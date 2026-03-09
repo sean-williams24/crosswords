@@ -1,0 +1,11 @@
+# Backend tooling (puzzle generator, word bank, secrets)
+Backend/
+
+# Xcode
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/
+build/
+
+# macOS
+.DS_Store
