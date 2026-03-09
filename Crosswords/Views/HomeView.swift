@@ -55,8 +55,11 @@ struct HomeView: View {
                     Spacer()
 
                     // Today's puzzle card
-                    if let puzzle = viewModel.todaysPuzzle {
-                        todayCard(puzzle: puzzle)
+                    if viewModel.todaysPuzzle != nil {
+                        NavigationLink(value: "puzzle") {
+                            todayCard(puzzle: viewModel.todaysPuzzle!)
+                        }
+                        .buttonStyle(.plain)
                     } else if viewModel.isLoading {
                         ProgressView()
                             .tint(.appAccent)
@@ -66,18 +69,6 @@ struct HomeView: View {
 
                     // Bottom buttons
                     VStack(spacing: 12) {
-                        if viewModel.todaysPuzzle != nil {
-                            NavigationLink(value: "puzzle") {
-                                Label(playButtonTitle, systemImage: "play.fill")
-                                .font(AppFont.body())
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 14)
-                                .background(Color.appAccent)
-                                .cornerRadius(AppLayout.cardCornerRadius)
-                            }
-                        }
-
                         Button {
                             showStats = true
                         } label: {
@@ -154,6 +145,11 @@ struct HomeView: View {
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
             }
+
+            Image(systemName: "play.fill")
+                .font(.system(size: 11))
+                .foregroundColor(.appAccent)
+                .padding(.top, 4)
         }
         .padding(32)
         .frame(maxWidth: .infinity)
@@ -170,11 +166,4 @@ struct HomeView: View {
         return fmt.string(from: Date()).uppercased()
     }
 
-    private var playButtonTitle: String {
-        switch viewModel.puzzleStatus {
-        case .new: return "Play Today's Puzzle"
-        case .inProgress: return "Continue"
-        case .completed: return "View Puzzle"
-        }
-    }
 }
