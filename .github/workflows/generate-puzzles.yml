@@ -1,0 +1,53 @@
+name: Generate Crossword Puzzles
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"   # Every Monday at 08:00 UTC
+  workflow_dispatch:       # Manual trigger
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install -r Backend/requirements.txt
+
+      - name: Determine start date and puzzle number
+        id: dates
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          python3 -c "
+          from supabase import create_client
+          from datetime import date, timedelta
+          import os
+          sb = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
+          rows = sb.table('puzzles').select('date,puzzle_number').order('date', desc=True).limit(1).execute()
+          if rows.data:
+              last = date.fromisoformat(rows.data[0]['date'])
+              num = rows.data[0]['puzzle_number']
+              print(f'start={(last + timedelta(days=1)).isoformat()}')
+              print(f'start_number={num + 1}')
+          else:
+              print(f'start={(date.today() + timedelta(days=1)).isoformat()}')
+              print(f'start_number=1')
+          " >> "$GITHUB_OUTPUT"
+
+      - name: Generate and upload puzzles
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          echo "Generating 7 puzzles starting from ${{ steps.dates.outputs.start }} (puzzle #${{ steps.dates.outputs.start_number }})"
+          python3 Backend/generate_puzzle.py \
+            --date "${{ steps.dates.outputs.start }}" \
+            --count 7 \
+            --start-number "${{ steps.dates.outputs.start_number }}"

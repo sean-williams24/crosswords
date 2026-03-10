@@ -1,5 +1,9 @@
-# Backend tooling (puzzle generator, word bank, secrets)
-Backend/
+# Backend – track source files, ignore generated/virtual env
+Backend/.venv/
+Backend/__pycache__/
+Backend/puzzles/
+Backend/puzzles_new/
+Backend/supabase/
 
 # Xcode
 *.xcodeproj/xcuserdata/
