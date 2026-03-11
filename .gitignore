@@ -10,6 +10,7 @@ Backend/supabase/
 # Xcode
 *.xcodeproj/xcuserdata/
 *.xcworkspace/xcuserdata/
+*.xcuserstate
 DerivedData/
 build/
 
