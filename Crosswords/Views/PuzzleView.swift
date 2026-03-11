@@ -56,9 +56,9 @@ struct PuzzleView: View {
 
     private var header: some View {
         VStack(spacing: 2) {
-            Text("PUZZLE #\(viewModel.puzzle.puzzleNumber)")
-                .font(AppFont.header(24))
-                .foregroundColor(.appTextPrimary)
+//            Text("PUZZLE #\(viewModel.puzzle.puzzleNumber)")
+//                .font(AppFont.header(24))
+//                .foregroundColor(.appTextPrimary)
 
             Text(viewModel.puzzle.date)
                 .font(AppFont.caption())
@@ -85,5 +85,12 @@ struct PuzzleView: View {
             Image(systemName: "lightbulb")
                 .foregroundColor(.appAccent)
         }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        PuzzleView(viewModel: GameViewModel(puzzle: .sample))
+            .environmentObject(StatsService())
     }
 }

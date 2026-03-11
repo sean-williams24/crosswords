@@ -45,11 +45,21 @@ struct ArchiveView: View {
             .navigationTitle("Archive")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Close") { dismiss() }
-                        .foregroundColor(.appAccent)
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.appTextSecondary)
+                    }
                 }
             }
+//            .toolbar {
+//                ToolbarItem(placement: .navigationBarLeading) {
+//                    Button("Close") { dismiss() }
+//                        .foregroundColor(.appAccent)
+//                }
+//            }
             .navigationDestination(isPresented: $showPuzzle) {
                 if let puzzle = selectedPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
@@ -71,10 +81,10 @@ struct ArchiveView: View {
         } label: {
             HStack(spacing: 16) {
                 // Puzzle number
-                Text("#\(entry.puzzleNumber)")
-                    .font(AppFont.statNumber())
-                    .foregroundColor(.appTextPrimary)
-                    .frame(width: 56, alignment: .leading)
+//                Text("#\(entry.puzzleNumber)")
+//                    .font(AppFont.statNumber())
+//                    .foregroundColor(.appTextPrimary)
+//                    .frame(width: 56, alignment: .leading)
 
                 // Date
                 VStack(alignment: .leading, spacing: 2) {
@@ -101,6 +111,7 @@ struct ArchiveView: View {
                     statusBadge(for: entry)
                 }
             }
+            .frame(height: 50)
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
             .background(Color.appSurface)

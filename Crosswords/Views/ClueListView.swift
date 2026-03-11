@@ -17,6 +17,12 @@ struct ClueListView: View {
                             .font(AppFont.clueLabel(14))
                             .foregroundColor(.appAccent)
                             .tracking(2)
+                            .textCase(nil)
+                            .listRowInsets(EdgeInsets())
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color.appBackground)
                     }
 
                     Section {
@@ -28,9 +34,17 @@ struct ClueListView: View {
                             .font(AppFont.clueLabel(14))
                             .foregroundColor(.appAccent)
                             .tracking(2)
+                            .textCase(nil)
+                            .listRowInsets(EdgeInsets())
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color.appBackground)
                     }
                 }
                 .listStyle(.plain)
+                .environment(\.defaultMinListHeaderHeight, 0)
+                .padding(.top, -22)
                 .onAppear {
                     if let active = viewModel.activeClue {
                         proxy.scrollTo(active.id, anchor: .center)
@@ -39,6 +53,8 @@ struct ClueListView: View {
             }
             .navigationTitle("Clues")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.appBackground, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -50,7 +66,7 @@ struct ClueListView: View {
                 }
             }
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents([.medium])
         .presentationDragIndicator(.visible)
     }
 
@@ -86,4 +102,8 @@ struct ClueListView: View {
         .id(clue.id)
         .listRowBackground(isActive ? Color.appAccent.opacity(0.08) : Color.clear)
     }
+}
+
+#Preview {
+    ClueListView(viewModel: GameViewModel(puzzle: .sample))
 }
