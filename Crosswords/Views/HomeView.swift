@@ -3,10 +3,12 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var statsService: StatsService
     @EnvironmentObject var puzzleService: PuzzleService
+    @EnvironmentObject var storeService: StoreService
     @StateObject private var viewModel: HomeViewModel
 
     @State private var showStats = false
     @State private var showArchive = false
+    @State private var showPaywall = false
     @State private var navigateToPuzzle = false
 
     init() {
@@ -26,8 +28,9 @@ struct HomeView: View {
 
                     // App title
                     VStack(spacing: 4) {
-                        Text("CROSSWORDS")
+                        Text(storeService.isProUser ? "CROSSWORDS PRO" : "CROSSWORDS")
                             .font(AppFont.header(36))
+                            .multilineTextAlignment(.center)
                             .foregroundColor(.appTextPrimary)
                             .tracking(4)
 
@@ -36,6 +39,7 @@ struct HomeView: View {
 //                            .foregroundColor(.appTextSecondary)
 //                            .tracking(1)
                     }
+                    .padding()
 
                     // Streak badge
                     if statsService.stats.currentStreak > 0 {
@@ -82,15 +86,28 @@ struct HomeView: View {
                         }
 
                         Button {
-                            showArchive = true
+                            if storeService.isProUser {
+                                showArchive = true
+                            } else {
+                                showPaywall = true
+                            }
                         } label: {
-                            Label("Archive", systemImage: "archivebox")
-                                .font(AppFont.body())
-                                .foregroundColor(.appTextPrimary)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 14)
-                                .background(Color.appSurface)
-                                .cornerRadius(AppLayout.cardCornerRadius)
+                            HStack {
+                                Label("Archive", systemImage: "archivebox")
+                                if !storeService.isProUser {
+                                    Spacer()
+                                    Image(systemName: "lock.fill")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.appAccent)
+                                }
+                            }
+                            .font(AppFont.body())
+                            .foregroundColor(.appTextPrimary)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                            .padding(.horizontal, 16)
+                            .background(Color.appSurface)
+                            .cornerRadius(AppLayout.cardCornerRadius)
                         }
                     }
                     .padding(.horizontal, AppLayout.screenPadding)
@@ -112,6 +129,10 @@ struct HomeView: View {
                     .environmentObject(puzzleService)
                     .environmentObject(statsService)
             }
+            .sheet(isPresented: $showPaywall) {
+                PaywallView()
+                    .environmentObject(storeService)
+            }
             .task {
                 await viewModel.loadTodaysPuzzle()
             }
@@ -123,7 +144,7 @@ struct HomeView: View {
     @ViewBuilder
     private func todayCard(puzzle: Puzzle) -> some View {
         VStack(spacing: 12) {
-            Text("DAILY PUZZLE")
+            Text("DAILY CROSSWORD")
                 .font(AppFont.clueLabel(11))
                 .foregroundColor(.appTextSecondary)
                 .tracking(3)

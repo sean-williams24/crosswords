@@ -4,12 +4,14 @@ import SwiftUI
 struct CrosswordsApp: App {
     @StateObject private var statsService = StatsService()
     @StateObject private var puzzleService = PuzzleService()
+    @StateObject private var storeService = StoreService()
 
     var body: some Scene {
         WindowGroup {
             HomeView()
                 .environmentObject(statsService)
                 .environmentObject(puzzleService)
+                .environmentObject(storeService)
         }
     }
 }

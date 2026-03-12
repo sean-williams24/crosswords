@@ -21,6 +21,8 @@
 		6EBA3E03AEEF55DD65C4AC70 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC73C42C4B5624541C6145F /* HomeViewModel.swift */; };
 		7439F1A63D54ABA2F679B0F8 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADBB2CCC3AA2C61B28321DD /* CacheService.swift */; };
 		7F87FA3DEB72CFE7FFB6BCEE /* CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF15C657AD1A3A058592EFE /* CompletionView.swift */; };
+		863024A32F623B51002B3CA5 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863024A22F623B51002B3CA5 /* StoreService.swift */; };
+		863024A72F623BA5002B3CA5 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863024A62F623BA5002B3CA5 /* PaywallView.swift */; };
 		880F9FA0C0AED52CF1DF0FEB /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760B9E180A144EF9F5A0EAAA /* AppTheme.swift */; };
 		9B214B58BD15ADC7A9DA5C37 /* CrosswordsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B06770CD5FC62F83516BB3 /* CrosswordsApp.swift */; };
 		A006116EEC348C09BA7967EF /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5ED0EB04709FDE5AFF6097 /* GameViewModel.swift */; };
@@ -46,6 +48,9 @@
 		760B9E180A144EF9F5A0EAAA /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		772BFD567B8BA32D90C3A2E0 /* KeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputView.swift; sourceTree = "<group>"; };
 		7C326BE4F25C5AB53AAF1C2A /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
+		863024A22F623B51002B3CA5 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
+		863024A62F623BA5002B3CA5 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		863024AA2F6363BE002B3CA5 /* CrosswordsProducts.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = CrosswordsProducts.storekit; path = Crosswords/Configuration/CrosswordsProducts.storekit; sourceTree = "<group>"; };
 		9DBEC370EFFB7380B84F74E9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BA0D59E4BD856AB23C420258 /* StatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsService.swift; sourceTree = "<group>"; };
 		BBA7D9E0E05B0C464E5CC128 /* ClueListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueListView.swift; sourceTree = "<group>"; };
@@ -94,6 +99,7 @@
 				BBA7D9E0E05B0C464E5CC128 /* ClueListView.swift */,
 				4BF15C657AD1A3A058592EFE /* CompletionView.swift */,
 				DDE1BEAA834A2C11283278DC /* HomeView.swift */,
+				863024A62F623BA5002B3CA5 /* PaywallView.swift */,
 				772BFD567B8BA32D90C3A2E0 /* KeyboardInputView.swift */,
 				0D95A0993EBA02FD4775E01B /* PuzzleGridView.swift */,
 				DE3D6F22462257FD00545EC0 /* PuzzleView.swift */,
@@ -143,6 +149,7 @@
 		F8082B6F6AC22DAB13FFB26F = {
 			isa = PBXGroup;
 			children = (
+				863024AA2F6363BE002B3CA5 /* CrosswordsProducts.storekit */,
 				80FB40E4367E5A11D4B766DB /* Crosswords */,
 				238573093061A564C6DD35CA /* Products */,
 			);
@@ -155,6 +162,7 @@
 				0BEA465775FDCD76EB3D459B /* HapticsEngine.swift */,
 				C3F4D143AF28580E3116C551 /* PuzzleService.swift */,
 				BA0D59E4BD856AB23C420258 /* StatsService.swift */,
+				863024A22F623B51002B3CA5 /* StoreService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -188,8 +196,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = B99CFE2CEBC444426CE1EA0B /* Build configuration list for PBXProject "Crosswords" */;
 			developmentRegion = en;
@@ -237,8 +243,10 @@
 				A006116EEC348C09BA7967EF /* GameViewModel.swift in Sources */,
 				CF47D18B9EBF6FA87446E053 /* HapticsEngine.swift in Sources */,
 				B8CD8F1B215BC3B1944010B4 /* HomeView.swift in Sources */,
+				863024A72F623BA5002B3CA5 /* PaywallView.swift in Sources */,
 				6EBA3E03AEEF55DD65C4AC70 /* HomeViewModel.swift in Sources */,
 				D44EAAD3B0E756CE20A44DB3 /* KeyboardInputView.swift in Sources */,
+				863024A32F623B51002B3CA5 /* StoreService.swift in Sources */,
 				F339B918E44F0B5065990E9E /* Puzzle.swift in Sources */,
 				4F29ABB6EC65AA0BEB5F04B3 /* PuzzleGridView.swift in Sources */,
 				088103B8D974A2F8DE1E28FC /* PuzzleService.swift in Sources */,
