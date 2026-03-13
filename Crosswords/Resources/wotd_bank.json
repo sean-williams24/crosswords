@@ -1,0 +1,272 @@
+[
+  {
+    "word": "Petrichor",
+    "pronunciation": "PET-ri-kor",
+    "partOfSpeech": "noun",
+    "definition": "The pleasant, earthy smell produced when rain falls on dry soil.",
+    "etymology": "Coined in 1964 from Greek 'petra' (stone) and 'ichor' (the fluid that flows in the veins of the gods in Greek mythology).",
+    "synonyms": ["earth scent", "rain smell"],
+    "exampleSentence": "After weeks of drought, the first drops of rain released a glorious petrichor across the garden."
+  },
+  {
+    "word": "Sonder",
+    "pronunciation": "SON-der",
+    "partOfSpeech": "noun",
+    "definition": "The realisation that each random passer-by is living a life as vivid and complex as your own.",
+    "etymology": "Coined by John Koenig in 'The Dictionary of Obscure Sorrows' (2012), from German 'sonder' (special) and French 'sonder' (to probe).",
+    "synonyms": ["empathic awareness", "existential reflection"],
+    "exampleSentence": "Standing in the busy station, she was struck by a wave of sonder as she watched hundreds of strangers rush past."
+  },
+  {
+    "word": "Defenestration",
+    "pronunciation": "dee-fen-eh-STRAY-shun",
+    "partOfSpeech": "noun",
+    "definition": "The act of throwing someone or something out of a window.",
+    "etymology": "From Latin 'de' (down from) and 'fenestra' (window). Popularised after the Defenestrations of Prague in 1419 and 1618.",
+    "synonyms": ["ejection", "expulsion"],
+    "exampleSentence": "The defenestration of the laptop was perhaps an overreaction to the software update."
+  },
+  {
+    "word": "Limerence",
+    "pronunciation": "LIM-er-ens",
+    "partOfSpeech": "noun",
+    "definition": "An involuntary state of intense romantic desire and obsessive attachment to another person.",
+    "etymology": "Coined by psychologist Dorothy Tennov in 1979, possibly derived from an arbitrary coinage designed to sound clinical.",
+    "synonyms": ["infatuation", "besotted", "lovesick"],
+    "exampleSentence": "What he mistook for true love was, his therapist gently suggested, a textbook case of limerence."
+  },
+  {
+    "word": "Sesquipedalian",
+    "pronunciation": "ses-kwi-peh-DAY-lee-un",
+    "partOfSpeech": "adjective",
+    "definition": "Relating to or given to the use of long words.",
+    "etymology": "From Latin 'sesquipedalis', literally 'a foot and a half long', from 'sesqui' (one and a half) and 'pes' (foot). Used by Horace in Ars Poetica.",
+    "synonyms": ["verbose", "grandiloquent", "polysyllabic"],
+    "exampleSentence": "His sesquipedalian prose made even simple recipes read like doctoral theses."
+  },
+  {
+    "word": "Aphelion",
+    "pronunciation": "ah-FEE-lee-un",
+    "partOfSpeech": "noun",
+    "definition": "The point in a planet's orbit where it is farthest from the sun.",
+    "etymology": "From Greek 'apo' (away from) and 'helios' (sun). First used in English around 1656.",
+    "synonyms": ["furthest orbital point"],
+    "exampleSentence": "Earth reaches its aphelion in early July, ironically during the Northern Hemisphere's summer."
+  },
+  {
+    "word": "Vellichor",
+    "pronunciation": "VEL-ih-kor",
+    "partOfSpeech": "noun",
+    "definition": "The strange wistfulness of used bookshops, which are somehow infused with the passage of time.",
+    "etymology": "Coined by John Koenig in 'The Dictionary of Obscure Sorrows', blending 'vellum' (parchment) with a suffix echoing 'petrichor'.",
+    "synonyms": ["book nostalgia", "bibliophilic wistfulness"],
+    "exampleSentence": "Browsing the dusty shelves of the antique shop, she was overcome by a deep vellichor."
+  },
+  {
+    "word": "Eigengrau",
+    "pronunciation": "EYE-gen-grow",
+    "partOfSpeech": "noun",
+    "definition": "The dark grey colour seen by the eye in perfect darkness, as opposed to true black.",
+    "etymology": "German for 'intrinsic grey' or 'own grey'. Documented in 19th-century vision research. Also known as 'Eigenlicht' (own light).",
+    "synonyms": ["brain grey", "dark light"],
+    "exampleSentence": "Even in the cave with no light whatsoever, his visual field was filled not with black but with eigengrau."
+  },
+  {
+    "word": "Tmesis",
+    "pronunciation": "tuh-MEE-sis",
+    "partOfSpeech": "noun",
+    "definition": "The separation of parts of a compound word by an intervening word, used for emphasis.",
+    "etymology": "From Greek 'tmesis' (cutting), from 'temnein' (to cut). Used in rhetoric since antiquity.",
+    "synonyms": ["word splitting", "infixation"],
+    "exampleSentence": "When she said 'abso-bloomin-lutely', she was employing a classic example of tmesis."
+  },
+  {
+    "word": "Phosphene",
+    "pronunciation": "FOS-feen",
+    "partOfSpeech": "noun",
+    "definition": "The sensation of seeing light without light actually entering the eye, such as when you press on your closed eyelids.",
+    "etymology": "From Greek 'phos' (light) and 'phainein' (to show). Coined in the 19th century by J.E. Purkinje.",
+    "synonyms": ["pressure light", "entoptic phenomenon"],
+    "exampleSentence": "As a child, she loved pressing her palms against her eyes to watch the kaleidoscopic phosphenes bloom."
+  },
+  {
+    "word": "Apricity",
+    "pronunciation": "ah-PRISS-ih-tee",
+    "partOfSpeech": "noun",
+    "definition": "The warmth of the sun in winter.",
+    "etymology": "From Latin 'apricus' (exposed to the sun, sunny). An archaic English word recorded as early as 1623.",
+    "synonyms": ["winter warmth", "sun's warmth"],
+    "exampleSentence": "They sat on the frozen bench, grateful for the unexpected apricity on that January morning."
+  },
+  {
+    "word": "Psithurism",
+    "pronunciation": "SITH-yur-iz-um",
+    "partOfSpeech": "noun",
+    "definition": "The sound of wind whispering through the trees.",
+    "etymology": "From Greek 'psithuros' (whispering), related to 'psithurizo' (I whisper).",
+    "synonyms": ["leaf rustle", "wind whisper"],
+    "exampleSentence": "The gentle psithurism of the birch trees made the forest feel alive with quiet conversation."
+  },
+  {
+    "word": "Callipygian",
+    "pronunciation": "kal-ih-PIJ-ee-un",
+    "partOfSpeech": "adjective",
+    "definition": "Having beautifully shaped buttocks.",
+    "etymology": "From Greek 'kallos' (beauty) and 'pyge' (buttocks). Inspired by the Venus Callipyge statue in Naples.",
+    "synonyms": ["well-proportioned", "shapely"],
+    "exampleSentence": "The art history lecture took an entertaining turn during the discussion of the callipygian Venus."
+  },
+  {
+    "word": "Selcouth",
+    "pronunciation": "SEL-kooth",
+    "partOfSpeech": "adjective",
+    "definition": "Unfamiliar, rare, strange, and yet marvellous.",
+    "etymology": "From Old English 'seldcūþ', combining 'seldan' (seldom) and 'cūþ' (known). Fell out of common use after the 14th century.",
+    "synonyms": ["wondrous", "marvellous", "extraordinary"],
+    "exampleSentence": "The aurora borealis was a selcouth sight for someone who had never left the tropics."
+  },
+  {
+    "word": "Fernweh",
+    "pronunciation": "FERN-vay",
+    "partOfSpeech": "noun",
+    "definition": "An ache for distant places; a longing for far-off lands one has never visited.",
+    "etymology": "German, from 'fern' (far) and 'weh' (pain, woe). The opposite of 'Heimweh' (homesickness).",
+    "synonyms": ["wanderlust", "travel longing", "farsickness"],
+    "exampleSentence": "Scrolling through photos of Patagonia filled her with an almost painful fernweh."
+  },
+  {
+    "word": "Orrery",
+    "pronunciation": "OR-uh-ree",
+    "partOfSpeech": "noun",
+    "definition": "A mechanical model of the solar system showing the relative positions and motions of the planets.",
+    "etymology": "Named after Charles Boyle, 4th Earl of Orrery, for whom one of the first such devices was made around 1713.",
+    "synonyms": ["planetary model", "solar system model"],
+    "exampleSentence": "The antique orrery in the museum still turned its brass planets in graceful arcs around a golden sun."
+  },
+  {
+    "word": "Clinomania",
+    "pronunciation": "kly-noh-MAY-nee-uh",
+    "partOfSpeech": "noun",
+    "definition": "An excessive desire to stay in bed; an obsessive attachment to one's bed.",
+    "etymology": "From Greek 'klinein' (to lean, recline) and 'mania' (madness, obsession).",
+    "synonyms": ["bed addiction", "dysania"],
+    "exampleSentence": "On dark winter mornings, his clinomania made the alarm clock feel like a personal enemy."
+  },
+  {
+    "word": "Syzygy",
+    "pronunciation": "SIZ-ih-jee",
+    "partOfSpeech": "noun",
+    "definition": "An alignment of three or more celestial bodies in a straight line, typically the sun, earth, and moon.",
+    "etymology": "From Greek 'suzugia' (yoked together), from 'sun' (together) and 'zugon' (yoke). Also notable for having no standard vowels in English.",
+    "synonyms": ["alignment", "conjunction"],
+    "exampleSentence": "The eclipse was caused by a perfect syzygy of the sun, moon, and earth."
+  },
+  {
+    "word": "Obsequious",
+    "pronunciation": "ob-SEE-kwee-us",
+    "partOfSpeech": "adjective",
+    "definition": "Obedient or attentive to an excessive or servile degree.",
+    "etymology": "From Latin 'obsequiosus' (compliant), from 'obsequi' (to follow, comply with), from 'ob' (towards) and 'sequi' (to follow).",
+    "synonyms": ["sycophantic", "fawning", "servile", "unctuous"],
+    "exampleSentence": "The obsequious waiter hovered so persistently that they could barely hold a conversation."
+  },
+  {
+    "word": "Ephemeral",
+    "pronunciation": "eh-FEM-er-ul",
+    "partOfSpeech": "adjective",
+    "definition": "Lasting for a very short time; transient.",
+    "etymology": "From Greek 'ephemeros' (lasting only a day), from 'epi' (on) and 'hemera' (day). Originally used in medicine for fevers lasting a single day.",
+    "synonyms": ["fleeting", "transitory", "evanescent", "momentary"],
+    "exampleSentence": "The cherry blossoms were a reminder that the most beautiful things are often the most ephemeral."
+  },
+  {
+    "word": "Surreptitious",
+    "pronunciation": "sur-ep-TISH-us",
+    "partOfSpeech": "adjective",
+    "definition": "Kept secret, especially because it would not be approved of.",
+    "etymology": "From Latin 'surrepticius' (stolen, secret), from 'surripere' (to seize secretly), from 'sub' (under) and 'rapere' (to seize).",
+    "synonyms": ["clandestine", "covert", "stealthy", "furtive"],
+    "exampleSentence": "She took a surreptitious glance at her phone under the table during the interminable meeting."
+  },
+  {
+    "word": "Ineffable",
+    "pronunciation": "in-EFF-uh-bul",
+    "partOfSpeech": "adjective",
+    "definition": "Too great or extreme to be expressed or described in words.",
+    "etymology": "From Latin 'ineffabilis', from 'in' (not) and 'effabilis' (utterable), from 'effari' (to speak out).",
+    "synonyms": ["indescribable", "inexpressible", "unspeakable", "unutterable"],
+    "exampleSentence": "The view from the summit filled her with an ineffable sense of wonder."
+  },
+  {
+    "word": "Mellifluous",
+    "pronunciation": "meh-LIF-loo-us",
+    "partOfSpeech": "adjective",
+    "definition": "Sweet or musical; pleasant to hear.",
+    "etymology": "From Latin 'mellifluus', from 'mel' (honey) and 'fluere' (to flow). Literally 'flowing with honey'.",
+    "synonyms": ["dulcet", "honeyed", "euphonious", "lyrical"],
+    "exampleSentence": "The cellist's mellifluous playing brought several audience members to tears."
+  },
+  {
+    "word": "Schadenfreude",
+    "pronunciation": "SHAH-den-froy-duh",
+    "partOfSpeech": "noun",
+    "definition": "Pleasure derived from another person's misfortune.",
+    "etymology": "German, from 'Schaden' (damage, harm) and 'Freude' (joy). Borrowed into English in the 19th century, as no single English word captures the concept.",
+    "synonyms": ["gloating", "malicious joy"],
+    "exampleSentence": "He felt a twinge of schadenfreude watching his rival trip on stage, though he quickly felt guilty about it."
+  },
+  {
+    "word": "Palimpsest",
+    "pronunciation": "PAL-imp-sest",
+    "partOfSpeech": "noun",
+    "definition": "A manuscript or piece of writing on which the original text has been erased and overwritten, yet traces of the original remain visible.",
+    "etymology": "From Greek 'palimpsestos' (scraped again), from 'palin' (again) and 'psao' (to scrape). Parchment was expensive, so monks frequently scraped and reused it.",
+    "synonyms": ["overwritten text", "layered manuscript"],
+    "exampleSentence": "The city itself was a palimpsest, each era's architecture layered atop the ruins of the last."
+  },
+  {
+    "word": "Querulous",
+    "pronunciation": "KWER-yuh-lus",
+    "partOfSpeech": "adjective",
+    "definition": "Complaining in a petulant or whining manner.",
+    "etymology": "From Latin 'querulus' (complaining), from 'queri' (to complain). Related to 'quarrel'.",
+    "synonyms": ["whiny", "petulant", "peevish", "grumbling"],
+    "exampleSentence": "The querulous neighbour had filed complaints about everything from birdsong to the colour of their bins."
+  },
+  {
+    "word": "Uitwaaien",
+    "pronunciation": "OWT-vy-en",
+    "partOfSpeech": "verb",
+    "definition": "To take a walk in the wind for fun; to go out in windy weather to clear one's head.",
+    "etymology": "Dutch, from 'uit' (out) and 'waaien' (to blow). A concept deeply embedded in Dutch coastal culture.",
+    "synonyms": ["windwalking", "airing out"],
+    "exampleSentence": "After a stressful week, she drove to the coast to uitwaaien along the cliffs."
+  },
+  {
+    "word": "Ataraxia",
+    "pronunciation": "at-uh-RAK-see-uh",
+    "partOfSpeech": "noun",
+    "definition": "A state of serene calmness; freedom from mental disturbance or anxiety.",
+    "etymology": "From Greek 'ataraxia' (impassiveness), from 'a' (without) and 'tarassein' (to disturb). A key concept in Epicurean and Stoic philosophy.",
+    "synonyms": ["equanimity", "tranquillity", "composure", "serenity"],
+    "exampleSentence": "Through years of meditation, she had achieved something approaching true ataraxia."
+  },
+  {
+    "word": "Cacoethes",
+    "pronunciation": "kak-oh-EE-theez",
+    "partOfSpeech": "noun",
+    "definition": "An irresistible urge to do something inadvisable.",
+    "etymology": "From Greek 'kakoethes' (ill-disposed), from 'kakos' (bad) and 'ethos' (character, habit). Used by Juvenal as 'cacoethes scribendi' (an incurable itch to write).",
+    "synonyms": ["compulsion", "irresistible urge", "mania"],
+    "exampleSentence": "He suffered from a cacoethes for correcting other people's grammar — a habit that won him few friends."
+  },
+  {
+    "word": "Penumbra",
+    "pronunciation": "peh-NUM-bruh",
+    "partOfSpeech": "noun",
+    "definition": "The partially shaded outer region of a shadow cast by an opaque object; or a peripheral or indeterminate area.",
+    "etymology": "From Latin 'paene' (almost) and 'umbra' (shadow). Coined by astronomer Johannes Kepler in 1604.",
+    "synonyms": ["partial shadow", "fringe", "periphery"],
+    "exampleSentence": "The truth lay somewhere in the penumbra between what he said and what he actually meant."
+  }
+]

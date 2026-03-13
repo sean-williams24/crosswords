@@ -10,7 +10,9 @@ struct HomeView: View {
     @State private var showStats = false
     @State private var showArchive = false
     @State private var showPaywall = false
+    @State private var showWOTD = false
     @State private var navigateToPuzzle = false
+    @StateObject private var wotdService = WOTDService()
 
     init() {
         // Can't use @EnvironmentObject in init, so create with a temporary service
@@ -58,6 +60,16 @@ struct HomeView: View {
                     }
 
                     Spacer()
+
+                    // Word of the Day
+                    if let word = wotdService.todaysWord {
+                        Button {
+                            showWOTD = true
+                        } label: {
+                            wotdCard(word: word)
+                        }
+                        .buttonStyle(.plain)
+                    }
 
                     // Today's puzzle card
                     if viewModel.todaysPuzzle != nil {
@@ -138,6 +150,15 @@ struct HomeView: View {
                 PaywallView()
                     .environmentObject(storeService)
             }
+            .sheet(isPresented: $showWOTD, onDismiss: {
+                if !storeService.isProUser {
+//                    adService.showInterstitial() // TODO: Re-enable
+                }
+            }) {
+                if let word = wotdService.todaysWord {
+                    WOTDDetailView(word: word)
+                }
+            }
             .task {
                 await viewModel.loadTodaysPuzzle()
             }
@@ -178,6 +199,28 @@ struct HomeView: View {
                 .padding(.top, 4)
         }
         .padding(32)
+        .frame(maxWidth: .infinity)
+        .background(Color.appSurface)
+        .cornerRadius(AppLayout.cardCornerRadius)
+        .padding(.horizontal, AppLayout.screenPadding)
+    }
+
+    // MARK: - Word of the Day Card
+
+    @ViewBuilder
+    private func wotdCard(word: WordOfTheDay) -> some View {
+        VStack(spacing: 6) {
+            Text("WORD OF THE DAY")
+                .font(AppFont.clueLabel(10))
+                .foregroundColor(.appTextSecondary)
+                .tracking(3)
+
+            Text(word.word)
+                .font(AppFont.header(22))
+                .foregroundColor(.appTextPrimary)
+        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 16)
         .frame(maxWidth: .infinity)
         .background(Color.appSurface)
         .cornerRadius(AppLayout.cardCornerRadius)
