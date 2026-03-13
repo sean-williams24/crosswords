@@ -9,8 +9,8 @@ struct ClueListView: View {
             ScrollViewReader { proxy in
                 List {
                     Section {
-                        ForEach(viewModel.puzzle.acrossClues) { clue in
-                            clueRow(clue)
+                        ForEach(Array(viewModel.puzzle.acrossClues.enumerated()), id: \.element.id) { index, clue in
+                            clueRow(clue, isFirst: index == 0, isLast: index == viewModel.puzzle.acrossClues.count - 1)
                         }
                     } header: {
                         Text("ACROSS")
@@ -26,8 +26,8 @@ struct ClueListView: View {
                     }
 
                     Section {
-                        ForEach(viewModel.puzzle.downClues) { clue in
-                            clueRow(clue)
+                        ForEach(Array(viewModel.puzzle.downClues.enumerated()), id: \.element.id) { index, clue in
+                            clueRow(clue, isFirst: index == 0, isLast: index == viewModel.puzzle.downClues.count - 1)
                         }
                     } header: {
                         Text("DOWN")
@@ -42,9 +42,8 @@ struct ClueListView: View {
                             .background(Color.appBackground)
                     }
                 }
+                .background(Color.appBackground)
                 .listStyle(.plain)
-                .environment(\.defaultMinListHeaderHeight, 0)
-                .padding(.top, -22)
                 .onAppear {
                     if let active = viewModel.activeClue {
                         proxy.scrollTo(active.id, anchor: .center)
@@ -71,7 +70,7 @@ struct ClueListView: View {
     }
 
     @ViewBuilder
-    private func clueRow(_ clue: Clue) -> some View {
+    private func clueRow(_ clue: Clue, isFirst: Bool = false, isLast: Bool = false) -> some View {
         let isCompleted = viewModel.progress.completedClueIds.contains(clue.id)
         let isActive = viewModel.activeClue?.id == clue.id
 
@@ -100,7 +99,9 @@ struct ClueListView: View {
             .padding(.vertical, 4)
         }
         .id(clue.id)
-        .listRowBackground(isActive ? Color.appAccent.opacity(0.08) : Color.clear)
+        .listRowSeparator(isFirst ? .hidden : .visible, edges: .top)
+        .listRowSeparator(isLast ? .hidden : .visible, edges: .bottom)
+        .listRowBackground(isActive ? Color.appAccent.opacity(0.08) : Color.appSurface)
     }
 }
 

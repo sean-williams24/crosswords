@@ -2,8 +2,6 @@ import UIKit
 import GoogleMobileAds
 
 /// Manages loading and presenting interstitial ads for free-tier users.
-/// Requires the Google Mobile Ads SDK — add via Swift Package Manager:
-/// https://github.com/googleads/swift-package-manager-google-mobile-ads
 ///
 /// Replace the production ad unit ID before submitting to the App Store.
 @MainActor
