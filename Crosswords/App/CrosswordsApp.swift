@@ -5,6 +5,7 @@ struct CrosswordsApp: App {
     @StateObject private var statsService = StatsService()
     @StateObject private var puzzleService = PuzzleService()
     @StateObject private var storeService = StoreService()
+    @StateObject private var adService = AdService()
 
     var body: some Scene {
         WindowGroup {
@@ -12,6 +13,7 @@ struct CrosswordsApp: App {
                 .environmentObject(statsService)
                 .environmentObject(puzzleService)
                 .environmentObject(storeService)
+                .environmentObject(adService)
         }
     }
 }

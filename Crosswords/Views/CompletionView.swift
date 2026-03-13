@@ -3,9 +3,12 @@ import SwiftUI
 struct CompletionView: View {
     @ObservedObject var viewModel: GameViewModel
     @EnvironmentObject var statsService: StatsService
+    @EnvironmentObject var storeService: StoreService
+    @EnvironmentObject var adService: AdService
     @Environment(\.dismiss) private var dismiss
 
     @State private var showContent = false
+    @State private var hasShownAd = false
 
     var body: some View {
         ZStack {
@@ -92,6 +95,14 @@ struct CompletionView: View {
 
             withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.2)) {
                 showContent = true
+            }
+
+            // Show interstitial ad for free users after the animation has played (once only)
+            if !storeService.isProUser && !hasShownAd {
+                hasShownAd = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    adService.showInterstitial()
+                }
             }
         }
         .interactiveDismissDisabled(false)

@@ -3,6 +3,8 @@ import SwiftUI
 struct ArchiveView: View {
     @EnvironmentObject var puzzleService: PuzzleService
     @EnvironmentObject var statsService: StatsService
+    @EnvironmentObject var storeService: StoreService
+    @EnvironmentObject var adService: AdService
 
     @State private var entries: [ArchiveEntry] = []
     @State private var isLoading = true
@@ -64,6 +66,8 @@ struct ArchiveView: View {
                 if let puzzle = selectedPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
                         .environmentObject(statsService)
+                        .environmentObject(storeService)
+                        .environmentObject(adService)
                 }
             }
             .task {

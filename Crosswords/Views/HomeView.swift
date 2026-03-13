@@ -4,6 +4,7 @@ struct HomeView: View {
     @EnvironmentObject var statsService: StatsService
     @EnvironmentObject var puzzleService: PuzzleService
     @EnvironmentObject var storeService: StoreService
+    @EnvironmentObject var adService: AdService
     @StateObject private var viewModel: HomeViewModel
 
     @State private var showStats = false
@@ -118,6 +119,8 @@ struct HomeView: View {
                 if let puzzle = viewModel.todaysPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
                         .environmentObject(statsService)
+                        .environmentObject(storeService)
+                        .environmentObject(adService)
                 }
             }
             .sheet(isPresented: $showStats) {
@@ -128,6 +131,8 @@ struct HomeView: View {
                 ArchiveView()
                     .environmentObject(puzzleService)
                     .environmentObject(statsService)
+                    .environmentObject(storeService)
+                    .environmentObject(adService)
             }
             .sheet(isPresented: $showPaywall) {
                 PaywallView()

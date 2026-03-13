@@ -3,6 +3,8 @@ import SwiftUI
 struct PuzzleView: View {
     @StateObject var viewModel: GameViewModel
     @EnvironmentObject var statsService: StatsService
+    @EnvironmentObject var storeService: StoreService
+    @EnvironmentObject var adService: AdService
 
     var body: some View {
         ZStack {
@@ -45,6 +47,8 @@ struct PuzzleView: View {
         .sheet(isPresented: $viewModel.isComplete) {
             CompletionView(viewModel: viewModel)
                 .environmentObject(statsService)
+                .environmentObject(storeService)
+                .environmentObject(adService)
         }
         .navigationBarBackButtonHidden(viewModel.isZenMode)
         .onTapGesture {
@@ -92,5 +96,7 @@ struct PuzzleView: View {
     NavigationStack {
         PuzzleView(viewModel: GameViewModel(puzzle: .sample))
             .environmentObject(StatsService())
+            .environmentObject(StoreService())
+            .environmentObject(AdService())
     }
 }
