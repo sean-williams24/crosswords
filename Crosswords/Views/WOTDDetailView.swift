@@ -35,6 +35,20 @@ struct WOTDDetailView: View {
                             .font(AppFont.body())
                             .foregroundColor(.appTextPrimary)
                     }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 19)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.appSurface)/*.opacity(0.75)*/
+                    .overlay(
+                        RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                            .stroke(Color.appAccent.opacity(0.6), lineWidth: 2)
+                    )
+                    .cornerRadius(AppLayout.cardCornerRadius)
+                    .shadow(color: Color(UIColor { traits in
+                        traits.userInterfaceStyle == .dark
+                            ? UIColor.white.withAlphaComponent(0.22)
+                            : UIColor.black.withAlphaComponent(0.22)
+                    }), radius: 4, x: 0, y: 3)
 
                     // Example
                     sectionBlock(title: "EXAMPLE") {
@@ -43,6 +57,8 @@ struct WOTDDetailView: View {
                             .italic()
                             .foregroundColor(.appTextPrimary)
                     }
+                    .padding(.horizontal, 14)
+
 
                     // Synonyms
                     if !word.synonyms.isEmpty {
@@ -59,6 +75,7 @@ struct WOTDDetailView: View {
                                 }
                             }
                         }
+                        .padding(.horizontal, 14)
                     }
 
                     // Etymology
@@ -67,6 +84,8 @@ struct WOTDDetailView: View {
                             .font(AppFont.clueText())
                             .foregroundColor(.appTextPrimary)
                     }
+                    .padding(.horizontal, 14)
+
 
                     // Part of speech explainer
                     if let explainer = partOfSpeechExplainer(word.partOfSpeech) {
@@ -83,15 +102,13 @@ struct WOTDDetailView: View {
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color.appSurface)
-                        .cornerRadius(AppLayout.cardCornerRadius)
                     }
                 }
                 .padding(.horizontal, AppLayout.screenPadding)
                 .padding(.top, 24)
                 .padding(.bottom, 40)
             }
-            .background(Color.appBackground)
+            .background(Color.appBackground.opacity(0.2))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -102,7 +119,7 @@ struct WOTDDetailView: View {
                 }
             }
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents([.large])
         .presentationDragIndicator(.visible)
     }
 
@@ -116,6 +133,11 @@ struct WOTDDetailView: View {
 
             content()
         }
+//        .padding(.horizontal, 14)
+//        .padding(.vertical, 10)
+//        .frame(maxWidth: .infinity, alignment: .leading)
+//        .background(Color.appSurface)
+//        .cornerRadius(AppLayout.cardCornerRadius)
     }
 
     private func partOfSpeechExplainer(_ pos: String) -> String? {
