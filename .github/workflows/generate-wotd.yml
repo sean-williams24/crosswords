@@ -43,6 +43,7 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           echo "Generating 7 WOTDs starting from ${{ steps.dates.outputs.start }}"
           python3 Backend/generate_wotd.py \

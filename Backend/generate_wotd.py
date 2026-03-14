@@ -613,6 +613,61 @@ def get_used_words() -> set[str]:
         return set()
 
 
+def generate_words_with_llm(count: int, used_words: set[str]) -> list[dict]:
+    """Use GPT-4o-mini to generate new WOTD entries when the bank runs dry."""
+    try:
+        import openai
+    except ImportError:
+        print("  openai package not installed — cannot use LLM fallback")
+        return []
+
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        print("  OPENAI_API_KEY not set — cannot use LLM fallback")
+        return []
+
+    print(f"  Falling back to GPT-4o-mini to generate {count} new words...")
+    client = openai.OpenAI(api_key=api_key)
+
+    exclude_list = ", ".join(sorted(used_words)[:50])  # sample to keep prompt short
+    prompt = f"""Generate {count} interesting, unusual, or beautiful English words suitable for a 'Word of the Day' feature in a crossword app.
+
+Avoid these already-used words (sample): {exclude_list}
+
+For each word return a JSON object with exactly these fields:
+- word (string, title case)
+- pronunciation (string, e.g. "ah-PRIS-ih-tee")
+- partOfSpeech (string, e.g. "noun")
+- definition (string, clear and engaging, 1-2 sentences)
+- etymology (string, interesting origin story, 1-2 sentences)
+- synonyms (array of 2-3 strings)
+- exampleSentence (string, natural usage example)
+
+Return a JSON array of {count} objects. Return ONLY the JSON array, no other text."""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.9,
+    )
+
+    content = response.choices[0].message.content or ""
+    if "```json" in content:
+        content = content.split("```json")[1].split("```")[0]
+    elif "```" in content:
+        content = content.split("```")[1].split("```")[0]
+
+    try:
+        result = json.loads(content.strip())
+        if isinstance(result, list):
+            print(f"  LLM generated {len(result)} new words")
+            return result
+    except Exception as e:
+        print(f"  LLM response parse error: {e}")
+
+    return []
+
+
 def get_words(count: int, seed: int, exclude_used: bool = True) -> list[dict]:
     """Select `count` unused words from the bank.
 
@@ -624,7 +679,11 @@ def get_words(count: int, seed: int, exclude_used: bool = True) -> list[dict]:
 
     remaining = len(pool)
     if remaining == 0:
-        print("ERROR: All words in the bank have been used! Add more words to WORD_BANK.")
+        print("  Word bank exhausted — using LLM fallback to generate new words.")
+        llm_words = generate_words_with_llm(count, used)
+        if llm_words:
+            return llm_words[:count]
+        print("ERROR: Word bank empty and LLM fallback failed. Add more words to WORD_BANK.")
         sys.exit(1)
     elif remaining <= 14:
         print(f"  ⚠️  Only {remaining} unused words left in the bank — add more soon!")
