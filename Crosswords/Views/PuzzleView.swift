@@ -5,6 +5,9 @@ struct PuzzleView: View {
     @EnvironmentObject var statsService: StatsService
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
+    @State private var showPaywall = false
+
+    private let freeHintLimit = 2
 
     var body: some View {
         ZStack {
@@ -50,6 +53,10 @@ struct PuzzleView: View {
                 .environmentObject(storeService)
                 .environmentObject(adService)
         }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
+                .environmentObject(storeService)
+        }
         .navigationBarBackButtonHidden(viewModel.isZenMode)
         .onTapGesture {
             viewModel.deactivateZenMode()
@@ -84,10 +91,20 @@ struct PuzzleView: View {
         }
 
         Button {
-            viewModel.useHint()
+            if storeService.isProUser || viewModel.progress.hintsUsed < freeHintLimit {
+                viewModel.useHint()
+            } else {
+                showPaywall = true
+            }
         } label: {
-            Image(systemName: "lightbulb")
-                .foregroundColor(.appAccent)
+            HStack(spacing: 4) {
+                Image(systemName: "lightbulb")
+                if !storeService.isProUser {
+                    Text("\(max(0, freeHintLimit - viewModel.progress.hintsUsed))")
+                        .font(AppFont.caption())
+                }
+            }
+            .foregroundColor(storeService.isProUser || viewModel.progress.hintsUsed < freeHintLimit ? .appAccent : .appTextSecondary)
         }
     }
 }

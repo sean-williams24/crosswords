@@ -2,6 +2,7 @@
 Backend/*.py
 !Backend/generate_puzzle.py
 !Backend/generate_wotd.py
+!Backend/upgrade_clues.py
 Backend/.venv/
 Backend/__pycache__/
 Backend/puzzles/

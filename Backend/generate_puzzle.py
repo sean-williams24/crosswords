@@ -545,7 +545,7 @@ def assemble_raw(
             "direction": slot.direction,
             "number": 0,  # assigned later by build_puzzle_payload
             "answer": entry["word"].upper(),
-            "text": entry["text"],
+            "text": entry.get("hard_text", entry["text"]),
             "hint": entry["hint"],
             "startRow": slot.row,
             "startCol": slot.col,
