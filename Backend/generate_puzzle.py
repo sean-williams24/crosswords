@@ -527,6 +527,7 @@ def solve_grid(
 def assemble_raw(
     template: list[list[bool]],
     solution: list[dict],
+    rng: random.Random | None = None,
 ) -> dict:
     """Convert solver output to the raw format used by validate/build."""
     grid = [
@@ -545,11 +546,17 @@ def assemble_raw(
     for item in solution:
         slot: Slot = item["slot"]
         entry = item["entry"]
+        # Pick randomly from clue variants if available, else fall back to hard_text or original
+        clue_variants = entry.get("clues", [])
+        if clue_variants and rng:
+            text = rng.choice(clue_variants)
+        else:
+            text = entry.get("hard_text", entry["text"])
         words.append({
             "direction": slot.direction,
             "number": 0,  # assigned later by build_puzzle_payload
             "answer": entry["word"].upper(),
-            "text": entry.get("hard_text", entry["text"]),
+            "text": text,
             "hint": entry["hint"],
             "startRow": slot.row,
             "startCol": slot.col,
@@ -582,7 +589,7 @@ def generate_puzzle(word_bank: dict[int, list[dict]], seed: int | None = None) -
             solution = solve_grid(slots, word_bank, sub_rng)
             if solution:
                 print("SUCCESS")
-                return assemble_raw(template, solution)
+                return assemble_raw(template, solution, sub_rng)
             else:
                 print("failed")
 

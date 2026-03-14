@@ -49,10 +49,12 @@ Rules:
 - Don't use quotation marks around the answer within the clue
 - Make the clue feel like it belongs in a quality newspaper crossword"""
 
-USER_PROMPT_TEMPLATE = """Generate a harder, more lateral crossword clue for each word below.
-The current "easy" clue is shown for context — your clue should be noticeably trickier.
+USER_PROMPT_TEMPLATE = """Generate 3 different harder, more lateral crossword clues for each word below.
+The current "easy" clue is shown for context — your clues should be noticeably trickier.
+Each of the 3 clues should use a different technique (double meaning, misdirection, wordplay, etc.)
+so they feel distinct from each other.
 
-Return a JSON array with objects like: {{"word": "...", "hard_text": "..."}}
+Return a JSON array with objects like: {{"word": "...", "clues": ["clue1", "clue2", "clue3"]}}
 
 Words:
 {words_json}
@@ -80,15 +82,20 @@ def call_openai(words_batch: list[dict], model: str) -> list[dict]:
             {"role": "user", "content": user_prompt},
         ],
         temperature=0.8,
-        response_format={"type": "json_object"},
     )
 
-    content = response.choices[0].message.content
-    result = json.loads(content)
+    content = response.choices[0].message.content or ""
+    # Strip markdown code fences if present
+    if "```json" in content:
+        content = content.split("```json")[1].split("```")[0]
+    elif "```" in content:
+        content = content.split("```")[1].split("```")[0]
+
+    result = json.loads(content.strip())
 
     # Handle both {"words": [...]} and [...] formats
     if isinstance(result, dict):
-        result = result.get("words", result.get("clues", []))
+        result = result.get("words", result.get("clues", list(result.values())[0] if result else []))
 
     return result
 
@@ -173,13 +180,13 @@ def main():
 
     # Filter to words needing processing
     if args.resume:
-        to_process = [w for w in words if "hard_text" not in w]
-        print(f"  {len(to_process)} words need hard_text ({len(words) - len(to_process)} already done)")
+        to_process = [w for w in words if "clues" not in w]
+        print(f"  {len(to_process)} words need clues ({len(words) - len(to_process)} already done)")
     else:
         to_process = words
 
     if not to_process:
-        print("All words already have hard_text!")
+        print("All words already have clues!")
         return
 
     # Build lookup for updating
@@ -200,17 +207,28 @@ def main():
         try:
             results = call_fn(batch, args.model)
 
+            batch_success = 0
             for item in results:
                 word = item.get("word", "")
-                hard_text = item.get("hard_text", "")
-                if word in word_map and hard_text:
-                    word_map[word]["hard_text"] = hard_text
+                clues = item.get("clues", [])
+                if word in word_map and clues:
+                    word_map[word]["clues"] = clues
+                    # Keep hard_text as the first variant for backwards compat
+                    word_map[word]["hard_text"] = clues[0]
                     success_count += 1
+                    batch_success += 1
                     if args.dry_run:
-                        print(f"    {word}: \"{word_map[word]['text']}\" → \"{hard_text}\"")
+                        print(f"    {word}: {clues}")
                 else:
                     fail_count += 1
-                    print(f"    WARNING: No match for '{word}'")
+                    print(f"    WARNING: No match or empty clues for '{word}'")
+
+            # Save after each batch so progress isn't lost on crash
+            if not args.dry_run and batch_success > 0:
+                updated_words = list(word_map.values())
+                with open(OUTPUT_PATH, "w") as f:
+                    json.dump(updated_words, f, indent=2, ensure_ascii=False)
+                print(f"    Saved ({success_count} total done)")
 
             # Rate limiting
             if i + args.batch_size < len(to_process):
@@ -222,15 +240,6 @@ def main():
             continue
 
     print(f"\n  Done: {success_count} upgraded, {fail_count} failed")
-
-    # Save
-    if not args.dry_run and success_count > 0:
-        updated_words = list(word_map.values())
-        with open(OUTPUT_PATH, "w") as f:
-            json.dump(updated_words, f, indent=2, ensure_ascii=False)
-        print(f"  Saved to {OUTPUT_PATH}")
-    elif args.dry_run:
-        print("  (dry run — not saved)")
 
 
 if __name__ == "__main__":

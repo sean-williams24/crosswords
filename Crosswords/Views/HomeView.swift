@@ -106,13 +106,16 @@ struct HomeView: View {
                             }
                         } label: {
                             HStack {
+                                Spacer()
                                 Label("Archive", systemImage: "archivebox")
                                 if !storeService.isProUser {
-                                    Spacer()
+//                                    Spacer()
                                     Image(systemName: "lock.fill")
                                         .font(.system(size: 12))
                                         .foregroundColor(.appAccent)
+                                    Spacer()
                                 }
+
                             }
                             .font(AppFont.body())
                             .foregroundColor(.appTextPrimary)
