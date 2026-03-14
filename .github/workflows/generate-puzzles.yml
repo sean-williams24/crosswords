@@ -41,6 +41,28 @@ jobs:
               print(f'start_number=1')
           " >> "$GITHUB_OUTPUT"
 
+      - name: Fetch recently-used words
+        id: used_words
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          python3 -c "
+          from supabase import create_client
+          import json, os
+          sb = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
+          rows = sb.table('puzzles').select('clues').order('date', desc=True).limit(30).execute()
+          used = set()
+          for row in rows.data:
+              for clue in row.get('clues', []):
+                  ans = clue.get('answer', '')
+                  if ans:
+                      used.add(ans.upper())
+          with open('/tmp/used_words.json', 'w') as f:
+              json.dump(sorted(used), f)
+          print(f'Fetched {len(used)} recently-used words from last 30 puzzles')
+          "
+
       - name: Generate and upload puzzles
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -50,4 +72,5 @@ jobs:
           python3 Backend/generate_puzzle.py \
             --date "${{ steps.dates.outputs.start }}" \
             --count 7 \
-            --start-number "${{ steps.dates.outputs.start_number }}"
+            --start-number "${{ steps.dates.outputs.start_number }}" \
+            --exclude-words /tmp/used_words.json

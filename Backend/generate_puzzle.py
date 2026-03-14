@@ -245,14 +245,18 @@ TEMPLATES = [
 
 # ── Word Bank ───────────────────────────────────────────────────────────────
 
-def load_word_bank() -> dict[int, list[dict]]:
-    """Load word bank and organize by length."""
+def load_word_bank(exclude: set[str] | None = None) -> dict[int, list[dict]]:
+    """Load word bank and organize by length, optionally excluding recently-used words."""
     bank_path = Path(__file__).parent / "word_bank.json"
     with open(bank_path) as f:
         words = json.load(f)
 
+    excluded = {w.upper() for w in exclude} if exclude else set()
+
     by_length: dict[int, list[dict]] = {}
     for w in words:
+        if w["word"].upper() in excluded:
+            continue
         length = len(w["word"])
         by_length.setdefault(length, []).append(w)
 
@@ -760,10 +764,24 @@ def main():
     )
     parser.add_argument("--output", type=str, help="Output directory for JSON files")
     parser.add_argument("--seed", type=int, help="Random seed for reproducibility")
+    parser.add_argument(
+        "--exclude-words", type=str, dest="exclude_words",
+        help="Path to JSON file containing list of words to exclude (recently used)"
+    )
     args = parser.parse_args()
 
+    # Load exclusion list if provided
+    exclude: set[str] = set()
+    if args.exclude_words:
+        try:
+            with open(args.exclude_words) as f:
+                exclude = set(json.load(f))
+            print(f"  Excluding {len(exclude)} recently-used words")
+        except Exception as e:
+            print(f"  Warning: could not load exclusion list: {e}")
+
     print("Loading word bank...")
-    word_bank = load_word_bank()
+    word_bank = load_word_bank(exclude=exclude)
     total_words = sum(len(v) for v in word_bank.values())
     print(f"  {total_words} words loaded ({', '.join(f'{k}-letter: {len(v)}' for k, v in sorted(word_bank.items()))})")
 
