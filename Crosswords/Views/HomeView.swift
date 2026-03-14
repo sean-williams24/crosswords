@@ -6,18 +6,46 @@ struct HomeView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
     @StateObject private var viewModel: HomeViewModel
+    @StateObject private var wotdService = WOTDService()
 
     @State private var showStats = false
     @State private var showArchive = false
     @State private var showPaywall = false
     @State private var showWOTD = false
     @State private var navigateToPuzzle = false
-    @StateObject private var wotdService = WOTDService()
 
     init() {
         // Can't use @EnvironmentObject in init, so create with a temporary service
         // The real service is injected via .onAppear
         _viewModel = StateObject(wrappedValue: HomeViewModel(puzzleService: PuzzleService()))
+    }
+
+    private var appTitle: some View {
+        VStack(spacing: 4) {
+            Text(storeService.isProUser ? "CROSSWORDS PRO" : "CROSSWORDS")
+                .font(AppFont.header(36))
+                .multilineTextAlignment(.center)
+                .foregroundColor(.appTextPrimary)
+                .tracking(4)
+        }
+        .padding()
+    }
+
+    @ViewBuilder
+    private var streakBadge: some View {
+        if statsService.stats.currentStreak >= 0 {
+            HStack(spacing: 6) {
+                Image(systemName: "flame.fill")
+                    .foregroundColor(.orange)
+                Text("\(statsService.stats.currentStreak)-day streak")
+                    .font(AppFont.clueLabel(13))
+                    .foregroundColor(.appTextPrimary)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .background(Color.appSurface)
+            .cornerRadius(20)
+        }
     }
 
     var body: some View {
@@ -29,35 +57,8 @@ struct HomeView: View {
                 VStack(spacing: 32) {
                     Spacer()
 
-                    // App title
-                    VStack(spacing: 4) {
-                        Text(storeService.isProUser ? "CROSSWORDS PRO" : "CROSSWORDS")
-                            .font(AppFont.header(36))
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.appTextPrimary)
-                            .tracking(4)
-
-//                        Text(formattedDate)
-//                            .font(AppFont.caption())
-//                            .foregroundColor(.appTextSecondary)
-//                            .tracking(1)
-                    }
-                    .padding()
-
-                    // Streak badge
-                    if statsService.stats.currentStreak > 0 {
-                        HStack(spacing: 6) {
-                            Image(systemName: "flame.fill")
-                                .foregroundColor(.orange)
-                            Text("\(statsService.stats.currentStreak)-day streak")
-                                .font(AppFont.clueLabel(13))
-                                .foregroundColor(.appTextPrimary)
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(Color.appSurface)
-                        .cornerRadius(20)
-                    }
+                    appTitle
+                    streakBadge
 
                     Spacer()
 
@@ -109,12 +110,11 @@ struct HomeView: View {
                                 Spacer()
                                 Label("Archive", systemImage: "archivebox")
                                 if !storeService.isProUser {
-//                                    Spacer()
                                     Image(systemName: "lock.fill")
                                         .font(.system(size: 12))
                                         .foregroundColor(.appAccent)
-                                    Spacer()
                                 }
+                                Spacer()
 
                             }
                             .font(AppFont.body())
@@ -142,7 +142,7 @@ struct HomeView: View {
                 StatsView()
                     .environmentObject(statsService)
             }
-            .sheet(isPresented: $showArchive) {
+            .fullScreenCover(isPresented: $showArchive) {
                 ArchiveView()
                     .environmentObject(puzzleService)
                     .environmentObject(statsService)
@@ -238,4 +238,12 @@ struct HomeView: View {
         return fmt.string(from: Date()).uppercased()
     }
 
+}
+
+#Preview {
+    HomeView()
+        .environmentObject(PuzzleService())
+        .environmentObject(StatsService())
+        .environmentObject(StoreService())
+        .environmentObject(AdService())
 }
