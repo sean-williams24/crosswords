@@ -596,18 +596,55 @@ WORD_BANK = [
 ]
 
 
-def get_words(count: int, seed: int) -> list[dict]:
-    """Select `count` words from the bank using the given seed for reproducibility."""
+def get_used_words() -> set[str]:
+    """Fetch all words already uploaded to Supabase."""
+    url = os.environ.get("SUPABASE_URL")
+    key = os.environ.get("SUPABASE_KEY")
+    if not url or not key:
+        return set()
+
+    try:
+        from supabase import create_client
+        client = create_client(url, key)
+        rows = client.table("words_of_the_day").select("word_data->word").execute()
+        return {r["word"] for r in rows.data if r.get("word")}
+    except Exception as e:
+        print(f"  Warning: could not fetch used words: {e}")
+        return set()
+
+
+def get_words(count: int, seed: int, exclude_used: bool = True) -> list[dict]:
+    """Select `count` unused words from the bank.
+
+    Queries Supabase for previously uploaded words and excludes them.
+    Warns when the remaining pool is getting low.
+    """
+    used = get_used_words() if exclude_used else set()
+    pool = [w for w in WORD_BANK if w["word"] not in used]
+
+    remaining = len(pool)
+    if remaining == 0:
+        print("ERROR: All words in the bank have been used! Add more words to WORD_BANK.")
+        sys.exit(1)
+    elif remaining <= 14:
+        print(f"  ⚠️  Only {remaining} unused words left in the bank — add more soon!")
+    elif remaining < count:
+        print(f"  ⚠️  Only {remaining} unused words available (requested {count})")
+
     rng = random.Random(seed)
-    # Shuffle a copy so we pick without bias
-    pool = list(WORD_BANK)
     rng.shuffle(pool)
-    # Cycle if count exceeds pool size (shouldn't happen with a large bank)
-    selected = []
-    while len(selected) < count:
-        remaining = count - len(selected)
-        selected.extend(pool[:remaining])
-        rng.shuffle(pool)
+    selected = pool[:count]
+
+    # Report how many words remain after this batch
+    after = remaining - len(selected)
+    print(f"  Words remaining after this batch: {after}")
+
+    # Write to GITHUB_OUTPUT if running in CI
+    github_output = os.environ.get("GITHUB_OUTPUT")
+    if github_output:
+        with open(github_output, "a") as f:
+            f.write(f"remaining={after}\n")
+
     return selected
 
 
@@ -654,7 +691,7 @@ def main():
     # Use the start date as seed for reproducibility
     seed = int(start_date.isoformat().replace("-", ""))
 
-    words = get_words(args.count, seed)
+    words = get_words(args.count, seed, exclude_used=not args.dry_run)
 
     print(f"Generating {args.count} WOTDs starting from {start_date.isoformat()}")
 

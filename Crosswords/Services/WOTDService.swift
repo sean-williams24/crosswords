@@ -33,7 +33,8 @@ final class WOTDService: ObservableObject {
 
     private func fetchFromSupabase() async throws -> WordOfTheDay? {
         let today = Self.dateFormatter.string(from: Date())
-        let urlString = "\(baseURL)/rest/v1/words_of_the_day?date=eq.\(today)&select=*"
+        // Try today's word first, then fall back to the latest available
+        let urlString = "\(baseURL)/rest/v1/words_of_the_day?date=lte.\(today)&select=*&order=date.desc&limit=1"
         guard let url = URL(string: urlString) else { return nil }
 
         var request = URLRequest(url: url)
