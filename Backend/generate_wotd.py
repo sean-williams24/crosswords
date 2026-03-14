@@ -678,15 +678,18 @@ def get_words(count: int, seed: int, exclude_used: bool = True) -> list[dict]:
     pool = [w for w in WORD_BANK if w["word"] not in used]
 
     remaining = len(pool)
-    if remaining == 0:
-        print("  Word bank exhausted — using LLM fallback to generate new words.")
-        llm_words = generate_words_with_llm(count, used)
+    if remaining < count:
+        # Not enough curated words — top up with LLM-generated ones
+        needed = count - remaining
+        print(f"  Only {remaining} curated words left (need {count}) — generating {needed} with LLM fallback.")
+        llm_words = generate_words_with_llm(needed, used)
         if llm_words:
-            return llm_words[:count]
-        print("ERROR: Word bank empty and LLM fallback failed. Add more words to WORD_BANK.")
-        sys.exit(1)
+            pool = pool + llm_words
+        else:
+            print("ERROR: Not enough words and LLM fallback failed. Add more words to WORD_BANK.")
+            sys.exit(1)
     elif remaining <= 14:
-        print(f"  ⚠️  Only {remaining} unused words left in the bank — add more soon!")
+        print(f"  ⚠️  Only {remaining} unused words left in the bank — LLM will take over soon!")
     elif remaining < count:
         print(f"  ⚠️  Only {remaining} unused words available (requested {count})")
 
