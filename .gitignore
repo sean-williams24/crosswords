@@ -1,11 +1,13 @@
-# Backend – only track core files (generate_puzzle.py, word_bank.json, requirements.txt)
+# Backend – only track core files
 Backend/*.py
 !Backend/generate_puzzle.py
+!Backend/generate_wotd.py
 Backend/.venv/
 Backend/__pycache__/
 Backend/puzzles/
 Backend/puzzles_new/
-Backend/supabase/
+Backend/supabase/*
+!Backend/supabase/schema.sql
 
 # Xcode
 *.xcodeproj/xcuserdata/
