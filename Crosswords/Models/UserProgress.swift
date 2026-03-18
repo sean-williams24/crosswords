@@ -4,6 +4,7 @@ struct UserProgress: Codable {
     let puzzleId: String
     var entries: [[String?]]
     var completedClueIds: Set<Int>
+    var hintedClueIds: Set<Int>
     var hintsUsed: Int
     var startedAt: Date
     var completedAt: Date?
@@ -14,9 +15,21 @@ struct UserProgress: Codable {
         self.puzzleId = puzzleId
         self.entries = Array(repeating: Array(repeating: nil, count: size), count: size)
         self.completedClueIds = []
+        self.hintedClueIds = []
         self.hintsUsed = 0
         self.startedAt = Date()
         self.completedAt = nil
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        puzzleId = try container.decode(String.self, forKey: .puzzleId)
+        entries = try container.decode([[String?]].self, forKey: .entries)
+        completedClueIds = try container.decode(Set<Int>.self, forKey: .completedClueIds)
+        hintedClueIds = try container.decodeIfPresent(Set<Int>.self, forKey: .hintedClueIds) ?? []
+        hintsUsed = try container.decode(Int.self, forKey: .hintsUsed)
+        startedAt = try container.decode(Date.self, forKey: .startedAt)
+        completedAt = try container.decodeIfPresent(Date.self, forKey: .completedAt)
     }
 
     var elapsedTime: TimeInterval {

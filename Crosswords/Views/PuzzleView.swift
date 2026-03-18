@@ -67,14 +67,20 @@ struct PuzzleView: View {
 
     private var header: some View {
         VStack(spacing: 2) {
-//            Text("PUZZLE #\(viewModel.puzzle.puzzleNumber)")
-//                .font(AppFont.header(24))
-//                .foregroundColor(.appTextPrimary)
+            ZStack {
+                Text(viewModel.puzzle.date)
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+                    .tracking(1)
+                    .opacity(viewModel.showAlreadyAnswered ? 0 : 1)
 
-            Text(viewModel.puzzle.date)
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary)
-                .tracking(1)
+                Text("Already answered")
+                    .font(AppFont.caption())
+                    .foregroundColor(.appAccent)
+                    .tracking(1)
+                    .opacity(viewModel.showAlreadyAnswered ? 1 : 0)
+            }
+            .animation(.easeInOut(duration: 0.4), value: viewModel.showAlreadyAnswered)
         }
         .padding(.top, 8)
     }
@@ -91,7 +97,7 @@ struct PuzzleView: View {
         }
 
         Button {
-            if storeService.isProUser || viewModel.progress.hintsUsed < freeHintLimit {
+            if storeService.isProUser || viewModel.activeClueIsHinted || viewModel.progress.hintedClueIds.count < freeHintLimit {
                 viewModel.useHint()
             } else {
                 showPaywall = true
@@ -100,11 +106,11 @@ struct PuzzleView: View {
             HStack(spacing: 4) {
                 Image(systemName: "lightbulb")
                 if !storeService.isProUser {
-                    Text("\(max(0, freeHintLimit - viewModel.progress.hintsUsed))")
+                    Text("\(max(0, freeHintLimit - viewModel.progress.hintedClueIds.count))")
                         .font(AppFont.caption())
                 }
             }
-            .foregroundColor(storeService.isProUser || viewModel.progress.hintsUsed < freeHintLimit ? .appAccent : .appTextSecondary)
+            .foregroundColor(storeService.isProUser || viewModel.activeClueIsHinted || viewModel.progress.hintedClueIds.count < freeHintLimit ? .appAccent : .appTextSecondary)
         }
     }
 }

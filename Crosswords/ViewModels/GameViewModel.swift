@@ -16,6 +16,7 @@ final class GameViewModel: ObservableObject {
     @Published var showHint: Bool = false
     @Published var showClueList: Bool = false
     @Published var isComplete: Bool = false
+    @Published var showAlreadyAnswered: Bool = false
     @Published var recentlyCompletedCells: Set<CellPosition> = []
 
     struct CellPosition: Hashable {
@@ -182,34 +183,41 @@ final class GameViewModel: ObservableObject {
     func useHint() {
         guard let clue = activeClue else { return }
 
-        if !showHint {
-            // First hint: show easier definition
+        // Don't consume a hint if the clue is already fully answered
+        let isAlreadyAnswered = clue.cells.allSatisfy { progress.entries[$0.row][$0.col] != nil }
+        if isAlreadyAnswered {
+            showAlreadyAnswered = true
+            Task {
+                try? await Task.sleep(nanoseconds: 3_000_000_000)
+                showAlreadyAnswered = false
+            }
+            return
+        }
+
+        if showHint {
+            // Toggle back to original clue — free, already paid
+            showHint = false
+        } else if progress.hintedClueIds.contains(clue.id) {
+            // Already paid for this hint in a previous tap — show it free
             showHint = true
+        } else {
+            // First time hinting this clue — charge one hint
+            showHint = true
+            progress.hintedClueIds.insert(clue.id)
             progress.hintsUsed += 1
             haptics.play(.hintUsed)
-        } else {
-            // Second hint: reveal a letter
-            for cell in clue.cells {
-                if progress.entries[cell.row][cell.col] == nil {
-                    let answer = clue.answer
-                    let idx = clue.direction == .across
-                        ? cell.col - clue.startCol
-                        : cell.row - clue.startRow
-                    let letterIndex = answer.index(answer.startIndex, offsetBy: idx)
-                    progress.entries[cell.row][cell.col] = String(answer[letterIndex])
-                    progress.hintsUsed += 1
-                    haptics.play(.hintUsed)
-                    checkWordCompletion()
-                    break
-                }
-            }
+            saveProgress()
         }
-        saveProgress()
     }
 
     var currentClueText: String {
         guard let clue = activeClue else { return "" }
         return showHint ? clue.hint : clue.text
+    }
+
+    var activeClueIsHinted: Bool {
+        guard let clue = activeClue else { return false }
+        return progress.hintedClueIds.contains(clue.id)
     }
 
     // MARK: - Zen Mode
