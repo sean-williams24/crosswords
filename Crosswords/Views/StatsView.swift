@@ -39,13 +39,13 @@ struct StatsView: View {
 
             // Primary stat: current streak
             VStack(spacing: 4) {
-                Text("\(statsService.stats.currentStreak)")
+                Text("\(statsService.stats.liveCurrentStreak)")
                     .font(AppFont.statNumber())
-                    .foregroundColor(.appAccent)
+                    .foregroundColor(statsService.stats.liveCurrentStreak > 0 ? .appAccent : .appTextSecondary)
                 HStack(spacing: 4) {
-                    Image(systemName: "flame.fill")
-                        .foregroundColor(.orange)
-                    Text("CURRENT STREAK")
+                    Image(systemName: statsService.stats.liveCurrentStreak > 0 ? "flame.fill" : "flame.slash.fill")
+                        .foregroundColor(statsService.stats.liveCurrentStreak > 0 ? .orange : .appTextSecondary)
+                    Text(statsService.stats.liveCurrentStreak > 0 ? "CURRENT STREAK" : "NO STREAK")
                         .font(AppFont.clueLabel(11))
                         .foregroundColor(.appTextSecondary)
                         .tracking(2)
@@ -115,7 +115,7 @@ struct StatsView: View {
             VStack(spacing: 0) {
                 ForEach(statsService.stats.history.suffix(5).reversed()) { result in
                     HStack {
-                        Text(result.puzzleId)
+                        Text(formatDate(result.date))
                             .font(AppFont.body(14))
                             .foregroundColor(.appTextPrimary)
                             .lineLimit(1)
@@ -165,9 +165,20 @@ struct StatsView: View {
 
     // MARK: - Helpers
 
+    private func formatDate(_ date: Date) -> String {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "EEEE, MMM d"
+        return fmt.string(from: date)
+    }
+
     private func formatTime(_ seconds: Int) -> String {
-        let m = seconds / 60
+        let h = seconds / 3600
+        let m = (seconds % 3600) / 60
         let s = seconds % 60
-        return String(format: "%d:%02d", m, s)
+        if h > 0 {
+            return String(format: "%d:%02d:%02d", h, m, s)
+        } else {
+            return String(format: "%d:%02d", m, s)
+        }
     }
 }

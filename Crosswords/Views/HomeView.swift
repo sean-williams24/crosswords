@@ -20,34 +20,6 @@ struct HomeView: View {
         _viewModel = StateObject(wrappedValue: HomeViewModel(puzzleService: PuzzleService()))
     }
 
-    private var appTitle: some View {
-        VStack(spacing: 4) {
-            Text(storeService.isProUser ? "CROSSWORDS PRO" : "CROSSWORDS")
-                .font(AppFont.header(36))
-                .multilineTextAlignment(.center)
-                .foregroundColor(.appTextPrimary)
-                .tracking(4)
-        }
-        .padding()
-    }
-
-    @ViewBuilder
-    private var streakBadge: some View {
-        if statsService.stats.currentStreak >= 0 {
-            HStack(spacing: 6) {
-                Image(systemName: "flame.fill")
-                    .foregroundColor(.orange)
-                Text("\(statsService.stats.currentStreak)-day streak")
-                    .font(AppFont.clueLabel(13))
-                    .foregroundColor(.appTextPrimary)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(Color.appSurface)
-            .cornerRadius(20)
-        }
-    }
-
     var body: some View {
         NavigationStack {
             ZStack {
@@ -57,8 +29,47 @@ struct HomeView: View {
                 VStack(spacing: 32) {
                     Spacer()
 
-                    appTitle
-                    streakBadge
+                    // App title
+                    VStack(spacing: 4) {
+                        Text(storeService.isProUser ? "CROSSWORDS PRO" : "CROSSWORDS")
+                            .font(AppFont.header(36))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.appTextPrimary)
+                            .tracking(4)
+
+//                        Text(formattedDate)
+//                            .font(AppFont.caption())
+//                            .foregroundColor(.appTextSecondary)
+//                            .tracking(1)
+                    }
+                    .padding()
+
+                    // Streak badge
+                    if statsService.stats.liveCurrentStreak > 0 {
+                        HStack(spacing: 6) {
+                            Image(systemName: "flame.fill")
+                                .foregroundColor(.orange)
+                            Text("\(statsService.stats.liveCurrentStreak)-day streak")
+                                .font(AppFont.clueLabel(13))
+                                .foregroundColor(.appTextPrimary)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(Color.appSurface)
+                        .cornerRadius(20)
+                    } else if statsService.stats.totalCompleted > 0 {
+                        HStack(spacing: 6) {
+                            Text("💔")
+                                .font(.system(size: 14))
+                            Text("No streak — solve today's puzzle!")
+                                .font(AppFont.clueLabel(13))
+                                .foregroundColor(.appTextSecondary)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(Color.appSurface)
+                        .cornerRadius(20)
+                    }
 
                     Spacer()
 
@@ -109,11 +120,11 @@ struct HomeView: View {
                             HStack {
                                 Spacer()
                                 Label("Archive", systemImage: "archivebox")
-                                if !storeService.isProUser {
-                                    Image(systemName: "lock.fill")
-                                        .font(.system(size: 12))
-                                        .foregroundColor(.appAccent)
-                                }
+                               if !storeService.isProUser {
+                                   Image(systemName: "lock.fill")
+                                       .font(.system(size: 12))
+                                       .foregroundColor(.appAccent)
+                               }
                                 Spacer()
 
                             }

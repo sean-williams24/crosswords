@@ -108,10 +108,10 @@ struct PaywallView: View {
 
     private var miniGrid: some View {
         let letters: [[Character?]] = [
-            ["P", "R", "O", nil, nil],
-            [nil, nil, "P", nil, nil],
-            [nil, nil, "E", nil, nil],
-            [nil, nil, "N", nil, nil],
+            [nil, nil, "W", nil, nil],
+            ["C", "R", "O", "S", "S"],
+            [nil, nil, "R", nil, nil],
+            [nil, nil, "D", nil, nil],
             [nil, nil, nil, nil, nil],
         ]
 
