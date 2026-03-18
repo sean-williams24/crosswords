@@ -23,6 +23,12 @@ final class StoreService: ObservableObject {
 
     init() {
         transactionListener = listenForTransactions()
+        #if DEBUG
+        if let override = UserDefaults.standard.object(forKey: Self.debugProOverrideKey) as? Bool {
+            debugProOverride = override
+            isProUser = override
+        }
+        #endif
         Task { await loadProducts() }
         Task { await updateSubscriptionStatus() }
     }
@@ -77,6 +83,9 @@ final class StoreService: ObservableObject {
     // MARK: - Subscription Status
 
     func updateSubscriptionStatus() async {
+        #if DEBUG
+        if debugProOverride != nil { return }
+        #endif
         var hasActiveSubscription = false
 
         for await result in Transaction.currentEntitlements {
@@ -99,6 +108,24 @@ final class StoreService: ObservableObject {
             return safe
         }
     }
+
+    // MARK: - Debug
+
+    #if DEBUG
+    private static let debugProOverrideKey = "debug_isProUser"
+    private var debugProOverride: Bool?
+
+    func setDebugProUser(_ value: Bool) {
+        debugProOverride = value
+        isProUser = value
+        UserDefaults.standard.set(value, forKey: Self.debugProOverrideKey)
+    }
+
+    func clearDebugProOverride() {
+        debugProOverride = nil
+        UserDefaults.standard.removeObject(forKey: Self.debugProOverrideKey)
+    }
+    #endif
 
     private func listenForTransactions() -> Task<Void, Never> {
         Task.detached { [weak self] in

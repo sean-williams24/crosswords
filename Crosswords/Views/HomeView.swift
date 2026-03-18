@@ -13,6 +13,9 @@ struct HomeView: View {
     @State private var showPaywall = false
     @State private var showWOTD = false
     @State private var navigateToPuzzle = false
+    #if DEBUG
+    @State private var showDebugSettings = false
+    #endif
 
     init() {
         // Can't use @EnvironmentObject in init, so create with a temporary service
@@ -36,6 +39,11 @@ struct HomeView: View {
                             .multilineTextAlignment(.center)
                             .foregroundColor(.appTextPrimary)
                             .tracking(4)
+                            #if DEBUG
+                            .onTapGesture(count: 3) {
+                                showDebugSettings = true
+                            }
+                            #endif
 
 //                        Text(formattedDate)
 //                            .font(AppFont.caption())
@@ -164,6 +172,12 @@ struct HomeView: View {
                 PaywallView()
                     .environmentObject(storeService)
             }
+            #if DEBUG
+            .sheet(isPresented: $showDebugSettings) {
+                DebugSettingsView()
+                    .environmentObject(storeService)
+            }
+            #endif
             .sheet(isPresented: $showWOTD, onDismiss: {
                 if !storeService.isProUser {
 //                    adService.showInterstitial() // TODO: Re-enable
