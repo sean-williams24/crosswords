@@ -79,3 +79,27 @@ CREATE POLICY "Public can read released words"
 --     ...
 --   ]'
 -- );
+
+-- ============================================================
+-- Weekly Puzzles table (pro-only, 13×13)
+-- ============================================================
+
+CREATE TABLE weekly_puzzles (
+    id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    puzzle_number INT NOT NULL UNIQUE,
+    date          DATE NOT NULL UNIQUE,
+    grid_data     JSONB NOT NULL,
+    clues         JSONB NOT NULL,
+    is_free       BOOLEAN NOT NULL DEFAULT FALSE,
+    published_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_weekly_puzzles_date ON weekly_puzzles (date);
+
+ALTER TABLE weekly_puzzles ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Public can read released weekly puzzles"
+    ON weekly_puzzles
+    FOR SELECT
+    USING (date <= CURRENT_DATE);

@@ -1,12 +1,14 @@
 # Backend – only track core files
 Backend/*.py
 !Backend/generate_puzzle.py
+!Backend/generate_weekly_puzzle.py
 !Backend/generate_wotd.py
 !Backend/upgrade_clues.py
 Backend/.venv/
 Backend/__pycache__/
 Backend/puzzles/
 Backend/puzzles_new/
+Backend/puzzles_weekly/
 Backend/supabase/*
 !Backend/supabase/schema.sql
 

@@ -13,6 +13,7 @@ struct HomeView: View {
     @State private var showPaywall = false
     @State private var showWOTD = false
     @State private var navigateToPuzzle = false
+    @State private var navigateToWeekly = false
     #if DEBUG
     @State private var showDebugSettings = false
     #endif
@@ -102,6 +103,23 @@ struct HomeView: View {
                             .tint(.appAccent)
                     }
 
+                    // Weekly puzzle card (pro only)
+                    if let weekly = viewModel.weeklyPuzzle {
+                        if storeService.isProUser {
+                            NavigationLink(value: "weekly") {
+                                weeklyCard(puzzle: weekly)
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            Button {
+                                showPaywall = true
+                            } label: {
+                                weeklyCard(puzzle: weekly, locked: true)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+
                     Spacer()
 
                     // Bottom buttons
@@ -149,8 +167,13 @@ struct HomeView: View {
                     .padding(.bottom, 32)
                 }
             }
-            .navigationDestination(for: String.self) { _ in
-                if let puzzle = viewModel.todaysPuzzle {
+            .navigationDestination(for: String.self) { destination in
+                if destination == "weekly", let puzzle = viewModel.weeklyPuzzle {
+                    PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
+                        .environmentObject(statsService)
+                        .environmentObject(storeService)
+                        .environmentObject(adService)
+                } else if let puzzle = viewModel.todaysPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
                         .environmentObject(statsService)
                         .environmentObject(storeService)
@@ -227,6 +250,54 @@ struct HomeView: View {
                 .padding(.top, 4)
         }
         .padding(32)
+        .frame(maxWidth: .infinity)
+        .background(Color.appSurface)
+        .cornerRadius(AppLayout.cardCornerRadius)
+        .padding(.horizontal, AppLayout.screenPadding)
+    }
+
+    // MARK: - Weekly Card
+
+    @ViewBuilder
+    private func weeklyCard(puzzle: Puzzle, locked: Bool = false) -> some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 6) {
+                Text("WEEKLY CHALLENGE")
+                    .font(AppFont.clueLabel(11))
+                    .foregroundColor(.appTextSecondary)
+                    .tracking(3)
+                if locked {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 10))
+                        .foregroundColor(.appAccent)
+                }
+            }
+
+            Text("13×13")
+                .font(AppFont.caption())
+                .foregroundColor(.appTextSecondary)
+
+            if !locked {
+                HStack(spacing: 6) {
+                    Image(systemName: viewModel.weeklyPuzzleStatus.icon)
+                        .foregroundColor(viewModel.weeklyPuzzleStatus.color)
+                        .font(.system(size: 13))
+                    Text(viewModel.weeklyPuzzleStatus.label)
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                }
+
+                Image(systemName: "play.fill")
+                    .font(.system(size: 11))
+                    .foregroundColor(.appAccent)
+                    .padding(.top, 4)
+            } else {
+                Text("Pro Only")
+                    .font(AppFont.caption())
+                    .foregroundColor(.appAccent)
+            }
+        }
+        .padding(24)
         .frame(maxWidth: .infinity)
         .background(Color.appSurface)
         .cornerRadius(AppLayout.cardCornerRadius)

@@ -4,6 +4,8 @@ import SwiftUI
 final class HomeViewModel: ObservableObject {
     @Published var todaysPuzzle: Puzzle?
     @Published var todaysProgress: UserProgress?
+    @Published var weeklyPuzzle: Puzzle?
+    @Published var weeklyProgress: UserProgress?
     @Published var isLoading = true
     @Published var errorMessage: String?
 
@@ -28,11 +30,26 @@ final class HomeViewModel: ObservableObject {
             errorMessage = nil // Suppress error when using sample
         }
 
+        // Load weekly puzzle (silently fail if none available)
+        do {
+            let weekly = try await puzzleService.fetchCurrentWeeklyPuzzle()
+            weeklyPuzzle = weekly
+            weeklyProgress = UserProgress.load(puzzleId: weekly.id)
+        } catch {
+            // No weekly puzzle available yet — that's fine
+        }
+
         isLoading = false
     }
 
     var puzzleStatus: PuzzleStatus {
         guard let progress = todaysProgress else { return .new }
+        if progress.isComplete { return .completed(progress.formattedTime) }
+        return .inProgress
+    }
+
+    var weeklyPuzzleStatus: PuzzleStatus {
+        guard let progress = weeklyProgress else { return .new }
         if progress.isComplete { return .completed(progress.formattedTime) }
         return .inProgress
     }

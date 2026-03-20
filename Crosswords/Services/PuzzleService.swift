@@ -74,6 +74,43 @@ final class PuzzleService: ObservableObject {
         }
     }
 
+    /// Fetches the current weekly puzzle (most recent with date <= today).
+    func fetchCurrentWeeklyPuzzle() async throws -> Puzzle {
+        let today = todayString()
+
+        // Try cache first
+        let cacheKey = "weekly_\(today)"
+        if let cached = cache.loadPuzzle(for: cacheKey) {
+            return cached
+        }
+
+        let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(today)&select=*&order=date.desc&limit=1"
+        guard let url = URL(string: urlString) else {
+            throw PuzzleServiceError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.setValue(apiKey, forHTTPHeaderField: "apikey")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw PuzzleServiceError.serverError
+        }
+
+        let puzzles = try decoder.decode([SupabasePuzzle].self, from: data)
+        guard let first = puzzles.first else {
+            throw PuzzleServiceError.noPuzzleForDate
+        }
+
+        let puzzle = first.toPuzzle()
+        cache.savePuzzle(puzzle, for: cacheKey)
+        return puzzle
+    }
+
     // MARK: - Network
 
     private func fetchPuzzle(date: String) async throws -> Puzzle {
