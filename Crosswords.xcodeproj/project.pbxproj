@@ -16,12 +16,12 @@
 		4E83F3AEEA3608C534D6D22B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DBEC370EFFB7380B84F74E9 /* Assets.xcassets */; };
 		4F29ABB6EC65AA0BEB5F04B3 /* PuzzleGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D95A0993EBA02FD4775E01B /* PuzzleGridView.swift */; };
 		585227152E049E7F5B1C2368 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F1A654C21C7766547A8DB3 /* StatsView.swift */; };
-		A1B2C3D4E5F600001234ABCD /* DebugSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F600001234ABCE /* DebugSettingsView.swift */; };
 		619E5E0F45D924C5082C2394 /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3D6F22462257FD00545EC0 /* PuzzleView.swift */; };
 		65EBC7BBF032978250BD1EFC /* ClueListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA7D9E0E05B0C464E5CC128 /* ClueListView.swift */; };
 		6EBA3E03AEEF55DD65C4AC70 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC73C42C4B5624541C6145F /* HomeViewModel.swift */; };
 		7439F1A63D54ABA2F679B0F8 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADBB2CCC3AA2C61B28321DD /* CacheService.swift */; };
 		7F87FA3DEB72CFE7FFB6BCEE /* CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF15C657AD1A3A058592EFE /* CompletionView.swift */; };
+		86059EE12F774DFE006DBF50 /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86059EE02F774DFE006DBF50 /* ZoomableView.swift */; };
 		863024A32F623B51002B3CA5 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863024A22F623B51002B3CA5 /* StoreService.swift */; };
 		863024A72F623BA5002B3CA5 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863024A62F623BA5002B3CA5 /* PaywallView.swift */; };
 		863024AC2F636CB9002B3CA5 /* AdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863024AB2F636CB9002B3CA5 /* AdService.swift */; };
@@ -33,6 +33,7 @@
 		880F9FA0C0AED52CF1DF0FEB /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760B9E180A144EF9F5A0EAAA /* AppTheme.swift */; };
 		9B214B58BD15ADC7A9DA5C37 /* CrosswordsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B06770CD5FC62F83516BB3 /* CrosswordsApp.swift */; };
 		A006116EEC348C09BA7967EF /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5ED0EB04709FDE5AFF6097 /* GameViewModel.swift */; };
+		A1B2C3D4E5F600001234ABCD /* DebugSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F600001234ABCE /* DebugSettingsView.swift */; };
 		B8CD8F1B215BC3B1944010B4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE1BEAA834A2C11283278DC /* HomeView.swift */; };
 		CF47D18B9EBF6FA87446E053 /* HapticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEA465775FDCD76EB3D459B /* HapticsEngine.swift */; };
 		D44EAAD3B0E756CE20A44DB3 /* KeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772BFD567B8BA32D90C3A2E0 /* KeyboardInputView.swift */; };
@@ -46,7 +47,6 @@
 		0D95A0993EBA02FD4775E01B /* PuzzleGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleGridView.swift; sourceTree = "<group>"; };
 		174303FEBEF1BD7E73B7D31B /* ClueBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueBarView.swift; sourceTree = "<group>"; };
 		21F1A654C21C7766547A8DB3 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F600001234ABCE /* DebugSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSettingsView.swift; sourceTree = "<group>"; };
 		2729D69673F179C051B0E947 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
 		2D5ED0EB04709FDE5AFF6097 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		4072C107A7532C8725B714F3 /* UserStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStats.swift; sourceTree = "<group>"; };
@@ -56,6 +56,7 @@
 		760B9E180A144EF9F5A0EAAA /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		772BFD567B8BA32D90C3A2E0 /* KeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputView.swift; sourceTree = "<group>"; };
 		7C326BE4F25C5AB53AAF1C2A /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
+		86059EE02F774DFE006DBF50 /* ZoomableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableView.swift; sourceTree = "<group>"; };
 		863024A22F623B51002B3CA5 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		863024A62F623BA5002B3CA5 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		863024AA2F6363BE002B3CA5 /* CrosswordsProducts.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = CrosswordsProducts.storekit; path = Crosswords/Configuration/CrosswordsProducts.storekit; sourceTree = "<group>"; };
@@ -66,6 +67,7 @@
 		8632E3A12F64CE70009792E7 /* wotd_bank.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = wotd_bank.json; sourceTree = "<group>"; };
 		8632E3A32F64CEA0009792E7 /* WOTDDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WOTDDetailView.swift; sourceTree = "<group>"; };
 		9DBEC370EFFB7380B84F74E9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1B2C3D4E5F600001234ABCE /* DebugSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSettingsView.swift; sourceTree = "<group>"; };
 		BA0D59E4BD856AB23C420258 /* StatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsService.swift; sourceTree = "<group>"; };
 		BBA7D9E0E05B0C464E5CC128 /* ClueListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueListView.swift; sourceTree = "<group>"; };
 		C04183F74CDB201495780052 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				8632E3A32F64CEA0009792E7 /* WOTDDetailView.swift */,
 				C04183F74CDB201495780052 /* ArchiveView.swift */,
 				7C326BE4F25C5AB53AAF1C2A /* CellView.swift */,
+				86059EE02F774DFE006DBF50 /* ZoomableView.swift */,
 				174303FEBEF1BD7E73B7D31B /* ClueBarView.swift */,
 				BBA7D9E0E05B0C464E5CC128 /* ClueListView.swift */,
 				4BF15C657AD1A3A058592EFE /* CompletionView.swift */,
@@ -295,6 +298,7 @@
 				D44EAAD3B0E756CE20A44DB3 /* KeyboardInputView.swift in Sources */,
 				8632E39E2F64CE3F009792E7 /* WOTDService.swift in Sources */,
 				8632E3A42F64CEA0009792E7 /* WOTDDetailView.swift in Sources */,
+				86059EE12F774DFE006DBF50 /* ZoomableView.swift in Sources */,
 				863024A32F623B51002B3CA5 /* StoreService.swift in Sources */,
 				F339B918E44F0B5065990E9E /* Puzzle.swift in Sources */,
 				863024AC2F636CB9002B3CA5 /* AdService.swift in Sources */,

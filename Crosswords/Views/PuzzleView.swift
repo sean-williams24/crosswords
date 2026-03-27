@@ -9,6 +9,10 @@ struct PuzzleView: View {
 
     private let freeHintLimit = 2
 
+    private var isZoomableGrid: Bool {
+        viewModel.puzzle.size > 12
+    }
+
     var body: some View {
         ZStack {
             Color.appBackground
@@ -27,8 +31,15 @@ struct PuzzleView: View {
                     .padding(.bottom, 12)
 
                 // Grid
-                PuzzleGridView(viewModel: viewModel)
-                    .padding(.horizontal, AppLayout.screenPadding)
+                if isZoomableGrid {
+                    ZoomableView(minZoom: 1.0, maxZoom: 2.5) {
+                        PuzzleGridView(viewModel: viewModel)
+                            .padding(.horizontal, AppLayout.screenPadding)
+                    }
+                } else {
+                    PuzzleGridView(viewModel: viewModel)
+                        .padding(.horizontal, AppLayout.screenPadding)
+                }
 
                 Spacer(minLength: 8)
 
