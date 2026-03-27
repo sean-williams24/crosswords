@@ -43,6 +43,10 @@ final class GameViewModel: ObservableObject {
         updateActiveClue()
     }
 
+    var answerFont: Font {
+        AppFont.gridLetter(puzzle.size > 12 ? 15 : 20)
+    }
+
     // MARK: - Cell State
 
     func enteredLetter(row: Int, col: Int) -> Character? {

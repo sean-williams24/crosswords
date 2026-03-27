@@ -35,22 +35,23 @@ struct HomeView: View {
 
                     // App title
                     VStack(spacing: 4) {
-                        Text(storeService.isProUser ? "CROSSWORDS PRO" : "CROSSWORDS")
+                        Text("CROSSWORDS")
                             .font(AppFont.header(36))
-                            .multilineTextAlignment(.center)
                             .foregroundColor(.appTextPrimary)
                             .tracking(4)
-                            #if DEBUG
-                            .onTapGesture(count: 3) {
-                                showDebugSettings = true
-                            }
-                            #endif
-
-//                        Text(formattedDate)
-//                            .font(AppFont.caption())
-//                            .foregroundColor(.appTextSecondary)
-//                            .tracking(1)
+                        if storeService.isProUser {
+                            Text("PRO")
+                                .font(AppFont.header(36))
+                                .foregroundColor(.appTextPrimary)
+                                .tracking(4)
+                        }
                     }
+                    .multilineTextAlignment(.center)
+                    #if DEBUG
+                    .onTapGesture(count: 3) {
+                        showDebugSettings = true
+                    }
+                    #endif
                     .padding()
 
                     // Streak badge
@@ -123,13 +124,13 @@ struct HomeView: View {
                     Spacer()
 
                     // Bottom buttons
-                    VStack(spacing: 12) {
+                    HStack(spacing: 12) {
                         Button {
                             showStats = true
                         } label: {
                             Label("Stats", systemImage: "chart.bar")
-                                .font(AppFont.body())
-                                .foregroundColor(.appTextPrimary)
+                                .font(AppFont.clueLabel(14))
+                                .foregroundColor(.appTextSecondary)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 14)
                                 .background(Color.appSurface)
@@ -154,8 +155,8 @@ struct HomeView: View {
                                 Spacer()
 
                             }
-                            .font(AppFont.body())
-                            .foregroundColor(.appTextPrimary)
+                            .font(AppFont.clueLabel(14))
+                            .foregroundColor(.appTextSecondary)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
                             .padding(.horizontal, 16)
@@ -244,12 +245,12 @@ struct HomeView: View {
                     .foregroundColor(.appTextSecondary)
             }
 
-            Image(systemName: "play.fill")
-                .font(.system(size: 11))
-                .foregroundColor(.appAccent)
-                .padding(.top, 4)
+//            Image(systemName: "play.fill")
+//                .font(.system(size: 11))
+//                .foregroundColor(.appAccent)
+//                .padding(.top, 4)
         }
-        .padding(32)
+        .padding(24)
         .frame(maxWidth: .infinity)
         .background(Color.appSurface)
         .cornerRadius(AppLayout.cardCornerRadius)
@@ -258,19 +259,32 @@ struct HomeView: View {
 
     // MARK: - Weekly Card
 
+    private var proGradient: LinearGradient {
+        LinearGradient(
+            colors: [
+                Color(red: 0.85, green: 0.65, blue: 0.25),
+                Color(red: 0.78, green: 0.52, blue: 0.20),
+                Color(red: 0.85, green: 0.65, blue: 0.25)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
     @ViewBuilder
     private func weeklyCard(puzzle: Puzzle, locked: Bool = false) -> some View {
         VStack(spacing: 12) {
             HStack(spacing: 6) {
-                Text("WEEKLY CHALLENGE")
+                Image(systemName: "crown.fill")
+                    .font(.system(size: 10))
+                    .foregroundStyle(proGradient)
+                Text("PRO CROSSWORD")
                     .font(AppFont.clueLabel(11))
-                    .foregroundColor(.appTextSecondary)
+                    .foregroundStyle(proGradient)
                     .tracking(3)
-                if locked {
-                    Image(systemName: "lock.fill")
-                        .font(.system(size: 10))
-                        .foregroundColor(.appAccent)
-                }
+                Image(systemName: "crown.fill")
+                    .font(.system(size: 10))
+                    .foregroundStyle(proGradient)
             }
 
             Text("13×13")
@@ -286,21 +300,31 @@ struct HomeView: View {
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
                 }
-
-                Image(systemName: "play.fill")
-                    .font(.system(size: 11))
-                    .foregroundColor(.appAccent)
-                    .padding(.top, 4)
             } else {
-                Text("Pro Only")
-                    .font(AppFont.caption())
-                    .foregroundColor(.appAccent)
+                HStack(spacing: 6) {
+                    Text("Pro Only")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appAccent)
+                    if locked {
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(.appAccent)
+                    }
+                }
             }
         }
         .padding(24)
         .frame(maxWidth: .infinity)
-        .background(Color.appSurface)
+        .background(
+            Color.appSurface.overlay(
+                proGradient.opacity(0.02)
+            )
+        )
         .cornerRadius(AppLayout.cardCornerRadius)
+        .overlay(
+            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                .stroke(proGradient, lineWidth: 1.5)
+        )
         .padding(.horizontal, AppLayout.screenPadding)
     }
 

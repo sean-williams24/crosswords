@@ -28,7 +28,7 @@ struct CellView: View {
                 // Letter
                 if let letter = viewModel.enteredLetter(row: row, col: col) {
                     Text(String(letter))
-                        .font(AppFont.gridLetter())
+                        .font(viewModel.answerFont)
                         .foregroundColor(letterColor)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
