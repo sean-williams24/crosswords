@@ -22,6 +22,7 @@
 		7439F1A63D54ABA2F679B0F8 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADBB2CCC3AA2C61B28321DD /* CacheService.swift */; };
 		7F87FA3DEB72CFE7FFB6BCEE /* CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF15C657AD1A3A058592EFE /* CompletionView.swift */; };
 		86059EE12F774DFE006DBF50 /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86059EE02F774DFE006DBF50 /* ZoomableView.swift */; };
+		86059EE32F7755F5006DBF50 /* MiniGridPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86059EE22F7755F5006DBF50 /* MiniGridPattern.swift */; };
 		863024A32F623B51002B3CA5 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863024A22F623B51002B3CA5 /* StoreService.swift */; };
 		863024A72F623BA5002B3CA5 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863024A62F623BA5002B3CA5 /* PaywallView.swift */; };
 		863024AC2F636CB9002B3CA5 /* AdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863024AB2F636CB9002B3CA5 /* AdService.swift */; };
@@ -57,6 +58,7 @@
 		772BFD567B8BA32D90C3A2E0 /* KeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputView.swift; sourceTree = "<group>"; };
 		7C326BE4F25C5AB53AAF1C2A /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		86059EE02F774DFE006DBF50 /* ZoomableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableView.swift; sourceTree = "<group>"; };
+		86059EE22F7755F5006DBF50 /* MiniGridPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGridPattern.swift; sourceTree = "<group>"; };
 		863024A22F623B51002B3CA5 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		863024A62F623BA5002B3CA5 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		863024AA2F6363BE002B3CA5 /* CrosswordsProducts.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = CrosswordsProducts.storekit; path = Crosswords/Configuration/CrosswordsProducts.storekit; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				174303FEBEF1BD7E73B7D31B /* ClueBarView.swift */,
 				BBA7D9E0E05B0C464E5CC128 /* ClueListView.swift */,
 				4BF15C657AD1A3A058592EFE /* CompletionView.swift */,
+				86059EE22F7755F5006DBF50 /* MiniGridPattern.swift */,
 				DDE1BEAA834A2C11283278DC /* HomeView.swift */,
 				863024A62F623BA5002B3CA5 /* PaywallView.swift */,
 				772BFD567B8BA32D90C3A2E0 /* KeyboardInputView.swift */,
@@ -308,6 +311,7 @@
 				1F8E63FA4E04BE88867A007A /* StatsService.swift in Sources */,
 				585227152E049E7F5B1C2368 /* StatsView.swift in Sources */,
 				A1B2C3D4E5F600001234ABCD /* DebugSettingsView.swift in Sources */,
+				86059EE32F7755F5006DBF50 /* MiniGridPattern.swift in Sources */,
 				070B4FC874B1F11E4FE129F2 /* UserProgress.swift in Sources */,
 				44A9D1540B0C139E453F0D2A /* UserStats.swift in Sources */,
 			);

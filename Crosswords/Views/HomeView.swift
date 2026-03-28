@@ -14,6 +14,7 @@ struct HomeView: View {
     @State private var showWOTD = false
     @State private var navigateToPuzzle = false
     @State private var navigateToWeekly = false
+    @State private var showStreakPopup = false
     #if DEBUG
     @State private var showDebugSettings = false
     #endif
@@ -54,35 +55,6 @@ struct HomeView: View {
                     #endif
                     .padding()
 
-                    // Streak badge
-                    if statsService.stats.liveCurrentStreak > 0 {
-                        HStack(spacing: 6) {
-                            Image(systemName: "flame.fill")
-                                .foregroundColor(.orange)
-                            Text("\(statsService.stats.liveCurrentStreak)-day streak")
-                                .font(AppFont.clueLabel(13))
-                                .foregroundColor(.appTextPrimary)
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(Color.appSurface)
-                        .cornerRadius(20)
-                    } else if statsService.stats.totalCompleted > 0 {
-                        HStack(spacing: 6) {
-                            Text("💔")
-                                .font(.system(size: 14))
-                            Text("No streak — solve today's puzzle!")
-                                .font(AppFont.clueLabel(13))
-                                .foregroundColor(.appTextSecondary)
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(Color.appSurface)
-                        .cornerRadius(20)
-                    }
-
-                    Spacer()
-
                     // Word of the Day
                     if let word = wotdService.todaysWord {
                         Button {
@@ -93,10 +65,12 @@ struct HomeView: View {
                         .buttonStyle(.plain)
                     }
 
+                    Spacer()
+
                     // Today's puzzle card
                     if viewModel.todaysPuzzle != nil {
                         NavigationLink(value: "puzzle") {
-                            todayCard(puzzle: viewModel.todaysPuzzle!)
+                            dailyCrosswordCard(puzzle: viewModel.todaysPuzzle!)
                         }
                         .buttonStyle(.plain)
                     } else if viewModel.isLoading {
@@ -220,39 +194,84 @@ struct HomeView: View {
     // MARK: - Today Card
 
     @ViewBuilder
-    private func todayCard(puzzle: Puzzle) -> some View {
-        VStack(spacing: 12) {
-            Text("DAILY CROSSWORD")
-                .font(AppFont.clueLabel(11))
-                .foregroundColor(.appTextSecondary)
-                .tracking(3)
+    private func dailyCrosswordCard(puzzle: Puzzle) -> some View {
+        ZStack(alignment: .bottomTrailing) {
+            VStack(spacing: 12) {
+                Text("DAILY CROSSWORD")
+                    .font(AppFont.clueLabel(11))
+                    .foregroundColor(.dailyCardTitle)
+                    .tracking(3)
 
-//            Text("#\(puzzle.puzzleNumber)")
-//                .font(AppFont.statNumber())
-//                .foregroundColor(.appTextPrimary)
-
-            Text(formattedDate)
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary)
-                .tracking(1)
-            
-            HStack(spacing: 6) {
-                Image(systemName: viewModel.puzzleStatus.icon)
-                    .foregroundColor(viewModel.puzzleStatus.color)
-                    .font(.system(size: 13))
-                Text(viewModel.puzzleStatus.label)
+                Text(formattedDate)
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
-            }
+                    .tracking(1)
 
-//            Image(systemName: "play.fill")
-//                .font(.system(size: 11))
-//                .foregroundColor(.appAccent)
-//                .padding(.top, 4)
+                HStack(spacing: 6) {
+                    Image(systemName: viewModel.puzzleStatus.icon)
+                        .foregroundColor(viewModel.puzzleStatus.color)
+                        .font(.system(size: 13))
+                    Text(viewModel.puzzleStatus.label)
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                }
+            }
+            .padding(24)
+            .frame(maxWidth: .infinity)
+
+            if statsService.stats.liveCurrentStreak > 0 {
+                Button {
+                    showStreakPopup.toggle()
+                    if showStreakPopup {
+                        Task {
+                            try? await Task.sleep(nanoseconds: 4_000_000_000)
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                showStreakPopup = false
+                            }
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "flame.fill")
+                            .foregroundColor(.orange)
+                            .font(.system(size: 11))
+                        Text("\(statsService.stats.liveCurrentStreak)")
+                            .font(AppFont.clueLabel(12))
+                            .foregroundColor(.appTextPrimary)
+                    }
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(Color.appSurface.opacity(0.8))
+                    .cornerRadius(14)
+                    .padding(12)
+                }
+                .buttonStyle(.plain)
+                .overlay(alignment: .top) {
+                    if showStreakPopup {
+                        Text("\(statsService.stats.liveCurrentStreak)-day streak")
+                            .font(AppFont.clueLabel(12))
+                            .foregroundColor(.appTextPrimary)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color.appSurface)
+                            .cornerRadius(10)
+                            .shadow(color: .black.opacity(0.15), radius: 8, y: 2)
+                            .offset(y: -36)
+                            .transition(.opacity.combined(with: .move(edge: .bottom)))
+                    }
+                }
+                .animation(.easeInOut(duration: 0.2), value: showStreakPopup)
+            }
         }
-        .padding(24)
         .frame(maxWidth: .infinity)
-        .background(Color.appSurface)
+        .background(
+            ZStack {
+                Color.dailyCardBackground
+                MiniGridPattern()
+                    .opacity(0.05)
+            }
+        )
+        .clipped()
         .cornerRadius(AppLayout.cardCornerRadius)
         .padding(.horizontal, AppLayout.screenPadding)
     }

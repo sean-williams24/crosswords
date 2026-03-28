@@ -10,6 +10,8 @@ extension Color {
     static let appCorrect = Color("Correct")
     static let appTextPrimary = Color("TextPrimary")
     static let appTextSecondary = Color("TextSecondary")
+    static let dailyCardBackground = Color("DailyCardBackground")
+    static let dailyCardTitle = Color("DailyCardTitle")
 }
 
 // MARK: - Typography
