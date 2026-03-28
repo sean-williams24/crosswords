@@ -1,9 +1,16 @@
+# Secrets
+.env
+Backend/.env
+
 # Backend – only track core files
 Backend/*.py
 !Backend/generate_puzzle.py
 !Backend/generate_weekly_puzzle.py
 !Backend/generate_wotd.py
 !Backend/upgrade_clues.py
+!Backend/expand_validated.py
+Backend/clean_progress.json
+Backend/word_bank_backup.json
 Backend/.venv/
 Backend/__pycache__/
 Backend/puzzles/
