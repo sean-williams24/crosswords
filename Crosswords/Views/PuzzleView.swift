@@ -6,6 +6,7 @@ struct PuzzleView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
     @State private var showPaywall = false
+    @State private var showRewardedHintBanner = false
 
     private let freeHintLimit = 2
 
@@ -19,6 +20,12 @@ struct PuzzleView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
+                // Rewarded hint banner
+                if showRewardedHintBanner {
+                    rewardedHintBanner
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
+
                 // Header
                 header
                     .opacity(viewModel.isZenMode ? 0.2 : 1.0)
@@ -74,6 +81,59 @@ struct PuzzleView: View {
         }
     }
 
+    // MARK: - Rewarded Hint Banner
+
+    private var rewardedHintBanner: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "play.circle.fill")
+                .font(.system(size: 24))
+                .foregroundColor(.appAccent)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Want a free hint?")
+                    .font(AppFont.clueLabel(13))
+                    .foregroundColor(.appTextPrimary)
+                Text("Watch a short ad to earn one.")
+                    .font(AppFont.caption(12))
+                    .foregroundColor(.appTextSecondary)
+            }
+
+            Spacer()
+
+            Button {
+                adService.showRewardedAd {
+                    viewModel.adBonusHints += 1
+                    withAnimation {
+                        showRewardedHintBanner = false
+                    }
+                }
+            } label: {
+                Text("Watch")
+                    .font(AppFont.clueLabel(12))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(Color.appAccent)
+                    .cornerRadius(10)
+            }
+            .disabled(!adService.isRewardedAdReady)
+
+            Button {
+                withAnimation {
+                    showRewardedHintBanner = false
+                }
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.appTextSecondary)
+            }
+        }
+        .padding(.horizontal, AppLayout.screenPadding)
+        .padding(.vertical, 12)
+        .background(Color.appSurface)
+        .shadow(color: .black.opacity(0.08), radius: 6, y: 3)
+    }
+
     // MARK: - Header
 
     private var header: some View {
@@ -108,20 +168,24 @@ struct PuzzleView: View {
         }
 
         Button {
-            if storeService.isProUser || viewModel.activeClueIsHinted || viewModel.progress.hintedClueIds.count < freeHintLimit {
+            let totalAllowed = freeHintLimit + viewModel.adBonusHints
+            if storeService.isProUser || viewModel.activeClueIsHinted || viewModel.progress.hintedClueIds.count < totalAllowed {
                 viewModel.useHint()
             } else {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                    showRewardedHintBanner = true
+                }
                 showPaywall = true
             }
         } label: {
             HStack(spacing: 4) {
                 Image(systemName: "lightbulb")
                 if !storeService.isProUser {
-                    Text("\(max(0, freeHintLimit - viewModel.progress.hintedClueIds.count))")
+                    Text("\(max(0, freeHintLimit + viewModel.adBonusHints - viewModel.progress.hintedClueIds.count))")
                         .font(AppFont.caption())
                 }
             }
-            .foregroundColor(storeService.isProUser || viewModel.activeClueIsHinted || viewModel.progress.hintedClueIds.count < freeHintLimit ? .appAccent : .appTextSecondary)
+            .foregroundColor(storeService.isProUser || viewModel.activeClueIsHinted || viewModel.progress.hintedClueIds.count < freeHintLimit + viewModel.adBonusHints ? .appAccent : .appTextSecondary)
         }
     }
 }

@@ -18,6 +18,7 @@ final class GameViewModel: ObservableObject {
     @Published var isComplete: Bool = false
     @Published var showAlreadyAnswered: Bool = false
     @Published var recentlyCompletedCells: Set<CellPosition> = []
+    @Published var adBonusHints: Int = 0
 
     struct CellPosition: Hashable {
         let row: Int
