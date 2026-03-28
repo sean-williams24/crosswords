@@ -7,10 +7,21 @@ struct ArchiveView: View {
     @EnvironmentObject var adService: AdService
 
     @State private var entries: [ArchiveEntry] = []
+    @State private var weeklyEntries: [ArchiveEntry] = []
     @State private var isLoading = true
+    @State private var selectedTab: ArchiveTab = .daily
     @State private var selectedPuzzle: Puzzle?
     @State private var loadingPuzzleId: String?
     @State private var showPuzzle = false
+
+    private enum ArchiveTab: String, CaseIterable {
+        case daily = "Daily"
+        case weekly = "Pro"
+    }
+
+    private var activeEntries: [ArchiveEntry] {
+        selectedTab == .daily ? entries : weeklyEntries
+    }
 
     @Environment(\.dismiss) private var dismiss
 
@@ -23,7 +34,7 @@ struct ArchiveView: View {
                 if isLoading {
                     ProgressView()
                         .tint(.appAccent)
-                } else if entries.isEmpty {
+                } else if activeEntries.isEmpty {
                     VStack(spacing: 12) {
                         Image(systemName: "tray")
                             .font(.system(size: 40))
@@ -35,13 +46,21 @@ struct ArchiveView: View {
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 8) {
-                            ForEach(entries) { entry in
+                            ForEach(activeEntries) { entry in
                                 archiveRow(entry)
                             }
                         }
                         .padding(.horizontal, AppLayout.screenPadding)
-                        .padding(.vertical, 16)
+                        .padding(.top, 16)
+                        .padding(.bottom, 96)
                     }
+                }
+
+                // Sliding tab toggle
+                VStack {
+                    Spacer()
+                    archiveTabToggle
+                        .padding(.bottom, 24)
                 }
             }
             .navigationTitle("Archive")
@@ -56,12 +75,6 @@ struct ArchiveView: View {
                     }
                 }
             }
-//            .toolbar {
-//                ToolbarItem(placement: .navigationBarLeading) {
-//                    Button("Close") { dismiss() }
-//                        .foregroundColor(.appAccent)
-//                }
-//            }
             .navigationDestination(isPresented: $showPuzzle) {
                 if let puzzle = selectedPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
@@ -74,6 +87,38 @@ struct ArchiveView: View {
                 await loadArchive()
             }
         }
+    }
+
+    // MARK: - Tab Toggle
+
+    private var archiveTabToggle: some View {
+        ZStack(alignment: selectedTab == .daily ? .leading : .trailing) {
+            Capsule()
+                .fill(Color.appSurface)
+                .frame(width: 180, height: 44)
+
+            Capsule()
+                .fill(Color.appAccent)
+                .frame(width: 90, height: 44)
+                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: selectedTab)
+
+            HStack(spacing: 0) {
+                ForEach(ArchiveTab.allCases, id: \.self) { tab in
+                    Button {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            selectedTab = tab
+                        }
+                    } label: {
+                        Text(tab.rawValue)
+                            .font(AppFont.clueLabel(13))
+                            .foregroundColor(selectedTab == tab ? .white : .appTextSecondary)
+                            .frame(width: 90, height: 44)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .shadow(color: .black.opacity(0.1), radius: 8, y: 2)
     }
 
     // MARK: - Row
@@ -181,14 +226,24 @@ struct ArchiveView: View {
 
     private func loadArchive() async {
         defer { isLoading = false }
-        entries = (try? await puzzleService.fetchArchive()) ?? []
+        async let daily = try? await puzzleService.fetchArchive()
+        async let weekly = try? await puzzleService.fetchWeeklyArchive()
+        entries = await daily ?? []
+        weeklyEntries = await weekly ?? []
     }
 
     private func loadAndNavigate(_ entry: ArchiveEntry) async {
         loadingPuzzleId = entry.id
         defer { loadingPuzzleId = nil }
 
-        if let puzzle = try? await puzzleService.fetchPuzzle(forDate: entry.date) {
+        let puzzle: Puzzle?
+        if selectedTab == .weekly {
+            puzzle = try? await puzzleService.fetchWeeklyPuzzle(forDate: entry.date)
+        } else {
+            puzzle = try? await puzzleService.fetchPuzzle(forDate: entry.date)
+        }
+
+        if let puzzle {
             selectedPuzzle = puzzle
             showPuzzle = true
         }

@@ -58,6 +58,22 @@ final class PuzzleService: ObservableObject {
         return try decoder.decode([ArchiveEntry].self, from: data)
     }
 
+    func fetchWeeklyArchive() async throws -> [ArchiveEntry] {
+        let today = todayString()
+        let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(today)&select=id,puzzle_number,date&order=date.desc"
+        guard let url = URL(string: urlString) else {
+            throw PuzzleServiceError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.setValue(apiKey, forHTTPHeaderField: "apikey")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+        let (data, _) = try await URLSession.shared.data(for: request)
+        return try decoder.decode([ArchiveEntry].self, from: data)
+    }
+
     func prefetchUpcomingPuzzles() async {
         let calendar = Calendar.current
         let today = Date()
@@ -85,6 +101,39 @@ final class PuzzleService: ObservableObject {
         }
 
         let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(today)&select=*&order=date.desc&limit=1"
+        guard let url = URL(string: urlString) else {
+            throw PuzzleServiceError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.setValue(apiKey, forHTTPHeaderField: "apikey")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw PuzzleServiceError.serverError
+        }
+
+        let puzzles = try decoder.decode([SupabasePuzzle].self, from: data)
+        guard let first = puzzles.first else {
+            throw PuzzleServiceError.noPuzzleForDate
+        }
+
+        let puzzle = first.toPuzzle()
+        cache.savePuzzle(puzzle, for: cacheKey)
+        return puzzle
+    }
+
+    func fetchWeeklyPuzzle(forDate date: String) async throws -> Puzzle {
+        let cacheKey = "weekly_\(date)"
+        if let cached = cache.loadPuzzle(for: cacheKey) {
+            return cached
+        }
+
+        let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=eq.\(date)&select=*"
         guard let url = URL(string: urlString) else {
             throw PuzzleServiceError.invalidURL
         }
