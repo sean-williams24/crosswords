@@ -56,11 +56,32 @@ struct ArchiveView: View {
                     }
                 }
 
+                // Gradient blur backdrop
+                VStack {
+                    Spacer()
+                    Rectangle()
+                        .fill(.ultraThinMaterial)
+                        .frame(height: 220)
+                        .mask(
+                            LinearGradient(
+                                stops: [
+                                    .init(color: .clear, location: 0),
+                                    .init(color: .black.opacity(0.4), location: 0.55),
+                                    .init(color: .black, location: 1)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                }
+                .ignoresSafeArea(edges: .bottom)
+                .allowsHitTesting(false)
+
                 // Sliding tab toggle
                 VStack {
                     Spacer()
                     archiveTabToggle
-                        .padding(.bottom, 24)
+                        .padding(.bottom, 16)
                 }
             }
             .navigationTitle("Archive")
