@@ -1,0 +1,75 @@
+name: Generate Weekly Crossword Puzzles
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # Every Monday at 06:00 UTC
+  workflow_dispatch:       # Manual trigger
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install -r Backend/requirements.txt
+
+      - name: Check remaining puzzles and determine next params
+        id: check
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          python3 -c "
+          from supabase import create_client
+          from datetime import date, timedelta
+          import os, sys
+
+          sb = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
+
+          # Count puzzles remaining from today onwards
+          today = date.today().isoformat()
+          remaining = sb.table('weekly_puzzles').select('id', count='exact').gte('date', today).execute()
+          count = remaining.count or 0
+          print(f'Remaining weekly puzzles from today: {count}', file=sys.stderr)
+
+          if count > 5:
+              print(f'enough=true')
+              print(f'remaining={count}')
+          else:
+              # Get the last puzzle to determine next date and number
+              last = sb.table('weekly_puzzles').select('date,puzzle_number').order('date', desc=True).limit(1).execute()
+              if last.data:
+                  last_date = date.fromisoformat(last.data[0]['date'])
+                  last_num = last.data[0]['puzzle_number']
+                  next_date = (last_date + timedelta(weeks=1)).isoformat()
+                  next_num = last_num + 1
+              else:
+                  next_date = date.today().isoformat()
+                  next_num = 1
+              print(f'enough=false')
+              print(f'remaining={count}')
+              print(f'next_date={next_date}')
+              print(f'next_number={next_num}')
+          " >> \$GITHUB_OUTPUT
+
+      - name: Skip if enough puzzles remain
+        if: steps.check.outputs.enough == 'true'
+        run: echo "Skipping — ${{ steps.check.outputs.remaining }} weekly puzzles already queued."
+
+      - name: Generate and upload 10 weekly puzzles
+        if: steps.check.outputs.enough == 'false'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          echo "Only ${{ steps.check.outputs.remaining }} puzzles remaining — generating 10 more from ${{ steps.check.outputs.next_date }} (#${{ steps.check.outputs.next_number }})"
+          python3 Backend/generate_weekly_puzzle.py \
+            --date "${{ steps.check.outputs.next_date }}" \
+            --start-number "${{ steps.check.outputs.next_number }}" \
+            --count 10
