@@ -187,11 +187,11 @@ struct HomeView: View {
                 }
             }
             .task {
-                await viewModel.loadTodaysPuzzle()
+                await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
             }
-            .onChange(of: scenePhase) { _, newPhase in
+            .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
-                    Task { await viewModel.refreshIfNeeded() }
+                    Task { await viewModel.refreshIfNeeded(isProUser: storeService.isProUser) }
                 }
             }
         }

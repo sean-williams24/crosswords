@@ -15,10 +15,22 @@ final class HomeViewModel: ObservableObject {
         self.puzzleService = puzzleService
     }
 
-    func refreshIfNeeded() async {
+    func refreshIfNeeded(isProUser: Bool) async {
         let today = formattedToday()
-        guard todaysPuzzle?.date != today else { return }
+        let dailyStale = todaysPuzzle?.date != today
+        let weeklyStale = isProUser && weeklyPuzzleIsStale()
+
+        guard dailyStale || weeklyStale else { return }
         await loadTodaysPuzzle()
+    }
+
+    private func weeklyPuzzleIsStale() -> Bool {
+        guard let dateString = weeklyPuzzle?.date else { return true }
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        guard let puzzleDate = f.date(from: dateString) else { return true }
+        let daysSince = Calendar.current.dateComponents([.day], from: puzzleDate, to: Date()).day ?? 0
+        return daysSince >= 7
     }
 
     private func formattedToday() -> String {
