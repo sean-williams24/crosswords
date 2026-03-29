@@ -7,6 +7,7 @@ struct HomeView: View {
     @EnvironmentObject var adService: AdService
     @StateObject private var viewModel: HomeViewModel
     @StateObject private var wotdService = WOTDService()
+    @Environment(\.scenePhase) private var scenePhase
 
     @State private var showStats = false
     @State private var showArchive = false
@@ -187,6 +188,11 @@ struct HomeView: View {
             }
             .task {
                 await viewModel.loadTodaysPuzzle()
+            }
+            .onChange(of: scenePhase) { _, newPhase in
+                if newPhase == .active {
+                    Task { await viewModel.refreshIfNeeded() }
+                }
             }
         }
     }

@@ -15,6 +15,18 @@ final class HomeViewModel: ObservableObject {
         self.puzzleService = puzzleService
     }
 
+    func refreshIfNeeded() async {
+        let today = formattedToday()
+        guard todaysPuzzle?.date != today else { return }
+        await loadTodaysPuzzle()
+    }
+
+    private func formattedToday() -> String {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        return f.string(from: Date())
+    }
+
     func loadTodaysPuzzle() async {
         isLoading = true
         errorMessage = nil
