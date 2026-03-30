@@ -33,7 +33,6 @@ struct HomeView: View {
                     .ignoresSafeArea()
 
                 VStack(spacing: 32) {
-                    Spacer()
 
                     // App title
                     VStack(spacing: 4) {
@@ -55,6 +54,7 @@ struct HomeView: View {
                     }
                     #endif
                     .padding()
+                    .padding(.top, 24)
 
                     // Word of the Day
                     if let word = wotdService.todaysWord {
@@ -65,8 +65,6 @@ struct HomeView: View {
                         }
                         .buttonStyle(.plain)
                     }
-
-                    Spacer()
 
                     // Today's puzzle card
                     if viewModel.todaysPuzzle != nil {
@@ -96,7 +94,7 @@ struct HomeView: View {
                         }
                     }
 
-                    Spacer()
+                    Spacer(minLength: 0)
 
                     // Bottom buttons
                     HStack(spacing: 12) {
@@ -143,6 +141,8 @@ struct HomeView: View {
                     .padding(.bottom, 32)
                 }
             }
+            .ignoresSafeArea(.keyboard)
+            .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: String.self) { destination in
                 if destination == "weekly", let puzzle = viewModel.weeklyPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))

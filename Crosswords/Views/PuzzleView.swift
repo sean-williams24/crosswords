@@ -5,8 +5,10 @@ struct PuzzleView: View {
     @EnvironmentObject var statsService: StatsService
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
+    @Environment(\.dismiss) private var dismiss
     @State private var showPaywall = false
     @State private var showRewardedHintBanner = false
+    @State private var isKeyboardReady = false
 
     private let freeHintLimit = 2
 
@@ -20,6 +22,26 @@ struct PuzzleView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
+                // Custom navigation bar
+                HStack {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(.appTextPrimary)
+                            .padding(.vertical, 8)
+                    }
+                    .opacity(viewModel.isZenMode ? 0.2 : 1.0)
+
+                    Spacer()
+
+                    toolbarButtons
+                        .opacity(viewModel.isZenMode ? 0.2 : 1.0)
+                }
+                .padding(.horizontal, AppLayout.screenPadding)
+                .padding(.top, 4)
+
                 // Rewarded hint banner
                 if showRewardedHintBanner {
                     rewardedHintBanner
@@ -27,7 +49,7 @@ struct PuzzleView: View {
                 }
 
                 // Header
-                VStack(spacing: 2) {
+                VStack(spacing: 12) {
                     header
                         .opacity(viewModel.isZenMode ? 0.2 : 1.0)
 
@@ -53,17 +75,14 @@ struct PuzzleView: View {
                 Spacer(minLength: 8)
 
                 // Invisible keyboard capture
-                KeyboardInputView(viewModel: viewModel)
-                    .frame(width: 0, height: 0)
-                    .opacity(0)
+                if isKeyboardReady {
+                    KeyboardInputView(viewModel: viewModel)
+                        .frame(width: 0, height: 0)
+                        .opacity(0)
+                }
             }
         }
-        .toolbar {
-            ToolbarItemGroup(placement: .topBarTrailing) {
-                toolbarButtons
-                    .opacity(viewModel.isZenMode ? 0.2 : 1.0)
-            }
-        }
+        .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $viewModel.showClueList) {
             ClueListView(viewModel: viewModel)
         }
@@ -77,7 +96,12 @@ struct PuzzleView: View {
             PaywallView()
                 .environmentObject(storeService)
         }
-        .navigationBarBackButtonHidden(viewModel.isZenMode)
+        .navigationBarBackButtonHidden(true)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                isKeyboardReady = true
+            }
+        }
         .onTapGesture {
             viewModel.deactivateZenMode()
         }
