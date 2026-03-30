@@ -119,6 +119,18 @@ struct PuzzleView: View {
             .disabled(!adService.isRewardedAdReady)
 
             Button {
+                showPaywall = true
+            } label: {
+                Text("Unlimited")
+                    .font(AppFont.clueLabel(12))
+                    .foregroundColor(.appAccent)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(Color.appAccent.opacity(0.12))
+                    .cornerRadius(10)
+            }
+
+            Button {
                 withAnimation {
                     showRewardedHintBanner = false
                 }
@@ -175,7 +187,6 @@ struct PuzzleView: View {
                 withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                     showRewardedHintBanner = true
                 }
-                showPaywall = true
             }
         } label: {
             HStack(spacing: 4) {

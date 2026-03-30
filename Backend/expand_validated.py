@@ -6,17 +6,19 @@ Unlike the old expand_word_bank scripts, this validates candidates with GPT
 BEFORE adding them — so only crossword-appropriate words make it in.
 
 Pipeline per batch:
-  1. Pull candidates from system dictionary (not already in bank)
+  1. Pull candidates from source (system dictionary or wordfreq)
   2. Filter with GPT: keep only well-known, crossword-suitable words
   3. Generate clues for approved words
   4. Append to word_bank.json
 
 Usage:
-    python expand_validated.py                        # Add up to 5000 words
-    python expand_validated.py --limit 2000           # Add up to 2000 words
-    python expand_validated.py --batch-size 40        # 40 candidates per API call
-    python expand_validated.py --model gpt-4o-mini    # Model to use
-    python expand_validated.py --dry-run              # Preview without saving
+    python expand_validated.py                          # Add up to 5000 words (system dict)
+    python expand_validated.py --source wordfreq        # Use frequency-ranked word list (better quality)
+    python expand_validated.py --source wordfreq --lengths 6 7 8 9  # Target specific lengths
+    python expand_validated.py --limit 2000             # Add up to 2000 words
+    python expand_validated.py --batch-size 40          # 40 candidates per API call
+    python expand_validated.py --model gpt-4o-mini      # Model to use
+    python expand_validated.py --dry-run                # Preview without saving
 
 Environment Variables:
     OPENAI_API_KEY — Required
@@ -115,10 +117,13 @@ def call_openai(system_prompt: str, user_prompt: str, model: str, temperature: f
     return response.choices[0].message.content or ""
 
 
-def load_candidates(existing_words: set[str]) -> list[str]:
+def load_candidates_dict(existing_words: set[str], lengths: list[int] | None = None) -> list[str]:
     """Load system dictionary candidates not already in the bank."""
     with open(DICT_PATH) as f:
         raw = [line.strip() for line in f]
+
+    min_len = min(lengths) if lengths else 3
+    max_len = max(lengths) if lengths else 13
 
     candidates = []
     for w in raw:
@@ -126,7 +131,9 @@ def load_candidates(existing_words: set[str]) -> list[str]:
         if upper in existing_words:
             continue
         lower = w.lower()
-        if len(lower) < 3 or len(lower) > 13:
+        if len(lower) < min_len or len(lower) > max_len:
+            continue
+        if lengths and len(lower) not in lengths:
             continue
         if not re.match(r'^[a-z]+$', lower):
             continue
@@ -139,8 +146,38 @@ def load_candidates(existing_words: set[str]) -> list[str]:
     return candidates
 
 
+def load_candidates_wordfreq(existing_words: set[str], lengths: list[int] | None = None, top_n: int = 200000) -> list[str]:
+    """Load frequency-ranked English words not already in the bank."""
+    try:
+        from wordfreq import top_n_list
+    except ImportError:
+        print("Install wordfreq: pip install wordfreq")
+        sys.exit(1)
+
+    target_lengths = set(lengths) if lengths else set(range(3, 14))
+    raw = top_n_list('en', top_n)
+
+    candidates = []
+    for w in raw:
+        if not w.isalpha():
+            continue
+        upper = w.upper()
+        if upper in existing_words:
+            continue
+        if len(w) not in target_lengths:
+            continue
+        candidates.append(upper)
+
+    # wordfreq already returns in frequency order (most common first) — that's our sorting
+    return candidates
+
+
 def main():
     parser = argparse.ArgumentParser(description="Expand word bank with pre-validated words")
+    parser.add_argument("--source", choices=["dict", "wordfreq"], default="dict",
+                        help="Word source: system dictionary or wordfreq frequency list (default: dict)")
+    parser.add_argument("--lengths", type=int, nargs="+", metavar="N",
+                        help="Only target specific word lengths e.g. --lengths 6 7 8 9")
     parser.add_argument("--model", default="gpt-4o-mini", help="OpenAI model (default: gpt-4o-mini)")
     parser.add_argument("--batch-size", type=int, default=40, help="Candidates per API call (default: 40)")
     parser.add_argument("--limit", type=int, default=5000, help="Max new words to add (default: 5000)")
@@ -158,8 +195,17 @@ def main():
     print(f"Current bank: {len(words)} words")
 
     # Load candidates
-    candidates = load_candidates(existing_words)
-    print(f"System dictionary candidates: {len(candidates)}")
+    if args.source == "wordfreq":
+        candidates = load_candidates_wordfreq(existing_words, args.lengths)
+        source_label = "wordfreq"
+    else:
+        candidates = load_candidates_dict(existing_words, args.lengths)
+        source_label = "system dictionary"
+
+    print(f"Source: {source_label}")
+    if args.lengths:
+        print(f"Target lengths: {args.lengths}")
+    print(f"Candidates available: {len(candidates)}")
     print(f"Target: add up to {args.limit} new words")
     print(f"Model: {args.model}, batch size: {args.batch_size}\n")
 
