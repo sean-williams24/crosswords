@@ -27,15 +27,17 @@ struct PuzzleView: View {
                 }
 
                 // Header
-                header
-                    .opacity(viewModel.isZenMode ? 0.2 : 1.0)
+                VStack(spacing: 2) {
+                    header
+                        .opacity(viewModel.isZenMode ? 0.2 : 1.0)
+
+                    // Clue bar
+                    ClueBarView(viewModel: viewModel)
+                        .padding(.horizontal, AppLayout.screenPadding)
+                        .padding(.bottom, 12)
+                }
 
                 Spacer(minLength: 8)
-
-                // Clue bar
-                ClueBarView(viewModel: viewModel)
-                    .padding(.horizontal, AppLayout.screenPadding)
-                    .padding(.bottom, 12)
 
                 // Grid
                 if isZoomableGrid {
