@@ -116,11 +116,11 @@ struct ArchiveView: View {
         ZStack(alignment: selectedTab == .daily ? .leading : .trailing) {
             Capsule()
                 .fill(Color.appSurface)
-                .frame(width: 180, height: 44)
+                .frame(width: 180, height: 34)
 
             Capsule()
                 .fill(Color.appAccent)
-                .frame(width: 90, height: 44)
+                .frame(width: 90, height: 34)
                 .animation(.spring(response: 0.3, dampingFraction: 0.7), value: selectedTab)
 
             HStack(spacing: 0) {
@@ -133,7 +133,7 @@ struct ArchiveView: View {
                         Text(tab.rawValue)
                             .font(AppFont.clueLabel(13))
                             .foregroundColor(selectedTab == tab ? .white : .appTextSecondary)
-                            .frame(width: 90, height: 44)
+                            .frame(width: 90, height: 34)
                     }
                     .buttonStyle(.plain)
                 }
