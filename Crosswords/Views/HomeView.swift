@@ -188,10 +188,14 @@ struct HomeView: View {
             }
             .task {
                 await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
+                await wotdService.refreshIfNeeded()
             }
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
-                    Task { await viewModel.refreshIfNeeded(isProUser: storeService.isProUser) }
+                    Task {
+                        await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
+                        await wotdService.refreshIfNeeded()
+                    }
                 }
             }
         }

@@ -9,6 +9,9 @@ final class WOTDService: ObservableObject {
     private let baseURL = "https://cmvzqtpvzobdnnjpvyfi.supabase.co"
     private let apiKey = "sb_publishable_Kj4RZqeTrOAXeOhRVdluVA_EFEOGveT"
 
+    /// The date string (yyyy-MM-dd) we last fetched for
+    private var lastFetchedDate: String?
+
     private let decoder: JSONDecoder = {
         let d = JSONDecoder()
         d.keyDecodingStrategy = .convertFromSnakeCase
@@ -19,7 +22,15 @@ final class WOTDService: ObservableObject {
         Task { await loadTodaysWord() }
     }
 
+    /// Re-fetches only when the calendar date has changed since last fetch.
+    func refreshIfNeeded() async {
+        let today = Self.dateFormatter.string(from: Date())
+        guard today != lastFetchedDate else { return }
+        await loadTodaysWord()
+    }
+
     private func loadTodaysWord() async {
+        lastFetchedDate = Self.dateFormatter.string(from: Date())
         // Try Supabase first
         if let word = try? await fetchFromSupabase() {
             todaysWord = word
