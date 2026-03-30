@@ -146,48 +146,85 @@ struct ArchiveView: View {
 
     @ViewBuilder
     private func archiveRow(_ entry: ArchiveEntry) -> some View {
+        let fraction = progressFraction(for: entry)
         Button {
             Task { await loadAndNavigate(entry) }
         } label: {
-            HStack(spacing: 16) {
-                // Puzzle number
-//                Text("#\(entry.puzzleNumber)")
-//                    .font(AppFont.statNumber())
-//                    .foregroundColor(.appTextPrimary)
-//                    .frame(width: 56, alignment: .leading)
+            VStack(spacing: 0) {
+                HStack(spacing: 16) {
+                    // Date
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(formattedDate(entry.date))
+                            .font(AppFont.body())
+                            .foregroundColor(.appTextPrimary)
 
-                // Date
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(formattedDate(entry.date))
-                        .font(AppFont.body())
-                        .foregroundColor(.appTextPrimary)
+                        if isToday(entry.date) {
+                            Text("TODAY")
+                                .font(AppFont.clueLabel(10))
+                                .foregroundColor(.appAccent)
+                                .tracking(1)
+                        }
+                    }
 
-                    if isToday(entry.date) {
-                        Text("TODAY")
-                            .font(AppFont.clueLabel(10))
-                            .foregroundColor(.appAccent)
-                            .tracking(1)
+                    Spacer()
+
+                    // Status indicator
+                    if loadingPuzzleId == entry.id {
+                        ProgressView()
+                            .tint(.appAccent)
+                            .scaleEffect(0.8)
+                    } else {
+                        statusBadge(for: entry)
                     }
                 }
+                .frame(height: 50)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 14)
 
-                Spacer()
-
-                // Status indicator
-                if loadingPuzzleId == entry.id {
-                    ProgressView()
-                        .tint(.appAccent)
-                        .scaleEffect(0.8)
-                } else {
-                    statusBadge(for: entry)
+                // Progress bar
+                if fraction > 0 {
+                    GeometryReader { geo in
+                        Capsule()
+                            .fill(progressColor(for: fraction))
+                            .frame(width: geo.size.width * fraction, height: 3)
+                            .animation(.easeOut(duration: 0.6), value: fraction)
+                    }
+                    .frame(height: 3)
+                    .padding(.horizontal, 12)
+                    .padding(.bottom, 8)
                 }
             }
-            .frame(height: 50)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 14)
             .background(Color.appSurface)
             .cornerRadius(AppLayout.cardCornerRadius)
         }
         .buttonStyle(.plain)
+    }
+
+    private func progressFraction(for entry: ArchiveEntry) -> CGFloat {
+        guard let progress = UserProgress.load(puzzleId: entry.id) else { return 0 }
+        if progress.isComplete { return 1.0 }
+        let filled = progress.entries.flatMap { $0 }.compactMap { $0 }.count
+        guard filled > 0 else { return 0 }
+        // Use cached puzzle to count fillable (non-black) cells
+        let cache = CacheService()
+        if let puzzle = cache.loadPuzzle(for: entry.date) {
+            let fillable = puzzle.cells.flatMap { $0 }.filter { !$0.isBlack }.count
+            guard fillable > 0 else { return 0 }
+            return min(CGFloat(filled) / CGFloat(fillable), 1.0)
+        }
+        // Fallback: estimate ~65% of grid is fillable
+        let total = progress.entries.flatMap { $0 }.count
+        guard total > 0 else { return 0 }
+        let estimatedFillable = Double(total) * 0.65
+        return min(CGFloat(Double(filled) / estimatedFillable), 1.0)
+    }
+
+    private func progressColor(for fraction: CGFloat) -> Color {
+        if fraction >= 1.0 { return .appCorrect }
+        // Blue → Green lerp
+        let blue = 1.0 - fraction
+        let green = fraction
+        return Color(red: 0.15, green: 0.35 + green * 0.5, blue: 0.4 + blue * 0.45)
     }
 
     @ViewBuilder
