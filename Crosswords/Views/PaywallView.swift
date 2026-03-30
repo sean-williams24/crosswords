@@ -148,6 +148,7 @@ struct PaywallView: View {
 
     private var featureList: some View {
         VStack(alignment: .leading, spacing: 14) {
+            featureRow(icon: "brain.head.profile", text: "Weekly challenging crosswords")
             featureRow(icon: "archivebox.fill", text: "Unlimited puzzle archive")
             featureRow(icon: "lightbulb.fill", text: "Unlimited hints")
             featureRow(icon: "eye.slash.fill", text: "Ad-free experience")
