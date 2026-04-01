@@ -44,11 +44,6 @@ struct BackwordView: View {
                     VStack(alignment: .center, spacing: 24) {
                         revealedLetterRow
 
-                        if !viewModel.isComplete && viewModel.currentInput.count == viewModel.unrevealedCount {
-                            submitButton
-                                .transition(.opacity.combined(with: .scale(scale: 0.9)))
-                        }
-
                         guessCounter
 
                         if !viewModel.progress.guesses.isEmpty {
@@ -64,7 +59,16 @@ struct BackwordView: View {
                     }
                     .padding(.horizontal, AppLayout.screenPadding)
                     .padding(.top, 16)
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 16)
+                }
+                .safeAreaInset(edge: .bottom) {
+                    if !viewModel.isComplete && viewModel.currentInput.count == viewModel.unrevealedCount {
+                        submitButton
+                            .padding(.horizontal, AppLayout.screenPadding)
+                            .padding(.vertical, 12)
+                            .background(Color.appBackground)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
                 }
             }
         }
