@@ -19,6 +19,13 @@ final class BackwordViewModel: ObservableObject {
         self.progress = BackwordProgress.load(date: word.date) ?? BackwordProgress(date: word.date)
     }
 
+    /// Preview-only initialiser — injects a pre-built progress state.
+    init(word: BackwordWord, progress: BackwordProgress) {
+        self.word = word
+        self.stats = BackwordStats.load()
+        self.progress = progress
+    }
+
     // MARK: - Computed
 
     /// 6 elements. Non-nil positions are revealed letters; nil positions are hidden.
@@ -38,6 +45,18 @@ final class BackwordViewModel: ObservableObject {
     var maxGuesses: Int { 5 }
     var guessesRemaining: Int { maxGuesses - guessCount }
 
+    /// Number of cells the user types into (the left, not-yet-revealed cells).
+    var unrevealedCount: Int { max(0, 6 - progress.revealedCount) }
+
+    /// The revealed letters of the target word that form the suffix of every guess.
+    var revealedSuffix: String {
+        let letters = Array(word.word.uppercased())
+        return (0..<6)
+            .filter { $0 >= (6 - progress.revealedCount) }
+            .map { String(letters[$0]) }
+            .joined()
+    }
+
     var showLetterFeedback: Bool {
         settings.backwordLetterFeedback
     }
@@ -45,8 +64,13 @@ final class BackwordViewModel: ObservableObject {
     // MARK: - Submit Guess
 
     func submitGuess() {
-        let guess = currentInput.uppercased().filter { $0.isLetter }
-        guard guess.count == 6, !progress.isComplete else {
+        let typed = currentInput.uppercased().filter { $0.isLetter }
+        guard typed.count == unrevealedCount, !progress.isComplete else {
+            triggerInputError()
+            return
+        }
+        let guess = typed + revealedSuffix
+        guard guess.count == 6 else {
             triggerInputError()
             return
         }
@@ -101,7 +125,7 @@ final class BackwordViewModel: ObservableObject {
 
     func onInputChange(_ newValue: String) {
         let filtered = newValue.uppercased().filter { $0.isLetter }
-        currentInput = String(filtered.prefix(6))
+        currentInput = String(filtered.prefix(unrevealedCount))
     }
 
     private func triggerInputError() {

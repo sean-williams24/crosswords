@@ -12,9 +12,26 @@ struct BackwordView: View {
         _viewModel = StateObject(wrappedValue: BackwordViewModel(word: word))
     }
 
+    fileprivate init(viewModel: BackwordViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+
     var body: some View {
         ZStack {
             Color.appBackground.ignoresSafeArea()
+
+            // Hidden TextField — captures keyboard input; focused programmatically.
+            TextField("", text: Binding(
+                get: { viewModel.currentInput },
+                set: { viewModel.onInputChange($0) }
+            ))
+            .textInputAutocapitalization(.characters)
+            .autocorrectionDisabled()
+            .keyboardType(.asciiCapable)
+            .focused($inputFocused)
+            .onSubmit { viewModel.submitGuess() }
+            .opacity(0.001)
+            .frame(width: 1, height: 1)
 
             VStack(spacing: 0) {
                 navBar
@@ -26,6 +43,11 @@ struct BackwordView: View {
                     VStack(spacing: 24) {
                         revealedLetterRow
 
+                        if !viewModel.isComplete && viewModel.currentInput.count == viewModel.unrevealedCount {
+                            submitButton
+                                .transition(.opacity.combined(with: .scale(scale: 0.9)))
+                        }
+
                         guessCounter
 
                         if !viewModel.progress.guesses.isEmpty {
@@ -36,7 +58,6 @@ struct BackwordView: View {
                             completionBanner
                                 .transition(.move(edge: .top).combined(with: .opacity))
                         } else {
-                            inputArea
                             hintRow
                         }
                     }
@@ -52,6 +73,7 @@ struct BackwordView: View {
                 inputFocused = true
             }
         }
+        .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
     }
 
     // MARK: - Nav Bar
@@ -87,14 +109,42 @@ struct BackwordView: View {
     // MARK: - Letter Row
 
     private var revealedLetterRow: some View {
-        HStack(spacing: 8) {
+        let inputChars = Array(viewModel.currentInput)
+        let unrevealed = viewModel.unrevealedCount
+
+        return HStack(spacing: 8) {
             ForEach(0..<6, id: \.self) { i in
+                let revealed = viewModel.revealedLetters[i]
+                let isInputCell = i < unrevealed && !viewModel.isComplete
+                let inputChar: Character? = (isInputCell && i < inputChars.count) ? inputChars[i] : nil
+                let showCursor = isInputCell && i == inputChars.count && inputFocused
+
                 BackwordLetterCell(
-                    letter: viewModel.revealedLetters[i],
+                    letter: revealed,
+                    inputLetter: inputChar,
+                    isCursor: showCursor,
                     isNew: viewModel.newlyRevealedIndex == i
                 )
                 .animation(.spring(response: 0.4, dampingFraction: 0.6), value: viewModel.revealedLetters[i] != nil)
             }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture { if !viewModel.isComplete { inputFocused = true } }
+    }
+
+    // MARK: - Submit Button
+
+    private var submitButton: some View {
+        Button {
+            viewModel.submitGuess()
+        } label: {
+            Text("Submit")
+                .font(AppFont.clueLabel(15))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(Color.appAccent)
+                .cornerRadius(AppLayout.cardCornerRadius)
         }
     }
 
@@ -123,53 +173,6 @@ struct BackwordView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    // MARK: - Input Area
-
-    private var inputArea: some View {
-        VStack(spacing: 12) {
-            HStack(spacing: 10) {
-                TextField("Enter 6 letters…", text: Binding(
-                    get: { viewModel.currentInput },
-                    set: { viewModel.onInputChange($0) }
-                ))
-                .font(AppFont.gridLetter(18))
-                .foregroundColor(.appTextPrimary)
-                .textInputAutocapitalization(.characters)
-                .autocorrectionDisabled()
-                .keyboardType(.asciiCapable)
-                .focused($inputFocused)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 12)
-                .background(Color.appSurface)
-                .cornerRadius(AppLayout.cardCornerRadius)
-                .overlay(
-                    RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                        .strokeBorder(
-                            viewModel.inputError ? Color.red : Color.appGridLine,
-                            lineWidth: 1
-                        )
-                )
-
-                Button {
-                    viewModel.submitGuess()
-                } label: {
-                    Text("Go")
-                        .font(AppFont.clueLabel(15))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 12)
-                        .background(
-                            viewModel.currentInput.count == 6
-                                ? Color.appAccent
-                                : Color.appTextSecondary.opacity(0.3)
-                        )
-                        .cornerRadius(AppLayout.cardCornerRadius)
-                }
-                .disabled(viewModel.currentInput.count != 6)
-            }
-        }
     }
 
     // MARK: - Hint Row
@@ -295,12 +298,36 @@ struct BackwordView: View {
     }
 }
 
-#Preview {
-    BackwordView(word: BackwordWord(
-        date: "2026-04-01",
-        word: "CASTLE",
-        category: "History",
-        definition: "A large medieval fortified building."
-    ))
-    .environmentObject(StoreService())
+// MARK: - Previews
+
+private let previewWord = BackwordWord(
+    date: "2026-04-01",
+    word: "CASTLE",
+    category: "History",
+    definition: "A large fortified building, typically medieval, used as a noble residence and stronghold."
+)
+
+#Preview("Active") {
+    BackwordView(word: previewWord)
+        .environmentObject(StoreService())
+}
+
+#Preview("Won — 3 guesses") {
+    var progress = BackwordProgress(date: previewWord.date)
+    progress.guesses = ["BRIDGX", "FXASXE", "CASTLE"]  // 2 wrong + 1 correct
+    progress.wonFlag = true
+    progress.completedAt = Date()
+    let vm = BackwordViewModel(word: previewWord, progress: progress)
+    return BackwordView(viewModel: vm)
+        .environmentObject(StoreService())
+}
+
+#Preview("Failed — 5 guesses") {
+    var progress = BackwordProgress(date: previewWord.date)
+    progress.guesses = ["BRXXLE", "FOXXLE", "PLXXLE", "MAXXLE", "SIXXLE"]
+    progress.wonFlag = false
+    progress.completedAt = Date()
+    let vm = BackwordViewModel(word: previewWord, progress: progress)
+    return BackwordView(viewModel: vm)
+        .environmentObject(StoreService())
 }
