@@ -50,4 +50,8 @@ extension BackwordProgress {
         guard let data = try? Data(contentsOf: fileURL(for: date)) else { return nil }
         return try? JSONDecoder().decode(BackwordProgress.self, from: data)
     }
+
+    static func delete(date: String) {
+        try? FileManager.default.removeItem(at: fileURL(for: date))
+    }
 }

@@ -6,6 +6,7 @@ struct BackwordView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var showCategoryHint = false
+    @State private var showInstructions = false
     @FocusState private var inputFocused: Bool
 
     init(word: BackwordWord) {
@@ -33,14 +34,14 @@ struct BackwordView: View {
             .opacity(0.001)
             .frame(width: 1, height: 1)
 
-            VStack(spacing: 0) {
+            VStack(alignment: .center, spacing: 0) {
                 navBar
                     .padding(.horizontal, AppLayout.screenPadding)
                     .padding(.top, 4)
                     .padding(.bottom, 8)
 
                 ScrollView(showsIndicators: false) {
-                    VStack(spacing: 24) {
+                    VStack(alignment: .center, spacing: 24) {
                         revealedLetterRow
 
                         if !viewModel.isComplete && viewModel.currentInput.count == viewModel.unrevealedCount {
@@ -56,7 +57,7 @@ struct BackwordView: View {
 
                         if viewModel.isComplete {
                             completionBanner
-                                .transition(.move(edge: .top).combined(with: .opacity))
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
                         } else {
                             hintRow
                         }
@@ -74,6 +75,9 @@ struct BackwordView: View {
             }
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
+        .onChange(of: viewModel.isComplete) { complete in
+            if complete { inputFocused = false }
+        }
     }
 
     // MARK: - Nav Bar
@@ -98,12 +102,89 @@ struct BackwordView: View {
 
             Spacer()
 
-            // Balance the back button
-            Image(systemName: "chevron.left")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundColor(.clear)
-                .padding(.vertical, 8)
+            Button {
+                showInstructions = true
+            } label: {
+                Image(systemName: "info.circle")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundColor(.appTextPrimary)
+                    .padding(.vertical, 8)
+            }
+            .popover(isPresented: $showInstructions, arrowEdge: .top) {
+                instructionsPopover
+            }
         }
+    }
+
+    // MARK: - Instructions Popover
+
+    private var instructionsPopover: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("How to Play")
+                .font(AppFont.header(18))
+                .foregroundColor(.appTextPrimary)
+
+            VStack(alignment: .leading, spacing: 10) {
+                instructionRow(number: "1", text: "Guess the 6-letter word in 5 tries.")
+                instructionRow(number: "2", text: "The last letter is revealed to start. Each wrong guess reveals one more letter from the right.")
+                instructionRow(number: "3", text: "Type the missing letters into the highlighted cells, then tap Submit.")
+                instructionRow(number: "4", text: "Tap the category tag for a free hint.")
+            }
+
+            Divider()
+                .background(Color.appGridLine)
+
+            HStack(spacing: 12) {
+                exampleCell(letter: "C", isRevealed: false)
+                exampleCell(letter: "A", isRevealed: false)
+                exampleCell(letter: "S", isRevealed: false)
+                exampleCell(letter: "T", isRevealed: true)
+                exampleCell(letter: "L", isRevealed: true)
+                exampleCell(letter: "E", isRevealed: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+
+            Text("After 2 wrong guesses — 3 letters revealed")
+                .font(AppFont.caption())
+                .foregroundColor(.appTextSecondary)
+                .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .padding(20)
+        .frame(width: 300)
+        .background(Color.appBackground)
+    }
+
+    private func instructionRow(number: String, text: String) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Text(number)
+                .font(AppFont.clueLabel(13))
+                .foregroundColor(.white)
+                .frame(width: 20, height: 20)
+                .background(Color.appAccent)
+                .clipShape(Circle())
+            Text(text)
+                .font(AppFont.body(14))
+                .foregroundColor(.appTextSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    private func exampleCell(letter: String, isRevealed: Bool) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 6)
+                .fill(Color.appSurface)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6)
+                        .strokeBorder(
+                            isRevealed ? Color.appAccent.opacity(0.5) : Color.appGridLine,
+                            lineWidth: 1.5
+                        )
+                )
+            Text(isRevealed ? letter : "")
+                .font(AppFont.gridLetter(16))
+                .foregroundColor(.appTextPrimary)
+        }
+        .frame(width: 36, height: 36)
     }
 
     // MARK: - Letter Row
@@ -151,15 +232,30 @@ struct BackwordView: View {
     // MARK: - Guess Counter
 
     private var guessCounter: some View {
-        Text("Guess \(viewModel.guessCount) / \(viewModel.maxGuesses)")
-            .font(AppFont.caption())
-            .foregroundColor(.appTextSecondary)
+        HStack(spacing: 6) {
+            ForEach(0..<viewModel.maxGuesses, id: \.self) { i in
+                let isUsed = i < viewModel.guessCount
+                let isWinSlot = viewModel.isWon && i == viewModel.guessCount - 1
+
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(isWinSlot ? Color.appCorrect : isUsed ? Color.appAccent.opacity(0.7) : Color.appSurface)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 3)
+                            .strokeBorder(
+                                isWinSlot ? Color.appCorrect : isUsed ? Color.appAccent.opacity(0.5) : Color.appGridLine,
+                                lineWidth: 1
+                            )
+                    )
+                    .frame(width: 36, height: 10)
+                    .animation(.easeInOut(duration: 0.25), value: viewModel.guessCount)
+            }
+        }
     }
 
     // MARK: - Guess History
 
     private var guessHistory: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .center, spacing: 8) {
             ForEach(Array(viewModel.progress.guesses.enumerated()), id: \.offset) { index, guess in
                 let isLast = index == viewModel.progress.guesses.count - 1
                 let isWinRow = viewModel.isWon && isLast
@@ -172,7 +268,7 @@ struct BackwordView: View {
                 )
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 
     // MARK: - Hint Row
@@ -229,49 +325,51 @@ struct BackwordView: View {
 
     private var completionBanner: some View {
         VStack(spacing: 16) {
-            if viewModel.isWon {
-                VStack(spacing: 8) {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 36))
-                        .foregroundColor(.appCorrect)
+            VStack {
+                if viewModel.isWon {
+                    VStack(spacing: 8) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 36))
+                            .foregroundColor(.appCorrect)
+                        //
+                        //                    Text("Well done!")
+                        //                        .font(AppFont.header(22))
+                        //                        .foregroundColor(.appTextPrimary)
 
-                    Text("Well done!")
-                        .font(AppFont.header(22))
-                        .foregroundColor(.appTextPrimary)
+                        Text("Got it in \(viewModel.guessCount) guess\(viewModel.guessCount == 1 ? "" : "es")")
+                            .font(AppFont.body(15))
+                            .foregroundColor(.appTextSecondary)
+                    }
+                } else {
+                    VStack(spacing: 8) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 36))
+                            .foregroundColor(.red.opacity(0.7))
 
-                    Text("Got it in \(viewModel.guessCount) guess\(viewModel.guessCount == 1 ? "" : "es")")
-                        .font(AppFont.body(15))
-                        .foregroundColor(.appTextSecondary)
+                        Text("The word was")
+                            .font(AppFont.body(15))
+                            .foregroundColor(.appTextSecondary)
+
+                        Text(viewModel.word.word)
+                            .font(AppFont.header(28))
+                            .foregroundColor(.appTextPrimary)
+                            .tracking(4)
+                    }
                 }
-            } else {
-                VStack(spacing: 8) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 36))
-                        .foregroundColor(.red.opacity(0.7))
 
-                    Text("The word was")
-                        .font(AppFont.body(15))
-                        .foregroundColor(.appTextSecondary)
-
-                    Text(viewModel.word.word)
-                        .font(AppFont.header(28))
-                        .foregroundColor(.appTextPrimary)
-                        .tracking(4)
-                }
+                // Definition
+                Text(viewModel.word.definition)
+                    .font(AppFont.clueText())
+                    .foregroundColor(.appTextSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 8)
             }
-
-            // Definition
-            Text(viewModel.word.definition)
-                .font(AppFont.clueText())
-                .foregroundColor(.appTextSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 8)
+            .padding(20)
+            .background(Color.appSurface)
+            .cornerRadius(AppLayout.cardCornerRadius)
 
             shareButton
         }
-        .padding(20)
-        .background(Color.appSurface)
-        .cornerRadius(AppLayout.cardCornerRadius)
     }
 
     private var shareButton: some View {
@@ -286,7 +384,7 @@ struct BackwordView: View {
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "square.and.arrow.up")
-                Text("Share result")
+                Text("Share")
             }
             .font(AppFont.body(15))
             .foregroundColor(.appAccent)

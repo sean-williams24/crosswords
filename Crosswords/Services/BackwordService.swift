@@ -23,9 +23,10 @@ final class BackwordService: ObservableObject {
     }
 
     /// Re-fetches only when the calendar date has changed since last fetch.
-    func refreshIfNeeded() async {
+    /// Pass `force: true` to re-fetch unconditionally (e.g. after a debug reset).
+    func refreshIfNeeded(force: Bool = false) async {
         let today = Self.dateFormatter.string(from: Date())
-        guard today != lastFetchedDate else { return }
+        guard force || today != lastFetchedDate else { return }
         await loadTodaysWord()
     }
 

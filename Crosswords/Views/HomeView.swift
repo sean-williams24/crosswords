@@ -205,6 +205,7 @@ struct HomeView: View {
             .sheet(isPresented: $showDebugSettings) {
                 DebugSettingsView()
                     .environmentObject(storeService)
+                    .environmentObject(backwordService)
             }
             #endif
             .fullScreenCover(isPresented: $showBackword) {

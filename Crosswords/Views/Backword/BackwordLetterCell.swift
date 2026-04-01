@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct BackwordLetterCell: View {
-    let letter: Character?       // Permanently revealed target letter
-    var inputLetter: Character?  // Currently typed letter (unrevealed position)
-    var isCursor: Bool = false   // Active input position (next to type)
+    let letter: Character?
+    var inputLetter: Character?
+    var isCursor: Bool = false
     var isNew: Bool = false
     var size: CGFloat = 44
 
@@ -15,10 +15,14 @@ struct BackwordLetterCell: View {
         ZStack {
             RoundedRectangle(cornerRadius: 6)
                 .fill(cellBackground)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .strokeBorder(cellBorder, lineWidth: isCursor ? 2 : 1.5)
-                )
+
+            // Border — pulsing sub-view when cursor, static otherwise
+            if isCursor {
+                PulsingBorder(size: size, cornerRadius: 6)
+            } else {
+                RoundedRectangle(cornerRadius: 6)
+                    .strokeBorder(staticBorderColor, lineWidth: 1.5)
+            }
 
             if let ch = displayLetter {
                 Text(String(ch))
@@ -26,9 +30,7 @@ struct BackwordLetterCell: View {
                     .foregroundColor(.appTextPrimary)
                     .transition(.scale(scale: 0.4).combined(with: .opacity))
             } else if isCursor {
-                RoundedRectangle(cornerRadius: 1)
-                    .fill(Color.appAccent)
-                    .frame(width: 2, height: size * 0.42)
+                PulsingUnderscore(size: size)
             } else {
                 Text("_")
                     .font(AppFont.gridLetter(size * 0.38))
@@ -48,16 +50,48 @@ struct BackwordLetterCell: View {
 
     private var cellBackground: Color {
         if flashed { return .appAccent.opacity(0.25) }
-        if letter != nil { return .appSurface }
-        if inputLetter != nil { return .appSurface }
+        if letter != nil || inputLetter != nil { return .appSurface }
         return .appSurface.opacity(0.5)
     }
 
-    private var cellBorder: Color {
+    private var staticBorderColor: Color {
         if flashed { return .appAccent }
         if letter != nil { return .appAccent.opacity(0.5) }
         if inputLetter != nil { return .appTextPrimary.opacity(0.5) }
-        if isCursor { return .appAccent }
         return .appGridLine
+    }
+}
+
+// MARK: - Pulsing sub-views (only in hierarchy when isCursor == true)
+
+private struct PulsingBorder: View {
+    let size: CGFloat
+    let cornerRadius: CGFloat
+    @State private var pulse = false
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: cornerRadius)
+            .strokeBorder(Color.appAccent.opacity(pulse ? 1 : 0.4), lineWidth: pulse ? 2 : 1.5)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true)) {
+                    pulse = true
+                }
+            }
+    }
+}
+
+private struct PulsingUnderscore: View {
+    let size: CGFloat
+    @State private var pulse = false
+
+    var body: some View {
+        Text("_")
+            .font(AppFont.gridLetter(size * 0.38))
+            .foregroundColor(.white.opacity(pulse ? 1 : 0.2))
+            .onAppear {
+                withAnimation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true)) {
+                    pulse = true
+                }
+            }
     }
 }
