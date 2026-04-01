@@ -103,3 +103,23 @@ CREATE POLICY "Public can read released weekly puzzles"
     ON weekly_puzzles
     FOR SELECT
     USING (date <= CURRENT_DATE);
+
+-- ============================================================
+-- Backword table (daily 6-letter word game)
+-- ============================================================
+
+CREATE TABLE backword_words (
+    id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    date          DATE NOT NULL UNIQUE,
+    word_data     JSONB NOT NULL,
+    created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_backword_date ON backword_words (date);
+
+ALTER TABLE backword_words ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Public can read released backword words"
+    ON backword_words
+    FOR SELECT
+    USING (date <= CURRENT_DATE);

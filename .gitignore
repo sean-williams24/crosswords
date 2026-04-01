@@ -2,6 +2,9 @@
 .env
 Backend/.env
 
+# VS Code – machine-specific settings
+.vscode/
+
 # Backend – only track core files
 Backend/*.py
 !Backend/generate_puzzle.py

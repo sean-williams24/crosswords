@@ -1,0 +1,84 @@
+name: Generate Backword Words
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"   # Every Monday at 09:00 UTC (1hr after WOTD)
+  workflow_dispatch:       # Manual trigger
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install -r Backend/requirements.txt
+
+      - name: Determine start date
+        id: dates
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          python3 -c "
+          from supabase import create_client
+          from datetime import date, timedelta
+          import os
+          sb = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
+          rows = sb.table('backword_words').select('date').order('date', desc=True).limit(1).execute()
+          if rows.data:
+              last = date.fromisoformat(rows.data[0]['date'])
+              print(f'start={(last + timedelta(days=1)).isoformat()}')
+          else:
+              print(f'start={(date.today() + timedelta(days=1)).isoformat()}')
+          " >> "$GITHUB_OUTPUT"
+
+      - name: Generate and upload words
+        id: generate
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "Generating 7 Backword words starting from ${{ steps.dates.outputs.start }}"
+          output=$(python3 Backend/generate_backword.py \
+            --date "${{ steps.dates.outputs.start }}" \
+            --count 7)
+          echo "$output"
+          remaining=$(echo "$output" | grep '^remaining=' | cut -d= -f2)
+          echo "remaining=$remaining" >> "$GITHUB_OUTPUT"
+
+      - name: Warn if word pool is running low
+        if: steps.generate.outputs.remaining != '' && fromJSON(steps.generate.outputs.remaining) <= 200
+        run: |
+          echo "::warning::Backword word pool is running low! Only ${{ steps.generate.outputs.remaining }} candidates remain."
+
+      - name: Create issue if word pool is critically low
+        if: steps.generate.outputs.remaining != '' && fromJSON(steps.generate.outputs.remaining) <= 200
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const remaining = ${{ steps.generate.outputs.remaining }};
+            const title = `Backword word pool running low — ${remaining} candidates remaining`;
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'backword-pool'
+            });
+            if (existing.data.length > 0) {
+              console.log('Issue already exists, skipping.');
+              return;
+            }
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body: `The Backword word pool has only **${remaining}** unused candidates left.\n\nAt the current rate of 7 words/week, the pool will be exhausted in ~${Math.floor(remaining / 7)} week(s).\n\nThe pool is sourced from \`wordfreq\` in \`Backend/generate_backword.py\` — consider adjusting \`WORDFREQ_TOP_N\` or \`WORDFREQ_SKIP_TOP\` to expand it.`,
+              labels: ['backword-pool']
+            });

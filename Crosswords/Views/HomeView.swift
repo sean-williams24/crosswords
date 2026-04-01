@@ -7,12 +7,15 @@ struct HomeView: View {
     @EnvironmentObject var adService: AdService
     @StateObject private var viewModel: HomeViewModel
     @StateObject private var wotdService = WOTDService()
+    @StateObject private var backwordService = BackwordService()
     @Environment(\.scenePhase) private var scenePhase
 
     @State private var showStats = false
     @State private var showArchive = false
     @State private var showPaywall = false
     @State private var showWOTD = false
+    @State private var showBackword = false
+    @State private var showSettings = false
     @State private var navigateToPuzzle = false
     @State private var navigateToWeekly = false
     @State private var showStreakPopup = false
@@ -35,17 +38,29 @@ struct HomeView: View {
                 VStack(spacing: 32) {
 
                     // App title
-                    VStack(spacing: 4) {
-                        Text("CROSSWORDS")
-                            .font(AppFont.header(36))
-                            .foregroundColor(.appTextPrimary)
-                            .tracking(4)
-                        if storeService.isProUser {
-                            Text("PRO")
+                    ZStack(alignment: .topTrailing) {
+                        VStack(spacing: 4) {
+                            Text("CROSSWORDS")
                                 .font(AppFont.header(36))
                                 .foregroundColor(.appTextPrimary)
                                 .tracking(4)
+                            if storeService.isProUser {
+                                Text("PRO")
+                                    .font(AppFont.header(36))
+                                    .foregroundColor(.appTextPrimary)
+                                    .tracking(4)
+                            }
                         }
+                        .frame(maxWidth: .infinity)
+
+                        Button {
+                            showSettings = true
+                        } label: {
+                            Image(systemName: "gearshape")
+                                .font(.system(size: 18))
+                                .foregroundColor(.appTextSecondary)
+                        }
+                        .padding(.top, 6)
                     }
                     .multilineTextAlignment(.center)
                     #if DEBUG
@@ -65,6 +80,21 @@ struct HomeView: View {
                         }
                         .buttonStyle(.plain)
                     }
+
+                    // Backword
+                    Button {
+                        if backwordService.todaysWord != nil {
+                            showBackword = true
+                        }
+                    } label: {
+                        BackwordCard(
+                            word: backwordService.todaysWord,
+                            progress: backwordService.todaysWord.flatMap {
+                                BackwordProgress.load(date: $0.date)
+                            }
+                        )
+                    }
+                    .buttonStyle(.plain)
 
                     // Today's puzzle card
                     if viewModel.todaysPuzzle != nil {
@@ -177,6 +207,16 @@ struct HomeView: View {
                     .environmentObject(storeService)
             }
             #endif
+            .fullScreenCover(isPresented: $showBackword) {
+                if let word = backwordService.todaysWord {
+                    BackwordView(word: word)
+                        .environmentObject(storeService)
+                }
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+                    .environmentObject(storeService)
+            }
             .sheet(isPresented: $showWOTD, onDismiss: {
                 if !storeService.isProUser {
 //                    adService.showInterstitial() // TODO: Re-enable
@@ -189,12 +229,14 @@ struct HomeView: View {
             .task {
                 await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
                 await wotdService.refreshIfNeeded()
+                await backwordService.refreshIfNeeded()
             }
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
                     Task {
                         await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
                         await wotdService.refreshIfNeeded()
+                        await backwordService.refreshIfNeeded()
                     }
                 }
             }
