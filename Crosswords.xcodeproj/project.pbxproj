@@ -52,6 +52,7 @@
 		E1E2BA5AF259229354350F1D /* ClueBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174303FEBEF1BD7E73B7D31B /* ClueBarView.swift */; };
 		E3AF0AC0F317EE4AF43D466B /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1440F9CF5D6B7CCEEFB9394 /* PaywallView.swift */; };
 		F339B918E44F0B5065990E9E /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2729D69673F179C051B0E947 /* Puzzle.swift */; };
+		F50B014933F62266DF83C88A /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 4EA37F6E92EDCE14F3F6C5C4 /* GoogleMobileAds */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,17 @@
 		F569FF3E6EA42765B5DF8BE0 /* wotd_bank.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = wotd_bank.json; sourceTree = "<group>"; };
 		FF799B02A25C552F1650003D /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F2DD309A469A26018575D312 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F50B014933F62266DF83C88A /* GoogleMobileAds in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		238573093061A564C6DD35CA /* Products */ = {
@@ -275,6 +287,7 @@
 			buildPhases = (
 				39A1BE8B7D27FE42679A53B1 /* Sources */,
 				11AEBE9AD18765A8FF5EE9C4 /* Resources */,
+				F2DD309A469A26018575D312 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -282,6 +295,7 @@
 			);
 			name = Crosswords;
 			packageProductDependencies = (
+				4EA37F6E92EDCE14F3F6C5C4 /* GoogleMobileAds */,
 			);
 			productName = Crosswords;
 			productReference = 6389C3B428CCAD9D23FD8AAE /* Crosswords.app */;
@@ -325,6 +339,9 @@
 			);
 			mainGroup = F8082B6F6AC22DAB13FFB26F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8972D7141AD6DC5AB4AB87C0 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 238573093061A564C6DD35CA /* Products */;
 			projectDirPath = "";
@@ -647,6 +664,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8972D7141AD6DC5AB4AB87C0 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4EA37F6E92EDCE14F3F6C5C4 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8972D7141AD6DC5AB4AB87C0 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 494B91A8816CE9D6372E1887 /* Project object */;
 }

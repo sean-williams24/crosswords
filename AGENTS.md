@@ -51,3 +51,7 @@ chore: update Supabase API key
 ```
 
 Types: `feat`, `fix`, `refactor`, `chore`, `test`, `docs`, `style`
+
+## Workflow
+
+- **Always wait for review before committing.** After making changes, present them for review and wait for explicit approval before running `git commit`.

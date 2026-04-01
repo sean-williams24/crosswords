@@ -58,7 +58,7 @@ final class BackwordService: ObservableObject {
         }
 
         let rows = try decoder.decode([SupabaseBackwordRow].self, from: data)
-        return rows.first?.wordData
+        return rows.first?.toBackwordWord
     }
 
     // MARK: - Local Fallback
@@ -90,5 +90,15 @@ final class BackwordService: ObservableObject {
 private struct SupabaseBackwordRow: Codable {
     let id: String
     let date: String
-    let wordData: BackwordWord
+    let wordData: PartialWordData
+
+    var toBackwordWord: BackwordWord {
+        BackwordWord(date: date, word: wordData.word, category: wordData.category, definition: wordData.definition)
+    }
+
+    struct PartialWordData: Codable {
+        let word: String
+        let category: String
+        let definition: String
+    }
 }

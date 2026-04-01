@@ -15,12 +15,19 @@ settings:
     INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
     INFOPLIST_KEY_CFBundleDisplayName: Crosswords
 
+packages:
+  GoogleMobileAds:
+    url: https://github.com/googleads/swift-package-manager-google-mobile-ads
+    minorVersion: 11.0.0
+
 targets:
   Crosswords:
     type: application
     platform: iOS
     sources:
       - path: Crosswords
+    dependencies:
+      - package: GoogleMobileAds
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.crosswords.app

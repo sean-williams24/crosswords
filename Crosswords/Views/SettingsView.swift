@@ -79,7 +79,7 @@ struct SettingsView: View {
             .padding(.vertical, 2)
             .overlay(
                 RoundedRectangle(cornerRadius: 3)
-                    .strokeBorder(.appAccent, lineWidth: 1)
+                    .strokeBorder(Color.appAccent, lineWidth: 1)
             )
     }
 }
