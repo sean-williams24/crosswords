@@ -142,7 +142,6 @@ struct PuzzleView: View {
                     .background(Color.appAccent)
                     .cornerRadius(10)
             }
-            .disabled(!adService.isRewardedAdReady)
 
             Button {
                 showPaywall = true

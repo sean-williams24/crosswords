@@ -78,7 +78,7 @@
 		2D5ED0EB04709FDE5AFF6097 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		3725D4EA76436EF4FD60D7DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4072C107A7532C8725B714F3 /* UserStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStats.swift; sourceTree = "<group>"; };
-		41BEF53462C64B7D34CD714A /* CrosswordsProducts.storekit */ = {isa = PBXFileReference; path = CrosswordsProducts.storekit; sourceTree = "<group>"; };
+		41BEF53462C64B7D34CD714A /* CrosswordsProducts.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = CrosswordsProducts.storekit; sourceTree = "<group>"; };
 		436196EA27FA017EE7D2475F /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		44D9675A422C4016610B9B01 /* BackwordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModelTests.swift; sourceTree = "<group>"; };
 		4BF15C657AD1A3A058592EFE /* CompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionView.swift; sourceTree = "<group>"; };
@@ -327,8 +327,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = B99CFE2CEBC444426CE1EA0B /* Build configuration list for PBXProject "Crosswords" */;
 			developmentRegion = en;
@@ -670,8 +668,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 11.0.0;
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

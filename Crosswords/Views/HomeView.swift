@@ -212,6 +212,7 @@ struct HomeView: View {
                 if let word = backwordService.todaysWord {
                     BackwordView(word: word)
                         .environmentObject(storeService)
+                        .environmentObject(adService)
                 }
             }
             .sheet(isPresented: $showSettings) {

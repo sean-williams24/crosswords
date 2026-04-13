@@ -3,10 +3,11 @@ import SwiftUI
 struct BackwordView: View {
     @StateObject private var viewModel: BackwordViewModel
     @EnvironmentObject var storeService: StoreService
+    @EnvironmentObject var adService: AdService
     @Environment(\.dismiss) private var dismiss
 
-    @State private var showCategoryHint = false
     @State private var showInstructions = false
+    @State private var showRewardedCategoryBanner = false
     @FocusState private var inputFocused: Bool
 
     init(word: BackwordWord) {
@@ -61,6 +62,12 @@ struct BackwordView: View {
                     .padding(.top, 16)
                     .padding(.bottom, 16)
                 }
+                .safeAreaInset(edge: .top) {
+                    if showRewardedCategoryBanner {
+                        rewardedCategoryBanner
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                    }
+                }
                 .safeAreaInset(edge: .bottom) {
                     if !viewModel.isComplete && viewModel.currentInput.count == viewModel.unrevealedCount {
                         submitButton
@@ -82,6 +89,57 @@ struct BackwordView: View {
         .onChange(of: viewModel.isComplete) { complete in
             if complete { inputFocused = false }
         }
+        .onChange(of: viewModel.categoryHintRevealed) { revealed in
+            if revealed { withAnimation { showRewardedCategoryBanner = false } }
+        }
+    }
+
+    // MARK: - Rewarded Category Banner
+
+    private var rewardedCategoryBanner: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "play.circle.fill")
+                .font(.system(size: 24))
+                .foregroundColor(.appAccent)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Reveal the category?")
+                    .font(AppFont.clueLabel(13))
+                    .foregroundColor(.appTextPrimary)
+                Text("Watch a short ad to unlock it.")
+                    .font(AppFont.caption(12))
+                    .foregroundColor(.appTextSecondary)
+            }
+
+            Spacer()
+
+            Button {
+                adService.showRewardedAd {
+                    viewModel.revealCategoryHint()
+                }
+            } label: {
+                Text("Watch")
+                    .font(AppFont.clueLabel(12))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(Color.appAccent)
+                    .cornerRadius(10)
+            }
+//            .disabled(!adService.isRewardedAdReady)
+
+            Button {
+                withAnimation { showRewardedCategoryBanner = false }
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.appTextSecondary)
+            }
+        }
+        .padding(.horizontal, AppLayout.screenPadding)
+        .padding(.vertical, 12)
+        .background(Color.appSurface)
+        .shadow(color: .black.opacity(0.08), radius: 6, y: 3)
     }
 
     // MARK: - Nav Bar
@@ -281,15 +339,20 @@ struct BackwordView: View {
         HStack(spacing: 12) {
             // Category hint
             Button {
-                viewModel.revealCategoryHint()
-                if viewModel.progress.categoryHintUsed {
-                    withAnimation { showCategoryHint = true }
+                if storeService.isProUser && !viewModel.categoryHintRevealed {
+                    // Pro: reveal for free
+                    viewModel.revealCategoryHint()
+                } else if !viewModel.categoryHintRevealed {
+                    // Free user — prompt rewarded ad
+                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                        showRewardedCategoryBanner = true
+                    }
                 }
             } label: {
                 HStack(spacing: 6) {
-                    Image(systemName: viewModel.progress.categoryHintUsed ? "tag.fill" : "tag")
+                    Image(systemName: viewModel.categoryHintRevealed ? "tag.fill" : "tag")
                         .font(.system(size: 13))
-                    if viewModel.progress.categoryHintUsed && showCategoryHint {
+                    if viewModel.categoryHintRevealed {
                         Text(viewModel.word.category)
                             .font(AppFont.caption())
                     } else {
@@ -297,7 +360,7 @@ struct BackwordView: View {
                             .font(AppFont.caption())
                     }
                 }
-                .foregroundColor(viewModel.progress.categoryHintUsed ? .appAccent : .appTextSecondary)
+                .foregroundColor(viewModel.categoryHintRevealed ? .appAccent : .appTextSecondary)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 7)
                 .background(Color.appSurface)
@@ -412,6 +475,7 @@ private let previewWord = BackwordWord(
 #Preview("Active") {
     BackwordView(word: previewWord)
         .environmentObject(StoreService())
+        .environmentObject(AdService())
 }
 
 #Preview("Won — 3 guesses") {
@@ -422,6 +486,7 @@ private let previewWord = BackwordWord(
     let vm = BackwordViewModel(word: previewWord, progress: progress)
     return BackwordView(viewModel: vm)
         .environmentObject(StoreService())
+        .environmentObject(AdService())
 }
 
 #Preview("Failed — 5 guesses") {
@@ -432,4 +497,5 @@ private let previewWord = BackwordWord(
     let vm = BackwordViewModel(word: previewWord, progress: progress)
     return BackwordView(viewModel: vm)
         .environmentObject(StoreService())
+        .environmentObject(AdService())
 }

@@ -7,6 +7,7 @@ final class BackwordViewModel: ObservableObject {
     private(set) var stats: BackwordStats
 
     @Published var progress: BackwordProgress
+    @Published var categoryHintRevealed: Bool
     @Published var currentInput: String = ""
     @Published var newlyRevealedIndex: Int? = nil
     @Published var inputError: Bool = false
@@ -16,7 +17,9 @@ final class BackwordViewModel: ObservableObject {
     init(word: BackwordWord) {
         self.word = word
         self.stats = BackwordStats.load()
-        self.progress = BackwordProgress.load(date: word.date) ?? BackwordProgress(date: word.date)
+        let prog = BackwordProgress.load(date: word.date) ?? BackwordProgress(date: word.date)
+        self.progress = prog
+        self.categoryHintRevealed = prog.categoryHintUsed
     }
 
     /// Preview-only initialiser — injects a pre-built progress state.
@@ -24,6 +27,7 @@ final class BackwordViewModel: ObservableObject {
         self.word = word
         self.stats = BackwordStats.load()
         self.progress = progress
+        self.categoryHintRevealed = progress.categoryHintUsed
     }
 
     // MARK: - Computed
@@ -112,6 +116,7 @@ final class BackwordViewModel: ObservableObject {
     func revealCategoryHint() {
         guard !progress.categoryHintUsed else { return }
         progress.categoryHintUsed = true
+        categoryHintRevealed = true
         progress.save()
     }
 
