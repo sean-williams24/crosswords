@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1DE372E6017DADAF73CA546C"
-               BuildableName = "Crosswords.app"
-               BlueprintName = "Crosswords"
-               ReferencedContainer = "container:Crosswords.xcodeproj">
+               BlueprintIdentifier = "A53A431755E77FC7A5A5FCB4"
+               BuildableName = "Backword.app"
+               BlueprintName = "Backword"
+               ReferencedContainer = "container:Backword.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1DE372E6017DADAF73CA546C"
-            BuildableName = "Crosswords.app"
-            BlueprintName = "Crosswords"
-            ReferencedContainer = "container:Crosswords.xcodeproj">
+            BlueprintIdentifier = "A53A431755E77FC7A5A5FCB4"
+            BuildableName = "Backword.app"
+            BlueprintName = "Backword"
+            ReferencedContainer = "container:Backword.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -44,10 +44,10 @@
             parallelizable = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6100625FB619523C2E53AC19"
-               BuildableName = "CrosswordsTests.xctest"
-               BlueprintName = "CrosswordsTests"
-               ReferencedContainer = "container:Crosswords.xcodeproj">
+               BlueprintIdentifier = "A60CF6E56E2650CA189CE1C2"
+               BuildableName = "BackwordTests.xctest"
+               BlueprintName = "BackwordTests"
+               ReferencedContainer = "container:Backword.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -68,10 +68,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1DE372E6017DADAF73CA546C"
-            BuildableName = "Crosswords.app"
-            BlueprintName = "Crosswords"
-            ReferencedContainer = "container:Crosswords.xcodeproj">
+            BlueprintIdentifier = "A53A431755E77FC7A5A5FCB4"
+            BuildableName = "Backword.app"
+            BlueprintName = "Backword"
+            ReferencedContainer = "container:Backword.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -87,10 +87,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1DE372E6017DADAF73CA546C"
-            BuildableName = "Crosswords.app"
-            BlueprintName = "Crosswords"
-            ReferencedContainer = "container:Crosswords.xcodeproj">
+            BlueprintIdentifier = "A53A431755E77FC7A5A5FCB4"
+            BuildableName = "Backword.app"
+            BlueprintName = "Backword"
+            ReferencedContainer = "container:Backword.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>

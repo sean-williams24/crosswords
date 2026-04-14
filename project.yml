@@ -1,6 +1,6 @@
-name: Crosswords
+name: Backword
 options:
-  bundleIdPrefix: com.crosswords
+  bundleIdPrefix: com.backword
   deploymentTarget:
     iOS: "16.0"
   xcodeVersion: "15.0"
@@ -13,7 +13,7 @@ settings:
     TARGETED_DEVICE_FAMILY: 1
     INFOPLIST_KEY_UILaunchScreen_Generation: true
     INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
-    INFOPLIST_KEY_CFBundleDisplayName: Crosswords
+    INFOPLIST_KEY_CFBundleDisplayName: BackWord
 
 packages:
   GoogleMobileAds:
@@ -21,44 +21,44 @@ packages:
     minorVersion: 11.0.0
 
 targets:
-  Crosswords:
+  Backword:
     type: application
     platform: iOS
     sources:
-      - path: Crosswords
+      - path: Backword
     dependencies:
       - package: GoogleMobileAds
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.crosswords.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.backword.app
         GENERATE_INFOPLIST_FILE: true
         INFOPLIST_KEY_UILaunchScreen_Generation: true
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
 
-  CrosswordsTests:
+  BackwordTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - path: CrosswordsTests
+      - path: BackwordTests
     dependencies:
-      - target: Crosswords
+      - target: Backword
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.crosswords.app.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.backword.app.tests
         GENERATE_INFOPLIST_FILE: true
 
 schemes:
-  Crosswords:
+  Backword:
     build:
       targets:
-        Crosswords: all
+        Backword: all
     run:
       config: Debug
     test:
       config: Debug
       targets:
-        - CrosswordsTests
+        - BackwordTests
     profile:
       config: Release
     analyze:
