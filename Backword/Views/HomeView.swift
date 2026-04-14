@@ -40,15 +40,15 @@ struct HomeView: View {
                     // App title
                     ZStack(alignment: .topTrailing) {
                         VStack(spacing: 4) {
-                            Text("BackWord")
-                                .font(AppFont.header(36))
-                                .foregroundColor(.appTextPrimary)
-                                .tracking(4)
+                            Image("BackWordLogo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 58)
                             if storeService.isProUser {
                                 Text("PRO")
-                                    .font(AppFont.header(36))
-                                    .foregroundColor(.appTextPrimary)
-                                    .tracking(4)
+                                    .font(AppFont.clueLabel(11))
+                                    .foregroundColor(.appTextSecondary)
+                                    .tracking(3)
                             }
                         }
                         .frame(maxWidth: .infinity)
