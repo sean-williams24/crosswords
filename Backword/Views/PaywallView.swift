@@ -42,7 +42,7 @@ struct PaywallView: View {
 
                 // Header
                 VStack(spacing: 6) {
-                    Text("Crosswords Pro")
+                    Text("BackWord Pro")
                         .font(AppFont.header(28))
                         .foregroundColor(.appTextPrimary)
 
@@ -148,7 +148,7 @@ struct PaywallView: View {
 
     private var featureList: some View {
         VStack(alignment: .leading, spacing: 14) {
-            featureRow(icon: "brain.head.profile", text: "Weekly challenging crosswords")
+            featureRow(icon: "brain.head.profile", text: "Weekly challenging puzzles")
             featureRow(icon: "archivebox.fill", text: "Unlimited puzzle archive")
             featureRow(icon: "lightbulb.fill", text: "Unlimited hints")
             featureRow(icon: "eye.slash.fill", text: "Ad-free experience")

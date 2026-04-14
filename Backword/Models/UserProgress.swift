@@ -50,7 +50,7 @@ struct UserProgress: Codable {
 extension UserProgress {
     private static var directory: URL {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("Crosswords", isDirectory: true)
+            .appendingPathComponent("Backword", isDirectory: true)
     }
 
     private static func fileURL(for puzzleId: String) -> URL {

@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct CrosswordsApp: App {
+struct BackwordApp: App {
     @StateObject private var statsService = StatsService()
     @StateObject private var puzzleService = PuzzleService()
     @StateObject private var storeService = StoreService()

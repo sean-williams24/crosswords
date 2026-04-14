@@ -40,7 +40,7 @@ struct HomeView: View {
                     // App title
                     ZStack(alignment: .topTrailing) {
                         VStack(spacing: 4) {
-                            Text("CROSSWORDS")
+                            Text("BackWord")
                                 .font(AppFont.header(36))
                                 .foregroundColor(.appTextPrimary)
                                 .tracking(4)

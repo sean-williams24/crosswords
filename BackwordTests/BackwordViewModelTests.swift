@@ -1,5 +1,5 @@
 import Testing
-@testable import Crosswords
+@testable import Backword
 
 @Suite("BackwordViewModel Tests")
 @MainActor

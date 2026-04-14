@@ -6,7 +6,7 @@ final class CacheService {
 
     private var cacheDirectory: URL {
         fileManager.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("Crosswords/Puzzles", isDirectory: true)
+            .appendingPathComponent("Backword/Puzzles", isDirectory: true)
     }
 
     // MARK: - Puzzle Cache
