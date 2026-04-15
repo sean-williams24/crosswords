@@ -19,6 +19,7 @@ struct HomeView: View {
     @State private var navigateToPuzzle = false
     @State private var navigateToWeekly = false
     @State private var showStreakPopup = false
+    @State private var logoVisible = false
     #if DEBUG
     @State private var showDebugSettings = false
     #endif
@@ -44,6 +45,8 @@ struct HomeView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 58)
+                                .offset(x: logoVisible ? 0 : 120)
+                                .opacity(logoVisible ? 1 : 0)
                             if storeService.isProUser {
                                 Text("PRO")
                                     .font(AppFont.clueLabel(11))
@@ -233,8 +236,24 @@ struct HomeView: View {
                 await wotdService.refreshIfNeeded()
                 await backwordService.refreshIfNeeded()
             }
+            .onAppear {
+                logoVisible = false
+                Task {
+                    try? await Task.sleep(nanoseconds: 50_000_000) // 50ms — next render cycle
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
+                        logoVisible = true
+                    }
+                }
+            }
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
+                    logoVisible = false
+                    Task {
+                        try? await Task.sleep(nanoseconds: 50_000_000)
+                        withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
+                            logoVisible = true
+                        }
+                    }
                     Task {
                         await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
                         await wotdService.refreshIfNeeded()
