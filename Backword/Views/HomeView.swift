@@ -14,7 +14,6 @@ struct HomeView: View {
     @State private var showArchive = false
     @State private var showPaywall = false
     @State private var showWOTD = false
-    @State private var showBackword = false
     @State private var showSettings = false
     @State private var navigateToPuzzle = false
     @State private var navigateToWeekly = false
@@ -85,19 +84,19 @@ struct HomeView: View {
                     }
 
                     // Backword
-                    Button {
-                        if backwordService.todaysWord != nil {
-                            showBackword = true
+                    if backwordService.todaysWord != nil {
+                        NavigationLink(value: "backword") {
+                            BackwordCard(
+                                word: backwordService.todaysWord,
+                                progress: backwordService.todaysWord.flatMap {
+                                    BackwordProgress.load(date: $0.date)
+                                }
+                            )
                         }
-                    } label: {
-                        BackwordCard(
-                            word: backwordService.todaysWord,
-                            progress: backwordService.todaysWord.flatMap {
-                                BackwordProgress.load(date: $0.date)
-                            }
-                        )
+                        .buttonStyle(.plain)
+                    } else {
+                        BackwordCard(word: nil, progress: nil)
                     }
-                    .buttonStyle(.plain)
 
                     // Today's puzzle card
                     if viewModel.todaysPuzzle != nil {
@@ -177,9 +176,15 @@ struct HomeView: View {
             .ignoresSafeArea(.keyboard)
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: String.self) { destination in
-                if destination == "weekly", let puzzle = viewModel.weeklyPuzzle {
+                if destination == "weekly",
+                    let puzzle = viewModel.weeklyPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
                         .environmentObject(statsService)
+                        .environmentObject(storeService)
+                        .environmentObject(adService)
+                } else if destination == "backword",
+                            let word = backwordService.todaysWord {
+                    BackwordView(word: word)
                         .environmentObject(storeService)
                         .environmentObject(adService)
                 } else if let puzzle = viewModel.todaysPuzzle {
@@ -211,13 +216,6 @@ struct HomeView: View {
                     .environmentObject(backwordService)
             }
             #endif
-            .fullScreenCover(isPresented: $showBackword) {
-                if let word = backwordService.todaysWord {
-                    BackwordView(word: word)
-                        .environmentObject(storeService)
-                        .environmentObject(adService)
-                }
-            }
             .sheet(isPresented: $showSettings) {
                 SettingsView()
                     .environmentObject(storeService)
