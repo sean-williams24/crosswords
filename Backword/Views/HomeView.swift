@@ -19,6 +19,7 @@ struct HomeView: View {
     @State private var navigateToWeekly = false
     @State private var showStreakPopup = false
     @State private var logoVisible = false
+    @State private var proLogoVisible = false
     #if DEBUG
     @State private var showDebugSettings = false
     #endif
@@ -39,7 +40,7 @@ struct HomeView: View {
 
                     // App title
                     ZStack(alignment: .topTrailing) {
-                        VStack(spacing: 4) {
+                        VStack(spacing: -17) {
                             Image("BackWordLogo")
                                 .resizable()
                                 .scaledToFit()
@@ -47,10 +48,12 @@ struct HomeView: View {
                                 .offset(x: logoVisible ? 0 : 120)
                                 .opacity(logoVisible ? 1 : 0)
                             if storeService.isProUser {
-                                Text("PRO")
-                                    .font(AppFont.clueLabel(11))
-                                    .foregroundColor(.appTextSecondary)
-                                    .tracking(3)
+                                Image("Pro")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 28)
+                                    .offset(x: 20)
+                                    .opacity(proLogoVisible ? 1 : 0)
                             }
                         }
                         .frame(maxWidth: .infinity)
@@ -236,10 +239,16 @@ struct HomeView: View {
             }
             .onAppear {
                 logoVisible = false
+                proLogoVisible = false
                 Task {
                     try? await Task.sleep(nanoseconds: 50_000_000) // 50ms — next render cycle
                     withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
                         logoVisible = true
+                    }
+
+                    try await Task.sleep(nanoseconds: 200_000_000)
+                    withAnimation(.easeIn) {
+                        proLogoVisible = true
                     }
                 }
             }
