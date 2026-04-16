@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct BackwordCard: View {
-    @Environment(\.colorScheme) private var colorScheme
     let word: BackwordWord?
     let progress: BackwordProgress?
 
@@ -15,10 +14,7 @@ struct BackwordCard: View {
                     .offset(y: 5)
                     .italic()
 
-                Image(logoName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 38)
+                BackwordLogo()
             }
 
             if let progress, progress.isComplete {
@@ -35,10 +31,6 @@ struct BackwordCard: View {
         .background(Color.appSurface)
         .cornerRadius(AppLayout.cardCornerRadius)
         .padding(.horizontal, AppLayout.screenPadding)
-    }
-
-    private var logoName: String {
-        colorScheme == .light ? "BackWordLogo - Light" : "BackWordLogo"
     }
 
     @ViewBuilder

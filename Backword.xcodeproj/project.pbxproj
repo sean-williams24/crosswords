@@ -28,6 +28,7 @@
 		83FBB193723C144A6456932E /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C44B7584617BA53797B0963 /* ZoomableView.swift */; };
 		84A6DDAE7557421BC685E350 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8669C3DD88CF9BC44A72C69 /* CellView.swift */; };
 		86728124E533B5942EADAB51 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */; };
+		86AE8C972F913EAB001D69EE /* BackwordLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AE8C962F913EAB001D69EE /* BackwordLogo.swift */; };
 		87051E8136E314CB2A272A91 /* BackwordLetterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2259B66045D006E89462572C /* BackwordLetterCell.swift */; };
 		8EF7F8087FF836F1BFC62151 /* HapticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */; };
 		8FB170C4A0F5A06EC9069AF6 /* BackwordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A476BC6A4DF0107699E2A1FD /* BackwordService.swift */; };
@@ -90,6 +91,7 @@
 		8254031869B9E1FAC8C5A377 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		8299222FB15ED0ECC8305F8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		83C12AC56422D31E9D619C3E /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		86AE8C962F913EAB001D69EE /* BackwordLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordLogo.swift; sourceTree = "<group>"; };
 		8820C57EC2BCBADADEC4006C /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		894071960CD50EDF948DA15E /* BackwordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordApp.swift; sourceTree = "<group>"; };
 		8AF93C5B6979DA0324E913C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				40ACCF7B840800AA52BD9ED7 /* BackwordGuessRow.swift */,
 				2259B66045D006E89462572C /* BackwordLetterCell.swift */,
 				464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */,
+				86AE8C962F913EAB001D69EE /* BackwordLogo.swift */,
 			);
 			path = Backword;
 			sourceTree = "<group>";
@@ -392,6 +395,7 @@
 				1D5CED31842B691A8E91932F /* BackwordViewModel.swift in Sources */,
 				EAD7311D1E0CE5265794E80E /* BackwordWord.swift in Sources */,
 				A220B5F6D4E48FCC57832B9C /* CacheService.swift in Sources */,
+				86AE8C972F913EAB001D69EE /* BackwordLogo.swift in Sources */,
 				84A6DDAE7557421BC685E350 /* CellView.swift in Sources */,
 				BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */,
 				C2A2E6FA90B85E2884F67538 /* ClueListView.swift in Sources */,
