@@ -42,8 +42,8 @@ struct BackwordView: View {
 
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .center, spacing: 24) {
+                        hintRow
                         revealedLetterRow
-
                         guessCounter
 
                         if !viewModel.progress.guesses.isEmpty {
@@ -56,8 +56,7 @@ struct BackwordView: View {
                         }
                     }
                     .padding(.horizontal, AppLayout.screenPadding)
-                    .padding(.top, 16)
-                    .padding(.bottom, 16)
+                    .padding([.top, .bottom], 16)
                 }
                 .safeAreaInset(edge: .bottom) {
                     if !viewModel.isComplete && viewModel.currentInput.count == viewModel.unrevealedCount {
@@ -272,22 +271,28 @@ struct BackwordView: View {
 
     // MARK: - Hint Row
 
-//    private var hintRow: some View {
-//        HStack(spacing: 12) {
-//            // Category — always visible
-//            HStack(spacing: 6) {
+    private var hintRow: some View {
+        HStack(spacing: 12) {
+            // Category — always visible
+            HStack(spacing: 6) {
 //                Image(systemName: "tag.fill")
 //                    .font(.system(size: 13))
-//                Text(viewModel.word.category)
-//                    .font(AppFont.caption())
-//            }
-//            .foregroundColor(.appAccent)
-//            .padding(.horizontal, 12)
-//            .padding(.vertical, 7)
+                Text("Category: ")
+                    .font(AppFont.clueLabel())
+                    .foregroundColor(.appGridLine)
+
+                Text(viewModel.word.category.uppercased())
+                    .font(AppFont.clueLabel(16))
+                    .italic()
+                    .foregroundColor(.appTextPrimary)
+            }
+//            .foregroundColor(.appGridLine)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 7)
 //            .background(Color.appSurface)
 //            .cornerRadius(20)
-//
-//            // Letter feedback toggle hint (pro only)
+
+            // Letter feedback toggle hint (pro only)
 //            if storeService.isProUser {
 //                NavigationLink(value: "settings") {
 //                    HStack(spacing: 6) {
@@ -303,10 +308,10 @@ struct BackwordView: View {
 //                    .cornerRadius(20)
 //                }
 //            }
-//
-//            Spacer()
-//        }
-//    }
+
+            Spacer()
+        }
+    }
 
     // MARK: - Completion Banner
 
