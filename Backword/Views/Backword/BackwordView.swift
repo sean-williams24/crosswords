@@ -157,10 +157,7 @@ struct BackwordView: View {
 
             Spacer()
 
-            Text("BACKWORD")
-                .font(AppFont.clueLabel(14))
-                .foregroundColor(.appTextPrimary)
-                .tracking(3)
+            BackwordLogo()
 
             Spacer()
 
