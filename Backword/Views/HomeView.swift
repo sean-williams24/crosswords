@@ -9,6 +9,7 @@ struct HomeView: View {
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.colorScheme) private var colorScheme
 
     @State private var showStats = false
     @State private var showArchive = false
@@ -30,6 +31,13 @@ struct HomeView: View {
         _viewModel = StateObject(wrappedValue: HomeViewModel(puzzleService: PuzzleService()))
     }
 
+    private var backwordLogo: some View {
+        Image(logoName)
+            .resizable()
+            .scaledToFit()
+            .frame(height: 58)
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -41,10 +49,7 @@ struct HomeView: View {
                     // App title
                     ZStack(alignment: .topTrailing) {
                         VStack(spacing: -17) {
-                            Image("BackWordLogo")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 58)
+                            backwordLogo
                                 .offset(x: logoVisible ? 0 : 120)
                                 .opacity(logoVisible ? 1 : 0)
                             if storeService.isProUser {
@@ -269,6 +274,10 @@ struct HomeView: View {
                 }
             }
         }
+    }
+
+    private var logoName: String {
+        colorScheme == .light ? "BackWordLogo - Light" : "BackWordLogo"
     }
 
     // MARK: - Today Card

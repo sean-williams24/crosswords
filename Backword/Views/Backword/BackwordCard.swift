@@ -1,15 +1,25 @@
 import SwiftUI
 
 struct BackwordCard: View {
+    @Environment(\.colorScheme) private var colorScheme
     let word: BackwordWord?
     let progress: BackwordProgress?
 
     var body: some View {
         VStack(spacing: 12) {
-            Text("BACKWORD")
-                .font(AppFont.clueLabel(11))
-                .foregroundColor(.appAccent)
-                .tracking(3)
+            HStack(spacing: -7) {
+                Text("Daily")
+                    .font(AppFont.clueLabel(11))
+                    .foregroundColor(.appTextPrimary)
+                    .tracking(3)
+                    .offset(y: 5)
+                    .italic()
+
+                Image(logoName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 38)
+            }
 
             if let progress, progress.isComplete {
                 completionContent(progress: progress)
@@ -25,6 +35,10 @@ struct BackwordCard: View {
         .background(Color.appSurface)
         .cornerRadius(AppLayout.cardCornerRadius)
         .padding(.horizontal, AppLayout.screenPadding)
+    }
+
+    private var logoName: String {
+        colorScheme == .light ? "BackWordLogo - Light" : "BackWordLogo"
     }
 
     @ViewBuilder
@@ -71,4 +85,8 @@ struct BackwordCard: View {
                 .foregroundColor(.appTextSecondary)
         }
     }
+}
+
+#Preview {
+    BackwordCard(word: BackwordWord(date: "", word: "Seannnn", category: "", definition: ""), progress: nil)
 }
