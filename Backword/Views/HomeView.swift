@@ -237,33 +237,35 @@ struct HomeView: View {
             .onAppear {
                 logoVisible = false
                 proLogoVisible = false
-                Task {
-                    try? await Task.sleep(nanoseconds: 50_000_000) // 50ms — next render cycle
-                    withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
-                        logoVisible = true
-                    }
-
-                    try await Task.sleep(nanoseconds: 200_000_000)
-                    withAnimation(.easeIn) {
-                        proLogoVisible = true
-                    }
-                }
+                animateLogo()
             }
             .onChange(of: scenePhase) { newPhase in
-                if newPhase == .active {
+                if newPhase == .background || newPhase == .inactive {
                     logoVisible = false
-                    Task {
-                        try? await Task.sleep(nanoseconds: 50_000_000)
-                        withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
-                            logoVisible = true
-                        }
-                    }
+                    proLogoVisible = false
+                } else if newPhase == .active {
+                    animateLogo()
+                    
                     Task {
                         await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
                         await wotdService.refreshIfNeeded()
                         await backwordService.refreshIfNeeded()
                     }
                 }
+            }
+        }
+    }
+
+    private func animateLogo() {
+        Task {
+            try? await Task.sleep(nanoseconds: 50_000_000) // 50ms — next render cycle
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
+                logoVisible = true
+            }
+
+            try? await Task.sleep(nanoseconds: 200_000_000)
+            withAnimation(.easeIn) {
+                proLogoVisible = true
             }
         }
     }
