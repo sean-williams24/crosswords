@@ -39,13 +39,9 @@ struct DebugSettingsView: View {
                 titleVisibility: .visible
             ) {
                 Button("Reset", role: .destructive) {
-                    let today = {
-                        let f = DateFormatter()
-                        f.dateFormat = "yyyy-MM-dd"
-                        f.timeZone = TimeZone(identifier: "UTC")
-                        return f.string(from: Date())
-                    }()
-                    BackwordProgress.delete(date: today)
+                    if let date = backwordService.todaysWord?.date {
+                        BackwordProgress.delete(date: date)
+                    }
                     Task { await backwordService.refreshIfNeeded(force: true) }
                     dismiss()
                 }

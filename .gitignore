@@ -12,6 +12,8 @@ Backend/*.py
 !Backend/generate_wotd.py
 !Backend/upgrade_clues.py
 !Backend/expand_validated.py
+!Backend/generate_backword.py
+!Backend/recategorise_backword.py
 Backend/clean_progress.json
 Backend/word_bank_backup.json
 Backend/.venv/
