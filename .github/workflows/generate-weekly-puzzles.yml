@@ -62,6 +62,37 @@ jobs:
         if: steps.check.outputs.enough == 'true'
         run: echo "Skipping — ${{ steps.check.outputs.remaining }} weekly puzzles already queued."
 
+      - name: Fetch recently-used words
+        if: steps.check.outputs.enough == 'false'
+        id: used_words
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          python3 -c "
+          from supabase import create_client
+          import json, os
+          sb = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
+          used = set()
+          # Weekly puzzles — last 13 weeks (90 days)
+          weekly = sb.table('weekly_puzzles').select('clues').order('date', desc=True).limit(13).execute()
+          for row in weekly.data:
+              for clue in row.get('clues', []):
+                  ans = clue.get('answer', '')
+                  if ans:
+                      used.add(ans.upper())
+          # Daily puzzles — last 90
+          daily = sb.table('puzzles').select('clues').order('date', desc=True).limit(90).execute()
+          for row in daily.data:
+              for clue in row.get('clues', []):
+                  ans = clue.get('answer', '')
+                  if ans:
+                      used.add(ans.upper())
+          with open('/tmp/used_words.json', 'w') as f:
+              json.dump(sorted(used), f)
+          print(f'Fetched {len(used)} recently-used words from last 13 weekly + 90 daily puzzles')
+          "
+
       - name: Generate and upload 10 weekly puzzles
         if: steps.check.outputs.enough == 'false'
         env:
@@ -72,4 +103,5 @@ jobs:
           python3 Backend/generate_weekly_puzzle.py \
             --date "${{ steps.check.outputs.next_date }}" \
             --start-number "${{ steps.check.outputs.next_number }}" \
-            --count 10
+            --count 10 \
+            --exclude-words /tmp/used_words.json

@@ -51,16 +51,24 @@ jobs:
           from supabase import create_client
           import json, os
           sb = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
-          rows = sb.table('puzzles').select('clues').order('date', desc=True).limit(90).execute()
           used = set()
+          # Daily puzzles — last 90
+          rows = sb.table('puzzles').select('clues').order('date', desc=True).limit(90).execute()
           for row in rows.data:
+              for clue in row.get('clues', []):
+                  ans = clue.get('answer', '')
+                  if ans:
+                      used.add(ans.upper())
+          # Weekly puzzles — last 13 weeks (90 days)
+          weekly = sb.table('weekly_puzzles').select('clues').order('date', desc=True).limit(13).execute()
+          for row in weekly.data:
               for clue in row.get('clues', []):
                   ans = clue.get('answer', '')
                   if ans:
                       used.add(ans.upper())
           with open('/tmp/used_words.json', 'w') as f:
               json.dump(sorted(used), f)
-          print(f'Fetched {len(used)} recently-used words from last 90 puzzles')
+          print(f'Fetched {len(used)} recently-used words from last 90 daily + 13 weekly puzzles')
           "
 
       - name: Generate and upload puzzles
