@@ -697,6 +697,7 @@ def main():
     )
 
     generated = 0
+    batch_used: set[str] = set()
     for i in range(args.count):
         puzzle_number = args.start_number + i
         puzzle_date = (start_date + timedelta(weeks=i)).isoformat()
@@ -704,7 +705,13 @@ def main():
 
         print(f"\nGenerating weekly puzzle #{puzzle_number} for {puzzle_date} (seed={seed})...")
 
-        raw = generate_puzzle(word_bank, seed=seed)
+        # Rebuild word bank excluding words already used in this batch
+        if batch_used:
+            current_bank = load_word_bank(exclude=exclude | batch_used)
+        else:
+            current_bank = word_bank
+
+        raw = generate_puzzle(current_bank, seed=seed)
         if raw is None:
             print("  Generation failed: could not fill grid")
             continue
@@ -714,6 +721,11 @@ def main():
             continue
 
         payload = build_puzzle_payload(raw, puzzle_number, puzzle_date)
+
+        # Track words used in this puzzle so subsequent puzzles in the batch avoid them
+        for clue in payload.get("clues", []):
+            if clue.get("answer"):
+                batch_used.add(clue["answer"].upper())
 
         if args.output:
             os.makedirs(args.output, exist_ok=True)
