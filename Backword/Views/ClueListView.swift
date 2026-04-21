@@ -90,6 +90,10 @@ struct ClueListView: View {
                     .strikethrough(isCompleted)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
+                Text("(\(clue.length))")
+                    .font(AppFont.caption(13))
+                    .foregroundColor(.appTextSecondary)
+
                 if isCompleted {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundColor(.appCorrect)

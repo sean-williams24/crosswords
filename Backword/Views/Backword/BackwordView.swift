@@ -108,25 +108,46 @@ struct BackwordView: View {
                     .foregroundColor(.appTextPrimary)
                     .padding(.vertical, 8)
             }
-            .popover(isPresented: $showInstructions, arrowEdge: .top) {
-                instructionsPopover
+            .sheet(isPresented: $showInstructions) {
+                instructionsSheet
             }
         }
     }
 
-    // MARK: - Instructions Popover
+    // MARK: - Instructions Sheet
 
-    private var instructionsPopover: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("How to Play")
-                .font(AppFont.header(18))
-                .foregroundColor(.appTextPrimary)
+    private var instructionsSheet: some View {
+        NavigationStack {
+            instructionsContent
+                .navigationTitle("How to Play")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showInstructions = false
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.appTextSecondary)
+                        }
+                    }
+                }
+                .toolbarBackground(Color.appBackground, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+        }
+        .presentationDetents([.medium])
+        .presentationDragIndicator(.visible)
+    }
 
+    private var instructionsContent: some View {
+        ZStack {
+            Color.appBackground.ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 10) {
                 instructionRow(number: "1", text: "Guess the 6-letter word in 5 tries.")
                 instructionRow(number: "2", text: "The last letter is revealed to start. Each wrong guess reveals one more letter from the right.")
                 instructionRow(number: "3", text: "Type the missing letters into the highlighted cells, then tap Submit.")
-                instructionRow(number: "4", text: "The category is shown at the bottom — use it as a clue!")
+                instructionRow(number: "4", text: "The category is shown at the top — it's your clue")
             }
 
             Divider()
@@ -146,10 +167,9 @@ struct BackwordView: View {
                 .font(AppFont.caption())
                 .foregroundColor(.appTextSecondary)
                 .frame(maxWidth: .infinity, alignment: .center)
+            }
+            .padding(20)
         }
-        .padding(20)
-        .frame(width: 300)
-        .background(Color.appBackground)
     }
 
     private func instructionRow(number: String, text: String) -> some View {

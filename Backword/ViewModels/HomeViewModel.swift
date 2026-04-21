@@ -20,8 +20,18 @@ final class HomeViewModel: ObservableObject {
         let dailyStale = todaysPuzzle?.date != today
         let weeklyStale = isProUser && weeklyPuzzleIsStale()
 
-        guard dailyStale || weeklyStale else { return }
-        await loadTodaysPuzzle()
+        if dailyStale || weeklyStale {
+            await loadTodaysPuzzle()
+        } else {
+            // Puzzle is still current — just refresh progress from disk in case
+            // the user played since we last loaded (e.g. returned from PuzzleView)
+            if let puzzle = todaysPuzzle {
+                todaysProgress = UserProgress.load(puzzleId: puzzle.id)
+            }
+            if let weekly = weeklyPuzzle {
+                weeklyProgress = UserProgress.load(puzzleId: weekly.id)
+            }
+        }
     }
 
     private func weeklyPuzzleIsStale() -> Bool {

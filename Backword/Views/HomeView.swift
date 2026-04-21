@@ -238,6 +238,9 @@ struct HomeView: View {
                 logoVisible = false
                 proLogoVisible = false
                 animateLogo()
+                Task {
+                    await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
+                }
             }
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .background || newPhase == .inactive {
