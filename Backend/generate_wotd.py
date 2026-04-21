@@ -606,8 +606,8 @@ def get_used_words() -> set[str]:
     try:
         from supabase import create_client
         client = create_client(url, key)
-        rows = client.table("words_of_the_day").select("word_data->word").execute()
-        return {r["word"] for r in rows.data if r.get("word")}
+        rows = client.table("words_of_the_day").select("word_data").execute()
+        return {r["word_data"]["word"] for r in rows.data if r.get("word_data") and isinstance(r["word_data"], dict) and r["word_data"].get("word")}
     except Exception as e:
         print(f"  Warning: could not fetch used words: {e}")
         return set()
