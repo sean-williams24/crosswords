@@ -190,21 +190,31 @@ struct BackwordView: View {
     private var revealedLetterRow: some View {
         let inputChars = Array(viewModel.currentInput)
         let unrevealed = viewModel.unrevealedCount
+        let wordChars = Array(viewModel.word.word.uppercased())
 
         return HStack(spacing: 8) {
             ForEach(0..<6, id: \.self) { i in
-                let revealed = viewModel.revealedLetters[i]
-                let isInputCell = i < unrevealed && !viewModel.isComplete
-                let inputChar: Character? = (isInputCell && i < inputChars.count) ? inputChars[i] : nil
-                let showCursor = isInputCell && i == inputChars.count && inputFocused
+                if viewModel.isWon {
+                    // Show full correct word in green
+                    BackwordLetterCell(
+                        letter: wordChars[i],
+                        isCorrect: true
+                    )
+                    .animation(.spring(response: 0.4, dampingFraction: 0.6).delay(Double(i) * 0.06), value: viewModel.isWon)
+                } else {
+                    let revealed = viewModel.revealedLetters[i]
+                    let isInputCell = i < unrevealed && !viewModel.isComplete
+                    let inputChar: Character? = (isInputCell && i < inputChars.count) ? inputChars[i] : nil
+                    let showCursor = isInputCell && i == inputChars.count && inputFocused
 
-                BackwordLetterCell(
-                    letter: revealed,
-                    inputLetter: inputChar,
-                    isCursor: showCursor,
-                    isNew: viewModel.newlyRevealedIndex == i
-                )
-                .animation(.spring(response: 0.4, dampingFraction: 0.6), value: viewModel.revealedLetters[i] != nil)
+                    BackwordLetterCell(
+                        letter: revealed,
+                        inputLetter: inputChar,
+                        isCursor: showCursor,
+                        isNew: viewModel.newlyRevealedIndex == i
+                    )
+                    .animation(.spring(response: 0.4, dampingFraction: 0.6), value: viewModel.revealedLetters[i] != nil)
+                }
             }
         }
         .contentShape(Rectangle())
@@ -253,16 +263,18 @@ struct BackwordView: View {
     // MARK: - Guess History
 
     private var guessHistory: some View {
-        VStack(alignment: .center, spacing: 8) {
-            ForEach(Array(viewModel.progress.guesses.enumerated()), id: \.offset) { index, guess in
-                let isLast = index == viewModel.progress.guesses.count - 1
-                let isWinRow = viewModel.isWon && isLast
+        // When won, the winning guess is shown in the letter row — exclude it here
+        let guesses = viewModel.isWon
+            ? Array(viewModel.progress.guesses.dropLast())
+            : viewModel.progress.guesses
 
+        return VStack(alignment: .center, spacing: 8) {
+            ForEach(Array(guesses.enumerated()), id: \.offset) { _, guess in
                 BackwordGuessRow(
                     guess: guess,
                     matchingLetters: viewModel.lettersInWord(for: guess),
                     showFeedback: viewModel.showLetterFeedback && storeService.isProUser,
-                    isWinningGuess: isWinRow
+                    isWinningGuess: false
                 )
             }
         }
@@ -320,15 +332,15 @@ struct BackwordView: View {
             VStack {
                 if viewModel.isWon {
                     VStack(spacing: 8) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.system(size: 36))
-                            .foregroundColor(.appCorrect)
+//                        Image(systemName: "checkmark.circle.fill")
+//                            .font(.system(size: 36))
+//                            .foregroundColor(.appCorrect)
                         //
                         //                    Text("Well done!")
                         //                        .font(AppFont.header(22))
                         //                        .foregroundColor(.appTextPrimary)
 
-                        Text("Got it in \(viewModel.guessCount) guess\(viewModel.guessCount == 1 ? "" : "es")")
+                        Text("Completed in \(viewModel.guessCount) guess\(viewModel.guessCount == 1 ? "" : "es")")
                             .font(AppFont.body(15))
                             .foregroundColor(.appTextSecondary)
                     }
@@ -350,11 +362,11 @@ struct BackwordView: View {
                 }
 
                 // Definition
-                Text(viewModel.word.definition)
-                    .font(AppFont.clueText())
-                    .foregroundColor(.appTextSecondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 8)
+//                Text(viewModel.word.definition)
+//                    .font(AppFont.clueText())
+//                    .foregroundColor(.appTextSecondary)
+//                    .multilineTextAlignment(.center)
+//                    .padding(.horizontal, 8)
             }
             .padding(20)
             .background(Color.appSurface)
@@ -365,25 +377,28 @@ struct BackwordView: View {
     }
 
     private var shareButton: some View {
-        Button {
-            let text = viewModel.shareText
-            let av = UIActivityViewController(activityItems: [text], applicationActivities: nil)
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first,
-               let root = window.rootViewController {
-                root.present(av, animated: true)
+        HStack {
+            Spacer()
+            Button {
+                let text = viewModel.shareText
+                let av = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let window = windowScene.windows.first,
+                   let root = window.rootViewController {
+                    root.present(av, animated: true)
+                }
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "square.and.arrow.up")
+                    Text("Share")
+                }
+                .font(AppFont.body(15))
+                .foregroundColor(.appAccent)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
+//                .background(Color.appAccent.opacity(0.1))
+                .cornerRadius(20)
             }
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "square.and.arrow.up")
-                Text("Share")
-            }
-            .font(AppFont.body(15))
-            .foregroundColor(.appAccent)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 10)
-            .background(Color.appAccent.opacity(0.1))
-            .cornerRadius(20)
         }
     }
 }

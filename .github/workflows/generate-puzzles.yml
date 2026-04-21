@@ -51,7 +51,7 @@ jobs:
           from supabase import create_client
           import json, os
           sb = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
-          rows = sb.table('puzzles').select('clues').order('date', desc=True).limit(30).execute()
+          rows = sb.table('puzzles').select('clues').order('date', desc=True).limit(90).execute()
           used = set()
           for row in rows.data:
               for clue in row.get('clues', []):
@@ -60,7 +60,7 @@ jobs:
                       used.add(ans.upper())
           with open('/tmp/used_words.json', 'w') as f:
               json.dump(sorted(used), f)
-          print(f'Fetched {len(used)} recently-used words from last 30 puzzles')
+          print(f'Fetched {len(used)} recently-used words from last 90 puzzles')
           "
 
       - name: Generate and upload puzzles

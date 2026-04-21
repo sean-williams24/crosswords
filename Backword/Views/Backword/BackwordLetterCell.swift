@@ -2,9 +2,10 @@ import SwiftUI
 
 struct BackwordLetterCell: View {
     let letter: Character?
-    var inputLetter: Character?
+    var inputLetter: Character?  = nil
     var isCursor: Bool = false
     var isNew: Bool = false
+    var isCorrect: Bool = false
     var size: CGFloat = 44
 
     @State private var flashed = false
@@ -49,12 +50,14 @@ struct BackwordLetterCell: View {
     }
 
     private var cellBackground: Color {
+        if isCorrect { return .appCorrect.opacity(0.15) }
         if flashed { return .appAccent.opacity(0.25) }
         if letter != nil || inputLetter != nil { return .appSurface }
         return .appSurface.opacity(0.5)
     }
 
     private var staticBorderColor: Color {
+        if isCorrect { return .appCorrect.opacity(0.6) }
         if flashed { return .appAccent }
         if letter != nil { return .appAccent.opacity(0.5) }
         if inputLetter != nil { return .appTextPrimary.opacity(0.5) }

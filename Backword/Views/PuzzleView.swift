@@ -201,6 +201,7 @@ struct PuzzleView: View {
             viewModel.showClueList = true
         } label: {
             Image(systemName: "list.bullet")
+                .frame(width: 44)
                 .foregroundColor(.appTextPrimary)
         }
 
@@ -216,6 +217,7 @@ struct PuzzleView: View {
         } label: {
             HStack(spacing: 4) {
                 Image(systemName: "lightbulb")
+                    .frame(height: 44)
                 if !storeService.isProUser {
                     Text("\(max(0, freeHintLimit + viewModel.adBonusHints - viewModel.progress.hintedClueIds.count))")
                         .font(AppFont.caption())

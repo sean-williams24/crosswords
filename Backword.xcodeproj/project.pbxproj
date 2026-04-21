@@ -67,7 +67,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleView.swift; sourceTree = "<group>"; };
 		0C4762545EDB078B5DA1FA49 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGridPattern.swift; sourceTree = "<group>"; };
@@ -442,6 +442,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 99VU66ZD3X;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -622,6 +623,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 99VU66ZD3X;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
