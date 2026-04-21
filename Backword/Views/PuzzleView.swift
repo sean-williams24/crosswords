@@ -10,7 +10,7 @@ struct PuzzleView: View {
     @State private var showRewardedHintBanner = false
     @State private var isKeyboardReady = false
 
-    private let freeHintLimit = 2
+    private let freeHintLimit = 1
 
     private var isZoomableGrid: Bool {
         viewModel.puzzle.size > 12
@@ -216,14 +216,13 @@ struct PuzzleView: View {
             }
         } label: {
             HStack(spacing: 4) {
-                Image(systemName: "lightbulb")
+                Image(systemName: viewModel.activeClueIsHinted ? "lightbulb.fill" : "lightbulb")
                     .frame(height: 44)
-                if !storeService.isProUser {
-                    Text("\(max(0, freeHintLimit + viewModel.adBonusHints - viewModel.progress.hintedClueIds.count))")
-                        .font(AppFont.caption())
-                }
+                let hintsRemaining = storeService.isProUser ? 1 : max(0, freeHintLimit + viewModel.adBonusHints - viewModel.progress.hintedClueIds.count)
+                Text(viewModel.activeClueIsHinted || hintsRemaining > 0 ? "Hint" : "Get hint")
+                    .font(AppFont.body(13))
             }
-            .foregroundColor(storeService.isProUser || viewModel.activeClueIsHinted || viewModel.progress.hintedClueIds.count < freeHintLimit + viewModel.adBonusHints ? .appAccent : .appTextSecondary)
+            .foregroundColor(viewModel.activeClueIsHinted ? .appCorrect : .appAccent)
         }
     }
 }
