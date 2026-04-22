@@ -28,8 +28,18 @@ struct BackwordCard: View {
         }
         .frame(maxWidth: .infinity)
         .padding(16)
-        .background(Color.appSurface)
-        .cornerRadius(AppLayout.cardCornerRadius)
+        .background(
+            LinearGradient(
+                colors: [Color.appAccent.opacity(0.12), Color.appSurface],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                .strokeBorder(Color.appAccent, lineWidth: 1)
+        )
         .padding(.horizontal, AppLayout.screenPadding)
     }
 

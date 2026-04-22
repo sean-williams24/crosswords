@@ -8,15 +8,21 @@ struct ArchiveView: View {
 
     @State private var entries: [ArchiveEntry] = []
     @State private var weeklyEntries: [ArchiveEntry] = []
+    @State private var backwordWords: [BackwordWord] = []
     @State private var isLoading = true
     @State private var selectedTab: ArchiveTab = .daily
     @State private var selectedPuzzle: Puzzle?
     @State private var loadingPuzzleId: String?
     @State private var showPuzzle = false
+    @State private var selectedBackwordWord: BackwordWord?
+    @State private var showBackword = false
+
+    private let backwordService = BackwordService()
 
     private enum ArchiveTab: String, CaseIterable {
-        case daily = "Daily"
-        case weekly = "Pro"
+        case backword = "Backword"
+        case daily = "Daily Crossword"
+        case weekly = "Pro Crossword"
     }
 
     private var activeEntries: [ArchiveEntry] {
@@ -34,6 +40,28 @@ struct ArchiveView: View {
                 if isLoading {
                     ProgressView()
                         .tint(.appAccent)
+                } else if selectedTab == .backword {
+                    if backwordWords.isEmpty {
+                        VStack(spacing: 12) {
+                            Image(systemName: "tray")
+                                .font(.system(size: 40))
+                                .foregroundColor(.appTextSecondary)
+                            Text("No Backword history yet")
+                                .font(AppFont.body())
+                                .foregroundColor(.appTextSecondary)
+                        }
+                    } else {
+                        ScrollView {
+                            LazyVStack(spacing: 8) {
+                                ForEach(backwordWords) { word in
+                                    backwordArchiveRow(word)
+                                }
+                            }
+                            .padding(.horizontal, AppLayout.screenPadding)
+                            .padding(.top, 16)
+                            .padding(.bottom, 96)
+                        }
+                    }
                 } else if activeEntries.isEmpty {
                     VStack(spacing: 12) {
                         Image(systemName: "tray")
@@ -84,7 +112,7 @@ struct ArchiveView: View {
                         .padding(.bottom, 16)
                 }
             }
-            .navigationTitle("Archive")
+            .navigationTitle(" \(selectedTab.rawValue) Archive")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -104,6 +132,13 @@ struct ArchiveView: View {
                         .environmentObject(adService)
                 }
             }
+            .navigationDestination(isPresented: $showBackword) {
+                if let word = selectedBackwordWord {
+                    BackwordView(word: word)
+                        .environmentObject(storeService)
+                        .environmentObject(adService)
+                }
+            }
             .task {
                 await loadArchive()
             }
@@ -113,14 +148,21 @@ struct ArchiveView: View {
     // MARK: - Tab Toggle
 
     private var archiveTabToggle: some View {
-        ZStack(alignment: selectedTab == .daily ? .leading : .trailing) {
+        let height: CGFloat = 44
+        let tabWidth: CGFloat = (UIScreen.main.bounds.width / 3) - 10
+        let tabCount = CGFloat(ArchiveTab.allCases.count)
+        let totalWidth = tabWidth * tabCount
+        let selectedIndex = CGFloat(ArchiveTab.allCases.firstIndex(of: selectedTab) ?? 0)
+        
+        return ZStack(alignment: .leading) {
             Capsule()
                 .fill(Color.appSurface)
-                .frame(width: 180, height: 34)
+                .frame(width: totalWidth, height: height)
 
             Capsule()
                 .fill(Color.appAccent)
-                .frame(width: 90, height: 34)
+                .frame(width: tabWidth, height: height)
+                .offset(x: selectedIndex * tabWidth)
                 .animation(.spring(response: 0.3, dampingFraction: 0.7), value: selectedTab)
 
             HStack(spacing: 0) {
@@ -132,8 +174,9 @@ struct ArchiveView: View {
                     } label: {
                         Text(tab.rawValue)
                             .font(AppFont.clueLabel(13))
+                            .minimumScaleFactor(0.6)
                             .foregroundColor(selectedTab == tab ? .white : .appTextSecondary)
-                            .frame(width: 90, height: 34)
+                            .frame(width: tabWidth, height: height)
                     }
                     .buttonStyle(.plain)
                 }
@@ -280,14 +323,104 @@ struct ArchiveView: View {
         return progress.isComplete ? .completed : .inProgress
     }
 
+    // MARK: - Backword Row
+
+    @ViewBuilder
+    private func backwordArchiveRow(_ word: BackwordWord) -> some View {
+        let progress = BackwordProgress.load(date: word.date)
+        Button {
+            selectedBackwordWord = word
+            showBackword = true
+        } label: {
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(formattedDate(word.date))
+                        .font(AppFont.body())
+                        .foregroundColor(.appTextPrimary)
+
+                    if isToday(word.date) {
+                        Text("TODAY")
+                            .font(AppFont.clueLabel(10))
+                            .foregroundColor(.appAccent)
+                            .tracking(1)
+                    }
+                }
+
+                Spacer()
+
+                if let progress, progress.isComplete {
+                    HStack(spacing: 6) {
+                        if progress.isWon {
+                            HStack(spacing: 4) {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(size: 11))
+                                Text("\(progress.guesses.count) guess\(progress.guesses.count == 1 ? "" : "es")")
+                                    .font(AppFont.clueLabel(11))
+                            }
+                            .foregroundColor(.appCorrect)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.appCorrect.opacity(0.12))
+                            .cornerRadius(12)
+                        } else {
+                            HStack(spacing: 4) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.system(size: 11))
+                                Text("Failed")
+                                    .font(AppFont.clueLabel(11))
+                            }
+                            .foregroundColor(.red.opacity(0.7))
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.red.opacity(0.08))
+                            .cornerRadius(12)
+                        }
+                    }
+                } else if let progress, !progress.guesses.isEmpty {
+                    HStack(spacing: 4) {
+                        Image(systemName: "pencil.circle")
+                            .font(.system(size: 11))
+                        Text("In Progress")
+                            .font(AppFont.clueLabel(11))
+                    }
+                    .foregroundColor(.appAccent)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Color.appAccent.opacity(0.12))
+                    .cornerRadius(12)
+                } else {
+                    HStack(spacing: 4) {
+                        Image(systemName: "circle")
+                            .font(.system(size: 11))
+                        Text("New")
+                            .font(AppFont.clueLabel(11))
+                    }
+                    .foregroundColor(.appTextSecondary)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Color.appTextSecondary.opacity(0.08))
+                    .cornerRadius(12)
+                }
+            }
+            .frame(height: 50)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .background(Color.appSurface)
+            .cornerRadius(AppLayout.cardCornerRadius)
+        }
+        .buttonStyle(.plain)
+    }
+
     // MARK: - Actions
 
     private func loadArchive() async {
         defer { isLoading = false }
         async let daily = try? await puzzleService.fetchArchive()
         async let weekly = try? await puzzleService.fetchWeeklyArchive()
+        async let backword = try? await backwordService.fetchArchive()
         entries = await daily ?? []
         weeklyEntries = await weekly ?? []
+        backwordWords = await backword ?? []
     }
 
     private func loadAndNavigate(_ entry: ArchiveEntry) async {
@@ -325,4 +458,12 @@ struct ArchiveView: View {
         fmt.timeZone = TimeZone(identifier: "UTC")
         return dateString == fmt.string(from: Date())
     }
+}
+
+#Preview {
+    ArchiveView()
+        .environmentObject(PuzzleService())
+        .environmentObject(StatsService())
+        .environmentObject(StoreService())
+        .environmentObject(AdService())
 }

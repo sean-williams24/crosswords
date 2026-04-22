@@ -76,6 +76,26 @@ final class BackwordService: ObservableObject {
         return words[abs(dayHash) % words.count]
     }
 
+    // MARK: - Archive
+
+    func fetchArchive() async throws -> [BackwordWord] {
+        let today = Self.dateFormatter.string(from: Date())
+        let urlString = "\(baseURL)/rest/v1/backword_words?date=lte.\(today)&select=*&order=date.desc&limit=90"
+        guard let url = URL(string: urlString) else { return [] }
+
+        var request = URLRequest(url: url)
+        request.setValue(apiKey, forHTTPHeaderField: "apikey")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else { return [] }
+
+        let rows = try decoder.decode([SupabaseBackwordRow].self, from: data)
+        return rows.map { $0.toBackwordWord }
+    }
+
     // MARK: - Helpers
 
     private static let dateFormatter: DateFormatter = {
