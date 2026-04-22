@@ -4,6 +4,7 @@ struct CellView: View {
     let row: Int
     let col: Int
     @ObservedObject var viewModel: GameViewModel
+    private let settings = AppSettings.shared
 
     private var cell: CellData? {
         viewModel.cellData(row: row, col: col)
@@ -48,7 +49,7 @@ struct CellView: View {
     // MARK: - Colors
 
     private var cellBackground: Color {
-        if viewModel.isRecentlyCompleted(row: row, col: col) {
+        if settings.crosswordCorrectHighlight && viewModel.isRecentlyCompleted(row: row, col: col) {
             return .appCorrect.opacity(0.3)
         }
         if viewModel.isSelected(row: row, col: col) {

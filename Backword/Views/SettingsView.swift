@@ -9,6 +9,20 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section {
+                    correctHighlightRow
+                } header: {
+                    Text("CROSSWORDS")
+                        .font(AppFont.clueLabel(12))
+                        .foregroundColor(.appAccent)
+                        .tracking(2)
+                        .textCase(nil)
+                } footer: {
+                    Text("When enabled, correctly completed answers flash green.")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                }
+
+                Section {
                     letterFeedbackRow
                 } header: {
                     Text("BACKWORD")
@@ -39,6 +53,20 @@ struct SettingsView: View {
                 }
             }
         }
+    }
+
+    private var correctHighlightRow: some View {
+        HStack {
+            Text("Highlight Correct Answer")
+                .font(AppFont.body(15))
+                .foregroundColor(.appTextPrimary)
+
+            Spacer()
+
+            Toggle("", isOn: $settings.crosswordCorrectHighlight)
+                .tint(.appAccent)
+        }
+        .listRowBackground(Color.appSurface)
     }
 
     private var letterFeedbackRow: some View {

@@ -30,6 +30,42 @@ struct HomeView: View {
         _viewModel = StateObject(wrappedValue: HomeViewModel(puzzleService: PuzzleService()))
     }
 
+    private var titleIcon: some View {
+        ZStack(alignment: .topTrailing) {
+            VStack(spacing: -17) {
+                BackwordLogo()
+                    .offset(x: logoVisible ? 0 : 120)
+                    .opacity(logoVisible ? 1 : 0)
+                if storeService.isProUser {
+                    Image("Pro")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 28)
+                        .offset(x: 20)
+                        .opacity(proLogoVisible ? 1 : 0)
+                }
+            }
+            .frame(maxWidth: .infinity)
+
+            Button {
+                showSettings = true
+            } label: {
+                Image(systemName: "gearshape")
+                    .font(.system(size: 18))
+                    .foregroundColor(.appTextSecondary)
+            }
+            .padding(.top, 6)
+        }
+        .multilineTextAlignment(.center)
+        #if DEBUG
+        .onTapGesture(count: 3) {
+            showDebugSettings = true
+        }
+        #endif
+        .padding()
+        .padding(.top, 24)
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -37,41 +73,8 @@ struct HomeView: View {
                     .ignoresSafeArea()
 
                 VStack(spacing: 32) {
-
-                    // App title
-                    ZStack(alignment: .topTrailing) {
-                        VStack(spacing: -17) {
-                            BackwordLogo()
-                                .offset(x: logoVisible ? 0 : 120)
-                                .opacity(logoVisible ? 1 : 0)
-                            if storeService.isProUser {
-                                Image("Pro")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 28)
-                                    .offset(x: 20)
-                                    .opacity(proLogoVisible ? 1 : 0)
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-
-                        Button {
-                            showSettings = true
-                        } label: {
-                            Image(systemName: "gearshape")
-                                .font(.system(size: 18))
-                                .foregroundColor(.appTextSecondary)
-                        }
-                        .padding(.top, 6)
-                    }
-                    .multilineTextAlignment(.center)
-                    #if DEBUG
-                    .onTapGesture(count: 3) {
-                        showDebugSettings = true
-                    }
-                    #endif
-                    .padding()
-                    .padding(.top, 24)
+                    titleIcon
+                    backwordButton
 
                     // Word of the Day
                     if let word = wotdService.todaysWord {
@@ -81,21 +84,6 @@ struct HomeView: View {
                             wotdCard(word: word)
                         }
                         .buttonStyle(.plain)
-                    }
-
-                    // Backword
-                    if backwordService.todaysWord != nil {
-                        NavigationLink(value: "backword") {
-                            BackwordCard(
-                                word: backwordService.todaysWord,
-                                progress: backwordService.todaysWord.flatMap {
-                                    BackwordProgress.load(date: $0.date)
-                                }
-                            )
-                        }
-                        .buttonStyle(.plain)
-                    } else {
-                        BackwordCard(word: nil, progress: nil)
                     }
 
                     // Today's puzzle card
@@ -256,6 +244,23 @@ struct HomeView: View {
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var backwordButton: some View {
+        if backwordService.todaysWord != nil {
+            NavigationLink(value: "backword") {
+                BackwordCard(
+                    word: backwordService.todaysWord,
+                    progress: backwordService.todaysWord.flatMap {
+                        BackwordProgress.load(date: $0.date)
+                    }
+                )
+            }
+            .buttonStyle(.plain)
+        } else {
+            BackwordCard(word: nil, progress: nil)
         }
     }
 

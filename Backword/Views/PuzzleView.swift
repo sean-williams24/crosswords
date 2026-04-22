@@ -16,31 +16,34 @@ struct PuzzleView: View {
         viewModel.puzzle.size > 12
     }
 
+    private var navigationBar: some View {
+        HStack {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundColor(.appTextPrimary)
+                    .padding(.vertical, 8)
+            }
+            .opacity(viewModel.isZenMode ? 0.2 : 1.0)
+
+            Spacer()
+
+            toolbarButtons
+                .opacity(viewModel.isZenMode ? 0.2 : 1.0)
+        }
+        .padding(.horizontal, AppLayout.screenPadding)
+        .padding(.top, 4)
+    }
+
     var body: some View {
         ZStack {
             Color.appBackground
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Custom navigation bar
-                HStack {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 17, weight: .semibold))
-                            .foregroundColor(.appTextPrimary)
-                            .padding(.vertical, 8)
-                    }
-                    .opacity(viewModel.isZenMode ? 0.2 : 1.0)
-
-                    Spacer()
-
-                    toolbarButtons
-                        .opacity(viewModel.isZenMode ? 0.2 : 1.0)
-                }
-                .padding(.horizontal, AppLayout.screenPadding)
-                .padding(.top, 4)
+                navigationBar
 
                 // Rewarded hint banner
                 if showRewardedHintBanner {
@@ -149,6 +152,7 @@ struct PuzzleView: View {
                 Text("Unlimited")
                     .font(AppFont.clueLabel(12))
                     .foregroundColor(.appAccent)
+                    .lineLimit(1)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
                     .background(Color.appAccent.opacity(0.12))

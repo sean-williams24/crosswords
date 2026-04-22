@@ -167,7 +167,6 @@ final class GameViewModel: ObservableObject {
         progress.entries[selectedRow][selectedCol] = String(letter).uppercased()
         haptics.play(.letterEntered)
 
-        activateZenMode()
         checkWordCompletion()
         advanceToNextCell()
         saveProgress()
