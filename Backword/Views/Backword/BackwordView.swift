@@ -7,6 +7,8 @@ struct BackwordView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var showInstructions = false
+    @State private var showStats = false
+    @StateObject private var statsService = BackwordStatsService()
     @FocusState private var inputFocused: Bool
 
     init(word: BackwordWord) {
@@ -82,7 +84,21 @@ struct BackwordView: View {
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
         .onChange(of: viewModel.isComplete) { complete in
-            if complete { inputFocused = false }
+            if complete {
+                inputFocused = false
+                statsService.refresh()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                    showStats = true
+                }
+            }
+        }
+        .sheet(isPresented: $showStats) {
+            BackwordStatsView(
+                stats: statsService.stats,
+                highlightGuessCount: viewModel.isWon ? viewModel.guessCount : nil
+            ) { showStats = false }
+            .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
         }
     }
 
@@ -105,16 +121,28 @@ struct BackwordView: View {
 
             Spacer()
 
-            Button {
-                showInstructions = true
-            } label: {
-                Image(systemName: "info.circle")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundColor(.appTextPrimary)
-                    .padding(.vertical, 8)
-            }
-            .sheet(isPresented: $showInstructions) {
-                instructionsSheet
+            HStack(spacing: 16) {
+                Button {
+                    statsService.refresh()
+                    showStats = true
+                } label: {
+                    Image(systemName: "chart.bar.fill")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundColor(.appTextPrimary)
+                        .padding(.vertical, 8)
+                }
+
+                Button {
+                    showInstructions = true
+                } label: {
+                    Image(systemName: "info.circle")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundColor(.appTextPrimary)
+                        .padding(.vertical, 8)
+                }
+                .sheet(isPresented: $showInstructions) {
+                    instructionsSheet
+                }
             }
         }
     }

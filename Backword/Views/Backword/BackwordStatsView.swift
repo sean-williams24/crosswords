@@ -1,0 +1,212 @@
+import SwiftUI
+
+struct BackwordStatsView: View {
+    let stats: BackwordStats
+    /// When non-nil, the bar for this guess count is highlighted (used on completion)
+    var highlightGuessCount: Int? = nil
+    /// Injected so previews can compile; unused at runtime.
+    var onDismiss: (() -> Void)? = nil
+
+    @State private var animatesBars = false
+
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                LinearGradient(
+                    colors: [Color.appAccent.opacity(0.10), Color.appBackground],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 28) {
+                        summaryRow
+                        distributionSection
+                    }
+                    .padding(.horizontal, AppLayout.screenPadding)
+                    .padding(.top, 20)
+                    .padding(.bottom, 40)
+                }
+            }
+            .navigationTitle("Backword Stats")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.appBackground, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        onDismiss?()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.appTextSecondary)
+                    }
+                }
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
+                    animatesBars = true
+                }
+            }
+        }
+    }
+
+    // MARK: - Summary Row
+
+    private var summaryRow: some View {
+        HStack(spacing: 0) {
+            statCell(value: "\(stats.gamesPlayed)", label: "Played")
+            divider
+            statCell(value: "\(stats.winRate)%", label: "Win Rate")
+            divider
+            statCell(
+                value: "\(stats.currentStreak)",
+                label: "Streak",
+                icon: stats.currentStreak > 0 ? "flame.fill" : nil,
+                iconColor: .orange
+            )
+            divider
+            statCell(value: "\(stats.longestStreak)", label: "Best")
+        }
+        .padding(.vertical, 20)
+        .background(Color.appSurface)
+        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                .strokeBorder(Color.appAccent.opacity(0.2), lineWidth: 1)
+        )
+    }
+
+    private var divider: some View {
+        Rectangle()
+            .fill(Color.appGridLine.opacity(0.5))
+            .frame(width: 1, height: 40)
+    }
+
+    private func statCell(value: String, label: String, icon: String? = nil, iconColor: Color = .appAccent) -> some View { // swiftlint:disable:this function_parameter_count
+        VStack(spacing: 4) {
+            HStack(spacing: 4) {
+                if let icon {
+                    Image(systemName: icon)
+                        .font(.system(size: 13))
+                        .foregroundColor(iconColor)
+                }
+                Text(value)
+                    .font(AppFont.header(28))
+                    .foregroundColor(.appTextPrimary)
+            }
+            Text(label)
+                .font(AppFont.clueLabel(11))
+                .foregroundColor(.appTextSecondary)
+                .tracking(1)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    // MARK: - Distribution
+
+    private var distributionSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("GUESS DISTRIBUTION")
+                .font(AppFont.clueLabel(12))
+                .foregroundColor(.appAccent)
+                .tracking(2)
+
+            if stats.gamesWon == 0 || stats.guessCounts.isEmpty {
+                Text("No wins yet — keep playing!")
+                    .font(AppFont.body(14))
+                    .foregroundColor(.appTextSecondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.vertical, 20)
+            } else {
+                VStack(spacing: 10) {
+                    ForEach(1...5, id: \.self) { guessNum in
+                        distributionRow(guessNum: guessNum)
+                    }
+                }
+            }
+        }
+        .padding(20)
+        .background(Color.appSurface)
+        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                .strokeBorder(Color.appAccent.opacity(0.2), lineWidth: 1)
+        )
+    }
+
+    private func distributionRow(guessNum: Int) -> some View {
+        let count = stats.count(forGuess: guessNum)
+        let maxCount = max(stats.maxGuessCount, 1)
+        let fraction = CGFloat(count) / CGFloat(maxCount)
+        let isHighlighted = highlightGuessCount == guessNum
+        let barColor: Color = isHighlighted ? .appCorrect : .appAccent
+
+        return HStack(spacing: 10) {
+            Text("\(guessNum)")
+                .font(AppFont.clueLabel(14))
+                .foregroundColor(.appTextSecondary)
+                .frame(width: 16, alignment: .center)
+
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.appSurface)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .strokeBorder(Color.appGridLine.opacity(0.4), lineWidth: 1)
+                        )
+
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(
+                            LinearGradient(
+                                colors: isHighlighted
+                                    ? [Color.appCorrect.opacity(0.8), Color.appCorrect]
+                                    : [barColor.opacity(0.7), barColor],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: animatesBars ? max(geo.size.width * fraction, count > 0 ? 36 : 0) : 0)
+                }
+            }
+            .frame(height: 32)
+
+            Text("\(count)")
+                .font(AppFont.clueLabel(13))
+                .foregroundColor(isHighlighted ? .appCorrect : .appTextSecondary)
+                .frame(width: 28, alignment: .trailing)
+                .scaleEffect(isHighlighted ? 1.1 : 1.0)
+                .animation(.spring(response: 0.4, dampingFraction: 0.6).delay(0.4), value: animatesBars)
+        }
+        .frame(height: 32)
+    }
+}
+
+// MARK: - Convenience font overload
+
+//private extension AppFont {
+//    static func statNumber(_ size: CGFloat = 32) -> Font {
+//        AppFont.header(size)
+//    }
+//}
+
+// MARK: - Preview
+
+#Preview("Has data") {
+    var s = BackwordStats()
+    s.record(guessCount: 1, date: "2026-04-18")
+    s.record(guessCount: 2, date: "2026-04-19")
+    s.record(guessCount: 2, date: "2026-04-20")
+    s.record(guessCount: 3, date: "2026-04-21")
+    s.record(guessCount: nil, date: "2026-04-22")
+    return BackwordStatsView(stats: s, highlightGuessCount: 2) {}
+        .preferredColorScheme(.dark)
+}
+
+#Preview("Empty") {
+    BackwordStatsView(stats: BackwordStats()) {}
+        .preferredColorScheme(.dark)
+}

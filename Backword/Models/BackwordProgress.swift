@@ -54,4 +54,16 @@ extension BackwordProgress {
     static func delete(date: String) {
         try? FileManager.default.removeItem(at: fileURL(for: date))
     }
+
+    static func loadAll() -> [BackwordProgress] {
+        let dir = directory
+        guard let files = try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil) else { return [] }
+        return files
+            .filter { $0.lastPathComponent.hasPrefix("backword_") && $0.pathExtension == "json" }
+            .compactMap { url -> BackwordProgress? in
+                guard let data = try? Data(contentsOf: url) else { return nil }
+                return try? JSONDecoder().decode(BackwordProgress.self, from: data)
+            }
+            .sorted { $0.date > $1.date }
+    }
 }

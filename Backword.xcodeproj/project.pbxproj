@@ -28,6 +28,8 @@
 		83FBB193723C144A6456932E /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C44B7584617BA53797B0963 /* ZoomableView.swift */; };
 		84A6DDAE7557421BC685E350 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8669C3DD88CF9BC44A72C69 /* CellView.swift */; };
 		86728124E533B5942EADAB51 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */; };
+		869FCBE22F9986FA00A280F2 /* BackwordStatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */; };
+		869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE32F99871800A280F2 /* BackwordStatsView.swift */; };
 		86AE8C972F913EAB001D69EE /* BackwordLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AE8C962F913EAB001D69EE /* BackwordLogo.swift */; };
 		87051E8136E314CB2A272A91 /* BackwordLetterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2259B66045D006E89462572C /* BackwordLetterCell.swift */; };
 		8EF7F8087FF836F1BFC62151 /* HapticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */; };
@@ -91,6 +93,8 @@
 		8254031869B9E1FAC8C5A377 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		8299222FB15ED0ECC8305F8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		83C12AC56422D31E9D619C3E /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsService.swift; sourceTree = "<group>"; };
+		869FCBE32F99871800A280F2 /* BackwordStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsView.swift; sourceTree = "<group>"; };
 		86AE8C962F913EAB001D69EE /* BackwordLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordLogo.swift; sourceTree = "<group>"; };
 		8820C57EC2BCBADADEC4006C /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		894071960CD50EDF948DA15E /* BackwordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordApp.swift; sourceTree = "<group>"; };
@@ -167,6 +171,7 @@
 			children = (
 				30C31A4805F0514D4233C775 /* AdService.swift */,
 				A476BC6A4DF0107699E2A1FD /* BackwordService.swift */,
+				869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */,
 				D15EB4D0D354246894E51C7E /* CacheService.swift */,
 				9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */,
 				F31C198A0EE68F6859AD60A4 /* PuzzleService.swift */,
@@ -202,6 +207,7 @@
 				2259B66045D006E89462572C /* BackwordLetterCell.swift */,
 				464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */,
 				86AE8C962F913EAB001D69EE /* BackwordLogo.swift */,
+				869FCBE32F99871800A280F2 /* BackwordStatsView.swift */,
 			);
 			path = Backword;
 			sourceTree = "<group>";
@@ -385,6 +391,7 @@
 				149802310440A77534BB615E /* AppTheme.swift in Sources */,
 				F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */,
 				E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */,
+				869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */,
 				CF96B7A7D6669B73DBA8125E /* BackwordCard.swift in Sources */,
 				7D3636249D4EA1ACE0D6916C /* BackwordGuessRow.swift in Sources */,
 				87051E8136E314CB2A272A91 /* BackwordLetterCell.swift in Sources */,
@@ -403,6 +410,7 @@
 				21618E85BCB44C8BE6735598 /* DebugSettingsView.swift in Sources */,
 				9344322FC4BD6682AB74BE2A /* GameViewModel.swift in Sources */,
 				8EF7F8087FF836F1BFC62151 /* HapticsEngine.swift in Sources */,
+				869FCBE22F9986FA00A280F2 /* BackwordStatsService.swift in Sources */,
 				86728124E533B5942EADAB51 /* HomeView.swift in Sources */,
 				05256FA0ABC9B788BBAABD5B /* HomeViewModel.swift in Sources */,
 				549205098DAD4DCC7F508DD1 /* KeyboardInputView.swift in Sources */,
