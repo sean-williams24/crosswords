@@ -6,6 +6,7 @@ struct BackwordApp: App {
     @StateObject private var puzzleService = PuzzleService()
     @StateObject private var storeService = StoreService()
     @StateObject private var adService = AdService()
+    @StateObject private var ratingService = OverallRatingService()
 
     var body: some Scene {
         WindowGroup {
@@ -14,6 +15,7 @@ struct BackwordApp: App {
                 .environmentObject(puzzleService)
                 .environmentObject(storeService)
                 .environmentObject(adService)
+                .environmentObject(ratingService)
         }
     }
 }

@@ -33,8 +33,22 @@ final class GameViewModel: ObservableObject {
 
     init(puzzle: Puzzle) {
         self.puzzle = puzzle
-        self.progress = UserProgress.load(puzzleId: puzzle.id)
-            ?? UserProgress(puzzleId: puzzle.id, size: puzzle.size)
+        var loaded = UserProgress.load(puzzleId: puzzle.id)
+            ?? UserProgress(
+                puzzleId: puzzle.id,
+                size: puzzle.size,
+                puzzleDate: puzzle.date,
+                totalClues: puzzle.clues.count,
+                isWeekly: puzzle.size > 12
+            )
+        // Back-fill metadata for legacy progress files
+        if loaded.puzzleDate == nil {
+            loaded.puzzleDate = puzzle.date
+            loaded.totalClues = puzzle.clues.count
+            loaded.isWeekly = puzzle.size > 12
+            loaded.save()
+        }
+        self.progress = loaded
 
         // Select the first white cell
         if let first = firstWhiteCell() {
@@ -285,7 +299,26 @@ final class GameViewModel: ObservableObject {
                 progress.completedAt = Date()
                 isComplete = true
                 haptics.play(.puzzleCompleted)
+                recordRating()
             }
+        }
+    }
+
+    private func recordRating() {
+        let ratingService = OverallRatingService()
+        // Determine if this is a weekly puzzle (size > 12) vs daily
+        if puzzle.size > 12 {
+            ratingService.recordWeeklyCrossword(
+                completedClues: progress.completedClueIds.count,
+                totalClues: puzzle.clues.count,
+                date: puzzle.date
+            )
+        } else {
+            ratingService.recordDailyCrossword(
+                completedClues: progress.completedClueIds.count,
+                totalClues: puzzle.clues.count,
+                date: puzzle.date
+            )
         }
     }
 

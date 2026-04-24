@@ -5,9 +5,11 @@ struct PuzzleView: View {
     @EnvironmentObject var statsService: StatsService
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
+    @EnvironmentObject var ratingService: OverallRatingService
     @Environment(\.dismiss) private var dismiss
     @State private var showPaywall = false
     @State private var showRewardedHintBanner = false
+    @State private var showCrosswordStats = false
     @State private var isKeyboardReady = false
 
     private let freeHintLimit = 1
@@ -99,10 +101,32 @@ struct PuzzleView: View {
             PaywallView()
                 .environmentObject(storeService)
         }
+        .sheet(isPresented: $showCrosswordStats) {
+            CrosswordStatsView { showCrosswordStats = false }
+                .environmentObject(statsService)
+        }
         .navigationBarBackButtonHidden(true)
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                 isKeyboardReady = true
+            }
+        }
+        .onDisappear {
+            // Ensure metadata is saved for rating backfill
+            if viewModel.progress.puzzleDate == nil {
+                viewModel.progress.puzzleDate = viewModel.puzzle.date
+                viewModel.progress.totalClues = viewModel.puzzle.clues.count
+                viewModel.progress.isWeekly = viewModel.puzzle.size > 12
+                viewModel.progress.save()
+            }
+            // Record partial or complete progress whenever the user leaves the puzzle
+            let completed = viewModel.progress.completedClueIds.count
+            let total = viewModel.puzzle.clues.count
+            let date = viewModel.puzzle.date
+            if viewModel.puzzle.size > 12 {
+                ratingService.recordWeeklyCrossword(completedClues: completed, totalClues: total, date: date)
+            } else {
+                ratingService.recordDailyCrossword(completedClues: completed, totalClues: total, date: date)
             }
         }
         .onTapGesture {
@@ -201,6 +225,14 @@ struct PuzzleView: View {
 
     @ViewBuilder
     private var toolbarButtons: some View {
+        Button {
+            showCrosswordStats = true
+        } label: {
+            Image(systemName: "chart.bar.fill")
+                .frame(width: 44)
+                .foregroundColor(.appTextPrimary)
+        }
+
         Button {
             viewModel.showClueList = true
         } label: {

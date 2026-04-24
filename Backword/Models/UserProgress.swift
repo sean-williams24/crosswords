@@ -8,10 +8,13 @@ struct UserProgress: Codable {
     var hintsUsed: Int
     var startedAt: Date
     var completedAt: Date?
+    var puzzleDate: String?   // "yyyy-MM-dd" — added for rating backfill
+    var totalClues: Int?      // total clue count — added for rating backfill
+    var isWeekly: Bool?       // true if weekly puzzle — added for rating backfill
 
     var isComplete: Bool { completedAt != nil }
 
-    init(puzzleId: String, size: Int) {
+    init(puzzleId: String, size: Int, puzzleDate: String? = nil, totalClues: Int? = nil, isWeekly: Bool? = nil) {
         self.puzzleId = puzzleId
         self.entries = Array(repeating: Array(repeating: nil, count: size), count: size)
         self.completedClueIds = []
@@ -19,6 +22,9 @@ struct UserProgress: Codable {
         self.hintsUsed = 0
         self.startedAt = Date()
         self.completedAt = nil
+        self.puzzleDate = puzzleDate
+        self.totalClues = totalClues
+        self.isWeekly = isWeekly
     }
 
     init(from decoder: Decoder) throws {
@@ -30,6 +36,9 @@ struct UserProgress: Codable {
         hintsUsed = try container.decode(Int.self, forKey: .hintsUsed)
         startedAt = try container.decode(Date.self, forKey: .startedAt)
         completedAt = try container.decodeIfPresent(Date.self, forKey: .completedAt)
+        puzzleDate = try container.decodeIfPresent(String.self, forKey: .puzzleDate)
+        totalClues = try container.decodeIfPresent(Int.self, forKey: .totalClues)
+        isWeekly = try container.decodeIfPresent(Bool.self, forKey: .isWeekly)
     }
 
     var elapsedTime: TimeInterval {
@@ -68,5 +77,19 @@ extension UserProgress {
     static func load(puzzleId: String) -> UserProgress? {
         guard let data = try? Data(contentsOf: fileURL(for: puzzleId)) else { return nil }
         return try? JSONDecoder().decode(UserProgress.self, from: data)
+    }
+
+    /// Load all progress files from disk.
+    static func loadAll() -> [UserProgress] {
+        let dir = directory
+        guard let files = try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil) else {
+            return []
+        }
+        return files.compactMap { url -> UserProgress? in
+            guard url.lastPathComponent.hasPrefix("progress_"),
+                  url.pathExtension == "json" else { return nil }
+            guard let data = try? Data(contentsOf: url) else { return nil }
+            return try? JSONDecoder().decode(UserProgress.self, from: data)
+        }
     }
 }

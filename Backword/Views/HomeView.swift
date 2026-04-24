@@ -5,12 +5,12 @@ struct HomeView: View {
     @EnvironmentObject var puzzleService: PuzzleService
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
+    @EnvironmentObject var ratingService: OverallRatingService
     @StateObject private var viewModel: HomeViewModel
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
     @Environment(\.scenePhase) private var scenePhase
 
-    @State private var showStats = false
     @State private var showArchive = false
     @State private var showPaywall = false
     @State private var showWOTD = false
@@ -74,6 +74,14 @@ struct HomeView: View {
 
                 VStack(spacing: 32) {
                     titleIcon
+
+                    RatingBarView(
+                        rating: ratingService.rating,
+                        isPro: storeService.isProUser
+                    )
+                    .padding(.horizontal, AppLayout.screenPadding)
+                    .padding(.top, -16)
+
                     backwordButton
 
                     // Word of the Day
@@ -117,45 +125,27 @@ struct HomeView: View {
                     Spacer(minLength: 0)
 
                     // Bottom buttons
-                    HStack(spacing: 12) {
-                        Button {
-                            showStats = true
-                        } label: {
-                            Label("Stats", systemImage: "chart.bar")
-                                .font(AppFont.clueLabel(14))
-                                .foregroundColor(.appTextSecondary)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 14)
-                                .background(Color.appSurface)
-                                .cornerRadius(AppLayout.cardCornerRadius)
+                    Button {
+                        if storeService.isProUser {
+                            showArchive = true
+                        } else {
+                            showPaywall = true
                         }
-
-                        Button {
-                            if storeService.isProUser {
-                                showArchive = true
-                            } else {
-                                showPaywall = true
+                    } label: {
+                        HStack {
+                            Label("Archive", systemImage: "archivebox")
+                            if !storeService.isProUser {
+                                Image(systemName: "lock.fill")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.appAccent)
                             }
-                        } label: {
-                            HStack {
-                                Spacer()
-                                Label("Archive", systemImage: "archivebox")
-                               if !storeService.isProUser {
-                                   Image(systemName: "lock.fill")
-                                       .font(.system(size: 12))
-                                       .foregroundColor(.appAccent)
-                               }
-                                Spacer()
-
-                            }
-                            .font(AppFont.clueLabel(14))
-                            .foregroundColor(.appTextSecondary)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .padding(.horizontal, 16)
-                            .background(Color.appSurface)
-                            .cornerRadius(AppLayout.cardCornerRadius)
                         }
+                        .font(AppFont.clueLabel(14))
+                        .foregroundColor(.appTextSecondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(Color.appSurface)
+                        .cornerRadius(AppLayout.cardCornerRadius)
                     }
                     .padding(.horizontal, AppLayout.screenPadding)
                     .padding(.bottom, 32)
@@ -170,6 +160,7 @@ struct HomeView: View {
                         .environmentObject(statsService)
                         .environmentObject(storeService)
                         .environmentObject(adService)
+                        .environmentObject(ratingService)
                 } else if destination == "backword",
                             let word = backwordService.todaysWord {
                     BackwordView(word: word)
@@ -180,11 +171,8 @@ struct HomeView: View {
                         .environmentObject(statsService)
                         .environmentObject(storeService)
                         .environmentObject(adService)
+                        .environmentObject(ratingService)
                 }
-            }
-            .sheet(isPresented: $showStats) {
-                StatsView()
-                    .environmentObject(statsService)
             }
             .fullScreenCover(isPresented: $showArchive) {
                 ArchiveView()
@@ -221,6 +209,11 @@ struct HomeView: View {
                 await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
                 await wotdService.refreshIfNeeded()
                 await backwordService.refreshIfNeeded()
+                ratingService.refresh()
+                ratingService.recordCurrentPuzzles(
+                    daily: viewModel.todaysPuzzle,
+                    weekly: viewModel.weeklyPuzzle
+                )
             }
             .onAppear {
                 logoVisible = false

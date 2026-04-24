@@ -90,11 +90,13 @@ final class BackwordViewModel: ObservableObject {
             progress.completedAt = Date()
             progress.save()
             stats.record(guessCount: progress.guesses.count, date: word.date)
+            OverallRatingService().recordBackword(guessCount: progress.guesses.count, date: word.date)
         } else if progress.guesses.count >= maxGuesses {
             progress.wonFlag = false
             progress.completedAt = Date()
             progress.save()
             stats.record(guessCount: nil, date: word.date)
+            OverallRatingService().recordBackword(guessCount: nil, date: word.date)
         } else {
             // Reveal next letter — it will be at the newly revealed index
             let newRevealedCount = progress.revealedCount
