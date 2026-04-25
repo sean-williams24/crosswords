@@ -187,7 +187,7 @@ struct HomeView: View {
             }
             #if DEBUG
             .sheet(isPresented: $showDebugSettings) {
-                DebugSettingsView()
+                DebugSettingsView(homeViewModel: viewModel)
                     .environmentObject(storeService)
                     .environmentObject(backwordService)
             }

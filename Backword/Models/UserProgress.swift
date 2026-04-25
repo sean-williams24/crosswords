@@ -79,6 +79,10 @@ extension UserProgress {
         return try? JSONDecoder().decode(UserProgress.self, from: data)
     }
 
+    static func delete(puzzleId: String) {
+        try? FileManager.default.removeItem(at: fileURL(for: puzzleId))
+    }
+
     /// Load all progress files from disk.
     static func loadAll() -> [UserProgress] {
         let dir = directory

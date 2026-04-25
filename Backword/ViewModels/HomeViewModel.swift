@@ -118,3 +118,48 @@ final class HomeViewModel: ObservableObject {
         }
     }
 }
+
+// MARK: - Debug helpers
+
+#if DEBUG
+extension HomeViewModel {
+    /// Fills all clues except the last one, so you're one answer away from completion.
+    func debugFillAllButOne(puzzle: Puzzle, isWeekly: Bool) {
+        var progress = UserProgress.load(puzzleId: puzzle.id)
+            ?? UserProgress(puzzleId: puzzle.id, size: puzzle.size,
+                            puzzleDate: puzzle.date, totalClues: puzzle.clues.count, isWeekly: isWeekly)
+
+        let clues = puzzle.clues.dropLast()  // leave the very last clue empty
+        for clue in clues {
+            let letters = Array(clue.answer)
+            for (offset, letter) in letters.enumerated() {
+                let row: Int
+                let col: Int
+                switch clue.direction {
+                case .across: row = clue.startRow; col = clue.startCol + offset
+                case .down:   row = clue.startRow + offset; col = clue.startCol
+                }
+                progress.entries[row][col] = String(letter)
+            }
+            progress.completedClueIds.insert(clue.id)
+        }
+        progress.save()
+
+        if isWeekly {
+            weeklyProgress = progress
+        } else {
+            todaysProgress = progress
+        }
+    }
+
+    /// Deletes saved progress for a puzzle, resetting it to New.
+    func debugResetPuzzle(puzzle: Puzzle, isWeekly: Bool) {
+        UserProgress.delete(puzzleId: puzzle.id)
+        if isWeekly {
+            weeklyProgress = nil
+        } else {
+            todaysProgress = nil
+        }
+    }
+}
+#endif

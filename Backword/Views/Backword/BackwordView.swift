@@ -105,43 +105,44 @@ struct BackwordView: View {
     // MARK: - Nav Bar
 
     private var navBar: some View {
-        HStack {
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundColor(.appTextPrimary)
-                    .padding(.vertical, 8)
-            }
-
-            Spacer()
-
+        ZStack {
+            // Centre title always perfectly centred
             BackwordLogo()
 
-            Spacer()
-
-            HStack(spacing: 16) {
+            HStack {
                 Button {
-                    statsService.refresh()
-                    showStats = true
+                    dismiss()
                 } label: {
-                    Image(systemName: "chart.bar.fill")
+                    Image(systemName: "chevron.left")
                         .font(.system(size: 17, weight: .semibold))
                         .foregroundColor(.appTextPrimary)
                         .padding(.vertical, 8)
                 }
 
-                Button {
-                    showInstructions = true
-                } label: {
-                    Image(systemName: "info.circle")
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(.appTextPrimary)
-                        .padding(.vertical, 8)
-                }
-                .sheet(isPresented: $showInstructions) {
-                    instructionsSheet
+                Spacer()
+
+                HStack(spacing: 16) {
+                    Button {
+                        statsService.refresh()
+                        showStats = true
+                    } label: {
+                        Image(systemName: "chart.bar.fill")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(.appTextPrimary)
+                            .padding(.vertical, 8)
+                    }
+
+                    Button {
+                        showInstructions = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(.appTextPrimary)
+                            .padding(.vertical, 8)
+                    }
+                    .sheet(isPresented: $showInstructions) {
+                        instructionsSheet
+                    }
                 }
             }
         }
