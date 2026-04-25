@@ -13,89 +13,98 @@ struct PaywallView: View {
 
     var body: some View {
         ZStack {
-            // Blurred background
-            Color.appBackground.opacity(0.3)
-                .ignoresSafeArea()
-                .background(.ultraThinMaterial)
-
             VStack(spacing: 0) {
-                // Dismiss button
+                // Black hero extends behind the top of the sheet
+                ZStack {
+                    Image("LogoBackgroundPro")
+                        .resizable()
+                        .frame(maxWidth: 200, maxHeight: 200)
+                }
+                .frame(height: 240)
+                .frame(maxWidth: .infinity)
+                .background(Color.black.ignoresSafeArea(edges: .top))
+
+                // Lower content on app background
+                VStack(spacing: 0) {
+                    Spacer().frame(height: 28)
+
+                    // Header
+                    VStack(spacing: 6) {
+//                    Text("BackWord Pro")
+//                        .font(AppFont.header(28))
+//                        .foregroundColor(.appTextPrimary)
+
+                        Text("The full crossword experience")
+                            .italic()
+                            .font(AppFont.header(15))
+                            .foregroundColor(.appTextPrimary)
+                    }
+
+                    Spacer().frame(height: 28)
+
+                    // Feature list
+                    featureList
+                        .padding(.horizontal, 32)
+
+                    Spacer().frame(height: 32)
+
+                    // Plan toggle
+                    planToggle
+                        .padding(.horizontal, 32)
+
+                    Spacer().frame(height: 24)
+
+                    // CTA button
+                    ctaButton
+                        .padding(.horizontal, 32)
+
+                    // Error
+                    if let errorMessage {
+                        Text(errorMessage)
+                            .font(AppFont.caption())
+                            .foregroundColor(.red)
+                            .padding(.top, 8)
+                    }
+
+                    Spacer().frame(height: 12)
+
+                    // Restore + legal
+                    Button("Restore Purchases") {
+                        Task { await storeService.restorePurchases() }
+                    }
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+
+                    Spacer().frame(height: 8)
+
+                    Text("Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period.")
+                        .font(.system(size: 10))
+                        .foregroundColor(.appTextSecondary.opacity(0.6))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                        .padding(.bottom, 20)
+                }
+                .frame(maxWidth: .infinity)
+                .background(Color.appBackground)
+            }
+
+            // Dismiss button floats over the black hero
+            VStack {
                 HStack {
                     Spacer()
                     Button { dismiss() } label: {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 28))
                             .symbolRenderingMode(.hierarchical)
-                            .foregroundColor(.appTextSecondary)
+                            .foregroundColor(.white.opacity(0.7))
                     }
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 16)
-
-                Spacer().frame(height: 16)
-
-                // Hero mini-grid
-                miniGrid
-                    .padding(.horizontal, 48)
-
-                Spacer().frame(height: 28)
-
-                // Header
-                VStack(spacing: 6) {
-                    Text("BackWord Pro")
-                        .font(AppFont.header(28))
-                        .foregroundColor(.appTextPrimary)
-
-                    Text("The full crossword experience")
-                        .font(AppFont.body(15))
-                        .foregroundColor(.appTextSecondary)
-                }
-
-                Spacer().frame(height: 28)
-
-                // Feature list
-                featureList
-                    .padding(.horizontal, 32)
-
-                Spacer().frame(height: 32)
-
-                // Plan toggle
-                planToggle
-                    .padding(.horizontal, 32)
-
-                Spacer().frame(height: 24)
-
-                // CTA button
-                ctaButton
-                    .padding(.horizontal, 32)
-
-                // Error
-                if let errorMessage {
-                    Text(errorMessage)
-                        .font(AppFont.caption())
-                        .foregroundColor(.red)
-                        .padding(.top, 8)
-                }
-
-                Spacer().frame(height: 12)
-
-                // Restore + legal
-                Button("Restore Purchases") {
-                    Task { await storeService.restorePurchases() }
-                }
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary)
-
-                Spacer().frame(height: 8)
-
-                Text("Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period.")
-                    .font(.system(size: 10))
-                    .foregroundColor(.appTextSecondary.opacity(0.6))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-                    .padding(.bottom, 20)
+                Spacer()
             }
         }
+        .blackSheetBackground()
         .interactiveDismissDisabled(storeService.purchaseInProgress)
         .onAppear {
             withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
@@ -152,7 +161,6 @@ struct PaywallView: View {
             featureRow(icon: "archivebox.fill", text: "Unlimited puzzle archive")
             featureRow(icon: "lightbulb.fill", text: "Unlimited hints")
             featureRow(icon: "eye.slash.fill", text: "Ad-free experience")
-            featureRow(icon: "flame.fill", text: "Support indie development")
         }
     }
 
@@ -270,6 +278,19 @@ struct PaywallView: View {
             }
         } catch {
             errorMessage = error.localizedDescription
+        }
+    }
+}
+
+// MARK: - Helpers
+
+private extension View {
+    @ViewBuilder
+    func blackSheetBackground() -> some View {
+        if #available(iOS 16.4, *) {
+            self.presentationBackground(Color.black)
+        } else {
+            self
         }
     }
 }

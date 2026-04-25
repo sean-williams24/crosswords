@@ -63,12 +63,12 @@ struct BackwordStatsView: View {
             divider
             statCell(
                 value: "\(stats.currentStreak)",
-                label: "Streak",
+                label: "Current Streak",
                 icon: stats.currentStreak > 0 ? "flame.fill" : nil,
                 iconColor: .orange
             )
             divider
-            statCell(value: "\(stats.longestStreak)", label: "Best")
+            statCell(value: "\(stats.longestStreak)", label: "Best Streak")
         }
         .padding(.vertical, 20)
         .background(Color.appSurface)
@@ -101,6 +101,7 @@ struct BackwordStatsView: View {
                 .font(AppFont.clueLabel(11))
                 .foregroundColor(.appTextSecondary)
                 .tracking(1)
+                .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
     }
