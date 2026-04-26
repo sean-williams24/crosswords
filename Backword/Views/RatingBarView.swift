@@ -19,25 +19,22 @@ struct RatingBarView: View {
                 // Bar track
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
-                        // Bar elements — constrained to 8pt, centered in the 18pt frame
-                        ZStack(alignment: .leading) {
-                            // Track
-                            Capsule()
-                                .fill(Color.appSurface)
+                        // Bar track (8pt, centered vertically in the ZStack)
+                        Capsule()
+                            .fill(Color.appSurface)
+                            .frame(height: 8)
 
-                            // Filled portion — gradient spans full track width, masked to filled area
-                            Rectangle()
-                                .fill(barGradient)
-                                .mask(alignment: .leading) {
-                                    Capsule()
-                                        .frame(width: animates ? max(geo.size.width * CGFloat(fraction), 6) : 6)
-                                        .animation(.spring(response: 0.8, dampingFraction: 0.75), value: animates)
-                                }
-                        }
-                        .frame(height: 8)
-                        .frame(maxHeight: .infinity, alignment: .center)
+                        // Gradient fill, masked to filled portion
+                        Rectangle()
+                            .fill(barGradient)
+                            .frame(height: 8)
+                            .mask(alignment: .leading) {
+                                Capsule()
+                                    .frame(width: animates ? max(geo.size.width * CGFloat(fraction), 6) : 6)
+                                    .animation(.spring(response: 0.8, dampingFraction: 0.75), value: animates)
+                            }
 
-                        // Tier marker dot — 18pt, protrudes above and below the 8pt bar
+                        // Dot (18pt — protrudes above/below the 8pt bar)
                         ZStack {
                             Circle()
                                 .fill(tier.color.opacity(0.3))
@@ -50,7 +47,6 @@ struct RatingBarView: View {
                                 .frame(width: 8, height: 8)
                         }
                         .shadow(color: tier.color.opacity(0.5), radius: 4, x: 0, y: 0)
-                        .frame(maxHeight: .infinity, alignment: .center)
                         .offset(x: animates ? max(geo.size.width * CGFloat(fraction) - 9, 0) : 0)
                         .animation(.spring(response: 0.8, dampingFraction: 0.75).delay(0.05), value: animates)
                     }

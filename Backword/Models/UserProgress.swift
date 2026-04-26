@@ -48,9 +48,14 @@ struct UserProgress: Codable {
 
     var formattedTime: String {
         let seconds = Int(elapsedTime)
-        let m = seconds / 60
+        let h = seconds / 3600
+        let m = (seconds % 3600) / 60
         let s = seconds % 60
-        return String(format: "%d:%02d", m, s)
+        if h > 0 {
+            return String(format: "%d:%02d:%02d", h, m, s)
+        } else {
+            return String(format: "%d:%02d", m, s)
+        }
     }
 }
 

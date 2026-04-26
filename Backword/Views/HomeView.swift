@@ -24,10 +24,10 @@ struct HomeView: View {
     @State private var showDebugSettings = false
     #endif
 
-    init() {
+    init(viewModel: HomeViewModel? = nil) {
         // Can't use @EnvironmentObject in init, so create with a temporary service
         // The real service is injected via .onAppear
-        _viewModel = StateObject(wrappedValue: HomeViewModel(puzzleService: PuzzleService()))
+        _viewModel = StateObject(wrappedValue: viewModel ?? HomeViewModel(puzzleService: PuzzleService()))
     }
 
     private var titleIcon: some View {
@@ -121,8 +121,6 @@ struct HomeView: View {
                             .buttonStyle(.plain)
                         }
                     }
-
-                    Spacer(minLength: 0)
 
                     // Bottom buttons
                     Button {
@@ -459,10 +457,24 @@ struct HomeView: View {
 
 }
 
-#Preview {
+#Preview("Default") {
     HomeView()
         .environmentObject(PuzzleService())
         .environmentObject(StatsService())
         .environmentObject(StoreService())
         .environmentObject(AdService())
+        .environmentObject(OverallRatingService())
 }
+
+#if DEBUG
+#Preview("Completed Puzzle") {
+    let vm = HomeViewModel(puzzleService: PuzzleService())
+    vm.debugSetSampleCompleted()
+    return HomeView(viewModel: vm)
+        .environmentObject(PuzzleService())
+        .environmentObject(StatsService())
+        .environmentObject(StoreService())
+        .environmentObject(AdService())
+        .environmentObject(OverallRatingService())
+}
+#endif

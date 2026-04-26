@@ -85,29 +85,29 @@ struct RatingDetailSheet: View {
             // Large progress bar
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
-                    // Bar elements — constrained to 16pt, centered in the 28pt frame
-                    ZStack(alignment: .leading) {
-                        Capsule().fill(Color.appSurface)
+                    // Bar track (16pt, centered vertically in the ZStack)
+                    Capsule()
+                        .fill(Color.appSurface)
+                        .frame(height: 16)
 
-                        Rectangle()
-                            .fill(barGradient)
-                            .mask(alignment: .leading) {
-                                Capsule()
-                                    .frame(width: animates ? max(geo.size.width * CGFloat(fraction), 8) : 8)
-                            }
-
-                        // Tier threshold markers
-                        ForEach(RatingTier.allCases.dropFirst(), id: \.displayName) { t in
+                    // Gradient fill, masked to filled portion
+                    Rectangle()
+                        .fill(barGradient)
+                        .frame(height: 16)
+                        .mask(alignment: .leading) {
                             Capsule()
-                                .fill(Color.appBackground.opacity(0.6))
-                                .frame(width: 2, height: 16)
-                                .offset(x: geo.size.width * CGFloat(t.threshold) - 1)
+                                .frame(width: animates ? max(geo.size.width * CGFloat(fraction), 8) : 8)
                         }
-                    }
-                    .frame(height: 16)
-                    .frame(maxHeight: .infinity, alignment: .center)
 
-                    // Dot — 28pt, protrudes above and below the 16pt bar
+                    // Tier threshold markers
+                    ForEach(RatingTier.allCases.dropFirst(), id: \.displayName) { t in
+                        Capsule()
+                            .fill(Color.appBackground.opacity(0.6))
+                            .frame(width: 2, height: 16)
+                            .offset(x: geo.size.width * CGFloat(t.threshold) - 1)
+                    }
+
+                    // Dot (28pt — protrudes above/below the 16pt bar)
                     ZStack {
                         Circle()
                             .fill(tier.color.opacity(0.3))
@@ -120,7 +120,6 @@ struct RatingDetailSheet: View {
                             .frame(width: 10, height: 10)
                     }
                     .shadow(color: tier.color.opacity(0.5), radius: 5, x: 0, y: 0)
-                    .frame(maxHeight: .infinity, alignment: .center)
                     .offset(x: animates ? max(geo.size.width * CGFloat(fraction) - 14, 0) : 0)
                 }
             }

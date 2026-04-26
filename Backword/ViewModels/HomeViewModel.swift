@@ -10,12 +10,18 @@ final class HomeViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     private let puzzleService: PuzzleService
+    #if DEBUG
+    var previewMode = false
+    #endif
 
     init(puzzleService: PuzzleService) {
         self.puzzleService = puzzleService
     }
 
     func refreshIfNeeded(isProUser: Bool) async {
+        #if DEBUG
+        if previewMode { return }
+        #endif
         let today = formattedToday()
         let dailyStale = todaysPuzzle?.date != today
         let weeklyStale = isProUser && weeklyPuzzleIsStale()
@@ -160,6 +166,29 @@ extension HomeViewModel {
         } else {
             todaysProgress = nil
         }
+    }
+
+    /// Sets the sample puzzle as completed in-memory for Xcode previews.
+    func debugSetSampleCompleted() {
+        previewMode = true
+        let puzzle = Puzzle.sample
+        var progress = UserProgress(puzzleId: puzzle.id, size: puzzle.size,
+                                    puzzleDate: puzzle.date, totalClues: puzzle.clues.count, isWeekly: false)
+        for clue in puzzle.clues {
+            let letters = Array(clue.answer)
+            for (offset, letter) in letters.enumerated() {
+                switch clue.direction {
+                case .across: progress.entries[clue.startRow][clue.startCol + offset] = String(letter)
+                case .down:   progress.entries[clue.startRow + offset][clue.startCol] = String(letter)
+                }
+            }
+            progress.completedClueIds.insert(clue.id)
+        }
+        progress.completedAt = Date()
+        progress.startedAt = Date().addingTimeInterval(-(2 * 3600 + 45 * 60))
+        todaysPuzzle = puzzle
+        todaysProgress = progress
+        isLoading = false
     }
 }
 #endif

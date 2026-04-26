@@ -55,6 +55,6 @@ enum AppFont {
 enum AppLayout {
     static let gridSpacing: CGFloat = 2
     static let cellCornerRadius: CGFloat = 2
-    static let cardCornerRadius: CGFloat = 12
+    static let cardCornerRadius: CGFloat = 22
     static let screenPadding: CGFloat = 20
 }
