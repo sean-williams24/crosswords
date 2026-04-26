@@ -19,25 +19,43 @@ struct RatingBarView: View {
                 // Bar track
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
-                        // Track
-                        Capsule()
-                            .fill(Color.appSurface)
+                        // Bar elements — constrained to 8pt, centered in the 18pt frame
+                        ZStack(alignment: .leading) {
+                            // Track
+                            Capsule()
+                                .fill(Color.appSurface)
 
-                        // Filled portion — uses a gradient that shifts colour as fraction grows
-                        Capsule()
-                            .fill(barGradient)
-                            .frame(width: animates ? max(geo.size.width * CGFloat(fraction), 6) : 6)
-                            .animation(.spring(response: 0.8, dampingFraction: 0.75), value: animates)
+                            // Filled portion — gradient spans full track width, masked to filled area
+                            Rectangle()
+                                .fill(barGradient)
+                                .mask(alignment: .leading) {
+                                    Capsule()
+                                        .frame(width: animates ? max(geo.size.width * CGFloat(fraction), 6) : 6)
+                                        .animation(.spring(response: 0.8, dampingFraction: 0.75), value: animates)
+                                }
+                        }
+                        .frame(height: 8)
+                        .frame(maxHeight: .infinity, alignment: .center)
 
-                        // Tier marker dot at current position
-                        Circle()
-                            .fill(tier.color)
-                            .frame(width: 10, height: 10)
-                            .offset(x: animates ? max(geo.size.width * CGFloat(fraction) - 5, 0) : 0)
-                            .animation(.spring(response: 0.8, dampingFraction: 0.75).delay(0.05), value: animates)
+                        // Tier marker dot — 18pt, protrudes above and below the 8pt bar
+                        ZStack {
+                            Circle()
+                                .fill(tier.color.opacity(0.3))
+                                .frame(width: 18, height: 18)
+                            Circle()
+                                .strokeBorder(tier.color, lineWidth: 2)
+                                .frame(width: 14, height: 14)
+                            Circle()
+                                .fill(.white)
+                                .frame(width: 8, height: 8)
+                        }
+                        .shadow(color: tier.color.opacity(0.5), radius: 4, x: 0, y: 0)
+                        .frame(maxHeight: .infinity, alignment: .center)
+                        .offset(x: animates ? max(geo.size.width * CGFloat(fraction) - 9, 0) : 0)
+                        .animation(.spring(response: 0.8, dampingFraction: 0.75).delay(0.05), value: animates)
                     }
                 }
-                .frame(height: 8)
+                .frame(height: 18)
 
                 // Tier label aligned under the dot
                 GeometryReader { geo in
@@ -89,12 +107,14 @@ struct RatingBarView: View {
     private var barGradient: LinearGradient {
         LinearGradient(
             stops: [
-                .init(color: RatingTier.dabbler.color.opacity(0.6), location: 0.0),
-                .init(color: RatingTier.penman.color, location: 0.2),
-                .init(color: RatingTier.linguist.color, location: 0.4),
-                .init(color: RatingTier.grandmaster.color, location: 0.6),
-                .init(color: Color(red: 0.95, green: 0.8, blue: 0.3), location: 0.8),
-                .init(color: Color(red: 0.85, green: 0.55, blue: 0.15), location: 1.0)
+                .init(color: .white,                                         location: 0.0),
+                .init(color: Color(white: 0.72),                             location: 1.0 / 7.0),
+                .init(color: RatingTier.dabbler.color.opacity(0.6),          location: 2.0 / 7.0),
+                .init(color: RatingTier.penman.color,                        location: 3.0 / 7.0),
+                .init(color: RatingTier.linguist.color,                      location: 4.0 / 7.0),
+                .init(color: RatingTier.grandmaster.color,                   location: 5.0 / 7.0),
+                .init(color: Color(red: 0.95, green: 0.8, blue: 0.3),       location: 6.0 / 7.0),
+                .init(color: Color(red: 0.85, green: 0.55, blue: 0.15),     location: 1.0)
             ],
             startPoint: .leading,
             endPoint: .trailing
