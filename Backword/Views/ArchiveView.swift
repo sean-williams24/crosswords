@@ -21,8 +21,8 @@ struct ArchiveView: View {
 
     private enum ArchiveTab: String, CaseIterable {
         case backword = "Backword"
-        case daily = "Daily Crossword"
-        case weekly = "Pro Crossword"
+        case daily = "Daily\n Crossword"
+        case weekly = "Pro\n Crossword"
     }
 
     private var activeEntries: [ArchiveEntry] {
@@ -94,7 +94,7 @@ struct ArchiveView: View {
                             LinearGradient(
                                 stops: [
                                     .init(color: .clear, location: 0),
-                                    .init(color: .black.opacity(0.4), location: 0.55),
+                                    .init(color: .black.opacity(0.7), location: 0.55),
                                     .init(color: .black, location: 1)
                                 ],
                                 startPoint: .top,
@@ -105,11 +105,10 @@ struct ArchiveView: View {
                 .ignoresSafeArea(edges: .bottom)
                 .allowsHitTesting(false)
 
-                // Sliding tab toggle
                 VStack {
                     Spacer()
                     archiveTabToggle
-                        .padding(.bottom, 16)
+//                        .padding(.bottom, 16)
                 }
             }
             .navigationTitle(" \(selectedTab.rawValue) Archive")
@@ -148,41 +147,25 @@ struct ArchiveView: View {
     // MARK: - Tab Toggle
 
     private var archiveTabToggle: some View {
-        let height: CGFloat = 44
-        let tabWidth: CGFloat = (UIScreen.main.bounds.width / 3) - 10
-        let tabCount = CGFloat(ArchiveTab.allCases.count)
-        let totalWidth = tabWidth * tabCount
-        let selectedIndex = CGFloat(ArchiveTab.allCases.firstIndex(of: selectedTab) ?? 0)
-        
-        return ZStack(alignment: .leading) {
-            Capsule()
-                .fill(Color.appSurface)
-                .frame(width: totalWidth, height: height)
-
-            Capsule()
-                .fill(Color.appAccent)
-                .frame(width: tabWidth, height: height)
-                .offset(x: selectedIndex * tabWidth)
-                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: selectedTab)
-
-            HStack(spacing: 0) {
-                ForEach(ArchiveTab.allCases, id: \.self) { tab in
-                    Button {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                            selectedTab = tab
-                        }
-                    } label: {
-                        Text(tab.rawValue)
-                            .font(AppFont.clueLabel(13))
-                            .minimumScaleFactor(0.6)
-                            .foregroundColor(selectedTab == tab ? .white : .appTextSecondary)
-                            .frame(width: tabWidth, height: height)
+        HStack(spacing: 0) {
+            ForEach(ArchiveTab.allCases, id: \.self) { tab in
+                Button {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        selectedTab = tab
                     }
-                    .buttonStyle(.plain)
+                } label: {
+                    Text(tab.rawValue)
+                        .font(AppFont.clueLabel(selectedTab == tab ? 15 : 13))
+                        .minimumScaleFactor(0.6)
+                        .foregroundColor(selectedTab == tab ? .appTextPrimary : .appTextSecondary)
+                        .frame(maxWidth: .infinity)
+//                        .padding(.vertical, 10)
+                        .multilineTextAlignment(.center)
+                        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: selectedTab)
                 }
+                .buttonStyle(.plain)
             }
         }
-        .shadow(color: .black.opacity(0.1), radius: 8, y: 2)
     }
 
     // MARK: - Row
