@@ -46,12 +46,11 @@ struct HomeView: View {
     private var dailyCrossword: some View {
         if viewModel.todaysPuzzle != nil {
             NavigationLink(value: "puzzle") {
-                dailyCrosswordCard(puzzle: viewModel.todaysPuzzle!)
+                dailyCrosswordCard()
             }
             .buttonStyle(.plain)
-        } else if viewModel.isLoading {
-            ProgressView()
-                .tint(.appAccent)
+        } else {
+            dailyCrosswordCard()
         }
     }
 
@@ -71,6 +70,8 @@ struct HomeView: View {
                 }
                 .buttonStyle(.plain)
             }
+        } else if viewModel.isLoading {
+            weeklyCard()
         }
     }
 
@@ -310,7 +311,7 @@ struct HomeView: View {
     // MARK: - Today Card
 
     @ViewBuilder
-    private func dailyCrosswordCard(puzzle: Puzzle) -> some View {
+    private func dailyCrosswordCard() -> some View {
         ZStack(alignment: .bottomTrailing) {
             VStack(spacing: 12) {
                 Text("DAILY CROSSWORD")
@@ -323,13 +324,18 @@ struct HomeView: View {
                     .foregroundColor(.appTextSecondary)
                     .tracking(1)
 
-                HStack(spacing: 6) {
-                    Image(systemName: viewModel.puzzleStatus.icon)
-                        .foregroundColor(viewModel.puzzleStatus.color)
-                        .font(.system(size: 13))
-                    Text(viewModel.puzzleStatus.label)
-                        .font(AppFont.caption())
-                        .foregroundColor(.appTextSecondary)
+                if viewModel.isLoading {
+                    ProgressView()
+                        .tint(.appAccent)
+                } else {
+                    HStack(spacing: 6) {
+                        Image(systemName: viewModel.puzzleStatus.icon)
+                            .foregroundColor(viewModel.puzzleStatus.color)
+                            .font(.system(size: 13))
+                        Text(viewModel.puzzleStatus.label)
+                            .font(AppFont.caption())
+                            .foregroundColor(.appTextSecondary)
+                    }
                 }
             }
             .padding(24)
@@ -407,7 +413,7 @@ struct HomeView: View {
     }
 
     @ViewBuilder
-    private func weeklyCard(puzzle: Puzzle, locked: Bool = false) -> some View {
+    private func weeklyCard(puzzle: Puzzle? = nil, locked: Bool = false) -> some View {
         VStack(spacing: 12) {
             HStack(spacing: 6) {
                 Image(systemName: "crown.fill")
@@ -422,25 +428,28 @@ struct HomeView: View {
                     .foregroundStyle(proGradient)
             }
 
-            Text("13×13")
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary)
-
-            if !locked {
-                HStack(spacing: 6) {
-                    Image(systemName: viewModel.weeklyPuzzleStatus.icon)
-                        .foregroundColor(viewModel.weeklyPuzzleStatus.color)
-                        .font(.system(size: 13))
-                    Text(viewModel.weeklyPuzzleStatus.label)
-                        .font(AppFont.caption())
-                        .foregroundColor(.appTextSecondary)
-                }
+            if viewModel.isLoading && puzzle == nil {
+                ProgressView()
+                    .tint(.appAccent)
             } else {
-                HStack(spacing: 6) {
-                    Text("Pro Only")
-                        .font(AppFont.caption())
-                        .foregroundColor(.appAccent)
-                    if locked {
+                Text("13×13")
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+
+                if !locked {
+                    HStack(spacing: 6) {
+                        Image(systemName: viewModel.weeklyPuzzleStatus.icon)
+                            .foregroundColor(viewModel.weeklyPuzzleStatus.color)
+                            .font(.system(size: 13))
+                        Text(viewModel.weeklyPuzzleStatus.label)
+                            .font(AppFont.caption())
+                            .foregroundColor(.appTextSecondary)
+                    }
+                } else {
+                    HStack(spacing: 6) {
+                        Text("Pro Only")
+                            .font(AppFont.caption())
+                            .foregroundColor(.appAccent)
                         Image(systemName: "lock.fill")
                             .font(.system(size: 12))
                             .foregroundColor(.appAccent)
