@@ -383,8 +383,8 @@ struct HomeView: View {
         .background(
             ZStack {
                 Color.dailyCardBackground
-                MiniGridPattern()
-                    .opacity(0.05)
+//                MiniGridPattern()
+//                    .opacity(0.05)
             }
         )
         .clipped()

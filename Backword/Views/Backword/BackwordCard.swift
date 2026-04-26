@@ -28,13 +28,13 @@ struct BackwordCard: View {
         }
         .frame(maxWidth: .infinity)
         .padding(16)
-        .background(
-            LinearGradient(
-                colors: [Color.appAccent.opacity(0.12), Color.appSurface],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
+//        .background(
+//            LinearGradient(
+//                colors: [Color.appAccent.opacity(0.12), Color.appSurface],
+//                startPoint: .topLeading,
+//                endPoint: .bottomTrailing
+//            )
+//        )
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
@@ -55,7 +55,7 @@ struct BackwordCard: View {
                     .font(AppFont.body(14))
                     .foregroundColor(.appTextSecondary)
             } else {
-                Text("Better luck tomorrow!")
+                Text("Better luck tomorrow")
                     .font(AppFont.body(14))
                     .foregroundColor(.appTextSecondary)
             }

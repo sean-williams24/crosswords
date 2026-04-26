@@ -21,13 +21,6 @@ struct BackwordView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [Color.appAccent.opacity(0.10), Color.appBackground],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-
             // Hidden TextField — captures keyboard input; focused programmatically.
             TextField("", text: Binding(
                 get: { viewModel.currentInput },
