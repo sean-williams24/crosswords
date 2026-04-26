@@ -169,12 +169,23 @@ struct HomeView: View {
                     .padding(.horizontal, AppLayout.screenPadding)
                     .padding(.top, 8)
                 }
-                .background(
-                    Color.appBackground.opacity(0.75)
-                        .background(.ultraThinMaterial)
-                        .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: -4)
-                        .ignoresSafeArea()
-                )
+                .background {
+                    ZStack {
+                        Rectangle().fill(.ultraThinMaterial)
+                        Color.appBackground.opacity(0.75)
+                    }
+                    .mask(
+                        LinearGradient(
+                            stops: [
+                                .init(color: .clear, location: 0),
+                                .init(color: .black, location: 0.15)
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .ignoresSafeArea()
+                }
             }
             .ignoresSafeArea(.keyboard)
             .toolbar(.hidden, for: .navigationBar)
