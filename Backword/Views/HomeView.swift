@@ -62,8 +62,52 @@ struct HomeView: View {
             showDebugSettings = true
         }
         #endif
-        .padding()
-        .padding(.top, 24)
+        .padding(.horizontal)
+//        .padding(.top, 24)
+    }
+
+    @ViewBuilder
+    private var wotd: some View {
+        if let word = wotdService.todaysWord {
+            Button {
+                showWOTD = true
+            } label: {
+                wotdCard(word: word)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    @ViewBuilder
+    private var dailyCrossword: some View {
+        if viewModel.todaysPuzzle != nil {
+            NavigationLink(value: "puzzle") {
+                dailyCrosswordCard(puzzle: viewModel.todaysPuzzle!)
+            }
+            .buttonStyle(.plain)
+        } else if viewModel.isLoading {
+            ProgressView()
+                .tint(.appAccent)
+        }
+    }
+
+    @ViewBuilder
+    private var weeklyCrossword: some View {
+        if let weekly = viewModel.weeklyPuzzle {
+            if storeService.isProUser {
+                NavigationLink(value: "weekly") {
+                    weeklyCard(puzzle: weekly)
+                }
+                .buttonStyle(.plain)
+            } else {
+                Button {
+                    showPaywall = true
+                } label: {
+                    weeklyCard(puzzle: weekly, locked: true)
+                }
+                .buttonStyle(.plain)
+            }
+        }
     }
 
     var body: some View {
@@ -72,57 +116,29 @@ struct HomeView: View {
                 Color.appBackground
                     .ignoresSafeArea()
 
-                VStack(spacing: 32) {
-                    titleIcon
+                ScrollView {
+                    VStack(spacing: 32) {
+                        titleIcon
 
-                    RatingBarView(
-                        rating: ratingService.rating,
-                        isPro: storeService.isProUser
-                    )
-                    .padding(.horizontal, AppLayout.screenPadding)
-                    .padding(.top, -16)
+                        RatingBarView(
+                            rating: ratingService.rating,
+                            isPro: storeService.isProUser
+                        )
+                        .padding(.horizontal, AppLayout.screenPadding)
+                        .padding(.top, -16)
 
-                    backwordButton
-
-                    // Word of the Day
-                    if let word = wotdService.todaysWord {
-                        Button {
-                            showWOTD = true
-                        } label: {
-                            wotdCard(word: word)
-                        }
-                        .buttonStyle(.plain)
+                        backwordButton
+                        dailyCrossword
+                        weeklyCrossword
+                        wotd
                     }
-
-                    // Today's puzzle card
-                    if viewModel.todaysPuzzle != nil {
-                        NavigationLink(value: "puzzle") {
-                            dailyCrosswordCard(puzzle: viewModel.todaysPuzzle!)
-                        }
-                        .buttonStyle(.plain)
-                    } else if viewModel.isLoading {
-                        ProgressView()
-                            .tint(.appAccent)
-                    }
-
-                    // Weekly puzzle card (pro only)
-                    if let weekly = viewModel.weeklyPuzzle {
-                        if storeService.isProUser {
-                            NavigationLink(value: "weekly") {
-                                weeklyCard(puzzle: weekly)
-                            }
-                            .buttonStyle(.plain)
-                        } else {
-                            Button {
-                                showPaywall = true
-                            } label: {
-                                weeklyCard(puzzle: weekly, locked: true)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-
-                    // Bottom buttons
+                    .padding(.bottom, 100)
+                }
+                .scrollIndicators(.hidden)
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                // Archive footer bar
+                VStack(spacing: 0) {
                     Button {
                         if storeService.isProUser {
                             showArchive = true
@@ -141,13 +157,17 @@ struct HomeView: View {
                         .font(AppFont.clueLabel(14))
                         .foregroundColor(.appTextSecondary)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(Color.appSurface)
-                        .cornerRadius(AppLayout.cardCornerRadius)
+                        .padding(.top, 14)
                     }
                     .padding(.horizontal, AppLayout.screenPadding)
-                    .padding(.bottom, 32)
+                    .padding(.top, 8)
                 }
+                .background(
+                    Color.appBackground.opacity(0.15)
+                        .background(.ultraThinMaterial)
+                        .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: -4)
+                        .ignoresSafeArea()
+                )
             }
             .ignoresSafeArea(.keyboard)
             .toolbar(.hidden, for: .navigationBar)
