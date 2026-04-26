@@ -30,42 +30,6 @@ struct HomeView: View {
         _viewModel = StateObject(wrappedValue: viewModel ?? HomeViewModel(puzzleService: PuzzleService()))
     }
 
-    private var titleIcon: some View {
-        ZStack(alignment: .topTrailing) {
-            VStack(spacing: -17) {
-                BackwordLogo()
-                    .offset(x: logoVisible ? 0 : 120)
-                    .opacity(logoVisible ? 1 : 0)
-                if storeService.isProUser {
-                    Image("Pro")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 28)
-                        .offset(x: 20)
-                        .opacity(proLogoVisible ? 1 : 0)
-                }
-            }
-            .frame(maxWidth: .infinity)
-
-            Button {
-                showSettings = true
-            } label: {
-                Image(systemName: "gearshape")
-                    .font(.system(size: 18))
-                    .foregroundColor(.appTextSecondary)
-            }
-            .padding(.top, 6)
-        }
-        .multilineTextAlignment(.center)
-        #if DEBUG
-        .onTapGesture(count: 3) {
-            showDebugSettings = true
-        }
-        #endif
-        .padding(.horizontal)
-//        .padding(.top, 24)
-    }
-
     @ViewBuilder
     private var wotd: some View {
         if let word = wotdService.todaysWord {
@@ -118,23 +82,66 @@ struct HomeView: View {
 
                 ScrollView {
                     VStack(spacing: 32) {
-                        titleIcon
-
                         RatingBarView(
                             rating: ratingService.rating,
                             isPro: storeService.isProUser
                         )
                         .padding(.horizontal, AppLayout.screenPadding)
-                        .padding(.top, -16)
 
                         backwordButton
                         dailyCrossword
                         weeklyCrossword
                         wotd
                     }
+                    .padding(.top, 16)
                     .padding(.bottom, 100)
                 }
                 .scrollIndicators(.hidden)
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                // Semi-transparent nav bar — extends behind status bar
+                ZStack(alignment: .center) {
+                    VStack(spacing: -17) {
+                        BackwordLogo()
+                            .offset(x: logoVisible ? 0 : 120)
+                            .opacity(logoVisible ? 1 : 0)
+                        if storeService.isProUser {
+                            Image("Pro")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 28)
+                                .offset(x: 20)
+                                .opacity(proLogoVisible ? 1 : 0)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+
+                    HStack {
+                        Spacer()
+                        Button {
+                            showSettings = true
+                        } label: {
+                            Image(systemName: "gearshape")
+                                .font(.system(size: 18))
+                                .foregroundColor(.appTextSecondary)
+                        }
+                        .padding(.trailing, AppLayout.screenPadding)
+                    }
+                }
+                #if DEBUG
+                .onTapGesture(count: 3) {
+                    showDebugSettings = true
+                }
+                #endif
+                .padding(.horizontal, AppLayout.screenPadding)
+                .padding(.top, 4)
+                .padding(.bottom, 12)
+                .background(
+                    Color.appBackground.opacity(0.85)
+                        .background(.ultraThinMaterial)
+                        .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 4)
+                        .ignoresSafeArea()
+                )
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 // Archive footer bar
@@ -163,7 +170,7 @@ struct HomeView: View {
                     .padding(.top, 8)
                 }
                 .background(
-                    Color.appBackground.opacity(0.15)
+                    Color.appBackground.opacity(0.75)
                         .background(.ultraThinMaterial)
                         .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: -4)
                         .ignoresSafeArea()
