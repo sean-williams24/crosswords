@@ -13,28 +13,50 @@ struct BackwordCard: View {
                     .tracking(3)
                     .offset(y: 5)
                     .italic()
-
                 BackwordLogo()
             }
 
             if let progress, progress.isComplete {
                 completionContent(progress: progress)
-            } else if let word {
-                inProgressContent(word: word, progress: progress)
             } else {
-                ProgressView()
-                    .tint(.appAccent)
+                // Show ProgressView in place of letter cells if loading, else show letter cells
+                Group {
+                    if let word {
+                        HStack(spacing: 6) {
+                            let revealedCount = progress?.revealedCount ?? 1
+                            let letters = Array(word.word)
+                            ForEach(0..<6, id: \ .self) { i in
+                                BackwordLetterCell(
+                                    letter: i >= (6 - revealedCount) ? letters[i] : nil,
+                                    size: 34
+                                )
+                            }
+                        }
+                    } else {
+                        HStack(spacing: 6) {
+                            Spacer()
+                            ProgressView()
+                                .tint(.appAccent)
+                            Spacer()
+                        }
+                        .frame(height: 34)
+                    }
+                }
+
+                // Always show the caption text
+                if let progress, !progress.guesses.isEmpty {
+                    Text("\(progress.guesses.count) / 5 guesses")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                } else {
+                    Text("Guess the 6-letter word")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                }
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, minHeight: 108)
         .padding(16)
-//        .background(
-//            LinearGradient(
-//                colors: [Color.appAccent.opacity(0.12), Color.appSurface],
-//                startPoint: .topLeading,
-//                endPoint: .bottomTrailing
-//            )
-//        )
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
@@ -62,33 +84,24 @@ struct BackwordCard: View {
         }
     }
 
-    @ViewBuilder
-    private func inProgressContent(word: BackwordWord, progress: BackwordProgress?) -> some View {
-        // Show the currently revealed letters as a small teaser row
-        let revealedCount = progress?.revealedCount ?? 1
-        let letters = Array(word.word)
-
-        HStack(spacing: 6) {
-            ForEach(0..<6, id: \.self) { i in
-                BackwordLetterCell(
-                    letter: i >= (6 - revealedCount) ? letters[i] : nil,
-                    size: 34
-                )
-            }
-        }
-
-        if let progress, !progress.guesses.isEmpty {
-            Text("\(progress.guesses.count) / 5 guesses")
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary)
-        } else {
-            Text("Guess the 6-letter word")
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary)
-        }
-    }
+    // inProgressContent no longer needed; logic inlined above
 }
 
 #Preview {
-    BackwordCard(word: BackwordWord(date: "", word: "Seannnn", category: "", definition: ""), progress: nil)
+    VStack {
+        BackwordCard(
+            word: BackwordWord(
+                date: "",
+                word: "Seannnn",
+                category: "",
+                definition: ""
+            ),
+            progress: nil
+        )
+
+        BackwordCard(
+            word: nil,
+            progress: nil
+        )
+    }
 }
