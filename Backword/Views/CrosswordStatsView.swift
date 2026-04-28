@@ -3,9 +3,9 @@ import SwiftUI
 struct CrosswordStatsView: View {
     @EnvironmentObject var statsService: StatsService
     var onDismiss: (() -> Void)? = nil
-
+    
     @State private var animates = false
-
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -15,7 +15,7 @@ struct CrosswordStatsView: View {
                     endPoint: .bottomTrailing
                 )
                 .ignoresSafeArea()
-
+                
                 if statsService.stats.totalCompleted == 0 {
                     emptyState
                 } else {
@@ -51,9 +51,9 @@ struct CrosswordStatsView: View {
             }
         }
     }
-
+    
     // MARK: - Summary Row
-
+    
     private var summaryRow: some View {
         VStack {
             HStack(spacing: 0) {
@@ -71,7 +71,7 @@ struct CrosswordStatsView: View {
             }
             statCell(value: statsService.stats.formattedAverageTime, label: "Avg Time")
                 .padding(.top)
-
+            
         }
         .padding(.vertical, 20)
         .background(Color.appSurface)
@@ -81,13 +81,13 @@ struct CrosswordStatsView: View {
                 .strokeBorder(Color.appAccent.opacity(0.2), lineWidth: 1)
         )
     }
-
+    
     private var divider: some View {
         Rectangle()
             .fill(Color.appGridLine.opacity(0.5))
             .frame(width: 1, height: 40)
     }
-
+    
     private func statCell(
         value: String,
         label: String,
@@ -113,16 +113,16 @@ struct CrosswordStatsView: View {
         }
         .frame(maxWidth: .infinity)
     }
-
+    
     // MARK: - Recent History
-
+    
     private var recentHistory: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("RECENT GAMES")
                 .font(AppFont.clueLabel(12))
                 .foregroundColor(.appAccent)
                 .tracking(2)
-
+            
             VStack(spacing: 0) {
                 let history = statsService.stats.history.suffix(10).reversed()
                 ForEach(Array(history.enumerated()), id: \.element.id) { index, result in
@@ -132,27 +132,27 @@ struct CrosswordStatsView: View {
                                 .font(AppFont.body(14))
                                 .foregroundColor(.appTextPrimary)
                         }
-
+                        
                         Spacer()
-
-                        Text(formatTime(result.timeSeconds))
+                        
+                        Text(result.timeSeconds.formattedTimeHHMMSS)
                             .font(AppFont.body(14))
                             .foregroundColor(.appTextSecondary)
                             .monospacedDigit()
-
-                        if result.hintsUsed == 0 {
-                            Image(systemName: "star.fill")
-                                .font(.system(size: 10))
-                                .foregroundColor(.appAccent)
-                        }
-
+                        
+                        //                        if result.hintsUsed == 0 {
+                        //                            Image(systemName: "star.fill")
+                        //                                .font(.system(size: 10))
+                        //                                .foregroundColor(.appAccent)
+                        //                        }
+                        
                         Image(systemName: "checkmark.circle.fill")
                             .font(.system(size: 13))
                             .foregroundColor(.appCorrect)
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
-
+                    
                     if index < min(9, statsService.stats.history.count - 1) {
                         Divider().background(Color.appGridLine)
                     }
@@ -166,9 +166,9 @@ struct CrosswordStatsView: View {
             )
         }
     }
-
+    
     // MARK: - Empty State
-
+    
     private var emptyState: some View {
         VStack(spacing: 16) {
             Image(systemName: "chart.bar")
@@ -184,19 +184,13 @@ struct CrosswordStatsView: View {
         }
         .padding(40)
     }
-
+    
     // MARK: - Formatting
-
+    
     private func formatDate(_ date: Date) -> String {
         let fmt = DateFormatter()
         fmt.dateFormat = "EEE, MMM d"
         return fmt.string(from: date)
-    }
-
-    private func formatTime(_ seconds: Int) -> String {
-        let m = seconds / 60
-        let s = seconds % 60
-        return String(format: "%d:%02d", m, s)
     }
 }
 

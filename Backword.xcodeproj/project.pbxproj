@@ -134,6 +134,27 @@
 		F31C198A0EE68F6859AD60A4 /* PuzzleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		86E5BFE32FA162D300A42156 /* Exceptions for "Utilities" folder in "Backword" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Int+Extensions.swift",
+			);
+			target = A53A431755E77FC7A5A5FCB4 /* Backword */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		86E5BFE02FA162B200A42156 /* Utilities */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				86E5BFE32FA162D300A42156 /* Exceptions for "Utilities" folder in "Backword" target */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		45490914F9B3DD3CBB222574 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -230,6 +251,7 @@
 		C706B4704F6EC022F822EB56 /* Backword */ = {
 			isa = PBXGroup;
 			children = (
+				86E5BFE02FA162B200A42156 /* Utilities */,
 				CFFA6D1B9E7C8A79F840A64E /* App */,
 				F12D87FC4D824503857237D6 /* Configuration */,
 				0574559B935CCFAA014F25D3 /* Models */,
