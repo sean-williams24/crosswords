@@ -55,19 +55,23 @@ struct CrosswordStatsView: View {
     // MARK: - Summary Row
 
     private var summaryRow: some View {
-        HStack(spacing: 0) {
-            statCell(
-                value: "\(statsService.stats.liveCurrentStreak)",
-                label: "Streak",
-                icon: statsService.stats.liveCurrentStreak > 0 ? "flame.fill" : nil,
-                iconColor: .orange
-            )
-            divider
-            statCell(value: "\(statsService.stats.totalCompleted)", label: "Solved")
-            divider
-            statCell(value: "\(statsService.stats.longestStreak)", label: "Best")
-            divider
+        VStack {
+            HStack(spacing: 0) {
+                statCell(
+                    value: "\(statsService.stats.liveCurrentStreak)",
+                    label: "Current\n Streak",
+                    icon: statsService.stats.liveCurrentStreak > 0 ? "flame.fill" : nil,
+                    iconColor: .orange
+                )
+                divider
+                statCell(value: "\(statsService.stats.totalCompleted)", label: "Solved\n")
+                divider
+                statCell(value: "\(statsService.stats.longestStreak)", label: "Best\n Streak")
+                divider
+            }
             statCell(value: statsService.stats.formattedAverageTime, label: "Avg Time")
+                .padding(.top)
+
         }
         .padding(.vertical, 20)
         .background(Color.appSurface)
@@ -84,12 +88,17 @@ struct CrosswordStatsView: View {
             .frame(width: 1, height: 40)
     }
 
-    private func statCell(value: String, label: String, icon: String? = nil, iconColor: Color = .appAccent) -> some View {
+    private func statCell(
+        value: String,
+        label: String,
+        icon: String? = nil,
+        iconColor: Color = .appAccent
+    ) -> some View {
         VStack(spacing: 4) {
             HStack(spacing: 4) {
                 if let icon {
                     Image(systemName: icon)
-                        .font(.system(size: 13))
+                        .font(.system(size: 10))
                         .foregroundColor(iconColor)
                 }
                 Text(value)
@@ -193,5 +202,31 @@ struct CrosswordStatsView: View {
 
 #Preview {
     CrosswordStatsView { }
-        .environmentObject(StatsService())
+        .environmentObject(CrosswordStatsView.mockService)
+}
+
+private extension CrosswordStatsView {
+    static var mockService: StatsService {
+        var mockStats = UserStats()
+        mockStats.currentStreak = 3
+        mockStats.longestStreak = 7
+        mockStats.totalCompleted = 12
+        mockStats.averageTimeSeconds = 6486.0
+        mockStats.lastCompletedDate = Calendar.current.date(byAdding: .day, value: -1, to: Date())
+        mockStats.history = [
+            PuzzleResult(puzzleId: "1", date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, timeSeconds: 5320, hintsUsed: 0),
+            PuzzleResult(puzzleId: "2", date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, timeSeconds: 8410, hintsUsed: 1),
+            PuzzleResult(puzzleId: "3", date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!, timeSeconds: 290, hintsUsed: 0),
+            PuzzleResult(puzzleId: "4", date: Calendar.current.date(byAdding: .day, value: -4, to: Date())!, timeSeconds: 370, hintsUsed: 2),
+            PuzzleResult(puzzleId: "5", date: Calendar.current.date(byAdding: .day, value: -5, to: Date())!, timeSeconds: 330, hintsUsed: 0),
+            PuzzleResult(puzzleId: "6", date: Calendar.current.date(byAdding: .day, value: -6, to: Date())!, timeSeconds: 355, hintsUsed: 0),
+            PuzzleResult(puzzleId: "7", date: Calendar.current.date(byAdding: .day, value: -7, to: Date())!, timeSeconds: 400, hintsUsed: 1),
+            PuzzleResult(puzzleId: "8", date: Calendar.current.date(byAdding: .day, value: -8, to: Date())!, timeSeconds: 315, hintsUsed: 0),
+            PuzzleResult(puzzleId: "9", date: Calendar.current.date(byAdding: .day, value: -9, to: Date())!, timeSeconds: 360, hintsUsed: 0),
+            PuzzleResult(puzzleId: "10", date: Calendar.current.date(byAdding: .day, value: -10, to: Date())!, timeSeconds: 390, hintsUsed: 2)
+        ]
+        let mockService = StatsService()
+        mockService.stats = mockStats
+        return mockService
+    }
 }

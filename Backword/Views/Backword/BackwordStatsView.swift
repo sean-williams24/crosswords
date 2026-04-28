@@ -55,20 +55,25 @@ struct BackwordStatsView: View {
 
     // MARK: - Summary Row
 
+    @ViewBuilder
     private var summaryRow: some View {
-        HStack(spacing: 0) {
-            statCell(value: "\(stats.gamesPlayed)", label: "Played")
-            divider
+        VStack {
+            HStack(spacing: 0) {
+                statCell(
+                    value: "\(stats.currentStreak)",
+                    label: "Current\n Streak",
+                    icon: stats.currentStreak > 0 ? "flame.fill" : nil,
+                    iconColor: .orange
+                )
+                divider
+                statCell(value: "\(stats.gamesPlayed)", label: "Played\n")
+                divider
+                divider
+                statCell(value: "\(stats.longestStreak)", label: "Best\n Streak")
+            }
             statCell(value: "\(stats.winRate)%", label: "Win Rate")
-            divider
-            statCell(
-                value: "\(stats.currentStreak)",
-                label: "Current Streak",
-                icon: stats.currentStreak > 0 ? "flame.fill" : nil,
-                iconColor: .orange
-            )
-            divider
-            statCell(value: "\(stats.longestStreak)", label: "Best Streak")
+                .padding(.top)
+
         }
         .padding(.vertical, 20)
         .background(Color.appSurface)
@@ -85,12 +90,17 @@ struct BackwordStatsView: View {
             .frame(width: 1, height: 40)
     }
 
-    private func statCell(value: String, label: String, icon: String? = nil, iconColor: Color = .appAccent) -> some View { // swiftlint:disable:this function_parameter_count
+    private func statCell(
+        value: String,
+        label: String,
+        icon: String? = nil,
+        iconColor: Color = .appAccent
+    ) -> some View { // swiftlint:disable:this function_parameter_count
         VStack(spacing: 4) {
             HStack(spacing: 4) {
                 if let icon {
                     Image(systemName: icon)
-                        .font(.system(size: 13))
+                        .font(.system(size: 10))
                         .foregroundColor(iconColor)
                 }
                 Text(value)
