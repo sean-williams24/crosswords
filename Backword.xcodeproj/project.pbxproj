@@ -79,12 +79,12 @@
 		0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleView.swift; sourceTree = "<group>"; };
 		0C4762545EDB078B5DA1FA49 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGridPattern.swift; sourceTree = "<group>"; };
-		19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OverallRatingService.swift; path = OverallRatingService.swift; sourceTree = "<group>"; };
+		19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingService.swift; sourceTree = "<group>"; };
 		1E4D0C7C19A4685DF1DC48C2 /* UserStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStats.swift; sourceTree = "<group>"; };
 		20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordWord.swift; sourceTree = "<group>"; };
 		2259B66045D006E89462572C /* BackwordLetterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordLetterCell.swift; sourceTree = "<group>"; };
 		2519353944EB9D4F32644E32 /* ClueBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueBarView.swift; sourceTree = "<group>"; };
-		26FDFB84159BB8E3A26031D0 /* OverallRating.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OverallRating.swift; path = OverallRating.swift; sourceTree = "<group>"; };
+		26FDFB84159BB8E3A26031D0 /* OverallRating.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRating.swift; sourceTree = "<group>"; };
 		30C31A4805F0514D4233C775 /* AdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdService.swift; sourceTree = "<group>"; };
 		3838DB082E2416DB47994C4D /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		40ACCF7B840800AA52BD9ED7 /* BackwordGuessRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordGuessRow.swift; sourceTree = "<group>"; };
@@ -107,9 +107,9 @@
 		8820C57EC2BCBADADEC4006C /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		894071960CD50EDF948DA15E /* BackwordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordApp.swift; sourceTree = "<group>"; };
 		8AF93C5B6979DA0324E913C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		9165B37268686C367CEB6523 /* RatingBarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RatingBarView.swift; path = RatingBarView.swift; sourceTree = "<group>"; };
-		922354966A899721DF1CF25C /* CrosswordStatsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CrosswordStatsView.swift; path = CrosswordStatsView.swift; sourceTree = "<group>"; };
-		963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RatingDetailSheet.swift; path = RatingDetailSheet.swift; sourceTree = "<group>"; };
+		9165B37268686C367CEB6523 /* RatingBarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RatingBarView.swift; sourceTree = "<group>"; };
+		922354966A899721DF1CF25C /* CrosswordStatsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CrosswordStatsView.swift; sourceTree = "<group>"; };
+		963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RatingDetailSheet.swift; sourceTree = "<group>"; };
 		9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsEngine.swift; sourceTree = "<group>"; };
 		A04496BE6230D031AE10977A /* DebugSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSettingsView.swift; sourceTree = "<group>"; };
 		A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModelTests.swift; sourceTree = "<group>"; };
@@ -475,7 +475,9 @@
 				DEVELOPMENT_TEAM = 99VU66ZD3X;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -656,7 +658,9 @@
 				DEVELOPMENT_TEAM = 99VU66ZD3X;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

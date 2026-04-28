@@ -6,6 +6,7 @@ struct RatingBarView: View {
     let isPro: Bool
 
     @State private var animates = false
+    @State private var pulses = false
     @State private var showDetail = false
 
     private var tier: RatingTier { rating.tier(isPro: isPro) }
@@ -37,8 +38,9 @@ struct RatingBarView: View {
                         // Dot (18pt — protrudes above/below the 8pt bar)
                         ZStack {
                             Circle()
-                                .fill(tier.color.opacity(0.3))
+                                .fill(tier.color.opacity(pulses ? 0.08 : 0.3))
                                 .frame(width: 18, height: 18)
+                                .scaleEffect(pulses ? 1.7 : 1.0)
                             Circle()
                                 .strokeBorder(tier.color, lineWidth: 2)
                                 .frame(width: 14, height: 14)
@@ -70,6 +72,13 @@ struct RatingBarView: View {
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 animates = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
+                withAnimation(
+                    .easeInOut(duration: 1.2).repeatForever(autoreverses: true)
+                ) {
+                    pulses = true
+                }
             }
         }
     }
