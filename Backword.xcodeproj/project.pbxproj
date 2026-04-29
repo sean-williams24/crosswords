@@ -139,6 +139,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Int+Extensions.swift",
+				"SwipeBackModifier.swift",
 			);
 			target = A53A431755E77FC7A5A5FCB4 /* Backword */;
 		};

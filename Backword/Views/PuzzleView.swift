@@ -88,6 +88,7 @@ struct PuzzleView: View {
             }
         }
         .toolbar(.hidden, for: .navigationBar)
+        .enableSwipeBack()
         .sheet(isPresented: $viewModel.showClueList) {
             ClueListView(viewModel: viewModel)
         }
