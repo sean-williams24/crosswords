@@ -35,8 +35,8 @@ struct RatingDetailSheet: View {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 28) {
                         tierHero
-                        breakdownSection
                         howItWorksSection
+                        breakdownSection
                     }
                     .padding(.horizontal, AppLayout.screenPadding)
                     .padding(.top, 8)
@@ -182,6 +182,7 @@ struct RatingDetailSheet: View {
                     .tracking(1)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
+                    .padding(.top, 8)
 
                     Divider().background(Color.appGridLine)
 
@@ -244,6 +245,7 @@ struct RatingDetailSheet: View {
                 .font(AppFont.clueLabel(13))
                 .foregroundColor(total > 0 ? .appTextPrimary : .appTextSecondary.opacity(0.4))
                 .frame(width: 44, alignment: .trailing)
+                .offset(x: -11)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
