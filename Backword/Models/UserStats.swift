@@ -6,6 +6,25 @@ struct PuzzleResult: Codable, Identifiable {
     let date: Date
     let timeSeconds: Int
     let hintsUsed: Int
+    var isWeekly: Bool
+
+    init(puzzleId: String, date: Date, timeSeconds: Int, hintsUsed: Int, isWeekly: Bool = false) {
+        self.puzzleId = puzzleId
+        self.date = date
+        self.timeSeconds = timeSeconds
+        self.hintsUsed = hintsUsed
+        self.isWeekly = isWeekly
+    }
+
+    // Custom decoder so existing saved records (without isWeekly) default to false
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        puzzleId = try container.decode(String.self, forKey: .puzzleId)
+        date = try container.decode(Date.self, forKey: .date)
+        timeSeconds = try container.decode(Int.self, forKey: .timeSeconds)
+        hintsUsed = try container.decode(Int.self, forKey: .hintsUsed)
+        isWeekly = (try? container.decode(Bool.self, forKey: .isWeekly)) ?? false
+    }
 }
 
 struct UserStats: Codable {
@@ -36,13 +55,14 @@ struct UserStats: Codable {
         return currentStreak
     }
 
-    mutating func recordCompletion(puzzleId: String, timeSeconds: Int, hintsUsed: Int) {
+    mutating func recordCompletion(puzzleId: String, timeSeconds: Int, hintsUsed: Int, isWeekly: Bool = false) {
         let today = Calendar.current.startOfDay(for: Date())
         let result = PuzzleResult(
             puzzleId: puzzleId,
             date: today,
             timeSeconds: timeSeconds,
-            hintsUsed: hintsUsed
+            hintsUsed: hintsUsed,
+            isWeekly: isWeekly
         )
         history.append(result)
         totalCompleted += 1
@@ -70,5 +90,63 @@ struct UserStats: Codable {
 
     var formattedAverageTime: String {
         Int(averageTimeSeconds).formattedTimeHHMMSS
+    }
+
+    // MARK: - Per-type filtered helpers
+
+    func filteredHistory(isWeekly: Bool) -> [PuzzleResult] {
+        history.filter { $0.isWeekly == isWeekly }
+    }
+
+    func totalCompleted(isWeekly: Bool) -> Int {
+        filteredHistory(isWeekly: isWeekly).count
+    }
+
+    func formattedAverageTime(isWeekly: Bool) -> String {
+        let h = filteredHistory(isWeekly: isWeekly)
+        guard !h.isEmpty else { return "–" }
+        let avg = Double(h.reduce(0) { $0 + $1.timeSeconds }) / Double(h.count)
+        return Int(avg).formattedTimeHHMMSS
+    }
+
+    /// Current streak from the filtered history.
+    /// Daily = consecutive calendar days; weekly = consecutive entries ≤8 days apart.
+    func currentStreak(isWeekly: Bool) -> Int {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let maxGap = isWeekly ? 8 : 1
+        let dates = filteredHistory(isWeekly: isWeekly)
+            .map { calendar.startOfDay(for: $0.date) }
+            .sorted()
+        guard let last = dates.last else { return 0 }
+        let daysSinceLast = calendar.dateComponents([.day], from: last, to: today).day ?? Int.max
+        guard daysSinceLast <= maxGap else { return 0 }
+        var streak = 1
+        for i in stride(from: dates.count - 1, through: 1, by: -1) {
+            let gap = calendar.dateComponents([.day], from: dates[i - 1], to: dates[i]).day ?? Int.max
+            if gap <= maxGap { streak += 1 } else { break }
+        }
+        return streak
+    }
+
+    func longestStreak(isWeekly: Bool) -> Int {
+        let calendar = Calendar.current
+        let maxGap = isWeekly ? 8 : 1
+        let dates = filteredHistory(isWeekly: isWeekly)
+            .map { calendar.startOfDay(for: $0.date) }
+            .sorted()
+        guard !dates.isEmpty else { return 0 }
+        var longest = 1
+        var current = 1
+        for i in 1..<dates.count {
+            let gap = calendar.dateComponents([.day], from: dates[i - 1], to: dates[i]).day ?? Int.max
+            if gap <= maxGap {
+                current += 1
+                longest = max(longest, current)
+            } else {
+                current = 1
+            }
+        }
+        return longest
     }
 }

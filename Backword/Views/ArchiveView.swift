@@ -272,29 +272,32 @@ struct ArchiveView: View {
     // MARK: - Status
 
     private enum PuzzleStatus {
-        case completed, inProgress, notStarted
+        case completedOnTime, completedLate, inProgress, notStarted
 
         var icon: String {
             switch self {
-            case .completed: return "checkmark.circle.fill"
-            case .inProgress: return "pencil.circle"
-            case .notStarted: return "circle"
+            case .completedOnTime: return "checkmark.circle.fill"
+            case .completedLate:   return "checkmark.circle.fill"
+            case .inProgress:      return "pencil.circle"
+            case .notStarted:      return "circle"
             }
         }
 
         var label: String {
             switch self {
-            case .completed: return "Done"
-            case .inProgress: return "In Progress"
-            case .notStarted: return "New"
+            case .completedOnTime: return "Solved"
+            case .completedLate:   return "Finished"
+            case .inProgress:      return "In Progress"
+            case .notStarted:      return "New"
             }
         }
 
         var color: Color {
             switch self {
-            case .completed: return .appCorrect
-            case .inProgress: return .appAccent
-            case .notStarted: return .appTextSecondary
+            case .completedOnTime: return Color(red: 0.92, green: 0.72, blue: 0.22)
+            case .completedLate:   return .appCorrect
+            case .inProgress:      return .appAccent
+            case .notStarted:      return .appTextSecondary
             }
         }
     }
@@ -303,7 +306,13 @@ struct ArchiveView: View {
         guard let progress = UserProgress.load(puzzleId: entry.id) else {
             return .notStarted
         }
-        return progress.isComplete ? .completed : .inProgress
+        guard progress.isComplete, let completedAt = progress.completedAt else {
+            return .inProgress
+        }
+        let fmt = DateFormatter()
+        fmt.dateFormat = "yyyy-MM-dd"
+        fmt.timeZone = TimeZone(identifier: "UTC")
+        return fmt.string(from: completedAt) == entry.date ? .completedOnTime : .completedLate
     }
 
     // MARK: - Backword Row

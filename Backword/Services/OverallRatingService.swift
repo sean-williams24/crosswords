@@ -4,6 +4,15 @@ import Foundation
 final class OverallRatingService: ObservableObject {
     @Published private(set) var rating: OverallRating = .load()
 
+    // MARK: - Init
+
+    init() {}
+
+    /// Preview / test initialiser — bypasses disk loading.
+    init(rating: OverallRating) {
+        _rating = Published(wrappedValue: rating)
+    }
+
     // MARK: - Refresh
 
     func refresh() {

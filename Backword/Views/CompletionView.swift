@@ -90,7 +90,8 @@ struct CompletionView: View {
             statsService.recordCompletion(
                 puzzleId: viewModel.puzzle.id,
                 timeSeconds: Int(viewModel.progress.elapsedTime),
-                hintsUsed: viewModel.progress.hintsUsed
+                hintsUsed: viewModel.progress.hintsUsed,
+                isWeekly: viewModel.puzzle.size > 12
             )
 
             withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.2)) {

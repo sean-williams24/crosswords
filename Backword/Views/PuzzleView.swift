@@ -102,8 +102,9 @@ struct PuzzleView: View {
                 .environmentObject(storeService)
         }
         .sheet(isPresented: $showCrosswordStats) {
-            CrosswordStatsView { showCrosswordStats = false }
+            CrosswordStatsView(isWeekly: viewModel.puzzle.size > 12) { showCrosswordStats = false }
                 .environmentObject(statsService)
+                .environmentObject(ratingService)
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {

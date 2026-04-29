@@ -8,6 +8,7 @@ struct BackwordView: View {
 
     @State private var showInstructions = false
     @State private var showStats = false
+    @State private var pulses = false
     @StateObject private var statsService = BackwordStatsService()
     @FocusState private var inputFocused: Bool
 
@@ -374,6 +375,14 @@ struct BackwordView: View {
 
     // MARK: - Completion Banner
 
+    private var failureMessages: [String] {
+        [
+            "It's good, but it's not the one,",
+            "That's unfortunate,",
+            "Solid efforts, but"
+        ]
+    }
+
     private var completionBanner: some View {
         VStack(spacing: 16) {
             VStack {
@@ -392,20 +401,25 @@ struct BackwordView: View {
                             .foregroundColor(.appTextSecondary)
                     }
                 } else {
-                    VStack(spacing: 8) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 36))
-                            .foregroundColor(.red.opacity(0.7))
+                    HStack(spacing: 8) {
+                        pulsatingCross
+                        VStack(spacing: 8) {
+                            Text(failureMessages.randomElement() ?? "")
+                                .font(AppFont.body(15))
+                                .foregroundColor(.appTextSecondary)
 
-                        Text("The word was")
-                            .font(AppFont.body(15))
-                            .foregroundColor(.appTextSecondary)
+                            Text("the word was")
+                                .font(AppFont.body(15))
+                                .foregroundColor(.appTextSecondary)
 
-                        Text(viewModel.word.word)
-                            .font(AppFont.header(28))
-                            .foregroundColor(.appTextPrimary)
-                            .tracking(4)
+                            Text(viewModel.word.word)
+                                .font(AppFont.header(28))
+                                .foregroundColor(.appTextPrimary)
+                                .tracking(4)
+                        }
+                        pulsatingCross
                     }
+                    .fixedSize()
                 }
 
                 // Definition
@@ -421,6 +435,20 @@ struct BackwordView: View {
 
             shareButton
         }
+    }
+
+    private var pulsatingCross: some View {
+        Image(systemName: "xmark.circle")
+            .font(.system(size: 26))
+            .foregroundColor(.red.opacity(0.5))
+            .scaleEffect(pulses ? 0.7 : 1.0)
+            .opacity(pulses ? 0.08 : 0.8)
+            .onAppear {
+                withAnimation(
+                    .easeInOut(duration: 1.2).repeatForever(autoreverses: true)
+                ) {
+                    pulses = true
+                }                           }
     }
 
     private var shareButton: some View {

@@ -11,9 +11,15 @@ struct RatingDetailSheet: View {
     private var tier: RatingTier { rating.tier(isPro: isPro) }
     private var fraction: Double { rating.fraction(isPro: isPro) }
 
-    // Sorted descending (most recent first), trimmed to 14 days
+    // Full 14-day calendar, most recent first. Days with no recorded activity default to zero scores.
     private var recentDays: [DailyScore] {
-        rating.dailyScores.sorted { $0.date > $1.date }
+        let fmt = OverallRating.dateFormatter
+        let scoreMap = Dictionary(uniqueKeysWithValues: rating.dailyScores.map { ($0.date, $0) })
+        return (0..<14).compactMap { offset -> DailyScore? in
+            guard let date = Calendar.current.date(byAdding: .day, value: -offset, to: Date()) else { return nil }
+            let dateStr = fmt.string(from: date)
+            return scoreMap[dateStr] ?? DailyScore(date: dateStr, dailyCrossword: 0, weeklyCrossword: nil, backword: 0)
+        }
     }
 
     var body: some View {
@@ -155,14 +161,7 @@ struct RatingDetailSheet: View {
                 .foregroundColor(.appAccent)
                 .tracking(2)
 
-            if recentDays.isEmpty {
-                Text("Play a game to start earning points!")
-                    .font(AppFont.body(14))
-                    .foregroundColor(.appTextSecondary)
-                    .padding(.vertical, 20)
-                    .frame(maxWidth: .infinity, alignment: .center)
-            } else {
-                VStack(spacing: 0) {
+            VStack(spacing: 0) {
                     // Header row
                     HStack(spacing: 0) {
                         Text("Date")
@@ -200,7 +199,6 @@ struct RatingDetailSheet: View {
                     RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                         .strokeBorder(Color.appAccent.opacity(0.15), lineWidth: 1)
                 )
-            }
         }
     }
 
@@ -381,14 +379,14 @@ struct RatingDetailSheet: View {
     private var barGradient: LinearGradient {
         LinearGradient(
             stops: [
-                .init(color: .white,                                         location: 0.0),
-                .init(color: Color(white: 0.72),                             location: 1.0 / 7.0),
-                .init(color: RatingTier.dabbler.color.opacity(0.6),          location: 2.0 / 7.0),
-                .init(color: RatingTier.penman.color,                        location: 3.0 / 7.0),
-                .init(color: RatingTier.linguist.color,                      location: 4.0 / 7.0),
-                .init(color: RatingTier.grandmaster.color,                   location: 5.0 / 7.0),
-                .init(color: Color(red: 0.95, green: 0.8, blue: 0.3),       location: 6.0 / 7.0),
-                .init(color: Color(red: 0.85, green: 0.55, blue: 0.15),     location: 1.0)
+                .init(color: .white, location: 0.0),
+                .init(color: Color(white: 0.72), location: 1.0 / 7.0),
+                .init(color: RatingTier.dabbler.color.opacity(0.6), location: 2.0 / 7.0),
+                .init(color: RatingTier.penman.color, location: 3.0 / 7.0),
+                .init(color: RatingTier.linguist.color, location: 4.0 / 7.0),
+                .init(color: RatingTier.grandmaster.color, location: 5.0 / 7.0),
+                .init(color: Color(red: 0.95, green: 0.8, blue: 0.3), location: 6.0 / 7.0),
+                .init(color: Color(red: 0.85, green: 0.55, blue: 0.15), location: 1.0)
             ],
             startPoint: .leading,
             endPoint: .trailing
