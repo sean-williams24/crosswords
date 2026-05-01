@@ -34,6 +34,15 @@
 		869FCBE22F9986FA00A280F2 /* BackwordStatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */; };
 		869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE32F99871800A280F2 /* BackwordStatsView.swift */; };
 		86AE8C972F913EAB001D69EE /* BackwordLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AE8C962F913EAB001D69EE /* BackwordLogo.swift */; };
+		86E5BFF62FA2BECA00A42156 /* Outfit-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFF02FA2BECA00A42156 /* Outfit-Light.ttf */; };
+		86E5BFF72FA2BECA00A42156 /* Outfit-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFF42FA2BECA00A42156 /* Outfit-Thin.ttf */; };
+		86E5BFF82FA2BECA00A42156 /* Outfit-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFEC2FA2BECA00A42156 /* Outfit-Black.ttf */; };
+		86E5BFF92FA2BECA00A42156 /* Outfit-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFF12FA2BECA00A42156 /* Outfit-Medium.ttf */; };
+		86E5BFFA2FA2BECA00A42156 /* Outfit-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFF22FA2BECA00A42156 /* Outfit-Regular.ttf */; };
+		86E5BFFB2FA2BECA00A42156 /* Outfit-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFF32FA2BECA00A42156 /* Outfit-SemiBold.ttf */; };
+		86E5BFFC2FA2BECA00A42156 /* Outfit-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFEF2FA2BECA00A42156 /* Outfit-ExtraLight.ttf */; };
+		86E5BFFD2FA2BECA00A42156 /* Outfit-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFEE2FA2BECA00A42156 /* Outfit-ExtraBold.ttf */; };
+		86E5BFFE2FA2BECA00A42156 /* Outfit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */; };
 		87051E8136E314CB2A272A91 /* BackwordLetterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2259B66045D006E89462572C /* BackwordLetterCell.swift */; };
 		8EF7F8087FF836F1BFC62151 /* HapticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */; };
 		8F92754416251062C7FCA46E /* CrosswordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922354966A899721DF1CF25C /* CrosswordStatsView.swift */; };
@@ -104,6 +113,15 @@
 		869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsService.swift; sourceTree = "<group>"; };
 		869FCBE32F99871800A280F2 /* BackwordStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsView.swift; sourceTree = "<group>"; };
 		86AE8C962F913EAB001D69EE /* BackwordLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordLogo.swift; sourceTree = "<group>"; };
+		86E5BFEC2FA2BECA00A42156 /* Outfit-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Black.ttf"; sourceTree = "<group>"; };
+		86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Bold.ttf"; sourceTree = "<group>"; };
+		86E5BFEE2FA2BECA00A42156 /* Outfit-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-ExtraBold.ttf"; sourceTree = "<group>"; };
+		86E5BFEF2FA2BECA00A42156 /* Outfit-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-ExtraLight.ttf"; sourceTree = "<group>"; };
+		86E5BFF02FA2BECA00A42156 /* Outfit-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Light.ttf"; sourceTree = "<group>"; };
+		86E5BFF12FA2BECA00A42156 /* Outfit-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Medium.ttf"; sourceTree = "<group>"; };
+		86E5BFF22FA2BECA00A42156 /* Outfit-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Regular.ttf"; sourceTree = "<group>"; };
+		86E5BFF32FA2BECA00A42156 /* Outfit-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-SemiBold.ttf"; sourceTree = "<group>"; };
+		86E5BFF42FA2BECA00A42156 /* Outfit-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Thin.ttf"; sourceTree = "<group>"; };
 		8820C57EC2BCBADADEC4006C /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		894071960CD50EDF948DA15E /* BackwordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordApp.swift; sourceTree = "<group>"; };
 		8AF93C5B6979DA0324E913C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -139,7 +157,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Int+Extensions.swift",
-				"SwipeBackModifier.swift",
+				SwipeBackModifier.swift,
 			);
 			target = A53A431755E77FC7A5A5FCB4 /* Backword */;
 		};
@@ -224,6 +242,7 @@
 			children = (
 				B35393D8C1799968B4B9119D /* Assets.xcassets */,
 				E7EE22FCCC10583E80948886 /* wotd_bank.json */,
+				86E5BFF52FA2BECA00A42156 /* OutfitFonts */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -234,6 +253,22 @@
 				8820C57EC2BCBADADEC4006C /* AppTheme.swift */,
 			);
 			path = Theme;
+			sourceTree = "<group>";
+		};
+		86E5BFF52FA2BECA00A42156 /* OutfitFonts */ = {
+			isa = PBXGroup;
+			children = (
+				86E5BFEC2FA2BECA00A42156 /* Outfit-Black.ttf */,
+				86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */,
+				86E5BFEE2FA2BECA00A42156 /* Outfit-ExtraBold.ttf */,
+				86E5BFEF2FA2BECA00A42156 /* Outfit-ExtraLight.ttf */,
+				86E5BFF02FA2BECA00A42156 /* Outfit-Light.ttf */,
+				86E5BFF12FA2BECA00A42156 /* Outfit-Medium.ttf */,
+				86E5BFF22FA2BECA00A42156 /* Outfit-Regular.ttf */,
+				86E5BFF32FA2BECA00A42156 /* Outfit-SemiBold.ttf */,
+				86E5BFF42FA2BECA00A42156 /* Outfit-Thin.ttf */,
+			);
+			path = OutfitFonts;
 			sourceTree = "<group>";
 		};
 		BBA3617EFAC18A3821319F9A /* Backword */ = {
@@ -405,6 +440,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEF00EC711F525FD3B8EB3DE /* Assets.xcassets in Resources */,
+				86E5BFF62FA2BECA00A42156 /* Outfit-Light.ttf in Resources */,
+				86E5BFF72FA2BECA00A42156 /* Outfit-Thin.ttf in Resources */,
+				86E5BFF82FA2BECA00A42156 /* Outfit-Black.ttf in Resources */,
+				86E5BFF92FA2BECA00A42156 /* Outfit-Medium.ttf in Resources */,
+				86E5BFFA2FA2BECA00A42156 /* Outfit-Regular.ttf in Resources */,
+				86E5BFFB2FA2BECA00A42156 /* Outfit-SemiBold.ttf in Resources */,
+				86E5BFFC2FA2BECA00A42156 /* Outfit-ExtraLight.ttf in Resources */,
+				86E5BFFD2FA2BECA00A42156 /* Outfit-ExtraBold.ttf in Resources */,
+				86E5BFFE2FA2BECA00A42156 /* Outfit-Bold.ttf in Resources */,
 				90808C76567660E437B97316 /* CrosswordsProducts.storekit in Resources */,
 				10DA4E78777801F05B5F7B2A /* wotd_bank.json in Resources */,
 			);

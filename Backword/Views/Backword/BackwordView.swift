@@ -343,7 +343,6 @@ struct BackwordView: View {
 
                 Text(viewModel.word.category.uppercased())
                     .font(AppFont.clueLabel(16))
-                    .italic()
                     .foregroundColor(.appTextPrimary)
             }
 //            .foregroundColor(.appGridLine)

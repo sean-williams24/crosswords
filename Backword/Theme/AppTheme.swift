@@ -18,35 +18,36 @@ extension Color {
 
 enum AppFont {
     static func header(_ size: CGFloat = 32) -> Font {
-        .system(size: size, weight: .bold, design: .rounded)
+        .custom("Outfit-Bold", size: size, relativeTo: .largeTitle)
     }
 
     static func gridLetter(_ size: CGFloat = 20) -> Font {
         .system(size: size, weight: .semibold, design: .monospaced)
+//        .custom("Outfit-SemiBold", size: size, relativeTo: .title3)
     }
 
     static func clueNumber(_ size: CGFloat = 8) -> Font {
-        .system(size: size, weight: .regular, design: .default)
+        .custom("Outfit-Regular", size: size, relativeTo: .caption2)
     }
 
     static func clueLabel(_ size: CGFloat = 12) -> Font {
-        .system(size: size, weight: .heavy, design: .default)
+        .custom("Outfit-Black", size: size, relativeTo: .caption)
     }
 
     static func clueText(_ size: CGFloat = 15) -> Font {
-        .system(size: size, weight: .light, design: .default)
+        .custom("Inter-Thin", size: size, relativeTo: .body)
     }
 
     static func body(_ size: CGFloat = 16) -> Font {
-        .system(size: size, weight: .regular, design: .default)
+        .custom("Outfit-Regular", size: size, relativeTo: .body)
     }
 
     static func caption(_ size: CGFloat = 13) -> Font {
-        .system(size: size, weight: .regular, design: .default)
+        .custom("Outfit-Regular", size: size, relativeTo: .footnote)
     }
 
     static func statNumber(_ size: CGFloat = 48) -> Font {
-        .system(size: size, weight: .bold, design: .rounded)
+        .custom("Outfit-Bold", size: size, relativeTo: .largeTitle)
     }
 }
 
