@@ -252,6 +252,22 @@ struct HomeView: View {
                     weekly: viewModel.weeklyPuzzle
                 )
             }
+            .task {
+                // Sleep until midnight then trigger a full refresh, then repeat each day.
+                while !Task.isCancelled {
+                    guard let delay = secondsUntilMidnight(), delay > 0 else { break }
+                    try? await Task.sleep(for: .seconds(delay))
+                    guard !Task.isCancelled else { break }
+                    await viewModel.loadTodaysPuzzle()
+                    await wotdService.refreshIfNeeded()
+                    await backwordService.refreshIfNeeded()
+                    ratingService.refresh()
+                    ratingService.recordCurrentPuzzles(
+                        daily: viewModel.todaysPuzzle,
+                        weekly: viewModel.weeklyPuzzle
+                    )
+                }
+            }
             .onAppear {
                 logoVisible = false
                 proLogoVisible = false
@@ -260,7 +276,7 @@ struct HomeView: View {
                     await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
                 }
             }
-            .onChange(of: scenePhase) { newPhase in
+            .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .background || newPhase == .inactive {
                     logoVisible = false
                     proLogoVisible = false
@@ -495,6 +511,16 @@ struct HomeView: View {
     }
 
     // MARK: - Helpers
+
+    private func secondsUntilMidnight() -> TimeInterval? {
+        let calendar = Calendar.current
+        guard let midnight = calendar.nextDate(
+            after: Date(),
+            matching: DateComponents(hour: 0, minute: 0, second: 0),
+            matchingPolicy: .nextTime
+        ) else { return nil }
+        return midnight.timeIntervalSinceNow
+    }
 
     private var formattedDate: String {
         let fmt = DateFormatter()
