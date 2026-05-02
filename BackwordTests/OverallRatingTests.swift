@@ -108,8 +108,8 @@ struct OverallRatingTests {
         #expect(OverallRating().tier(isPro: false) == .dabbler)
     }
 
-    @Test("~20% → Penman")
-    func penmanTier() {
+    @Test("~20% → Scribe")
+    func scribeTier() {
         // 20% of 140 = 28 pts. 14 days × 2 pts daily = 28.
         var r = OverallRating()
         for i in 0..<14 {
@@ -117,7 +117,7 @@ struct OverallRatingTests {
             let ds = OverallRating.dateFormatter.string(from: d)
             r.upsertDailyCrossword(score: 2, date: ds)
         }
-        #expect(r.tier(isPro: false) == .penman)
+        #expect(r.tier(isPro: false) == .scribe)
     }
 
     @Test("Perfect free score → Virtuoso")

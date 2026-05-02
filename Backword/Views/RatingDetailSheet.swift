@@ -384,7 +384,7 @@ struct RatingDetailSheet: View {
                 .init(color: .white, location: 0.0),
                 .init(color: Color(white: 0.72), location: 1.0 / 7.0),
                 .init(color: RatingTier.dabbler.color.opacity(0.6), location: 2.0 / 7.0),
-                .init(color: RatingTier.penman.color, location: 3.0 / 7.0),
+                .init(color: RatingTier.scribe.color, location: 3.0 / 7.0),
                 .init(color: RatingTier.linguist.color, location: 4.0 / 7.0),
                 .init(color: RatingTier.grandmaster.color, location: 5.0 / 7.0),
                 .init(color: Color(red: 0.95, green: 0.8, blue: 0.3), location: 6.0 / 7.0),

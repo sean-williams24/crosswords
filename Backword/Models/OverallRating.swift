@@ -15,12 +15,12 @@ struct DailyScore: Codable {
 // MARK: - Rating Tier
 
 enum RatingTier: CaseIterable {
-    case dabbler, penman, linguist, grandmaster, virtuoso
+    case dabbler, scribe, linguist, grandmaster, virtuoso
 
     var displayName: String {
         switch self {
         case .dabbler:     return "Dabbler"
-        case .penman:      return "Penman"
+        case .scribe:      return "Scribe"
         case .linguist:    return "Linguist"
         case .grandmaster: return "Grandmaster"
         case .virtuoso:    return "Virtuoso"
@@ -30,7 +30,7 @@ enum RatingTier: CaseIterable {
     var color: Color {
         switch self {
         case .dabbler:     return Color(.systemGray)
-        case .penman:      return Color(red: 0.4, green: 0.6, blue: 0.9)
+        case .scribe:      return Color(red: 0.4, green: 0.6, blue: 0.9)
         case .linguist:    return Color(red: 0.2, green: 0.5, blue: 0.95)
         case .grandmaster: return Color(red: 0.1, green: 0.35, blue: 0.85)
         case .virtuoso:    return Color(red: 0.85, green: 0.65, blue: 0.2)
@@ -54,7 +54,7 @@ enum RatingTier: CaseIterable {
     var threshold: Double {
         switch self {
         case .dabbler:     return 0.0
-        case .penman:      return 0.2
+        case .scribe:      return 0.2
         case .linguist:    return 0.4
         case .grandmaster: return 0.6
         case .virtuoso:    return 0.8
@@ -64,7 +64,7 @@ enum RatingTier: CaseIterable {
     var nextThreshold: Double {
         switch self {
         case .dabbler:     return 0.2
-        case .penman:      return 0.4
+        case .scribe:      return 0.4
         case .linguist:    return 0.6
         case .grandmaster: return 0.8
         case .virtuoso:    return 1.0
