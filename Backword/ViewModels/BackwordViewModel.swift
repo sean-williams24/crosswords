@@ -65,6 +65,15 @@ final class BackwordViewModel: ObservableObject {
         settings.backwordLetterFeedback
     }
 
+    var statsIconColour: Color {
+        if isFailed {
+            return .red
+        } else if isWon {
+            return .appCorrect
+        }
+        return .appTextPrimary
+    }
+
     // MARK: - Submit Guess
 
     func submitGuess() {

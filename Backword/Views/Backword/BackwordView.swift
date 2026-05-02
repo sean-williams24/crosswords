@@ -9,6 +9,7 @@ struct BackwordView: View {
     @State private var showInstructions = false
     @State private var showStats = false
     @State private var pulses = false
+    @State private var selectedFailureMessage: String = ""
     @StateObject private var statsService = BackwordStatsService()
     @FocusState private var inputFocused: Bool
 
@@ -81,9 +82,9 @@ struct BackwordView: View {
             if complete {
                 inputFocused = false
                 statsService.refresh()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                    showStats = true
-                }
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+//                    showStats = true
+//                }
             }
         }
         .sheet(isPresented: $showStats) {
@@ -122,8 +123,10 @@ struct BackwordView: View {
                     } label: {
                         Image(systemName: "chart.bar.fill")
                             .font(.system(size: 17, weight: .semibold))
-                            .foregroundColor(.appTextPrimary)
                             .padding(.vertical, 8)
+                            .foregroundColor(viewModel.statsIconColour)
+                            .scaleEffect(pulses ? 0.7 : 1.3)
+                            .opacity(pulses ? 0.44 : 0.8)
                     }
 
                     Button {
@@ -293,8 +296,14 @@ struct BackwordView: View {
                 let isUsed = i < viewModel.guessCount
                 let isWinSlot = viewModel.isWon && i == viewModel.guessCount - 1
 
+                var guessCounterColour: Color {
+                    if viewModel.isFailed {
+                        return .red
+                    }
+                    return isWinSlot ? Color.appCorrect : isUsed ? Color.appAccent.opacity(0.7) : Color.appSurface
+                }
                 RoundedRectangle(cornerRadius: 3)
-                    .fill(isWinSlot ? Color.appCorrect : isUsed ? Color.appAccent.opacity(0.7) : Color.appSurface)
+                    .fill(guessCounterColour)
                     .overlay(
                         RoundedRectangle(cornerRadius: 3)
                             .strokeBorder(
@@ -382,51 +391,46 @@ struct BackwordView: View {
         ]
     }
 
+    private var successMessages: [String] {
+        [
+            " nice work.",
+            " well played.",
+            " solid efforts."
+        ]
+    }
+
     private var completionBanner: some View {
         VStack(spacing: 16) {
             VStack {
                 if viewModel.isWon {
                     VStack(spacing: 8) {
-//                        Image(systemName: "checkmark.circle.fill")
-//                            .font(.system(size: 36))
-//                            .foregroundColor(.appCorrect)
-                        //
-                        //                    Text("Well done!")
-                        //                        .font(AppFont.header(22))
-                        //                        .foregroundColor(.appTextPrimary)
-
-                        Text("Completed in \(viewModel.guessCount) guess\(viewModel.guessCount == 1 ? "" : "es")")
+                        Text("Completed in \(viewModel.guessCount) guess\(viewModel.guessCount == 1 ? "" : "es"), \(successMessages.randomElement() ?? "")")
                             .font(AppFont.body(15))
                             .foregroundColor(.appTextSecondary)
                     }
                 } else {
                     HStack(spacing: 8) {
                         pulsatingCross
-                        VStack(spacing: 8) {
-                            Text(failureMessages.randomElement() ?? "")
+                        Spacer()
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(selectedFailureMessage + " the word was...")
                                 .font(AppFont.body(15))
                                 .foregroundColor(.appTextSecondary)
-
-                            Text("the word was")
-                                .font(AppFont.body(15))
-                                .foregroundColor(.appTextSecondary)
-
-                            Text(viewModel.word.word)
-                                .font(AppFont.header(28))
-                                .foregroundColor(.appTextPrimary)
-                                .tracking(4)
+                            HStack {
+                                Spacer()
+                                Text(viewModel.word.word)
+                                    .font(AppFont.header(28))
+                                    .foregroundColor(.red)
+                                    .tracking(4)
+                                    .opacity(pulses ? 0.4 : 0.8)
+                                Spacer()
+                            }
                         }
+                        Spacer()
                         pulsatingCross
                     }
-                    .fixedSize()
+                    .frame(maxWidth: .infinity)
                 }
-
-                // Definition
-//                Text(viewModel.word.definition)
-//                    .font(AppFont.clueText())
-//                    .foregroundColor(.appTextSecondary)
-//                    .multilineTextAlignment(.center)
-//                    .padding(.horizontal, 8)
             }
             .padding(20)
             .background(Color.appSurface)
@@ -434,20 +438,25 @@ struct BackwordView: View {
 
             shareButton
         }
+        .onAppear {
+            if selectedFailureMessage.isEmpty {
+                selectedFailureMessage = failureMessages.randomElement() ?? "Game Over"
+            }
+        }
     }
 
     private var pulsatingCross: some View {
         Image(systemName: "xmark.circle")
             .font(.system(size: 26))
             .foregroundColor(.red.opacity(0.5))
-            .scaleEffect(pulses ? 0.7 : 1.0)
             .opacity(pulses ? 0.08 : 0.8)
             .onAppear {
                 withAnimation(
                     .easeInOut(duration: 1.2).repeatForever(autoreverses: true)
                 ) {
                     pulses = true
-                }                           }
+                }
+            }
     }
 
     private var shareButton: some View {
