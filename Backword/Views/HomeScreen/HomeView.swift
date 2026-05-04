@@ -42,27 +42,6 @@ struct HomeView: View {
         }
     }
 
-    @ViewBuilder
-    private var weeklyCrossword: some View {
-        if let weekly = viewModel.weeklyPuzzle {
-            if storeService.isProUser {
-                NavigationLink(value: "weekly") {
-                    weeklyCard(puzzle: weekly)
-                }
-                .buttonStyle(.plain)
-            } else {
-                Button {
-                    showPaywall = true
-                } label: {
-                    weeklyCard(puzzle: weekly, locked: true)
-                }
-                .buttonStyle(.plain)
-            }
-        } else if viewModel.isLoading {
-            weeklyCard()
-        }
-    }
-
     var body: some View {
         NavigationStack {
             ZStack {
@@ -79,7 +58,8 @@ struct HomeView: View {
 
                         backwordButton
                         dailyCrossword
-                        weeklyCrossword
+                        WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
+                            .environmentObject(storeService)
                         wotd
                     }
                     .padding(.top, 16)
@@ -322,11 +302,13 @@ struct HomeView: View {
                     .font(AppFont.clueLabel(11))
                     .foregroundColor(.dailyCardTitle)
                     .tracking(3)
+                    .multilineTextAlignment(.center)
 
                 Text(formattedDate)
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
                     .tracking(1)
+                    .multilineTextAlignment(.center)
 
                 if viewModel.isLoading {
                     ProgressView()
@@ -393,86 +375,10 @@ struct HomeView: View {
         .background(
             ZStack {
                 Color.dailyCardBackground
-//                MiniGridPattern()
-//                    .opacity(0.05)
             }
         )
         .clipped()
         .cornerRadius(AppLayout.cardCornerRadius)
-        .padding(.horizontal, AppLayout.screenPadding)
-    }
-
-    // MARK: - Weekly Card
-
-    private var proGradient: LinearGradient {
-        LinearGradient(
-            colors: [
-                Color(red: 0.85, green: 0.65, blue: 0.25),
-                Color(red: 0.78, green: 0.52, blue: 0.20),
-                Color(red: 0.85, green: 0.65, blue: 0.25)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-    }
-
-    @ViewBuilder
-    private func weeklyCard(puzzle: Puzzle? = nil, locked: Bool = false) -> some View {
-        VStack(spacing: 12) {
-            HStack(spacing: 6) {
-                Image(systemName: "crown.fill")
-                    .font(.system(size: 10))
-                    .foregroundStyle(proGradient)
-                Text("PRO CROSSWORD")
-                    .font(AppFont.clueLabel(11))
-                    .foregroundStyle(proGradient)
-                    .tracking(3)
-                Image(systemName: "crown.fill")
-                    .font(.system(size: 10))
-                    .foregroundStyle(proGradient)
-            }
-
-            if viewModel.isLoading && puzzle == nil {
-                ProgressView()
-                    .tint(.appAccent)
-            } else {
-                Text("13×13")
-                    .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
-
-                if !locked {
-                    HStack(spacing: 6) {
-                        Image(systemName: viewModel.weeklyPuzzleStatus.icon)
-                            .foregroundColor(viewModel.weeklyPuzzleStatus.color)
-                            .font(.system(size: 13))
-                        Text(viewModel.weeklyPuzzleStatus.label)
-                            .font(AppFont.caption())
-                            .foregroundColor(.appTextSecondary)
-                    }
-                } else {
-                    HStack(spacing: 6) {
-                        Text("Pro Only")
-                            .font(AppFont.caption())
-                            .foregroundColor(.appAccent)
-                        Image(systemName: "lock.fill")
-                            .font(.system(size: 12))
-                            .foregroundColor(.appAccent)
-                    }
-                }
-            }
-        }
-        .padding(24)
-        .frame(maxWidth: .infinity)
-        .background(
-            Color.appSurface.overlay(
-                proGradient.opacity(0.02)
-            )
-        )
-        .cornerRadius(AppLayout.cardCornerRadius)
-        .overlay(
-            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .stroke(proGradient, lineWidth: 1.5)
-        )
         .padding(.horizontal, AppLayout.screenPadding)
     }
 

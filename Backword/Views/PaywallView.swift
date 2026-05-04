@@ -4,153 +4,139 @@ import StoreKit
 struct PaywallView: View {
     @EnvironmentObject var storeService: StoreService
     @Environment(\.dismiss) private var dismiss
-
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @State private var selectedPlan: Plan = .annual
     @State private var isBreathing = false
     @State private var errorMessage: String?
-
+    @State private var logoVisible = false
+    @State private var proLogoVisible = false
+    
     enum Plan { case monthly, annual }
 
     var body: some View {
-        ZStack {
-            VStack(spacing: 0) {
-                // Black hero extends behind the top of the sheet
-                ZStack {
-                    Image("LogoBackgroundPro")
-                        .resizable()
-                        .frame(maxWidth: 200, maxHeight: 200)
-                }
-                .frame(height: 240)
-                .frame(maxWidth: .infinity)
-                .background(Color.black.ignoresSafeArea(edges: .top))
-
-                // Lower content on app background
+        ScrollView {
+            ZStack {
                 VStack(spacing: 0) {
-                    Spacer().frame(height: 28)
+                    // Black hero extends behind the top of the sheet
+                    ZStack {
+                        VStack(spacing: -30) {
+                            BackwordLogo(frame: 78)
+                                .offset(x: logoVisible ? 0 : 120)
+                                .opacity(logoVisible ? 1 : 0)
 
-                    // Header
-                    VStack(spacing: 6) {
-//                    Text("BackWord Pro")
-//                        .font(AppFont.header(28))
-//                        .foregroundColor(.appTextPrimary)
+                            Image("Pro")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 48)
+                                .offset(x: 36)
+                                .opacity(proLogoVisible ? 1 : 0)
+                                .scaleEffect(isBreathing ? 1.09 : 1.0)
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .frame(height: 240)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.black.ignoresSafeArea(edges: .top))
 
+                    // Lower content on app background
+                    VStack(spacing: 0) {
+                        Spacer().frame(height: 28)
+
+                        // Header
                         Text("The full crossword experience")
-                            .italic()
                             .font(AppFont.header(15))
                             .foregroundColor(.appTextPrimary)
+                            .padding(.horizontal, AppLayout.screenPadding)
+
+                        Spacer().frame(height: 28)
+
+                        // Feature list
+                        featureList
+                            .padding(.horizontal, 32)
+
+                        Spacer().frame(height: 32)
+
+                        // Plan toggle
+                        planToggle
+                            .background(Color.appSurface)
+                            .cornerRadius(AppLayout.cardCornerRadius)
+                            .padding(.horizontal, 32)
+
+                        Spacer().frame(height: 24)
+
+                        // CTA button
+                        ctaButton
+                            .padding(.horizontal, 32)
+
+                        // Error
+                        if let errorMessage {
+                            Text(errorMessage)
+                                .font(AppFont.caption())
+                                .foregroundColor(.red)
+                                .padding(.top, 8)
+                        }
+
+                        Spacer().frame(height: 12)
+
+                        // Restore + legal
+                        Button("Restore Purchases") {
+                            Task { await storeService.restorePurchases() }
+                        }
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+
+                        Spacer().frame(height: 8)
+
+                        Text("Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period.")
+                            .font(AppFont.clueNumber(10))
+                            .foregroundColor(.appTextSecondary.opacity(0.6))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 32)
+                            .padding(.bottom, 20)
                     }
-
-                    Spacer().frame(height: 28)
-
-                    // Feature list
-                    featureList
-                        .padding(.horizontal, 32)
-
-                    Spacer().frame(height: 32)
-
-                    // Plan toggle
-                    planToggle
-                        .padding(.horizontal, 32)
-
-                    Spacer().frame(height: 24)
-
-                    // CTA button
-                    ctaButton
-                        .padding(.horizontal, 32)
-
-                    // Error
-                    if let errorMessage {
-                        Text(errorMessage)
-                            .font(AppFont.caption())
-                            .foregroundColor(.red)
-                            .padding(.top, 8)
-                    }
-
-                    Spacer().frame(height: 12)
-
-                    // Restore + legal
-                    Button("Restore Purchases") {
-                        Task { await storeService.restorePurchases() }
-                    }
-                    .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
-
-                    Spacer().frame(height: 8)
-
-                    Text("Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period.")
-                        .font(.system(size: 10))
-                        .foregroundColor(.appTextSecondary.opacity(0.6))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 32)
-                        .padding(.bottom, 20)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.appBackground)
                 }
-                .frame(maxWidth: .infinity)
-                .background(Color.appBackground)
-            }
 
-            // Dismiss button floats over the black hero
-            VStack {
-                HStack {
+                // Dismiss button floats over the black hero
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button { dismiss() } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 28))
+                                .symbolRenderingMode(.hierarchical)
+                                .foregroundColor(.white.opacity(0.7))
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 16)
                     Spacer()
-                    Button { dismiss() } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 28))
-                            .symbolRenderingMode(.hierarchical)
-                            .foregroundColor(.white.opacity(0.7))
-                    }
                 }
-                .padding(.horizontal, 24)
-                .padding(.top, 16)
-                Spacer()
             }
-        }
-        .blackSheetBackground()
-        .interactiveDismissDisabled(storeService.purchaseInProgress)
-        .onAppear {
-            withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
-                isBreathing = true
+            .blackSheetBackground()
+            .interactiveDismissDisabled(storeService.purchaseInProgress)
+            .onAppear {
+                animateLogo()
+                withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
+                    isBreathing = true
+                }
             }
         }
     }
 
-    // MARK: - Mini Grid Hero
+    private func animateLogo() {
+        Task {
+            try? await Task.sleep(nanoseconds: 50_000_000) // 50ms — next render cycle
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
+                logoVisible = true
+            }
 
-    private var miniGrid: some View {
-        let letters: [[Character?]] = [
-            [nil, nil, "W", nil, nil],
-            ["C", "R", "O", "S", "S"],
-            [nil, nil, "R", nil, nil],
-            [nil, nil, "D", nil, nil],
-            [nil, nil, nil, nil, nil],
-        ]
-
-        return Grid(horizontalSpacing: 3, verticalSpacing: 3) {
-            ForEach(0..<5, id: \.self) { row in
-                GridRow {
-                    ForEach(0..<5, id: \.self) { col in
-                        if let letter = letters[row][col] {
-                            RoundedRectangle(cornerRadius: 3)
-                                .fill(Color.appAccent.opacity(0.12))
-                                .overlay(
-                                    Text(String(letter))
-                                        .font(.system(size: 14, weight: .semibold, design: .monospaced))
-                                        .foregroundColor(.appAccent)
-                                )
-                                .aspectRatio(1, contentMode: .fit)
-                        } else if letters[row][col] == nil && (row < 4 || col < 3) {
-                            RoundedRectangle(cornerRadius: 3)
-                                .fill(Color.appSurface)
-                                .aspectRatio(1, contentMode: .fit)
-                        } else {
-                            RoundedRectangle(cornerRadius: 3)
-                                .fill(Color.appGridLine.opacity(0.3))
-                                .aspectRatio(1, contentMode: .fit)
-                        }
-                    }
-                }
+            try? await Task.sleep(nanoseconds: 200_000_000)
+            withAnimation(.easeIn) {
+                proLogoVisible = true
             }
         }
-        .frame(maxWidth: 160)
     }
 
     // MARK: - Feature List
@@ -174,29 +160,55 @@ struct PaywallView: View {
             Text(text)
                 .font(AppFont.body(15))
                 .foregroundColor(.appTextPrimary)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
     // MARK: - Plan Toggle
 
-    private var planToggle: some View {
-        HStack(spacing: 0) {
-            planOption(
-                title: "Monthly",
-                price: storeService.monthlyProduct?.displayPrice ?? "£1.99",
-                subtitle: "per month",
-                plan: .monthly
-            )
+    private var isLargeContent: Bool {
+        dynamicTypeSize > .accessibility3
+    }
 
-            planOption(
-                title: "Annual",
-                price: storeService.annualProduct?.displayPrice ?? "£15.99",
-                subtitle: "per year · Save 33%",
-                plan: .annual
-            )
+    @ViewBuilder
+    private var planToggle: some View {
+        if isLargeContent {
+            verticalPlanToggle
+        } else {
+            horizontalPlanToggle
         }
-        .background(Color.appSurface)
-        .cornerRadius(AppLayout.cardCornerRadius)
+    }
+
+    private var horizontalPlanToggle: some View {
+        HStack(spacing: 0) {
+            monthlyPlanOption
+            annualPlanOption
+        }
+    }
+
+    private var verticalPlanToggle: some View {
+        VStack {
+            monthlyPlanOption
+            annualPlanOption
+        }
+    }
+
+    private var monthlyPlanOption: some View {
+        planOption(
+            title: "Monthly",
+            price: storeService.monthlyProduct?.displayPrice ?? "£1.99",
+            subtitle: "per month",
+            plan: .monthly
+        )
+    }
+
+    private var annualPlanOption: some View {
+        planOption(
+            title: "Annual",
+            price: storeService.annualProduct?.displayPrice ?? "£15.99",
+            subtitle: "per year · Save 33%",
+            plan: .annual
+        )
     }
 
     private func planOption(title: String, price: String, subtitle: String, plan: Plan) -> some View {
@@ -245,6 +257,7 @@ struct PaywallView: View {
                     Text("Start 7-Day Free Trial")
                         .font(AppFont.clueLabel(16))
                         .tracking(0.5)
+                        .padding(.horizontal, 5)
                 }
             }
             .foregroundColor(.white)
@@ -252,7 +265,7 @@ struct PaywallView: View {
             .padding(.vertical, 18)
             .background(Color.appAccent)
             .cornerRadius(AppLayout.cardCornerRadius)
-            .scaleEffect(isBreathing ? 1.02 : 1.0)
+            .scaleEffect(isBreathing ? 1.05 : 1.0)
         }
         .disabled(storeService.purchaseInProgress)
     }

@@ -43,6 +43,7 @@
 		86E5BFFC2FA2BECA00A42156 /* Outfit-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFEF2FA2BECA00A42156 /* Outfit-ExtraLight.ttf */; };
 		86E5BFFD2FA2BECA00A42156 /* Outfit-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFEE2FA2BECA00A42156 /* Outfit-ExtraBold.ttf */; };
 		86E5BFFE2FA2BECA00A42156 /* Outfit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */; };
+		86E5C00A2FA9211200A42156 /* WeeklyCrosswordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */; };
 		87051E8136E314CB2A272A91 /* BackwordLetterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2259B66045D006E89462572C /* BackwordLetterCell.swift */; };
 		8EF7F8087FF836F1BFC62151 /* HapticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */; };
 		8F92754416251062C7FCA46E /* CrosswordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922354966A899721DF1CF25C /* CrosswordStatsView.swift */; };
@@ -122,6 +123,7 @@
 		86E5BFF22FA2BECA00A42156 /* Outfit-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Regular.ttf"; sourceTree = "<group>"; };
 		86E5BFF32FA2BECA00A42156 /* Outfit-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-SemiBold.ttf"; sourceTree = "<group>"; };
 		86E5BFF42FA2BECA00A42156 /* Outfit-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Thin.ttf"; sourceTree = "<group>"; };
+		86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCrosswordCard.swift; sourceTree = "<group>"; };
 		8820C57EC2BCBADADEC4006C /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		894071960CD50EDF948DA15E /* BackwordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordApp.swift; sourceTree = "<group>"; };
 		8AF93C5B6979DA0324E913C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -272,6 +274,15 @@
 			path = OutfitFonts;
 			sourceTree = "<group>";
 		};
+		86E5C0062FA9207600A42156 /* HomeScreen */ = {
+			isa = PBXGroup;
+			children = (
+				F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */,
+				86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */,
+			);
+			path = HomeScreen;
+			sourceTree = "<group>";
+		};
 		BBA3617EFAC18A3821319F9A /* Backword */ = {
 			isa = PBXGroup;
 			children = (
@@ -339,7 +350,7 @@
 				D84C8AB718DDE4C9E0EDDE1F /* ClueListView.swift */,
 				741EF0B3C1470452272529E1 /* CompletionView.swift */,
 				A04496BE6230D031AE10977A /* DebugSettingsView.swift */,
-				F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */,
+				86E5C0062FA9207600A42156 /* HomeScreen */,
 				7EDCB92E82855EB80981B63B /* KeyboardInputView.swift */,
 				0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */,
 				83C12AC56422D31E9D619C3E /* PaywallView.swift */,
@@ -520,6 +531,7 @@
 				70FDEC9954ABAD6370C542F4 /* RatingBarView.swift in Sources */,
 				CDFB51C30CE8784881171A9F /* RatingDetailSheet.swift in Sources */,
 				8F92754416251062C7FCA46E /* CrosswordStatsView.swift in Sources */,
+				86E5C00A2FA9211200A42156 /* WeeklyCrosswordCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

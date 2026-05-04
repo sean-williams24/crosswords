@@ -1,18 +1,17 @@
 import SwiftUI
 
 struct BackwordCard: View {
+    @ScaledMetric private var spacing: CGFloat = 10
     let word: BackwordWord?
     let progress: BackwordProgress?
 
     var body: some View {
-        VStack(spacing: 12) {
-            HStack(spacing: -7) {
+        VStack(alignment: .center, spacing: spacing) {
+            HStack(alignment: .center, spacing: -7) {
                 Text("Daily")
                     .font(AppFont.clueLabel(11))
                     .foregroundColor(.appTextPrimary)
                     .tracking(3)
-                    .offset(y: 5)
-                    .italic()
                 BackwordLogo()
             }
 
@@ -36,7 +35,6 @@ struct BackwordCard: View {
                         HStack(spacing: 6) {
                             Spacer()
                             ProgressView()
-                                .tint(.appAccent)
                             Spacer()
                         }
                         .frame(height: 34)
@@ -84,8 +82,6 @@ struct BackwordCard: View {
             }
         }
     }
-
-    // inProgressContent no longer needed; logic inlined above
 }
 
 #Preview {
