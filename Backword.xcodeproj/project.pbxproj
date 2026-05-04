@@ -156,6 +156,7 @@
 		86E5BFE32FA162D300A42156 /* Exceptions for "Utilities" folder in "Backword" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				DateFormatting.swift,
 				"Int+Extensions.swift",
 				SwipeBackModifier.swift,
 			);

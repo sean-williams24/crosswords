@@ -4,6 +4,8 @@ import Foundation
 final class BackwordService: ObservableObject {
 
     @Published var todaysWord: BackwordWord?
+    private let cache = CacheService()
+    private let dateFormatting = DateFormatting()
 
     // Supabase config (same project as PuzzleService)
     private let baseURL = "https://cmvzqtpvzobdnnjpvyfi.supabase.co"
@@ -12,6 +14,10 @@ final class BackwordService: ObservableObject {
     /// The date string (yyyy-MM-dd) we last fetched for
     private var lastFetchedDate: String?
 
+    private var today: String {
+        dateFormatting.todayString()
+    }
+    
     private let decoder: JSONDecoder = {
         let d = JSONDecoder()
         d.keyDecodingStrategy = .convertFromSnakeCase
@@ -25,24 +31,27 @@ final class BackwordService: ObservableObject {
     /// Re-fetches only when the calendar date has changed since last fetch.
     /// Pass `force: true` to re-fetch unconditionally (e.g. after a debug reset).
     func refreshIfNeeded(force: Bool = false) async {
-        let today = Self.dateFormatter.string(from: Date())
+        let today = dateFormatting.todayString()
         guard force || today != lastFetchedDate else { return }
         await loadTodaysWord()
     }
 
     private func loadTodaysWord() async {
-        lastFetchedDate = Self.dateFormatter.string(from: Date())
-        if let word = try? await fetchFromSupabase() {
+        if let word = cache.loadBackword(for: today) {
             todaysWord = word
             return
         }
-        todaysWord = loadFromBundle()
+        if let word = try? await fetchFromSupabase() {
+            todaysWord = word
+            cache.saveBackword(word, for: today)
+            lastFetchedDate = dateFormatting.formatter.string(from: Date())
+            return
+        }
     }
 
     // MARK: - Supabase
 
     private func fetchFromSupabase() async throws -> BackwordWord? {
-        let today = Self.dateFormatter.string(from: Date())
         let urlString = "\(baseURL)/rest/v1/backword_words?date=lte.\(today)&select=*&order=date.desc&limit=1"
         guard let url = URL(string: urlString) else { return nil }
 
@@ -79,7 +88,6 @@ final class BackwordService: ObservableObject {
     // MARK: - Archive
 
     func fetchArchive() async throws -> [BackwordWord] {
-        let today = Self.dateFormatter.string(from: Date())
         let urlString = "\(baseURL)/rest/v1/backword_words?date=lte.\(today)&select=*&order=date.desc&limit=90"
         guard let url = URL(string: urlString) else { return [] }
 
@@ -95,15 +103,6 @@ final class BackwordService: ObservableObject {
         let rows = try decoder.decode([SupabaseBackwordRow].self, from: data)
         return rows.map { $0.toBackwordWord }
     }
-
-    // MARK: - Helpers
-
-    private static let dateFormatter: DateFormatter = {
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        f.timeZone = TimeZone(identifier: "UTC")
-        return f
-    }()
 }
 
 // MARK: - Supabase Response Model

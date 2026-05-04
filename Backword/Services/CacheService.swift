@@ -9,6 +9,22 @@ final class CacheService {
             .appendingPathComponent("Backword/Puzzles", isDirectory: true)
     }
 
+    // MARK: - Backword Cache
+
+    func saveBackword(_ backword: BackwordWord, for date: String) {
+        ensureDirectory()
+        let url = backwordFileURL(for: date)
+        if let data = try? JSONEncoder().encode(backword) {
+            try? data.write(to: url, options: .atomic)
+        }
+    }
+
+    func loadBackword(for date: String) -> BackwordWord? {
+        let url = backwordFileURL(for: date)
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode(BackwordWord.self, from: data)
+    }
+
     // MARK: - Puzzle Cache
 
     func savePuzzle(_ puzzle: Puzzle, for date: String) {
@@ -46,6 +62,10 @@ final class CacheService {
 
     private func fileURL(for date: String) -> URL {
         cacheDirectory.appendingPathComponent("puzzle_\(date).json")
+    }
+
+    private func backwordFileURL(for date: String) -> URL {
+        cacheDirectory.appendingPathComponent("backword_\(date).json")
     }
 
     private func ensureDirectory() {

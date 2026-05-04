@@ -10,17 +10,20 @@ final class PuzzleService: ObservableObject {
     private let apiKey: String = "sb_publishable_Kj4RZqeTrOAXeOhRVdluVA_EFEOGveT"
 
     private let cache = CacheService()
+    private let dateFormatting = DateFormatting()
     private let decoder: JSONDecoder = {
         let d = JSONDecoder()
         d.keyDecodingStrategy = .convertFromSnakeCase
         return d
     }()
 
+    private var today: String {
+        dateFormatting.todayString()
+    }
+
     // MARK: - Public API
 
     func fetchTodaysPuzzle() async throws -> Puzzle {
-        let today = todayString()
-
         // Try cache first
         if let cached = cache.loadPuzzle(for: today) {
             return cached
@@ -43,7 +46,6 @@ final class PuzzleService: ObservableObject {
 
     /// Fetches lightweight metadata for all released puzzles (no grid data).
     func fetchArchive() async throws -> [ArchiveEntry] {
-        let today = todayString()
         let urlString = "\(baseURL)/rest/v1/puzzles?date=lte.\(today)&select=id,puzzle_number,date&order=date.desc"
         guard let url = URL(string: urlString) else {
             throw PuzzleServiceError.invalidURL
@@ -59,7 +61,6 @@ final class PuzzleService: ObservableObject {
     }
 
     func fetchWeeklyArchive() async throws -> [ArchiveEntry] {
-        let today = todayString()
         let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(today)&select=id,puzzle_number,date&order=date.desc"
         guard let url = URL(string: urlString) else {
             throw PuzzleServiceError.invalidURL
@@ -80,7 +81,7 @@ final class PuzzleService: ObservableObject {
 
         for dayOffset in 0...6 {
             guard let date = calendar.date(byAdding: .day, value: dayOffset, to: today) else { continue }
-            let dateString = Self.dateFormatter.string(from: date)
+            let dateString = dateFormatting.formatter.string(from: date)
 
             if cache.loadPuzzle(for: dateString) != nil { continue }
 
@@ -92,8 +93,6 @@ final class PuzzleService: ObservableObject {
 
     /// Fetches the current weekly puzzle (most recent with date <= today).
     func fetchCurrentWeeklyPuzzle() async throws -> Puzzle {
-        let today = todayString()
-
         // Try cache first
         let cacheKey = "weekly_\(today)"
         if let cached = cache.loadPuzzle(for: cacheKey) {
@@ -200,17 +199,6 @@ final class PuzzleService: ObservableObject {
 
         return first.toPuzzle()
     }
-
-    private func todayString() -> String {
-        Self.dateFormatter.string(from: Date())
-    }
-
-    private static let dateFormatter: DateFormatter = {
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        f.timeZone = TimeZone(identifier: "UTC")
-        return f
-    }()
 
     // MARK: - Errors
 
