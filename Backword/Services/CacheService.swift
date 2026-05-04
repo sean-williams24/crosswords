@@ -25,6 +25,22 @@ final class CacheService {
         return try? JSONDecoder().decode(BackwordWord.self, from: data)
     }
 
+    // MARK: - WOTD Cache
+
+    func saveWOTD(_ backword: WordOfTheDay, for date: String) {
+        ensureDirectory()
+        let url = wotdFileURL(for: date)
+        if let data = try? JSONEncoder().encode(backword) {
+            try? data.write(to: url, options: .atomic)
+        }
+    }
+
+    func loadWOTD(for date: String) -> WordOfTheDay? {
+        let url = wotdFileURL(for: date)
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode(WordOfTheDay.self, from: data)
+    }
+
     // MARK: - Puzzle Cache
 
     func savePuzzle(_ puzzle: Puzzle, for date: String) {
@@ -66,6 +82,10 @@ final class CacheService {
 
     private func backwordFileURL(for date: String) -> URL {
         cacheDirectory.appendingPathComponent("backword_\(date).json")
+    }
+
+    private func wotdFileURL(for date: String) -> URL {
+        cacheDirectory.appendingPathComponent("wotd\(date).json")
     }
 
     private func ensureDirectory() {

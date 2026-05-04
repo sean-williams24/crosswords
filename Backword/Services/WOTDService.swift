@@ -4,6 +4,8 @@ import Foundation
 final class WOTDService: ObservableObject {
 
     @Published var todaysWord: WordOfTheDay?
+    private let cache = CacheService()
+    private let dateFormatting = DateFormatting()
 
     // Supabase config (same project as PuzzleService)
     private let baseURL = "https://cmvzqtpvzobdnnjpvyfi.supabase.co"
@@ -18,6 +20,10 @@ final class WOTDService: ObservableObject {
         return d
     }()
 
+    private var today: String {
+        dateFormatting.todayString()
+    }
+
     init() {
         Task { await loadTodaysWord() }
     }
@@ -30,10 +36,15 @@ final class WOTDService: ObservableObject {
     }
 
     private func loadTodaysWord() async {
-        lastFetchedDate = Self.dateFormatter.string(from: Date())
-        // Try Supabase first
+        if let word = cache.loadWOTD(for: today) {
+            todaysWord = word
+            return
+        }
+
         if let word = try? await fetchFromSupabase() {
             todaysWord = word
+            cache.saveWOTD(word, for: today)
+            lastFetchedDate = Self.dateFormatter.string(from: Date())
             return
         }
         // Fall back to local bundle

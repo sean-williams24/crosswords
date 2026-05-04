@@ -31,18 +31,6 @@ struct HomeView: View {
     }
 
     @ViewBuilder
-    private var wotd: some View {
-        if let word = wotdService.todaysWord {
-            Button {
-                showWOTD = true
-            } label: {
-                wotdCard(word: word)
-            }
-            .buttonStyle(.plain)
-        }
-    }
-
-    @ViewBuilder
     private var dailyCrossword: some View {
         if viewModel.todaysPuzzle != nil {
             NavigationLink(value: "puzzle") {
@@ -491,16 +479,31 @@ struct HomeView: View {
     // MARK: - Word of the Day Card
 
     @ViewBuilder
-    private func wotdCard(word: WordOfTheDay) -> some View {
+    private var wotd: some View {
+        Button {
+            showWOTD = true
+        } label: {
+            wotdCard()
+        }
+        .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private func wotdCard() -> some View {
         VStack(spacing: 6) {
             Text("WORD OF THE DAY")
                 .font(AppFont.clueLabel(10))
                 .foregroundColor(.appTextSecondary)
                 .tracking(3)
 
-            Text(word.word)
-                .font(AppFont.header(22))
-                .foregroundColor(.appTextPrimary)
+            if let word = wotdService.todaysWord {
+                Text(word.word)
+                    .font(AppFont.header(22))
+                    .foregroundColor(.appTextPrimary)
+            } else {
+                ProgressView()
+                    .frame(minHeight: 30)
+            }
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
