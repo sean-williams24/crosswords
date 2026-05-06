@@ -52,6 +52,10 @@ chore: update Supabase API key
 
 Types: `feat`, `fix`, `refactor`, `chore`, `test`, `docs`, `style`
 
+## Conventions
+
+Key logic decisions and non-obvious behaviours are documented in [CONVENTIONS.md](./CONVENTIONS.md). Read it before working on any area it covers, and add a section whenever a meaningful decision is made.
+
 ## Workflow
 
 - **Always wait for review before committing.** After making changes, present them for review and wait for explicit approval before running `git commit`.
