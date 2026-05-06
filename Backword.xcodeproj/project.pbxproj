@@ -44,6 +44,7 @@
 		86E5BFFD2FA2BECA00A42156 /* Outfit-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFEE2FA2BECA00A42156 /* Outfit-ExtraBold.ttf */; };
 		86E5BFFE2FA2BECA00A42156 /* Outfit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */; };
 		86E5C00A2FA9211200A42156 /* WeeklyCrosswordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */; };
+		86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */; };
 		87051E8136E314CB2A272A91 /* BackwordLetterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2259B66045D006E89462572C /* BackwordLetterCell.swift */; };
 		8EF7F8087FF836F1BFC62151 /* HapticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */; };
 		8F92754416251062C7FCA46E /* CrosswordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922354966A899721DF1CF25C /* CrosswordStatsView.swift */; };
@@ -124,6 +125,7 @@
 		86E5BFF32FA2BECA00A42156 /* Outfit-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-SemiBold.ttf"; sourceTree = "<group>"; };
 		86E5BFF42FA2BECA00A42156 /* Outfit-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Thin.ttf"; sourceTree = "<group>"; };
 		86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCrosswordCard.swift; sourceTree = "<group>"; };
+		86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordCard.swift; sourceTree = "<group>"; };
 		8820C57EC2BCBADADEC4006C /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		894071960CD50EDF948DA15E /* BackwordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordApp.swift; sourceTree = "<group>"; };
 		8AF93C5B6979DA0324E913C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */,
+				86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */,
 				86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */,
 			);
 			path = HomeScreen;
@@ -486,6 +489,7 @@
 				437E4CF0032D9E5D69A92C43 /* AppSettings.swift in Sources */,
 				149802310440A77534BB615E /* AppTheme.swift in Sources */,
 				F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */,
+				86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */,
 				E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */,
 				869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */,
 				CF96B7A7D6669B73DBA8125E /* BackwordCard.swift in Sources */,

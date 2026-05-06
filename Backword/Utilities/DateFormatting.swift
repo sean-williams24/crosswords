@@ -18,4 +18,10 @@ final class DateFormatting {
         f.timeZone = TimeZone(identifier: "UTC")
         return f
     }
+
+    var formattedDate: String {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "EEEE, MMMM d"
+        return fmt.string(from: Date()).uppercased()
+    }
 }

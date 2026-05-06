@@ -17,7 +17,6 @@ struct HomeView: View {
     @State private var showSettings = false
     @State private var navigateToPuzzle = false
     @State private var navigateToWeekly = false
-    @State private var showStreakPopup = false
     @State private var logoVisible = false
     @State private var proLogoVisible = false
     #if DEBUG
@@ -28,18 +27,6 @@ struct HomeView: View {
         // Can't use @EnvironmentObject in init, so create with a temporary service
         // The real service is injected via .onAppear
         _viewModel = StateObject(wrappedValue: viewModel ?? HomeViewModel(puzzleService: PuzzleService()))
-    }
-
-    @ViewBuilder
-    private var dailyCrossword: some View {
-        if viewModel.todaysPuzzle != nil {
-            NavigationLink(value: "puzzle") {
-                dailyCrosswordCard()
-            }
-            .buttonStyle(.plain)
-        } else {
-            dailyCrosswordCard()
-        }
     }
 
     var body: some View {
@@ -57,7 +44,7 @@ struct HomeView: View {
                         .padding(.horizontal, AppLayout.screenPadding)
 
                         backwordButton
-                        dailyCrossword
+                        DailyCrosswordCard(viewModel: viewModel)
                         WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
                             .environmentObject(storeService)
                         wotd
@@ -292,96 +279,6 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - Today Card
-
-    @ViewBuilder
-    private func dailyCrosswordCard() -> some View {
-        ZStack(alignment: .bottomTrailing) {
-            VStack(spacing: 12) {
-                Text("DAILY CROSSWORD")
-                    .font(AppFont.clueLabel(11))
-                    .foregroundColor(.dailyCardTitle)
-                    .tracking(3)
-                    .multilineTextAlignment(.center)
-
-                Text(formattedDate)
-                    .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
-                    .tracking(1)
-                    .multilineTextAlignment(.center)
-
-                if viewModel.isLoading {
-                    ProgressView()
-                        .tint(.appAccent)
-                } else {
-                    HStack(spacing: 6) {
-                        Image(systemName: viewModel.puzzleStatus.icon)
-                            .foregroundColor(viewModel.puzzleStatus.color)
-                            .font(.system(size: 13))
-                        Text(viewModel.puzzleStatus.label)
-                            .font(AppFont.caption())
-                            .foregroundColor(.appTextSecondary)
-                    }
-                }
-            }
-            .padding(24)
-            .frame(maxWidth: .infinity)
-
-            if statsService.stats.liveCurrentStreak > 0 {
-                Button {
-                    showStreakPopup.toggle()
-                    if showStreakPopup {
-                        Task {
-                            try? await Task.sleep(nanoseconds: 4_000_000_000)
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                showStreakPopup = false
-                            }
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "flame.fill")
-                            .foregroundColor(.orange)
-                            .font(.system(size: 11))
-                        Text("\(statsService.stats.liveCurrentStreak)")
-                            .font(AppFont.clueLabel(12))
-                            .foregroundColor(.appTextPrimary)
-                    }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(Color.appSurface.opacity(0.8))
-                    .cornerRadius(14)
-                    .padding(12)
-                }
-                .buttonStyle(.plain)
-                .overlay(alignment: .top) {
-                    if showStreakPopup {
-                        Text("\(statsService.stats.liveCurrentStreak)-day streak")
-                            .font(AppFont.clueLabel(12))
-                            .foregroundColor(.appTextPrimary)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(Color.appSurface)
-                            .cornerRadius(10)
-                            .shadow(color: .black.opacity(0.15), radius: 8, y: 2)
-                            .offset(y: -36)
-                            .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    }
-                }
-                .animation(.easeInOut(duration: 0.2), value: showStreakPopup)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .background(
-            ZStack {
-                Color.dailyCardBackground
-            }
-        )
-        .clipped()
-        .cornerRadius(AppLayout.cardCornerRadius)
-        .padding(.horizontal, AppLayout.screenPadding)
-    }
-
     // MARK: - Word of the Day Card
 
     @ViewBuilder
@@ -430,13 +327,6 @@ struct HomeView: View {
         ) else { return nil }
         return midnight.timeIntervalSinceNow
     }
-
-    private var formattedDate: String {
-        let fmt = DateFormatter()
-        fmt.dateFormat = "EEEE, MMMM d"
-        return fmt.string(from: Date()).uppercased()
-    }
-
 }
 
 #Preview("Default") {

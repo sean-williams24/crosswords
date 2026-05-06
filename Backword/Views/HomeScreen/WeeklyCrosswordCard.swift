@@ -44,6 +44,7 @@ struct WeeklyCrosswordCard: View {
                 if isProUser {
                     HStack(spacing: 6) {
                         Image(systemName: viewModel.weeklyPuzzleStatus.icon)
+                            .font(.system(size: iconSize))
                             .foregroundColor(viewModel.weeklyPuzzleStatus.color)
                             .font(.system(size: 13))
                         Text(viewModel.weeklyPuzzleStatus.label)
@@ -57,7 +58,6 @@ struct WeeklyCrosswordCard: View {
                             .foregroundColor(.appAccent)
                         Image(systemName: "lock.fill")
                             .font(.system(size: iconSize))
-                            .font(.system(size: 12))
                             .foregroundColor(.appAccent)
                             .offset(y: offset)
                     }
