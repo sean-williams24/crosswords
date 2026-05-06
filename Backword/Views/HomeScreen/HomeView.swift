@@ -319,7 +319,8 @@ struct HomeView: View {
     // MARK: - Helpers
 
     private func secondsUntilMidnight() -> TimeInterval? {
-        let calendar = Calendar.current
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "UTC")!
         guard let midnight = calendar.nextDate(
             after: Date(),
             matching: DateComponents(hour: 0, minute: 0, second: 0),

@@ -15,11 +15,11 @@ struct DailyScore: Codable {
 // MARK: - Rating Tier
 
 enum RatingTier: CaseIterable {
-    case dabbler, scribe, linguist, grandmaster, virtuoso
+    case novice, scribe, linguist, grandmaster, virtuoso
 
     var displayName: String {
         switch self {
-        case .dabbler:     return "Dabbler"
+        case .novice:     return "Novice"
         case .scribe:      return "Scribe"
         case .linguist:    return "Linguist"
         case .grandmaster: return "Grandmaster"
@@ -29,7 +29,7 @@ enum RatingTier: CaseIterable {
 
     var color: Color {
         switch self {
-        case .dabbler:     return Color(.systemGray)
+        case .novice:     return Color(.systemGray)
         case .scribe:      return Color(red: 0.4, green: 0.6, blue: 0.9)
         case .linguist:    return Color(red: 0.2, green: 0.5, blue: 0.95)
         case .grandmaster: return Color(red: 0.1, green: 0.35, blue: 0.85)
@@ -53,7 +53,7 @@ enum RatingTier: CaseIterable {
     /// Minimum fraction (0–1) of max possible points to reach this tier.
     var threshold: Double {
         switch self {
-        case .dabbler:     return 0.0
+        case .novice:     return 0.0
         case .scribe:      return 0.2
         case .linguist:    return 0.4
         case .grandmaster: return 0.6
@@ -63,7 +63,7 @@ enum RatingTier: CaseIterable {
 
     var nextThreshold: Double {
         switch self {
-        case .dabbler:     return 0.2
+        case .novice:     return 0.2
         case .scribe:      return 0.4
         case .linguist:    return 0.6
         case .grandmaster: return 0.8
@@ -128,7 +128,7 @@ struct OverallRating: Codable {
 
     func tier(isPro: Bool) -> RatingTier {
         let f = fraction(isPro: isPro)
-        return RatingTier.allCases.reversed().first { $0.threshold <= f } ?? .dabbler
+        return RatingTier.allCases.reversed().first { $0.threshold <= f } ?? .novice
     }
 
     private func scoreFor(_ day: DailyScore, isPro: Bool) -> Int {

@@ -103,9 +103,9 @@ struct OverallRatingTests {
 
     // MARK: tier
 
-    @Test("Empty rating → Dabbler")
+    @Test("Empty rating → Novice")
     func emptyTier() {
-        #expect(OverallRating().tier(isPro: false) == .dabbler)
+        #expect(OverallRating().tier(isPro: false) == .novice)
     }
 
     @Test("~20% → Scribe")
