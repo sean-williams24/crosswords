@@ -206,7 +206,8 @@ struct RatingDetailSheet: View {
     private func breakdownRow(day: DailyScore) -> some View {
         let weeklyScore = isPro ? (day.weeklyCrossword ?? 0) : 0
         let total = day.dailyCrossword + weeklyScore + day.backword
-        let isToday = day.date == OverallRating.dateFormatter.string(from: Date())
+        let isToday = day.date == Self.localDateFormatter.string(from: Date())
+        let isUtcToday = day.date == OverallRating.dateFormatter.string(from: Date())
         let hasWeekly = day.weeklyCrossword != nil
 
         return HStack(spacing: 0) {
@@ -218,6 +219,11 @@ struct RatingDetailSheet: View {
                     Text("TODAY")
                         .font(AppFont.clueLabel(9))
                         .foregroundColor(.appAccent)
+                        .tracking(1)
+                } else if isUtcToday, let deadline = deadlineTime {
+                    Text("Until \(deadline)")
+                        .font(AppFont.clueLabel(9))
+                        .foregroundColor(.appTextSecondary)
                         .tracking(1)
                 }
             }
@@ -377,6 +383,30 @@ struct RatingDetailSheet: View {
     }
 
     // MARK: - Helpers
+
+    /// Returns the local-time representation of the next UTC midnight (e.g. "1:00 AM" for BST),
+    /// or nil if the local and UTC dates are already the same.
+    private var deadlineTime: String? {
+        guard Self.localDateFormatter.string(from: Date()) != OverallRating.dateFormatter.string(from: Date())
+        else { return nil }
+        var utcCal = Calendar(identifier: .gregorian)
+        utcCal.timeZone = TimeZone(identifier: "UTC")!
+        guard let utcMidnight = utcCal.nextDate(
+            after: Date(),
+            matching: DateComponents(hour: 0, minute: 0, second: 0),
+            matchingPolicy: .nextTime
+        ) else { return nil }
+        let fmt = DateFormatter()
+        fmt.dateFormat = "h:mm a"
+        return fmt.string(from: utcMidnight)
+    }
+
+    private static let localDateFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        // No timeZone set — uses the device's local timezone
+        return f
+    }()
 
     private var barGradient: LinearGradient {
         LinearGradient(
