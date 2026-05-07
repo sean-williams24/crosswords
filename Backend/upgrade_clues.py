@@ -24,9 +24,19 @@ Environment Variables:
 import argparse
 import json
 import os
+import re
 import sys
 import time
 from pathlib import Path
+
+
+def _leaks_answer(word: str, text: str) -> bool:
+    """True if the answer word appears as a whole word in text (case-insensitive)."""
+    if not text:
+        return False
+    pattern = r"\b" + re.escape(word) + r"\b"
+    return bool(re.search(pattern, text, re.IGNORECASE))
+
 
 BANK_PATH = Path(__file__).parent / "word_bank.json"
 OUTPUT_PATH = Path(__file__).parent / "word_bank.json"
@@ -212,13 +222,22 @@ def main():
                 word = item.get("word", "")
                 clues = item.get("clues", [])
                 if word in word_map and clues:
-                    word_map[word]["clues"] = clues
+                    # Drop any clue that leaks the answer word
+                    clean_clues = [c for c in clues if not _leaks_answer(word, c)]
+                    dropped = len(clues) - len(clean_clues)
+                    if dropped:
+                        print(f"    WARNING: {dropped} clue(s) for {word} contained the answer and were dropped")
+                    if not clean_clues:
+                        fail_count += 1
+                        print(f"    WARNING: All clues for {word} leaked the answer — skipping")
+                        continue
+                    word_map[word]["clues"] = clean_clues
                     # Keep hard_text as the first variant for backwards compat
-                    word_map[word]["hard_text"] = clues[0]
+                    word_map[word]["hard_text"] = clean_clues[0]
                     success_count += 1
                     batch_success += 1
                     if args.dry_run:
-                        print(f"    {word}: {clues}")
+                        print(f"    {word}: {clean_clues}")
                 else:
                     fail_count += 1
                     print(f"    WARNING: No match or empty clues for '{word}'")

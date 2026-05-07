@@ -14,6 +14,7 @@ Backend/*.py
 !Backend/expand_validated.py
 !Backend/generate_backword.py
 !Backend/recategorise_backword.py
+!Backend/fix_answer_leakage.py
 Backend/clean_progress.json
 Backend/word_bank_backup.json
 Backend/.venv/
