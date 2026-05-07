@@ -80,3 +80,92 @@ private var deadlineTime: String? {
 | "TODAY" label detection | Local (device) |
 | "Until X:XX AM" deadline display | Local (DateFormatter default) |
 | Human-readable date strings (e.g. "Wed, May 6") | Local (DateFormatter default) |
+
+---
+
+## Word Bank
+
+### Structure
+
+`Backend/word_bank.json` is a JSON array of objects. Each object represents one crossword answer:
+
+```json
+{
+    "word": "LESLIE",
+    "text": "Common female first name.",
+    "hint": "Parks and Recreation character",
+    "hard_text": "A female name, perhaps less than a lot.",
+    "clues": [
+        "Famous actress, first name only.",
+        "Name of a character in 'The Parent Trap'.",
+        "Knope of Pawnee, familiarly"
+    ]
+}
+```
+
+### How each field is used
+
+| Field | Used by | Purpose |
+|---|---|---|
+| `word` | Everything | The answer (always uppercase) |
+| `clues` | `generate_puzzle.py` | **Primary clue source.** One item is randomly selected at puzzle-generation time and becomes the `text` field in the final puzzle JSON. Randomisation means the same word can have different clues across puzzles. |
+| `hard_text` | `generate_puzzle.py` | Fallback clue if `clues[]` is empty or missing. |
+| `text` | `generate_puzzle.py` | Last-resort fallback if both `clues[]` and `hard_text` are absent. |
+| `hint` | `GameViewModel` | Shown to the user when they tap the hint button in-game (costs hint tokens). Should give **genuinely new context** not already present in the clue — e.g. a category, a cultural reference, or a synonym. Never just a generic label like "name" when the clue already says it's a name. |
+
+### Clue selection logic (generate_puzzle.py)
+
+```python
+clue_variants = entry.get("clues", [])
+if clue_variants and rng:
+    text = rng.choice(clue_variants)   # random pick from the array
+else:
+    text = entry.get("hard_text", entry["text"])   # fallback chain
+```
+
+### Answer leakage rule
+
+**No clue or hint field may contain the answer word (case-insensitive, whole-word match).** For multi-word answers (e.g. `ICE CREAM`), constituent words ≥ 3 characters are also checked individually.
+
+Run `Backend/fix_answer_leakage.py` to scan for violations and regenerate affected fields via OpenAI. All clue-generation scripts (`clean_word_bank.py`, `upgrade_clues.py`, `expand_short_words.py`) enforce this rule at generation time via `_leaks_answer()`.
+
+---
+
+## Backend Python Scripts
+
+The `Backend/` folder is organised into two tiers:
+
+### Active scripts (tracked in git)
+
+**Automated — run by GitHub Actions workflows (Monday cron):**
+
+| Script | Workflow | Purpose |
+|---|---|---|
+| `generate_puzzle.py` | `generate-puzzles.yml` | Generates 7 daily crossword puzzles and uploads to Supabase |
+| `generate_weekly_puzzle.py` | `generate-weekly-puzzles.yml` | Generates 10 weekly 13×13 puzzles when < 5 remain queued |
+| `generate_wotd.py` | `generate-wotd.yml` | Generates 7 Words of the Day and uploads to Supabase |
+| `generate_backword.py` | `generate-backword.yml` | Generates 7 Backword words and uploads to Supabase |
+
+**Utility — run manually as needed:**
+
+| Script | Purpose |
+|---|---|
+| `clean_word_bank.py` | Filter obscure words and generate clues for placeholder entries via LLM |
+| `upgrade_clues.py` | Regenerate `clues[]` / `hard_text` for existing entries using a harder clue style |
+| `expand_short_words.py` | Add high-frequency 3/4-letter words from the macOS system dictionary |
+| `expand_validated.py` | Expand the word bank with GPT-validated candidates |
+| `recategorise_backword.py` | Recategorise Backword word candidates (e.g. after scoring changes) |
+| `fix_answer_leakage.py` | Scan for and fix answer leakage / redundant hints across all word bank entries |
+| `upload_weekly_puzzles.py` | Manually upload pre-generated weekly puzzle JSON files to Supabase |
+| `validate_puzzles.py` | Validate generated puzzles have no 2-cell runs |
+
+### Archive scripts (`Backend/archive/`)
+
+Historical one-off scripts kept for reference. These were used during initial development to generate crossword grid templates, iterate on solvers, and perform bulk word bank expansions. They are not tracked by git and should not be run without understanding their specific context.
+
+Categories in `archive/`:
+- **Template generation** — `gen_templates_*.py`, `gen_weekly_templates_*.py`, `generate_templates.py`, `craft_templates.py`
+- **Solver testing** — `test_11x11_solver.py`, `test_13x13_solver.py`, `test_solver_quick.py`, `test_templates.py`, `test_weekly_solver.py`
+- **Template validation/diagnostics** — `validate_templates.py`, `validate_weekly_templates.py`, `verify_templates.py`, `check_weekly_templates.py`, `diagnose_weekly.py`, `diag_13x13.py`
+- **One-off word bank expansions** — `add_*.py`, `expand_word_bank.py`, `expand_word_bank_v2.py`, `upgrade_word_bank.py`, `restore_kept.py`
+- **Miscellaneous** — `generate_icon.py`, `generate_puzzle_old.py`, `check_status.py`

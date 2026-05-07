@@ -17,8 +17,11 @@ Backend/*.py
 !Backend/fix_answer_leakage.py
 Backend/clean_progress.json
 Backend/word_bank_backup.json
+Backend/leaky_entries.json
+Backend/fix_progress.json
 Backend/.venv/
 Backend/__pycache__/
+Backend/archive/
 Backend/puzzles/
 Backend/puzzles_new/
 Backend/puzzles_weekly/
