@@ -7,13 +7,7 @@ struct BackwordCard: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: spacing) {
-            HStack(alignment: .center, spacing: -7) {
-                Text("Daily")
-                    .font(AppFont.clueLabel(11))
-                    .foregroundColor(.appTextPrimary)
-                    .tracking(3)
                 BackwordLogo()
-            }
 
             if let progress, progress.isComplete {
                 completionContent(progress: progress)
@@ -61,7 +55,6 @@ struct BackwordCard: View {
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .strokeBorder(Color.appAccent, lineWidth: 1)
         )
-        .padding(.horizontal, AppLayout.screenPadding)
     }
 
     @ViewBuilder
