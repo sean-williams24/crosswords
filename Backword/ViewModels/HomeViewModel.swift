@@ -82,6 +82,14 @@ final class HomeViewModel: ObservableObject {
         isLoading = false
     }
 
+    var dailyCrosswordScore: Int? {
+        guard let progress = todaysProgress,
+              let total = progress.totalClues, total > 0,
+              progress.completedClueIds.count > 0 else { return nil }
+        let pct = Int(Double(progress.completedClueIds.count) / Double(total) * 100)
+        return Int.crosswordScore(percentComplete: pct)
+    }
+
     var puzzleStatus: PuzzleStatus {
         guard let progress = todaysProgress else { return .new }
         if progress.isComplete { return .completed(progress.formattedTime) }

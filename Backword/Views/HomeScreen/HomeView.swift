@@ -36,18 +36,17 @@ struct HomeView: View {
                     .ignoresSafeArea()
 
                 ScrollView {
-                    VStack(spacing: 32) {
+                    VStack(spacing: 20) {
                         RatingBarView(
                             rating: ratingService.rating,
                             isPro: storeService.isProUser
                         )
                         .padding(.horizontal, AppLayout.screenPadding)
 
-                        backwordButton
-                        DailyCrosswordCard(viewModel: viewModel)
+                        wotd
+                        dailyGamesView
                         WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
                             .environmentObject(storeService)
-                        wotd
                     }
                     .padding(.top, 16)
                     .padding(.bottom, 100)
@@ -55,93 +54,10 @@ struct HomeView: View {
                 .scrollIndicators(.hidden)
             }
             .safeAreaInset(edge: .top, spacing: 0) {
-                // Semi-transparent nav bar — extends behind status bar
-                ZStack(alignment: .center) {
-                    VStack(spacing: -17) {
-                        BackwordLogo()
-                            .offset(x: logoVisible ? 0 : 120)
-                            .opacity(logoVisible ? 1 : 0)
-                        if storeService.isProUser {
-                            Image("Pro")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 28)
-                                .offset(x: 20)
-                                .opacity(proLogoVisible ? 1 : 0)
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-
-                    HStack {
-                        Spacer()
-                        Button {
-                            showSettings = true
-                        } label: {
-                            Image(systemName: "gearshape")
-                                .font(.system(size: 18))
-                                .foregroundColor(.appTextSecondary)
-                        }
-                        .padding(.trailing, AppLayout.screenPadding)
-                    }
-                }
-                #if DEBUG
-                .onTapGesture(count: 3) {
-                    showDebugSettings = true
-                }
-                #endif
-                .padding(.horizontal, AppLayout.screenPadding)
-                .padding(.top, 4)
-                .padding(.bottom, 12)
-                .background(
-                    Color.appBackground.opacity(0.85)
-                        .background(.ultraThinMaterial)
-                        .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 4)
-                        .ignoresSafeArea()
-                )
+                navigationBar
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                // Archive footer bar
-                VStack(spacing: 0) {
-                    Button {
-                        if storeService.isProUser {
-                            showArchive = true
-                        } else {
-                            showPaywall = true
-                        }
-                    } label: {
-                        HStack {
-                            Label("Archive", systemImage: "archivebox")
-                            if !storeService.isProUser {
-                                Image(systemName: "lock.fill")
-                                    .font(.system(size: 12))
-                                    .foregroundColor(.appAccent)
-                            }
-                        }
-                        .font(AppFont.clueLabel(14))
-                        .foregroundColor(.appTextSecondary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 14)
-                    }
-                    .padding(.horizontal, AppLayout.screenPadding)
-                    .padding(.top, 8)
-                }
-                .background {
-                    ZStack {
-                        Rectangle().fill(.ultraThinMaterial)
-                        Color.appBackground.opacity(0.75)
-                    }
-                    .mask(
-                        LinearGradient(
-                            stops: [
-                                .init(color: .clear, location: 0),
-                                .init(color: .black, location: 0.15)
-                            ],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                    .ignoresSafeArea()
-                }
+                archiveFooterBar
             }
             .ignoresSafeArea(.keyboard)
             .toolbar(.hidden, for: .navigationBar)
@@ -248,8 +164,145 @@ struct HomeView: View {
         }
     }
 
+    private var dailyGamesView: some View {
+        VStack(spacing: 0) {
+            Rectangle()
+                .frame(height: 1)
+            Text("Daily Games")
+                .font(AppFont.header(16))
+                .padding(.top, 16)
+                .padding(.bottom, 6)
+
+            TimelineView(.periodic(from: .now, by: 60)) { context in
+                if isAfterLocalMidnight(at: context.date) {
+                    Text(utcResetCountdown(at: context.date))
+                        .font(AppFont.caption())
+                        .foregroundColor(Color.appTextSecondary)
+                        .tracking(1)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 16)
+                } else {
+                    Text(DateFormatting().formattedDate)
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                        .tracking(1)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 16)
+                }
+            }
+
+            Group {
+                backwordCard
+                DailyCrosswordCard(viewModel: viewModel)
+            }
+            .padding(.horizontal, AppLayout.screenPadding)
+            .padding(.bottom, 20)
+
+            Rectangle()
+                .frame(height: 1)
+        }
+        .background {
+            LinearGradient(
+                colors: [Color.appAccent.opacity(0.15), Color.appBackground],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        }
+    }
+
     @ViewBuilder
-    private var backwordButton: some View {
+    private var navigationBar: some View {
+        ZStack(alignment: .center) {
+            VStack(spacing: -17) {
+                BackwordLogo()
+                    .offset(x: logoVisible ? 0 : 120)
+                    .opacity(logoVisible ? 1 : 0)
+                if storeService.isProUser {
+                    Image("Pro")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 28)
+                        .offset(x: 20)
+                        .opacity(proLogoVisible ? 1 : 0)
+                }
+            }
+            .frame(maxWidth: .infinity)
+
+            HStack {
+                Spacer()
+                Button {
+                    showSettings = true
+                } label: {
+                    Image(systemName: "gearshape")
+                        .font(.system(size: 18))
+                        .foregroundColor(.appTextSecondary)
+                }
+                .padding(.trailing, AppLayout.screenPadding)
+            }
+        }
+        #if DEBUG
+        .onTapGesture(count: 3) {
+            showDebugSettings = true
+        }
+        #endif
+        .padding(.horizontal, AppLayout.screenPadding)
+        .padding(.top, 4)
+        .padding(.bottom, 12)
+        .background(
+            Color.appBackground.opacity(0.85)
+                .background(.ultraThinMaterial)
+                .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 4)
+                .ignoresSafeArea()
+        )
+    }
+
+    @ViewBuilder
+    private var archiveFooterBar: some View {
+        VStack(spacing: 0) {
+            Button {
+                if storeService.isProUser {
+                    showArchive = true
+                } else {
+                    showPaywall = true
+                }
+            } label: {
+                HStack {
+                    Label("Archive", systemImage: "archivebox")
+                    if !storeService.isProUser {
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(.appAccent)
+                    }
+                }
+                .font(AppFont.clueLabel(14))
+                .foregroundColor(.appTextSecondary)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 14)
+            }
+            .padding(.horizontal, AppLayout.screenPadding)
+            .padding(.top, 8)
+        }
+        .background {
+            ZStack {
+                Rectangle().fill(.ultraThinMaterial)
+                Color.appBackground.opacity(0.75)
+            }
+            .mask(
+                LinearGradient(
+                    stops: [
+                        .init(color: .clear, location: 0),
+                        .init(color: .black, location: 0.15)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+            .ignoresSafeArea()
+        }
+    }
+
+    @ViewBuilder
+    private var backwordCard: some View {
         if backwordService.todaysWord != nil {
             NavigationLink(value: "backword") {
                 BackwordCard(
@@ -317,6 +370,33 @@ struct HomeView: View {
     }
 
     // MARK: - Helpers
+
+    /// Returns true when the local date has ticked past midnight but UTC midnight hasn't fired yet.
+    private func isAfterLocalMidnight(at date: Date = Date()) -> Bool {
+        let localFmt = DateFormatter()
+        localFmt.dateFormat = "yyyy-MM-dd"
+        let utcFmt = DateFormatter()
+        utcFmt.dateFormat = "yyyy-MM-dd"
+        utcFmt.timeZone = TimeZone(identifier: "UTC")!
+        return localFmt.string(from: date) != utcFmt.string(from: date)
+    }
+
+    /// Returns a string like "RESETS IN 1:05" counting down to the next UTC midnight.
+    private func utcResetCountdown(at date: Date = Date()) -> String {
+        var utcCal = Calendar(identifier: .gregorian)
+        utcCal.timeZone = TimeZone(identifier: "UTC")!
+        guard let utcMidnight = utcCal.nextDate(
+            after: date,
+            matching: DateComponents(hour: 0, minute: 0, second: 0),
+            matchingPolicy: .nextTime
+        ) else { return "RESETS SOON" }
+        let totalMinutes = max(0, Int(utcMidnight.timeIntervalSince(date) / 60))
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        return hours > 0
+            ? String(format: "Resets in %d:%02d", hours, minutes)
+            : String(format: "%d minutes remaining", minutes)
+    }
 
     private func secondsUntilMidnight() -> TimeInterval? {
         var calendar = Calendar(identifier: .gregorian)

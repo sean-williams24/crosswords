@@ -27,18 +27,22 @@ struct DailyCrosswordCard: View {
     private var content: some View {
         ZStack(alignment: .bottomTrailing) {
             VStack(spacing: 12) {
-                Text("DAILY CROSSWORD")
+                Text("CROSSWORD")
                     .font(AppFont.clueLabel(11))
                     .foregroundColor(.dailyCardTitle)
                     .tracking(3)
                     .multilineTextAlignment(.center)
 
-                Text(formattedDate)
-                    .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
-                    .tracking(1)
-                    .multilineTextAlignment(.center)
-
+                if let score = viewModel.dailyCrosswordScore {
+                    HStack(spacing: 4) {
+                        Text("\(score)")
+                            .font(AppFont.header(28))
+                            .foregroundColor(score == 5 ? .appCorrect : .appAccent)
+                        Text("/ 5")
+                            .font(AppFont.header(16))
+                            .foregroundColor(.appTextSecondary)
+                    }
+                }
                 if viewModel.isLoading {
                     ProgressView()
                 } else {
@@ -53,7 +57,7 @@ struct DailyCrosswordCard: View {
                     }
                 }
             }
-            .padding(24)
+            .padding(.vertical, 24)
             .frame(maxWidth: .infinity)
 
             if statsService.stats.liveCurrentStreak > 0 {
@@ -108,14 +112,7 @@ struct DailyCrosswordCard: View {
         )
         .clipped()
         .cornerRadius(AppLayout.cardCornerRadius)
-        .padding(.horizontal, AppLayout.screenPadding)
     }
-}
-
-private var formattedDate: String {
-    let fmt = DateFormatter()
-    fmt.dateFormat = "EEEE, MMMM d"
-    return fmt.string(from: Date()).uppercased()
 }
 
 #Preview {
