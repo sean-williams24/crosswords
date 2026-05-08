@@ -11,6 +11,7 @@ final class BackwordViewModel: ObservableObject {
     @Published var currentInput: String = ""
     @Published var newlyRevealedIndex: Int? = nil
     @Published var inputError: Bool = false
+    @Published var invalidWordMessage: String? = nil
 
     private let settings = AppSettings.shared
 
@@ -88,6 +89,13 @@ final class BackwordViewModel: ObservableObject {
             return
         }
 
+        // Always accept the target word; otherwise validate against system dictionary
+        let isTarget = guess == word.word.uppercased()
+        if !isTarget && !wordValidator(guess) {
+            triggerInvalidWord()
+            return
+        }
+
         let previousRevealedCount = progress.revealedCount
         progress.guesses.append(guess)
         currentInput = ""
@@ -151,6 +159,25 @@ final class BackwordViewModel: ObservableObject {
             inputError = false
         }
     }
+
+    private var invalidWords: Set<String> = [
+        "Not a valid word",
+        "Real words only",
+        "Invalid word",
+        "Made up words are n/a"
+    ]
+
+    private func triggerInvalidWord() {
+        invalidWordMessage = invalidWords.randomElement()
+        triggerInputError()
+        Task {
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            invalidWordMessage = nil
+        }
+    }
+
+    // Indirection for testability — tests can inject a custom validator.
+    var wordValidator: (String) -> Bool = { WordValidator.isValidEnglishWord($0) }
 
     // MARK: - Share
 

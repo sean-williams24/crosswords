@@ -163,6 +163,7 @@
 				DateFormatting.swift,
 				"Int+Extensions.swift",
 				SwipeBackModifier.swift,
+				WordValidator.swift,
 			);
 			target = A53A431755E77FC7A5A5FCB4 /* Backword */;
 		};

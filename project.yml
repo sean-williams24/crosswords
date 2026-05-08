@@ -18,7 +18,7 @@ settings:
 packages:
   GoogleMobileAds:
     url: https://github.com/googleads/swift-package-manager-google-mobile-ads
-    minorVersion: 11.0.0
+    minorVersion: 13.0.0
 
 targets:
   Backword:

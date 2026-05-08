@@ -193,4 +193,51 @@ struct BackwordViewModelTests {
         let matching = vm.lettersInWord(for: "BIOPSY")
         #expect(matching.isEmpty)
     }
+
+    // MARK: - Word Validation
+
+    @Test("Invalid word is rejected and guess not consumed")
+    func invalidWordRejected() async throws {
+        let vm = BackwordViewModel(word: makeWord("CASTLE"))
+        vm.wordValidator = { _ in false }
+        vm.currentInput = "BRIDG"
+        vm.submitGuess()
+
+        #expect(vm.guessCount == 0)
+        #expect(vm.invalidWordMessage != nil)
+    }
+
+    @Test("Valid word is accepted")
+    func validWordAccepted() async throws {
+        let vm = BackwordViewModel(word: makeWord("CASTLE"))
+        vm.wordValidator = { _ in true }
+        vm.currentInput = "BRIDG"
+        vm.submitGuess()
+
+        #expect(vm.guessCount == 1)
+        #expect(vm.invalidWordMessage == nil)
+    }
+
+    @Test("Target word always accepted even if validator rejects it")
+    func targetWordAlwaysAccepted() async throws {
+        let vm = BackwordViewModel(word: makeWord("CASTLE"))
+        vm.wordValidator = { _ in false }
+        vm.currentInput = "CASTL"
+        vm.submitGuess()
+
+        #expect(vm.guessCount == 1)
+        #expect(vm.isWon == true)
+    }
+
+    @Test("Invalid word does not reveal next letter")
+    func invalidWordDoesNotRevealLetter() async throws {
+        let vm = BackwordViewModel(word: makeWord("CASTLE"))
+        vm.wordValidator = { _ in false }
+        let revealedBefore = vm.progress.revealedCount
+        vm.currentInput = "XYZQW"
+        vm.submitGuess()
+
+        #expect(vm.progress.revealedCount == revealedBefore)
+        #expect(vm.guessCount == 0)
+    }
 }

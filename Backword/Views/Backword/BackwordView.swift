@@ -46,6 +46,14 @@ struct BackwordView: View {
                     VStack(alignment: .center, spacing: 24) {
                         hintRow
                         revealedLetterRow
+
+                        if let message = viewModel.invalidWordMessage {
+                            Text(message)
+                                .font(AppFont.caption(16))
+                                .foregroundColor(.red.opacity(0.6))
+                                .transition(.opacity)
+                        }
+
                         guessCounter
 
                         if !viewModel.progress.guesses.isEmpty {
@@ -78,6 +86,7 @@ struct BackwordView: View {
             }
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.invalidWordMessage != nil)
         .onChange(of: viewModel.isComplete) { complete in
             if complete {
                 inputFocused = false
