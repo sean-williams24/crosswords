@@ -193,6 +193,7 @@ struct HomeView: View {
 
             Group {
                 backwordCard
+                    .shadow(color: .primary, radius: .pi, x: 0.2, y: 0.2)
                 DailyCrosswordCard(viewModel: viewModel)
             }
             .padding(.horizontal, AppLayout.screenPadding)
@@ -200,10 +201,11 @@ struct HomeView: View {
 
             Rectangle()
                 .frame(height: 1)
+                .shadow(color: .primary, radius: .pi, x: 0.2, y: 0.6)
         }
         .background {
             LinearGradient(
-                colors: [Color.appAccent.opacity(0.15), Color.appBackground],
+                colors: [Color.appGridLine.opacity(0.55), Color.appBackground],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
