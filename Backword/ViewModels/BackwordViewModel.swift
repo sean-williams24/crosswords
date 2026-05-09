@@ -37,10 +37,32 @@ final class BackwordViewModel: ObservableObject {
     /// Index 2 (3rd letter) and index 5 (last letter) are pinned from the start.
     /// Wrong guesses reveal indices 4, 3, then index 2's slot is a wasted step
     /// (already shown), then 1 and 0 — keeping all 5 guesses meaningful.
+    ///
+    //  3rd letter
+//    private static let revealedSets: [Set<Int>] = [
+//        [2, 5],              // revealedCount 1: game start
+//        [2, 4, 5],           // revealedCount 2: 1 wrong guess
+//        [2, 3, 4, 5],        // revealedCount 3: 2 wrong guesses
+//        [2, 3, 4, 5],        // revealedCount 4: 3 wrong guesses — index 2 already shown (wasted step)
+//        [1, 2, 3, 4, 5],     // revealedCount 5: 4 wrong guesses
+//        [0, 1, 2, 3, 4, 5],  // revealedCount 6: failed state — all revealed for display
+//    ]
+
+    // 4th letter
+//    private static let revealedSets: [Set<Int>] = [
+//        [3, 5],              // revealedCount 1: game start
+//        [3, 4, 5],           // revealedCount 2: 1 wrong guess
+//        [2, 3, 4, 5],        // revealedCount 3: 2 wrong guesses
+//        [2, 3, 4, 5],        // revealedCount 4: 3 wrong guesses — index 2 already shown (wasted step)
+//        [1, 2, 3, 4, 5],     // revealedCount 5: 4 wrong guesses
+//        [0, 1, 2, 3, 4, 5],  // revealedCount 6: failed state — all revealed for display
+//    ]
+
+    // last letter
     private static let revealedSets: [Set<Int>] = [
-        [2, 5],              // revealedCount 1: game start
-        [2, 4, 5],           // revealedCount 2: 1 wrong guess
-        [2, 3, 4, 5],        // revealedCount 3: 2 wrong guesses
+        [5],              // revealedCount 1: game start
+        [4, 5],           // revealedCount 2: 1 wrong guess
+        [3, 4, 5],        // revealedCount 3: 2 wrong guesses
         [2, 3, 4, 5],        // revealedCount 4: 3 wrong guesses — index 2 already shown (wasted step)
         [1, 2, 3, 4, 5],     // revealedCount 5: 4 wrong guesses
         [0, 1, 2, 3, 4, 5],  // revealedCount 6: failed state — all revealed for display
