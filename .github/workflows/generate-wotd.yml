@@ -2,14 +2,12 @@ name: Generate Words of the Day
 
 on:
   schedule:
-    - cron: "0 8 * * 1"   # Every Monday at 08:00 UTC
+    - cron: "0 8 1 */3 *"  # Quarterly: 1st of every 3rd month at 08:00 UTC
   workflow_dispatch:       # Manual trigger
 
 jobs:
   generate:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
       - uses: actions/checkout@v4
 
@@ -47,38 +45,8 @@ jobs:
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          echo "Generating 7 WOTDs starting from ${{ steps.dates.outputs.start }}"
+          echo "Generating 90 WOTDs starting from ${{ steps.dates.outputs.start }}"
           python3 Backend/generate_wotd.py \
             --date "${{ steps.dates.outputs.start }}" \
-            --count 7
-
-      - name: Warn if word bank is running low
-        if: steps.generate.outputs.remaining != '' && fromJSON(steps.generate.outputs.remaining) <= 14
-        run: |
-          echo "::warning::WOTD bank is running low! Only ${{ steps.generate.outputs.remaining }} unused words remain. Add more to WORD_BANK in Backend/generate_wotd.py."
-
-      - name: Create issue if word bank is critically low
-        if: steps.generate.outputs.remaining != '' && fromJSON(steps.generate.outputs.remaining) <= 14
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const remaining = ${{ steps.generate.outputs.remaining }};
-            const title = `WOTD bank running low — ${remaining} words remaining`;
-            // Don't create duplicate issues
-            const existing = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              labels: 'wotd-bank'
-            });
-            if (existing.data.length > 0) {
-              console.log('Issue already exists, skipping.');
-              return;
-            }
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title,
-              body: `The Word of the Day bank has only **${remaining}** unused words left.\n\nAt the current rate of 7 words/week, the bank will be empty in ~${Math.floor(remaining / 7)} week(s).\n\nAdd more entries to \`WORD_BANK\` in \`Backend/generate_wotd.py\` and push to \`main\`.`,
-              labels: ['wotd-bank']
-            });
+            --count 90 \
+            --batch-size 30
