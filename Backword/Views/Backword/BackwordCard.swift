@@ -17,10 +17,11 @@ struct BackwordCard: View {
                     if let word {
                         HStack(spacing: 6) {
                             let revealedCount = progress?.revealedCount ?? 1
+                            let revealed = BackwordViewModel.revealedIndices(forRevealedCount: revealedCount)
                             let letters = Array(word.word)
-                            ForEach(0..<6, id: \ .self) { i in
+                            ForEach(0..<6, id: \.self) { i in
                                 BackwordLetterCell(
-                                    letter: i >= (6 - revealedCount) ? letters[i] : nil,
+                                    letter: revealed.contains(i) ? letters[i] : nil,
                                     size: 34
                                 )
                             }

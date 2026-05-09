@@ -11,15 +11,15 @@ struct BackwordViewModelTests {
 
     // MARK: - Initial State
 
-    @Test("Initial state reveals only the last letter")
+    @Test("Initial state reveals the 3rd and last letters")
     func initialRevealedLetters() async throws {
         let vm = BackwordViewModel(word: makeWord())
         let revealed = vm.revealedLetters
 
-        // Only index 5 (last) should be non-nil
+        // Index 2 (S) and index 5 (E) are pinned from the start
         #expect(revealed[0] == nil)
         #expect(revealed[1] == nil)
-        #expect(revealed[2] == nil)
+        #expect(revealed[2] == Character("S"))
         #expect(revealed[3] == nil)
         #expect(revealed[4] == nil)
         #expect(revealed[5] == Character("E"))
@@ -37,13 +37,17 @@ struct BackwordViewModelTests {
     @Test("Wrong guess reveals next letter from right")
     func wrongGuessRevealsNextLetter() async throws {
         let vm = BackwordViewModel(word: makeWord("CASTLE"))
-        // Initial: position 5 (E) revealed. User types the 5 unrevealed chars.
-        vm.currentInput = "BRIDG"
+        vm.wordValidator = { _ in true }
+        // Pinned: index 2 (S) and 5 (E). Unrevealed: [0,1,3,4] — type 4 chars.
+        vm.currentInput = "ABCD"
         vm.submitGuess()
 
-        // After 1 wrong guess: revealedCount == 2 → indices 4 and 5 revealed
+        // After 1 wrong guess: additionally reveals index 4 (L)
+        #expect(vm.revealedLetters[2] == Character("S"))
         #expect(vm.revealedLetters[4] == Character("L"))
         #expect(vm.revealedLetters[5] == Character("E"))
+        #expect(vm.revealedLetters[0] == nil)
+        #expect(vm.revealedLetters[1] == nil)
         #expect(vm.revealedLetters[3] == nil)
         #expect(vm.guessCount == 1)
         #expect(vm.isComplete == false)
@@ -52,19 +56,20 @@ struct BackwordViewModelTests {
     @Test("Each wrong guess reveals one more letter")
     func multipleWrongGuessesRevealLetters() async throws {
         let vm = BackwordViewModel(word: makeWord("CASTLE"))
-        // Supply only the unrevealed prefix for each guess; revealed suffix is auto-appended.
+        vm.wordValidator = { _ in true }
         for _ in 0..<3 {
             vm.currentInput = String(repeating: "X", count: vm.unrevealedCount)
             vm.submitGuess()
         }
 
-        // After 3 wrong guesses: revealedCount == 4 → indices 2,3,4,5 revealed (S,T,L,E)
+        // After 3 wrong guesses: revealedCount=4 — wasted step (index 2 already shown)
+        // Revealed: {2,3,4,5}; indices 0 (C) and 1 (A) still hidden
         #expect(vm.revealedLetters[2] == Character("S"))
         #expect(vm.revealedLetters[3] == Character("T"))
         #expect(vm.revealedLetters[4] == Character("L"))
         #expect(vm.revealedLetters[5] == Character("E"))
-        #expect(vm.revealedLetters[1] == nil)
         #expect(vm.revealedLetters[0] == nil)
+        #expect(vm.revealedLetters[1] == nil)
     }
 
     // MARK: - Win Condition
@@ -72,8 +77,8 @@ struct BackwordViewModelTests {
     @Test("Correct guess triggers win")
     func correctGuessTriggerWin() async throws {
         let vm = BackwordViewModel(word: makeWord("CASTLE"))
-        // Initial: position 5 (E) revealed. Type only the 5 unrevealed chars.
-        vm.currentInput = "CASTL"
+        // Pinned: S(2), E(5). Unrevealed: [0,1,3,4]. Type C,A,T,L to form CASTLE.
+        vm.currentInput = "CATL"
         vm.submitGuess()
 
         #expect(vm.isComplete == true)
@@ -85,11 +90,12 @@ struct BackwordViewModelTests {
     @Test("Correct guess after wrong guesses wins")
     func correctGuessAfterWrongGuesses() async throws {
         let vm = BackwordViewModel(word: makeWord("CASTLE"))
-        // Wrong guess: unrevealed=5, type "BRIDG" → full guess "BRIDGE"
-        vm.currentInput = "BRIDG"
+        vm.wordValidator = { _ in true }
+        // Wrong guess: unrevealed=[0,1,3,4], type 4 chars
+        vm.currentInput = "ABCD"
         vm.submitGuess()
-        // Now unrevealed=4 (L,E revealed). Type "CAST" → full guess "CASTLE"
-        vm.currentInput = "CAST"
+        // Now unrevealed=[0,1,3] (L,E,S revealed). Type C,A,T to form CASTLE.
+        vm.currentInput = "CAT"
         vm.submitGuess()
 
         #expect(vm.isWon == true)
@@ -102,6 +108,9 @@ struct BackwordViewModelTests {
     @Test("Five wrong guesses causes failure")
     func fiveWrongGuesessFail() async throws {
         let vm = BackwordViewModel(word: makeWord("CASTLE"))
+        vm.wordValidator = { _ in true }
+        // Guess 3 and 4 both have unrevealedCount=2 (wasted step at revealedCount=4);
+        // guess 5 has unrevealedCount=1 — wrong → isFailed.
         for _ in 0..<5 {
             vm.currentInput = String(repeating: "X", count: vm.unrevealedCount)
             vm.submitGuess()
@@ -116,26 +125,25 @@ struct BackwordViewModelTests {
     @Test("No more guesses accepted after game complete")
     func noGuessesAfterComplete() async throws {
         let vm = BackwordViewModel(word: makeWord("CASTLE"))
+        vm.wordValidator = { _ in true }
         for _ in 0..<5 {
             vm.currentInput = String(repeating: "X", count: vm.unrevealedCount)
             vm.submitGuess()
         }
-
-        // Try one more (game is complete, input should be rejected)
+        // Game is now failed; extra submission must be rejected
         vm.currentInput = "X"
         vm.submitGuess()
 
-        // Still only 5 guesses
         #expect(vm.guessCount == 5)
     }
 
     // MARK: - Input Validation
 
-    @Test("Input shorter than 6 is rejected")
+    @Test("Input shorter than required is rejected")
     func shortInputRejected() async throws {
         let vm = BackwordViewModel(word: makeWord())
-        // unrevealedCount == 5; "CAT" (3 chars) is too short
-        vm.currentInput = "CAT"
+        // unrevealedCount == 4; "CA" (2 chars) is too short
+        vm.currentInput = "CA"
         vm.submitGuess()
         #expect(vm.guessCount == 0)
     }
@@ -143,17 +151,17 @@ struct BackwordViewModelTests {
     @Test("onInputChange filters to uppercase alpha and caps at unrevealedCount")
     func inputChangeFilters() async throws {
         let vm = BackwordViewModel(word: makeWord())
-        // Initial unrevealedCount == 5; "castle123!!" filtered+capped = "CASTL"
+        // Initial unrevealedCount == 4; "castle123!!" filtered+capped = "CAST"
         vm.onInputChange("castle123!!")
-        #expect(vm.currentInput == "CASTL")
+        #expect(vm.currentInput == "CAST")
     }
 
     @Test("onInputChange truncates to unrevealedCount characters")
     func inputChangeTruncates() async throws {
         let vm = BackwordViewModel(word: makeWord())
-        // Initial unrevealedCount == 5
+        // Initial unrevealedCount == 4
         vm.onInputChange("ABCDEFGH")
-        #expect(vm.currentInput == "ABCDE")
+        #expect(vm.currentInput == "ABCD")
     }
 
     // MARK: - Category Hint
@@ -200,7 +208,7 @@ struct BackwordViewModelTests {
     func invalidWordRejected() async throws {
         let vm = BackwordViewModel(word: makeWord("CASTLE"))
         vm.wordValidator = { _ in false }
-        vm.currentInput = "BRIDG"
+        vm.currentInput = "ABCD"  // 4 chars for unrevealed [0,1,3,4]
         vm.submitGuess()
 
         #expect(vm.guessCount == 0)
@@ -211,7 +219,7 @@ struct BackwordViewModelTests {
     func validWordAccepted() async throws {
         let vm = BackwordViewModel(word: makeWord("CASTLE"))
         vm.wordValidator = { _ in true }
-        vm.currentInput = "BRIDG"
+        vm.currentInput = "ABCD"  // 4 chars for unrevealed [0,1,3,4]
         vm.submitGuess()
 
         #expect(vm.guessCount == 1)
@@ -222,7 +230,8 @@ struct BackwordViewModelTests {
     func targetWordAlwaysAccepted() async throws {
         let vm = BackwordViewModel(word: makeWord("CASTLE"))
         vm.wordValidator = { _ in false }
-        vm.currentInput = "CASTL"
+        // Unrevealed [0,1,3,4] for CASTLE with S(2),E(5) pinned: type C,A,T,L
+        vm.currentInput = "CATL"
         vm.submitGuess()
 
         #expect(vm.guessCount == 1)
@@ -234,7 +243,7 @@ struct BackwordViewModelTests {
         let vm = BackwordViewModel(word: makeWord("CASTLE"))
         vm.wordValidator = { _ in false }
         let revealedBefore = vm.progress.revealedCount
-        vm.currentInput = "XYZQW"
+        vm.currentInput = "XYZQ"  // 4 chars for unrevealed [0,1,3,4]
         vm.submitGuess()
 
         #expect(vm.progress.revealedCount == revealedBefore)

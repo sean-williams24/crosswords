@@ -31,16 +31,42 @@ final class BackwordViewModel: ObservableObject {
         self.categoryHintRevealed = progress.categoryHintUsed
     }
 
+    // MARK: - Reveal Sequence
+
+    /// Set of letter indices visible at each `revealedCount` step.
+    /// Index 2 (3rd letter) and index 5 (last letter) are pinned from the start.
+    /// Wrong guesses reveal indices 4, 3, then index 2's slot is a wasted step
+    /// (already shown), then 1 and 0 — keeping all 5 guesses meaningful.
+    private static let revealedSets: [Set<Int>] = [
+        [2, 5],              // revealedCount 1: game start
+        [2, 4, 5],           // revealedCount 2: 1 wrong guess
+        [2, 3, 4, 5],        // revealedCount 3: 2 wrong guesses
+        [2, 3, 4, 5],        // revealedCount 4: 3 wrong guesses — index 2 already shown (wasted step)
+        [1, 2, 3, 4, 5],     // revealedCount 5: 4 wrong guesses
+        [0, 1, 2, 3, 4, 5],  // revealedCount 6: failed state — all revealed for display
+    ]
+
+    private var revealedIndices: Set<Int> {
+        BackwordViewModel.revealedSets[min(progress.revealedCount, 6) - 1]
+    }
+
+    /// Exposed for views that display letter cells without a full ViewModel (e.g. BackwordCard).
+    static func revealedIndices(forRevealedCount count: Int) -> Set<Int> {
+        revealedSets[min(count, 6) - 1]
+    }
+
     // MARK: - Computed
 
-    /// 6 elements. Non-nil positions are revealed letters; nil positions are hidden.
-    /// Reveal order: last letter first (index 5), then 4, 3, 2, 1, 0.
+    /// 6 elements. Non-nil where the letter is visible, nil where the user must type.
     var revealedLetters: [Character?] {
         let letters = Array(word.word)
-        return (0..<6).map { i in
-            // Reveal from right: position 5 is revealed first, then 4, etc.
-            i >= (6 - progress.revealedCount) ? letters[i] : nil
-        }
+        let revealed = revealedIndices
+        return (0..<6).map { i in revealed.contains(i) ? letters[i] : nil }
+    }
+
+    /// Sorted indices of cells the user still needs to type into.
+    var unrevealedIndices: [Int] {
+        (0..<6).filter { !revealedIndices.contains($0) }
     }
 
     var isComplete: Bool { progress.isComplete }
@@ -50,17 +76,8 @@ final class BackwordViewModel: ObservableObject {
     var maxGuesses: Int { 5 }
     var guessesRemaining: Int { maxGuesses - guessCount }
 
-    /// Number of cells the user types into (the left, not-yet-revealed cells).
-    var unrevealedCount: Int { max(0, 6 - progress.revealedCount) }
-
-    /// The revealed letters of the target word that form the suffix of every guess.
-    var revealedSuffix: String {
-        let letters = Array(word.word.uppercased())
-        return (0..<6)
-            .filter { $0 >= (6 - progress.revealedCount) }
-            .map { String(letters[$0]) }
-            .joined()
-    }
+    /// Number of cells the user types into.
+    var unrevealedCount: Int { unrevealedIndices.count }
 
     var showLetterFeedback: Bool {
         settings.backwordLetterFeedback
@@ -83,7 +100,7 @@ final class BackwordViewModel: ObservableObject {
             triggerInputError()
             return
         }
-        let guess = typed + revealedSuffix
+        let guess = buildGuess(from: typed)
         guard guess.count == 6 else {
             triggerInputError()
             return
@@ -115,11 +132,12 @@ final class BackwordViewModel: ObservableObject {
             stats.record(guessCount: nil, date: word.date)
             OverallRatingService().recordBackword(guessCount: nil, date: word.date)
         } else {
-            // Reveal next letter — it will be at the newly revealed index
+            // Reveal next letter — determine which index was newly revealed
             let newRevealedCount = progress.revealedCount
             if newRevealedCount > previousRevealedCount {
-                let revealedIndex = 6 - newRevealedCount  // index from left that just revealed
-                newlyRevealedIndex = revealedIndex
+                let prevSet = BackwordViewModel.revealedSets[previousRevealedCount - 1]
+                let newSet = BackwordViewModel.revealedSets[min(newRevealedCount, 6) - 1]
+                newlyRevealedIndex = newSet.subtracting(prevSet).min()
                 progress.save()
                 // Clear the highlight after the animation
                 Task {
@@ -130,6 +148,23 @@ final class BackwordViewModel: ObservableObject {
                 progress.save()
             }
         }
+    }
+
+    /// Assembles the full 6-letter guess by placing typed characters into unrevealed positions
+    /// and known letters into revealed positions.
+    private func buildGuess(from typed: String) -> String {
+        let letters = Array(word.word.uppercased())
+        let revealed = revealedIndices
+        let typedChars = Array(typed)
+        var typedIdx = 0
+        return (0..<6).map { i -> String in
+            if revealed.contains(i) {
+                return String(letters[i])
+            } else {
+                defer { typedIdx += 1 }
+                return typedIdx < typedChars.count ? String(typedChars[typedIdx]) : ""
+            }
+        }.joined()
     }
 
     func revealCategoryHint() {

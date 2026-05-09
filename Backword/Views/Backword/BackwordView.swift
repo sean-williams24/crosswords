@@ -185,7 +185,7 @@ struct BackwordView: View {
             VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 10) {
                 instructionRow(number: "1", text: "Guess the 6-letter word in 5 tries.")
-                instructionRow(number: "2", text: "The last letter is revealed to start. Each wrong guess reveals one more letter from the right.")
+                instructionRow(number: "2", text: "The last letter and the third letter are revealed to start. Each wrong guess reveals one more letter from the right.")
                 instructionRow(number: "3", text: "Type the missing letters into the highlighted cells, then tap Submit.")
                 instructionRow(number: "4", text: "The category is shown at the top — it's your clue")
             }
@@ -196,14 +196,14 @@ struct BackwordView: View {
             HStack(spacing: 12) {
                 exampleCell(letter: "C", isRevealed: false)
                 exampleCell(letter: "A", isRevealed: false)
-                exampleCell(letter: "S", isRevealed: false)
+                exampleCell(letter: "S", isRevealed: true)
                 exampleCell(letter: "T", isRevealed: true)
                 exampleCell(letter: "L", isRevealed: true)
                 exampleCell(letter: "E", isRevealed: true)
             }
             .frame(maxWidth: .infinity, alignment: .center)
 
-            Text("After 2 wrong guesses — 3 letters revealed")
+            Text("After 2 wrong guesses — 4 letters revealed")
                 .font(AppFont.caption())
                 .foregroundColor(.appTextSecondary)
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -249,7 +249,7 @@ struct BackwordView: View {
 
     private var revealedLetterRow: some View {
         let inputChars = Array(viewModel.currentInput)
-        let unrevealed = viewModel.unrevealedCount
+        let unrevealedIndices = viewModel.unrevealedIndices
         let wordChars = Array(viewModel.word.word.uppercased())
 
         return HStack(spacing: 8) {
@@ -263,9 +263,10 @@ struct BackwordView: View {
                     .animation(.spring(response: 0.4, dampingFraction: 0.6).delay(Double(i) * 0.06), value: viewModel.isWon)
                 } else {
                     let revealed = viewModel.revealedLetters[i]
-                    let isInputCell = i < unrevealed && !viewModel.isComplete
-                    let inputChar: Character? = (isInputCell && i < inputChars.count) ? inputChars[i] : nil
-                    let showCursor = isInputCell && i == inputChars.count && inputFocused
+                    let inputIndex = unrevealedIndices.firstIndex(of: i)
+                    let isInputCell = inputIndex != nil && !viewModel.isComplete
+                    let inputChar: Character? = isInputCell ? (inputIndex! < inputChars.count ? inputChars[inputIndex!] : nil) : nil
+                    let showCursor = isInputCell && inputIndex! == inputChars.count && inputFocused
 
                     BackwordLetterCell(
                         letter: revealed,
