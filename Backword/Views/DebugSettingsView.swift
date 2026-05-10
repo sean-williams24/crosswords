@@ -4,6 +4,7 @@ import SwiftUI
 struct DebugSettingsView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var backwordService: BackwordService
+    @EnvironmentObject var adService: AdService
     @Environment(\.dismiss) private var dismiss
 
     var homeViewModel: HomeViewModel? = nil
@@ -11,6 +12,7 @@ struct DebugSettingsView: View {
     @State private var showResetBackwordConfirmation = false
     @State private var showResetDailyConfirmation = false
     @State private var showResetWeeklyConfirmation = false
+    @State private var showResetUserDefaultsConfirmation = false
 
     var body: some View {
         NavigationStack {
@@ -22,6 +24,33 @@ struct DebugSettingsView: View {
                     ))
                 }
 
+                /// Google Ads
+                Section("Ads") {
+                    Toggle("Ads Enabled", isOn: Binding(
+                        get: { adService.debugAdsEnabled },
+                        set: { adService.setDebugAdsEnabled($0) }
+                    ))
+                    Button(role: .destructive) {
+                        showResetUserDefaultsConfirmation = true
+                    } label: {
+                        Label("Reset User Deafults", systemImage: "arrow.counterclockwise")
+                    }
+                }
+                .confirmationDialog(
+                    "Reset defaults",
+                    isPresented: $showResetUserDefaultsConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Reset", role: .destructive) {
+                        adService.resetUserDefaults()
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("All 3 user defaults values will be reset.")
+                }
+
+                /// Daily Crossword
                 Section("Daily Crossword") {
                     Button {
                         if let vm = homeViewModel, let puzzle = vm.todaysPuzzle {
@@ -40,7 +69,23 @@ struct DebugSettingsView: View {
                     }
                     .disabled(homeViewModel?.todaysPuzzle == nil)
                 }
+                .confirmationDialog(
+                    "Reset Daily Puzzle?",
+                    isPresented: $showResetDailyConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Reset", role: .destructive) {
+                        if let vm = homeViewModel, let puzzle = vm.todaysPuzzle {
+                            vm.debugResetPuzzle(puzzle: puzzle, isWeekly: false)
+                        }
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("All progress on today's daily crossword will be cleared.")
+                }
 
+                /// Pro Crossword
                 Section("Pro Crossword") {
                     Button {
                         if let vm = homeViewModel, let puzzle = vm.weeklyPuzzle {
@@ -59,13 +104,45 @@ struct DebugSettingsView: View {
                     }
                     .disabled(homeViewModel?.weeklyPuzzle == nil)
                 }
+                .confirmationDialog(
+                    "Reset Pro Puzzle?",
+                    isPresented: $showResetWeeklyConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Reset", role: .destructive) {
+                        if let vm = homeViewModel, let puzzle = vm.weeklyPuzzle {
+                            vm.debugResetPuzzle(puzzle: puzzle, isWeekly: true)
+                        }
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("All progress on the current pro crossword will be cleared.")
+                }
 
+                /// Backword
                 Section("Backword") {
                     Button(role: .destructive) {
                         showResetBackwordConfirmation = true
                     } label: {
                         Label("Reset Today's Backword", systemImage: "arrow.counterclockwise")
                     }
+                }
+                .confirmationDialog(
+                    "Reset Today's Backword?",
+                    isPresented: $showResetBackwordConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Reset", role: .destructive) {
+                        if let date = backwordService.todaysWord?.date {
+                            BackwordProgress.delete(date: date)
+                        }
+                        Task { await backwordService.refreshIfNeeded(force: true) }
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("Your guesses for today will be cleared and the game will restart.")
                 }
             }
             .navigationTitle("Debug Settings")
@@ -75,52 +152,6 @@ struct DebugSettingsView: View {
                     Button("Done") { dismiss() }
                 }
             }
-            .confirmationDialog(
-                "Reset Today's Backword?",
-                isPresented: $showResetBackwordConfirmation,
-                titleVisibility: .visible
-            ) {
-                Button("Reset", role: .destructive) {
-                    if let date = backwordService.todaysWord?.date {
-                        BackwordProgress.delete(date: date)
-                    }
-                    Task { await backwordService.refreshIfNeeded(force: true) }
-                    dismiss()
-                }
-                Button("Cancel", role: .cancel) {}
-            } message: {
-                Text("Your guesses for today will be cleared and the game will restart.")
-            }
-            .confirmationDialog(
-                "Reset Daily Puzzle?",
-                isPresented: $showResetDailyConfirmation,
-                titleVisibility: .visible
-            ) {
-                Button("Reset", role: .destructive) {
-                    if let vm = homeViewModel, let puzzle = vm.todaysPuzzle {
-                        vm.debugResetPuzzle(puzzle: puzzle, isWeekly: false)
-                    }
-                    dismiss()
-                }
-                Button("Cancel", role: .cancel) {}
-            } message: {
-                Text("All progress on today's daily crossword will be cleared.")
-            }
-            .confirmationDialog(
-                "Reset Pro Puzzle?",
-                isPresented: $showResetWeeklyConfirmation,
-                titleVisibility: .visible
-            ) {
-                Button("Reset", role: .destructive) {
-                    if let vm = homeViewModel, let puzzle = vm.weeklyPuzzle {
-                        vm.debugResetPuzzle(puzzle: puzzle, isWeekly: true)
-                    }
-                    dismiss()
-                }
-                Button("Cancel", role: .cancel) {}
-            } message: {
-                Text("All progress on the current pro crossword will be cleared.")
-            }
         }
     }
 }
@@ -129,5 +160,6 @@ struct DebugSettingsView: View {
     DebugSettingsView()
         .environmentObject(StoreService())
         .environmentObject(BackwordService())
+        .environmentObject(AdService())
 }
 #endif

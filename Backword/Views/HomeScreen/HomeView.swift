@@ -76,7 +76,7 @@ struct HomeView: View {
                         .environmentObject(adService)
                         .onAppear {
                             if !storeService.isProUser {
-                                adService.showInterstitialOnce(slot: "backword_open")
+                                adService.showInterstitialOnce(for: .backwordOpen)
                             }
                         }
                 } else if let puzzle = viewModel.todaysPuzzle {
@@ -87,7 +87,7 @@ struct HomeView: View {
                         .environmentObject(ratingService)
                         .onAppear {
                             if !storeService.isProUser {
-                                adService.showInterstitialOnce(slot: "daily_puzzle_open")
+                                adService.showInterstitialOnce(for: .dailyPuzzleOpen)
                             }
                         }
                 }
@@ -108,6 +108,7 @@ struct HomeView: View {
                 DebugSettingsView(homeViewModel: viewModel)
                     .environmentObject(storeService)
                     .environmentObject(backwordService)
+                    .environmentObject(adService)
             }
             #endif
             .sheet(isPresented: $showSettings) {
@@ -116,7 +117,7 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showWOTD, onDismiss: {
                 if !storeService.isProUser {
-                    adService.showInterstitialOnce(slot: "wotd_dismiss")
+                    adService.showInterstitialOnce(for: .wotdDismiss)
                 }
             }) {
                 if let word = wotdService.todaysWord {

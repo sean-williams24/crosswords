@@ -74,11 +74,26 @@ final class AdService: NSObject, ObservableObject {
       }
     }
 
+    // MARK: - Debug
+
+    #if DEBUG
+    private static let debugAdsEnabledKey = "debug_adsEnabled"
+    @Published var debugAdsEnabled: Bool = UserDefaults.standard.object(forKey: debugAdsEnabledKey) as? Bool ?? true
+
+    func setDebugAdsEnabled(_ value: Bool) {
+        debugAdsEnabled = value
+        UserDefaults.standard.set(value, forKey: Self.debugAdsEnabledKey)
+    }
+    #endif
+
     // MARK: - Show
 
     /// Presents the interstitial ad from the top-most view controller.
     /// Silently no-ops if no ad is loaded or no suitable view controller is found.
     func showInterstitial() {
+        #if DEBUG
+        guard debugAdsEnabled else { return }
+        #endif
         guard let ad = interstitial, let rootVC = topViewController() else { return }
         ad.present(from: rootVC)
         interstitial = nil
@@ -87,8 +102,8 @@ final class AdService: NSObject, ObservableObject {
 
     /// Shows the interstitial at most once per calendar day for the given slot identifier.
     /// Subsequent calls on the same day are silently ignored.
-    func showInterstitialOnce(slot: String) {
-        let key = "AdService.lastShown.\(slot)"
+    func showInterstitialOnce(for type: UserDefaultsKey) {
+        let key = "AdService.lastShown.\(type.rawValue)"
         let today = Calendar.current.startOfDay(for: Date())
         if let last = UserDefaults.standard.object(forKey: key) as? Date,
            Calendar.current.isDate(last, inSameDayAs: today) {
@@ -121,6 +136,17 @@ final class AdService: NSObject, ObservableObject {
 //        self.addCoins(reward.amount.intValue)
           completion()
       }
+    }
+
+    func resetUserDefaults() {
+        UserDefaultsKey.allCases
+            .forEach { UserDefaults.standard.removeObject(forKey: "AdService.lastShown.\($0.rawValue)") }
+    }
+
+    enum UserDefaultsKey: String, CaseIterable {
+        case backwordOpen = "backword_open"
+        case dailyPuzzleOpen = "daily_puzzle_open"
+        case wotdDismiss = "wotd_dismiss"
     }
 
     // MARK: - Helpers
