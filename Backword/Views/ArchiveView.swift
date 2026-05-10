@@ -294,7 +294,7 @@ struct ArchiveView: View {
 
         var color: Color {
             switch self {
-            case .completedOnTime: return Color(red: 0.92, green: 0.72, blue: 0.22)
+            case .completedOnTime: return .solvedGold
             case .completedLate:   return .appCorrect
             case .inProgress:      return .appAccent
             case .notStarted:      return .appTextSecondary

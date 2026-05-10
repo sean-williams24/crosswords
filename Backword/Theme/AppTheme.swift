@@ -12,6 +12,7 @@ extension Color {
     static let appTextSecondary = Color("TextSecondary")
     static let dailyCardBackground = Color("DailyCardBackground")
     static let dailyCardTitle = Color("DailyCardTitle")
+    static let solvedGold = Color("SolvedGold")
 }
 
 // MARK: - Typography

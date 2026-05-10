@@ -160,6 +160,12 @@ struct CrosswordStatsView: View {
                                     .foregroundColor(.appAccent)
                                     .tracking(1)
                             }
+                            if row.isSolved {
+                                Text("SOLVED")
+                                    .font(AppFont.clueLabel(9))
+                                    .foregroundColor(.solvedGold)
+                                    .tracking(1)
+                            }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -169,7 +175,7 @@ struct CrosswordStatsView: View {
                         if let time = row.solveTime {
                             Text(time.formattedTimeHHMMSS)
                                 .font(AppFont.body(13))
-                                .foregroundColor(.appTextSecondary)
+                                .foregroundColor(.solvedGold)
                                 .monospacedDigit()
                                 .frame(width: 72, alignment: .trailing)
                         } else {
@@ -195,6 +201,42 @@ struct CrosswordStatsView: View {
             )
         }
     }
+
+//    private func titleView(row: DailyRow) -> some View {
+//        Text(formatDate(row.date))
+//            .font(AppFont.body(13))
+//            .foregroundColor(row.isToday ? .appAccent : .appTextPrimary)
+//    }
+
+//    @ViewBuilder
+//    private func titleSubView(row: DailyRow) -> some View {
+//        if row.isToday {
+//            Text("TODAY")
+//                .font(AppFont.clueLabel(9))
+//                .foregroundColor(.appAccent)
+//                .tracking(1)
+//        }
+//        if row.isSolved {
+//            Text("SOLVED")
+//                .font(AppFont.clueLabel(9))
+//                .foregroundColor(.solvedGold)
+//                .tracking(1)
+//        }
+//    }
+//
+//    private func horizontalTitleStack(for row: DailyRow) -> some View {
+//        HStack {
+//            titleView(row: row)
+//            titleSubView(row: row)
+//        }
+//    }
+//
+//    private func verticalTitleStack(for row: DailyRow) -> some View {
+//        VStack {
+//            titleView(row: row)
+//            titleSubView(row: row)
+//        }
+//    }
 
     private var weeklyHistorySection: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -245,6 +287,7 @@ struct CrosswordStatsView: View {
         let score: Int
         let hasEntry: Bool
         let solveTime: Int?
+        let isSolved: Bool
     }
 
     private var dailyBreakdownRows: [DailyRow] {
@@ -255,9 +298,16 @@ struct CrosswordStatsView: View {
         let scoreMap: [String: Int] = Dictionary(uniqueKeysWithValues:
             ratingService.rating.dailyScores.map { ($0.date, $0.dailyCrossword) }
         )
+        // Build time map from UserProgress files, keyed by the puzzle's scheduled UTC date.
+        // Only include puzzles completed on the same UTC date as the puzzle date (i.e. solved on time),
+        // matching the "Solved" status shown in the archive view.
         var timeMap = [String: Int]()
-        for result in statsService.stats.filteredHistory(isWeekly: false) {
-            timeMap[utcFmt.string(from: result.date)] = result.timeSeconds
+        for progress in UserProgress.loadAll() {
+            guard progress.isWeekly != true,
+                  let puzzleDate = progress.puzzleDate,
+                  let completedAt = progress.completedAt,
+                  utcFmt.string(from: completedAt) == puzzleDate else { continue }
+            timeMap[puzzleDate] = Int(progress.elapsedTime)
         }
         let todayStr = utcFmt.string(from: Date())
         return (0..<14).compactMap { offset -> DailyRow? in
@@ -273,7 +323,8 @@ struct CrosswordStatsView: View {
                 isToday: dateStr == todayStr,
                 score: score,
                 hasEntry: hasEntry,
-                solveTime: solveTime
+                solveTime: solveTime,
+                isSolved: solveTime != nil
             )
         }
     }
