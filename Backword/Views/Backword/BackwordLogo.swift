@@ -6,6 +6,7 @@ import SwiftUI
 struct BackwordLogo: View {
     @Environment(\.colorScheme) private var colorScheme
     var frame: CGFloat = 38
+    var forceDark: Bool = false
 
     var body: some View {
         Image(logoName)
@@ -15,6 +16,9 @@ struct BackwordLogo: View {
     }
 
     private var logoName: String {
-        colorScheme == .light ? "BackWordLogo - Light" : "BackWordLogo"
+        guard !forceDark else {
+            return "BackWordLogo"
+        }
+        return colorScheme == .light ? "BackWordLogo - Light" : "BackWordLogo"
     }
 }

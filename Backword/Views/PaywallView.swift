@@ -20,7 +20,7 @@ struct PaywallView: View {
                     // Black hero extends behind the top of the sheet
                     ZStack {
                         VStack(spacing: -30) {
-                            BackwordLogo(frame: 78)
+                            BackwordLogo(frame: 78, forceDark: true)
                                 .offset(x: logoVisible ? 0 : 120)
                                 .opacity(logoVisible ? 1 : 0)
 

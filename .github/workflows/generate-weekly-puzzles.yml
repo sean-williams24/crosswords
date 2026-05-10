@@ -56,7 +56,7 @@ jobs:
               print(f'remaining={count}')
               print(f'next_date={next_date}')
               print(f'next_number={next_num}')
-          " >> \$GITHUB_OUTPUT
+          " >> "$GITHUB_OUTPUT"
 
       - name: Skip if enough puzzles remain
         if: steps.check.outputs.enough == 'true'
