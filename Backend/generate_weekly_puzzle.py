@@ -265,7 +265,7 @@ def solve_grid(
     """
     MAX_BACKTRACKS = 5_000_000
     MAX_CANDIDATES_PER_SLOT = 200
-    MAX_SECONDS = 300  # 5 minutes per attempt
+    MAX_SECONDS = 30  # 30 seconds per attempt — fail fast and retry with different seed
 
     start_time = time.monotonic()
 
@@ -495,9 +495,9 @@ def generate_puzzle(word_bank: dict[int, list[dict]], seed: int | None = None) -
             print(f"  Template {ti}: missing word lengths {missing}, skipping")
             continue
 
-        for attempt in range(20):
+        for attempt in range(5):
             sub_rng = random.Random(rng.randint(0, 2**31) + attempt)
-            print(f"  Template {ti} attempt {attempt+1}/20 ({len(slots)} slots)...", end=" ", flush=True)
+            print(f"  Template {ti} attempt {attempt+1}/5 ({len(slots)} slots)...", end=" ", flush=True)
             solution = solve_grid(slots, word_bank, sub_rng)
             if solution:
                 print("SUCCESS")
