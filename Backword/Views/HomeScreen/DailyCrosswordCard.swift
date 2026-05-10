@@ -104,7 +104,7 @@ struct DailyCrosswordCard: View {
                 .animation(.easeInOut(duration: 0.2), value: showStreakPopup)
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, minHeight: 144)
         .background(
             ZStack {
                 Color.dailyCardBackground

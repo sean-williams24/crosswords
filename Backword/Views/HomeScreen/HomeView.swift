@@ -10,6 +10,7 @@ struct HomeView: View {
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.horizontalSizeClass) var sizeClass
 
     @State private var showArchive = false
     @State private var showPaywall = false
@@ -232,13 +233,23 @@ struct HomeView: View {
                 }
             }
 
-            Group {
-                backwordCard
-                    .shadow(color: .primary, radius: .pi, x: 0.2, y: 0.2)
-                DailyCrosswordCard(viewModel: viewModel)
+            if sizeClass == .regular {
+                HStack(spacing: 25) {
+                    backwordCard
+                        .shadow(color: .primary, radius: .pi, x: 0.2, y: 0.2)
+                    DailyCrosswordCard(viewModel: viewModel)
+                }
+                .padding(.horizontal, AppLayout.screenPadding)
+                .padding(.bottom, 30)
+            } else {
+                Group {
+                    backwordCard
+                        .shadow(color: .primary, radius: .pi, x: 0.2, y: 0.2)
+                    DailyCrosswordCard(viewModel: viewModel)
+                }
+                .padding(.horizontal, AppLayout.screenPadding)
+                .padding(.bottom, 20)
             }
-            .padding(.horizontal, AppLayout.screenPadding)
-            .padding(.bottom, 20)
 
             Rectangle()
                 .frame(height: 1)
