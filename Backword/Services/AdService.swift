@@ -10,8 +10,8 @@ final class AdService: NSObject, ObservableObject {
     // MARK: - Ad Unit IDs
 
     #if DEBUG
-    private let interstitialAdUnitID = "ca-app-pub-3940256099942544/4411468910" // Google test ID
-    private let rewardedAdUnitID = "ca-app-pub-3940256099942544/1712485313"      // Google test ID
+    private let interstitialAdUnitID = "ca-app-pub-3940256099942544/4411468910" // Google test ID (Interstitial)
+    private let rewardedAdUnitID = "ca-app-pub-3940256099942544/1712485313"      // Google test ID (Rewarded)
     #else
     private let interstitialAdUnitID = "ca-app-pub-7357305065047849/2731847065"
     private let rewardedAdUnitID = "ca-app-pub-7357305065047849/XXXXXXXXXX" // TODO: Replace with real rewarded ad unit ID
@@ -19,7 +19,7 @@ final class AdService: NSObject, ObservableObject {
 
     // MARK: - State
 
-    private var interstitial: RewardedInterstitialAd?
+    private var interstitial: InterstitialAd?
     private var rewarded: RewardedAd?
     private var pendingRewardCallback: (@MainActor () -> Void)?
     @Published var isRewardedAdReady = false
@@ -39,7 +39,7 @@ final class AdService: NSObject, ObservableObject {
 
     func loadAd() async {
         do {
-            interstitial = try await RewardedInterstitialAd.load(
+            interstitial = try await InterstitialAd.load(
                 with: interstitialAdUnitID,
                 request: Request()
             )
@@ -80,7 +80,7 @@ final class AdService: NSObject, ObservableObject {
     /// Silently no-ops if no ad is loaded or no suitable view controller is found.
     func showInterstitial() {
         guard let ad = interstitial, let rootVC = topViewController() else { return }
-        ad.present(from: rootVC, userDidEarnRewardHandler: {})
+        ad.present(from: rootVC)
         interstitial = nil
         Task { await loadAd() }
     }

@@ -106,7 +106,7 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showWOTD, onDismiss: {
                 if !storeService.isProUser {
-//                    adService.showInterstitial() // TODO: Re-enable
+                    adService.showInterstitial()
                 }
             }) {
                 if let word = wotdService.todaysWord {
