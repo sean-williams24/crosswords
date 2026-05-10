@@ -457,11 +457,14 @@ def assemble_raw(
     for item in solution:
         slot: Slot = item["slot"]
         entry = item["entry"]
+        hard_text = entry.get("hard_text", "")
         clue_variants = entry.get("clues", [])
-        if clue_variants and rng:
+        if hard_text:
+            text = hard_text
+        elif clue_variants and rng:
             text = rng.choice(clue_variants)
         else:
-            text = entry.get("hard_text", entry["text"])
+            text = entry["text"]
         words.append({
             "direction": slot.direction,
             "number": 0,

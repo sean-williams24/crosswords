@@ -4,6 +4,39 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 ---
 
+## Crossword Configuration & Word Repeat Prevention
+
+### Daily crossword (9×9)
+
+- **Grid:** 9×9, ~15 clues, `is_free: true`
+- **Generator:** `Backend/generate_puzzle.py`
+- **Clue selection:** picks randomly from the word's `clues[]` array; falls back to `hard_text`, then `text` if `clues` is empty.
+- **Scheduling:** generated weekly in batches of 7 via the `generate-puzzles` GitHub Actions workflow.
+
+### Weekly crossword (13×13)
+
+- **Grid:** 13×13, ~35 clues, `is_free: false` (pro-only)
+- **Generator:** `Backend/generate_weekly_puzzle.py`
+- **Clue selection:** uses `hard_text` as the primary clue (deliberately harder); falls back to a random pick from `clues[]`, then `text` if neither is available.
+- **Scheduling:** generated in batches of 10 via the `generate-weekly-puzzles` GitHub Actions workflow, triggered every Monday at 06:00 UTC. Skipped if 5+ future puzzles already exist in Supabase.
+
+### Word repeat prevention
+
+Both generators share the same exclusion mechanism to avoid repeating answers across puzzles.
+
+**At generation time (via `--exclude-words`):**
+- The GitHub Actions workflow fetches a combined exclusion list from Supabase before calling the generator:
+  - **Last 13 weekly puzzles** (≈13 weeks back) from the `weekly_puzzles` table
+  - **Last 90 daily puzzles** (≈90 days back) from the `puzzles` table
+- Answers are extracted from each puzzle's `clues` array, uppercased, deduplicated, and written to a temporary JSON file (`/tmp/used_words.json`).
+- The file is passed via `--exclude-words`, which strips matching words from the word bank before the constraint solver runs.
+
+**Within a batch run:**
+- Each puzzle in a batch records its answers into a `batch_used` set.
+- Every subsequent puzzle in the same batch adds `batch_used` to the exclusion set, so no word appears twice within a single generation run regardless of the Supabase history.
+
+---
+
 ## Timezone & Date Handling
 
 ### Puzzle dates are plain calendar dates
