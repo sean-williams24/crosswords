@@ -85,6 +85,19 @@ final class AdService: NSObject, ObservableObject {
         Task { await loadAd() }
     }
 
+    /// Shows the interstitial at most once per calendar day for the given slot identifier.
+    /// Subsequent calls on the same day are silently ignored.
+    func showInterstitialOnce(slot: String) {
+        let key = "AdService.lastShown.\(slot)"
+        let today = Calendar.current.startOfDay(for: Date())
+        if let last = UserDefaults.standard.object(forKey: key) as? Date,
+           Calendar.current.isDate(last, inSameDayAs: today) {
+            return
+        }
+        UserDefaults.standard.set(today, forKey: key)
+        showInterstitial()
+    }
+
     /// Presents a rewarded ad. Calls `onReward` when the ad is dismissed (regardless of
     /// whether the user watched it fully or tapped the close button).
 //    func showRewardedAd(onReward: @escaping @MainActor () -> Void) {

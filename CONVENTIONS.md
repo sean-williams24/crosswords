@@ -169,3 +169,39 @@ Categories in `archive/`:
 - **Template validation/diagnostics** — `validate_templates.py`, `validate_weekly_templates.py`, `verify_templates.py`, `check_weekly_templates.py`, `diagnose_weekly.py`, `diag_13x13.py`
 - **One-off word bank expansions** — `add_*.py`, `expand_word_bank.py`, `expand_word_bank_v2.py`, `upgrade_word_bank.py`, `restore_kept.py`
 - **Miscellaneous** — `generate_icon.py`, `generate_puzzle_old.py`, `check_status.py`
+
+---
+
+## Ads
+
+Ads are served via Google AdMob and managed by `AdService`. Free-tier users only.
+
+### Ad formats
+
+| Format | Type | Purpose |
+|---|---|---|
+| Interstitial | `InterstitialAd` | Shown at natural transition points (game open, WOTD dismiss) |
+| Rewarded | `RewardedAd` | Shown when the user requests a hint clue |
+
+### Test IDs (DEBUG builds)
+
+| Format | Test unit ID |
+|---|---|
+| Interstitial | `ca-app-pub-3940256099942544/4411468910` |
+| Rewarded | `ca-app-pub-3940256099942544/1712485313` |
+
+The test IDs must match the ad format exactly — using a Rewarded Interstitial ID for an `InterstitialAd.load(...)` call (or vice versa) will produce an "Ad unit doesn't match format" error at runtime.
+
+### Once-per-day interstitial rule
+
+Interstitials are shown **at most once per calendar day per slot** using `showInterstitialOnce(slot:)`. The method stores the last-shown date in `UserDefaults` under the key `AdService.lastShown.<slot>` and no-ops if the current day already has a recorded impression.
+
+Current slots:
+
+| Slot | Trigger |
+|---|---|
+| `daily_puzzle_open` | Free user navigates to the daily crossword for the first time today |
+| `backword_open` | Free user navigates to Backword for the first time today |
+| `wotd_dismiss` | Free user dismisses the WOTD sheet for the first time today |
+
+Slots are independent — each resets at the next calendar midnight (device local time, via `Calendar.current`).

@@ -74,12 +74,22 @@ struct HomeView: View {
                     BackwordView(word: word)
                         .environmentObject(storeService)
                         .environmentObject(adService)
+                        .onAppear {
+                            if !storeService.isProUser {
+                                adService.showInterstitialOnce(slot: "backword_open")
+                            }
+                        }
                 } else if let puzzle = viewModel.todaysPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
                         .environmentObject(statsService)
                         .environmentObject(storeService)
                         .environmentObject(adService)
                         .environmentObject(ratingService)
+                        .onAppear {
+                            if !storeService.isProUser {
+                                adService.showInterstitialOnce(slot: "daily_puzzle_open")
+                            }
+                        }
                 }
             }
             .fullScreenCover(isPresented: $showArchive) {
@@ -106,7 +116,7 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showWOTD, onDismiss: {
                 if !storeService.isProUser {
-                    adService.showInterstitial()
+                    adService.showInterstitialOnce(slot: "wotd_dismiss")
                 }
             }) {
                 if let word = wotdService.todaysWord {
