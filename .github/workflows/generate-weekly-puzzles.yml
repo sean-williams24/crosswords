@@ -74,23 +74,19 @@ jobs:
           import json, os
           sb = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
           used = set()
-          # Weekly puzzles — last 13 weeks (90 days)
+          # Weekly puzzles only — last 13 weeks
+          # Daily puzzle words are intentionally excluded from this check: daily and weekly
+          # are separate products and cross-excluding daily words depletes the short-word bank,
+          # making the 13x13 solver fail to find valid fills.
           weekly = sb.table('weekly_puzzles').select('clues').order('date', desc=True).limit(13).execute()
           for row in weekly.data:
               for clue in row.get('clues', []):
                   ans = clue.get('answer', '')
                   if ans:
                       used.add(ans.upper())
-          # Daily puzzles — last 90
-          daily = sb.table('puzzles').select('clues').order('date', desc=True).limit(90).execute()
-          for row in daily.data:
-              for clue in row.get('clues', []):
-                  ans = clue.get('answer', '')
-                  if ans:
-                      used.add(ans.upper())
           with open('/tmp/used_words.json', 'w') as f:
               json.dump(sorted(used), f)
-          print(f'Fetched {len(used)} recently-used words from last 13 weekly + 90 daily puzzles')
+          print(f'Fetched {len(used)} recently-used words from last 13 weekly puzzles')
           "
 
       - name: Generate and upload 10 weekly puzzles

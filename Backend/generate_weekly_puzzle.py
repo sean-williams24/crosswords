@@ -700,13 +700,19 @@ def main():
     )
 
     generated = 0
+    retry_count = 0
+    max_retries_per_puzzle = 5
     batch_used: set[str] = set()
-    for i in range(args.count):
-        puzzle_number = args.start_number + i
-        puzzle_date = (start_date + timedelta(weeks=i)).isoformat()
-        seed = (args.seed + i) if args.seed is not None else (hash(puzzle_date) & 0xFFFFFFFF)
+    puzzle_number = args.start_number
+    puzzle_date = start_date
 
-        print(f"\nGenerating weekly puzzle #{puzzle_number} for {puzzle_date} (seed={seed})...")
+    while generated < args.count:
+        puzzle_date_str = puzzle_date.isoformat()
+        seed = (args.seed + generated + retry_count) if args.seed is not None else (
+            (hash(puzzle_date_str) + retry_count) & 0xFFFFFFFF
+        )
+
+        print(f"\nGenerating weekly puzzle #{puzzle_number} for {puzzle_date_str} (seed={seed})...")
 
         # Rebuild word bank excluding words already used in this batch
         if batch_used:
@@ -716,14 +722,29 @@ def main():
 
         raw = generate_puzzle(current_bank, seed=seed)
         if raw is None:
-            print("  Generation failed: could not fill grid")
+            retry_count += 1
+            if retry_count >= max_retries_per_puzzle:
+                print(f"  Generation failed after {max_retries_per_puzzle} retries — skipping puzzle #{puzzle_number}")
+                puzzle_number += 1
+                puzzle_date += timedelta(weeks=1)
+                retry_count = 0
+            else:
+                print(f"  Generation failed: retrying with different seed (attempt {retry_count + 1}/{max_retries_per_puzzle})...")
             continue
 
         if not validate_puzzle(raw):
-            print("  Validation failed, skipping.")
+            retry_count += 1
+            if retry_count >= max_retries_per_puzzle:
+                print(f"  Validation failed after {max_retries_per_puzzle} retries — skipping puzzle #{puzzle_number}")
+                puzzle_number += 1
+                puzzle_date += timedelta(weeks=1)
+                retry_count = 0
+            else:
+                print(f"  Validation failed: retrying (attempt {retry_count + 1}/{max_retries_per_puzzle})...")
             continue
 
-        payload = build_puzzle_payload(raw, puzzle_number, puzzle_date)
+        retry_count = 0
+        payload = build_puzzle_payload(raw, puzzle_number, puzzle_date_str)
 
         # Track words used in this puzzle so subsequent puzzles in the batch avoid them
         for clue in payload.get("clues", []):
@@ -746,6 +767,8 @@ def main():
             print("  (dry run — not uploading)")
 
         generated += 1
+        puzzle_number += 1
+        puzzle_date += timedelta(weeks=1)
 
     print(f"\nDone! Generated {generated}/{args.count} weekly puzzles.")
 

@@ -25,9 +25,9 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 Both generators share the same exclusion mechanism to avoid repeating answers across puzzles.
 
 **At generation time (via `--exclude-words`):**
-- The GitHub Actions workflow fetches a combined exclusion list from Supabase before calling the generator:
-  - **Last 13 weekly puzzles** (≈13 weeks back) from the `weekly_puzzles` table
-  - **Last 90 daily puzzles** (≈90 days back) from the `puzzles` table
+- The GitHub Actions workflow fetches an exclusion list from Supabase before calling the generator:
+  - **Weekly generator:** last 13 weekly puzzles only (from `weekly_puzzles` table). Daily puzzle words are intentionally *not* excluded — cross-excluding them depletes the small short-word bank (only ~289 3-letter words) and causes the 13×13 solver to fail to find valid fills.
+  - **Daily generator:** last 90 daily puzzles + last 13 weekly puzzles (from both tables).
 - Answers are extracted from each puzzle's `clues` array, uppercased, deduplicated, and written to a temporary JSON file (`/tmp/used_words.json`).
 - The file is passed via `--exclude-words`, which strips matching words from the word bank before the constraint solver runs.
 
