@@ -45,8 +45,7 @@ struct HomeView: View {
 
                         wotd
                         dailyGamesView
-                        WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
-                            .environmentObject(storeService)
+                        weeklyGamesView
                     }
                     .padding(.top, 16)
                     .padding(.bottom, 100)
@@ -173,6 +172,36 @@ struct HomeView: View {
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var weeklyGamesView: some View {
+        VStack(spacing: 0) {
+            Text("Weekly Games")
+                .font(AppFont.header(16))
+                .padding(.bottom, 6)
+
+            TimelineView(.periodic(from: .now, by: 60)) { context in
+                if isBeforeWeeklyResetUTC(at: context.date) {
+                    Text(weeklyResetCountdown(at: context.date))
+                        .font(AppFont.caption())
+                        .foregroundColor(Color.appTextSecondary)
+                        .tracking(1)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 16)
+                } else {
+                    Text(weeklyRefreshLabel(at: context.date))
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                        .tracking(1)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 16)
+                }
+            }
+
+            WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
+                .environmentObject(storeService)
         }
     }
 
@@ -421,6 +450,46 @@ struct HomeView: View {
             matchingPolicy: .nextTime
         ) else { return nil }
         return midnight.timeIntervalSinceNow
+    }
+
+    /// Returns true when local day is Sunday but UTC midnight hasn't flipped to Sunday yet.
+    private func isBeforeWeeklyResetUTC(at date: Date = Date()) -> Bool {
+        let localCal = Calendar(identifier: .gregorian)
+        guard localCal.component(.weekday, from: date) == 1 else { return false }
+        return isAfterLocalMidnight(at: date)
+    }
+
+    /// Returns a label like "Refreshes Sundays at 1 AM" showing the local time of the weekly UTC reset.
+    private func weeklyRefreshLabel(at date: Date = Date()) -> String {
+        var utcCal = Calendar(identifier: .gregorian)
+        utcCal.timeZone = TimeZone(identifier: "UTC")!
+        let components = DateComponents(hour: 0, minute: 0, second: 0, weekday: 1)
+        guard let nextSunMidnight = utcCal.nextDate(
+            after: date,
+            matching: components,
+            matchingPolicy: .nextTime
+        ) else { return "Refreshes Sundays" }
+        let fmt = DateFormatter()
+        fmt.dateFormat = "h a"
+        return "Refreshes Sundays at \(fmt.string(from: nextSunMidnight))"
+    }
+
+    /// Returns a string like "New puzzle in 1:05" counting down to the next Sunday UTC midnight.
+    private func weeklyResetCountdown(at date: Date = Date()) -> String {
+        var utcCal = Calendar(identifier: .gregorian)
+        utcCal.timeZone = TimeZone(identifier: "UTC")!
+        let components = DateComponents(hour: 0, minute: 0, second: 0, weekday: 1)
+        guard let nextSunMidnight = utcCal.nextDate(
+            after: date,
+            matching: components,
+            matchingPolicy: .nextTime
+        ) else { return "New puzzle soon" }
+        let totalMinutes = max(0, Int(nextSunMidnight.timeIntervalSince(date) / 60))
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        return hours > 0
+            ? String(format: "New puzzle in %d:%02d", hours, minutes)
+            : String(format: "%d minutes remaining", minutes)
     }
 }
 

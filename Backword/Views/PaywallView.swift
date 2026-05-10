@@ -196,7 +196,7 @@ struct PaywallView: View {
     private var monthlyPlanOption: some View {
         planOption(
             title: "Monthly",
-            price: storeService.monthlyProduct?.displayPrice ?? "£1.99",
+            price: storeService.monthlyProduct?.displayPrice ?? "£1.49",
             subtitle: "per month",
             plan: .monthly
         )
@@ -205,7 +205,7 @@ struct PaywallView: View {
     private var annualPlanOption: some View {
         planOption(
             title: "Annual",
-            price: storeService.annualProduct?.displayPrice ?? "£15.99",
+            price: storeService.annualProduct?.displayPrice ?? "£11.99",
             subtitle: "per year · Save 33%",
             plan: .annual
         )
