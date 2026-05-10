@@ -75,6 +75,13 @@ final class WOTDService: ObservableObject {
         return rows.first?.wordData
     }
 
+    func purgeCache() async {
+        cache.clearWOTD(for: today)
+        todaysWord = nil
+        lastFetchedDate = nil
+        await loadTodaysWord()
+    }
+
     // MARK: - Local Fallback
 
     private func loadFromBundle() -> WordOfTheDay? {

@@ -4,6 +4,7 @@ import SwiftUI
 struct DebugSettingsView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var backwordService: BackwordService
+    @EnvironmentObject var wotdService: WOTDService
     @EnvironmentObject var adService: AdService
     @Environment(\.dismiss) private var dismiss
 
@@ -13,6 +14,10 @@ struct DebugSettingsView: View {
     @State private var showResetDailyConfirmation = false
     @State private var showResetWeeklyConfirmation = false
     @State private var showResetUserDefaultsConfirmation = false
+    @State private var showPurgeDailyConfirmation = false
+    @State private var showPurgeWeeklyConfirmation = false
+    @State private var showPurgeBackwordConfirmation = false
+    @State private var showPurgeWOTDConfirmation = false
 
     var body: some View {
         NavigationStack {
@@ -144,6 +149,87 @@ struct DebugSettingsView: View {
                 } message: {
                     Text("Your guesses for today will be cleared and the game will restart.")
                 }
+
+                // MARK: - Cache
+
+                Section("Cache") {
+                    Button(role: .destructive) {
+                        showPurgeDailyConfirmation = true
+                    } label: {
+                        Label("Purge Daily Crossword", systemImage: "trash")
+                    }
+                    Button(role: .destructive) {
+                        showPurgeWeeklyConfirmation = true
+                    } label: {
+                        Label("Purge Weekly Crossword", systemImage: "trash")
+                    }
+                    Button(role: .destructive) {
+                        showPurgeBackwordConfirmation = true
+                    } label: {
+                        Label("Purge Backword", systemImage: "trash")
+                    }
+                    Button(role: .destructive) {
+                        showPurgeWOTDConfirmation = true
+                    } label: {
+                        Label("Purge Word of the Day", systemImage: "trash")
+                    }
+                }
+                .confirmationDialog(
+                    "Purge Daily Crossword?",
+                    isPresented: $showPurgeDailyConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Purge", role: .destructive) {
+                        Task {
+                            await homeViewModel?.debugPurgeDailyPuzzle()
+                        }
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("The cached daily crossword will be deleted. The app will fetch a fresh copy from Supabase.")
+                }
+                .confirmationDialog(
+                    "Purge Weekly Crossword?",
+                    isPresented: $showPurgeWeeklyConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Purge", role: .destructive) {
+                        Task {
+                            await homeViewModel?.debugPurgeWeeklyPuzzle()
+                        }
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("The cached weekly crossword will be deleted. The app will fetch a fresh copy from Supabase.")
+                }
+                .confirmationDialog(
+                    "Purge Backword?",
+                    isPresented: $showPurgeBackwordConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Purge", role: .destructive) {
+                        Task { await backwordService.purgeCache() }
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("The cached Backword will be deleted. The app will fetch a fresh copy from Supabase.")
+                }
+                .confirmationDialog(
+                    "Purge Word of the Day?",
+                    isPresented: $showPurgeWOTDConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Purge", role: .destructive) {
+                        Task { await wotdService.purgeCache() }
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("The cached Word of the Day will be deleted. The app will fetch a fresh copy from Supabase.")
+                }
             }
             .navigationTitle("Debug Settings")
             .navigationBarTitleDisplayMode(.inline)
@@ -160,6 +246,7 @@ struct DebugSettingsView: View {
     DebugSettingsView()
         .environmentObject(StoreService())
         .environmentObject(BackwordService())
+        .environmentObject(WOTDService())
         .environmentObject(AdService())
 }
 #endif

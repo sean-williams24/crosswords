@@ -166,6 +166,26 @@ extension HomeViewModel {
         }
     }
 
+    /// Purges the cached daily puzzle and re-fetches it from Supabase.
+    func debugPurgeDailyPuzzle() async {
+        puzzleService.purgeDailyCache()
+        todaysPuzzle = nil
+        todaysProgress = nil
+        await loadTodaysPuzzle()
+    }
+
+    /// Purges the cached weekly puzzle and re-fetches it from Supabase.
+    func debugPurgeWeeklyPuzzle() async {
+        puzzleService.purgeWeeklyCache()
+        weeklyPuzzle = nil
+        weeklyProgress = nil
+        do {
+            let weekly = try await puzzleService.fetchCurrentWeeklyPuzzle()
+            weeklyPuzzle = weekly
+            weeklyProgress = UserProgress.load(puzzleId: weekly.id)
+        } catch {}
+    }
+
     /// Deletes saved progress for a puzzle, resetting it to New.
     func debugResetPuzzle(puzzle: Puzzle, isWeekly: Bool) {
         UserProgress.delete(puzzleId: puzzle.id)

@@ -109,6 +109,7 @@ struct HomeView: View {
                     .environmentObject(storeService)
                     .environmentObject(backwordService)
                     .environmentObject(adService)
+                    .environmentObject(wotdService)
             }
             #endif
             .sheet(isPresented: $showSettings) {

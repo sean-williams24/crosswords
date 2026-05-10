@@ -57,6 +57,18 @@ final class CacheService {
         return try? JSONDecoder().decode(Puzzle.self, from: data)
     }
 
+    func clearPuzzle(for date: String) {
+        try? fileManager.removeItem(at: fileURL(for: date))
+    }
+
+    func clearBackword(for date: String) {
+        try? fileManager.removeItem(at: backwordFileURL(for: date))
+    }
+
+    func clearWOTD(for date: String) {
+        try? fileManager.removeItem(at: wotdFileURL(for: date))
+    }
+
     func clearOldPuzzles(olderThan days: Int = 30) {
         guard let contents = try? fileManager.contentsOfDirectory(
             at: cacheDirectory,

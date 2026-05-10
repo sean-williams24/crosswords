@@ -84,6 +84,13 @@ final class BackwordService: ObservableObject {
         return words[abs(dayHash) % words.count]
     }
 
+    func purgeCache() async {
+        cache.clearBackword(for: today)
+        todaysWord = nil
+        lastFetchedDate = nil
+        await loadTodaysWord()
+    }
+
     // MARK: - Archive
 
     func fetchArchive() async throws -> [BackwordWord] {

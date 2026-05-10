@@ -75,6 +75,14 @@ final class PuzzleService: ObservableObject {
         return try decoder.decode([ArchiveEntry].self, from: data)
     }
 
+    func purgeDailyCache() {
+        cache.clearPuzzle(for: today)
+    }
+
+    func purgeWeeklyCache() {
+        cache.clearPuzzle(for: "weekly_\(today)")
+    }
+
     func prefetchUpcomingPuzzles() async {
         let calendar = Calendar.current
         let today = Date()
