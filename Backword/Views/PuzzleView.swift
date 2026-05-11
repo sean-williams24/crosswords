@@ -273,3 +273,13 @@ struct PuzzleView: View {
             .environmentObject(AdService())
     }
 }
+
+#Preview {
+    NavigationStack {
+        PuzzleView(viewModel: GameViewModel(puzzle: .sample13x13))
+            .environmentObject(StatsService())
+            .environmentObject(StoreService())
+            .environmentObject(AdService())
+    }
+}
+

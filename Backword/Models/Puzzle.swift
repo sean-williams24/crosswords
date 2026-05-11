@@ -255,6 +255,155 @@ extension Puzzle {
         return clues[word] ?? "A word (\(word.count) letters)"
     }
 
+    static let sample13x13: Puzzle = {
+        // A simple 13x13 crossword for development
+        let size = 13
+
+        // Define the grid: nil letter = black square
+        // Simple symmetric pattern for demonstration
+        let pattern: [[String?]] = [
+            ["S", "T", "A", "R", nil, "M", "A", "G", "I", "C", nil, "P", "L"],
+            ["H", nil, nil, "A", nil, "A", nil, "L", nil, "E", nil, nil, "E"],
+            ["E", "A", "R", "I", "N", "G", nil, "A", "R", "E", "A", "S", nil],
+            ["D", nil, nil, "N", nil, "I", nil, "N", nil, "D", nil, nil, "S"],
+            [nil, nil, "J", "E", "S", "C", nil, "C", "A", "T", nil, nil, nil],
+            [nil, nil, nil, "D", nil, nil, nil, nil, nil, "U", nil, nil, nil],
+            [nil, "C", nil, nil, nil, "S", "U", "N", "S", nil, nil, "A", nil],
+            [nil, "A", nil, "W", "I", "N", "D", nil, "B", "T", "S", nil, nil],
+            ["B", "T", "S", nil, nil, nil, "E", nil, nil, nil, "E", nil, nil],
+            [nil, nil, "C", "A", "T", nil, "S", "U", "N", nil, nil, nil, nil],
+            [nil, nil, nil, "D", nil, nil, nil, nil, nil, "U", nil, nil, nil],
+            [nil, nil, "J", "E", "S", "C", nil, "C", "A", "T", nil, nil, nil],
+            ["S", "T", "A", "R", nil, "M", "A", "G", "I", "C", nil, "P", "L"],
+        ]
+
+        var cells: [[CellData]] = []
+        var clueNumber = 1
+        var clueList: [Clue] = []
+
+        for row in 0..<size {
+            var rowCells: [CellData] = []
+            for col in 0..<size {
+                let letter = pattern[row][col]
+                var number: Int? = nil
+
+                if letter != nil {
+                    let needsAcross = (col == 0 || pattern[row][col - 1] == nil) &&
+                                      col + 1 < size && pattern[row][col + 1] != nil
+                    let needsDown = (row == 0 || pattern[row - 1][col] == nil) &&
+                                    row + 1 < size && pattern[row + 1][col] != nil
+
+                    if needsAcross || needsDown {
+                        number = clueNumber
+                        clueNumber += 1
+                    }
+                }
+
+                rowCells.append(CellData(
+                    letter: letter,
+                    clueNumber: number,
+                    acrossClueId: nil,
+                    downClueId: nil
+                ))
+            }
+            cells.append(rowCells)
+        }
+
+        // Build clues from the pattern
+        clueNumber = 1
+        var clueId = 0
+        var acrossIds: [[Int?]] = Array(repeating: Array(repeating: nil, count: size), count: size)
+        var downIds: [[Int?]] = Array(repeating: Array(repeating: nil, count: size), count: size)
+
+        for row in 0..<size {
+            for col in 0..<size {
+                guard pattern[row][col] != nil else { continue }
+
+                let needsAcross = (col == 0 || pattern[row][col - 1] == nil) &&
+                                  col + 1 < size && pattern[row][col + 1] != nil
+                let needsDown = (row == 0 || pattern[row - 1][col] == nil) &&
+                                row + 1 < size && pattern[row + 1][col] != nil
+
+                let hasNumber = needsAcross || needsDown
+
+                if needsAcross {
+                    var length = 0
+                    var word = ""
+                    var c = col
+                    while c < size, let letter = pattern[row][c] {
+                        word += letter
+                        length += 1
+                        c += 1
+                    }
+                    let clue = Clue(
+                        id: clueId, direction: .across, number: clueNumber,
+                        text: sampleClueText(for: word),
+                        hint: sampleHintText(for: word),
+                        answer: word,
+                        startRow: row, startCol: col, length: length
+                    )
+                    clueList.append(clue)
+                    for i in 0..<length {
+                        acrossIds[row][col + i] = clueId
+                    }
+                    clueId += 1
+                }
+
+                if needsDown {
+                    var length = 0
+                    var word = ""
+                    var r = row
+                    while r < size, let letter = pattern[r][col] {
+                        word += letter
+                        length += 1
+                        r += 1
+                    }
+                    let clue = Clue(
+                        id: clueId, direction: .down, number: clueNumber,
+                        text: sampleClueText(for: word),
+                        hint: sampleHintText(for: word),
+                        answer: word,
+                        startRow: row, startCol: col, length: length
+                    )
+                    clueList.append(clue)
+                    for i in 0..<length {
+                        downIds[row + i][col] = clueId
+                    }
+                    clueId += 1
+                }
+
+                if hasNumber {
+                    clueNumber += 1
+                }
+            }
+        }
+
+        // Rebuild cells with clue IDs
+        var finalCells: [[CellData]] = []
+        for row in 0..<size {
+            var rowCells: [CellData] = []
+            for col in 0..<size {
+                let old = cells[row][col]
+                rowCells.append(CellData(
+                    letter: old.letter,
+                    clueNumber: old.clueNumber,
+                    acrossClueId: acrossIds[row][col],
+                    downClueId: downIds[row][col]
+                ))
+            }
+            finalCells.append(rowCells)
+        }
+
+        return Puzzle(
+            id: "sample-013",
+            puzzleNumber: 13,
+            date: "2026-03-13",
+            size: size,
+            cells: finalCells,
+            clues: clueList
+        )
+    }()
+
     private static func sampleHintText(for word: String) -> String {
         let hints: [String: String] = [
             "STAR": "Hollywood celebrity",
