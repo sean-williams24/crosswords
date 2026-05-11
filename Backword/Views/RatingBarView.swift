@@ -4,7 +4,6 @@ import SwiftUI
 struct RatingBarView: View {
     let rating: OverallRating
     let isPro: Bool
-
     @State private var animates = false
     @State private var pulses = false
     @State private var showDetail = false

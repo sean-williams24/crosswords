@@ -1,0 +1,291 @@
+import SwiftUI
+
+struct PuzzleView: View {
+    @StateObject var viewModel: GameViewModel
+    @EnvironmentObject var statsService: StatsService
+    @EnvironmentObject var storeService: StoreService
+    @EnvironmentObject var adService: AdService
+    @EnvironmentObject var ratingService: OverallRatingService
+    @Environment(\.dismiss) private var dismiss
+    @State private var showPaywall = false
+    @State private var showRewardedHintBanner = false
+    @State private var showCrosswordStats = false
+    @State private var isKeyboardReady = false
+
+    private let freeHintLimit = 1
+
+    private var isZoomableGrid: Bool {
+        viewModel.puzzle.size > 12
+    }
+    private var navigationBar: some View {
+        HStack {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundColor(.appTextPrimary)
+                    .padding(.vertical, 8)
+            }
+            .opacity(viewModel.isZenMode ? 0.2 : 1.0)
+
+            Spacer()
+
+            toolbarButtons
+                .opacity(viewModel.isZenMode ? 0.2 : 1.0)
+        }
+        .padding(.horizontal, AppLayout.screenPadding)
+        .padding(.top, 4)
+    }
+
+    var body: some View {
+        ZStack {
+            Color.appBackground
+                .ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                navigationBar
+
+                // Rewarded hint banner
+                if showRewardedHintBanner {
+                    rewardedHintBanner
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
+
+                // Header
+                VStack(spacing: 12) {
+                    header
+                        .opacity(viewModel.isZenMode ? 0.2 : 1.0)
+
+                    // Clue bar
+                    ClueBarView(viewModel: viewModel)
+                        .padding(.horizontal, AppLayout.screenPadding)
+                        .padding(.bottom, 12)
+                }
+
+                Spacer(minLength: 8)
+
+                // Grid
+                if isZoomableGrid {
+                    ZoomableView(minZoom: 1.0, maxZoom: 2.5) {
+                        PuzzleGridView(viewModel: viewModel)
+                            .padding(.horizontal, AppLayout.screenPadding)
+                    }
+                } else {
+                    PuzzleGridView(viewModel: viewModel)
+                        .padding(.horizontal, AppLayout.screenPadding)
+                }
+
+                Spacer(minLength: 8)
+
+                // Invisible keyboard capture
+                if isKeyboardReady {
+                    KeyboardInputView(viewModel: viewModel)
+                        .frame(width: 0, height: 0)
+                        .opacity(0)
+                }
+            }
+        }
+        .toolbar(.hidden, for: .navigationBar)
+        .enableSwipeBack()
+        .sheet(isPresented: $viewModel.showClueList) {
+            ClueListView(viewModel: viewModel)
+        }
+        .sheet(isPresented: $viewModel.isComplete) {
+            CompletionView(viewModel: viewModel)
+                .environmentObject(statsService)
+                .environmentObject(storeService)
+                .environmentObject(adService)
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
+                .environmentObject(storeService)
+        }
+        .sheet(isPresented: $showCrosswordStats) {
+            CrosswordStatsView(isWeekly: viewModel.puzzle.size > 12) { showCrosswordStats = false }
+                .environmentObject(statsService)
+                .environmentObject(ratingService)
+        }
+        .navigationBarBackButtonHidden(true)
+        .onAppear {
+            if isZoomableGrid {
+                // For the large grid, bring the keyboard up immediately so the
+                // layout is already in its final position before the view fully
+                // appears — eliminating any jarring resize/slide animation.
+                isKeyboardReady = true
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                    isKeyboardReady = true
+                }
+            }
+        }
+        .onDisappear {
+            // Ensure metadata is saved for rating backfill
+            if viewModel.progress.puzzleDate == nil {
+                viewModel.progress.puzzleDate = viewModel.puzzle.date
+                viewModel.progress.totalClues = viewModel.puzzle.clues.count
+                viewModel.progress.isWeekly = viewModel.puzzle.size > 12
+                viewModel.progress.save()
+            }
+            // Record partial or complete progress whenever the user leaves the puzzle
+            let completed = viewModel.progress.completedClueIds.count
+            let total = viewModel.puzzle.clues.count
+            let date = viewModel.puzzle.date
+            if viewModel.puzzle.size > 12 {
+                ratingService.recordWeeklyCrossword(completedClues: completed, totalClues: total, date: date)
+            } else {
+                ratingService.recordDailyCrossword(completedClues: completed, totalClues: total, date: date)
+            }
+        }
+        .onTapGesture {
+            viewModel.deactivateZenMode()
+        }
+    }
+
+    // MARK: - Rewarded Hint Banner
+
+    private var rewardedHintBanner: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "play.circle.fill")
+                .font(.system(size: 24))
+                .foregroundColor(.appAccent)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Want a free hint?")
+                    .font(AppFont.clueLabel(13))
+                    .foregroundColor(.appTextPrimary)
+                Text("Watch a short ad to earn one.")
+                    .font(AppFont.caption(12))
+                    .foregroundColor(.appTextSecondary)
+            }
+
+            Spacer()
+
+            Button {
+                adService.showRewardedAd {
+                    viewModel.adBonusHints += 1
+                    withAnimation {
+                        showRewardedHintBanner = false
+                    }
+                }
+            } label: {
+                Text("Watch")
+                    .font(AppFont.clueLabel(12))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(Color.appAccent)
+                    .cornerRadius(10)
+            }
+
+            Button {
+                showPaywall = true
+            } label: {
+                Text("Unlimited")
+                    .font(AppFont.clueLabel(12))
+                    .foregroundColor(.appAccent)
+                    .lineLimit(1)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(Color.appAccent.opacity(0.12))
+                    .cornerRadius(10)
+            }
+
+            Button {
+                withAnimation {
+                    showRewardedHintBanner = false
+                }
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.appTextSecondary)
+            }
+        }
+        .padding(.horizontal, AppLayout.screenPadding)
+        .padding(.vertical, 12)
+        .background(Color.appSurface)
+        .shadow(color: .black.opacity(0.08), radius: 6, y: 3)
+    }
+
+    // MARK: - Header
+
+    private var header: some View {
+        VStack(spacing: 2) {
+            ZStack {
+                Text(viewModel.puzzle.date)
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+                    .tracking(1)
+                    .opacity(viewModel.showAlreadyAnswered ? 0 : 1)
+
+                Text("Already answered")
+                    .font(AppFont.caption())
+                    .foregroundColor(.appAccent)
+                    .tracking(1)
+                    .opacity(viewModel.showAlreadyAnswered ? 1 : 0)
+            }
+            .animation(.easeInOut(duration: 0.4), value: viewModel.showAlreadyAnswered)
+        }
+        .padding(.top, 8)
+    }
+
+    // MARK: - Toolbar
+
+    @ViewBuilder
+    private var toolbarButtons: some View {
+        Button {
+            showCrosswordStats = true
+        } label: {
+            Image(systemName: "chart.bar.fill")
+                .frame(width: 44)
+                .foregroundColor(.appTextPrimary)
+        }
+
+        Button {
+            viewModel.showClueList = true
+        } label: {
+            Image(systemName: "list.bullet")
+                .frame(width: 44)
+                .foregroundColor(.appTextPrimary)
+        }
+
+        Button {
+            let totalAllowed = freeHintLimit + viewModel.adBonusHints
+            if storeService.isProUser || viewModel.activeClueIsHinted || viewModel.progress.hintedClueIds.count < totalAllowed {
+                viewModel.useHint()
+            } else {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                    showRewardedHintBanner = true
+                }
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: viewModel.activeClueIsHinted ? "lightbulb.fill" : "lightbulb")
+                    .frame(height: 44)
+                let hintsRemaining = storeService.isProUser ? 1 : max(0, freeHintLimit + viewModel.adBonusHints - viewModel.progress.hintedClueIds.count)
+                Text(viewModel.activeClueIsHinted || hintsRemaining > 0 ? "Hint" : "Get hint")
+                    .font(AppFont.body(13))
+            }
+            .foregroundColor(viewModel.activeClueIsHinted ? .appCorrect : .appAccent)
+        }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        PuzzleView(viewModel: GameViewModel(puzzle: .sample))
+            .environmentObject(StatsService())
+            .environmentObject(StoreService())
+            .environmentObject(AdService())
+    }
+}
+
+#Preview {
+    NavigationStack {
+        PuzzleView(viewModel: GameViewModel(puzzle: .sample13x13))
+            .environmentObject(StatsService())
+            .environmentObject(StoreService())
+            .environmentObject(AdService())
+    }
+}
+

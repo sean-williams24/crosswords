@@ -18,6 +18,5 @@ struct PuzzleGridView: View {
         }
         .padding(spacing)
         .background(Color.appBackground)
-//        .cornerRadius(AppLayout.cardCornerRadius)
     }
 }

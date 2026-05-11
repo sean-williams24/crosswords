@@ -287,6 +287,20 @@
 			path = HomeScreen;
 			sourceTree = "<group>";
 		};
+		86FAA1472FB27DFB0022EFF6 /* Crosswords */ = {
+			isa = PBXGroup;
+			children = (
+				CAB36B91BB7D50A21760149C /* PuzzleGridView.swift */,
+				0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */,
+				7EDCB92E82855EB80981B63B /* KeyboardInputView.swift */,
+				B8669C3DD88CF9BC44A72C69 /* CellView.swift */,
+				2519353944EB9D4F32644E32 /* ClueBarView.swift */,
+				D84C8AB718DDE4C9E0EDDE1F /* ClueListView.swift */,
+				6C44B7584617BA53797B0963 /* ZoomableView.swift */,
+			);
+			path = Crosswords;
+			sourceTree = "<group>";
+		};
 		BBA3617EFAC18A3821319F9A /* Backword */ = {
 			isa = PBXGroup;
 			children = (
@@ -349,21 +363,15 @@
 			children = (
 				BBA3617EFAC18A3821319F9A /* Backword */,
 				EE5A3938FD382B86EEB78063 /* ArchiveView.swift */,
-				B8669C3DD88CF9BC44A72C69 /* CellView.swift */,
-				2519353944EB9D4F32644E32 /* ClueBarView.swift */,
-				D84C8AB718DDE4C9E0EDDE1F /* ClueListView.swift */,
 				741EF0B3C1470452272529E1 /* CompletionView.swift */,
 				A04496BE6230D031AE10977A /* DebugSettingsView.swift */,
 				86E5C0062FA9207600A42156 /* HomeScreen */,
-				7EDCB92E82855EB80981B63B /* KeyboardInputView.swift */,
 				0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */,
 				83C12AC56422D31E9D619C3E /* PaywallView.swift */,
-				CAB36B91BB7D50A21760149C /* PuzzleGridView.swift */,
-				0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */,
+				86FAA1472FB27DFB0022EFF6 /* Crosswords */,
 				8AF93C5B6979DA0324E913C9 /* SettingsView.swift */,
 				8254031869B9E1FAC8C5A377 /* StatsView.swift */,
 				7CFE3BE7131C4A71B3845485 /* WOTDDetailView.swift */,
-				6C44B7584617BA53797B0963 /* ZoomableView.swift */,
 				9165B37268686C367CEB6523 /* RatingBarView.swift */,
 				963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */,
 				922354966A899721DF1CF25C /* CrosswordStatsView.swift */,
