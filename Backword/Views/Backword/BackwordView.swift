@@ -49,7 +49,7 @@ struct BackwordView: View {
                             Spacer()
                                 .frame(height: 100)
                         }
-                        hintRow
+                        categoryView
                         revealedLetterRow
 
                         if let message = viewModel.invalidWordMessage {
@@ -363,45 +363,32 @@ struct BackwordView: View {
 
     // MARK: - Hint Row
 
-    private var hintRow: some View {
+    private var categoryView: some View {
         HStack(spacing: 12) {
-            // Category — always visible
-            HStack(spacing: 6) {
-//                Image(systemName: "tag.fill")
-//                    .font(.system(size: 13))
-                Text("Category: ")
-                    .font(AppFont.clueLabel(isIpad ? 25 : 12))
-                    .foregroundColor(.appGridLine)
-
-                Text(viewModel.word.category.uppercased())
-                    .font(AppFont.clueLabel(isIpad ? 30 : 16 ))
-                    .foregroundColor(.appTextPrimary)
+            ViewThatFits {
+                HStack(spacing: 6) {
+                    categoryContent
+                }
+                VStack(alignment: .leading) {
+                    categoryContent
+                }
             }
-//            .foregroundColor(.appGridLine)
             .padding(.horizontal, 16)
             .padding(.vertical, 7)
-//            .background(Color.appSurface)
-//            .cornerRadius(20)
-
-            // Letter feedback toggle hint (pro only)
-//            if storeService.isProUser {
-//                NavigationLink(value: "settings") {
-//                    HStack(spacing: 6) {
-//                        Image(systemName: AppSettings.shared.backwordLetterFeedback ? "lightbulb.fill" : "lightbulb")
-//                            .font(.system(size: 13))
-//                        Text("Letter Hints")
-//                            .font(AppFont.caption())
-//                    }
-//                    .foregroundColor(AppSettings.shared.backwordLetterFeedback ? .appAccent : .appTextSecondary)
-//                    .padding(.horizontal, 12)
-//                    .padding(.vertical, 7)
-//                    .background(Color.appSurface)
-//                    .cornerRadius(20)
-//                }
-//            }
 
             Spacer()
         }
+    }
+
+    @ViewBuilder
+    private var categoryContent: some View {
+        Text("Category: ")
+            .font(AppFont.clueLabel(isIpad ? 25 : 12))
+            .foregroundColor(.appGridLine)
+
+        Text(viewModel.word.category.uppercased())
+            .font(AppFont.clueLabel(isIpad ? 30 : 16 ))
+            .foregroundColor(.appTextPrimary)
     }
 
     // MARK: - Completion Banner
