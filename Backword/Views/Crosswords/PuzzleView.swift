@@ -11,6 +11,8 @@ struct PuzzleView: View {
     @State private var showRewardedHintBanner = false
     @State private var showCrosswordStats = false
     @State private var isKeyboardReady = false
+    @State private var layoutKeyboardHeight: CGFloat = 0
+    @State private var suppressKeyboardUpdate = false
 
     private let freeHintLimit = 1
 
@@ -85,7 +87,9 @@ struct PuzzleView: View {
                         .opacity(0)
                 }
             }
+            .padding(.bottom, layoutKeyboardHeight)
         }
+        .ignoresSafeArea(.keyboard)
         .toolbar(.hidden, for: .navigationBar)
         .enableSwipeBack()
         .sheet(isPresented: $viewModel.showClueList) {
@@ -108,15 +112,10 @@ struct PuzzleView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            if isZoomableGrid {
-                // For the large grid, bring the keyboard up immediately so the
-                // layout is already in its final position before the view fully
-                // appears — eliminating any jarring resize/slide animation.
+            // Delay keyboard appearance until after the navigation push animation
+            // completes (~0.35s), for both grid sizes.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 isKeyboardReady = true
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                    isKeyboardReady = true
-                }
             }
         }
         .onDisappear {
@@ -135,6 +134,51 @@ struct PuzzleView: View {
                 ratingService.recordWeeklyCrossword(completedClues: completed, totalClues: total, date: date)
             } else {
                 ratingService.recordDailyCrossword(completedClues: completed, totalClues: total, date: date)
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillChangeFrameNotification)) { notif in
+            guard !suppressKeyboardUpdate else { return }
+            let endFrame = (notif.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? .zero
+            let screenHeight = UIScreen.main.bounds.height
+            let rawHeight = max(0, screenHeight - endFrame.origin.y)
+            // The keyboard frame includes the bottom safe area (home indicator), but the
+            // VStack already respects it naturally — subtract to avoid double-counting.
+            let safeAreaBottom = UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .first?.windows.first(where: { $0.isKeyWindow })?
+                .safeAreaInsets.bottom ?? 0
+            let height = max(0, rawHeight - safeAreaBottom)
+            let duration = (notif.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double) ?? 0.25
+            withAnimation(.easeInOut(duration: duration)) {
+                layoutKeyboardHeight = height
+            }
+        }
+        .onChange(of: viewModel.showClueList) { isShowing in
+            if isShowing {
+                suppressKeyboardUpdate = true
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
+            }
+        }
+        .onChange(of: showCrosswordStats) { isShowing in
+            if isShowing {
+                suppressKeyboardUpdate = true
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
+            }
+        }
+        .onChange(of: showPaywall) { isShowing in
+            if isShowing {
+                suppressKeyboardUpdate = true
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
+            }
+        }
+        .onChange(of: viewModel.isComplete) { isShowing in
+            if isShowing {
+                suppressKeyboardUpdate = true
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
             }
         }
         .onTapGesture {
