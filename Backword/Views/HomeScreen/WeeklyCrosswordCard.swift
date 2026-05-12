@@ -4,12 +4,17 @@
 import SwiftUI
 
 struct WeeklyCrosswordCard: View {
+    @Environment(\.horizontalSizeClass) var sizeClass
     @EnvironmentObject var storeService: StoreService
     @ScaledMetric private var iconSize: CGFloat = 10
     @ScaledMetric private var offset: CGFloat = 1
     @ObservedObject var viewModel: HomeViewModel
     @State private var showPaywall = false
     var isProUser: Bool = false
+
+    private var isIpad: Bool {
+        sizeClass == .regular
+    }
 
     var body: some View {
         if isProUser {
@@ -65,7 +70,7 @@ struct WeeklyCrosswordCard: View {
             }
         }
         .padding(24)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: isIpad ? 400 : .infinity)
         .background(
             Color.appSurface.overlay(
                 proGradient.opacity(0.02)
@@ -87,7 +92,7 @@ struct WeeklyCrosswordCard: View {
         HStack(spacing: 6) {
             crown
             Text("PRO CROSSWORD")
-                .font(AppFont.clueLabel(11))
+                .font(AppFont.clueLabel(isIpad ? 15 : 11))
                 .foregroundStyle(proGradient)
                 .tracking(3)
                 .multilineTextAlignment(.center)

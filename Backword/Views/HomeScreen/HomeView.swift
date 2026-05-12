@@ -181,6 +181,7 @@ struct HomeView: View {
         VStack(spacing: 0) {
             Text("Weekly Games")
                 .font(AppFont.header(16))
+                .padding(.top, isIpad ? 6 : 0)
                 .padding(.bottom, 6)
 
             TimelineView(.periodic(from: .now, by: 60)) { context in
@@ -200,6 +201,7 @@ struct HomeView: View {
                         .padding(.bottom, 16)
                 }
             }
+            .padding(.bottom, isIpad ? 16 : 0)
 
             WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
                 .environmentObject(storeService)
@@ -212,7 +214,7 @@ struct HomeView: View {
                 .frame(height: 1)
             Text("Daily Games")
                 .font(AppFont.header(16))
-                .padding(.top, 16)
+                .padding(.top, 26)
                 .padding(.bottom, 6)
 
             TimelineView(.periodic(from: .now, by: 60)) { context in
@@ -222,25 +224,25 @@ struct HomeView: View {
                         .foregroundColor(Color.appTextSecondary)
                         .tracking(1)
                         .multilineTextAlignment(.center)
-                        .padding(.bottom, 16)
+                        .padding(.bottom, 26)
                 } else {
                     Text(DateFormatting().formattedDate)
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
                         .tracking(1)
                         .multilineTextAlignment(.center)
-                        .padding(.bottom, 16)
+                        .padding(.bottom, 26)
                 }
             }
 
             if sizeClass == .regular {
-                HStack(spacing: 25) {
+                HStack(spacing: 45) {
                     backwordCard
                         .shadow(color: .primary, radius: .pi, x: 0.2, y: 0.2)
                     DailyCrosswordCard(viewModel: viewModel)
                 }
-                .padding(.horizontal, AppLayout.screenPadding)
-                .padding(.bottom, 30)
+                .padding(.horizontal, 45)
+                .padding(.bottom, 60)
             } else {
                 Group {
                     backwordCard
@@ -420,7 +422,12 @@ struct HomeView: View {
         .frame(maxWidth: .infinity)
         .background(Color.appSurface)
         .cornerRadius(AppLayout.cardCornerRadius)
-        .padding(.horizontal, AppLayout.screenPadding)
+        .padding(.horizontal, isIpad ? 45 : AppLayout.screenPadding)
+        .padding(.bottom, isIpad ? 16 : 0)
+    }
+
+    private var isIpad: Bool {
+        sizeClass == .regular
     }
 
     // MARK: - Helpers

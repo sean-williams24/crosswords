@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct DailyCrosswordCard: View {
+    @Environment(\.horizontalSizeClass) var sizeClass
     @EnvironmentObject private var statsService: StatsService
     @ObservedObject var viewModel: HomeViewModel
     @ScaledMetric private var iconSize: CGFloat = 10
     @State private var showStreakPopup = false
 
+    private var isIpad: Bool {
+        sizeClass == .regular
+    }
+    
     var body: some View {
         if viewModel.todaysPuzzle != nil {
             NavigationLink(value: "puzzle") {
@@ -28,7 +33,7 @@ struct DailyCrosswordCard: View {
         ZStack(alignment: .bottomTrailing) {
             VStack(spacing: 12) {
                 Text("CROSSWORD")
-                    .font(AppFont.clueLabel(11))
+                    .font(AppFont.clueLabel(isIpad ? 15 : 11))
                     .foregroundColor(.dailyCardTitle)
                     .tracking(3)
                     .multilineTextAlignment(.center)
