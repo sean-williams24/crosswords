@@ -3,6 +3,15 @@ import SwiftUI
 struct CellView: View {
     @Environment(\.horizontalSizeClass) var sizeClass
 
+    // Scale answer font sizes with Dynamic Type
+    @ScaledMetric(relativeTo: .body) private var answerFontSizePhone: CGFloat = 18
+    @ScaledMetric(relativeTo: .body) private var answerFontSizePhonePro: CGFloat = 13
+    @ScaledMetric(relativeTo: .body) private var answerFontSizeIpad: CGFloat = 60
+    @ScaledMetric(relativeTo: .body) private var answerFontSizeIpadPro: CGFloat = 40
+    // Minimum cell sizes that grow with Dynamic Type so cells expand when text is larger
+    @ScaledMetric(relativeTo: .body) private var minCellSizeRegular: CGFloat = 34
+    @ScaledMetric(relativeTo: .body) private var minCellSizePro: CGFloat = 23
+
     let row: Int
     let col: Int
     @ObservedObject var viewModel: GameViewModel
@@ -37,6 +46,7 @@ struct CellView: View {
                 }
             }
             .aspectRatio(1, contentMode: .fit)
+            .frame(minWidth: minCellSize, minHeight: minCellSize)
             .contentShape(Rectangle())
             .onTapGesture {
                 viewModel.selectCell(row: row, col: col)
@@ -45,6 +55,7 @@ struct CellView: View {
             // Black cell — just the background color
             Color.appBackground
                 .aspectRatio(1, contentMode: .fit)
+                .frame(minWidth: minCellSize, minHeight: minCellSize)
         }
     }
 
@@ -66,10 +77,14 @@ struct CellView: View {
 
     var answerFont: Font {
         if isIpad {
-            AppFont.gridLetter(isProPuzzle ? 40 : 60)
+            AppFont.gridLetter(isProPuzzle ? answerFontSizeIpadPro : answerFontSizeIpad)
         } else {
-            AppFont.gridLetter(isProPuzzle ? 13 : 18)
+            AppFont.gridLetter(isProPuzzle ? answerFontSizePhonePro : answerFontSizePhone)
         }
+    }
+
+    private var minCellSize: CGFloat {
+        isProPuzzle ? minCellSizePro : minCellSizeRegular
     }
 
     // MARK: - Colors

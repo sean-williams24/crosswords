@@ -38,8 +38,21 @@ struct ZoomableView<Content: View>: UIViewRepresentable {
             hostingController.view.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             hostingController.view.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
             hostingController.view.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            hostingController.view.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
-            hostingController.view.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor),
+        ])
+
+        // At default type size the content fills the frame exactly (low-priority equality).
+        // At larger Dynamic Type sizes the grid cells carry a larger minimum size, so the
+        // content may grow beyond the viewport — the required >= constraints allow that,
+        // and UIScrollView handles the resulting scroll / zoom.
+        let widthEq = hostingController.view.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
+        widthEq.priority = .defaultLow
+        let heightEq = hostingController.view.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor)
+        heightEq.priority = .defaultLow
+        NSLayoutConstraint.activate([
+            widthEq,
+            heightEq,
+            hostingController.view.widthAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.widthAnchor),
+            hostingController.view.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor),
         ])
 
         let doubleTap = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleDoubleTap(_:)))
