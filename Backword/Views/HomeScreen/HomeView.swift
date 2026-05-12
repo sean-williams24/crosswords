@@ -11,6 +11,7 @@ struct HomeView: View {
     @StateObject private var backwordService = BackwordService()
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
     @State private var showArchive = false
     @State private var showPaywall = false
@@ -43,6 +44,7 @@ struct HomeView: View {
                             isPro: storeService.isProUser
                         )
                         .padding(.horizontal, AppLayout.screenPadding)
+                        .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
 
                         wotd
                         dailyGamesView

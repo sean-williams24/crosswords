@@ -12,7 +12,6 @@ struct BackwordCard: View {
             if let progress, progress.isComplete {
                 completionContent(progress: progress)
             } else {
-                // Show ProgressView in place of letter cells if loading, else show letter cells
                 Group {
                     if let word {
                         HStack(spacing: 6) {
@@ -45,6 +44,7 @@ struct BackwordCard: View {
                     Text("Guess the 6-letter word")
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
+                        .padding(.bottom, 10)
                 }
             }
         }

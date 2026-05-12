@@ -5,7 +5,7 @@ import SwiftUI
 
 struct BackwordLogo: View {
     @Environment(\.colorScheme) private var colorScheme
-    var frame: CGFloat = 38
+    @ScaledMetric var frame: CGFloat = 38
     var forceDark: Bool = false
 
     var body: some View {
