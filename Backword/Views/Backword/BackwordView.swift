@@ -5,6 +5,7 @@ struct BackwordView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) var sizeClass
 
     @State private var showInstructions = false
     @State private var showStats = false
@@ -44,6 +45,10 @@ struct BackwordView: View {
 
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .center, spacing: 24) {
+                        if isIpad {
+                            Spacer()
+                                .frame(height: 100)
+                        }
                         hintRow
                         revealedLetterRow
 
@@ -87,7 +92,7 @@ struct BackwordView: View {
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
         .animation(.easeInOut(duration: 0.3), value: viewModel.invalidWordMessage != nil)
-        .onChange(of: viewModel.isComplete) { complete in
+        .onChange(of: viewModel.isComplete) { _, complete in
             if complete {
                 inputFocused = false
                 statsService.refresh()
@@ -104,6 +109,10 @@ struct BackwordView: View {
             .presentationDetents([.large])
             .presentationDragIndicator(.visible)
         }
+    }
+
+    private var isIpad: Bool {
+        sizeClass == .regular
     }
 
     // MARK: - Nav Bar
@@ -185,9 +194,10 @@ struct BackwordView: View {
             VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 10) {
                 instructionRow(number: "1", text: "Guess the 6-letter word in 5 tries.")
-                instructionRow(number: "2", text: "The last letter and the third letter are revealed to start. Each wrong guess reveals one more letter from the right.")
+                instructionRow(number: "2", text: "The last letter is revealed to start. Each wrong guess reveals one more letter from the right.")
                 instructionRow(number: "3", text: "Type the missing letters into the highlighted cells, then tap Submit.")
-                instructionRow(number: "4", text: "The category is shown at the top — it's your clue")
+                instructionRow(number: "4", text: "The category is shown at the top — it's your clue.")
+                instructionRow(number: "5", text: "The fewer the guesses, the more points you get.")
             }
 
             Divider()
@@ -196,14 +206,14 @@ struct BackwordView: View {
             HStack(spacing: 12) {
                 exampleCell(letter: "C", isRevealed: false)
                 exampleCell(letter: "A", isRevealed: false)
-                exampleCell(letter: "S", isRevealed: true)
+                exampleCell(letter: "S", isRevealed: false)
                 exampleCell(letter: "T", isRevealed: true)
                 exampleCell(letter: "L", isRevealed: true)
                 exampleCell(letter: "E", isRevealed: true)
             }
             .frame(maxWidth: .infinity, alignment: .center)
 
-            Text("After 2 wrong guesses — 4 letters revealed")
+            Text("After 2 wrong guesses — 3 letters revealed")
                 .font(AppFont.caption())
                 .foregroundColor(.appTextSecondary)
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -251,6 +261,7 @@ struct BackwordView: View {
         let inputChars = Array(viewModel.currentInput)
         let unrevealedIndices = viewModel.unrevealedIndices
         let wordChars = Array(viewModel.word.word.uppercased())
+        let size: CGFloat = isIpad ? 84 : 44
 
         return HStack(spacing: 8) {
             ForEach(0..<6, id: \.self) { i in
@@ -258,7 +269,8 @@ struct BackwordView: View {
                     // Show full correct word in green
                     BackwordLetterCell(
                         letter: wordChars[i],
-                        isCorrect: true
+                        isCorrect: true,
+                        size: size
                     )
                     .animation(.spring(response: 0.4, dampingFraction: 0.6).delay(Double(i) * 0.06), value: viewModel.isWon)
                 } else {
@@ -272,7 +284,8 @@ struct BackwordView: View {
                         letter: revealed,
                         inputLetter: inputChar,
                         isCursor: showCursor,
-                        isNew: viewModel.newlyRevealedIndex == i
+                        isNew: viewModel.newlyRevealedIndex == i,
+                        size: size
                     )
                     .animation(.spring(response: 0.4, dampingFraction: 0.6), value: viewModel.revealedLetters[i] != nil)
                 }
@@ -357,11 +370,11 @@ struct BackwordView: View {
 //                Image(systemName: "tag.fill")
 //                    .font(.system(size: 13))
                 Text("Category: ")
-                    .font(AppFont.clueLabel())
+                    .font(AppFont.clueLabel(isIpad ? 25 : 12))
                     .foregroundColor(.appGridLine)
 
                 Text(viewModel.word.category.uppercased())
-                    .font(AppFont.clueLabel(16))
+                    .font(AppFont.clueLabel(isIpad ? 30 : 16 ))
                     .foregroundColor(.appTextPrimary)
             }
 //            .foregroundColor(.appGridLine)

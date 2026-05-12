@@ -255,13 +255,13 @@ struct HomeView: View {
                 .frame(height: 1)
                 .shadow(color: .primary, radius: .pi, x: 0.2, y: 0.6)
         }
-        .background {
-            LinearGradient(
-                colors: [Color.appGridLine.opacity(0.55), Color.appBackground],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        }
+//        .background {
+//            LinearGradient(
+//                colors: [Color.appGridLine.opacity(0.55), Color.appBackground],
+//                startPoint: .topLeading,
+//                endPoint: .bottomTrailing
+//            )
+//        }
     }
 
     @ViewBuilder

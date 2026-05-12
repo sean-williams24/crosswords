@@ -67,13 +67,7 @@ struct PuzzleView: View {
 
                 Spacer(minLength: 8)
 
-                // Grid
-                if isZoomableGrid {
-                    ZoomableView(minZoom: 1.0, maxZoom: 2.5) {
-                        PuzzleGridView(viewModel: viewModel)
-                            .padding(.horizontal, AppLayout.screenPadding)
-                    }
-                } else {
+                ZoomableView(minZoom: 1.0, maxZoom: 2.5) {
                     PuzzleGridView(viewModel: viewModel)
                         .padding(.horizontal, AppLayout.screenPadding)
                 }
@@ -153,36 +147,29 @@ struct PuzzleView: View {
                 layoutKeyboardHeight = height
             }
         }
-        .onChange(of: viewModel.showClueList) { isShowing in
-            if isShowing {
-                suppressKeyboardUpdate = true
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
-            }
+        .onChange(of: viewModel.showClueList) { _, isShowing in
+            handleKeyboardSurpression(if: isShowing)
+            
         }
-        .onChange(of: showCrosswordStats) { isShowing in
-            if isShowing {
-                suppressKeyboardUpdate = true
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
-            }
+        .onChange(of: showCrosswordStats) { _, isShowing in
+            handleKeyboardSurpression(if: isShowing)
         }
-        .onChange(of: showPaywall) { isShowing in
-            if isShowing {
-                suppressKeyboardUpdate = true
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
-            }
+        .onChange(of: showPaywall) { _, isShowing in
+            handleKeyboardSurpression(if: isShowing)
         }
-        .onChange(of: viewModel.isComplete) { isShowing in
-            if isShowing {
-                suppressKeyboardUpdate = true
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
-            }
+        .onChange(of: viewModel.isComplete) { _, isShowing in
+            handleKeyboardSurpression(if: isShowing)
         }
         .onTapGesture {
             viewModel.deactivateZenMode()
+        }
+    }
+
+    private func handleKeyboardSurpression(if isShowing: Bool) {
+        if isShowing {
+            suppressKeyboardUpdate = true
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
         }
     }
 
