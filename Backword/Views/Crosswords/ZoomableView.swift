@@ -4,11 +4,17 @@ import UIKit
 struct ZoomableView<Content: View>: UIViewRepresentable {
     let minZoom: CGFloat
     let maxZoom: CGFloat
+    /// When true (elevated Dynamic Type size) the content is allowed to grow taller than
+    /// the scroll view frame; the user can then scroll vertically to reach every cell.
+    /// When false (default type) the content is constrained to exactly the frame height,
+    /// preserving the original "squish to fit" layout behaviour.
+    let allowsVerticalOverflow: Bool
     let content: Content
 
-    init(minZoom: CGFloat = 1.0, maxZoom: CGFloat = 2.5, @ViewBuilder content: () -> Content) {
+    init(minZoom: CGFloat = 1.0, maxZoom: CGFloat = 2.5, allowsVerticalOverflow: Bool = false, @ViewBuilder content: () -> Content) {
         self.minZoom = minZoom
         self.maxZoom = maxZoom
+        self.allowsVerticalOverflow = allowsVerticalOverflow
         self.content = content()
     }
 
@@ -40,20 +46,19 @@ struct ZoomableView<Content: View>: UIViewRepresentable {
             hostingController.view.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
         ])
 
-        // At default type size the content fills the frame exactly (low-priority equality).
-        // At larger Dynamic Type sizes the grid cells carry a larger minimum size, so the
-        // content may grow beyond the viewport — the required >= constraints allow that,
-        // and UIScrollView handles the resulting scroll / zoom.
+        // Width and height: at default type the content is constrained to exactly the
+        // frame size (squish-to-fit). At elevated Dynamic Type sizes `allowsVerticalOverflow
+        // = true` switches both axes to a low-priority equality + required >= so cells can
+        // grow beyond the viewport and the user can scroll/zoom in all directions.
         let widthEq = hostingController.view.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
-        widthEq.priority = .defaultLow
+        let widthGe = hostingController.view.widthAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.widthAnchor)
         let heightEq = hostingController.view.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor)
-        heightEq.priority = .defaultLow
-        NSLayoutConstraint.activate([
-            widthEq,
-            heightEq,
-            hostingController.view.widthAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.widthAnchor),
-            hostingController.view.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor),
-        ])
+        let heightGe = hostingController.view.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor)
+        context.coordinator.widthEqConstraint = widthEq
+        context.coordinator.widthGeConstraint = widthGe
+        context.coordinator.heightEqConstraint = heightEq
+        context.coordinator.heightGeConstraint = heightGe
+        applyOverflowConstraints(widthEq: widthEq, widthGe: widthGe, heightEq: heightEq, heightGe: heightGe, overflow: allowsVerticalOverflow)
 
         let doubleTap = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleDoubleTap(_:)))
         doubleTap.numberOfTapsRequired = 2
@@ -67,12 +72,44 @@ struct ZoomableView<Content: View>: UIViewRepresentable {
     func updateUIView(_ scrollView: UIScrollView, context: Context) {
         scrollView.minimumZoomScale = minZoom
         scrollView.maximumZoomScale = maxZoom
+        if let wEq = context.coordinator.widthEqConstraint,
+           let wGe = context.coordinator.widthGeConstraint,
+           let hEq = context.coordinator.heightEqConstraint,
+           let hGe = context.coordinator.heightGeConstraint {
+            applyOverflowConstraints(widthEq: wEq, widthGe: wGe, heightEq: hEq, heightGe: hGe, overflow: allowsVerticalOverflow)
+        }
+    }
+
+    private func applyOverflowConstraints(
+        widthEq: NSLayoutConstraint, widthGe: NSLayoutConstraint,
+        heightEq: NSLayoutConstraint, heightGe: NSLayoutConstraint,
+        overflow: Bool
+    ) {
+        if overflow {
+            widthEq.priority = .defaultLow
+            heightEq.priority = .defaultLow
+            widthGe.isActive = true
+            heightGe.isActive = true
+            widthEq.isActive = true
+            heightEq.isActive = true
+        } else {
+            widthGe.isActive = false
+            heightGe.isActive = false
+            widthEq.priority = .required
+            heightEq.priority = .required
+            widthEq.isActive = true
+            heightEq.isActive = true
+        }
     }
 
     class Coordinator: NSObject, UIScrollViewDelegate {
         var hostingView: UIView?
         weak var scrollView: UIScrollView?
         var maxZoom: CGFloat = 2.5
+        var widthEqConstraint: NSLayoutConstraint?
+        var widthGeConstraint: NSLayoutConstraint?
+        var heightEqConstraint: NSLayoutConstraint?
+        var heightGeConstraint: NSLayoutConstraint?
 
         func viewForZooming(in scrollView: UIScrollView) -> UIView? {
             hostingView

@@ -7,6 +7,7 @@ struct PuzzleView: View {
     @EnvironmentObject var adService: AdService
     @EnvironmentObject var ratingService: OverallRatingService
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var showPaywall = false
     @State private var showRewardedHintBanner = false
     @State private var showCrosswordStats = false
@@ -67,7 +68,11 @@ struct PuzzleView: View {
 
                 Spacer(minLength: 8)
 
-                ZoomableView(minZoom: 1.0, maxZoom: 2.5) {
+                ZoomableView(
+                    minZoom: 1.0,
+                    maxZoom: 2.5,
+                    allowsVerticalOverflow: dynamicTypeSize > .large
+                ) {
                     PuzzleGridView(viewModel: viewModel)
                         .padding(.horizontal, AppLayout.screenPadding)
                 }

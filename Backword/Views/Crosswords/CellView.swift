@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CellView: View {
     @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     // Scale answer font sizes with Dynamic Type
     @ScaledMetric(relativeTo: .body) private var answerFontSizePhone: CGFloat = 18
@@ -83,8 +84,11 @@ struct CellView: View {
         }
     }
 
-    private var minCellSize: CGFloat {
-        isProPuzzle ? minCellSizePro : minCellSizeRegular
+    // Only impose a minimum when the user has selected an elevated type size.
+    // At the default (.large) type size cells fit the available frame naturally.
+    private var minCellSize: CGFloat? {
+        guard dynamicTypeSize > .large else { return nil }
+        return isProPuzzle ? minCellSizePro : minCellSizeRegular
     }
 
     // MARK: - Colors

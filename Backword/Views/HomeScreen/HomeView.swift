@@ -194,6 +194,7 @@ struct HomeView: View {
                         .tracking(1)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 16)
+                        .padding(.horizontal, AppLayout.screenPadding)
                 } else {
                     Text(weeklyRefreshLabel(at: context.date))
                         .font(AppFont.caption())
@@ -201,6 +202,7 @@ struct HomeView: View {
                         .tracking(1)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 16)
+                        .padding(.horizontal, AppLayout.screenPadding)
                 }
             }
             .padding(.bottom, isIpad ? 16 : 0)
@@ -216,7 +218,7 @@ struct HomeView: View {
                 .frame(height: 1)
             Text("Daily Games")
                 .font(AppFont.header(16))
-                .padding(.top, 26)
+                .padding(.top, 16)
                 .padding(.bottom, 6)
 
             TimelineView(.periodic(from: .now, by: 60)) { context in
@@ -227,6 +229,7 @@ struct HomeView: View {
                         .tracking(1)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 26)
+                        .padding(.horizontal, AppLayout.screenPadding)
                 } else {
                     Text(DateFormatting().formattedDate)
                         .font(AppFont.caption())
@@ -234,6 +237,7 @@ struct HomeView: View {
                         .tracking(1)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 26)
+                        .padding(.horizontal, AppLayout.screenPadding)
                 }
             }
 

@@ -6,7 +6,7 @@ struct BackwordCard: View {
     let progress: BackwordProgress?
 
     var body: some View {
-        VStack(alignment: .center, spacing: spacing) {
+        VStack(alignment: .center, spacing: 0) {
                 BackwordLogo()
 
             if let progress, progress.isComplete {
@@ -68,10 +68,15 @@ struct BackwordCard: View {
                 Text("Completed in \(progress.guesses.count) guess\(progress.guesses.count == 1 ? "" : "es")")
                     .font(AppFont.body(14))
                     .foregroundColor(.appTextSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding()
             } else {
                 Text("Better luck tomorrow")
                     .font(AppFont.body(14))
                     .foregroundColor(.appTextSecondary)
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(1)
+                    .padding()
             }
         }
     }
