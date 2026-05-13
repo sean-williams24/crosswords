@@ -45,6 +45,7 @@
 		86E5BFFE2FA2BECA00A42156 /* Outfit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */; };
 		86E5C00A2FA9211200A42156 /* WeeklyCrosswordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */; };
 		86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */; };
+		86FAA14F2FB4F8C00022EFF6 /* CustomKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FAA14E2FB4F8C00022EFF6 /* CustomKeyboardView.swift */; };
 		87051E8136E314CB2A272A91 /* BackwordLetterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2259B66045D006E89462572C /* BackwordLetterCell.swift */; };
 		8EF7F8087FF836F1BFC62151 /* HapticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */; };
 		8F92754416251062C7FCA46E /* CrosswordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922354966A899721DF1CF25C /* CrosswordStatsView.swift */; };
@@ -126,6 +127,7 @@
 		86E5BFF42FA2BECA00A42156 /* Outfit-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Thin.ttf"; sourceTree = "<group>"; };
 		86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCrosswordCard.swift; sourceTree = "<group>"; };
 		86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordCard.swift; sourceTree = "<group>"; };
+		86FAA14E2FB4F8C00022EFF6 /* CustomKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomKeyboardView.swift; sourceTree = "<group>"; };
 		8820C57EC2BCBADADEC4006C /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		894071960CD50EDF948DA15E /* BackwordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordApp.swift; sourceTree = "<group>"; };
 		8AF93C5B6979DA0324E913C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				CAB36B91BB7D50A21760149C /* PuzzleGridView.swift */,
 				0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */,
 				7EDCB92E82855EB80981B63B /* KeyboardInputView.swift */,
+				86FAA14E2FB4F8C00022EFF6 /* CustomKeyboardView.swift */,
 				B8669C3DD88CF9BC44A72C69 /* CellView.swift */,
 				2519353944EB9D4F32644E32 /* ClueBarView.swift */,
 				D84C8AB718DDE4C9E0EDDE1F /* ClueListView.swift */,
@@ -520,6 +523,7 @@
 				9344322FC4BD6682AB74BE2A /* GameViewModel.swift in Sources */,
 				8EF7F8087FF836F1BFC62151 /* HapticsEngine.swift in Sources */,
 				869FCBE22F9986FA00A280F2 /* BackwordStatsService.swift in Sources */,
+				86FAA14F2FB4F8C00022EFF6 /* CustomKeyboardView.swift in Sources */,
 				86728124E533B5942EADAB51 /* HomeView.swift in Sources */,
 				05256FA0ABC9B788BBAABD5B /* HomeViewModel.swift in Sources */,
 				549205098DAD4DCC7F508DD1 /* KeyboardInputView.swift in Sources */,

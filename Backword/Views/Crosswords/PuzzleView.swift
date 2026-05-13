@@ -45,29 +45,29 @@ struct PuzzleView: View {
         ZStack {
             Color.appBackground
                 .ignoresSafeArea()
-
+            
             VStack(spacing: 0) {
                 navigationBar
-
+                
                 // Rewarded hint banner
                 if showRewardedHintBanner {
                     rewardedHintBanner
                         .transition(.move(edge: .top).combined(with: .opacity))
                 }
-
+                
                 // Header
                 VStack(spacing: 12) {
                     header
                         .opacity(viewModel.isZenMode ? 0.2 : 1.0)
-
+                    
                     // Clue bar
                     ClueBarView(viewModel: viewModel)
                         .padding(.horizontal, AppLayout.screenPadding)
                         .padding(.bottom, 12)
                 }
-
+                
                 Spacer(minLength: 8)
-
+                
                 ZoomableView(
                     minZoom: 1.0,
                     maxZoom: 2.5,
@@ -76,14 +76,26 @@ struct PuzzleView: View {
                     PuzzleGridView(viewModel: viewModel)
                         .padding(.horizontal, AppLayout.screenPadding)
                 }
-
+                
                 Spacer(minLength: 8)
-
+                
                 // Invisible keyboard capture
-                if isKeyboardReady {
-                    KeyboardInputView(viewModel: viewModel)
-                        .frame(width: 0, height: 0)
-                        .opacity(0)
+                //                if isKeyboardReady {
+                //                    KeyboardInputView(viewModel: viewModel)
+                //                        .frame(width: 0, height: 0)
+                //                        .opacity(0)
+                //                }
+                CustomKeyboardView { text in
+                    Task { @MainActor in
+                        if let char = text.uppercased().first,
+                           char.isLetter {
+                            viewModel.enterLetter(char)
+                        }
+                    }
+                } onDelete: {
+                    Task { @MainActor in
+                        viewModel.deleteLetter()
+                    }
                 }
             }
             .padding(.bottom, layoutKeyboardHeight)
@@ -135,48 +147,50 @@ struct PuzzleView: View {
                 ratingService.recordDailyCrossword(completedClues: completed, totalClues: total, date: date)
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillChangeFrameNotification)) { notif in
-            guard !suppressKeyboardUpdate else { return }
-            let endFrame = (notif.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? .zero
-            let screenHeight = UIScreen.main.bounds.height
-            let rawHeight = max(0, screenHeight - endFrame.origin.y)
-            // The keyboard frame includes the bottom safe area (home indicator), but the
-            // VStack already respects it naturally — subtract to avoid double-counting.
-            let safeAreaBottom = UIApplication.shared.connectedScenes
-                .compactMap { $0 as? UIWindowScene }
-                .first?.windows.first(where: { $0.isKeyWindow })?
-                .safeAreaInsets.bottom ?? 0
-            let height = max(0, rawHeight - safeAreaBottom)
-            let duration = (notif.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double) ?? 0.25
-            withAnimation(.easeInOut(duration: duration)) {
-                layoutKeyboardHeight = height
-            }
-        }
-        .onChange(of: viewModel.showClueList) { _, isShowing in
-            handleKeyboardSurpression(if: isShowing)
-            
-        }
-        .onChange(of: showCrosswordStats) { _, isShowing in
-            handleKeyboardSurpression(if: isShowing)
-        }
-        .onChange(of: showPaywall) { _, isShowing in
-            handleKeyboardSurpression(if: isShowing)
-        }
-        .onChange(of: viewModel.isComplete) { _, isShowing in
-            handleKeyboardSurpression(if: isShowing)
-        }
-        .onTapGesture {
-            viewModel.deactivateZenMode()
-        }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
-
-    private func handleKeyboardSurpression(if isShowing: Bool) {
-        if isShowing {
-            suppressKeyboardUpdate = true
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
-        }
-    }
+//        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillChangeFrameNotification)) { notif in
+//            guard !suppressKeyboardUpdate else { return }
+//            let endFrame = (notif.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? .zero
+//            let screenHeight = UIScreen.main.bounds.height
+//            let rawHeight = max(0, screenHeight - endFrame.origin.y)
+//            // The keyboard frame includes the bottom safe area (home indicator), but the
+//            // VStack already respects it naturally — subtract to avoid double-counting.
+//            let safeAreaBottom = UIApplication.shared.connectedScenes
+//                .compactMap { $0 as? UIWindowScene }
+//                .first?.windows.first(where: { $0.isKeyWindow })?
+//                .safeAreaInsets.bottom ?? 0
+//            let height = max(0, rawHeight - safeAreaBottom)
+//            let duration = (notif.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double) ?? 0.25
+//            withAnimation(.easeInOut(duration: duration)) {
+//                layoutKeyboardHeight = height
+//            }
+//        }
+//        .onChange(of: viewModel.showClueList) { _, isShowing in
+//            handleKeyboardSurpression(if: isShowing)
+//            
+//        }
+//        .onChange(of: showCrosswordStats) { _, isShowing in
+//            handleKeyboardSurpression(if: isShowing)
+//        }
+//        .onChange(of: showPaywall) { _, isShowing in
+//            handleKeyboardSurpression(if: isShowing)
+//        }
+//        .onChange(of: viewModel.isComplete) { _, isShowing in
+//            handleKeyboardSurpression(if: isShowing)
+//        }
+//        .onTapGesture {
+//            viewModel.deactivateZenMode()
+//        }
+//    }
+//
+//    private func handleKeyboardSurpression(if isShowing: Bool) {
+//        if isShowing {
+//            suppressKeyboardUpdate = true
+//        } else {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
+//        }
+//    }
 
     // MARK: - Rewarded Hint Banner
 
