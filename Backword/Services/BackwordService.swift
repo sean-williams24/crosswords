@@ -34,7 +34,7 @@ final class BackwordService: ObservableObject {
     }
 
     func fetchArchive() async throws -> [BackwordWord] {
-        try await apiClient.fetchArchive()
+        try await apiClient.fetchBackwordArchive()
     }
 
     private func loadTodaysWord() async {
@@ -48,7 +48,7 @@ final class BackwordService: ObservableObject {
         }
 
         do {
-            let word = try await apiClient.fetchFromSupabase()
+            let word = try await apiClient.fetchTodaysBackword()
             todaysWord = word
             cache.saveBackword(word, for: today)
             lastFetchedDate = today

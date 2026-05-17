@@ -4,7 +4,8 @@ import Foundation
 import Supabase
 
 protocol SupabaseClientProtocol {
-    func fetchFromSupabase() async throws -> BackwordWord
+    func fetchTodaysBackword() async throws -> BackwordWord
+    func fetchBackwordArchive() async throws -> [BackwordWord]
 }
 
 final class SupabaseClient: SupabaseClientProtocol {
@@ -18,7 +19,7 @@ final class SupabaseClient: SupabaseClientProtocol {
         self.client = Supabase.SupabaseClient(supabaseURL: URL(string: baseURL)!, supabaseKey: apiKey)
     }
 
-    func fetchFromSupabase() async throws -> BackwordWord {
+    func fetchTodaysBackword() async throws -> BackwordWord {
         let row: BackwordRow = try await client
             .from("backword_words")
             .select()
@@ -30,7 +31,7 @@ final class SupabaseClient: SupabaseClientProtocol {
         return row.toBackwordWord
     }
 
-    func fetchArchive() async throws -> [BackwordWord] {
+    func fetchBackwordArchive() async throws -> [BackwordWord] {
         let rows: [BackwordRow] = try await client
             .from("backword_words")
             .select()
