@@ -55,6 +55,19 @@ struct BackwordCard: View {
             .font(AppFont.caption())
             .foregroundColor(.appTextSecondary)
             .padding(.bottom, 16)
+
+        if let status {
+            StatusLabelView(status: status)
+                .padding(.bottom, 16)
+        }
+    }
+
+    var status: PuzzleStatus? {
+        guard let progress else { return .new }
+        if !progress.guesses.isEmpty {
+            return .inProgress
+        }
+        return nil
     }
 
     private var errorView: some View {
@@ -138,12 +151,6 @@ struct BackwordCard: View {
     VStack {
         BackwordCard(
             service: BackwordService(),
-            //            word: BackwordWord(
-            //                date: "",
-            //                word: "Seannnn",
-            //                category: "",
-            //                definition: ""
-            //            ),
             progress: nil
         )
 

@@ -72,21 +72,7 @@ struct DailyCrosswordCard: View {
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
                 } else {
-//                    HStack(spacing: 6) {
-//                        Image(systemName: viewModel.puzzleStatus.icon)
-//                            .font(.system(size: iconSize))
-//                            .foregroundColor(viewModel.puzzleStatus.color)
-//                            .font(.system(size: 13))
-                        Text(viewModel.puzzleStatus.label)
-                            .padding(.vertical, 4)
-                            .padding(.horizontal, 8)
-                            .font(AppFont.statNumber(10))
-                            .foregroundStyle(viewModel.puzzleStatus.color)
-                            .background(content: {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .shadow(radius: 2)
-                            })
-//                    }
+                    StatusLabelView(status: viewModel.puzzleStatus)
                 }
             }
             .padding(.vertical, 24)
