@@ -317,6 +317,7 @@ struct HomeView: View {
             }
             .padding(.horizontal, AppLayout.screenPadding)
             .padding(.top, 8)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
         }
         .background {
             ZStack {
@@ -341,7 +342,7 @@ struct HomeView: View {
         Button {
             showRatingDetails = true
         } label: {
-            Label("Stats", systemImage: "brain.head.profilebrain.head.profile")
+            Label("Stats", systemImage: "brain.head.profile")
                 .font(AppFont.clueLabel(14))
                 .foregroundColor(.appTextSecondary)
                 .frame(maxWidth: .infinity)
@@ -365,7 +366,7 @@ struct HomeView: View {
                         .foregroundColor(.appAccent)
                 }
             }
-            .font(AppFont.clueLabel(14))
+            .font(AppFont.clueLabel(16))
             .foregroundColor(.appTextSecondary)
             .frame(maxWidth: .infinity)
             .padding(.top, 14)
