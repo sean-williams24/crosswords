@@ -192,31 +192,30 @@ struct HomeView: View {
         }
     }
 
+    private func dateView(for date: String) -> some View {
+        Text(date)
+            .font(AppFont.caption())
+            .foregroundColor(Color.appTextSecondary)
+            .tracking(1)
+            .multilineTextAlignment(.leading)
+            .padding(.bottom, 26)
+            .padding(.horizontal, AppLayout.screenPadding)
+    }
+
+    @ViewBuilder
     private var dailyGamesView: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Daily Games")
-                .font(AppFont.header(16))
+                .font(AppFont.header(20))
                 .padding(.top, 16)
                 .padding(.bottom, 6)
                 .padding(.horizontal, AppLayout.screenPadding)
 
             TimelineView(.periodic(from: .now, by: 60)) { context in
                 if isAfterLocalMidnight(at: context.date) {
-                    Text(utcResetCountdown(at: context.date))
-                        .font(AppFont.caption())
-                        .foregroundColor(Color.appTextSecondary)
-                        .tracking(1)
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom, 26)
-                        .padding(.horizontal, AppLayout.screenPadding)
+                    dateView(for: utcResetCountdown(at: context.date))
                 } else {
-                    Text(DateFormatting().formattedDate)
-                        .font(AppFont.caption())
-                        .foregroundColor(.appTextSecondary)
-                        .tracking(1)
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom, 26)
-                        .padding(.horizontal, AppLayout.screenPadding)
+                    dateView(for: DateFormatting().formattedDate)
                 }
             }
 
@@ -244,28 +243,16 @@ struct HomeView: View {
     private var weeklyGamesView: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Weekly Games")
-                .font(AppFont.header(16))
+                .font(AppFont.header(20))
                 .padding(.top, isIpad ? 6 : 0)
                 .padding(.bottom, 6)
                 .padding(.horizontal, AppLayout.screenPadding)
 
             TimelineView(.periodic(from: .now, by: 60)) { context in
                 if isBeforeWeeklyResetUTC(at: context.date) {
-                    Text(weeklyResetCountdown(at: context.date))
-                        .font(AppFont.caption())
-                        .foregroundColor(Color.appTextSecondary)
-                        .tracking(1)
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom, 16)
-                        .padding(.horizontal, AppLayout.screenPadding)
+                    dateView(for: weeklyResetCountdown(at: context.date))
                 } else {
-                    Text(weeklyRefreshLabel(at: context.date))
-                        .font(AppFont.caption())
-                        .foregroundColor(.appTextSecondary)
-                        .tracking(1)
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom, 16)
-                        .padding(.horizontal, AppLayout.screenPadding)
+                    dateView(for: weeklyRefreshLabel(at: context.date))
                 }
             }
             .padding(.bottom, isIpad ? 16 : 0)
