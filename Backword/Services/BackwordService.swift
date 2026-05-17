@@ -26,6 +26,17 @@ final class BackwordService: ObservableObject {
         await loadTodaysWord()
     }
 
+    func purgeCache() async {
+        cache.clearBackword(for: today)
+        todaysWord = nil
+        lastFetchedDate = nil
+        await loadTodaysWord()
+    }
+
+    func fetchArchive() async throws -> [BackwordWord] {
+        try await apiClient.fetchArchive()
+    }
+
     private func loadTodaysWord() async {
         isLoading = true
         defer { isLoading = false }
@@ -46,24 +57,4 @@ final class BackwordService: ObservableObject {
         }
     }
 
-    func purgeCache() async {
-        cache.clearBackword(for: today)
-        todaysWord = nil
-        lastFetchedDate = nil
-        await loadTodaysWord()
-    }
-
-    // MARK: - Supabase
-
-    private let decoder: JSONDecoder = {
-        let d = JSONDecoder()
-        d.keyDecodingStrategy = .convertFromSnakeCase
-        return d
-    }()
-
-    // MARK: - Archive
-
-    func fetchArchive() async throws -> [BackwordWord] {
-        try await apiClient.fetchArchive()
-    }
 }
