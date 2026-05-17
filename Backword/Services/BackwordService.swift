@@ -1,20 +1,13 @@
 import Foundation
 
-//final class BackwordViewModel {
-//    
-//}
-
 @MainActor
 final class BackwordService: ObservableObject {
     @Published var todaysWord: BackwordWord?
     @Published var isLoading = false
-//    @Published var errorMessage: String?
 
     private let cache = CacheService()
     private let apiClient: SupabaseClient
     private let dateFormatting = DateFormatting()
-    private let baseURL = "https://cmvzqtpvzobdnnjpvyfi.supabase.co"
-    private let apiKey = "sb_publishable_Kj4RZqeTrOAXeOhRVdluVA_EFEOGveT"
     private var lastFetchedDate: String?
 
     init(apiClient: SupabaseClient = SupabaseClient()) {
@@ -35,7 +28,6 @@ final class BackwordService: ObservableObject {
 
     private func loadTodaysWord() async {
         isLoading = true
-//        errorMessage = nil
         defer { isLoading = false }
 
         if let word = cache.loadBackword(for: today) {
@@ -50,7 +42,6 @@ final class BackwordService: ObservableObject {
             cache.saveBackword(word, for: today)
             lastFetchedDate = today
         } catch {
-//            errorMessage = "Failed to load today's word. Please try again."
             print("Supabase fetch error: \(error)")
         }
     }
@@ -70,62 +61,9 @@ final class BackwordService: ObservableObject {
         return d
     }()
 
-//    private func fetchFromSupabase() async throws -> BackwordWord? {
-//        let urlString = "\(baseURL)/rest/v1/backword_words?date=lte.\(today)&select=*&order=date.desc&limit=1"
-//        guard let url = URL(string: urlString) else { return nil }
-//
-//        var request = URLRequest(url: url)
-//        request.setValue(apiKey, forHTTPHeaderField: "apikey")
-//        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
-//        request.setValue("application/json", forHTTPHeaderField: "Accept")
-//
-//        let (data, response) = try await URLSession.shared.data(for: request)
-//
-//        guard let httpResponse = response as? HTTPURLResponse,
-//              (200...299).contains(httpResponse.statusCode) else {
-//            return nil
-//        }
-//
-//        let rows = try decoder.decode([SupabaseBackwordRow].self, from: data)
-//        return rows.first?.toBackwordWord
-//    }
-
     // MARK: - Archive
 
     func fetchArchive() async throws -> [BackwordWord] {
         try await apiClient.fetchArchive()
-    }
-//        let urlString = "\(baseURL)/rest/v1/backword_words?date=lte.\(today)&select=*&order=date.desc&limit=90"
-//        guard let url = URL(string: urlString) else { return [] }
-//
-//        var request = URLRequest(url: url)
-//        request.setValue(apiKey, forHTTPHeaderField: "apikey")
-//        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
-//        request.setValue("application/json", forHTTPHeaderField: "Accept")
-//
-//        let (data, response) = try await URLSession.shared.data(for: request)
-//        guard let httpResponse = response as? HTTPURLResponse,
-//              (200...299).contains(httpResponse.statusCode) else { return [] }
-//
-//        let rows = try decoder.decode([BackwordRow].self, from: data)
-//        return rows.map { $0.toBackwordWord }
-//    }
-}
-
-// MARK: - Supabase Response Model
-
-private struct SupabaseBackwordRow: Codable {
-    let id: String
-    let date: String
-    let wordData: PartialWordData
-
-    var toBackwordWord: BackwordWord {
-        BackwordWord(id: id, date: date, word: wordData.word, category: wordData.category, definition: wordData.definition)
-    }
-
-    struct PartialWordData: Codable {
-        let word: String
-        let category: String
-        let definition: String
     }
 }

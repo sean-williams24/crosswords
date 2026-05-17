@@ -11,12 +11,11 @@ final class SupabaseClient: SupabaseClientProtocol {
     static let shared = SupabaseClient()
     private let dateFormatting = DateFormatting()
     private let client: Supabase.SupabaseClient
+    private let baseURL = "https://cmvzqtpvzobdnnjpvyfi.supabase.co"
+    private let apiKey = "sb_publishable_Kj4RZqeTrOAXeOhRVdluVA_EFEOGveT"
 
     init() {
-        // Initialize the official client
-        let url = URL(string: "https://cmvzqtpvzobdnnjpvyfi.supabase.co")!
-        let key = "sb_publishable_Kj4RZqeTrOAXeOhRVdluVA_EFEOGveT"
-        self.client = Supabase.SupabaseClient(supabaseURL: url, supabaseKey: key)
+        self.client = Supabase.SupabaseClient(supabaseURL: URL(string: baseURL)!, supabaseKey: apiKey)
     }
 
     func fetchFromSupabase() async throws -> BackwordWord {
