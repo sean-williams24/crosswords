@@ -1,9 +1,41 @@
 import Foundation
 
 struct BackwordWord: Codable, Identifiable {
-    var id: String { date }
+    var id: String
     let date: String
     let word: String       // Always 6 uppercase letters
     let category: String   // e.g. "Animal", "Food", "Nature"
     let definition: String // Revealed as optional hint
+}
+
+// MARK: - Supabase Response Model
+
+// This represents the entire row in your Supabase table
+struct BackwordRow: Decodable {
+    let id: String
+    let date: String
+    let wordData: WordDataPayload
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case date
+        case wordData = "word_data"
+    }
+
+    var toBackwordWord: BackwordWord {
+        BackwordWord(
+            id: id,
+            date: date,
+            word: wordData.word,
+            category: wordData.category,
+            definition: wordData.definition
+        )
+    }
+}
+
+struct WordDataPayload: Decodable {
+    let word: String
+    let reject: Bool
+    let category: String
+    let definition: String
 }

@@ -6,6 +6,7 @@ struct BackwordView: View {
     @EnvironmentObject var adService: AdService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @State private var showInstructions = false
     @State private var showStats = false
@@ -24,7 +25,6 @@ struct BackwordView: View {
 
     var body: some View {
         ZStack {
-            // Hidden TextField — captures keyboard input; focused programmatically.
             TextField("", text: Binding(
                 get: { viewModel.currentInput },
                 set: { viewModel.onInputChange($0) }
@@ -34,8 +34,9 @@ struct BackwordView: View {
             .keyboardType(.asciiCapable)
             .focused($inputFocused)
             .onSubmit { viewModel.submitGuess() }
-            .opacity(0.001)
             .frame(width: 1, height: 1)
+            .opacity(0.001)
+            .allowsHitTesting(false)
 
             VStack(alignment: .center, spacing: 0) {
                 navBar
@@ -87,7 +88,10 @@ struct BackwordView: View {
         .navigationBarHidden(true)
         .onAppear {
             if !viewModel.isComplete {
-                inputFocused = true
+                Task {
+                    try? await Task.sleep(nanoseconds: 500_000_000)
+                    inputFocused = true
+                }
             }
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
@@ -139,8 +143,8 @@ struct BackwordView: View {
                         statsService.refresh()
                         showStats = true
                     } label: {
-                        Image(systemName: "chart.bar.fill")
-                            .font(.system(size: 17, weight: .semibold))
+                        Image(systemName: "brain.head.profile")
+                            .frame(width: 34)
                             .padding(.vertical, 8)
                             .foregroundColor(viewModel.statsIconColour)
                             .scaleEffect(pulses ? 0.7 : 1.3)
@@ -151,7 +155,7 @@ struct BackwordView: View {
                         showInstructions = true
                     } label: {
                         Image(systemName: "info.circle")
-                            .font(.system(size: 17, weight: .semibold))
+                            .frame(width: 34)
                             .foregroundColor(.appTextPrimary)
                             .padding(.vertical, 8)
                     }
@@ -160,6 +164,7 @@ struct BackwordView: View {
                     }
                 }
             }
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         }
     }
 
@@ -499,6 +504,7 @@ struct BackwordView: View {
 // MARK: - Previews
 
 private let previewWord = BackwordWord(
+    id: "",
     date: "2026-04-01",
     word: "CASTLE",
     category: "History",

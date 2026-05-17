@@ -21,6 +21,7 @@ struct HomeView: View {
     @State private var navigateToWeekly = false
     @State private var logoVisible = false
     @State private var proLogoVisible = false
+    @State private var showRatingDetails = false
     #if DEBUG
     @State private var showDebugSettings = false
     #endif
@@ -105,6 +106,11 @@ struct HomeView: View {
                 PaywallView()
                     .environmentObject(storeService)
             }
+            .sheet(isPresented: $showRatingDetails) {
+                RatingDetailSheet(rating: ratingService.rating, isPro: storeService.isProUser) {
+                    showRatingDetails = false
+                }
+            }
             #if DEBUG
             .sheet(isPresented: $showDebugSettings) {
                 DebugSettingsView(homeViewModel: viewModel)
@@ -175,16 +181,73 @@ struct HomeView: View {
                     }
                 }
             }
+            .alert("There was a problem loading the games, please check your network.", isPresented: $viewModel.crosswordsFetchDidFail) {
+                Button("OK", role: .cancel) { }
+                Button("Try again") {
+                    Task {
+                        await viewModel.loadTodaysPuzzle()
+                    }
+                }
+            }
+        }
+    }
+
+    private var dailyGamesView: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Daily Games")
+                .font(AppFont.header(16))
+                .padding(.top, 16)
+                .padding(.bottom, 6)
+                .padding(.horizontal, AppLayout.screenPadding)
+
+            TimelineView(.periodic(from: .now, by: 60)) { context in
+                if isAfterLocalMidnight(at: context.date) {
+                    Text(utcResetCountdown(at: context.date))
+                        .font(AppFont.caption())
+                        .foregroundColor(Color.appTextSecondary)
+                        .tracking(1)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 26)
+                        .padding(.horizontal, AppLayout.screenPadding)
+                } else {
+                    Text(DateFormatting().formattedDate)
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                        .tracking(1)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 26)
+                        .padding(.horizontal, AppLayout.screenPadding)
+                }
+            }
+
+            if sizeClass == .regular {
+                HStack(spacing: 45) {
+                    backwordCard
+                    DailyCrosswordCard(viewModel: viewModel)
+                }
+                .padding(.horizontal, 45)
+                .padding(.bottom, 60)
+            } else {
+                Group {
+                    backwordCard
+                        .shadow(color: .primary, radius: 2, x: 0, y: 1)
+                        .padding(.bottom, 20)
+
+                    DailyCrosswordCard(viewModel: viewModel)
+                }
+                .padding(.horizontal, AppLayout.screenPadding)
+            }
         }
     }
 
     @ViewBuilder
     private var weeklyGamesView: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             Text("Weekly Games")
                 .font(AppFont.header(16))
                 .padding(.top, isIpad ? 6 : 0)
                 .padding(.bottom, 6)
+                .padding(.horizontal, AppLayout.screenPadding)
 
             TimelineView(.periodic(from: .now, by: 60)) { context in
                 if isBeforeWeeklyResetUTC(at: context.date) {
@@ -210,66 +273,6 @@ struct HomeView: View {
             WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
                 .environmentObject(storeService)
         }
-    }
-
-    private var dailyGamesView: some View {
-        VStack(spacing: 0) {
-            Rectangle()
-                .frame(height: 1)
-            Text("Daily Games")
-                .font(AppFont.header(16))
-                .padding(.top, 16)
-                .padding(.bottom, 6)
-
-            TimelineView(.periodic(from: .now, by: 60)) { context in
-                if isAfterLocalMidnight(at: context.date) {
-                    Text(utcResetCountdown(at: context.date))
-                        .font(AppFont.caption())
-                        .foregroundColor(Color.appTextSecondary)
-                        .tracking(1)
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom, 26)
-                        .padding(.horizontal, AppLayout.screenPadding)
-                } else {
-                    Text(DateFormatting().formattedDate)
-                        .font(AppFont.caption())
-                        .foregroundColor(.appTextSecondary)
-                        .tracking(1)
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom, 26)
-                        .padding(.horizontal, AppLayout.screenPadding)
-                }
-            }
-
-            if sizeClass == .regular {
-                HStack(spacing: 45) {
-                    backwordCard
-                        .shadow(color: .primary, radius: .pi, x: 0.2, y: 0.2)
-                    DailyCrosswordCard(viewModel: viewModel)
-                }
-                .padding(.horizontal, 45)
-                .padding(.bottom, 60)
-            } else {
-                Group {
-                    backwordCard
-                        .shadow(color: .primary, radius: .pi, x: 0.2, y: 0.2)
-                    DailyCrosswordCard(viewModel: viewModel)
-                }
-                .padding(.horizontal, AppLayout.screenPadding)
-                .padding(.bottom, 20)
-            }
-
-            Rectangle()
-                .frame(height: 1)
-                .shadow(color: .primary, radius: .pi, x: 0.2, y: 0.6)
-        }
-//        .background {
-//            LinearGradient(
-//                colors: [Color.appGridLine.opacity(0.55), Color.appBackground],
-//                startPoint: .topLeading,
-//                endPoint: .bottomTrailing
-//            )
-//        }
     }
 
     @ViewBuilder
@@ -321,25 +324,9 @@ struct HomeView: View {
     @ViewBuilder
     private var archiveFooterBar: some View {
         VStack(spacing: 0) {
-            Button {
-                if storeService.isProUser {
-                    showArchive = true
-                } else {
-                    showPaywall = true
-                }
-            } label: {
-                HStack {
-                    Label("Archive", systemImage: "archivebox")
-                    if !storeService.isProUser {
-                        Image(systemName: "lock.fill")
-                            .font(.system(size: 12))
-                            .foregroundColor(.appAccent)
-                    }
-                }
-                .font(AppFont.clueLabel(14))
-                .foregroundColor(.appTextSecondary)
-                .frame(maxWidth: .infinity)
-                .padding(.top, 14)
+            HStack {
+                archiveButton
+                statsButton
             }
             .padding(.horizontal, AppLayout.screenPadding)
             .padding(.top, 8)
@@ -363,21 +350,49 @@ struct HomeView: View {
         }
     }
 
+    private var statsButton: some View {
+        Button {
+            showRatingDetails = true
+        } label: {
+            Label("Stats", systemImage: "brain.head.profilebrain.head.profile")
+                .font(AppFont.clueLabel(14))
+                .foregroundColor(.appTextSecondary)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 14)
+        }
+    }
+
+    private var archiveButton: some View {
+        Button {
+            if storeService.isProUser {
+                showArchive = true
+            } else {
+                showPaywall = true
+            }
+        } label: {
+            HStack {
+                Label("Archive", systemImage: "archivebox")
+                if !storeService.isProUser {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 12))
+                        .foregroundColor(.appAccent)
+                }
+            }
+            .font(AppFont.clueLabel(14))
+            .foregroundColor(.appTextSecondary)
+            .frame(maxWidth: .infinity)
+            .padding(.top, 14)
+        }
+    }
+
     @ViewBuilder
     private var backwordCard: some View {
-        if backwordService.todaysWord != nil {
-            NavigationLink(value: "backword") {
-                BackwordCard(
-                    word: backwordService.todaysWord,
-                    progress: backwordService.todaysWord.flatMap {
-                        BackwordProgress.load(date: $0.date)
-                    }
-                )
+        BackwordCard(
+            service: backwordService,
+            progress: backwordService.todaysWord.flatMap {
+                BackwordProgress.load(date: $0.date)
             }
-            .buttonStyle(.plain)
-        } else {
-            BackwordCard(word: nil, progress: nil)
-        }
+        )
     }
 
     private func animateLogo() {
@@ -396,6 +411,14 @@ struct HomeView: View {
 
     // MARK: - Word of the Day Card
 
+    private var chevronRight: some View {
+        HStack {
+            Spacer()
+            Image(systemName: "chevron.right")
+                .foregroundStyle(Color.primary)
+        }
+    }
+
     @ViewBuilder
     private var wotd: some View {
         Button {
@@ -404,23 +427,36 @@ struct HomeView: View {
             wotdCard()
         }
         .buttonStyle(.plain)
+        .disabled(wotdService.todaysWord == nil)
     }
 
     @ViewBuilder
     private func wotdCard() -> some View {
-        VStack(spacing: 6) {
-            Text("WORD OF THE DAY")
-                .font(AppFont.clueLabel(10))
-                .foregroundColor(.appTextSecondary)
-                .tracking(3)
+        ZStack {
+            chevronRight
 
-            if let word = wotdService.todaysWord {
-                Text(word.word)
-                    .font(AppFont.header(22))
-                    .foregroundColor(.appTextPrimary)
-            } else {
-                ProgressView()
-                    .frame(minHeight: 30)
+            HStack {
+                Spacer()
+                    .frame(width: 30)
+
+                VStack(spacing: 6) {
+                    Text("WORD OF THE DAY")
+                        .font(AppFont.clueLabel(10))
+                        .foregroundColor(.appTextSecondary)
+                        .tracking(3)
+                        .multilineTextAlignment(.center)
+
+                    if let word = wotdService.todaysWord {
+                        Text(word.word)
+                            .font(AppFont.header(22))
+                            .foregroundColor(.appTextPrimary)
+                    } else {
+                        ProgressView()
+                            .frame(minHeight: 30)
+                    }
+                }
+                Spacer()
+                    .frame(width: 30)
             }
         }
         .padding(.horizontal, 24)
