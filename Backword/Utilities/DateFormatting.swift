@@ -22,6 +22,6 @@ final class DateFormatting {
     var formattedDate: String {
         let fmt = DateFormatter()
         fmt.dateFormat = "EEEE, MMMM d"
-        return fmt.string(from: Date()).uppercased()
+        return fmt.string(from: Date()).capitalized
     }
 }

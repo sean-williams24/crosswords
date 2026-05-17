@@ -36,6 +36,7 @@ struct PuzzleView: View {
 
             toolbarButtons
                 .opacity(viewModel.isZenMode ? 0.2 : 1.0)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         }
         .padding(.horizontal, AppLayout.screenPadding)
         .padding(.top, 4)
@@ -286,8 +287,8 @@ struct PuzzleView: View {
         Button {
             showCrosswordStats = true
         } label: {
-            Image(systemName: "chart.bar.fill")
-                .frame(width: 44)
+            Image(systemName: "brain.head.profile")
+                .frame(width: 34)
                 .foregroundColor(.appTextPrimary)
         }
 
@@ -295,7 +296,7 @@ struct PuzzleView: View {
             viewModel.showClueList = true
         } label: {
             Image(systemName: "list.bullet")
-                .frame(width: 44)
+                .frame(width: 34)
                 .foregroundColor(.appTextPrimary)
         }
 

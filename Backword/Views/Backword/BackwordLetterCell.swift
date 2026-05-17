@@ -39,7 +39,7 @@ struct BackwordLetterCell: View {
             }
         }
         .frame(width: size, height: size)
-        .onChange(of: isNew) { newValue in
+        .onChange(of: isNew) { _, newValue in
             guard newValue else { return }
             flashed = true
             Task {

@@ -7,12 +7,20 @@ final class HomeViewModel: ObservableObject {
     @Published var weeklyPuzzle: Puzzle?
     @Published var weeklyProgress: UserProgress?
     @Published var isLoading = true
-    @Published var errorMessage: String?
-
+    @Published var crosswordsFetchDidFail: Bool = false
+    var isFetching = false
     private let puzzleService: PuzzleService
     #if DEBUG
     var previewMode = false
     #endif
+
+    enum State {
+        case loading
+        case success
+        case failed
+    }
+
+    @Published var state: State = .loading
 
     init(puzzleService: PuzzleService) {
         self.puzzleService = puzzleService
@@ -27,6 +35,7 @@ final class HomeViewModel: ObservableObject {
         let weeklyStale = isProUser && weeklyPuzzleIsStale()
 
         if dailyStale || weeklyStale {
+            guard !isFetching else { return }
             await loadTodaysPuzzle()
         } else {
             // Puzzle is still current — just refresh progress from disk in case
@@ -56,30 +65,23 @@ final class HomeViewModel: ObservableObject {
     }
 
     func loadTodaysPuzzle() async {
-        isLoading = true
-        errorMessage = nil
-
+        state = .loading
         do {
+            isFetching = true
             let puzzle = try await puzzleService.fetchTodaysPuzzle()
             todaysPuzzle = puzzle
             todaysProgress = UserProgress.load(puzzleId: puzzle.id)
-        } catch {
-            // Fall back to sample puzzle for development
-            todaysPuzzle = .sample
-            todaysProgress = UserProgress.load(puzzleId: Puzzle.sample.id)
-            errorMessage = nil // Suppress error when using sample
-        }
-
-        // Load weekly puzzle (silently fail if none available)
-        do {
             let weekly = try await puzzleService.fetchCurrentWeeklyPuzzle()
             weeklyPuzzle = weekly
             weeklyProgress = UserProgress.load(puzzleId: weekly.id)
+            state = .success
         } catch {
-            // No weekly puzzle available yet — that's fine
+            todaysPuzzle = nil
+            weeklyPuzzle = nil
+            crosswordsFetchDidFail = true
+            state = .failed
         }
-
-        isLoading = false
+        isFetching = false
     }
 
     var dailyCrosswordScore: Int? {
@@ -109,8 +111,8 @@ final class HomeViewModel: ObservableObject {
 
         var label: String {
             switch self {
-            case .new: return "New"
-            case .inProgress: return "In Progress"
+            case .new: return "NEW"
+            case .inProgress: return "In Progress..."
             case .completed(let time): return "Completed in \(time)"
             }
         }

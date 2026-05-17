@@ -347,7 +347,7 @@ struct CrosswordStatsView: View {
     
     private var emptyState: some View {
         VStack(spacing: 16) {
-            Image(systemName: "chart.bar")
+            Image(systemName: "brain.head.profile")
                 .font(.system(size: 48))
                 .foregroundColor(.appTextSecondary.opacity(0.4))
             Text("No puzzles solved yet")

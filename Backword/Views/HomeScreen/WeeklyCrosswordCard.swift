@@ -17,18 +17,35 @@ struct WeeklyCrosswordCard: View {
     }
 
     var body: some View {
-        if isProUser {
-            NavigationLink(value: "weekly") {
-                content
+        switch viewModel.state {
+        case .failed:
+            failedButton
+        case .loading:
+            content
+        case .success:
+            if isProUser {
+                NavigationLink(value: "weekly") {
+                    content
+                }
+                .buttonStyle(.plain)
+            } else {
+                Button {
+                    showPaywall = true
+                } label: {
+                    content
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
-        } else {
-            Button {
-                showPaywall = true
-            } label: {
-                content
+        }
+    }
+
+    private var failedButton: some View {
+        Button {
+            Task {
+                await viewModel.loadTodaysPuzzle()
             }
-            .buttonStyle(.plain)
+        } label: {
+            content
         }
     }
 
@@ -39,22 +56,34 @@ struct WeeklyCrosswordCard: View {
                 verticalTitleContent
             }
 
-            if viewModel.isLoading && viewModel.weeklyPuzzle == nil {
+            Text("13×13")
+                .font(AppFont.caption())
+                .foregroundColor(.appTextSecondary)
+
+            if viewModel.state == .loading {
                 ProgressView()
             } else {
-                Text("13×13")
-                    .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
-
                 if isProUser {
-                    HStack(spacing: 6) {
-                        Image(systemName: viewModel.weeklyPuzzleStatus.icon)
-                            .font(.system(size: iconSize))
-                            .foregroundColor(viewModel.weeklyPuzzleStatus.color)
-                            .font(.system(size: 13))
-                        Text(viewModel.weeklyPuzzleStatus.label)
+                    if viewModel.weeklyPuzzle == nil {
+                        Text("Failed to fetch today's crossword.\nTap here to try again.")
                             .font(AppFont.caption())
                             .foregroundColor(.appTextSecondary)
+                    } else {
+//                        HStack(spacing: 6) {
+//                            Image(systemName: viewModel.weeklyPuzzleStatus.icon)
+//                                .font(.system(size: iconSize))
+//                                .foregroundColor(viewModel.weeklyPuzzleStatus.color)
+//                                .font(.system(size: 13))
+                            Text(viewModel.weeklyPuzzleStatus.label)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 8)
+                            .font(AppFont.statNumber(10))
+                            .foregroundStyle(viewModel.puzzleStatus.color)
+                            .background(content: {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .shadow(radius: 2)
+                            })
+//                        }
                     }
                 } else {
                     HStack(spacing: 6) {

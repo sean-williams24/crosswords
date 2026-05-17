@@ -45,7 +45,9 @@
 		86E5BFFE2FA2BECA00A42156 /* Outfit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */; };
 		86E5C00A2FA9211200A42156 /* WeeklyCrosswordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */; };
 		86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */; };
+		86F02E462FB9BE220083B752 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 86F02E452FB9BE220083B752 /* Supabase */; };
 		86FAA14F2FB4F8C00022EFF6 /* CustomKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FAA14E2FB4F8C00022EFF6 /* CustomKeyboardView.swift */; };
+		86FAA1592FB9B9150022EFF6 /* SupabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FAA1582FB9B9150022EFF6 /* SupabaseClient.swift */; };
 		87051E8136E314CB2A272A91 /* BackwordLetterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2259B66045D006E89462572C /* BackwordLetterCell.swift */; };
 		8EF7F8087FF836F1BFC62151 /* HapticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */; };
 		8F92754416251062C7FCA46E /* CrosswordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922354966A899721DF1CF25C /* CrosswordStatsView.swift */; };
@@ -128,6 +130,7 @@
 		86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCrosswordCard.swift; sourceTree = "<group>"; };
 		86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordCard.swift; sourceTree = "<group>"; };
 		86FAA14E2FB4F8C00022EFF6 /* CustomKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomKeyboardView.swift; sourceTree = "<group>"; };
+		86FAA1582FB9B9150022EFF6 /* SupabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseClient.swift; sourceTree = "<group>"; };
 		8820C57EC2BCBADADEC4006C /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		894071960CD50EDF948DA15E /* BackwordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordApp.swift; sourceTree = "<group>"; };
 		8AF93C5B6979DA0324E913C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -187,6 +190,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86F02E462FB9BE220083B752 /* Supabase in Frameworks */,
 				FC2E739DC6045316AD55D0F4 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -233,6 +237,7 @@
 			children = (
 				30C31A4805F0514D4233C775 /* AdService.swift */,
 				A476BC6A4DF0107699E2A1FD /* BackwordService.swift */,
+				86FAA1582FB9B9150022EFF6 /* SupabaseClient.swift */,
 				869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */,
 				D15EB4D0D354246894E51C7E /* CacheService.swift */,
 				9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */,
@@ -289,6 +294,13 @@
 			path = HomeScreen;
 			sourceTree = "<group>";
 		};
+		86F02E442FB9BE220083B752 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		86FAA1472FB27DFB0022EFF6 /* Crosswords */ = {
 			isa = PBXGroup;
 			children = (
@@ -339,6 +351,7 @@
 			children = (
 				C706B4704F6EC022F822EB56 /* Backword */,
 				00EC67C42E7E2A26C6A44CB3 /* BackwordTests */,
+				86F02E442FB9BE220083B752 /* Frameworks */,
 				0CBB88961DE1D6BD2C28D2DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -408,6 +421,7 @@
 			name = Backword;
 			packageProductDependencies = (
 				9919F8A6B05C3D85B7C8E63E /* GoogleMobileAds */,
+				86F02E452FB9BE220083B752 /* Supabase */,
 			);
 			productName = Backword;
 			productReference = 038A68C6C4BF20D72379BD11 /* Backword.app */;
@@ -449,6 +463,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				92AE2339B0D3055DBBC232EC /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				86FAA15A2FB9BA750022EFF6 /* XCRemoteSwiftPackageReference "supabase-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0CBB88961DE1D6BD2C28D2DF /* Products */;
@@ -504,6 +519,7 @@
 				86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */,
 				E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */,
 				869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */,
+				86FAA1592FB9B9150022EFF6 /* SupabaseClient.swift in Sources */,
 				CF96B7A7D6669B73DBA8125E /* BackwordCard.swift in Sources */,
 				7D3636249D4EA1ACE0D6916C /* BackwordGuessRow.swift in Sources */,
 				87051E8136E314CB2A272A91 /* BackwordLetterCell.swift in Sources */,
@@ -801,6 +817,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		86FAA15A2FB9BA750022EFF6 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase-community/supabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
 		92AE2339B0D3055DBBC232EC /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
@@ -812,6 +836,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		86F02E452FB9BE220083B752 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 86FAA15A2FB9BA750022EFF6 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
 		9919F8A6B05C3D85B7C8E63E /* GoogleMobileAds */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 92AE2339B0D3055DBBC232EC /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;

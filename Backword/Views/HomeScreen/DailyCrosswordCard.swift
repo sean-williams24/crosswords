@@ -17,14 +17,27 @@ struct DailyCrosswordCard: View {
     private var isIpad: Bool {
         sizeClass == .regular
     }
-    
+
     var body: some View {
-        if viewModel.todaysPuzzle != nil {
+        switch viewModel.state {
+        case .failed:
+            failedButton
+        case .loading:
+            content
+        case .success:
             NavigationLink(value: "puzzle") {
                 content
             }
             .buttonStyle(.plain)
-        } else {
+        }
+    }
+
+    private var failedButton: some View {
+        Button {
+            Task {
+                await viewModel.loadTodaysPuzzle()
+            }
+        } label: {
             content
         }
     }
@@ -38,6 +51,10 @@ struct DailyCrosswordCard: View {
                     .tracking(3)
                     .multilineTextAlignment(.center)
 
+                Text("9×9")
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+
                 if let score = viewModel.dailyCrosswordScore {
                     HStack(spacing: 4) {
                         Text("\(score)")
@@ -48,18 +65,28 @@ struct DailyCrosswordCard: View {
                             .foregroundColor(.appTextSecondary)
                     }
                 }
-                if viewModel.isLoading {
+                if viewModel.state == .loading {
                     ProgressView()
+                } else if viewModel.todaysPuzzle == nil {
+                    Text("Failed to fetch today's crossword.\nTap here to try again.")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
                 } else {
-                    HStack(spacing: 6) {
-                        Image(systemName: viewModel.puzzleStatus.icon)
-                            .font(.system(size: iconSize))
-                            .foregroundColor(viewModel.puzzleStatus.color)
-                            .font(.system(size: 13))
+//                    HStack(spacing: 6) {
+//                        Image(systemName: viewModel.puzzleStatus.icon)
+//                            .font(.system(size: iconSize))
+//                            .foregroundColor(viewModel.puzzleStatus.color)
+//                            .font(.system(size: 13))
                         Text(viewModel.puzzleStatus.label)
-                            .font(AppFont.caption())
-                            .foregroundColor(.appTextSecondary)
-                    }
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 8)
+                            .font(AppFont.statNumber(10))
+                            .foregroundStyle(viewModel.puzzleStatus.color)
+                            .background(content: {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .shadow(radius: 2)
+                            })
+//                    }
                 }
             }
             .padding(.vertical, 24)
