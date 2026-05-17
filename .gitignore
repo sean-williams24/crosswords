@@ -35,5 +35,9 @@ Backend/supabase/*
 DerivedData/
 build/
 
+# Exclude Xcode workspace settings (user and shared)
+Backword.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+Backword.xcodeproj/project.xcworkspace/xcuserdata/*/WorkspaceSettings.xcsettings
+
 # macOS
 .DS_Store
