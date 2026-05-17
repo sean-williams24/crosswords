@@ -3,29 +3,42 @@ import SwiftUI
 struct WOTDDetailView: View {
     let word: WordOfTheDay
     @Environment(\.dismiss) private var dismiss
+    @ScaledMetric private var iconSize: CGFloat = 12
+
+    private var pronunciationView: some View {
+        Text(word.pronunciation)
+            .font(AppFont.clueText(15))
+            .foregroundColor(.appAccent)
+    }
+
+    private var partOfSpeechView: some View {
+        Text(word.partOfSpeech.capitalized)
+            .font(AppFont.clueText(15))
+            .italic()
+            .foregroundColor(.appTextSecondary)
+    }
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    // Word header
                     VStack(alignment: .leading, spacing: 6) {
                         Text(word.word)
                             .font(AppFont.header(32))
                             .foregroundColor(.appTextPrimary)
 
-                        HStack(spacing: 8) {
-                            Text(word.pronunciation)
-                                .font(AppFont.clueText(15))
-                                .foregroundColor(.appAccent)
+                        ViewThatFits {
+                            HStack(spacing: 8) {
+                                pronunciationView
+                                Text("•")
+                                    .foregroundColor(.appTextSecondary)
+                                partOfSpeechView
+                            }
 
-                            Text("•")
-                                .foregroundColor(.appTextSecondary)
-
-                            Text(word.partOfSpeech)
-                                .font(AppFont.clueText(15))
-                                .italic()
-                                .foregroundColor(.appTextSecondary)
+                            VStack(alignment: .leading) {
+                                pronunciationView
+                                partOfSpeechView
+                            }
                         }
                     }
 
@@ -89,9 +102,9 @@ struct WOTDDetailView: View {
 
                     // Part of speech explainer
                     if let explainer = partOfSpeechExplainer(word.partOfSpeech) {
-                        HStack(spacing: 8) {
+                        HStack(spacing: iconSize) {
                             Image(systemName: "info.circle")
-                                .font(.system(size: 12))
+                                .font(.system(size: iconSize))
                                 .foregroundColor(.appTextSecondary)
 
                             Text(explainer)
@@ -208,7 +221,7 @@ struct FlowLayout: Layout {
     WOTDDetailView(word: WordOfTheDay(
         word: "Petrichor",
         pronunciation: "PET-ri-kor",
-        partOfSpeech: "noun",
+        partOfSpeech: "adjective",
         definition: "The pleasant, earthy smell produced when rain falls on dry soil.",
         etymology: "Coined in 1964 from Greek 'petra' (stone) and 'ichor' (the fluid that flows in the veins of the gods).",
         synonyms: ["earth scent", "rain smell"],
