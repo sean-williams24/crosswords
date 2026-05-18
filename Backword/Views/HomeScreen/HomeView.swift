@@ -358,18 +358,11 @@ struct HomeView: View {
                 showPaywall = true
             }
         } label: {
-            HStack {
-                Label("Archive", systemImage: "archivebox")
-                if !storeService.isProUser {
-                    Image(systemName: "lock.fill")
-                        .font(.system(size: 12))
-                        .foregroundColor(.appAccent)
-                }
-            }
-            .font(AppFont.clueLabel(16))
-            .foregroundColor(.appTextSecondary)
-            .frame(maxWidth: .infinity)
-            .padding(.top, 14)
+            Label("Archive", systemImage: storeService.isProUser ? "archivebox" : "lock.fill")
+                .font(AppFont.clueLabel(16))
+                .foregroundColor(.appTextSecondary)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 14)
         }
     }
 

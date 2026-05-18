@@ -1,12 +1,19 @@
 import SwiftUI
 
 struct RatingDetailSheet: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @State private var animates = false
+    @State private var showHowItWorks = false
+    @ScaledMetric private var columnWidth: CGFloat = 60
+    @ScaledMetric private var scrollingColumnWidth: CGFloat = 70
+    @ScaledMetric private var totalColumnWidth: CGFloat = 30
+    @ScaledMetric private var dateColumnWidth: CGFloat = 80
+    @ScaledMetric private var dailyColumnWidth: CGFloat = 60
+    @ScaledMetric private var chipSize: CGFloat = 24
+
     let rating: OverallRating
     let isPro: Bool
     var onDismiss: (() -> Void)? = nil
-
-    @State private var animates = false
-    @State private var showHowItWorks = false
 
     private var tier: RatingTier { rating.tier(isPro: isPro) }
     private var fraction: Double { rating.fraction(isPro: isPro) }
@@ -35,10 +42,11 @@ struct RatingDetailSheet: View {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 28) {
                         tierHero
+                            .padding(.horizontal, AppLayout.screenPadding)
                         howItWorksSection
+                            .padding(.horizontal, AppLayout.screenPadding)
                         breakdownSection
                     }
-                    .padding(.horizontal, AppLayout.screenPadding)
                     .padding(.top, 8)
                     .padding(.bottom, 40)
                 }
@@ -154,56 +162,114 @@ struct RatingDetailSheet: View {
 
     // MARK: - Day-by-Day Breakdown
 
-    private var breakdownSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("LAST 14 DAYS")
-                .font(AppFont.clueLabel(12))
-                .foregroundColor(.appAccent)
-                .tracking(2)
+    private var breakdownTitle: some View {
+        Text("LAST 14 DAYS")
+            .font(AppFont.clueLabel(12))
+            .foregroundColor(.appAccent)
+            .tracking(2)
+            .padding(.leading, AppLayout.screenPadding)
+    }
 
-            VStack(spacing: 0) {
-                    // Header row
-                    HStack(spacing: 0) {
-                        Text("Date")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        Text("Daily")
-                            .frame(width: 44, alignment: .center)
-                        if isPro {
-                            Text("Weekly")
-                                .frame(width: 52, alignment: .center)
-                        }
-                        Text("Backword")
-                            .frame(width: 66, alignment: .center)
-                        Text("Total")
-                            .frame(width: 44, alignment: .trailing)
-                    }
-                    .font(AppFont.clueLabel(10))
-                    .foregroundColor(.appTextSecondary)
-                    .tracking(1)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .padding(.top, 8)
-
-                    Divider().background(Color.appGridLine)
-
-                    ForEach(Array(recentDays.enumerated()), id: \.element.date) { idx, day in
-                        breakdownRow(day: day)
-
-                        if idx < recentDays.count - 1 {
-                            Divider().background(Color.appGridLine.opacity(0.5))
-                        }
-                    }
-                }
-                .background(Color.appSurface)
-                .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
-                .overlay(
-                    RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                        .strokeBorder(Color.appAccent.opacity(0.15), lineWidth: 1)
-                )
+    private var verticalTitle: some View {
+        VStack(alignment: .leading) {
+            breakdownTitle
+            HStack {
+                Spacer()
+                scrollLabel
+            }
         }
     }
 
-    private func breakdownRow(day: DailyScore) -> some View {
+    private var horizontalTitle: some View {
+        HStack(spacing: 0){
+            breakdownTitle
+            Spacer()
+            scrollLabel
+        }
+    }
+
+    @ViewBuilder
+    private var scrollLabel: some View {
+        Text("Scroll")
+            .font(AppFont.clueLabel(8))
+            .offset(x: 14)
+        Image(systemName: "arrow.right")
+            .font(AppFont.clueLabel(10))
+            .padding(.horizontal, AppLayout.screenPadding)
+    }
+
+    private var breakdownSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if useHorizontalScroll {
+                ViewThatFits {
+                    horizontalTitle
+                    verticalTitle
+                }
+            } else {
+                breakdownTitle
+            }
+
+            Group {
+                if useHorizontalScroll {
+                    ScrollView(.horizontal, showsIndicators: true) {
+                        tableViewContent(isScrolling: true)
+                            .frame(minWidth: isPro ? 420 : 380)
+                    }
+                } else {
+                    tableViewContent(isScrolling: false)
+                }
+            }
+            .background(Color.appSurface)
+        }
+    }
+
+    @ViewBuilder
+    private func tableViewContent(isScrolling: Bool) -> some View {
+        VStack(alignment: .center, spacing: 0) {
+            HStack(alignment: .center, spacing: 0) {
+                Text("Date")
+                    .frame(maxWidth: isScrolling ? .none : .infinity, alignment: .leading)
+                    .frame(width: isScrolling ? dateColumnWidth : .none, alignment: .leading)
+
+                Text("Daily")
+                    .frame(width: isScrolling ? dailyColumnWidth : columnWidth, alignment: .center)
+
+                if isPro {
+                    Text("Weekly")
+                        .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
+                }
+
+                Text("Backword")
+                    .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
+
+                Text("Total")
+                    .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
+
+            }
+            .font(AppFont.clueLabel(10))
+            .foregroundColor(.appTextSecondary)
+            .tracking(1)
+            .padding(.leading, 14)
+            .padding(.vertical, 8)
+            .padding(.top, 8)
+
+            Divider().background(Color.appGridLine)
+
+            ForEach(Array(recentDays.enumerated()), id: \.element.date) { idx, day in
+                breakdownRow(day: day, isScrolling: isScrolling)
+
+                if idx < recentDays.count - 1 {
+                    Divider().background(Color.appGridLine.opacity(0.5))
+                }
+            }
+        }
+    }
+
+    private var useHorizontalScroll: Bool {
+        dynamicTypeSize >= (isPro ? .xLarge : .xxLarge)
+    }
+
+    private func breakdownRow(day: DailyScore, isScrolling: Bool) -> some View {
         let weeklyScore = isPro ? (day.weeklyCrossword ?? 0) : 0
         let total = day.dailyCrossword + weeklyScore + day.backword
         let isToday = day.date == Self.localDateFormatter.string(from: Date())
@@ -215,6 +281,7 @@ struct RatingDetailSheet: View {
                 Text(formattedDate(day.date))
                     .font(AppFont.body(13))
                     .foregroundColor(isToday ? .appAccent : .appTextPrimary)
+
                 if isToday {
                     Text("TODAY")
                         .font(AppFont.clueLabel(9))
@@ -227,33 +294,33 @@ struct RatingDetailSheet: View {
                         .tracking(1)
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: isScrolling ? .none : .infinity, alignment: .leading)
+            .frame(width: isScrolling ? dateColumnWidth : .none, alignment: .leading)
 
             scoreChip(day.dailyCrossword)
-                .frame(width: 44, alignment: .center)
+                .frame(width: isScrolling ? dailyColumnWidth : columnWidth, alignment: .center)
 
             if isPro {
                 if hasWeekly {
                     scoreChip(day.weeklyCrossword ?? 0)
-                        .frame(width: 52, alignment: .center)
+                        .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
                 } else {
                     Text("—")
                         .font(AppFont.clueLabel(12))
                         .foregroundColor(.appTextSecondary.opacity(0.3))
-                        .frame(width: 52, alignment: .center)
+                        .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
                 }
             }
 
             scoreChip(day.backword)
-                .frame(width: 66, alignment: .center)
+                .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
 
             Text("\(total)")
                 .font(AppFont.clueLabel(13))
                 .foregroundColor(total > 0 ? .appTextPrimary : .appTextSecondary.opacity(0.4))
-                .frame(width: 44, alignment: .trailing)
-                .offset(x: -11)
+                .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
         }
-        .padding(.horizontal, 14)
+        .padding(.leading, 14)
         .padding(.vertical, 10)
     }
 
@@ -262,7 +329,7 @@ struct RatingDetailSheet: View {
         return Text("\(score)")
             .font(AppFont.clueLabel(12))
             .foregroundColor(score > 0 ? .white : .appTextSecondary.opacity(0.4))
-            .frame(width: 24, height: 24)
+            .frame(width: chipSize, height: chipSize)
             .background(color)
             .clipShape(RoundedRectangle(cornerRadius: 6))
     }
