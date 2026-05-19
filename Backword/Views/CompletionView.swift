@@ -6,6 +6,7 @@ struct CompletionView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
     @State private var showContent = false
     @State private var hasShownAd = false
@@ -33,27 +34,31 @@ struct CompletionView: View {
                 .opacity(showContent ? 1.0 : 0.0)
 
                 // Stats card
-                HStack(spacing: 24) {
-                    statItem(
-                        value: viewModel.progress.formattedTime,
-                        label: "TIME"
-                    )
-                    statDivider
-                    statItem(
-                        value: "\(viewModel.progress.hintsUsed)",
-                        label: "HINTS"
-                    )
-                    statDivider
-                    statItem(
-                        value: "\(max(0, 5 - viewModel.progress.hintsUsed / 3))/5",
-                        label: "SCORE"
-                    )
-                    statDivider
-                    statItem(
-                        value: "\(statsService.stats.currentStreak)",
-                        label: "STREAK"
-                    )
+                VStack {
+                    HStack(spacing: 24) {
+                        statItem(
+                            value: viewModel.progress.formattedTime,
+                            label: "TIME"
+                        )
+                        statDivider
+                        statItem(
+                            value: "\(viewModel.progress.hintsUsed)",
+                            label: "HINTS"
+                        )
+                    }
+                    HStack(spacing: 24) {
+                        statItem(
+                            value: "\(max(0, 5 - viewModel.progress.hintsUsed / 3))/5",
+                            label: "SCORE"
+                        )
+                        statDivider
+                        statItem(
+                            value: "\(statsService.stats.currentStreak)",
+                            label: "STREAK"
+                        )
+                    }
                 }
+                .frame(maxWidth: .infinity)
                 .padding(.horizontal, 32)
                 .padding(.vertical, 20)
                 .background(Color.appSurface)
@@ -61,20 +66,21 @@ struct CompletionView: View {
                 .padding(.horizontal, AppLayout.screenPadding)
                 .opacity(showContent ? 1.0 : 0.0)
                 .offset(y: showContent ? 0 : 20)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility2)
 
                 Spacer()
 
                 // Action buttons
                 VStack(spacing: 12) {
-                    ShareLink(item: shareText) {
-                        Label("Share Result", systemImage: "square.and.arrow.up")
-                            .font(AppFont.body())
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(Color.appAccent)
-                            .cornerRadius(AppLayout.cardCornerRadius)
-                    }
+//                    ShareLink(item: shareText) {
+//                        Label("Share Result", systemImage: "square.and.arrow.up")
+//                            .font(AppFont.body())
+//                            .foregroundColor(.white)
+//                            .frame(maxWidth: .infinity)
+//                            .padding(.vertical, 14)
+//                            .background(Color.appAccent)
+//                            .cornerRadius(AppLayout.cardCornerRadius)
+//                    }
 
                     Button {
                         dismiss()
@@ -127,6 +133,7 @@ struct CompletionView: View {
                 .foregroundColor(.appTextSecondary)
                 .tracking(2)
         }
+        .frame(maxWidth: .infinity)
     }
 
     private var statDivider: some View {
@@ -150,4 +157,11 @@ struct CompletionView: View {
         else { text += " | 💡 \(hints) hint\(hints == 1 ? "" : "s")" }
         return text
     }
+}
+
+#Preview {
+    CompletionView(viewModel: GameViewModel(puzzle: .sample))
+        .environmentObject(StatsService())
+        .environmentObject(StoreService())
+        .environmentObject(AdService())
 }

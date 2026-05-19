@@ -451,7 +451,7 @@ struct BackwordView: View {
             .background(Color.appSurface)
             .cornerRadius(AppLayout.cardCornerRadius)
 
-            shareButton
+//            shareButton
         }
         .onAppear {
             if selectedFailureMessage.isEmpty {

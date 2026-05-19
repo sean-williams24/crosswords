@@ -374,10 +374,15 @@ struct RatingDetailSheet: View {
                         ]
                     )
 
+                    Text("- 1 point deducted for every 3 hints used")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                        .padding(.leading, 28)
+
                     Divider().background(Color.appGridLine.opacity(0.5))
 
                     scoringRule(
-                        icon: "textformat.abc",
+                        icon: "backward.circle",
                         title: "Backword",
                         rows: [
                             ("Win in 1 guess", "5 pts"),
@@ -401,7 +406,7 @@ struct RatingDetailSheet: View {
                                 .font(AppFont.clueLabel(13))
                                 .foregroundColor(.appTextPrimary)
                         }
-                        Text("Your rating reflects only the last 14 days. Skip a day and it scores 0, so play every day to keep your rating high!")
+                        Text("Your rating reflects only the last 14 days. Skip a day and it scores 0, so play every day to keep your rating up.")
                             .font(AppFont.caption())
                             .foregroundColor(.appTextSecondary)
                             .padding(.leading, 28)
