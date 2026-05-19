@@ -45,6 +45,11 @@ struct CompletionView: View {
                     )
                     statDivider
                     statItem(
+                        value: "\(max(0, 5 - viewModel.progress.hintsUsed / 3))/5",
+                        label: "SCORE"
+                    )
+                    statDivider
+                    statItem(
                         value: "\(statsService.stats.currentStreak)",
                         label: "STREAK"
                     )

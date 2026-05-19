@@ -46,6 +46,7 @@ struct CrosswordStatsView: View {
             }
         }
         .onAppear {
+            ratingService.refresh()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
                     animates = true

@@ -5,6 +5,10 @@ struct PaywallView: View {
     @EnvironmentObject var storeService: StoreService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    @ScaledMetric private var proLogoFrame: CGFloat = 48
+    @ScaledMetric private var proLogoOffset: CGFloat = 34
+    @ScaledMetric private var proLogoVStackSpacing: CGFloat = -29
+
     @State private var selectedPlan: Plan = .annual
     @State private var isBreathing = false
     @State private var errorMessage: String?
@@ -19,16 +23,16 @@ struct PaywallView: View {
                 VStack(spacing: 0) {
                     // Black hero extends behind the top of the sheet
                     ZStack {
-                        VStack(spacing: -30) {
+                        VStack(spacing: proLogoVStackSpacing) {
                             BackwordLogo(frame: 78, forceDark: true)
                                 .offset(x: logoVisible ? 0 : 120)
                                 .opacity(logoVisible ? 1 : 0)
 
                             Image("Pro")
                                 .resizable()
-                                .scaledToFit()
-                                .frame(height: 48)
-                                .offset(x: 36)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: proLogoFrame)
+                                .offset(x: proLogoOffset)
                                 .opacity(proLogoVisible ? 1 : 0)
                                 .scaleEffect(isBreathing ? 1.09 : 1.0)
                         }

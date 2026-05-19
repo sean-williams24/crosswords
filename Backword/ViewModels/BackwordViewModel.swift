@@ -220,8 +220,7 @@ final class BackwordViewModel: ObservableObject {
     private var invalidWords: Set<String> = [
         "Not a valid word",
         "Real words only",
-        "Invalid word",
-        "Made up words are n/a"
+        "Invalid word"
     ]
 
     private func triggerInvalidWord() {

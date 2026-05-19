@@ -12,6 +12,7 @@ struct HomeView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    @ScaledMetric var proLogoFrame: CGFloat = 18
 
     @State private var showArchive = false
     @State private var showPaywall = false
@@ -262,20 +263,22 @@ struct HomeView: View {
         }
     }
 
+    @ScaledMetric var navBarVStackSpacing: CGFloat = -12
+    @ScaledMetric var navBarProLogoOffset: CGFloat = 20
+
     @ViewBuilder
     private var navigationBar: some View {
         ZStack(alignment: .center) {
-            VStack(spacing: -17) {
+            VStack(spacing: navBarVStackSpacing) {
                 BackwordLogo()
                     .offset(x: logoVisible ? 0 : 120)
                     .opacity(logoVisible ? 1 : 0)
                 if storeService.isProUser {
                     Image("Pro")
                         .resizable()
-                        .scaledToFit()
-                        .frame(height: 28)
-                        .offset(x: 20)
-                        .opacity(proLogoVisible ? 1 : 0)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: proLogoFrame)
+                        .offset(x: navBarProLogoOffset)
                 }
             }
             .frame(maxWidth: .infinity)

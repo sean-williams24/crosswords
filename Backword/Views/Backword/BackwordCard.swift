@@ -130,10 +130,10 @@ struct BackwordCard: View {
 
     @ViewBuilder
     private func completionContent(progress: BackwordProgress) -> some View {
-        HStack(spacing: 8) {
-            Image(systemName: progress.wonFlag ? "checkmark.circle.fill" : "xmark.circle.fill")
-                .foregroundColor(progress.wonFlag ? .appCorrect : .red.opacity(0.7))
-                .font(.system(size: 16))
+        VStack(spacing: 8) {
+            if progress.isFailed {
+                guessCounter
+            }
 
             Text(progress.wonFlag
                  ? "Completed in \(progress.guesses.count) guess\(progress.guesses.count == 1 ? "" : "es")"
@@ -147,16 +147,48 @@ struct BackwordCard: View {
     }
 }
 
-#Preview {
-    VStack {
-        BackwordCard(
-            service: BackwordService(),
-            progress: nil
-        )
-
-        BackwordCard(
-            service: BackwordService(),
-            progress: nil
-        )
+private var guessCounter: some View {
+    HStack(spacing: 6) {
+        ForEach(0..<5, id: \.self) { i in
+            RoundedRectangle(cornerRadius: 3)
+                .fill(.red)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 3)
+                        .strokeBorder(
+                            Color.appGridLine,
+                            lineWidth: 1
+                        )
+                )
+                .frame(width: 36, height: 10)
+        }
     }
+}
+
+#Preview("Won") {
+    var progress = BackwordProgress(date: "")
+    progress.guesses = ["BRIDGX", "FXASXE", "CASTLE"]
+    progress.wonFlag = true
+    progress.completedAt = Date()
+    return BackwordCard(
+        service: BackwordService(),
+        progress: progress
+    )
+}
+
+#Preview("Failed") {
+    var progress = BackwordProgress(date: "")
+    progress.guesses = ["BRIDGX", "FXASXE", "CASTLE"]
+    progress.wonFlag = false
+    progress.completedAt = Date()
+    return BackwordCard(
+        service: BackwordService(),
+        progress: progress
+    )
+}
+
+#Preview {
+    BackwordCard(
+        service: BackwordService(),
+        progress: nil
+    )
 }

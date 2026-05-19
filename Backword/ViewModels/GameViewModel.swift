@@ -307,13 +307,15 @@ final class GameViewModel: ObservableObject {
             ratingService.recordWeeklyCrossword(
                 completedClues: progress.completedClueIds.count,
                 totalClues: puzzle.clues.count,
-                date: puzzle.date
+                date: puzzle.date,
+                hintsUsed: progress.hintsUsed
             )
         } else {
             ratingService.recordDailyCrossword(
                 completedClues: progress.completedClueIds.count,
                 totalClues: puzzle.clues.count,
-                date: puzzle.date
+                date: puzzle.date,
+                hintsUsed: progress.hintsUsed
             )
         }
     }

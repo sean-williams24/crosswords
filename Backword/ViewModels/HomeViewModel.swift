@@ -89,7 +89,7 @@ final class HomeViewModel: ObservableObject {
               let total = progress.totalClues, total > 0,
               progress.completedClueIds.count > 0 else { return nil }
         let pct = Int(Double(progress.completedClueIds.count) / Double(total) * 100)
-        return Int.crosswordScore(percentComplete: pct)
+        return max(0, Int.crosswordScore(percentComplete: pct) - progress.hintsUsed / 3)
     }
 
     var puzzleStatus: PuzzleStatus {

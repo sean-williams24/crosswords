@@ -40,7 +40,7 @@ final class OverallRatingService: ObservableObject {
                   let total = p.totalClues, total > 0 else { continue }
             let completed = p.completedClueIds.count
             let pct = Int(Double(completed) / Double(total) * 100)
-            let score = Int.crosswordScore(percentComplete: pct)
+            let score = max(0, Int.crosswordScore(percentComplete: pct) - p.hintsUsed / 3)
             if p.isWeekly == true {
                 rating.upsertWeeklyCrossword(score: score, date: date)
             } else {
@@ -57,14 +57,18 @@ final class OverallRatingService: ObservableObject {
         if let puzzle = daily {
             let progress = UserProgress.load(puzzleId: puzzle.id)
             let completed = progress?.completedClueIds.count ?? 0
+            let hintsUsed = progress?.hintsUsed ?? 0
             let pct = puzzle.clues.count > 0 ? Int(Double(completed) / Double(puzzle.clues.count) * 100) : 0
-            rating.upsertDailyCrossword(score: Int.crosswordScore(percentComplete: pct), date: puzzle.date)
+            let score = max(0, Int.crosswordScore(percentComplete: pct) - hintsUsed / 3)
+            rating.upsertDailyCrossword(score: score, date: puzzle.date)
         }
         if let puzzle = weekly {
             let progress = UserProgress.load(puzzleId: puzzle.id)
             let completed = progress?.completedClueIds.count ?? 0
+            let hintsUsed = progress?.hintsUsed ?? 0
             let pct = puzzle.clues.count > 0 ? Int(Double(completed) / Double(puzzle.clues.count) * 100) : 0
-            rating.upsertWeeklyCrossword(score: Int.crosswordScore(percentComplete: pct), date: puzzle.date)
+            let score = max(0, Int.crosswordScore(percentComplete: pct) - hintsUsed / 3)
+            rating.upsertWeeklyCrossword(score: score, date: puzzle.date)
         }
         backfillFromDisk()
     }
@@ -72,16 +76,16 @@ final class OverallRatingService: ObservableObject {
     // MARK: - Crossword Scoring
 
     /// Record a crossword completion score immediately (e.g. when the user finishes a puzzle in-session).
-    func recordDailyCrossword(completedClues: Int, totalClues: Int, date: String) {
+    func recordDailyCrossword(completedClues: Int, totalClues: Int, date: String, hintsUsed: Int = 0) {
         let pct = totalClues > 0 ? Int(Double(completedClues) / Double(totalClues) * 100) : 0
-        let score = Int.crosswordScore(percentComplete: pct)
+        let score = max(0, Int.crosswordScore(percentComplete: pct) - hintsUsed / 3)
         rating.upsertDailyCrossword(score: score, date: date)
         rating.save()
     }
 
-    func recordWeeklyCrossword(completedClues: Int, totalClues: Int, date: String) {
+    func recordWeeklyCrossword(completedClues: Int, totalClues: Int, date: String, hintsUsed: Int = 0) {
         let pct = totalClues > 0 ? Int(Double(completedClues) / Double(totalClues) * 100) : 0
-        let score = Int.crosswordScore(percentComplete: pct)
+        let score = max(0, Int.crosswordScore(percentComplete: pct) - hintsUsed / 3)
         rating.upsertWeeklyCrossword(score: score, date: date)
         rating.save()
     }

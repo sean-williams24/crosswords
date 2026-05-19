@@ -15,7 +15,7 @@ struct PuzzleView: View {
     @State private var layoutKeyboardHeight: CGFloat = 0
     @State private var suppressKeyboardUpdate = false
 
-    private let freeHintLimit = 1
+    private let freeHintLimit = 0
 
     private var isZoomableGrid: Bool {
         viewModel.puzzle.size > 12
@@ -142,10 +142,11 @@ struct PuzzleView: View {
             let completed = viewModel.progress.completedClueIds.count
             let total = viewModel.puzzle.clues.count
             let date = viewModel.puzzle.date
+            let hintsUsed = viewModel.progress.hintsUsed
             if viewModel.puzzle.size > 12 {
-                ratingService.recordWeeklyCrossword(completedClues: completed, totalClues: total, date: date)
+                ratingService.recordWeeklyCrossword(completedClues: completed, totalClues: total, date: date, hintsUsed: hintsUsed)
             } else {
-                ratingService.recordDailyCrossword(completedClues: completed, totalClues: total, date: date)
+                ratingService.recordDailyCrossword(completedClues: completed, totalClues: total, date: date, hintsUsed: hintsUsed)
             }
         }
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
