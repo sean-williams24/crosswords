@@ -13,7 +13,8 @@ struct HomeView: View {
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @ScaledMetric var proLogoFrame: CGFloat = 18
-
+    @ScaledMetric var navBarVStackSpacing: CGFloat = -12
+    @ScaledMetric var navBarProLogoOffset: CGFloat = 20
     @State private var showArchive = false
     @State private var showPaywall = false
     @State private var showWOTD = false
@@ -262,9 +263,6 @@ struct HomeView: View {
                 .environmentObject(storeService)
         }
     }
-
-    @ScaledMetric var navBarVStackSpacing: CGFloat = -12
-    @ScaledMetric var navBarProLogoOffset: CGFloat = 20
 
     @ViewBuilder
     private var navigationBar: some View {

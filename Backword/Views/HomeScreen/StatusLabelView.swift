@@ -6,18 +6,25 @@ struct StatusLabelView: View {
     let status: PuzzleStatus
 
     var body: some View {
-        Text(status.label)
-            .padding(.vertical, 4)
-            .padding(.horizontal, 8)
-            .font(AppFont.statNumber(10))
-            .foregroundStyle(status.color)
-            .background(content: {
-                RoundedRectangle(cornerRadius: 10)
-                    .shadow(radius: 2)
-            })
+        HStack(spacing: 4) {
+            Image(systemName: status.icon)
+                .font(.system(size: 11))
+            Text(status.label)
+                .font(AppFont.clueLabel(11))
+        }
+        .foregroundColor(status.color)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 5)
+        .background(status.backgroundColor)
+        .cornerRadius(12)
     }
 }
 
 #Preview {
-    StatusLabelView(status: .new)
+    VStack(spacing: 12) {
+        StatusLabelView(status: .notStarted)
+        StatusLabelView(status: .inProgress)
+        StatusLabelView(status: .completedOnTime)
+        StatusLabelView(status: .completedLate)
+    }
 }

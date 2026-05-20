@@ -63,11 +63,9 @@ struct BackwordCard: View {
     }
 
     var status: PuzzleStatus? {
-        guard let progress else { return .new }
-        if !progress.guesses.isEmpty {
-            return .inProgress
-        }
-        return nil
+        guard let progress else { return .notStarted }
+        if progress.guesses.isEmpty { return nil }
+        return .inProgress
     }
 
     private var errorView: some View {
@@ -133,16 +131,17 @@ struct BackwordCard: View {
         VStack(spacing: 8) {
             if progress.isFailed {
                 guessCounter
+
+//                Text("Better luck tomorrow")
+//                    .font(AppFont.body(14))
+//                    .foregroundColor(.appTextSecondary)
+//                    .multilineTextAlignment(.center)
+            } else {
+                todaysWordView
             }
 
-            Text(progress.wonFlag
-                 ? "Completed in \(progress.guesses.count) guess\(progress.guesses.count == 1 ? "" : "es")"
-                 : "Better luck tomorrow")
-                .font(AppFont.body(14))
-                .foregroundColor(.appTextSecondary)
-                .multilineTextAlignment(.center)
-                .lineSpacing(progress.wonFlag ? 0 : 1)
-                .padding()
+            StatusLabelView(status: PuzzleStatus.status(for: progress))
+                .padding(.bottom, 16)
         }
     }
 }

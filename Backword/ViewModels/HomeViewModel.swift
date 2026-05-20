@@ -93,15 +93,21 @@ final class HomeViewModel: ObservableObject {
     }
 
     var puzzleStatus: PuzzleStatus {
-        guard let progress = todaysProgress else { return .new }
-        if progress.isComplete { return .completed(progress.formattedTime) }
-        return .inProgress
+        guard let progress = todaysProgress else { return .notStarted }
+        guard progress.isComplete, let completedAt = progress.completedAt else { return .inProgress }
+        let fmt = DateFormatter()
+        fmt.dateFormat = "yyyy-MM-dd"
+        fmt.timeZone = TimeZone(identifier: "UTC")
+        return fmt.string(from: completedAt) == todaysPuzzle?.date ? .completedOnTime : .completedLate
     }
 
     var weeklyPuzzleStatus: PuzzleStatus {
-        guard let progress = weeklyProgress else { return .new }
-        if progress.isComplete { return .completed(progress.formattedTime) }
-        return .inProgress
+        guard let progress = weeklyProgress else { return .notStarted }
+        guard progress.isComplete, let completedAt = progress.completedAt else { return .inProgress }
+        let fmt = DateFormatter()
+        fmt.dateFormat = "yyyy-MM-dd"
+        fmt.timeZone = TimeZone(identifier: "UTC")
+        return fmt.string(from: completedAt) == weeklyPuzzle?.date ? .completedOnTime : .completedLate
     }
 }
 

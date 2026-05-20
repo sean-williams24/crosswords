@@ -34,6 +34,7 @@
 		869FCBE22F9986FA00A280F2 /* BackwordStatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */; };
 		869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE32F99871800A280F2 /* BackwordStatsView.swift */; };
 		86AE8C972F913EAB001D69EE /* BackwordLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AE8C962F913EAB001D69EE /* BackwordLogo.swift */; };
+		86AFC3CE2FBE53CA007623C3 /* BackwordArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */; };
 		86E5BFF62FA2BECA00A42156 /* Outfit-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFF02FA2BECA00A42156 /* Outfit-Light.ttf */; };
 		86E5BFF72FA2BECA00A42156 /* Outfit-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFF42FA2BECA00A42156 /* Outfit-Thin.ttf */; };
 		86E5BFF82FA2BECA00A42156 /* Outfit-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFEC2FA2BECA00A42156 /* Outfit-Black.ttf */; };
@@ -120,6 +121,7 @@
 		869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsService.swift; sourceTree = "<group>"; };
 		869FCBE32F99871800A280F2 /* BackwordStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsView.swift; sourceTree = "<group>"; };
 		86AE8C962F913EAB001D69EE /* BackwordLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordLogo.swift; sourceTree = "<group>"; };
+		86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordArchiveRow.swift; sourceTree = "<group>"; };
 		86E5BFEC2FA2BECA00A42156 /* Outfit-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Black.ttf"; sourceTree = "<group>"; };
 		86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Bold.ttf"; sourceTree = "<group>"; };
 		86E5BFEE2FA2BECA00A42156 /* Outfit-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-ExtraBold.ttf"; sourceTree = "<group>"; };
@@ -272,6 +274,15 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
+		86AFC3CC2FBE53AF007623C3 /* Archive */ = {
+			isa = PBXGroup;
+			children = (
+				EE5A3938FD382B86EEB78063 /* ArchiveView.swift */,
+				86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */,
+			);
+			path = Archive;
+			sourceTree = "<group>";
+		};
 		86E5BFF52FA2BECA00A42156 /* OutfitFonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -384,7 +395,7 @@
 			isa = PBXGroup;
 			children = (
 				BBA3617EFAC18A3821319F9A /* Backword */,
-				EE5A3938FD382B86EEB78063 /* ArchiveView.swift */,
+				86AFC3CC2FBE53AF007623C3 /* Archive */,
 				741EF0B3C1470452272529E1 /* CompletionView.swift */,
 				A04496BE6230D031AE10977A /* DebugSettingsView.swift */,
 				86E5C0062FA9207600A42156 /* HomeScreen */,
@@ -552,6 +563,7 @@
 				9F66E5C1AA96EC8A2DBEADF1 /* MiniGridPattern.swift in Sources */,
 				753A45E043CDDEBF5C5DBB36 /* PaywallView.swift in Sources */,
 				30E8BB67675128C8176A7F6E /* Puzzle.swift in Sources */,
+				86AFC3CE2FBE53CA007623C3 /* BackwordArchiveRow.swift in Sources */,
 				51C6F9994EF7199F8EDDF3CA /* PuzzleGridView.swift in Sources */,
 				39D867F5E790F76409AF8AE0 /* PuzzleService.swift in Sources */,
 				02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */,

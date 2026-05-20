@@ -5,6 +5,7 @@ struct ArchiveView: View {
     @EnvironmentObject var statsService: StatsService
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
     @State private var entries: [ArchiveEntry] = []
     @State private var weeklyEntries: [ArchiveEntry] = []
@@ -54,7 +55,7 @@ struct ArchiveView: View {
                         ScrollView {
                             LazyVStack(spacing: 8) {
                                 ForEach(backwordWords) { word in
-                                    backwordArchiveRow(word)
+                                    BackwordArchiveRow(word: word)
                                 }
                             }
                             .padding(.horizontal, AppLayout.screenPadding)
@@ -88,13 +89,13 @@ struct ArchiveView: View {
                 VStack {
                     Spacer()
                     Rectangle()
-                        .fill(.ultraThinMaterial)
+                        .fill(.thickMaterial)
                         .frame(height: 220)
                         .mask(
                             LinearGradient(
                                 stops: [
                                     .init(color: .clear, location: 0),
-                                    .init(color: .black.opacity(0.7), location: 0.55),
+                                    .init(color: .black.opacity(0.9), location: 0.55),
                                     .init(color: .black, location: 1)
                                 ],
                                 startPoint: .top,
@@ -131,13 +132,6 @@ struct ArchiveView: View {
                         .environmentObject(adService)
                 }
             }
-            .navigationDestination(isPresented: $showBackword) {
-                if let word = selectedBackwordWord {
-                    BackwordView(word: word)
-                        .environmentObject(storeService)
-                        .environmentObject(adService)
-                }
-            }
             .task {
                 await loadArchive()
             }
@@ -146,26 +140,31 @@ struct ArchiveView: View {
 
     // MARK: - Tab Toggle
 
+    @ViewBuilder
     private var archiveTabToggle: some View {
         HStack(spacing: 0) {
-            ForEach(ArchiveTab.allCases, id: \.self) { tab in
-                Button {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                        selectedTab = tab
-                    }
-                } label: {
-                    Text(tab.rawValue)
-                        .font(AppFont.clueLabel(selectedTab == tab ? 15 : 13))
-                        .minimumScaleFactor(0.6)
-                        .foregroundColor(selectedTab == tab ? .appTextPrimary : .appTextSecondary)
-                        .frame(maxWidth: .infinity)
-//                        .padding(.vertical, 10)
-                        .multilineTextAlignment(.center)
-                        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: selectedTab)
-                }
-                .buttonStyle(.plain)
-            }
+            archiveTabToggleContent
         }
+    }
+
+    private var archiveTabToggleContent: some View {
+        ForEach(ArchiveTab.allCases, id: \.self) { tab in
+            Button {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    selectedTab = tab
+                }
+            } label: {
+                Text(tab.rawValue)
+                    .font(AppFont.clueLabel(selectedTab == tab ? 15 : 13))
+                    .minimumScaleFactor(0.6)
+                    .foregroundColor(selectedTab == tab ? .appTextPrimary : .appTextSecondary)
+                    .frame(maxWidth: .infinity)
+                    .multilineTextAlignment(.center)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.7), value: selectedTab)
+            }
+            .buttonStyle(.plain)
+        }
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     // MARK: - Row
@@ -200,7 +199,7 @@ struct ArchiveView: View {
                             .tint(.appAccent)
                             .scaleEffect(0.8)
                     } else {
-                        statusBadge(for: entry)
+                        StatusLabelView(status: .status(for: entry))
                     }
                 }
                 .frame(height: 50)
@@ -251,156 +250,6 @@ struct ArchiveView: View {
         let blue = 1.0 - fraction
         let green = fraction
         return Color(red: 0.15, green: 0.35 + green * 0.5, blue: 0.4 + blue * 0.45)
-    }
-
-    @ViewBuilder
-    private func statusBadge(for entry: ArchiveEntry) -> some View {
-        let status = puzzleStatus(for: entry)
-        HStack(spacing: 4) {
-            Image(systemName: status.icon)
-                .font(.system(size: 11))
-            Text(status.label)
-                .font(AppFont.clueLabel(11))
-        }
-        .foregroundColor(status.color)
-        .padding(.horizontal, 10)
-        .padding(.vertical, 5)
-        .background(status.color.opacity(0.12))
-        .cornerRadius(12)
-    }
-
-    // MARK: - Status
-
-    private enum PuzzleStatus {
-        case completedOnTime, completedLate, inProgress, notStarted
-
-        var icon: String {
-            switch self {
-            case .completedOnTime: return "checkmark.circle.fill"
-            case .completedLate:   return "checkmark.circle.fill"
-            case .inProgress:      return "pencil.circle"
-            case .notStarted:      return "circle"
-            }
-        }
-
-        var label: String {
-            switch self {
-            case .completedOnTime: return "Solved"
-            case .completedLate:   return "Finished"
-            case .inProgress:      return "In Progress"
-            case .notStarted:      return "New"
-            }
-        }
-
-        var color: Color {
-            switch self {
-            case .completedOnTime: return .solvedGold
-            case .completedLate:   return .appCorrect
-            case .inProgress:      return .appAccent
-            case .notStarted:      return .appTextSecondary
-            }
-        }
-    }
-
-    private func puzzleStatus(for entry: ArchiveEntry) -> PuzzleStatus {
-        guard let progress = UserProgress.load(puzzleId: entry.id) else {
-            return .notStarted
-        }
-        guard progress.isComplete, let completedAt = progress.completedAt else {
-            return .inProgress
-        }
-        let fmt = DateFormatter()
-        fmt.dateFormat = "yyyy-MM-dd"
-        fmt.timeZone = TimeZone(identifier: "UTC")
-        return fmt.string(from: completedAt) == entry.date ? .completedOnTime : .completedLate
-    }
-
-    // MARK: - Backword Row
-
-    @ViewBuilder
-    private func backwordArchiveRow(_ word: BackwordWord) -> some View {
-        let progress = BackwordProgress.load(date: word.date)
-        Button {
-            selectedBackwordWord = word
-            showBackword = true
-        } label: {
-            HStack(spacing: 16) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(formattedDate(word.date))
-                        .font(AppFont.body())
-                        .foregroundColor(.appTextPrimary)
-
-                    if isToday(word.date) {
-                        Text("TODAY")
-                            .font(AppFont.clueLabel(10))
-                            .foregroundColor(.appAccent)
-                            .tracking(1)
-                    }
-                }
-
-                Spacer()
-
-                if let progress, progress.isComplete {
-                    HStack(spacing: 6) {
-                        if progress.isWon {
-                            HStack(spacing: 4) {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .font(.system(size: 11))
-                                Text("\(progress.guesses.count) guess\(progress.guesses.count == 1 ? "" : "es")")
-                                    .font(AppFont.clueLabel(11))
-                            }
-                            .foregroundColor(.appCorrect)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(Color.appCorrect.opacity(0.12))
-                            .cornerRadius(12)
-                        } else {
-                            HStack(spacing: 4) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .font(.system(size: 11))
-                                Text("Failed")
-                                    .font(AppFont.clueLabel(11))
-                            }
-                            .foregroundColor(.red.opacity(0.7))
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(Color.red.opacity(0.08))
-                            .cornerRadius(12)
-                        }
-                    }
-                } else if let progress, !progress.guesses.isEmpty {
-                    HStack(spacing: 4) {
-                        Image(systemName: "pencil.circle")
-                            .font(.system(size: 11))
-                        Text("In Progress")
-                            .font(AppFont.clueLabel(11))
-                    }
-                    .foregroundColor(.appAccent)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(Color.appAccent.opacity(0.12))
-                    .cornerRadius(12)
-                } else {
-                    HStack(spacing: 4) {
-                        Image(systemName: "circle")
-                            .font(.system(size: 11))
-                        Text("New")
-                            .font(AppFont.clueLabel(11))
-                    }
-                    .foregroundColor(.appTextSecondary)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(Color.appTextSecondary.opacity(0.08))
-                    .cornerRadius(12)
-                }
-            }
-            .frame(height: 50)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 14)
-            .background(Color.appSurface)
-            .cornerRadius(AppLayout.cardCornerRadius)
-        }
-        .buttonStyle(.plain)
     }
 
     // MARK: - Actions
