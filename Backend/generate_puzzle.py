@@ -546,18 +546,15 @@ def assemble_raw(
     for item in solution:
         slot: Slot = item["slot"]
         entry = item["entry"]
-        # Pick randomly from clue variants if available, else fall back to hard_text or original
         clue_variants = entry.get("clues", [])
-        if clue_variants and rng:
-            text = rng.choice(clue_variants)
-        else:
-            text = entry.get("hard_text", entry["text"])
+        text = entry["text"]
+        hint = rng.choice(clue_variants) if clue_variants and rng else entry.get("hint", "")
         words.append({
             "direction": slot.direction,
             "number": 0,  # assigned later by build_puzzle_payload
             "answer": entry["word"].upper(),
             "text": text,
-            "hint": entry["hint"],
+            "hint": hint,
             "startRow": slot.row,
             "startCol": slot.col,
         })

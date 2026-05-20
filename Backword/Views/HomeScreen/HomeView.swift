@@ -279,6 +279,7 @@ struct HomeView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(height: proLogoFrame)
                         .offset(x: navBarProLogoOffset)
+                        .opacity(proLogoVisible ? 1 : 0)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -320,7 +321,7 @@ struct HomeView: View {
             }
             .padding(.horizontal, AppLayout.screenPadding)
             .padding(.top, 8)
-            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         }
         .background {
             ZStack {

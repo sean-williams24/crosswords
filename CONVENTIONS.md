@@ -10,14 +10,14 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 - **Grid:** 9×9, ~15 clues, `is_free: true`
 - **Generator:** `Backend/generate_puzzle.py`
-- **Clue selection:** picks randomly from the word's `clues[]` array; falls back to `hard_text`, then `text` if `clues` is empty.
+- **Clue selection:** uses `text` as the main clue; picks randomly from `clues[]` as the in-game hint (falls back to `hint` if `clues` is empty).
 - **Scheduling:** generated weekly in batches of 7 via the `generate-puzzles` GitHub Actions workflow.
 
 ### Weekly crossword (13×13)
 
 - **Grid:** 13×13, ~35 clues, `is_free: false` (pro-only)
 - **Generator:** `Backend/generate_weekly_puzzle.py`
-- **Clue selection:** uses `hard_text` as the primary clue (deliberately harder); falls back to a random pick from `clues[]`, then `text` if neither is available.
+- **Clue selection:** picks randomly from `clues[]` as the main clue (falls back to `text`); uses `hard_text` as the in-game hint (falls back to `hint`).
 - **Scheduling:** generated in batches of 10 via the `generate-weekly-puzzles` GitHub Actions workflow, triggered every Monday at 06:00 UTC. Skipped if 5+ future puzzles already exist in Supabase.
 
 ### Word repeat prevention
@@ -146,14 +146,20 @@ private var deadlineTime: String? {
 | `text` | `generate_puzzle.py` | Last-resort fallback if both `clues[]` and `hard_text` are absent. |
 | `hint` | `GameViewModel` | Shown to the user when they tap the hint button in-game (costs hint tokens). Should give **genuinely new context** not already present in the clue — e.g. a category, a cultural reference, or a synonym. Never just a generic label like "name" when the clue already says it's a name. |
 
-### Clue selection logic (generate_puzzle.py)
+### Clue selection logic
 
+**Daily (`generate_puzzle.py`):**
 ```python
 clue_variants = entry.get("clues", [])
-if clue_variants and rng:
-    text = rng.choice(clue_variants)   # random pick from the array
-else:
-    text = entry.get("hard_text", entry["text"])   # fallback chain
+text = entry["text"]                                          # always the main clue
+hint = rng.choice(clue_variants) if clue_variants else entry.get("hint", "")
+```
+
+**Weekly (`generate_weekly_puzzle.py`):**
+```python
+clue_variants = entry.get("clues", [])
+text = rng.choice(clue_variants) if clue_variants else entry["text"]   # random pick from clues[]
+hint = entry.get("hard_text", entry.get("hint", ""))                   # hard_text as hint
 ```
 
 ### Answer leakage rule
