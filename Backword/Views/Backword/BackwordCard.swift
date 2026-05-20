@@ -112,14 +112,23 @@ struct BackwordCard: View {
     private var todaysWordView: some View {
         if let word = service.todaysWord {
             HStack(spacing: 6) {
-                let revealedCount = progress?.revealedCount ?? 1
-                let revealed = BackwordViewModel.revealedIndices(forRevealedCount: revealedCount)
                 let letters = Array(word.word)
-                ForEach(0..<6, id: \.self) { i in
-                    BackwordLetterCell(
-                        letter: revealed.contains(i) ? letters[i] : nil,
-                        size: 40
-                    )
+                if progress?.isWon == true {
+                    ForEach(0..<6, id: \.self) { i in
+                        BackwordLetterCell(
+                            letter: letters[i],
+                            isCorrect: true,
+                            size: 40                        )
+                    }
+                } else {
+                    let revealedCount = progress?.revealedCount ?? 1
+                    let revealed = BackwordViewModel.revealedIndices(forRevealedCount: revealedCount)
+                    ForEach(0..<6, id: \.self) { i in
+                        BackwordLetterCell(
+                            letter: revealed.contains(i) ? letters[i] : nil,
+                            size: 40
+                        )
+                    }
                 }
             }
             .padding(.bottom, 10)
@@ -131,16 +140,11 @@ struct BackwordCard: View {
         VStack(spacing: 8) {
             if progress.isFailed {
                 guessCounter
-
-//                Text("Better luck tomorrow")
-//                    .font(AppFont.body(14))
-//                    .foregroundColor(.appTextSecondary)
-//                    .multilineTextAlignment(.center)
             } else {
                 todaysWordView
             }
 
-            StatusLabelView(status: PuzzleStatus.status(for: progress))
+            StatusLabelView(status: .status(for: progress))
                 .padding(.bottom, 16)
         }
     }
