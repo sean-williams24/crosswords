@@ -11,7 +11,7 @@ struct ArchiveView: View {
     @State private var weeklyEntries: [ArchiveEntry] = []
     @State private var backwordWords: [BackwordWord] = []
     @State private var isLoading = true
-    @State private var selectedTab: ArchiveTab = .daily
+    @State private var selectedTab: ArchiveTab = .backword
     @State private var selectedPuzzle: Puzzle?
     @State private var loadingPuzzleId: String?
     @State private var showPuzzle = false
@@ -109,7 +109,6 @@ struct ArchiveView: View {
                 VStack {
                     Spacer()
                     archiveTabToggle
-//                        .padding(.bottom, 16)
                 }
             }
             .navigationTitle(" \(selectedTab.rawValue) Archive")
@@ -164,7 +163,7 @@ struct ArchiveView: View {
             }
             .buttonStyle(.plain)
         }
-        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
     }
 
     // MARK: - Row
@@ -176,33 +175,16 @@ struct ArchiveView: View {
             Task { await loadAndNavigate(entry) }
         } label: {
             VStack(spacing: 0) {
-                HStack(spacing: 16) {
-                    // Date
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(formattedDate(entry.date))
-                            .font(AppFont.body())
-                            .foregroundColor(.appTextPrimary)
-
-                        if isToday(entry.date) {
-                            Text("TODAY")
-                                .font(AppFont.clueLabel(10))
-                                .foregroundColor(.appAccent)
-                                .tracking(1)
-                        }
+                ViewThatFits {
+                    HStack(spacing: 16) {
+                        archiveRowContent(entry)
                     }
-
-                    Spacer()
-
-                    // Status indicator
-                    if loadingPuzzleId == entry.id {
-                        ProgressView()
-                            .tint(.appAccent)
-                            .scaleEffect(0.8)
-                    } else {
-                        StatusLabelView(status: .status(for: entry))
+                    VStack(alignment: .leading) {
+                        archiveRowContent(entry)
                     }
                 }
-                .frame(height: 50)
+                .frame(minHeight: 50)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 14)
 
@@ -223,6 +205,32 @@ struct ArchiveView: View {
             .cornerRadius(AppLayout.cardCornerRadius)
         }
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private func archiveRowContent(_ entry: ArchiveEntry) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(formattedDate(entry.date))
+                .font(AppFont.body())
+                .foregroundColor(.appTextPrimary)
+
+            if isToday(entry.date) {
+                Text("TODAY")
+                    .font(AppFont.clueLabel(10))
+                    .foregroundColor(.appAccent)
+                    .tracking(1)
+            }
+        }
+
+        Spacer()
+
+        if loadingPuzzleId == entry.id {
+            ProgressView()
+                .tint(.appAccent)
+                .scaleEffect(0.8)
+        } else {
+            StatusLabelView(status: .status(for: entry))
+        }
     }
 
     private func progressFraction(for entry: ArchiveEntry) -> CGFloat {

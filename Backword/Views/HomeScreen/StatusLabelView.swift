@@ -8,7 +8,7 @@ struct StatusLabelView: View {
     var body: some View {
         HStack(spacing: 4) {
             Image(systemName: status.icon)
-                .font(.system(size: 11))
+                .font(.caption2)
             Text(status.label)
                 .font(AppFont.clueLabel(11))
         }

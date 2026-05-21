@@ -15,12 +15,19 @@ struct BackwordArchiveRow: View {
         Button {
             showBackword = true
         } label: {
-            HStack(spacing: 16) {
-                DateSection(date: word.date)
-                Spacer()
-                StatusLabelView(status: .status(for: progress))
+            ViewThatFits {
+                HStack(spacing: 16) {
+                    DateSection(date: word.date)
+                    Spacer()
+                    StatusLabelView(status: .status(for: progress))
+                }
+                VStack(alignment: .leading) {
+                    DateSection(date: word.date)
+                    StatusLabelView(status: .status(for: progress))
+                }
             }
-            .frame(height: 50)
+            .frame(minHeight: 50)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
             .background(Color.appSurface)
