@@ -201,7 +201,7 @@ struct BackwordView: View {
                 instructionRow(number: "1", text: "Guess the 6-letter word in 5 tries.")
                 instructionRow(number: "2", text: "The last letter is revealed to start. Each wrong guess reveals one more letter from the right.")
                 instructionRow(number: "3", text: "Type the missing letters into the highlighted cells, then tap Submit.")
-                instructionRow(number: "4", text: "The category is shown at the top — it's your clue.")
+                instructionRow(number: "4", text: "The clue is shown at the top — use it to guide your guess.")
                 instructionRow(number: "5", text: "The fewer the guesses, the more points you get.")
             }
 
@@ -387,11 +387,11 @@ struct BackwordView: View {
 
     @ViewBuilder
     private var categoryContent: some View {
-        Text("Category: ")
+        Text("Clue: ")
             .font(AppFont.clueLabel(isIpad ? 25 : 12))
             .foregroundColor(.appGridLine)
 
-        Text(viewModel.word.category.uppercased())
+        Text(viewModel.word.clue.uppercased())
             .font(AppFont.clueLabel(isIpad ? 30 : 16 ))
             .foregroundColor(.appTextPrimary)
     }
@@ -507,8 +507,7 @@ private let previewWord = BackwordWord(
     id: "",
     date: "2026-04-01",
     word: "CASTLE",
-    category: "History",
-    definition: "A large fortified building, typically medieval, used as a noble residence and stronghold."
+    clue: "CHESS"
 )
 
 #Preview("Active") {

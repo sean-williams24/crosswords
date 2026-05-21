@@ -86,9 +86,8 @@ private func isToday(_ dateString: String) -> Bool {
         word: .init(
             id: "",
             date: "Wednesday, May 20",
-            word: "Catrin",
-            category: "GF",
-            definition: "Fit"
+            word: "CASTLE",
+            clue: "CHESS"
         )
     )
     .environmentObject(StoreService())

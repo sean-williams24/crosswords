@@ -3,9 +3,8 @@ import Foundation
 struct BackwordWord: Codable, Identifiable {
     var id: String
     let date: String
-    let word: String       // Always 6 uppercase letters
-    let category: String   // e.g. "Animal", "Food", "Nature"
-    let definition: String // Revealed as optional hint
+    let word: String  // Always 6 uppercase letters
+    let clue: String  // Abstract association hint, e.g. "PATIENCE" for "WAITED"
 }
 
 // MARK: - Supabase Response Model
@@ -27,8 +26,7 @@ struct BackwordRow: Decodable {
             id: id,
             date: date,
             word: wordData.word,
-            category: wordData.category,
-            definition: wordData.definition
+            clue: wordData.clue ?? wordData.category ?? ""
         )
     }
 }
@@ -36,6 +34,7 @@ struct BackwordRow: Decodable {
 struct WordDataPayload: Decodable {
     let word: String
     let reject: Bool
-    let category: String
-    let definition: String
+    let clue: String?      // new records
+    let category: String?  // old records — fallback
+    let definition: String? // old records — ignored
 }

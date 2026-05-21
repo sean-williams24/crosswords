@@ -4,15 +4,20 @@ struct BackwordProgress: Codable {
     let date: String
     var guesses: [String]
     var completedAt: Date?
-    var categoryHintUsed: Bool
+    var clueRevealed: Bool
     /// Set to true by BackwordViewModel when the winning guess is submitted.
     var wonFlag: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case date, guesses, completedAt, wonFlag
+        case clueRevealed = "categoryHintUsed"
+    }
 
     init(date: String) {
         self.date = date
         self.guesses = []
         self.completedAt = nil
-        self.categoryHintUsed = false
+        self.clueRevealed = false
         self.wonFlag = false
     }
 

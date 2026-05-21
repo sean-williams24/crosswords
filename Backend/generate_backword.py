@@ -6,7 +6,7 @@ Generates 6-letter daily words for the Backword game and uploads them to Supabas
 
 Pipeline:
   1. Extract 6-letter words from wordfreq (frequency-ranked, mid-frequency band)
-  2. Enrich with GPT-4o-mini: add category and definition
+  2. Enrich with GPT-4o-mini: add clue
   3. Upload to Supabase `backword_words` table
 
 Usage:
@@ -55,14 +55,6 @@ except ImportError:
 WORDFREQ_TOP_N     = 100_000   # Pull from top 100k English words
 WORDFREQ_SKIP_TOP  = 3_000     # Skip the 3k most common (trivial)
 WORD_LENGTH        = 6
-
-# Categories the LLM can assign
-VALID_CATEGORIES = [
-    "Animal", "Food", "Nature", "Sport", "Music", "Science",
-    "Travel", "Fashion", "History", "Body", "Weather", "Art",
-    "Technology", "Business", "Literature", "Culture", "Language",
-]
-FALLBACK_CATEGORY = "Random"
 
 # Fallback seed words if wordfreq is unavailable
 FALLBACK_WORDS = [
@@ -117,12 +109,25 @@ def get_used_words(client) -> set[str]:
 
 # ── LLM Enrichment ────────────────────────────────────────────────────────
 
-ENRICH_SYSTEM = """You are a word game designer creating content for a family-friendly daily word game.
+ENRICH_SYSTEM = """You are a lateral puzzle designer creating clues for a word game.
 For each 6-letter English word provided, return a JSON object with:
   - "word": the word in UPPERCASE
   - "reject": true if the word must be excluded (see criteria), false otherwise
-  - "category": one of: Animal, Food, Nature, Sport, Music, Science, Travel, Fashion, History, Body, Weather, Art, Technology, Business, Literature, Culture, Language
-  - "definition": a clear, concise definition for a word game hint (1-2 sentences, not too obvious)
+  - "clue": exactly ONE single word — an abstract association, thematic link, or lateral hint
+
+STRICT CONSTRAINTS for "clue":
+  - Must NOT be a direct synonym of the word
+  - Must NOT contain any part of the root word
+  - Must be a single word only
+  - Should require lateral thinking to connect to the word
+
+EXAMPLES of good clues (study these carefully):
+  {"word": "WAITED", "clue": "PATIENCE"}   — hints at the state of mind required
+  {"word": "SILENT", "clue": "VOLUME"}     — points to the absence of the concept
+  {"word": "SHIELD", "clue": "KNIGHT"}     — thematic association
+  {"word": "CASTLE", "clue": "CHESS"}      — lateral connection
+  {"word": "CANDLE", "clue": "FLICKER"}    — focuses on a characteristic
+  {"word": "WINTER", "clue": "FROST"}      — evokes the physical reality
 
 REJECT a word (set "reject": true) if it is:
   - A proper noun: personal names (Sharon, Ernest), brand/company names (Schwab), place names, nationality adjectives
@@ -131,50 +136,17 @@ REJECT a word (set "reject": true) if it is:
   - An abbreviation, acronym, or slang term
   - Not a standalone common English noun, verb, or adjective
 
-If rejected, still include all fields but "definition" may be empty.
-Be accurate. If a word has multiple meanings, use the most common non-offensive one.
+If rejected, still include all fields but "clue" may be empty.
 Return ONLY a JSON array, no other text."""
 
 ENRICH_USER = """Enrich these words: {words}
 
 Return a JSON array like:
 [
-  {{"word": "CASTLE", "reject": false, "category": "History", "definition": "A large medieval fortified building or group of buildings."}},
-  {{"word": "SHARON", "reject": true, "category": "History", "definition": ""}},
+  {{"word": "CASTLE", "reject": false, "clue": "CHESS"}},
+  {{"word": "SHARON", "reject": true, "clue": ""}},
   ...
 ]"""
-
-RETRY_SYSTEM = """You are a word categorisation assistant.
-Assign the single best category for the given word from this list — you MUST pick one:
-Animal, Food, Nature, Sport, Music, Science, Travel, Fashion, History, Body,
-Weather, Art, Technology, Business, Literature, Culture, Language
-
-Return ONLY a JSON object: {"word": "WORD", "category": "Category", "definition": "Short definition."}"""
-
-RETRY_USER = "Categorise this word: {word}"
-
-
-def _retry_category(client, model: str, word: str, existing_definition: str) -> str:
-    """Retry categorisation for a single word. Returns a valid category or FALLBACK_CATEGORY."""
-    try:
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": RETRY_SYSTEM},
-                {"role": "user",   "content": RETRY_USER.format(word=word)},
-            ],
-            temperature=0.2,
-            response_format={"type": "json_object"},
-        )
-        parsed = json.loads(response.choices[0].message.content.strip())
-        category = parsed.get("category", "")
-        if category in VALID_CATEGORIES:
-            print(f"      ✓ Retry succeeded: {word} → {category}")
-            return category
-        print(f"      ✗ Retry returned invalid category '{category}' for {word} — using {FALLBACK_CATEGORY}")
-    except Exception as e:
-        print(f"      ✗ Retry failed for {word}: {e}")
-    return FALLBACK_CATEGORY
 
 
 def enrich_words(words: list[str], model: str, api_key: str) -> list[dict]:
@@ -213,22 +185,17 @@ def enrich_words(words: list[str], model: str, api_key: str) -> list[dict]:
                 if (
                     isinstance(item, dict)
                     and "word" in item
-                    and "category" in item
-                    and "definition" in item
+                    and "clue" in item
                 ):
                     item["word"] = item["word"].upper()
                     if item.get("reject"):
                         print(f"    ✗ Rejected: {item['word']}")
-                    # Validate category — retry if invalid or disallowed
-                    if item["category"] not in VALID_CATEGORIES:
-                        print(f"    ⚠  Invalid category '{item['category']}' for {item['word']} — retrying...")
-                        item["category"] = _retry_category(client, model, item["word"], item.get("definition", ""))
                     results.append(item)
 
         except Exception as e:
             print(f"  ⚠  Enrichment failed for batch: {e}", file=sys.stderr)
             for w in batch:
-                results.append({"word": w, "category": FALLBACK_CATEGORY, "definition": f"A six-letter word: {w.lower()}."})
+                results.append({"word": w, "clue": "UNKNOWN"})
 
         if i + batch_size < len(words):
             time.sleep(1)
@@ -255,7 +222,7 @@ def upload_words(words: list[dict], start_date: date, supabase_url: str, supabas
         }
         try:
             client.table("backword_words").insert(payload).execute()
-            print(f"  ✓ {entry_date}: {word_data['word']} ({word_data['category']})")
+            print(f"  ✓ {entry_date}: {word_data['word']} [{word_data.get('clue', '')}]")
             uploaded += 1
         except Exception as e:
             print(f"  ✗ Failed to upload {entry_date}: {e}", file=sys.stderr)
@@ -357,8 +324,7 @@ def main():
     print(f"\n📝  Generated {len(enriched)} words:\n")
     for i, wd in enumerate(enriched):
         entry_date = start_date + timedelta(days=i)
-        print(f"  {entry_date.isoformat()}  {wd['word']:<10} [{wd['category']}]")
-        print(f"            {wd['definition']}")
+        print(f"  {entry_date.isoformat()}  {wd['word']:<10} [{wd.get('clue', '')}]")
         print()
 
     if args.dry_run:

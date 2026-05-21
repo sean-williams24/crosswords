@@ -6,7 +6,7 @@ import Testing
 struct BackwordViewModelTests {
 
     private func makeWord(_ word: String = "CASTLE") -> BackwordWord {
-        BackwordWord(date: "2026-04-01", word: word, category: "History", definition: "A fortified building.")
+        BackwordWord(id: "", date: "2026-04-01", word: word, clue: "FORTRESS")
     }
 
     // MARK: - Initial State
@@ -164,22 +164,22 @@ struct BackwordViewModelTests {
         #expect(vm.currentInput == "ABCD")
     }
 
-    // MARK: - Category Hint
+    // MARK: - Clue Hint
 
-    @Test("Category hint sets flag")
-    func categoryHintSetsFlag() async throws {
+    @Test("Clue hint sets flag")
+    func clueHintSetsFlag() async throws {
         let vm = BackwordViewModel(word: makeWord())
-        #expect(vm.progress.categoryHintUsed == false)
-        vm.revealCategoryHint()
-        #expect(vm.progress.categoryHintUsed == true)
+        #expect(vm.progress.clueRevealed == false)
+        vm.revealClueHint()
+        #expect(vm.progress.clueRevealed == true)
     }
 
-    @Test("Category hint is idempotent")
-    func categoryHintIdempotent() async throws {
+    @Test("Clue hint is idempotent")
+    func clueHintIdempotent() async throws {
         let vm = BackwordViewModel(word: makeWord())
-        vm.revealCategoryHint()
-        vm.revealCategoryHint()
-        #expect(vm.progress.categoryHintUsed == true)
+        vm.revealClueHint()
+        vm.revealClueHint()
+        #expect(vm.progress.clueRevealed == true)
     }
 
     // MARK: - Letter Feedback
