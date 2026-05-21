@@ -188,7 +188,7 @@ struct BackwordView: View {
                 .toolbarBackground(Color.appBackground, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
         }
-        .presentationDetents([.medium])
+        .presentationDetents([.fraction(0.85)])
         .presentationDragIndicator(.visible)
     }
 
@@ -197,31 +197,33 @@ struct BackwordView: View {
             Color.appBackground.ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: 16) {
-            VStack(alignment: .leading, spacing: 10) {
-                instructionRow(number: "1", text: "Guess the 6-letter word in 5 tries.")
-                instructionRow(number: "2", text: "After each wrong guess, any letters you got right at the end of the word are revealed.")
-                instructionRow(number: "3", text: "Type the missing letters into the highlighted cells, then tap Submit.")
-                instructionRow(number: "4", text: "The clue is shown at the top — use it to guide your guess.")
-                instructionRow(number: "5", text: "The fewer the guesses, the more points you get.")
-            }
+                VStack(alignment: .leading, spacing: 10) {
+                    instructionRow(number: "1", text: "Guess the 6-letter word in 5 tries.")
+                    instructionRow(number: "2", text: "After each wrong guess, any letters you got right at the end of the word are revealed.")
+                    instructionRow(number: "3", text: "Type the missing letters into the highlighted cells, then tap Submit.")
+                    instructionRow(number: "4", text: "The clue is shown at the top — use it to guide your guess.")
+                    instructionRow(number: "5", text: "The fewer the guesses, the more points you get.")
+                }
 
-            Divider()
-                .background(Color.appGridLine)
+                Divider()
+                    .background(Color.appGridLine)
 
-            HStack(spacing: 12) {
-                exampleCell(letter: "C", isRevealed: false)
-                exampleCell(letter: "A", isRevealed: false)
-                exampleCell(letter: "S", isRevealed: false)
-                exampleCell(letter: "T", isRevealed: true)
-                exampleCell(letter: "L", isRevealed: true)
-                exampleCell(letter: "E", isRevealed: true)
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-
-            Text("After 2 wrong guesses — 3 letters revealed")
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary)
+                HStack(spacing: 12) {
+                    exampleCell(letter: "C", isRevealed: false)
+                    exampleCell(letter: "A", isRevealed: false)
+                    exampleCell(letter: "S", isRevealed: false)
+                    exampleCell(letter: "T", isRevealed: true)
+                    exampleCell(letter: "L", isRevealed: true)
+                    exampleCell(letter: "E", isRevealed: true)
+                }
                 .frame(maxWidth: .infinity, alignment: .center)
+
+                Text("After 2 wrong guesses — 3 letters revealed")
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+
+                ScoringRuleView.backword()
             }
             .padding(20)
         }

@@ -361,18 +361,7 @@ struct RatingDetailSheet: View {
                 VStack(alignment: .leading, spacing: 14) {
                     Divider().background(Color.appGridLine)
 
-                    scoringRule(
-                        icon: "square.grid.3x3.fill",
-                        title: "Daily & Weekly Crossword",
-                        rows: [
-                            ("100% complete", "5 pts"),
-                            ("75–99% complete", "4 pts"),
-                            ("50–74% complete", "3 pts"),
-                            ("25–49% complete", "2 pts"),
-                            ("1–24% complete", "1 pt"),
-                            ("Not started", "0 pts"),
-                        ]
-                    )
+                    ScoringRuleView.crossword()
 
                     Text("- 1 point deducted for every 3 hints used")
                         .font(AppFont.caption())
@@ -381,18 +370,7 @@ struct RatingDetailSheet: View {
 
                     Divider().background(Color.appGridLine.opacity(0.5))
 
-                    scoringRule(
-                        icon: "backward.circle",
-                        title: "Backword",
-                        rows: [
-                            ("Win in 1 guess", "5 pts"),
-                            ("Win in 2 guesses", "4 pts"),
-                            ("Win in 3 guesses", "3 pts"),
-                            ("Win in 4 guesses", "2 pts"),
-                            ("Win in 5 guesses", "1 pt"),
-                            ("Loss or missed", "0 pts"),
-                        ]
-                    )
+                    ScoringRuleView.backword()
 
                     Divider().background(Color.appGridLine.opacity(0.5))
 
@@ -424,34 +402,6 @@ struct RatingDetailSheet: View {
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .strokeBorder(Color.appAccent.opacity(0.15), lineWidth: 1)
         )
-    }
-
-    private func scoringRule(icon: String, title: String, rows: [(String, String)]) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                Image(systemName: icon)
-                    .font(.system(size: 14))
-                    .foregroundColor(.appAccent)
-                    .frame(width: 20)
-                Text(title)
-                    .font(AppFont.clueLabel(13))
-                    .foregroundColor(.appTextPrimary)
-            }
-            VStack(spacing: 4) {
-                ForEach(rows, id: \.0) { label, pts in
-                    HStack {
-                        Text(label)
-                            .font(AppFont.caption())
-                            .foregroundColor(.appTextSecondary)
-                        Spacer()
-                        Text(pts)
-                            .font(AppFont.clueLabel(11))
-                            .foregroundColor(.appAccent)
-                    }
-                    .padding(.leading, 28)
-                }
-            }
-        }
     }
 
     // MARK: - Helpers
