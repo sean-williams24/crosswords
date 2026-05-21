@@ -138,7 +138,7 @@ struct BackwordView: View {
 
                 Spacer()
 
-                HStack(spacing: 16) {
+                HStack(spacing: 4) {
                     Button {
                         statsService.refresh()
                         showStats = true
@@ -147,7 +147,7 @@ struct BackwordView: View {
                             .frame(width: 34)
                             .padding(.vertical, 8)
                             .foregroundColor(viewModel.statsIconColour)
-                            .scaleEffect(pulses ? 0.7 : 1.3)
+                            .scaleEffect(pulses ? 0.7 : 1)
                             .opacity(pulses ? 0.44 : 0.8)
                     }
 
@@ -164,7 +164,7 @@ struct BackwordView: View {
                     }
                 }
             }
-            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
     }
 
@@ -199,7 +199,7 @@ struct BackwordView: View {
             VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 10) {
                 instructionRow(number: "1", text: "Guess the 6-letter word in 5 tries.")
-                instructionRow(number: "2", text: "The last letter is revealed to start. Each wrong guess reveals one more letter from the right.")
+                instructionRow(number: "2", text: "After each wrong guess, any letters you got right at the end of the word are revealed.")
                 instructionRow(number: "3", text: "Type the missing letters into the highlighted cells, then tap Submit.")
                 instructionRow(number: "4", text: "The clue is shown at the top — use it to guide your guess.")
                 instructionRow(number: "5", text: "The fewer the guesses, the more points you get.")
@@ -424,27 +424,16 @@ struct BackwordView: View {
                             .foregroundColor(.appTextSecondary)
                     }
                 } else {
-                    HStack(spacing: 8) {
-                        pulsatingCross
-                        Spacer()
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(selectedFailureMessage + " the word was...")
-                                .font(AppFont.body(15))
-                                .foregroundColor(.appTextSecondary)
-                            HStack {
-                                Spacer()
-                                Text(viewModel.word.word)
-                                    .font(AppFont.header(28))
-                                    .foregroundColor(.red)
-                                    .tracking(4)
-                                    .opacity(pulses ? 0.4 : 0.8)
-                                Spacer()
-                            }
-                        }
-                        Spacer()
-                        pulsatingCross
+                    VStack(alignment: .center, spacing: 8) {
+                        Text(selectedFailureMessage + " the word was...")
+                            .font(AppFont.body(15))
+                            .foregroundColor(.appTextSecondary)
+                        Text(viewModel.word.word)
+                            .font(AppFont.header(28))
+                            .foregroundColor(.red)
+                            .tracking(4)
+                            .opacity(pulses ? 0.4 : 0.8)
                     }
-                    .frame(maxWidth: .infinity)
                 }
             }
             .padding(20)
