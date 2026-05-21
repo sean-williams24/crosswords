@@ -121,8 +121,7 @@ struct BackwordCard: View {
                             size: 40                        )
                     }
                 } else {
-                    let revealedCount = progress?.revealedCount ?? 1
-                    let revealed = BackwordViewModel.revealedIndices(forRevealedCount: revealedCount)
+                    let revealed = BackwordViewModel.revealedIndices(for: progress, word: word.word)
                     ForEach(0..<6, id: \.self) { i in
                         BackwordLetterCell(
                             letter: revealed.contains(i) ? letters[i] : nil,

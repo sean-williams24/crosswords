@@ -388,11 +388,11 @@ struct BackwordView: View {
     @ViewBuilder
     private var categoryContent: some View {
         Text("Clue: ")
-            .font(AppFont.clueLabel(isIpad ? 25 : 12))
-            .foregroundColor(.appGridLine)
+            .font(AppFont.clueLabel(isIpad ? 25 : 16))
+            .foregroundColor(.appAccent)
 
         Text(viewModel.word.clue.uppercased())
-            .font(AppFont.clueLabel(isIpad ? 30 : 16 ))
+            .font(AppFont.clueLabel(isIpad ? 30 : 19 ))
             .foregroundColor(.appTextPrimary)
     }
 

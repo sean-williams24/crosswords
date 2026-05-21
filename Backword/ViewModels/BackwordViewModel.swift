@@ -33,48 +33,31 @@ final class BackwordViewModel: ObservableObject {
 
     // MARK: - Reveal Sequence
 
-    /// Set of letter indices visible at each `revealedCount` step.
-    /// Index 2 (3rd letter) and index 5 (last letter) are pinned from the start.
-    /// Wrong guesses reveal indices 4, 3, then index 2's slot is a wasted step
-    /// (already shown), then 1 and 0 — keeping all 5 guesses meaningful.
-    ///
-    //  3rd letter
-//    private static let revealedSets: [Set<Int>] = [
-//        [2, 5],              // revealedCount 1: game start
-//        [2, 4, 5],           // revealedCount 2: 1 wrong guess
-//        [2, 3, 4, 5],        // revealedCount 3: 2 wrong guesses
-//        [2, 3, 4, 5],        // revealedCount 4: 3 wrong guesses — index 2 already shown (wasted step)
-//        [1, 2, 3, 4, 5],     // revealedCount 5: 4 wrong guesses
-//        [0, 1, 2, 3, 4, 5],  // revealedCount 6: failed state — all revealed for display
-//    ]
-
-    // 4th letter
-//    private static let revealedSets: [Set<Int>] = [
-//        [3, 5],              // revealedCount 1: game start
-//        [3, 4, 5],           // revealedCount 2: 1 wrong guess
-//        [2, 3, 4, 5],        // revealedCount 3: 2 wrong guesses
-//        [2, 3, 4, 5],        // revealedCount 4: 3 wrong guesses — index 2 already shown (wasted step)
-//        [1, 2, 3, 4, 5],     // revealedCount 5: 4 wrong guesses
-//        [0, 1, 2, 3, 4, 5],  // revealedCount 6: failed state — all revealed for display
-//    ]
-
-    // last letter
-    private static let revealedSets: [Set<Int>] = [
-        [5],              // revealedCount 1: game start
-        [4, 5],           // revealedCount 2: 1 wrong guess
-        [3, 4, 5],        // revealedCount 3: 2 wrong guesses
-        [2, 3, 4, 5],        // revealedCount 4: 3 wrong guesses — index 2 already shown (wasted step)
-        [1, 2, 3, 4, 5],     // revealedCount 5: 4 wrong guesses
-        [0, 1, 2, 3, 4, 5],  // revealedCount 6: failed state — all revealed for display
-    ]
-
     private var revealedIndices: Set<Int> {
-        BackwordViewModel.revealedSets[min(progress.revealedCount, 6) - 1]
+        BackwordViewModel.suffixRevealedIndices(progress: progress, word: word.word)
     }
 
     /// Exposed for views that display letter cells without a full ViewModel (e.g. BackwordCard).
-    static func revealedIndices(forRevealedCount count: Int) -> Set<Int> {
-        revealedSets[min(count, 6) - 1]
+    static func revealedIndices(for progress: BackwordProgress?, word: String) -> Set<Int> {
+        suffixRevealedIndices(progress: progress, word: word)
+    }
+
+    private static func suffixRevealedIndices(progress: BackwordProgress?, word: String) -> Set<Int> {
+        guard let progress else { return [5] }
+        if progress.isFailed { return Set(0..<6) }
+        let target = Array(word.uppercased())
+        let wrongGuesses = progress.isWon ? Array(progress.guesses.dropLast()) : progress.guesses
+        var maxSuffix = 1
+        for guess in wrongGuesses {
+            let g = Array(guess.uppercased())
+            guard g.count == 6, target.count == 6 else { continue }
+            var match = 0
+            for i in stride(from: 5, through: 0, by: -1) {
+                if g[i] == target[i] { match += 1 } else { break }
+            }
+            maxSuffix = max(maxSuffix, match)
+        }
+        return Set((6 - maxSuffix)..<6)
     }
 
     // MARK: - Computed
@@ -135,7 +118,7 @@ final class BackwordViewModel: ObservableObject {
             return
         }
 
-        let previousRevealedCount = progress.revealedCount
+        let prevRevealed = revealedIndices
         progress.guesses.append(guess)
         currentInput = ""
 
@@ -154,20 +137,14 @@ final class BackwordViewModel: ObservableObject {
             stats.record(guessCount: nil, date: word.date)
             OverallRatingService().recordBackword(guessCount: nil, date: word.date)
         } else {
-            // Reveal next letter — determine which index was newly revealed
-            let newRevealedCount = progress.revealedCount
-            if newRevealedCount > previousRevealedCount {
-                let prevSet = BackwordViewModel.revealedSets[previousRevealedCount - 1]
-                let newSet = BackwordViewModel.revealedSets[min(newRevealedCount, 6) - 1]
-                newlyRevealedIndex = newSet.subtracting(prevSet).min()
-                progress.save()
-                // Clear the highlight after the animation
+            let justRevealed = revealedIndices.subtracting(prevRevealed)
+            progress.save()
+            if !justRevealed.isEmpty {
+                newlyRevealedIndex = justRevealed.min()
                 Task {
                     try? await Task.sleep(nanoseconds: 800_000_000)
                     newlyRevealedIndex = nil
                 }
-            } else {
-                progress.save()
             }
         }
     }
