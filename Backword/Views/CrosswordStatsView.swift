@@ -55,15 +55,16 @@ struct CrosswordStatsView: View {
     @ViewBuilder
     private var recentHistory: some View {
         if isWeekly {
-            weeklyHistorySection
+            historySection(title: "RECENT GAMES", rows: weeklyBreakdownRows)
         } else {
-            dailyBreakdownSection
+            historySection(title: "LAST 14 DAYS", rows: dailyBreakdownRows)
         }
     }
 
-    private var dailyBreakdownSection: some View {
+    @ViewBuilder
+    private func historySection(title: String, rows: [HistoryRow]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("LAST 14 DAYS")
+            Text(title)
                 .font(AppFont.clueLabel(12))
                 .foregroundColor(.appAccent)
                 .tracking(2)
@@ -72,10 +73,8 @@ struct CrosswordStatsView: View {
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
                     Text("Date").frame(maxWidth: .infinity, alignment: .leading)
-                    Text("Score")
-                        .frame(width: 50, alignment: .center)
-                    Text("Time")
-                        .frame(width: 72, alignment: .center)
+                    Text("Score").frame(width: 50, alignment: .center)
+                    Text("Time").frame(width: 72, alignment: .center)
                 }
                 .font(AppFont.clueLabel(10))
                 .foregroundColor(.appTextSecondary)
@@ -85,7 +84,7 @@ struct CrosswordStatsView: View {
 
                 Divider().background(Color.appGridLine)
 
-                ForEach(Array(dailyBreakdownRows.enumerated()), id: \.element.dateStr) { idx, row in
+                ForEach(Array(rows.enumerated()), id: \.element.dateStr) { idx, row in
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 1) {
                             Text(formatDate(row.date))
@@ -106,7 +105,6 @@ struct CrosswordStatsView: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-//                        scoreChip(row.score, hasEntry: row.hasEntry)
                         ScoreChipView(score: row.score)
                             .frame(width: 50, alignment: .center)
 
@@ -129,7 +127,7 @@ struct CrosswordStatsView: View {
                     .padding(.leading, 14)
                     .padding(.vertical, 10)
 
-                    if idx < dailyBreakdownRows.count - 1 {
+                    if idx < rows.count - 1 {
                         Divider().background(Color.appGridLine.opacity(0.5))
                     }
                 }
@@ -138,46 +136,9 @@ struct CrosswordStatsView: View {
         }
     }
 
-    private var weeklyHistorySection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("RECENT GAMES")
-                .font(AppFont.clueLabel(12))
-                .foregroundColor(.appAccent)
-                .tracking(2)
+    // MARK: - Row Data
 
-            VStack(spacing: 0) {
-                let history = statsService.stats.filteredHistory(isWeekly: true).suffix(10).reversed()
-                ForEach(Array(history.enumerated()), id: \.element.id) { index, result in
-                    HStack(spacing: 12) {
-                        Text(formatDate(result.date))
-                            .font(AppFont.body(14))
-                            .foregroundColor(.appTextPrimary)
-                        Spacer()
-                        Text(result.timeSeconds.formattedTimeHHMMSS)
-                            .font(AppFont.body(14))
-                            .foregroundColor(.appTextSecondary)
-                            .monospacedDigit()
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-
-                    if index < min(9, statsService.stats.filteredHistory(isWeekly: true).count - 1) {
-                        Divider().background(Color.appGridLine)
-                    }
-                }
-            }
-            .background(Color.appSurface)
-            .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
-            .overlay(
-                RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                    .strokeBorder(Color.appAccent.opacity(0.2), lineWidth: 1)
-            )
-        }
-    }
-
-    // MARK: - Daily Breakdown Data
-
-    private struct DailyRow {
+    private struct HistoryRow {
         let dateStr: String
         let date: Date
         let isToday: Bool
@@ -187,7 +148,7 @@ struct CrosswordStatsView: View {
         let isSolved: Bool
     }
 
-    private var dailyBreakdownRows: [DailyRow] {
+    private var dailyBreakdownRows: [HistoryRow] {
         let utcFmt = DateFormatter()
         utcFmt.dateFormat = "yyyy-MM-dd"
         utcFmt.timeZone = TimeZone(identifier: "UTC")
@@ -195,7 +156,6 @@ struct CrosswordStatsView: View {
         let scoreMap: [String: Int] = Dictionary(uniqueKeysWithValues:
             ratingService.rating.dailyScores.map { ($0.date, $0.dailyCrossword) }
         )
-        // Build time map from UserProgress files, keyed by the puzzle's scheduled UTC date.
         // Only include puzzles completed on the same UTC date as the puzzle date (i.e. solved on time),
         // matching the "Solved" status shown in the archive view.
         var timeMap = [String: Int]()
@@ -207,23 +167,58 @@ struct CrosswordStatsView: View {
             timeMap[puzzleDate] = Int(progress.elapsedTime)
         }
         let todayStr = utcFmt.string(from: Date())
-        return (0..<14).compactMap { offset -> DailyRow? in
+        return (0..<14).compactMap { offset -> HistoryRow? in
             guard let date = Calendar.current.date(byAdding: .day, value: -offset, to: Date()) else { return nil }
             let dateStr = utcFmt.string(from: date)
             let solveTime = timeMap[dateStr]
             let ratingScore = scoreMap[dateStr]
             let score = ratingScore ?? (solveTime != nil ? 5 : 0)
-            let hasEntry = solveTime != nil || ratingScore != nil
-            return DailyRow(
+            return HistoryRow(
                 dateStr: dateStr,
                 date: date,
                 isToday: dateStr == todayStr,
                 score: score,
-                hasEntry: hasEntry,
+                hasEntry: solveTime != nil || ratingScore != nil,
                 solveTime: solveTime,
                 isSolved: solveTime != nil
             )
         }
+    }
+
+    private var weeklyBreakdownRows: [HistoryRow] {
+        let utcFmt = DateFormatter()
+        utcFmt.dateFormat = "yyyy-MM-dd"
+        utcFmt.timeZone = TimeZone(identifier: "UTC")
+
+        let scoreMap: [String: Int] = Dictionary(
+            ratingService.rating.dailyScores.compactMap { entry -> (String, Int)? in
+                guard let ws = entry.weeklyCrossword else { return nil }
+                return (entry.date, ws)
+            },
+            uniquingKeysWith: { first, _ in first }
+        )
+
+        return UserProgress.loadAll()
+            .filter { $0.isWeekly == true && $0.completedAt != nil }
+            .compactMap { progress -> HistoryRow? in
+                guard let puzzleDate = progress.puzzleDate,
+                      let date = utcFmt.date(from: puzzleDate) else { return nil }
+                let solveTime = Int(progress.elapsedTime)
+                let ratingScore = scoreMap[puzzleDate]
+                let score = ratingScore ?? 5
+                return HistoryRow(
+                    dateStr: puzzleDate,
+                    date: date,
+                    isToday: false,
+                    score: score,
+                    hasEntry: true,
+                    solveTime: solveTime,
+                    isSolved: true
+                )
+            }
+            .sorted { $0.date > $1.date }
+            .prefix(10)
+            .map { $0 }
     }
     
     // MARK: - Empty State
@@ -275,8 +270,8 @@ private extension CrosswordStatsView {
         mockStats.averageTimeSeconds = 6486.0
         mockStats.lastCompletedDate = Calendar.current.date(byAdding: .day, value: -1, to: Date())
         mockStats.history = [
-            PuzzleResult(puzzleId: "1", date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, timeSeconds: 5320, hintsUsed: 0),
-            PuzzleResult(puzzleId: "2", date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, timeSeconds: 8410, hintsUsed: 1),
+            PuzzleResult(puzzleId: "1", date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, timeSeconds: 5320, hintsUsed: 0, isWeekly: true),
+            PuzzleResult(puzzleId: "2", date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, timeSeconds: 8410, hintsUsed: 1, isWeekly: true),
             PuzzleResult(puzzleId: "3", date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!, timeSeconds: 290, hintsUsed: 0),
             PuzzleResult(puzzleId: "4", date: Calendar.current.date(byAdding: .day, value: -4, to: Date())!, timeSeconds: 370, hintsUsed: 2),
             PuzzleResult(puzzleId: "5", date: Calendar.current.date(byAdding: .day, value: -5, to: Date())!, timeSeconds: 330, hintsUsed: 0),
