@@ -326,6 +326,8 @@ struct BackwordView: View {
         Text(viewModel.word.clue.uppercased())
             .font(AppFont.clueLabel(isIpad ? 30 : 19 ))
             .foregroundColor(.appTextPrimary)
+            .lineLimit(1)
+            .minimumScaleFactor(0.5)
     }
 
     // MARK: - Completion Banner
@@ -428,7 +430,7 @@ private let previewWord = BackwordWord(
     id: "",
     date: "2026-04-01",
     word: "CASTLE",
-    clue: "CHESS"
+    clue: "Perfromance"
 )
 
 #Preview("Active") {

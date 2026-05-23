@@ -57,6 +57,44 @@ struct BackwordStatsView: View {
 
     @ViewBuilder
     private var summaryRow: some View {
+        ViewThatFits {
+            horizontalSummaryRowContent
+            verticalSummaryRowContent
+        }
+        .padding(.vertical, 20)
+        .background(Color.appSurface)
+        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                .strokeBorder(Color.appAccent.opacity(0.2), lineWidth: 1)
+        )
+    }
+
+    private var verticalSummaryRowContent: some View {
+        VStack {
+            HStack(spacing: 0) {
+                statCell(
+                    value: "\(stats.currentStreak)",
+                    label: "Current\n Streak",
+                    icon: stats.currentStreak > 0 ? "flame.fill" : nil,
+                    iconColor: .orange
+                )
+                divider
+                statCell(value: "\(stats.gamesPlayed)", label: "Played\n")
+                divider
+            }
+
+            HStack(spacing: 0) {
+                statCell(value: "\(stats.longestStreak)", label: "Best\n Streak")
+                divider
+                statCell(value: "\(stats.winRate)%", label: "Win Rate")
+                    .padding(.top)
+            }
+        }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility4)
+    }
+
+    private var horizontalSummaryRowContent: some View {
         VStack {
             HStack(spacing: 0) {
                 statCell(
@@ -75,13 +113,6 @@ struct BackwordStatsView: View {
                 .padding(.top)
 
         }
-        .padding(.vertical, 20)
-        .background(Color.appSurface)
-        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
-        .overlay(
-            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .strokeBorder(Color.appAccent.opacity(0.2), lineWidth: 1)
-        )
     }
 
     private var divider: some View {
@@ -124,6 +155,8 @@ struct BackwordStatsView: View {
                 .font(AppFont.clueLabel(12))
                 .foregroundColor(.appAccent)
                 .tracking(2)
+                .lineLimit(2)
+                .minimumScaleFactor(0.5)
 
             if stats.gamesWon == 0 || stats.guessCounts.isEmpty {
                 Text("No wins yet — keep playing!")
@@ -148,6 +181,8 @@ struct BackwordStatsView: View {
         )
     }
 
+    @ScaledMetric private var numberIconFrame: CGFloat = 16
+
     private func distributionRow(guessNum: Int) -> some View {
         let count = stats.count(forGuess: guessNum)
         let maxCount = max(stats.maxGuessCount, 1)
@@ -159,7 +194,7 @@ struct BackwordStatsView: View {
             Text("\(guessNum)")
                 .font(AppFont.clueLabel(14))
                 .foregroundColor(.appTextSecondary)
-                .frame(width: 16, alignment: .center)
+                .frame(width: numberIconFrame, alignment: .center)
 
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
@@ -188,7 +223,7 @@ struct BackwordStatsView: View {
             Text("\(count)")
                 .font(AppFont.clueLabel(13))
                 .foregroundColor(isHighlighted ? .appCorrect : .appTextSecondary)
-                .frame(width: 28, alignment: .trailing)
+                .frame(width: numberIconFrame, alignment: .center)
                 .scaleEffect(isHighlighted ? 1.1 : 1.0)
                 .animation(.spring(response: 0.4, dampingFraction: 0.6).delay(0.4), value: animatesBars)
         }
