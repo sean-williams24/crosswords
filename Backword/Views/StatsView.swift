@@ -1,184 +1,131 @@
+//  StatsView.swift
+
 import SwiftUI
 
 struct StatsView: View {
-    @EnvironmentObject var statsService: StatsService
-    @Environment(\.dismiss) private var dismiss
+    private var currentStreak: Int
+    private var longestStreak: Int
+    private var winRate: Int?
+    private var totalCompleted: Int
+    private var averageTimeSeconds: String?
 
-    var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.appBackground
-                    .ignoresSafeArea()
-
-                if statsService.stats.totalCompleted == 0 {
-                    emptyState
-                } else {
-                    statsContent
-                }
-            }
-            .navigationTitle("Stats")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.appTextSecondary)
-                    }
-                }
-            }
-        }
+    init(stats: BackwordStats) {
+        currentStreak = stats.currentStreak
+        totalCompleted = stats.gamesWon
+        longestStreak = stats.longestStreak
+        winRate = stats.winRate
     }
 
-    // MARK: - Stats Content
+    init(stats: UserStats, isWeekly: Bool) {
+        currentStreak = stats.currentStreak
+        longestStreak = stats.longestStreak
+        totalCompleted = stats.totalCompleted
+        averageTimeSeconds = stats.formattedAverageTime(isWeekly: isWeekly)
+    }
 
-    private var statsContent: some View {
-        VStack(spacing: 32) {
-            Spacer()
-
-            // Primary stat: current streak
-            VStack(spacing: 4) {
-                Text("\(statsService.stats.liveCurrentStreak)")
-                    .font(AppFont.statNumber())
-                    .foregroundColor(statsService.stats.liveCurrentStreak > 0 ? .appAccent : .appTextSecondary)
-                HStack(spacing: 4) {
-                    Image(systemName: statsService.stats.liveCurrentStreak > 0 ? "flame.fill" : "flame.slash.fill")
-                        .foregroundColor(statsService.stats.liveCurrentStreak > 0 ? .orange : .appTextSecondary)
-                    Text(statsService.stats.liveCurrentStreak > 0 ? "CURRENT STREAK" : "NO STREAK")
-                        .font(AppFont.clueLabel(11))
-                        .foregroundColor(.appTextSecondary)
-                        .tracking(2)
-                }
-            }
-
-            // Secondary stats grid
-            HStack(spacing: 0) {
-                statBox(
-                    value: "\(statsService.stats.longestStreak)",
-                    label: "BEST\nSTREAK"
-                )
-                statDivider
-                statBox(
-                    value: "\(statsService.stats.totalCompleted)",
-                    label: "PUZZLES\nSOLVED"
-                )
-                statDivider
-                statBox(
-                    value: statsService.stats.formattedAverageTime,
-                    label: "AVG\nTIME"
-                )
-            }
-            .padding(.vertical, 20)
-            .background(Color.appSurface)
-            .cornerRadius(AppLayout.cardCornerRadius)
-            .padding(.horizontal, AppLayout.screenPadding)
-
-            // Recent history
-            if !statsService.stats.history.isEmpty {
-                recentHistory
-            }
-
-            Spacer()
-        }
+    var body: some View {
+        summaryRow
     }
 
     @ViewBuilder
-    private func statBox(value: String, label: String) -> some View {
-        VStack(spacing: 6) {
+    private var summaryRow: some View {
+        ViewThatFits {
+            horizontalSummaryRowContent
+            verticalSummaryRowContent
+        }
+        .padding(.vertical, 20)
+        .padding(.horizontal, 16)
+        .background(Color.appSurface)
+        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                .strokeBorder(Color.appAccent.opacity(0.2), lineWidth: 1)
+        )
+    }
+
+    private var verticalSummaryRowContent: some View {
+        VStack {
+            HStack(spacing: 0) {
+                streakCell
+                divider
+                totalCompletedCell
+            }
+
+            HStack(spacing: 0) {
+                longestStreakCell
+                divider
+                winRateCell
+            }
+        }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+    }
+
+    private var horizontalSummaryRowContent: some View {
+        VStack {
+            HStack(spacing: 8) {
+                streakCell
+                divider
+                totalCompletedCell
+                divider
+                longestStreakCell
+            }
+            winRateCell
+        }
+    }
+
+    private var streakCell: some View {
+        statCell(
+            value: "\(currentStreak)",
+            label: "Current\n Streak"
+        )
+    }
+
+    @ViewBuilder
+    private var totalCompletedCell: some View {
+        statCell(value: "\(totalCompleted)", label: "Total\nSolved")
+    }
+
+    private var longestStreakCell: some View {
+        statCell(value: "\(longestStreak)", label: "Best\n Streak")
+    }
+
+    @ViewBuilder
+    private var winRateCell: some View {
+        if let winRate {
+            statCell(value: "\(winRate)%", label: "Win Rate")
+        } else if let averageTimeSeconds {
+            statCell(value: averageTimeSeconds, label: "Avg Time")
+        }
+    }
+
+    private var divider: some View {
+        Rectangle()
+            .fill(Color.appGridLine.opacity(0.5))
+            .frame(width: 1, height: 40)
+    }
+
+    private func statCell(
+        value: String,
+        label: String
+    ) -> some View {
+        VStack(spacing: 4) {
             Text(value)
-                .font(AppFont.header(24))
+                .font(AppFont.header(28))
                 .foregroundColor(.appTextPrimary)
+                .fixedSize(horizontal: true, vertical: false)
             Text(label)
-                .font(AppFont.clueLabel(9))
+                .font(AppFont.clueLabel(11))
                 .foregroundColor(.appTextSecondary)
-                .tracking(1.5)
+                .tracking(1)
+                .lineLimit(2)
+                .fixedSize(horizontal: true, vertical: false)
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
     }
+}
 
-    private var statDivider: some View {
-        Rectangle()
-            .fill(Color.appGridLine)
-            .frame(width: 1, height: 50)
-    }
-
-    private var recentHistory: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("RECENT")
-                .font(AppFont.clueLabel(11))
-                .foregroundColor(.appTextSecondary)
-                .tracking(2)
-                .padding(.horizontal, AppLayout.screenPadding)
-
-            VStack(spacing: 0) {
-                ForEach(statsService.stats.history.suffix(5).reversed()) { result in
-                    HStack {
-                        Text(formatDate(result.date))
-                            .font(AppFont.body(14))
-                            .foregroundColor(.appTextPrimary)
-                            .lineLimit(1)
-
-                        Spacer()
-
-                        Text(formatTime(result.timeSeconds))
-                            .font(AppFont.body(14))
-                            .foregroundColor(.appTextSecondary)
-
-                        if result.hintsUsed == 0 {
-                            Image(systemName: "star.fill")
-                                .font(.system(size: 10))
-                                .foregroundColor(.appAccent)
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-
-                    if result.id != statsService.stats.history.last?.id {
-                        Divider()
-                            .background(Color.appGridLine)
-                    }
-                }
-            }
-            .background(Color.appSurface)
-            .cornerRadius(AppLayout.cardCornerRadius)
-            .padding(.horizontal, AppLayout.screenPadding)
-        }
-    }
-
-    // MARK: - Empty State
-
-    private var emptyState: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "puzzlepiece")
-                .font(.system(size: 48))
-                .foregroundColor(.appTextSecondary)
-            Text("No puzzles completed yet")
-                .font(AppFont.body())
-                .foregroundColor(.appTextSecondary)
-            Text("Complete your first puzzle to see stats")
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary.opacity(0.7))
-        }
-    }
-
-    // MARK: - Helpers
-
-    private func formatDate(_ date: Date) -> String {
-        let fmt = DateFormatter()
-        fmt.dateFormat = "EEEE, MMM d"
-        return fmt.string(from: date)
-    }
-
-    private func formatTime(_ seconds: Int) -> String {
-        let h = seconds / 3600
-        let m = (seconds % 3600) / 60
-        let s = seconds % 60
-        if h > 0 {
-            return String(format: "%d:%02d:%02d", h, m, s)
-        } else {
-            return String(format: "%d:%02d", m, s)
-        }
-    }
+#Preview {
+    StatsView(stats: BackwordStats())
+    StatsView(stats: UserStats(), isWeekly:  false)
 }

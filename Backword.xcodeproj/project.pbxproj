@@ -37,6 +37,8 @@
 		86AFC3CE2FBE53CA007623C3 /* BackwordArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */; };
 		86AFC3D12FBFC367007623C3 /* ScoringRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D02FBFC367007623C3 /* ScoringRuleView.swift */; };
 		86AFC3D32FC20460007623C3 /* BackwordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */; };
+		86AFC3D52FC2402F007623C3 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D42FC2402F007623C3 /* StatsView.swift */; };
+		86AFC3D72FC25567007623C3 /* ScoreChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D62FC25567007623C3 /* ScoreChipView.swift */; };
 		86E5BFF62FA2BECA00A42156 /* Outfit-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFF02FA2BECA00A42156 /* Outfit-Light.ttf */; };
 		86E5BFF72FA2BECA00A42156 /* Outfit-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFF42FA2BECA00A42156 /* Outfit-Thin.ttf */; };
 		86E5BFF82FA2BECA00A42156 /* Outfit-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFEC2FA2BECA00A42156 /* Outfit-Black.ttf */; };
@@ -64,7 +66,7 @@
 		A220B5F6D4E48FCC57832B9C /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15EB4D0D354246894E51C7E /* CacheService.swift */; };
 		AC638DF36320A3F8C6EFDE6E /* CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741EF0B3C1470452272529E1 /* CompletionView.swift */; };
 		B022F8B276983EAF1219E126 /* WOTDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */; };
-		B87E042C9276130084747CA3 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8254031869B9E1FAC8C5A377 /* StatsView.swift */; };
+		B87E042C9276130084747CA3 /* StatsView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8254031869B9E1FAC8C5A377 /* StatsView2.swift */; };
 		BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2519353944EB9D4F32644E32 /* ClueBarView.swift */; };
 		BEF00EC711F525FD3B8EB3DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B35393D8C1799968B4B9119D /* Assets.xcassets */; };
 		C2A2E6FA90B85E2884F67538 /* ClueListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84C8AB718DDE4C9E0EDDE1F /* ClueListView.swift */; };
@@ -117,7 +119,7 @@
 		7CFE3BE7131C4A71B3845485 /* WOTDDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WOTDDetailView.swift; sourceTree = "<group>"; };
 		7D68E5D9B55DF552855C5B33 /* WordOfTheDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordOfTheDay.swift; sourceTree = "<group>"; };
 		7EDCB92E82855EB80981B63B /* KeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputView.swift; sourceTree = "<group>"; };
-		8254031869B9E1FAC8C5A377 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		8254031869B9E1FAC8C5A377 /* StatsView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView2.swift; sourceTree = "<group>"; };
 		8299222FB15ED0ECC8305F8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		83C12AC56422D31E9D619C3E /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsService.swift; sourceTree = "<group>"; };
@@ -126,6 +128,8 @@
 		86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordArchiveRow.swift; sourceTree = "<group>"; };
 		86AFC3D02FBFC367007623C3 /* ScoringRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringRuleView.swift; sourceTree = "<group>"; };
 		86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordInstructionsContentView.swift; sourceTree = "<group>"; };
+		86AFC3D42FC2402F007623C3 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		86AFC3D62FC25567007623C3 /* ScoreChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreChipView.swift; sourceTree = "<group>"; };
 		86E5BFEC2FA2BECA00A42156 /* Outfit-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Black.ttf"; sourceTree = "<group>"; };
 		86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Bold.ttf"; sourceTree = "<group>"; };
 		86E5BFEE2FA2BECA00A42156 /* Outfit-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-ExtraBold.ttf"; sourceTree = "<group>"; };
@@ -291,6 +295,7 @@
 			isa = PBXGroup;
 			children = (
 				963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */,
+				86AFC3D62FC25567007623C3 /* ScoreChipView.swift */,
 				86AFC3D02FBFC367007623C3 /* ScoringRuleView.swift */,
 			);
 			path = RatingDetails;
@@ -417,7 +422,8 @@
 				83C12AC56422D31E9D619C3E /* PaywallView.swift */,
 				86FAA1472FB27DFB0022EFF6 /* Crosswords */,
 				8AF93C5B6979DA0324E913C9 /* SettingsView.swift */,
-				8254031869B9E1FAC8C5A377 /* StatsView.swift */,
+				8254031869B9E1FAC8C5A377 /* StatsView2.swift */,
+				86AFC3D42FC2402F007623C3 /* StatsView.swift */,
 				7CFE3BE7131C4A71B3845485 /* WOTDDetailView.swift */,
 				9165B37268686C367CEB6523 /* RatingBarView.swift */,
 				86AFC3CF2FBFC323007623C3 /* RatingDetails */,
@@ -552,6 +558,7 @@
 				E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */,
 				869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */,
 				86FAA1592FB9B9150022EFF6 /* SupabaseClient.swift in Sources */,
+				86AFC3D72FC25567007623C3 /* ScoreChipView.swift in Sources */,
 				CF96B7A7D6669B73DBA8125E /* BackwordCard.swift in Sources */,
 				7D3636249D4EA1ACE0D6916C /* BackwordGuessRow.swift in Sources */,
 				87051E8136E314CB2A272A91 /* BackwordLetterCell.swift in Sources */,
@@ -568,6 +575,7 @@
 				BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */,
 				C2A2E6FA90B85E2884F67538 /* ClueListView.swift in Sources */,
 				AC638DF36320A3F8C6EFDE6E /* CompletionView.swift in Sources */,
+				86AFC3D52FC2402F007623C3 /* StatsView.swift in Sources */,
 				21618E85BCB44C8BE6735598 /* DebugSettingsView.swift in Sources */,
 				9344322FC4BD6682AB74BE2A /* GameViewModel.swift in Sources */,
 				8EF7F8087FF836F1BFC62151 /* HapticsEngine.swift in Sources */,
@@ -585,7 +593,7 @@
 				02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */,
 				58638D080E0090141DE592A2 /* SettingsView.swift in Sources */,
 				D39F9C4C078DA5925A365ABB /* StatsService.swift in Sources */,
-				B87E042C9276130084747CA3 /* StatsView.swift in Sources */,
+				B87E042C9276130084747CA3 /* StatsView2.swift in Sources */,
 				D380A06E810FCE5F5A7B9D43 /* StoreService.swift in Sources */,
 				C9B78241F73047C516573390 /* UserProgress.swift in Sources */,
 				46E2C3DE4959F83FA6F2E5E1 /* UserStats.swift in Sources */,

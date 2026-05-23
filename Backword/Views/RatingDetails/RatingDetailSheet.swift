@@ -9,7 +9,6 @@ struct RatingDetailSheet: View {
     @ScaledMetric private var totalColumnWidth: CGFloat = 30
     @ScaledMetric private var dateColumnWidth: CGFloat = 80
     @ScaledMetric private var dailyColumnWidth: CGFloat = 60
-    @ScaledMetric private var chipSize: CGFloat = 24
 
     let rating: OverallRating
     let isPro: Bool
@@ -31,26 +30,18 @@ struct RatingDetailSheet: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                LinearGradient(
-                    colors: [tier.color.opacity(0.12), Color.appBackground],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
-
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 28) {
-                        tierHero
-                            .padding(.horizontal, AppLayout.screenPadding)
-                        howItWorksSection
-                            .padding(.horizontal, AppLayout.screenPadding)
-                        breakdownSection
-                    }
-                    .padding(.top, 8)
-                    .padding(.bottom, 40)
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 28) {
+                    tierHero
+                        .padding(.horizontal, AppLayout.screenPadding)
+                    howItWorksSection
+                        .padding(.horizontal, AppLayout.screenPadding)
+                    breakdownSection
                 }
+                .padding(.top, 8)
+                .padding(.bottom, 40)
             }
+            .background(Color.appBackground)
             .navigationTitle("Your Rating")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
@@ -297,12 +288,12 @@ struct RatingDetailSheet: View {
             .frame(maxWidth: isScrolling ? .none : .infinity, alignment: .leading)
             .frame(width: isScrolling ? dateColumnWidth : .none, alignment: .leading)
 
-            scoreChip(day.dailyCrossword)
+            ScoreChipView(score: day.dailyCrossword)
                 .frame(width: isScrolling ? dailyColumnWidth : columnWidth, alignment: .center)
 
             if isPro {
                 if hasWeekly {
-                    scoreChip(day.weeklyCrossword ?? 0)
+                    ScoreChipView(score: day.weeklyCrossword ?? 0)
                         .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
                 } else {
                     Text("—")
@@ -312,7 +303,7 @@ struct RatingDetailSheet: View {
                 }
             }
 
-            scoreChip(day.backword)
+            ScoreChipView(score: day.backword)
                 .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
 
             Text("\(total)")
@@ -322,16 +313,6 @@ struct RatingDetailSheet: View {
         }
         .padding(.leading, 14)
         .padding(.vertical, 10)
-    }
-
-    private func scoreChip(_ score: Int) -> some View {
-        let color: Color = score == 5 ? .appCorrect : score > 0 ? .appAccent : .appTextSecondary.opacity(0.25)
-        return Text("\(score)")
-            .font(AppFont.clueLabel(12))
-            .foregroundColor(score > 0 ? .white : .appTextSecondary.opacity(0.4))
-            .frame(width: chipSize, height: chipSize)
-            .background(color)
-            .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
     // MARK: - How It Works
