@@ -47,7 +47,7 @@ final class BackwordViewModel: ObservableObject {
         if progress.isFailed { return Set(0..<6) }
         let target = Array(word.uppercased())
         let wrongGuesses = progress.isWon ? Array(progress.guesses.dropLast()) : progress.guesses
-        var maxSuffix = 1
+        var maxSuffix = wrongGuesses.count + 1
         for guess in wrongGuesses {
             let g = Array(guess.uppercased())
             guard g.count == 6, target.count == 6 else { continue }

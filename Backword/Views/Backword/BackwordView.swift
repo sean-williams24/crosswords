@@ -199,10 +199,12 @@ struct BackwordView: View {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 10) {
                     instructionRow(number: "1", text: "Guess the 6-letter word in 5 tries.")
-                    instructionRow(number: "2", text: "After each wrong guess, any letters you got right at the end of the word are revealed.")
-                    instructionRow(number: "3", text: "Type the missing letters into the highlighted cells, then tap Submit.")
-                    instructionRow(number: "4", text: "The clue is shown at the top — use it to guide your guess.")
-                    instructionRow(number: "5", text: "The fewer the guesses, the more points you get.")
+                    instructionRow(number: "2", text: "Type the missing letters into the highlighted cells, then tap Submit.")
+                    instructionRow(number: "3", text: "After each wrong guess, any letters you got right at the end of the word are revealed.")
+                    instructionRow(number: "4", text: "Unmatched letters from previous guesses are not eliminated — they're still in play")
+
+                    instructionRow(number: "5", text: "The clue is shown at the top — use it to guide your guess.")
+                    instructionRow(number: "6", text: "The fewer the guesses, the more points you get.")
                 }
 
                 Divider()
