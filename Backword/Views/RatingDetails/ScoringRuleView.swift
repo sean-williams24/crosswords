@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct ScoringRuleView: View {
+    @ScaledMetric private var spacing: CGFloat = 8
     let icon: String
     let title: String
     let rows: [(String, String)]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
+            HStack(spacing: spacing) {
                 Image(systemName: icon)
-                    .font(.system(size: 14))
+                    .font(.body)
                     .foregroundColor(.appAccent)
                     .frame(width: 20)
                 Text(title)
@@ -72,5 +73,5 @@ struct ScoringRuleView: View {
 }
 
 #Preview {
-    ScoringRuleView(icon: "", title: "Sean", rows: [("", "")])
+    ScoringRuleView(icon: "backward.circle", title: "Win in 1 guess", rows: [("", "")])
 }
