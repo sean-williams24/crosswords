@@ -160,6 +160,8 @@ struct ArchiveView: View {
                     .frame(maxWidth: .infinity)
                     .multilineTextAlignment(.center)
                     .animation(.spring(response: 0.3, dampingFraction: 0.7), value: selectedTab)
+                    .padding(.vertical, 12)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
         }

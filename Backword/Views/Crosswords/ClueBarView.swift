@@ -22,7 +22,6 @@ struct ClueBarView: View {
                 Text(viewModel.currentClueText)
                     .font(AppFont.clueText(isIpad ? 20 : 15))
                     .foregroundColor(.appTextPrimary)
-                    .lineLimit(2)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .id(clue.id) // force transition on clue change
                     .transition(.asymmetric(
