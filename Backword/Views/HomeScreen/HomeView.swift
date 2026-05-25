@@ -209,6 +209,7 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Daily Games")
                 .font(AppFont.header(20))
+                .foregroundColor(.appTextHeading)
                 .padding(.top, 16)
                 .padding(.bottom, 6)
                 .padding(.horizontal, AppLayout.screenPadding)
@@ -246,6 +247,7 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Weekly Games")
                 .font(AppFont.header(20))
+                .foregroundColor(.appTextHeading)
                 .padding(.top, isIpad ? 6 : 0)
                 .padding(.bottom, 6)
                 .padding(.horizontal, AppLayout.screenPadding)
@@ -425,7 +427,7 @@ struct HomeView: View {
                 VStack(spacing: 6) {
                     Text("WORD OF THE DAY")
                         .font(AppFont.clueLabel(10))
-                        .foregroundColor(.appTextSecondary)
+                        .foregroundColor(.appTextHeading)
                         .tracking(3)
                         .multilineTextAlignment(.center)
 

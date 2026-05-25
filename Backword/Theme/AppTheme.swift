@@ -9,6 +9,7 @@ extension Color {
     static let appAccent = Color("Accent")
     static let appCorrect = Color("Correct")
     static let appTextPrimary = Color("TextPrimary")
+    static let appTextHeading = Color("TextHeading")
     static let appTextSecondary = Color("TextSecondary")
     static let dailyCardBackground = Color("DailyCardBackground")
     static let dailyCardTitle = Color("DailyCardTitle")

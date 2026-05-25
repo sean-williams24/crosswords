@@ -1,8 +1,10 @@
 import SwiftUI
 
 struct ClueListView: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ObservedObject var viewModel: GameViewModel
     @Environment(\.dismiss) private var dismiss
+    @ScaledMetric private var clueFrame: CGFloat = 24
 
     var body: some View {
         NavigationStack {
@@ -78,34 +80,50 @@ struct ClueListView: View {
             viewModel.navigateToClue(clue)
             dismiss()
         } label: {
-            HStack(alignment: .top, spacing: 10) {
-                Text("\(clue.number)")
-                    .font(AppFont.clueLabel(14))
-                    .foregroundColor(isActive ? .appAccent : .appTextSecondary)
-                    .frame(width: 24, alignment: .trailing)
-
-                Text(clue.text)
-                    .font(AppFont.clueText())
-                    .foregroundColor(isCompleted ? .appTextSecondary : .appTextPrimary)
-                    .strikethrough(isCompleted)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                Text("(\(clue.length))")
-                    .font(AppFont.caption(13))
-                    .foregroundColor(.appTextSecondary)
-
-                if isCompleted {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.appCorrect)
-                        .font(.system(size: 14))
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 10) {
+                    clueNumber(clue: clue, isActive: isActive)
+                    clueText(clue: clue, isCompleted: isCompleted)
+                    HStack {
+                        Spacer()
+                        clueLength(clue: clue, isCompleted: isCompleted)
+                    }
                 }
+            } else {
+                HStack(alignment: .top, spacing: 10) {
+                    clueNumber(clue: clue, isActive: isActive)
+                    clueText(clue: clue, isCompleted: isCompleted)
+                    clueLength(clue: clue, isCompleted: isCompleted)
+                }
+                .padding(.vertical, 4)
             }
-            .padding(.vertical, 4)
         }
         .id(clue.id)
         .listRowSeparator(isFirst ? .hidden : .visible, edges: .top)
         .listRowSeparator(isLast ? .hidden : .visible, edges: .bottom)
         .listRowBackground(isActive ? Color.appAccent.opacity(0.08) : Color.appSurface)
+    }
+    
+    private func clueNumber(clue: Clue, isActive: Bool) -> some View {
+        Text("\(clue.number)")
+            .font(AppFont.clueLabel(14))
+            .foregroundColor(isActive ? .appAccent : .appTextSecondary)
+            .frame(width: clueFrame, alignment: .leading)
+    }
+
+    private func clueText(clue: Clue, isCompleted: Bool) -> some View {
+        Text(clue.text)
+            .font(AppFont.clueText())
+            .foregroundColor(isCompleted ? .appTextSecondary : .appTextPrimary)
+            .strikethrough(isCompleted)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func clueLength(clue: Clue, isCompleted: Bool) -> some View {
+        Text("(\(clue.length))")
+            .font(AppFont.caption(13))
+            .foregroundColor(.appTextSecondary)
+            .foregroundColor(isCompleted ? .appCorrect : .appTextPrimary)
     }
 }
 
