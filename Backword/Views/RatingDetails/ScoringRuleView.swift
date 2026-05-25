@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ScoringRuleView: View {
-    @ScaledMetric private var spacing: CGFloat = 8
+    @ScaledMetric private var spacing: CGFloat = 14
     let icon: String
     let title: String
     let rows: [(String, String)]

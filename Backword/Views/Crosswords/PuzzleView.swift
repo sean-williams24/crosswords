@@ -8,6 +8,7 @@ struct PuzzleView: View {
     @EnvironmentObject var ratingService: OverallRatingService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @ScaledMetric private var buttonWidth: CGFloat = 60
     @State private var showPaywall = false
     @State private var showRewardedHintBanner = false
     @State private var showCrosswordStats = false
@@ -194,63 +195,113 @@ struct PuzzleView: View {
 //        }
 //    }
 
-    // MARK: - Rewarded Hint Banner
+    // MARK: - Rewarde
+    private let hintIcon: some View = Image(systemName: "play.circle.fill")
+        .font(.system(size: 24))
+        .foregroundColor(.appAccent)
 
-    private var rewardedHintBanner: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "play.circle.fill")
-                .font(.system(size: 24))
-                .foregroundColor(.appAccent)
+    private var bannerTextStack: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text("Want a free hint?")
+                .font(AppFont.clueLabel(13))
+                .foregroundColor(.appTextPrimary)
+            Text("Watch a short ad to earn one.")
+                .font(AppFont.caption(12))
+                .foregroundColor(.appTextSecondary)
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Want a free hint?")
-                    .font(AppFont.clueLabel(13))
-                    .foregroundColor(.appTextPrimary)
-                Text("Watch a short ad to earn one.")
-                    .font(AppFont.caption(12))
-                    .foregroundColor(.appTextSecondary)
-            }
-
-            Spacer()
-
-            Button {
-                adService.showRewardedAd {
-                    viewModel.adBonusHints += 1
-                    withAnimation {
-                        showRewardedHintBanner = false
-                    }
-                }
-            } label: {
-                Text("Watch")
-                    .font(AppFont.clueLabel(12))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .background(Color.appAccent)
-                    .cornerRadius(10)
-            }
-
-            Button {
-                showPaywall = true
-            } label: {
-                Text("Unlimited")
-                    .font(AppFont.clueLabel(12))
-                    .foregroundColor(.appAccent)
-                    .lineLimit(1)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .background(Color.appAccent.opacity(0.12))
-                    .cornerRadius(10)
-            }
-
-            Button {
+    private var watchButton: some View {
+        Button {
+            adService.showRewardedAd {
+                viewModel.adBonusHints += 1
                 withAnimation {
                     showRewardedHintBanner = false
                 }
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.appTextSecondary)
+            }
+        } label: {
+            Text("Watch")
+                .frame(maxWidth: .infinity)
+                .font(AppFont.clueLabel(12))
+                .foregroundColor(.white)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(Color.appAccent)
+                .cornerRadius(10)
+        }
+    }
+
+    private var unlimitedButton: some View {
+        Button {
+            showPaywall = true
+        } label: {
+            Text("Unlimited")
+                .fixedSize(horizontal: true, vertical: false)
+                .frame(maxWidth: .infinity)
+                .font(AppFont.clueLabel(12))
+                .foregroundColor(.appAccent)
+                .lineLimit(1)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(Color.appAccent.opacity(0.12))
+                .cornerRadius(10)
+        }
+    }
+
+    private var closeButton: some View {
+        Button {
+            withAnimation {
+                showRewardedHintBanner = false
+            }
+        } label: {
+            Image(systemName: "xmark")
+                .font(.body)
+                .foregroundColor(.appTextSecondary)
+        }
+    }
+
+    private var hRewardedHintBanner: some View {
+        HStack(spacing: 12) {
+            hintIcon
+            bannerTextStack
+            Spacer()
+            ViewThatFits {
+                HStack {
+                    watchButton
+                    unlimitedButton
+                }
+                VStack {
+                    watchButton
+                    unlimitedButton
+                }
+            }
+
+            closeButton
+        }
+    }
+
+    private var vRewardedHintBanner: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                bannerTextStack
+                Spacer(minLength: 0)
+                closeButton
+            }
+            HStack {
+                watchButton
+                unlimitedButton
+            }
+        }
+    }
+
+    private var rewardedHintBanner: some View {
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                vRewardedHintBanner
+            } else {
+                hRewardedHintBanner
             }
         }
         .padding(.horizontal, AppLayout.screenPadding)

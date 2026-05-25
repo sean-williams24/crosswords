@@ -127,6 +127,7 @@ struct PaywallView: View {
                 }
             }
         }
+        .background(Color.appBackground)
     }
 
     private func animateLogo() {

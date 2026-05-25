@@ -2,8 +2,10 @@ import SwiftUI
 
 struct RatingDetailSheet: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @ScaledMetric private var spacing: CGFloat = 14
     @State private var animates = false
-    @State private var showHowItWorks = false
+    @State private var showHowItWorks = true
+    @ScaledMetric private var chevronSize: CGFloat = 12
     @ScaledMetric private var columnWidth: CGFloat = 60
     @ScaledMetric private var scrollingColumnWidth: CGFloat = 70
     @ScaledMetric private var totalColumnWidth: CGFloat = 30
@@ -16,7 +18,7 @@ struct RatingDetailSheet: View {
 
     private var tier: RatingTier { rating.tier(isPro: isPro) }
     private var fraction: Double { rating.fraction(isPro: isPro) }
-
+    
     // Full 14-day calendar, most recent first. Days with no recorded activity default to zero scores.
     private var recentDays: [DailyScore] {
         let fmt = OverallRating.dateFormatter
@@ -82,10 +84,12 @@ struct RatingDetailSheet: View {
                         .foregroundColor(tier.color)
                 }
 
-                Text("\(rating.totalPoints(isPro: isPro)) / \(rating.maxPoints(isPro: isPro)) pts · 14 days")
+                Text("\(rating.totalPoints(isPro: isPro)) / \(rating.maxPoints(isPro: isPro)) pts")
                     .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
+                    .foregroundColor(.appTextHeading)
             }
+            .minimumScaleFactor(0.5)
+            .lineLimit(1)
 
             // Large progress bar
             GeometryReader { geo in
@@ -107,7 +111,7 @@ struct RatingDetailSheet: View {
                     // Tier threshold markers
                     ForEach(RatingTier.allCases.dropFirst(), id: \.displayName) { t in
                         Capsule()
-                            .fill(Color.appBackground.opacity(0.6))
+                            .fill(Color.appTextHeading.opacity(0.6))
                             .frame(width: 2, height: 16)
                             .offset(x: geo.size.width * CGFloat(t.threshold) - 1)
                     }
@@ -131,14 +135,17 @@ struct RatingDetailSheet: View {
             .frame(height: 28)
 
             // Tier scale labels
-            HStack {
-                ForEach(RatingTier.allCases, id: \.displayName) { t in
-                    Text(t.displayName)
-                        .font(AppFont.clueLabel(9))
-                        .foregroundColor(t == tier ? t.color : .appTextSecondary.opacity(0.5))
-                        .frame(maxWidth: .infinity)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.2)
+            if dynamicTypeSize > .medium {
+                VStack {
+                    ForEach(RatingTier.allCases.reversed(), id: \.displayName) { t in
+                        ratingLevels(t)
+                    }
+                }
+            } else {
+                HStack(spacing: 4) {
+                    ForEach(RatingTier.allCases, id: \.displayName) { t in
+                        ratingLevels(t)
+                    }
                 }
             }
         }
@@ -149,6 +156,14 @@ struct RatingDetailSheet: View {
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .strokeBorder(tier.color.opacity(0.3), lineWidth: 1)
         )
+    }
+
+    private func ratingLevels(_ t: RatingTier) -> some View {
+        Text(t.displayName)
+            .font(AppFont.clueLabel(10))
+            .foregroundColor(t == tier ? t.color : .appTextSecondary.opacity(0.5))
+            .frame(maxWidth: .infinity)
+            .lineLimit(1)
     }
 
     // MARK: - Day-by-Day Breakdown
@@ -331,10 +346,11 @@ struct RatingDetailSheet: View {
                         .tracking(2)
                     Spacer()
                     Image(systemName: showHowItWorks ? "chevron.up" : "chevron.down")
-                        .font(.system(size: 12, weight: .semibold))
+                        .font(.system(size: chevronSize, weight: .semibold))
                         .foregroundColor(.appTextSecondary)
                 }
                 .padding(16)
+                .background(Color.appSurface)
             }
             .buttonStyle(.plain)
 
@@ -343,6 +359,7 @@ struct RatingDetailSheet: View {
                     Divider().background(Color.appGridLine)
 
                     ScoringRuleView.crossword()
+                        .padding(.leading, 8)
 
                     Text("- 1 point deducted for every 3 hints used")
                         .font(AppFont.caption())
@@ -352,19 +369,22 @@ struct RatingDetailSheet: View {
                     Divider().background(Color.appGridLine.opacity(0.5))
 
                     ScoringRuleView.backword()
+                        .padding(.leading, 8)
 
                     Divider().background(Color.appGridLine.opacity(0.5))
 
                     VStack(alignment: .leading, spacing: 6) {
-                        HStack(spacing: 8) {
+                        HStack(spacing: spacing) {
                             Image(systemName: "calendar")
-                                .font(.system(size: 14))
+                                .font(.body)
                                 .foregroundColor(.appAccent)
                                 .frame(width: 20)
                             Text("Rolling 14-day window")
                                 .font(AppFont.clueLabel(13))
                                 .foregroundColor(.appTextPrimary)
                         }
+                        .padding(.leading, 8)
+
                         Text("Your rating reflects only the last 14 days. Skip a day and it scores 0, so play every day to keep your rating up.")
                             .font(AppFont.caption())
                             .foregroundColor(.appTextSecondary)
