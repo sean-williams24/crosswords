@@ -22,19 +22,19 @@ struct SettingsView: View {
                         .foregroundColor(.appTextSecondary)
                 }
 
-                Section {
-                    letterFeedbackRow
-                } header: {
-                    Text("BACKWORD")
-                        .font(AppFont.clueLabel(12))
-                        .foregroundColor(.appAccent)
-                        .tracking(2)
-                        .textCase(nil)
-                } footer: {
-                    Text("When enabled, letters in your past guesses that appear anywhere in the target word are highlighted.")
-                        .font(AppFont.caption())
-                        .foregroundColor(.appTextSecondary)
-                }
+//                Section {
+//                    letterFeedbackRow
+//                } header: {
+//                    Text("BACKWORD")
+//                        .font(AppFont.clueLabel(12))
+//                        .foregroundColor(.appAccent)
+//                        .tracking(2)
+//                        .textCase(nil)
+//                } footer: {
+//                    Text("When enabled, letters in your past guesses that appear anywhere in the target word are highlighted.")
+//                        .font(AppFont.caption())
+//                        .foregroundColor(.appTextSecondary)
+//                }
             }
             .scrollContentBackground(.hidden)
             .background(Color.appBackground)
@@ -67,16 +67,34 @@ struct SettingsView: View {
                 .tint(.appAccent)
         }
         .listRowBackground(Color.appSurface)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility3)
     }
 
-    private var letterFeedbackRow: some View {
+    private var letterFeedbackTitle: some View {
+        Text("Letter Feedback")
+            .fixedSize(horizontal: true, vertical: false)
+            .font(AppFont.body(15))
+            .lineLimit(2)
+            .foregroundColor(storeService.isProUser ? .appTextPrimary : .appTextSecondary)
+    }
+
+    private var letterFeedbackToggle: some View {
+        Toggle("", isOn: Binding(
+            get: { settings.backwordLetterFeedback },
+            set: { newValue in
+                guard storeService.isProUser else { return }
+                settings.backwordLetterFeedback = newValue
+            }
+        ))
+        .tint(.appAccent)
+        .disabled(!storeService.isProUser)
+    }
+
+    private var hLetterFeedbackContent: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 6) {
-                    Text("Letter Feedback")
-                        .font(AppFont.body(15))
-                        .foregroundColor(storeService.isProUser ? .appTextPrimary : .appTextSecondary)
-
+                    letterFeedbackTitle
                     if !storeService.isProUser {
                         proTag
                     }
@@ -84,16 +102,29 @@ struct SettingsView: View {
             }
 
             Spacer()
+            letterFeedbackToggle
+        }
+    }
 
-            Toggle("", isOn: Binding(
-                get: { settings.backwordLetterFeedback },
-                set: { newValue in
-                    guard storeService.isProUser else { return }
-                    settings.backwordLetterFeedback = newValue
+    private var vLetterFeedbackContent: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 26) {
+                letterFeedbackTitle
+                if !storeService.isProUser {
+                    proTag
                 }
-            ))
-            .tint(.appAccent)
-            .disabled(!storeService.isProUser)
+            }
+
+            Spacer()
+            letterFeedbackToggle
+            Spacer()
+        }
+    }
+
+    private var letterFeedbackRow: some View {
+        ViewThatFits {
+            hLetterFeedbackContent
+            vLetterFeedbackContent
         }
         .listRowBackground(Color.appSurface)
     }

@@ -67,7 +67,7 @@ struct ClueListView: View {
                 }
             }
         }
-        .presentationDetents([.medium])
+        .presentationDetents(dynamicTypeSize.isAccessibilitySize ? [.large] : [.medium])
         .presentationDragIndicator(.visible)
     }
 
@@ -103,7 +103,7 @@ struct ClueListView: View {
         .listRowSeparator(isLast ? .hidden : .visible, edges: .bottom)
         .listRowBackground(isActive ? Color.appAccent.opacity(0.08) : Color.appSurface)
     }
-    
+
     private func clueNumber(clue: Clue, isActive: Bool) -> some View {
         Text("\(clue.number)")
             .font(AppFont.clueLabel(14))
