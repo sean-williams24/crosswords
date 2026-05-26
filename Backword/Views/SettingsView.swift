@@ -4,10 +4,20 @@ struct SettingsView: View {
     @ObservedObject private var settings = AppSettings.shared
     @EnvironmentObject var storeService: StoreService
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("appColorScheme") private var appColorScheme: Int = 2
 
     var body: some View {
         NavigationStack {
             Form {
+                Section(header: Text("Appearance")) {
+                    Picker("Theme", selection: $appColorScheme) {
+                        Text("Light").tag(1)
+                        Text("Dark").tag(2)
+                        Text("System").tag(3)
+                    }
+                    .pickerStyle(.segmented)
+                }
+
                 Section {
                     correctHighlightRow
                 } header: {
@@ -40,6 +50,7 @@ struct SettingsView: View {
             .background(Color.appBackground)
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
+            .preferredColorScheme(selectedScheme)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
@@ -52,6 +63,14 @@ struct SettingsView: View {
                     }
                 }
             }
+        }
+    }
+
+    private var selectedScheme: ColorScheme? {
+        switch appColorScheme {
+        case 1: return .light
+        case 2: return .dark
+        default: return nil
         }
     }
 
