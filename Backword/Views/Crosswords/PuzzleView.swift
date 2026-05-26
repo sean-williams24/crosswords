@@ -107,6 +107,7 @@ struct PuzzleView: View {
         .enableSwipeBack()
         .sheet(isPresented: $viewModel.showClueList) {
             ClueListView(viewModel: viewModel)
+                .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $viewModel.isComplete) {
             CompletionView(viewModel: viewModel)
