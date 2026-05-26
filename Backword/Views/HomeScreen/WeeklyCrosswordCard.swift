@@ -16,6 +16,10 @@ struct WeeklyCrosswordCard: View {
         sizeClass == .regular
     }
 
+    private var appLayout: AppLayout {
+        AppLayout(sizeClass: sizeClass)
+    }
+
     var body: some View {
         switch viewModel.state {
         case .failed:
@@ -85,7 +89,7 @@ struct WeeklyCrosswordCard: View {
             }
         }
         .padding(24)
-        .frame(maxWidth: isIpad ? 400 : .infinity)
+        .frame(maxWidth: isIpad ? 400 : .infinity, minHeight: appLayout.cardHeight)
         .background(
             Color.appSurface.overlay(
                 proGradient.opacity(0.02)
@@ -96,7 +100,6 @@ struct WeeklyCrosswordCard: View {
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .stroke(proGradient, lineWidth: 1.5)
         )
-        .padding(.horizontal, AppLayout.screenPadding)
         .sheet(isPresented: $showPaywall) {
             PaywallView()
                 .environmentObject(storeService)

@@ -55,9 +55,27 @@ enum AppFont {
 
 // MARK: - Spacing & Layout
 
-enum AppLayout {
+struct AppLayout {
+    let sizeClass: UserInterfaceSizeClass?
+
+    // Statically available constants
     static let gridSpacing: CGFloat = 2
     static let cellCornerRadius: CGFloat = 2
     static let cardCornerRadius: CGFloat = 12
+    static let cardHeightSmall: CGFloat = 144
+    static let cardHeightLarge: CGFloat = 194
     static let screenPadding: CGFloat = 20
+    static let screenPaddingLarge: CGFloat = 45
+
+    var isiPad: Bool {
+        sizeClass == .regular
+    }
+
+    var cardHeight: CGFloat {
+        isiPad ? AppLayout.cardHeightLarge : AppLayout.cardHeightSmall
+    }
+
+    var homeHorizontalPadding: CGFloat {
+        isiPad ? AppLayout.screenPaddingLarge : AppLayout.screenPadding
+    }
 }

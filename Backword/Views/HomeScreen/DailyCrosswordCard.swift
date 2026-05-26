@@ -14,6 +14,10 @@ struct DailyCrosswordCard: View {
     @ScaledMetric private var iconSize: CGFloat = 10
     @State private var showStreakPopup = false
 
+    private var appLayout: AppLayout {
+        AppLayout(sizeClass: sizeClass)
+    }
+
     private var isIpad: Bool {
         sizeClass == .regular
     }
@@ -79,50 +83,10 @@ struct DailyCrosswordCard: View {
             .frame(maxWidth: .infinity)
 
             if statsService.stats.liveCurrentStreak > 0 {
-                Button {
-                    showStreakPopup.toggle()
-                    if showStreakPopup {
-                        Task {
-                            try? await Task.sleep(nanoseconds: 4_000_000_000)
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                showStreakPopup = false
-                            }
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "flame.fill")
-                            .foregroundColor(.orange)
-                            .font(.system(size: 11))
-                        Text("\(statsService.stats.liveCurrentStreak)")
-                            .font(AppFont.clueLabel(12))
-                            .foregroundColor(.appTextPrimary)
-                    }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(Color.appSurface.opacity(0.8))
-                    .cornerRadius(14)
-                    .padding(12)
-                }
-                .buttonStyle(.plain)
-                .overlay(alignment: .top) {
-                    if showStreakPopup {
-                        Text("\(statsService.stats.liveCurrentStreak)-day streak")
-                            .font(AppFont.clueLabel(12))
-                            .foregroundColor(.appTextPrimary)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(Color.appSurface)
-                            .cornerRadius(10)
-                            .shadow(color: .black.opacity(0.15), radius: 8, y: 2)
-                            .offset(y: -36)
-                            .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    }
-                }
-                .animation(.easeInOut(duration: 0.2), value: showStreakPopup)
+                streakButton
             }
         }
-        .frame(maxWidth: .infinity, minHeight: 144)
+        .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(
             ZStack {
                 Color.dailyCardBackground
@@ -131,9 +95,54 @@ struct DailyCrosswordCard: View {
         .clipped()
         .cornerRadius(AppLayout.cardCornerRadius)
     }
+
+    private var streakButton: some View {
+        Button {
+            showStreakPopup.toggle()
+            if showStreakPopup {
+                Task {
+                    try? await Task.sleep(nanoseconds: 4_000_000_000)
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        showStreakPopup = false
+                    }
+                }
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: "flame.fill")
+                    .foregroundColor(.orange)
+                    .font(.system(size: 11))
+                Text("\(statsService.stats.liveCurrentStreak)")
+                    .font(AppFont.clueLabel(12))
+                    .foregroundColor(.appTextPrimary)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(Color.appSurface.opacity(0.8))
+            .cornerRadius(14)
+            .padding(.trailing, 12)
+        }
+        .buttonStyle(.plain)
+        .overlay(alignment: .top) {
+            if showStreakPopup {
+                Text("\(statsService.stats.liveCurrentStreak)-day streak")
+                    .font(AppFont.clueLabel(12))
+                    .foregroundColor(.appTextPrimary)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(Color.appSurface)
+                    .cornerRadius(10)
+                    .shadow(color: .black.opacity(0.15), radius: 8, y: 2)
+                    .offset(y: -36)
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: showStreakPopup)
+    }
 }
 
 #Preview {
     DailyCrosswordCard(viewModel: HomeViewModel(puzzleService: PuzzleService()))
         .environmentObject(StatsService())
+        .padding()
 }

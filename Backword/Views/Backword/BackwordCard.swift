@@ -1,9 +1,14 @@
 import SwiftUI
 
 struct BackwordCard: View {
+    @Environment(\.horizontalSizeClass) var sizeClass
     @ScaledMetric private var spacing: CGFloat = 10
     @ObservedObject var service: BackwordService
     let progress: BackwordProgress?
+
+    private var appLayout: AppLayout {
+        AppLayout(sizeClass: sizeClass)
+    }
 
     var body: some View {
         Group {
@@ -38,7 +43,7 @@ struct BackwordCard: View {
                 playView
             }
         }
-        .frame(maxWidth: .infinity, minHeight: 144)
+        .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(Color.appBackground)
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(

@@ -28,6 +28,10 @@ struct HomeView: View {
     @State private var showDebugSettings = false
     #endif
 
+    private var appLayout: AppLayout {
+        AppLayout(sizeClass: sizeClass)
+    }
+
     init(viewModel: HomeViewModel? = nil) {
         // Can't use @EnvironmentObject in init, so create with a temporary service
         // The real service is injected via .onAppear
@@ -46,7 +50,7 @@ struct HomeView: View {
                             rating: ratingService.rating,
                             isPro: storeService.isProUser
                         )
-                        .padding(.horizontal, AppLayout.screenPadding)
+                        .padding(.horizontal, appLayout.homeHorizontalPadding)
                         .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
 
                         wotd
@@ -201,7 +205,7 @@ struct HomeView: View {
             .tracking(1)
             .multilineTextAlignment(.leading)
             .padding(.bottom, 26)
-            .padding(.horizontal, AppLayout.screenPadding)
+//            .padding(.horizontal, AppLayout.screenPadding)
     }
 
     @ViewBuilder
@@ -212,7 +216,6 @@ struct HomeView: View {
                 .foregroundColor(.appTextHeading)
                 .padding(.top, 16)
                 .padding(.bottom, 6)
-                .padding(.horizontal, AppLayout.screenPadding)
 
             TimelineView(.periodic(from: .now, by: 60)) { context in
                 if isAfterLocalMidnight(at: context.date) {
@@ -227,7 +230,6 @@ struct HomeView: View {
                     backwordCard
                     DailyCrosswordCard(viewModel: viewModel)
                 }
-                .padding(.horizontal, 45)
                 .padding(.bottom, 60)
             } else {
                 Group {
@@ -237,9 +239,10 @@ struct HomeView: View {
 
                     DailyCrosswordCard(viewModel: viewModel)
                 }
-                .padding(.horizontal, AppLayout.screenPadding)
             }
         }
+        .padding(.horizontal, appLayout.homeHorizontalPadding)
+
     }
 
     @ViewBuilder
@@ -250,7 +253,6 @@ struct HomeView: View {
                 .foregroundColor(.appTextHeading)
                 .padding(.top, isIpad ? 6 : 0)
                 .padding(.bottom, 6)
-                .padding(.horizontal, AppLayout.screenPadding)
 
             TimelineView(.periodic(from: .now, by: 60)) { context in
                 if isBeforeWeeklyResetUTC(at: context.date) {
@@ -264,6 +266,7 @@ struct HomeView: View {
             WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
                 .environmentObject(storeService)
         }
+        .padding(.horizontal, appLayout.homeHorizontalPadding)
     }
 
     @ViewBuilder
@@ -449,7 +452,7 @@ struct HomeView: View {
         .frame(maxWidth: .infinity)
         .background(Color.appSurface)
         .cornerRadius(AppLayout.cardCornerRadius)
-        .padding(.horizontal, isIpad ? 45 : AppLayout.screenPadding)
+        .padding(.horizontal, appLayout.homeHorizontalPadding)
         .padding(.bottom, isIpad ? 16 : 0)
     }
 
