@@ -6,10 +6,8 @@ final class WOTDService: ObservableObject {
     @Published var todaysWord: WordOfTheDay?
     private let cache = CacheService()
     private let dateFormatting = DateFormatting()
-
-    // Supabase config (same project as PuzzleService)
-    private let baseURL = "https://cmvzqtpvzobdnnjpvyfi.supabase.co"
-    private let apiKey = "sb_publishable_Kj4RZqeTrOAXeOhRVdluVA_EFEOGveT"
+    private let baseURL = Secrets.supabaseURL
+    private let apiKey = Secrets.supabaseAnonKey
 
     /// The date string (yyyy-MM-dd) we last fetched for
     private var lastFetchedDate: String?

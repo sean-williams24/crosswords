@@ -12,8 +12,8 @@ final class SupabaseClient: SupabaseClientProtocol {
     static let shared = SupabaseClient()
     private let dateFormatting = DateFormatting()
     private let client: Supabase.SupabaseClient
-    private let baseURL = "https://cmvzqtpvzobdnnjpvyfi.supabase.co"
-    private let apiKey = "sb_publishable_Kj4RZqeTrOAXeOhRVdluVA_EFEOGveT"
+    private let baseURL = Secrets.supabaseURL
+    private let apiKey = Secrets.supabaseAnonKey
 
     init() {
         self.client = Supabase.SupabaseClient(supabaseURL: URL(string: baseURL)!, supabaseKey: apiKey)

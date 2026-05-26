@@ -16,5 +16,9 @@
 	</array>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-7357305065047849~1745088518</string>
+	<key>SupabaseURL</key>
+	<string>$(SUPABASE_URL)</string>
+	<key>SupabaseAnonKey</key>
+	<string>$(SUPABASE_ANON_KEY)</string>
 </dict>
 </plist>

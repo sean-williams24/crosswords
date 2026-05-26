@@ -4,11 +4,8 @@ import Foundation
 final class PuzzleService: ObservableObject {
 
     // MARK: - Configuration
-
-    /// Set these to your Supabase project values
-    private let baseURL: String = "https://cmvzqtpvzobdnnjpvyfi.supabase.co"
-    private let apiKey: String = "sb_publishable_Kj4RZqeTrOAXeOhRVdluVA_EFEOGveT"
-
+    private let baseURL = Secrets.supabaseURL
+    private let apiKey = Secrets.supabaseAnonKey
     private let cache = CacheService()
     private let dateFormatting = DateFormatting()
     private let decoder: JSONDecoder = {

@@ -34,6 +34,7 @@ Backend/supabase/*
 *.xcuserstate
 DerivedData/
 build/
+Config.xcconfig
 
 # Exclude Xcode workspace settings (user and shared)
 Backword.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
