@@ -15,7 +15,7 @@
 		<string>Outfit-Black.ttf</string>
 	</array>
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-7357305065047849~1745088518</string>
+	<string>$(ADMOB_APP_ID)</string>
 	<key>SupabaseURL</key>
 	<string>$(SUPABASE_URL)</string>
 	<key>SupabaseAnonKey</key>

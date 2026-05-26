@@ -1,5 +1,0 @@
-//
-//  Config.xcconfig
-
-SUPABASE_URL = https:/$()/cmvzqtpvzobdnnjpvyfi.supabase.co
-SUPABASE_ANON_KEY = sb_publishable_Kj4RZqeTrOAXeOhRVdluVA_EFEOGveT
