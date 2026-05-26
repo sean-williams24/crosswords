@@ -1,9 +1,6 @@
 import UIKit
 import GoogleMobileAds
 
-/// Manages loading and presenting interstitial and rewarded ads for free-tier users.
-///
-/// Replace the production ad unit IDs before submitting to the App Store.
 @MainActor
 final class AdService: NSObject, ObservableObject {
 
@@ -14,7 +11,7 @@ final class AdService: NSObject, ObservableObject {
     private let rewardedAdUnitID = "ca-app-pub-3940256099942544/1712485313"      // Google test ID (Rewarded)
     #else
     private let interstitialAdUnitID = "ca-app-pub-7357305065047849/2731847065"
-    private let rewardedAdUnitID = "ca-app-pub-7357305065047849/XXXXXXXXXX" // TODO: Replace with real rewarded ad unit ID
+    private let rewardedAdUnitID = "ca-app-pub-7357305065047849/9890466910"
     #endif
 
     // MARK: - State
@@ -47,22 +44,6 @@ final class AdService: NSObject, ObservableObject {
             print("[AdService] Failed to load interstitial: \(error.localizedDescription)")
         }
     }
-
-//    func loadRewardedAd() async {
-//        do {
-//            rewarded = try await GADRewardedAd.load(
-//                withAdUnitID: rewardedAdUnitID,
-//                request: GADRequest()
-//            )
-//            isRewardedAdReady = rewarded != nil
-//        } catch {
-//            isRewardedAdReady = false
-//            print("[AdService] Failed to load rewarded ad: \(error.localizedDescription)")
-//        }
-//    }
-
-//    @Published var coins = 0
-//    private var rewardedAd: RewardedAd?
 
     func loadRewardedAd() async {
       do {
@@ -113,29 +94,15 @@ final class AdService: NSObject, ObservableObject {
         showInterstitial()
     }
 
-    /// Presents a rewarded ad. Calls `onReward` when the ad is dismissed (regardless of
-    /// whether the user watched it fully or tapped the close button).
-//    func showRewardedAd(onReward: @escaping @MainActor () -> Void) {
-//        guard let ad = rewarded, let rootVC = topViewController() else { return }
-//        pendingRewardCallback = onReward
-//        ad.fullScreenContentDelegate = self
-//        ad.present(from: rootVC, userDidEarnRewardHandler: {})
-//        rewarded = nil
-////        isRewardedAdReady = false
-//        Task { await loadRewardedAd() }
-//    }
-
     func showRewardedAd(completion: @escaping @MainActor () -> Void) {
-      guard let rewarded else {
-        return print("Ad wasn't ready.")
-      }
+        guard let rewarded else {
+            return print("Ad wasn't ready.")
+        }
 
         rewarded.present(from: nil) {
-        let reward = rewarded.adReward
-        print("Reward amount: \(reward.amount)")
-//        self.addCoins(reward.amount.intValue)
-          completion()
-      }
+            let reward = rewarded.adReward
+            completion()
+        }
     }
 
     func resetUserDefaults() {
@@ -170,13 +137,6 @@ final class AdService: NSObject, ObservableObject {
 // MARK: - GADFullScreenContentDelegate
 
 extension AdService: FullScreenContentDelegate {
-//    nonisolated func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-//        Task { @MainActor [self] in
-//            pendingRewardCallback?()
-//            pendingRewardCallback = nil
-//        }
-//    }
-
     func adDidRecordImpression(_ ad: FullScreenPresentingAd) {
       print("\(#function) called")
     }
