@@ -100,7 +100,6 @@ final class AdService: NSObject, ObservableObject {
         }
 
         rewarded.present(from: nil) {
-            let reward = rewarded.adReward
             completion()
         }
     }
