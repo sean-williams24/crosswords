@@ -211,9 +211,17 @@ struct PaywallView: View {
         planOption(
             title: "Annual",
             price: storeService.annualProduct?.displayPrice ?? "£11.99",
-            subtitle: "per year · Save 33%",
+            subtitle: annualSubtitle,
             plan: .annual
         )
+    }
+
+    private var annualSubtitle: String {
+        if let annualSavings = storeService.annualSavings {
+            return "per year · \(annualSavings)"
+        } else {
+            return "per year"
+        }
     }
 
     private func planOption(title: String, price: String, subtitle: String, plan: Plan) -> some View {

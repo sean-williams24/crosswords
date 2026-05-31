@@ -80,7 +80,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "1.99",
+          "displayPrice" : "1.49",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
@@ -98,7 +98,7 @@
               "locale" : "en_GB"
             }
           ],
-          "productID" : "com.crosswords.pro.monthly",
+          "productID" : "com.backword.monthlypro",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Pro Monthly",
           "subscriptionGroupID" : "D4E5F6A7-B8C9-0D1E-2F3A-4B5C6D7E8F9A",
@@ -111,7 +111,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "15.99",
+          "displayPrice" : "11.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "B2C3D4E5-F6A7-8901-BCDE-F12345678901",
@@ -129,7 +129,7 @@
               "locale" : "en_GB"
             }
           ],
-          "productID" : "com.crosswords.pro.annual",
+          "productID" : "com.backword.annualpro",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Pro Annual",
           "subscriptionGroupID" : "D4E5F6A7-B8C9-0D1E-2F3A-4B5C6D7E8F9A",

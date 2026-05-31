@@ -5,8 +5,8 @@ final class StoreService: ObservableObject {
 
     // MARK: - Product IDs
 
-    static let monthlyID = "com.crosswords.pro.monthly"
-    static let annualID = "com.crosswords.pro.annual"
+    static let monthlyID = "com.backword.monthlypro"
+    static let annualID = "com.backword.annualpro"
 
     // MARK: - Published State
 
@@ -35,6 +35,17 @@ final class StoreService: ObservableObject {
 
     deinit {
         transactionListener?.cancel()
+    }
+
+    var annualSavings: String? {
+        guard let monthlyProduct, let annualProduct else { return nil }
+        let monthlyPrice = NSDecimalNumber(decimal: monthlyProduct.price).doubleValue
+        let annualPrice = NSDecimalNumber(decimal: annualProduct.price).doubleValue
+
+        let totalMonthlyCost = monthlyPrice * 12
+        let savingsPercent = ((totalMonthlyCost - annualPrice) / totalMonthlyCost) * 100
+        let savingsPercentString = String(format: "%.0f%%", savingsPercent)
+        return "Save \(savingsPercentString)"
     }
 
     // MARK: - Load Products

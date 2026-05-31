@@ -30,6 +30,7 @@
 		7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */; };
 		83FBB193723C144A6456932E /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C44B7584617BA53797B0963 /* ZoomableView.swift */; };
 		84A6DDAE7557421BC685E350 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8669C3DD88CF9BC44A72C69 /* CellView.swift */; };
+		86123BEA2FC900E5008A929E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86123BE92FC900E5008A929E /* StoreKit.framework */; };
 		86728124E533B5942EADAB51 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */; };
 		869FCBE22F9986FA00A280F2 /* BackwordStatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */; };
 		869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE32F99871800A280F2 /* BackwordStatsView.swift */; };
@@ -123,6 +124,7 @@
 		8299222FB15ED0ECC8305F8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		83C12AC56422D31E9D619C3E /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		86123BC82FC6529F008A929E /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		86123BE92FC900E5008A929E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsService.swift; sourceTree = "<group>"; };
 		869FCBE32F99871800A280F2 /* BackwordStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsView.swift; sourceTree = "<group>"; };
 		86AE8C962F913EAB001D69EE /* BackwordLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordLogo.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86123BEA2FC900E5008A929E /* StoreKit.framework in Frameworks */,
 				86F02E462FB9BE220083B752 /* Supabase in Frameworks */,
 				FC2E739DC6045316AD55D0F4 /* GoogleMobileAds in Frameworks */,
 			);
@@ -334,6 +337,7 @@
 		86F02E442FB9BE220083B752 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				86123BE92FC900E5008A929E /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -633,12 +637,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BackWord;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -819,12 +826,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BackWord;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
