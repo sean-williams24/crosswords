@@ -1,0 +1,2037 @@
+[
+  {
+    "word": "aaron",
+    "text": "Biblical figure and priestly leader",
+    "hint": "Brother of a famous prophet",
+    "hard_text": "Moses' sidekick in history",
+    "clues": [
+      "Moses' sidekick in history",
+      "Brotherly figure in scripture",
+      "Name meaning 'mountain of strength'"
+    ]
+  },
+  {
+    "word": "adela",
+    "text": "Noblewoman in literature",
+    "hint": "Name often associated with nobility",
+    "hard_text": "Noble character in medieval tales",
+    "clues": [
+      "Noble character in medieval tales",
+      "Name meaning 'noble' or 'nobility'",
+      "She may be the belle of the ball"
+    ]
+  },
+  {
+    "word": "ADRIENNE",
+    "text": "Common female name.",
+    "hint": "Name meaning 'dark' in Hebrew",
+    "hard_text": "Sounds like a queen's address.",
+    "clues": [
+      "A classic French name for women.",
+      "Famous character in 'A Streetcar Named Desire'.",
+      "One may sing this name melodiously."
+    ]
+  },
+  {
+    "word": "agnes",
+    "text": "A feminine name of Greek origin",
+    "hint": "Legendary author of a classic novel",
+    "hard_text": "A saintly name, but not always known",
+    "clues": [
+      "A saintly name, but not always known",
+      "Feminine moniker, often historical",
+      "Classic name, yet surprisingly rare"
+    ]
+  },
+  {
+    "word": "ALAN",
+    "text": "Common male name",
+    "hint": "Popular male first name",
+    "hard_text": "Man's name with a musical twist",
+    "clues": [
+      "Famous comedian with a first name",
+      "First name of a 'Game of Thrones' actor",
+      "Name that means 'handsome' in Gaelic"
+    ]
+  },
+  {
+    "word": "ALASTAIR",
+    "text": "Masculine name of Scottish origin.",
+    "hint": "Scottish masculine given name",
+    "hard_text": "A name that sounds like a royal figure.",
+    "clues": [
+      "Scottish name meaning 'defender of mankind'.",
+      "May remind one of a classic novel.",
+      "Famous bearer was a Scottish statesman."
+    ]
+  },
+  {
+    "word": "ALEJANDRO",
+    "text": "Common Spanish name meaning 'defender of men'",
+    "hint": "popular name",
+    "hard_text": "Famous for a song by a pop star.",
+    "clues": [
+      "Spanish name with many fans in music.",
+      "A name that suggests protection in Spanish.",
+      "Defender in a melodic context."
+    ]
+  },
+  {
+    "word": "alexandra",
+    "text": "Common feminine name of royal origin",
+    "hint": "Feminine name often associated with royalty",
+    "hard_text": "A name tied to a famous city",
+    "clues": [
+      "A name tied to a famous city",
+      "Feminine counterpart to a conqueror?",
+      "Royalty often bears this name"
+    ]
+  },
+  {
+    "word": "alicia",
+    "text": "Popular female name",
+    "hint": "Singer Keys' first name",
+    "hard_text": "A name that could sound like a song",
+    "clues": [
+      "A name that could sound like a song",
+      "Famous character's name, but not from the past",
+      "An elegant choice, often seen in letters"
+    ]
+  },
+  {
+    "word": "ALISON",
+    "text": "Common female name",
+    "hint": "Given name",
+    "hard_text": "A name that sounds like 'Alice'",
+    "clues": [
+      "Popular name in the '90s",
+      "Name of a famous singer",
+      "Notable bearer in pop culture"
+    ]
+  },
+  {
+    "word": "ALLAN",
+    "text": "Common male given name",
+    "hint": "first name",
+    "hard_text": "A name that could refer to a famous poet.",
+    "clues": [
+      "Last name of a famous American writer",
+      "Popular name, often seen in literature",
+      "A name that rhymes with 'plan'"
+    ]
+  },
+  {
+    "word": "allen",
+    "text": "Common male first name",
+    "hint": "Famous filmmaker and actor",
+    "hard_text": "Surname of a famous comedian",
+    "clues": [
+      "Surname of a famous comedian",
+      "A name that sounds like a tool",
+      "First name of a beloved director"
+    ]
+  },
+  {
+    "word": "amanda",
+    "text": "Common female name",
+    "hint": "Character in Tennessee Williams play",
+    "hard_text": "Name linked to a famous play's title",
+    "clues": [
+      "Name linked to a famous play's title",
+      "Looks like a name, but could mean 'worthy'",
+      "Sounds like a command to not forget"
+    ]
+  },
+  {
+    "word": "amos",
+    "text": "Minor prophet in Hebrew scripture",
+    "hint": "Author of a biblical book",
+    "hard_text": "Prophet of the Old Testament",
+    "clues": [
+      "Prophet of the Old Testament",
+      "Name meaning burden",
+      "A biblical figure"
+    ]
+  },
+  {
+    "word": "andrew",
+    "text": "Common male given name",
+    "hint": "Biblical name meaning strong",
+    "hard_text": "Common name, but also means 'manly'",
+    "clues": [
+      "Common name, but also means 'manly'",
+      "A biblical figure with a brotherly bond",
+      "A name that could run for office"
+    ]
+  },
+  {
+    "word": "angela",
+    "text": "Common feminine given name",
+    "hint": "Popular name in literature and film",
+    "hard_text": "Name often associated with heavenly beings",
+    "clues": [
+      "Name often associated with heavenly beings",
+      "Could refer to a kind-hearted character",
+      "Sounds like a reminder to be kind"
+    ]
+  },
+  {
+    "word": "anita",
+    "text": "Female given name",
+    "hint": "A character in West Side Story",
+    "hard_text": "Name with a musical twist",
+    "clues": [
+      "Name with a musical twist",
+      "Sounds like 'I need a'",
+      "Famous for a Broadway role"
+    ]
+  },
+  {
+    "word": "annabel",
+    "text": "Common feminine given name",
+    "hint": "Classic literary name",
+    "hard_text": "A name often associated with charm?",
+    "clues": [
+      "A name often associated with charm?",
+      "Could be a character from a story?",
+      "One who brings joy, perhaps?"
+    ]
+  },
+  {
+    "word": "anthony",
+    "text": "Popular male given name",
+    "hint": "Famous figure associated with Rome",
+    "hard_text": "Common name with historical significance?",
+    "clues": [
+      "Common name with historical significance?",
+      "Often seen in classic literature?",
+      "Could belong to a famed orator?"
+    ]
+  },
+  {
+    "word": "arabella",
+    "text": "Name meaning 'yielding to prayer'",
+    "hint": "Elegant name for a girl",
+    "hard_text": "A charming girl in a book of names",
+    "clues": [
+      "A charming girl in a book of names",
+      "A name that rings like a bell",
+      "Elegant title for a literary lady"
+    ]
+  },
+  {
+    "word": "arya",
+    "text": "Fictional character trained in combat",
+    "hint": "Famous Stark daughter",
+    "hard_text": "Notable Game of Thrones character",
+    "clues": [
+      "Notable Game of Thrones character",
+      "Name meaning noble",
+      "A name of strength"
+    ]
+  },
+  {
+    "word": "ASHA",
+    "text": "Indian goddess of hope and belief",
+    "hint": "Optimism in Hindu culture",
+    "hard_text": "Name associated with positivity in beliefs",
+    "clues": [
+      "A name meaning 'hope' in Sanskrit",
+      "A popular name in South Asia",
+      "One who embodies optimism"
+    ]
+  },
+  {
+    "word": "asher",
+    "text": "Biblical name associated with happiness",
+    "hint": "Popular name in Hebrew culture",
+    "hard_text": "A name meaning 'blessed'",
+    "clues": [
+      "A name meaning 'blessed'",
+      "One who brings happiness",
+      "A character with a fortunate fate"
+    ]
+  },
+  {
+    "word": "ASTRID",
+    "text": "A Scandinavian feminine name",
+    "hint": "Common Scandinavian girl's name",
+    "hard_text": "Royal name, perhaps associated with beauty",
+    "clues": [
+      "Famous Scandinavian name meaning 'divine strength'",
+      "One of the princesses, but not a common choice",
+      "Name of a notable queen, often in history"
+    ]
+  },
+  {
+    "word": "BARBARA",
+    "text": "Common female name, often shortened",
+    "hint": "Female name",
+    "hard_text": "Name of a saint and a famous actress",
+    "clues": [
+      "First name of a famous Streisand",
+      "Classic name often used in songs",
+      "Traditional female moniker"
+    ]
+  },
+  {
+    "word": "BLAKE",
+    "text": "Common male name",
+    "hint": "Boy's name",
+    "hard_text": "Surname of a famous poet",
+    "clues": [
+      "Poet with visions?",
+      "A classic name for boys?",
+      "William's literary last name"
+    ]
+  },
+  {
+    "word": "brandon",
+    "text": "Common male name",
+    "hint": "Name associated with a famous actor",
+    "hard_text": "Name that’s also a popular brand",
+    "clues": [
+      "Name that’s also a popular brand",
+      "A place for a creative mind?",
+      "One who carries a torch, perhaps?"
+    ]
+  },
+  {
+    "word": "brian",
+    "text": "Popular male given name",
+    "hint": "Famous actor from 'The Breakfast Club'",
+    "hard_text": "Common name, but with unique stories",
+    "clues": [
+      "Common name, but with unique stories",
+      "Often a leader, yet humble in spirit",
+      "A classic moniker, yet ever relevant"
+    ]
+  },
+  {
+    "word": "bryan",
+    "text": "Common given name for boys",
+    "hint": "First name of a famous politician",
+    "hard_text": "He made a famous case against evolution",
+    "clues": [
+      "He made a famous case against evolution",
+      "A name that sounds like a lawyer's call",
+      "This first name shares initials with a singer"
+    ]
+  },
+  {
+    "word": "caleb",
+    "text": "Name of a loyal biblical character",
+    "hint": "Famous spy in the Bible",
+    "hard_text": "Biblical figure who spied the promised land",
+    "clues": [
+      "Biblical figure who spied the promised land",
+      "He had a faithful dog, or so they say",
+      "A name that means 'faithful' in Hebrew"
+    ]
+  },
+  {
+    "word": "caroline",
+    "text": "Female given name of French origin",
+    "hint": "Southern belle or potential lover",
+    "hard_text": "Name linked to a royal line?",
+    "clues": [
+      "Name linked to a royal line?",
+      "A potential romantic interest?",
+      "A common name for a girl in the South?"
+    ]
+  },
+  {
+    "word": "CARRIE",
+    "text": "A name popularized by a famous novel.",
+    "hint": "female name",
+    "hard_text": "Notable character in horror fiction.",
+    "clues": [
+      "Fictional girl with telekinetic powers.",
+      "Stephen King's tragic protagonist.",
+      "The name of a high school outcast."
+    ]
+  },
+  {
+    "word": "cassie",
+    "text": "Female name often associated with love stories",
+    "hint": "Character from a popular song",
+    "hard_text": "A name, but also a potential loss",
+    "clues": [
+      "A name, but also a potential loss",
+      "Girl's name that might bring to mind a song",
+      "Could refer to a character in a tale"
+    ]
+  },
+  {
+    "word": "CATHERINE",
+    "text": "A feminine given name",
+    "hint": "female name",
+    "hard_text": "Monarch's name often associated with royalty",
+    "clues": [
+      "Queen's first name",
+      "Famous name in history",
+      "Regal title holder"
+    ]
+  },
+  {
+    "word": "cathy",
+    "text": "Common feminine given name",
+    "hint": "Popular name in literature",
+    "hard_text": "A name that suggests a caring friend",
+    "clues": [
+      "Often associated with warmth and kindness",
+      "Fictional character in a coming-of-age story",
+      "Name of a famous character from a classic novel"
+    ]
+  },
+  {
+    "word": "CHARLENE",
+    "text": "Popular female name",
+    "hint": "Common name for a woman",
+    "hard_text": "This name might charm you",
+    "clues": [
+      "A name that sounds like 'charming'",
+      "Feminine moniker with a royal touch",
+      "Could be a character in a romance"
+    ]
+  },
+  {
+    "word": "CHRISTIANA",
+    "text": "Name of an important river in Delaware",
+    "hint": "river name",
+    "hard_text": "Feminine form of a holiday's patron saint",
+    "clues": [
+      "City in Delaware, home to a university",
+      "Major waterway named after a saint",
+      "Girl's name associated with Christianity"
+    ]
+  },
+  {
+    "word": "christina",
+    "text": "Common female name with royal connotations",
+    "hint": "Famous for a holiday song",
+    "hard_text": "Popular name among holiday celebrations",
+    "clues": [
+      "Popular name among holiday celebrations",
+      "First name of a princess in a tale",
+      "A name associated with the festive season"
+    ]
+  },
+  {
+    "word": "clara",
+    "text": "Luminous female name",
+    "hint": "Bright or clear in meaning",
+    "hard_text": "Name meaning bright or clear.",
+    "clues": [
+      "Name meaning bright or clear.",
+      "Famous character in a holiday ballet.",
+      "A name with a musical ring."
+    ]
+  },
+  {
+    "word": "CLAUDE",
+    "text": "French artist known for Impressionism.",
+    "hint": "Impressionist",
+    "hard_text": "First name of a famous painter who painted water.",
+    "clues": [
+      "His last name rhymes with 'Monet.'",
+      "Pioneer of light and color in art.",
+      "Artist who often depicted gardens."
+    ]
+  },
+  {
+    "word": "curtis",
+    "text": "First name of a notable American playwright",
+    "hint": "Notable American playwright, first name",
+    "hard_text": "Surnamed character in a classic?",
+    "clues": [
+      "Surnamed character in a classic?",
+      "Name of a famous film director?",
+      "Common name for a young man?"
+    ]
+  },
+  {
+    "word": "DAMIEN",
+    "text": "Common male name, often associated with art",
+    "hint": "Notable figure in modern art",
+    "hard_text": "Name that hints at creativity and vision",
+    "clues": [
+      "First name of a famous contemporary artist",
+      "Mononym of a known visual creator",
+      "Artistic figure with a notable last name"
+    ]
+  },
+  {
+    "word": "dana",
+    "text": "A female given name with various meanings",
+    "hint": "Common name in many cultures",
+    "hard_text": "A name that means 'wise'?",
+    "clues": [
+      "A name that means 'wise'?",
+      "Could be a goddess in some tales",
+      "Sounding like a cherished title"
+    ]
+  },
+  {
+    "word": "DANIELLE",
+    "text": "A feminine name of Hebrew origin",
+    "hint": "female name",
+    "hard_text": "Name meaning 'God is my judge'",
+    "clues": [
+      "Popular name for girls",
+      "Common name in literature",
+      "Given name with biblical roots"
+    ]
+  },
+  {
+    "word": "dave",
+    "text": "Popular male first name",
+    "hint": "Famous comedian or musician",
+    "hard_text": "Common name for a guy",
+    "clues": [
+      "Common name for a guy",
+      "Short for David",
+      "Often seen in pop culture"
+    ]
+  },
+  {
+    "word": "DENIS",
+    "text": "Common French name",
+    "hint": "male name",
+    "hard_text": "A name that sounds like 'den' but is not",
+    "clues": [
+      "Popular name in literature",
+      "French version of a biblical figure",
+      "The one who is often found in 'den'"
+    ]
+  },
+  {
+    "word": "DEVLIN",
+    "text": "Surname of a famous Irish author.",
+    "hint": "Irish name",
+    "hard_text": "Devil in the name, but not the person.",
+    "clues": [
+      "One who might write with a devilish flair.",
+      "Famous family in literature or sports.",
+      "Last name of a notable actor or athlete."
+    ]
+  },
+  {
+    "word": "diane",
+    "text": "Female name of Greek origin",
+    "hint": "Feminine name associated with royalty",
+    "hard_text": "A name meaning 'divine'",
+    "clues": [
+      "A name meaning 'divine'",
+      "Often found in elegant circles",
+      "Name of a famous TV character"
+    ]
+  },
+  {
+    "word": "diego",
+    "text": "Name of a famous Mexican painter",
+    "hint": "Cartoon character's first name",
+    "hard_text": "Famous Mexican artist",
+    "clues": [
+      "Famous Mexican artist",
+      "Name shared with a cartoon explorer",
+      "California city with a sunny reputation"
+    ]
+  },
+  {
+    "word": "dora",
+    "text": "Animated character known for exploration",
+    "hint": "Girl with a monkey companion",
+    "hard_text": "Explorer with a backpack",
+    "clues": [
+      "Explorer with a backpack",
+      "A name meaning 'gift'",
+      "Often associated with adventure and fun"
+    ]
+  },
+  {
+    "word": "EDDIE",
+    "text": "Common boy's name",
+    "hint": "Nickname for a child",
+    "hard_text": "A name that sounds like a small boat",
+    "clues": [
+      "Nickname for Edward",
+      "Young boy's title",
+      "Famous character in 'The Iron Giant'"
+    ]
+  },
+  {
+    "word": "EDITH",
+    "text": "Classic female name",
+    "hint": "female name",
+    "hard_text": "One may enjoy a good laugh with this classic name",
+    "clues": [
+      "Name meaning 'prosperous in war'",
+      "Often paired with 'Wharton'",
+      "Character in 'Downton Abbey'"
+    ]
+  },
+  {
+    "word": "edmond",
+    "text": "A male given name",
+    "hint": "Character in The Count of Monte Cristo",
+    "hard_text": "Name with royal ties?",
+    "clues": [
+      "Name with royal ties?",
+      "Fictional character with a complex fate?",
+      "Noble name in literature?"
+    ]
+  },
+  {
+    "word": "edna",
+    "text": "Common female name in literature",
+    "hint": "Famous character in literature or film",
+    "hard_text": "A name often associated with wisdom",
+    "clues": [
+      "A name often associated with wisdom",
+      "Fictional widow in literature",
+      "Historically significant female figure"
+    ]
+  },
+  {
+    "word": "eduardo",
+    "text": "Popular male name in Spanish-speaking countries",
+    "hint": "Famous character from a Disney film",
+    "hard_text": "Common name with Spanish flair",
+    "clues": [
+      "Common name with Spanish flair",
+      "Often shortened to Eddie",
+      "Moniker of a famous artist"
+    ]
+  },
+  {
+    "word": "edward",
+    "text": "Common name for British monarchs",
+    "hint": "Royal first name",
+    "hard_text": "Kingly name through history?",
+    "clues": [
+      "Kingly name through history?",
+      "Famous for both good and ill?",
+      "A name with regal connotations?"
+    ]
+  },
+  {
+    "word": "EILEEN",
+    "text": "Common girl's name, often means 'bright, shining one'",
+    "hint": "female name",
+    "hard_text": "A name that sounds like a call to rise",
+    "clues": [
+      "Often associated with a popular song",
+      "A name sometimes linked to a famous actress",
+      "Rhymes with 'feelin', often used in lyrics"
+    ]
+  },
+  {
+    "word": "elia",
+    "text": "Graceful name of Hebrew origin",
+    "hint": "Charming girl's name",
+    "hard_text": "A name that evokes grace",
+    "clues": [
+      "A name that evokes grace",
+      "Could belong to a literary heroine",
+      "Sounding like a classic muse"
+    ]
+  },
+  {
+    "word": "ELIAS",
+    "text": "Biblical name meaning 'my God is Yahweh'",
+    "hint": "Name associated with a famous prophet",
+    "hard_text": "A name that echoes through ancient texts",
+    "clues": [
+      "Prophet in the Old Testament",
+      "A name with a strong spiritual connotation",
+      "Often shortened to 'Eli'"
+    ]
+  },
+  {
+    "word": "ELINOR",
+    "text": "A variant of Eleanor, meaning 'shining light'",
+    "hint": "variant name",
+    "hard_text": "A name that suggests brightness and beauty",
+    "clues": [
+      "A character from Jane Austen's 'Sense and Sensibility'",
+      "Commonly spelled with an 'E' and an 'O'",
+      "Often reflects a sense of grace and elegance"
+    ]
+  },
+  {
+    "word": "ella",
+    "text": "Common girl's name with Spanish roots",
+    "hint": "Title character in a famous fairy tale",
+    "hard_text": "Name of a charming fairy tale",
+    "clues": [
+      "Name of a charming fairy tale",
+      "Musical notes for a sweet melody",
+      "Often linked to classic beauty"
+    ]
+  },
+  {
+    "word": "ELLIOT",
+    "text": "A common given name",
+    "hint": "First name of a director",
+    "hard_text": "Name shared with a famous TV show character",
+    "clues": [
+      "Director's first name in the spotlight",
+      "Fictional detective with this surname",
+      "Popular first name for a male lead"
+    ]
+  },
+  {
+    "word": "ELLIOTT",
+    "text": "Common surname, often literary",
+    "hint": "last name",
+    "hard_text": "Famous poet, not a typical first name",
+    "clues": [
+      "Author with a prominent last name",
+      "Last name of a renowned modernist poet",
+      "Surname of a notable writer in the 20th century"
+    ]
+  },
+  {
+    "word": "emil",
+    "text": "Given name of German origin",
+    "hint": "Rival in French",
+    "hard_text": "Name meaning rival",
+    "clues": [
+      "Name meaning rival",
+      "Associated with a famous composer",
+      "A less common male name"
+    ]
+  },
+  {
+    "word": "enid",
+    "text": "Character known for her devotion in Arthurian legend",
+    "hint": "Famous name in Arthurian literature",
+    "hard_text": "Legendary figure from Arthurian tales",
+    "clues": [
+      "Legendary figure from Arthurian tales",
+      "A name meaning 'soul' or 'life'",
+      "Often associated with beauty and loyalty"
+    ]
+  },
+  {
+    "word": "ethan",
+    "text": "Male given name of Hebrew origin",
+    "hint": "Famous for being strong and enduring",
+    "hard_text": "Common name with biblical ties",
+    "clues": [
+      "Common name with biblical ties",
+      "One who is enduring",
+      "Popular choice for a boy"
+    ]
+  },
+  {
+    "word": "ethel",
+    "text": "Old-fashioned female given name",
+    "hint": "Common name in the early 20th century",
+    "hard_text": "Vintage name, often forgotten",
+    "clues": [
+      "Vintage name, often forgotten",
+      "A classic choice, once popular",
+      "Name of literary heroines"
+    ]
+  },
+  {
+    "word": "etta",
+    "text": "Common feminine name with historical roots",
+    "hint": "Name popularized by a famous singer",
+    "hard_text": "Shortened name for a beloved character",
+    "clues": [
+      "Shortened name for a beloved character",
+      "Could mean 'ruler of the home'",
+      "A name with a vintage flair"
+    ]
+  },
+  {
+    "word": "eugene",
+    "text": "Given name of a famous poet",
+    "hint": "Noble name of Greek origin",
+    "hard_text": "Name with noble connotations",
+    "clues": [
+      "Name with noble connotations",
+      "Common name in history",
+      "Famous figure in literature"
+    ]
+  },
+  {
+    "word": "eunice",
+    "text": "A female given name of Greek origin",
+    "hint": "Famous name in ancient literature",
+    "hard_text": "A name that sounds like a unit of time?",
+    "clues": [
+      "A name that sounds like a unit of time?",
+      "Greek name meaning 'good victory'?",
+      "Fictional character with a unique perspective?"
+    ]
+  },
+  {
+    "word": "evan",
+    "text": "Given name of Hebrew origin",
+    "hint": "Welsh given name of biblical roots",
+    "hard_text": "Name meaning young warrior",
+    "clues": [
+      "Name meaning young warrior",
+      "Common Welsh name",
+      "Often associated with youth"
+    ]
+  },
+  {
+    "word": "ezra",
+    "text": "Old Testament figure known for scripture",
+    "hint": "Common name for a biblical figure",
+    "hard_text": "Biblical name, but not a prophet",
+    "clues": [
+      "Biblical name, but not a prophet",
+      "Scholar's first name, perhaps",
+      "Old Testament scribe's modern version"
+    ]
+  },
+  {
+    "word": "fred",
+    "text": "Given name often associated with a cartoon bear",
+    "hint": "Character in a classic animated show",
+    "hard_text": "Common name, but less popular now",
+    "clues": [
+      "Common name, but less popular now",
+      "Fictional character in a classic cartoon",
+      "Name of a famous TV dog"
+    ]
+  },
+  {
+    "word": "FREDERICK",
+    "text": "Common male given name",
+    "hint": "Notable figure in German history",
+    "hard_text": "Traditional name often associated with rulers",
+    "clues": [
+      "Historic name linked to leaders",
+      "Monarchs and scholars share this name",
+      "Popular name in Germanic regions"
+    ]
+  },
+  {
+    "word": "GABRIELLE",
+    "text": "Female name with angelic roots",
+    "hint": "angelic name",
+    "hard_text": "One who brings good news?",
+    "clues": [
+      "Name meaning 'God is my strength'",
+      "A popular feminine name",
+      "Often associated with angels"
+    ]
+  },
+  {
+    "word": "GEORGE",
+    "text": "Common male name.",
+    "hint": "Royal figure or cartoon character",
+    "hard_text": "Name associated with a British monarch.",
+    "clues": [
+      "Popular name across many cultures.",
+      "Historical king of Britain.",
+      "Name meaning 'farmer' in Greek."
+    ]
+  },
+  {
+    "word": "GERTRUDE",
+    "text": "Name of a Shakespearean character",
+    "hint": "female name",
+    "hard_text": "A name that sounds 'girthy' in literature",
+    "clues": [
+      "Shakespeare's troubled character in Hamlet",
+      "Feminine name with royal connotations",
+      "Literary figure often linked to madness"
+    ]
+  },
+  {
+    "word": "GILLIAN",
+    "text": "A common female name",
+    "hint": "girl's name",
+    "hard_text": "A name that sounds quite British",
+    "clues": [
+      "Female name, often seen in literature",
+      "Given name of a famous actress",
+      "Popular choice for a girl, rhymes with million"
+    ]
+  },
+  {
+    "word": "GRAHAM",
+    "text": "Common surname or given name",
+    "hint": "Popular cookie brand",
+    "hard_text": "Known for a famous cracker",
+    "clues": [
+      "First name of a notable author",
+      "Surname of a prominent politician",
+      "Name associated with a famous dessert"
+    ]
+  },
+  {
+    "word": "hanna",
+    "text": "Female given name of Hebrew origin",
+    "hint": "Biblical female name meaning grace",
+    "hard_text": "Popular name with biblical roots",
+    "clues": [
+      "Popular name with biblical roots",
+      "One who is favored?",
+      "Name meaning 'grace' in Hebrew"
+    ]
+  },
+  {
+    "word": "HANNAH",
+    "text": "A common female name.",
+    "hint": "Popular name in the Old Testament.",
+    "hard_text": "A palindrome in the realm of names.",
+    "clues": [
+      "Famous biblical woman.",
+      "Name that's the same backward.",
+      "Charming character in literature."
+    ]
+  },
+  {
+    "word": "HANS",
+    "text": "Common male name in Germany",
+    "hint": "German name",
+    "hard_text": "A classic character in fairy tales",
+    "clues": [
+      "First name of a famous fairy tale character",
+      "Surnames often include this first name",
+      "Germanic name found in literature"
+    ]
+  },
+  {
+    "word": "HAROLD",
+    "text": "Common male given name.",
+    "hint": "male name",
+    "hard_text": "Royalty might call a king this.",
+    "clues": [
+      "Lead character in a cult classic film.",
+      "Often follows 'King' in names.",
+      "First name of a British monarch."
+    ]
+  },
+  {
+    "word": "HARRIS",
+    "text": "Surname of a famous painter.",
+    "hint": "last name",
+    "hard_text": "This surname is known in politics.",
+    "clues": [
+      "A common surname in American politics.",
+      "Also a first name in some cases.",
+      "Surname of a famous 19th-century artist."
+    ]
+  },
+  {
+    "word": "HARRISON",
+    "text": "Common male given name",
+    "hint": "first name",
+    "hard_text": "Surname of a famous US president",
+    "clues": [
+      "Last name of a historical leader",
+      "First name of a popular actor",
+      "Well-known name associated with politics"
+    ]
+  },
+  {
+    "word": "HARVEY",
+    "text": "Common male name, also a rabbit",
+    "hint": "Fictional rabbit companion",
+    "hard_text": "A certain rabbit with an imaginary friend",
+    "clues": [
+      "Fictional friend of a giant rabbit",
+      "Name made famous by a play",
+      "Classic character in American literature"
+    ]
+  },
+  {
+    "word": "HERBERT",
+    "text": "Common male given name",
+    "hint": "Hawthorne or Marshall, e.g.",
+    "hard_text": "A famous author’s first name",
+    "clues": [
+      "Fiction writer with notable works",
+      "Famous first name in literature",
+      "First name of a poet laureate"
+    ]
+  },
+  {
+    "word": "hillary",
+    "text": "Prominent American political figure",
+    "hint": "2016 presidential candidate",
+    "hard_text": "First name associated with political ambition",
+    "clues": [
+      "First name associated with political ambition",
+      "Last name of a notable former Secretary of State",
+      "Possible contender for a presidential race"
+    ]
+  },
+  {
+    "word": "HOWARD",
+    "text": "Common male first name",
+    "hint": "Famous character in The Big Bang Theory",
+    "hard_text": "Well-known name of a famous actor",
+    "clues": [
+      "Surname of a famous director",
+      "First name of a comic book hero",
+      "Name of a TV personality"
+    ]
+  },
+  {
+    "word": "ISABEL",
+    "text": "Common female name, Spanish origin",
+    "hint": "Famous queen's moniker",
+    "hard_text": "Monarch's name shared with many",
+    "clues": [
+      "Regal name with history",
+      "Popular name in romance",
+      "Often associated with royalty"
+    ]
+  },
+  {
+    "word": "ISABELLA",
+    "text": "A name of Spanish origin",
+    "hint": "female name",
+    "hard_text": "Queen of Castile, once a famous monarch",
+    "clues": [
+      "Regal name in Spanish history",
+      "A character in Shakespeare's 'Measure for Measure'",
+      "A name that means 'pledged to God'"
+    ]
+  },
+  {
+    "word": "ivan",
+    "text": "Popular given name in Eastern Europe",
+    "hint": "Famous Russian tsar's name",
+    "hard_text": "Common name for a Russian ruler",
+    "clues": [
+      "Common name for a Russian ruler",
+      "A character with a storied legacy",
+      "Name associated with many historical figures"
+    ]
+  },
+  {
+    "word": "JACKIE",
+    "text": "First name of a famous athlete",
+    "hint": "Olympian and activist",
+    "hard_text": "Short for a well-known name",
+    "clues": [
+      "Nickname for an iconic sports figure",
+      "Famous for breaking barriers",
+      "Known for her athletic prowess"
+    ]
+  },
+  {
+    "word": "jane",
+    "text": "Common female name",
+    "hint": "Often paired with 'Doe'",
+    "hard_text": "Everywoman of the literary world",
+    "clues": [
+      "Everywoman of the literary world",
+      "Common name, uncommon adventures",
+      "A standalone hero in her story"
+    ]
+  },
+  {
+    "word": "JEANNETTE",
+    "text": "Common feminine given name",
+    "hint": "female name",
+    "hard_text": "A name that may remind one of a poet.",
+    "clues": [
+      "A classic name with French roots.",
+      "Often associated with youthful charm.",
+      "Popular name in various cultures."
+    ]
+  },
+  {
+    "word": "JENKINS",
+    "text": "Common surname in the U.S.",
+    "hint": "Last name",
+    "hard_text": "Code name for a famous artist?",
+    "clues": [
+      "Famous surname in tech circles.",
+      "First name of a lesser-known author.",
+      "A common name in 'The Office'."
+    ]
+  },
+  {
+    "word": "JENNIFER",
+    "text": "Common female name",
+    "hint": "Famous character in 'Forrest Gump'",
+    "hard_text": "Often associated with a famous actress",
+    "clues": [
+      "Popular name for girls",
+      "Known from a movie title",
+      "Often shortened to Jen"
+    ]
+  },
+  {
+    "word": "JESSICA",
+    "text": "A common female name",
+    "hint": "girl's name",
+    "hard_text": "A character in Shakespeare's 'The Merchant'",
+    "clues": [
+      "Often associated with charm and grace",
+      "Name linked to literary heroines",
+      "Famous for her love story"
+    ]
+  },
+  {
+    "word": "jill",
+    "text": "Feminine given name",
+    "hint": "Character from a famous nursery rhyme",
+    "hard_text": "Partner of Jack in nursery rhymes",
+    "clues": [
+      "Partner of Jack in nursery rhymes",
+      "A name for a spirited young lady",
+      "Often seen with a bucket in hand"
+    ]
+  },
+  {
+    "word": "john",
+    "text": "Common male name or term",
+    "hint": "Often a generic name for a man",
+    "hard_text": "Everyman in many a tale",
+    "clues": [
+      "Everyman in many a tale",
+      "Biblical figure with a significant role",
+      "A name that echoes through time"
+    ]
+  },
+  {
+    "word": "JONATHAN",
+    "text": "Common male given name",
+    "hint": "Popular biblical name",
+    "hard_text": "Biblical figure or popular apple variety",
+    "clues": [
+      "Friend of David in ancient tales",
+      "Famous apple variety, crisp and tart",
+      "Noble name with biblical roots"
+    ]
+  },
+  {
+    "word": "jorge",
+    "text": "Popular male name in Spanish-speaking countries",
+    "hint": "Famous author of 'One Hundred Years of Solitude'",
+    "hard_text": "Not just any name, but a classic",
+    "clues": [
+      "Not just any name, but a classic",
+      "Fictional gardener with a twist",
+      "Common name in Hispanic cultures"
+    ]
+  },
+  {
+    "word": "JOSEPH",
+    "text": "Common male given name",
+    "hint": "Dream interpreter in the Bible",
+    "hard_text": "Biblical figure with a colorful coat.",
+    "clues": [
+      "Name of a popular biblical character.",
+      "Often associated with dreams.",
+      "Famous for his coat."
+    ]
+  },
+  {
+    "word": "JOSEPHINE",
+    "text": "Feminine name of French origin",
+    "hint": "female name",
+    "hard_text": "Widely recognized empress?",
+    "clues": [
+      "Name meaning 'God increases'",
+      "Famous wife of Napoleon",
+      "Common female name in France"
+    ]
+  },
+  {
+    "word": "julia",
+    "text": "Common female given name",
+    "hint": "Name of a famous child of Shakespeare",
+    "hard_text": "A name seen in classic literature",
+    "clues": [
+      "A name seen in classic literature",
+      "Often representing elegance and charm",
+      "Famous for her contributions to the arts"
+    ]
+  },
+  {
+    "word": "justine",
+    "text": "A female name meaning 'fair' or 'just'",
+    "hint": "Literary character linked to fairness",
+    "hard_text": "Name associated with justice’s virtues",
+    "clues": [
+      "Name associated with justice’s virtues",
+      "A character often found in novels",
+      "Embodiment of fairness in fiction"
+    ]
+  },
+  {
+    "word": "KAREEM",
+    "text": "First name of a famous basketball player.",
+    "hint": "Athlete",
+    "hard_text": "Skyhook specialist of the hardwood.",
+    "clues": [
+      "Basketball legend known for his scoring.",
+      "A towering figure in sports history.",
+      "Last name associated with 'Skyhook' technique."
+    ]
+  },
+  {
+    "word": "kate",
+    "text": "Popular name for a girl",
+    "hint": "Common female name starting with K",
+    "hard_text": "Two famous Kates: one an actress, one a royal",
+    "clues": [
+      "Two famous Kates: one an actress, one a royal",
+      "Shortened name for a common female name",
+      "This name might rhyme with 'bait' for some"
+    ]
+  },
+  {
+    "word": "KATHARINE",
+    "text": "Actress known for her roles in classic films",
+    "hint": "Famous actress",
+    "hard_text": "Star who often played strong-willed women",
+    "clues": [
+      "First name of Hepburn or Graham",
+      "Hollywood icon of the mid-20th century",
+      "Oscar-winning actress from the '40s"
+    ]
+  },
+  {
+    "word": "KATHERINE",
+    "text": "Common female given name",
+    "hint": "Common female name in history",
+    "hard_text": "Historically significant name in literature",
+    "clues": [
+      "Traditional name with royal associations",
+      "Famous for several historical figures",
+      "Often shortened to Kate"
+    ]
+  },
+  {
+    "word": "keith",
+    "text": "Common male given name",
+    "hint": "Popular name in music and film",
+    "hard_text": "Name shared with a Rolling Stone",
+    "clues": [
+      "Name shared with a Rolling Stone",
+      "First name of a famous actor",
+      "Often used in classic rock lyrics"
+    ]
+  },
+  {
+    "word": "kenneth",
+    "text": "Popular male name of Gaelic origin",
+    "hint": "Famous actor from '30 Rock'",
+    "hard_text": "Name meaning 'handsome' or 'born of fire'",
+    "clues": [
+      "Name meaning 'handsome' or 'born of fire'",
+      "Could be a charming character in a story",
+      "Common name, but still stands out"
+    ]
+  },
+  {
+    "word": "KHALIL",
+    "text": "A common Arabic name meaning 'friend'.",
+    "hint": "Popular name in Arabic culture",
+    "hard_text": "A name that echoes friendship in Arabic.",
+    "clues": [
+      "Could refer to a poet of profound thoughts.",
+      "A name sharing roots with the word 'friend'.",
+      "Often associated with love and camaraderie."
+    ]
+  },
+  {
+    "word": "LAURA",
+    "text": "Female given name",
+    "hint": "common name",
+    "hard_text": "A name that echoes in romantic poetry",
+    "clues": [
+      "Classic name with literary roots",
+      "Famous for her love in Petrarch's verses",
+      "A name popular in many cultures"
+    ]
+  },
+  {
+    "word": "LAURENCE",
+    "text": "Common male given name",
+    "hint": "male name",
+    "hard_text": "A name that sounds regal, yet quite familiar",
+    "clues": [
+      "First name of a famous British actor",
+      "Classic name with historical significance",
+      "Often associated with nobility or fame"
+    ]
+  },
+  {
+    "word": "LAWRENCE",
+    "text": "Common male name",
+    "hint": "first name",
+    "hard_text": "A name with historical significance",
+    "clues": [
+      "Name of a famous writer",
+      "Surname of a notable figure",
+      "First name of a poet"
+    ]
+  },
+  {
+    "word": "LENA",
+    "text": "Common female name, also a river.",
+    "hint": "female name",
+    "hard_text": "Name that flows like a river.",
+    "clues": [
+      "River in Europe or a popular girl's name.",
+      "Name shared with a famous actress.",
+      "Common name with a water connection."
+    ]
+  },
+  {
+    "word": "leon",
+    "text": "Common male name with royal connotation",
+    "hint": "Spanish for lion",
+    "hard_text": "Name for the king of the jungle",
+    "clues": [
+      "Name for the king of the jungle",
+      "What you might call a brave person",
+      "Feline symbol of strength and courage"
+    ]
+  },
+  {
+    "word": "LESLIE",
+    "text": "Common female first name.",
+    "hint": "Female name with Scottish origins",
+    "hard_text": "A female name, perhaps less than a lot.",
+    "clues": [
+      "Famous actress known for her role in 'The Parent Trap'.",
+      "A common first name in the entertainment industry.",
+      "Comedian who hosted 'Saturday Night Live' multiple times."
+    ]
+  },
+  {
+    "word": "LESTER",
+    "text": "Common male first name.",
+    "hint": "Common male given name.",
+    "hard_text": "A male name, you might say, lesser in style.",
+    "clues": [
+      "First name of a famous American comedian.",
+      "Name of a character in 'The Office'.",
+      "Protagonist in the film 'American Beauty'."
+    ]
+  },
+  {
+    "word": "LETITIA",
+    "text": "Female name meaning joy",
+    "hint": "female name",
+    "hard_text": "Joyful name often associated with royalty",
+    "clues": [
+      "A name befitting a happy queen",
+      "A popular name since medieval times",
+      "Name linked to contentment and happiness"
+    ]
+  },
+  {
+    "word": "LIONEL",
+    "text": "Common male first name.",
+    "hint": "Famous toy train brand",
+    "hard_text": "A name that roars with character.",
+    "clues": [
+      "First name of a famous musician, Richie.",
+      "Character in children's toy brand.",
+      "Name of a notable figure in sports."
+    ]
+  },
+  {
+    "word": "LOLA",
+    "text": "Feminine name meaning 'sorrows.'",
+    "hint": "female name",
+    "hard_text": "Name often associated with a playful character.",
+    "clues": [
+      "Name of a famous dancing girl.",
+      "Shortened form of a Spanish name.",
+      "Character in a well-known musical."
+    ]
+  },
+  {
+    "word": "LORI",
+    "text": "Common female name, often short for Lorinda.",
+    "hint": "girl's name",
+    "hard_text": "Name shared with a notable country singer.",
+    "clues": [
+      "First name of a famous TV personality.",
+      "Name that rhymes with story.",
+      "Popular name in the '70s and '80s."
+    ]
+  },
+  {
+    "word": "louie",
+    "text": "Common male name with royal connections",
+    "hint": "French monarch nickname",
+    "hard_text": "Name associated with kings in France",
+    "clues": [
+      "Name associated with kings in France",
+      "Famous figure in a classic song",
+      "Common name, often with a twist"
+    ]
+  },
+  {
+    "word": "louise",
+    "text": "Common female name of French origin",
+    "hint": "Famous character in a classic novel",
+    "hard_text": "A name with royal charm, perhaps?",
+    "clues": [
+      "A name with royal charm, perhaps?",
+      "Feminine touch in classic literature",
+      "Beloved character of a famous mother"
+    ]
+  },
+  {
+    "word": "MAGGIE",
+    "text": "Common female name.",
+    "hint": "nickname",
+    "hard_text": "Short for Margaret, perhaps.",
+    "clues": [
+      "Name often associated with a famous politician.",
+      "A name that rhymes with 'saggy'.",
+      "First name of a famous Simpsons character."
+    ]
+  },
+  {
+    "word": "MARGARET",
+    "text": "Common female given name",
+    "hint": "female name",
+    "hard_text": "A name meaning 'pearl'",
+    "clues": [
+      "Often shortened to 'Meg'.",
+      "A name with royal associations.",
+      "Common in various cultures."
+    ]
+  },
+  {
+    "word": "MARION",
+    "text": "Unisex name of Latin origin.",
+    "hint": "given name",
+    "hard_text": "A name shared with a famous actress.",
+    "clues": [
+      "Name linked to both genders.",
+      "Famous for a fictional British spy.",
+      "A name that sounds like a city in France."
+    ]
+  },
+  {
+    "word": "martha",
+    "text": "Biblical woman known for hospitality",
+    "hint": "Famous chef and TV personality",
+    "hard_text": "Name of a certain cook",
+    "clues": [
+      "Name of a certain cook",
+      "Common first name with a historical twist",
+      "Biblical figure who hosted Jesus"
+    ]
+  },
+  {
+    "word": "MAURICE",
+    "text": "Common male name, also an author.",
+    "hint": "Notable novelist's first name",
+    "hard_text": "First name of a notable writer of 'Tango.'",
+    "clues": [
+      "Wrote about societal norms in the early 1900s.",
+      "This author was a prominent figure in modernist literature.",
+      "Wrote a novel centered on same-sex love."
+    ]
+  },
+  {
+    "word": "MELVIN",
+    "text": "Common male name",
+    "hint": "first name",
+    "hard_text": "A traditional boy's name",
+    "clues": [
+      "Moniker of a classic gentleman",
+      "Name popular in past decades",
+      "Character in a comedy film who is a nerd"
+    ]
+  },
+  {
+    "word": "MICHAEL",
+    "text": "Common male name.",
+    "hint": "Famous figure in religious texts",
+    "hard_text": "Archangel often depicted in art.",
+    "clues": [
+      "Popular name for boys.",
+      "Biblical figure known for battles.",
+      "Patron saint of soldiers."
+    ]
+  },
+  {
+    "word": "MOHAMED",
+    "text": "Common Arabic male name",
+    "hint": "Well-known figure in Islam",
+    "hard_text": "Often associated with a revered prophet",
+    "clues": [
+      "Name shared by many followers",
+      "Popular in Islamic culture",
+      "Often seen in historical texts"
+    ]
+  },
+  {
+    "word": "MONICA",
+    "text": "Common female name.",
+    "hint": "Character from a popular sitcom",
+    "hard_text": "A name with various famous bearers.",
+    "clues": [
+      "Could be an actress or a character.",
+      "Popular name in various cultures.",
+      "Often associated with friendship."
+    ]
+  },
+  {
+    "word": "NATE",
+    "text": "A common male first name",
+    "hint": "Common male moniker",
+    "hard_text": "Shortened form of a popular name",
+    "clues": [
+      "Familiar name, often a Nathan",
+      "Friendly name, often found in circles",
+      "Short for a name of biblical origin"
+    ]
+  },
+  {
+    "word": "NATHAN",
+    "text": "Biblical prophet",
+    "hint": "Prophet's name",
+    "hard_text": "One who advised King David",
+    "clues": [
+      "A name meaning 'gift' in Hebrew",
+      "Famous for confronting a king about his sins",
+      "One of David's trusted counselors"
+    ]
+  },
+  {
+    "word": "nathaniel",
+    "text": "Male given name of Hebrew origin",
+    "hint": "Famous 19th-century American writer",
+    "hard_text": "Biblical name, but not a common choice",
+    "clues": [
+      "Biblical name, but not a common choice",
+      "A figure in literature, yet not widely known",
+      "A name with roots, but not always grounded"
+    ]
+  },
+  {
+    "word": "NELL",
+    "text": "Female given name, often short",
+    "hint": "short name",
+    "hard_text": "A diminutive name that sounds like a bell",
+    "clues": [
+      "Character in a famous play by Shakespeare",
+      "A name that echoes with sweetness",
+      "Often associated with 'Nellie' or 'Nellie Bly'"
+    ]
+  },
+  {
+    "word": "NEWMAN",
+    "text": "Common surname or first name",
+    "hint": "Character from a popular sitcom",
+    "hard_text": "Often associated with notable figures",
+    "clues": [
+      "Famous for actors and authors",
+      "Last name of prominent individuals",
+      "Name with historical significance"
+    ]
+  },
+  {
+    "word": "nora",
+    "text": "Protagonist in Ibsen's play",
+    "hint": "Ibsen's iconic female figure",
+    "hard_text": "A doll's house centerpiece",
+    "clues": [
+      "A doll's house centerpiece",
+      "A name that means honor",
+      "Character who 'kicks the door down'"
+    ]
+  },
+  {
+    "word": "NORAH",
+    "text": "Common female name, also a singer",
+    "hint": "female name",
+    "hard_text": "A name that rhymes with 'flora'",
+    "clues": [
+      "First name of a famous jazz artist",
+      "It shares a sound with 'bore-a'",
+      "Name meaning 'honor' in Hebrew"
+    ]
+  },
+  {
+    "word": "OCTAVIA",
+    "text": "Female Roman name meaning 'eighth'",
+    "hint": "Name of a famous Roman sister",
+    "hard_text": "A name with a regal history and number",
+    "clues": [
+      "Historical figure from ancient Rome",
+      "Common name for girls in ancient times",
+      "Eighth in line, according to its meaning"
+    ]
+  },
+  {
+    "word": "PAMELA",
+    "text": "A common female name",
+    "hint": "Fictional character in a classic novel",
+    "hard_text": "Name made famous by literature",
+    "clues": [
+      "Name of a literary heroine",
+      "Often associated with charm",
+      "Popular in various cultures"
+    ]
+  },
+  {
+    "word": "PARKER",
+    "text": "Common surname or given name",
+    "hint": "family name",
+    "hard_text": "Famous for a comic book character",
+    "clues": [
+      "Last name of Spider-Man.",
+      "A surname with many bearers.",
+      "A name often associated with parks."
+    ]
+  },
+  {
+    "word": "paul",
+    "text": "Notable figure in early Christianity",
+    "hint": "First name of a famous apostle",
+    "hard_text": "Famous apostle, perhaps?",
+    "clues": [
+      "Famous apostle, perhaps?",
+      "First name of a Beatle?",
+      "Common name in the Bible?"
+    ]
+  },
+  {
+    "word": "pete",
+    "text": "Common first name",
+    "hint": "Musician or character name",
+    "hard_text": "Famous guitar player, perhaps?",
+    "clues": [
+      "Famous guitar player, perhaps?",
+      "Common name for a boy?",
+      "A certain everyman?"
+    ]
+  },
+  {
+    "word": "PHILIP",
+    "text": "Common male name, also a royal title",
+    "hint": "Royal figure's first name",
+    "hard_text": "A name shared by British royalty",
+    "clues": [
+      "Given name of a Duke of Edinburgh",
+      "Monarch's consort in the UK",
+      "Notable figure in the British royal family"
+    ]
+  },
+  {
+    "word": "RACHEL",
+    "text": "Common female name in many cultures",
+    "hint": "Biblical figure's name",
+    "hard_text": "A Biblical matriarch with a timeless name",
+    "clues": [
+      "Name often found in literature",
+      "Famous for a character in a sitcom",
+      "Classic name with strong roots"
+    ]
+  },
+  {
+    "word": "RAHUL",
+    "text": "Common Indian name",
+    "hint": "male name",
+    "hard_text": "A name popular in Bollywood circles",
+    "clues": [
+      "Famous character in Indian tales",
+      "Often associated with politics",
+      "A name in many Hindi films"
+    ]
+  },
+  {
+    "word": "randall",
+    "text": "Popular male name often associated with strength",
+    "hint": "Famous for a character in a 90s sitcom",
+    "hard_text": "Common name, but stands out in memory",
+    "clues": [
+      "Common name, but stands out in memory",
+      "A character with flair, not just a name",
+      "A name that resonates, but not a song"
+    ]
+  },
+  {
+    "word": "REBECCA",
+    "text": "Common female name.",
+    "hint": "Biblical matriarch or literary figure",
+    "hard_text": "Often associated with literature.",
+    "clues": [
+      "Famous for a novel by Daphne du Maurier.",
+      "Character in many stories.",
+      "A name with cultural significance."
+    ]
+  },
+  {
+    "word": "RITA",
+    "text": "Common name for a woman",
+    "hint": "Famous figure in music",
+    "hard_text": "Goes by the name of a famous singer",
+    "clues": [
+      "Famous singer known for her voice",
+      "Single name sparks recognition",
+      "A popular girl's name in the '80s"
+    ]
+  },
+  {
+    "word": "RONNIE",
+    "text": "Common diminutive of Ronald",
+    "hint": "Musical nickname for a celebrity",
+    "hard_text": "Short for a name often associated with music",
+    "clues": [
+      "Familiar form of Ronald",
+      "Popular name in rock history",
+      "Nickname for a famous singer"
+    ]
+  },
+  {
+    "word": "sadie",
+    "text": "Common girl's name in pop culture",
+    "hint": "Character from a beloved song",
+    "hard_text": "Famous 'girl' from a classic tune",
+    "clues": [
+      "Famous 'girl' from a classic tune",
+      "Name associated with a well-loved song",
+      "Notable character in a popular narrative"
+    ]
+  },
+  {
+    "word": "SAMANTHA",
+    "text": "Common female name",
+    "hint": "Character in fiction or folklore",
+    "hard_text": "Often associated with 'witch' from a show",
+    "clues": [
+      "Popular girl's name",
+      "Name of a famous TV witch",
+      "Feminine moniker"
+    ]
+  },
+  {
+    "word": "SARA",
+    "text": "Biblical matriarch and mother",
+    "hint": "Wife of Abraham",
+    "hard_text": "A name that means princess in Hebrew",
+    "clues": [
+      "Mother of Isaac in the Old Testament",
+      "A name linked to motherhood and faith",
+      "Not just a name, but a significant figure"
+    ]
+  },
+  {
+    "word": "sarah",
+    "text": "Wife of a key biblical figure",
+    "hint": "Biblical name meaning 'princess'",
+    "hard_text": "Biblical matriarch with a famous son",
+    "clues": [
+      "Biblical matriarch with a famous son",
+      "Name meaning princess, historically significant",
+      "Wife of Abraham in ancient texts"
+    ]
+  },
+  {
+    "word": "SEAN",
+    "text": "Common Irish name",
+    "hint": "Irish name",
+    "hard_text": "Often associated with good luck in folklore.",
+    "clues": [
+      "Famous actor Astin",
+      "Irish name meaning 'John'",
+      "Popular name in the Emerald Isle"
+    ]
+  },
+  {
+    "word": "SEBASTIAN",
+    "text": "Common male name, often regal",
+    "hint": "Given name",
+    "hard_text": "Famous for a crab in a Disney film",
+    "clues": [
+      "Name of many kings",
+      "Popular male name",
+      "Character from 'The Little Mermaid'"
+    ]
+  },
+  {
+    "word": "SENECA",
+    "text": "Roman philosopher and playwright",
+    "hint": "Famous Roman thinker",
+    "hard_text": "Famous Stoic from ancient Rome",
+    "clues": [
+      "He advised on virtue and ethics",
+      "One of the great Stoics",
+      "Roman dramatist's first name"
+    ]
+  },
+  {
+    "word": "SHANE",
+    "text": "A common male given name.",
+    "hint": "Lead character in a Western film",
+    "hard_text": "A name that might rhyme with gain.",
+    "clues": [
+      "Popular name for boys in various cultures.",
+      "Given name often associated with 'gift'.",
+      "Classic name popularized in American cinema."
+    ]
+  },
+  {
+    "word": "sharon",
+    "text": "Female given name of Hebrew origin",
+    "hint": "Notable figure in pop culture",
+    "hard_text": "Name associated with famous singers",
+    "clues": [
+      "Name associated with famous singers",
+      "Commonly a first name for women",
+      "A popular figure in suburbia"
+    ]
+  },
+  {
+    "word": "singh",
+    "text": "Common name meaning 'lion' in many cultures.",
+    "hint": "Title often associated with Sikh men.",
+    "hard_text": "Feline name in Hindi.",
+    "clues": [
+      "Feline name in Hindi.",
+      "Honorary title for a brave heart.",
+      "Common surname with royal connotations."
+    ]
+  },
+  {
+    "word": "SLADE",
+    "text": "A surname or given name",
+    "hint": "British rock band member",
+    "hard_text": "Famous for musical contributions.",
+    "clues": [
+      "Noted for rock music influence.",
+      "Surname of a notable musician.",
+      "Last name associated with popular tunes."
+    ]
+  },
+  {
+    "word": "STEPHANIE",
+    "text": "Common female name.",
+    "hint": "Often shortened to 'Steph'",
+    "hard_text": "Regal name often associated with royalty.",
+    "clues": [
+      "Queen's first name?",
+      "A popular girl's name.",
+      "Name that means 'crowned'."
+    ]
+  },
+  {
+    "word": "STEPHEN",
+    "text": "Common male name.",
+    "hint": "Saint known for his stoning",
+    "hard_text": "Often associated with the first martyr.",
+    "clues": [
+      "First Christian martyr's name.",
+      "Popular male given name.",
+      "Name of a biblical figure."
+    ]
+  },
+  {
+    "word": "STUART",
+    "text": "Common Scottish surname",
+    "hint": "Scottish name",
+    "hard_text": "Royal name in British history",
+    "clues": [
+      "Famous for a monarchy",
+      "Last name of a king",
+      "Notable Scottish lineage"
+    ]
+  },
+  {
+    "word": "susie",
+    "text": "Common girl's name",
+    "hint": "Childhood character often referenced",
+    "hard_text": "Endearing name for a friend?",
+    "clues": [
+      "Endearing name for a friend?",
+      "A character in many childhood tales?",
+      "Often paired with a last name?"
+    ]
+  },
+  {
+    "word": "TAMARA",
+    "text": "Female name of Hebrew origin",
+    "hint": "Common girl's name",
+    "hard_text": "A name that evokes strength and beauty",
+    "clues": [
+      "Hebrew name meaning 'date palm'",
+      "Often associated with beauty and grace",
+      "Name of a popular character or figure"
+    ]
+  },
+  {
+    "word": "TANIA",
+    "text": "Common female name, often of Slavic origin",
+    "hint": "Beloved character from a famous ballet",
+    "hard_text": "A Russian name, but not a Dostoevsky character",
+    "clues": [
+      "A name meaning 'fairy queen'",
+      "Short form of a longer name",
+      "Often found in Slavic tales"
+    ]
+  },
+  {
+    "word": "TERESA",
+    "text": "First name of a famous saint",
+    "hint": "Renowned figure in philanthropy",
+    "hard_text": "Name associated with a notable humanitarian",
+    "clues": [
+      "Last name of a Nobel Peace Prize winner",
+      "Name of a beloved figure in charity",
+      "Famous for compassion and service work"
+    ]
+  },
+  {
+    "word": "THEODORA",
+    "text": "Byzantine empress known for her influence",
+    "hint": "Historic figure of power",
+    "hard_text": "Famous ruler, perhaps in a dream state",
+    "clues": [
+      "She shared a throne with Justinian.",
+      "Name meaning 'gift of God' in Greek.",
+      "A queen of the Eastern Roman Empire."
+    ]
+  },
+  {
+    "word": "THERESA",
+    "text": "Common female first name, often royal",
+    "hint": "female name",
+    "hard_text": "A saintly figure with a touch of royalty",
+    "clues": [
+      "Name associated with a famous humanitarian",
+      "Royalty and kindness in one moniker",
+      "Moniker of a notable saint from Avila"
+    ]
+  },
+  {
+    "word": "tina",
+    "text": "Female name often associated with performers",
+    "hint": "Famous singer with a similar name",
+    "hard_text": "Fictional singer from the past",
+    "clues": [
+      "Fictional singer from the past",
+      "Diva of the stage?",
+      "Common name for a short actress"
+    ]
+  },
+  {
+    "word": "TODD",
+    "text": "Common male given name",
+    "hint": "First name of a famous animated character",
+    "hard_text": "A name often associated with youth",
+    "clues": [
+      "First name of a famous actor, known for humor",
+      "Moniker for a young fellow",
+      "Popular name in the 20th century"
+    ]
+  },
+  {
+    "word": "URIAH",
+    "text": "Biblical figure known for his wife",
+    "hint": "Hittite",
+    "hard_text": "Husband in a Davidic dilemma",
+    "clues": [
+      "Wife was Bathsheba's first spouse",
+      "Fell victim to royal orders",
+      "Name meaning 'my light' in Hebrew"
+    ]
+  },
+  {
+    "word": "VANESSA",
+    "text": "Common name, often for a butterfly",
+    "hint": "butterfly name",
+    "hard_text": "A name that flutters with grace",
+    "clues": [
+      "First name of a famous actress",
+      "Common name for a butterfly genus",
+      "Elegant name in nature"
+    ]
+  },
+  {
+    "word": "VLADIMIR",
+    "text": "Famous Russian name, often associated with leaders",
+    "hint": "Slavic name meaning 'ruler' or 'peace'",
+    "hard_text": "Historically significant, often a ruler's name",
+    "clues": [
+      "Often found in Russian royal lineage",
+      "A name shared with a famous chess player",
+      "Prominent in 20th-century political discourse"
+    ]
+  },
+  {
+    "word": "WALLACE",
+    "text": "A common surname or given name.",
+    "hint": "Scottish freedom fighter",
+    "hard_text": "Famous for a brave historical figure.",
+    "clues": [
+      "Scottish hero's last name.",
+      "Name tied to freedom.",
+      "Character in literature."
+    ]
+  },
+  {
+    "word": "WALTER",
+    "text": "Common male first name.",
+    "hint": "Common male given name",
+    "hard_text": "A classic name, not just a surname.",
+    "clues": [
+      "First name of a famous film character.",
+      "This name shares a letter with 'water'.",
+      "Considered a timeless moniker."
+    ]
+  },
+  {
+    "word": "WALTERS",
+    "text": "Common surname, also a given name.",
+    "hint": "TV journalist or talk show host",
+    "hard_text": "Famous for both people and characters.",
+    "clues": [
+      "A name shared by many.",
+      "Notable figure in entertainment.",
+      "Known for various historical contexts."
+    ]
+  },
+  {
+    "word": "WESLEY",
+    "text": "Common male first name",
+    "hint": "First name of many leaders",
+    "hard_text": "A name with religious origins",
+    "clues": [
+      "First name of a famous theologian",
+      "Often associated with Methodism",
+      "Popular name in English-speaking countries"
+    ]
+  },
+  {
+    "word": "WILLEM",
+    "text": "Dutch royal name",
+    "hint": "Monarch",
+    "hard_text": "First name of a king from the Netherlands",
+    "clues": [
+      "Common name for Dutch rulers",
+      "Given name of the current king",
+      "Royal title in the Low Countries"
+    ]
+  },
+  {
+    "word": "WILLIE",
+    "text": "Common diminutive of William",
+    "hint": "Nickname",
+    "hard_text": "Friendly name for a famous singer",
+    "clues": [
+      "Famous country singer known for his guitar",
+      "Commonly used name, often familiar",
+      "Short form of a traditional name"
+    ]
+  }
+]
