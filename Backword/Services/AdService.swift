@@ -6,13 +6,33 @@ final class AdService: NSObject, ObservableObject {
 
     // MARK: - Ad Unit IDs
 
-    #if DEBUG
-    private let interstitialAdUnitID = "ca-app-pub-3940256099942544/4411468910" // Google test ID (Interstitial)
-    private let rewardedAdUnitID = "ca-app-pub-3940256099942544/1712485313"      // Google test ID (Rewarded)
-    #else
-    private let interstitialAdUnitID = "ca-app-pub-7357305065047849/2731847065"
-    private let rewardedAdUnitID = "ca-app-pub-7357305065047849/9890466910"
-    #endif
+    var interstitialAdUnitID: String {
+        #if DEBUG
+        // Simulator or local dev build
+        return "ca-app-pub-3940256099942544/4411468910"
+        #else
+        // Check if running in TestFlight sandbox
+        if Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" {
+            return "ca-app-pub-3940256099942544/4411468910"
+        }
+        // Live App Store build
+        return "ca-app-pub-7357305065047849/2731847065"
+        #endif
+    }
+
+    var rewardedAdUnitID: String {
+        #if DEBUG
+        // Simulator or local dev build
+        return "ca-app-pub-3940256099942544/1712485313"
+        #else
+        // Check if running in TestFlight sandbox
+        if Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" {
+            return "ca-app-pub-3940256099942544/1712485313"
+        }
+        // Live App Store build
+        return "ca-app-pub-7357305065047849/9890466910"
+        #endif
+    }
 
     // MARK: - State
 
