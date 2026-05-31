@@ -11,12 +11,12 @@ struct BackwordInstructionsContentView: View {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 10) {
                     instructionRow(number: "1", text: "Guess the 6-letter word in 5 tries.")
-                    instructionRow(number: "2", text: "Type the missing letters into the highlighted cells, then tap Submit.")
-                    instructionRow(number: "3", text: "After each wrong guess, any letters you got right at the end of the word are revealed.")
-                    instructionRow(number: "4", text: "Unmatched letters from previous guesses are not eliminated — they're still in play")
-
-                    instructionRow(number: "5", text: "The clue is shown at the top — use it to guide your guess.")
-                    instructionRow(number: "6", text: "The fewer the guesses, the more points you get.")
+                    instructionRow(number: "2", text: "Read the clue at the top to guide your guesses.")
+                    instructionRow(number: "3", text: "Type your guess into the cells and tap Submit.")
+                    instructionRow(number: "4", text: "After a wrong guess, any correct letters at the end of the word will lock in and reveal.")
+                    instructionRow(number: "5", text: "Letters only reveal right-to-left! If you guess a correct letter at the start of the word, it will stay hidden until the middle is correct too.")
+                    instructionRow(number: "6", text: "The fewer guesses you need, the more points you score.")
+                    instructionRow(number: nil, text: "If you're stuck, submit any word that fits to reveal more letters from the end.")
                 }
 
                 Divider()
@@ -37,7 +37,7 @@ struct BackwordInstructionsContentView: View {
                     .foregroundColor(.appTextSecondary)
                     .frame(maxWidth: .infinity, alignment: .center)
 
-                ScoringRuleView.backword()
+                ScoringRuleView.backword(title: "Scoring")
 
             }
             .padding(20)
@@ -45,14 +45,19 @@ struct BackwordInstructionsContentView: View {
         .background(Color.appBackground)
     }
 
-    private func instructionRow(number: String, text: String) -> some View {
+    private func instructionRow(number: String?, text: String) -> some View {
         HStack(alignment: .top, spacing: 10) {
-            Text(number)
-                .font(AppFont.clueLabel(13))
-                .foregroundColor(.white)
-                .frame(width: iconFrame, height: iconFrame)
-                .background(Color.appAccent)
-                .clipShape(Circle())
+            if let number {
+                Text(number)
+                    .font(AppFont.clueLabel(13))
+                    .foregroundColor(.white)
+                    .frame(width: iconFrame, height: iconFrame)
+                    .background(Color.appAccent)
+                    .clipShape(Circle())
+            } else {
+                Image(systemName: "info.circle")
+                    .foregroundColor(.appCorrect)
+            }
             Text(text)
                 .font(AppFont.body(14))
                 .foregroundColor(.appTextSecondary)

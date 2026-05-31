@@ -35,16 +35,16 @@ struct ScoringRuleView: View {
                             .font(AppFont.clueLabel(11))
                             .foregroundColor(.appAccent)
                     }
-                    .padding(.leading, 28)
+                    .padding(.leading, 34)
                 }
             }
         }
     }
 
-    static func backword() -> some View {
+    static func backword(title: String = "Backword") -> some View {
         ScoringRuleView(
             icon: "backward.circle",
-            title: "Backword",
+            title: title,
             rows: [
                 ("Win in 1 guess", "5 pts"),
                 ("Win in 2 guesses", "4 pts"),
@@ -73,5 +73,14 @@ struct ScoringRuleView: View {
 }
 
 #Preview {
-    ScoringRuleView(icon: "backward.circle", title: "Win in 1 guess", rows: [("", "")])
+    ScoringRuleView(
+        icon: "backward.circle",
+        title: "Win in 1 guess",
+        rows: [("Win in 1 guess", "5 pts"),
+               ("Win in 2 guesses", "4 pts"),
+               ("Win in 3 guesses", "3 pts"),
+               ("Win in 4 guesses", "2 pts"),
+               ("Win in 5 guesses", "1 pt"),
+               ("Loss or missed", "0 pts")]
+    )
 }
