@@ -51,7 +51,7 @@ struct WOTDDetailView: View {
                     .padding(.horizontal, 14)
                     .padding(.vertical, 19)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.appSurface)/*.opacity(0.75)*/
+                    .background(Color.appBackground)
                     .overlay(
                         RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                             .stroke(Color.appAccent.opacity(0.6), lineWidth: 2)
@@ -121,7 +121,7 @@ struct WOTDDetailView: View {
                 .padding(.top, 24)
                 .padding(.bottom, 40)
             }
-            .background(Color.appBackground.opacity(0.2))
+            .background(Color.appSurface)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

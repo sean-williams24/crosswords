@@ -1,0 +1,1772 @@
+[
+  {
+    "word": "FOB",
+    "text": "Key chain attachment",
+    "hint": "Pocket watch accessory",
+    "source": "llm"
+  },
+  {
+    "word": "GNU",
+    "text": "Wildebeest",
+    "hint": "African antelope",
+    "source": "llm"
+  },
+  {
+    "word": "IRE",
+    "text": "Anger or wrath",
+    "hint": "Strong displeasure",
+    "source": "llm"
+  },
+  {
+    "word": "NIT",
+    "text": "Louse egg",
+    "hint": "Petty criticism: ___pick",
+    "source": "llm"
+  },
+  {
+    "word": "OUR",
+    "text": "Belonging to us",
+    "hint": "Possessive form of we",
+    "source": "llm"
+  },
+  {
+    "word": "SOP",
+    "text": "Something soaked or dipped",
+    "hint": "Standard operating procedure",
+    "source": "llm"
+  },
+  {
+    "word": "THE",
+    "text": "Most common English word",
+    "hint": "Definite article",
+    "source": "llm"
+  },
+  {
+    "word": "VIM",
+    "text": "Energy and enthusiasm",
+    "hint": "Full of ___ and vigor",
+    "source": "llm"
+  },
+  {
+    "word": "YAW",
+    "text": "Turn to one side",
+    "hint": "Aircraft rotation around vertical axis",
+    "source": "llm"
+  },
+  {
+    "word": "ZIT",
+    "text": "Teenage skin woe",
+    "hint": "Blemish",
+    "source": "llm"
+  },
+  {
+    "word": "BAA",
+    "text": "Sheep's sound",
+    "hint": "Bleat",
+    "source": "llm"
+  },
+  {
+    "word": "BAE",
+    "text": "Significant other, informally",
+    "hint": "Sweetheart",
+    "source": "llm"
+  },
+  {
+    "word": "BAM",
+    "text": "Sudden impact sound",
+    "hint": "Crash",
+    "source": "llm"
+  },
+  {
+    "word": "BEN",
+    "text": "Mountain peak, informally",
+    "hint": "Summit",
+    "source": "llm"
+  },
+  {
+    "word": "CUD",
+    "text": "Partially digested food",
+    "hint": "Cow's food",
+    "source": "llm"
+  },
+  {
+    "word": "CUR",
+    "text": "A mongrel dog",
+    "hint": "Undesirable canine",
+    "source": "llm"
+  },
+  {
+    "word": "GAM",
+    "text": "Leg",
+    "hint": "Limbs",
+    "source": "llm"
+  },
+  {
+    "word": "GEO",
+    "text": "Earth-related",
+    "hint": "Study of terrestrial features",
+    "source": "llm"
+  },
+  {
+    "word": "KIM",
+    "text": "Common Asian name",
+    "hint": "Surname of a famous martial artist?",
+    "source": "llm"
+  },
+  {
+    "word": "LUX",
+    "text": "Unit of light intensity",
+    "hint": "brightness measure",
+    "source": "llm"
+  },
+  {
+    "word": "MAE",
+    "text": "Common female name",
+    "hint": "Common female given name",
+    "source": "llm"
+  },
+  {
+    "word": "NAM",
+    "text": "Short form for a country in Southeast Asia",
+    "hint": "Vietnam",
+    "source": "llm"
+  },
+  {
+    "word": "NEO",
+    "text": "Prefix meaning new or recent",
+    "hint": "Contemporary concept or trend",
+    "source": "llm"
+  },
+  {
+    "word": "ada",
+    "text": "Pioneer in computer science",
+    "hint": "Famous for her work on algorithms",
+    "source": "llm"
+  },
+  {
+    "word": "hon",
+    "text": "Term of endearment for a loved one",
+    "hint": "Affectionate nickname",
+    "source": "llm"
+  },
+  {
+    "word": "leo",
+    "text": "Astrological sign represented by a lion",
+    "hint": "Sign known for its confidence",
+    "source": "llm"
+  },
+  {
+    "word": "rho",
+    "text": "17th letter of the Greek alphabet",
+    "hint": "Symbol often used in math and science",
+    "source": "llm"
+  },
+  {
+    "word": "rio",
+    "text": "Spanish word for river",
+    "hint": "City known for its Carnival",
+    "source": "llm"
+  },
+  {
+    "word": "ron",
+    "text": "Type of alcoholic beverage",
+    "hint": "Common name for a wizard's companion",
+    "source": "llm"
+  },
+  {
+    "word": "ted",
+    "text": "Common male given name",
+    "hint": "Famous bear in film",
+    "source": "llm"
+  },
+  {
+    "word": "tho",
+    "text": "Casual word used to soften statements",
+    "hint": "Informal way to express contrast",
+    "source": "llm"
+  },
+  {
+    "word": "til",
+    "text": "Contraction often seen in casual writing",
+    "hint": "Time-related preposition",
+    "source": "llm"
+  },
+  {
+    "word": "tri",
+    "text": "Prefix meaning three",
+    "hint": "Prefix for a triangle",
+    "source": "llm"
+  },
+  {
+    "word": "abe",
+    "text": "16th president of the United States",
+    "hint": "Emancipation Proclamation signer",
+    "source": "llm"
+  },
+  {
+    "word": "bea",
+    "text": "A charming nickname",
+    "hint": "Sweet-sounding girl's name",
+    "source": "llm"
+  },
+  {
+    "word": "eva",
+    "text": "Female name of Hebrew origin",
+    "hint": "A name meaning 'life'",
+    "source": "llm"
+  },
+  {
+    "word": "gus",
+    "text": "Short form of a common name",
+    "hint": "Moniker for a friendly character",
+    "source": "llm"
+  },
+  {
+    "word": "ike",
+    "text": "Former U.S. president known for WWII leadership",
+    "hint": "Nickname of a famous general",
+    "source": "llm"
+  },
+  {
+    "word": "jon",
+    "text": "Common masculine given name",
+    "hint": "Common first name",
+    "source": "llm"
+  },
+  {
+    "word": "jun",
+    "text": "Third month of summer in the Northern Hemisphere",
+    "hint": "Abbreviation for a month",
+    "source": "llm"
+  },
+  {
+    "word": "luc",
+    "text": "Source of brightness",
+    "hint": "Common prefix for light-related words",
+    "source": "llm"
+  },
+  {
+    "word": "moe",
+    "text": "Japanese term for cuteness",
+    "hint": "Anime subculture reference",
+    "source": "llm"
+  },
+  {
+    "word": "mrs",
+    "text": "Title for a married woman",
+    "hint": "Formal address for a wife",
+    "source": "llm"
+  },
+  {
+    "word": "par",
+    "text": "Average performance level",
+    "hint": "Standard golf score",
+    "source": "llm"
+  },
+  {
+    "word": "ped",
+    "text": "Related to foot or child",
+    "hint": "Common prefix in anatomy",
+    "source": "llm"
+  },
+  {
+    "word": "per",
+    "text": "In accordance with",
+    "hint": "As a proportion of",
+    "source": "llm"
+  },
+  {
+    "word": "phi",
+    "text": "Fifth letter of the Greek alphabet",
+    "hint": "Mathematical constant symbol",
+    "source": "llm"
+  },
+  {
+    "word": "raj",
+    "text": "Historical period of British rule in India",
+    "hint": "Colonial governance in South Asia",
+    "source": "llm"
+  },
+  {
+    "word": "reg",
+    "text": "Official guideline or rule",
+    "hint": "Government regulations, for instance",
+    "source": "llm"
+  },
+  {
+    "word": "roy",
+    "text": "A common male name",
+    "hint": "Famous character from a classic film",
+    "source": "llm"
+  },
+  {
+    "word": "sam",
+    "text": "Short form of a male name",
+    "hint": "Fictional character from 'The Lord of the Rings'",
+    "source": "llm"
+  },
+  {
+    "word": "sib",
+    "text": "Relative sharing genetic ties",
+    "hint": "Blood relation",
+    "source": "llm"
+  },
+  {
+    "word": "sim",
+    "text": "Abbreviation for simulation",
+    "hint": "Short for a virtual environment",
+    "source": "llm"
+  },
+  {
+    "word": "tam",
+    "text": "Traditional Scottish hat",
+    "hint": "Headwear often associated with Scotland",
+    "source": "llm"
+  },
+  {
+    "word": "tim",
+    "text": "Popular name for a boy",
+    "hint": "Character from a famous animated series",
+    "source": "llm"
+  },
+  {
+    "word": "tom",
+    "text": "Male feline or nickname for Thomas",
+    "hint": "Male name or feline reference",
+    "source": "llm"
+  },
+  {
+    "word": "val",
+    "text": "Abbreviation in computing or names",
+    "hint": "Common prefix in names",
+    "source": "llm"
+  },
+  {
+    "word": "meg",
+    "text": "One million units in size",
+    "hint": "Prefix for a million",
+    "source": "llm"
+  },
+  {
+    "word": "ANA",
+    "text": "Collection of anecdotes or writings",
+    "hint": "Compilation of works",
+    "source": "llm"
+  },
+  {
+    "word": "IRA",
+    "text": "Retirement savings account",
+    "hint": "investment",
+    "source": "llm"
+  },
+  {
+    "word": "LEA",
+    "text": "Open grassy field",
+    "hint": "Open space for grazing livestock",
+    "source": "llm"
+  },
+  {
+    "word": "LIN",
+    "text": "Type of fabric made from flax",
+    "hint": "Fabric often associated with summer wear",
+    "source": "llm"
+  },
+  {
+    "word": "LOO",
+    "text": "A room with a toilet",
+    "hint": "restroom",
+    "source": "llm"
+  },
+  {
+    "word": "OLE",
+    "text": "Exclamation of approval",
+    "hint": "bravo",
+    "source": "llm"
+  },
+  {
+    "word": "TAE",
+    "text": "Scottish term for 'to'",
+    "hint": "toward",
+    "source": "llm"
+  },
+  {
+    "word": "TAO",
+    "text": "Way or path in Chinese philosophy",
+    "hint": "method",
+    "source": "llm"
+  },
+  {
+    "word": "YEA",
+    "text": "Affirmative response",
+    "hint": "Yes",
+    "source": "llm"
+  },
+  {
+    "word": "AVE",
+    "text": "A common abbreviation for avenue.",
+    "hint": "Street type.",
+    "source": "llm"
+  },
+  {
+    "word": "BOT",
+    "text": "Automated software for tasks.",
+    "hint": "Computer program.",
+    "source": "llm"
+  },
+  {
+    "word": "ALT",
+    "text": "Short for alternative.",
+    "hint": "Option or substitute.",
+    "source": "llm"
+  },
+  {
+    "word": "DIS",
+    "text": "To disrespect or insult.",
+    "hint": "Put down.",
+    "source": "llm"
+  },
+  {
+    "word": "PAM",
+    "text": "A common name, often short for Pamela.",
+    "hint": "Short name for a girl.",
+    "source": "llm"
+  },
+  {
+    "word": "NES",
+    "text": "A classic video game console.",
+    "hint": "Retro gaming system.",
+    "source": "llm"
+  },
+  {
+    "word": "LPS",
+    "text": "Small, collectible toy pets.",
+    "hint": "Adorable toy animals.",
+    "source": "llm"
+  },
+  {
+    "word": "HEF",
+    "text": "Nickname for a famous magazine founder.",
+    "hint": "Playboy creator.",
+    "source": "llm"
+  },
+  {
+    "word": "INS",
+    "text": "Short for insurance.",
+    "hint": "Coverage for protection.",
+    "source": "llm"
+  },
+  {
+    "word": "ROO",
+    "text": "A baby kangaroo.",
+    "hint": "Young marsupial.",
+    "source": "llm"
+  },
+  {
+    "word": "ATL",
+    "text": "Abbreviation for a major U.S. city.",
+    "hint": "Capital of Georgia.",
+    "source": "llm"
+  },
+  {
+    "word": "BRO",
+    "text": "A term for a close male friend.",
+    "hint": "Buddy or pal.",
+    "source": "llm"
+  },
+  {
+    "word": "LUV",
+    "text": "A playful spelling of love.",
+    "hint": "Affectionate term.",
+    "source": "llm"
+  },
+  {
+    "word": "HRS",
+    "text": "Units of time equal to 60 minutes.",
+    "hint": "Time measurement.",
+    "source": "llm"
+  },
+  {
+    "word": "MIB",
+    "text": "Agents who handle extraterrestrial affairs.",
+    "hint": "Secret agents in black.",
+    "source": "llm"
+  },
+  {
+    "word": "ERE",
+    "text": "An old term meaning before.",
+    "hint": "Before in time.",
+    "source": "llm"
+  },
+  {
+    "word": "AXL",
+    "text": "Lead guitarist of Guns N' Roses.",
+    "hint": "Rock star with a famous band.",
+    "source": "llm"
+  },
+  {
+    "word": "ODS",
+    "text": "A collection of objectives for sustainability.",
+    "hint": "Global goals for a better world.",
+    "source": "llm"
+  },
+  {
+    "word": "SNL",
+    "text": "Weekly comedy show on NBC.",
+    "hint": "Late-night sketch comedy.",
+    "source": "llm"
+  },
+  {
+    "word": "DWI",
+    "text": "Driving under the influence of alcohol.",
+    "hint": "Illegal driving condition.",
+    "source": "llm"
+  },
+  {
+    "word": "ILK",
+    "text": "Type or kind of something.",
+    "hint": "Similar category.",
+    "source": "llm"
+  },
+  {
+    "word": "ESE",
+    "text": "Direction between east and southeast.",
+    "hint": "Cardinal direction.",
+    "source": "llm"
+  },
+  {
+    "word": "MSN",
+    "text": "Microsoft's online service and news portal.",
+    "hint": "Internet service by Microsoft.",
+    "source": "llm"
+  },
+  {
+    "word": "AUK",
+    "text": "A seabird known for its diving ability.",
+    "hint": "Bird that swims well.",
+    "source": "llm"
+  },
+  {
+    "word": "TIS",
+    "text": "An archaic contraction for 'it is'.",
+    "hint": "Old-fashioned way to say 'it is'.",
+    "source": "llm"
+  },
+  {
+    "word": "LIB",
+    "text": "Short for a place to borrow books.",
+    "hint": "Place for reading and borrowing.",
+    "source": "llm"
+  },
+  {
+    "word": "OOH",
+    "text": "Expression of surprise or excitement.",
+    "hint": "Sound of amazement.",
+    "source": "llm"
+  },
+  {
+    "word": "OOF",
+    "text": "Sound made when someone falls or is hurt.",
+    "hint": "Sound of impact.",
+    "source": "llm"
+  },
+  {
+    "word": "IOU",
+    "text": "A written acknowledgment of a debt.",
+    "hint": "Promise to pay back.",
+    "source": "llm"
+  },
+  {
+    "word": "LYE",
+    "text": "A strong alkaline solution used in soap making.",
+    "hint": "Used in making soap.",
+    "source": "llm"
+  },
+  {
+    "word": "APB",
+    "text": "Broadcast to locate a suspect.",
+    "hint": "Alert for a criminal.",
+    "source": "llm"
+  },
+  {
+    "word": "MDS",
+    "text": "A type of medical condition affecting blood cells.",
+    "hint": "Disorder of the bone marrow.",
+    "source": "llm"
+  },
+  {
+    "word": "GRR",
+    "text": "Sound expressing anger or frustration.",
+    "hint": "Growl of annoyance.",
+    "source": "llm"
+  },
+  {
+    "word": "FHM",
+    "text": "Popular men's magazine known for its models.",
+    "hint": "Men's lifestyle publication.",
+    "source": "llm"
+  },
+  {
+    "word": "IOS",
+    "text": "Apple's mobile operating system.",
+    "hint": "Apple's phone software.",
+    "source": "llm"
+  },
+  {
+    "word": "ICK",
+    "text": "Expression of disgust or distaste.",
+    "hint": "Gross feeling.",
+    "source": "llm"
+  },
+  {
+    "word": "NEE",
+    "text": "Used to indicate a maiden name.",
+    "hint": "Born as, before marriage.",
+    "source": "llm"
+  },
+  {
+    "word": "ISH",
+    "text": "Suffix indicating approximation.",
+    "hint": "About or around.",
+    "source": "llm"
+  },
+  {
+    "word": "AMC",
+    "text": "Famous movie theater chain.",
+    "hint": "Cinema company.",
+    "source": "llm"
+  },
+  {
+    "word": "ROM",
+    "text": "Read-only memory in computers.",
+    "hint": "Non-volatile storage.",
+    "source": "llm"
+  },
+  {
+    "word": "PSI",
+    "text": "Unit of pressure measurement.",
+    "hint": "Pressure unit.",
+    "source": "llm"
+  },
+  {
+    "word": "RSS",
+    "text": "Web feed format for updates.",
+    "hint": "Content syndication format.",
+    "source": "llm"
+  },
+  {
+    "word": "FOP",
+    "text": "Dandy or a fashionable man.",
+    "hint": "A stylish man.",
+    "source": "llm"
+  },
+  {
+    "word": "MIR",
+    "text": "Reflective surface for seeing oneself.",
+    "hint": "Looking glass.",
+    "source": "llm"
+  },
+  {
+    "word": "TPS",
+    "text": "Measurement of tasks per second.",
+    "hint": "Task speed.",
+    "source": "llm"
+  },
+  {
+    "word": "MAO",
+    "text": "Chinese leader known for the Cultural Revolution.",
+    "hint": "Famous Chinese figure.",
+    "source": "llm"
+  },
+  {
+    "word": "CHE",
+    "text": "Argentinian revolutionary figure.",
+    "hint": "Famous revolutionary.",
+    "source": "llm"
+  },
+  {
+    "word": "HIC",
+    "text": "Sound made when one has a spasm.",
+    "hint": "Unexpected sound.",
+    "source": "llm"
+  },
+  {
+    "word": "COM",
+    "text": "Short for communication.",
+    "hint": "Connect with others.",
+    "source": "llm"
+  },
+  {
+    "word": "ASL",
+    "text": "Language using hand signs.",
+    "hint": "Sign language.",
+    "source": "llm"
+  },
+  {
+    "word": "SHO",
+    "text": "Type of footwear for the foot.",
+    "hint": "Footwear.",
+    "source": "llm"
+  },
+  {
+    "word": "IVS",
+    "text": "Medical abbreviation for intravenous.",
+    "hint": "In the vein.",
+    "source": "llm"
+  },
+  {
+    "word": "EST",
+    "text": "Time zone for Eastern United States.",
+    "hint": "Eastern time.",
+    "source": "llm"
+  },
+  {
+    "word": "CEL",
+    "text": "Unit of temperature measurement.",
+    "hint": "Temperature scale.",
+    "source": "llm"
+  },
+  {
+    "word": "YAS",
+    "text": "Excited affirmation or agreement.",
+    "hint": "Yes with enthusiasm.",
+    "source": "llm"
+  },
+  {
+    "word": "IVE",
+    "text": "Suffix indicating a tendency or nature.",
+    "hint": "Descriptive ending.",
+    "source": "llm"
+  },
+  {
+    "word": "PWN",
+    "text": "To dominate or defeat decisively.",
+    "hint": "Totally win.",
+    "source": "llm"
+  },
+  {
+    "word": "ALP",
+    "text": "Mountain range in Europe.",
+    "hint": "Famous mountain range.",
+    "source": "llm"
+  },
+  {
+    "word": "MIT",
+    "text": "Prestigious technology university in Boston.",
+    "hint": "Famous tech school.",
+    "source": "llm"
+  },
+  {
+    "word": "GAH",
+    "text": "Expression of frustration or surprise.",
+    "hint": "Sound of exasperation.",
+    "source": "llm"
+  },
+  {
+    "word": "DIF",
+    "text": "Short for different.",
+    "hint": "Not the same.",
+    "source": "llm"
+  },
+  {
+    "word": "IED",
+    "text": "Explosive device.",
+    "hint": "Booming contraption.",
+    "source": "llm"
+  },
+  {
+    "word": "OED",
+    "text": "Comprehensive dictionary.",
+    "hint": "Words and definitions.",
+    "source": "llm"
+  },
+  {
+    "word": "ACH",
+    "text": "Expression of pain.",
+    "hint": "Ouch sound.",
+    "source": "llm"
+  },
+  {
+    "word": "LOS",
+    "text": "Loss in a game.",
+    "hint": "Defeat.",
+    "source": "llm"
+  },
+  {
+    "word": "DRE",
+    "text": "Short for dream.",
+    "hint": "Nighttime visions.",
+    "source": "llm"
+  },
+  {
+    "word": "TAS",
+    "text": "Short for tasks.",
+    "hint": "Jobs to do.",
+    "source": "llm"
+  },
+  {
+    "word": "ANG",
+    "text": "Short for angle.",
+    "hint": "Corner or slope.",
+    "source": "llm"
+  },
+  {
+    "word": "MAA",
+    "text": "Sound made by a sheep.",
+    "hint": "Sheep's call.",
+    "source": "llm"
+  },
+  {
+    "word": "IDO",
+    "text": "Phrase in wedding vows.",
+    "hint": "I agree.",
+    "source": "llm"
+  },
+  {
+    "word": "REN",
+    "text": "Small, agile bird.",
+    "hint": "Tiny songbird.",
+    "source": "llm"
+  },
+  {
+    "word": "IDS",
+    "text": "Identifications or tags.",
+    "hint": "Short for identifiers.",
+    "source": "llm"
+  },
+  {
+    "word": "WTF",
+    "text": "Expression of disbelief.",
+    "hint": "Surprised reaction.",
+    "source": "llm"
+  },
+  {
+    "word": "FEN",
+    "text": "Wetland area.",
+    "hint": "Marshy ecosystem.",
+    "source": "llm"
+  },
+  {
+    "word": "DRJ",
+    "text": "Abbreviation for a doctor.",
+    "hint": "Short for medical professional.",
+    "source": "llm"
+  },
+  {
+    "word": "FRI",
+    "text": "Day before the weekend.",
+    "hint": "Last workday for many.",
+    "source": "llm"
+  },
+  {
+    "word": "RFK",
+    "text": "U.S. politician and activist.",
+    "hint": "Kennedy family member.",
+    "source": "llm"
+  },
+  {
+    "word": "EKE",
+    "text": "To manage with difficulty.",
+    "hint": "Struggle to get by.",
+    "source": "llm"
+  },
+  {
+    "word": "WAH",
+    "text": "Sound of crying.",
+    "hint": "Baby's noise.",
+    "source": "llm"
+  },
+  {
+    "word": "REO",
+    "text": "Real estate owned by a bank.",
+    "hint": "Bank-owned property.",
+    "source": "llm"
+  },
+  {
+    "word": "ZED",
+    "text": "Last letter of the alphabet.",
+    "hint": "Final letter.",
+    "source": "llm"
+  },
+  {
+    "word": "JRS",
+    "text": "Abbreviation for junior.",
+    "hint": "Short form of a title.",
+    "source": "llm"
+  },
+  {
+    "word": "OWW",
+    "text": "A sound made when in pain.",
+    "hint": "Expression of discomfort.",
+    "source": "llm"
+  },
+  {
+    "word": "JEB",
+    "text": "A common male name.",
+    "hint": "First name of a politician.",
+    "source": "llm"
+  },
+  {
+    "word": "ESC",
+    "text": "Key to exit a program.",
+    "hint": "Exit button.",
+    "source": "llm"
+  },
+  {
+    "word": "HIE",
+    "text": "To hurry or rush.",
+    "hint": "Move quickly.",
+    "source": "hard_remove"
+  },
+  {
+    "word": "ITD",
+    "text": "Abbreviation for 'in the distance'.",
+    "hint": "Far away.",
+    "source": "hard_remove"
+  },
+  {
+    "word": "TEX",
+    "text": "Relating to Texas.",
+    "hint": "Lone Star State.",
+    "source": "llm"
+  },
+  {
+    "word": "ARF",
+    "text": "Sound a dog makes.",
+    "hint": "Dog's bark.",
+    "source": "llm"
+  },
+  {
+    "word": "ALF",
+    "text": "Fictional alien from a TV show.",
+    "hint": "Eats cats.",
+    "source": "llm"
+  },
+  {
+    "word": "HMO",
+    "text": "Health insurance plan type.",
+    "hint": "Managed care.",
+    "source": "hard_remove"
+  },
+  {
+    "word": "AJA",
+    "text": "A common expression of surprise.",
+    "hint": "Got it!",
+    "source": "hard_remove"
+  },
+  {
+    "word": "HEH",
+    "text": "A sound of mild amusement.",
+    "hint": "Chuckling sound.",
+    "source": "llm"
+  },
+  {
+    "word": "FER",
+    "text": "To carry or bring.",
+    "hint": "To transport.",
+    "source": "llm"
+  },
+  {
+    "word": "SID",
+    "text": "A common male name.",
+    "hint": "Short for Sidney.",
+    "source": "llm"
+  },
+  {
+    "word": "ORG",
+    "text": "Short for organization.",
+    "hint": "Group or company.",
+    "source": "llm"
+  },
+  {
+    "word": "FEB",
+    "text": "Second month of the year.",
+    "hint": "Shortest month.",
+    "source": "llm"
+  },
+  {
+    "word": "NOS",
+    "text": "Short for numbers.",
+    "hint": "Digits.",
+    "source": "llm"
+  },
+  {
+    "word": "TVS",
+    "text": "Television sets or screens",
+    "hint": "Home entertainment devices",
+    "source": "llm"
+  },
+  {
+    "word": "USH",
+    "text": "A quick movement to push away",
+    "hint": "To shove or push",
+    "source": "llm"
+  },
+  {
+    "word": "CCR",
+    "text": "Rock band known for 'Bad Moon Rising'",
+    "hint": "Famous music group",
+    "source": "llm"
+  },
+  {
+    "word": "BUB",
+    "text": "A term of endearment for a friend",
+    "hint": "Buddy or pal",
+    "source": "llm"
+  },
+  {
+    "word": "LIZ",
+    "text": "Common name for a female lizard",
+    "hint": "Reptile name",
+    "source": "llm"
+  },
+  {
+    "word": "BOD",
+    "text": "Short for body or group of people",
+    "hint": "Physical form",
+    "source": "llm"
+  },
+  {
+    "word": "HUN",
+    "text": "A term for a person you care for",
+    "hint": "Sweetheart or darling",
+    "source": "llm"
+  },
+  {
+    "word": "IQS",
+    "text": "Measure of intelligence",
+    "hint": "Cognitive ability score",
+    "source": "llm"
+  },
+  {
+    "word": "NIA",
+    "text": "National Institute on Aging",
+    "hint": "Research organization",
+    "source": "hard_remove"
+  },
+  {
+    "word": "BCC",
+    "text": "Blind carbon copy in emails",
+    "hint": "Hidden recipient",
+    "source": "llm"
+  },
+  {
+    "word": "SYD",
+    "text": "Capital city of New South Wales",
+    "hint": "Australian metropolis",
+    "source": "llm"
+  },
+  {
+    "word": "MCS",
+    "text": "A condition affecting the nervous system",
+    "hint": "Neurological disorder",
+    "source": "llm"
+  },
+  {
+    "word": "DOI",
+    "text": "Digital Object Identifier for documents",
+    "hint": "Unique reference",
+    "source": "llm"
+  },
+  {
+    "word": "PBJ",
+    "text": "Classic sandwich with peanut butter and jelly",
+    "hint": "Childhood favorite",
+    "source": "llm"
+  },
+  {
+    "word": "JED",
+    "text": "Common name for a male",
+    "hint": "Boy's name",
+    "source": "llm"
+  },
+  {
+    "word": "LAV",
+    "text": "Short for lavatory",
+    "hint": "Restroom",
+    "source": "hard_remove"
+  },
+  {
+    "word": "SOC",
+    "text": "Relating to society or social interactions",
+    "hint": "Community-focused",
+    "source": "llm"
+  },
+  {
+    "word": "WPM",
+    "text": "Words typed per minute",
+    "hint": "Typing speed measure",
+    "source": "llm"
+  },
+  {
+    "word": "JUT",
+    "text": "To stick out or extend",
+    "hint": "Protrude",
+    "source": "llm"
+  },
+  {
+    "word": "POM",
+    "text": "A slang term for an Australian",
+    "hint": "Aussie slang",
+    "source": "hard_remove"
+  },
+  {
+    "word": "GOB",
+    "text": "A large lump or mass",
+    "hint": "Chunk",
+    "source": "llm"
+  },
+  {
+    "word": "CYA",
+    "text": "Informal goodbye expression",
+    "hint": "See you later",
+    "source": "llm"
+  },
+  {
+    "word": "DJS",
+    "text": "Music mixers and entertainers",
+    "hint": "Party music players",
+    "source": "llm"
+  },
+  {
+    "word": "TNN",
+    "text": "A former news network",
+    "hint": "News channel",
+    "source": "llm"
+  },
+  {
+    "word": "QUE",
+    "text": "To line up or wait in order",
+    "hint": "Line up",
+    "source": "hard_remove"
+  },
+  {
+    "word": "DHS",
+    "text": "U.S. Department of Homeland Security",
+    "hint": "Safety agency",
+    "source": "llm"
+  },
+  {
+    "word": "MIC",
+    "text": "Device for amplifying sound",
+    "hint": "Sound device",
+    "source": "llm"
+  },
+  {
+    "word": "GAT",
+    "text": "A slang term for a gun",
+    "hint": "Firearm",
+    "source": "llm"
+  },
+  {
+    "word": "SOX",
+    "text": "Footwear made of fabric",
+    "hint": "Foot covering",
+    "source": "llm"
+  },
+  {
+    "word": "ZEE",
+    "text": "The last letter of the alphabet",
+    "hint": "Final letter",
+    "source": "llm"
+  },
+  {
+    "word": "AUX",
+    "text": "Short for auxiliary, often used in audio",
+    "hint": "Extra support",
+    "source": "llm"
+  },
+  {
+    "word": "MAW",
+    "text": "The jaws or throat of a voracious animal",
+    "hint": "Animal's mouth",
+    "source": "llm"
+  },
+  {
+    "word": "KEV",
+    "text": "A common name, often short for Kevin",
+    "hint": "Short name",
+    "source": "llm"
+  },
+  {
+    "word": "MEX",
+    "text": "Abbreviation for Mexico",
+    "hint": "Country code",
+    "source": "llm"
+  },
+  {
+    "word": "JTT",
+    "text": "Initials of a famous teen actor",
+    "hint": "Actor's initials",
+    "source": "llm"
+  },
+  {
+    "word": "EQS",
+    "text": "Abbreviation for equations",
+    "hint": "Math expressions",
+    "source": "llm"
+  },
+  {
+    "word": "VAX",
+    "text": "A shot to prevent illness.",
+    "hint": "Preventive injection.",
+    "source": "llm"
+  },
+  {
+    "word": "VJS",
+    "text": "Short for video game consoles.",
+    "hint": "Gaming devices.",
+    "source": "llm"
+  },
+  {
+    "word": "HSI",
+    "text": "A unit of measurement for heat.",
+    "hint": "Temperature scale.",
+    "source": "llm"
+  },
+  {
+    "word": "WHA",
+    "text": "A sound of surprise or confusion.",
+    "hint": "Expression of disbelief.",
+    "source": "llm"
+  },
+  {
+    "word": "NEN",
+    "text": "A type of bird known for its song.",
+    "hint": "Singing avian.",
+    "source": "llm"
+  },
+  {
+    "word": "PSP",
+    "text": "Portable gaming device from Sony.",
+    "hint": "Handheld game console.",
+    "source": "llm"
+  },
+  {
+    "word": "RNR",
+    "text": "A genre of music with rhythm.",
+    "hint": "Rock and roll.",
+    "source": "llm"
+  },
+  {
+    "word": "CUZ",
+    "text": "A familiar term for a relative.",
+    "hint": "Family member.",
+    "source": "llm"
+  },
+  {
+    "word": "VFW",
+    "text": "Organization for veterans of wars.",
+    "hint": "Support group for ex-soldiers.",
+    "source": "llm"
+  },
+  {
+    "word": "PDQ",
+    "text": "An acronym for quickly.",
+    "hint": "Fast or speedy.",
+    "source": "llm"
+  },
+  {
+    "word": "TMZ",
+    "text": "A source for celebrity news.",
+    "hint": "Gossip outlet.",
+    "source": "llm"
+  },
+  {
+    "word": "WWW",
+    "text": "The global information network.",
+    "hint": "Internet's foundation.",
+    "source": "llm"
+  },
+  {
+    "word": "PBR",
+    "text": "A popular American beer brand.",
+    "hint": "Brewed beverage.",
+    "source": "llm"
+  },
+  {
+    "word": "WTA",
+    "text": "Governing body for women's tennis.",
+    "hint": "Women's sports organization.",
+    "source": "llm"
+  },
+  {
+    "word": "EWR",
+    "text": "New Jersey airport code.",
+    "hint": "Air travel hub.",
+    "source": "llm"
+  },
+  {
+    "word": "JUL",
+    "text": "The seventh month of the year.",
+    "hint": "Summer month.",
+    "source": "llm"
+  },
+  {
+    "word": "PUS",
+    "text": "Thick fluid from an infection.",
+    "hint": "Body's response to infection.",
+    "source": "llm"
+  },
+  {
+    "word": "PSY",
+    "text": "South Korean singer known for a viral hit.",
+    "hint": "Gangnam Style artist.",
+    "source": "llm"
+  },
+  {
+    "word": "ZZZ",
+    "text": "Symbol for sleeping.",
+    "hint": "Indicates rest.",
+    "source": "llm"
+  },
+  {
+    "word": "GTA",
+    "text": "Popular video game series about crime.",
+    "hint": "Open-world gaming.",
+    "source": "llm"
+  },
+  {
+    "word": "GUV",
+    "text": "Slang term for a male friend.",
+    "hint": "Buddy or pal.",
+    "source": "llm"
+  },
+  {
+    "word": "JUS",
+    "text": "A sauce made from meat juices.",
+    "hint": "Savory liquid from cooked meat.",
+    "source": "llm"
+  },
+  {
+    "word": "AWS",
+    "text": "Amazon's cloud computing platform.",
+    "hint": "Cloud service by Amazon.",
+    "source": "llm"
+  },
+  {
+    "word": "OHH",
+    "text": "Expression of surprise or realization.",
+    "hint": "Sound of sudden understanding.",
+    "source": "llm"
+  },
+  {
+    "word": "SEZ",
+    "text": "Informal way to say 'says'.",
+    "hint": "Casual speech for 'says'.",
+    "source": "llm"
+  },
+  {
+    "word": "COZ",
+    "text": "Short for cousin.",
+    "hint": "Relative, often family.",
+    "source": "llm"
+  },
+  {
+    "word": "NAD",
+    "text": "Part of the male reproductive system.",
+    "hint": "Male anatomy component.",
+    "source": "llm"
+  },
+  {
+    "word": "JQA",
+    "text": "Initials of a U.S. president.",
+    "hint": "President with the last name Adams.",
+    "source": "llm"
+  },
+  {
+    "word": "QIX",
+    "text": "A classic arcade game.",
+    "hint": "Game involving a geometric shape.",
+    "source": "llm"
+  },
+  {
+    "word": "GOY",
+    "text": "Non-Jewish person in Yiddish.",
+    "hint": "Term for a non-Jew.",
+    "source": "llm"
+  },
+  {
+    "word": "IAD",
+    "text": "Airport code for Washington D.C. area.",
+    "hint": "D.C. airport abbreviation.",
+    "source": "llm"
+  },
+  {
+    "word": "BFS",
+    "text": "Big Friendly Giant's nickname.",
+    "hint": "Giant from a famous children's book.",
+    "source": "llm"
+  },
+  {
+    "word": "BHT",
+    "text": "Chemical used as a preservative.",
+    "hint": "Food additive for freshness.",
+    "source": "llm"
+  },
+  {
+    "word": "FWY",
+    "text": "Another word for freeway.",
+    "hint": "High-speed road.",
+    "source": "llm"
+  },
+  {
+    "word": "KWS",
+    "text": "Abbreviation for a keyword strategy.",
+    "hint": "Search term planning.",
+    "source": "llm"
+  },
+  {
+    "word": "MRX",
+    "text": "Stock exchange abbreviation.",
+    "hint": "Market for trading stocks.",
+    "source": "llm"
+  },
+  {
+    "word": "UHH",
+    "text": "Sound of hesitation or uncertainty.",
+    "hint": "Expression of doubt.",
+    "source": "llm"
+  },
+  {
+    "word": "JVC",
+    "text": "Brand known for electronics.",
+    "hint": "Electronics company initials.",
+    "source": "llm"
+  },
+  {
+    "word": "ADI",
+    "text": "Measurement of a person's age in years.",
+    "hint": "Years lived.",
+    "source": "llm"
+  },
+  {
+    "word": "LTE",
+    "text": "Technology for high-speed mobile internet.",
+    "hint": "Fast mobile data.",
+    "source": "llm"
+  },
+  {
+    "word": "ZDX",
+    "text": "Model of a luxury car brand.",
+    "hint": "Luxury SUV by Acura.",
+    "source": "llm"
+  },
+  {
+    "word": "NPC",
+    "text": "Character in a video game.",
+    "hint": "Non-player character.",
+    "source": "llm"
+  },
+  {
+    "word": "ALA",
+    "text": "A term used to describe a style.",
+    "hint": "In the style of.",
+    "source": "llm"
+  },
+  {
+    "word": "EMO",
+    "text": "A genre of music expressing deep emotions.",
+    "hint": "Emotionally charged music style.",
+    "source": "llm"
+  },
+  {
+    "word": "PRE",
+    "text": "Before something happens.",
+    "hint": "Prior to.",
+    "source": "llm"
+  },
+  {
+    "word": "JEM",
+    "text": "A precious stone or valuable item.",
+    "hint": "A precious stone.",
+    "source": "llm"
+  },
+  {
+    "word": "YON",
+    "text": "Over there; at a distance.",
+    "hint": "Over there.",
+    "source": "llm"
+  },
+  {
+    "word": "LIL",
+    "text": "A term of endearment for something small.",
+    "hint": "Little or small.",
+    "source": "llm"
+  },
+  {
+    "word": "NYE",
+    "text": "Celebration on the last day of the year.",
+    "hint": "New Year's Eve.",
+    "source": "llm"
+  },
+  {
+    "word": "OGS",
+    "text": "Canines, often kept as pets.",
+    "hint": "Four-legged friends.",
+    "source": "llm"
+  },
+  {
+    "word": "PCP",
+    "text": "A substance once used as an anesthetic.",
+    "hint": "An old anesthetic drug.",
+    "source": "llm"
+  },
+  {
+    "word": "NAS",
+    "text": "Network-attached storage for data.",
+    "hint": "Data storage device.",
+    "source": "llm"
+  },
+  {
+    "word": "KOS",
+    "text": "A type of food that is prepared according to Jewish law.",
+    "hint": "Jewish dietary law.",
+    "source": "llm"
+  },
+  {
+    "word": "AHH",
+    "text": "A sound of relief or pleasure.",
+    "hint": "Sound of satisfaction.",
+    "source": "llm"
+  },
+  {
+    "word": "IMO",
+    "text": "In my opinion.",
+    "hint": "Personal viewpoint.",
+    "source": "llm"
+  },
+  {
+    "word": "PEC",
+    "text": "A type of nut often used in baking.",
+    "hint": "Nut used in pies.",
+    "source": "llm"
+  },
+  {
+    "word": "FRO",
+    "text": "To freeze something solid.",
+    "hint": "To make something cold.",
+    "source": "llm"
+  },
+  {
+    "word": "LON",
+    "text": "Abbreviation for a major city in England.",
+    "hint": "Capital of the UK.",
+    "source": "llm"
+  },
+  {
+    "word": "SMS",
+    "text": "Short message service on phones.",
+    "hint": "Texting feature on mobile devices.",
+    "source": "llm"
+  },
+  {
+    "word": "GOG",
+    "text": "A popular online game store.",
+    "hint": "Platform for downloading games.",
+    "source": "llm"
+  },
+  {
+    "word": "IFS",
+    "text": "Conditional statements in programming.",
+    "hint": "If this, then that.",
+    "source": "llm"
+  },
+  {
+    "word": "EWW",
+    "text": "Expression of disgust.",
+    "hint": "Yucky sound.",
+    "source": "llm"
+  },
+  {
+    "word": "THC",
+    "text": "Psychoactive compound in cannabis.",
+    "hint": "Active ingredient in marijuana.",
+    "source": "llm"
+  },
+  {
+    "word": "XXX",
+    "text": "Symbol often used for adult content.",
+    "hint": "Three letters for something risqué.",
+    "source": "llm"
+  },
+  {
+    "word": "TAZ",
+    "text": "Cartoon character known for chaos.",
+    "hint": "Tasmanian devil in animation.",
+    "source": "llm"
+  },
+  {
+    "word": "WII",
+    "text": "Nintendo gaming console with motion controls.",
+    "hint": "Popular family gaming system.",
+    "source": "llm"
+  },
+  {
+    "word": "POO",
+    "text": "Informal term for feces.",
+    "hint": "What a dog leaves behind.",
+    "source": "llm"
+  },
+  {
+    "word": "XYZ",
+    "text": "Last letters of the alphabet.",
+    "hint": "End of the alphabet.",
+    "source": "llm"
+  },
+  {
+    "word": "IAM",
+    "text": "A phrase to express identity.",
+    "hint": "Self-identification.",
+    "source": "llm"
+  },
+  {
+    "word": "LAT",
+    "text": "Direction opposite of north.",
+    "hint": "Compass point.",
+    "source": "llm"
+  },
+  {
+    "word": "AOK",
+    "text": "Slang for acceptable.",
+    "hint": "All good.",
+    "source": "llm"
+  },
+  {
+    "word": "AOL",
+    "text": "Early internet service provider.",
+    "hint": "Old email service.",
+    "source": "llm"
+  },
+  {
+    "word": "MEW",
+    "text": "Sound a cat makes.",
+    "hint": "Kitten's call.",
+    "source": "llm"
+  },
+  {
+    "word": "MRT",
+    "text": "Rapid transit system.",
+    "hint": "City train.",
+    "source": "llm"
+  },
+  {
+    "word": "OKS",
+    "text": "Informal approval.",
+    "hint": "All is well.",
+    "source": "llm"
+  },
+  {
+    "word": "TOS",
+    "text": "Terms of service.",
+    "hint": "User agreement.",
+    "source": "llm"
+  },
+  {
+    "word": "HEW",
+    "text": "To cut or chop.",
+    "hint": "Carve or shape.",
+    "source": "llm"
+  },
+  {
+    "word": "PAS",
+    "text": "A pass in sports.",
+    "hint": "To throw to a teammate.",
+    "source": "llm"
+  },
+  {
+    "word": "HIQ",
+    "text": "High IQ.",
+    "hint": "Smart person.",
+    "source": "llm"
+  },
+  {
+    "word": "IVA",
+    "text": "Value-added tax.",
+    "hint": "Tax on goods.",
+    "source": "llm"
+  },
+  {
+    "word": "HQS",
+    "text": "Headquarters.",
+    "hint": "Main office.",
+    "source": "llm"
+  },
+  {
+    "word": "VEG",
+    "text": "Plant-based food.",
+    "hint": "Healthy produce.",
+    "source": "llm"
+  },
+  {
+    "word": "YID",
+    "text": "A slang term for a Jewish person.",
+    "hint": "Jewish slang term.",
+    "source": "llm"
+  },
+  {
+    "word": "EQD",
+    "text": "Abbreviation for equal distance.",
+    "hint": "Same length or space.",
+    "source": "llm"
+  },
+  {
+    "word": "MYB",
+    "text": "Short for 'mind your business'.",
+    "hint": "Stay out of it.",
+    "source": "llm"
+  },
+  {
+    "word": "TBT",
+    "text": "Throwback Thursday on social media.",
+    "hint": "Nostalgic post day.",
+    "source": "llm"
+  },
+  {
+    "word": "PUR",
+    "text": "A sound made by a cat.",
+    "hint": "Happy cat noise.",
+    "source": "llm"
+  },
+  {
+    "word": "QQQ",
+    "text": "A popular exchange-traded fund symbol.",
+    "hint": "Tech-focused investment.",
+    "source": "llm"
+  },
+  {
+    "word": "QIK",
+    "text": "Slang for quick or fast.",
+    "hint": "Speedy action.",
+    "source": "llm"
+  },
+  {
+    "word": "SRY",
+    "text": "An abbreviation for 'sorry'.",
+    "hint": "Apology in text form.",
+    "source": "llm"
+  },
+  {
+    "word": "NRG",
+    "text": "Abbreviation for energy.",
+    "hint": "Vital force.",
+    "source": "llm"
+  },
+  {
+    "word": "WUT",
+    "text": "Slang for 'what'.",
+    "hint": "Questioning confusion.",
+    "source": "llm"
+  },
+  {
+    "word": "ZEF",
+    "text": "A South African slang term for a certain style.",
+    "hint": "Cool and trendy vibe.",
+    "source": "llm"
+  },
+  {
+    "word": "UWU",
+    "text": "An emoticon representing happiness.",
+    "hint": "Cute face expression.",
+    "source": "llm"
+  }
+]
