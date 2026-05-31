@@ -130,6 +130,11 @@ struct PaywallView: View {
             .task {
                 await checkTrialEligibility()
             }
+            .onChange(of: storeService.isProUser) {_, newValue in
+                if newValue {
+                    dismiss()
+                }
+            }
         }
         .background(Color.appBackground)
     }
