@@ -14,7 +14,8 @@ struct PaywallView: View {
     @State private var errorMessage: String?
     @State private var logoVisible = false
     @State private var proLogoVisible = false
-    
+    @State private var isEligibleForTrial = true
+
     enum Plan { case monthly, annual }
 
     var body: some View {
@@ -126,6 +127,9 @@ struct PaywallView: View {
                     isBreathing = true
                 }
             }
+            .task {
+                await checkTrialEligibility()
+            }
         }
         .background(Color.appBackground)
     }
@@ -142,6 +146,12 @@ struct PaywallView: View {
                 proLogoVisible = true
             }
         }
+    }
+
+    @MainActor
+    private func checkTrialEligibility() async {
+        guard let subscription = storeService.monthlyProduct?.subscription else { return }
+        isEligibleForTrial = await subscription.isEligibleForIntroOffer
     }
 
     // MARK: - Feature List
@@ -267,7 +277,7 @@ struct PaywallView: View {
                     ProgressView()
                         .tint(.white)
                 } else {
-                    Text("Start 7-Day Free Trial")
+                    Text(isEligibleForTrial ? "Start 7-Day Free Trial" : "Subscribe Now")
                         .font(AppFont.clueLabel(16))
                         .tracking(0.5)
                         .padding(.horizontal, 5)
