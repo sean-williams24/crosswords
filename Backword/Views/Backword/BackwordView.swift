@@ -38,6 +38,8 @@ struct BackwordView: View {
             .opacity(0.001)
             .allowsHitTesting(false)
 
+            AppBackgroundGradient()
+
             VStack(alignment: .center, spacing: 0) {
                 navBar
                     .padding(.horizontal, AppLayout.screenPadding)

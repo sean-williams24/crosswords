@@ -31,6 +31,7 @@
 		83FBB193723C144A6456932E /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C44B7584617BA53797B0963 /* ZoomableView.swift */; };
 		84A6DDAE7557421BC685E350 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8669C3DD88CF9BC44A72C69 /* CellView.swift */; };
 		86123BEA2FC900E5008A929E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86123BE92FC900E5008A929E /* StoreKit.framework */; };
+		864905432FCE0720006A38A3 /* AppBackgroundGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864905422FCE0720006A38A3 /* AppBackgroundGradient.swift */; };
 		86728124E533B5942EADAB51 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */; };
 		869FCBE22F9986FA00A280F2 /* BackwordStatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */; };
 		869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE32F99871800A280F2 /* BackwordStatsView.swift */; };
@@ -125,6 +126,7 @@
 		83C12AC56422D31E9D619C3E /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		86123BC82FC6529F008A929E /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		86123BE92FC900E5008A929E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		864905422FCE0720006A38A3 /* AppBackgroundGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackgroundGradient.swift; sourceTree = "<group>"; };
 		869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsService.swift; sourceTree = "<group>"; };
 		869FCBE32F99871800A280F2 /* BackwordStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsView.swift; sourceTree = "<group>"; };
 		86AE8C962F913EAB001D69EE /* BackwordLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordLogo.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				8820C57EC2BCBADADEC4006C /* AppTheme.swift */,
+				864905422FCE0720006A38A3 /* AppBackgroundGradient.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -585,6 +588,7 @@
 				86AFC3D52FC2402F007623C3 /* StatsView.swift in Sources */,
 				21618E85BCB44C8BE6735598 /* DebugSettingsView.swift in Sources */,
 				9344322FC4BD6682AB74BE2A /* GameViewModel.swift in Sources */,
+				864905432FCE0720006A38A3 /* AppBackgroundGradient.swift in Sources */,
 				8EF7F8087FF836F1BFC62151 /* HapticsEngine.swift in Sources */,
 				869FCBE22F9986FA00A280F2 /* BackwordStatsService.swift in Sources */,
 				86FAA14F2FB4F8C00022EFF6 /* CustomKeyboardView.swift in Sources */,

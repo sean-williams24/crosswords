@@ -12,12 +12,7 @@ struct BackwordStatsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                LinearGradient(
-                    colors: [Color.appAccent.opacity(0.10), Color.appBackground],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
+                AppBackgroundGradient()
 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 28) {
@@ -83,7 +78,7 @@ struct BackwordStatsView: View {
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .strokeBorder(Color.appAccent.opacity(0.2), lineWidth: 1)
+                .strokeBorder(.clear)
         )
     }
 

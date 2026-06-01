@@ -43,7 +43,7 @@ struct RatingDetailSheet: View {
                 .padding(.top, 8)
                 .padding(.bottom, 40)
             }
-            .background(Color.appBackground)
+            .background(AppBackgroundGradient())
             .navigationTitle("Your Rating")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
@@ -154,7 +154,7 @@ struct RatingDetailSheet: View {
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .strokeBorder(tier.color.opacity(0.3), lineWidth: 1)
+                .strokeBorder(.clear)
         )
     }
 
@@ -401,7 +401,7 @@ struct RatingDetailSheet: View {
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .strokeBorder(Color.appAccent.opacity(0.15), lineWidth: 1)
+                .strokeBorder(.clear)
         )
     }
 

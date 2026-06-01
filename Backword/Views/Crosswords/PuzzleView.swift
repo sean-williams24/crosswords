@@ -42,11 +42,10 @@ struct PuzzleView: View {
         .padding(.horizontal, AppLayout.screenPadding)
         .padding(.top, 4)
     }
-
+    
     var body: some View {
         ZStack {
-            Color.appCrosswordBackground
-                .ignoresSafeArea()
+            AppBackgroundGradient()
             
             VStack(spacing: 0) {
                 navigationBar

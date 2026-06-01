@@ -39,7 +39,7 @@ struct StatsView: View {
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .strokeBorder(Color.appAccent.opacity(0.2), lineWidth: 1)
+                .strokeBorder(.clear)
         )
     }
 

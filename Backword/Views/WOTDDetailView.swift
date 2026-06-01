@@ -121,7 +121,7 @@ struct WOTDDetailView: View {
                 .padding(.top, 24)
                 .padding(.bottom, 40)
             }
-            .background(Color.appSurface)
+            .background(AppBackgroundGradient())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
