@@ -45,7 +45,7 @@ struct PuzzleView: View {
 
     var body: some View {
         ZStack {
-            Color.appBackground
+            Color.appCrosswordBackground
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {

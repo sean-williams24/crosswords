@@ -14,7 +14,7 @@ final class AppSettings: ObservableObject {
         didSet { UserDefaults.standard.set(backwordLetterFeedback, forKey: Keys.backwordLetterFeedback) }
     }
 
-    /// When enabled, cells flash green when a crossword answer is completed correctly.
+    /// When enabled, correctly completed crossword cells are permanently highlighted green and locked from deletion.
     @Published var crosswordCorrectHighlight: Bool {
         didSet { UserDefaults.standard.set(crosswordCorrectHighlight, forKey: Keys.crosswordCorrectHighlight) }
     }

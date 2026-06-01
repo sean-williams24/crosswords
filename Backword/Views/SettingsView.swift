@@ -27,7 +27,7 @@ struct SettingsView: View {
                         .tracking(2)
                         .textCase(nil)
                 } footer: {
-                    Text("When enabled, correctly completed answers flash green.")
+                    Text("When enabled, correctly completed answers are highlighted green and locked. Disable for a harder experience.")
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
                 }

@@ -54,7 +54,7 @@ struct CellView: View {
             }
         } else {
             // Black cell — just the background color
-            Color.appBackground
+            Color.appCrosswordBackground
                 .aspectRatio(1, contentMode: .fit)
                 .frame(minWidth: minCellSize, minHeight: minCellSize)
         }
@@ -94,14 +94,16 @@ struct CellView: View {
     // MARK: - Colors
 
     private var cellBackground: Color {
-        if settings.crosswordCorrectHighlight && viewModel.isRecentlyCompleted(row: row, col: col) {
-            return .appCorrect.opacity(0.3)
+        if settings.crosswordCorrectHighlight && viewModel.isCompleted(row: row, col: col) {
+            return viewModel.isSelected(row: row, col: col)
+                ? .appCorrect.opacity(0.65)
+                : .appCorrect.opacity(0.3)
         }
         if viewModel.isSelected(row: row, col: col) {
             return .appAccent
         }
         if viewModel.isInActiveWord(row: row, col: col) {
-            return .appAccent.opacity(0.1)
+            return .appAccent.opacity(0.3)
         }
         return .appSurface
     }

@@ -17,6 +17,6 @@ struct PuzzleGridView: View {
             }
         }
         .padding(spacing)
-        .background(Color.appBackground)
+        .background(Color.appCrosswordBackground)
     }
 }

@@ -17,17 +17,10 @@ final class GameViewModel: ObservableObject {
     @Published var showClueList: Bool = false
     @Published var isComplete: Bool = false
     @Published var showAlreadyAnswered: Bool = false
-    @Published var recentlyCompletedCells: Set<CellPosition> = []
     @Published var adBonusHints: Int = 0
-
-    struct CellPosition: Hashable {
-        let row: Int
-        let col: Int
-    }
 
     private let haptics = HapticsEngine()
     private var zenTimer: Timer?
-    private var completionFlashTask: Task<Void, Never>?
 
     // MARK: - Init
 
@@ -84,10 +77,6 @@ final class GameViewModel: ObservableObject {
             done = done || progress.completedClueIds.contains(downId)
         }
         return done
-    }
-
-    func isRecentlyCompleted(row: Int, col: Int) -> Bool {
-        recentlyCompletedCells.contains(CellPosition(row: row, col: col))
     }
 
     func cellData(row: Int, col: Int) -> CellData? {
@@ -183,11 +172,20 @@ final class GameViewModel: ObservableObject {
     }
 
     func deleteLetter() {
+        let lockEnabled = AppSettings.shared.crosswordCorrectHighlight
+
+        if lockEnabled && isCompleted(row: selectedRow, col: selectedCol) {
+            moveToPreviousCell()
+            return
+        }
+
         if progress.entries[selectedRow][selectedCol] != nil {
             progress.entries[selectedRow][selectedCol] = nil
         } else {
             moveToPreviousCell()
-            progress.entries[selectedRow][selectedCol] = nil
+            if !(lockEnabled && isCompleted(row: selectedRow, col: selectedCol)) {
+                progress.entries[selectedRow][selectedCol] = nil
+            }
         }
         saveProgress()
     }
@@ -279,16 +277,6 @@ final class GameViewModel: ObservableObject {
         if enteredWord.uppercased() == clue.answer.uppercased() {
             progress.completedClueIds.insert(clue.id)
             haptics.play(.wordCompleted)
-
-            // Flash the completed cells
-            let positions = Set(clue.cells.map { CellPosition(row: $0.row, col: $0.col) })
-            recentlyCompletedCells = positions
-            completionFlashTask?.cancel()
-            completionFlashTask = Task {
-                try? await Task.sleep(nanoseconds: 800_000_000)
-                guard !Task.isCancelled else { return }
-                recentlyCompletedCells = []
-            }
 
             // Check full puzzle completion
             if progress.completedClueIds.count == puzzle.clues.count {
