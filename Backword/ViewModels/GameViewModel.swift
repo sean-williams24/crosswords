@@ -96,15 +96,34 @@ final class GameViewModel: ObservableObject {
             selectedRow = row
             selectedCol = col
 
-            // Pick direction based on available clues at this cell
             let clues = puzzle.cluesAt(row: row, col: col)
-            if clues.across != nil && clues.down == nil {
+
+            // 1. Determine if this cell is the START of the across/down words
+            let isNumberedCell = (cell.clueNumber != nil)
+            let startsAcross = isNumberedCell && (clues.across?.number == cell.clueNumber)
+            let startsDown = isNumberedCell && (clues.down?.number == cell.clueNumber)
+
+            // 2. Pick direction based on whether it's a numbered starting cell
+            if startsAcross && !startsDown {
+                // It's the start of an Across word only (e.g., taps 12-Across)
                 activeDirection = .across
-            } else if clues.across == nil && clues.down != nil {
+            } else if startsDown && !startsAcross {
+                // It's the start of a Down word only (e.g., taps 9-Down)
                 activeDirection = .down
+            } else if startsAcross && startsDown {
+                // It starts BOTH an Across and Down word.
+                // Keep the current activeDirection, user can tap again to toggle.
+            } else {
+                // 3. Fallback for non-numbered cells (middle of a word)
+                if clues.across != nil && clues.down == nil {
+                    activeDirection = .across
+                } else if clues.across == nil && clues.down != nil {
+                    activeDirection = .down
+                }
+                // else it intersects both, so keep current direction
             }
-            // else keep current direction
         }
+
         updateActiveClue()
         haptics.play(.clueNavigated)
     }

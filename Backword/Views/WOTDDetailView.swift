@@ -54,7 +54,7 @@ struct WOTDDetailView: View {
                     .background(Color.appBackground)
                     .overlay(
                         RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                            .stroke(Color.appAccent.opacity(0.6), lineWidth: 2)
+                            .stroke(.clear)
                     )
                     .cornerRadius(AppLayout.cardCornerRadius)
                     .shadow(color: Color(UIColor { traits in
