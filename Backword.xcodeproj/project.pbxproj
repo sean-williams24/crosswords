@@ -195,6 +195,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		860A8F242FCE196700C2BE38 /* SharedViews */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SharedViews;
+			sourceTree = "<group>";
+		};
 		86E5BFE02FA162B200A42156 /* Utilities */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -423,6 +428,7 @@
 		EFC005C9CEABE981870F3D65 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				860A8F242FCE196700C2BE38 /* SharedViews */,
 				BBA3617EFAC18A3821319F9A /* Backword */,
 				86AFC3CC2FBE53AF007623C3 /* Archive */,
 				741EF0B3C1470452272529E1 /* CompletionView.swift */,
@@ -464,6 +470,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				860A8F242FCE196700C2BE38 /* SharedViews */,
 			);
 			name = Backword;
 			packageProductDependencies = (

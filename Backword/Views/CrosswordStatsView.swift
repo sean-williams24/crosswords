@@ -26,7 +26,7 @@ struct CrosswordStatsView: View {
                     }
                 }
             }
-            .background(Color.appBackground)
+            .background(AppBackgroundGradient())
             .navigationTitle(isWeekly ? "Weekly Stats" : "Daily Stats")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
@@ -236,7 +236,7 @@ struct CrosswordStatsView: View {
                 .foregroundColor(.appTextSecondary.opacity(0.7))
                 .multilineTextAlignment(.center)
         }
-        .padding(40)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     // MARK: - Formatting
