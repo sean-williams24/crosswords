@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 @main
 struct BackwordApp: App {
@@ -19,6 +20,10 @@ struct BackwordApp: App {
                 .environmentObject(adService)
                 .environmentObject(ratingService)
         }
+    }
+
+    init() {
+        try? Tips.configure()
     }
 
     private var selectedScheme: ColorScheme? {

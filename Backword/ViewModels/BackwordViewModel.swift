@@ -88,6 +88,14 @@ final class BackwordViewModel: ObservableObject {
         settings.backwordLetterFeedback
     }
 
+    var showOnboarding: Bool {
+        !settings.hasSeenBackwordOnboarding
+    }
+
+    func hasSeenOnboarding() {
+        settings.hasSeenBackwordOnboarding = true
+    }
+
     var statsIconColour: Color {
         if isFailed {
             return .red

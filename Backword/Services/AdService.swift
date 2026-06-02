@@ -157,30 +157,30 @@ final class AdService: NSObject, ObservableObject {
 
 extension AdService: FullScreenContentDelegate {
     func adDidRecordImpression(_ ad: FullScreenPresentingAd) {
-      print("\(#function) called")
+//      print("\(#function) called")
     }
 
     func adDidRecordClick(_ ad: FullScreenPresentingAd) {
-      print("\(#function) called")
+//      print("\(#function) called")
     }
 
     func ad(
       _ ad: FullScreenPresentingAd,
       didFailToPresentFullScreenContentWithError error: Error
     ) {
-      print("\(#function) called")
+//      print("\(#function) called")
     }
 
     func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
-      print("\(#function) called")
+//      print("\(#function) called")
     }
 
     func adWillDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
-      print("\(#function) called")
+//      print("\(#function) called")
     }
 
     func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
-        print("\(#function) called")
+//        print("\(#function) called")
         // Clear the rewarded ad.
         rewarded = nil
 

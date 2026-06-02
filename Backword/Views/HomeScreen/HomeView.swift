@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct HomeView: View {
     @EnvironmentObject var statsService: StatsService
@@ -82,11 +83,6 @@ struct HomeView: View {
                     BackwordView(word: word)
                         .environmentObject(storeService)
                         .environmentObject(adService)
-                        .onAppear {
-                            if !storeService.isProUser {
-                                adService.showInterstitialOnce(for: .backwordOpen)
-                            }
-                        }
                 } else if let puzzle = viewModel.todaysPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
                         .environmentObject(statsService)
@@ -204,7 +200,6 @@ struct HomeView: View {
             .tracking(1)
             .multilineTextAlignment(.leading)
             .padding(.bottom, 26)
-//            .padding(.horizontal, AppLayout.screenPadding)
     }
 
     @ViewBuilder
@@ -292,13 +287,14 @@ struct HomeView: View {
                     showSettings = true
                 } label: {
                     Image(systemName: "gearshape")
-                        .font(.system(size: 18))
+                        .font(.body)
                         .foregroundColor(.appTextSecondary)
                 }
+                .popoverTip(SettingsTip())
                 .padding(.trailing, AppLayout.screenPadding)
             }
         }
-        #if DEBUG
+#if DEBUG
         .onTapGesture(count: 3) {
             showDebugSettings = true
         }

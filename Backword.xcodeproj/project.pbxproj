@@ -30,6 +30,7 @@
 		7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */; };
 		83FBB193723C144A6456932E /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C44B7584617BA53797B0963 /* ZoomableView.swift */; };
 		84A6DDAE7557421BC685E350 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8669C3DD88CF9BC44A72C69 /* CellView.swift */; };
+		860A8F3C2FCEBA5100C2BE38 /* TipFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860A8F3B2FCEBA5100C2BE38 /* TipFactory.swift */; };
 		86123BEA2FC900E5008A929E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86123BE92FC900E5008A929E /* StoreKit.framework */; };
 		864905432FCE0720006A38A3 /* AppBackgroundGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864905422FCE0720006A38A3 /* AppBackgroundGradient.swift */; };
 		86728124E533B5942EADAB51 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */; };
@@ -124,6 +125,7 @@
 		8254031869B9E1FAC8C5A377 /* StatsView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView2.swift; sourceTree = "<group>"; };
 		8299222FB15ED0ECC8305F8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		83C12AC56422D31E9D619C3E /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		860A8F3B2FCEBA5100C2BE38 /* TipFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipFactory.swift; sourceTree = "<group>"; };
 		86123BC82FC6529F008A929E /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		86123BE92FC900E5008A929E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		864905422FCE0720006A38A3 /* AppBackgroundGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackgroundGradient.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				1E4D0C7C19A4685DF1DC48C2 /* UserStats.swift */,
 				7D68E5D9B55DF552855C5B33 /* WordOfTheDay.swift */,
 				26FDFB84159BB8E3A26031D0 /* OverallRating.swift */,
+				860A8F3B2FCEBA5100C2BE38 /* TipFactory.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -588,6 +591,7 @@
 				E9501AAB5231A6C28698D2E6 /* BackwordView.swift in Sources */,
 				1D5CED31842B691A8E91932F /* BackwordViewModel.swift in Sources */,
 				EAD7311D1E0CE5265794E80E /* BackwordWord.swift in Sources */,
+				860A8F3C2FCEBA5100C2BE38 /* TipFactory.swift in Sources */,
 				A220B5F6D4E48FCC57832B9C /* CacheService.swift in Sources */,
 				86AE8C972F913EAB001D69EE /* BackwordLogo.swift in Sources */,
 				84A6DDAE7557421BC685E350 /* CellView.swift in Sources */,

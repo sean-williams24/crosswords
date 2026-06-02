@@ -1,5 +1,6 @@
 #if DEBUG
 import SwiftUI
+import TipKit
 
 struct DebugSettingsView: View {
     @EnvironmentObject var storeService: StoreService
@@ -9,6 +10,7 @@ struct DebugSettingsView: View {
     @Environment(\.dismiss) private var dismiss
 
     var homeViewModel: HomeViewModel? = nil
+    private let settings = AppSettings.shared
 
     @State private var showResetBackwordConfirmation = false
     @State private var showResetDailyConfirmation = false
@@ -18,6 +20,7 @@ struct DebugSettingsView: View {
     @State private var showPurgeWeeklyConfirmation = false
     @State private var showPurgeBackwordConfirmation = false
     @State private var showPurgeWOTDConfirmation = false
+    @State private var showOnboardingResetConfirmation = false
 
     var body: some View {
         NavigationStack {
@@ -148,6 +151,34 @@ struct DebugSettingsView: View {
                     Button("Cancel", role: .cancel) {}
                 } message: {
                     Text("Your guesses for today will be cleared and the game will restart.")
+                }
+
+
+                // MARK: - Onboarding
+
+                Section("Onboarding") {
+                    Button(role: .destructive) {
+                        showOnboardingResetConfirmation = true
+                    } label: {
+                        Label("Reset onboarding flags", systemImage: "trash")
+                    }
+                }
+                confirmationDialog(
+                    "Reset onboarding flags?",
+                    isPresented: $showOnboardingResetConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Reset", role: .destructive) {
+                        try? Tips.resetDatastore()
+                        try? Tips.configure([
+                            .datastoreLocation(.applicationDefault)
+                        ])
+                        settings.hasSeenBackwordOnboarding = false
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("Onboarding tooltips and user defaults flags will be reset.")
                 }
 
                 // MARK: - Cache

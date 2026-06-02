@@ -12,7 +12,6 @@ struct BackwordView: View {
     @State private var showStats = false
     @State private var pulses = false
     @State private var selectedFailureMessage: String = ""
-    @State private var showingTooltip = false
     @StateObject private var statsService = BackwordStatsService()
     @FocusState private var inputFocused: Bool
 
@@ -96,8 +95,10 @@ struct BackwordView: View {
                     inputFocused = true
                 }
             }
-
-            showingTooltip = true
+            if !storeService.isProUser && !viewModel.showOnboarding {
+                adService.showInterstitialOnce(for: .backwordOpen)
+            }
+            showInstructionsOnFirstLaunch()
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
         .animation(.easeInOut(duration: 0.3), value: viewModel.invalidWordMessage != nil)
@@ -122,6 +123,11 @@ struct BackwordView: View {
 
     private var isIpad: Bool {
         sizeClass == .regular
+    }
+
+    private func showInstructionsOnFirstLaunch() {
+        guard viewModel.showOnboarding else { return }
+        showInstructions = true
     }
 
     // MARK: - Nav Bar
@@ -164,17 +170,14 @@ struct BackwordView: View {
                             .foregroundColor(.appTextPrimary)
                             .padding(.vertical, 8)
                     }
-                    .tooltip(
-                        isPresented: $showingTooltip,
-                        items: [.init(title: "Game info here")],
-                        direction: .bottom,
-                        alignment: .trailing,
-                        presentationDelay: 0.7,
-                        duration: .short
-                    )
+                    .popoverTip(BackwordInstructionsTip())
                     .sheet(isPresented: $showInstructions) {
+                        viewModel.hasSeenOnboarding()
+                        BackwordInstructionsTip.actionCompleted = true
+                    } content: {
                         instructionsSheet
                     }
+
                 }
             }
             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)

@@ -19,6 +19,11 @@ final class AppSettings: ObservableObject {
         didSet { UserDefaults.standard.set(crosswordCorrectHighlight, forKey: Keys.crosswordCorrectHighlight) }
     }
 
+    var hasSeenBackwordOnboarding: Bool {
+        get { UserDefaults.standard.bool(forKey: "hasSeenBackwordOnboarding") }
+        set { UserDefaults.standard.set(newValue, forKey: "hasSeenBackwordOnboarding") }
+    }
+
     private init() {
         backwordLetterFeedback = UserDefaults.standard.bool(forKey: Keys.backwordLetterFeedback)
         let stored = UserDefaults.standard.object(forKey: Keys.crosswordCorrectHighlight)
