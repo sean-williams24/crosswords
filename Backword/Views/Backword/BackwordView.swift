@@ -12,6 +12,7 @@ struct BackwordView: View {
     @State private var showStats = false
     @State private var pulses = false
     @State private var selectedFailureMessage: String = ""
+    @State private var shouldPopAfterCompletionSheet = false
     @StateObject private var statsService = BackwordStatsService()
     @FocusState private var inputFocused: Bool
 
@@ -31,7 +32,7 @@ struct BackwordView: View {
             ))
             .textInputAutocapitalization(.characters)
             .autocorrectionDisabled()
-            .keyboardType(.asciiCapable)
+            .keyboardType(.alphabet)
             .focused($inputFocused)
             .onSubmit { viewModel.submitGuess() }
             .frame(width: 1, height: 1)
@@ -89,7 +90,7 @@ struct BackwordView: View {
         }
         .navigationBarHidden(true)
         .onAppear {
-            if !viewModel.isComplete {
+            if !viewModel.isComplete && !viewModel.showOnboarding {
                 Task {
                     try? await Task.sleep(nanoseconds: 500_000_000)
                     inputFocused = true
@@ -106,19 +107,29 @@ struct BackwordView: View {
             if complete {
                 inputFocused = false
                 statsService.refresh()
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-//                    showStats = true
-//                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                    showStats = true
+                }
             }
         }
-        .sheet(isPresented: $showStats) {
+        .sheet(
+            isPresented: $showStats,
+            onDismiss: {
+                if shouldPopAfterCompletionSheet {
+                    dismiss()
+                    viewModel.didComplete = false
+                }
+            }
+        ) {
             BackwordStatsView(
                 stats: statsService.stats,
-                highlightGuessCount: viewModel.isWon ? viewModel.guessCount : nil
-            ) { showStats = false }
-            .presentationDetents([.large])
-            .presentationDragIndicator(.visible)
+                highlightGuessCount: viewModel.isWon ? viewModel.guessCount : nil,
+                shouldPop: $shouldPopAfterCompletionSheet,
+                isCompleted: viewModel.didComplete
+            )
         }
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
     }
 
     private var isIpad: Bool {
@@ -174,6 +185,7 @@ struct BackwordView: View {
                     .sheet(isPresented: $showInstructions) {
                         viewModel.hasSeenOnboarding()
                         BackwordInstructionsTip.actionCompleted = true
+                        inputFocused = true
                     } content: {
                         instructionsSheet
                     }

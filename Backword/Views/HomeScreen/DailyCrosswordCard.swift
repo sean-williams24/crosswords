@@ -1,9 +1,4 @@
-//
 //  DailyCrosswordCard.swift
-//  Backword
-//
-//  Created by Sean Williams on 04/05/2026.
-//
 
 import SwiftUI
 
@@ -47,7 +42,7 @@ struct DailyCrosswordCard: View {
     }
 
     private var content: some View {
-        ZStack(alignment: .bottomTrailing) {
+        ZStack(alignment: .bottom) {
             VStack(spacing: 12) {
                 Text("CROSSWORD")
                     .font(AppFont.clueLabel(isIpad ? 15 : 11))
@@ -69,6 +64,7 @@ struct DailyCrosswordCard: View {
                             .foregroundColor(.appTextSecondary)
                     }
                 }
+
                 if viewModel.state == .loading {
                     ProgressView()
                 } else if viewModel.todaysPuzzle == nil {
@@ -79,21 +75,18 @@ struct DailyCrosswordCard: View {
                     StatusLabelView(status: viewModel.puzzleStatus)
                 }
             }
-            .padding(.vertical, 24)
-            .frame(maxWidth: .infinity)
 
             if statsService.stats.liveCurrentStreak > 0 {
                 streakButton
+                    .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
+        .padding(.vertical, 24)
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(
-            ZStack {
-                Color.dailyCardBackground
-            }
+            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                .fill(Color.dailyCardBackground)
         )
-        .clipped()
-        .cornerRadius(AppLayout.cardCornerRadius)
     }
 
     private var streakButton: some View {
@@ -126,6 +119,7 @@ struct DailyCrosswordCard: View {
         .overlay(alignment: .top) {
             if showStreakPopup {
                 Text("\(statsService.stats.liveCurrentStreak)-day streak")
+                    .fixedSize()
                     .font(AppFont.clueLabel(12))
                     .foregroundColor(.appTextPrimary)
                     .padding(.horizontal, 12)

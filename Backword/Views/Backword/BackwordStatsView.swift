@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct BackwordStatsView: View {
+    @Environment(\.dismiss) private var dismiss
     let stats: BackwordStats
     /// When non-nil, the bar for this guess count is highlighted (used on completion)
     var highlightGuessCount: Int? = nil
     /// Injected so previews can compile; unused at runtime.
-    var onDismiss: (() -> Void)? = nil
+    @Binding var shouldPop: Bool
+    var isCompleted = false
 
     @State private var animatesBars = false
 
@@ -31,7 +33,8 @@ struct BackwordStatsView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        onDismiss?()
+                        dismiss()
+                        shouldPop = isCompleted
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .foregroundColor(.appTextSecondary)
@@ -132,14 +135,6 @@ struct BackwordStatsView: View {
     }
 }
 
-// MARK: - Convenience font overload
-
-//private extension AppFont {
-//    static func statNumber(_ size: CGFloat = 32) -> Font {
-//        AppFont.header(size)
-//    }
-//}
-
 // MARK: - Preview
 
 #Preview("Has data") {
@@ -149,11 +144,11 @@ struct BackwordStatsView: View {
     s.record(guessCount: 2, date: "2026-04-20")
     s.record(guessCount: 3, date: "2026-04-21")
     s.record(guessCount: nil, date: "2026-04-22")
-    return BackwordStatsView(stats: s, highlightGuessCount: 2) {}
+    return BackwordStatsView(stats: s, highlightGuessCount: 2, shouldPop: .constant(false))
         .preferredColorScheme(.dark)
 }
 
 #Preview("Empty") {
-    BackwordStatsView(stats: BackwordStats()) {}
+    BackwordStatsView(stats: BackwordStats(), shouldPop: .constant(false))
         .preferredColorScheme(.dark)
 }

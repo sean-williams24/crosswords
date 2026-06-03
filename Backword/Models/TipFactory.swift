@@ -13,8 +13,8 @@ struct SettingsTip: Tip {
             .font(AppFont.caption(13))
     }
 
-    var image: Image? {
-        nil
+    var options: [TipOption] {
+        Tips.MaxDisplayCount(1)
     }
 }
 
@@ -29,14 +29,16 @@ struct BackwordInstructionsTip: Tip {
             .font(AppFont.caption(13))
     }
 
-    // 1. Define a parameter tracking your action state
     @Parameter
     static var actionCompleted: Bool = false
 
-    // 2. Set up the rule restriction
     var rules: [Rule] {
         [
             #Rule(Self.$actionCompleted) { $0 == true }
         ]
+    }
+
+    var options: [TipOption] {
+        Tips.MaxDisplayCount(1)
     }
 }

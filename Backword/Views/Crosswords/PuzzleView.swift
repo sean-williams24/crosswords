@@ -15,12 +15,13 @@ struct PuzzleView: View {
     @State private var isKeyboardReady = false
     @State private var layoutKeyboardHeight: CGFloat = 0
     @State private var suppressKeyboardUpdate = false
-
+    @State private var shouldPopAfterCompletionSheet = false
     private let freeHintLimit = 0
 
     private var isZoomableGrid: Bool {
         viewModel.puzzle.size > 12
     }
+
     private var navigationBar: some View {
         HStack {
             Button {
@@ -108,8 +109,15 @@ struct PuzzleView: View {
             ClueListView(viewModel: viewModel)
                 .presentationDetents([.medium, .large])
         }
-        .sheet(isPresented: $viewModel.isComplete) {
-            CompletionView(viewModel: viewModel)
+        .sheet(
+            isPresented: $viewModel.isComplete,
+            onDismiss: {
+                if shouldPopAfterCompletionSheet {
+                    dismiss()
+                }
+            }
+        ) {
+            CompletionView(viewModel: viewModel, shouldPop: $shouldPopAfterCompletionSheet)
                 .environmentObject(statsService)
                 .environmentObject(storeService)
                 .environmentObject(adService)

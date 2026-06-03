@@ -7,9 +7,9 @@ struct CompletionView: View {
     @EnvironmentObject var adService: AdService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-
     @State private var showContent = false
     @State private var hasShownAd = false
+    @Binding var shouldPop: Bool
 
     var body: some View {
         ZStack {
@@ -37,9 +37,9 @@ struct CompletionView: View {
                 VStack {
                     HStack(spacing: 24) {
                         statItem(
-                            value: viewModel.progress.formattedTime,
-                            label: "TIME"
-                        )
+                            value: "\(statsService.stats.currentStreak)",
+                            label: "STREAK"
+                            )
                         statDivider
                         statItem(
                             value: "\(viewModel.progress.hintsUsed)",
@@ -53,8 +53,8 @@ struct CompletionView: View {
                         )
                         statDivider
                         statItem(
-                            value: "\(statsService.stats.currentStreak)",
-                            label: "STREAK"
+                            value: viewModel.progress.formattedTime,
+                            label: "TIME"
                         )
                     }
                 }
@@ -84,8 +84,9 @@ struct CompletionView: View {
 
                     Button {
                         dismiss()
+                        shouldPop = true
                     } label: {
-                        Text("Done")
+                        Text("HOME")
                             .font(AppFont.body())
                             .foregroundColor(.appTextSecondary)
                             .frame(maxWidth: .infinity)
@@ -110,12 +111,12 @@ struct CompletionView: View {
             }
 
             // Show interstitial ad for free users after the animation has played (once only)
-            if !storeService.isProUser && !hasShownAd {
-                hasShownAd = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                    adService.showInterstitial()
-                }
-            }
+//            if !storeService.isProUser && !hasShownAd {
+//                hasShownAd = true
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+//                    adService.showInterstitial()
+//                }
+//            }
         }
         .interactiveDismissDisabled(false)
     }
@@ -160,7 +161,7 @@ struct CompletionView: View {
 }
 
 #Preview {
-    CompletionView(viewModel: GameViewModel(puzzle: .sample))
+    CompletionView(viewModel: GameViewModel(puzzle: .sample), shouldPop: .constant(false))
         .environmentObject(StatsService())
         .environmentObject(StoreService())
         .environmentObject(AdService())

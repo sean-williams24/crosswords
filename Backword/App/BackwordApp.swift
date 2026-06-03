@@ -23,7 +23,7 @@ struct BackwordApp: App {
     }
 
     init() {
-        try? Tips.configure()
+        try? Tips.configure([.displayFrequency(.immediate)])
     }
 
     private var selectedScheme: ColorScheme? {

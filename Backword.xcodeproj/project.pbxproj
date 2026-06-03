@@ -364,6 +364,7 @@
 				2519353944EB9D4F32644E32 /* ClueBarView.swift */,
 				D84C8AB718DDE4C9E0EDDE1F /* ClueListView.swift */,
 				6C44B7584617BA53797B0963 /* ZoomableView.swift */,
+				741EF0B3C1470452272529E1 /* CompletionView.swift */,
 			);
 			path = Crosswords;
 			sourceTree = "<group>";
@@ -434,7 +435,6 @@
 				860A8F242FCE196700C2BE38 /* SharedViews */,
 				BBA3617EFAC18A3821319F9A /* Backword */,
 				86AFC3CC2FBE53AF007623C3 /* Archive */,
-				741EF0B3C1470452272529E1 /* CompletionView.swift */,
 				A04496BE6230D031AE10977A /* DebugSettingsView.swift */,
 				86E5C0062FA9207600A42156 /* HomeScreen */,
 				0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */,

@@ -83,6 +83,7 @@ final class BackwordViewModel: ObservableObject {
 
     /// Number of cells the user types into.
     var unrevealedCount: Int { unrevealedIndices.count }
+    var didComplete = false
 
     var showLetterFeedback: Bool {
         settings.backwordLetterFeedback
@@ -134,6 +135,7 @@ final class BackwordViewModel: ObservableObject {
 
         if isCorrect {
             progress.wonFlag = true
+            didComplete = true
             progress.completedAt = Date()
             progress.save()
             stats.record(guessCount: progress.guesses.count, date: word.date)
