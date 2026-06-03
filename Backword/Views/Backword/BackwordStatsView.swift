@@ -18,6 +18,11 @@ struct BackwordStatsView: View {
 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 28) {
+                        if isCompleted {
+                            Text("Solved!")
+                                .font(AppFont.header(40))
+                                .foregroundColor(.appTextHeading)
+                        }
                         StatsView(stats: stats)
                         distributionSection
                     }

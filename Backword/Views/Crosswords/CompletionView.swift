@@ -23,7 +23,7 @@ struct CompletionView: View {
                 VStack(spacing: 8) {
                     Text("Solved!")
                         .font(AppFont.header(40))
-                        .foregroundColor(.appTextPrimary)
+                        .foregroundColor(.appTextHeading)
 
                     Text("PUZZLE #\(viewModel.puzzle.puzzleNumber)")
                         .font(AppFont.clueLabel(14))
