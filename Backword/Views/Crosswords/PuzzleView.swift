@@ -70,23 +70,13 @@ struct PuzzleView: View {
                 
                 Spacer(minLength: 8)
                 
-                ZoomableView(
-                    minZoom: 1.0,
-                    maxZoom: 2.5,
-                    allowsVerticalOverflow: dynamicTypeSize > .large
-                ) {
+                ZoomableView(allowsVerticalOverflow: true) {
                     PuzzleGridView(viewModel: viewModel)
                         .padding(.horizontal, AppLayout.screenPadding)
+                        .dynamicTypeSize(.medium)
                 }
                 
                 Spacer(minLength: 8)
-                
-                // Invisible keyboard capture
-                //                if isKeyboardReady {
-                //                    KeyboardInputView(viewModel: viewModel)
-                //                        .frame(width: 0, height: 0)
-                //                        .opacity(0)
-                //                }
                 CustomKeyboardView { text in
                     Task { @MainActor in
                         if let char = text.uppercased().first,
