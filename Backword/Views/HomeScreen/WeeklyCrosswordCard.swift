@@ -157,5 +157,5 @@ struct WeeklyCrosswordCard: View {
 }
 
 #Preview {
-    WeeklyCrosswordCard(viewModel: HomeViewModel(puzzleService: PuzzleService()))
+    WeeklyCrosswordCard(viewModel: HomeViewModel(puzzleService: PuzzleService(), storeService: StoreService()))
 }

@@ -96,9 +96,6 @@ struct BackwordView: View {
                     inputFocused = true
                 }
             }
-            if !storeService.isProUser && !viewModel.showOnboarding {
-                adService.showInterstitialOnce(for: .backwordOpen)
-            }
             showInstructionsOnFirstLaunch()
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)

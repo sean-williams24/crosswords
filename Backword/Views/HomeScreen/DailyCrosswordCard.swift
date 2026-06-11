@@ -6,9 +6,11 @@ struct DailyCrosswordCard: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.horizontalSizeClass) var sizeClass
     @EnvironmentObject private var statsService: StatsService
+    @EnvironmentObject var adService: AdService
     @ObservedObject var viewModel: HomeViewModel
     @ScaledMetric private var iconSize: CGFloat = 10
     @State private var showStreakPopup = false
+    var showDailyCrossword: () -> Void
 
     private var appLayout: AppLayout {
         AppLayout(sizeClass: sizeClass)
@@ -25,10 +27,17 @@ struct DailyCrosswordCard: View {
         case .loading:
             content
         case .success:
-            NavigationLink(value: "puzzle") {
+            Button {
+                if !viewModel.isProUser {
+                    adService.showInterstitialOnce(for: .dailyPuzzleOpen) {
+                        showDailyCrossword()
+                    }
+                } else {
+                    showDailyCrossword()
+                }
+            } label: {
                 content
             }
-            .buttonStyle(.plain)
         }
     }
 
@@ -142,7 +151,7 @@ struct DailyCrosswordCard: View {
 }
 
 #Preview {
-    DailyCrosswordCard(viewModel: HomeViewModel(puzzleService: PuzzleService()))
+    DailyCrosswordCard(viewModel: HomeViewModel(puzzleService: PuzzleService(), storeService: StoreService()), showDailyCrossword: {})
         .environmentObject(StatsService())
         .padding()
 }

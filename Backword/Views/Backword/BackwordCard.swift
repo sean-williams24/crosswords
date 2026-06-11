@@ -2,9 +2,12 @@ import SwiftUI
 
 struct BackwordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
+    @EnvironmentObject var adService: AdService
+    @EnvironmentObject var storeService: StoreService
     @ScaledMetric private var spacing: CGFloat = 10
     @ObservedObject var service: BackwordService
     let progress: BackwordProgress?
+    var showBackword: () -> Void
 
     private var appLayout: AppLayout {
         AppLayout(sizeClass: sizeClass)
@@ -20,10 +23,17 @@ struct BackwordCard: View {
                 }
                 .buttonStyle(.plain)
             } else {
-                NavigationLink(value: "backword") {
+                Button {
+                    if !storeService.isProUser && AppSettings.shared.hasSeenBackwordOnboarding {
+                        adService.showInterstitialOnce(for: .backwordOpen) {
+                            showBackword()
+                        }
+                    } else {
+                        showBackword()
+                    }
+                } label: {
                     cardContainer
                 }
-                .buttonStyle(.plain)
             }
         }
     }
@@ -178,7 +188,8 @@ private var guessCounter: some View {
     progress.completedAt = Date()
     return BackwordCard(
         service: BackwordService(),
-        progress: progress
+        progress: progress,
+        showBackword: {}
     )
 }
 
@@ -189,13 +200,15 @@ private var guessCounter: some View {
     progress.completedAt = Date()
     return BackwordCard(
         service: BackwordService(),
-        progress: progress
+        progress: progress,
+        showBackword: {}
     )
 }
 
 #Preview {
     BackwordCard(
         service: BackwordService(),
-        progress: nil
+        progress: nil,
+        showBackword: {}
     )
 }

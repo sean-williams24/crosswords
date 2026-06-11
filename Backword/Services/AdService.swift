@@ -35,11 +35,9 @@ final class AdService: NSObject, ObservableObject {
     }
 
     // MARK: - State
-
     private var interstitial: InterstitialAd?
     private var rewarded: RewardedAd?
-    private var pendingRewardCallback: (@MainActor () -> Void)?
-    @Published var isRewardedAdReady = false
+    private var onAdDismissedCallback: (@MainActor () -> Void)?
 
     // MARK: - Init
 
@@ -60,6 +58,7 @@ final class AdService: NSObject, ObservableObject {
                 with: interstitialAdUnitID,
                 request: Request()
             )
+            interstitial?.fullScreenContentDelegate = self
         } catch {
             print("[AdService] Failed to load interstitial: \(error.localizedDescription)")
         }
@@ -103,11 +102,13 @@ final class AdService: NSObject, ObservableObject {
 
     /// Shows the interstitial at most once per calendar day for the given slot identifier.
     /// Subsequent calls on the same day are silently ignored.
-    func showInterstitialOnce(for type: UserDefaultsKey) {
+    func showInterstitialOnce(for type: UserDefaultsKey, onDismiss: @escaping () -> Void) {
+        onAdDismissedCallback = onDismiss
         let key = "AdService.lastShown.\(type.rawValue)"
         let today = Calendar.current.startOfDay(for: Date())
         if let last = UserDefaults.standard.object(forKey: key) as? Date,
            Calendar.current.isDate(last, inSameDayAs: today) {
+            onDismiss()
             return
         }
         UserDefaults.standard.set(today, forKey: key)
@@ -119,7 +120,7 @@ final class AdService: NSObject, ObservableObject {
             return print("Ad wasn't ready.")
         }
 
-        rewarded.present(from: nil) {
+        rewarded.present(from: nil) { @MainActor in
             completion()
         }
     }
@@ -127,6 +128,7 @@ final class AdService: NSObject, ObservableObject {
     func resetUserDefaults() {
         UserDefaultsKey.allCases
             .forEach { UserDefaults.standard.removeObject(forKey: "AdService.lastShown.\($0.rawValue)") }
+        Task { await loadAd() }
     }
 
     enum UserDefaultsKey: String, CaseIterable {
@@ -156,36 +158,29 @@ final class AdService: NSObject, ObservableObject {
 // MARK: - GADFullScreenContentDelegate
 
 extension AdService: FullScreenContentDelegate {
-    func adDidRecordImpression(_ ad: FullScreenPresentingAd) {
-//      print("\(#function) called")
-    }
-
-    func adDidRecordClick(_ ad: FullScreenPresentingAd) {
-//      print("\(#function) called")
-    }
-
-    func ad(
+     func ad(
       _ ad: FullScreenPresentingAd,
       didFailToPresentFullScreenContentWithError error: Error
     ) {
-//      print("\(#function) called")
+        onAdDismissedCallback?()
     }
 
     func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
-//      print("\(#function) called")
+      print("\(#function) called")
     }
 
     func adWillDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
-//      print("\(#function) called")
+      print("\(#function) called")
     }
 
     func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
-//        print("\(#function) called")
-        // Clear the rewarded ad.
-        rewarded = nil
-
-        Task { @MainActor [self] in
-            await loadRewardedAd()
+        if let _ = ad as? InterstitialAd {
+            onAdDismissedCallback?()
+        } else if let _ = ad as? RewardedAd {
+            self.rewarded = nil
+            Task { @MainActor [self] in
+                await loadRewardedAd()
+            }
         }
     }
 }

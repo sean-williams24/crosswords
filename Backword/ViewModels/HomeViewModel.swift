@@ -10,6 +10,7 @@ final class HomeViewModel: ObservableObject {
     @Published var crosswordsFetchDidFail: Bool = false
     var isFetching = false
     private let puzzleService: PuzzleService
+    private let storeService: StoreService
     #if DEBUG
     var previewMode = false
     #endif
@@ -22,11 +23,12 @@ final class HomeViewModel: ObservableObject {
 
     @Published var state: State = .loading
 
-    init(puzzleService: PuzzleService) {
+    init(puzzleService: PuzzleService, storeService: StoreService) {
         self.puzzleService = puzzleService
+        self.storeService = storeService
     }
 
-    func refreshIfNeeded(isProUser: Bool) async {
+    func refreshIfNeeded() async {
         #if DEBUG
         if previewMode { return }
         #endif
@@ -82,6 +84,10 @@ final class HomeViewModel: ObservableObject {
             state = .failed
         }
         isFetching = false
+    }
+
+    var isProUser: Bool {
+        storeService.isProUser
     }
 
     var dailyCrosswordScore: Int? {

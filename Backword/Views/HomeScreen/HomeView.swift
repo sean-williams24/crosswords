@@ -20,11 +20,10 @@ struct HomeView: View {
     @State private var showPaywall = false
     @State private var showWOTD = false
     @State private var showSettings = false
-    @State private var navigateToPuzzle = false
-    @State private var navigateToWeekly = false
     @State private var logoVisible = false
     @State private var proLogoVisible = false
     @State private var showRatingDetails = false
+    @State private var navigationPath = [String]()
     #if DEBUG
     @State private var showDebugSettings = false
     #endif
@@ -36,11 +35,11 @@ struct HomeView: View {
     init(viewModel: HomeViewModel? = nil) {
         // Can't use @EnvironmentObject in init, so create with a temporary service
         // The real service is injected via .onAppear
-        _viewModel = StateObject(wrappedValue: viewModel ?? HomeViewModel(puzzleService: PuzzleService()))
+        _viewModel = StateObject(wrappedValue: viewModel ?? HomeViewModel(puzzleService: PuzzleService(), storeService: StoreService()))
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             ZStack {
                 AppBackgroundGradient()
 
@@ -72,28 +71,24 @@ struct HomeView: View {
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: String.self) { destination in
                 if destination == "weekly",
-                    let puzzle = viewModel.weeklyPuzzle {
+                   let puzzle = viewModel.weeklyPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
                         .environmentObject(statsService)
                         .environmentObject(storeService)
                         .environmentObject(adService)
                         .environmentObject(ratingService)
                 } else if destination == "backword",
-                            let word = backwordService.todaysWord {
+                          let word = backwordService.todaysWord {
                     BackwordView(word: word)
                         .environmentObject(storeService)
                         .environmentObject(adService)
-                } else if let puzzle = viewModel.todaysPuzzle {
+                } else if destination == "puzzle",
+                          let puzzle = viewModel.todaysPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
                         .environmentObject(statsService)
                         .environmentObject(storeService)
                         .environmentObject(adService)
                         .environmentObject(ratingService)
-                        .onAppear {
-                            if !storeService.isProUser {
-                                adService.showInterstitialOnce(for: .dailyPuzzleOpen)
-                            }
-                        }
                 }
             }
             .fullScreenCover(isPresented: $showArchive) {
@@ -125,17 +120,13 @@ struct HomeView: View {
                 SettingsView()
                     .environmentObject(storeService)
             }
-            .sheet(isPresented: $showWOTD, onDismiss: {
-                if !storeService.isProUser {
-                    adService.showInterstitialOnce(for: .wotdDismiss)
-                }
-            }) {
+            .sheet(isPresented: $showWOTD) {
                 if let word = wotdService.todaysWord {
                     WOTDDetailView(word: word)
                 }
             }
             .task {
-                await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
+                await viewModel.refreshIfNeeded()
                 await wotdService.refreshIfNeeded()
                 await backwordService.refreshIfNeeded()
                 ratingService.refresh()
@@ -165,7 +156,7 @@ struct HomeView: View {
                 proLogoVisible = false
                 animateLogo()
                 Task {
-                    await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
+                    await viewModel.refreshIfNeeded()
                 }
             }
             .onChange(of: scenePhase) { _, newPhase in
@@ -176,7 +167,7 @@ struct HomeView: View {
                     animateLogo()
                     
                     Task {
-                        await viewModel.refreshIfNeeded(isProUser: storeService.isProUser)
+                        await viewModel.refreshIfNeeded()
                         await wotdService.refreshIfNeeded()
                         await backwordService.refreshIfNeeded()
                     }
@@ -222,7 +213,7 @@ struct HomeView: View {
             if sizeClass == .regular {
                 HStack(spacing: 45) {
                     backwordCard
-                    DailyCrosswordCard(viewModel: viewModel)
+                    dailyCrosswordCard
                 }
                 .padding(.bottom, 60)
             } else {
@@ -230,8 +221,7 @@ struct HomeView: View {
                     backwordCard
                         .shadow(color: .primary, radius: 2, x: 0, y: 1)
                         .padding(.bottom, 20)
-
-                    DailyCrosswordCard(viewModel: viewModel)
+                    dailyCrosswordCard
                 }
             }
         }
@@ -368,14 +358,23 @@ struct HomeView: View {
         }
     }
 
-    @ViewBuilder
     private var backwordCard: some View {
         BackwordCard(
             service: backwordService,
             progress: backwordService.todaysWord.flatMap {
                 BackwordProgress.load(date: $0.date)
             }
-        )
+        ) {
+            navigationPath.append("backword")
+        }
+        .environmentObject(adService)
+    }
+
+    private var dailyCrosswordCard: some View {
+        DailyCrosswordCard(viewModel: viewModel) {
+            navigationPath.append("puzzle")
+        }
+        .environmentObject(adService)
     }
 
     private func animateLogo() {
@@ -547,7 +546,7 @@ struct HomeView: View {
 
 #if DEBUG
 #Preview("Completed Puzzle") {
-    let vm = HomeViewModel(puzzleService: PuzzleService())
+    let vm = HomeViewModel(puzzleService: PuzzleService(), storeService: StoreService())
     vm.debugSetSampleCompleted()
     return HomeView(viewModel: vm)
         .environmentObject(PuzzleService())
