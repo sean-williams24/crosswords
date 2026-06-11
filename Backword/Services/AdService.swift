@@ -35,6 +35,8 @@ final class AdService: NSObject, ObservableObject {
     }
 
     // MARK: - State
+    @Published var rewardedAdDidDismiss = false
+    var rewardGranted = false
     private var interstitial: InterstitialAd?
     private var rewarded: RewardedAd?
     private var onAdDismissedCallback: (@MainActor () -> Void)?
@@ -115,13 +117,17 @@ final class AdService: NSObject, ObservableObject {
         showInterstitial()
     }
 
-    func showRewardedAd(completion: @escaping @MainActor () -> Void) {
+    func showRewardedAd() {
         guard let rewarded else {
+            Task { await loadRewardedAd() }
             return print("Ad wasn't ready.")
         }
 
-        rewarded.present(from: nil) { @MainActor in
-            completion()
+        rewardedAdDidDismiss = false
+        Task { @MainActor in
+            rewarded.present(from: topViewController()) { @MainActor [weak self] in
+                self?.rewardGranted = true
+            }
         }
     }
 
@@ -177,7 +183,9 @@ extension AdService: FullScreenContentDelegate {
         if let _ = ad as? InterstitialAd {
             onAdDismissedCallback?()
         } else if let _ = ad as? RewardedAd {
-            self.rewarded = nil
+            rewarded = nil
+            rewardGranted = false
+            rewardedAdDidDismiss = true
             Task { @MainActor [self] in
                 await loadRewardedAd()
             }

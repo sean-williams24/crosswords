@@ -148,6 +148,18 @@ struct PuzzleView: View {
                 ratingService.recordDailyCrossword(completedClues: completed, totalClues: total, date: date, hintsUsed: hintsUsed)
             }
         }
+        .onChange(of: adService.rewardedAdDidDismiss, { _, didDismiss in
+            if didDismiss {
+                withAnimation {
+                    showRewardedHintBanner = false
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    viewModel.adBonusHints += 1
+                    viewModel.useHint()
+                }
+            }
+        })
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 //        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillChangeFrameNotification)) { notif in
@@ -213,16 +225,7 @@ struct PuzzleView: View {
 
     private var watchButton: some View {
         Button {
-            adService.showRewardedAd {
-                viewModel.adBonusHints += 1
-                withAnimation {
-                    showRewardedHintBanner = false
-                }
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    viewModel.useHint()
-                }
-            }
+            adService.showRewardedAd()
         } label: {
             Text("Watch")
                 .frame(maxWidth: .infinity)
