@@ -18,16 +18,17 @@ struct ClueBarView: View {
                     .font(AppFont.clueLabel(isIpad ? 16 : 12))
                     .foregroundColor(.appAccent)
                     .frame(minWidth: 30)
-
+                    .contentTransition(.opacity)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: viewModel.activeClue)
                 Text(viewModel.currentClueText)
                     .font(AppFont.clueText(isIpad ? 20 : 15))
                     .foregroundColor(.appTextPrimary)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .id(clue.id) // force transition on clue change
-                    .transition(.asymmetric(
-                        insertion: .move(edge: dragOffset > 0 ? .leading : .trailing).combined(with: .opacity),
-                        removal: .move(edge: dragOffset > 0 ? .trailing : .leading).combined(with: .opacity)
-                    ))
+                    .contentTransition(.opacity)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: viewModel.activeClue)
+                    .id(viewModel.showHint)
+                    .transition(.slide)
+                    .animation(.easeInOut(duration: 0.4), value: viewModel.showHint)
             } else {
                 Spacer()
             }

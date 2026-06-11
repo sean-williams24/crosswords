@@ -193,7 +193,7 @@ struct PuzzleView: View {
 //        }
 //    }
 
-    // MARK: - Rewarde
+    // MARK: - Rewarded
     private let hintIcon: some View = Image(systemName: "play.circle.fill")
         .font(.system(size: 24))
         .foregroundColor(.appAccent)
@@ -217,6 +217,10 @@ struct PuzzleView: View {
                 viewModel.adBonusHints += 1
                 withAnimation {
                     showRewardedHintBanner = false
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    viewModel.useHint()
                 }
             }
         } label: {

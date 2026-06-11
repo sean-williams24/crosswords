@@ -52,8 +52,8 @@ struct HomeView: View {
                         .padding(.horizontal, appLayout.homeHorizontalPadding)
                         .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
 
-                        wotd
                         dailyGamesView
+                        wotd
                         weeklyGamesView
                     }
                     .padding(.top, 16)
@@ -199,7 +199,6 @@ struct HomeView: View {
             Text("Daily Games")
                 .font(AppFont.header(20))
                 .foregroundColor(.appTextHeading)
-                .padding(.top, 16)
                 .padding(.bottom, 6)
 
             TimelineView(.periodic(from: .now, by: 60)) { context in

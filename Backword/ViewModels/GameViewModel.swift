@@ -243,7 +243,7 @@ final class GameViewModel: ObservableObject {
 
     var currentClueText: String {
         guard let clue = activeClue else { return "" }
-        return showHint ? clue.hint.capitalized : clue.text
+        return showHint ? clue.hint : clue.text
     }
 
     var activeClueIsHinted: Bool {
