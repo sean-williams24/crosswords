@@ -204,7 +204,7 @@ struct ArchiveView: View {
             Spacer()
             Rectangle()
                 .fill(.thickMaterial)
-                .frame(height: 220)
+                .frame(height: 150)
                 .mask(
                     LinearGradient(
                         stops: [
