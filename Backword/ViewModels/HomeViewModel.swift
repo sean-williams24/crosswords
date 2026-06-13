@@ -11,6 +11,8 @@ final class HomeViewModel: ObservableObject {
     var isFetching = false
     private let puzzleService: PuzzleService
     private let storeService: StoreService
+    private let archiveDataSource: ArchiveDataSource
+    private var lastArchivePrefetchDate: String?
     #if DEBUG
     var previewMode = false
     #endif
@@ -23,9 +25,14 @@ final class HomeViewModel: ObservableObject {
 
     @Published var state: State = .loading
 
-    init(puzzleService: PuzzleService, storeService: StoreService) {
+    init(
+        puzzleService: PuzzleService,
+        storeService: StoreService,
+        archiveDataSource: ArchiveDataSource? = nil
+    ) {
         self.puzzleService = puzzleService
         self.storeService = storeService
+        self.archiveDataSource = archiveDataSource ?? ArchiveDataSource(puzzleService: puzzleService)
     }
 
     func refreshIfNeeded() async {
@@ -84,6 +91,14 @@ final class HomeViewModel: ObservableObject {
             state = .failed
         }
         isFetching = false
+    }
+
+    func prefetchCurrentArchiveMonthIfNeeded() async {
+        let today = formattedToday()
+        guard lastArchivePrefetchDate != today else { return }
+
+        lastArchivePrefetchDate = today
+        await archiveDataSource.prefetchCurrentMonth()
     }
 
     var isProUser: Bool {

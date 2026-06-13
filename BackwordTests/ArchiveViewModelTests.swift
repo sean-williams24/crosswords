@@ -40,6 +40,7 @@ struct ArchiveViewModelTests {
         #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .backword, month: currentMonth)))
         #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .daily, month: currentMonth)))
         #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .weekly, month: currentMonth)))
+        #expect(dataSource.monthLoadPolicies.allSatisfy { $0 == .cacheFirst })
     }
 
     @Test("Earlier months exclude current month")
@@ -52,6 +53,31 @@ struct ArchiveViewModelTests {
         await viewModel.loadInitialArchive()
 
         #expect(viewModel.earlierMonths(for: .daily) == [previousMonth])
+    }
+
+    @Test("Initial load asks archive source for cached month indexes")
+    func initialLoadUsesCachedMonthIndexes() async {
+        let currentMonth = ArchiveMonth(year: 2026, month: 6)
+        let dataSource = MockArchiveDataSource(currentMonth: currentMonth)
+        let viewModel = ArchiveViewModel(dataSource: dataSource, currentMonth: currentMonth)
+
+        await viewModel.loadInitialArchive()
+
+        #expect(dataSource.availableMonthPolicies.count == 3)
+        #expect(dataSource.availableMonthPolicies.allSatisfy { $0 == .cacheFirst })
+    }
+
+    @Test("Expanding older month uses network first")
+    func expandingOlderMonthUsesNetworkFirst() async {
+        let currentMonth = ArchiveMonth(year: 2026, month: 6)
+        let previousMonth = ArchiveMonth(year: 2026, month: 5)
+        let dataSource = MockArchiveDataSource(currentMonth: currentMonth, olderMonth: previousMonth)
+        let viewModel = ArchiveViewModel(dataSource: dataSource, currentMonth: currentMonth)
+
+        await viewModel.loadInitialArchive()
+        await viewModel.expandOrCollapse(previousMonth, for: .daily)
+
+        #expect(dataSource.loadPolicy(for: ArchiveMonthKey(type: .daily, month: previousMonth)) == .networkFirst)
     }
 
     @Test("Expanding a second month collapses the previous month in the same tab")
@@ -136,6 +162,12 @@ private final class MockArchiveDataSource: ArchiveDataProviding {
     private var content: [ArchiveMonthKey: ArchiveMonthContent] = [:]
 
     private(set) var loadedMonths: Set<ArchiveMonthKey> = []
+    private(set) var availableMonthPolicies: [ArchiveLoadPolicy] = []
+    private(set) var loadedMonthPolicies: [ArchiveMonthKey: ArchiveLoadPolicy] = [:]
+
+    var monthLoadPolicies: [ArchiveLoadPolicy] {
+        Array(loadedMonthPolicies.values)
+    }
 
     init(
         currentMonth: ArchiveMonth,
@@ -168,14 +200,24 @@ private final class MockArchiveDataSource: ArchiveDataProviding {
         }
     }
 
-    func availableMonths(for type: ArchiveGameType) async -> [ArchiveMonth] {
-        months
+    func availableMonths(for type: ArchiveGameType, policy: ArchiveLoadPolicy) async -> [ArchiveMonth] {
+        availableMonthPolicies.append(policy)
+        return months
     }
 
-    func loadMonth(_ month: ArchiveMonth, for type: ArchiveGameType) async -> ArchiveMonthContent {
+    func loadMonth(
+        _ month: ArchiveMonth,
+        for type: ArchiveGameType,
+        policy: ArchiveLoadPolicy
+    ) async -> ArchiveMonthContent {
         let key = ArchiveMonthKey(type: type, month: month)
         loadedMonths.insert(key)
+        loadedMonthPolicies[key] = policy
         return content[key] ?? ArchiveMonthContent()
+    }
+
+    func loadPolicy(for key: ArchiveMonthKey) -> ArchiveLoadPolicy? {
+        loadedMonthPolicies[key]
     }
 }
 

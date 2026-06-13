@@ -95,9 +95,9 @@ final class ArchiveViewModel: ObservableObject {
     func loadInitialArchive() async {
         defer { isLoading = false }
 
-        async let backwordMonths = dataSource.availableMonths(for: .backword)
-        async let dailyMonths = dataSource.availableMonths(for: .daily)
-        async let weeklyMonths = dataSource.availableMonths(for: .weekly)
+        async let backwordMonths = dataSource.availableMonths(for: .backword, policy: .cacheFirst)
+        async let dailyMonths = dataSource.availableMonths(for: .daily, policy: .cacheFirst)
+        async let weeklyMonths = dataSource.availableMonths(for: .weekly, policy: .cacheFirst)
 
         monthsByType[.backword] = await backwordMonths
         monthsByType[.daily] = await dailyMonths
@@ -122,7 +122,7 @@ final class ArchiveViewModel: ObservableObject {
 
         loadingMonths = loadingMonths.union([key])
         unavailableMonths = unavailableMonths.subtracting([key])
-        let content = await dataSource.loadMonth(month, for: type)
+        let content = await dataSource.loadMonth(month, for: type, policy: .networkFirst)
         withAnimation(.easeInOut(duration: 0.25)) {
             contentByMonth[key] = content
             loadingMonths = loadingMonths.subtracting([key])
@@ -139,9 +139,9 @@ final class ArchiveViewModel: ObservableObject {
     }
 
     private func loadCurrentMonth() async {
-        async let backword = dataSource.loadMonth(currentMonth, for: .backword)
-        async let daily = dataSource.loadMonth(currentMonth, for: .daily)
-        async let weekly = dataSource.loadMonth(currentMonth, for: .weekly)
+        async let backword = dataSource.loadMonth(currentMonth, for: .backword, policy: .cacheFirst)
+        async let daily = dataSource.loadMonth(currentMonth, for: .daily, policy: .cacheFirst)
+        async let weekly = dataSource.loadMonth(currentMonth, for: .weekly, policy: .cacheFirst)
 
         contentByMonth[ArchiveMonthKey(type: .backword, month: currentMonth)] = await backword
         contentByMonth[ArchiveMonthKey(type: .daily, month: currentMonth)] = await daily

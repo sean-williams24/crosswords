@@ -10,9 +10,11 @@ final class BackwordService: ObservableObject {
     private let dateFormatting = DateFormatting()
     private var lastFetchedDate: String?
 
-    init(apiClient: SupabaseClient = SupabaseClient()) {
+    init(apiClient: SupabaseClient = SupabaseClient(), loadOnInit: Bool = true) {
         self.apiClient = apiClient
-        Task { await loadTodaysWord() }
+        if loadOnInit {
+            Task { await loadTodaysWord() }
+        }
     }
 
     private var today: String {
