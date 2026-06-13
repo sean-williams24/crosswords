@@ -26,8 +26,8 @@ struct ArchiveMonthGrid: View {
                             Text(month.shortDisplayName)
                                 .font(AppFont.clueLabel(13))
                                 .foregroundColor(expandedMonth == month ? .appTextPrimary : .appTextSecondary)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.75)
+                                .lineLimit(2)
+                                .multilineTextAlignment(.center)
                         }
 
                         if unavailableMonths.contains(ArchiveMonthKey(type: type, month: month)) {
@@ -39,7 +39,7 @@ struct ArchiveMonthGrid: View {
                         }
                     }
                     .frame(maxWidth: .infinity)
-                    .frame(height: 54)
+                    .frame(minHeight: 54)
                     .background(expandedMonth == month ? Color.appAccent.opacity(0.16) : Color.appSurface)
                     .cornerRadius(AppLayout.cardCornerRadius)
                 }
