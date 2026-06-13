@@ -57,6 +57,23 @@ final class PuzzleService: ObservableObject {
         return try decoder.decode([ArchiveEntry].self, from: data)
     }
 
+    func fetchArchiveMonths() async throws -> [ArchiveMonth] {
+        let urlString = "\(baseURL)/rest/v1/puzzles?date=lte.\(today)&select=date&order=date.desc"
+        let dates = try await fetchArchiveDates(urlString: urlString)
+        return months(from: dates)
+    }
+
+    func fetchPuzzles(for month: ArchiveMonth) async throws -> [Puzzle] {
+        let range = month.dateRange()
+        let upperBound = min(range.upperBound, today)
+        guard range.lowerBound <= upperBound else { return [] }
+
+        let urlString = "\(baseURL)/rest/v1/puzzles?date=gte.\(range.lowerBound)&date=lte.\(upperBound)&select=*&order=date.desc"
+        let puzzles = try await fetchPuzzleList(urlString: urlString)
+        puzzles.forEach { cache.savePuzzle($0, for: $0.date) }
+        return puzzles
+    }
+
     func fetchWeeklyArchive() async throws -> [ArchiveEntry] {
         let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(today)&select=id,puzzle_number,date&order=date.desc"
         guard let url = URL(string: urlString) else {
@@ -70,6 +87,23 @@ final class PuzzleService: ObservableObject {
 
         let (data, _) = try await URLSession.shared.data(for: request)
         return try decoder.decode([ArchiveEntry].self, from: data)
+    }
+
+    func fetchWeeklyArchiveMonths() async throws -> [ArchiveMonth] {
+        let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(today)&select=date&order=date.desc"
+        let dates = try await fetchArchiveDates(urlString: urlString)
+        return months(from: dates)
+    }
+
+    func fetchWeeklyPuzzles(for month: ArchiveMonth) async throws -> [Puzzle] {
+        let range = month.dateRange()
+        let upperBound = min(range.upperBound, today)
+        guard range.lowerBound <= upperBound else { return [] }
+
+        let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=gte.\(range.lowerBound)&date=lte.\(upperBound)&select=*&order=date.desc"
+        let puzzles = try await fetchPuzzleList(urlString: urlString)
+        puzzles.forEach { cache.savePuzzle($0, for: "weekly_\($0.date)") }
+        return puzzles
     }
 
     func purgeDailyCache() {
@@ -205,6 +239,50 @@ final class PuzzleService: ObservableObject {
         return first.toPuzzle()
     }
 
+    private func fetchPuzzleList(urlString: String) async throws -> [Puzzle] {
+        guard let url = URL(string: urlString) else {
+            throw PuzzleServiceError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.setValue(apiKey, forHTTPHeaderField: "apikey")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw PuzzleServiceError.serverError
+        }
+
+        return try decoder.decode([SupabasePuzzle].self, from: data).map { $0.toPuzzle() }
+    }
+
+    private func fetchArchiveDates(urlString: String) async throws -> [String] {
+        guard let url = URL(string: urlString) else {
+            throw PuzzleServiceError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.setValue(apiKey, forHTTPHeaderField: "apikey")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw PuzzleServiceError.serverError
+        }
+
+        return try decoder.decode([ArchiveDateRow].self, from: data).map(\.date)
+    }
+
+    private func months(from dates: [String]) -> [ArchiveMonth] {
+        Array(Set(dates.compactMap(ArchiveMonth.from(dateString:)))).sorted(by: >)
+    }
+
     // MARK: - Errors
 
     enum PuzzleServiceError: LocalizedError {
@@ -227,6 +305,10 @@ final class PuzzleService: ObservableObject {
 struct ArchiveEntry: Codable, Identifiable {
     let id: String
     let puzzleNumber: Int
+    let date: String
+}
+
+private struct ArchiveDateRow: Codable {
     let date: String
 }
 
