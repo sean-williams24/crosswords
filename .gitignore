@@ -16,6 +16,7 @@ Backend/*.py
 !Backend/generate_backword.py
 !Backend/recategorise_backword.py
 !Backend/fix_answer_leakage.py
+!Backend/fix_duplicate_clues.py
 Backend/clean_progress.json
 Backend/word_bank_backup.json
 Backend/word_bank_backup_*.json
