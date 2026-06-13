@@ -129,6 +129,7 @@ struct HomeView: View {
                 await viewModel.refreshIfNeeded()
                 await wotdService.refreshIfNeeded()
                 await backwordService.refreshIfNeeded()
+                await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                 ratingService.refresh()
                 ratingService.recordCurrentPuzzles(
                     daily: viewModel.todaysPuzzle,
@@ -144,6 +145,7 @@ struct HomeView: View {
                     await viewModel.loadTodaysPuzzle()
                     await wotdService.refreshIfNeeded()
                     await backwordService.refreshIfNeeded()
+                    await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                     ratingService.refresh()
                     ratingService.recordCurrentPuzzles(
                         daily: viewModel.todaysPuzzle,
@@ -157,6 +159,7 @@ struct HomeView: View {
                 animateLogo()
                 Task {
                     await viewModel.refreshIfNeeded()
+                    await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                 }
             }
             .onChange(of: scenePhase) { _, newPhase in
@@ -170,6 +173,7 @@ struct HomeView: View {
                         await viewModel.refreshIfNeeded()
                         await wotdService.refreshIfNeeded()
                         await backwordService.refreshIfNeeded()
+                        await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                     }
                 }
             }

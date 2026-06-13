@@ -3,9 +3,14 @@ import Foundation
 final class CacheService {
 
     private let fileManager = FileManager.default
+    private let customCacheDirectory: URL?
+
+    init(cacheDirectory: URL? = nil) {
+        self.customCacheDirectory = cacheDirectory
+    }
 
     private var cacheDirectory: URL {
-        fileManager.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        customCacheDirectory ?? fileManager.urls(for: .cachesDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("Backword/Puzzles", isDirectory: true)
     }
 
@@ -69,6 +74,40 @@ final class CacheService {
         try? fileManager.removeItem(at: wotdFileURL(for: date))
     }
 
+    // MARK: - Monthly Archive Cache
+
+    func saveDailyArchive(_ puzzles: [Puzzle], for month: ArchiveMonth) {
+        save(puzzles, to: archiveFileURL(prefix: "archive_daily", month: month))
+    }
+
+    func loadDailyArchive(for month: ArchiveMonth) -> [Puzzle]? {
+        load([Puzzle].self, from: archiveFileURL(prefix: "archive_daily", month: month))
+    }
+
+    func saveWeeklyArchive(_ puzzles: [Puzzle], for month: ArchiveMonth) {
+        save(puzzles, to: archiveFileURL(prefix: "archive_weekly", month: month))
+    }
+
+    func loadWeeklyArchive(for month: ArchiveMonth) -> [Puzzle]? {
+        load([Puzzle].self, from: archiveFileURL(prefix: "archive_weekly", month: month))
+    }
+
+    func saveBackwordArchive(_ words: [BackwordWord], for month: ArchiveMonth) {
+        save(words, to: archiveFileURL(prefix: "archive_backword", month: month))
+    }
+
+    func loadBackwordArchive(for month: ArchiveMonth) -> [BackwordWord]? {
+        load([BackwordWord].self, from: archiveFileURL(prefix: "archive_backword", month: month))
+    }
+
+    func saveArchiveMonths(_ months: [ArchiveMonth], for type: ArchiveGameType) {
+        save(months, to: archiveMonthsFileURL(for: type))
+    }
+
+    func loadArchiveMonths(for type: ArchiveGameType) -> [ArchiveMonth]? {
+        load([ArchiveMonth].self, from: archiveMonthsFileURL(for: type))
+    }
+
     func clearOldPuzzles(olderThan days: Int = 30) {
         guard let contents = try? fileManager.contentsOfDirectory(
             at: cacheDirectory,
@@ -98,6 +137,26 @@ final class CacheService {
 
     private func wotdFileURL(for date: String) -> URL {
         cacheDirectory.appendingPathComponent("wotd\(date).json")
+    }
+
+    private func archiveFileURL(prefix: String, month: ArchiveMonth) -> URL {
+        cacheDirectory.appendingPathComponent("\(prefix)_\(month.key).json")
+    }
+
+    private func archiveMonthsFileURL(for type: ArchiveGameType) -> URL {
+        cacheDirectory.appendingPathComponent("archive_months_\(type.rawValue).json")
+    }
+
+    private func save<T: Encodable>(_ value: T, to url: URL) {
+        ensureDirectory()
+        if let data = try? JSONEncoder().encode(value) {
+            try? data.write(to: url, options: .atomic)
+        }
+    }
+
+    private func load<T: Decodable>(_ type: T.Type, from url: URL) -> T? {
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode(type, from: data)
     }
 
     private func ensureDirectory() {

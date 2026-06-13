@@ -1,6 +1,6 @@
 import Foundation
 
-struct BackwordWord: Codable, Identifiable {
+struct BackwordWord: Codable, Identifiable, Equatable {
     var id: String
     let date: String
     let word: String  // Always 6 uppercase letters

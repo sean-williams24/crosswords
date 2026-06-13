@@ -12,6 +12,7 @@
 		10DA4E78777801F05B5F7B2A /* wotd_bank.json in Resources */ = {isa = PBXBuildFile; fileRef = E7EE22FCCC10583E80948886 /* wotd_bank.json */; };
 		143A79FE56648107686BEF85 /* OverallRatingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */; };
 		149802310440A77534BB615E /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8820C57EC2BCBADADEC4006C /* AppTheme.swift */; };
+		1A9378281C994E16BFCC1FDC /* ArchivePuzzleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31664D1AD154A3FB5415AA5 /* ArchivePuzzleRow.swift */; };
 		1D5CED31842B691A8E91932F /* BackwordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64455C838772CB66C039CCE2 /* BackwordViewModel.swift */; };
 		21618E85BCB44C8BE6735598 /* DebugSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04496BE6230D031AE10977A /* DebugSettingsView.swift */; };
 		23B843AEA4BD3659C133FD9D /* BackwordStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99766A650EBD6521697BD6C /* BackwordStats.swift */; };
@@ -30,6 +31,7 @@
 		753A45E043CDDEBF5C5DBB36 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12AC56422D31E9D619C3E /* PaywallView.swift */; };
 		7D3636249D4EA1ACE0D6916C /* BackwordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ACCF7B840800AA52BD9ED7 /* BackwordGuessRow.swift */; };
 		7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */; };
+		0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */; };
 		83FBB193723C144A6456932E /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C44B7584617BA53797B0963 /* ZoomableView.swift */; };
 		84A6DDAE7557421BC685E350 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8669C3DD88CF9BC44A72C69 /* CellView.swift */; };
 		860A8F3C2FCEBA5100C2BE38 /* TipFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860A8F3B2FCEBA5100C2BE38 /* TipFactory.swift */; };
@@ -40,6 +42,7 @@
 		869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE32F99871800A280F2 /* BackwordStatsView.swift */; };
 		86AE8C972F913EAB001D69EE /* BackwordLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AE8C962F913EAB001D69EE /* BackwordLogo.swift */; };
 		86AFC3CE2FBE53CA007623C3 /* BackwordArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */; };
+		95726DE84D084852B6D77C8C /* ArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625E52DC74D846679E9A73FE /* ArchiveViewModel.swift */; };
 		86AFC3D12FBFC367007623C3 /* ScoringRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D02FBFC367007623C3 /* ScoringRuleView.swift */; };
 		86AFC3D32FC20460007623C3 /* BackwordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */; };
 		86AFC3D52FC2402F007623C3 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D42FC2402F007623C3 /* StatsView.swift */; };
@@ -68,6 +71,7 @@
 		9248622AF11FEBE6A948671B /* WordOfTheDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D68E5D9B55DF552855C5B33 /* WordOfTheDay.swift */; };
 		9344322FC4BD6682AB74BE2A /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4762545EDB078B5DA1FA49 /* GameViewModel.swift */; };
 		9F66E5C1AA96EC8A2DBEADF1 /* MiniGridPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */; };
+		9DAB5905105243A7AB4CA249 /* ArchiveViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AAC0EA05C940EEA05D4CE9 /* ArchiveViewModelTests.swift */; };
 		A220B5F6D4E48FCC57832B9C /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15EB4D0D354246894E51C7E /* CacheService.swift */; };
 		AC638DF36320A3F8C6EFDE6E /* CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741EF0B3C1470452272529E1 /* CompletionView.swift */; };
 		B022F8B276983EAF1219E126 /* WOTDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */; };
@@ -77,6 +81,7 @@
 		C2A2E6FA90B85E2884F67538 /* ClueListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84C8AB718DDE4C9E0EDDE1F /* ClueListView.swift */; };
 		C9B78241F73047C516573390 /* UserProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A38BFC4B60EA86A8DF662F3E /* UserProgress.swift */; };
 		CDFB51C30CE8784881171A9F /* RatingDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */; };
+		E2020AB31629439996CCB55A /* ArchiveMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */; };
 		CF96B7A7D6669B73DBA8125E /* BackwordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7143C2570D23B983CD7AF74 /* BackwordCard.swift */; };
 		D380A06E810FCE5F5A7B9D43 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AAFAD519B1F99879B1643D /* StoreService.swift */; };
 		D39F9C4C078DA5925A365ABB /* StatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B091EBD64E55AE0AB83F4B /* StatsService.swift */; };
@@ -85,6 +90,7 @@
 		E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894071960CD50EDF948DA15E /* BackwordApp.swift */; };
 		E9501AAB5231A6C28698D2E6 /* BackwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */; };
 		EAD7311D1E0CE5265794E80E /* BackwordWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */; };
+		1E354F5B18434CB3B98C776D /* ArchiveMonthGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D1C0AA78734BA68994AEF6 /* ArchiveMonthGrid.swift */; };
 		F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A3938FD382B86EEB78063 /* ArchiveView.swift */; };
 		FB8811D4DA46B6D23CDE6ED8 /* OverallRating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FDFB84159BB8E3A26031D0 /* OverallRating.swift */; };
 		FC2E739DC6045316AD55D0F4 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 9919F8A6B05C3D85B7C8E63E /* GoogleMobileAds */; };
@@ -109,6 +115,7 @@
 		1E4D0C7C19A4685DF1DC48C2 /* UserStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStats.swift; sourceTree = "<group>"; };
 		20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordWord.swift; sourceTree = "<group>"; };
 		2259B66045D006E89462572C /* BackwordLetterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordLetterCell.swift; sourceTree = "<group>"; };
+		30AAC0EA05C940EEA05D4CE9 /* ArchiveViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveViewModelTests.swift; sourceTree = "<group>"; };
 		2519353944EB9D4F32644E32 /* ClueBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueBarView.swift; sourceTree = "<group>"; };
 		26FDFB84159BB8E3A26031D0 /* OverallRating.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRating.swift; sourceTree = "<group>"; };
 		30C31A4805F0514D4233C775 /* AdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdService.swift; sourceTree = "<group>"; };
@@ -117,11 +124,13 @@
 		41BD8C5299844A6BAF87B504 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordView.swift; sourceTree = "<group>"; };
 		47B091EBD64E55AE0AB83F4B /* StatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsService.swift; sourceTree = "<group>"; };
+		625E52DC74D846679E9A73FE /* ArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveViewModel.swift; sourceTree = "<group>"; };
 		64455C838772CB66C039CCE2 /* BackwordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModel.swift; sourceTree = "<group>"; };
 		6AA64C182BEEF7710023A110 /* WordBankTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBankTests.swift; sourceTree = "<group>"; };
 		6C44B7584617BA53797B0963 /* ZoomableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableView.swift; sourceTree = "<group>"; };
 		741EF0B3C1470452272529E1 /* CompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionView.swift; sourceTree = "<group>"; };
 		78FB91A4266664E312011B33 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
+		73D1C0AA78734BA68994AEF6 /* ArchiveMonthGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveMonthGrid.swift; sourceTree = "<group>"; };
 		7CFE3BE7131C4A71B3845485 /* WOTDDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WOTDDetailView.swift; sourceTree = "<group>"; };
 		7D68E5D9B55DF552855C5B33 /* WordOfTheDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordOfTheDay.swift; sourceTree = "<group>"; };
 		7EDCB92E82855EB80981B63B /* KeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputView.swift; sourceTree = "<group>"; };
@@ -167,10 +176,12 @@
 		A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModelTests.swift; sourceTree = "<group>"; };
 		A38BFC4B60EA86A8DF662F3E /* UserProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProgress.swift; sourceTree = "<group>"; };
 		A476BC6A4DF0107699E2A1FD /* BackwordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordService.swift; sourceTree = "<group>"; };
+		B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveMonth.swift; sourceTree = "<group>"; };
 		B35393D8C1799968B4B9119D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B8669C3DD88CF9BC44A72C69 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingTests.swift; sourceTree = "<group>"; };
 		C99766A650EBD6521697BD6C /* BackwordStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStats.swift; sourceTree = "<group>"; };
+		C31664D1AD154A3FB5415AA5 /* ArchivePuzzleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivePuzzleRow.swift; sourceTree = "<group>"; };
 		C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WOTDService.swift; sourceTree = "<group>"; };
 		CAB36B91BB7D50A21760149C /* PuzzleGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleGridView.swift; sourceTree = "<group>"; };
 		D15EB4D0D354246894E51C7E /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
@@ -182,6 +193,7 @@
 		E7ADB44BEDC57CE5114B0214 /* BackwordTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = BackwordTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7EE22FCCC10583E80948886 /* wotd_bank.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = wotd_bank.json; sourceTree = "<group>"; };
 		EE5A3938FD382B86EEB78063 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
+		F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveDataSource.swift; sourceTree = "<group>"; };
 		F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		F31C198A0EE68F6859AD60A4 /* PuzzleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -233,6 +245,7 @@
 		00EC67C42E7E2A26C6A44CB3 /* BackwordTests */ = {
 			isa = PBXGroup;
 			children = (
+				30AAC0EA05C940EEA05D4CE9 /* ArchiveViewModelTests.swift */,
 				A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */,
 				91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */,
 				BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */,
@@ -244,6 +257,7 @@
 		0574559B935CCFAA014F25D3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */,
 				41BD8C5299844A6BAF87B504 /* AppSettings.swift */,
 				E6124F655D1ABA64F820B278 /* BackwordProgress.swift */,
 				C99766A650EBD6521697BD6C /* BackwordStats.swift */,
@@ -271,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				30C31A4805F0514D4233C775 /* AdService.swift */,
+				F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */,
 				A476BC6A4DF0107699E2A1FD /* BackwordService.swift */,
 				86FAA1582FB9B9150022EFF6 /* SupabaseClient.swift */,
 				869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */,
@@ -308,6 +323,8 @@
 			isa = PBXGroup;
 			children = (
 				EE5A3938FD382B86EEB78063 /* ArchiveView.swift */,
+				73D1C0AA78734BA68994AEF6 /* ArchiveMonthGrid.swift */,
+				C31664D1AD154A3FB5415AA5 /* ArchivePuzzleRow.swift */,
 				86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */,
 			);
 			path = Archive;
@@ -428,6 +445,7 @@
 		D5A47C913B0947C0B37F2D61 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				625E52DC74D846679E9A73FE /* ArchiveViewModel.swift */,
 				64455C838772CB66C039CCE2 /* BackwordViewModel.swift */,
 				0C4762545EDB078B5DA1FA49 /* GameViewModel.swift */,
 				3838DB082E2416DB47994C4D /* HomeViewModel.swift */,
@@ -568,6 +586,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DAB5905105243A7AB4CA249 /* ArchiveViewModelTests.swift in Sources */,
 				6113351E253762AC9BB6A8E0 /* BackwordViewModelTests.swift in Sources */,
 				6B0F8E2B5B724322AE390E5B /* GameViewModelTests.swift in Sources */,
 				7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */,
@@ -580,6 +599,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C161668681E34C0C10A14A3 /* AdService.swift in Sources */,
+				0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */,
+				E2020AB31629439996CCB55A /* ArchiveMonth.swift in Sources */,
+				1E354F5B18434CB3B98C776D /* ArchiveMonthGrid.swift in Sources */,
+				1A9378281C994E16BFCC1FDC /* ArchivePuzzleRow.swift in Sources */,
+				95726DE84D084852B6D77C8C /* ArchiveViewModel.swift in Sources */,
 				437E4CF0032D9E5D69A92C43 /* AppSettings.swift in Sources */,
 				149802310440A77534BB615E /* AppTheme.swift in Sources */,
 				F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */,

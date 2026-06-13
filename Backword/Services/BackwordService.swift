@@ -10,9 +10,11 @@ final class BackwordService: ObservableObject {
     private let dateFormatting = DateFormatting()
     private var lastFetchedDate: String?
 
-    init(apiClient: SupabaseClient = SupabaseClient()) {
+    init(apiClient: SupabaseClient = SupabaseClient(), loadOnInit: Bool = true) {
         self.apiClient = apiClient
-        Task { await loadTodaysWord() }
+        if loadOnInit {
+            Task { await loadTodaysWord() }
+        }
     }
 
     private var today: String {
@@ -35,6 +37,16 @@ final class BackwordService: ObservableObject {
 
     func fetchArchive() async throws -> [BackwordWord] {
         try await apiClient.fetchBackwordArchive()
+    }
+
+    func fetchArchiveMonths() async throws -> [ArchiveMonth] {
+        try await apiClient.fetchBackwordArchiveMonths()
+    }
+
+    func fetchBackwords(for month: ArchiveMonth) async throws -> [BackwordWord] {
+        let words = try await apiClient.fetchBackwords(for: month)
+        words.forEach { cache.saveBackword($0, for: $0.date) }
+        return words
     }
 
     private func loadTodaysWord() async {

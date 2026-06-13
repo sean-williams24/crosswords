@@ -43,6 +43,14 @@ When the setting is disabled, completed cells remain editable and deletable for 
 
 ---
 
+## Archive Month Caching
+
+The archive loads playable full-game payloads by UTC month, not metadata-only rows. The current month is fetched when the archive opens; older months are fetched lazily when the user expands them. Each fetched month is cached by game type and `yyyy-MM` key so previously opened months remain playable offline.
+
+Do not fetch the full year of archive game payloads up front. A lightweight month index is acceptable, but full puzzle/Backword data should stay month-scoped.
+
+---
+
 ## Timezone & Date Handling
 
 ### Puzzle dates are plain calendar dates
