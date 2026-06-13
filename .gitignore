@@ -4,6 +4,7 @@ Backend/.env
 
 # VS Code – machine-specific settings
 .vscode/
+.opencode/
 
 # Backend – only track core files
 Backend/*.py
@@ -17,8 +18,13 @@ Backend/*.py
 !Backend/fix_answer_leakage.py
 Backend/clean_progress.json
 Backend/word_bank_backup.json
+Backend/word_bank_backup_*.json
 Backend/leaky_entries.json
 Backend/fix_progress.json
+Backend/answer_derivability_*.json
+Backend/audit_quality_*.json
+Backend/test_answer_derivability_fixture.json
+Backend/.cache/
 Backend/.venv/
 Backend/__pycache__/
 Backend/archive/
@@ -31,6 +37,7 @@ Backend/supabase/*
 # Xcode
 *.xcodeproj/xcuserdata/
 *.xcworkspace/xcuserdata/
+**/*.xcworkspace/xcuserdata/
 *.xcuserstate
 DerivedData/
 build/
