@@ -58,14 +58,24 @@ struct ArchiveView: View {
             ProgressView()
                 .tint(.appAccent)
         } else {
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 14) {
-                    currentMonthSection
-                    earlierMonthsSection
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 14) {
+                        currentMonthSection
+                        earlierMonthsSection
+                    }
+                    .padding(.horizontal, AppLayout.screenPadding)
+                    .padding(.top, 16)
+                    .padding(.bottom, 112)
                 }
-                .padding(.horizontal, AppLayout.screenPadding)
-                .padding(.top, 16)
-                .padding(.bottom, 112)
+                .onChange(of: viewModel.expandedScrollToken(for: viewModel.activeType)) { _, token in
+                    guard token != nil else { return }
+                    let type = viewModel.activeType
+                    Task {
+                        try? await Task.sleep(nanoseconds: 50_000_000)
+                        scrollMonthGridToTop(proxy, type: type)
+                    }
+                }
             }
         }
     }
@@ -92,25 +102,30 @@ struct ArchiveView: View {
         let type = viewModel.activeType
         let months = viewModel.earlierMonths(for: type)
 
-        if !months.isEmpty {
-            Text("EARLIER MONTHS")
-                .font(AppFont.clueLabel(11))
-                .foregroundColor(.appTextSecondary)
-                .tracking(1)
-                .padding(.horizontal, 4)
-                .padding(.top, 8)
+        Group {
+            if !months.isEmpty {
+                Text("EARLIER MONTHS")
+                    .font(AppFont.clueLabel(11))
+                    .foregroundColor(.appTextSecondary)
+                    .tracking(1)
+                    .padding(.horizontal, 4)
+                    .padding(.top, 8)
+                    .id(earlierMonthsHeaderID(for: type))
 
-            ArchiveMonthGrid(
-                months: months,
-                type: type,
-                expandedMonth: viewModel.expandedMonth(for: type),
-                loadingMonths: viewModel.loadingMonths,
-                unavailableMonths: viewModel.unavailableMonths
-            ) { month in
-                Task { await viewModel.expandOrCollapse(month, for: type) }
+                ArchiveMonthGrid(
+                    months: months,
+                    type: type,
+                    expandedMonth: viewModel.expandedMonth(for: type),
+                    loadingMonths: viewModel.loadingMonths,
+                    unavailableMonths: viewModel.unavailableMonths
+                ) { month in
+                    Task {
+                        await viewModel.expandOrCollapse(month, for: type)
+                    }
+                }
+
+                expandedMonthSection(for: type)
             }
-
-            expandedMonthSection(for: type)
         }
     }
 
@@ -160,6 +175,16 @@ struct ArchiveView: View {
             return ArchiveMonthContent(dailyPuzzles: viewModel.currentDailyPuzzles)
         case .weekly:
             return ArchiveMonthContent(weeklyPuzzles: viewModel.currentWeeklyPuzzles)
+        }
+    }
+
+    private func earlierMonthsHeaderID(for type: ArchiveGameType) -> String {
+        "archive-earlier-months-header-\(type.rawValue)"
+    }
+
+    private func scrollMonthGridToTop(_ proxy: ScrollViewProxy, type: ArchiveGameType) {
+        withAnimation(.easeInOut(duration: 0.35)) {
+            proxy.scrollTo(earlierMonthsHeaderID(for: type), anchor: .top)
         }
     }
 

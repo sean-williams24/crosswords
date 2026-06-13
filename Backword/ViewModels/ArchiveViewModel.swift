@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 @MainActor
 final class ArchiveViewModel: ObservableObject {
@@ -81,6 +82,16 @@ final class ArchiveViewModel: ObservableObject {
         unavailableMonths.contains(ArchiveMonthKey(type: type, month: month))
     }
 
+    func expandedScrollToken(for type: ArchiveGameType) -> String? {
+        guard let month = expandedMonth(for: type),
+              let content = expandedContent(for: type),
+              !content.isEmpty(for: type) else {
+            return nil
+        }
+
+        return "\(type.rawValue)-\(month.key)-\(content.count(for: type))"
+    }
+
     func loadInitialArchive() async {
         defer { isLoading = false }
 
@@ -97,19 +108,25 @@ final class ArchiveViewModel: ObservableObject {
 
     func expandOrCollapse(_ month: ArchiveMonth, for type: ArchiveGameType) async {
         if expandedMonthByType[type] == month {
-            expandedMonthByType[type] = nil
+            withAnimation(.easeInOut(duration: 0.25)) {
+                expandedMonthByType[type] = nil
+            }
             return
         }
 
-        expandedMonthByType[type] = month
+        withAnimation(.easeInOut(duration: 0.25)) {
+            expandedMonthByType[type] = month
+        }
         let key = ArchiveMonthKey(type: type, month: month)
         guard contentByMonth[key] == nil else { return }
 
         loadingMonths = loadingMonths.union([key])
         unavailableMonths = unavailableMonths.subtracting([key])
         let content = await dataSource.loadMonth(month, for: type)
-        contentByMonth[key] = content
-        loadingMonths = loadingMonths.subtracting([key])
+        withAnimation(.easeInOut(duration: 0.25)) {
+            contentByMonth[key] = content
+            loadingMonths = loadingMonths.subtracting([key])
+        }
 
         if content.isEmpty(for: type) {
             unavailableMonths = unavailableMonths.union([key])
@@ -156,4 +173,17 @@ enum ArchiveTab: String, CaseIterable {
 struct ArchiveMonthKey: Hashable {
     let type: ArchiveGameType
     let month: ArchiveMonth
+}
+
+private extension ArchiveMonthContent {
+    func count(for type: ArchiveGameType) -> Int {
+        switch type {
+        case .backword:
+            return backwordWords.count
+        case .daily:
+            return dailyPuzzles.count
+        case .weekly:
+            return weeklyPuzzles.count
+        }
+    }
 }
