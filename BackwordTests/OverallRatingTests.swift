@@ -47,6 +47,22 @@ struct OverallRatingTests {
         return r
     }
 
+    private func ratingWithFreePoints(_ points: Int) -> OverallRating {
+        var r = OverallRating()
+        var remaining = points
+        for i in 0..<14 {
+            let d = Calendar.current.date(byAdding: .day, value: -i, to: Date())!
+            let ds = OverallRating.dateFormatter.string(from: d)
+            let daily = min(5, remaining)
+            remaining -= daily
+            let backword = min(5, remaining)
+            remaining -= backword
+            r.upsertDailyCrossword(score: daily, date: ds)
+            r.upsertBackword(score: backword, date: ds)
+        }
+        return r
+    }
+
     // MARK: maxPoints
 
     @Test("Free user max = 14 × 2 games × 5 pts = 140")
@@ -118,6 +134,42 @@ struct OverallRatingTests {
             r.upsertDailyCrossword(score: 2, date: ds)
         }
         #expect(r.tier(isPro: false) == .scribe)
+    }
+
+    @Test("40% remains Scribe")
+    func fortyPercentRemainsScribe() {
+        // 40% of 140 = 56 pts, below the new 50% Linguist threshold.
+        #expect(ratingWithFreePoints(56).tier(isPro: false) == .scribe)
+    }
+
+    @Test("50% → Linguist")
+    func linguistTier() {
+        // 50% of 140 = 70 pts.
+        #expect(ratingWithFreePoints(70).tier(isPro: false) == .linguist)
+    }
+
+    @Test("60% remains Linguist")
+    func sixtyPercentRemainsLinguist() {
+        // 60% of 140 = 84 pts, below the new 75% Grandmaster threshold.
+        #expect(ratingWithFreePoints(84).tier(isPro: false) == .linguist)
+    }
+
+    @Test("75% → Grandmaster")
+    func grandmasterTier() {
+        // 75% of 140 = 105 pts.
+        #expect(ratingWithFreePoints(105).tier(isPro: false) == .grandmaster)
+    }
+
+    @Test("Just under 90% remains Grandmaster")
+    func justUnderVirtuosoRemainsGrandmaster() {
+        // 125 / 140 = 89.29%, below the new 90% Virtuoso threshold.
+        #expect(ratingWithFreePoints(125).tier(isPro: false) == .grandmaster)
+    }
+
+    @Test("90% → Virtuoso")
+    func ninetyPercentVirtuosoTier() {
+        // 90% of 140 = 126 pts.
+        #expect(ratingWithFreePoints(126).tier(isPro: false) == .virtuoso)
     }
 
     @Test("Perfect free score → Virtuoso")
