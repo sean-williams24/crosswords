@@ -55,18 +55,18 @@ enum RatingTier: CaseIterable {
         switch self {
         case .novice:     return 0.0
         case .scribe:      return 0.2
-        case .linguist:    return 0.4
-        case .grandmaster: return 0.6
-        case .virtuoso:    return 0.8
+        case .linguist:    return 0.5
+        case .grandmaster: return 0.75
+        case .virtuoso:    return 0.9
         }
     }
 
     var nextThreshold: Double {
         switch self {
         case .novice:     return 0.2
-        case .scribe:      return 0.4
-        case .linguist:    return 0.6
-        case .grandmaster: return 0.8
+        case .scribe:      return 0.5
+        case .linguist:    return 0.75
+        case .grandmaster: return 0.9
         case .virtuoso:    return 1.0
         }
     }
