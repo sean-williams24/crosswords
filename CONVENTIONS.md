@@ -35,6 +35,12 @@ Both generators share the same exclusion mechanism to avoid repeating answers ac
 - Each puzzle in a batch records its answers into a `batch_used` set.
 - Every subsequent puzzle in the same batch adds `batch_used` to the exclusion set, so no word appears twice within a single generation run regardless of the Supabase history.
 
+## Crossword Correct Highlight Locking
+
+When `AppSettings.crosswordCorrectHighlight` is enabled, cells belonging to completed crossword clues are treated as locked input. `GameViewModel` must reject both deletion and typed replacement for those cells, because the green highlight is the user's signal that the answer has been accepted and should no longer be editable.
+
+When the setting is disabled, completed cells remain editable and deletable for the harder non-locking experience.
+
 ---
 
 ## Timezone & Date Handling
