@@ -24,6 +24,7 @@
 		549205098DAD4DCC7F508DD1 /* KeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDCB92E82855EB80981B63B /* KeyboardInputView.swift */; };
 		58638D080E0090141DE592A2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF93C5B6979DA0324E913C9 /* SettingsView.swift */; };
 		6113351E253762AC9BB6A8E0 /* BackwordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */; };
+		6AA64C192BEEF7710023A110 /* WordBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA64C182BEEF7710023A110 /* WordBankTests.swift */; };
 		70FDEC9954ABAD6370C542F4 /* RatingBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9165B37268686C367CEB6523 /* RatingBarView.swift */; };
 		753A45E043CDDEBF5C5DBB36 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12AC56422D31E9D619C3E /* PaywallView.swift */; };
 		7D3636249D4EA1ACE0D6916C /* BackwordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ACCF7B840800AA52BD9ED7 /* BackwordGuessRow.swift */; };
@@ -116,6 +117,7 @@
 		464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordView.swift; sourceTree = "<group>"; };
 		47B091EBD64E55AE0AB83F4B /* StatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsService.swift; sourceTree = "<group>"; };
 		64455C838772CB66C039CCE2 /* BackwordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModel.swift; sourceTree = "<group>"; };
+		6AA64C182BEEF7710023A110 /* WordBankTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBankTests.swift; sourceTree = "<group>"; };
 		6C44B7584617BA53797B0963 /* ZoomableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableView.swift; sourceTree = "<group>"; };
 		741EF0B3C1470452272529E1 /* CompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionView.swift; sourceTree = "<group>"; };
 		78FB91A4266664E312011B33 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 			children = (
 				A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */,
 				BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */,
+				6AA64C182BEEF7710023A110 /* WordBankTests.swift */,
 			);
 			path = BackwordTests;
 			sourceTree = "<group>";
@@ -564,6 +567,7 @@
 			files = (
 				6113351E253762AC9BB6A8E0 /* BackwordViewModelTests.swift in Sources */,
 				7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */,
+				6AA64C192BEEF7710023A110 /* WordBankTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,6 +689,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -762,6 +767,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
