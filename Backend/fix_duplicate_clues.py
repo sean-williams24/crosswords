@@ -8,8 +8,11 @@ clues that give away the answer through exact, morphological, or tense variants.
 
 Usage:
     python3 fix_duplicate_clues.py scan
+    python3 fix_duplicate_clues.py scan-leaks
     python3 fix_duplicate_clues.py export --output duplicate_clue_batches.json
     python3 fix_duplicate_clues.py repair --dry-run
+    python3 fix_duplicate_clues.py repair-leaks --dry-run
+    python3 fix_duplicate_clues.py repair-leaks
     python3 fix_duplicate_clues.py repair
     python3 fix_duplicate_clues.py apply replacements.json
     python3 fix_duplicate_clues.py validate
@@ -36,6 +39,7 @@ from audit_answer_derivability import (
 BANK_PATH = Path(__file__).parent / "word_bank.json"
 EXPORT_PATH = Path(__file__).parent / "duplicate_clue_batches.json"
 PROPOSALS_PATH = Path(__file__).parent / "duplicate_clue_replacements.json"
+LEAK_PROPOSALS_PATH = Path(__file__).parent / "leaking_clue_replacements.json"
 MIN_CONSTITUENT_LEN = 3
 
 
@@ -128,6 +132,28 @@ def scan_duplicates(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return findings
 
 
+def scan_leaks(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    findings = []
+    for index, entry in enumerate(entries):
+        word = str(entry.get("word", ""))
+        issues: dict[str, dict[str, Any]] = {}
+        for field, value in field_values(entry):
+            issue = replacement_issue(word, value)
+            if issue:
+                issues[field] = {
+                    "original": value,
+                    "reasons": issue.get("reasons", ["UNKNOWN"]),
+                }
+        if issues:
+            findings.append({
+                "index": index,
+                "word": word,
+                "issues": issues,
+                "entry": entry,
+            })
+    return findings
+
+
 def check_terms(answer: str) -> list[str]:
     normalized = re.sub(r"[^A-Za-z0-9]+", " ", answer).strip()
     parts = normalized.split()
@@ -178,7 +204,11 @@ def existing_values(entry: dict[str, Any], replacing: str | None = None) -> set[
 
 def normalize_sentence(text: str) -> str:
     text = re.sub(r"\s+", " ", text).strip()
-    return text.rstrip(" .")
+    text = text.rstrip(" .")
+    text = re.sub(r"^(Could be|Maybe|Often|Seen as|Associated with|A sign of)\s+", "", text, flags=re.IGNORECASE)
+    text = re.sub(r",\s*(perhaps|sometimes|loosely|for one)$", "", text, flags=re.IGNORECASE)
+    text = text.rstrip("?")
+    return text.strip()
 
 
 def lower_first(text: str) -> str:
@@ -195,7 +225,6 @@ def clueish_variants(seed: str, salt: int) -> list[str]:
         f"{capped}, perhaps",
         f"Maybe {lowered}",
         f"Often {lowered}",
-        f"Think {lowered}",
         f"{capped}, sometimes",
         f"Seen as {lowered}",
         f"{capped}?",
@@ -272,6 +301,24 @@ def build_replacements(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return proposals
 
 
+def build_leak_replacements(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    proposals = []
+    for finding in scan_leaks(entries):
+        entry = deepcopy(finding["entry"])
+        replacements: dict[str, str] = {}
+        for field in finding["issues"]:
+            replacement = first_valid_replacement(entry, field)
+            set_field(entry, field, replacement)
+            replacements[field] = replacement
+        proposals.append({
+            "index": finding["index"],
+            "word": finding["word"],
+            "issues": finding["issues"],
+            "replacements": replacements,
+        })
+    return proposals
+
+
 def apply_replacements(entries: list[dict[str, Any]], replacements: list[dict[str, Any]]) -> None:
     for item in replacements:
         index = item["index"]
@@ -296,7 +343,7 @@ def validation_errors(entries: list[dict[str, Any]]) -> list[str]:
         for value, fields in duplicate_groups(entry).items():
             errors.append(f"{index} {word}: duplicate {fields} -> {value!r}")
         for field, value in field_values(entry):
-            issue = derivability_issue(word, value)
+            issue = replacement_issue(word, value)
             if issue:
                 reasons = ",".join(issue.get("reasons", ["UNKNOWN"]))
                 errors.append(f"{index} {word}: {field} derivable ({reasons}) -> {value!r}")
@@ -322,9 +369,33 @@ def print_scan_report(findings: list[dict[str, Any]]) -> None:
         print(f"  {finding['index']} {finding['word']}: {finding['fixes']}")
 
 
+def print_leak_report(findings: list[dict[str, Any]]) -> None:
+    field_counts = Counter()
+    reason_counts = Counter()
+    for finding in findings:
+        for field, issue in finding["issues"].items():
+            field_counts[field.split("[")[0]] += 1
+            for reason in issue["reasons"]:
+                reason_counts[reason] += 1
+    print(f"Flagged entries: {len(findings)}")
+    print(f"Leaking fields: {sum(len(f['issues']) for f in findings)}")
+    print(f"Field occurrences: {dict(field_counts)}")
+    print(f"Reason counts: {dict(reason_counts)}")
+    for finding in findings[:10]:
+        print(f"  {finding['index']} {finding['word']}: {finding['issues']}")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Fix duplicate word-bank clue strings")
-    parser.add_argument("command", choices=["scan", "export", "repair", "apply", "validate"])
+    parser.add_argument("command", choices=[
+        "scan",
+        "scan-leaks",
+        "export",
+        "repair",
+        "repair-leaks",
+        "apply",
+        "validate",
+    ])
     parser.add_argument("replacement_file", nargs="?", type=Path)
     parser.add_argument("--bank", type=Path, default=BANK_PATH)
     parser.add_argument("--output", type=Path)
@@ -338,6 +409,10 @@ def main() -> None:
 
     if args.command == "scan":
         print_scan_report(scan_duplicates(entries))
+        return
+
+    if args.command == "scan-leaks":
+        print_leak_report(scan_leaks(entries))
         return
 
     if args.command == "export":
@@ -365,6 +440,26 @@ def main() -> None:
         save_entries(args.bank, entries)
         print(f"Applied {len(replacements)} replacement records to {args.bank}")
         print(f"Replacement report written to {output}")
+        return
+
+    if args.command == "repair-leaks":
+        output = args.output or LEAK_PROPOSALS_PATH
+        replacements = build_leak_replacements(entries)
+        output.write_text(json.dumps(replacements, indent=2, ensure_ascii=False) + "\n")
+        apply_replacements(entries, replacements)
+        errors = validation_errors(entries)
+        if errors:
+            print(f"Validation failed after leak repair ({len(errors)} errors):", file=sys.stderr)
+            for error in errors[:50]:
+                print(f"  {error}", file=sys.stderr)
+            raise SystemExit(1)
+        if args.dry_run:
+            print(f"Dry run: built {len(replacements)} leak replacement records; no bank changes written.")
+            print(f"Leak replacement report written to {output}")
+            return
+        save_entries(args.bank, entries)
+        print(f"Applied {len(replacements)} leak replacement records to {args.bank}")
+        print(f"Leak replacement report written to {output}")
         return
 
     if args.command == "apply":

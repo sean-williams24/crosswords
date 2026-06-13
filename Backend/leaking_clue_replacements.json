@@ -1,0 +1,4323 @@
+[
+  {
+    "index": 3,
+    "word": "ABLE",
+    "issues": {
+      "hint": {
+        "original": "Capable or competent",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Skilled enough for the task"
+    }
+  },
+  {
+    "index": 12,
+    "word": "ACHE",
+    "issues": {
+      "hint": {
+        "original": "What a headache is",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Persistent bodily discomfort"
+    }
+  },
+  {
+    "index": 50,
+    "word": "ARCH",
+    "issues": {
+      "hint": {
+        "original": "Gateway shape in architecture",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Curved opening or support"
+    }
+  },
+  {
+    "index": 83,
+    "word": "BASE",
+    "issues": {
+      "hint": {
+        "original": "Home plate in baseball",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Foundation point or lower support"
+    }
+  },
+  {
+    "index": 120,
+    "word": "BOARD",
+    "issues": {
+      "hint": {
+        "original": "Chalkboard or surf___",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Flat panel or committee group"
+    }
+  },
+  {
+    "index": 131,
+    "word": "BORE",
+    "issues": {
+      "hint": {
+        "original": "Drill into or cause boredom",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Drill through or tire someone"
+    }
+  },
+  {
+    "index": 201,
+    "word": "CASE",
+    "issues": {
+      "hint": {
+        "original": "Suitcase or legal matter",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Legal matter or protective container"
+    }
+  },
+  {
+    "index": 234,
+    "word": "CHEMICAL",
+    "issues": {
+      "clues[1]": {
+        "original": "It can change your mood chemically",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Reactive lab ingredient"
+    }
+  },
+  {
+    "index": 282,
+    "word": "CLUB",
+    "issues": {
+      "hint": {
+        "original": "Nightclub or golf ___",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Social group or heavy stick"
+    }
+  },
+  {
+    "index": 298,
+    "word": "COLLECT",
+    "issues": {
+      "hint": {
+        "original": "Build a collection",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Bring items together"
+    }
+  },
+  {
+    "index": 343,
+    "word": "COPY",
+    "issues": {
+      "hint": {
+        "original": "Make a photocopy",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Duplicate by writing or printing"
+    }
+  },
+  {
+    "index": 446,
+    "word": "DENT",
+    "issues": {
+      "clues[2]": {
+        "original": "A small indentation in a surface",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Small hollow left by impact"
+    }
+  },
+  {
+    "index": 474,
+    "word": "DIRECT",
+    "issues": {
+      "hint": {
+        "original": "What a film director does",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Guide without detours"
+    }
+  },
+  {
+    "index": 519,
+    "word": "DRENCH",
+    "issues": {
+      "hint": {
+        "original": "Drenched in rain",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Soak until thoroughly wet"
+    }
+  },
+  {
+    "index": 527,
+    "word": "DRONE",
+    "issues": {
+      "clues[1]": {
+        "original": "Monotone voice that drones on",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Low continuous hum"
+    }
+  },
+  {
+    "index": 557,
+    "word": "EDIBLE",
+    "issues": {
+      "clues[1]": {
+        "original": "Fit for a feast, unlike inedible decor",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Suitable for a meal"
+    }
+  },
+  {
+    "index": 636,
+    "word": "FACE",
+    "issues": {
+      "hard_text": {
+        "original": "Surface visible to the world",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Front part of the head"
+    }
+  },
+  {
+    "index": 653,
+    "word": "FAST",
+    "issues": {
+      "hint": {
+        "original": "Breakfast means break the ___",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Quick, or going without food"
+    }
+  },
+  {
+    "index": 705,
+    "word": "FLAW",
+    "issues": {
+      "clues[2]": {
+        "original": "Crack in a flawless facade",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Weak spot in an otherwise good plan"
+    }
+  },
+  {
+    "index": 785,
+    "word": "GAPE",
+    "issues": {
+      "clues[2]": {
+        "original": "Mouth agape at the spectacle",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Stare open-mouthed"
+    }
+  },
+  {
+    "index": 877,
+    "word": "GUISE",
+    "issues": {
+      "hard_text": {
+        "original": "Disguise for a masquerade",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Outward appearance that hides truth"
+    }
+  },
+  {
+    "index": 915,
+    "word": "HEAL",
+    "issues": {
+      "text": {
+        "original": "Become healthy again",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Restoring something to health?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Recover after injury",
+      "clues[2]": "Mend after damage"
+    }
+  },
+  {
+    "index": 917,
+    "word": "HEAR",
+    "issues": {
+      "text": {
+        "original": "Perceive with ears",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Detect sound"
+    }
+  },
+  {
+    "index": 920,
+    "word": "HEAT",
+    "issues": {
+      "clues[2]": {
+        "original": "Can be a heated argument?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Warmth from a furnace"
+    }
+  },
+  {
+    "index": 934,
+    "word": "HERE",
+    "issues": {
+      "hint": {
+        "original": "Opposite of there",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Not there, but...",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "In this exact place",
+      "clues[2]": "At this location"
+    }
+  },
+  {
+    "index": 968,
+    "word": "HOST",
+    "issues": {
+      "clues[2]": {
+        "original": "Master of ceremonies, but not a ghost?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Person running a party or show"
+    }
+  },
+  {
+    "index": 1083,
+    "word": "KNOW",
+    "issues": {
+      "hint": {
+        "original": "Have knowledge of",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Hold facts in mind"
+    }
+  },
+  {
+    "index": 1150,
+    "word": "LINE",
+    "issues": {
+      "hint": {
+        "original": "Pick-up ___ or clothesline",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Queue, boundary, or written row"
+    }
+  },
+  {
+    "index": 1159,
+    "word": "LIVE",
+    "issues": {
+      "text": {
+        "original": "Be alive or in real time",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Happening in real time"
+    }
+  },
+  {
+    "index": 1201,
+    "word": "MAGNET",
+    "issues": {
+      "clues[2]": {
+        "original": "A device with a magnetic personality",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Object that pulls iron"
+    }
+  },
+  {
+    "index": 1256,
+    "word": "MIRE",
+    "issues": {
+      "clues[1]": {
+        "original": "Quagmire of troubles",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Deep boggy trouble"
+    }
+  },
+  {
+    "index": 1284,
+    "word": "MOUNT",
+    "issues": {
+      "text": {
+        "original": "Climb or mountain",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Rise upward or set in place"
+    }
+  },
+  {
+    "index": 1483,
+    "word": "PRINT",
+    "issues": {
+      "hint": {
+        "original": "What a printer does",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Put words onto paper"
+    }
+  },
+  {
+    "index": 1632,
+    "word": "ROBE",
+    "issues": {
+      "hint": {
+        "original": "Bathrobe",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Loose ceremonial garment"
+    }
+  },
+  {
+    "index": 1679,
+    "word": "SCOPE",
+    "issues": {
+      "hint": {
+        "original": "Telescope or project boundaries",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Range covered by a subject"
+    }
+  },
+  {
+    "index": 1764,
+    "word": "SMELT",
+    "issues": {
+      "hint": {
+        "original": "Smelting process",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Small fish or metal process"
+    }
+  },
+  {
+    "index": 1828,
+    "word": "STAIR",
+    "issues": {
+      "text": {
+        "original": "One step in a staircase",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Single step between levels"
+    }
+  },
+  {
+    "index": 1849,
+    "word": "STEER",
+    "issues": {
+      "hint": {
+        "original": "Turn the steering wheel",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Guide a vehicle or course"
+    }
+  },
+  {
+    "index": 1934,
+    "word": "TEACH",
+    "issues": {
+      "hint": {
+        "original": "What teachers do",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Help someone learn"
+    }
+  },
+  {
+    "index": 1956,
+    "word": "THING",
+    "issues": {
+      "hint": {
+        "original": "Generic term for anything",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Object, matter, or unnamed item"
+    }
+  },
+  {
+    "index": 1973,
+    "word": "THUMB",
+    "issues": {
+      "hint": {
+        "original": "What gives a thumbs up",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Short digit on the hand"
+    }
+  },
+  {
+    "index": 2142,
+    "word": "WHILE",
+    "issues": {
+      "hint": {
+        "original": "Period of time or meanwhile",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Period of time"
+    }
+  },
+  {
+    "index": 2159,
+    "word": "WITNESS",
+    "issues": {
+      "clues[2]": {
+        "original": "An eyewitness to history",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Observer who may testify"
+    }
+  },
+  {
+    "index": 2175,
+    "word": "WRIT",
+    "issues": {
+      "clues[1]": {
+        "original": "Legal command in written form",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Formal court order"
+    }
+  },
+  {
+    "index": 3147,
+    "word": "ALTO",
+    "issues": {
+      "clues[0]": {
+        "original": "Contralto range",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Low female singing range"
+    }
+  },
+  {
+    "index": 3197,
+    "word": "BATE",
+    "issues": {
+      "text": {
+        "original": "Lessen or abate",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Reduce in force"
+    }
+  },
+  {
+    "index": 3245,
+    "word": "BRAG",
+    "issues": {
+      "clues[1]": {
+        "original": "Humblebrag, minus the humble",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Boast about oneself"
+    }
+  },
+  {
+    "index": 3289,
+    "word": "CHAT",
+    "issues": {
+      "hard_text": {
+        "original": "Social chitchat",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Casual conversation"
+    }
+  },
+  {
+    "index": 3304,
+    "word": "COCO",
+    "issues": {
+      "hint": {
+        "original": "Coconut",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Chocolate-colored fashion name"
+    }
+  },
+  {
+    "index": 3306,
+    "word": "COED",
+    "issues": {
+      "clues[1]": {
+        "original": "Female student in a coeducational school",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Mixed-gender school setting"
+    }
+  },
+  {
+    "index": 3356,
+    "word": "DELE",
+    "issues": {
+      "clues[2]": {
+        "original": "Delete, in print",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Printer proof mark to remove text"
+    }
+  },
+  {
+    "index": 3360,
+    "word": "DERM",
+    "issues": {
+      "hard_text": {
+        "original": "What a dermatologist studies",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Skin-related medical shorthand"
+    }
+  },
+  {
+    "index": 3406,
+    "word": "DRIB",
+    "issues": {
+      "hint": {
+        "original": "Dribble, perhaps",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Tiny remaining amount"
+    }
+  },
+  {
+    "index": 3437,
+    "word": "EVER",
+    "issues": {
+      "hard_text": {
+        "original": "Always and forever",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "At any point in time"
+    }
+  },
+  {
+    "index": 3445,
+    "word": "FEND",
+    "issues": {
+      "hint": {
+        "original": "Defend",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Ward something off"
+    }
+  },
+  {
+    "index": 3495,
+    "word": "ADMIN",
+    "issues": {
+      "clues[1]": {
+        "original": "Administrative duties?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Office coordination work"
+    }
+  },
+  {
+    "index": 3531,
+    "word": "ALOUD",
+    "issues": {
+      "clues[0]": {
+        "original": "In a loud voice",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Spoken so others can hear"
+    }
+  },
+  {
+    "index": 3532,
+    "word": "ALPHA",
+    "issues": {
+      "text": {
+        "original": "First letter of the Greek alphabet",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "First in a sequence"
+    }
+  },
+  {
+    "index": 3635,
+    "word": "BEAUT",
+    "issues": {
+      "text": {
+        "original": "An informal term for beauty",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Slangy compliment for a looker"
+    }
+  },
+  {
+    "index": 3655,
+    "word": "BESOT",
+    "issues": {
+      "clues[1]": {
+        "original": "Besotted, perhaps?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Make foolishly infatuated"
+    }
+  },
+  {
+    "index": 3684,
+    "word": "BLOOD",
+    "issues": {
+      "hint": {
+        "original": "Lifeblood",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Red fluid in veins"
+    }
+  },
+  {
+    "index": 3803,
+    "word": "ACTUAL",
+    "issues": {
+      "text": {
+        "original": "Real or factual",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Real rather than imagined"
+    }
+  },
+  {
+    "index": 3851,
+    "word": "AMORAL",
+    "issues": {
+      "text": {
+        "original": "Lacking a moral sense",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Outside ordinary ethics"
+    }
+  },
+  {
+    "index": 3990,
+    "word": "ADRENAL",
+    "issues": {
+      "text": {
+        "original": "Relating to adrenaline or glands",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[0]": {
+        "original": "Glands that pump adrenaline",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Related to glands above kidneys",
+      "clues[0]": "Linked to fight-or-flight hormones"
+    }
+  },
+  {
+    "index": 4183,
+    "word": "ALFRESCO",
+    "issues": {
+      "clues[2]": {
+        "original": "Al fresco meals, perhaps",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Meal under open sky"
+    }
+  },
+  {
+    "index": 4369,
+    "word": "hind",
+    "issues": {
+      "clues[2]": {
+        "original": "What’s behind the times?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Located at the back"
+    }
+  },
+  {
+    "index": 4371,
+    "word": "hist",
+    "issues": {
+      "hard_text": {
+        "original": "Quiet command for history lovers",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Sharp sound asking for silence"
+    }
+  },
+  {
+    "index": 4400,
+    "word": "lino",
+    "issues": {
+      "text": {
+        "original": "Common flooring material made from linoleum",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Durable sheet flooring"
+    }
+  },
+  {
+    "index": 4460,
+    "word": "rota",
+    "issues": {
+      "hint": {
+        "original": "Duty roster or rotation",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[1]": {
+        "original": "List for assignments or a rotating schedule",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Schedule of turns",
+      "clues[1]": "Assignment schedule"
+    }
+  },
+  {
+    "index": 4487,
+    "word": "shad",
+    "issues": {
+      "hard_text": {
+        "original": "Fish that swims in shadows?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Springtime river fish"
+    }
+  },
+  {
+    "index": 4546,
+    "word": "toon",
+    "issues": {
+      "hint": {
+        "original": "Cartoon character slang",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[1]": {
+        "original": "Cartoon's playful form",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Animated character slang",
+      "clues[1]": "Playful animated figure"
+    }
+  },
+  {
+    "index": 4581,
+    "word": "fore",
+    "issues": {
+      "hard_text": {
+        "original": "Direction before the rest",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Golf warning shout"
+    }
+  },
+  {
+    "index": 4592,
+    "word": "gent",
+    "issues": {
+      "text": {
+        "original": "Informal term for a gentleman",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Informal refined man"
+    }
+  },
+  {
+    "index": 4618,
+    "word": "hunk",
+    "issues": {
+      "clues[2]": {
+        "original": "Chunky slice of charm",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Attractive, well-built man"
+    }
+  },
+  {
+    "index": 4670,
+    "word": "male",
+    "issues": {
+      "text": {
+        "original": "Biological sex opposite to female",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[1]": {
+        "original": "Not female, but the other kind",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Masculine sex category",
+      "clues[1]": "Not the feminine category"
+    }
+  },
+  {
+    "index": 4676,
+    "word": "mean",
+    "issues": {
+      "clues[2]": {
+        "original": "Not friendly, in demeanor",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Unkind, or an average value"
+    }
+  },
+  {
+    "index": 4685,
+    "word": "mine",
+    "issues": {
+      "hint": {
+        "original": "Excavation site for minerals",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Owned by the speaker"
+    }
+  },
+  {
+    "index": 4707,
+    "word": "most",
+    "issues": {
+      "clues[2]": {
+        "original": "Almost all in one category",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Greatest amount or degree"
+    }
+  },
+  {
+    "index": 4773,
+    "word": "phon",
+    "issues": {
+      "clues[1]": {
+        "original": "What a phone might produce?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Unit of perceived loudness"
+    }
+  },
+  {
+    "index": 4774,
+    "word": "phot",
+    "issues": {
+      "clues[1]": {
+        "original": "Notable moment in photography?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Unit of illumination"
+    }
+  },
+  {
+    "index": 4806,
+    "word": "putt",
+    "issues": {
+      "clues[2]": {
+        "original": "What you do on the putting surface",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Gentle golf stroke"
+    }
+  },
+  {
+    "index": 4809,
+    "word": "raft",
+    "issues": {
+      "hint": {
+        "original": "Life-saving watercraft",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Craft for floating on water",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Flat floating platform",
+      "clues[2]": "Floating wooden platform"
+    }
+  },
+  {
+    "index": 4894,
+    "word": "sorb",
+    "issues": {
+      "hard_text": {
+        "original": "Absorb but with a twist?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Take in by absorption"
+    }
+  },
+  {
+    "index": 4919,
+    "word": "surf",
+    "issues": {
+      "clues[2]": {
+        "original": "To glide over water's surface?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Ride breaking waves"
+    }
+  },
+  {
+    "index": 4942,
+    "word": "tiny",
+    "issues": {
+      "hard_text": {
+        "original": "Small enough to fit in your palm",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Extremely small"
+    }
+  },
+  {
+    "index": 5145,
+    "word": "poly",
+    "issues": {
+      "hint": {
+        "original": "Prefix used in terms like polymath",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "hard_text": {
+        "original": "Prefix for many, like polyglot",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Prefix meaning many",
+      "hard_text": "Many-related prefix"
+    }
+  },
+  {
+    "index": 5151,
+    "word": "prep",
+    "issues": {
+      "hard_text": {
+        "original": "Preparation for an upcoming event",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Get ready beforehand"
+    }
+  },
+  {
+    "index": 5186,
+    "word": "spec",
+    "issues": {
+      "hint": {
+        "original": "Short for specification",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Detailed requirement description"
+    }
+  },
+  {
+    "index": 5340,
+    "word": "nitro",
+    "issues": {
+      "text": {
+        "original": "Relating to nitrogen or its compounds",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Short form for nitrogen compounds",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Explosive racing-fuel shorthand",
+      "clues[2]": "High-energy fuel additive"
+    }
+  },
+  {
+    "index": 5438,
+    "word": "there",
+    "issues": {
+      "hard_text": {
+        "original": "Not here",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "At that place"
+    }
+  },
+  {
+    "index": 5503,
+    "word": "chute",
+    "issues": {
+      "clues[2]": {
+        "original": "Parachute's cousin?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Steep slide or drop passage"
+    }
+  },
+  {
+    "index": 5565,
+    "word": "dozer",
+    "issues": {
+      "clues[1]": {
+        "original": "Bulldozer’s short form",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Earthmoving machine, briefly"
+    }
+  },
+  {
+    "index": 5585,
+    "word": "elect",
+    "issues": {
+      "clues[2]": {
+        "original": "Select with a specific intent",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Choose by vote"
+    }
+  },
+  {
+    "index": 5695,
+    "word": "hives",
+    "issues": {
+      "clues[2]": {
+        "original": "Beehive's busy inhabitants?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Raised itchy skin reaction"
+    }
+  },
+  {
+    "index": 5767,
+    "word": "legit",
+    "issues": {
+      "text": {
+        "original": "Informal term for legitimate",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Slang for acceptable"
+    }
+  },
+  {
+    "index": 5773,
+    "word": "licit",
+    "issues": {
+      "clues[1]": {
+        "original": "Opposite of illicit behavior",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Allowed by law"
+    }
+  },
+  {
+    "index": 5863,
+    "word": "outgo",
+    "issues": {
+      "text": {
+        "original": "Total of outgoing funds",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Money going out"
+    }
+  },
+  {
+    "index": 5888,
+    "word": "plash",
+    "issues": {
+      "text": {
+        "original": "Sound made by a light splash",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "A soft splash with subtle grace",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Soft watery sound",
+      "clues[2]": "Gentle watery sound"
+    }
+  },
+  {
+    "index": 5890,
+    "word": "plied",
+    "issues": {
+      "clues[1]": {
+        "original": "Repeatedly applied with care",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Worked at steadily"
+    }
+  },
+  {
+    "index": 5923,
+    "word": "ravel",
+    "issues": {
+      "hard_text": {
+        "original": "To tangle up, not to unravel",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Tangle into knots"
+    }
+  },
+  {
+    "index": 5930,
+    "word": "recon",
+    "issues": {
+      "text": {
+        "original": "Military term for reconnaissance",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Military scouting, briefly"
+    }
+  },
+  {
+    "index": 5949,
+    "word": "roach",
+    "issues": {
+      "clues[2]": {
+        "original": "Cockroach's cousin in a new role?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Common unwanted insect"
+    }
+  },
+  {
+    "index": 6051,
+    "word": "smith",
+    "issues": {
+      "clues[1]": {
+        "original": "A surname synonymous with blacksmiths",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Metalworker surname"
+    }
+  },
+  {
+    "index": 6084,
+    "word": "strum",
+    "issues": {
+      "hard_text": {
+        "original": "Play a stringed instrument",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Sweep fingers across strings"
+    }
+  },
+  {
+    "index": 6229,
+    "word": "choco",
+    "issues": {
+      "text": {
+        "original": "Type of sweet chocolate product",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Cocoa-flavored shorthand"
+    }
+  },
+  {
+    "index": 6310,
+    "word": "facet",
+    "issues": {
+      "hard_text": {
+        "original": "One side of a multifaceted jewel",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "One side of a cut gem"
+    }
+  },
+  {
+    "index": 6346,
+    "word": "franc",
+    "issues": {
+      "text": {
+        "original": "Former currency of France",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Former French currency"
+    }
+  },
+  {
+    "index": 6634,
+    "word": "raiser",
+    "issues": {
+      "hint": {
+        "original": "Fundraiser or event organizer",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Organizer of a money event"
+    }
+  },
+  {
+    "index": 6811,
+    "word": "toddle",
+    "issues": {
+      "hint": {
+        "original": "Early walking style of toddlers",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Walk with short unsteady steps"
+    }
+  },
+  {
+    "index": 6954,
+    "word": "christ",
+    "issues": {
+      "text": {
+        "original": "Religious figure revered in Christianity",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "hint": {
+        "original": "Messiah in Christian theology",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Central figure of the New Testament",
+      "hint": "Messiah figure for believers"
+    }
+  },
+  {
+    "index": 7168,
+    "word": "finite",
+    "issues": {
+      "clues[1]": {
+        "original": "Opposite of infinite in scope",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Limited in amount or scope"
+    }
+  },
+  {
+    "index": 7350,
+    "word": "lucent",
+    "issues": {
+      "clues[2]": {
+        "original": "Translucent quality in a glowing object",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Softly glowing quality"
+    }
+  },
+  {
+    "index": 7375,
+    "word": "mature",
+    "issues": {
+      "hard_text": {
+        "original": "Ripened, not immature",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Fully grown or developed"
+    }
+  },
+  {
+    "index": 7511,
+    "word": "phrase",
+    "issues": {
+      "clues[1]": {
+        "original": "Catchphrase for a clever saying",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Meaningful cluster of words"
+    }
+  },
+  {
+    "index": 7681,
+    "word": "heritor",
+    "issues": {
+      "hint": {
+        "original": "Inheritor of wealth or title.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Person due to receive property"
+    }
+  },
+  {
+    "index": 8101,
+    "word": "crossed",
+    "issues": {
+      "hint": {
+        "original": "Opposite of uncrossed",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Went from one side to another"
+    }
+  },
+  {
+    "index": 8317,
+    "word": "furnish",
+    "issues": {
+      "text": {
+        "original": "To supply furnishings or equipment",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Equip a room with essentials"
+    }
+  },
+  {
+    "index": 8436,
+    "word": "indulge",
+    "issues": {
+      "hint": {
+        "original": "Overindulge in a treat",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Allow oneself a treat"
+    }
+  },
+  {
+    "index": 9442,
+    "word": "assurance",
+    "issues": {
+      "clues[2]": {
+        "original": "Reassurance that calms nervous minds?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Confidence-giving promise"
+    }
+  },
+  {
+    "index": 10098,
+    "word": "intentional",
+    "issues": {
+      "hint": {
+        "original": "Opposite of unintentional",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Deliberate rather than accidental"
+    }
+  },
+  {
+    "index": 10436,
+    "word": "distinctness",
+    "issues": {
+      "clues[2]": {
+        "original": "The opposite of indistinctness",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Clear difference or uniqueness"
+    }
+  },
+  {
+    "index": 10500,
+    "word": "HOLL",
+    "issues": {
+      "text": {
+        "original": "To make a hole or hollow",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Dig out a cavity"
+    }
+  },
+  {
+    "index": 10530,
+    "word": "RUDE",
+    "issues": {
+      "hard_text": {
+        "original": "Not polite, but perhaps a little crude",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Lacking manners"
+    }
+  },
+  {
+    "index": 10554,
+    "word": "TEND",
+    "issues": {
+      "hint": {
+        "original": "attend",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[1]": {
+        "original": "Have a tendency towards",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Look after something",
+      "clues[1]": "Care for or be inclined to"
+    }
+  },
+  {
+    "index": 10559,
+    "word": "THEO",
+    "issues": {
+      "clues[0]": {
+        "original": "Pertaining to theology or deities",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "God-related prefix"
+    }
+  },
+  {
+    "index": 10570,
+    "word": "ALIST",
+    "issues": {
+      "clues[1]": {
+        "original": "A list that’s hard to get on",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Exclusive celebrity group"
+    }
+  },
+  {
+    "index": 10611,
+    "word": "LINEA",
+    "issues": {
+      "clues[1]": {
+        "original": "A linear mark, from a foreign tongue",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Foreign word for a drawn mark"
+    }
+  },
+  {
+    "index": 10629,
+    "word": "ORTHO",
+    "issues": {
+      "hint": {
+        "original": "Prefix in orthodontics",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Straight or correct prefix"
+    }
+  },
+  {
+    "index": 10650,
+    "word": "SERAI",
+    "issues": {
+      "text": {
+        "original": "An Eastern caravanserai or inn.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Eastern inn for travelers"
+    }
+  },
+  {
+    "index": 10654,
+    "word": "SHIEL",
+    "issues": {
+      "clues[0]": {
+        "original": "A place to shield oneself",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Shelter on open land"
+    }
+  },
+  {
+    "index": 10665,
+    "word": "SLOSH",
+    "issues": {
+      "clues[0]": {
+        "original": "Sound of water in a sloshing ride",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Noisy splash of liquid"
+    }
+  },
+  {
+    "index": 10680,
+    "word": "THORO",
+    "issues": {
+      "text": {
+        "original": "Thorough; complete",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[1]": {
+        "original": "Often seen in 'thoroughbred' contexts",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Complete and careful",
+      "clues[1]": "Careful from start to finish"
+    }
+  },
+  {
+    "index": 10695,
+    "word": "URLED",
+    "issues": {
+      "hint": {
+        "original": "Hurled",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Launched with force"
+    }
+  },
+  {
+    "index": 10713,
+    "word": "ASSURE",
+    "issues": {
+      "hint": {
+        "original": "Reassure someone about an outcome",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Guarantee or promise"
+    }
+  },
+  {
+    "index": 10750,
+    "word": "ENDEAR",
+    "issues": {
+      "clues[2]": {
+        "original": "Endearingly attract attention",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Win affection"
+    }
+  },
+  {
+    "index": 10864,
+    "word": "STEROL",
+    "issues": {
+      "hint": {
+        "original": "cholesterol",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Lipid-family molecule"
+    }
+  },
+  {
+    "index": 11162,
+    "word": "LONENESS",
+    "issues": {
+      "clues[2]": {
+        "original": "Aloneness, but with a touch of sadness",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Solitary sadness"
+    }
+  },
+  {
+    "index": 11310,
+    "word": "LINEATION",
+    "issues": {
+      "hint": {
+        "original": "delineation",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Act of outlining"
+    }
+  },
+  {
+    "index": 12033,
+    "word": "PERSONATION",
+    "issues": {
+      "hint": {
+        "original": "impersonation",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Mimicry of another person"
+    }
+  },
+  {
+    "index": 12371,
+    "word": "INDELICATE",
+    "issues": {
+      "clues[1]": {
+        "original": "Bluntness in delicate situations",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Tactless in sensitive moments"
+    }
+  },
+  {
+    "index": 12502,
+    "word": "PERSONATOR",
+    "issues": {
+      "text": {
+        "original": "Impersonator or mimic",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Mimic or role player"
+    }
+  },
+  {
+    "index": 13056,
+    "word": "EVOLUTION",
+    "issues": {
+      "hard_text": {
+        "original": "A change over time, not just a revolution.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Gradual change over time"
+    }
+  },
+  {
+    "index": 13117,
+    "word": "GRATULATE",
+    "issues": {
+      "hint": {
+        "original": "congratulate",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Offer praise or good wishes"
+    }
+  },
+  {
+    "index": 13174,
+    "word": "HONORABLE",
+    "issues": {
+      "clues[0]": {
+        "original": "Opposite of dishonorable",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Worthy of respect"
+    }
+  },
+  {
+    "index": 13464,
+    "word": "PERSONATE",
+    "issues": {
+      "hint": {
+        "original": "impersonate",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Act as another identity"
+    }
+  },
+  {
+    "index": 13721,
+    "word": "SPLENDENT",
+    "issues": {
+      "clues[1]": {
+        "original": "Resplendent in the morning light",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Shining brilliantly"
+    }
+  },
+  {
+    "index": 13817,
+    "word": "TOLERABLE",
+    "issues": {
+      "clues[2]": {
+        "original": "Just shy of intolerable",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Acceptable, if barely"
+    }
+  },
+  {
+    "index": 13969,
+    "word": "ANGELINA",
+    "issues": {
+      "clues[0]": {
+        "original": "Brangelina's former half",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Hollywood star and humanitarian"
+    }
+  },
+  {
+    "index": 13983,
+    "word": "ASSURING",
+    "issues": {
+      "text": {
+        "original": "Reassuring or confident",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Giving confidence"
+    }
+  },
+  {
+    "index": 14111,
+    "word": "EVENNESS",
+    "issues": {
+      "hard_text": {
+        "original": "State of no unevenness or disparity",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Smooth uniformity"
+    }
+  },
+  {
+    "index": 14164,
+    "word": "GRUNTLED",
+    "issues": {
+      "hard_text": {
+        "original": "A play on being disgruntled, but not",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Opposite of disgruntled",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Pleased, in a back-formed way",
+      "clues[2]": "Contented and satisfied"
+    }
+  },
+  {
+    "index": 14377,
+    "word": "LONGHAIR",
+    "issues": {
+      "text": {
+        "original": "Person with long hair, often hippie",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Hippie type with flowing locks"
+    }
+  },
+  {
+    "index": 14427,
+    "word": "MINISTER",
+    "issues": {
+      "clues[2]": {
+        "original": "One who administers spiritual guidance.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Cleric or government official"
+    }
+  },
+  {
+    "index": 14451,
+    "word": "MUNITION",
+    "issues": {
+      "text": {
+        "original": "Military weapons and ammunition",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Military arms supply"
+    }
+  },
+  {
+    "index": 14481,
+    "word": "NOVATION",
+    "issues": {
+      "hint": {
+        "original": "innovation",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Substitution with something new"
+    }
+  },
+  {
+    "index": 14484,
+    "word": "NUMERATE",
+    "issues": {
+      "clues[2]": {
+        "original": "Enumerate items in a list",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Count or calculate"
+    }
+  },
+  {
+    "index": 14511,
+    "word": "OUTFIELD",
+    "issues": {
+      "clues[2]": {
+        "original": "Where outfielders chase long hits",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Deep baseball area"
+    }
+  },
+  {
+    "index": 14656,
+    "word": "THOUGH",
+    "issues": {
+      "clues[1]": {
+        "original": "Although there are objections",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "However, in a clause"
+    }
+  },
+  {
+    "index": 14676,
+    "word": "POSSIBLE",
+    "issues": {
+      "clues[2]": {
+        "original": "Not impossible, but uncertain",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Feasible but uncertain"
+    }
+  },
+  {
+    "index": 14785,
+    "word": "EUROPE",
+    "issues": {
+      "hard_text": {
+        "original": "Home to the European Union.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Continent west of Asia"
+    }
+  },
+  {
+    "index": 14796,
+    "word": "EXCEPT",
+    "issues": {
+      "clues[2]": {
+        "original": "With the exception of.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Leaving out"
+    }
+  },
+  {
+    "index": 14866,
+    "word": "PASSED",
+    "issues": {
+      "clues[2]": {
+        "original": "Surpassed a certain measure.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Got beyond a mark"
+    }
+  },
+  {
+    "index": 14961,
+    "word": "ACTIONS",
+    "issues": {
+      "hard_text": {
+        "original": "Moves that create reactions",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Things done to get results"
+    }
+  },
+  {
+    "index": 15061,
+    "word": "ELECTRIC",
+    "issues": {
+      "text": {
+        "original": "Powered by electricity",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Powered by current"
+    }
+  },
+  {
+    "index": 15171,
+    "word": "CLAIMED",
+    "issues": {
+      "hint": {
+        "original": "Proclaimed something as yours",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Asserted as true or owned"
+    }
+  },
+  {
+    "index": 15187,
+    "word": "ELECTED",
+    "issues": {
+      "hard_text": {
+        "original": "Selected through the ballot box",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Chosen by voters"
+    }
+  },
+  {
+    "index": 15415,
+    "word": "SOLUTIONS",
+    "issues": {
+      "clues[0]": {
+        "original": "Resolutions to dilemmas.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Ways out of puzzles"
+    }
+  },
+  {
+    "index": 15444,
+    "word": "PRACTICAL",
+    "issues": {
+      "hard_text": {
+        "original": "Emphasizing practicality over theory",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Useful in real situations"
+    }
+  },
+  {
+    "index": 15454,
+    "word": "CIRCUIT",
+    "issues": {
+      "hint": {
+        "original": "Circuitous route",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Closed electrical path"
+    }
+  },
+  {
+    "index": 15618,
+    "word": "PRINTED",
+    "issues": {
+      "hard_text": {
+        "original": "Imprinted on pages with ink",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Put on paper with ink"
+    }
+  },
+  {
+    "index": 15889,
+    "word": "REPEATED",
+    "issues": {
+      "hint": {
+        "original": "Repeatedly",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Done more than once"
+    }
+  },
+  {
+    "index": 16068,
+    "word": "ABILITIES",
+    "issues": {
+      "clues[2]": {
+        "original": "Capabilities that define performance",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Skills and talents"
+    }
+  },
+  {
+    "index": 16199,
+    "word": "WARNED",
+    "issues": {
+      "clues[0]": {
+        "original": "Forewarned of impending trouble",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Alerted to danger"
+    }
+  },
+  {
+    "index": 16207,
+    "word": "CINEMA",
+    "issues": {
+      "clues[2]": {
+        "original": "A place for cinematic experiences",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Movie theater experience"
+    }
+  },
+  {
+    "index": 16277,
+    "word": "INFORM",
+    "issues": {
+      "clues[0]": {
+        "original": "To relay information clearly",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Tell or notify"
+    }
+  },
+  {
+    "index": 16420,
+    "word": "MINIMAL",
+    "issues": {
+      "clues[2]": {
+        "original": "Minimalist in nature",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Very slight or smallest"
+    }
+  },
+  {
+    "index": 16519,
+    "word": "SOLVED",
+    "issues": {
+      "hint": {
+        "original": "resolved",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Found the answer"
+    }
+  },
+  {
+    "index": 16587,
+    "word": "LIFTING",
+    "issues": {
+      "clues[2]": {
+        "original": "Uplifting action",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Raising upward"
+    }
+  },
+  {
+    "index": 16795,
+    "word": "SPECIALLY",
+    "issues": {
+      "hint": {
+        "original": "Especially",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "For a specific purpose"
+    }
+  },
+  {
+    "index": 16870,
+    "word": "SOLVING",
+    "issues": {
+      "hint": {
+        "original": "Resolving",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Finding the answer"
+    }
+  },
+  {
+    "index": 16955,
+    "word": "THOROUGH",
+    "issues": {
+      "hint": {
+        "original": "Thoroughgoing",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Careful and complete"
+    }
+  },
+  {
+    "index": 16999,
+    "word": "STUFFED",
+    "issues": {
+      "clues[2]": {
+        "original": "Overstuffed with items.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Filled tightly"
+    }
+  },
+  {
+    "index": 17113,
+    "word": "IMPRESS",
+    "issues": {
+      "clues[1]": {
+        "original": "Create a lasting impression",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Make a strong effect"
+    }
+  },
+  {
+    "index": 17547,
+    "word": "AFGHAN",
+    "issues": {
+      "text": {
+        "original": "Relating to Afghanistan.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "From Kabul's country"
+    }
+  },
+  {
+    "index": 17628,
+    "word": "FELLOWS",
+    "issues": {
+      "clues[2]": {
+        "original": "Peers in a fellowship.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Members of the same group"
+    }
+  },
+  {
+    "index": 18088,
+    "word": "CONTEMPT",
+    "issues": {
+      "hint": {
+        "original": "Contemptuous attitude",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Scornful feeling"
+    }
+  },
+  {
+    "index": 18121,
+    "word": "PSYCHO",
+    "issues": {
+      "clues[2]": {
+        "original": "Psychologically challenging",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Unstable thriller figure"
+    }
+  },
+  {
+    "index": 18341,
+    "word": "POKÉMON",
+    "issues": {
+      "hard_text": {
+        "original": "Pocket monsters in battles",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Collectible battle creatures"
+    }
+  },
+  {
+    "index": 18570,
+    "word": "CRUNCH",
+    "issues": {
+      "hint": {
+        "original": "crunching noise",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Sharp crushing sound"
+    }
+  },
+  {
+    "index": 19076,
+    "word": "CYCLIST",
+    "issues": {
+      "clues[1]": {
+        "original": "Bicyclist pedaling down the street",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Bike rider"
+    }
+  },
+  {
+    "index": 19117,
+    "word": "TELECOM",
+    "issues": {
+      "text": {
+        "original": "Telecommunication services",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Communications industry"
+    }
+  },
+  {
+    "index": 19533,
+    "word": "REIGNS",
+    "issues": {
+      "hard_text": {
+        "original": "Sovereign's period of control",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Rules as monarch"
+    }
+  },
+  {
+    "index": 19555,
+    "word": "APPROX",
+    "issues": {
+      "hard_text": {
+        "original": "Approximately correct but not exact",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Nearly exact"
+    }
+  },
+  {
+    "index": 19565,
+    "word": "CHEMIST",
+    "issues": {
+      "text": {
+        "original": "Scientist specializing in chemistry",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Laboratory scientist"
+    }
+  },
+  {
+    "index": 19730,
+    "word": "FAMOUSLY",
+    "issues": {
+      "clues[0]": {
+        "original": "Infamously recognized",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "In a well-known way"
+    }
+  },
+  {
+    "index": 19980,
+    "word": "TANGLED",
+    "issues": {
+      "hint": {
+        "original": "entangled",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Twisted into knots"
+    }
+  },
+  {
+    "index": 20065,
+    "word": "CARDIO",
+    "issues": {
+      "clues[0]": {
+        "original": "Fitness focusing on cardiovascular endurance",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Heart-focused exercise"
+    }
+  },
+  {
+    "index": 20196,
+    "word": "PHARMA",
+    "issues": {
+      "hard_text": {
+        "original": "Short for pharmaceuticals, big business",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Medicine business shorthand"
+    }
+  },
+  {
+    "index": 20367,
+    "word": "TUMBLE",
+    "issues": {
+      "hint": {
+        "original": "Stumble or trip unexpectedly",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Fall suddenly"
+    }
+  },
+  {
+    "index": 20434,
+    "word": "SLOVAKIA",
+    "issues": {
+      "clues[2]": {
+        "original": "Once part of Czechoslovakia",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Country with capital Bratislava"
+    }
+  },
+  {
+    "index": 20485,
+    "word": "MASHED",
+    "issues": {
+      "clues[0]": {
+        "original": "Smashed down to a creamy consistency.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Pressed into a soft mass"
+    }
+  },
+  {
+    "index": 20855,
+    "word": "COGNITION",
+    "issues": {
+      "clues[1]": {
+        "original": "Recognition and comprehension",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Mental understanding"
+    }
+  },
+  {
+    "index": 20936,
+    "word": "CIRCLING",
+    "issues": {
+      "clues[2]": {
+        "original": "Encircling a center",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Moving around a center"
+    }
+  },
+  {
+    "index": 21145,
+    "word": "GLARING",
+    "issues": {
+      "clues[1]": {
+        "original": "Shining intensely or glaringly obvious",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Harshly bright or obvious"
+    }
+  },
+  {
+    "index": 21287,
+    "word": "EXCITE",
+    "issues": {
+      "clues[2]": {
+        "original": "Bring about excitement.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Stir up enthusiasm"
+    }
+  },
+  {
+    "index": 21332,
+    "word": "SOLVES",
+    "issues": {
+      "hint": {
+        "original": "Resolves",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Finds answers"
+    }
+  },
+  {
+    "index": 21336,
+    "word": "TENDING",
+    "issues": {
+      "hard_text": {
+        "original": "Attending to a garden or responsibility",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Looking after carefully"
+    }
+  },
+  {
+    "index": 21418,
+    "word": "SPLINTER",
+    "issues": {
+      "clues[1]": {
+        "original": "Splintered wood causing pain",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Thin shard of wood"
+    }
+  },
+  {
+    "index": 21630,
+    "word": "COMMEND",
+    "issues": {
+      "clues[2]": {
+        "original": "Expressing commendation for achievement.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Praise formally"
+    }
+  },
+  {
+    "index": 21692,
+    "word": "SUNDANCE",
+    "issues": {
+      "clues[0]": {
+        "original": "Celebratory sun dance",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Ritual solar celebration"
+    }
+  },
+  {
+    "index": 21767,
+    "word": "REWIND",
+    "issues": {
+      "clues[2]": {
+        "original": "Like rewinding a video cassette.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Run a recording backward"
+    }
+  },
+  {
+    "index": 22048,
+    "word": "SMITHS",
+    "issues": {
+      "clues[1]": {
+        "original": "Family of blacksmiths",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Metalworking artisans"
+    }
+  },
+  {
+    "index": 22069,
+    "word": "ANTIFA",
+    "issues": {
+      "text": {
+        "original": "Anti-fascist political movement",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Far-left protest movement"
+    }
+  },
+  {
+    "index": 22074,
+    "word": "BLINDING",
+    "issues": {
+      "hint": {
+        "original": "Blindingly bright phenomenon",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Dazzlingly bright"
+    }
+  },
+  {
+    "index": 22330,
+    "word": "CIRCLED",
+    "issues": {
+      "hint": {
+        "original": "Encircled or marked for emphasis",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Marked with a ring"
+    }
+  },
+  {
+    "index": 22395,
+    "word": "SLOVAK",
+    "issues": {
+      "text": {
+        "original": "Relating to Slovakia.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "hint": {
+        "original": "Slovakian",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Central European language or person",
+      "hint": "Language from Bratislava region"
+    }
+  },
+  {
+    "index": 22478,
+    "word": "SPORTSMAN",
+    "issues": {
+      "clues[1]": {
+        "original": "Person of sportsmanship and skill",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Athletic competitor"
+    }
+  },
+  {
+    "index": 22489,
+    "word": "UPROAR",
+    "issues": {
+      "clues[0]": {
+        "original": "Loud outcry or uproariousness",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Loud public commotion"
+    }
+  },
+  {
+    "index": 23110,
+    "word": "REVERE",
+    "issues": {
+      "clues[1]": {
+        "original": "To regard with profound reverence",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Regard with deep respect"
+    }
+  },
+  {
+    "index": 23237,
+    "word": "COMPRESS",
+    "issues": {
+      "clues[2]": {
+        "original": "Compressing files for easier transfer",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Squeeze into less space"
+    }
+  },
+  {
+    "index": 23258,
+    "word": "GYMNAST",
+    "issues": {
+      "text": {
+        "original": "One who practices gymnastics",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Acrobatic athlete"
+    }
+  },
+  {
+    "index": 23429,
+    "word": "CROWDING",
+    "issues": {
+      "hint": {
+        "original": "overcrowding",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Packing too many together"
+    }
+  },
+  {
+    "index": 23714,
+    "word": "ELECTS",
+    "issues": {
+      "hint": {
+        "original": "Selects",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Chooses by ballot"
+    }
+  },
+  {
+    "index": 24361,
+    "word": "RUMBLING",
+    "issues": {
+      "hint": {
+        "original": "grumbling",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Low rolling noise"
+    }
+  },
+  {
+    "index": 24514,
+    "word": "ONTO",
+    "issues": {
+      "clues[0]": {
+        "original": "Positioned on top",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Upon the top of"
+    }
+  },
+  {
+    "index": 24531,
+    "word": "PARA",
+    "issues": {
+      "hard_text": {
+        "original": "Prefix for parallel concepts.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Prefix meaning beside or beyond"
+    }
+  },
+  {
+    "index": 24537,
+    "word": "FEST",
+    "issues": {
+      "text": {
+        "original": "A celebration or festival.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Festival atmosphere",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Public celebration",
+      "clues[2]": "Lively celebration atmosphere"
+    }
+  },
+  {
+    "index": 24539,
+    "word": "ACT",
+    "issues": {
+      "clues[1]": {
+        "original": "The action that drives a story",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Part of a play"
+    }
+  },
+  {
+    "index": 24568,
+    "word": "BUS",
+    "issues": {
+      "clues[1]": {
+        "original": "Shared ride on a busy route?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Large public vehicle"
+    }
+  },
+  {
+    "index": 24583,
+    "word": "CUT",
+    "issues": {
+      "clues[1]": {
+        "original": "A budget reduction, not just a haircut",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Slice or reduce"
+    }
+  },
+  {
+    "index": 24600,
+    "word": "EAR",
+    "issues": {
+      "text": {
+        "original": "Organ of hearing",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "hint": {
+        "original": "Where earrings go",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "hard_text": {
+        "original": "Part of the body that hears whispers",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Organ for sound",
+      "hint": "Side organ for sound",
+      "hard_text": "Body part for listening"
+    }
+  },
+  {
+    "index": 24640,
+    "word": "HAT",
+    "issues": {
+      "hard_text": {
+        "original": "Headwear that adds flair to an outfit",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Accessory that hides bad hair days",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Item worn on the head",
+      "clues[2]": "Accessory worn above the face"
+    }
+  },
+  {
+    "index": 24644,
+    "word": "HID",
+    "issues": {
+      "text": {
+        "original": "Past tense of hide",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Kept out of sight"
+    }
+  },
+  {
+    "index": 24677,
+    "word": "LAW",
+    "issues": {
+      "hint": {
+        "original": "What lawyers study",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Rule enforced by courts"
+    }
+  },
+  {
+    "index": 24684,
+    "word": "LIP",
+    "issues": {
+      "hint": {
+        "original": "Where lipstick goes",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Mouth border"
+    }
+  },
+  {
+    "index": 24687,
+    "word": "LOW",
+    "issues": {
+      "hard_text": {
+        "original": "Position below the norm or standard",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Small in height or amount"
+    }
+  },
+  {
+    "index": 24707,
+    "word": "NUT",
+    "issues": {
+      "hint": {
+        "original": "Almond or walnut",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Kernel in a shell"
+    }
+  },
+  {
+    "index": 24715,
+    "word": "ONE",
+    "issues": {
+      "hint": {
+        "original": "The loneliest number",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "The first counting number"
+    }
+  },
+  {
+    "index": 24716,
+    "word": "OPT",
+    "issues": {
+      "hint": {
+        "original": "Pick an option",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "hard_text": {
+        "original": "To make a choice in a buffet of options",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Choose among choices",
+      "hard_text": "Make a choice"
+    }
+  },
+  {
+    "index": 24720,
+    "word": "OWE",
+    "issues": {
+      "clues[2]": {
+        "original": "To give back what’s borrowed",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Have a debt to repay"
+    }
+  },
+  {
+    "index": 24773,
+    "word": "SIT",
+    "issues": {
+      "clues[1]": {
+        "original": "Resting position, but not lying down?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Take a seat"
+    }
+  },
+  {
+    "index": 24779,
+    "word": "SON",
+    "issues": {
+      "clues[2]": {
+        "original": "Progeny in a classic rock song",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Male child in a family"
+    }
+  },
+  {
+    "index": 24785,
+    "word": "SUB",
+    "issues": {
+      "text": {
+        "original": "Submarine or substitute",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Underwater vessel or sandwich"
+    }
+  },
+  {
+    "index": 24788,
+    "word": "TAB",
+    "issues": {
+      "hard_text": {
+        "original": "Small projection, not a bill",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Attachment for pulling, not a tabulation",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Browser label or bar bill",
+      "clues[2]": "Small pullable flap"
+    }
+  },
+  {
+    "index": 24789,
+    "word": "TAG",
+    "issues": {
+      "hard_text": {
+        "original": "Attach a label, not a game",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Label attached to an item"
+    }
+  },
+  {
+    "index": 24811,
+    "word": "VET",
+    "issues": {
+      "hint": {
+        "original": "Military veteran, for short",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Clinic animal expert, briefly"
+    }
+  },
+  {
+    "index": 24823,
+    "word": "WIT",
+    "issues": {
+      "hard_text": {
+        "original": "Mental sharpness with humor",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Quick comic intelligence"
+    }
+  },
+  {
+    "index": 24832,
+    "word": "ZIP",
+    "issues": {
+      "text": {
+        "original": "Move fast or fasten a zipper",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Fasten or move quickly"
+    }
+  },
+  {
+    "index": 24854,
+    "word": "BYE",
+    "issues": {
+      "hint": {
+        "original": "Goodbye",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Farewell word"
+    }
+  },
+  {
+    "index": 24899,
+    "word": "LUG",
+    "issues": {
+      "clues[2]": {
+        "original": "What you might do with luggage?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Haul with effort"
+    }
+  },
+  {
+    "index": 24900,
+    "word": "MAC",
+    "issues": {
+      "text": {
+        "original": "Short for Macintosh computer",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Apple computer nickname"
+    }
+  },
+  {
+    "index": 24901,
+    "word": "MAN",
+    "issues": {
+      "text": {
+        "original": "Adult male human",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[0]": {
+        "original": "Opposite of woman?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Human being, generally male?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Adult male person",
+      "clues[0]": "Grown male person",
+      "clues[2]": "Male person"
+    }
+  },
+  {
+    "index": 24904,
+    "word": "MEN",
+    "issues": {
+      "clues[1]": {
+        "original": "Opposite of women?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Male adults"
+    }
+  },
+  {
+    "index": 24905,
+    "word": "MET",
+    "issues": {
+      "hard_text": {
+        "original": "To have come across someone or something",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Encountered before"
+    }
+  },
+  {
+    "index": 24915,
+    "word": "rad",
+    "issues": {
+      "clues[2]": {
+        "original": "Short for a unit of radiation measurement?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Excellent, in old slang"
+    }
+  },
+  {
+    "index": 24922,
+    "word": "sue",
+    "issues": {
+      "hard_text": {
+        "original": "Pursue in a legal sense",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "File a legal claim"
+    }
+  },
+  {
+    "index": 24927,
+    "word": "mod",
+    "issues": {
+      "hint": {
+        "original": "Short for modernist",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Reference to a modern lifestyle?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "1960s style subculture",
+      "clues[2]": "Stylish youth subculture"
+    }
+  },
+  {
+    "index": 24929,
+    "word": "orc",
+    "issues": {
+      "clues[2]": {
+        "original": "Brute force, but what's the IQ?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Fantasy brute"
+    }
+  },
+  {
+    "index": 24933,
+    "word": "pro",
+    "issues": {
+      "hard_text": {
+        "original": "For the professionals, but who qualifies?",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Paid expert or supporter"
+    }
+  },
+  {
+    "index": 24935,
+    "word": "rep",
+    "issues": {
+      "hint": {
+        "original": "Short form for a representative",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Representation in a crowd, but lost in numbers",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Legislative member, briefly",
+      "clues[2]": "Elected delegate, briefly"
+    }
+  },
+  {
+    "index": 24941,
+    "word": "sax",
+    "issues": {
+      "hard_text": {
+        "original": "Brass instrument, not a saxon",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Jazz reed instrument"
+    }
+  },
+  {
+    "index": 24983,
+    "word": "EON",
+    "issues": {
+      "clues[2]": {
+        "original": "An age lasting eons, perhaps",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Vast stretch of time"
+    }
+  },
+  {
+    "index": 24984,
+    "word": "ERR",
+    "issues": {
+      "clues[0]": {
+        "original": "Commit an error",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Make a mistake"
+    }
+  },
+  {
+    "index": 24995,
+    "word": "MID",
+    "issues": {
+      "hint": {
+        "original": "Middle",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Central part"
+    }
+  },
+  {
+    "index": 25001,
+    "word": "MAG",
+    "issues": {
+      "text": {
+        "original": "Short for magazine.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Periodical, briefly"
+    }
+  },
+  {
+    "index": 25008,
+    "word": "TSA",
+    "issues": {
+      "hint": {
+        "original": "Airport safety group.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Airport security agency"
+    }
+  },
+  {
+    "index": 25009,
+    "word": "ECO",
+    "issues": {
+      "clues[2]": {
+        "original": "Relates to ecology.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Environmentally minded prefix"
+    }
+  },
+  {
+    "index": 25043,
+    "word": "APP",
+    "issues": {
+      "hard_text": {
+        "original": "Application for smartphones or tablets.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Short for application",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Mobile software program",
+      "clues[2]": "Phone software"
+    }
+  },
+  {
+    "index": 25062,
+    "word": "UMP",
+    "issues": {
+      "clues[2]": {
+        "original": "A gentle thump",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[2]": "Baseball official, briefly"
+    }
+  },
+  {
+    "index": 25119,
+    "word": "SIS",
+    "issues": {
+      "text": {
+        "original": "Informal term for sister.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[2]": {
+        "original": "Term of endearment for sister.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Female sibling, informally",
+      "clues[2]": "Informal female sibling"
+    }
+  },
+  {
+    "index": 25121,
+    "word": "FAM",
+    "issues": {
+      "text": {
+        "original": "Informal term for family or friends.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "text": "Close people, slangily"
+    }
+  },
+  {
+    "index": 25139,
+    "word": "IRE",
+    "issues": {
+      "hard_text": {
+        "original": "A feeling that can spark a fire.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hard_text": "Anger or wrath"
+    }
+  },
+  {
+    "index": 25147,
+    "word": "GEO",
+    "issues": {
+      "clues[1]": {
+        "original": "Relating to geography.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[1]": "Earth science prefix"
+    }
+  },
+  {
+    "index": 25155,
+    "word": "BRO",
+    "issues": {
+      "hint": {
+        "original": "Brotherly term.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      },
+      "clues[1]": {
+        "original": "Brotherly slang.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "hint": "Informal male sibling",
+      "clues[1]": "Fraternal slang term"
+    }
+  },
+  {
+    "index": 25159,
+    "word": "ORG",
+    "issues": {
+      "clues[0]": {
+        "original": "Short form for organization.",
+        "reasons": [
+          "ANSWER_FRAGMENT"
+        ]
+      }
+    },
+    "replacements": {
+      "clues[0]": "Charity web domain ending"
+    }
+  }
+]

@@ -50,11 +50,17 @@ final class WordBankTests: XCTestCase {
         return re.firstMatch(in: haystack.lowercased(), options: [], range: range) != nil
     }
 
+    func leaksAnswerFragment(_ haystack: String, _ needle: String) -> Bool {
+        let compactHaystack = compact(haystack)
+        let compactNeedle = compact(needle)
+        return !compactNeedle.isEmpty && compactHaystack.contains(compactNeedle)
+    }
+
     func testNoFieldContainsAnswerOrConstituent() throws {
         for obj in wordBank {
             let terms = answerTerms(for: obj.word)
             for field in fieldValues(for: obj) {
-                for term in terms where isWholeWord(field.value, term) {
+                for term in terms where leaksAnswerFragment(field.value, term) {
                     XCTFail("\(field.name) contains answer term for word: \(obj.word) term: \(term) field: \(field.value)")
                 }
             }
@@ -62,6 +68,7 @@ final class WordBankTests: XCTestCase {
     }
 
     func testKnownDerivabilityExamplesAreRejected() throws {
+        XCTAssertTrue(leaksAnswerFragment("Suitcase or legal matter", "CASE"))
         XCTAssertTrue(isAnswerDerivable(answer: "SMOKER", clue: "One who smokes"))
         XCTAssertTrue(isAnswerDerivable(answer: "ARTY", clue: "Pretentiously artistic"))
         XCTAssertTrue(isAnswerDerivable(answer: "RUNNER", clue: "One who runs"))
@@ -135,6 +142,14 @@ final class WordBankTests: XCTestCase {
             options: .regularExpression
         )
         return normalized.split(separator: " ").map(String.init)
+    }
+
+    func compact(_ text: String) -> String {
+        text.lowercased().replacingOccurrences(
+            of: #"[^a-z0-9]+"#,
+            with: "",
+            options: .regularExpression
+        )
     }
 
     func singularize(_ word: String) -> String {

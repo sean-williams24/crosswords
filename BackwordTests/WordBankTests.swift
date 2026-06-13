@@ -39,7 +39,7 @@ struct WordBankTests {
             for field in fieldValues(for: obj) {
                 for term in terms {
                     #expect(
-                        !isWholeWord(field.value, term),
+                        !leaksAnswerFragment(field.value, term),
                         "\(field.name) contains answer term for word: \(obj.word) term: \(term) field: \(field.value)"
                     )
                 }
@@ -49,6 +49,7 @@ struct WordBankTests {
 
     @Test("Known derivability examples are rejected")
     func knownDerivabilityExamplesAreRejected() {
+        #expect(leaksAnswerFragment("Suitcase or legal matter", "CASE"))
         #expect(isAnswerDerivable(answer: "SMOKER", clue: "One who smokes"))
         #expect(isAnswerDerivable(answer: "ARTY", clue: "Pretentiously artistic"))
         #expect(isAnswerDerivable(answer: "RUNNER", clue: "One who runs"))
@@ -115,6 +116,12 @@ struct WordBankTests {
         return regex.firstMatch(in: lowered, options: [], range: range) != nil
     }
 
+    private func leaksAnswerFragment(_ haystack: String, _ needle: String) -> Bool {
+        let compactHaystack = compact(haystack)
+        let compactNeedle = compact(needle)
+        return !compactNeedle.isEmpty && compactHaystack.contains(compactNeedle)
+    }
+
     private func isAnswerDerivable(answer: String, clue: String) -> Bool {
         for term in answerTerms(for: answer) where isWholeWord(clue, term) {
             return true
@@ -144,6 +151,14 @@ struct WordBankTests {
             options: .regularExpression
         )
         return normalized.split(separator: " ").map(String.init)
+    }
+
+    private func compact(_ text: String) -> String {
+        text.lowercased().replacingOccurrences(
+            of: #"[^a-z0-9]+"#,
+            with: "",
+            options: .regularExpression
+        )
     }
 
     private func singularize(_ word: String) -> String {
