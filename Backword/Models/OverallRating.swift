@@ -104,8 +104,8 @@ struct OverallRating: Codable {
     private static let windowDays = 14
 
     private var window: [DailyScore] {
-        let cutoff = Self.cutoffDate()
-        return dailyScores.filter { $0.date >= cutoff }
+        let range = Self.windowDateRange()
+        return dailyScores.filter { $0.date >= range.cutoff && $0.date <= range.today }
     }
 
     func totalPoints(isPro: Bool) -> Int {
@@ -132,21 +132,23 @@ struct OverallRating: Codable {
     }
 
     private func scoreFor(_ day: DailyScore, isPro: Bool) -> Int {
-        day.dailyCrossword + (isPro ? (day.weeklyCrossword ?? 0) : 0) + day.backword
+        Self.clampScore(day.dailyCrossword)
+            + (isPro ? Self.clampScore(day.weeklyCrossword ?? 0) : 0)
+            + Self.clampScore(day.backword)
     }
 
     // MARK: - Mutation
 
     mutating func upsertDailyCrossword(score: Int, date: String) {
-        upsert(date: date) { $0.dailyCrossword = score }
+        upsert(date: date) { $0.dailyCrossword = Self.clampScore(score) }
     }
 
     mutating func upsertWeeklyCrossword(score: Int, date: String) {
-        upsert(date: date) { $0.weeklyCrossword = score }
+        upsert(date: date) { $0.weeklyCrossword = Self.clampScore(score) }
     }
 
     mutating func upsertBackword(score: Int, date: String) {
-        upsert(date: date) { $0.backword = score }
+        upsert(date: date) { $0.backword = Self.clampScore(score) }
     }
 
     private mutating func upsert(date: String, update: (inout DailyScore) -> Void) {
@@ -161,14 +163,55 @@ struct OverallRating: Codable {
     }
 
     mutating func trim() {
-        let cutoff = Self.cutoffDate()
-        dailyScores = dailyScores.filter { $0.date >= cutoff }
+        normalize()
     }
 
-    private static func cutoffDate() -> String {
-        let cal = Calendar.current
-        let cutoffDate = cal.date(byAdding: .day, value: -(windowDays - 1), to: cal.startOfDay(for: Date()))!
-        return dateFormatter.string(from: cutoffDate)
+    mutating func normalize() {
+        let range = Self.windowDateRange()
+        dailyScores = dailyScores
+            .filter { $0.date >= range.cutoff && $0.date <= range.today }
+            .reduce(into: [String: DailyScore]()) { scoresByDate, day in
+                let normalized = Self.normalized(day)
+                guard var existing = scoresByDate[normalized.date] else {
+                    scoresByDate[normalized.date] = normalized
+                    return
+                }
+
+                existing.dailyCrossword = max(existing.dailyCrossword, normalized.dailyCrossword)
+                existing.backword = max(existing.backword, normalized.backword)
+                switch (existing.weeklyCrossword, normalized.weeklyCrossword) {
+                case let (existingScore?, normalizedScore?):
+                    existing.weeklyCrossword = max(existingScore, normalizedScore)
+                case (nil, let normalizedScore?):
+                    existing.weeklyCrossword = normalizedScore
+                default:
+                    break
+                }
+                scoresByDate[normalized.date] = existing
+            }
+            .values
+            .sorted { $0.date > $1.date }
+    }
+
+    private static func normalized(_ day: DailyScore) -> DailyScore {
+        DailyScore(
+            date: day.date,
+            dailyCrossword: clampScore(day.dailyCrossword),
+            weeklyCrossword: day.weeklyCrossword.map(clampScore),
+            backword: clampScore(day.backword)
+        )
+    }
+
+    private static func clampScore(_ score: Int) -> Int {
+        min(max(score, 0), 5)
+    }
+
+    private static func windowDateRange() -> (cutoff: String, today: String) {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "UTC")!
+        let today = calendar.startOfDay(for: Date())
+        let cutoffDate = calendar.date(byAdding: .day, value: -(windowDays - 1), to: today)!
+        return (dateFormatter.string(from: cutoffDate), dateFormatter.string(from: today))
     }
 
     static let dateFormatter: DateFormatter = {

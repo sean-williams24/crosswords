@@ -208,6 +208,39 @@ struct OverallRatingTests {
         #expect(r.dailyScores[0].dailyCrossword == 3)
     }
 
+    @Test("Future scores are excluded from the rolling window")
+    func futureScoresExcluded() {
+        var r = OverallRating()
+        let today = OverallRating.dateFormatter.string(from: Date())
+        let tomorrow = OverallRating.dateFormatter.string(
+            from: Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+        )
+
+        r.upsertDailyCrossword(score: 1, date: today)
+        r.upsertDailyCrossword(score: 5, date: tomorrow)
+        r.upsertBackword(score: 5, date: tomorrow)
+
+        #expect(r.totalPoints(isPro: false) == 1)
+        #expect(r.dailyScores.count == 1)
+        #expect(r.dailyScores[0].date == today)
+    }
+
+    @Test("Loaded scores are clamped to valid per-game values")
+    func normalizesOutOfRangeScores() {
+        let today = OverallRating.dateFormatter.string(from: Date())
+        var r = OverallRating(dailyScores: [
+            DailyScore(date: today, dailyCrossword: 197, weeklyCrossword: 9, backword: -4)
+        ])
+
+        r.normalize()
+
+        #expect(r.totalPoints(isPro: false) == 5)
+        #expect(r.totalPoints(isPro: true) == 10)
+        #expect(r.dailyScores[0].dailyCrossword == 5)
+        #expect(r.dailyScores[0].weeklyCrossword == 5)
+        #expect(r.dailyScores[0].backword == 0)
+    }
+
     // MARK: upsert deduplication
 
     @Test("Upserting same date twice updates the record, not duplicates")

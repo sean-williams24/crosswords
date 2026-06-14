@@ -4,7 +4,7 @@ struct RatingDetailSheet: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric private var spacing: CGFloat = 14
     @State private var animates = false
-    @State private var showHowItWorks = true
+    @State private var showHowItWorks = false
     @ScaledMetric private var chevronSize: CGFloat = 12
     @ScaledMetric private var columnWidth: CGFloat = 60
     @ScaledMetric private var scrollingColumnWidth: CGFloat = 70
