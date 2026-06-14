@@ -28,6 +28,12 @@ struct AdFreeExperienceButton: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var isAnimating = false
 
+    private enum Layout {
+        static let horizontalPadding: CGFloat = 24
+        static let verticalPadding: CGFloat = 16
+        static let cardHeight: CGFloat = 72
+    }
+
     let content: AdFreeExperienceButtonContent
     let action: () -> Void
 
@@ -46,7 +52,7 @@ struct AdFreeExperienceButton: View {
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(proGradient)
                     .frame(width: 28, height: 28)
-                    .background(Color.appSurface)
+                    .background(Color.appSurface.opacity(0.26))
                     .clipShape(Circle())
                     .scaleEffect(isAnimating && !reduceMotion ? 1.12 : 1)
                     .rotationEffect(.degrees(isAnimating && !reduceMotion ? 8 : -6))
@@ -84,15 +90,15 @@ struct AdFreeExperienceButton: View {
                     .layoutPriority(1)
 
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 11, weight: .bold))
-                    .foregroundColor(.appTextPrimary)
+                    .foregroundStyle(Color.primary)
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 10)
+            .padding(.horizontal, Layout.horizontalPadding)
+            .padding(.vertical, Layout.verticalPadding)
             .frame(maxWidth: .infinity)
+            .frame(minHeight: Layout.cardHeight)
             .background(
                 RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                    .fill(Color.appSurface.opacity(0.96))
+                    .fill(Color.appSurface.opacity(0.26))
                     .overlay(
                         RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                             .stroke(proGradient, lineWidth: 0)
