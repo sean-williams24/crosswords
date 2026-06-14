@@ -7,6 +7,7 @@ struct RatingBarView: View {
     @State private var animates = false
     @State private var pulses = false
     @State private var showDetail = false
+    @ScaledMetric private var tierLabelHeight: CGFloat = 20
 
     private var tier: RatingTier { rating.tier(isPro: isPro) }
     private var fraction: Double { rating.fraction(isPro: isPro) }
@@ -56,10 +57,19 @@ struct RatingBarView: View {
 
                 // Tier label aligned under the dot
                 GeometryReader { geo in
-                    tierLabel
-                        .offset(x: labelOffset(barWidth: geo.size.width))
+                    ZStack(alignment: .topLeading) {
+                        tierLabel
+                            .alignmentGuide(.leading) { dimensions in
+                                -RatingBarLabelLayout.leadingOffset(
+                                    barWidth: geo.size.width,
+                                    fraction: fraction,
+                                    labelWidth: dimensions.width
+                                )
+                            }
+                    }
+                    .frame(width: geo.size.width, height: tierLabelHeight, alignment: .topLeading)
                 }
-                .frame(height: 20)
+                .frame(height: tierLabelHeight)
             }
         }
         .buttonStyle(.plain)
@@ -98,14 +108,6 @@ struct RatingBarView: View {
         }
     }
 
-    private func labelOffset(barWidth: CGFloat) -> CGFloat {
-        // Centre the label under the dot, clamped to bar bounds
-        let dotX = barWidth * CGFloat(fraction)
-        let labelWidth: CGFloat = CGFloat(tier.displayName.count) * 7.5 + (tier == .virtuoso ? 16 : 0)
-        let ideal = dotX - labelWidth / 2
-        return max(0, min(ideal, barWidth - labelWidth))
-    }
-
     /// A gradient that covers all tier colours from left to right, so the filled bar
     /// colour progression matches the position on the bar.
     private var barGradient: LinearGradient {
@@ -123,6 +125,17 @@ struct RatingBarView: View {
             startPoint: .leading,
             endPoint: .trailing
         )
+    }
+}
+
+enum RatingBarLabelLayout {
+    static func leadingOffset(barWidth: CGFloat, fraction: Double, labelWidth: CGFloat) -> CGFloat {
+        let dotX = barWidth * CGFloat(fraction)
+        let ideal = dotX - labelWidth / 2
+        if labelWidth > barWidth {
+            return barWidth - labelWidth
+        }
+        return max(0, min(ideal, barWidth - labelWidth))
     }
 }
 

@@ -29,6 +29,7 @@
 		6AA64C192BEEF7710023A110 /* WordBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA64C182BEEF7710023A110 /* WordBankTests.swift */; };
 		6B0F8E2B5B724322AE390E5B /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */; };
 		70FDEC9954ABAD6370C542F4 /* RatingBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9165B37268686C367CEB6523 /* RatingBarView.swift */; };
+		72C4C6D82B1A4930A633D528 /* RatingBarLabelLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C4C6D72B1A4930A633D528 /* RatingBarLabelLayoutTests.swift */; };
 		753A45E043CDDEBF5C5DBB36 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12AC56422D31E9D619C3E /* PaywallView.swift */; };
 		7D3636249D4EA1ACE0D6916C /* BackwordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ACCF7B840800AA52BD9ED7 /* BackwordGuessRow.swift */; };
 		7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */; };
@@ -173,6 +174,7 @@
 		8AF93C5B6979DA0324E913C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		9165B37268686C367CEB6523 /* RatingBarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RatingBarView.swift; sourceTree = "<group>"; };
 		91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
+		72C4C6D72B1A4930A633D528 /* RatingBarLabelLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingBarLabelLayoutTests.swift; sourceTree = "<group>"; };
 		922354966A899721DF1CF25C /* CrosswordStatsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CrosswordStatsView.swift; sourceTree = "<group>"; };
 		963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RatingDetailSheet.swift; sourceTree = "<group>"; };
 		9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsEngine.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */,
 				91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */,
 				BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */,
+				72C4C6D72B1A4930A633D528 /* RatingBarLabelLayoutTests.swift */,
 				6AA64C182BEEF7710023A110 /* WordBankTests.swift */,
 			);
 			path = BackwordTests;
@@ -597,6 +600,7 @@
 				6113351E253762AC9BB6A8E0 /* BackwordViewModelTests.swift in Sources */,
 				6B0F8E2B5B724322AE390E5B /* GameViewModelTests.swift in Sources */,
 				7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */,
+				72C4C6D82B1A4930A633D528 /* RatingBarLabelLayoutTests.swift in Sources */,
 				6AA64C192BEEF7710023A110 /* WordBankTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
