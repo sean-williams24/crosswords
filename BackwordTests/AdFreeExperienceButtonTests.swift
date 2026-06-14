@@ -7,11 +7,11 @@ struct AdFreeExperienceButtonTests {
     func homeContentCopy() {
         let content = AdFreeExperienceButtonContent.home
 
-        #expect(content.title == "Ad free experience")
+        #expect(content.title == "Ad-free experience")
         #expect(content.detail == "Archive access")
         #expect(content.subtitle == "Go Pro")
         #expect(content.systemImage == "sparkles")
-        #expect(content.accessibilityLabel == "Ad free experience, Archive access, Go Pro")
+        #expect(content.accessibilityLabel == "Ad-free experience, Archive access, Go Pro")
     }
 
     @Test("Visibility waits for subscription status before showing free user CTA")

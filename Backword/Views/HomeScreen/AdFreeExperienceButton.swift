@@ -25,6 +25,9 @@ struct AdFreeExperienceButtonVisibility {
 }
 
 struct AdFreeExperienceButton: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isAnimating = false
+
     let content: AdFreeExperienceButtonContent
     let action: () -> Void
 
@@ -45,6 +48,8 @@ struct AdFreeExperienceButton: View {
                     .frame(width: 28, height: 28)
                     .background(Color.appSurface)
                     .clipShape(Circle())
+                    .scaleEffect(isAnimating && !reduceMotion ? 1.12 : 1)
+                    .rotationEffect(.degrees(isAnimating && !reduceMotion ? 8 : -6))
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(content.title)
@@ -67,18 +72,20 @@ struct AdFreeExperienceButton: View {
 
                 Text(content.subtitle)
                     .font(AppFont.clueLabel(10))
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(.appAccent)
                     .tracking(0.8)
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
                     .allowsTightening(true)
                     .fixedSize(horizontal: true, vertical: false)
                     .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                    .scaleEffect(isAnimating && !reduceMotion ? 1.04 : 0.98)
+                    .opacity(isAnimating && !reduceMotion ? 1 : 0.82)
                     .layoutPriority(1)
 
                 Image(systemName: "chevron.right")
                     .font(.system(size: 11, weight: .bold))
-                    .foregroundStyle(proGradient)
+                    .foregroundColor(.appTextPrimary)
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 10)
@@ -88,13 +95,34 @@ struct AdFreeExperienceButton: View {
                     .fill(Color.appSurface.opacity(0.96))
                     .overlay(
                         RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                            .stroke(proGradient, lineWidth: 1)
+                            .stroke(proGradient, lineWidth: 0)
                     )
                     .shadow(color: Color.appAccent.opacity(0.16), radius: 10, x: 0, y: 4)
             )
         }
         .buttonStyle(.plain)
         .accessibilityLabel(content.accessibilityLabel)
+        .onAppear {
+            guard !reduceMotion else { return }
+            withAnimation(
+                .easeInOut(duration: 1.35)
+                    .repeatForever(autoreverses: true)
+            ) {
+                isAnimating = true
+            }
+        }
+        .onChange(of: reduceMotion) { _, shouldReduceMotion in
+            if shouldReduceMotion {
+                isAnimating = false
+            } else {
+                withAnimation(
+                    .easeInOut(duration: 1.35)
+                        .repeatForever(autoreverses: true)
+                ) {
+                    isAnimating = true
+                }
+            }
+        }
     }
 
     private var proGradient: LinearGradient {
