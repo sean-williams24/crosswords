@@ -31,6 +31,7 @@
 		753A45E043CDDEBF5C5DBB36 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12AC56422D31E9D619C3E /* PaywallView.swift */; };
 		7D3636249D4EA1ACE0D6916C /* BackwordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ACCF7B840800AA52BD9ED7 /* BackwordGuessRow.swift */; };
 		7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */; };
+		86BEEF012FDD000100000001 /* StoreServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BEEF002FDD000100000001 /* StoreServiceTests.swift */; };
 		0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */; };
 		83FBB193723C144A6456932E /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C44B7584617BA53797B0963 /* ZoomableView.swift */; };
 		84A6DDAE7557421BC685E350 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8669C3DD88CF9BC44A72C69 /* CellView.swift */; };
@@ -138,6 +139,7 @@
 		8299222FB15ED0ECC8305F8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		83C12AC56422D31E9D619C3E /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		860A8F3B2FCEBA5100C2BE38 /* TipFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipFactory.swift; sourceTree = "<group>"; };
+		86BEEF002FDD000100000001 /* StoreServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreServiceTests.swift; sourceTree = "<group>"; };
 		86123BC82FC6529F008A929E /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		86123BE92FC900E5008A929E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		864905422FCE0720006A38A3 /* AppBackgroundGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackgroundGradient.swift; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */,
 				91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */,
 				BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */,
+				86BEEF002FDD000100000001 /* StoreServiceTests.swift */,
 				6AA64C182BEEF7710023A110 /* WordBankTests.swift */,
 			);
 			path = BackwordTests;
@@ -590,6 +593,7 @@
 				6113351E253762AC9BB6A8E0 /* BackwordViewModelTests.swift in Sources */,
 				6B0F8E2B5B724322AE390E5B /* GameViewModelTests.swift in Sources */,
 				7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */,
+				86BEEF012FDD000100000001 /* StoreServiceTests.swift in Sources */,
 				6AA64C192BEEF7710023A110 /* WordBankTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

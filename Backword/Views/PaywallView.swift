@@ -12,9 +12,11 @@ struct PaywallView: View {
     @State private var selectedPlan: Plan = .annual
     @State private var isBreathing = false
     @State private var errorMessage: String?
+    @State private var statusMessage: String?
     @State private var logoVisible = false
     @State private var proLogoVisible = false
     @State private var isEligibleForTrial = true
+    @State private var isRestoring = false
 
     enum Plan { case monthly, annual }
 
@@ -74,21 +76,39 @@ struct PaywallView: View {
                             .padding(.horizontal, 32)
 
                         // Error
+                        if let statusMessage {
+                            Text(statusMessage)
+                                .font(AppFont.caption())
+                                .foregroundColor(.appTextSecondary)
+                                .multilineTextAlignment(.center)
+                                .padding(.top, 8)
+                                .padding(.horizontal, 32)
+                        }
+
                         if let errorMessage {
                             Text(errorMessage)
                                 .font(AppFont.caption())
                                 .foregroundColor(.red)
+                                .multilineTextAlignment(.center)
                                 .padding(.top, 8)
+                                .padding(.horizontal, 32)
                         }
 
                         Spacer().frame(height: 12)
 
                         // Restore + legal
-                        Button("Restore Purchases") {
-                            Task { await storeService.restorePurchases() }
+                        Button {
+                            Task { await restorePurchases() }
+                        } label: {
+                            if isRestoring {
+                                ProgressView()
+                            } else {
+                                Text("Restore Purchases")
+                            }
                         }
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
+                        .disabled(storeService.purchaseInProgress || isRestoring)
 
                         Spacer().frame(height: 8)
 
@@ -128,7 +148,13 @@ struct PaywallView: View {
                 }
             }
             .task {
+                if storeService.products.isEmpty {
+                    await storeService.loadProducts()
+                }
                 await checkTrialEligibility()
+            }
+            .onChange(of: selectedPlan) { _, _ in
+                Task { await checkTrialEligibility() }
             }
             .onChange(of: storeService.isProUser) {_, newValue in
                 if newValue {
@@ -155,7 +181,10 @@ struct PaywallView: View {
 
     @MainActor
     private func checkTrialEligibility() async {
-        guard let subscription = storeService.monthlyProduct?.subscription else { return }
+        let product = selectedPlan == .monthly
+            ? storeService.monthlyProduct
+            : storeService.annualProduct
+        guard let subscription = product?.subscription else { return }
         isEligibleForTrial = await subscription.isEligibleForIntroOffer
     }
 
@@ -302,6 +331,7 @@ struct PaywallView: View {
 
     private func purchase() async {
         errorMessage = nil
+        statusMessage = nil
 
         let product: Product? = selectedPlan == .monthly
             ? storeService.monthlyProduct
@@ -313,9 +343,33 @@ struct PaywallView: View {
         }
 
         do {
-            try await storeService.purchase(product)
-            if storeService.isProUser {
+            let outcome = try await storeService.purchase(product)
+            switch outcome {
+            case .purchased:
                 dismiss()
+            case .pending:
+                statusMessage = "Purchase pending approval. Your Pro access will unlock when Apple confirms it."
+            case .cancelled:
+                break
+            }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func restorePurchases() async {
+        errorMessage = nil
+        statusMessage = nil
+        isRestoring = true
+        defer { isRestoring = false }
+
+        do {
+            let outcome = try await storeService.restorePurchases()
+            switch outcome {
+            case .restored:
+                dismiss()
+            case .notFound:
+                statusMessage = "No active subscription found for this Apple ID."
             }
         } catch {
             errorMessage = error.localizedDescription
