@@ -10,6 +10,7 @@ final class StoreService: ObservableObject {
     // MARK: - Published State
     @Published private(set) var products: [Product] = []
     @Published private(set) var isProUser = false
+    @Published private(set) var subscriptionStatusLoaded = false
     @Published private(set) var purchaseInProgress = false
 
     var monthlyProduct: Product? { products.first { $0.id == Self.monthlyID } }
@@ -25,6 +26,7 @@ final class StoreService: ObservableObject {
         if let override = UserDefaults.standard.object(forKey: Self.debugProOverrideKey) as? Bool {
             debugProOverride = override
             isProUser = override
+            subscriptionStatusLoaded = true
         }
         #endif
 
@@ -111,6 +113,7 @@ final class StoreService: ObservableObject {
         }
 
         isProUser = hasActiveSubscription
+        subscriptionStatusLoaded = true
     }
 
     // MARK: - Helpers
@@ -136,6 +139,7 @@ final class StoreService: ObservableObject {
 
     func clearDebugProOverride() {
         debugProOverride = nil
+        subscriptionStatusLoaded = false
         UserDefaults.standard.removeObject(forKey: Self.debugProOverrideKey)
         Task { await updateSubscriptionStatus() }
     }

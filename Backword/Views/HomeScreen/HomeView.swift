@@ -53,6 +53,7 @@ struct HomeView: View {
                         .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
 
                         dailyGamesView
+                        adFreeExperienceButton
                         wotd
                         weeklyGamesView
                     }
@@ -378,6 +379,19 @@ struct HomeView: View {
             navigationPath.append("puzzle")
         }
         .environmentObject(adService)
+    }
+
+    @ViewBuilder
+    private var adFreeExperienceButton: some View {
+        if AdFreeExperienceButtonVisibility.shouldShow(
+            isProUser: storeService.isProUser,
+            subscriptionStatusLoaded: storeService.subscriptionStatusLoaded
+        ) {
+            AdFreeExperienceButton {
+                showPaywall = true
+            }
+            .padding(.horizontal, appLayout.homeHorizontalPadding)
+        }
     }
 
     private func animateLogo() {

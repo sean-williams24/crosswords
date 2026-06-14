@@ -13,7 +13,7 @@ extension Color {
     static let appTextSecondary = Color("TextSecondary")
     static let dailyCardBackground = Color("DailyCardBackground")
     static let dailyCardTitle = Color("DailyCardTitle")
-    static let solvedGold = Color("SolvedGold")
+    static let solvedGold = Color("solvedGold")
     static let appCrosswordBackground = Color("CrosswordBackground")
 }
 
