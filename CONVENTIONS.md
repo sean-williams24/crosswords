@@ -225,6 +225,20 @@ Categories in `archive/`:
 
 ---
 
+## StoreKit Subscription State
+
+`StoreService.purchase(_:)` returns an explicit purchase outcome. A verified monthly or annual transaction grants Pro immediately before finishing the transaction, so the paywall does not depend on `Transaction.currentEntitlements` refreshing synchronously before dismissal.
+
+`updateSubscriptionStatus()` remains the source of truth for launch, renewal, revocation, expiration, and transaction-update refreshes. Entitlements only grant Pro when the product ID is one of the known subscription IDs, the transaction is not revoked, and its expiration date is either absent or in the future. Restore first trusts an already-visible active entitlement before calling `AppStore.sync()`, then checks entitlements again after sync only if needed.
+
+In DEBUG builds, the Pro override is intentionally authoritative while set. `updateSubscriptionStatus()` must respect the override and return early; use the debug settings reset action to clear the override and re-check StoreKit.
+
+Debug builds may also simulate one-shot pending purchase and restore outcomes from Debug Settings. These are UI test hooks only and must remain behind `#if DEBUG`.
+
+Debug entitlement dumps may inspect `Transaction.currentEntitlements` and print details to the console to diagnose StoreKit restore issues. This diagnostic path must remain behind `#if DEBUG` and must not alter subscription state.
+
+---
+
 ## Ads
 
 Ads are served via Google AdMob and managed by `AdService`. Free-tier users only.

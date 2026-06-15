@@ -26,9 +26,65 @@ struct DebugSettingsView: View {
         NavigationStack {
             List {
                 Section("In-App Purchases") {
-                    Toggle("Pro User", isOn: Binding(
-                        get: { storeService.isProUser },
+                    Toggle("Debug Pro Override", isOn: Binding(
+                        get: { storeService.debugProOverrideValue ?? storeService.isProUser },
                         set: { storeService.setDebugProUser($0) }
+                    ))
+
+                    HStack {
+                        Text("Effective Status")
+                        Spacer()
+                        Text(storeService.isProUser ? "Pro" : "Free")
+                            .foregroundColor(.secondary)
+                    }
+
+                    HStack {
+                        Text("Override")
+                        Spacer()
+                        Text(debugOverrideDescription)
+                            .foregroundColor(.secondary)
+                    }
+
+                    Button {
+                        storeService.clearDebugProOverride()
+                    } label: {
+                        Label("Reset Override & Re-check StoreKit", systemImage: "arrow.counterclockwise")
+                    }
+                    .disabled(!storeService.hasDebugProOverride)
+
+                    Button {
+                        storeService.refreshStoreKitStatus()
+                    } label: {
+                        Label("Refresh StoreKit Status", systemImage: "arrow.clockwise")
+                    }
+                    .disabled(storeService.hasDebugProOverride)
+
+                    Button {
+                        Task { await storeService.dumpStoreKitEntitlements() }
+                    } label: {
+                        Label("Dump StoreKit Entitlements", systemImage: "doc.text.magnifyingglass")
+                    }
+                    .disabled(storeService.isDumpingStoreKitEntitlements)
+
+                    if let summary = storeService.storeKitEntitlementDiagnosticSummary {
+                        Text(summary)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+
+                    Toggle("Simulate Next Purchase Pending", isOn: Binding(
+                        get: { storeService.simulateNextPurchasePending },
+                        set: { storeService.setDebugSimulateNextPurchasePending($0) }
+                    ))
+
+                    Toggle("Simulate Next Restore Success", isOn: Binding(
+                        get: { storeService.simulateNextRestoreOutcome == .restored },
+                        set: { storeService.setDebugSimulateNextRestoreOutcome($0 ? .restored : nil) }
+                    ))
+
+                    Toggle("Simulate Next Restore Not Found", isOn: Binding(
+                        get: { storeService.simulateNextRestoreOutcome == .notFound },
+                        set: { storeService.setDebugSimulateNextRestoreOutcome($0 ? .notFound : nil) }
                     ))
                 }
 
@@ -270,6 +326,14 @@ struct DebugSettingsView: View {
                 }
             }
         }
+    }
+
+    private var debugOverrideDescription: String {
+        guard let value = storeService.debugProOverrideValue else {
+            return "StoreKit"
+        }
+
+        return value ? "Forcing Pro" : "Forcing Free"
     }
 }
 
