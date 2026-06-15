@@ -68,7 +68,7 @@ struct BackwordCard: View {
 
         Text(guessInfoText)
             .font(AppFont.caption())
-            .foregroundColor(.appTextSecondary)
+            .foregroundColor(.appTextPrimary)
             .padding(.bottom, 16)
 
         if let status {
