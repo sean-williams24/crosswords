@@ -50,7 +50,7 @@ struct PaywallView: View {
                         Spacer().frame(height: 28)
 
                         // Header
-                        Text("The full crossword experience")
+                        Text("The full game experience")
                             .font(AppFont.header(15))
                             .foregroundColor(.appTextPrimary)
                             .padding(.horizontal, AppLayout.screenPadding)
