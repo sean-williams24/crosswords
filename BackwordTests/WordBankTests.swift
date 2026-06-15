@@ -67,6 +67,25 @@ struct WordBankTests {
         }
     }
 
+    @Test("All word bank clues have terminal punctuation")
+    func allWordBankCluesHaveTerminalPunctuation() throws {
+        let terminalPunctuation: Set<Character> = [".", "?", "!"]
+
+        for obj in try loadWordBank() {
+            for field in fieldValues(for: obj) {
+                let trimmedValue = field.value.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard let lastCharacter = trimmedValue.last else {
+                    continue
+                }
+
+                #expect(
+                    terminalPunctuation.contains(lastCharacter),
+                    "\(field.name) is missing terminal punctuation for word: \(obj.word) field: \(field.value)"
+                )
+            }
+        }
+    }
+
     private func loadWordBank() throws -> [WordObject] {
         let url = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
