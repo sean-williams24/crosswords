@@ -47,8 +47,8 @@ IRREGULAR_PAST_OR_PARTICIPLE = {
     "gotten", "grew", "grown", "held", "hung", "kept", "knelt", "known", "laid",
     "lain", "leant", "leapt", "led", "left", "lent", "lied", "lit", "lost",
     "made", "meant", "met", "paid", "pled", "ran", "rang", "read", "ridden",
-    "risen", "rode", "rose", "said", "sang", "sank", "sat", "saw", "seen", "sent",
-    "shone", "shook", "shown", "slain", "slept", "slid", "slung", "sold", "sought",
+    "fallen", "risen", "rode", "rose", "said", "sang", "sank", "sat", "saw", "seen", "sent",
+    "shone", "shook", "shorn", "shown", "slain", "slept", "slid", "slung", "sold", "sought",
     "sown", "sped", "spilt", "spoke", "spent", "spun", "stood", "stridden",
     "strode", "struck", "stunk", "sung", "sunk", "swept", "swore", "swung",
     "taught", "thought", "threw", "told", "took", "tore", "torn", "trod", "trodden",
@@ -58,6 +58,11 @@ IRREGULAR_PAST_OR_PARTICIPLE = {
 
 THIRD_PERSON_VERB_ANSWERS = {
     "does", "goes", "has", "is", "makes", "says", "sees", "uses",
+}
+
+IRREGULAR_PLURAL_ANSWERS = {
+    "addenda", "antennae", "dice", "fishermen", "iraqis", "israelis", "salesmen",
+    "sportsmen", "stadia", "stimuli",
 }
 
 ADJECTIVE_SUFFIXES = (
@@ -99,6 +104,8 @@ def tokens(value: str) -> list[str]:
 
 def is_pluralish_answer(answer: str) -> bool:
     word = answer.lower()
+    if word in IRREGULAR_PLURAL_ANSWERS:
+        return True
     if word in THIRD_PERSON_VERB_ANSWERS:
         return False
     if len(word) <= 3:

@@ -1,0 +1,833 @@
+{
+  "source": "Backend/word_bank_inflection_wide_review.json",
+  "note": "Curated from wide-net review. Excludes collective nouns, accepted third-person clues, and false plural-looking words.",
+  "replacements": [
+    {
+      "index": 17,
+      "word": "ADMIRABLE",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "Qualities that inspire respect.",
+          "proposed": "Praiseworthy in character."
+        }
+      ]
+    },
+    {
+      "index": 401,
+      "word": "CUSTOMS",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A practice that varies greatly around the world.",
+          "proposed": "Practices that vary greatly around the world."
+        }
+      ]
+    },
+    {
+      "index": 914,
+      "word": "HEADLINES",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A news summary's main features?",
+          "proposed": "Top lines on a news page."
+        }
+      ]
+    },
+    {
+      "index": 2623,
+      "word": "CROSSWORDS",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A puzzle for wordsmiths at play?",
+          "proposed": "Puzzles for wordsmiths at play."
+        }
+      ]
+    },
+    {
+      "index": 2765,
+      "word": "SANDWICHES",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A meal that stacks flavors together.",
+          "proposed": "Meals that stack flavors together."
+        }
+      ]
+    },
+    {
+      "index": 3046,
+      "word": "POCKETKNIVES",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A blade that fits in your hand.",
+          "proposed": "Folding blades that fit in your hand."
+        }
+      ]
+    },
+    {
+      "index": 3051,
+      "word": "ROLLERBLADES",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A skater's choice for speed and style.",
+          "proposed": "Wheeled footwear for skaters."
+        }
+      ]
+    },
+    {
+      "index": 5265,
+      "word": "eared",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "Features of some animals' heads.",
+          "proposed": "Having animal-like hearing features."
+        }
+      ]
+    },
+    {
+      "index": 5432,
+      "word": "teens",
+      "fields": [
+        {
+          "field": "text",
+          "current": "A stage of youthful development.",
+          "proposed": "Years from thirteen to nineteen."
+        }
+      ]
+    },
+    {
+      "index": 5809,
+      "word": "merit",
+      "fields": [
+        {
+          "field": "text",
+          "current": "Qualities worthy of praise or reward.",
+          "proposed": "Quality worthy of praise or reward."
+        }
+      ]
+    },
+    {
+      "index": 6224,
+      "word": "chaps",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A style from the wild frontier.",
+          "proposed": "Leather leg coverings from the frontier."
+        }
+      ]
+    },
+    {
+      "index": 7446,
+      "word": "norman",
+      "fields": [
+        {
+          "field": "text",
+          "current": "People from a region in France.",
+          "proposed": "Person from a region in France."
+        }
+      ]
+    },
+    {
+      "index": 9630,
+      "word": "disparate",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Things that are starkly different in nature.",
+          "proposed": "Starkly different in nature."
+        }
+      ]
+    },
+    {
+      "index": 10224,
+      "word": "downtrodden",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "People crushed by fate's heavy foot.",
+          "proposed": "Crushed by fate's heavy foot."
+        }
+      ]
+    },
+    {
+      "index": 10273,
+      "word": "girlishness",
+      "fields": [
+        {
+          "field": "hint",
+          "current": "Traits often associated with young girls, for one.",
+          "proposed": "Quality associated with youth."
+        },
+        {
+          "field": "clues[0]",
+          "current": "Traits often associated with young girls.",
+          "proposed": "Quality associated with young girls."
+        }
+      ]
+    },
+    {
+      "index": 10914,
+      "word": "UNSOLD",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "Items that didn't find buyers.",
+          "proposed": "Still waiting for buyers."
+        }
+      ]
+    },
+    {
+      "index": 11951,
+      "word": "INHERITABLE",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "Traits that run in the family line.",
+          "proposed": "Able to run in the family line."
+        }
+      ]
+    },
+    {
+      "index": 11988,
+      "word": "MERITORIOUS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Qualities that earn commendation.",
+          "proposed": "Worthy of commendation."
+        }
+      ]
+    },
+    {
+      "index": 12340,
+      "word": "HEREDITARY",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "Traits you didn't choose, but inherited.",
+          "proposed": "Passed down through family lines."
+        }
+      ]
+    },
+    {
+      "index": 12770,
+      "word": "UNDERPANTS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A foundational layer for trousers.",
+          "proposed": "Foundational layers for trousers."
+        }
+      ]
+    },
+    {
+      "index": 12793,
+      "word": "UNLAUDABLE",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "Actions that don't earn accolades.",
+          "proposed": "Not worthy of accolades."
+        }
+      ]
+    },
+    {
+      "index": 14425,
+      "word": "MILLIONS",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "A vast sum often associated with riches.",
+          "proposed": "Vast sums often associated with riches."
+        },
+        {
+          "field": "clues[2]",
+          "current": "A figure representing great abundance.",
+          "proposed": "Figures representing great abundance."
+        }
+      ]
+    },
+    {
+      "index": 14602,
+      "word": "QUARTERS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A place to stay, but only part-time.",
+          "proposed": "Places to stay, perhaps temporarily."
+        }
+      ]
+    },
+    {
+      "index": 14684,
+      "word": "MINUTES",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A brief moment measured.",
+          "proposed": "Brief measured moments."
+        }
+      ]
+    },
+    {
+      "index": 15009,
+      "word": "THOUSANDS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A significant count of units.",
+          "proposed": "Significant counts of units."
+        }
+      ]
+    },
+    {
+      "index": 15230,
+      "word": "HUNDREDS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A multitude, but not quite thousands.",
+          "proposed": "Multitudes, but not quite thousands."
+        },
+        {
+          "field": "clues[1]",
+          "current": "A lot, but not a thousand.",
+          "proposed": "Large counts below a thousand."
+        }
+      ]
+    },
+    {
+      "index": 15891,
+      "word": "REQUESTS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "An appeal made to someone in authority.",
+          "proposed": "Appeals made to someone in authority."
+        }
+      ]
+    },
+    {
+      "index": 16428,
+      "word": "REFLECTS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A surface that bounces back.",
+          "proposed": "Bounces back from a surface."
+        }
+      ]
+    },
+    {
+      "index": 16434,
+      "word": "ARCHIVES",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A repository of valuable documents.",
+          "proposed": "Repositories of valuable documents."
+        }
+      ]
+    },
+    {
+      "index": 16524,
+      "word": "THROWS",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A motion often seen in sports.",
+          "proposed": "Motions often seen in sports."
+        }
+      ]
+    },
+    {
+      "index": 16917,
+      "word": "BILLIONS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "An astronomical amount, often used in finance.",
+          "proposed": "Astronomical amounts, often used in finance."
+        },
+        {
+          "field": "clues[0]",
+          "current": "A thousand million units.",
+          "proposed": "Thousand-million counts."
+        }
+      ]
+    },
+    {
+      "index": 16958,
+      "word": "APPLES",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A fruit of temptation in a tale.",
+          "proposed": "Fruits of temptation in tales."
+        }
+      ]
+    },
+    {
+      "index": 17039,
+      "word": "NORWEGIAN",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "People known for their stunning landscapes.",
+          "proposed": "From a land of stunning landscapes."
+        }
+      ]
+    },
+    {
+      "index": 17139,
+      "word": "YANKEES",
+      "fields": [
+        {
+          "field": "text",
+          "current": "A famous baseball team from New York.",
+          "proposed": "Famous baseball team from New York."
+        }
+      ]
+    },
+    {
+      "index": 17371,
+      "word": "CROWDS",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A sea of faces at a festival.",
+          "proposed": "Seas of faces at festivals."
+        }
+      ]
+    },
+    {
+      "index": 17879,
+      "word": "CARDINALS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A term for essential rules.",
+          "proposed": "Essential rules, in one sense."
+        }
+      ]
+    },
+    {
+      "index": 17881,
+      "word": "CIRCUITS",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A track for racing cars.",
+          "proposed": "Tracks for racing cars."
+        }
+      ]
+    },
+    {
+      "index": 18062,
+      "word": "SUNDAYS",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A day for family and reflection.",
+          "proposed": "Days for family and reflection."
+        }
+      ]
+    },
+    {
+      "index": 18186,
+      "word": "STARTERS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "An introduction to a larger idea.",
+          "proposed": "Introductions to larger ideas."
+        }
+      ]
+    },
+    {
+      "index": 18274,
+      "word": "MASCULINE",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Traits traditionally associated with men.",
+          "proposed": "Traditionally associated with men."
+        }
+      ]
+    },
+    {
+      "index": 18470,
+      "word": "PASSAGES",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A movement from one place to another.",
+          "proposed": "Movements from one place to another."
+        }
+      ]
+    },
+    {
+      "index": 19237,
+      "word": "OPPRESSED",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "People experiencing injustice.",
+          "proposed": "Experiencing injustice."
+        }
+      ]
+    },
+    {
+      "index": 19698,
+      "word": "SHORTAGES",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A scarcity of necessary items.",
+          "proposed": "Scarcities of necessary items."
+        }
+      ]
+    },
+    {
+      "index": 19885,
+      "word": "REVIEWERS",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A collective of critics in the field.",
+          "proposed": "Critics in the field."
+        }
+      ]
+    },
+    {
+      "index": 20147,
+      "word": "BRUISES",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A mark showing a hit.",
+          "proposed": "Marks showing hits."
+        }
+      ]
+    },
+    {
+      "index": 20242,
+      "word": "ENCRYPTED",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Messages transformed for secrecy.",
+          "proposed": "Transformed for secrecy."
+        }
+      ]
+    },
+    {
+      "index": 20687,
+      "word": "THROATS",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A sensitive area during a cold.",
+          "proposed": "Sensitive areas during colds."
+        }
+      ]
+    },
+    {
+      "index": 20809,
+      "word": "OUTBREAKS",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "An event that raises health concerns.",
+          "proposed": "Events that raise health concerns."
+        }
+      ]
+    },
+    {
+      "index": 20826,
+      "word": "SERMONS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A call to moral or spiritual action.",
+          "proposed": "Calls to moral or spiritual action."
+        }
+      ]
+    },
+    {
+      "index": 20903,
+      "word": "SINFUL",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "Actions deemed wrong by society.",
+          "proposed": "Morally wrong."
+        }
+      ]
+    },
+    {
+      "index": 21140,
+      "word": "FLEETS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A convoy of vessels at sea?",
+          "proposed": "Convoys of vessels at sea."
+        }
+      ]
+    },
+    {
+      "index": 21267,
+      "word": "ARRAYS",
+      "fields": [
+        {
+          "field": "text",
+          "current": "An impressive display or arrangement.",
+          "proposed": "Impressive displays or arrangements."
+        }
+      ]
+    },
+    {
+      "index": 21290,
+      "word": "FOUNTAINS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A source of refreshment.",
+          "proposed": "Sources of refreshment."
+        }
+      ]
+    },
+    {
+      "index": 21291,
+      "word": "FREEZES",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A seasonal change for water.",
+          "proposed": "Seasonal changes for water."
+        }
+      ]
+    },
+    {
+      "index": 21347,
+      "word": "WEARABLE",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "Devices for personal use.",
+          "proposed": "Able to be worn."
+        }
+      ]
+    },
+    {
+      "index": 21420,
+      "word": "SQUATS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A fitness exercise for the lower body.",
+          "proposed": "Fitness exercises for the lower body."
+        }
+      ]
+    },
+    {
+      "index": 21621,
+      "word": "CAMBODIAN",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "People from Southeast Asia.",
+          "proposed": "From a Southeast Asian country."
+        }
+      ]
+    },
+    {
+      "index": 21754,
+      "word": "PASTURES",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A term for open fields.",
+          "proposed": "Open fields for grazing."
+        }
+      ]
+    },
+    {
+      "index": 21759,
+      "word": "RATIONS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A term for distributed supplies.",
+          "proposed": "Distributed supplies."
+        }
+      ]
+    },
+    {
+      "index": 21812,
+      "word": "CHEESES",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "A variety of flavors from milk.",
+          "proposed": "Varieties of flavor from milk."
+        }
+      ]
+    },
+    {
+      "index": 22112,
+      "word": "MEATBALLS",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A staple of spaghetti dishes.",
+          "proposed": "Staples of spaghetti dishes."
+        }
+      ]
+    },
+    {
+      "index": 22133,
+      "word": "SPRAYS",
+      "fields": [
+        {
+          "field": "text",
+          "current": "A fine mist of liquid.",
+          "proposed": "Fine mists of liquid."
+        },
+        {
+          "field": "clues[2]",
+          "current": "A method of applying paint or perfume.",
+          "proposed": "Methods of applying paint or perfume."
+        }
+      ]
+    },
+    {
+      "index": 22141,
+      "word": "VAULTS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A strong, arched architectural feature.",
+          "proposed": "Strong, arched architectural features."
+        }
+      ]
+    },
+    {
+      "index": 22661,
+      "word": "RAISINS",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A chewy addition to cereals.",
+          "proposed": "Chewy additions to cereals."
+        }
+      ]
+    },
+    {
+      "index": 22838,
+      "word": "ORCHIDS",
+      "fields": [
+        {
+          "field": "text",
+          "current": "A diverse family of flowering plants.",
+          "proposed": "Members of a diverse flower family."
+        }
+      ]
+    },
+    {
+      "index": 22942,
+      "word": "STINGS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A fleeting pain from a sharp touch.",
+          "proposed": "Fleeting pains from sharp touches."
+        },
+        {
+          "field": "clues[1]",
+          "current": "A brief but intense sensation.",
+          "proposed": "Brief but intense sensations."
+        }
+      ]
+    },
+    {
+      "index": 23093,
+      "word": "MONGOLIAN",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "People known for their horseback skills.",
+          "proposed": "From a land known for horseback skill."
+        }
+      ]
+    },
+    {
+      "index": 23448,
+      "word": "HICCUPS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A frequent annoyance after a meal.",
+          "proposed": "Frequent annoyances after meals."
+        },
+        {
+          "field": "clues[2]",
+          "current": "A quirky reaction to excitement or surprise.",
+          "proposed": "Quirky reactions to excitement or surprise."
+        }
+      ]
+    },
+    {
+      "index": 23706,
+      "word": "COUGHS",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "A loud expulsion of breath.",
+          "proposed": "Loud expulsions of breath."
+        }
+      ]
+    },
+    {
+      "index": 23941,
+      "word": "HAVENS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A refuge from danger?",
+          "proposed": "Refuges from danger."
+        }
+      ]
+    },
+    {
+      "index": 24120,
+      "word": "EARPHONES",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A popular accessory for mobile devices.",
+          "proposed": "Audio accessories for mobile devices."
+        }
+      ]
+    },
+    {
+      "index": 24126,
+      "word": "FEASTS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A spread fit for royalty.",
+          "proposed": "Spreads fit for royalty."
+        }
+      ]
+    }
+  ]
+}

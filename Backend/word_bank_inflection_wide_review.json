@@ -1,0 +1,1605 @@
+{
+  "generatedAt": "2026-06-15T21:22:34.536356+00:00",
+  "source": "/Users/sean.williams2/src/Crosswords/Backend/word_bank.json",
+  "entryCount": 25166,
+  "candidateEntryCount": 80,
+  "candidateFieldCount": 85,
+  "summary": {
+    "byReason": {
+      "WIDE_SINGULAR_ANSWER_PLURAL_CLUE": 58,
+      "WIDE_PLURAL_ANSWER_SINGULAR_CLUE": 27
+    },
+    "byField": {
+      "hard_text": 23,
+      "text": 12,
+      "hint": 7,
+      "clues": 43
+    },
+    "byConfidence": {
+      "medium": 85
+    }
+  },
+  "note": "Wide-net review candidates only. This file is intentionally noisier than the high-confidence replacement export and should not be applied directly.",
+  "candidates": [
+    {
+      "id": "word_bank:224:character",
+      "index": 224,
+      "word": "CHARACTER",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Traits define a persona, or a role in plays.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:273:clique",
+      "index": 273,
+      "word": "CLIQUE",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Friends who don't share.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:597:equipment",
+      "index": 597,
+      "word": "EQUIPMENT",
+      "fields": [
+        {
+          "field": "text",
+          "current": "Tools and devices needed.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        },
+        {
+          "field": "hard_text",
+          "current": "Tools for the job at hand.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:732:folk",
+      "index": 732,
+      "word": "FOLK",
+      "fields": [
+        {
+          "field": "text",
+          "current": "People or traditional music.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:973:household",
+      "index": 973,
+      "word": "HOUSEHOLD",
+      "fields": [
+        {
+          "field": "text",
+          "current": "People in a home.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:1303:nation",
+      "index": 1303,
+      "word": "NATION",
+      "fields": [
+        {
+          "field": "hint",
+          "current": "People under one government, sometimes.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        },
+        {
+          "field": "clues[0]",
+          "current": "People under one government.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:1511:property",
+      "index": 1511,
+      "word": "PROPERTY",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "Items that define ownership.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:1826:staff",
+      "index": 1826,
+      "word": "STAFF",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "Workers or a walking stick.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:2051:union",
+      "index": 2051,
+      "word": "UNION",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "Workers' organization or marriage.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:2519:jigsawpuzzle",
+      "index": 2519,
+      "word": "JIGSAWPUZZLE",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Pieces that fit together?",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:2786:technology",
+      "index": 2786,
+      "word": "TECHNOLOGY",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "Tools developed from science's advances.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:2890:personality",
+      "index": 2890,
+      "word": "PERSONALITY",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "Traits that make you, you.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:4008:aircrew",
+      "index": 4008,
+      "word": "AIRCREW",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "People in charge of the skies.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:4086:apparel",
+      "index": 4086,
+      "word": "APPAREL",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "Garments for all seasons.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:4709:moth",
+      "index": 4709,
+      "word": "moth",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "Clothes pest or night flyer.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:5690:heaps",
+      "index": 5690,
+      "word": "heaps",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A lot of something, but messy.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:6329:fives",
+      "index": 6329,
+      "word": "fives",
+      "fields": [
+        {
+          "field": "hint",
+          "current": "A common total in games.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:7139:faints",
+      "index": 7139,
+      "word": "faints",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A sudden swoon might lead to this?",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:7234:hanger",
+      "index": 7234,
+      "word": "hanger",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "Clothes organizing tool.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:8092:coterie",
+      "index": 8092,
+      "word": "coterie",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "Friends gathered around shared passions.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:8304:forties",
+      "index": 8304,
+      "word": "forties",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A time of transition post-Great Depression?",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:8393:heavens",
+      "index": 8393,
+      "word": "heavens",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A celestial location for dreams?",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:8465:jitters",
+      "index": 8465,
+      "word": "jitters",
+      "fields": [
+        {
+          "field": "text",
+          "current": "A state of nervousness or anxiety.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:9037:doldrums",
+      "index": 9037,
+      "word": "doldrums",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A sailor's stagnant sea of boredom.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:9525:coalition",
+      "index": 9525,
+      "word": "coalition",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "Partners united for political gain.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:10579:artel",
+      "index": 10579,
+      "word": "ARTEL",
+      "fields": [
+        {
+          "field": "hint",
+          "current": "workers' group.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:10719:attire",
+      "index": 10719,
+      "word": "ATTIRE",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "Garments often chosen for special events.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:11238:threader",
+      "index": 11238,
+      "word": "THREADER",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "Passes through with finesse.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:11673:fatherliness",
+      "index": 11673,
+      "word": "FATHERLINESS",
+      "fields": [
+        {
+          "field": "text",
+          "current": "Traits or qualities of a father.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:11946:hysteriales",
+      "index": 11946,
+      "word": "HYSTERIALES",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A condition characterized by extreme agitation.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:12501:personalia",
+      "index": 12501,
+      "word": "PERSONALIA",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "Items of personal interest or significance.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:13092:furniture",
+      "index": 13092,
+      "word": "FURNITURE",
+      "fields": [
+        {
+          "field": "text",
+          "current": "Items used to make a room functional.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:13634:sassafras",
+      "index": 13634,
+      "word": "SASSAFRAS",
+      "fields": [
+        {
+          "field": "text",
+          "current": "A tree known for its aromatic leaves.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:13786:tailoring",
+      "index": 13786,
+      "word": "TAILORING",
+      "fields": [
+        {
+          "field": "hint",
+          "current": "clothes adjustment.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:13878:underwear",
+      "index": 13878,
+      "word": "UNDERWEAR",
+      "fields": [
+        {
+          "field": "text",
+          "current": "Garments worn beneath outer clothes.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:14081:draughts",
+      "index": 14081,
+      "word": "DRAUGHTS",
+      "fields": [
+        {
+          "field": "text",
+          "current": "A board game similar to checkers.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:14182:hardware",
+      "index": 14182,
+      "word": "HARDWARE",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Tools and tech, not software's domain.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        },
+        {
+          "field": "clues[0]",
+          "current": "Items in a toolbox.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:14304:iroquois",
+      "index": 14304,
+      "word": "IROQUOIS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "People of the longhouse.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:15102:behavior",
+      "index": 15102,
+      "word": "BEHAVIOR",
+      "fields": [
+        {
+          "field": "text",
+          "current": "Actions or conduct.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:15455:clothing",
+      "index": 15455,
+      "word": "CLOTHING",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "Garments for the body.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:15678:behaviour",
+      "index": 15678,
+      "word": "BEHAVIOUR",
+      "fields": [
+        {
+          "field": "text",
+          "current": "Actions or reactions of an individual.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:15785:humanity",
+      "index": 15785,
+      "word": "HUMANITY",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "People collectively.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:16252:roberts",
+      "index": 16252,
+      "word": "ROBERTS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A last name often seen.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:16309:inventory",
+      "index": 16309,
+      "word": "INVENTORY",
+      "fields": [
+        {
+          "field": "hint",
+          "current": "Items for sale.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:16346:dozens",
+      "index": 16346,
+      "word": "DOZENS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A common count for eggs or roses.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:16383:jewelry",
+      "index": 16383,
+      "word": "JEWELRY",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "Items for embellishing outfits.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:17062:barnes",
+      "index": 17062,
+      "word": "BARNES",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A bookstore known for its vast collections.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:17114:incoming",
+      "index": 17114,
+      "word": "INCOMING",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "Messages that are on their way.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:17343:metric",
+      "index": 17343,
+      "word": "METRIC",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "Units based on tens and hundreds.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:17722:displaced",
+      "index": 17722,
+      "word": "DISPLACED",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "People forced to leave their homes.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:17731:luggage",
+      "index": 17731,
+      "word": "LUGGAGE",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Items carried when going on a trip.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:17868:unwanted",
+      "index": 17868,
+      "word": "UNWANTED",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "Things that aren't wanted.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:18080:baggage",
+      "index": 18080,
+      "word": "BAGGAGE",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Items carried during travel.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:18106:jewellery",
+      "index": 18106,
+      "word": "JEWELLERY",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Items that adorn the body.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:18162:grapes",
+      "index": 18162,
+      "word": "GRAPES",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A popular fruit for snacking and juicing.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:18337:noodles",
+      "index": 18337,
+      "word": "NOODLES",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A staple in Asian cuisine.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:19834:twenties",
+      "index": 19834,
+      "word": "TWENTIES",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A decade of exploration.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:19989:checklist",
+      "index": 19989,
+      "word": "CHECKLIST",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Items to tick off one by one.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:20214:whoops",
+      "index": 20214,
+      "word": "WHOOPS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "An exclamation for unintended actions.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:20739:preserves",
+      "index": 20739,
+      "word": "PRESERVES",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A favorite for breakfast alongside butter.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:20763:weaponry",
+      "index": 20763,
+      "word": "WEAPONRY",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Tools of warfare and defense.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:21396:leggings",
+      "index": 21396,
+      "word": "LEGGINGS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A snug fit for your lower half.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:21397:legions",
+      "index": 21397,
+      "word": "LEGIONS",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "An army of followers, perhaps.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        },
+        {
+          "field": "clues[2]",
+          "current": "A multitude, often in a military context.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:21663:navajo",
+      "index": 21663,
+      "word": "NAVAJO",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "People of the Four Corners region.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:21905:eighties",
+      "index": 21905,
+      "word": "EIGHTIES",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A decade defined by its trends.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:21976:americana",
+      "index": 21976,
+      "word": "AMERICANA",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Items representing the spirit of a nation.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:22005:fifties",
+      "index": 22005,
+      "word": "FIFTIES",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A time of sock hops and rock'n'roll.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:22083:clockwork",
+      "index": 22083,
+      "word": "CLOCKWORK",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Things running like a well-oiled machine.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:22677:spades",
+      "index": 22677,
+      "word": "SPADES",
+      "fields": [
+        {
+          "field": "text",
+          "current": "A suit in playing cards.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:22933:shambles",
+      "index": 22933,
+      "word": "SHAMBLES",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "A complete disarray.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:23303:shortlist",
+      "index": 23303,
+      "word": "SHORTLIST",
+      "fields": [
+        {
+          "field": "hint",
+          "current": "people vying for consideration.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:23494:armament",
+      "index": 23494,
+      "word": "ARMAMENT",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Tools of warfare and defense.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:23496:auctioned",
+      "index": 23496,
+      "word": "AUCTIONED",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "Items sold to the highest offerer.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:23550:scrabble",
+      "index": 23550,
+      "word": "SCRABBLE",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "Players create words on a square board.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:23600:congolese",
+      "index": 23600,
+      "word": "CONGOLESE",
+      "fields": [
+        {
+          "field": "clues[0]",
+          "current": "People of Central Africa.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:23618:flocks",
+      "index": 23618,
+      "word": "FLOCKS",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "A congregation of similar beings.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:23743:levies",
+      "index": 23743,
+      "word": "LEVIES",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "A government’s way to collect dues.",
+          "reasons": [
+            "WIDE_PLURAL_ANSWER_SINGULAR_CLUE"
+          ],
+          "details": [
+            "Plural-looking answer has a clue that begins with a singular article."
+          ],
+          "reviewHint": "Confirm the clue describes multiple things, or rewrite to plural wording.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:23762:populism",
+      "index": 23762,
+      "word": "POPULISM",
+      "fields": [
+        {
+          "field": "hint",
+          "current": "People's movement.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:24100:wishlist",
+      "index": 24100,
+      "word": "WISHLIST",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Things one hopes to acquire.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        },
+        {
+          "field": "clues[1]",
+          "current": "Items wished for eagerly.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "id": "word_bank:25121:fam",
+      "index": 25121,
+      "word": "FAM",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "People you care about.",
+          "reasons": [
+            "WIDE_SINGULAR_ANSWER_PLURAL_CLUE"
+          ],
+          "details": [
+            "Singular-looking answer has a clue that begins with a plural head noun."
+          ],
+          "reviewHint": "Check whether the answer is a collective/mass noun; otherwise rewrite singular.",
+          "confidence": "medium"
+        }
+      ]
+    }
+  ]
+}
