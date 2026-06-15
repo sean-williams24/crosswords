@@ -1,0 +1,203 @@
+{
+  "source": "Backend/word_bank_inflection_sample_50.json",
+  "note": "Reviewed high-confidence inflection fixes only. THIRD_PERSON_CLUE rows intentionally excluded.",
+  "replacements": [
+    {
+      "index": 25,
+      "word": "AGED",
+      "fields": [
+        {
+          "field": "hint",
+          "current": "What cheese does to improve, loosely.",
+          "proposed": "Fine wine quality, perhaps."
+        },
+        {
+          "field": "clues[0]",
+          "current": "What cheese does to improve.",
+          "proposed": "Matured over time, as cheese can be."
+        }
+      ]
+    },
+    {
+      "index": 48,
+      "word": "APPEAL",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "Requesting something earnestly.",
+          "proposed": "Request something earnestly."
+        },
+        {
+          "field": "clues[1]",
+          "current": "Making a case for help.",
+          "proposed": "Make a case for help."
+        }
+      ]
+    },
+    {
+      "index": 2956,
+      "word": "ESTABLISHED",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "What a tradition does to its roots.",
+          "proposed": "Long accepted as valid."
+        }
+      ]
+    },
+    {
+      "index": 4846,
+      "word": "sank",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "What a ship does during a storm.",
+          "proposed": "Went below the surface."
+        }
+      ]
+    },
+    {
+      "index": 4945,
+      "word": "togs",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A word for garments that might include swimwear.",
+          "proposed": "Casual clothes, especially swimwear."
+        }
+      ]
+    },
+    {
+      "index": 5467,
+      "word": "tuned",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "What a musician does before a show.",
+          "proposed": "Ready to play in key."
+        }
+      ]
+    },
+    {
+      "index": 5813,
+      "word": "miles",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "A unit that counts travel, not just steps.",
+          "proposed": "Travel units, not just steps."
+        }
+      ]
+    },
+    {
+      "index": 6066,
+      "word": "spilt",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "What a careless cook does.",
+          "proposed": "No longer kept in the container."
+        }
+      ]
+    },
+    {
+      "index": 6113,
+      "word": "taxed",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "What a government does to you?",
+          "proposed": "Subject to a levy."
+        }
+      ]
+    },
+    {
+      "index": 6537,
+      "word": "hurled",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "What a quarterback does with a football.",
+          "proposed": "Sent flying at speed."
+        }
+      ]
+    },
+    {
+      "index": 6667,
+      "word": "rolled",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "What dough does before baking?",
+          "proposed": "Moved like a wheel."
+        }
+      ]
+    },
+    {
+      "index": 7258,
+      "word": "hoofed",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "What a horse does on the track.",
+          "proposed": "Danced or walked heavily."
+        }
+      ]
+    },
+    {
+      "index": 7382,
+      "word": "melted",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "What ice does in warm weather.",
+          "proposed": "Lost its solid form."
+        }
+      ]
+    },
+    {
+      "index": 8059,
+      "word": "chilled",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "What ice does to a drink.",
+          "proposed": "Cooled before serving."
+        }
+      ]
+    },
+    {
+      "index": 8966,
+      "word": "declared",
+      "fields": [
+        {
+          "field": "clues[2]",
+          "current": "What a king does to his subjects.",
+          "proposed": "Made known on the record."
+        }
+      ]
+    },
+    {
+      "index": 10383,
+      "word": "administered",
+      "fields": [
+        {
+          "field": "clues[1]",
+          "current": "What a doctor does with care.",
+          "proposed": "Dispensed or managed carefully."
+        }
+      ]
+    },
+    {
+      "index": 21715,
+      "word": "CHEWED",
+      "fields": [
+        {
+          "field": "hard_text",
+          "current": "What food does to your teeth?",
+          "proposed": "Worked over with teeth."
+        }
+      ]
+    }
+  ]
+}

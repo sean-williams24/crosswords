@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-06-15T20:54:26.674329+00:00",
+  "source": "/Users/sean.williams2/src/Crosswords/Backend/word_bank.json",
+  "entryCount": 25166,
+  "flaggedEntryCount": 2,
+  "flaggedFieldCount": 4,
+  "summary": {
+    "byReason": {
+      "THIRD_PERSON_CLUE": 4
+    },
+    "byField": {
+      "hint": 2,
+      "clues": 2
+    }
+  },
+  "strictRule": "Every clue must naturally resolve to the exact stored answer form, including tense, number, inflection, and part of speech.",
+  "replacements": [
+    {
+      "id": "word_bank:5:absorb",
+      "index": 5,
+      "word": "ABSORB",
+      "fields": [
+        {
+          "field": "hint",
+          "current": "What a sponge does, perhaps.",
+          "reasons": [
+            "THIRD_PERSON_CLUE"
+          ],
+          "details": [
+            "Clue wording implies a third-person answer form, not the base verb."
+          ],
+          "proposed": "Take in liquid, perhaps."
+        },
+        {
+          "field": "clues[0]",
+          "current": "What a sponge does.",
+          "reasons": [
+            "THIRD_PERSON_CLUE"
+          ],
+          "details": [
+            "Clue wording implies a third-person answer form, not the base verb."
+          ],
+          "proposed": "Take in like a sponge."
+        }
+      ]
+    },
+    {
+      "id": "word_bank:105:bite",
+      "index": 105,
+      "word": "BITE",
+      "fields": [
+        {
+          "field": "hint",
+          "current": "What a mosquito does, sometimes.",
+          "reasons": [
+            "THIRD_PERSON_CLUE"
+          ],
+          "details": [
+            "Clue wording implies a third-person answer form, not the base verb."
+          ],
+          "proposed": "Use teeth or a stinger, sometimes."
+        },
+        {
+          "field": "clues[0]",
+          "current": "What a mosquito does.",
+          "reasons": [
+            "THIRD_PERSON_CLUE"
+          ],
+          "details": [
+            "Clue wording implies a third-person answer form, not the base verb."
+          ],
+          "proposed": "Use teeth or a stinger."
+        }
+      ]
+    }
+  ]
+}

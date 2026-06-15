@@ -120,6 +120,11 @@ STRICT CONSTRAINTS for "clue":
   - Must NOT contain any part of the root word
   - Must be a single word only
   - Should require lateral thinking to connect to the word
+  - Must match the answer's grammatical form when read as a clue/answer pair:
+    * base verb answers need base-form clue associations, not third-person forms
+    * plural answers need plural clue associations
+    * nouns, adjectives, past tense, gerunds, comparatives, and superlatives must not be crossed
+    * reject or rewrite mismatches like ACHIEVE/EXCELS, DUPLICATE/CLONES, CRUELTY/UNKIND
 
 EXAMPLES of good clues (study these carefully):
   {"word": "WAITED", "clue": "PATIENCE"}   — hints at the state of mind required
@@ -128,6 +133,11 @@ EXAMPLES of good clues (study these carefully):
   {"word": "CASTLE", "clue": "CHESS"}      — lateral connection
   {"word": "CANDLE", "clue": "FLICKER"}    — focuses on a characteristic
   {"word": "WINTER", "clue": "FROST"}      — evokes the physical reality
+
+EXAMPLES of bad inflection matches:
+  {"word": "ACHIEVE", "clue": "EXCELS"}     — EXCELS is third-person; ACHIEVE is base verb
+  {"word": "DUPLICATE", "clue": "CLONES"}   — CLONES is plural/third-person; DUPLICATE is base verb or adjective
+  {"word": "CRUELTY", "clue": "UNKIND"}     — UNKIND is adjective; CRUELTY is noun
 
 REJECT a word (set "reject": true) if it is:
   - A proper noun: personal names (Sharon, Ernest), brand/company names (Schwab), place names, nationality adjectives

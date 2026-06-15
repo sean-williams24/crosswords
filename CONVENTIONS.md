@@ -182,6 +182,25 @@ hint = entry.get("hard_text", entry.get("hint", ""))                   # hard_te
 
 Run `Backend/fix_answer_leakage.py` to scan for violations and regenerate affected fields via OpenAI. All clue-generation scripts (`clean_word_bank.py`, `upgrade_clues.py`, `expand_short_words.py`) enforce this rule at generation time via `_leaks_answer()`.
 
+### Inflection review workflow
+
+Clues should resolve to the exact stored answer form: tense, number, inflection, and part of speech should match the `word` value. Review suspected mismatches with:
+
+```bash
+python3 Backend/audit_word_bank_inflections.py sample --count 50
+python3 Backend/audit_word_bank_inflections.py export
+python3 Backend/audit_word_bank_inflections.py apply --input Backend/word_bank_inflection_replacements.json
+```
+
+`sample` and `export` are review-only and never modify `word_bank.json`. The full bank should only be changed by applying an approved replacement file.
+
+Backword uses the same review-first pattern for existing Supabase rows:
+
+```bash
+python3 Backend/audit_backword_inflections.py export
+python3 Backend/audit_backword_inflections.py apply --input Backend/backword_inflection_replacements.json
+```
+
 ---
 
 ## Backend Python Scripts
