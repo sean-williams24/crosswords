@@ -66,6 +66,10 @@ struct BackwordView: View {
                         guessCounter
 
                         if !viewModel.progress.guesses.isEmpty {
+                            Text("Previous Guesses")
+                                .font(AppFont.caption(16))
+                                .foregroundColor(.appTextSecondary)
+                                .dynamicTypeSize(...DynamicTypeSize.accessibility2)
                             guessHistory
                         }
 
