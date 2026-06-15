@@ -1,0 +1,71 @@
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-Regular.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-Medium.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-SemiBold.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-Bold.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 700;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #eeeeee;
+  background: #0a0a0a;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+::selection {
+  color: #0a0a0a;
+  background: #d6be87;
+}
+
+.legal-copy h2 {
+  margin-top: 2rem;
+  color: #eeeeee;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.legal-copy p {
+  margin-top: 0.85rem;
+  color: #b8b8b8;
+  line-height: 1.8;
+}
+
+.legal-copy ul {
+  margin-top: 0.85rem;
+  padding-left: 1.2rem;
+  color: #b8b8b8;
+  line-height: 1.8;
+}
