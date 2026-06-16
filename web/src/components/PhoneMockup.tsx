@@ -5,7 +5,7 @@ type PhoneMockupProps = {
 
 export function PhoneMockup({ src, alt }: PhoneMockupProps) {
   return (
-    <div className="relative mx-auto w-full max-w-[20rem] sm:max-w-[24rem] lg:max-w-[30rem]">
+    <div className="relative mx-auto w-full max-w-[18rem] sm:max-w-[22rem] lg:max-w-[26rem]">
       <div className="absolute -inset-8 rounded-full bg-accent/10 blur-3xl" />
       <PhoneFrame src={src} alt={alt} />
     </div>
