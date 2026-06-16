@@ -5,7 +5,7 @@ export function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      intro="This page describes the intended privacy approach for Backword. Replace this placeholder text with reviewed production policy language before launch."
+      intro="This policy explains how Backword handles information in the iOS app and on this website."
       sections={privacySections}
     />
   );

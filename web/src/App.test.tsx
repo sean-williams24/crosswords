@@ -31,7 +31,10 @@ describe("Backword website routes", () => {
     expect(
       screen.getByRole("heading", { level: 1, name: "Privacy Policy" })
     ).toBeInTheDocument();
-    expect(screen.getAllByText(/placeholder privacy policy/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/operated by Sean Williams/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Advertising and AdMob" })
+    ).toBeInTheDocument();
   });
 
   it("renders the terms route", () => {
