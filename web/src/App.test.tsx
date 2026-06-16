@@ -43,6 +43,11 @@ describe("Backword website routes", () => {
     expect(
       screen.getByRole("heading", { level: 1, name: "Terms & Conditions" })
     ).toBeInTheDocument();
-    expect(screen.getAllByText(/placeholder terms/i).length).toBeGreaterThan(0);
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Pro Features, Purchases, and Subscriptions" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Advertising and Rewards" })
+    ).toBeInTheDocument();
   });
 });

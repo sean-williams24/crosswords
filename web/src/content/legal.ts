@@ -87,27 +87,95 @@ export const privacySections = [
 
 export const termsSections = [
   {
-    title: "Agreement",
+    title: "Agreement to These Terms",
     body: [
-      `By using ${siteConfig.appName}, you agree to these placeholder terms. These terms should be reviewed and finalized before the public launch.`
+      `These Terms & Conditions govern your use of the ${siteConfig.appName} iOS app and this website. By using ${siteConfig.appName}, you agree to these terms. If you do not agree, please do not use the app or website.`
     ]
   },
   {
-    title: "Use of the App",
+    title: "About Backword",
     body: [
-      "You may use the app and website for personal, non-commercial entertainment. Do not attempt to interfere with the service, misuse game data, or bypass access controls."
+      "Backword is a word game app that includes Backword, daily crosswords, weekly crosswords, Word of the Day, scores, rating tiers, archives, ads, and optional Pro features. Features may change, be added, or be removed over time."
     ]
   },
   {
-    title: "Purchases and Ads",
+    title: "Eligibility and Accounts",
     body: [
-      "The app may include ads, optional purchases, or subscriptions. Any final purchase terms should match the live App Store configuration."
+      "Backword is intended for a general audience. If you are under the age required to agree to these terms in your country or region, you should use Backword only with permission from a parent or guardian.",
+      "Backword may introduce user accounts and cross-device sync. If you create an account, you are responsible for keeping your login details secure and for activity that occurs through your account. You must provide accurate information and must not impersonate another person."
     ]
   },
   {
-    title: "Availability",
+    title: "Acceptable Use",
     body: [
-      "The service may change, pause, or stop at any time. Puzzle availability, scoring, and features may evolve as Backword develops."
+      "You may use Backword for personal, non-commercial entertainment. You must not misuse the app or website, interfere with their operation, attempt to access systems or data without permission, scrape or copy puzzle content at scale, reverse engineer the app except where permitted by law, bypass ads, subscriptions, access controls, or technical protections, or use Backword in a way that violates applicable law."
+    ]
+  },
+  {
+    title: "Scores, Ratings, and Game Content",
+    body: [
+      "Scores, streaks, rating tiers, puzzle availability, archives, and other game features are provided for entertainment. We may correct errors, adjust scoring rules, change puzzle schedules, remove or replace content, or reset inaccurate progress where reasonably necessary to protect the service or fix mistakes.",
+      "Daily and weekly content may depend on backend availability, device settings, app version, subscription status, and network access. We do not guarantee that every puzzle, archive entry, score, or feature will always be available."
+    ]
+  },
+  {
+    title: "Pro Features, Purchases, and Subscriptions",
+    body: [
+      "Backword may offer optional paid features, subscriptions, or other in-app purchases. Purchases are processed by Apple through the App Store. Apple’s terms, payment rules, cancellation process, refund process, and subscription management controls apply to those purchases.",
+      "Prices, billing periods, trial availability, renewal terms, and included Pro features are shown in the app or App Store before purchase. Subscriptions renew automatically unless cancelled through your Apple ID settings before the renewal date. We do not receive your payment card details.",
+      "Pro features may change over time. If a purchase does not unlock correctly, use the restore purchases option in the app or contact us."
+    ]
+  },
+  {
+    title: "Advertising and Rewards",
+    body: [
+      "Backword may show ads, including interstitial and rewarded ads. Rewarded ads may grant in-app benefits only after the ad provider confirms completion. Ad availability is not guaranteed and may vary by region, device, consent choices, network availability, and ad provider decisions.",
+      "You must not manipulate ad delivery, fake ad completion, or use automated tools to obtain rewards or avoid ads."
+    ]
+  },
+  {
+    title: "Intellectual Property",
+    body: [
+      "Backword, including its name, design, app interface, puzzle content, text, graphics, logos, scoring systems, and other materials, is owned by Sean Williams or licensed for use in Backword. These terms do not transfer ownership of any intellectual property to you.",
+      "You may not copy, redistribute, sell, publish, or create derivative works from Backword content except for personal, non-commercial sharing of normal gameplay screenshots or results, provided that sharing does not misrepresent Backword or violate these terms."
+    ]
+  },
+  {
+    title: "Privacy",
+    body: [
+      "Our Privacy Policy explains how information is collected, used, and shared when you use Backword or visit this website. By using Backword, you acknowledge the Privacy Policy."
+    ]
+  },
+  {
+    title: "Third-Party Services",
+    body: [
+      "Backword relies on third-party services such as Apple, Google AdMob, Supabase, and website hosting providers. These services may be subject to their own terms and privacy policies. We are not responsible for third-party services outside our control."
+    ]
+  },
+  {
+    title: "Disclaimers",
+    body: [
+      "Backword is provided on an as-is and as-available basis. We try to keep the app and website reliable, enjoyable, and accurate, but we do not guarantee that they will be uninterrupted, error-free, secure, or available at all times.",
+      "To the fullest extent permitted by law, we disclaim warranties of merchantability, fitness for a particular purpose, non-infringement, and any warranties arising from course of dealing or usage of trade."
+    ]
+  },
+  {
+    title: "Limitation of Liability",
+    body: [
+      "To the fullest extent permitted by law, Sean Williams and Backword will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages, or for loss of data, profits, goodwill, or other intangible losses arising from your use of or inability to use Backword.",
+      "Nothing in these terms limits liability that cannot legally be limited, including liability for fraud or for death or personal injury caused by negligence where applicable."
+    ]
+  },
+  {
+    title: "Changes to Backword or These Terms",
+    body: [
+      "We may update, suspend, or discontinue any part of Backword, including games, features, subscriptions, archives, scoring, rating tiers, ads, or website content. We may also update these terms from time to time. When we make changes, we will update the date shown on this page. Continued use of Backword after changes means you accept the revised terms."
+    ]
+  },
+  {
+    title: "Governing Law",
+    body: [
+      "These terms are intended to be governed by the laws of England and Wales, except where local consumer protection laws require otherwise. If you live outside the United Kingdom, you may also have rights under the laws of your country or region."
     ]
   },
   {
