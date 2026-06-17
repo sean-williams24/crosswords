@@ -7,7 +7,7 @@ export function HomePage() {
     <>
       <ScreenshotSection
         title="Backword"
-        body="Three word games plus Word of the Day in one clean daily ritual: Backword, a daily crossword, and a deeper weekly crossword."
+        body="Three word games and a Word of the Day, all in one daily ritual to get your brain moving: Backword, a daily crossword, and a deeper weekly crossword."
         secondaryBody="Build the highest score you can across all three games over a rolling 14-day period, climb the rating tiers, and see how long you can sustain the top level."
         headingLevel="h1"
         screenshotAlt="Backword home screen"
