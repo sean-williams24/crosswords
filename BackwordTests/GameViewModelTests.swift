@@ -29,6 +29,29 @@ struct GameViewModelTests {
         #expect(vm.selectedCol == 0)
     }
 
+    @Test("Retyping the same locked crossword letter advances to the next cell")
+    func retypingSameLockedLetterAdvancesWhenHighlightingEnabled() async throws {
+        let originalHighlightSetting = AppSettings.shared.crosswordCorrectHighlight
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer {
+            UserProgress.delete(puzzleId: puzzle.id)
+            AppSettings.shared.crosswordCorrectHighlight = originalHighlightSetting
+        }
+
+        AppSettings.shared.crosswordCorrectHighlight = true
+        let vm = GameViewModel(puzzle: puzzle)
+
+        vm.enterLetter("A")
+        vm.enterLetter("B")
+        vm.selectCell(row: 0, col: 0)
+        vm.enterLetter("A")
+
+        #expect(vm.progress.entries[0][0] == "A")
+        #expect(vm.selectedRow == 0)
+        #expect(vm.selectedCol == 1)
+    }
+
     @Test("Completed crossword cells can be overwritten when correct highlighting is disabled")
     func completedCellsCanBeOverwrittenWhenHighlightingDisabled() async throws {
         let originalHighlightSetting = AppSettings.shared.crosswordCorrectHighlight

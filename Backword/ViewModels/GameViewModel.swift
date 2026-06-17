@@ -181,9 +181,17 @@ final class GameViewModel: ObservableObject {
 
     func enterLetter(_ letter: Character) {
         guard !puzzle.cells[selectedRow][selectedCol].isBlack else { return }
-        guard !(AppSettings.shared.crosswordCorrectHighlight && isCompleted(row: selectedRow, col: selectedCol)) else { return }
+        let entered = String(letter).uppercased()
 
-        progress.entries[selectedRow][selectedCol] = String(letter).uppercased()
+        if AppSettings.shared.crosswordCorrectHighlight && isCompleted(row: selectedRow, col: selectedCol) {
+            guard progress.entries[selectedRow][selectedCol] == entered else { return }
+            haptics.play(.letterEntered)
+            advanceToNextCell()
+            saveProgress()
+            return
+        }
+
+        progress.entries[selectedRow][selectedCol] = entered
         haptics.play(.letterEntered)
 
         checkWordCompletion()

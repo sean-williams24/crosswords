@@ -37,7 +37,7 @@ Both generators share the same exclusion mechanism to avoid repeating answers ac
 
 ## Crossword Correct Highlight Locking
 
-When `AppSettings.crosswordCorrectHighlight` is enabled, cells belonging to completed crossword clues are treated as locked input. `GameViewModel` must reject both deletion and typed replacement for those cells, because the green highlight is the user's signal that the answer has been accepted and should no longer be editable.
+When `AppSettings.crosswordCorrectHighlight` is enabled, cells belonging to completed crossword clues are treated as locked input. `GameViewModel` must reject deletion and typed replacement for those cells, because the green highlight is the user's signal that the answer has been accepted and should no longer be editable. Retyping the same letter already in a locked cell is allowed as navigation input and advances to the next cell without changing the answer.
 
 When the setting is disabled, completed cells remain editable and deletable for the harder non-locking experience.
 
