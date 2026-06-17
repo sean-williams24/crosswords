@@ -173,6 +173,27 @@ struct BackwordViewModelTests {
         #expect(vm.currentInput == "ABCDE")
     }
 
+    @Test("Keyboard letter entry uppercases and caps at unrevealed count")
+    func keyboardLetterEntryUppercasesAndCaps() async throws {
+        let vm = makeViewModel()
+
+        for letter in "castle" {
+            vm.enterLetter(letter)
+        }
+
+        #expect(vm.currentInput == "CASTL")
+    }
+
+    @Test("Keyboard delete removes the last typed letter")
+    func keyboardDeleteRemovesLastTypedLetter() async throws {
+        let vm = makeViewModel()
+
+        vm.onInputChange("CAST")
+        vm.deleteLetter()
+
+        #expect(vm.currentInput == "CAS")
+    }
+
     // MARK: - Clue Hint
 
     @Test("Clue hint sets flag")

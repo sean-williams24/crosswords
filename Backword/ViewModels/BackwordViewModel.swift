@@ -196,6 +196,16 @@ final class BackwordViewModel: ObservableObject {
         currentInput = String(filtered.prefix(unrevealedCount))
     }
 
+    func enterLetter(_ letter: Character) {
+        guard !progress.isComplete else { return }
+        onInputChange(currentInput + String(letter))
+    }
+
+    func deleteLetter() {
+        guard !progress.isComplete, !currentInput.isEmpty else { return }
+        currentInput.removeLast()
+    }
+
     private func triggerInputError() {
         inputError = true
         Task {

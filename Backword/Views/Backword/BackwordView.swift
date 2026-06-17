@@ -14,7 +14,6 @@ struct BackwordView: View {
     @State private var selectedFailureMessage: String = ""
     @State private var shouldPopAfterCompletionSheet = false
     @StateObject private var statsService = BackwordStatsService()
-    @FocusState private var inputFocused: Bool
 
     init(word: BackwordWord) {
         _viewModel = StateObject(wrappedValue: BackwordViewModel(word: word))
@@ -26,19 +25,6 @@ struct BackwordView: View {
 
     var body: some View {
         ZStack {
-            TextField("", text: Binding(
-                get: { viewModel.currentInput },
-                set: { viewModel.onInputChange($0) }
-            ))
-            .textInputAutocapitalization(.characters)
-            .autocorrectionDisabled()
-            .keyboardType(.alphabet)
-            .focused($inputFocused)
-            .onSubmit { viewModel.submitGuess() }
-            .frame(width: 1, height: 1)
-            .opacity(0.001)
-            .allowsHitTesting(false)
-
             AppBackgroundGradient()
 
             VStack(alignment: .center, spacing: 0) {
@@ -81,32 +67,36 @@ struct BackwordView: View {
                     .padding(.horizontal, AppLayout.screenPadding)
                     .padding([.top, .bottom], 16)
                 }
-                .safeAreaInset(edge: .bottom) {
-                    if !viewModel.isComplete && viewModel.currentInput.count == viewModel.unrevealedCount {
-                        submitButton
-                            .padding(.horizontal, AppLayout.screenPadding)
-                            .padding(.vertical, 12)
-                            .background(Color.appBackground)
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                if !viewModel.isComplete {
+                    VStack(spacing: 0) {
+                        if viewModel.currentInput.count == viewModel.unrevealedCount {
+                            submitButton
+                                .padding(.horizontal, AppLayout.screenPadding)
+                                .padding(.vertical, 12)
+                                .background(Color.appBackground)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                        }
+
+                        CustomKeyboardView { text in
+                            if let letter = text.first {
+                                viewModel.enterLetter(letter)
+                            }
+                        } onDelete: {
+                            viewModel.deleteLetter()
+                        }
                     }
                 }
             }
         }
+        .ignoresSafeArea(.keyboard)
         .navigationBarHidden(true)
         .onAppear {
-            if !viewModel.isComplete && !viewModel.showOnboarding {
-                Task {
-                    try? await Task.sleep(nanoseconds: 500_000_000)
-                    inputFocused = true
-                }
-            }
             showInstructionsOnFirstLaunch()
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
         .animation(.easeInOut(duration: 0.3), value: viewModel.invalidWordMessage != nil)
         .onChange(of: viewModel.isComplete) { _, complete in
             if complete {
-                inputFocused = false
                 statsService.refresh()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                     showStats = true
@@ -186,7 +176,6 @@ struct BackwordView: View {
                     .sheet(isPresented: $showInstructions) {
                         viewModel.hasSeenOnboarding()
                         BackwordInstructionsTip.actionCompleted = true
-                        inputFocused = true
                     } content: {
                         instructionsSheet
                     }
@@ -244,7 +233,7 @@ struct BackwordView: View {
                     let inputIndex = unrevealedIndices.firstIndex(of: i)
                     let isInputCell = inputIndex != nil && !viewModel.isComplete
                     let inputChar: Character? = isInputCell ? (inputIndex! < inputChars.count ? inputChars[inputIndex!] : nil) : nil
-                    let showCursor = isInputCell && inputIndex! == inputChars.count && inputFocused
+                    let showCursor = isInputCell && inputIndex! == inputChars.count
 
                     BackwordLetterCell(
                         letter: revealed,
@@ -258,7 +247,6 @@ struct BackwordView: View {
             }
         }
         .contentShape(Rectangle())
-        .onTapGesture { if !viewModel.isComplete { inputFocused = true } }
     }
 
     // MARK: - Submit Button
