@@ -12,7 +12,9 @@ struct BackwordApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            LaunchSplashView {
+                HomeView()
+            }
                 .preferredColorScheme(selectedScheme)
                 .environmentObject(statsService)
                 .environmentObject(puzzleService)

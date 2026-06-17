@@ -11,6 +11,7 @@
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
 		04F1AE892FE2A3E6007A1001 /* AppVersionInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */; };
 		05256FA0ABC9B788BBAABD5B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3838DB082E2416DB47994C4D /* HomeViewModel.swift */; };
+		0A5F0E3C2FE322C700F00E3C /* LaunchSplashViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */; };
 		0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */; };
 		10DA4E78777801F05B5F7B2A /* wotd_bank.json in Resources */ = {isa = PBXBuildFile; fileRef = E7EE22FCCC10583E80948886 /* wotd_bank.json */; };
 		143A79FE56648107686BEF85 /* OverallRatingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */; };
@@ -47,6 +48,7 @@
 		869FCBE22F9986FA00A280F2 /* BackwordStatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */; };
 		869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869FCBE32F99871800A280F2 /* BackwordStatsView.swift */; };
 		86AE8C972F913EAB001D69EE /* BackwordLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AE8C962F913EAB001D69EE /* BackwordLogo.swift */; };
+		86AE8C992FE31F01001D69EE /* LaunchSplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AE8C982FE31F01001D69EE /* LaunchSplashView.swift */; };
 		86AFC3CE2FBE53CA007623C3 /* BackwordArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */; };
 		86AFC3D12FBFC367007623C3 /* ScoringRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D02FBFC367007623C3 /* ScoringRuleView.swift */; };
 		86AFC3D32FC20460007623C3 /* BackwordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */; };
@@ -118,6 +120,7 @@
 		04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionInfoTests.swift; sourceTree = "<group>"; };
 		0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleView.swift; sourceTree = "<group>"; };
 		0C4762545EDB078B5DA1FA49 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
+		0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchSplashViewTests.swift; sourceTree = "<group>"; };
 		0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGridPattern.swift; sourceTree = "<group>"; };
 		15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionInfo.swift; sourceTree = "<group>"; };
 		19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingService.swift; sourceTree = "<group>"; };
@@ -155,6 +158,7 @@
 		869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsService.swift; sourceTree = "<group>"; };
 		869FCBE32F99871800A280F2 /* BackwordStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsView.swift; sourceTree = "<group>"; };
 		86AE8C962F913EAB001D69EE /* BackwordLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordLogo.swift; sourceTree = "<group>"; };
+		86AE8C982FE31F01001D69EE /* LaunchSplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchSplashView.swift; sourceTree = "<group>"; };
 		86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordArchiveRow.swift; sourceTree = "<group>"; };
 		86AFC3D02FBFC367007623C3 /* ScoringRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringRuleView.swift; sourceTree = "<group>"; };
 		86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordInstructionsContentView.swift; sourceTree = "<group>"; };
@@ -262,6 +266,7 @@
 				30AAC0EA05C940EEA05D4CE9 /* ArchiveViewModelTests.swift */,
 				A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */,
 				91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */,
+				0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */,
 				BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */,
 				72C4C6D72B1A4930A633D528 /* RatingBarLabelLayoutTests.swift */,
 				86BEEF002FDD000100000001 /* StoreServiceTests.swift */,
@@ -419,6 +424,7 @@
 				464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */,
 				86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */,
 				86AE8C962F913EAB001D69EE /* BackwordLogo.swift */,
+				86AE8C982FE31F01001D69EE /* LaunchSplashView.swift */,
 				869FCBE32F99871800A280F2 /* BackwordStatsView.swift */,
 			);
 			path = Backword;
@@ -609,6 +615,7 @@
 				9DAB5905105243A7AB4CA249 /* ArchiveViewModelTests.swift in Sources */,
 				6113351E253762AC9BB6A8E0 /* BackwordViewModelTests.swift in Sources */,
 				6B0F8E2B5B724322AE390E5B /* GameViewModelTests.swift in Sources */,
+				0A5F0E3C2FE322C700F00E3C /* LaunchSplashViewTests.swift in Sources */,
 				7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */,
 				72C4C6D82B1A4930A633D528 /* RatingBarLabelLayoutTests.swift in Sources */,
 				86BEEF012FDD000100000001 /* StoreServiceTests.swift in Sources */,
@@ -650,6 +657,7 @@
 				860A8F3C2FCEBA5100C2BE38 /* TipFactory.swift in Sources */,
 				A220B5F6D4E48FCC57832B9C /* CacheService.swift in Sources */,
 				86AE8C972F913EAB001D69EE /* BackwordLogo.swift in Sources */,
+				86AE8C992FE31F01001D69EE /* LaunchSplashView.swift in Sources */,
 				84A6DDAE7557421BC685E350 /* CellView.swift in Sources */,
 				BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */,
 				C2A2E6FA90B85E2884F67538 /* ClueListView.swift in Sources */,
