@@ -46,6 +46,9 @@ struct SettingsView: View {
 //                        .foregroundColor(.appTextSecondary)
 //                }
             }
+            .safeAreaInset(edge: .bottom) {
+                appVersionFooter
+            }
             .scrollContentBackground(.hidden)
             .background(Color.appBackground)
             .navigationTitle("Settings")
@@ -87,6 +90,15 @@ struct SettingsView: View {
         }
         .listRowBackground(Color.appSurface)
         .dynamicTypeSize(...DynamicTypeSize.accessibility3)
+    }
+
+    private var appVersionFooter: some View {
+        Text(AppVersionInfo.current.displayText)
+            .font(AppFont.caption())
+            .foregroundColor(.appTextSecondary)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .background(Color.appBackground)
     }
 
     private var letterFeedbackTitle: some View {

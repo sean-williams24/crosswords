@@ -9,11 +9,13 @@
 /* Begin PBXBuildFile section */
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
+		04F1AE892FE2A3E6007A1001 /* AppVersionInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */; };
 		05256FA0ABC9B788BBAABD5B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3838DB082E2416DB47994C4D /* HomeViewModel.swift */; };
 		0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */; };
 		10DA4E78777801F05B5F7B2A /* wotd_bank.json in Resources */ = {isa = PBXBuildFile; fileRef = E7EE22FCCC10583E80948886 /* wotd_bank.json */; };
 		143A79FE56648107686BEF85 /* OverallRatingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */; };
 		149802310440A77534BB615E /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8820C57EC2BCBADADEC4006C /* AppTheme.swift */; };
+		15C99D922FE2A3E6007A1001 /* AppVersionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */; };
 		1A9378281C994E16BFCC1FDC /* ArchivePuzzleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31664D1AD154A3FB5415AA5 /* ArchivePuzzleRow.swift */; };
 		1D5CED31842B691A8E91932F /* BackwordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64455C838772CB66C039CCE2 /* BackwordViewModel.swift */; };
 		1E354F5B18434CB3B98C776D /* ArchiveMonthGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D1C0AA78734BA68994AEF6 /* ArchiveMonthGrid.swift */; };
@@ -113,9 +115,11 @@
 /* Begin PBXFileReference section */
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
+		04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionInfoTests.swift; sourceTree = "<group>"; };
 		0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleView.swift; sourceTree = "<group>"; };
 		0C4762545EDB078B5DA1FA49 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGridPattern.swift; sourceTree = "<group>"; };
+		15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionInfo.swift; sourceTree = "<group>"; };
 		19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingService.swift; sourceTree = "<group>"; };
 		1E4D0C7C19A4685DF1DC48C2 /* UserStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStats.swift; sourceTree = "<group>"; };
 		20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordWord.swift; sourceTree = "<group>"; };
@@ -254,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */,
+				04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */,
 				30AAC0EA05C940EEA05D4CE9 /* ArchiveViewModelTests.swift */,
 				A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */,
 				91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */,
@@ -270,6 +275,7 @@
 			children = (
 				B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */,
 				41BD8C5299844A6BAF87B504 /* AppSettings.swift */,
+				15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */,
 				E6124F655D1ABA64F820B278 /* BackwordProgress.swift */,
 				C99766A650EBD6521697BD6C /* BackwordStats.swift */,
 				20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */,
@@ -599,6 +605,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */,
+				04F1AE892FE2A3E6007A1001 /* AppVersionInfoTests.swift in Sources */,
 				9DAB5905105243A7AB4CA249 /* ArchiveViewModelTests.swift in Sources */,
 				6113351E253762AC9BB6A8E0 /* BackwordViewModelTests.swift in Sources */,
 				6B0F8E2B5B724322AE390E5B /* GameViewModelTests.swift in Sources */,
@@ -621,6 +628,7 @@
 				95726DE84D084852B6D77C8C /* ArchiveViewModel.swift in Sources */,
 				809E28C92FF638D200FF7B33 /* AdFreeExperienceButton.swift in Sources */,
 				437E4CF0032D9E5D69A92C43 /* AppSettings.swift in Sources */,
+				15C99D922FE2A3E6007A1001 /* AppVersionInfo.swift in Sources */,
 				149802310440A77534BB615E /* AppTheme.swift in Sources */,
 				F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */,
 				86AFC3D32FC20460007623C3 /* BackwordInstructionsContentView.swift in Sources */,
