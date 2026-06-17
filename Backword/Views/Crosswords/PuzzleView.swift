@@ -12,9 +12,7 @@ struct PuzzleView: View {
     @State private var showPaywall = false
     @State private var showRewardedHintBanner = false
     @State private var showCrosswordStats = false
-    @State private var isKeyboardReady = false
     @State private var layoutKeyboardHeight: CGFloat = 0
-    @State private var suppressKeyboardUpdate = false
     @State private var shouldPopAfterCompletionSheet = false
     private let freeHintLimit = 0
 
@@ -122,13 +120,6 @@ struct PuzzleView: View {
                 .environmentObject(ratingService)
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear {
-            // Delay keyboard appearance until after the navigation push animation
-            // completes (~0.35s), for both grid sizes.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                isKeyboardReady = true
-            }
-        }
         .onDisappear {
             // Ensure metadata is saved for rating backfill
             if viewModel.progress.puzzleDate == nil {
@@ -162,48 +153,6 @@ struct PuzzleView: View {
         })
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
-//        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillChangeFrameNotification)) { notif in
-//            guard !suppressKeyboardUpdate else { return }
-//            let endFrame = (notif.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? .zero
-//            let screenHeight = UIScreen.main.bounds.height
-//            let rawHeight = max(0, screenHeight - endFrame.origin.y)
-//            // The keyboard frame includes the bottom safe area (home indicator), but the
-//            // VStack already respects it naturally — subtract to avoid double-counting.
-//            let safeAreaBottom = UIApplication.shared.connectedScenes
-//                .compactMap { $0 as? UIWindowScene }
-//                .first?.windows.first(where: { $0.isKeyWindow })?
-//                .safeAreaInsets.bottom ?? 0
-//            let height = max(0, rawHeight - safeAreaBottom)
-//            let duration = (notif.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double) ?? 0.25
-//            withAnimation(.easeInOut(duration: duration)) {
-//                layoutKeyboardHeight = height
-//            }
-//        }
-//        .onChange(of: viewModel.showClueList) { _, isShowing in
-//            handleKeyboardSurpression(if: isShowing)
-//            
-//        }
-//        .onChange(of: showCrosswordStats) { _, isShowing in
-//            handleKeyboardSurpression(if: isShowing)
-//        }
-//        .onChange(of: showPaywall) { _, isShowing in
-//            handleKeyboardSurpression(if: isShowing)
-//        }
-//        .onChange(of: viewModel.isComplete) { _, isShowing in
-//            handleKeyboardSurpression(if: isShowing)
-//        }
-//        .onTapGesture {
-//            viewModel.deactivateZenMode()
-//        }
-//    }
-//
-//    private func handleKeyboardSurpression(if isShowing: Bool) {
-//        if isShowing {
-//            suppressKeyboardUpdate = true
-//        } else {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { suppressKeyboardUpdate = false }
-//        }
-//    }
 
     // MARK: - Rewarded
     private let hintIcon: some View = Image(systemName: "play.circle.fill")
