@@ -108,21 +108,18 @@ function ScreenshotSection({
   const screenshot = (
     <PhoneMockup src={screenshotSrc} alt={screenshotAlt} size={screenshotSize} />
   );
+  const textClass =
+    screenshotPosition === "left" ? "lg:order-2" : "lg:order-1";
+  const screenshotClass =
+    screenshotPosition === "left"
+      ? "lg:order-1 lg:justify-self-start"
+      : "lg:order-2 lg:justify-self-end";
 
   return (
     <section className={`border-b border-line/80 px-6 ${sectionPadding}`}>
       <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
-        {screenshotPosition === "left" ? (
-          <>
-            <div className="lg:justify-self-start">{screenshot}</div>
-            {text}
-          </>
-        ) : (
-          <>
-            {text}
-            <div className="lg:justify-self-end">{screenshot}</div>
-          </>
-        )}
+        <div className={textClass}>{text}</div>
+        <div className={screenshotClass}>{screenshot}</div>
       </div>
     </section>
   );

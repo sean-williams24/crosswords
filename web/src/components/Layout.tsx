@@ -15,7 +15,7 @@ export function Layout({ children }: LayoutProps) {
             className="text-lg font-semibold text-textPrimary transition hover:text-heading"
             to="/"
           >
-            Backword
+            Home
           </Link>
           <nav aria-label="Main" className="flex gap-5 text-sm text-textSecondary">
             <Link className="transition hover:text-textPrimary" to="/privacy">

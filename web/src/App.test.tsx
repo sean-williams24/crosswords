@@ -25,6 +25,30 @@ describe("Backword website routes", () => {
     expect(screen.getAllByRole("link", { name: "Terms" })).toHaveLength(2);
   });
 
+  it("keeps homepage section text before screenshots in mobile source order", () => {
+    renderRoute("/");
+
+    const backwordHeading = screen.getByRole("heading", {
+      level: 2,
+      name: "Guess forwards. Reveal backwards."
+    });
+    const backwordImage = screen.getByAltText("Backword gameplay screen");
+    const weeklyHeading = screen.getByRole("heading", {
+      level: 2,
+      name: "A larger 13 x 13 puzzle for a slower challenge."
+    });
+    const weeklyImage = screen.getByAltText("Backword weekly crossword screen");
+
+    expect(
+      backwordHeading.compareDocumentPosition(backwordImage) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+    expect(
+      weeklyHeading.compareDocumentPosition(weeklyImage) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+  });
+
   it("renders the privacy route", () => {
     renderRoute("/privacy");
 
