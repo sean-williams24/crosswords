@@ -54,7 +54,7 @@ struct BackwordCard: View {
             }
         }
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
-        .background(Color.appBackground)
+        .background(Color.appCrosswordBackground)
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)

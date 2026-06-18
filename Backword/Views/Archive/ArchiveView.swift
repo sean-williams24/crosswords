@@ -16,7 +16,6 @@ struct ArchiveView: View {
             ZStack {
                 AppBackgroundGradient()
                 archiveContent
-                bottomBlur
 
                 VStack {
                     Spacer()
@@ -219,26 +218,13 @@ struct ArchiveView: View {
     }
 
     private var archiveTabToggle: some View {
-        HStack(spacing: 0) {
-            ForEach(viewModel.tabs, id: \.self) { tab in
-                Button {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                        viewModel.selectedTab = tab
-                    }
-                } label: {
-                    Text(tab.rawValue)
-                        .font(AppFont.clueLabel(viewModel.selectedTab == tab ? 15 : 13))
-                        .minimumScaleFactor(0.6)
-                        .foregroundColor(viewModel.selectedTab == tab ? .appTextPrimary : .appTextSecondary)
-                        .frame(maxWidth: .infinity)
-                        .multilineTextAlignment(.center)
-                        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: viewModel.selectedTab)
-                        .padding(.vertical, 12)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
+        ArchiveTabBarView(
+            tabs: viewModel.tabs,
+            selectedTab: viewModel.selectedTab
+        ) { tab in
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                viewModel.selectedTab = tab
             }
-            .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         }
     }
 }

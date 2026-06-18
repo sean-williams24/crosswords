@@ -306,60 +306,19 @@ struct HomeView: View {
 
     @ViewBuilder
     private var archiveFooterBar: some View {
-        VStack(spacing: 0) {
-            HStack {
-                archiveButton
-                statsButton
+        HomeTabBarView(
+            isProUser: storeService.isProUser,
+            showArchive: {
+                if storeService.isProUser {
+                    showArchive = true
+                } else {
+                    showPaywall = true
+                }
+            },
+            showStats: {
+                showRatingDetails = true
             }
-            .padding(.horizontal, AppLayout.screenPadding)
-            .padding(.top, 8)
-            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
-        }
-        .background {
-            ZStack {
-                Rectangle().fill(.ultraThinMaterial)
-                Color.appBackground.opacity(0.75)
-            }
-            .mask(
-                LinearGradient(
-                    stops: [
-                        .init(color: .clear, location: 0),
-                        .init(color: .black, location: 0.15)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
-            .ignoresSafeArea()
-        }
-    }
-
-    private var statsButton: some View {
-        Button {
-            showRatingDetails = true
-        } label: {
-            Label("Stats", systemImage: "brain.head.profile")
-                .font(AppFont.clueLabel(14))
-                .foregroundColor(.appTextSecondary)
-                .frame(maxWidth: .infinity)
-                .padding(.top, 14)
-        }
-    }
-
-    private var archiveButton: some View {
-        Button {
-            if storeService.isProUser {
-                showArchive = true
-            } else {
-                showPaywall = true
-            }
-        } label: {
-            Label("Archive", systemImage: storeService.isProUser ? "archivebox" : "lock.fill")
-                .font(AppFont.clueLabel(16))
-                .foregroundColor(.appTextSecondary)
-                .frame(maxWidth: .infinity)
-                .padding(.top, 14)
-        }
+        )
     }
 
     private var backwordCard: some View {
