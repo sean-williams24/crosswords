@@ -73,6 +73,59 @@ struct GameViewModelTests {
         #expect(vm.progress.entries[0][0] == "Z")
     }
 
+    @Test("Rewarded hint grant consumes one hint for a new clue")
+    func rewardedHintGrantConsumesOneHintForNewClue() async throws {
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(puzzle: puzzle)
+
+        let didGrantHint = vm.grantRewardedHint()
+
+        #expect(didGrantHint)
+        #expect(vm.adBonusHints == 1)
+        #expect(vm.progress.hintsUsed == 1)
+        #expect(vm.progress.hintedClueIds.contains(0))
+        #expect(vm.showHint)
+    }
+
+    @Test("Rewarded hint grant is idempotent for an already hinted clue")
+    func rewardedHintGrantIsIdempotentForAlreadyHintedClue() async throws {
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(puzzle: puzzle)
+
+        #expect(vm.grantRewardedHint())
+        #expect(vm.grantRewardedHint())
+
+        #expect(vm.adBonusHints == 1)
+        #expect(vm.progress.hintsUsed == 1)
+        #expect(vm.progress.hintedClueIds == [0])
+        #expect(vm.showHint)
+    }
+
+    @Test("Rewarded hint grant does not consume a hint for an already answered clue")
+    func rewardedHintGrantDoesNotConsumeHintForAlreadyAnsweredClue() async throws {
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(puzzle: puzzle)
+        vm.enterLetter("A")
+        vm.enterLetter("B")
+
+        let didGrantHint = vm.grantRewardedHint()
+
+        #expect(!didGrantHint)
+        #expect(vm.adBonusHints == 0)
+        #expect(vm.progress.hintsUsed == 0)
+        #expect(vm.progress.hintedClueIds.isEmpty)
+        #expect(!vm.showHint)
+    }
+
     private func makePuzzle() -> Puzzle {
         let clue = Clue(
             id: 0,

@@ -35,11 +35,19 @@ final class AdService: NSObject, ObservableObject {
     }
 
     // MARK: - State
+    enum RewardedAdResult {
+        case earnedReward
+        case unavailable
+        case failedToPresent
+        case dismissedWithoutReward
+    }
+
     @Published var rewardedAdDidDismiss = false
     var rewardGranted = false
     private var interstitial: InterstitialAd?
     private var rewarded: RewardedAd?
     private var onAdDismissedCallback: (@MainActor () -> Void)?
+    private var rewardedAdCompletion: (@MainActor (RewardedAdResult) -> Void)?
 
     // MARK: - Init
 
@@ -117,16 +125,41 @@ final class AdService: NSObject, ObservableObject {
         showInterstitial()
     }
 
-    func showRewardedAd() {
-        guard let rewarded else {
-            Task { await loadRewardedAd() }
-            return print("Ad wasn't ready.")
+    func showRewardedAd(onComplete: @escaping @MainActor (RewardedAdResult) -> Void) {
+        guard rewardedAdCompletion == nil else {
+            onComplete(.dismissedWithoutReward)
+            return
         }
 
+        #if DEBUG
+        guard debugAdsEnabled else {
+            onComplete(.unavailable)
+            Task { await loadRewardedAd() }
+            return
+        }
+        #endif
+
+        guard let rewarded else {
+            Task { await loadRewardedAd() }
+            print("Ad wasn't ready.")
+            onComplete(.unavailable)
+            return
+        }
+
+        guard let presenter = topViewController() else {
+            self.rewarded = nil
+            Task { await loadRewardedAd() }
+            onComplete(.failedToPresent)
+            return
+        }
+
+        rewardedAdCompletion = onComplete
         rewardedAdDidDismiss = false
+        rewardGranted = false
         Task { @MainActor in
-            rewarded.present(from: topViewController()) { @MainActor [weak self] in
-                self?.rewardGranted = true
+            rewarded.present(from: presenter) { @MainActor [weak self] in
+                guard let self else { return }
+                rewardGranted = true
             }
         }
     }
@@ -159,16 +192,31 @@ final class AdService: NSObject, ObservableObject {
         }
         return top
     }
+
+    private func completeRewardedAd(with result: RewardedAdResult) {
+        guard let completion = rewardedAdCompletion else { return }
+        rewardedAdCompletion = nil
+        completion(result)
+    }
 }
 
 // MARK: - GADFullScreenContentDelegate
 
 extension AdService: FullScreenContentDelegate {
-     func ad(
+    func ad(
       _ ad: FullScreenPresentingAd,
       didFailToPresentFullScreenContentWithError error: Error
     ) {
-        onAdDismissedCallback?()
+        if let _ = ad as? RewardedAd {
+            rewarded = nil
+            rewardGranted = false
+            completeRewardedAd(with: .failedToPresent)
+            Task { @MainActor [self] in
+                await loadRewardedAd()
+            }
+        } else {
+            onAdDismissedCallback?()
+        }
     }
 
     func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
@@ -184,6 +232,11 @@ extension AdService: FullScreenContentDelegate {
             onAdDismissedCallback?()
         } else if let _ = ad as? RewardedAd {
             rewarded = nil
+            if rewardGranted {
+                completeRewardedAd(with: .earnedReward)
+            } else {
+                completeRewardedAd(with: .dismissedWithoutReward)
+            }
             rewardGranted = false
             rewardedAdDidDismiss = true
             Task { @MainActor [self] in

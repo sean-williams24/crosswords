@@ -14,6 +14,7 @@ struct PuzzleView: View {
     @State private var showCrosswordStats = false
     @State private var layoutKeyboardHeight: CGFloat = 0
     @State private var shouldPopAfterCompletionSheet = false
+    @State private var isRewardedAdRequestInFlight = false
     private let freeHintLimit = 0
 
     private var isZoomableGrid: Bool {
@@ -139,18 +140,6 @@ struct PuzzleView: View {
                 ratingService.recordDailyCrossword(completedClues: completed, totalClues: total, date: date, hintsUsed: hintsUsed)
             }
         }
-        .onChange(of: adService.rewardedAdDidDismiss, { _, didDismiss in
-            if didDismiss {
-                withAnimation {
-                    showRewardedHintBanner = false
-                }
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    viewModel.adBonusHints += 1
-                    viewModel.useHint()
-                }
-            }
-        })
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
@@ -174,7 +163,23 @@ struct PuzzleView: View {
 
     private var watchButton: some View {
         Button {
-            adService.showRewardedAd()
+            guard !isRewardedAdRequestInFlight else { return }
+            isRewardedAdRequestInFlight = true
+            adService.showRewardedAd { result in
+                isRewardedAdRequestInFlight = false
+                withAnimation {
+                    showRewardedHintBanner = false
+                }
+
+                switch result {
+                case .earnedReward, .unavailable, .failedToPresent:
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        viewModel.grantRewardedHint()
+                    }
+                case .dismissedWithoutReward:
+                    break
+                }
+            }
         } label: {
             Text("Watch")
                 .frame(maxWidth: .infinity)
@@ -182,9 +187,10 @@ struct PuzzleView: View {
                 .foregroundColor(.white)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 8)
-                .background(Color.appAccent)
+                .background(Color.appAccent.opacity(isRewardedAdRequestInFlight ? 0.55 : 1))
                 .cornerRadius(10)
         }
+        .disabled(isRewardedAdRequestInFlight)
     }
 
     private var unlimitedButton: some View {
@@ -345,4 +351,3 @@ struct PuzzleView: View {
             .environmentObject(AdService())
     }
 }
-

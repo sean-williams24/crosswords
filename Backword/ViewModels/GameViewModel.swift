@@ -224,8 +224,7 @@ final class GameViewModel: ObservableObject {
         guard let clue = activeClue else { return }
 
         // Don't consume a hint if the clue is already fully answered
-        let isAlreadyAnswered = clue.cells.allSatisfy { progress.entries[$0.row][$0.col] != nil }
-        if isAlreadyAnswered {
+        if activeClueIsAlreadyAnswered {
             showAlreadyAnswered = true
             Task {
                 try? await Task.sleep(nanoseconds: 3_000_000_000)
@@ -250,6 +249,25 @@ final class GameViewModel: ObservableObject {
         }
     }
 
+    @discardableResult
+    func grantRewardedHint() -> Bool {
+        guard activeClue != nil else { return false }
+
+        guard !activeClueIsAlreadyAnswered else {
+            useHint()
+            return false
+        }
+
+        if activeClueIsHinted {
+            showHint = true
+            return true
+        }
+
+        adBonusHints += 1
+        useHint()
+        return true
+    }
+
     var currentClueText: String {
         guard let clue = activeClue else { return "" }
         return showHint ? clue.hint : clue.text
@@ -258,6 +276,11 @@ final class GameViewModel: ObservableObject {
     var activeClueIsHinted: Bool {
         guard let clue = activeClue else { return false }
         return progress.hintedClueIds.contains(clue.id)
+    }
+
+    private var activeClueIsAlreadyAnswered: Bool {
+        guard let clue = activeClue else { return false }
+        return clue.cells.allSatisfy { progress.entries[$0.row][$0.col] != nil }
     }
 
     // MARK: - Zen Mode
