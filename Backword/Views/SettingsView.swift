@@ -3,8 +3,11 @@ import SwiftUI
 struct SettingsView: View {
     @ObservedObject private var settings = AppSettings.shared
     @EnvironmentObject var storeService: StoreService
+    @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     @AppStorage("appColorScheme") private var appColorScheme: Int = 2
+    @State private var isShowingMailComposer = false
+    @State private var isFeedbackRowPressed = false
 
     var body: some View {
         NavigationStack {
@@ -32,6 +35,16 @@ struct SettingsView: View {
                         .foregroundColor(.appTextSecondary)
                 }
 
+                Section {
+                    sendFeedbackRow
+                } header: {
+                    Text("SUPPORT")
+                        .font(AppFont.clueLabel(12))
+                        .foregroundColor(.appAccent)
+                        .tracking(2)
+                        .textCase(nil)
+                }
+
 //                Section {
 //                    letterFeedbackRow
 //                } header: {
@@ -56,6 +69,12 @@ struct SettingsView: View {
             .preferredColorScheme(selectedScheme)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .sheet(isPresented: $isShowingMailComposer) {
+                MailComposerView(
+                    content: .current,
+                    isPresented: $isShowingMailComposer
+                )
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -90,6 +109,47 @@ struct SettingsView: View {
         }
         .listRowBackground(Color.appSurface)
         .dynamicTypeSize(...DynamicTypeSize.accessibility3)
+    }
+
+    private var sendFeedbackRow: some View {
+        Button {
+            sendFeedback()
+        } label: {
+            HStack {
+                Text("Send Feedback")
+                    .font(AppFont.body(15))
+                    .foregroundColor(.appTextPrimary)
+
+                Spacer()
+
+                Image(systemName: "envelope")
+                    .foregroundColor(.appTextSecondary)
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .listRowBackground(isFeedbackRowPressed ? Color.appAccent.opacity(0.14) : Color.appSurface)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility3)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in
+                    isFeedbackRowPressed = true
+                }
+                .onEnded { _ in
+                    isFeedbackRowPressed = false
+                }
+        )
+    }
+
+    private func sendFeedback() {
+        let content = FeedbackEmailContent.current
+
+        if MailComposerView.canSendMail {
+            isShowingMailComposer = true
+        } else if let mailtoURL = content.mailtoURL {
+            openURL(mailtoURL)
+        }
     }
 
     private var appVersionFooter: some View {
