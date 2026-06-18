@@ -6,6 +6,7 @@ final class ArchiveViewModel: ObservableObject {
     @Published var isLoading = true
     @Published var selectedTab: ArchiveTab = .backword
     @Published var selectedPuzzle: Puzzle?
+    @Published var selectedPuzzleLaunchContext: PuzzleLaunchContext = .home
     @Published var showPuzzle = false
     @Published var loadingMonths: Set<ArchiveMonthKey> = []
     @Published var unavailableMonths: Set<ArchiveMonthKey> = []
@@ -92,6 +93,17 @@ final class ArchiveViewModel: ObservableObject {
         return "\(type.rawValue)-\(month.key)-\(content.count(for: type))"
     }
 
+    var currentWeeklyPuzzleId: String? {
+        contentByMonth.values
+            .flatMap(\.weeklyPuzzles)
+            .sorted { lhs, rhs in
+                if lhs.date != rhs.date { return lhs.date > rhs.date }
+                return lhs.puzzleNumber > rhs.puzzleNumber
+            }
+            .first?
+            .id
+    }
+
     func loadInitialArchive() async {
         defer { isLoading = false }
 
@@ -133,8 +145,9 @@ final class ArchiveViewModel: ObservableObject {
         }
     }
 
-    func openPuzzle(_ puzzle: Puzzle) {
+    func openPuzzle(_ puzzle: Puzzle, type: ArchiveGameType) {
         selectedPuzzle = puzzle
+        selectedPuzzleLaunchContext = .archive(type: type, currentWeeklyPuzzleId: currentWeeklyPuzzleId)
         showPuzzle = true
     }
 

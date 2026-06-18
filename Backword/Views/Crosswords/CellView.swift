@@ -94,7 +94,12 @@ struct CellView: View {
     // MARK: - Colors
 
     private var cellBackground: Color {
-        if settings.crosswordCorrectHighlight && viewModel.isCompleted(row: row, col: col) {
+        if viewModel.isGaveUpRevealed(row: row, col: col) {
+            return viewModel.isSelected(row: row, col: col)
+                ? .appGaveUp.opacity(0.65)
+                : .appGaveUp.opacity(0.3)
+        }
+        if (settings.crosswordCorrectHighlight || viewModel.hasGivenUp) && viewModel.isCompleted(row: row, col: col) {
             return viewModel.isSelected(row: row, col: col)
                 ? .appCorrect.opacity(0.65)
                 : .appCorrect.opacity(0.3)

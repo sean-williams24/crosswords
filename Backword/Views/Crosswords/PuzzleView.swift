@@ -15,10 +15,15 @@ struct PuzzleView: View {
     @State private var layoutKeyboardHeight: CGFloat = 0
     @State private var shouldPopAfterCompletionSheet = false
     @State private var isRewardedAdRequestInFlight = false
+    @State private var showGiveUpConfirmation = false
     private let freeHintLimit = 0
 
     private var isZoomableGrid: Bool {
         viewModel.puzzle.size > 12
+    }
+
+    private var canGiveUp: Bool {
+        viewModel.canGiveUp(isProUser: storeService.isProUser)
     }
 
     private var navigationBar: some View {
@@ -110,6 +115,7 @@ struct PuzzleView: View {
                 .environmentObject(statsService)
                 .environmentObject(storeService)
                 .environmentObject(adService)
+                .environmentObject(ratingService)
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
@@ -120,6 +126,14 @@ struct PuzzleView: View {
                 .environmentObject(statsService)
                 .environmentObject(ratingService)
         }
+        .alert("Give up?", isPresented: $showGiveUpConfirmation) {
+            Button("Cancel", role: .cancel) {}
+            Button("Reveal Answers", role: .destructive) {
+                viewModel.giveUp(displayScore: giveUpDisplayScore)
+            }
+        } message: {
+            Text("This will reveal and lock every answer for this archive puzzle.")
+        }
         .navigationBarBackButtonHidden(true)
         .onDisappear {
             // Ensure metadata is saved for rating backfill
@@ -129,6 +143,7 @@ struct PuzzleView: View {
                 viewModel.progress.isWeekly = viewModel.puzzle.size > 12
                 viewModel.progress.save()
             }
+            guard !viewModel.hasGivenUp else { return }
             // Record partial or complete progress whenever the user leaves the puzzle
             let completed = viewModel.progress.completedClueIds.count
             let total = viewModel.puzzle.clues.count
@@ -296,6 +311,17 @@ struct PuzzleView: View {
 
     @ViewBuilder
     private var toolbarButtons: some View {
+        if canGiveUp {
+            Button {
+                showGiveUpConfirmation = true
+            } label: {
+                Image(systemName: "flag.slash")
+                    .frame(width: 34)
+                    .foregroundColor(.appTextPrimary)
+            }
+            .accessibilityLabel("Give up")
+        }
+
         Button {
             showCrosswordStats = true
         } label: {
@@ -332,6 +358,18 @@ struct PuzzleView: View {
             .foregroundColor(viewModel.activeClueIsHinted ? .appCorrect : .appAccent)
         }
     }
+
+    private var giveUpDisplayScore: Int {
+        savedReleaseDateScore ?? viewModel.currentScore
+    }
+
+    private var savedReleaseDateScore: Int? {
+        ratingService.rating.dailyScores
+            .first { $0.date == viewModel.puzzle.date }
+            .flatMap { day in
+                viewModel.puzzle.size > 12 ? day.weeklyCrossword : day.dailyCrossword
+            }
+    }
 }
 
 #Preview {
@@ -340,6 +378,7 @@ struct PuzzleView: View {
             .environmentObject(StatsService())
             .environmentObject(StoreService())
             .environmentObject(AdService())
+            .environmentObject(OverallRatingService())
     }
 }
 
@@ -349,5 +388,6 @@ struct PuzzleView: View {
             .environmentObject(StatsService())
             .environmentObject(StoreService())
             .environmentObject(AdService())
+            .environmentObject(OverallRatingService())
     }
 }

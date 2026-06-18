@@ -88,6 +88,41 @@ struct Puzzle: Codable, Identifiable, Hashable {
     }
 }
 
+// MARK: - Puzzle Launch Context
+
+enum PuzzleLaunchContext: Equatable {
+    case home
+    case archive(type: ArchiveGameType, currentWeeklyPuzzleId: String?)
+
+    var archiveType: ArchiveGameType? {
+        guard case let .archive(type, _) = self else { return nil }
+        return type
+    }
+
+    func canGiveUp(
+        puzzle: Puzzle,
+        progress: UserProgress,
+        isProUser: Bool,
+        todayString: String = DateFormatting().todayString()
+    ) -> Bool {
+        guard isProUser,
+              !progress.isComplete,
+              progress.gaveUpAt == nil,
+              case let .archive(type, currentWeeklyPuzzleId) = self else {
+            return false
+        }
+
+        switch type {
+        case .daily:
+            return puzzle.date < todayString
+        case .weekly:
+            return puzzle.id != currentWeeklyPuzzleId
+        case .backword:
+            return false
+        }
+    }
+}
+
 // MARK: - Sample Data
 
 extension Puzzle {

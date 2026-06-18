@@ -44,6 +44,7 @@ final class StatsService: ObservableObject {
 
         for progress in UserProgress.loadAll() {
             guard progress.isComplete,
+                  progress.gaveUpAt == nil,
                   let completedAt = progress.completedAt,
                   !existingIds.contains(progress.puzzleId) else { continue }
 

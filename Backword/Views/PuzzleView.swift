@@ -11,6 +11,7 @@ struct PuzzleView: View {
     @State private var showRewardedHintBanner = false
     @State private var showCrosswordStats = false
     @State private var isKeyboardReady = false
+    @State private var shouldPopAfterCompletionSheet = false
 
     private let freeHintLimit = 1
 
@@ -92,11 +93,19 @@ struct PuzzleView: View {
         .sheet(isPresented: $viewModel.showClueList) {
             ClueListView(viewModel: viewModel)
         }
-        .sheet(isPresented: $viewModel.isComplete) {
-            CompletionView(viewModel: viewModel)
+        .sheet(
+            isPresented: $viewModel.isComplete,
+            onDismiss: {
+                if shouldPopAfterCompletionSheet {
+                    dismiss()
+                }
+            }
+        ) {
+            CompletionView(viewModel: viewModel, shouldPop: $shouldPopAfterCompletionSheet)
                 .environmentObject(statsService)
                 .environmentObject(storeService)
                 .environmentObject(adService)
+                .environmentObject(ratingService)
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
@@ -121,6 +130,7 @@ struct PuzzleView: View {
                 viewModel.progress.isWeekly = viewModel.puzzle.size > 12
                 viewModel.progress.save()
             }
+            guard !viewModel.hasGivenUp else { return }
             // Record partial or complete progress whenever the user leaves the puzzle
             let completed = viewModel.progress.completedClueIds.count
             let total = viewModel.puzzle.clues.count
@@ -271,6 +281,7 @@ struct PuzzleView: View {
             .environmentObject(StatsService())
             .environmentObject(StoreService())
             .environmentObject(AdService())
+            .environmentObject(OverallRatingService())
     }
 }
 
@@ -280,6 +291,6 @@ struct PuzzleView: View {
             .environmentObject(StatsService())
             .environmentObject(StoreService())
             .environmentObject(AdService())
+            .environmentObject(OverallRatingService())
     }
 }
-

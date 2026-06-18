@@ -5,6 +5,7 @@ struct CompletionView: View {
     @EnvironmentObject var statsService: StatsService
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
+    @EnvironmentObject var ratingService: OverallRatingService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @State private var showContent = false
@@ -21,7 +22,7 @@ struct CompletionView: View {
 
                 // Celebration header
                 VStack(spacing: 8) {
-                    Text("Solved!")
+                    Text(viewModel.hasGivenUp ? "Gave up" : "Solved!")
                         .font(AppFont.header(40))
                         .foregroundColor(.appTextHeading)
 
@@ -48,7 +49,7 @@ struct CompletionView: View {
                     }
                     HStack(spacing: 24) {
                         statItem(
-                            value: "\(max(0, 5 - viewModel.progress.hintsUsed / 3))/5",
+                            value: "\(completionScore)/5",
                             label: "SCORE"
                         )
                         statDivider
@@ -99,12 +100,14 @@ struct CompletionView: View {
             }
         }
         .onAppear {
-            statsService.recordCompletion(
-                puzzleId: viewModel.puzzle.id,
-                timeSeconds: Int(viewModel.progress.elapsedTime),
-                hintsUsed: viewModel.progress.hintsUsed,
-                isWeekly: viewModel.puzzle.size > 12
-            )
+            if !viewModel.hasGivenUp {
+                statsService.recordCompletion(
+                    puzzleId: viewModel.puzzle.id,
+                    timeSeconds: Int(viewModel.progress.elapsedTime),
+                    hintsUsed: viewModel.progress.hintsUsed,
+                    isWeekly: viewModel.puzzle.size > 12
+                )
+            }
 
             withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.2)) {
                 showContent = true
@@ -143,6 +146,21 @@ struct CompletionView: View {
             .frame(width: 1, height: 40)
     }
 
+    private var completionScore: Int {
+        if viewModel.hasGivenUp {
+            return savedReleaseDateScore ?? viewModel.progress.gaveUpScore ?? 0
+        }
+        return max(0, 5 - viewModel.progress.hintsUsed / 3)
+    }
+
+    private var savedReleaseDateScore: Int? {
+        ratingService.rating.dailyScores
+            .first { $0.date == viewModel.puzzle.date }
+            .flatMap { day in
+                viewModel.puzzle.size > 12 ? day.weeklyCrossword : day.dailyCrossword
+            }
+    }
+
     // MARK: - Share
 
     private var shareText: String {
@@ -165,4 +183,5 @@ struct CompletionView: View {
         .environmentObject(StatsService())
         .environmentObject(StoreService())
         .environmentObject(AdService())
+        .environmentObject(OverallRatingService())
 }

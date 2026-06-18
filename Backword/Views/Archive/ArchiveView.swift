@@ -4,6 +4,7 @@ struct ArchiveView: View {
     @EnvironmentObject var statsService: StatsService
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
+    @EnvironmentObject var ratingService: OverallRatingService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
@@ -36,10 +37,11 @@ struct ArchiveView: View {
             }
             .navigationDestination(isPresented: $viewModel.showPuzzle) {
                 if let puzzle = viewModel.selectedPuzzle {
-                    PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
+                    PuzzleView(viewModel: GameViewModel(puzzle: puzzle, launchContext: viewModel.selectedPuzzleLaunchContext))
                         .environmentObject(statsService)
                         .environmentObject(storeService)
                         .environmentObject(adService)
+                        .environmentObject(ratingService)
                 }
             }
             .task {
@@ -151,13 +153,13 @@ struct ArchiveView: View {
         case .daily:
             ForEach(content.dailyPuzzles) { puzzle in
                 ArchivePuzzleRow(puzzle: puzzle, isWeekly: false) {
-                    viewModel.openPuzzle(puzzle)
+                    viewModel.openPuzzle(puzzle, type: .daily)
                 }
             }
         case .weekly:
             ForEach(content.weeklyPuzzles) { puzzle in
                 ArchivePuzzleRow(puzzle: puzzle, isWeekly: true) {
-                    viewModel.openPuzzle(puzzle)
+                    viewModel.openPuzzle(puzzle, type: .weekly)
                 }
             }
         }
@@ -234,4 +236,5 @@ struct ArchiveView: View {
         .environmentObject(StatsService())
         .environmentObject(StoreService())
         .environmentObject(AdService())
+        .environmentObject(OverallRatingService())
 }

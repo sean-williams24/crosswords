@@ -36,7 +36,8 @@ final class OverallRatingService: ObservableObject {
 
         // Crosswords — scan all progress files that have metadata
         for p in UserProgress.loadAll() {
-            guard let date = p.puzzleDate, date >= cutoff,
+            guard p.gaveUpAt == nil,
+                  let date = p.puzzleDate, date >= cutoff,
                   let total = p.totalClues, total > 0 else { continue }
             let completed = p.completedClueIds.count
             let pct = Int(Double(completed) / Double(total) * 100)

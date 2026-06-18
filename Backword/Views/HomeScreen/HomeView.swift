@@ -98,6 +98,7 @@ struct HomeView: View {
                     .environmentObject(statsService)
                     .environmentObject(storeService)
                     .environmentObject(adService)
+                    .environmentObject(ratingService)
             }
             .sheet(isPresented: $showPaywall) {
                 PaywallView()

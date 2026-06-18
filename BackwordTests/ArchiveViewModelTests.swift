@@ -112,6 +112,21 @@ struct ArchiveViewModelTests {
         #expect(viewModel.expandedMonth(for: .weekly) == april)
     }
 
+    @Test("Opening archive puzzle captures newest loaded weekly as current")
+    func openingArchivePuzzleCapturesNewestLoadedWeeklyAsCurrent() async {
+        let currentMonth = ArchiveMonth(year: 2026, month: 6)
+        let previousMonth = ArchiveMonth(year: 2026, month: 5)
+        let dataSource = MockArchiveDataSource(currentMonth: currentMonth, olderMonth: previousMonth)
+        let viewModel = ArchiveViewModel(dataSource: dataSource, currentMonth: currentMonth)
+
+        await viewModel.loadInitialArchive()
+        let puzzle = makePuzzle(id: "daily-archive", date: "2026-06-12")
+        viewModel.openPuzzle(puzzle, type: .daily)
+
+        #expect(viewModel.selectedPuzzle?.id == "daily-archive")
+        #expect(viewModel.selectedPuzzleLaunchContext == .archive(type: .daily, currentWeeklyPuzzleId: "weekly-current"))
+    }
+
     @Test("Switching between already loaded months publishes a view update")
     func switchingLoadedMonthsPublishesUpdate() async {
         let currentMonth = ArchiveMonth(year: 2026, month: 6)

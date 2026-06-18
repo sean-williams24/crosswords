@@ -126,7 +126,179 @@ struct GameViewModelTests {
         #expect(!vm.showHint)
     }
 
-    private func makePuzzle() -> Puzzle {
+    @Test("Give up fills answers, completes clues, and persists metadata")
+    func giveUpFillsAnswersCompletesCluesAndPersistsMetadata() async throws {
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(
+            puzzle: puzzle,
+            launchContext: .archive(type: .daily, currentWeeklyPuzzleId: nil)
+        )
+
+        vm.giveUp(displayScore: 3)
+
+        #expect(vm.progress.entries[0][0] == "A")
+        #expect(vm.progress.entries[0][1] == "B")
+        #expect(vm.progress.completedClueIds == [0])
+        #expect(vm.progress.completedAt != nil)
+        #expect(vm.progress.gaveUpAt != nil)
+        #expect(vm.progress.gaveUpScore == 3)
+        #expect(vm.progress.gaveUpRevealedCells == ["0,0", "0,1"])
+        #expect(!vm.isComplete)
+
+        let saved = try #require(UserProgress.load(puzzleId: puzzle.id))
+        #expect(saved.gaveUpAt != nil)
+        #expect(saved.gaveUpScore == 3)
+        #expect(saved.gaveUpRevealedCells == ["0,0", "0,1"])
+        #expect(saved.entries[0][0] == "A")
+        #expect(saved.entries[0][1] == "B")
+    }
+
+    @Test("Give up marks only previously incomplete cells as revealed")
+    func giveUpMarksOnlyPreviouslyIncompleteCellsAsRevealed() async throws {
+        let puzzle = makeTwoAnswerPuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(
+            puzzle: puzzle,
+            launchContext: .archive(type: .daily, currentWeeklyPuzzleId: nil)
+        )
+
+        vm.enterLetter("A")
+        vm.enterLetter("B")
+        vm.giveUp(displayScore: 3)
+
+        #expect(!vm.isGaveUpRevealed(row: 0, col: 0))
+        #expect(!vm.isGaveUpRevealed(row: 0, col: 1))
+        #expect(vm.isGaveUpRevealed(row: 1, col: 0))
+        #expect(vm.isGaveUpRevealed(row: 1, col: 1))
+        #expect(vm.progress.gaveUpRevealedCells == ["1,0", "1,1"])
+    }
+
+    @Test("Give up locks entries against typing and deleting")
+    func giveUpLocksEntriesAgainstTypingAndDeleting() async throws {
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(
+            puzzle: puzzle,
+            launchContext: .archive(type: .daily, currentWeeklyPuzzleId: nil)
+        )
+        vm.giveUp(displayScore: 2)
+
+        vm.selectCell(row: 0, col: 0)
+        vm.enterLetter("Z")
+        vm.deleteLetter()
+
+        #expect(vm.progress.entries[0][0] == "A")
+        #expect(vm.progress.entries[0][1] == "B")
+    }
+
+    @Test("Normal solve completes without give up metadata")
+    func normalSolveCompletesWithoutGiveUpMetadata() async throws {
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(puzzle: puzzle)
+        vm.enterLetter("A")
+        vm.enterLetter("B")
+
+        #expect(vm.isComplete)
+        #expect(vm.progress.completedAt != nil)
+        #expect(vm.progress.gaveUpAt == nil)
+        #expect(vm.progress.gaveUpScore == nil)
+    }
+
+    @Test("Home-launched puzzle cannot give up")
+    func homeLaunchedPuzzleCannotGiveUp() async throws {
+        let puzzle = makePuzzle(date: "2026-06-17")
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(puzzle: puzzle)
+
+        #expect(!vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
+    }
+
+    @Test("Archive daily for today cannot give up")
+    func archiveDailyForTodayCannotGiveUp() async throws {
+        let puzzle = makePuzzle(date: "2026-06-18")
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(
+            puzzle: puzzle,
+            launchContext: .archive(type: .daily, currentWeeklyPuzzleId: nil)
+        )
+
+        #expect(!vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
+    }
+
+    @Test("Archive daily before today can give up for Pro")
+    func archiveDailyBeforeTodayCanGiveUpForPro() async throws {
+        let puzzle = makePuzzle(date: "2026-06-17")
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(
+            puzzle: puzzle,
+            launchContext: .archive(type: .daily, currentWeeklyPuzzleId: nil)
+        )
+
+        #expect(vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
+    }
+
+    @Test("Current archive weekly cannot give up")
+    func currentArchiveWeeklyCannotGiveUp() async throws {
+        let puzzle = makePuzzle(id: "current-weekly", date: "2026-06-15")
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(
+            puzzle: puzzle,
+            launchContext: .archive(type: .weekly, currentWeeklyPuzzleId: "current-weekly")
+        )
+
+        #expect(!vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
+    }
+
+    @Test("Older archive weekly can give up for Pro")
+    func olderArchiveWeeklyCanGiveUpForPro() async throws {
+        let puzzle = makePuzzle(id: "older-weekly", date: "2026-06-08")
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(
+            puzzle: puzzle,
+            launchContext: .archive(type: .weekly, currentWeeklyPuzzleId: "current-weekly")
+        )
+
+        #expect(vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
+    }
+
+    @Test("Free archive users cannot give up")
+    func freeArchiveUsersCannotGiveUp() async throws {
+        let puzzle = makePuzzle(date: "2026-06-17")
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        let vm = GameViewModel(
+            puzzle: puzzle,
+            launchContext: .archive(type: .daily, currentWeeklyPuzzleId: nil)
+        )
+
+        #expect(!vm.canGiveUp(isProUser: false, todayString: "2026-06-18"))
+    }
+
+    private func makePuzzle(
+        id: String = "game-view-model-tests-\(UUID().uuidString)",
+        date: String = "2026-06-13"
+    ) -> Puzzle {
         let clue = Clue(
             id: 0,
             direction: .across,
@@ -140,9 +312,9 @@ struct GameViewModelTests {
         )
 
         return Puzzle(
-            id: "game-view-model-tests-\(UUID().uuidString)",
+            id: id,
             puzzleNumber: 1,
-            date: "2026-06-13",
+            date: date,
             size: 2,
             cells: [
                 [
@@ -155,6 +327,49 @@ struct GameViewModelTests {
                 ],
             ],
             clues: [clue]
+        )
+    }
+
+    private func makeTwoAnswerPuzzle() -> Puzzle {
+        let firstClue = Clue(
+            id: 0,
+            direction: .across,
+            number: 1,
+            text: "First two-letter answer",
+            hint: "First answer",
+            answer: "AB",
+            startRow: 0,
+            startCol: 0,
+            length: 2
+        )
+        let secondClue = Clue(
+            id: 1,
+            direction: .across,
+            number: 2,
+            text: "Second two-letter answer",
+            hint: "Second answer",
+            answer: "CD",
+            startRow: 1,
+            startCol: 0,
+            length: 2
+        )
+
+        return Puzzle(
+            id: "game-view-model-two-answer-tests-\(UUID().uuidString)",
+            puzzleNumber: 1,
+            date: "2026-06-13",
+            size: 2,
+            cells: [
+                [
+                    CellData(letter: "A", clueNumber: 1, acrossClueId: 0, downClueId: nil),
+                    CellData(letter: "B", clueNumber: nil, acrossClueId: 0, downClueId: nil),
+                ],
+                [
+                    CellData(letter: "C", clueNumber: 2, acrossClueId: 1, downClueId: nil),
+                    CellData(letter: "D", clueNumber: nil, acrossClueId: 1, downClueId: nil),
+                ],
+            ],
+            clues: [firstClue, secondClue]
         )
     }
 }

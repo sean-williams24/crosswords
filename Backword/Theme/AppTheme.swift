@@ -8,6 +8,7 @@ extension Color {
     static let appGridLine = Color("GridLine")
     static let appAccent = Color("Accent")
     static let appCorrect = Color("Correct")
+    static let appGaveUp = Color("GaveUp")
     static let appTextPrimary = Color("TextPrimary")
     static let appTextHeading = Color("TextHeading")
     static let appTextSecondary = Color("TextSecondary")

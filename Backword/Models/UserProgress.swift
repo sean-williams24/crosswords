@@ -11,6 +11,9 @@ struct UserProgress: Codable {
     var puzzleDate: String?   // "yyyy-MM-dd" — added for rating backfill
     var totalClues: Int?      // total clue count — added for rating backfill
     var isWeekly: Bool?       // true if weekly puzzle — added for rating backfill
+    var gaveUpAt: Date?
+    var gaveUpScore: Int?
+    var gaveUpRevealedCells: Set<String>
 
     var isComplete: Bool { completedAt != nil }
 
@@ -25,6 +28,9 @@ struct UserProgress: Codable {
         self.puzzleDate = puzzleDate
         self.totalClues = totalClues
         self.isWeekly = isWeekly
+        self.gaveUpAt = nil
+        self.gaveUpScore = nil
+        self.gaveUpRevealedCells = []
     }
 
     init(from decoder: Decoder) throws {
@@ -39,6 +45,9 @@ struct UserProgress: Codable {
         puzzleDate = try container.decodeIfPresent(String.self, forKey: .puzzleDate)
         totalClues = try container.decodeIfPresent(Int.self, forKey: .totalClues)
         isWeekly = try container.decodeIfPresent(Bool.self, forKey: .isWeekly)
+        gaveUpAt = try container.decodeIfPresent(Date.self, forKey: .gaveUpAt)
+        gaveUpScore = try container.decodeIfPresent(Int.self, forKey: .gaveUpScore)
+        gaveUpRevealedCells = try container.decodeIfPresent(Set<String>.self, forKey: .gaveUpRevealedCells) ?? []
     }
 
     var elapsedTime: TimeInterval {

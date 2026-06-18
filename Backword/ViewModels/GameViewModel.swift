@@ -19,13 +19,15 @@ final class GameViewModel: ObservableObject {
     @Published var showAlreadyAnswered: Bool = false
     @Published var adBonusHints: Int = 0
 
+    let launchContext: PuzzleLaunchContext
     private let haptics = HapticsEngine()
     private var zenTimer: Timer?
 
     // MARK: - Init
 
-    init(puzzle: Puzzle) {
+    init(puzzle: Puzzle, launchContext: PuzzleLaunchContext = .home) {
         self.puzzle = puzzle
+        self.launchContext = launchContext
         var loaded = UserProgress.load(puzzleId: puzzle.id)
             ?? UserProgress(
                 puzzleId: puzzle.id,
@@ -180,6 +182,7 @@ final class GameViewModel: ObservableObject {
     // MARK: - Input
 
     func enterLetter(_ letter: Character) {
+        guard progress.gaveUpAt == nil else { return }
         guard !puzzle.cells[selectedRow][selectedCol].isBlack else { return }
         let entered = String(letter).uppercased()
 
@@ -200,6 +203,7 @@ final class GameViewModel: ObservableObject {
     }
 
     func deleteLetter() {
+        guard progress.gaveUpAt == nil else { return }
         let lockEnabled = AppSettings.shared.crosswordCorrectHighlight
 
         if lockEnabled && isCompleted(row: selectedRow, col: selectedCol) {
@@ -218,9 +222,60 @@ final class GameViewModel: ObservableObject {
         saveProgress()
     }
 
+    // MARK: - Give Up
+
+    var hasGivenUp: Bool {
+        progress.gaveUpAt != nil
+    }
+
+    var currentScore: Int {
+        let total = puzzle.clues.count
+        guard total > 0 else { return 0 }
+        let percentComplete = Int(Double(progress.completedClueIds.count) / Double(total) * 100)
+        return max(0, Int.crosswordScore(percentComplete: percentComplete) - progress.hintsUsed / 3)
+    }
+
+    func canGiveUp(isProUser: Bool, todayString: String = DateFormatting().todayString()) -> Bool {
+        launchContext.canGiveUp(
+            puzzle: puzzle,
+            progress: progress,
+            isProUser: isProUser,
+            todayString: todayString
+        )
+    }
+
+    func giveUp(displayScore: Int) {
+        guard progress.gaveUpAt == nil else { return }
+
+        var revealedCells = Set<String>()
+        for row in 0..<puzzle.size {
+            for col in 0..<puzzle.size {
+                guard let letter = puzzle.cells[row][col].letter else { continue }
+                if !isCompleted(row: row, col: col) {
+                    revealedCells.insert(Self.cellKey(row: row, col: col))
+                }
+                progress.entries[row][col] = letter.uppercased()
+            }
+        }
+
+        progress.completedClueIds = Set(puzzle.clues.map(\.id))
+        let gaveUpAt = Date()
+        progress.completedAt = gaveUpAt
+        progress.gaveUpAt = gaveUpAt
+        progress.gaveUpScore = displayScore
+        progress.gaveUpRevealedCells = revealedCells
+        haptics.play(.puzzleCompleted)
+        saveProgress()
+    }
+
+    func isGaveUpRevealed(row: Int, col: Int) -> Bool {
+        progress.gaveUpRevealedCells.contains(Self.cellKey(row: row, col: col))
+    }
+
     // MARK: - Hints
 
     func useHint() {
+        guard progress.gaveUpAt == nil else { return }
         guard let clue = activeClue else { return }
 
         // Don't consume a hint if the clue is already fully answered
@@ -414,5 +469,9 @@ final class GameViewModel: ObservableObject {
 
     private func saveProgress() {
         progress.save()
+    }
+
+    private static func cellKey(row: Int, col: Int) -> String {
+        "\(row),\(col)"
     }
 }
