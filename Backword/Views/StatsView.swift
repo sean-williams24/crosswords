@@ -17,9 +17,9 @@ struct StatsView: View {
     }
 
     init(stats: UserStats, isWeekly: Bool) {
-        currentStreak = stats.currentStreak
-        longestStreak = stats.longestStreak
-        totalCompleted = stats.totalCompleted
+        currentStreak = stats.currentStreak(isWeekly: isWeekly)
+        longestStreak = stats.longestStreak(isWeekly: isWeekly)
+        totalCompleted = stats.totalCompleted(isWeekly: isWeekly)
         averageTimeSeconds = stats.formattedAverageTime(isWeekly: isWeekly)
     }
 

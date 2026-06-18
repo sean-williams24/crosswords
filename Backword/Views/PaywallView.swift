@@ -194,6 +194,7 @@ struct PaywallView: View {
         VStack(alignment: .leading, spacing: 14) {
             featureRow(icon: "brain.head.profile", text: "Weekly challenging puzzles")
             featureRow(icon: "archivebox.fill", text: "Unlimited puzzle archive")
+            featureRow(icon: "flag.fill", text: "Reveal answers when stuck")
             featureRow(icon: "lightbulb.fill", text: "Ad-free hints")
             featureRow(icon: "eye.slash.fill", text: "Ad-free experience")
         }

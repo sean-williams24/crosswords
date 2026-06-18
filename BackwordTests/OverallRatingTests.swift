@@ -29,6 +29,50 @@ struct BackwordScoreTests {
     @Test("6+ guesses → 0") func sixGuess()  { #expect(Int.backwordScore(guessCount: 6)   == 0) }
 }
 
+// MARK: - User stats
+
+@Suite("UserStats model")
+struct UserStatsTests {
+    @Test("Removing results excludes gave-up puzzles from counts and averages")
+    func removeResultsRecomputesAggregates() {
+        var stats = UserStats()
+        let today = Calendar.current.startOfDay(for: Date())
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: today)!
+
+        stats.history = [
+            PuzzleResult(puzzleId: "solved-daily", date: yesterday, timeSeconds: 120, hintsUsed: 0),
+            PuzzleResult(puzzleId: "gave-up-weekly", date: today, timeSeconds: 300, hintsUsed: 0, isWeekly: true),
+        ]
+        stats.recomputeAggregates()
+
+        stats.removeResults(puzzleIds: ["gave-up-weekly"])
+
+        #expect(stats.history.map(\.puzzleId) == ["solved-daily"])
+        #expect(stats.totalCompleted == 1)
+        #expect(stats.averageTimeSeconds == 120)
+        #expect(stats.totalCompleted(isWeekly: true) == 0)
+    }
+
+    @Test("Weekly counters use weekly history only")
+    func weeklyCountersUseWeeklyHistoryOnly() {
+        var stats = UserStats()
+        let today = Calendar.current.startOfDay(for: Date())
+        let lastWeek = Calendar.current.date(byAdding: .day, value: -7, to: today)!
+
+        stats.history = [
+            PuzzleResult(puzzleId: "daily", date: today, timeSeconds: 60, hintsUsed: 0),
+            PuzzleResult(puzzleId: "weekly-1", date: lastWeek, timeSeconds: 300, hintsUsed: 0, isWeekly: true),
+            PuzzleResult(puzzleId: "weekly-2", date: today, timeSeconds: 240, hintsUsed: 0, isWeekly: true),
+        ]
+        stats.recomputeAggregates()
+
+        #expect(stats.totalCompleted(isWeekly: true) == 2)
+        #expect(stats.currentStreak(isWeekly: true) == 2)
+        #expect(stats.longestStreak(isWeekly: true) == 2)
+        #expect(stats.totalCompleted(isWeekly: false) == 1)
+    }
+}
+
 // MARK: - OverallRating model
 
 @Suite("OverallRating model")

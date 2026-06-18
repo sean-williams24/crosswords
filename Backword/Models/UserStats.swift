@@ -92,6 +92,59 @@ struct UserStats: Codable {
         Int(averageTimeSeconds).formattedTimeHHMMSS
     }
 
+    mutating func removeResults(puzzleIds: Set<String>) {
+        guard !puzzleIds.isEmpty else { return }
+        history.removeAll { puzzleIds.contains($0.puzzleId) }
+        recomputeAggregates()
+    }
+
+    mutating func recomputeAggregates() {
+        history.sort { $0.date < $1.date }
+        totalCompleted = history.count
+        averageTimeSeconds = history.isEmpty
+            ? 0
+            : Double(history.reduce(0) { $0 + $1.timeSeconds }) / Double(history.count)
+
+        let calendar = Calendar.current
+        let dailyDates = filteredHistory(isWeekly: false)
+            .map { calendar.startOfDay(for: $0.date) }
+            .sorted()
+
+        guard let lastDate = dailyDates.last else {
+            currentStreak = 0
+            longestStreak = 0
+            lastCompletedDate = nil
+            return
+        }
+
+        lastCompletedDate = lastDate
+        let today = calendar.startOfDay(for: Date())
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: today)!
+        if calendar.isDate(lastDate, inSameDayAs: today) || calendar.isDate(lastDate, inSameDayAs: yesterday) {
+            var streak = 1
+            for i in stride(from: dailyDates.count - 1, through: 1, by: -1) {
+                let gap = calendar.dateComponents([.day], from: dailyDates[i - 1], to: dailyDates[i]).day ?? Int.max
+                if gap <= 1 { streak += 1 } else { break }
+            }
+            currentStreak = streak
+        } else {
+            currentStreak = 0
+        }
+
+        var longest = 1
+        var current = 1
+        for i in 1..<dailyDates.count {
+            let gap = calendar.dateComponents([.day], from: dailyDates[i - 1], to: dailyDates[i]).day ?? Int.max
+            if gap <= 1 {
+                current += 1
+                longest = max(longest, current)
+            } else {
+                current = 1
+            }
+        }
+        longestStreak = longest
+    }
+
     // MARK: - Per-type filtered helpers
 
     func filteredHistory(isWeekly: Bool) -> [PuzzleResult] {

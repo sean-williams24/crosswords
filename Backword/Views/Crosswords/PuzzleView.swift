@@ -315,7 +315,7 @@ struct PuzzleView: View {
             Button {
                 showGiveUpConfirmation = true
             } label: {
-                Image(systemName: "flag.slash")
+                Image(systemName: "flag.fill")
                     .frame(width: 34)
                     .foregroundColor(.appTextPrimary)
             }

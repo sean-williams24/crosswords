@@ -161,6 +161,7 @@ struct CrosswordStatsView: View {
         var timeMap = [String: Int]()
         for progress in UserProgress.loadAll() {
             guard progress.isWeekly != true,
+                  progress.gaveUpAt == nil,
                   let puzzleDate = progress.puzzleDate,
                   let completedAt = progress.completedAt,
                   utcFmt.string(from: completedAt) == puzzleDate else { continue }
@@ -199,7 +200,7 @@ struct CrosswordStatsView: View {
         )
 
         return UserProgress.loadAll()
-            .filter { $0.isWeekly == true && $0.completedAt != nil }
+            .filter { $0.isWeekly == true && $0.completedAt != nil && $0.gaveUpAt == nil }
             .compactMap { progress -> HistoryRow? in
                 guard let puzzleDate = progress.puzzleDate,
                       let date = utcFmt.date(from: puzzleDate) else { return nil }
