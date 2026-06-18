@@ -408,6 +408,8 @@ struct HomeView: View {
                         Text(word.word)
                             .font(AppFont.header(22))
                             .foregroundColor(.appTextPrimary)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
                     } else {
                         ProgressView()
                             .frame(minHeight: 30)
