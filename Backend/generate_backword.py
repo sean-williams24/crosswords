@@ -46,6 +46,8 @@ try:
 except ImportError:
     create_client = None
 
+from inflection_safety import known_bad_backword_pair_reason
+
 
 # ── Constants ──────────────────────────────────────────────────────────────
 
@@ -120,6 +122,10 @@ STRICT CONSTRAINTS for "clue":
   - Must NOT contain any part of the root word
   - Must be a single word only
   - Should require lateral thinking to connect to the word
+  - Must be a direct semantic fit for the exact answer:
+    * The clue must point to something the answer directly is, has, does, causes, receives, or strongly evokes
+    * Do NOT use clues that are merely a related process, phase, result, cause, container, setting, or neighboring concept
+    * Reject or rewrite tenuous links where the answer is only a stage, participant, ingredient, tool, or byproduct of the clue
   - Must match the answer's grammatical form when read as a clue/answer pair:
     * base verb answers need base-form clue associations, not third-person forms
     * plural answers need plural clue associations
@@ -138,6 +144,11 @@ EXAMPLES of bad inflection matches:
   {"word": "ACHIEVE", "clue": "EXCELS"}     — EXCELS is third-person; ACHIEVE is base verb
   {"word": "DUPLICATE", "clue": "CLONES"}   — CLONES is plural/third-person; DUPLICATE is base verb or adjective
   {"word": "CRUELTY", "clue": "UNKIND"}     — UNKIND is adjective; CRUELTY is noun
+
+EXAMPLES of bad semantic fits:
+  {"word": "LARVAE", "clue": "TRANSFORMATION"}   — larvae are a stage within metamorphosis, not transformation itself
+  {"word": "PUPAE", "clue": "METAMORPHOSIS"}     — pupae are a stage in the process, not the process
+  {"word": "BAKERS", "clue": "BREAD"}            — bakers make bread, but plural people should not be clued by a singular product
 
 REJECT a word (set "reject": true) if it is:
   - A proper noun: personal names (Sharon, Ernest), brand/company names (Schwab), place names, nationality adjectives
@@ -158,9 +169,65 @@ Return a JSON array like:
   ...
 ]"""
 
+VALIDATE_SYSTEM = """You are a strict Backword clue reviewer.
+Each item has a 6-letter answer and a proposed one-word clue.
+
+Return a JSON object with a "reviews" array. Each review must include:
+  - "word": the answer in UPPERCASE
+  - "clue": the clue in UPPERCASE
+  - "accept": true only if the clue is safe to publish
+  - "reason": "OK" if accepted, otherwise one of:
+    "ADJACENT_PROCESS", "TOO_BROAD", "WEAK_ASSOCIATION", "INFLECTION_MISMATCH", "DIRECT_SYNONYM", "ROOT_LEAK", "NOT_ONE_WORD"
+
+Reject clues that are merely a related process, phase, result, cause, container,
+setting, product, or neighboring concept. The clue must be directly defensible
+for the exact answer.
+
+Reject examples:
+  {"word": "LARVAE", "clue": "TRANSFORMATION"} because larvae are a stage within metamorphosis, not transformation itself.
+  {"word": "PUPAE", "clue": "METAMORPHOSIS"} because pupae are a stage in the process, not the process.
+  {"word": "BAKERS", "clue": "BREAD"} because plural people are not the singular product they make.
+
+Accept examples:
+  {"word": "CASTLE", "clue": "CHESS"}
+  {"word": "SHIELD", "clue": "KNIGHT"}
+  {"word": "WINTER", "clue": "FROST"}
+
+Return ONLY a JSON object, no other text."""
+
+VALIDATE_USER = """Review these Backword clue pairs:
+{pairs}
+
+Return a JSON object like:
+{{
+  "reviews": [
+    {{"word": "CASTLE", "clue": "CHESS", "accept": true, "reason": "OK"}},
+    {{"word": "LARVAE", "clue": "TRANSFORMATION", "accept": false, "reason": "ADJACENT_PROCESS"}}
+  ]
+}}"""
+
+
+def json_array_from_response(content: str) -> list:
+    parsed = json.loads(content)
+    if isinstance(parsed, list):
+        return parsed
+    if isinstance(parsed, dict):
+        return next((v for v in parsed.values() if isinstance(v, list)), [])
+    return []
+
+
+def local_rejection_reason(item: dict) -> str | None:
+    word = str(item.get("word", "")).strip()
+    clue = str(item.get("clue", "")).strip()
+    if not word or not clue:
+        return "MISSING_WORD_OR_CLUE"
+    if len(clue.split()) != 1:
+        return "NOT_ONE_WORD"
+    return known_bad_backword_pair_reason(word, clue)
+
 
 def enrich_words(words: list[str], model: str, api_key: str) -> list[dict]:
-    """Call GPT to add category + definition to each word."""
+    """Call GPT to add one-word Backword clues to each word."""
     client = OpenAI(api_key=api_key)
     results = []
     batch_size = 20
@@ -182,14 +249,7 @@ def enrich_words(words: list[str], model: str, api_key: str) -> list[dict]:
             )
             content = response.choices[0].message.content.strip()
             # GPT may wrap in an object key — try to extract the array
-            parsed = json.loads(content)
-            if isinstance(parsed, list):
-                items = parsed
-            elif isinstance(parsed, dict):
-                # Find first list value
-                items = next((v for v in parsed.values() if isinstance(v, list)), [])
-            else:
-                items = []
+            items = json_array_from_response(content)
 
             for item in items:
                 if (
@@ -211,6 +271,66 @@ def enrich_words(words: list[str], model: str, api_key: str) -> list[dict]:
             time.sleep(1)
 
     return results
+
+
+def validate_clues(words: list[dict], model: str, api_key: str) -> list[dict]:
+    """Filter generated Backword clues through local and LLM validation."""
+    local_passed = []
+    for item in words:
+        reason = local_rejection_reason(item)
+        if reason:
+            print(f"    ✗ Rejected clue: {item.get('word', '')} [{item.get('clue', '')}] — {reason}")
+            continue
+        local_passed.append(item)
+
+    if not local_passed:
+        return []
+
+    client = OpenAI(api_key=api_key)
+    accepted = []
+    batch_size = 20
+
+    for i in range(0, len(local_passed), batch_size):
+        batch = local_passed[i : i + batch_size]
+        pairs = json.dumps(
+            [{"word": item.get("word", ""), "clue": item.get("clue", "")} for item in batch],
+            ensure_ascii=False,
+        )
+        print(f"  Validating clues {i+1}–{i+len(batch)}")
+
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": VALIDATE_SYSTEM},
+                    {"role": "user", "content": VALIDATE_USER.format(pairs=pairs)},
+                ],
+                temperature=0,
+                response_format={"type": "json_object"},
+            )
+            items = json_array_from_response(response.choices[0].message.content.strip())
+            verdicts = {
+                (str(item.get("word", "")).upper(), str(item.get("clue", "")).upper()): item
+                for item in items
+                if isinstance(item, dict)
+            }
+
+            for item in batch:
+                key = (str(item.get("word", "")).upper(), str(item.get("clue", "")).upper())
+                verdict = verdicts.get(key)
+                if verdict and verdict.get("accept") is True:
+                    accepted.append(item)
+                else:
+                    reason = str((verdict or {}).get("reason") or "VALIDATION_REJECTED")
+                    print(f"    ✗ Rejected clue: {item['word']} [{item.get('clue', '')}] — {reason}")
+        except Exception as e:
+            print(f"  ⚠  Clue validation failed for batch: {e}", file=sys.stderr)
+            accepted.extend(batch)
+
+        if i + batch_size < len(local_passed):
+            time.sleep(1)
+
+    return accepted
 
 
 # ── Upload ─────────────────────────────────────────────────────────────────
@@ -263,7 +383,8 @@ def parse_args():
     p.add_argument("--count",   type=int, default=7,    help="Number of words to generate (default: 7)")
     p.add_argument("--date",    type=str, default=None, help="Start date yyyy-MM-dd (default: day after last upload)")
     p.add_argument("--dry-run", action="store_true",    help="Generate without uploading to Supabase")
-    p.add_argument("--model",     type=str, default="gpt-4o-mini", help="OpenAI model (default: gpt-4o-mini)")
+    p.add_argument("--model",     type=str, default="gpt-4o-mini", help="OpenAI enrichment model (default: gpt-4o-mini)")
+    p.add_argument("--validator-model", type=str, default="gpt-5.4", help="OpenAI clue validation model (default: gpt-5.4)")
     p.add_argument("--overwrite",  action="store_true",             help="Delete existing records for the target date range before uploading")
     return p.parse_args()
 
@@ -325,6 +446,13 @@ def main():
     rejected_count = len(enriched_all) - len(enriched)
     if rejected_count:
         print(f"    Filtered out {rejected_count} rejected word(s), {len(enriched)} remain")
+
+    print(f"\n🔎  Validating clue quality with GPT ({args.validator_model})...")
+    validated = validate_clues(enriched, args.validator_model, api_key)
+    validation_rejected_count = len(enriched) - len(validated)
+    if validation_rejected_count:
+        print(f"    Filtered out {validation_rejected_count} weak clue(s), {len(validated)} remain")
+    enriched = validated
 
     if len(enriched) < args.count:
         print(f"⚠  Only {len(enriched)} suitable words after filtering (requested {args.count}). Consider re-running.", file=sys.stderr)

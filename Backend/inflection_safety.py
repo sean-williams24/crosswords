@@ -70,6 +70,10 @@ ADJECTIVE_SUFFIXES = (
     "ous", "y",
 )
 
+KNOWN_BAD_BACKWORD_PAIRS = {
+    ("LARVAE", "TRANSFORMATION"): "ADJACENT_PROCESS",
+}
+
 
 @dataclass(frozen=True)
 class InflectionIssue:
@@ -100,6 +104,18 @@ def upper_first(value: str) -> str:
 def tokens(value: str) -> list[str]:
     normalized = re.sub(r"[^a-z0-9]+", " ", value.lower())
     return normalized.split()
+
+
+def normalize_backword_token(value: str) -> str:
+    return re.sub(r"[^A-Z0-9]+", "", value.upper())
+
+
+def known_bad_backword_pair_reason(word: str, clue: str) -> str | None:
+    """Return a rejection reason for known weak future Backword word/clue pairs."""
+    return KNOWN_BAD_BACKWORD_PAIRS.get((
+        normalize_backword_token(word),
+        normalize_backword_token(clue),
+    ))
 
 
 def is_pluralish_answer(answer: str) -> bool:

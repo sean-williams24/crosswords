@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest
 
 from audit_word_bank_inflections import apply_replacements, scan_entries
-from inflection_safety import scan_clue
+from inflection_safety import known_bad_backword_pair_reason, scan_clue
 
 
 class InflectionSafetyTests(unittest.TestCase):
@@ -30,6 +30,15 @@ class InflectionSafetyTests(unittest.TestCase):
                 issues = scan_clue(answer, clue, single_word_pair=True)
                 self.assertTrue(issues)
                 self.assertEqual(issues[0].proposed, expected)
+
+    def test_backword_adjacent_process_pair_is_rejected(self) -> None:
+        self.assertEqual(
+            known_bad_backword_pair_reason("LARVAE", "TRANSFORMATION"),
+            "ADJACENT_PROCESS",
+        )
+
+    def test_backword_good_lateral_pair_is_allowed(self) -> None:
+        self.assertIsNone(known_bad_backword_pair_reason("CASTLE", "CHESS"))
 
     def test_scan_entries_returns_only_flagged_entries(self) -> None:
         entries = [

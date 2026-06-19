@@ -201,6 +201,10 @@ python3 Backend/audit_backword_inflections.py export
 python3 Backend/audit_backword_inflections.py apply --input Backend/backword_inflection_replacements.json
 ```
 
+### Backword clue semantic fit
+
+Backword clues are one-word lateral associations, but they must still be directly defensible for the exact answer. Do not use adjacent-process clues where the answer is only a stage, participant, result, product, tool, container, or neighboring concept of the clue. For example, `LARVAE` should not be clued as `TRANSFORMATION`: larvae are a stage within metamorphosis, not transformation itself.
+
 ---
 
 ## Backend Python Scripts
