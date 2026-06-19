@@ -13,7 +13,10 @@ struct BackwordAnalyticsEvent: Equatable {
         action: AdAction,
         format: AdFormat,
         placement: AdService.UserDefaultsKey? = nil,
+        attemptID: String? = nil,
         result: String? = nil,
+        presentedAt: Date? = nil,
+        secondsSincePresent: TimeInterval? = nil,
         error: Error? = nil,
         environment: String = AppEnvironment.current
     ) -> BackwordAnalyticsEvent {
@@ -27,8 +30,20 @@ struct BackwordAnalyticsEvent: Equatable {
             parameters["placement"] = placement.rawValue
         }
 
+        if let attemptID {
+            parameters["ad_attempt_id"] = attemptID
+        }
+
         if let result {
             parameters["result"] = result
+        }
+
+        if let presentedAt {
+            parameters["presented_at"] = ISO8601DateFormatter().string(from: presentedAt)
+        }
+
+        if let secondsSincePresent {
+            parameters["seconds_since_present"] = String(format: "%.1f", secondsSincePresent)
         }
 
         if let error {
@@ -53,6 +68,7 @@ struct BackwordAnalyticsEvent: Equatable {
         case willPresent = "will_present"
         case willDismiss = "will_dismiss"
         case didDismiss = "did_dismiss"
+        case possibleStuck = "possible_stuck"
         case rewardEarned = "reward_earned"
         case completed
     }

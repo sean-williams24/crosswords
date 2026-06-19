@@ -10,7 +10,10 @@ struct BackwordAnalyticsEventTests {
             action: .presentationRequested,
             format: .interstitial,
             placement: .dailyPuzzleOpen,
+            attemptID: "attempt-123",
             result: "ready",
+            presentedAt: Date(timeIntervalSince1970: 1_800),
+            secondsSincePresent: 12.34,
             environment: "test"
         )
 
@@ -18,7 +21,10 @@ struct BackwordAnalyticsEventTests {
         #expect(event.parameters["action"] == "presentation_requested")
         #expect(event.parameters["ad_format"] == "interstitial")
         #expect(event.parameters["placement"] == "daily_puzzle_open")
+        #expect(event.parameters["ad_attempt_id"] == "attempt-123")
         #expect(event.parameters["result"] == "ready")
+        #expect(event.parameters["presented_at"] == "1970-01-01T00:30:00Z")
+        #expect(event.parameters["seconds_since_present"] == "12.3")
         #expect(event.parameters["environment"] == "test")
     }
 

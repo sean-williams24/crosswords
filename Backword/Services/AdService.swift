@@ -72,7 +72,8 @@ final class AdService: NSObject, ObservableObject {
     private var interstitial: InterstitialAd?
     private var rewarded: RewardedAd?
     private var interstitialContext: InterstitialPresentationContext?
-    private var rewardedAdCompletion: (@MainActor (RewardedAdResult) -> Void)?
+    private var directInterstitialContext: DirectAdPresentationContext?
+    private var rewardedAdContext: RewardedAdPresentationContext?
     private let interstitialGate: InterstitialPresentationGate
 
     // MARK: - Init
@@ -152,7 +153,12 @@ final class AdService: NSObject, ObservableObject {
             Task { await loadAd() }
             return
         }
-        logger.interstitialDirectPresentationRequested()
+        let attemptID = UUID().uuidString
+        directInterstitialContext = DirectAdPresentationContext(
+            attemptID: attemptID,
+            requestedAt: Date()
+        )
+        logger.interstitialDirectPresentationRequested(attemptID: attemptID)
         ad.present(from: presenter)
     }
 
@@ -200,7 +206,7 @@ final class AdService: NSObject, ObservableObject {
     }
 
     func showRewardedAd(onComplete: @escaping @MainActor (RewardedAdResult) -> Void) {
-        guard rewardedAdCompletion == nil else {
+        guard rewardedAdContext == nil else {
             logger.rewardedAdRequestIgnoredAlreadyInProgress()
             onComplete(.dismissedWithoutReward)
             return
@@ -230,14 +236,19 @@ final class AdService: NSObject, ObservableObject {
             return
         }
 
-        rewardedAdCompletion = onComplete
+        let attemptID = UUID().uuidString
+        rewardedAdContext = RewardedAdPresentationContext(
+            attemptID: attemptID,
+            requestedAt: Date(),
+            completion: onComplete
+        )
         rewardedAdDidDismiss = false
         rewardGranted = false
-        logger.rewardedAdPresentationRequested()
+        logger.rewardedAdPresentationRequested(attemptID: attemptID)
         Task { @MainActor in
             rewarded.present(from: presenter) { @MainActor [weak self] in
                 guard let self else { return }
-                logger.rewardedAdRewardEarned()
+                logger.rewardedAdRewardEarned(attemptID: rewardedAdContext?.attemptID)
                 rewardGranted = true
             }
         }
@@ -273,16 +284,23 @@ final class AdService: NSObject, ObservableObject {
     }
 
     private func completeRewardedAd(with result: RewardedAdResult) {
-        guard let completion = rewardedAdCompletion else { return }
-        rewardedAdCompletion = nil
-        logger.rewardedAdCompleted(with: result)
-        completion(result)
+        guard let context = rewardedAdContext else { return }
+        rewardedAdContext = nil
+        context.stuckAdTask?.cancel()
+        logger.rewardedAdCompleted(with: result, attemptID: context.attemptID, presentedAt: context.presentedAt)
+        context.completion(result)
     }
 
     private func completeInterstitial() {
         guard let context = interstitialContext else { return }
         interstitialContext = nil
+        context.stuckAdTask?.cancel()
         context.onDismiss()
+    }
+
+    private func clearDirectInterstitialContext() {
+        directInterstitialContext?.stuckAdTask?.cancel()
+        directInterstitialContext = nil
     }
 
     private func presentInterstitialIfReady(for type: UserDefaultsKey, onDismiss: @escaping @MainActor () -> Void) -> Bool {
@@ -302,8 +320,14 @@ final class AdService: NSObject, ObservableObject {
         }
 
         interstitialGate.markPresented(type: type)
-        interstitialContext = InterstitialPresentationContext(type: type, onDismiss: onDismiss)
-        logger.interstitialPresentationRequested(for: type)
+        let attemptID = UUID().uuidString
+        interstitialContext = InterstitialPresentationContext(
+            type: type,
+            attemptID: attemptID,
+            requestedAt: Date(),
+            onDismiss: onDismiss
+        )
+        logger.interstitialPresentationRequested(for: type, attemptID: attemptID)
         ad.present(from: presenter)
         return true
     }
@@ -315,9 +339,88 @@ final class AdService: NSObject, ObservableObject {
         completeInterstitial()
     }
 
+    private func markInterstitialWillPresent() -> (attemptID: String?, presentedAt: Date?) {
+        guard var context = interstitialContext else { return (nil, nil) }
+        let presentedAt = Date()
+        context.presentedAt = presentedAt
+        context.stuckAdTask = makePossibleStuckAdTask(
+            format: .interstitial,
+            placement: context.type,
+            attemptID: context.attemptID,
+            presentedAt: presentedAt
+        )
+        interstitialContext = context
+        return (context.attemptID, presentedAt)
+    }
+
+    private func markDirectInterstitialWillPresent() -> (attemptID: String?, presentedAt: Date?) {
+        guard var context = directInterstitialContext else { return (nil, nil) }
+        let presentedAt = Date()
+        context.presentedAt = presentedAt
+        context.stuckAdTask = makePossibleStuckAdTask(
+            format: .interstitial,
+            placement: nil,
+            attemptID: context.attemptID,
+            presentedAt: presentedAt
+        )
+        directInterstitialContext = context
+        return (context.attemptID, presentedAt)
+    }
+
+    private func markRewardedWillPresent() -> (attemptID: String?, presentedAt: Date?) {
+        guard var context = rewardedAdContext else { return (nil, nil) }
+        let presentedAt = Date()
+        context.presentedAt = presentedAt
+        context.stuckAdTask = makePossibleStuckAdTask(
+            format: .rewarded,
+            placement: nil,
+            attemptID: context.attemptID,
+            presentedAt: presentedAt
+        )
+        rewardedAdContext = context
+        return (context.attemptID, presentedAt)
+    }
+
+    private func makePossibleStuckAdTask(
+        format: BackwordAnalyticsEvent.AdFormat,
+        placement: UserDefaultsKey?,
+        attemptID: String,
+        presentedAt: Date
+    ) -> Task<Void, Never> {
+        Task { @MainActor [weak self] in
+            try? await Task.sleep(nanoseconds: 45_000_000_000)
+            guard !Task.isCancelled else { return }
+            self?.logger.possibleStuckAd(
+                format: format,
+                placement: placement,
+                attemptID: attemptID,
+                presentedAt: presentedAt
+            )
+        }
+    }
+
     private struct InterstitialPresentationContext {
         let type: UserDefaultsKey
+        let attemptID: String
+        let requestedAt: Date
+        var presentedAt: Date?
+        var stuckAdTask: Task<Void, Never>?
         let onDismiss: @MainActor () -> Void
+    }
+
+    private struct RewardedAdPresentationContext {
+        let attemptID: String
+        let requestedAt: Date
+        var presentedAt: Date?
+        var stuckAdTask: Task<Void, Never>?
+        let completion: @MainActor (RewardedAdResult) -> Void
+    }
+
+    private struct DirectAdPresentationContext {
+        let attemptID: String
+        let requestedAt: Date
+        var presentedAt: Date?
+        var stuckAdTask: Task<Void, Never>?
     }
 }
 
@@ -329,7 +432,11 @@ extension AdService: FullScreenContentDelegate {
       didFailToPresentFullScreenContentWithError error: Error
     ) {
         if let _ = ad as? RewardedAd {
-            logger.rewardedAdFailedToPresent(error)
+            logger.rewardedAdFailedToPresent(
+                error,
+                attemptID: rewardedAdContext?.attemptID,
+                presentedAt: rewardedAdContext?.presentedAt
+            )
             rewarded = nil
             rewardGranted = false
             completeRewardedAd(with: .failedToPresent)
@@ -337,9 +444,14 @@ extension AdService: FullScreenContentDelegate {
                 await loadRewardedAd()
             }
         } else {
-            logger.interstitialAdFailedToPresent(error)
+            logger.interstitialAdFailedToPresent(
+                error,
+                attemptID: interstitialContext?.attemptID ?? directInterstitialContext?.attemptID,
+                presentedAt: interstitialContext?.presentedAt ?? directInterstitialContext?.presentedAt
+            )
             interstitial = nil
             failInterstitialPresentation()
+            clearDirectInterstitialContext()
             Task { @MainActor [self] in
                 await loadAd()
             }
@@ -347,23 +459,53 @@ extension AdService: FullScreenContentDelegate {
     }
 
     func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
-        logger.fullScreenAdWillPresent(ad)
+        if let _ = ad as? InterstitialAd {
+            let presentation: (attemptID: String?, presentedAt: Date?)
+            if interstitialContext == nil {
+                presentation = markDirectInterstitialWillPresent()
+            } else {
+                presentation = markInterstitialWillPresent()
+            }
+            logger.fullScreenAdWillPresent(ad, attemptID: presentation.attemptID, presentedAt: presentation.presentedAt ?? Date())
+        } else if let _ = ad as? RewardedAd {
+            let presentation = markRewardedWillPresent()
+            logger.fullScreenAdWillPresent(ad, attemptID: presentation.attemptID, presentedAt: presentation.presentedAt ?? Date())
+        } else {
+            logger.fullScreenAdWillPresent(ad, attemptID: nil, presentedAt: Date())
+        }
     }
 
     func adWillDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
-        logger.fullScreenAdWillDismiss(ad)
+        if let _ = ad as? InterstitialAd {
+            logger.fullScreenAdWillDismiss(
+                ad,
+                attemptID: interstitialContext?.attemptID ?? directInterstitialContext?.attemptID,
+                presentedAt: interstitialContext?.presentedAt ?? directInterstitialContext?.presentedAt
+            )
+        } else if let _ = ad as? RewardedAd {
+            logger.fullScreenAdWillDismiss(ad, attemptID: rewardedAdContext?.attemptID, presentedAt: rewardedAdContext?.presentedAt)
+        } else {
+            logger.fullScreenAdWillDismiss(ad, attemptID: nil, presentedAt: nil)
+        }
     }
 
     func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         if let _ = ad as? InterstitialAd {
-            logger.interstitialAdDidDismiss()
+            logger.interstitialAdDidDismiss(
+                attemptID: interstitialContext?.attemptID ?? directInterstitialContext?.attemptID,
+                presentedAt: interstitialContext?.presentedAt ?? directInterstitialContext?.presentedAt
+            )
             interstitial = nil
             completeInterstitial()
+            clearDirectInterstitialContext()
             Task { @MainActor [self] in
                 await loadAd()
             }
         } else if let _ = ad as? RewardedAd {
-            logger.rewardedAdDidDismiss()
+            logger.rewardedAdDidDismiss(
+                attemptID: rewardedAdContext?.attemptID,
+                presentedAt: rewardedAdContext?.presentedAt
+            )
             rewarded = nil
             if rewardGranted {
                 completeRewardedAd(with: .earnedReward)

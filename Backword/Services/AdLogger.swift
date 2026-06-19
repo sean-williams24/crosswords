@@ -34,9 +34,9 @@ struct AdLogger {
         logAnalytics(.presenterUnavailable, format: .interstitial, result: "direct_presentation")
     }
 
-    func interstitialDirectPresentationRequested() {
+    func interstitialDirectPresentationRequested(attemptID: String) {
         logger.info("Interstitial direct presentation requested in \(appEnvironment, privacy: .public)")
-        logAnalytics(.presentationRequested, format: .interstitial, result: "direct_presentation")
+        logAnalytics(.presentationRequested, format: .interstitial, attemptID: attemptID, result: "direct_presentation")
     }
 
     func interstitialSkippedDebugDisabled(for placement: AdService.UserDefaultsKey) {
@@ -79,19 +79,32 @@ struct AdLogger {
         logAnalytics(.presenterUnavailable, format: .interstitial, placement: placement)
     }
 
-    func interstitialPresentationRequested(for placement: AdService.UserDefaultsKey) {
-        logger.info("Interstitial presentation requested for \(placement.rawValue, privacy: .public) in \(appEnvironment, privacy: .public)")
-        logAnalytics(.presentationRequested, format: .interstitial, placement: placement)
+    func interstitialPresentationRequested(for placement: AdService.UserDefaultsKey, attemptID: String) {
+        logger.info("Interstitial presentation requested for \(placement.rawValue, privacy: .public) in \(appEnvironment, privacy: .public) with attempt \(attemptID, privacy: .public)")
+        logAnalytics(.presentationRequested, format: .interstitial, placement: placement, attemptID: attemptID)
     }
 
-    func interstitialAdFailedToPresent(_ error: Error) {
+    func interstitialAdFailedToPresent(_ error: Error, attemptID: String?, presentedAt: Date?) {
         logger.error("Interstitial ad failed to present: \(describe(error), privacy: .public)")
-        logAnalytics(.failedToPresent, format: .interstitial, error: error)
+        logAnalytics(
+            .failedToPresent,
+            format: .interstitial,
+            attemptID: attemptID,
+            presentedAt: presentedAt,
+            secondsSincePresent: secondsSince(presentedAt),
+            error: error
+        )
     }
 
-    func interstitialAdDidDismiss() {
+    func interstitialAdDidDismiss(attemptID: String?, presentedAt: Date?) {
         logger.info("Interstitial ad did dismiss")
-        logAnalytics(.didDismiss, format: .interstitial)
+        logAnalytics(
+            .didDismiss,
+            format: .interstitial,
+            attemptID: attemptID,
+            presentedAt: presentedAt,
+            secondsSincePresent: secondsSince(presentedAt)
+        )
     }
 
     func rewardedAdLoaded() {
@@ -124,39 +137,78 @@ struct AdLogger {
         logAnalytics(.presenterUnavailable, format: .rewarded)
     }
 
-    func rewardedAdPresentationRequested() {
-        logger.info("Rewarded ad presentation requested in \(appEnvironment, privacy: .public)")
-        logAnalytics(.presentationRequested, format: .rewarded)
+    func rewardedAdPresentationRequested(attemptID: String) {
+        logger.info("Rewarded ad presentation requested in \(appEnvironment, privacy: .public) with attempt \(attemptID, privacy: .public)")
+        logAnalytics(.presentationRequested, format: .rewarded, attemptID: attemptID)
     }
 
-    func rewardedAdRewardEarned() {
+    func rewardedAdRewardEarned(attemptID: String?) {
         logger.info("Rewarded ad reward earned")
-        logAnalytics(.rewardEarned, format: .rewarded)
+        logAnalytics(.rewardEarned, format: .rewarded, attemptID: attemptID)
     }
 
-    func rewardedAdCompleted(with result: AdService.RewardedAdResult) {
+    func rewardedAdCompleted(with result: AdService.RewardedAdResult, attemptID: String?, presentedAt: Date?) {
         logger.info("Rewarded ad completed with result \(String(describing: result), privacy: .public)")
-        logAnalytics(.completed, format: .rewarded, result: String(describing: result))
+        logAnalytics(
+            .completed,
+            format: .rewarded,
+            attemptID: attemptID,
+            result: String(describing: result),
+            presentedAt: presentedAt,
+            secondsSincePresent: secondsSince(presentedAt)
+        )
     }
 
-    func rewardedAdFailedToPresent(_ error: Error) {
+    func rewardedAdFailedToPresent(_ error: Error, attemptID: String?, presentedAt: Date?) {
         logger.error("Rewarded ad failed to present: \(describe(error), privacy: .public)")
-        logAnalytics(.failedToPresent, format: .rewarded, error: error)
+        logAnalytics(
+            .failedToPresent,
+            format: .rewarded,
+            attemptID: attemptID,
+            presentedAt: presentedAt,
+            secondsSincePresent: secondsSince(presentedAt),
+            error: error
+        )
     }
 
-    func rewardedAdDidDismiss() {
+    func rewardedAdDidDismiss(attemptID: String?, presentedAt: Date?) {
         logger.info("Rewarded ad did dismiss")
-        logAnalytics(.didDismiss, format: .rewarded)
+        logAnalytics(
+            .didDismiss,
+            format: .rewarded,
+            attemptID: attemptID,
+            presentedAt: presentedAt,
+            secondsSincePresent: secondsSince(presentedAt)
+        )
     }
 
-    func fullScreenAdWillPresent(_ ad: FullScreenPresentingAd) {
+    func fullScreenAdWillPresent(_ ad: FullScreenPresentingAd, attemptID: String?, presentedAt: Date) {
         logger.info("\(format(for: ad), privacy: .public) ad will present")
-        logAnalytics(.willPresent, format: analyticsFormat(for: ad))
+        logAnalytics(.willPresent, format: analyticsFormat(for: ad), attemptID: attemptID, presentedAt: presentedAt)
     }
 
-    func fullScreenAdWillDismiss(_ ad: FullScreenPresentingAd) {
+    func fullScreenAdWillDismiss(_ ad: FullScreenPresentingAd, attemptID: String?, presentedAt: Date?) {
         logger.info("\(format(for: ad), privacy: .public) ad will dismiss")
-        logAnalytics(.willDismiss, format: analyticsFormat(for: ad))
+        logAnalytics(
+            .willDismiss,
+            format: analyticsFormat(for: ad),
+            attemptID: attemptID,
+            presentedAt: presentedAt,
+            secondsSincePresent: secondsSince(presentedAt)
+        )
+    }
+
+    func possibleStuckAd(format: BackwordAnalyticsEvent.AdFormat, placement: AdService.UserDefaultsKey?, attemptID: String, presentedAt: Date) {
+        logger.error("\(format.rawValue, privacy: .public) ad possible stuck after 45 seconds for attempt \(attemptID, privacy: .public)")
+        logAnalytics(
+            .possibleStuck,
+            format: format,
+            placement: placement,
+            attemptID: attemptID,
+            result: "no_dismiss_callback_after_45_seconds",
+            presentedAt: presentedAt,
+            secondsSincePresent: secondsSince(presentedAt)
+        )
     }
 
     private var appEnvironment: String {
@@ -173,6 +225,11 @@ struct AdLogger {
     private func describe(_ error: Error) -> String {
         let nsError = error as NSError
         return "\(nsError.domain) \(nsError.code): \(nsError.localizedDescription)"
+    }
+
+    private func secondsSince(_ date: Date?) -> TimeInterval? {
+        guard let date else { return nil }
+        return Date().timeIntervalSince(date)
     }
 
     private func format(for ad: FullScreenPresentingAd) -> String {
@@ -199,14 +256,20 @@ struct AdLogger {
         _ action: BackwordAnalyticsEvent.AdAction,
         format: BackwordAnalyticsEvent.AdFormat,
         placement: AdService.UserDefaultsKey? = nil,
+        attemptID: String? = nil,
         result: String? = nil,
+        presentedAt: Date? = nil,
+        secondsSincePresent: TimeInterval? = nil,
         error: Error? = nil
     ) {
         analytics.log(.adLifecycle(
             action: action,
             format: format,
             placement: placement,
+            attemptID: attemptID,
             result: result,
+            presentedAt: presentedAt,
+            secondsSincePresent: secondsSincePresent,
             error: error,
             environment: appEnvironment
         ))
