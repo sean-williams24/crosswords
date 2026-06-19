@@ -1,8 +1,20 @@
 import SwiftUI
 import TipKit
+import UIKit
+
+final class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
+        BackwordAnalyticsService.shared.configureIfPossible()
+        return true
+    }
+}
 
 @main
 struct BackwordApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @StateObject private var statsService = StatsService()
     @StateObject private var puzzleService = PuzzleService()
     @StateObject private var storeService = StoreService()

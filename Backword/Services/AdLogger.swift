@@ -6,126 +6,157 @@ struct AdLogger {
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "Backword",
         category: "ads"
-    )
+    )   
+    private let analytics = BackwordAnalyticsService.shared
 
     func interstitialAdLoaded() {
         logger.info("Interstitial ad loaded in \(appEnvironment, privacy: .public)")
+        logAnalytics(.loaded, format: .interstitial)
     }
 
     func interstitialAdFailedToLoad(_ error: Error) {
         logger.error("Interstitial ad failed to load: \(describe(error), privacy: .public)")
+        logAnalytics(.loadFailed, format: .interstitial, error: error)
     }
 
     func interstitialSkippedDebugDisabled() {
         logger.info("Interstitial skipped in \(appEnvironment, privacy: .public) because debug ads are disabled")
+        logAnalytics(.skipped, format: .interstitial, result: "debug_ads_disabled")
     }
 
     func interstitialUnavailableForDirectPresentation() {
         logger.info("Interstitial unavailable for direct presentation in \(appEnvironment, privacy: .public)")
+        logAnalytics(.unavailable, format: .interstitial, result: "direct_presentation")
     }
 
     func interstitialDirectPresentationPresenterUnavailable() {
         logger.info("Interstitial direct presentation skipped in \(appEnvironment, privacy: .public) because no presenter was available")
+        logAnalytics(.presenterUnavailable, format: .interstitial, result: "direct_presentation")
     }
 
     func interstitialDirectPresentationRequested() {
         logger.info("Interstitial direct presentation requested in \(appEnvironment, privacy: .public)")
+        logAnalytics(.presentationRequested, format: .interstitial, result: "direct_presentation")
     }
 
     func interstitialSkippedDebugDisabled(for placement: AdService.UserDefaultsKey) {
         logger.info("Interstitial skipped for \(placement.rawValue, privacy: .public) in \(appEnvironment, privacy: .public) because debug ads are disabled")
+        logAnalytics(.skipped, format: .interstitial, placement: placement, result: "debug_ads_disabled")
     }
 
     func interstitialAlreadyShownToday(for placement: AdService.UserDefaultsKey) {
         logger.info("Interstitial skipped for \(placement.rawValue, privacy: .public) in \(appEnvironment, privacy: .public) because it has already shown today")
+        logAnalytics(.skipped, format: .interstitial, placement: placement, result: "already_shown_today")
     }
 
     func interstitialUnavailableAttemptingForegroundLoad(for placement: AdService.UserDefaultsKey) {
         logger.info("Interstitial unavailable for \(placement.rawValue, privacy: .public) in \(appEnvironment, privacy: .public); attempting foreground load")
+        logAnalytics(.foregroundLoadStarted, format: .interstitial, placement: placement)
     }
 
     func interstitialAlreadyShownAfterForegroundLoadRequest(for placement: AdService.UserDefaultsKey) {
         logger.info("Interstitial skipped for \(placement.rawValue, privacy: .public) after foreground load request because it has already shown today")
+        logAnalytics(.skipped, format: .interstitial, placement: placement, result: "already_shown_after_foreground_load")
     }
 
     func interstitialForegroundLoadFailed(for placement: AdService.UserDefaultsKey) {
         logger.info("Interstitial foreground load failed for \(placement.rawValue, privacy: .public); continuing without ad")
+        logAnalytics(.foregroundLoadFailed, format: .interstitial, placement: placement)
     }
 
     func interstitialStillUnavailableAfterForegroundLoad(for placement: AdService.UserDefaultsKey) {
         logger.info("Interstitial still unavailable after foreground load for \(placement.rawValue, privacy: .public); continuing without ad")
+        logAnalytics(.unavailable, format: .interstitial, placement: placement, result: "after_foreground_load")
     }
 
     func interstitialRequestIgnoredAlreadyInProgress(for placement: AdService.UserDefaultsKey) {
         logger.info("Interstitial request ignored for \(placement.rawValue, privacy: .public) because another interstitial is in progress")
+        logAnalytics(.skipped, format: .interstitial, placement: placement, result: "already_in_progress")
     }
 
     func interstitialPresenterUnavailable(for placement: AdService.UserDefaultsKey) {
         logger.info("Interstitial presenter unavailable for \(placement.rawValue, privacy: .public) in \(appEnvironment, privacy: .public); continuing without ad")
+        logAnalytics(.presenterUnavailable, format: .interstitial, placement: placement)
     }
 
     func interstitialPresentationRequested(for placement: AdService.UserDefaultsKey) {
         logger.info("Interstitial presentation requested for \(placement.rawValue, privacy: .public) in \(appEnvironment, privacy: .public)")
+        logAnalytics(.presentationRequested, format: .interstitial, placement: placement)
     }
 
     func interstitialAdFailedToPresent(_ error: Error) {
         logger.error("Interstitial ad failed to present: \(describe(error), privacy: .public)")
+        logAnalytics(.failedToPresent, format: .interstitial, error: error)
     }
 
     func interstitialAdDidDismiss() {
         logger.info("Interstitial ad did dismiss")
+        logAnalytics(.didDismiss, format: .interstitial)
     }
 
     func rewardedAdLoaded() {
         logger.info("Rewarded ad loaded in \(appEnvironment, privacy: .public)")
+        logAnalytics(.loaded, format: .rewarded)
     }
 
     func rewardedAdFailedToLoad(_ error: Error) {
         logger.error("Rewarded ad failed to load: \(describe(error), privacy: .public)")
+        logAnalytics(.loadFailed, format: .rewarded, error: error)
     }
 
     func rewardedAdRequestIgnoredAlreadyInProgress() {
         logger.info("Rewarded ad request ignored in \(appEnvironment, privacy: .public) because another rewarded ad is in progress")
+        logAnalytics(.skipped, format: .rewarded, result: "already_in_progress")
     }
 
     func rewardedAdSkippedDebugDisabled() {
         logger.info("Rewarded ad skipped in \(appEnvironment, privacy: .public) because debug ads are disabled")
+        logAnalytics(.skipped, format: .rewarded, result: "debug_ads_disabled")
     }
 
     func rewardedAdUnavailableGrantingFallback() {
         logger.info("Rewarded ad unavailable in \(appEnvironment, privacy: .public); granting fallback result")
+        logAnalytics(.unavailable, format: .rewarded, result: "granting_fallback")
     }
 
     func rewardedAdPresenterUnavailable() {
         logger.info("Rewarded ad presenter unavailable in \(appEnvironment, privacy: .public)")
+        logAnalytics(.presenterUnavailable, format: .rewarded)
     }
 
     func rewardedAdPresentationRequested() {
         logger.info("Rewarded ad presentation requested in \(appEnvironment, privacy: .public)")
+        logAnalytics(.presentationRequested, format: .rewarded)
     }
 
     func rewardedAdRewardEarned() {
         logger.info("Rewarded ad reward earned")
+        logAnalytics(.rewardEarned, format: .rewarded)
     }
 
     func rewardedAdCompleted(with result: AdService.RewardedAdResult) {
         logger.info("Rewarded ad completed with result \(String(describing: result), privacy: .public)")
+        logAnalytics(.completed, format: .rewarded, result: String(describing: result))
     }
 
     func rewardedAdFailedToPresent(_ error: Error) {
         logger.error("Rewarded ad failed to present: \(describe(error), privacy: .public)")
+        logAnalytics(.failedToPresent, format: .rewarded, error: error)
     }
 
     func rewardedAdDidDismiss() {
         logger.info("Rewarded ad did dismiss")
+        logAnalytics(.didDismiss, format: .rewarded)
     }
 
     func fullScreenAdWillPresent(_ ad: FullScreenPresentingAd) {
         logger.info("\(format(for: ad), privacy: .public) ad will present")
+        logAnalytics(.willPresent, format: analyticsFormat(for: ad))
     }
 
     func fullScreenAdWillDismiss(_ ad: FullScreenPresentingAd) {
         logger.info("\(format(for: ad), privacy: .public) ad will dismiss")
+        logAnalytics(.willDismiss, format: analyticsFormat(for: ad))
     }
 
     private var appEnvironment: String {
@@ -152,5 +183,32 @@ struct AdLogger {
         } else {
             return "Unknown full-screen"
         }
+    }
+
+    private func analyticsFormat(for ad: FullScreenPresentingAd) -> BackwordAnalyticsEvent.AdFormat {
+        if ad is InterstitialAd {
+            return .interstitial
+        } else if ad is RewardedAd {
+            return .rewarded
+        } else {
+            return .unknown
+        }
+    }
+
+    private func logAnalytics(
+        _ action: BackwordAnalyticsEvent.AdAction,
+        format: BackwordAnalyticsEvent.AdFormat,
+        placement: AdService.UserDefaultsKey? = nil,
+        result: String? = nil,
+        error: Error? = nil
+    ) {
+        analytics.log(.adLifecycle(
+            action: action,
+            format: format,
+            placement: placement,
+            result: result,
+            error: error,
+            environment: appEnvironment
+        ))
     }
 }
