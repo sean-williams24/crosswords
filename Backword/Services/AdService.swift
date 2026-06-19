@@ -1,8 +1,33 @@
 import UIKit
 import GoogleMobileAds
 
+struct InterstitialPresentationGate {
+    let userDefaults: UserDefaults
+    var calendar: Calendar = .current
+
+    func key(for type: AdService.UserDefaultsKey) -> String {
+        "AdService.lastShown.\(type.rawValue)"
+    }
+
+    func shouldPresent(type: AdService.UserDefaultsKey, now: Date = Date()) -> Bool {
+        let key = key(for: type)
+        let today = calendar.startOfDay(for: now)
+        guard let last = userDefaults.object(forKey: key) as? Date else { return true }
+        return !calendar.isDate(last, inSameDayAs: today)
+    }
+
+    func markPresented(type: AdService.UserDefaultsKey, now: Date = Date()) {
+        userDefaults.set(calendar.startOfDay(for: now), forKey: key(for: type))
+    }
+
+    func clearPresented(type: AdService.UserDefaultsKey) {
+        userDefaults.removeObject(forKey: key(for: type))
+    }
+}
+
 @MainActor
 final class AdService: NSObject, ObservableObject {
+    private let logger = AdLogger()
 
     // MARK: - Ad Unit IDs
 
@@ -46,12 +71,14 @@ final class AdService: NSObject, ObservableObject {
     var rewardGranted = false
     private var interstitial: InterstitialAd?
     private var rewarded: RewardedAd?
-    private var onAdDismissedCallback: (@MainActor () -> Void)?
+    private var interstitialContext: InterstitialPresentationContext?
     private var rewardedAdCompletion: (@MainActor (RewardedAdResult) -> Void)?
+    private let interstitialGate: InterstitialPresentationGate
 
     // MARK: - Init
 
-    override init() {
+    init(interstitialGate: InterstitialPresentationGate = InterstitialPresentationGate(userDefaults: .standard)) {
+        self.interstitialGate = interstitialGate
         super.init()
         MobileAds.shared.start()
         Task {
@@ -62,26 +89,34 @@ final class AdService: NSObject, ObservableObject {
 
     // MARK: - Load
 
-    func loadAd() async {
+    @discardableResult
+    func loadAd() async -> Bool {
         do {
             interstitial = try await InterstitialAd.load(
                 with: interstitialAdUnitID,
                 request: Request()
             )
             interstitial?.fullScreenContentDelegate = self
+            logger.interstitialAdLoaded()
+            return true
         } catch {
-            print("[AdService] Failed to load interstitial: \(error.localizedDescription)")
+            interstitial = nil
+            logger.interstitialAdFailedToLoad(error)
+            return false
         }
     }
 
     func loadRewardedAd() async {
-      do {
-        rewarded = try await RewardedAd.load(
-          with: rewardedAdUnitID, request: Request())
-        rewarded?.fullScreenContentDelegate = self
-      } catch {
-        print("Failed to load rewarded ad with error: \(error.localizedDescription)")
-      }
+        do {
+            rewarded = try await RewardedAd.load(
+                with: rewardedAdUnitID,
+                request: Request()
+            )
+            rewarded?.fullScreenContentDelegate = self
+            logger.rewardedAdLoaded()
+        } catch {
+            logger.rewardedAdFailedToLoad(error)
+        }
     }
 
     // MARK: - Debug
@@ -102,37 +137,78 @@ final class AdService: NSObject, ObservableObject {
     /// Silently no-ops if no ad is loaded or no suitable view controller is found.
     func showInterstitial() {
         #if DEBUG
-        guard debugAdsEnabled else { return }
+        guard debugAdsEnabled else {
+            logger.interstitialSkippedDebugDisabled()
+            return
+        }
         #endif
-        guard let ad = interstitial, let rootVC = topViewController() else { return }
-        ad.present(from: rootVC)
-        interstitial = nil
-        Task { await loadAd() }
+        guard let ad = interstitial else {
+            logger.interstitialUnavailableForDirectPresentation()
+            Task { await loadAd() }
+            return
+        }
+        guard let presenter = topViewController() else {
+            logger.interstitialDirectPresentationPresenterUnavailable()
+            Task { await loadAd() }
+            return
+        }
+        logger.interstitialDirectPresentationRequested()
+        ad.present(from: presenter)
     }
 
     /// Shows the interstitial at most once per calendar day for the given slot identifier.
     /// Subsequent calls on the same day are silently ignored.
     func showInterstitialOnce(for type: UserDefaultsKey, onDismiss: @escaping () -> Void) {
-        onAdDismissedCallback = onDismiss
-        let key = "AdService.lastShown.\(type.rawValue)"
-        let today = Calendar.current.startOfDay(for: Date())
-        if let last = UserDefaults.standard.object(forKey: key) as? Date,
-           Calendar.current.isDate(last, inSameDayAs: today) {
+        #if DEBUG
+        guard debugAdsEnabled else {
+            logger.interstitialSkippedDebugDisabled(for: type)
             onDismiss()
             return
         }
-        UserDefaults.standard.set(today, forKey: key)
-        showInterstitial()
+        #endif
+
+        guard interstitialGate.shouldPresent(type: type) else {
+            logger.interstitialAlreadyShownToday(for: type)
+            onDismiss()
+            return
+        }
+
+        if presentInterstitialIfReady(for: type, onDismiss: onDismiss) {
+            return
+        }
+
+        logger.interstitialUnavailableAttemptingForegroundLoad(for: type)
+        Task { @MainActor [self] in
+            guard interstitialGate.shouldPresent(type: type) else {
+                logger.interstitialAlreadyShownAfterForegroundLoadRequest(for: type)
+                onDismiss()
+                return
+            }
+
+            guard await loadAd() else {
+                logger.interstitialForegroundLoadFailed(for: type)
+                onDismiss()
+                return
+            }
+
+            guard presentInterstitialIfReady(for: type, onDismiss: onDismiss) else {
+                logger.interstitialStillUnavailableAfterForegroundLoad(for: type)
+                onDismiss()
+                return
+            }
+        }
     }
 
     func showRewardedAd(onComplete: @escaping @MainActor (RewardedAdResult) -> Void) {
         guard rewardedAdCompletion == nil else {
+            logger.rewardedAdRequestIgnoredAlreadyInProgress()
             onComplete(.dismissedWithoutReward)
             return
         }
 
         #if DEBUG
         guard debugAdsEnabled else {
+            logger.rewardedAdSkippedDebugDisabled()
             onComplete(.unavailable)
             Task { await loadRewardedAd() }
             return
@@ -141,7 +217,7 @@ final class AdService: NSObject, ObservableObject {
 
         guard let rewarded else {
             Task { await loadRewardedAd() }
-            print("Ad wasn't ready.")
+            logger.rewardedAdUnavailableGrantingFallback()
             onComplete(.unavailable)
             return
         }
@@ -149,6 +225,7 @@ final class AdService: NSObject, ObservableObject {
         guard let presenter = topViewController() else {
             self.rewarded = nil
             Task { await loadRewardedAd() }
+            logger.rewardedAdPresenterUnavailable()
             onComplete(.failedToPresent)
             return
         }
@@ -156,9 +233,11 @@ final class AdService: NSObject, ObservableObject {
         rewardedAdCompletion = onComplete
         rewardedAdDidDismiss = false
         rewardGranted = false
+        logger.rewardedAdPresentationRequested()
         Task { @MainActor in
             rewarded.present(from: presenter) { @MainActor [weak self] in
                 guard let self else { return }
+                logger.rewardedAdRewardEarned()
                 rewardGranted = true
             }
         }
@@ -196,7 +275,49 @@ final class AdService: NSObject, ObservableObject {
     private func completeRewardedAd(with result: RewardedAdResult) {
         guard let completion = rewardedAdCompletion else { return }
         rewardedAdCompletion = nil
+        logger.rewardedAdCompleted(with: result)
         completion(result)
+    }
+
+    private func completeInterstitial() {
+        guard let context = interstitialContext else { return }
+        interstitialContext = nil
+        context.onDismiss()
+    }
+
+    private func presentInterstitialIfReady(for type: UserDefaultsKey, onDismiss: @escaping @MainActor () -> Void) -> Bool {
+        guard interstitialContext == nil else {
+            logger.interstitialRequestIgnoredAlreadyInProgress(for: type)
+            return true
+        }
+
+        guard let ad = interstitial else {
+            return false
+        }
+
+        guard let presenter = topViewController() else {
+            logger.interstitialPresenterUnavailable(for: type)
+            Task { await loadAd() }
+            return false
+        }
+
+        interstitialGate.markPresented(type: type)
+        interstitialContext = InterstitialPresentationContext(type: type, onDismiss: onDismiss)
+        logger.interstitialPresentationRequested(for: type)
+        ad.present(from: presenter)
+        return true
+    }
+
+    private func failInterstitialPresentation() {
+        if let context = interstitialContext {
+            interstitialGate.clearPresented(type: context.type)
+        }
+        completeInterstitial()
+    }
+
+    private struct InterstitialPresentationContext {
+        let type: UserDefaultsKey
+        let onDismiss: @MainActor () -> Void
     }
 }
 
@@ -208,6 +329,7 @@ extension AdService: FullScreenContentDelegate {
       didFailToPresentFullScreenContentWithError error: Error
     ) {
         if let _ = ad as? RewardedAd {
+            logger.rewardedAdFailedToPresent(error)
             rewarded = nil
             rewardGranted = false
             completeRewardedAd(with: .failedToPresent)
@@ -215,22 +337,33 @@ extension AdService: FullScreenContentDelegate {
                 await loadRewardedAd()
             }
         } else {
-            onAdDismissedCallback?()
+            logger.interstitialAdFailedToPresent(error)
+            interstitial = nil
+            failInterstitialPresentation()
+            Task { @MainActor [self] in
+                await loadAd()
+            }
         }
     }
 
     func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
-      print("\(#function) called")
+        logger.fullScreenAdWillPresent(ad)
     }
 
     func adWillDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
-      print("\(#function) called")
+        logger.fullScreenAdWillDismiss(ad)
     }
 
     func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         if let _ = ad as? InterstitialAd {
-            onAdDismissedCallback?()
+            logger.interstitialAdDidDismiss()
+            interstitial = nil
+            completeInterstitial()
+            Task { @MainActor [self] in
+                await loadAd()
+            }
         } else if let _ = ad as? RewardedAd {
+            logger.rewardedAdDidDismiss()
             rewarded = nil
             if rewardGranted {
                 completeRewardedAd(with: .earnedReward)
