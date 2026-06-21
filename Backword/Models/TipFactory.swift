@@ -2,6 +2,24 @@
 
 import TipKit
 
+enum SettingsTipPresentationReadiness {
+    static func canPresent(
+        launchSplashDidComplete: Bool,
+        navigationBarDidAppear: Bool,
+        adStartupDidComplete: Bool,
+        isPresentingFullScreenAd: Bool,
+        isHomeNavigationActive: Bool,
+        didReturnFromDailyGame: Bool
+    ) -> Bool {
+        launchSplashDidComplete
+            && navigationBarDidAppear
+            && adStartupDidComplete
+            && !isPresentingFullScreenAd
+            && !isHomeNavigationActive
+            && didReturnFromDailyGame
+    }
+}
+
 struct SettingsTip: Tip {
     var title: Text {
         Text("Settings")
@@ -11,6 +29,15 @@ struct SettingsTip: Tip {
     var message: Text? {
         Text("Customize your game settings, including colour scheme and difficulty.")
             .font(AppFont.caption(13))
+    }
+
+    @Parameter
+    static var homeChromeReady: Bool = false
+
+    var rules: [Rule] {
+        [
+            #Rule(Self.$homeChromeReady) { $0 == true }
+        ]
     }
 
     var options: [TipOption] {

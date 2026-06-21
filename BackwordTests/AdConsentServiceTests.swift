@@ -14,6 +14,8 @@ struct AdConsentServiceTests {
 
         #expect(!canRequestAds)
         #expect(consentService.prepareCallCount == 1)
+        #expect(adService.adStartupDidComplete)
+        #expect(!adService.isPresentingFullScreenAd)
     }
 
     @Test("Interstitial gate continues when consent startup is not ready")

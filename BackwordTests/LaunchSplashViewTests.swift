@@ -31,4 +31,72 @@ struct LaunchSplashViewTests {
         #expect(phoneFrame == 96)
         #expect(iPadFrame == phoneFrame * 2)
     }
+
+    @Test("Settings tip waits for splash completion and home navigation bar")
+    func settingsTipWaitsForSplashAndNavigationBar() {
+        #expect(SettingsTipPresentationReadiness.canPresent(
+            launchSplashDidComplete: false,
+            navigationBarDidAppear: false,
+            adStartupDidComplete: false,
+            isPresentingFullScreenAd: false,
+            isHomeNavigationActive: false,
+            didReturnFromDailyGame: false
+        ) == false)
+        #expect(SettingsTipPresentationReadiness.canPresent(
+            launchSplashDidComplete: false,
+            navigationBarDidAppear: true,
+            adStartupDidComplete: true,
+            isPresentingFullScreenAd: false,
+            isHomeNavigationActive: false,
+            didReturnFromDailyGame: true
+        ) == false)
+        #expect(SettingsTipPresentationReadiness.canPresent(
+            launchSplashDidComplete: true,
+            navigationBarDidAppear: false,
+            adStartupDidComplete: true,
+            isPresentingFullScreenAd: false,
+            isHomeNavigationActive: false,
+            didReturnFromDailyGame: true
+        ) == false)
+        #expect(SettingsTipPresentationReadiness.canPresent(
+            launchSplashDidComplete: true,
+            navigationBarDidAppear: true,
+            adStartupDidComplete: false,
+            isPresentingFullScreenAd: false,
+            isHomeNavigationActive: false,
+            didReturnFromDailyGame: true
+        ) == false)
+        #expect(SettingsTipPresentationReadiness.canPresent(
+            launchSplashDidComplete: true,
+            navigationBarDidAppear: true,
+            adStartupDidComplete: true,
+            isPresentingFullScreenAd: true,
+            isHomeNavigationActive: false,
+            didReturnFromDailyGame: true
+        ) == false)
+        #expect(SettingsTipPresentationReadiness.canPresent(
+            launchSplashDidComplete: true,
+            navigationBarDidAppear: true,
+            adStartupDidComplete: true,
+            isPresentingFullScreenAd: false,
+            isHomeNavigationActive: true,
+            didReturnFromDailyGame: true
+        ) == false)
+        #expect(SettingsTipPresentationReadiness.canPresent(
+            launchSplashDidComplete: true,
+            navigationBarDidAppear: true,
+            adStartupDidComplete: true,
+            isPresentingFullScreenAd: false,
+            isHomeNavigationActive: false,
+            didReturnFromDailyGame: false
+        ) == false)
+        #expect(SettingsTipPresentationReadiness.canPresent(
+            launchSplashDidComplete: true,
+            navigationBarDidAppear: true,
+            adStartupDidComplete: true,
+            isPresentingFullScreenAd: false,
+            isHomeNavigationActive: false,
+            didReturnFromDailyGame: true
+        ))
+    }
 }

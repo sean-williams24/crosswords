@@ -1,5 +1,16 @@
 import SwiftUI
 
+private struct LaunchSplashCompletionKey: EnvironmentKey {
+    static let defaultValue = true
+}
+
+extension EnvironmentValues {
+    var launchSplashDidComplete: Bool {
+        get { self[LaunchSplashCompletionKey.self] }
+        set { self[LaunchSplashCompletionKey.self] = newValue }
+    }
+}
+
 struct LaunchSplashAnimationTiming: Equatable {
     let holdNanoseconds: UInt64
     let fadeDuration: Double
@@ -49,6 +60,7 @@ struct LaunchSplashView<Content: View>: View {
             content
                 .opacity(contentOpacity)
                 .allowsHitTesting(!isShowingSplash)
+                .environment(\.launchSplashDidComplete, !isShowingSplash)
 
             if isShowingSplash {
                 splash

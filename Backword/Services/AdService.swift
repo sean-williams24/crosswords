@@ -68,6 +68,8 @@ final class AdService: NSObject, ObservableObject {
     }
 
     @Published var rewardedAdDidDismiss = false
+    @Published private(set) var adStartupDidComplete = false
+    @Published private(set) var isPresentingFullScreenAd = false
     var rewardGranted = false
     private var interstitial: InterstitialAd?
     private var rewarded: RewardedAd?
@@ -101,13 +103,16 @@ final class AdService: NSObject, ObservableObject {
         }
 
         let task = Task { @MainActor [self] in
+            adStartupDidComplete = false
             guard await adConsentService.prepareForAds() else {
                 startupTask = nil
+                adStartupDidComplete = true
                 return false
             }
 
             guard !adsHaveStarted else {
                 startupTask = nil
+                adStartupDidComplete = true
                 return true
             }
 
@@ -117,6 +122,7 @@ final class AdService: NSObject, ObservableObject {
 
             await loadAd()
             await loadRewardedAd()
+            adStartupDidComplete = true
             return true
         }
         startupTask = task
@@ -139,6 +145,7 @@ final class AdService: NSObject, ObservableObject {
             if !result {
                 task.cancel()
                 startupTask = nil
+                adStartupDidComplete = true
             }
 
             return result
@@ -221,6 +228,7 @@ final class AdService: NSObject, ObservableObject {
             requestedAt: Date()
         )
         logger.interstitialDirectPresentationRequested(attemptID: attemptID)
+        isPresentingFullScreenAd = true
         ad.present(from: presenter)
     }
 
@@ -324,6 +332,7 @@ final class AdService: NSObject, ObservableObject {
         rewardedAdDidDismiss = false
         rewardGranted = false
         logger.rewardedAdPresentationRequested(attemptID: attemptID)
+        isPresentingFullScreenAd = true
         Task { @MainActor in
             rewarded.present(from: presenter) { @MainActor [weak self] in
                 guard let self else { return }
@@ -407,6 +416,7 @@ final class AdService: NSObject, ObservableObject {
             onDismiss: onDismiss
         )
         logger.interstitialPresentationRequested(for: type, attemptID: attemptID)
+        isPresentingFullScreenAd = true
         ad.present(from: presenter)
         return true
     }
@@ -517,6 +527,7 @@ extension AdService: FullScreenContentDelegate {
                 presentedAt: rewardedAdContext?.presentedAt
             )
             rewarded = nil
+            isPresentingFullScreenAd = false
             rewardGranted = false
             completeRewardedAd(with: .failedToPresent)
             Task { @MainActor [self] in
@@ -529,6 +540,7 @@ extension AdService: FullScreenContentDelegate {
                 presentedAt: interstitialContext?.presentedAt ?? directInterstitialContext?.presentedAt
             )
             interstitial = nil
+            isPresentingFullScreenAd = false
             failInterstitialPresentation()
             clearDirectInterstitialContext()
             Task { @MainActor [self] in
@@ -575,6 +587,7 @@ extension AdService: FullScreenContentDelegate {
                 presentedAt: interstitialContext?.presentedAt ?? directInterstitialContext?.presentedAt
             )
             interstitial = nil
+            isPresentingFullScreenAd = false
             completeInterstitial()
             clearDirectInterstitialContext()
             Task { @MainActor [self] in
@@ -586,6 +599,7 @@ extension AdService: FullScreenContentDelegate {
                 presentedAt: rewardedAdContext?.presentedAt
             )
             rewarded = nil
+            isPresentingFullScreenAd = false
             if rewardGranted {
                 completeRewardedAd(with: .earnedReward)
             } else {

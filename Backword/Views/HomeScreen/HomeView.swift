@@ -11,6 +11,7 @@ struct HomeView: View {
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.launchSplashDidComplete) private var launchSplashDidComplete
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @ScaledMetric var proLogoFrame: CGFloat = 18
@@ -24,6 +25,10 @@ struct HomeView: View {
     @State private var proLogoVisible = false
     @State private var showRatingDetails = false
     @State private var navigationPath = [String]()
+    @State private var navigationBarDidAppear = false
+    @State private var settingsTipReadinessTask: Task<Void, Never>?
+    @State private var hasOpenedDailyGameThisSession = false
+    @State private var didReturnFromDailyGame = false
     #if DEBUG
     @State private var showDebugSettings = false
     #endif
@@ -156,13 +161,45 @@ struct HomeView: View {
             .onAppear {
                 logoVisible = false
                 proLogoVisible = false
+                updateSettingsTipReadiness()
                 animateLogo()
                 Task {
                     await viewModel.refreshIfNeeded()
                     await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                 }
             }
+            .onChange(of: launchSplashDidComplete) { _, _ in
+                updateSettingsTipReadiness()
+            }
+            .onChange(of: adService.adStartupDidComplete) { _, _ in
+                updateSettingsTipReadiness()
+            }
+            .onChange(of: adService.isPresentingFullScreenAd) { _, _ in
+                updateSettingsTipReadiness()
+            }
+            .onChange(of: navigationPath) { oldPath, newPath in
+                if !oldPath.isEmpty, newPath.isEmpty, hasOpenedDailyGameThisSession {
+                    didReturnFromDailyGame = true
+                }
+                updateSettingsTipReadiness()
+            }
+            .onChange(of: showArchive) { _, _ in
+                updateSettingsTipReadiness()
+            }
+            .onChange(of: showPaywall) { _, _ in
+                updateSettingsTipReadiness()
+            }
+            .onChange(of: showWOTD) { _, _ in
+                updateSettingsTipReadiness()
+            }
+            .onChange(of: showSettings) { _, _ in
+                updateSettingsTipReadiness()
+            }
+            .onChange(of: showRatingDetails) { _, _ in
+                updateSettingsTipReadiness()
+            }
             .onChange(of: scenePhase) { _, newPhase in
+                updateSettingsTipReadiness()
                 if newPhase == .background || newPhase == .inactive {
                     logoVisible = false
                     proLogoVisible = false
@@ -302,6 +339,14 @@ struct HomeView: View {
                 .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 4)
                 .ignoresSafeArea()
         )
+        .onAppear {
+            navigationBarDidAppear = true
+            updateSettingsTipReadiness()
+        }
+        .onDisappear {
+            navigationBarDidAppear = false
+            updateSettingsTipReadiness()
+        }
     }
 
     @ViewBuilder
@@ -328,14 +373,14 @@ struct HomeView: View {
                 BackwordProgress.load(date: $0.date)
             }
         ) {
-            navigationPath.append("backword")
+            navigateToBackword()
         }
         .environmentObject(adService)
     }
 
     private var dailyCrosswordCard: some View {
         DailyCrosswordCard(viewModel: viewModel) {
-            navigationPath.append("puzzle")
+            navigateToDailyCrossword()
         }
         .environmentObject(adService)
     }
@@ -365,6 +410,56 @@ struct HomeView: View {
                 proLogoVisible = true
             }
         }
+    }
+
+    private func updateSettingsTipReadiness() {
+        settingsTipReadinessTask?.cancel()
+        SettingsTip.homeChromeReady = false
+
+        guard settingsTipCanPresent else { return }
+
+        settingsTipReadinessTask = Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 900_000_000)
+            guard !Task.isCancelled else { return }
+            SettingsTip.homeChromeReady = settingsTipCanPresent
+        }
+    }
+
+    private var settingsTipCanPresent: Bool {
+        SettingsTipPresentationReadiness.canPresent(
+            launchSplashDidComplete: launchSplashDidComplete,
+            navigationBarDidAppear: navigationBarDidAppear,
+            adStartupDidComplete: adService.adStartupDidComplete,
+            isPresentingFullScreenAd: adService.isPresentingFullScreenAd,
+            isHomeNavigationActive: homeHasActivePresentation,
+            didReturnFromDailyGame: didReturnFromDailyGame
+        )
+    }
+
+    private var homeHasActivePresentation: Bool {
+        !navigationPath.isEmpty
+            || showArchive
+            || showPaywall
+            || showWOTD
+            || showSettings
+            || showRatingDetails
+    }
+
+    private func navigateToBackword() {
+        cancelSettingsTipPresentation()
+        hasOpenedDailyGameThisSession = true
+        navigationPath.append("backword")
+    }
+
+    private func navigateToDailyCrossword() {
+        cancelSettingsTipPresentation()
+        hasOpenedDailyGameThisSession = true
+        navigationPath.append("puzzle")
+    }
+
+    private func cancelSettingsTipPresentation() {
+        settingsTipReadinessTask?.cancel()
+        SettingsTip.homeChromeReady = false
     }
 
     // MARK: - Word of the Day Card
