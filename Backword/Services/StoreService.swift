@@ -2,10 +2,12 @@ import StoreKit
 
 @MainActor
 final class StoreService: ObservableObject {
+    private let logger = StoreLogger()
 
     // MARK: - Product IDs
     static let monthlyID = "com.backword.monthlypro"
     static let annualID = "com.backword.annualpro"
+    private static let productIDs = [monthlyID, annualID]
 
     // MARK: - Published State
     @Published private(set) var products: [Product] = []
@@ -64,16 +66,22 @@ final class StoreService: ObservableObject {
 
     // MARK: - Load Products
     func loadProducts() async {
+        logger.productsLoadRequested(productIDs: Self.productIDs)
         do {
-            products = try await Product.products(for: [Self.monthlyID, Self.annualID])
+            products = try await Product.products(for: Self.productIDs)
                 .sorted { $0.price < $1.price }
+            logger.productsLoaded(
+                products.map { StoreLogger.ProductSnapshot(id: $0.id) },
+                requestedProductIDs: Self.productIDs
+            )
         } catch {
-            print("Failed to load products: \(error)")
+            logger.productsLoadFailed(error)
         }
     }
 
     // MARK: - Purchase
     func purchase(_ product: Product) async throws -> StorePurchaseOutcome {
+        logger.purchaseRequested(productID: product.id)
         purchaseInProgress = true
         defer { purchaseInProgress = false }
 
@@ -82,74 +90,119 @@ final class StoreService: ObservableObject {
             simulateNextPurchasePending: simulateNextPurchasePending
         ) {
             simulateNextPurchasePending = false
+            logger.purchaseCompleted(productID: product.id, result: simulatedOutcome)
             return simulatedOutcome
         }
         #endif
 
-        let result = try await product.purchase()
+        let result: Product.PurchaseResult
+        do {
+            result = try await product.purchase()
+        } catch {
+            logger.purchaseFailed(productID: product.id, error: error)
+            throw error
+        }
 
         switch result {
         case .success(let verification):
-            let transaction = try checkVerified(verification)
+            let transaction: Transaction
+            do {
+                transaction = try checkVerified(verification)
+            } catch {
+                logger.purchaseFailed(productID: product.id, error: error)
+                throw error
+            }
+
             if grantsProAccess(transaction) {
                 isProUser = true
             } else {
-                await updateSubscriptionStatus()
+                await updateSubscriptionStatus(source: "purchase")
             }
             await transaction.finish()
             guard isProUser else {
+                logger.purchaseDidNotUnlockPro(productID: product.id)
                 throw StoreError.purchaseDidNotUnlockPro
             }
+            logger.purchaseCompleted(productID: product.id, result: .purchased)
             return .purchased
 
         case .userCancelled:
+            logger.purchaseCompleted(productID: product.id, result: .cancelled)
             return .cancelled
 
         case .pending:
+            logger.purchaseCompleted(productID: product.id, result: .pending)
             return .pending
 
         @unknown default:
+            logger.purchaseCompleted(productID: product.id, result: .pending)
             return .pending
         }
     }
 
     // MARK: - Restore
     func restorePurchases() async throws -> StoreRestoreOutcome {
+        logger.restoreRequested(source: "user")
+
         #if DEBUG
         if let simulatedOutcome = simulateNextRestoreOutcome {
             simulateNextRestoreOutcome = nil
             if simulatedOutcome == .restored {
                 isProUser = true
             }
+            logger.restoreCompleted(simulatedOutcome, source: "debug_simulated")
             return simulatedOutcome
         }
 
         if debugProOverride != nil {
-            try await AppStore.sync()
-            await updateSubscriptionStatus()
-            return isProUser ? .restored : .notFound
+            do {
+                try await AppStore.sync()
+            } catch {
+                logger.restoreFailed(source: "debug_override_sync", error: error)
+                throw error
+            }
+            await updateSubscriptionStatus(source: "debug_override_restore")
+            let outcome: StoreRestoreOutcome = isProUser ? .restored : .notFound
+            logger.restoreCompleted(outcome, source: "debug_override_sync")
+            return outcome
         }
         #endif
 
-        if await refreshProStatusFromCurrentEntitlements() {
+        if await refreshProStatusFromCurrentEntitlements(source: "restore_before_sync") {
+            logger.restoreCompleted(.restored, source: "current_entitlements")
             return .restored
         }
 
-        try await AppStore.sync()
-        return await refreshProStatusFromCurrentEntitlements() ? .restored : .notFound
+        do {
+            try await AppStore.sync()
+        } catch {
+            logger.restoreFailed(source: "app_store_sync", error: error)
+            throw error
+        }
+
+        let outcome: StoreRestoreOutcome = await refreshProStatusFromCurrentEntitlements(source: "restore_after_sync") ? .restored : .notFound
+        logger.restoreCompleted(outcome, source: "app_store_sync")
+        return outcome
     }
 
     // MARK: - Subscription Status
-    func updateSubscriptionStatus() async {
+    func updateSubscriptionStatus(source: String = "manual") async {
         #if DEBUG
         if let debugProOverride {
             isProUser = debugProOverride
             subscriptionStatusLoaded = true
+            logger.subscriptionStatusRefreshCompleted(
+                source: "\(source):debug_override",
+                entitlementCount: 0,
+                proEntitlementCount: debugProOverride ? 1 : 0,
+                unverifiedCount: 0,
+                isProUser: isProUser
+            )
             return
         }
         #endif
 
-        await refreshProStatusFromCurrentEntitlements()
+        await refreshProStatusFromCurrentEntitlements(source: source)
     }
 
     // MARK: - Helpers
@@ -172,18 +225,37 @@ final class StoreService: ObservableObject {
     }
 
     @discardableResult
-    private func refreshProStatusFromCurrentEntitlements() async -> Bool {
+    private func refreshProStatusFromCurrentEntitlements(source: String) async -> Bool {
+        logger.subscriptionStatusRefreshStarted(source: source)
         var hasActiveSubscription = false
+        var entitlementCount = 0
+        var proEntitlementCount = 0
+        var unverifiedCount = 0
 
         for await result in Transaction.currentEntitlements {
-            if let transaction = try? checkVerified(result),
-               grantsProAccess(transaction) {
-                hasActiveSubscription = true
+            entitlementCount += 1
+
+            switch result {
+            case .verified(let transaction):
+                if grantsProAccess(transaction) {
+                    proEntitlementCount += 1
+                    hasActiveSubscription = true
+                }
+
+            case .unverified:
+                unverifiedCount += 1
             }
         }
 
         isProUser = hasActiveSubscription
         subscriptionStatusLoaded = true
+        logger.subscriptionStatusRefreshCompleted(
+            source: source,
+            entitlementCount: entitlementCount,
+            proEntitlementCount: proEntitlementCount,
+            unverifiedCount: unverifiedCount,
+            isProUser: isProUser
+        )
         return hasActiveSubscription
     }
 
@@ -244,17 +316,19 @@ final class StoreService: ObservableObject {
         debugProOverride = value
         isProUser = value
         UserDefaults.standard.set(value, forKey: Self.debugProOverrideKey)
+        logger.debugOverrideChanged(value)
     }
 
     func clearDebugProOverride() {
         debugProOverride = nil
         subscriptionStatusLoaded = false
         UserDefaults.standard.removeObject(forKey: Self.debugProOverrideKey)
-        Task { await updateSubscriptionStatus() }
+        logger.debugOverrideChanged(nil)
+        Task { await updateSubscriptionStatus(source: "debug_override_cleared") }
     }
 
     func refreshStoreKitStatus() {
-        Task { await updateSubscriptionStatus() }
+        Task { await updateSubscriptionStatus(source: "debug_manual_refresh") }
     }
 
     func setDebugSimulateNextPurchasePending(_ value: Bool) {
@@ -316,6 +390,11 @@ final class StoreService: ObservableObject {
         storeKitEntitlementDiagnosticSummary = summary
         lines.append("Summary: \(summary)")
         lines.append("=== End StoreKit currentEntitlements dump ===")
+        logger.debugEntitlementsDumped(
+            entitlementCount: totalCount,
+            proEntitlementCount: proGrantingCount,
+            unverifiedCount: unverifiedCount
+        )
         print(lines.joined(separator: "\n"))
     }
 
@@ -331,12 +410,15 @@ final class StoreService: ObservableObject {
             for await result in Transaction.updates {
                 guard let self = self else { return }
 
-                do {
-                    let transaction = try self.checkVerified(result)
-                    await self.updateSubscriptionStatus()
+                switch result {
+                case .verified(let transaction):
+                    self.logger.transactionUpdateReceived(productID: transaction.productID)
+                    await self.updateSubscriptionStatus(source: "transaction_update")
                     await transaction.finish()
-                } catch {
-                    print("Received unverified transaction update: \(error)")
+                    self.logger.transactionUpdateCompleted(productID: transaction.productID)
+
+                case .unverified(let transaction, let error):
+                    self.logger.transactionUpdateFailed(productID: transaction.productID, error: error)
                 }
             }
         }

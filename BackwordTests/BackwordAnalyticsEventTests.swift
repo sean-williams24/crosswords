@@ -45,4 +45,47 @@ struct BackwordAnalyticsEventTests {
         #expect(event.parameters["error_code"] == "42")
         #expect(event.parameters["error_description"] == nil)
     }
+
+    @Test("Store lifecycle event includes product counts and outcome")
+    func storeLifecycleEventIncludesExpectedParameters() {
+        let event = BackwordAnalyticsEvent.storeLifecycle(
+            action: .productsLoaded,
+            result: "loaded",
+            productCount: 1,
+            entitlementCount: 2,
+            proEntitlementCount: 1,
+            unverifiedCount: 1,
+            missingProductIDs: ["com.backword.annualpro"],
+            environment: "test"
+        )
+
+        #expect(event.name == "bw_store_lifecycle")
+        #expect(event.parameters["action"] == "products_loaded")
+        #expect(event.parameters["result"] == "loaded")
+        #expect(event.parameters["product_count"] == "1")
+        #expect(event.parameters["entitlement_count"] == "2")
+        #expect(event.parameters["pro_entitlement_count"] == "1")
+        #expect(event.parameters["unverified_count"] == "1")
+        #expect(event.parameters["missing_product_ids"] == "com.backword.annualpro")
+        #expect(event.parameters["environment"] == "test")
+    }
+
+    @Test("Store lifecycle error event stores sanitized error details")
+    func storeLifecycleErrorEventStoresSanitizedDetails() {
+        let error = NSError(domain: "com.backword.store", code: 7, userInfo: [
+            NSLocalizedDescriptionKey: "Do not send this message to analytics"
+        ])
+
+        let event = BackwordAnalyticsEvent.storeLifecycle(
+            action: .purchaseFailed,
+            productID: StoreService.monthlyID,
+            error: error,
+            environment: "test"
+        )
+
+        #expect(event.parameters["product_id"] == StoreService.monthlyID)
+        #expect(event.parameters["error_domain"] == "com.backword.store")
+        #expect(event.parameters["error_code"] == "7")
+        #expect(event.parameters["error_description"] == nil)
+    }
 }
