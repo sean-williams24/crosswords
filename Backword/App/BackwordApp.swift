@@ -34,6 +34,9 @@ struct BackwordApp: App {
                 .environmentObject(storeService)
                 .environmentObject(adService)
                 .environmentObject(ratingService)
+                .task {
+                    await adService.prepareAdsIfNeeded()
+                }
         }
     }
 

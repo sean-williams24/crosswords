@@ -19,6 +19,9 @@ packages:
   GoogleMobileAds:
     url: https://github.com/googleads/swift-package-manager-google-mobile-ads
     minorVersion: 13.0.0
+  GoogleUserMessagingPlatform:
+    url: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
+    minorVersion: 3.1.0
 
 targets:
   Backword:
@@ -28,6 +31,7 @@ targets:
       - path: Backword
     dependencies:
       - package: GoogleMobileAds
+      - package: GoogleUserMessagingPlatform
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.backword.app

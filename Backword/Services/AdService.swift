@@ -75,16 +75,73 @@ final class AdService: NSObject, ObservableObject {
     private var directInterstitialContext: DirectAdPresentationContext?
     private var rewardedAdContext: RewardedAdPresentationContext?
     private let interstitialGate: InterstitialPresentationGate
+    private let adConsentService: AdConsentPreparing
+    private var startupTask: Task<Bool, Never>?
+    private var adsHaveStarted = false
 
     // MARK: - Init
 
-    init(interstitialGate: InterstitialPresentationGate = InterstitialPresentationGate(userDefaults: .standard)) {
+    init(
+        interstitialGate: InterstitialPresentationGate = InterstitialPresentationGate(userDefaults: .standard),
+        adConsentService: AdConsentPreparing = GoogleAdConsentService()
+    ) {
         self.interstitialGate = interstitialGate
+        self.adConsentService = adConsentService
         super.init()
-        MobileAds.shared.start()
-        Task {
+    }
+
+    @discardableResult
+    func prepareAdsIfNeeded() async -> Bool {
+        if adsHaveStarted {
+            return true
+        }
+
+        if let startupTask {
+            return await awaitStartupTask(startupTask)
+        }
+
+        let task = Task { @MainActor [self] in
+            guard await adConsentService.prepareForAds() else {
+                startupTask = nil
+                return false
+            }
+
+            guard !adsHaveStarted else {
+                startupTask = nil
+                return true
+            }
+
+            await MobileAds.shared.start()
+            adsHaveStarted = true
+            startupTask = nil
+
             await loadAd()
             await loadRewardedAd()
+            return true
+        }
+        startupTask = task
+        return await awaitStartupTask(task)
+    }
+
+    private func awaitStartupTask(_ task: Task<Bool, Never>) async -> Bool {
+        await withTaskGroup(of: Bool.self) { group in
+            group.addTask {
+                await task.value
+            }
+            group.addTask {
+                try? await Task.sleep(nanoseconds: 8_000_000_000)
+                return false
+            }
+
+            let result = await group.next() ?? false
+            group.cancelAll()
+
+            if !result {
+                task.cancel()
+                startupTask = nil
+            }
+
+            return result
         }
     }
 
@@ -143,6 +200,11 @@ final class AdService: NSObject, ObservableObject {
             return
         }
         #endif
+        guard adsHaveStarted else {
+            Task { await prepareAdsIfNeeded() }
+            logger.interstitialUnavailableForDirectPresentation()
+            return
+        }
         guard let ad = interstitial else {
             logger.interstitialUnavailableForDirectPresentation()
             Task { await loadAd() }
@@ -172,6 +234,12 @@ final class AdService: NSObject, ObservableObject {
             return
         }
         #endif
+
+        guard adsHaveStarted else {
+            Task { await prepareAdsIfNeeded() }
+            onDismiss()
+            return
+        }
 
         guard interstitialGate.shouldPresent(type: type) else {
             logger.interstitialAlreadyShownToday(for: type)
@@ -220,6 +288,17 @@ final class AdService: NSObject, ObservableObject {
             return
         }
         #endif
+
+        guard adsHaveStarted else {
+            Task { @MainActor [self] in
+                guard await prepareAdsIfNeeded() else {
+                    onComplete(.unavailable)
+                    return
+                }
+                showRewardedAd(onComplete: onComplete)
+            }
+            return
+        }
 
         guard let rewarded else {
             Task { await loadRewardedAd() }
