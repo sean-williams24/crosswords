@@ -170,6 +170,7 @@ struct HomeView: View {
                     animateLogo()
                     
                     Task {
+                        await storeService.updateSubscriptionStatus(source: "scene_active")
                         await viewModel.refreshIfNeeded()
                         await wotdService.refreshIfNeeded()
                         await backwordService.refreshIfNeeded()

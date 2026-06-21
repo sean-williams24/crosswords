@@ -66,6 +66,53 @@ struct StoreServiceTests {
         ))
     }
 
+    @Test("Next Pro expiration returns earliest active subscription expiration")
+    func nextProExpirationReturnsEarliestActiveSubscriptionExpiration() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        let soon = now.addingTimeInterval(60)
+        let later = now.addingTimeInterval(120)
+
+        let expiration = StoreService.nextProExpiration(from: [
+            ProEntitlementSnapshot(
+                productID: StoreService.annualID,
+                revocationDate: nil,
+                expirationDate: later
+            ),
+            ProEntitlementSnapshot(
+                productID: StoreService.monthlyID,
+                revocationDate: nil,
+                expirationDate: soon
+            ),
+            ProEntitlementSnapshot(
+                productID: "com.backword.not-pro",
+                revocationDate: nil,
+                expirationDate: now.addingTimeInterval(30)
+            )
+        ], now: now)
+
+        #expect(expiration == soon)
+    }
+
+    @Test("Next Pro expiration ignores expired and revoked subscriptions")
+    func nextProExpirationIgnoresInactiveSubscriptions() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+
+        let expiration = StoreService.nextProExpiration(from: [
+            ProEntitlementSnapshot(
+                productID: StoreService.annualID,
+                revocationDate: nil,
+                expirationDate: now.addingTimeInterval(-60)
+            ),
+            ProEntitlementSnapshot(
+                productID: StoreService.monthlyID,
+                revocationDate: now,
+                expirationDate: now.addingTimeInterval(60)
+            )
+        ], now: now)
+
+        #expect(expiration == nil)
+    }
+
     #if DEBUG
     @Test("Debug override true forces Pro")
     func debugOverrideTrueForcesPro() {

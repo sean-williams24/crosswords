@@ -28,6 +28,7 @@ final class StoreService: ObservableObject {
     #endif
 
     private var transactionListener: Task<Void, Never>?
+    private var subscriptionExpirationRefreshTask: Task<Void, Never>?
 
     // MARK: - Init
     init() {
@@ -51,6 +52,7 @@ final class StoreService: ObservableObject {
 
     deinit {
         transactionListener?.cancel()
+        subscriptionExpirationRefreshTask?.cancel()
     }
 
     var annualSavings: String? {
@@ -115,6 +117,10 @@ final class StoreService: ObservableObject {
 
             if grantsProAccess(transaction) {
                 isProUser = true
+                scheduleSubscriptionExpirationRefresh(
+                    nextExpirationDate: transaction.expirationDate,
+                    source: "purchase"
+                )
             } else {
                 await updateSubscriptionStatus(source: "purchase")
             }
@@ -231,13 +237,25 @@ final class StoreService: ObservableObject {
         var entitlementCount = 0
         var proEntitlementCount = 0
         var unverifiedCount = 0
+        var proEntitlements: [ProEntitlementSnapshot] = []
 
         for await result in Transaction.currentEntitlements {
             entitlementCount += 1
 
             switch result {
             case .verified(let transaction):
-                if grantsProAccess(transaction) {
+                let entitlement = ProEntitlementSnapshot(
+                    productID: transaction.productID,
+                    revocationDate: transaction.revocationDate,
+                    expirationDate: transaction.expirationDate
+                )
+                proEntitlements.append(entitlement)
+
+                if Self.grantsProAccess(
+                    productID: entitlement.productID,
+                    revocationDate: entitlement.revocationDate,
+                    expirationDate: entitlement.expirationDate
+                ) {
                     proEntitlementCount += 1
                     hasActiveSubscription = true
                 }
@@ -249,6 +267,10 @@ final class StoreService: ObservableObject {
 
         isProUser = hasActiveSubscription
         subscriptionStatusLoaded = true
+        scheduleSubscriptionExpirationRefresh(
+            nextExpirationDate: Self.nextProExpiration(from: proEntitlements),
+            source: source
+        )
         logger.subscriptionStatusRefreshCompleted(
             source: source,
             entitlementCount: entitlementCount,
@@ -257,6 +279,19 @@ final class StoreService: ObservableObject {
             isProUser: isProUser
         )
         return hasActiveSubscription
+    }
+
+    private func scheduleSubscriptionExpirationRefresh(nextExpirationDate: Date?, source: String) {
+        subscriptionExpirationRefreshTask?.cancel()
+
+        guard let nextExpirationDate else { return }
+
+        let delay = max(0, nextExpirationDate.timeIntervalSinceNow + 1)
+        subscriptionExpirationRefreshTask = Task { @MainActor [weak self] in
+            try? await Task.sleep(for: .seconds(delay))
+            guard !Task.isCancelled else { return }
+            await self?.updateSubscriptionStatus(source: "\(source):expiration")
+        }
     }
 
     static func grantsProAccess(
@@ -269,6 +304,23 @@ final class StoreService: ObservableObject {
         guard revocationDate == nil else { return false }
         guard expirationDate.map({ $0 > now }) ?? true else { return false }
         return true
+    }
+
+    static func nextProExpiration(
+        from entitlements: [ProEntitlementSnapshot],
+        now: Date = Date()
+    ) -> Date? {
+        entitlements
+            .filter {
+                grantsProAccess(
+                    productID: $0.productID,
+                    revocationDate: $0.revocationDate,
+                    expirationDate: $0.expirationDate,
+                    now: now
+                )
+            }
+            .compactMap(\.expirationDate)
+            .min()
     }
 
     #if DEBUG
@@ -448,4 +500,10 @@ enum StorePurchaseOutcome: Equatable {
 enum StoreRestoreOutcome: Equatable {
     case restored
     case notFound
+}
+
+struct ProEntitlementSnapshot: Equatable {
+    let productID: String
+    let revocationDate: Date?
+    let expirationDate: Date?
 }
