@@ -51,6 +51,9 @@ Backword.xcodeproj/project.xcworkspace/xcuserdata/*/WorkspaceSettings.xcsettings
 # macOS
 .DS_Store
 
+# Generated reports and screenshots
+reports/
+
 # Web
 web/node_modules/
 web/dist/
