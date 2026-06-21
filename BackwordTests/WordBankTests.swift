@@ -67,20 +67,33 @@ struct WordBankTests {
         }
     }
 
-    @Test("All word bank clues have terminal punctuation")
-    func allWordBankCluesHaveTerminalPunctuation() throws {
-        let terminalPunctuation: Set<Character> = [".", "?", "!"]
-
+    @Test("No word bank clues end in full stops")
+    func noWordBankCluesEndInFullStops() throws {
         for obj in try loadWordBank() {
             for field in fieldValues(for: obj) {
                 let trimmedValue = field.value.trimmingCharacters(in: .whitespacesAndNewlines)
-                guard let lastCharacter = trimmedValue.last else {
-                    continue
-                }
 
                 #expect(
-                    terminalPunctuation.contains(lastCharacter),
-                    "\(field.name) is missing terminal punctuation for word: \(obj.word) field: \(field.value)"
+                    !trimmedValue.hasSuffix("."),
+                    "\(field.name) ends in a full stop for word: \(obj.word) field: \(field.value)"
+                )
+            }
+        }
+    }
+
+    @Test("Abbreviation clues are marked")
+    func abbreviationCluesAreMarked() throws {
+        let wordBank = try loadWordBank()
+        let foundWords = Set(wordBank.map { $0.word.uppercased() })
+        let missingWords = Self.abbreviationWords.subtracting(foundWords)
+
+        #expect(missingWords.isEmpty, "Abbreviation test words missing from word bank: \(missingWords.sorted())")
+
+        for obj in wordBank where Self.abbreviationWords.contains(obj.word.uppercased()) {
+            for field in fieldValues(for: obj) {
+                #expect(
+                    field.value.hasSuffix(" (abbr)"),
+                    "\(field.name) is missing abbreviation marker for word: \(obj.word) field: \(field.value)"
                 )
             }
         }
@@ -257,5 +270,18 @@ struct WordBankTests {
     private static let stopwords: Set<String> = [
         "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "in", "into",
         "is", "it", "of", "on", "one", "or", "that", "the", "thing", "to", "who", "with",
+    ]
+
+    private static let abbreviationWords: Set<String> = [
+        "ABC", "ABS", "ALT", "APR", "ATF", "ATM", "AWOL", "BBC", "BBQ", "BFF",
+        "BLM", "BLT", "BMW", "BMX", "BRB", "BTW", "CBS", "CDS", "CEO", "CGI",
+        "CNN", "CSI", "DIY", "DJS", "DNA", "DUI", "DVD", "ESL", "ETC",
+        "FAQ", "FBI", "FCC", "FWD", "FYI", "GOP", "GPA", "GPS", "HBO", "HIV",
+        "IBM", "IOS", "IPA", "IRS", "IUD", "JFK", "JLO", "JPG", "KFC", "KGB",
+        "LAX", "LBJ", "LCD", "LEED", "LOL", "MGM", "MIC", "MMA", "MRS", "MSG",
+        "MTV", "MVP", "NBA", "NBC", "NFL", "NHL", "NPR", "NRA", "NYE", "NYT",
+        "OCD", "OMG", "ORG", "PBS", "PDF", "PGA", "PHD", "PJS", "REM", "RNA",
+        "SCOTUS", "SMS", "SOS", "SUV", "TBD", "TBS", "TKO", "TLC", "TNT", "TSA",
+        "TSP", "UPC", "UPS", "VIP", "WWE", "WWI",
     ]
 }

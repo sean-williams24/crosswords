@@ -84,6 +84,37 @@ final class WordBankTests: XCTestCase {
         }
     }
 
+    func testNoWordBankCluesEndInFullStops() throws {
+        for obj in wordBank {
+            for field in fieldValues(for: obj) {
+                let trimmedValue = field.value.trimmingCharacters(in: .whitespacesAndNewlines)
+                XCTAssertFalse(
+                    trimmedValue.hasSuffix("."),
+                    "\(field.name) ends in a full stop for word: \(obj.word) field: \(field.value)"
+                )
+            }
+        }
+    }
+
+    func testAbbreviationCluesAreMarked() throws {
+        let foundWords = Set(wordBank.map { $0.word.uppercased() })
+        let missingWords = Self.abbreviationWords.subtracting(foundWords)
+
+        XCTAssertTrue(
+            missingWords.isEmpty,
+            "Abbreviation test words missing from word bank: \(missingWords.sorted())"
+        )
+
+        for obj in wordBank where Self.abbreviationWords.contains(obj.word.uppercased()) {
+            for field in fieldValues(for: obj) {
+                XCTAssertTrue(
+                    field.value.hasSuffix(" (abbr)"),
+                    "\(field.name) is missing abbreviation marker for word: \(obj.word) field: \(field.value)"
+                )
+            }
+        }
+    }
+
     func fieldValues(for obj: WordObject) -> [FieldValue] {
         var fields: [FieldValue] = []
         if let text = obj.text, !text.isEmpty {
@@ -231,5 +262,18 @@ final class WordBankTests: XCTestCase {
     static let stopwords: Set<String> = [
         "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "in", "into",
         "is", "it", "of", "on", "one", "or", "that", "the", "thing", "to", "who", "with",
+    ]
+
+    static let abbreviationWords: Set<String> = [
+        "ABC", "ABS", "ALT", "APR", "ATF", "ATM", "AWOL", "BBC", "BBQ", "BFF",
+        "BLM", "BLT", "BMW", "BMX", "BRB", "BTW", "CBS", "CDS", "CEO", "CGI",
+        "CNN", "CSI", "DIY", "DJS", "DNA", "DUI", "DVD", "ESL", "ETC",
+        "FAQ", "FBI", "FCC", "FWD", "FYI", "GOP", "GPA", "GPS", "HBO", "HIV",
+        "IBM", "IOS", "IPA", "IRS", "IUD", "JFK", "JLO", "JPG", "KFC", "KGB",
+        "LAX", "LBJ", "LCD", "LEED", "LOL", "MGM", "MIC", "MMA", "MRS", "MSG",
+        "MTV", "MVP", "NBA", "NBC", "NFL", "NHL", "NPR", "NRA", "NYE", "NYT",
+        "OCD", "OMG", "ORG", "PBS", "PDF", "PGA", "PHD", "PJS", "REM", "RNA",
+        "SCOTUS", "SMS", "SOS", "SUV", "TBD", "TBS", "TKO", "TLC", "TNT", "TSA",
+        "TSP", "UPC", "UPS", "VIP", "WWE", "WWI",
     ]
 }
