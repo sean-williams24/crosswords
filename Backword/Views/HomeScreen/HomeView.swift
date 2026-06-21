@@ -7,7 +7,7 @@ struct HomeView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
     @EnvironmentObject var ratingService: OverallRatingService
-    @StateObject private var viewModel: HomeViewModel
+    @ObservedObject private var viewModel: HomeViewModel
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
     @Environment(\.scenePhase) private var scenePhase
@@ -32,10 +32,8 @@ struct HomeView: View {
         AppLayout(sizeClass: sizeClass)
     }
 
-    init(viewModel: HomeViewModel? = nil) {
-        // Can't use @EnvironmentObject in init, so create with a temporary service
-        // The real service is injected via .onAppear
-        _viewModel = StateObject(wrappedValue: viewModel ?? HomeViewModel(puzzleService: PuzzleService(), storeService: StoreService()))
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
     }
 
     var body: some View {
@@ -515,10 +513,12 @@ struct HomeView: View {
 }
 
 #Preview("Default") {
-    HomeView()
-        .environmentObject(PuzzleService())
+    let puzzleService = PuzzleService()
+    let storeService = StoreService()
+    return HomeView(viewModel: HomeViewModel(puzzleService: puzzleService, storeService: storeService))
+        .environmentObject(puzzleService)
         .environmentObject(StatsService())
-        .environmentObject(StoreService())
+        .environmentObject(storeService)
         .environmentObject(AdService())
         .environmentObject(OverallRatingService())
 }

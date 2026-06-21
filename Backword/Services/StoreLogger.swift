@@ -88,12 +88,10 @@ struct StoreLogger {
 
     func transactionUpdateReceived(productID: String) {
         logger.info("Store transaction update received for \(productID, privacy: .public)")
-        logAnalytics(.transactionUpdateReceived, productID: productID)
     }
 
     func transactionUpdateCompleted(productID: String) {
         logger.info("Store transaction update completed for \(productID, privacy: .public)")
-        logAnalytics(.transactionUpdateCompleted, productID: productID)
     }
 
     func transactionUpdateFailed(productID: String?, error: Error) {
