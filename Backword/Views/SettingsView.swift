@@ -45,6 +45,18 @@ struct SettingsView: View {
                         .textCase(nil)
                 }
 
+                Section {
+                    ForEach(LegalLink.all) { link in
+                        legalLinkRow(link)
+                    }
+                } header: {
+                    Text("LEGAL")
+                        .font(AppFont.clueLabel(12))
+                        .foregroundColor(.appAccent)
+                        .tracking(2)
+                        .textCase(nil)
+                }
+
 //                Section {
 //                    letterFeedbackRow
 //                } header: {
@@ -150,6 +162,29 @@ struct SettingsView: View {
         } else if let mailtoURL = content.mailtoURL {
             openURL(mailtoURL)
         }
+    }
+
+    private func legalLinkRow(_ link: LegalLink) -> some View {
+        Button {
+            openURL(link.url)
+        } label: {
+            HStack {
+                Text(link.title)
+                    .font(AppFont.body(15))
+                    .foregroundColor(.appTextPrimary)
+
+                Spacer()
+
+                Image(systemName: "arrow.up.right")
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .listRowBackground(Color.appSurface)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility3)
     }
 
     private var appVersionFooter: some View {

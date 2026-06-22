@@ -16,6 +16,8 @@
 		05AD00022FFD000000000001 /* AdConsentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD00012FFD000000000001 /* AdConsentService.swift */; };
 		05AD00042FFD000000000001 /* AdConsentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD00032FFD000000000001 /* AdConsentServiceTests.swift */; };
 		05AD00072FFD000000000001 /* GoogleUserMessagingPlatform in Frameworks */ = {isa = PBXBuildFile; productRef = 05AD00062FFD000000000001 /* GoogleUserMessagingPlatform */; };
+		05AD10022FFE000000000001 /* LegalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD10012FFE000000000001 /* LegalLink.swift */; };
+		05AD10042FFE000000000001 /* LegalLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD10032FFE000000000001 /* LegalLinkTests.swift */; };
 		05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */; };
 		05F1E1A62FFCFD9300F1E1A5 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A32FFCFD9300F1E1A5 /* FirebaseCore */; };
 		05F1E1A72FFCFD9300F1E1A5 /* StoreLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */; };
@@ -140,6 +142,8 @@
 		05A1D9B62FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordAnalyticsEventTests.swift; sourceTree = "<group>"; };
 		05AD00012FFD000000000001 /* AdConsentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdConsentService.swift; sourceTree = "<group>"; };
 		05AD00032FFD000000000001 /* AdConsentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdConsentServiceTests.swift; sourceTree = "<group>"; };
+		05AD10012FFE000000000001 /* LegalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalLink.swift; sourceTree = "<group>"; };
+		05AD10032FFE000000000001 /* LegalLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalLinkTests.swift; sourceTree = "<group>"; };
 		05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLogger.swift; sourceTree = "<group>"; };
 		0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewTests.swift; sourceTree = "<group>"; };
 		0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTabBarViewTests.swift; sourceTree = "<group>"; };
@@ -308,6 +312,7 @@
 				91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */,
 				0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */,
 				05A1D9B42FFCF62100AD5001 /* InterstitialPresentationGateTests.swift */,
+				05AD10032FFE000000000001 /* LegalLinkTests.swift */,
 				0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */,
 				BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */,
 				72C4C6D72B1A4930A633D528 /* RatingBarLabelLayoutTests.swift */,
@@ -327,6 +332,7 @@
 				C99766A650EBD6521697BD6C /* BackwordStats.swift */,
 				20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */,
 				ABCD10000000000000000002 /* FeedbackEmailContent.swift */,
+				05AD10012FFE000000000001 /* LegalLink.swift */,
 				78FB91A4266664E312011B33 /* Puzzle.swift */,
 				A38BFC4B60EA86A8DF662F3E /* UserProgress.swift */,
 				1E4D0C7C19A4685DF1DC48C2 /* UserStats.swift */,
@@ -673,6 +679,7 @@
 				05A1D9B72FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift in Sources */,
 				05AD00042FFD000000000001 /* AdConsentServiceTests.swift in Sources */,
 				ABCD10000000000000000004 /* FeedbackEmailContentTests.swift in Sources */,
+				05AD10042FFE000000000001 /* LegalLinkTests.swift in Sources */,
 				9DAB5905105243A7AB4CA249 /* ArchiveViewModelTests.swift in Sources */,
 				6113351E253762AC9BB6A8E0 /* BackwordViewModelTests.swift in Sources */,
 				6B0F8E2B5B724322AE390E5B /* GameViewModelTests.swift in Sources */,
@@ -705,6 +712,7 @@
 				15C99D922FE2A3E6007A1001 /* AppVersionInfo.swift in Sources */,
 				149802310440A77534BB615E /* AppTheme.swift in Sources */,
 				ABCD10000000000000000005 /* FeedbackEmailContent.swift in Sources */,
+				05AD10022FFE000000000001 /* LegalLink.swift in Sources */,
 				F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */,
 				86AFC3D32FC20460007623C3 /* BackwordInstructionsContentView.swift in Sources */,
 				86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */,

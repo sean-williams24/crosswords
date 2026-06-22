@@ -5,6 +5,7 @@ struct PaywallView: View {
     @EnvironmentObject var storeService: StoreService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    @Environment(\.openURL) private var openURL
     @ScaledMetric private var proLogoFrame: CGFloat = 48
     @ScaledMetric private var proLogoOffset: CGFloat = 34
     @ScaledMetric private var proLogoVStackSpacing: CGFloat = -29
@@ -117,6 +118,9 @@ struct PaywallView: View {
                             .foregroundColor(.appTextSecondary.opacity(0.6))
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 32)
+
+                        legalLinks
+                            .padding(.top, 8)
                             .padding(.bottom, 20)
                     }
                     .frame(maxWidth: .infinity)
@@ -163,6 +167,37 @@ struct PaywallView: View {
             }
         }
         .background(Color.appBackground)
+    }
+
+    private var legalLinks: some View {
+        ViewThatFits {
+            HStack(spacing: 12) {
+                ForEach(LegalLink.all) { link in
+                    legalLinkButton(link)
+                }
+            }
+
+            VStack(spacing: 6) {
+                ForEach(LegalLink.all) { link in
+                    legalLinkButton(link)
+                }
+            }
+        }
+        .padding(.horizontal, 32)
+    }
+
+    private func legalLinkButton(_ link: LegalLink) -> some View {
+        Button {
+            openURL(link.url)
+        } label: {
+            Text(link.title)
+                .font(AppFont.clueNumber(10))
+                .foregroundColor(.appTextSecondary)
+                .underline()
+                .lineLimit(1)
+                .fixedSize(horizontal: true, vertical: false)
+        }
+        .buttonStyle(.plain)
     }
 
     private func animateLogo() {
