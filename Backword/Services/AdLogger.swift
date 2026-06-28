@@ -211,6 +211,10 @@ struct AdLogger {
         )
     }
 
+    func recoveringPossiblyStuckAd(format: BackwordAnalyticsEvent.AdFormat, attemptID: String) {
+        logger.error("Recovering possibly stuck \(format.rawValue, privacy: .public) ad for attempt \(attemptID, privacy: .public)")
+    }
+
     private var appEnvironment: String {
         #if DEBUG
         return "debug"

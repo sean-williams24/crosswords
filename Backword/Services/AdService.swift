@@ -391,6 +391,17 @@ final class AdService: NSObject, ObservableObject {
         directInterstitialContext = nil
     }
 
+    private func dismissTopAdControllerIfNeeded() {
+        guard let top = topViewController() else { return }
+        let className = String(describing: type(of: top))
+        guard Self.isGoogleFullScreenAdControllerClassName(className) else { return }
+        top.dismiss(animated: true)
+    }
+
+    nonisolated static func isGoogleFullScreenAdControllerClassName(_ className: String) -> Bool {
+        className.contains("GAD") || className.contains("GoogleMobileAds")
+    }
+
     private func presentInterstitialIfReady(for type: UserDefaultsKey, onDismiss: @escaping @MainActor () -> Void) -> Bool {
         guard interstitialContext == nil else {
             logger.interstitialRequestIgnoredAlreadyInProgress(for: type)
@@ -485,6 +496,49 @@ final class AdService: NSObject, ObservableObject {
                 attemptID: attemptID,
                 presentedAt: presentedAt
             )
+            self?.recoverPossiblyStuckAd(format: format, attemptID: attemptID)
+        }
+    }
+
+    private func recoverPossiblyStuckAd(format: BackwordAnalyticsEvent.AdFormat, attemptID: String) {
+        switch format {
+        case .interstitial:
+            let matchesInterstitial = interstitialContext?.attemptID == attemptID
+            let matchesDirectInterstitial = directInterstitialContext?.attemptID == attemptID
+            guard matchesInterstitial || matchesDirectInterstitial else { return }
+
+            logger.recoveringPossiblyStuckAd(format: format, attemptID: attemptID)
+            dismissTopAdControllerIfNeeded()
+            interstitial = nil
+            isPresentingFullScreenAd = false
+
+            if matchesInterstitial {
+                completeInterstitial()
+            }
+            if matchesDirectInterstitial {
+                clearDirectInterstitialContext()
+            }
+
+            Task { @MainActor [self] in
+                await loadAd()
+            }
+
+        case .rewarded:
+            guard rewardedAdContext?.attemptID == attemptID else { return }
+
+            logger.recoveringPossiblyStuckAd(format: format, attemptID: attemptID)
+            dismissTopAdControllerIfNeeded()
+            rewarded = nil
+            isPresentingFullScreenAd = false
+            rewardGranted = false
+            completeRewardedAd(with: .dismissedWithoutReward)
+
+            Task { @MainActor [self] in
+                await loadRewardedAd()
+            }
+
+        case .unknown:
+            return
         }
     }
 

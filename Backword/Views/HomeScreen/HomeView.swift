@@ -205,7 +205,9 @@ struct HomeView: View {
                     proLogoVisible = false
                 } else if newPhase == .active {
                     animateLogo()
-                    
+
+                    guard !adService.isPresentingFullScreenAd else { return }
+
                     Task {
                         await storeService.updateSubscriptionStatus(source: "scene_active")
                         await viewModel.refreshIfNeeded()
