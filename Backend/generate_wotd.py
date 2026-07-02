@@ -109,11 +109,16 @@ _SYSTEM_PROMPT = (
     "tomorrow. The target register is contemporary literary fiction and quality long-form "
     "journalism -- writers like Madeleine Gray, Sally Rooney, Zadie Smith, or columnists in "
     "The Guardian or The Atlantic.\n\n"
-    "GOOD examples of the right level:\n"
+    "The following words show the approximate level, but they are overused WOTD cliches. "
+    "They are examples of register only, and must NOT be returned:\n"
     "  sanguine, languorous, insouciant, mercurial, quotidian, pernicious, effusive,\n"
     "  loquacious, ephemeral, wistful, tenuous, laconic, melancholy,\n"
     "  voluble, perfunctory, plaintive, reticent, candour, luminous, verdant, hapless\n\n"
+    "Prefer useful, underused contemporary words from ordinary life, criticism, relationships, "
+    "work, politics, weather, cities, domestic detail, art, memory, movement, and perception. "
+    "Avoid SAT-list staples and thesaurus-showoff words.\n\n"
     "FORBIDDEN -- do NOT include:\n"
+    "  - Any word listed above as a register example\n"
     "  - Words coined by John Koenig's Dictionary of Obscure Sorrows (sonder, vellichor, chrysalism...)\n"
     "  - Extremely rare or dead words that virtually no contemporary author uses\n"
     "    (apricity, psithurism, aeipathy, mamihlapinatapai...)\n"
@@ -125,11 +130,14 @@ _SYSTEM_PROMPT = (
 
 _USER_PROMPT_TEMPLATE = (
     "Generate {count} Word of the Day entries.\n\n"
+    "This batch theme: {theme}\n\n"
     "Already-used words to exclude (do NOT repeat any of these): {exclude_list}\n\n"
     "Rules:\n"
     "- Each word must be unique — no word may appear more than once in the array.\n"
     "- Spell every word correctly. Double-check before including it.\n"
     "- Do not include any word from the exclusion list above.\n\n"
+    "- Avoid familiar Word-of-the-Day staples even when they fit the theme.\n"
+    "- Prefer words a reader may know passively but not reach for often.\n\n"
     "For each word return a JSON object with exactly these fields:\n"
     "- word (string, title case)\n"
     "- pronunciation (string, e.g. \"SANG-gwin\")\n"
@@ -141,6 +149,85 @@ _USER_PROMPT_TEMPLATE = (
     "Return ONLY a JSON object with a \"words\" array containing {count} objects, no other text."
 )
 
+
+WOTD_CLICHE_WORDS = {
+    "adept",
+    "aplomb",
+    "auspicious",
+    "benevolent",
+    "cacophony",
+    "candid",
+    "candor",
+    "candour",
+    "cognizant",
+    "dichotomy",
+    "disparate",
+    "ebullient",
+    "effulgent",
+    "effusive",
+    "ephemeral",
+    "epiphany",
+    "furtive",
+    "garrulous",
+    "gregarious",
+    "hapless",
+    "ineffable",
+    "insouciant",
+    "juxtaposition",
+    "laconic",
+    "lacuna",
+    "languid",
+    "languorous",
+    "lament",
+    "loquacious",
+    "luminous",
+    "melancholy",
+    "mellifluous",
+    "mercurial",
+    "nostalgia",
+    "obfuscate",
+    "perfunctory",
+    "pernicious",
+    "pensive",
+    "plaintive",
+    "quintessential",
+    "quixotic",
+    "quotidian",
+    "recalcitrant",
+    "resilient",
+    "reticent",
+    "sagacious",
+    "sanguine",
+    "serendipity",
+    "soporific",
+    "sycophant",
+    "taciturn",
+    "tenacious",
+    "tenuous",
+    "transcendent",
+    "trepidation",
+    "ubiquitous",
+    "vicarious",
+    "voluble",
+    "voracious",
+    "wistful",
+    "zealous",
+}
+
+WOTD_THEMES = [
+    "emotional texture and subtle moods",
+    "social behavior, conversation, and manners",
+    "argument, writing, criticism, and rhetoric",
+    "attention, perception, memory, and thought",
+    "movement, change, hesitation, and effort",
+    "weather, nature, light, and the built environment",
+    "work, institutions, politics, and public life",
+    "domestic life, objects, habits, and small rituals",
+    "art, taste, style, and performance",
+    "relationships, obligation, intimacy, and distance",
+    "risk, judgment, uncertainty, and consequence",
+    "city life, travel, crowds, and solitude",
+]
 
 REQUIRED_WORD_FIELDS = {
     "word",
@@ -179,7 +266,17 @@ def is_valid_word_entry(word_data: dict) -> bool:
     return bool(str(word_data.get("word", "")).strip())
 
 
-def generate_words_with_llm(count: int, used_words: set[str], max_retries: int = 3) -> list[dict]:
+def theme_for_attempt(attempt: int) -> str:
+    """Return a rotating theme to keep WOTD batches from collapsing into one vocabulary cluster."""
+    return WOTD_THEMES[(attempt - 1) % len(WOTD_THEMES)]
+
+
+def generate_words_with_llm(
+    count: int,
+    used_words: set[str],
+    max_retries: int = 3,
+    theme: str = "general contemporary vocabulary",
+) -> list[dict]:
     """Use GPT-4o-mini to generate WOTD entries."""
     try:
         import openai
@@ -195,7 +292,11 @@ def generate_words_with_llm(count: int, used_words: set[str], max_retries: int =
     client = openai.OpenAI(api_key=api_key)
     exclude_list = ", ".join(sorted(used_words, key=str.lower)) if used_words else "none yet"
 
-    prompt = _USER_PROMPT_TEMPLATE.format(count=count, exclude_list=exclude_list)
+    prompt = _USER_PROMPT_TEMPLATE.format(
+        count=count,
+        exclude_list=exclude_list,
+        theme=theme,
+    )
 
     for attempt in range(1, max_retries + 1):
         print(f"  Calling GPT-4o-mini for {count} words (try {attempt}/{max_retries})...")
@@ -227,14 +328,15 @@ def get_words(
     count: int,
     batch_size: int,
     exclude_used: bool = True,
-    max_attempts: int = 12,
+    max_attempts: int = 16,
     llm_retries: int = 3,
 ) -> list[dict]:
     """Generate `count` unique, correctly-spelled words via LLM in batches of `batch_size`."""
     used = get_used_words() if exclude_used else set()
+    blocked_lower = {word.lower() for word in WOTD_CLICHE_WORDS}
 
     all_words: list[dict] = []
-    used_lower = {word.lower() for word in used}
+    used_lower = {word.lower() for word in used} | blocked_lower
 
     for attempt in range(1, max_attempts + 1):
         if len(all_words) >= count:
@@ -245,9 +347,10 @@ def get_words(
         # Pass all already-accepted words as the exclusion set so the LLM
         # never repeats a word — both from Supabase and from this run.
         accepted_lower = {w["word"].lower() for w in all_words}
-        exclude = used | {w["word"] for w in all_words}
-        print(f"  Attempt {attempt}/{max_attempts}: need {needed} more WOTDs")
-        words = generate_words_with_llm(batch, exclude, max_retries=llm_retries)
+        exclude = used | WOTD_CLICHE_WORDS | {w["word"] for w in all_words}
+        theme = theme_for_attempt(attempt)
+        print(f"  Attempt {attempt}/{max_attempts}: need {needed} more WOTDs ({theme})")
+        words = generate_words_with_llm(batch, exclude, max_retries=llm_retries, theme=theme)
 
         if not words:
             print("  No parseable words returned for this attempt.")
@@ -262,6 +365,9 @@ def get_words(
                 continue
             if not is_valid_word_entry(w):
                 print(f"  Skipping malformed WOTD entry: '{w.get('word', '?')}'")
+                continue
+            if word_key in blocked_lower:
+                print(f"  Skipping overused WOTD staple: '{w.get('word')}'")
                 continue
             if word_key in accepted_lower or word_key in used_lower:
                 print(f"  Skipping duplicate from LLM response: '{w.get('word')}'")
@@ -307,12 +413,12 @@ def main():
         help="Number of words to generate (default: 90, roughly one quarter)",
     )
     parser.add_argument(
-        "--batch-size", type=int, default=30,
-        help="Words per LLM call (default: 30)",
+        "--batch-size", type=int, default=60,
+        help="Words per LLM call (default: 60)",
     )
     parser.add_argument(
-        "--max-attempts", type=int, default=12,
-        help="Maximum generation batches before failing (default: 12)",
+        "--max-attempts", type=int, default=16,
+        help="Maximum generation batches before failing (default: 16)",
     )
     parser.add_argument(
         "--llm-retries", type=int, default=3,
