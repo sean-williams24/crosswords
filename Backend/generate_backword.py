@@ -13,7 +13,7 @@ Usage:
     python generate_backword.py --count 14                  # Generate 14 words
     python generate_backword.py --date 2026-04-07           # Start from specific date
     python generate_backword.py --dry-run                   # Generate without uploading
-    python generate_backword.py --count 7 --dry-run         # Preview 7 words
+    python generate_backword.py --count 14 --dry-run        # Preview 14 words
 
 Environment Variables (only needed for upload):
     SUPABASE_URL  — Your Supabase project URL
@@ -333,6 +333,77 @@ def validate_clues(words: list[dict], model: str, api_key: str) -> list[dict]:
     return accepted
 
 
+def generate_suitable_words(
+    pool: list[str],
+    count: int,
+    enrichment_model: str,
+    validator_model: str,
+    api_key: str,
+    max_attempts: int,
+    candidate_batch_size: int,
+) -> tuple[list[dict], int]:
+    """Keep enriching bounded candidate batches until enough publishable words exist."""
+    enriched = []
+    accepted_words = set()
+    cursor = 0
+
+    for attempt in range(1, max_attempts + 1):
+        if len(enriched) >= count or cursor >= len(pool):
+            break
+
+        remaining_needed = count - len(enriched)
+        batch_count = min(candidate_batch_size, len(pool) - cursor)
+        candidates = pool[cursor : cursor + batch_count]
+        cursor += batch_count
+
+        print(
+            f"\n✏️   Attempt {attempt}/{max_attempts}: enriching {len(candidates)} "
+            f"candidates with GPT ({enrichment_model}) "
+            f"({remaining_needed} more needed)..."
+        )
+        enriched_all = enrich_words(candidates, enrichment_model, api_key)
+
+        candidates_set = set(candidates)
+        plausible = []
+        rejected_count = 0
+        for item in enriched_all:
+            word = str(item.get("word", "")).upper()
+            item["word"] = word
+            if word not in candidates_set:
+                print(f"    ✗ Rejected: {word} (not in requested candidate batch)")
+                rejected_count += 1
+            elif item.get("reject"):
+                rejected_count += 1
+            else:
+                plausible.append(item)
+
+        if rejected_count:
+            print(f"    Filtered out {rejected_count} rejected word(s), {len(plausible)} remain")
+
+        if not plausible:
+            continue
+
+        print(f"\n🔎  Validating clue quality with GPT ({validator_model})...")
+        validated = validate_clues(plausible, validator_model, api_key)
+        validation_rejected_count = len(plausible) - len(validated)
+        if validation_rejected_count:
+            print(f"    Filtered out {validation_rejected_count} weak clue(s), {len(validated)} remain")
+
+        for item in validated:
+            word = str(item.get("word", "")).upper()
+            if word in accepted_words:
+                print(f"    ✗ Rejected: {word} (duplicate accepted word)")
+                continue
+            accepted_words.add(word)
+            enriched.append(item)
+            if len(enriched) >= count:
+                break
+
+        print(f"    Accepted {len(enriched)}/{count} required word(s) so far")
+
+    return enriched[:count], cursor
+
+
 # ── Upload ─────────────────────────────────────────────────────────────────
 
 def upload_words(words: list[dict], start_date: date, supabase_url: str, supabase_key: str) -> int:
@@ -380,11 +451,13 @@ def get_next_date(supabase_url: str, supabase_key: str) -> date:
 
 def parse_args():
     p = argparse.ArgumentParser(description="Generate Backword daily words")
-    p.add_argument("--count",   type=int, default=7,    help="Number of words to generate (default: 7)")
+    p.add_argument("--count",   type=int, default=14,   help="Number of words to generate (default: 14)")
     p.add_argument("--date",    type=str, default=None, help="Start date yyyy-MM-dd (default: day after last upload)")
     p.add_argument("--dry-run", action="store_true",    help="Generate without uploading to Supabase")
     p.add_argument("--model",     type=str, default="gpt-4o-mini", help="OpenAI enrichment model (default: gpt-4o-mini)")
     p.add_argument("--validator-model", type=str, default="gpt-5.4", help="OpenAI clue validation model (default: gpt-5.4)")
+    p.add_argument("--max-attempts", type=int, default=8, help="Maximum candidate batches to try before failing (default: 8)")
+    p.add_argument("--candidate-batch-size", type=int, default=None, help="Words to enrich per attempt (default: count × 3)")
     p.add_argument("--overwrite",  action="store_true",             help="Delete existing records for the target date range before uploading")
     return p.parse_args()
 
@@ -395,6 +468,19 @@ def main():
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
         print("ERROR: OPENAI_API_KEY environment variable not set", file=sys.stderr)
+        sys.exit(1)
+
+    if args.count <= 0:
+        print("ERROR: --count must be greater than 0", file=sys.stderr)
+        sys.exit(1)
+
+    if args.max_attempts <= 0:
+        print("ERROR: --max-attempts must be greater than 0", file=sys.stderr)
+        sys.exit(1)
+
+    candidate_batch_size = args.candidate_batch_size or args.count * 3
+    if candidate_batch_size <= 0:
+        print("ERROR: --candidate-batch-size must be greater than 0", file=sys.stderr)
         sys.exit(1)
 
     supabase_url = os.environ.get("SUPABASE_URL")
@@ -432,38 +518,38 @@ def main():
     else:
         print(f"    {len(pool)} candidates available")
 
-    # Over-fetch candidates (3x) to account for GPT rejections
-    over_count = min(args.count * 3, len(pool))
-    if over_count < args.count:
+    if len(pool) < args.count:
         print(f"⚠  Only {len(pool)} candidates available, requested {args.count}", file=sys.stderr)
 
-    candidates = pool[:over_count]
-    print(f"\n✏️   Enriching {over_count} candidates with GPT ({args.model}) (targeting {args.count} good words)...")
-    enriched_all = enrich_words(candidates, args.model, api_key)
+    print(
+        f"    Will try up to {args.max_attempts} batch(es) "
+        f"of {candidate_batch_size} candidate(s)"
+    )
 
-    # Filter out rejected words
-    enriched = [w for w in enriched_all if not w.get("reject")]
-    rejected_count = len(enriched_all) - len(enriched)
-    if rejected_count:
-        print(f"    Filtered out {rejected_count} rejected word(s), {len(enriched)} remain")
-
-    print(f"\n🔎  Validating clue quality with GPT ({args.validator_model})...")
-    validated = validate_clues(enriched, args.validator_model, api_key)
-    validation_rejected_count = len(enriched) - len(validated)
-    if validation_rejected_count:
-        print(f"    Filtered out {validation_rejected_count} weak clue(s), {len(validated)} remain")
-    enriched = validated
-
-    if len(enriched) < args.count:
-        print(f"⚠  Only {len(enriched)} suitable words after filtering (requested {args.count}). Consider re-running.", file=sys.stderr)
-
-    enriched = enriched[: args.count]
+    enriched, attempted_count = generate_suitable_words(
+        pool=pool,
+        count=args.count,
+        enrichment_model=args.model,
+        validator_model=args.validator_model,
+        api_key=api_key,
+        max_attempts=args.max_attempts,
+        candidate_batch_size=candidate_batch_size,
+    )
 
     print(f"\n📝  Generated {len(enriched)} words:\n")
     for i, wd in enumerate(enriched):
         entry_date = start_date + timedelta(days=i)
         print(f"  {entry_date.isoformat()}  {wd['word']:<10} [{wd.get('clue', '')}]")
         print()
+
+    if len(enriched) < args.count:
+        print(
+            f"ERROR: Only generated {len(enriched)}/{args.count} suitable words "
+            f"after {args.max_attempts} attempt(s) and {attempted_count} candidate(s). "
+            "No words were uploaded.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     if args.dry_run:
         print("✅  Dry run complete — nothing uploaded.")
@@ -490,6 +576,13 @@ def main():
     print(f"⬆️   Uploading to Supabase...")
     uploaded = upload_words(enriched, start_date, supabase_url, supabase_key)
     print(f"\n✅  Done — {uploaded}/{len(enriched)} words uploaded.")
+
+    if uploaded != args.count:
+        print(
+            f"ERROR: Uploaded {uploaded}/{args.count} requested words.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     remaining = len(pool) - len(enriched)
     print(f"    ~{remaining} unused words remaining in pool.")
