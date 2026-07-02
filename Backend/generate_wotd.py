@@ -138,11 +138,48 @@ _USER_PROMPT_TEMPLATE = (
     "- etymology (string, interesting origin story, 1-2 sentences)\n"
     "- synonyms (array of 2-3 strings, plain everyday synonyms)\n"
     "- exampleSentence (string, natural usage in a sentence that could appear in contemporary fiction)\n\n"
-    "Return ONLY a JSON array of {count} objects, no other text."
+    "Return ONLY a JSON object with a \"words\" array containing {count} objects, no other text."
 )
 
 
-def generate_words_with_llm(count: int, used_words: set[str]) -> list[dict]:
+REQUIRED_WORD_FIELDS = {
+    "word",
+    "pronunciation",
+    "partOfSpeech",
+    "definition",
+    "etymology",
+    "synonyms",
+    "exampleSentence",
+}
+
+
+def words_from_response(content: str) -> list[dict]:
+    """Parse WOTD entries from either the current object shape or the old array shape."""
+    if "```json" in content:
+        content = content.split("```json", 1)[1].split("```", 1)[0]
+    elif "```" in content:
+        content = content.split("```", 1)[1].split("```", 1)[0]
+
+    result = json.loads(content.strip())
+    if isinstance(result, list):
+        return [item for item in result if isinstance(item, dict)]
+    if isinstance(result, dict):
+        words = result.get("words", [])
+        if isinstance(words, list):
+            return [item for item in words if isinstance(item, dict)]
+    return []
+
+
+def is_valid_word_entry(word_data: dict) -> bool:
+    """Return true when an LLM entry has the fields the app expects."""
+    if not REQUIRED_WORD_FIELDS.issubset(word_data):
+        return False
+    if not isinstance(word_data.get("synonyms"), list):
+        return False
+    return bool(str(word_data.get("word", "")).strip())
+
+
+def generate_words_with_llm(count: int, used_words: set[str], max_retries: int = 3) -> list[dict]:
     """Use GPT-4o-mini to generate WOTD entries."""
     try:
         import openai
@@ -156,60 +193,65 @@ def generate_words_with_llm(count: int, used_words: set[str]) -> list[dict]:
         sys.exit(1)
 
     client = openai.OpenAI(api_key=api_key)
-    # Keep exclusion list to 100 words max to avoid inflating the prompt
-    exclude_sample = sorted(used_words)[:100]
-    exclude_list = ", ".join(exclude_sample) if exclude_sample else "none yet"
+    exclude_list = ", ".join(sorted(used_words, key=str.lower)) if used_words else "none yet"
 
     prompt = _USER_PROMPT_TEMPLATE.format(count=count, exclude_list=exclude_list)
 
-    print(f"  Calling GPT-4o-mini for {count} words...")
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": _SYSTEM_PROMPT},
-            {"role": "user", "content": prompt},
-        ],
-        temperature=0.85,
-    )
+    for attempt in range(1, max_retries + 1):
+        print(f"  Calling GPT-4o-mini for {count} words (try {attempt}/{max_retries})...")
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": _SYSTEM_PROMPT},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0.7,
+            response_format={"type": "json_object"},
+        )
 
-    content = response.choices[0].message.content or ""
-    if "```json" in content:
-        content = content.split("```json")[1].split("```")[0]
-    elif "```" in content:
-        content = content.split("```")[1].split("```")[0]
-
-    try:
-        result = json.loads(content.strip())
-        if isinstance(result, list):
-            print(f"  LLM returned {len(result)} words")
-            return result
-        print(f"  LLM response was not a list: {type(result)}")
-    except Exception as e:
-        print(f"  LLM response parse error: {e}")
-        print(f"  Raw response:\n{content[:500]}")
+        content = response.choices[0].message.content or ""
+        try:
+            words = words_from_response(content)
+            if words:
+                print(f"  LLM returned {len(words)} words")
+                return words
+            print("  LLM response did not contain a words array")
+        except Exception as e:
+            print(f"  LLM response parse error: {e}")
+            print(f"  Raw response:\n{content[:500]}")
 
     return []
 
 
-def get_words(count: int, batch_size: int, exclude_used: bool = True) -> list[dict]:
+def get_words(
+    count: int,
+    batch_size: int,
+    exclude_used: bool = True,
+    max_attempts: int = 12,
+    llm_retries: int = 3,
+) -> list[dict]:
     """Generate `count` unique, correctly-spelled words via LLM in batches of `batch_size`."""
     used = get_used_words() if exclude_used else set()
 
     all_words: list[dict] = []
+    used_lower = {word.lower() for word in used}
 
-    while len(all_words) < count:
+    for attempt in range(1, max_attempts + 1):
+        if len(all_words) >= count:
+            break
         needed = count - len(all_words)
-        batch = min(needed, batch_size)
+        batch = min(count, batch_size)
 
         # Pass all already-accepted words as the exclusion set so the LLM
         # never repeats a word — both from Supabase and from this run.
         accepted_lower = {w["word"].lower() for w in all_words}
         exclude = used | {w["word"] for w in all_words}
-        words = generate_words_with_llm(batch, exclude)
+        print(f"  Attempt {attempt}/{max_attempts}: need {needed} more WOTDs")
+        words = generate_words_with_llm(batch, exclude, max_retries=llm_retries)
 
         if not words:
-            print("ERROR: LLM generation failed.")
-            sys.exit(1)
+            print("  No parseable words returned for this attempt.")
+            continue
 
         # Filter duplicates from this batch (case-insensitive) before accepting
         for w in words:
@@ -218,11 +260,24 @@ def get_words(count: int, batch_size: int, exclude_used: bool = True) -> list[di
             word_key = w.get("word", "").lower()
             if not word_key:
                 continue
-            if word_key in accepted_lower or word_key in {u.lower() for u in used}:
+            if not is_valid_word_entry(w):
+                print(f"  Skipping malformed WOTD entry: '{w.get('word', '?')}'")
+                continue
+            if word_key in accepted_lower or word_key in used_lower:
                 print(f"  Skipping duplicate from LLM response: '{w.get('word')}'")
                 continue
             all_words.append(w)
             accepted_lower.add(word_key)
+
+        print(f"  Accepted {len(all_words)}/{count} WOTDs so far")
+
+    if len(all_words) < count:
+        print(
+            f"ERROR: Only generated {len(all_words)}/{count} unique WOTDs "
+            f"after {max_attempts} attempt(s). No words were uploaded.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     # Write generated count to GITHUB_OUTPUT if running in CI
     github_output = os.environ.get("GITHUB_OUTPUT")
@@ -255,6 +310,14 @@ def main():
         "--batch-size", type=int, default=30,
         help="Words per LLM call (default: 30)",
     )
+    parser.add_argument(
+        "--max-attempts", type=int, default=12,
+        help="Maximum generation batches before failing (default: 12)",
+    )
+    parser.add_argument(
+        "--llm-retries", type=int, default=3,
+        help="Retries for malformed LLM JSON per batch (default: 3)",
+    )
     parser.add_argument("--date", type=str, help="Start date (YYYY-MM-DD)")
     parser.add_argument(
         "--dry-run", action="store_true",
@@ -274,12 +337,35 @@ def main():
         purge_future_words(dry_run=args.dry_run)
         return
 
+    if args.count <= 0:
+        print("ERROR: --count must be greater than 0", file=sys.stderr)
+        sys.exit(1)
+
+    if args.batch_size <= 0:
+        print("ERROR: --batch-size must be greater than 0", file=sys.stderr)
+        sys.exit(1)
+
+    if args.max_attempts <= 0:
+        print("ERROR: --max-attempts must be greater than 0", file=sys.stderr)
+        sys.exit(1)
+
+    if args.llm_retries <= 0:
+        print("ERROR: --llm-retries must be greater than 0", file=sys.stderr)
+        sys.exit(1)
+
     start_date = date.fromisoformat(args.date) if args.date else date.today() + timedelta(days=1)
 
-    words = get_words(args.count, args.batch_size, exclude_used=not args.dry_run)
+    words = get_words(
+        args.count,
+        args.batch_size,
+        exclude_used=not args.dry_run,
+        max_attempts=args.max_attempts,
+        llm_retries=args.llm_retries,
+    )
 
     print(f"\nGenerating {args.count} WOTDs starting from {start_date.isoformat()}")
 
+    uploaded = 0
     for i, word_data in enumerate(words):
         word_date = start_date + timedelta(days=i)
         payload = {
@@ -300,6 +386,14 @@ def main():
 
         if not args.dry_run:
             upload_to_supabase(payload)
+            uploaded += 1
+
+    if not args.dry_run and uploaded != args.count:
+        print(
+            f"ERROR: Uploaded {uploaded}/{args.count} requested WOTDs.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     print("Done!")
 

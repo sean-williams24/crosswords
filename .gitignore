@@ -18,6 +18,7 @@ Backend/*.py
 !Backend/fix_answer_leakage.py
 !Backend/fix_duplicate_clues.py
 !Backend/test_generate_backword.py
+!Backend/test_generate_wotd.py
 Backend/clean_progress.json
 Backend/word_bank_backup.json
 Backend/word_bank_backup_*.json
