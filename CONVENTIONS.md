@@ -141,7 +141,7 @@ private var deadlineTime: String? {
     "word": "LESLIE",
     "text": "Common female first name.",
     "hint": "Parks and Recreation character",
-    "hard_text": "A female name, perhaps less than a lot.",
+    "hard_text": "A female name with a Pawnee connection.",
     "clues": [
         "Famous actress, first name only.",
         "Name of a character in 'The Parent Trap'.",
@@ -158,7 +158,7 @@ private var deadlineTime: String? {
 | `clues` | `generate_puzzle.py` | **Primary clue source.** One item is randomly selected at puzzle-generation time and becomes the `text` field in the final puzzle JSON. Randomisation means the same word can have different clues across puzzles. |
 | `hard_text` | `generate_puzzle.py` | Fallback clue if `clues[]` is empty or missing. |
 | `text` | `generate_puzzle.py` | Last-resort fallback if both `clues[]` and `hard_text` are absent. |
-| `hint` | `GameViewModel` | Shown to the user when they tap the hint button in-game (costs hint tokens). Should give **genuinely new context** not already present in the clue — e.g. a category, a cultural reference, or a synonym. Never just a generic label like "name" when the clue already says it's a name. |
+| `hint` | Fallback metadata only | Dormant fallback clue text. Current daily/weekly generation paths use hardcoded clue sources before this field, so word-bank leakage and similarity cleanup intentionally ignores `hint`. |
 
 ### Clue selection logic
 
@@ -178,9 +178,17 @@ hint = entry.get("hard_text", entry.get("hint", ""))                   # hard_te
 
 ### Answer leakage rule
 
-**No clue or hint field may contain the answer word (case-insensitive, whole-word match).** For multi-word answers (e.g. `ICE CREAM`), constituent words ≥ 3 characters are also checked individually.
+**No active clue field may contain the answer, an answer fragment, or an obvious derived giveaway form.** Active clue fields are `text`, `hard_text`/`hardText`, and `clues[]`; `hint` is ignored because it is dormant fallback metadata. Checks are case-insensitive and token-aware. For multi-word answers (e.g. `ICE CREAM`), constituent words ≥ 3 characters are checked individually. Compact answer fragments of 4+ characters are also blocked (e.g. `CASE` in `Suitcase`), while incidental 3-letter substrings such as `ART` in `start` are not blocked unless produced by a clear derivation.
 
-Run `Backend/fix_answer_leakage.py` to scan for violations and regenerate affected fields via OpenAI. All clue-generation scripts (`clean_word_bank.py`, `upgrade_clues.py`, `expand_short_words.py`) enforce this rule at generation time via `_leaks_answer()`.
+Derived forms are blocked when they are clear inflections or common ordinal/cardinal pairs, e.g. `BAGGED` must not be clued with `bag`, `SMOKER` with `smokes`, `RUNNER` with `runs`, and `TENTH` with `ten`.
+
+Run `Backend/fix_answer_leakage.py` to scan for violations and regenerate affected fields via OpenAI. Backend clue-generation scripts should enforce the same rule through `Backend/answer_leakage.py`.
+
+### Clue redundancy rule
+
+Active clue fields inside the same word-bank object must use genuinely different clue ideas. `hint` is ignored for this cleanup rule. Do not repair one active field by reusing another field with wrapper text such as "Maybe", "Could be", "Often", "Seen as", "Associated with", "A sign of", or suffixes such as "perhaps", "sometimes", "for one", or a trailing question mark. Active clue fields should also avoid filler qualifiers such as "perhaps", "maybe", "possibly", "sometimes", and "loosely" anywhere in the clue; remove the qualifier or write a fresh clue instead.
+
+For example, `text: "Maybe burning fiercely"` is considered the same clue idea as `clues[0]: "Burning fiercely"` and must be replaced with a fresh angle. Run `python3 Backend/fix_duplicate_clues.py scan-similar` to find these cases, and `python3 Backend/fix_duplicate_clues.py validate` before shipping word-bank changes.
 
 ### Inflection review workflow
 

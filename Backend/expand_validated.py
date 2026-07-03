@@ -32,6 +32,8 @@ import sys
 import time
 from pathlib import Path
 
+from answer_leakage import leaks_answer
+
 BANK_PATH = Path(__file__).parent / "word_bank.json"
 DICT_PATH = Path("/usr/share/dict/words")
 
@@ -115,6 +117,28 @@ def call_openai(system_prompt: str, user_prompt: str, model: str, temperature: f
         temperature=temperature,
     )
     return response.choices[0].message.content or ""
+
+
+def clue_field_leaks(entry: dict, field: str) -> bool:
+    return leaks_answer(str(entry.get("word", "")), str(entry.get(field, "")))
+
+
+def safe_generated_entry(entry: dict) -> dict | None:
+    word = str(entry.get("word", "")).upper()
+    if not word or not entry.get("text"):
+        return None
+    cleaned = dict(entry)
+    cleaned["word"] = word
+    if clue_field_leaks(cleaned, "text"):
+        return None
+    for field in ("hint", "hard_text"):
+        if clue_field_leaks(cleaned, field):
+            cleaned[field] = ""
+    cleaned["clues"] = [
+        clue for clue in cleaned.get("clues", [])
+        if isinstance(clue, str) and not leaks_answer(word, clue)
+    ]
+    return cleaned
 
 
 def load_candidates_dict(existing_words: set[str], lengths: list[int] | None = None) -> list[str]:
@@ -257,10 +281,11 @@ def main():
 
             new_entries = clue_result.get("words", [])
             # Validate entries have required fields
-            valid_entries = [
-                e for e in new_entries
-                if e.get("word") and e.get("text") and e["word"].upper() not in existing_words
-            ]
+            valid_entries = []
+            for entry in new_entries:
+                cleaned = safe_generated_entry(entry)
+                if cleaned and cleaned["word"] not in existing_words:
+                    valid_entries.append(cleaned)
 
             if args.dry_run:
                 for e in valid_entries[:3]:
@@ -268,9 +293,7 @@ def main():
                 if len(valid_entries) > 3:
                     print(f"    ... and {len(valid_entries) - 3} more")
             else:
-                # Normalise word to uppercase
                 for e in valid_entries:
-                    e["word"] = e["word"].upper()
                     existing_words.add(e["word"])
 
                 words.extend(valid_entries)
@@ -284,21 +307,7 @@ def main():
 
         except Exception as e:
             print(f"  Clue generation ERROR: {e} — skipping clues for this batch")
-            # Still add words with placeholder clues so they're not lost
-            if not args.dry_run and kept:
-                for word in kept:
-                    if word not in existing_words:
-                        entry = {
-                            "word": word,
-                            "text": f"Definition of {word.lower()}",
-                            "hint": word.lower(),
-                        }
-                        words.append(entry)
-                        existing_words.add(word)
-                        added_count += 1
-                with open(BANK_PATH, "w") as f:
-                    json.dump(words, f, indent=2, ensure_ascii=False)
-                print(f"  Saved {len(kept)} with placeholder clues")
+            print("  No placeholder clues saved; unsafe generated entries are skipped")
 
         time.sleep(0.5)
 

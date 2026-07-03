@@ -1,0 +1,74 @@
+[
+  {
+    "index": 22603,
+    "word": "MAC",
+    "replacements": {
+      "hard_text": "Brand known for sleek laptops",
+      "clues[0]": "Device for graphic design enthusiasts?"
+    }
+  },
+  {
+    "index": 22620,
+    "word": "roe",
+    "replacements": {
+      "hard_text": "Tiny gems found in seafood dishes"
+    }
+  },
+  {
+    "index": 22623,
+    "word": "she",
+    "replacements": {
+      "clues[2]": "Subjective form for a woman"
+    }
+  },
+  {
+    "index": 22628,
+    "word": "tot",
+    "replacements": {
+      "hard_text": "Little one sometimes in trouble"
+    }
+  },
+  {
+    "index": 22634,
+    "word": "pat",
+    "replacements": {
+      "clues[0]": "Gentle gesture of approval"
+    }
+  },
+  {
+    "index": 22644,
+    "word": "sax",
+    "replacements": {
+      "hard_text": "Brass-like woodwind with a bell"
+    }
+  },
+  {
+    "index": 22645,
+    "word": "sec",
+    "replacements": {
+      "hard_text": "Fraction of a minute",
+      "clues[0]": "Third of a minute"
+    }
+  },
+  {
+    "index": 22656,
+    "word": "was",
+    "replacements": {
+      "clues[0]": "Used to be, in the past"
+    }
+  },
+  {
+    "index": 22670,
+    "word": "pox",
+    "replacements": {
+      "hard_text": "Contagion characterized by skin lesions"
+    }
+  },
+  {
+    "index": 22687,
+    "word": "ERR",
+    "replacements": {
+      "clues[0]": "Trip up in judgment"
+    }
+  }
+]

@@ -24,18 +24,16 @@ Environment Variables:
 import argparse
 import json
 import os
-import re
 import sys
 import time
 from pathlib import Path
 
+from answer_leakage import leaks_answer
+
 
 def _leaks_answer(word: str, text: str) -> bool:
-    """True if the answer word appears as a whole word in text (case-insensitive)."""
-    if not text:
-        return False
-    pattern = r"\b" + re.escape(word) + r"\b"
-    return bool(re.search(pattern, text, re.IGNORECASE))
+    """True if text gives away the answer or an obvious derived form."""
+    return leaks_answer(word, text)
 
 
 BANK_PATH = Path(__file__).parent / "word_bank.json"

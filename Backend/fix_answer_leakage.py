@@ -4,14 +4,13 @@ Fix Answer Leakage & Redundant Hints in Word Bank
 ===================================================
 
 Scans word_bank.json for two issues:
-  1. LEAKAGE       — The answer word appears literally in a clue field
-                     (text, hint, hard_text, or any item in clues[])
-  2. REDUNDANT_HINT — The hint is a single generic word that already appears
-                     in the main clue text, making it useless (e.g., hint
-                     "name" when the clue already says "Common female first name")
+  1. LEAKAGE       — The answer, a fragment, or a derived form appears in a clue field
+                     (text, hard_text, or any item in clues[]). The dormant
+                     hint fallback is intentionally ignored by this scanner.
 
 For multi-word answers (e.g., "ICE CREAM") each constituent word ≥3 chars
-is also checked individually.
+is also checked individually. Clear derived forms are checked too, e.g.
+TENTH → ten and BAGGED → bag.
 
 Usage:
     python fix_answer_leakage.py              # Scan only — writes leaky_entries.json
@@ -28,14 +27,17 @@ Environment Variables:
     OPENAI_API_KEY — Required for --fix mode
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import os
-import re
 import sys
 import time
 from datetime import datetime
 from pathlib import Path
+
+from answer_leakage import check_terms, leaks_answer, scan_text
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 
@@ -56,8 +58,6 @@ if _env_file.exists():
 
 CHECKPOINT_EVERY = 50    # Save word_bank.json + fix_progress.json every N fixed entries
 MAX_RETRIES = 3          # LLM retry attempts if leakage persists in regenerated fields
-MIN_CONSTITUENT_LEN = 3  # Skip constituent words shorter than this (avoids "A", "OF" false positives)
-
 # ── Leakage detection helpers ─────────────────────────────────────────────
 
 
@@ -67,46 +67,21 @@ def _check_words(word: str) -> list[str]:
 
     For single words (LESLIE) returns ["LESLIE"].
     For multi-word answers (ICE CREAM) returns ["ICE CREAM", "ICE", "CREAM"],
-    skipping any constituent that is shorter than MIN_CONSTITUENT_LEN.
+    skipping any constituent that is shorter than the shared leakage threshold.
     """
-    parts = word.split()
-    if len(parts) == 1:
-        return [word]
-    constituents = [p for p in parts if len(p) >= MIN_CONSTITUENT_LEN]
-    return [word] + constituents
-
-
-def _contains_word(text: str, word: str) -> bool:
-    """Case-insensitive whole-word match via regex word boundaries."""
-    pattern = r"\b" + re.escape(word) + r"\b"
-    return bool(re.search(pattern, text, re.IGNORECASE))
+    return check_terms(word)
 
 
 def _field_leaks(text: str, check_words: list[str]) -> bool:
-    """True if any check_word appears as a whole word in text."""
+    """True if the field leaks the answer or a derived giveaway form."""
     if not text:
         return False
-    return any(_contains_word(text, w) for w in check_words)
+    answer = check_words[0] if check_words else ""
+    return leaks_answer(answer, text)
 
 
-def _is_redundant_hint(hint: str, entry: dict) -> bool:
-    """
-    True if the hint is a single-word generic category term that already
-    appears in the main clue text, adding no new information.
-
-    Example: hint "name" for LESLIE when clues say "Common female first name."
-    """
-    hint_stripped = hint.strip()
-    if not hint_stripped or " " in hint_stripped:
-        return False
-    # Gather all clue text to check against
-    all_texts = []
-    if entry.get("text"):
-        all_texts.append(entry["text"])
-    if entry.get("hard_text"):
-        all_texts.append(entry["hard_text"])
-    all_texts.extend(entry.get("clues") or [])
-    return any(_contains_word(t, hint_stripped) for t in all_texts)
+def _field_issue_reasons(answer: str, text: str) -> list[str]:
+    return sorted({issue.reason for issue in scan_text(answer, text)})
 
 
 # ── Scan ──────────────────────────────────────────────────────────────────
@@ -121,32 +96,24 @@ def scan_entry(entry: dict) -> dict | None:
     if not word:
         return None
 
-    check_words = _check_words(word)
     issues: dict = {}
 
     # text field
-    if _field_leaks(entry.get("text", ""), check_words):
-        issues["text"] = ["LEAKAGE"]
-
-    # hint field — leakage takes priority over redundant check
-    hint = entry.get("hint", "")
-    hint_issues = []
-    if _field_leaks(hint, check_words):
-        hint_issues.append("LEAKAGE")
-    elif _is_redundant_hint(hint, entry):
-        hint_issues.append("REDUNDANT_HINT")
-    if hint_issues:
-        issues["hint"] = hint_issues
+    text_reasons = _field_issue_reasons(word, entry.get("text", ""))
+    if text_reasons:
+        issues["text"] = text_reasons
 
     # hard_text field
-    if _field_leaks(entry.get("hard_text", ""), check_words):
-        issues["hard_text"] = ["LEAKAGE"]
+    hard_text_reasons = _field_issue_reasons(word, entry.get("hard_text", ""))
+    if hard_text_reasons:
+        issues["hard_text"] = hard_text_reasons
 
     # clues array — record index of each offending clue
     clue_issues: dict = {}
     for i, clue in enumerate(entry.get("clues") or []):
-        if _field_leaks(clue, check_words):
-            clue_issues[i] = ["LEAKAGE"]
+        clue_reasons = _field_issue_reasons(word, clue)
+        if clue_reasons:
+            clue_issues[i] = clue_reasons
     if clue_issues:
         issues["clues"] = clue_issues
 
@@ -177,8 +144,7 @@ def print_scan_report(results: list[dict]) -> None:
         return
 
     leakage_total = 0
-    redundant_total = 0
-    field_counts: dict[str, int] = {"text": 0, "hint": 0, "hard_text": 0, "clues": 0}
+    field_counts: dict[str, int] = {"text": 0, "hard_text": 0, "clues": 0}
 
     for r in results:
         for field, issue_list in r["issues"].items():
@@ -187,18 +153,14 @@ def print_scan_report(results: list[dict]) -> None:
                 field_counts["clues"] += n
                 leakage_total += n
             else:
-                if "LEAKAGE" in issue_list:
-                    leakage_total += 1
-                    field_counts[field] += 1
-                if "REDUNDANT_HINT" in issue_list:
-                    redundant_total += 1
+                leakage_total += 1
+                field_counts[field] += 1
 
     print(f"\n{'='*60}")
     print("SCAN RESULTS")
     print(f"{'='*60}")
     print(f"  Entries with issues:   {len(results)}")
     print(f"  Leakage issues:        {leakage_total}")
-    print(f"  Redundant hint issues: {redundant_total}")
     print(f"\n  Breakdown by field:")
     for field, count in field_counts.items():
         if count:
@@ -210,11 +172,9 @@ def print_scan_report(results: list[dict]) -> None:
             if field == "clues":
                 for ci, cl in ilist.items():
                     clue_text = (r["entry"].get("clues") or [])[ci] if ci < len(r["entry"].get("clues") or []) else "?"
-                    print(f"    {word} | clues[{ci}] LEAKAGE → \"{clue_text}\"")
-            elif "LEAKAGE" in ilist:
-                print(f"    {word} | {field} LEAKAGE → \"{r['entry'].get(field, '')}\"")
+                    print(f"    {word} | clues[{ci}] {','.join(cl)} → \"{clue_text}\"")
             else:
-                print(f"    {word} | {field} REDUNDANT_HINT → \"{r['entry'].get(field, '')}\"")
+                print(f"    {word} | {field} {','.join(ilist)} → \"{r['entry'].get(field, '')}\"")
     if len(results) > 10:
         print(f"    … and {len(results) - 10} more")
     print(f"\n  Full results written to: {LEAKY_PATH}")
@@ -226,15 +186,9 @@ FIX_SYSTEM_PROMPT = """\
 You are an expert crossword puzzle clue writer. Fix the word bank entry described below.
 
 Issue types you may be asked to address:
-  LEAKAGE        — The answer word appears directly in the clue, giving it away.
-  REDUNDANT_HINT — The hint is a single generic word already present in the main
-                   clue text, making it useless.
-
+  LEAKAGE        — The answer, a fragment, or a derived form appears in the clue.
 Rules for every field you write:
-  - NEVER include the answer word (or any constituent word of a multi-word answer)
-  - Hints should be 1-5 words and give GENUINELY NEW context beyond what the clue
-    already says. E.g. for LESLIE don't write "name" — write something specific
-    like "Parks and Recreation character" or "Nielsen or Caron, e.g."
+  - NEVER include the answer word, any constituent word, or obvious derived forms
   - "text": clear, direct definition clue (under 10 words)
   - "hard_text": trickier clue using wordplay, double meanings, or misdirection
   - "clues": exactly 3 varied clues using different techniques each
@@ -267,27 +221,18 @@ def _build_fix_prompt(record: dict) -> str:
     fields_to_regenerate: list[str] = []
 
     if "text" in issues:
-        lines.append(f'  - text: LEAKAGE — "{entry.get("text", "")}" contains the answer')
+        lines.append(f'  - text: {",".join(issues["text"])} — "{entry.get("text", "")}" gives away the answer')
         fields_to_regenerate.append("text")
 
-    if "hint" in issues:
-        issue_type = issues["hint"][0]
-        hint_val = entry.get("hint", "")
-        if issue_type == "LEAKAGE":
-            lines.append(f'  - hint: LEAKAGE — "{hint_val}" contains the answer')
-        else:
-            lines.append(f'  - hint: REDUNDANT_HINT — "{hint_val}" already appears in the main clue text')
-        fields_to_regenerate.append("hint")
-
     if "hard_text" in issues:
-        lines.append(f'  - hard_text: LEAKAGE — "{entry.get("hard_text", "")}" contains the answer')
+        lines.append(f'  - hard_text: {",".join(issues["hard_text"])} — "{entry.get("hard_text", "")}" gives away the answer')
         fields_to_regenerate.append("hard_text")
 
     if "clues" in issues:
         clue_list = entry.get("clues") or []
         for ci, ilist in issues["clues"].items():
             clue_text = clue_list[ci] if ci < len(clue_list) else "?"
-            lines.append(f'  - clues[{ci}]: LEAKAGE — "{clue_text}" contains the answer')
+            lines.append(f'  - clues[{ci}]: {",".join(ilist)} — "{clue_text}" gives away the answer')
         # Always regenerate all 3 clues if any one has an issue
         fields_to_regenerate.append("clues")
 
@@ -303,11 +248,11 @@ def _build_fix_prompt(record: dict) -> str:
         "Regenerate ONLY the flagged fields. Return a JSON object with ONLY those keys:",
         json.dumps(example_response, indent=2),
         "",
-        f"IMPORTANT: Do NOT include the word '{word}' in any regenerated field.",
+        f"IMPORTANT: Do NOT include the word '{word}' or obvious roots/inflections in any regenerated field.",
     ]
 
     if " " in word:
-        parts = [p for p in word.split() if len(p) >= MIN_CONSTITUENT_LEN]
+        parts = check_terms(word)[1:]
         if parts:
             lines.append(f"Also do NOT include any of its constituent words: {', '.join(parts)}")
 
@@ -344,11 +289,13 @@ def _validate_fix(fix_data: dict, check_words: list[str]) -> list[str]:
     for field, value in fix_data.items():
         if field == "clues":
             for clue in (value or []):
-                if _field_leaks(str(clue), check_words):
+                answer = check_words[0] if check_words else ""
+                if leaks_answer(answer, str(clue)):
                     still_leaking.append(field)
                     break
         else:
-            if _field_leaks(str(value or ""), check_words):
+            answer = check_words[0] if check_words else ""
+            if leaks_answer(answer, str(value or "")):
                 still_leaking.append(field)
     return still_leaking
 
