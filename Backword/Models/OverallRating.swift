@@ -206,18 +206,19 @@ struct OverallRating: Codable {
         min(max(score, 0), 5)
     }
 
-    private static func windowDateRange() -> (cutoff: String, today: String) {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = TimeZone(identifier: "UTC")!
-        let today = calendar.startOfDay(for: Date())
-        let cutoffDate = calendar.date(byAdding: .day, value: -(windowDays - 1), to: today)!
-        return (dateFormatter.string(from: cutoffDate), dateFormatter.string(from: today))
+    static func windowDateRange(
+        now: Date = Date(),
+        calendar: Calendar = Calendar.current
+    ) -> (cutoff: String, today: String) {
+        let releaseCalendar = ContentReleaseCalendar(now: now, calendar: calendar)
+        let cutoff = releaseCalendar.dailyDateString(offsetByDays: -(windowDays - 1)) ?? releaseCalendar.dailyDateString
+        return (cutoff, releaseCalendar.dailyDateString)
     }
 
     static let dateFormatter: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd"
-        f.timeZone = TimeZone(identifier: "UTC")
+        f.timeZone = TimeZone.current
         return f
     }()
 }

@@ -142,8 +142,7 @@ enum RatingBarLabelLayout {
 private func makePreviewRating(days: Int, daily: Int, backword: Int) -> OverallRating {
     var r = OverallRating()
     for i in 0..<days {
-        let d = Calendar.current.date(byAdding: .day, value: -i, to: Date())!
-        let ds = OverallRating.dateFormatter.string(from: d)
+        let ds = ContentReleaseCalendar().dailyDateString(offsetByDays: -i)!
         r.upsertDailyCrossword(score: daily, date: ds)
         r.upsertBackword(score: backword, date: ds)
     }

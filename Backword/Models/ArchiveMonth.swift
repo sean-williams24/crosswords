@@ -29,7 +29,7 @@ struct ArchiveMonth: Codable, Hashable, Identifiable, Comparable {
         return lhs.month < rhs.month
     }
 
-    static func current(date: Date = Date(), calendar: Calendar = utcCalendar) -> ArchiveMonth {
+    static func current(date: Date = Date(), calendar: Calendar = Calendar.current) -> ArchiveMonth {
         let components = calendar.dateComponents([.year, .month], from: date)
         return ArchiveMonth(year: components.year ?? 1970, month: components.month ?? 1)
     }
@@ -49,7 +49,7 @@ struct ArchiveMonth: Codable, Hashable, Identifiable, Comparable {
         dateString.hasPrefix(key)
     }
 
-    func dateRange(calendar: Calendar = utcCalendar) -> ClosedRange<String> {
+    func dateRange(calendar: Calendar = Calendar.current) -> ClosedRange<String> {
         var components = DateComponents()
         components.calendar = calendar
         components.year = year
@@ -62,21 +62,17 @@ struct ArchiveMonth: Codable, Hashable, Identifiable, Comparable {
             return startDateString...startDateString
         }
 
-        return Self.dateFormatter.string(from: start)...Self.dateFormatter.string(from: end)
+        let dateFormatter = Self.dateFormatter(calendar: calendar)
+        return dateFormatter.string(from: start)...dateFormatter.string(from: end)
     }
 
-    private static var utcCalendar: Calendar = {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = TimeZone(identifier: "UTC")!
-        return calendar
-    }()
-
-    private static let dateFormatter: DateFormatter = {
+    private static func dateFormatter(calendar: Calendar) -> DateFormatter {
         let formatter = DateFormatter()
+        formatter.calendar = calendar
         formatter.dateFormat = "yyyy-MM-dd"
-        formatter.timeZone = TimeZone(identifier: "UTC")
+        formatter.timeZone = calendar.timeZone
         return formatter
-    }()
+    }
 
     private static let monthFormatter: DateFormatter = {
         let formatter = DateFormatter()

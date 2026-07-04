@@ -35,7 +35,8 @@ final class CacheService {
     func saveWOTD(_ backword: WordOfTheDay, for date: String) {
         ensureDirectory()
         let url = wotdFileURL(for: date)
-        if let data = try? JSONEncoder().encode(backword) {
+        let cachedWord = CachedWOTD(date: date, word: backword)
+        if let data = try? JSONEncoder().encode(cachedWord) {
             try? data.write(to: url, options: .atomic)
         }
     }
@@ -43,7 +44,10 @@ final class CacheService {
     func loadWOTD(for date: String) -> WordOfTheDay? {
         let url = wotdFileURL(for: date)
         guard let data = try? Data(contentsOf: url) else { return nil }
-        return try? JSONDecoder().decode(WordOfTheDay.self, from: data)
+        guard let cachedWord = try? JSONDecoder().decode(CachedWOTD.self, from: data),
+              cachedWord.date == date
+        else { return nil }
+        return cachedWord.word
     }
 
     // MARK: - Puzzle Cache
@@ -164,4 +168,9 @@ final class CacheService {
             try? fileManager.createDirectory(at: cacheDirectory, withIntermediateDirectories: true)
         }
     }
+}
+
+private struct CachedWOTD: Codable {
+    let date: String
+    let word: WordOfTheDay
 }

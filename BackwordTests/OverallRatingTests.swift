@@ -82,8 +82,7 @@ struct OverallRatingTests {
     private func perfectRating(days: Int, withWeekly: Bool = false) -> OverallRating {
         var r = OverallRating()
         for i in 0..<days {
-            let d = Calendar.current.date(byAdding: .day, value: -i, to: Date())!
-            let ds = OverallRating.dateFormatter.string(from: d)
+            let ds = dateString(offsetByDays: -i)
             r.upsertDailyCrossword(score: 5, date: ds)
             r.upsertBackword(score: 5, date: ds)
             if withWeekly { r.upsertWeeklyCrossword(score: 5, date: ds) }
@@ -95,8 +94,7 @@ struct OverallRatingTests {
         var r = OverallRating()
         var remaining = points
         for i in 0..<14 {
-            let d = Calendar.current.date(byAdding: .day, value: -i, to: Date())!
-            let ds = OverallRating.dateFormatter.string(from: d)
+            let ds = dateString(offsetByDays: -i)
             let daily = min(5, remaining)
             remaining -= daily
             let backword = min(5, remaining)
@@ -143,7 +141,7 @@ struct OverallRatingTests {
     @Test("fraction clamps at 1.0 even when over max")
     func fractionClamp() {
         // Create a rating with more than max by adding weekly to free
-        var r = perfectRating(days: 14, withWeekly: true)
+        let r = perfectRating(days: 14, withWeekly: true)
         // Free user (ignores weekly) → fraction should still be 1.0
         #expect(r.fraction(isPro: false) <= 1.0)
     }
@@ -152,8 +150,7 @@ struct OverallRatingTests {
     func halfFractionFree() {
         var r = OverallRating()
         for i in 0..<14 {
-            let d = Calendar.current.date(byAdding: .day, value: -i, to: Date())!
-            let ds = OverallRating.dateFormatter.string(from: d)
+            let ds = dateString(offsetByDays: -i)
             // Only daily (5 pts) — no backword — gives 5/10 per day
             r.upsertDailyCrossword(score: 5, date: ds)
         }
@@ -173,8 +170,7 @@ struct OverallRatingTests {
         // 20% of 140 = 28 pts. 14 days × 2 pts daily = 28.
         var r = OverallRating()
         for i in 0..<14 {
-            let d = Calendar.current.date(byAdding: .day, value: -i, to: Date())!
-            let ds = OverallRating.dateFormatter.string(from: d)
+            let ds = dateString(offsetByDays: -i)
             r.upsertDailyCrossword(score: 2, date: ds)
         }
         #expect(r.tier(isPro: false) == .scribe)
@@ -235,8 +231,7 @@ struct OverallRatingTests {
     func trimOldScores() {
         var r = OverallRating()
         // Add a score 15 days ago
-        let old = Calendar.current.date(byAdding: .day, value: -15, to: Date())!
-        let oldDate = OverallRating.dateFormatter.string(from: old)
+        let oldDate = dateString(offsetByDays: -15)
         r.upsertDailyCrossword(score: 5, date: oldDate)
         // The old score should have been trimmed
         #expect(r.dailyScores.isEmpty)
@@ -245,8 +240,7 @@ struct OverallRatingTests {
     @Test("Score from 13 days ago is retained")
     func retainRecentScore() {
         var r = OverallRating()
-        let recent = Calendar.current.date(byAdding: .day, value: -13, to: Date())!
-        let recentDate = OverallRating.dateFormatter.string(from: recent)
+        let recentDate = dateString(offsetByDays: -13)
         r.upsertDailyCrossword(score: 3, date: recentDate)
         #expect(r.dailyScores.count == 1)
         #expect(r.dailyScores[0].dailyCrossword == 3)
@@ -255,10 +249,8 @@ struct OverallRatingTests {
     @Test("Future scores are excluded from the rolling window")
     func futureScoresExcluded() {
         var r = OverallRating()
-        let today = OverallRating.dateFormatter.string(from: Date())
-        let tomorrow = OverallRating.dateFormatter.string(
-            from: Calendar.current.date(byAdding: .day, value: 1, to: Date())!
-        )
+        let today = dateString()
+        let tomorrow = dateString(offsetByDays: 1)
 
         r.upsertDailyCrossword(score: 1, date: today)
         r.upsertDailyCrossword(score: 5, date: tomorrow)
@@ -271,7 +263,7 @@ struct OverallRatingTests {
 
     @Test("Loaded scores are clamped to valid per-game values")
     func normalizesOutOfRangeScores() {
-        let today = OverallRating.dateFormatter.string(from: Date())
+        let today = dateString()
         var r = OverallRating(dailyScores: [
             DailyScore(date: today, dailyCrossword: 197, weeklyCrossword: 9, backword: -4)
         ])
@@ -290,7 +282,7 @@ struct OverallRatingTests {
     @Test("Upserting same date twice updates the record, not duplicates")
     func upsertDedup() {
         var r = OverallRating()
-        let today = OverallRating.dateFormatter.string(from: Date())
+        let today = dateString()
         r.upsertDailyCrossword(score: 3, date: today)
         r.upsertDailyCrossword(score: 5, date: today)
         #expect(r.dailyScores.count == 1)
@@ -300,7 +292,7 @@ struct OverallRatingTests {
     @Test("Upserting backword and daily on same date produces one entry")
     func upsertMultipleFieldsSameDay() {
         var r = OverallRating()
-        let today = OverallRating.dateFormatter.string(from: Date())
+        let today = dateString()
         r.upsertDailyCrossword(score: 4, date: today)
         r.upsertBackword(score: 3, date: today)
         #expect(r.dailyScores.count == 1)
@@ -313,7 +305,7 @@ struct OverallRatingTests {
     @Test("Weekly score not counted for free users")
     func weeklyIgnoredForFree() {
         var r = OverallRating()
-        let today = OverallRating.dateFormatter.string(from: Date())
+        let today = dateString()
         r.upsertDailyCrossword(score: 5, date: today)
         r.upsertWeeklyCrossword(score: 5, date: today)
         r.upsertBackword(score: 5, date: today)
@@ -327,7 +319,7 @@ struct OverallRatingTests {
     @Test("OverallRating survives JSON encode/decode")
     func codableRoundTrip() throws {
         var r = OverallRating()
-        let today = OverallRating.dateFormatter.string(from: Date())
+        let today = dateString()
         r.upsertDailyCrossword(score: 4, date: today)
         r.upsertWeeklyCrossword(score: 3, date: today)
         r.upsertBackword(score: 5, date: today)
@@ -337,5 +329,9 @@ struct OverallRatingTests {
         #expect(decoded.dailyScores[0].dailyCrossword == 4)
         #expect(decoded.dailyScores[0].weeklyCrossword == 3)
         #expect(decoded.dailyScores[0].backword == 5)
+    }
+
+    private func dateString(offsetByDays offset: Int = 0) -> String {
+        ContentReleaseCalendar().dailyDateString(offsetByDays: offset)!
     }
 }

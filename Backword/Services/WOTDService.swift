@@ -8,6 +8,8 @@ final class WOTDService: ObservableObject {
     private let dateFormatting = DateFormatting()
     private let baseURL = Secrets.supabaseURL
     private let apiKey = Secrets.supabaseAnonKey
+    private let supabaseFetcher: ((String) async throws -> WordOfTheDay?)?
+    private let fallbackWordProvider: (() -> WordOfTheDay?)?
 
     /// The date string (yyyy-MM-dd) we last fetched for
     private var lastFetchedDate: String?
@@ -22,40 +24,57 @@ final class WOTDService: ObservableObject {
         dateFormatting.todayString()
     }
 
-    init() {
-        Task { await loadTodaysWord() }
+    init(
+        loadOnInit: Bool = true,
+        supabaseFetcher: ((String) async throws -> WordOfTheDay?)? = nil,
+        fallbackWordProvider: (() -> WordOfTheDay?)? = nil
+    ) {
+        self.supabaseFetcher = supabaseFetcher
+        self.fallbackWordProvider = fallbackWordProvider
+        if loadOnInit {
+            Task { await loadTodaysWord() }
+        }
     }
 
     /// Re-fetches only when the calendar date has changed since last fetch.
     func refreshIfNeeded() async {
-        let today = Self.dateFormatter.string(from: Date())
         guard today != lastFetchedDate else { return }
         await loadTodaysWord()
     }
 
     private func loadTodaysWord() async {
-        if let word = cache.loadWOTD(for: today) {
+        let requestedDate = today
+
+        if let word = cache.loadWOTD(for: requestedDate) {
             todaysWord = word
+            lastFetchedDate = requestedDate
             return
         }
 
-        if let word = try? await fetchFromSupabase() {
+        if let word = try? await fetchWord(for: requestedDate) {
             todaysWord = word
-            cache.saveWOTD(word, for: today)
-            lastFetchedDate = Self.dateFormatter.string(from: Date())
+            cache.saveWOTD(word, for: requestedDate)
+            lastFetchedDate = requestedDate
             return
         }
-        // Fall back to local bundle
+
+        // Fall back to local bundle, but keep the date retryable so a later
+        // Supabase policy/network fix can replace it with the real daily row.
         todaysWord = loadFromBundle()
     }
 
     // MARK: - Supabase
 
-    private func fetchFromSupabase() async throws -> WordOfTheDay? {
-        let today = Self.dateFormatter.string(from: Date())
-        // Try today's word first, then fall back to the latest available
-        let urlString = "\(baseURL)/rest/v1/words_of_the_day?date=lte.\(today)&select=*&order=date.desc&limit=1"
-        guard let url = URL(string: urlString) else { return nil }
+    private func fetchWord(for date: String) async throws -> WordOfTheDay? {
+        if let supabaseFetcher {
+            return try await supabaseFetcher(date)
+        }
+
+        return try await fetchFromSupabase(for: date)
+    }
+
+    private func fetchFromSupabase(for date: String) async throws -> WordOfTheDay? {
+        guard let url = Self.supabaseURL(baseURL: baseURL, date: date) else { return nil }
 
         var request = URLRequest(url: url)
         request.setValue(apiKey, forHTTPHeaderField: "apikey")
@@ -83,6 +102,10 @@ final class WOTDService: ObservableObject {
     // MARK: - Local Fallback
 
     private func loadFromBundle() -> WordOfTheDay? {
+        if let fallbackWordProvider {
+            return fallbackWordProvider()
+        }
+
         guard let url = Bundle.main.url(forResource: "wotd_bank", withExtension: "json"),
               let data = try? Data(contentsOf: url),
               let words = try? JSONDecoder().decode([WordOfTheDay].self, from: data),
@@ -96,12 +119,10 @@ final class WOTDService: ObservableObject {
 
     // MARK: - Helpers
 
-    private static let dateFormatter: DateFormatter = {
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        f.timeZone = TimeZone(identifier: "UTC")
-        return f
-    }()
+    nonisolated static func supabaseURL(baseURL: String, date: String) -> URL? {
+        URL(string: "\(baseURL)/rest/v1/words_of_the_day?date=eq.\(date)&select=*&limit=1")
+    }
+
 }
 
 // MARK: - Supabase Response Model

@@ -61,16 +61,19 @@ final class ArchiveDataSource: ArchiveDataProviding {
     }
 
     func prefetchCurrentMonth() async {
-        let currentMonth = ArchiveMonth.current()
+        let releaseCalendar = ContentReleaseCalendar()
+        let currentBackwordMonth = releaseCalendar.month(for: .backword)
+        let currentDailyMonth = releaseCalendar.month(for: .daily)
+        let currentWeeklyMonth = releaseCalendar.month(for: .weekly)
 
         async let backwordMonths = availableMonths(for: .backword, policy: .networkFirst)
         async let dailyMonths = availableMonths(for: .daily, policy: .networkFirst)
         async let weeklyMonths = availableMonths(for: .weekly, policy: .networkFirst)
         _ = await (backwordMonths, dailyMonths, weeklyMonths)
 
-        async let backwordContent = loadMonth(currentMonth, for: .backword, policy: .networkFirst)
-        async let dailyContent = loadMonth(currentMonth, for: .daily, policy: .networkFirst)
-        async let weeklyContent = loadMonth(currentMonth, for: .weekly, policy: .networkFirst)
+        async let backwordContent = loadMonth(currentBackwordMonth, for: .backword, policy: .networkFirst)
+        async let dailyContent = loadMonth(currentDailyMonth, for: .daily, policy: .networkFirst)
+        async let weeklyContent = loadMonth(currentWeeklyMonth, for: .weekly, policy: .networkFirst)
         _ = await (backwordContent, dailyContent, weeklyContent)
     }
 

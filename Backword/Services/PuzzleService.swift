@@ -18,6 +18,10 @@ final class PuzzleService: ObservableObject {
         dateFormatting.todayString()
     }
 
+    private var currentWeeklyDate: String {
+        dateFormatting.weeklyContentDateString()
+    }
+
     // MARK: - Public API
 
     func fetchTodaysPuzzle() async throws -> Puzzle {
@@ -75,7 +79,7 @@ final class PuzzleService: ObservableObject {
     }
 
     func fetchWeeklyArchive() async throws -> [ArchiveEntry] {
-        let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(today)&select=id,puzzle_number,date&order=date.desc"
+        let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(currentWeeklyDate)&select=id,puzzle_number,date&order=date.desc"
         guard let url = URL(string: urlString) else {
             throw PuzzleServiceError.invalidURL
         }
@@ -90,14 +94,14 @@ final class PuzzleService: ObservableObject {
     }
 
     func fetchWeeklyArchiveMonths() async throws -> [ArchiveMonth] {
-        let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(today)&select=date&order=date.desc"
+        let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(currentWeeklyDate)&select=date&order=date.desc"
         let dates = try await fetchArchiveDates(urlString: urlString)
         return months(from: dates)
     }
 
     func fetchWeeklyPuzzles(for month: ArchiveMonth) async throws -> [Puzzle] {
         let range = month.dateRange()
-        let upperBound = min(range.upperBound, today)
+        let upperBound = min(range.upperBound, currentWeeklyDate)
         guard range.lowerBound <= upperBound else { return [] }
 
         let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=gte.\(range.lowerBound)&date=lte.\(upperBound)&select=*&order=date.desc"
@@ -111,16 +115,14 @@ final class PuzzleService: ObservableObject {
     }
 
     func purgeWeeklyCache() {
-        cache.clearPuzzle(for: "weekly_\(today)")
+        cache.clearPuzzle(for: "weekly_\(currentWeeklyDate)")
     }
 
     func prefetchUpcomingPuzzles() async {
-        let calendar = Calendar.current
-        let today = Date()
+        let releaseCalendar = ContentReleaseCalendar()
 
         for dayOffset in 0...6 {
-            guard let date = calendar.date(byAdding: .day, value: dayOffset, to: today) else { continue }
-            let dateString = dateFormatting.formatter.string(from: date)
+            guard let dateString = releaseCalendar.dailyDateString(offsetByDays: dayOffset) else { continue }
 
             if cache.loadPuzzle(for: dateString) != nil { continue }
 
@@ -133,12 +135,12 @@ final class PuzzleService: ObservableObject {
     /// Fetches the current weekly puzzle (most recent with date <= today).
     func fetchCurrentWeeklyPuzzle() async throws -> Puzzle {
         // Try cache first
-        let cacheKey = "weekly_\(today)"
+        let cacheKey = "weekly_\(currentWeeklyDate)"
         if let cached = cache.loadPuzzle(for: cacheKey) {
             return cached
         }
 
-        let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(today)&select=*&order=date.desc&limit=1"
+        let urlString = "\(baseURL)/rest/v1/weekly_puzzles?date=lte.\(currentWeeklyDate)&select=*&order=date.desc&limit=1"
         guard let url = URL(string: urlString) else {
             throw PuzzleServiceError.invalidURL
         }

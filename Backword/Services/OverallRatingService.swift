@@ -23,9 +23,7 @@ final class OverallRatingService: ObservableObject {
     // MARK: - Backfill from disk
 
     private func backfillFromDisk() {
-        let cutoff = OverallRating.dateFormatter.string(
-            from: Calendar.current.date(byAdding: .day, value: -13, to: Calendar.current.startOfDay(for: Date()))!
-        )
+        let cutoff = ContentReleaseCalendar().dailyDateString(offsetByDays: -13) ?? DateFormatting().todayString()
 
         // Backword
         for bw in BackwordProgress.loadAll() where bw.date >= cutoff {

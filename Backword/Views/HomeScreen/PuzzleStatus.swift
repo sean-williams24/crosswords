@@ -58,10 +58,7 @@ enum PuzzleStatus {
         guard progress.isComplete, let completedAt = progress.completedAt else {
             return .inProgress
         }
-        let fmt = DateFormatter()
-        fmt.dateFormat = "yyyy-MM-dd"
-        fmt.timeZone = TimeZone(identifier: "UTC")
-        return fmt.string(from: completedAt) == entry.date ? .completedOnTime : .completedLate
+        return ContentReleaseCalendar(now: completedAt).dailyDateString == entry.date ? .completedOnTime : .completedLate
     }
 
     static func status(for progress: BackwordProgress?) -> PuzzleStatus {
