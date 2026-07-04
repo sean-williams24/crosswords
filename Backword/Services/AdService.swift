@@ -70,6 +70,7 @@ final class AdService: NSObject, ObservableObject {
     @Published var rewardedAdDidDismiss = false
     @Published private(set) var adStartupDidComplete = false
     @Published private(set) var isPresentingFullScreenAd = false
+    @Published private(set) var isPrivacyOptionsRequired = false
     var rewardGranted = false
     private var interstitial: InterstitialAd?
     private var rewarded: RewardedAd?
@@ -105,10 +106,12 @@ final class AdService: NSObject, ObservableObject {
         let task = Task { @MainActor [self] in
             adStartupDidComplete = false
             guard await adConsentService.prepareForAds() else {
+                refreshPrivacyOptionsRequirement()
                 startupTask = nil
                 adStartupDidComplete = true
                 return false
             }
+            refreshPrivacyOptionsRequirement()
 
             guard !adsHaveStarted else {
                 startupTask = nil
@@ -127,6 +130,15 @@ final class AdService: NSObject, ObservableObject {
         }
         startupTask = task
         return await awaitStartupTask(task)
+    }
+
+    func refreshPrivacyOptionsRequirement() {
+        isPrivacyOptionsRequired = adConsentService.isPrivacyOptionsRequired
+    }
+
+    func presentPrivacyOptionsForm() async {
+        await adConsentService.presentPrivacyOptionsForm()
+        refreshPrivacyOptionsRequirement()
     }
 
     private func awaitStartupTask(_ task: Task<Bool, Never>) async -> Bool {

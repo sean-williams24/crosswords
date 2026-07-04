@@ -3,11 +3,13 @@ import SwiftUI
 struct SettingsView: View {
     @ObservedObject private var settings = AppSettings.shared
     @EnvironmentObject var storeService: StoreService
+    @EnvironmentObject var adService: AdService
     @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     @AppStorage("appColorScheme") private var appColorScheme: Int = 2
     @State private var isShowingMailComposer = false
     @State private var isFeedbackRowPressed = false
+    @State private var isAdPrivacyChoicesRowPressed = false
 
     var body: some View {
         NavigationStack {
@@ -46,6 +48,10 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    if Self.showsAdPrivacyChoicesRow(isPrivacyOptionsRequired: adService.isPrivacyOptionsRequired) {
+                        adPrivacyChoicesRow
+                    }
+
                     ForEach(LegalLink.all) { link in
                         legalLinkRow(link)
                     }
@@ -81,6 +87,9 @@ struct SettingsView: View {
             .preferredColorScheme(selectedScheme)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .onAppear {
+                adService.refreshPrivacyOptionsRequirement()
+            }
             .sheet(isPresented: $isShowingMailComposer) {
                 MailComposerView(
                     content: .current,
@@ -98,6 +107,10 @@ struct SettingsView: View {
                 }
             }
         }
+    }
+
+    static func showsAdPrivacyChoicesRow(isPrivacyOptionsRequired: Bool) -> Bool {
+        isPrivacyOptionsRequired
     }
 
     private var selectedScheme: ColorScheme? {
@@ -162,6 +175,39 @@ struct SettingsView: View {
         } else if let mailtoURL = content.mailtoURL {
             openURL(mailtoURL)
         }
+    }
+
+    private var adPrivacyChoicesRow: some View {
+        Button {
+            Task {
+                await adService.presentPrivacyOptionsForm()
+            }
+        } label: {
+            HStack {
+                Text("Ad Privacy Choices")
+                    .font(AppFont.body(15))
+                    .foregroundColor(.appTextPrimary)
+
+                Spacer()
+
+                Image(systemName: "slider.horizontal.3")
+                    .foregroundColor(.appTextSecondary)
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .listRowBackground(isAdPrivacyChoicesRowPressed ? Color.appAccent.opacity(0.14) : Color.appSurface)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility3)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in
+                    isAdPrivacyChoicesRowPressed = true
+                }
+                .onEnded { _ in
+                    isAdPrivacyChoicesRowPressed = false
+                }
+        )
     }
 
     private func legalLinkRow(_ link: LegalLink) -> some View {
@@ -272,4 +318,5 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
         .environmentObject(StoreService())
+        .environmentObject(AdService())
 }
