@@ -149,14 +149,10 @@ struct CrosswordStatsView: View {
     }
 
     private var dailyBreakdownRows: [HistoryRow] {
-        let utcFmt = DateFormatter()
-        utcFmt.dateFormat = "yyyy-MM-dd"
-        utcFmt.timeZone = TimeZone(identifier: "UTC")
-
         let scoreMap: [String: Int] = Dictionary(uniqueKeysWithValues:
             ratingService.rating.dailyScores.map { ($0.date, $0.dailyCrossword) }
         )
-        // Only include puzzles completed on the same UTC date as the puzzle date (i.e. solved on time),
+        // Only include puzzles completed on the same local content date as the puzzle date (i.e. solved on time),
         // matching the "Solved" status shown in the archive view.
         var timeMap = [String: Int]()
         for progress in UserProgress.loadAll() {
@@ -164,13 +160,13 @@ struct CrosswordStatsView: View {
                   progress.gaveUpAt == nil,
                   let puzzleDate = progress.puzzleDate,
                   let completedAt = progress.completedAt,
-                  utcFmt.string(from: completedAt) == puzzleDate else { continue }
+                  ContentReleaseCalendar(now: completedAt).dailyDateString == puzzleDate else { continue }
             timeMap[puzzleDate] = Int(progress.elapsedTime)
         }
-        let todayStr = utcFmt.string(from: Date())
+        let todayStr = ContentReleaseCalendar().dailyDateString
         return (0..<14).compactMap { offset -> HistoryRow? in
-            guard let date = Calendar.current.date(byAdding: .day, value: -offset, to: Date()) else { return nil }
-            let dateStr = utcFmt.string(from: date)
+            guard let dateStr = ContentReleaseCalendar().dailyDateString(offsetByDays: -offset),
+                  let date = OverallRating.dateFormatter.date(from: dateStr) else { return nil }
             let solveTime = timeMap[dateStr]
             let ratingScore = scoreMap[dateStr]
             let score = ratingScore ?? (solveTime != nil ? 5 : 0)
@@ -187,10 +183,6 @@ struct CrosswordStatsView: View {
     }
 
     private var weeklyBreakdownRows: [HistoryRow] {
-        let utcFmt = DateFormatter()
-        utcFmt.dateFormat = "yyyy-MM-dd"
-        utcFmt.timeZone = TimeZone(identifier: "UTC")
-
         let scoreMap: [String: Int] = Dictionary(
             ratingService.rating.dailyScores.compactMap { entry -> (String, Int)? in
                 guard let ws = entry.weeklyCrossword else { return nil }
@@ -203,7 +195,7 @@ struct CrosswordStatsView: View {
             .filter { $0.isWeekly == true && $0.completedAt != nil && $0.gaveUpAt == nil }
             .compactMap { progress -> HistoryRow? in
                 guard let puzzleDate = progress.puzzleDate,
-                      let date = utcFmt.date(from: puzzleDate) else { return nil }
+                      let date = OverallRating.dateFormatter.date(from: puzzleDate) else { return nil }
                 let solveTime = Int(progress.elapsedTime)
                 let ratingScore = scoreMap[puzzleDate]
                 let score = ratingScore ?? 5
@@ -289,15 +281,12 @@ private extension CrosswordStatsView {
 
     static var mockRatingService: OverallRatingService {
         var r = OverallRating()
-        let utcFmt = DateFormatter()
-        utcFmt.dateFormat = "yyyy-MM-dd"
-        utcFmt.timeZone = TimeZone(identifier: "UTC")
         // Only score days that also have times in the history (days 1–10 above)
         let dailyScores = [0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0]
         for (i, score) in dailyScores.enumerated() {
             guard score > 0,
-                  let date = Calendar.current.date(byAdding: .day, value: -i, to: Date()) else { continue }
-            r.upsertDailyCrossword(score: score, date: utcFmt.string(from: date))
+                  let dateString = ContentReleaseCalendar().dailyDateString(offsetByDays: -i) else { continue }
+            r.upsertDailyCrossword(score: score, date: dateString)
         }
         return OverallRatingService(rating: r)
     }

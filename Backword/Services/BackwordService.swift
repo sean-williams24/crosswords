@@ -6,11 +6,11 @@ final class BackwordService: ObservableObject {
     @Published var isLoading = false
 
     private let cache = CacheService()
-    private let apiClient: SupabaseClient
+    private let apiClient: SupabaseClientProtocol
     private let dateFormatting = DateFormatting()
     private var lastFetchedDate: String?
 
-    init(apiClient: SupabaseClient = SupabaseClient(), loadOnInit: Bool = true) {
+    init(apiClient: SupabaseClientProtocol = SupabaseClient(), loadOnInit: Bool = true) {
         self.apiClient = apiClient
         if loadOnInit {
             Task { await loadTodaysWord() }
@@ -24,7 +24,7 @@ final class BackwordService: ObservableObject {
     /// Re-fetches only when the calendar date has changed since last fetch.
     /// Pass `force: true` to re-fetch unconditionally (e.g. after a debug reset).
     func refreshIfNeeded(force: Bool = false) async {
-        guard force || today != lastFetchedDate || todaysWord == nil else { return }
+        guard force || today != lastFetchedDate else { return }
         await loadTodaysWord()
     }
 
@@ -50,21 +50,24 @@ final class BackwordService: ObservableObject {
     }
 
     private func loadTodaysWord() async {
+        let requestedDate = today
         isLoading = true
         defer { isLoading = false }
 
-        if let word = cache.loadBackword(for: today) {
+        if let word = cache.loadBackword(for: requestedDate) {
             todaysWord = word
-            lastFetchedDate = today
+            lastFetchedDate = requestedDate
             return
         }
 
         do {
             let word = try await apiClient.fetchTodaysBackword()
             todaysWord = word
-            cache.saveBackword(word, for: today)
-            lastFetchedDate = today
+            cache.saveBackword(word, for: requestedDate)
+            lastFetchedDate = requestedDate
         } catch {
+            todaysWord = nil
+            lastFetchedDate = requestedDate
             print("Supabase fetch error: \(error)")
         }
     }

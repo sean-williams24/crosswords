@@ -74,10 +74,7 @@ private func formattedDate(_ dateString: String) -> String {
 }
 
 private func isToday(_ dateString: String) -> Bool {
-    let fmt = DateFormatter()
-    fmt.dateFormat = "yyyy-MM-dd"
-    fmt.timeZone = TimeZone(identifier: "UTC")
-    return dateString == fmt.string(from: Date())
+    dateString == ContentReleaseCalendar().dailyDateString
 }
 
 

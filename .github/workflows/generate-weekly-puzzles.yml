@@ -32,9 +32,19 @@ jobs:
 
           sb = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
 
-          # Count puzzles remaining from today onwards
-          today = date.today().isoformat()
-          remaining = sb.table('weekly_puzzles').select('id', count='exact').gte('date', today).execute()
+          def current_release_sunday(day):
+              return day - timedelta(days=(day.weekday() + 1) % 7)
+
+          def next_release_sunday_after(day):
+              days_until_sunday = (6 - day.weekday()) % 7
+              if days_until_sunday == 0:
+                  days_until_sunday = 7
+              return day + timedelta(days=days_until_sunday)
+
+          # Count puzzles remaining from the current local-release week onwards.
+          today = date.today()
+          current_sunday = current_release_sunday(today).isoformat()
+          remaining = sb.table('weekly_puzzles').select('id', count='exact').gte('date', current_sunday).execute()
           count = remaining.count or 0
           print(f'Remaining weekly puzzles from today: {count}', file=sys.stderr)
 
@@ -47,10 +57,10 @@ jobs:
               if last.data:
                   last_date = date.fromisoformat(last.data[0]['date'])
                   last_num = last.data[0]['puzzle_number']
-                  next_date = (last_date + timedelta(weeks=1)).isoformat()
+                  next_date = next_release_sunday_after(last_date).isoformat()
                   next_num = last_num + 1
               else:
-                  next_date = date.today().isoformat()
+                  next_date = current_release_sunday(today).isoformat()
                   next_num = 1
               print(f'enough=false')
               print(f'remaining={count}')

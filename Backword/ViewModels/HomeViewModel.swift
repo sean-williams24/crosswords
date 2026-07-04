@@ -12,6 +12,7 @@ final class HomeViewModel: ObservableObject {
     private let puzzleService: PuzzleService
     private let storeService: StoreService
     private let archiveDataSource: ArchiveDataSource
+    private let dateFormatting = DateFormatting()
     private var lastArchivePrefetchDate: String?
     #if DEBUG
     var previewMode = false
@@ -39,9 +40,9 @@ final class HomeViewModel: ObservableObject {
         #if DEBUG
         if previewMode { return }
         #endif
-        let today = formattedToday()
+        let today = dateFormatting.todayString()
         let dailyStale = todaysPuzzle?.date != today
-        let weeklyStale = isProUser && weeklyPuzzleIsStale()
+        let weeklyStale = isProUser && weeklyPuzzle?.date != dateFormatting.weeklyContentDateString()
 
         if dailyStale || weeklyStale {
             guard !isFetching else { return }
@@ -56,21 +57,6 @@ final class HomeViewModel: ObservableObject {
                 weeklyProgress = UserProgress.load(puzzleId: weekly.id)
             }
         }
-    }
-
-    private func weeklyPuzzleIsStale() -> Bool {
-        guard let dateString = weeklyPuzzle?.date else { return true }
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        guard let puzzleDate = f.date(from: dateString) else { return true }
-        let daysSince = Calendar.current.dateComponents([.day], from: puzzleDate, to: Date()).day ?? 0
-        return daysSince >= 7
-    }
-
-    private func formattedToday() -> String {
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        return f.string(from: Date())
     }
 
     func loadTodaysPuzzle() async {
@@ -94,7 +80,7 @@ final class HomeViewModel: ObservableObject {
     }
 
     func prefetchCurrentArchiveMonthIfNeeded() async {
-        let today = formattedToday()
+        let today = dateFormatting.todayString()
         guard lastArchivePrefetchDate != today else { return }
 
         lastArchivePrefetchDate = today
@@ -116,19 +102,13 @@ final class HomeViewModel: ObservableObject {
     var puzzleStatus: PuzzleStatus {
         guard let progress = todaysProgress else { return .notStarted }
         guard progress.isComplete, let completedAt = progress.completedAt else { return .inProgress }
-        let fmt = DateFormatter()
-        fmt.dateFormat = "yyyy-MM-dd"
-        fmt.timeZone = TimeZone(identifier: "UTC")
-        return fmt.string(from: completedAt) == todaysPuzzle?.date ? .completedOnTime : .completedLate
+        return ContentReleaseCalendar(now: completedAt).dailyDateString == todaysPuzzle?.date ? .completedOnTime : .completedLate
     }
 
     var weeklyPuzzleStatus: PuzzleStatus {
         guard let progress = weeklyProgress else { return .notStarted }
         guard progress.isComplete, let completedAt = progress.completedAt else { return .inProgress }
-        let fmt = DateFormatter()
-        fmt.dateFormat = "yyyy-MM-dd"
-        fmt.timeZone = TimeZone(identifier: "UTC")
-        return fmt.string(from: completedAt) == weeklyPuzzle?.date ? .completedOnTime : .completedLate
+        return ContentReleaseCalendar(now: completedAt).weeklyDateString == weeklyPuzzle?.date ? .completedOnTime : .completedLate
     }
 }
 

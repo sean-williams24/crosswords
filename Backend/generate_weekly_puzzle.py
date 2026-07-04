@@ -28,6 +28,11 @@ TARGET_CLUES = 35
 MIN_WORD_LENGTH = 3
 MAX_WORD_LENGTH = 13
 
+
+def next_sunday_on_or_after(day: date) -> date:
+    """Return the Sunday release date on or after `day`."""
+    return day + timedelta(days=(6 - day.weekday()) % 7)
+
 # ── Grid Templates ──────────────────────────────────────────────────────────
 # Each template is a 13×13 grid. '#' = black, '.' = white.
 # All templates have 180° rotational symmetry (standard crossword convention).
@@ -691,7 +696,7 @@ def main():
     print(f"  {total_words} words loaded ({', '.join(f'{k}-letter: {len(v)}' for k, v in sorted(word_bank.items()))})")
 
     start_date = (
-        date.fromisoformat(args.date) if args.date else date.today() + timedelta(days=1)
+        date.fromisoformat(args.date) if args.date else next_sunday_on_or_after(date.today())
     )
 
     generated = 0

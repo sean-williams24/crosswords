@@ -142,7 +142,7 @@ struct HomeView: View {
                 )
             }
             .task {
-                // Sleep until midnight then trigger a full refresh, then repeat each day.
+                // Sleep until local midnight then trigger a full refresh, then repeat each day.
                 while !Task.isCancelled {
                     guard let delay = secondsUntilMidnight(), delay > 0 else { break }
                     try? await Task.sleep(for: .seconds(delay))
@@ -246,11 +246,7 @@ struct HomeView: View {
                 .padding(.bottom, 6)
 
             TimelineView(.periodic(from: .now, by: 60)) { context in
-                if isAfterLocalMidnight(at: context.date) {
-                    dateView(for: utcResetCountdown(at: context.date))
-                } else {
-                    dateView(for: DateFormatting().formattedDate)
-                }
+                dateView(for: dailyReleaseLabel(at: context.date))
             }
 
             if sizeClass == .regular {
@@ -282,11 +278,7 @@ struct HomeView: View {
                 .padding(.bottom, 6)
 
             TimelineView(.periodic(from: .now, by: 60)) { context in
-                if isBeforeWeeklyResetUTC(at: context.date) {
-                    dateView(for: weeklyResetCountdown(at: context.date))
-                } else {
-                    dateView(for: weeklyRefreshLabel(at: context.date))
-                }
+                dateView(for: weeklyRefreshLabel(at: context.date))
             }
             .padding(.bottom, isIpad ? 16 : 0)
 
@@ -531,26 +523,19 @@ struct HomeView: View {
 
     // MARK: - Helpers
 
-    /// Returns true when the local date has ticked past midnight but UTC midnight hasn't fired yet.
-    private func isAfterLocalMidnight(at date: Date = Date()) -> Bool {
-        let localFmt = DateFormatter()
-        localFmt.dateFormat = "yyyy-MM-dd"
-        let utcFmt = DateFormatter()
-        utcFmt.dateFormat = "yyyy-MM-dd"
-        utcFmt.timeZone = TimeZone(identifier: "UTC")!
-        return localFmt.string(from: date) != utcFmt.string(from: date)
+    private func secondsUntilMidnight() -> TimeInterval? {
+        ContentReleaseCalendar().secondsUntilDailyRefresh()
     }
 
-    /// Returns a string like "RESETS IN 1:05" counting down to the next UTC midnight.
-    private func utcResetCountdown(at date: Date = Date()) -> String {
-        var utcCal = Calendar(identifier: .gregorian)
-        utcCal.timeZone = TimeZone(identifier: "UTC")!
-        guard let utcMidnight = utcCal.nextDate(
-            after: date,
-            matching: DateComponents(hour: 0, minute: 0, second: 0),
-            matchingPolicy: .nextTime
-        ) else { return "RESETS SOON" }
-        let totalMinutes = max(0, Int(utcMidnight.timeIntervalSince(date) / 60))
+    private func dailyReleaseLabel(at date: Date = Date()) -> String {
+        let releaseCalendar = ContentReleaseCalendar(now: date)
+        guard let seconds = releaseCalendar.secondsUntilDailyRefresh(),
+              seconds <= 3_600
+        else {
+            return releaseCalendar.formattedToday
+        }
+
+        let totalMinutes = max(0, Int(seconds / 60))
         let hours = totalMinutes / 60
         let minutes = totalMinutes % 60
         return hours > 0
@@ -558,55 +543,10 @@ struct HomeView: View {
             : String(format: "%d minutes remaining", minutes)
     }
 
-    private func secondsUntilMidnight() -> TimeInterval? {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = TimeZone(identifier: "UTC")!
-        guard let midnight = calendar.nextDate(
-            after: Date(),
-            matching: DateComponents(hour: 0, minute: 0, second: 0),
-            matchingPolicy: .nextTime
-        ) else { return nil }
-        return midnight.timeIntervalSinceNow
-    }
-
-    /// Returns true when local day is Sunday but UTC midnight hasn't flipped to Sunday yet.
-    private func isBeforeWeeklyResetUTC(at date: Date = Date()) -> Bool {
-        let localCal = Calendar(identifier: .gregorian)
-        guard localCal.component(.weekday, from: date) == 1 else { return false }
-        return isAfterLocalMidnight(at: date)
-    }
-
-    /// Returns a label like "Refreshes Sundays at 1 AM" showing the local time of the weekly UTC reset.
+    /// Returns a label like "Refreshes Sundays at midnight" for the local weekly reset.
     private func weeklyRefreshLabel(at date: Date = Date()) -> String {
-        var utcCal = Calendar(identifier: .gregorian)
-        utcCal.timeZone = TimeZone(identifier: "UTC")!
-        let components = DateComponents(hour: 0, minute: 0, second: 0, weekday: 1)
-        guard let nextSunMidnight = utcCal.nextDate(
-            after: date,
-            matching: components,
-            matchingPolicy: .nextTime
-        ) else { return "Refreshes Sundays" }
-        let fmt = DateFormatter()
-        fmt.dateFormat = "h a"
-        return "Refreshes Sundays at \(fmt.string(from: nextSunMidnight))"
-    }
-
-    /// Returns a string like "New puzzle in 1:05" counting down to the next Sunday UTC midnight.
-    private func weeklyResetCountdown(at date: Date = Date()) -> String {
-        var utcCal = Calendar(identifier: .gregorian)
-        utcCal.timeZone = TimeZone(identifier: "UTC")!
-        let components = DateComponents(hour: 0, minute: 0, second: 0, weekday: 1)
-        guard let nextSunMidnight = utcCal.nextDate(
-            after: date,
-            matching: components,
-            matchingPolicy: .nextTime
-        ) else { return "New puzzle soon" }
-        let totalMinutes = max(0, Int(nextSunMidnight.timeIntervalSince(date) / 60))
-        let hours = totalMinutes / 60
-        let minutes = totalMinutes % 60
-        return hours > 0
-            ? String(format: "New puzzle in %d:%02d", hours, minutes)
-            : String(format: "%d minutes remaining", minutes)
+        _ = date
+        return "Refreshes Sundays at midnight"
     }
 }
 

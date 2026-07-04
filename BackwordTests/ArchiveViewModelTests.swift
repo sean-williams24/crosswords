@@ -7,7 +7,7 @@ import Testing
 @MainActor
 struct ArchiveViewModelTests {
 
-    @Test("Month range uses UTC calendar month bounds")
+    @Test("Month range uses calendar month bounds")
     func monthRange() {
         let february = ArchiveMonth(year: 2024, month: 2)
 

@@ -21,11 +21,9 @@ struct RatingDetailSheet: View {
     
     // Full 14-day calendar, most recent first. Days with no recorded activity default to zero scores.
     private var recentDays: [DailyScore] {
-        let fmt = OverallRating.dateFormatter
         let scoreMap = Dictionary(uniqueKeysWithValues: rating.dailyScores.map { ($0.date, $0) })
         return (0..<14).compactMap { offset -> DailyScore? in
-            guard let date = Calendar.current.date(byAdding: .day, value: -offset, to: Date()) else { return nil }
-            let dateStr = fmt.string(from: date)
+            guard let dateStr = ContentReleaseCalendar().dailyDateString(offsetByDays: -offset) else { return nil }
             return scoreMap[dateStr] ?? DailyScore(date: dateStr, dailyCrossword: 0, weeklyCrossword: nil, backword: 0)
         }
     }
@@ -278,8 +276,7 @@ struct RatingDetailSheet: View {
     private func breakdownRow(day: DailyScore, isScrolling: Bool) -> some View {
         let weeklyScore = isPro ? (day.weeklyCrossword ?? 0) : 0
         let total = day.dailyCrossword + weeklyScore + day.backword
-        let isToday = day.date == Self.localDateFormatter.string(from: Date())
-        let isUtcToday = day.date == OverallRating.dateFormatter.string(from: Date())
+        let isToday = day.date == ContentReleaseCalendar().dailyDateString
         let hasWeekly = day.weeklyCrossword != nil
 
         return HStack(spacing: 0) {
@@ -292,11 +289,6 @@ struct RatingDetailSheet: View {
                     Text("TODAY")
                         .font(AppFont.clueLabel(9))
                         .foregroundColor(.appAccent)
-                        .tracking(1)
-                } else if isUtcToday, let deadline = deadlineTime {
-                    Text("Until \(deadline)")
-                        .font(AppFont.clueLabel(9))
-                        .foregroundColor(.appTextSecondary)
                         .tracking(1)
                 }
             }
@@ -407,30 +399,6 @@ struct RatingDetailSheet: View {
 
     // MARK: - Helpers
 
-    /// Returns the local-time representation of the next UTC midnight (e.g. "1:00 AM" for BST),
-    /// or nil if the local and UTC dates are already the same.
-    private var deadlineTime: String? {
-        guard Self.localDateFormatter.string(from: Date()) != OverallRating.dateFormatter.string(from: Date())
-        else { return nil }
-        var utcCal = Calendar(identifier: .gregorian)
-        utcCal.timeZone = TimeZone(identifier: "UTC")!
-        guard let utcMidnight = utcCal.nextDate(
-            after: Date(),
-            matching: DateComponents(hour: 0, minute: 0, second: 0),
-            matchingPolicy: .nextTime
-        ) else { return nil }
-        let fmt = DateFormatter()
-        fmt.dateFormat = "h:mm a"
-        return fmt.string(from: utcMidnight)
-    }
-
-    private static let localDateFormatter: DateFormatter = {
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        // No timeZone set — uses the device's local timezone
-        return f
-    }()
-
     private var barGradient: LinearGradient {
         LinearGradient(
             stops: [
@@ -451,7 +419,6 @@ struct RatingDetailSheet: View {
     private func formattedDate(_ dateString: String) -> String {
         let inFmt = DateFormatter()
         inFmt.dateFormat = "yyyy-MM-dd"
-        inFmt.timeZone = TimeZone(identifier: "UTC")
         guard let date = inFmt.date(from: dateString) else { return dateString }
         let outFmt = DateFormatter()
         outFmt.dateFormat = "EEE, MMM d"
@@ -465,8 +432,7 @@ struct RatingDetailSheet: View {
     var r = OverallRating()
     let scores = [5, 3, 5, 0, 4, 5, 2, 5, 5, 1, 3, 5, 4, 5]
     for (i, score) in scores.enumerated() {
-        let d = Calendar.current.date(byAdding: .day, value: -i, to: Date())!
-        let ds = OverallRating.dateFormatter.string(from: d)
+        let ds = ContentReleaseCalendar().dailyDateString(offsetByDays: -i)!
         r.upsertDailyCrossword(score: score, date: ds)
         r.upsertBackword(score: max(0, score - 1), date: ds)
     }
