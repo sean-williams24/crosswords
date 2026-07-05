@@ -2,8 +2,6 @@ import SwiftUI
 
 struct BackwordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
-    @EnvironmentObject var adService: AdService
-    @EnvironmentObject var storeService: StoreService
     @ScaledMetric private var spacing: CGFloat = 10
     @ObservedObject var service: BackwordService
     let progress: BackwordProgress?
@@ -24,13 +22,7 @@ struct BackwordCard: View {
                 .buttonStyle(.plain)
             } else {
                 Button {
-                    if !storeService.isProUser && AppSettings.shared.hasSeenBackwordOnboarding {
-                        adService.showInterstitialOnce(for: .backwordOpen) {
-                            showBackword()
-                        }
-                    } else {
-                        showBackword()
-                    }
+                    showBackword()
                 } label: {
                     cardContainer
                 }

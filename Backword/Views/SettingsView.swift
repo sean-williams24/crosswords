@@ -38,6 +38,20 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    adExplanationRow
+                } header: {
+                    Text("ADVERTS")
+                        .font(AppFont.clueLabel(12))
+                        .foregroundColor(.appAccent)
+                        .tracking(2)
+                        .textCase(nil)
+                } footer: {
+                    Text("When enabled, we explain full-screen adverts before showing one for a daily game.")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                }
+
+                Section {
                     sendFeedbackRow
                 } header: {
                     Text("SUPPORT")
@@ -131,6 +145,26 @@ struct SettingsView: View {
 
             Toggle("", isOn: $settings.crosswordCorrectHighlight)
                 .tint(.appAccent)
+        }
+        .listRowBackground(Color.appSurface)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility3)
+    }
+
+    private var adExplanationRow: some View {
+        HStack {
+            Text("Show Ad Explanation")
+                .font(AppFont.body(15))
+                .foregroundColor(.appTextPrimary)
+
+            Spacer()
+
+            Toggle("", isOn: Binding(
+                get: { !settings.hasDismissedAdExplainer },
+                set: { newValue in
+                    settings.hasDismissedAdExplainer = !newValue
+                }
+            ))
+            .tint(.appAccent)
         }
         .listRowBackground(Color.appSurface)
         .dynamicTypeSize(...DynamicTypeSize.accessibility3)

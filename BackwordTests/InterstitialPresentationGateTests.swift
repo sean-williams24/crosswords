@@ -58,6 +58,22 @@ struct InterstitialPresentationGateTests {
         #expect(gate.shouldPresent(type: .dailyPuzzleOpen, now: now))
     }
 
+    @MainActor
+    @Test("Ad service exposes read-only daily interstitial eligibility")
+    func adServiceExposesDailyInterstitialEligibility() {
+        let defaults = makeDefaults()
+        defer { defaults.removePersistentDomain(forName: defaultsSuiteName) }
+        let gate = makeGate(defaults: defaults)
+        let service = AdService(interstitialGate: gate)
+        let now = Date(timeIntervalSince1970: 1_768_996_800) // 2026-01-20 12:00:00 UTC
+
+        #expect(service.canShowInterstitialToday(for: .dailyPuzzleOpen, now: now))
+
+        gate.markPresented(type: .dailyPuzzleOpen, now: now)
+
+        #expect(!service.canShowInterstitialToday(for: .dailyPuzzleOpen, now: now))
+    }
+
     private var defaultsSuiteName: String {
         "InterstitialPresentationGateTests"
     }

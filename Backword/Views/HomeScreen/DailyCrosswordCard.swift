@@ -6,7 +6,6 @@ struct DailyCrosswordCard: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.horizontalSizeClass) var sizeClass
     @EnvironmentObject private var statsService: StatsService
-    @EnvironmentObject var adService: AdService
     @ObservedObject var viewModel: HomeViewModel
     @ScaledMetric private var iconSize: CGFloat = 10
     @State private var showStreakPopup = false
@@ -28,13 +27,7 @@ struct DailyCrosswordCard: View {
             content
         case .success:
             Button {
-                if !viewModel.isProUser {
-                    adService.showInterstitialOnce(for: .dailyPuzzleOpen) {
-                        showDailyCrossword()
-                    }
-                } else {
-                    showDailyCrossword()
-                }
+                showDailyCrossword()
             } label: {
                 content
             }

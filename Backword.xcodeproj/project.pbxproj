@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
+		04ADAE912FFD100000000001 /* AdExplainerPresentationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */; };
+		04ADAE932FFD100000000001 /* AdExplainerPresentationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE922FFD100000000001 /* AdExplainerPresentationPolicy.swift */; };
+		04ADAE952FFD100000000001 /* AdExplainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE942FFD100000000001 /* AdExplainerView.swift */; };
 		04F1AE892FE2A3E6007A1001 /* AppVersionInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */; };
 		05256FA0ABC9B788BBAABD5B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3838DB082E2416DB47994C4D /* HomeViewModel.swift */; };
 		05A1D9B52FFCF62100AD5001 /* InterstitialPresentationGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A1D9B42FFCF62100AD5001 /* InterstitialPresentationGateTests.swift */; };
@@ -141,6 +144,9 @@
 /* Begin PBXFileReference section */
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
+		04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicyTests.swift; sourceTree = "<group>"; };
+		04ADAE922FFD100000000001 /* AdExplainerPresentationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicy.swift; sourceTree = "<group>"; };
+		04ADAE942FFD100000000001 /* AdExplainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerView.swift; sourceTree = "<group>"; };
 		04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionInfoTests.swift; sourceTree = "<group>"; };
 		05A1D9B42FFCF62100AD5001 /* InterstitialPresentationGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialPresentationGateTests.swift; sourceTree = "<group>"; };
 		05A1D9B62FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordAnalyticsEventTests.swift; sourceTree = "<group>"; };
@@ -309,6 +315,7 @@
 		00EC67C42E7E2A26C6A44CB3 /* BackwordTests */ = {
 			isa = PBXGroup;
 			children = (
+				04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */,
 				049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */,
 				04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */,
 				0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */,
@@ -337,6 +344,7 @@
 		0574559B935CCFAA014F25D3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				04ADAE922FFD100000000001 /* AdExplainerPresentationPolicy.swift */,
 				B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */,
 				41BD8C5299844A6BAF87B504 /* AppSettings.swift */,
 				15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */,
@@ -447,6 +455,7 @@
 		86E5C0062FA9207600A42156 /* HomeScreen */ = {
 			isa = PBXGroup;
 			children = (
+				04ADAE942FFD100000000001 /* AdExplainerView.swift */,
 				F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */,
 				867281252FE2D39C00000001 /* HomeTabBarView.swift */,
 				809E28C82FF638D200FF7B33 /* AdFreeExperienceButton.swift */,
@@ -686,6 +695,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */,
+				04ADAE912FFD100000000001 /* AdExplainerPresentationPolicyTests.swift in Sources */,
 				04F1AE892FE2A3E6007A1001 /* AppVersionInfoTests.swift in Sources */,
 				0838E5D72FE2E5AB00000001 /* ArchiveTabBarViewTests.swift in Sources */,
 				05A1D9B72FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift in Sources */,
@@ -716,6 +726,7 @@
 				3C16166A681E34C0C10A14A3 /* AdLogger.swift in Sources */,
 				05AD00022FFD000000000001 /* AdConsentService.swift in Sources */,
 				3C161668681E34C0C10A14A3 /* AdService.swift in Sources */,
+				04ADAE932FFD100000000001 /* AdExplainerPresentationPolicy.swift in Sources */,
 				0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */,
 				3C16166C681E34C0C10A14A3 /* BackwordAnalyticsService.swift in Sources */,
 				E2020AB31629439996CCB55A /* ArchiveMonth.swift in Sources */,
@@ -724,6 +735,7 @@
 				1A93782A2FE2E56600000001 /* ArchiveTabBarView.swift in Sources */,
 				95726DE84D084852B6D77C8C /* ArchiveViewModel.swift in Sources */,
 				809E28C92FF638D200FF7B33 /* AdFreeExperienceButton.swift in Sources */,
+				04ADAE952FFD100000000001 /* AdExplainerView.swift in Sources */,
 				437E4CF0032D9E5D69A92C43 /* AppSettings.swift in Sources */,
 				15C99D922FE2A3E6007A1001 /* AppVersionInfo.swift in Sources */,
 				149802310440A77534BB615E /* AppTheme.swift in Sources */,

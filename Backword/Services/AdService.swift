@@ -293,6 +293,10 @@ final class AdService: NSObject, ObservableObject {
         }
     }
 
+    func canShowInterstitialToday(for type: UserDefaultsKey, now: Date = Date()) -> Bool {
+        interstitialGate.shouldPresent(type: type, now: now)
+    }
+
     func showRewardedAd(onComplete: @escaping @MainActor (RewardedAdResult) -> Void) {
         guard rewardedAdContext == nil else {
             logger.rewardedAdRequestIgnoredAlreadyInProgress()

@@ -8,6 +8,7 @@ struct HomeView: View {
     @EnvironmentObject var adService: AdService
     @EnvironmentObject var ratingService: OverallRatingService
     @ObservedObject private var viewModel: HomeViewModel
+    @ObservedObject private var settings = AppSettings.shared
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
     @Environment(\.scenePhase) private var scenePhase
@@ -29,6 +30,10 @@ struct HomeView: View {
     @State private var settingsTipReadinessTask: Task<Void, Never>?
     @State private var hasOpenedDailyGameThisSession = false
     @State private var didReturnFromDailyGame = false
+    @State private var showAdExplainer = false
+    @State private var pendingAdExplainerGame: DailyGame?
+    @State private var adExplainerGameToOpenOnDismiss: DailyGame?
+    @State private var adExplainerDoNotShowAgain = false
     #if DEBUG
     @State private var showDebugSettings = false
     #endif
@@ -130,6 +135,16 @@ struct HomeView: View {
                     WOTDDetailView(word: word)
                 }
             }
+            .fullScreenCover(isPresented: $showAdExplainer, onDismiss: handleAdExplainerDismiss) {
+                if let pendingAdExplainerGame {
+                    AdExplainerView(
+                        doNotShowAgain: $adExplainerDoNotShowAgain,
+                        gameName: pendingAdExplainerGame.displayName,
+                        close: closeAdExplainer,
+                        play: playFromAdExplainer
+                    )
+                }
+            }
             .task {
                 await viewModel.refreshIfNeeded()
                 await wotdService.refreshIfNeeded()
@@ -190,6 +205,9 @@ struct HomeView: View {
                 updateSettingsTipReadiness()
             }
             .onChange(of: showWOTD) { _, _ in
+                updateSettingsTipReadiness()
+            }
+            .onChange(of: showAdExplainer) { _, _ in
                 updateSettingsTipReadiness()
             }
             .onChange(of: showSettings) { _, _ in
@@ -367,16 +385,14 @@ struct HomeView: View {
                 BackwordProgress.load(date: $0.date)
             }
         ) {
-            navigateToBackword()
+            openDailyGame(.backword)
         }
-        .environmentObject(adService)
     }
 
     private var dailyCrosswordCard: some View {
         DailyCrosswordCard(viewModel: viewModel) {
-            navigateToDailyCrossword()
+            openDailyGame(.crossword)
         }
-        .environmentObject(adService)
     }
 
     @ViewBuilder
@@ -435,8 +451,87 @@ struct HomeView: View {
             || showArchive
             || showPaywall
             || showWOTD
+            || showAdExplainer
             || showSettings
             || showRatingDetails
+    }
+
+    private func openDailyGame(_ game: DailyGame) {
+        if shouldShowAdExplainer(for: game) {
+            cancelSettingsTipPresentation()
+            pendingAdExplainerGame = game
+            adExplainerDoNotShowAgain = false
+            showAdExplainer = true
+        } else {
+            showInterstitialThenNavigate(to: game)
+        }
+    }
+
+    private func shouldShowAdExplainer(for game: DailyGame) -> Bool {
+        guard shouldUseAdGate(for: game) else { return false }
+        return AdExplainerPresentationPolicy.shouldShow(
+            isProUser: storeService.isProUser,
+            hasDismissedExplainer: settings.hasDismissedAdExplainer,
+            isInterstitialEligibleToday: adService.canShowInterstitialToday(for: game.adPlacement)
+        )
+    }
+
+    private func closeAdExplainer() {
+        showAdExplainer = false
+        adExplainerGameToOpenOnDismiss = nil
+    }
+
+    private func playFromAdExplainer() {
+        guard let game = pendingAdExplainerGame else {
+            closeAdExplainer()
+            return
+        }
+
+        if adExplainerDoNotShowAgain {
+            settings.hasDismissedAdExplainer = true
+        }
+
+        showAdExplainer = false
+        adExplainerGameToOpenOnDismiss = game
+    }
+
+    private func handleAdExplainerDismiss() {
+        let game = adExplainerGameToOpenOnDismiss
+        adExplainerGameToOpenOnDismiss = nil
+        pendingAdExplainerGame = nil
+        adExplainerDoNotShowAgain = false
+
+        if let game {
+            showInterstitialThenNavigate(to: game)
+        }
+    }
+
+    private func showInterstitialThenNavigate(to game: DailyGame) {
+        guard shouldUseAdGate(for: game) else {
+            navigate(to: game)
+            return
+        }
+
+        adService.showInterstitialOnce(for: game.adPlacement) {
+            navigate(to: game)
+        }
+    }
+
+    private func shouldUseAdGate(for game: DailyGame) -> Bool {
+        guard !storeService.isProUser else { return false }
+        if game == .backword {
+            return settings.hasSeenBackwordOnboarding
+        }
+        return true
+    }
+
+    private func navigate(to game: DailyGame) {
+        switch game {
+        case .backword:
+            navigateToBackword()
+        case .crossword:
+            navigateToDailyCrossword()
+        }
     }
 
     private func navigateToBackword() {
@@ -547,6 +642,29 @@ struct HomeView: View {
     private func weeklyRefreshLabel(at date: Date = Date()) -> String {
         _ = date
         return "Refreshes Sundays at midnight"
+    }
+}
+
+private enum DailyGame {
+    case backword
+    case crossword
+
+    var displayName: String {
+        switch self {
+        case .backword:
+            return "Backword"
+        case .crossword:
+            return "Crossword"
+        }
+    }
+
+    var adPlacement: AdService.UserDefaultsKey {
+        switch self {
+        case .backword:
+            return .backwordOpen
+        case .crossword:
+            return .dailyPuzzleOpen
+        }
     }
 }
 

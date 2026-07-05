@@ -41,6 +41,12 @@ When `AppSettings.crosswordCorrectHighlight` is enabled, cells belonging to comp
 
 When the setting is disabled, completed cells remain editable and deletable for the harder non-locking experience.
 
+## Daily Game Ad Explainer
+
+Non-Pro users can see a full-screen explainer before the Backword or daily crossword interstitial. The opt-out preference is shared across both games. The explainer is only shown when that game's once-per-day interstitial slot is still eligible; same-day repeat opens skip both the advert and the explainer.
+
+Backword keeps its onboarding-first behaviour: the Backword ad gate is skipped until the user has seen Backword onboarding.
+
 ---
 
 ## Archive Month Caching

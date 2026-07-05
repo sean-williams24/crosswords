@@ -7,6 +7,7 @@ final class AppSettings: ObservableObject {
     private enum Keys {
         static let backwordLetterFeedback = "backwordLetterFeedback"
         static let crosswordCorrectHighlight = "crosswordCorrectHighlight"
+        static let hasDismissedAdExplainer = "hasDismissedAdExplainer"
     }
 
     /// Pro-only: highlight letters in past guesses that appear anywhere in the target word.
@@ -19,6 +20,11 @@ final class AppSettings: ObservableObject {
         didSet { UserDefaults.standard.set(crosswordCorrectHighlight, forKey: Keys.crosswordCorrectHighlight) }
     }
 
+    /// When true, the interstitial ad explainer is skipped before daily games.
+    @Published var hasDismissedAdExplainer: Bool {
+        didSet { UserDefaults.standard.set(hasDismissedAdExplainer, forKey: Keys.hasDismissedAdExplainer) }
+    }
+
     var hasSeenBackwordOnboarding: Bool {
         get { UserDefaults.standard.bool(forKey: "hasSeenBackwordOnboarding") }
         set { UserDefaults.standard.set(newValue, forKey: "hasSeenBackwordOnboarding") }
@@ -28,5 +34,6 @@ final class AppSettings: ObservableObject {
         backwordLetterFeedback = UserDefaults.standard.bool(forKey: Keys.backwordLetterFeedback)
         let stored = UserDefaults.standard.object(forKey: Keys.crosswordCorrectHighlight)
         crosswordCorrectHighlight = stored != nil ? UserDefaults.standard.bool(forKey: Keys.crosswordCorrectHighlight) : true
+        hasDismissedAdExplainer = UserDefaults.standard.bool(forKey: Keys.hasDismissedAdExplainer)
     }
 }
