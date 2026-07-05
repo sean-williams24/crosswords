@@ -12,6 +12,7 @@
 		04ADAE912FFD100000000001 /* AdExplainerPresentationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */; };
 		04ADAE932FFD100000000001 /* AdExplainerPresentationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE922FFD100000000001 /* AdExplainerPresentationPolicy.swift */; };
 		04ADAE952FFD100000000001 /* AdExplainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE942FFD100000000001 /* AdExplainerView.swift */; };
+		04ADAE972FFD100000000001 /* AnimatedAdPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE962FFD100000000001 /* AnimatedAdPreviewView.swift */; };
 		04F1AE892FE2A3E6007A1001 /* AppVersionInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */; };
 		05256FA0ABC9B788BBAABD5B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3838DB082E2416DB47994C4D /* HomeViewModel.swift */; };
 		05A1D9B52FFCF62100AD5001 /* InterstitialPresentationGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A1D9B42FFCF62100AD5001 /* InterstitialPresentationGateTests.swift */; };
@@ -24,6 +25,8 @@
 		05AD20042FFF000000000001 /* AdServiceRecoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD20032FFF000000000001 /* AdServiceRecoveryTests.swift */; };
 		05AD30022FFF100000000001 /* AppReviewPromptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD30012FFF100000000001 /* AppReviewPromptService.swift */; };
 		05AD30042FFF100000000001 /* AppReviewPromptServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */; };
+		05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */; };
+		05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */; };
 		05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */; };
 		05F1E1A62FFCFD9300F1E1A5 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A32FFCFD9300F1E1A5 /* FirebaseCore */; };
 		05F1E1A72FFCFD9300F1E1A5 /* StoreLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */; };
@@ -60,7 +63,6 @@
 		7D3636249D4EA1ACE0D6916C /* BackwordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ACCF7B840800AA52BD9ED7 /* BackwordGuessRow.swift */; };
 		7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */; };
 		809E28C92FF638D200FF7B33 /* AdFreeExperienceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E28C82FF638D200FF7B33 /* AdFreeExperienceButton.swift */; };
-		04ADAE972FFD100000000001 /* AnimatedAdPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE962FFD100000000001 /* AnimatedAdPreviewView.swift */; };
 		83FBB193723C144A6456932E /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C44B7584617BA53797B0963 /* ZoomableView.swift */; };
 		84A6DDAE7557421BC685E350 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8669C3DD88CF9BC44A72C69 /* CellView.swift */; };
 		860A8F3C2FCEBA5100C2BE38 /* TipFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860A8F3B2FCEBA5100C2BE38 /* TipFactory.swift */; };
@@ -129,8 +131,6 @@
 		EAD7311D1E0CE5265794E80E /* BackwordWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */; };
 		F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A3938FD382B86EEB78063 /* ArchiveView.swift */; };
 		FB8811D4DA46B6D23CDE6ED8 /* OverallRating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FDFB84159BB8E3A26031D0 /* OverallRating.swift */; };
-		05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */; };
-		05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */; };
 		FC2E739DC6045316AD55D0F4 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 9919F8A6B05C3D85B7C8E63E /* GoogleMobileAds */; };
 /* End PBXBuildFile section */
 
@@ -837,7 +837,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
@@ -851,7 +851,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1028,7 +1028,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
@@ -1042,7 +1042,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
