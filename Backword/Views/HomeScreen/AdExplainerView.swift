@@ -43,8 +43,8 @@ struct AdExplainerView: View {
         }
     }
 
-    private var iconSize: CGFloat {
-        dynamicTypeSize >= .accessibility1 ? 34 : 48
+    private var previewWidth: CGFloat {
+        dynamicTypeSize >= .accessibility1 ? 108 : 150
     }
 
     private var titleFontSize: CGFloat {
@@ -65,10 +65,8 @@ struct AdExplainerView: View {
 
     private var scrollContent: some View {
         VStack(spacing: 22) {
-            Image(systemName: "play.rectangle.on.rectangle")
-                .font(.system(size: iconSize, weight: .semibold))
-                .foregroundColor(.appAccent)
-                .accessibilityHidden(true)
+            AnimatedAdPreviewView()
+                .frame(width: previewWidth)
 
             VStack(spacing: 12) {
                 explainerText(
@@ -78,7 +76,7 @@ struct AdExplainerView: View {
                 )
 
                 explainerText(
-                    "On the free version of Backword, we may show a full-screen advert before the \(gameName). The advert usually has a short progress bar or timer, and the close button appears when it finishes.",
+                    "On the free version of Backword, we may show a full-screen advert before the \(gameName) game. The advert usually has a short progress bar or timer, and the close button appears when it finishes.",
                     font: AppFont.body(15),
                     color: .appTextPrimary
                 )
@@ -95,7 +93,11 @@ struct AdExplainerView: View {
 
     private var bottomActionPanel: some View {
         VStack(spacing: 14) {
-            AdFreeExperienceButton(height: bottomControlHeight, action: showAdFreeExperience)
+            AdFreeExperienceButton(
+                height: bottomControlHeight,
+                showDetails: false,
+                action: showAdFreeExperience
+            )
             toggleRow
             playButton
         }

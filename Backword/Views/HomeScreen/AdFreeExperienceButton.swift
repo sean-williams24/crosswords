@@ -36,15 +36,18 @@ struct AdFreeExperienceButton: View {
 
     let content: AdFreeExperienceButtonContent
     let height: CGFloat
+    let showDetails: Bool
     let action: () -> Void
 
     init(
         content: AdFreeExperienceButtonContent = .home,
         height: CGFloat = Layout.cardHeight,
+        showDetails: Bool = true,
         action: @escaping () -> Void
     ) {
         self.content = content
         self.height = height
+        self.showDetails = showDetails
         self.action = action
     }
 
@@ -69,13 +72,15 @@ struct AdFreeExperienceButton: View {
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                         .allowsTightening(true)
 
-                    Text(content.detail)
-                        .font(AppFont.caption(12))
-                        .foregroundColor(.appTextPrimary)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.7)
-                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                        .allowsTightening(true)
+                    if showDetails {
+                        Text(content.detail)
+                            .font(AppFont.caption(12))
+                            .foregroundColor(.appTextPrimary)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                            .allowsTightening(true)
+                    }
                 }
                 .layoutPriority(2)
 

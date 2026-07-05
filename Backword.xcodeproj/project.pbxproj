@@ -58,6 +58,7 @@
 		7D3636249D4EA1ACE0D6916C /* BackwordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ACCF7B840800AA52BD9ED7 /* BackwordGuessRow.swift */; };
 		7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */; };
 		809E28C92FF638D200FF7B33 /* AdFreeExperienceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E28C82FF638D200FF7B33 /* AdFreeExperienceButton.swift */; };
+		04ADAE972FFD100000000001 /* AnimatedAdPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE962FFD100000000001 /* AnimatedAdPreviewView.swift */; };
 		83FBB193723C144A6456932E /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C44B7584617BA53797B0963 /* ZoomableView.swift */; };
 		84A6DDAE7557421BC685E350 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8669C3DD88CF9BC44A72C69 /* CellView.swift */; };
 		860A8F3C2FCEBA5100C2BE38 /* TipFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860A8F3B2FCEBA5100C2BE38 /* TipFactory.swift */; };
@@ -147,6 +148,7 @@
 		04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicyTests.swift; sourceTree = "<group>"; };
 		04ADAE922FFD100000000001 /* AdExplainerPresentationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicy.swift; sourceTree = "<group>"; };
 		04ADAE942FFD100000000001 /* AdExplainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerView.swift; sourceTree = "<group>"; };
+		04ADAE962FFD100000000001 /* AnimatedAdPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedAdPreviewView.swift; sourceTree = "<group>"; };
 		04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionInfoTests.swift; sourceTree = "<group>"; };
 		05A1D9B42FFCF62100AD5001 /* InterstitialPresentationGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialPresentationGateTests.swift; sourceTree = "<group>"; };
 		05A1D9B62FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordAnalyticsEventTests.swift; sourceTree = "<group>"; };
@@ -456,6 +458,7 @@
 			isa = PBXGroup;
 			children = (
 				04ADAE942FFD100000000001 /* AdExplainerView.swift */,
+				04ADAE962FFD100000000001 /* AnimatedAdPreviewView.swift */,
 				F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */,
 				867281252FE2D39C00000001 /* HomeTabBarView.swift */,
 				809E28C82FF638D200FF7B33 /* AdFreeExperienceButton.swift */,
@@ -736,6 +739,7 @@
 				95726DE84D084852B6D77C8C /* ArchiveViewModel.swift in Sources */,
 				809E28C92FF638D200FF7B33 /* AdFreeExperienceButton.swift in Sources */,
 				04ADAE952FFD100000000001 /* AdExplainerView.swift in Sources */,
+				04ADAE972FFD100000000001 /* AnimatedAdPreviewView.swift in Sources */,
 				437E4CF0032D9E5D69A92C43 /* AppSettings.swift in Sources */,
 				15C99D922FE2A3E6007A1001 /* AppVersionInfo.swift in Sources */,
 				149802310440A77534BB615E /* AppTheme.swift in Sources */,
