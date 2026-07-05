@@ -35,13 +35,16 @@ struct AdFreeExperienceButton: View {
     }
 
     let content: AdFreeExperienceButtonContent
+    let height: CGFloat
     let action: () -> Void
 
     init(
         content: AdFreeExperienceButtonContent = .home,
+        height: CGFloat = Layout.cardHeight,
         action: @escaping () -> Void
     ) {
         self.content = content
+        self.height = height
         self.action = action
     }
 
@@ -61,7 +64,8 @@ struct AdFreeExperienceButton: View {
                     Text(content.title)
                         .font(AppFont.clueLabel(13))
                         .foregroundColor(.appTextPrimary)
-                        .lineLimit(2)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.62)
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                         .allowsTightening(true)
 
@@ -69,6 +73,7 @@ struct AdFreeExperienceButton: View {
                         .font(AppFont.caption(12))
                         .foregroundColor(.appTextPrimary)
                         .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                         .allowsTightening(true)
                 }
@@ -95,7 +100,7 @@ struct AdFreeExperienceButton: View {
             .padding(.horizontal, Layout.horizontalPadding)
             .padding(.vertical, Layout.verticalPadding)
             .frame(maxWidth: .infinity)
-            .frame(minHeight: Layout.cardHeight)
+            .frame(height: height)
             .background(
                 RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                     .fill(Color.appSurface.opacity(0.26))

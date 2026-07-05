@@ -33,6 +33,7 @@ struct HomeView: View {
     @State private var showAdExplainer = false
     @State private var pendingAdExplainerGame: DailyGame?
     @State private var adExplainerGameToOpenOnDismiss: DailyGame?
+    @State private var showPaywallAfterAdExplainerDismiss = false
     @State private var adExplainerDoNotShowAgain = false
     #if DEBUG
     @State private var showDebugSettings = false
@@ -141,7 +142,8 @@ struct HomeView: View {
                         doNotShowAgain: $adExplainerDoNotShowAgain,
                         gameName: pendingAdExplainerGame.displayName,
                         close: closeAdExplainer,
-                        play: playFromAdExplainer
+                        play: playFromAdExplainer,
+                        showAdFreeExperience: showAdFreeExperienceFromExplainer
                     )
                 }
             }
@@ -479,6 +481,7 @@ struct HomeView: View {
     private func closeAdExplainer() {
         showAdExplainer = false
         adExplainerGameToOpenOnDismiss = nil
+        showPaywallAfterAdExplainerDismiss = false
     }
 
     private func playFromAdExplainer() {
@@ -495,13 +498,23 @@ struct HomeView: View {
         adExplainerGameToOpenOnDismiss = game
     }
 
+    private func showAdFreeExperienceFromExplainer() {
+        showPaywallAfterAdExplainerDismiss = true
+        adExplainerGameToOpenOnDismiss = nil
+        showAdExplainer = false
+    }
+
     private func handleAdExplainerDismiss() {
         let game = adExplainerGameToOpenOnDismiss
+        let shouldShowPaywall = showPaywallAfterAdExplainerDismiss
         adExplainerGameToOpenOnDismiss = nil
+        showPaywallAfterAdExplainerDismiss = false
         pendingAdExplainerGame = nil
         adExplainerDoNotShowAgain = false
 
-        if let game {
+        if shouldShowPaywall {
+            showPaywall = true
+        } else if let game {
             showInterstitialThenNavigate(to: game)
         }
     }

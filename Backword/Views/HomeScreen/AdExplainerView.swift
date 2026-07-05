@@ -6,6 +6,7 @@ struct AdExplainerView: View {
     let gameName: String
     let close: () -> Void
     let play: () -> Void
+    let showAdFreeExperience: () -> Void
 
     var body: some View {
         ZStack {
@@ -54,8 +55,12 @@ struct AdExplainerView: View {
         dynamicTypeSize >= .accessibility1
     }
 
+    private var bottomControlHeight: CGFloat {
+        dynamicTypeSize >= .accessibility1 ? 72 : 52
+    }
+
     private var bottomActionPadding: CGFloat {
-        dynamicTypeSize >= .accessibility1 ? 300 : 220
+        dynamicTypeSize >= .accessibility1 ? 390 : 300
     }
 
     private var scrollContent: some View {
@@ -90,6 +95,7 @@ struct AdExplainerView: View {
 
     private var bottomActionPanel: some View {
         VStack(spacing: 14) {
+            AdFreeExperienceButton(height: bottomControlHeight, action: showAdFreeExperience)
             toggleRow
             playButton
         }
@@ -122,46 +128,49 @@ struct AdExplainerView: View {
                 .multilineTextAlignment(.center)
                 .lineLimit(nil)
                 .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: .infinity)
                 .padding(.horizontal, 16)
-                .padding(.vertical, 16)
+                .frame(maxWidth: .infinity)
+                .frame(height: bottomControlHeight)
                 .background(Color.appAccent)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         }
     }
 
     @ViewBuilder
     private var toggleRow: some View {
-        if shouldStackToggle {
-            VStack(alignment: .leading, spacing: 16) {
-                toggleLabel
-                HStack {
-                    Spacer()
-                    Toggle("", isOn: $doNotShowAgain)
-                        .labelsHidden()
-                        .tint(.appAccent)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 18)
-            .padding(.vertical, 14)
-            .background(Color.appSurface)
-            .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
-        } else {
+//        if shouldStackToggle {
+//            VStack(alignment: .leading, spacing: 16) {
+//                toggleLabel
+//                HStack {
+//                    Spacer()
+//                    Toggle("", isOn: $doNotShowAgain)
+//                        .labelsHidden()
+//                        .tint(.appAccent)
+//                }
+//            }
+//            .frame(maxWidth: .infinity, alignment: .leading)
+//            .padding(.horizontal, 18)
+//            .frame(height: bottomControlHeight)
+//            .background(Color.appSurface)
+//            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+//            .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+//        } else {
             Toggle(isOn: $doNotShowAgain) {
                 toggleLabel
             }
             .tint(.appAccent)
             .padding(.horizontal, 18)
-            .padding(.vertical, 14)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+            .frame(height: bottomControlHeight)
             .background(Color.appSurface)
             .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
-        }
+//        }
     }
 
     private var toggleLabel: some View {
         Text("I get it, don't show this again")
-            .font(AppFont.body(15))
+            .font(AppFont.caption(14))
             .foregroundColor(.appTextPrimary)
             .lineLimit(nil)
             .fixedSize(horizontal: false, vertical: true)
@@ -173,6 +182,7 @@ struct AdExplainerView: View {
         doNotShowAgain: .constant(false),
         gameName: "Crossword",
         close: {},
-        play: {}
+        play: {},
+        showAdFreeExperience: {}
     )
 }
