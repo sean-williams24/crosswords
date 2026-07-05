@@ -70,14 +70,6 @@ struct GoogleAdConsentService: AdConsentPreparing {
         let parameters = RequestParameters()
         parameters.isTaggedForUnderAgeOfConsent = false
 
-        #if DEBUG
-        ConsentInformation.shared.reset()
-
-        let debugSettings = DebugSettings()
-        debugSettings.geography = .EEA
-        parameters.debugSettings = debugSettings
-        #endif
-
         await withCheckedContinuation { continuation in
             ConsentInformation.shared.requestConsentInfoUpdate(with: parameters) { _ in
                 continuation.resume()
