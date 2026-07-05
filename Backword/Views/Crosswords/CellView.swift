@@ -7,8 +7,7 @@ struct CellView: View {
     // Scale answer font sizes with Dynamic Type
     @ScaledMetric(relativeTo: .body) private var answerFontSizePhone: CGFloat = 18
     @ScaledMetric(relativeTo: .body) private var answerFontSizePhonePro: CGFloat = 13
-    @ScaledMetric(relativeTo: .body) private var answerFontSizeIpad: CGFloat = 60
-    @ScaledMetric(relativeTo: .body) private var answerFontSizeIpadPro: CGFloat = 40
+    @ScaledMetric(relativeTo: .body) private var answerFontSizeIpad: CGFloat = 40
     // Minimum cell sizes that grow with Dynamic Type so cells expand when text is larger
     @ScaledMetric(relativeTo: .body) private var minCellSizeRegular: CGFloat = 34
     @ScaledMetric(relativeTo: .body) private var minCellSizePro: CGFloat = 23
@@ -78,7 +77,7 @@ struct CellView: View {
 
     var answerFont: Font {
         if isIpad {
-            AppFont.gridLetter(isProPuzzle ? answerFontSizeIpadPro : answerFontSizeIpad)
+            AppFont.gridLetter(answerFontSizeIpad)
         } else {
             AppFont.gridLetter(isProPuzzle ? answerFontSizePhonePro : answerFontSizePhone)
         }
