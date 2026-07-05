@@ -22,6 +22,8 @@
 		05AD10022FFE000000000001 /* LegalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD10012FFE000000000001 /* LegalLink.swift */; };
 		05AD10042FFE000000000001 /* LegalLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD10032FFE000000000001 /* LegalLinkTests.swift */; };
 		05AD20042FFF000000000001 /* AdServiceRecoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD20032FFF000000000001 /* AdServiceRecoveryTests.swift */; };
+		05AD30022FFF100000000001 /* AppReviewPromptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD30012FFF100000000001 /* AppReviewPromptService.swift */; };
+		05AD30042FFF100000000001 /* AppReviewPromptServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */; };
 		05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */; };
 		05F1E1A62FFCFD9300F1E1A5 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A32FFCFD9300F1E1A5 /* FirebaseCore */; };
 		05F1E1A72FFCFD9300F1E1A5 /* StoreLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */; };
@@ -157,6 +159,8 @@
 		05AD10012FFE000000000001 /* LegalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalLink.swift; sourceTree = "<group>"; };
 		05AD10032FFE000000000001 /* LegalLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalLinkTests.swift; sourceTree = "<group>"; };
 		05AD20032FFF000000000001 /* AdServiceRecoveryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdServiceRecoveryTests.swift; sourceTree = "<group>"; };
+		05AD30012FFF100000000001 /* AppReviewPromptService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewPromptService.swift; sourceTree = "<group>"; };
+		05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewPromptServiceTests.swift; sourceTree = "<group>"; };
 		05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReleaseCalendarTests.swift; sourceTree = "<group>"; };
 		05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAuxiliaryContentServiceTests.swift; sourceTree = "<group>"; };
 		05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLogger.swift; sourceTree = "<group>"; };
@@ -325,6 +329,7 @@
 				05A1D9B62FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift */,
 				05AD00032FFD000000000001 /* AdConsentServiceTests.swift */,
 				05AD20032FFF000000000001 /* AdServiceRecoveryTests.swift */,
+				05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */,
 				A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */,
 				05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */,
 				05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */,
@@ -380,6 +385,7 @@
 				3C161669681E34C0C10A14A3 /* AdLogger.swift */,
 				05AD00012FFD000000000001 /* AdConsentService.swift */,
 				30C31A4805F0514D4233C775 /* AdService.swift */,
+				05AD30012FFF100000000001 /* AppReviewPromptService.swift */,
 				F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */,
 				3C16166B681E34C0C10A14A3 /* BackwordAnalyticsService.swift */,
 				A476BC6A4DF0107699E2A1FD /* BackwordService.swift */,
@@ -704,6 +710,7 @@
 				05A1D9B72FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift in Sources */,
 				05AD00042FFD000000000001 /* AdConsentServiceTests.swift in Sources */,
 				05AD20042FFF000000000001 /* AdServiceRecoveryTests.swift in Sources */,
+				05AD30042FFF100000000001 /* AppReviewPromptServiceTests.swift in Sources */,
 				05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */,
 				05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */,
 				ABCD10000000000000000004 /* FeedbackEmailContentTests.swift in Sources */,
@@ -729,6 +736,7 @@
 				3C16166A681E34C0C10A14A3 /* AdLogger.swift in Sources */,
 				05AD00022FFD000000000001 /* AdConsentService.swift in Sources */,
 				3C161668681E34C0C10A14A3 /* AdService.swift in Sources */,
+				05AD30022FFF100000000001 /* AppReviewPromptService.swift in Sources */,
 				04ADAE932FFD100000000001 /* AdExplainerPresentationPolicy.swift in Sources */,
 				0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */,
 				3C16166C681E34C0C10A14A3 /* BackwordAnalyticsService.swift in Sources */,

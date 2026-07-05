@@ -49,6 +49,14 @@ Backword keeps its onboarding-first behaviour: the Backword ad gate is skipped u
 
 ---
 
+## App Store Review Prompt
+
+Backword requests the system App Store review prompt only after positive crossword completions. Backword word-game completions are intentionally excluded because that game has a faster loop and would make review prompts feel less earned.
+
+`AppReviewPromptService` records unique completed crossword puzzle IDs locally. Give-up completions do not count. The first review request is eligible after 3 counted crossword wins; repeat requests require at least 90 days since the previous request and 5 additional counted crossword wins. Apple may still suppress any individual system prompt.
+
+---
+
 ## Archive Month Caching
 
 The archive loads playable full-game payloads by release-calendar month, not metadata-only rows. The current month is fetched when the archive opens; older months are fetched lazily when the user expands them. Each fetched month is cached by game type and `yyyy-MM` key so previously opened months remain playable offline.

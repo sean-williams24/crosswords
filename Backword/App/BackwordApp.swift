@@ -20,6 +20,7 @@ struct BackwordApp: App {
     @StateObject private var storeService: StoreService
     @StateObject private var adService: AdService
     @StateObject private var ratingService: OverallRatingService
+    @StateObject private var appReviewPromptService: AppReviewPromptService
     @StateObject private var homeViewModel: HomeViewModel
     @AppStorage("appColorScheme") private var appColorScheme: Int = 2
 
@@ -34,6 +35,7 @@ struct BackwordApp: App {
                 .environmentObject(storeService)
                 .environmentObject(adService)
                 .environmentObject(ratingService)
+                .environmentObject(appReviewPromptService)
                 .task {
                     await adService.prepareAdsIfNeeded()
                 }
@@ -46,12 +48,14 @@ struct BackwordApp: App {
         let storeService = StoreService()
         let adService = AdService()
         let ratingService = OverallRatingService()
+        let appReviewPromptService = AppReviewPromptService()
 
         _statsService = StateObject(wrappedValue: statsService)
         _puzzleService = StateObject(wrappedValue: puzzleService)
         _storeService = StateObject(wrappedValue: storeService)
         _adService = StateObject(wrappedValue: adService)
         _ratingService = StateObject(wrappedValue: ratingService)
+        _appReviewPromptService = StateObject(wrappedValue: appReviewPromptService)
         _homeViewModel = StateObject(wrappedValue: HomeViewModel(
             puzzleService: puzzleService,
             storeService: storeService

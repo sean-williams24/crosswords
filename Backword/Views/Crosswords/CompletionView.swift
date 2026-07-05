@@ -6,6 +6,7 @@ struct CompletionView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
     @EnvironmentObject var ratingService: OverallRatingService
+    @EnvironmentObject var appReviewPromptService: AppReviewPromptService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @State private var showContent = false
@@ -113,13 +114,14 @@ struct CompletionView: View {
                 showContent = true
             }
 
-            // Show interstitial ad for free users after the animation has played (once only)
-//            if !storeService.isProUser && !hasShownAd {
-//                hasShownAd = true
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-//                    adService.showInterstitial()
-//                }
-//            }
+            if !viewModel.hasGivenUp {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    appReviewPromptService.recordEligibleCrosswordCompletion(
+                        puzzleId: viewModel.puzzle.id,
+                        gaveUp: viewModel.hasGivenUp
+                    )
+                }
+            }
         }
         .interactiveDismissDisabled(false)
     }
@@ -184,4 +186,5 @@ struct CompletionView: View {
         .environmentObject(StoreService())
         .environmentObject(AdService())
         .environmentObject(OverallRatingService())
+        .environmentObject(AppReviewPromptService())
 }

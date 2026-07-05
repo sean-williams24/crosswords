@@ -6,6 +6,7 @@ struct PuzzleView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
     @EnvironmentObject var ratingService: OverallRatingService
+    @EnvironmentObject var appReviewPromptService: AppReviewPromptService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric private var buttonWidth: CGFloat = 60
@@ -116,6 +117,7 @@ struct PuzzleView: View {
                 .environmentObject(storeService)
                 .environmentObject(adService)
                 .environmentObject(ratingService)
+                .environmentObject(appReviewPromptService)
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
@@ -379,6 +381,7 @@ struct PuzzleView: View {
             .environmentObject(StoreService())
             .environmentObject(AdService())
             .environmentObject(OverallRatingService())
+            .environmentObject(AppReviewPromptService())
     }
 }
 
@@ -389,5 +392,6 @@ struct PuzzleView: View {
             .environmentObject(StoreService())
             .environmentObject(AdService())
             .environmentObject(OverallRatingService())
+            .environmentObject(AppReviewPromptService())
     }
 }
