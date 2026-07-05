@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct AdExplainerView: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Binding var doNotShowAgain: Bool
     let gameName: String
     let close: () -> Void
@@ -24,59 +25,146 @@ struct AdExplainerView: View {
                 .padding(.horizontal, AppLayout.screenPadding)
                 .padding(.top, 18)
 
-                Spacer(minLength: 20)
-
-                VStack(spacing: 22) {
-                    Image(systemName: "play.rectangle.on.rectangle")
-                        .font(.system(size: 48, weight: .semibold))
-                        .foregroundColor(.appAccent)
-                        .accessibilityHidden(true)
-
-                    VStack(spacing: 12) {
-                        Text("A quick note before you play...")
-                            .font(AppFont.header(18))
-                            .foregroundColor(.appTextHeading)
-                            .multilineTextAlignment(.center)
-
-                        Text("On the free version of Backword, we may show a full-screen advert before the \(gameName). The advert usually has a short progress bar or timer, and the close button appears when it finishes.")
-                            .font(AppFont.body(15))
-                            .foregroundColor(.appTextPrimary)
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(4)
-
-                        Text("We only show one advert per day for each game.")
-                            .font(AppFont.body(15))
-                            .foregroundColor(.appTextPrimary)
-                            .multilineTextAlignment(.center)
-                    }
-
-                    Button(action: play) {
-                        Text("Let's play")
-                            .font(AppFont.header(18))
-                            .foregroundColor(.appBackground)
+                ZStack(alignment: .bottom) {
+                    ScrollView {
+                        scrollContent
+                            .padding(.horizontal, AppLayout.screenPadding)
+                            .padding(.top, 24)
+                            .padding(.bottom, bottomActionPadding)
+                            .frame(maxWidth: 520)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(Color.appAccent)
-                            .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
                     }
+                    .scrollIndicators(.hidden)
 
-                    Toggle(isOn: $doNotShowAgain) {
-                        Text("I get it, don't show this again")
-                            .font(AppFont.body(15))
-                            .foregroundColor(.appTextPrimary)
-                    }
-                    .tint(.appAccent)
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 14)
-                    .background(Color.appSurface)
-                    .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+                    bottomActionPanel
                 }
-                .padding(.horizontal, AppLayout.screenPadding)
-                .frame(maxWidth: 520)
-
-                Spacer(minLength: 30)
             }
         }
+    }
+
+    private var iconSize: CGFloat {
+        dynamicTypeSize >= .accessibility1 ? 34 : 48
+    }
+
+    private var titleFontSize: CGFloat {
+        dynamicTypeSize >= .accessibility1 ? 16 : 18
+    }
+
+    private var shouldStackToggle: Bool {
+        dynamicTypeSize >= .accessibility1
+    }
+
+    private var bottomActionPadding: CGFloat {
+        dynamicTypeSize >= .accessibility1 ? 300 : 220
+    }
+
+    private var scrollContent: some View {
+        VStack(spacing: 22) {
+            Image(systemName: "play.rectangle.on.rectangle")
+                .font(.system(size: iconSize, weight: .semibold))
+                .foregroundColor(.appAccent)
+                .accessibilityHidden(true)
+
+            VStack(spacing: 12) {
+                explainerText(
+                    "A quick note before you play...",
+                    font: AppFont.header(titleFontSize),
+                    color: .appTextHeading
+                )
+
+                explainerText(
+                    "On the free version of Backword, we may show a full-screen advert before the \(gameName). The advert usually has a short progress bar or timer, and the close button appears when it finishes.",
+                    font: AppFont.body(15),
+                    color: .appTextPrimary
+                )
+                .lineSpacing(4)
+
+                explainerText(
+                    "We only show one advert per day for each game.",
+                    font: AppFont.body(15),
+                    color: .appTextPrimary
+                )
+            }
+        }
+    }
+
+    private var bottomActionPanel: some View {
+        VStack(spacing: 14) {
+            toggleRow
+            playButton
+        }
+        .padding(.horizontal, AppLayout.screenPadding)
+        .padding(.top, 14)
+        .padding(.bottom, 18)
+        .frame(maxWidth: 520)
+        .frame(maxWidth: .infinity)
+        .background(
+            Color.appCrosswordBackground/*opacity(0.8)*/
+                .background(.ultraThinMaterial)
+                .ignoresSafeArea(edges: .bottom)
+        )
+    }
+
+    private func explainerText(_ text: String, font: Font, color: Color) -> some View {
+        Text(text)
+            .font(font)
+            .foregroundColor(color)
+            .multilineTextAlignment(.center)
+            .lineLimit(nil)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private var playButton: some View {
+        Button(action: play) {
+            Text("Let's play")
+                .font(AppFont.header(18))
+                .foregroundColor(.appBackground)
+                .multilineTextAlignment(.center)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 16)
+                .background(Color.appAccent)
+                .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        }
+    }
+
+    @ViewBuilder
+    private var toggleRow: some View {
+        if shouldStackToggle {
+            VStack(alignment: .leading, spacing: 16) {
+                toggleLabel
+                HStack {
+                    Spacer()
+                    Toggle("", isOn: $doNotShowAgain)
+                        .labelsHidden()
+                        .tint(.appAccent)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 18)
+            .padding(.vertical, 14)
+            .background(Color.appSurface)
+            .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        } else {
+            Toggle(isOn: $doNotShowAgain) {
+                toggleLabel
+            }
+            .tint(.appAccent)
+            .padding(.horizontal, 18)
+            .padding(.vertical, 14)
+            .background(Color.appSurface)
+            .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        }
+    }
+
+    private var toggleLabel: some View {
+        Text("I get it, don't show this again")
+            .font(AppFont.body(15))
+            .foregroundColor(.appTextPrimary)
+            .lineLimit(nil)
+            .fixedSize(horizontal: false, vertical: true)
     }
 }
 
