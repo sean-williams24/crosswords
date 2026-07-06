@@ -295,9 +295,79 @@ struct GameViewModelTests {
         #expect(!vm.canGiveUp(isProUser: false, todayString: "2026-06-18"))
     }
 
+    @Test("Home daily crossword shows onboarding before it has been seen")
+    func homeDailyCrosswordShowsOnboardingBeforeSeen() async throws {
+        let originalOnboardingSetting = AppSettings.shared.hasSeenDailyCrosswordOnboarding
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer {
+            UserProgress.delete(puzzleId: puzzle.id)
+            AppSettings.shared.hasSeenDailyCrosswordOnboarding = originalOnboardingSetting
+        }
+
+        AppSettings.shared.hasSeenDailyCrosswordOnboarding = false
+        let vm = GameViewModel(puzzle: puzzle)
+
+        #expect(vm.shouldShowDailyCrosswordOnboarding)
+    }
+
+    @Test("Home daily crossword does not show onboarding after it has been marked seen")
+    func homeDailyCrosswordDoesNotShowOnboardingAfterSeen() async throws {
+        let originalOnboardingSetting = AppSettings.shared.hasSeenDailyCrosswordOnboarding
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer {
+            UserProgress.delete(puzzleId: puzzle.id)
+            AppSettings.shared.hasSeenDailyCrosswordOnboarding = originalOnboardingSetting
+        }
+
+        AppSettings.shared.hasSeenDailyCrosswordOnboarding = false
+        let vm = GameViewModel(puzzle: puzzle)
+
+        vm.markDailyCrosswordOnboardingSeen()
+
+        #expect(!vm.shouldShowDailyCrosswordOnboarding)
+    }
+
+    @Test("Home weekly crossword does not show daily onboarding")
+    func homeWeeklyCrosswordDoesNotShowDailyOnboarding() async throws {
+        let originalOnboardingSetting = AppSettings.shared.hasSeenDailyCrosswordOnboarding
+        let puzzle = makePuzzle(size: 13)
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer {
+            UserProgress.delete(puzzleId: puzzle.id)
+            AppSettings.shared.hasSeenDailyCrosswordOnboarding = originalOnboardingSetting
+        }
+
+        AppSettings.shared.hasSeenDailyCrosswordOnboarding = false
+        let vm = GameViewModel(puzzle: puzzle)
+
+        #expect(!vm.shouldShowDailyCrosswordOnboarding)
+    }
+
+    @Test("Archive daily crossword does not auto-show onboarding")
+    func archiveDailyCrosswordDoesNotAutoShowOnboarding() async throws {
+        let originalOnboardingSetting = AppSettings.shared.hasSeenDailyCrosswordOnboarding
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer {
+            UserProgress.delete(puzzleId: puzzle.id)
+            AppSettings.shared.hasSeenDailyCrosswordOnboarding = originalOnboardingSetting
+        }
+
+        AppSettings.shared.hasSeenDailyCrosswordOnboarding = false
+        let vm = GameViewModel(
+            puzzle: puzzle,
+            launchContext: .archive(type: .daily, currentWeeklyPuzzleId: nil)
+        )
+
+        #expect(!vm.shouldShowDailyCrosswordOnboarding)
+    }
+
     private func makePuzzle(
         id: String = "game-view-model-tests-\(UUID().uuidString)",
-        date: String = "2026-06-13"
+        date: String = "2026-06-13",
+        size: Int = 2
     ) -> Puzzle {
         let clue = Clue(
             id: 0,
@@ -311,21 +381,22 @@ struct GameViewModelTests {
             length: 2
         )
 
+        var cells = Array(
+            repeating: Array(
+                repeating: CellData(letter: nil, clueNumber: nil, acrossClueId: nil, downClueId: nil),
+                count: size
+            ),
+            count: size
+        )
+        cells[0][0] = CellData(letter: "A", clueNumber: 1, acrossClueId: 0, downClueId: nil)
+        cells[0][1] = CellData(letter: "B", clueNumber: nil, acrossClueId: 0, downClueId: nil)
+
         return Puzzle(
             id: id,
             puzzleNumber: 1,
             date: date,
-            size: 2,
-            cells: [
-                [
-                    CellData(letter: "A", clueNumber: 1, acrossClueId: 0, downClueId: nil),
-                    CellData(letter: "B", clueNumber: nil, acrossClueId: 0, downClueId: nil),
-                ],
-                [
-                    CellData(letter: nil, clueNumber: nil, acrossClueId: nil, downClueId: nil),
-                    CellData(letter: nil, clueNumber: nil, acrossClueId: nil, downClueId: nil),
-                ],
-            ],
+            size: size,
+            cells: cells,
             clues: [clue]
         )
     }

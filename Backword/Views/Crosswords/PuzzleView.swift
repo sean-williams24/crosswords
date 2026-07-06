@@ -17,6 +17,7 @@ struct PuzzleView: View {
     @State private var shouldPopAfterCompletionSheet = false
     @State private var isRewardedAdRequestInFlight = false
     @State private var showGiveUpConfirmation = false
+    @State private var showInstructions = false
     private let freeHintLimit = 0
 
     private var isZoomableGrid: Bool {
@@ -100,6 +101,9 @@ struct PuzzleView: View {
         .ignoresSafeArea(.keyboard)
         .toolbar(.hidden, for: .navigationBar)
         .enableSwipeBack()
+        .onAppear {
+            showInstructionsOnFirstLaunch()
+        }
         .sheet(isPresented: $viewModel.showClueList) {
             ClueListView(viewModel: viewModel)
                 .presentationDetents([.medium, .large])
@@ -127,6 +131,14 @@ struct PuzzleView: View {
             CrosswordStatsView(isWeekly: viewModel.puzzle.size > 12) { showCrosswordStats = false }
                 .environmentObject(statsService)
                 .environmentObject(ratingService)
+        }
+        .sheet(
+            isPresented: $showInstructions,
+            onDismiss: {
+                viewModel.markDailyCrosswordOnboardingSeen()
+            }
+        ) {
+            instructionsSheet
         }
         .alert("Give up?", isPresented: $showGiveUpConfirmation) {
             Button("Cancel", role: .cancel) {}
@@ -158,6 +170,11 @@ struct PuzzleView: View {
             }
         }
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+    }
+
+    private func showInstructionsOnFirstLaunch() {
+        guard viewModel.shouldShowDailyCrosswordOnboarding else { return }
+        showInstructions = true
     }
 
     // MARK: - Rewarded
@@ -359,6 +376,39 @@ struct PuzzleView: View {
             }
             .foregroundColor(viewModel.activeClueIsHinted ? .appCorrect : .appAccent)
         }
+
+        if viewModel.isDailyCrossword {
+            Button {
+                showInstructions = true
+            } label: {
+                Image(systemName: "info.circle")
+                    .frame(width: 34)
+                    .foregroundColor(.appTextPrimary)
+            }
+            .accessibilityLabel("How to play")
+        }
+    }
+
+    private var instructionsSheet: some View {
+        NavigationStack {
+            DailyCrosswordInstructionsContentView()
+                .navigationTitle("How to Play")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showInstructions = false
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.appTextSecondary)
+                        }
+                    }
+                }
+                .toolbarBackground(Color.appBackground, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+        }
+        .presentationDetents([.fraction(0.85)])
+        .presentationDragIndicator(.visible)
     }
 
     private var giveUpDisplayScore: Int {

@@ -27,6 +27,7 @@
 		05AD30042FFF100000000001 /* AppReviewPromptServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */; };
 		05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */; };
 		05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */; };
+		05D2A0013002000000000001 /* DailyCrosswordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */; };
 		05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */; };
 		05F1E1A62FFCFD9300F1E1A5 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A32FFCFD9300F1E1A5 /* FirebaseCore */; };
 		05F1E1A72FFCFD9300F1E1A5 /* StoreLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */; };
@@ -163,6 +164,7 @@
 		05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewPromptServiceTests.swift; sourceTree = "<group>"; };
 		05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReleaseCalendarTests.swift; sourceTree = "<group>"; };
 		05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAuxiliaryContentServiceTests.swift; sourceTree = "<group>"; };
+		05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordInstructionsContentView.swift; sourceTree = "<group>"; };
 		05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLogger.swift; sourceTree = "<group>"; };
 		0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewTests.swift; sourceTree = "<group>"; };
 		0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTabBarViewTests.swift; sourceTree = "<group>"; };
@@ -496,6 +498,7 @@
 				D84C8AB718DDE4C9E0EDDE1F /* ClueListView.swift */,
 				6C44B7584617BA53797B0963 /* ZoomableView.swift */,
 				741EF0B3C1470452272529E1 /* CompletionView.swift */,
+				05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */,
 			);
 			path = Crosswords;
 			sourceTree = "<group>";
@@ -749,6 +752,7 @@
 				04ADAE952FFD100000000001 /* AdExplainerView.swift in Sources */,
 				04ADAE972FFD100000000001 /* AnimatedAdPreviewView.swift in Sources */,
 				437E4CF0032D9E5D69A92C43 /* AppSettings.swift in Sources */,
+				05D2A0013002000000000001 /* DailyCrosswordInstructionsContentView.swift in Sources */,
 				15C99D922FE2A3E6007A1001 /* AppVersionInfo.swift in Sources */,
 				149802310440A77534BB615E /* AppTheme.swift in Sources */,
 				ABCD10000000000000000005 /* FeedbackEmailContent.swift in Sources */,

@@ -8,6 +8,7 @@ final class AppSettings: ObservableObject {
         static let backwordLetterFeedback = "backwordLetterFeedback"
         static let crosswordCorrectHighlight = "crosswordCorrectHighlight"
         static let hasDismissedAdExplainer = "hasDismissedAdExplainer"
+        static let hasSeenDailyCrosswordOnboarding = "hasSeenDailyCrosswordOnboarding"
     }
 
     /// Pro-only: highlight letters in past guesses that appear anywhere in the target word.
@@ -28,6 +29,11 @@ final class AppSettings: ObservableObject {
     var hasSeenBackwordOnboarding: Bool {
         get { UserDefaults.standard.bool(forKey: "hasSeenBackwordOnboarding") }
         set { UserDefaults.standard.set(newValue, forKey: "hasSeenBackwordOnboarding") }
+    }
+
+    var hasSeenDailyCrosswordOnboarding: Bool {
+        get { UserDefaults.standard.bool(forKey: Keys.hasSeenDailyCrosswordOnboarding) }
+        set { UserDefaults.standard.set(newValue, forKey: Keys.hasSeenDailyCrosswordOnboarding) }
     }
 
     private init() {

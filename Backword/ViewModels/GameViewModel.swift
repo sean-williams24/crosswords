@@ -22,6 +22,7 @@ final class GameViewModel: ObservableObject {
     let launchContext: PuzzleLaunchContext
     private let haptics = HapticsEngine()
     private var zenTimer: Timer?
+    private let settings = AppSettings.shared
 
     // MARK: - Init
 
@@ -51,6 +52,18 @@ final class GameViewModel: ObservableObject {
             selectedCol = first.col
         }
         updateActiveClue()
+    }
+
+    var isDailyCrossword: Bool {
+        puzzle.size <= 12
+    }
+
+    var shouldShowDailyCrosswordOnboarding: Bool {
+        launchContext == .home && isDailyCrossword && !settings.hasSeenDailyCrosswordOnboarding
+    }
+
+    func markDailyCrosswordOnboardingSeen() {
+        settings.hasSeenDailyCrosswordOnboarding = true
     }
 
     // MARK: - Cell State
