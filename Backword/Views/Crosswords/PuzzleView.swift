@@ -18,6 +18,7 @@ struct PuzzleView: View {
     @State private var isRewardedAdRequestInFlight = false
     @State private var showGiveUpConfirmation = false
     @State private var showInstructions = false
+    @State private var showPaywallAfterInstructionsDismiss = false
     private let freeHintLimit = 0
 
     private var isZoomableGrid: Bool {
@@ -136,6 +137,7 @@ struct PuzzleView: View {
             isPresented: $showInstructions,
             onDismiss: {
                 viewModel.markDailyCrosswordOnboardingSeen()
+                showPaywallAfterInstructionsIfNeeded()
             }
         ) {
             instructionsSheet
@@ -175,6 +177,14 @@ struct PuzzleView: View {
     private func showInstructionsOnFirstLaunch() {
         guard viewModel.shouldShowDailyCrosswordOnboarding else { return }
         showInstructions = true
+    }
+
+    private func showPaywallAfterInstructionsIfNeeded() {
+        guard showPaywallAfterInstructionsDismiss else { return }
+        showPaywallAfterInstructionsDismiss = false
+        DispatchQueue.main.async {
+            showPaywall = true
+        }
     }
 
     // MARK: - Rewarded
@@ -395,7 +405,10 @@ struct PuzzleView: View {
 
     private var instructionsSheet: some View {
         NavigationStack {
-            DailyCrosswordInstructionsContentView()
+            DailyCrosswordInstructionsContentView(isProUser: storeService.isProUser) {
+                showPaywallAfterInstructionsDismiss = true
+                showInstructions = false
+            }
                 .navigationTitle("How to Play")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {

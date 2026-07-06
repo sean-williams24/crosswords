@@ -3,6 +3,13 @@ import SwiftUI
 struct DailyCrosswordInstructionsContentView: View {
     @ObservedObject private var settings = AppSettings.shared
     @ScaledMetric private var iconFrame: CGFloat = 22
+    let isProUser: Bool
+    let onSubscribe: () -> Void
+
+    init(isProUser: Bool = false, onSubscribe: @escaping () -> Void = {}) {
+        self.isProUser = isProUser
+        self.onSubscribe = onSubscribe
+    }
 
     var body: some View {
         ScrollView {
@@ -12,6 +19,10 @@ struct DailyCrosswordInstructionsContentView: View {
                     instructionRow(icon: "list.bullet", text: "Tap a cell to select it, tap the same cell again to switch direction, or use the clue list to browse all clues")
                     instructionRow(icon: "lightbulb", text: "Tap Get hint to reveal an alternate clue. Free users watch an ad for a hint; Pro users get hints without ads")
                     instructionRow(icon: "flag.fill", text: "Pro users are able to give up and reveal the answers")
+
+                    if !isProUser {
+                        subscribeButton
+                    }
                 }
 
                 Divider()
@@ -27,6 +38,21 @@ struct DailyCrosswordInstructionsContentView: View {
             .padding(20)
         }
         .background(Color.appBackground)
+    }
+
+    private var subscribeButton: some View {
+        Button {
+            onSubscribe()
+        } label: {
+            Text("Subscribe")
+                .font(AppFont.clueLabel(12))
+                .foregroundColor(.white)
+                .padding(.horizontal, 18)
+                .padding(.vertical, 8)
+                .background(Color.appAccent)
+                .cornerRadius(10)
+        }
+        .frame(maxWidth: .infinity)
     }
 
     private var answerFeedbackToggle: some View {
