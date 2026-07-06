@@ -15,7 +15,7 @@ struct CellView: View {
     let row: Int
     let col: Int
     @ObservedObject var viewModel: GameViewModel
-    private let settings = AppSettings.shared
+    @ObservedObject private var settings = AppSettings.shared
 
     private var cell: CellData? {
         viewModel.cellData(row: row, col: col)
