@@ -8,10 +8,10 @@ struct DailyCrosswordInstructionsContentView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 VStack(alignment: .leading, spacing: 12) {
-                    instructionRow(number: "1", text: "Complete the grid and lock-in your score before the next crossword refreshes at midnight")
-                    instructionRow(number: "2", text: "Tap a cell to select it, tap the same cell again to switch direction, or use the clue list to browse all clues")
-                    instructionRow(number: "3", text: "Tap Get hint to reveal an alternate clue. Free users watch an ad for a hint; Pro users get hints without ads")
-                    instructionRow(number: "4", text: "Pro users are able to give up and reveal the answers")
+                    instructionRow(icon: "timer", text: "Complete the grid and lock-in your score before the next crossword refreshes at midnight")
+                    instructionRow(icon: "list.bullet", text: "Tap a cell to select it, tap the same cell again to switch direction, or use the clue list to browse all clues")
+                    instructionRow(icon: "lightbulb", text: "Tap Get hint to reveal an alternate clue. Free users watch an ad for a hint; Pro users get hints without ads")
+                    instructionRow(icon: "flag.fill", text: "Pro users are able to give up and reveal the answers")
                 }
 
                 Divider()
@@ -84,14 +84,12 @@ struct DailyCrosswordInstructionsContentView: View {
         }
     }
 
-    private func instructionRow(number: String, text: String) -> some View {
+    private func instructionRow(icon: String, text: String) -> some View {
         HStack(alignment: .top, spacing: 10) {
-            Text(number)
-                .font(AppFont.clueLabel(13))
-                .foregroundColor(.white)
+            Image(systemName: icon)
+                .font(AppFont.clueLabel(14))
+                .foregroundColor(.appTextPrimary)
                 .frame(width: iconFrame, height: iconFrame)
-                .background(Color.appAccent)
-                .clipShape(Circle())
 
             Text(text)
                 .font(AppFont.body(14))

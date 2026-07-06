@@ -330,6 +330,8 @@ struct PuzzleView: View {
 
     @ViewBuilder
     private var toolbarButtons: some View {
+        getHintButton
+
         if canGiveUp {
             Button {
                 showGiveUpConfirmation = true
@@ -357,6 +359,19 @@ struct PuzzleView: View {
                 .foregroundColor(.appTextPrimary)
         }
 
+        if viewModel.isDailyCrossword {
+            Button {
+                showInstructions = true
+            } label: {
+                Image(systemName: "info.circle")
+                    .frame(width: 34)
+                    .foregroundColor(.appTextPrimary)
+            }
+            .accessibilityLabel("How to play")
+        }
+    }
+
+    private var getHintButton: some View {
         Button {
             let totalAllowed = freeHintLimit + viewModel.adBonusHints
             if storeService.isProUser || viewModel.activeClueIsHinted || viewModel.progress.hintedClueIds.count < totalAllowed {
@@ -375,17 +390,6 @@ struct PuzzleView: View {
                     .font(AppFont.body(13))
             }
             .foregroundColor(viewModel.activeClueIsHinted ? .appCorrect : .appAccent)
-        }
-
-        if viewModel.isDailyCrossword {
-            Button {
-                showInstructions = true
-            } label: {
-                Image(systemName: "info.circle")
-                    .frame(width: 34)
-                    .foregroundColor(.appTextPrimary)
-            }
-            .accessibilityLabel("How to play")
         }
     }
 
