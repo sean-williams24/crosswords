@@ -47,47 +47,63 @@ struct DailyCrosswordCard: View {
     }
 
     private var content: some View {
-        VStack(spacing: 12) {
-            Text("QUICK CROSSWORD")
-                .font(AppFont.clueLabel(isIpad ? 15 : 11))
-                .foregroundColor(.dailyCardTitle)
-                .tracking(3)
-                .multilineTextAlignment(.center)
+        VStack(spacing: 0) {
+            VStack(spacing: 12) {
+                Text("QUICK CROSSWORD")
+                    .font(AppFont.clueLabel(isIpad ? 15 : 11))
+                    .foregroundColor(.dailyCardTitle)
+                    .tracking(3)
+                    .multilineTextAlignment(.center)
 
-            Text("9×9")
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary)
-
-            if let score = viewModel.dailyCrosswordScore {
-                HStack(spacing: 4) {
-                    Text("\(score)")
-                        .font(AppFont.header(28))
-                        .foregroundColor(score == 5 ? .appCorrect : .appAccent)
-                    Text("/ 5")
-                        .font(AppFont.header(16))
-                        .foregroundColor(.appTextSecondary)
-                }
-            }
-
-            if viewModel.state == .loading {
-                ProgressView()
-            } else if viewModel.todaysPuzzle == nil {
-                Text("Failed to fetch today's crossword.\nTap here to try again.")
+                Text("9×9")
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
-            } else {
-                StatusLabelView(status: viewModel.puzzleStatus)
+
+                if viewModel.state == .loading {
+                    ProgressView()
+                } else if viewModel.todaysPuzzle == nil {
+                    Text("Failed to fetch today's crossword.\nTap here to try again.")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                        .multilineTextAlignment(.center)
+                } else {
+                    StatusLabelView(status: viewModel.puzzleStatus)
+                }
             }
+            .padding(.horizontal, 24)
+            .padding(.top, 24)
+            .padding(.bottom, 8)
+
+            bottomStatsView
+                .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
+                .padding(.bottom, 10)
         }
-        .padding(.vertical, 24)
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .fill(Color.dailyCardBackground)
         )
-        .overlay(alignment: .bottomTrailing) {
+    }
+
+    private var bottomStatsView: some View {
+        HStack {
+            scoreView
+            Spacer(minLength: 2)
             StreakButton(streak: statsService.stats.liveCurrentStreak)
-                .padding(HomeCardStreakLayout.streakButtonEdgeInset)
+        }
+    }
+
+    @ViewBuilder
+    private var scoreView: some View {
+        if let score = viewModel.dailyCrosswordScore {
+            HStack(spacing: 4) {
+                Text("\(score)")
+                    .font(AppFont.header(24))
+                    .foregroundColor(score == 5 ? .appCorrect : .appAccent)
+                Text("/ 5")
+                    .font(AppFont.header(12))
+                    .foregroundColor(.appTextSecondary)
+            }
         }
     }
 }
