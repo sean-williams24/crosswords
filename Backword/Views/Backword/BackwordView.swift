@@ -89,7 +89,9 @@ struct BackwordView: View {
             }
         }
         .ignoresSafeArea(.keyboard)
-        .navigationBarHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
+        .enableSwipeBack()
+        .navigationBarBackButtonHidden(true)
         .onAppear {
             showInstructionsOnFirstLaunch()
         }

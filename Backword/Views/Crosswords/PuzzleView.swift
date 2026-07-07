@@ -20,7 +20,6 @@ struct PuzzleView: View {
     @State private var showGiveUpConfirmation = false
     @State private var showInstructions = false
     @State private var showPaywallAfterInstructionsDismiss = false
-    @State private var isHintIconFlashing = true
     private let freeHintLimit = 0
 
     private var isZoomableGrid: Bool {
@@ -402,24 +401,16 @@ struct PuzzleView: View {
                 }
             }
         } label: {
-            HStack(spacing: 6) {
+            HStack(spacing: 4) {
                 let hintsRemaining = storeService.isProUser ? 1 : max(0, freeHintLimit + viewModel.adBonusHints - viewModel.progress.hintedClueIds.count)
                 Text(viewModel.activeClueIsHinted || hintsRemaining > 0 ? "Hint" : "Get hint")
                     .font(AppFont.body(appLayout.iconTextSize))
                 Image(systemName: viewModel.activeClueIsHinted ? "lightbulb.fill" : "lightbulb")
                     .font(AppFont.body(appLayout.iconGlyphSize))
-                    .frame(height: appLayout.iconSize)
-                    .opacity(isHintIconFlashing ? 0.35 : 1)
-                    .scaleEffect(isHintIconFlashing ? 1.12 : 1)
-                    .animation(
-                        .easeInOut(duration: 0.45).repeatForever(autoreverses: true),
-                        value: isHintIconFlashing
-                    )
+                    .frame(width: appLayout.iconSize, height: appLayout.iconSize)
+                    .symbolEffect(.pulse, options: .repeating)
             }
             .foregroundColor(viewModel.activeClueIsHinted ? .appCorrect : .appAccent)
-            .onAppear {
-                isHintIconFlashing.toggle()
-            }
         }
     }
 

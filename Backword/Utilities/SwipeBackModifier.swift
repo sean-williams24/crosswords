@@ -20,6 +20,12 @@ private struct SwipeBackEnabler: UIViewControllerRepresentable {
 private class SwipeBackViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        SwipeBackGesturePolicy.enable(on: navigationController)
+    }
+}
+
+enum SwipeBackGesturePolicy {
+    static func enable(on navigationController: UINavigationController?) {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
