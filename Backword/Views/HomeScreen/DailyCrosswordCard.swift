@@ -2,6 +2,10 @@
 
 import SwiftUI
 
+enum DailyCrosswordCardLayout {
+    static let streakButtonEdgeInset: CGFloat = 12
+}
+
 struct DailyCrosswordCard: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.horizontalSizeClass) var sizeClass
@@ -45,44 +49,36 @@ struct DailyCrosswordCard: View {
     }
 
     private var content: some View {
-        ZStack(alignment: .bottom) {
-            VStack(spacing: 12) {
-                Text("CROSSWORD")
-                    .font(AppFont.clueLabel(isIpad ? 15 : 11))
-                    .foregroundColor(.dailyCardTitle)
-                    .tracking(3)
-                    .multilineTextAlignment(.center)
+        VStack(spacing: 12) {
+            Text("QUICK CROSSWORD")
+                .font(AppFont.clueLabel(isIpad ? 15 : 11))
+                .foregroundColor(.dailyCardTitle)
+                .tracking(3)
+                .multilineTextAlignment(.center)
 
-                Text("9×9")
-                    .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
+            Text("9×9")
+                .font(AppFont.caption())
+                .foregroundColor(.appTextSecondary)
 
-                if let score = viewModel.dailyCrosswordScore {
-                    HStack(spacing: 4) {
-                        Text("\(score)")
-                            .font(AppFont.header(28))
-                            .foregroundColor(score == 5 ? .appCorrect : .appAccent)
-                        Text("/ 5")
-                            .font(AppFont.header(16))
-                            .foregroundColor(.appTextSecondary)
-                    }
-                }
-
-                if viewModel.state == .loading {
-                    ProgressView()
-                } else if viewModel.todaysPuzzle == nil {
-                    Text("Failed to fetch today's crossword.\nTap here to try again.")
-                        .font(AppFont.caption())
+            if let score = viewModel.dailyCrosswordScore {
+                HStack(spacing: 4) {
+                    Text("\(score)")
+                        .font(AppFont.header(28))
+                        .foregroundColor(score == 5 ? .appCorrect : .appAccent)
+                    Text("/ 5")
+                        .font(AppFont.header(16))
                         .foregroundColor(.appTextSecondary)
-                } else {
-                    StatusLabelView(status: viewModel.puzzleStatus)
-                }
-                if dynamicTypeSize >= .accessibility1 {
-                    streakButton
                 }
             }
-            if dynamicTypeSize < .accessibility1 {
-                streakButton
+
+            if viewModel.state == .loading {
+                ProgressView()
+            } else if viewModel.todaysPuzzle == nil {
+                Text("Failed to fetch today's crossword.\nTap here to try again.")
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+            } else {
+                StatusLabelView(status: viewModel.puzzleStatus)
             }
         }
         .padding(.vertical, 24)
@@ -91,6 +87,10 @@ struct DailyCrosswordCard: View {
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .fill(Color.dailyCardBackground)
         )
+        .overlay(alignment: .bottomTrailing) {
+            streakButton
+                .padding(DailyCrosswordCardLayout.streakButtonEdgeInset)
+        }
     }
 
     @ViewBuilder
@@ -118,12 +118,10 @@ struct DailyCrosswordCard: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
                 .background(Color.appSurface.opacity(0.5))
-                .cornerRadius(14)
-                .padding(.trailing, 12)
+                .cornerRadius(AppLayout.cardCornerRadius)
             }
-            .frame(maxWidth: .infinity, alignment: .trailing)
             .buttonStyle(.plain)
-            .overlay(alignment: .top) {
+            .overlay(alignment: .topTrailing) {
                 if showStreakPopup {
                     Text("\(statsService.stats.liveCurrentStreak)-day streak")
                         .fixedSize()

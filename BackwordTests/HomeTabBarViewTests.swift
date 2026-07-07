@@ -28,3 +28,11 @@ struct HomeTabBarViewTests {
         #expect(HomeTabBarItemContent.stats.accessibilityLabel == "Stats")
     }
 }
+
+@Suite("Daily crossword card layout")
+struct DailyCrosswordCardLayoutTests {
+    @Test("Streak button uses one edge inset for bottom and trailing padding")
+    func streakButtonUsesSharedEdgeInset() {
+        #expect(DailyCrosswordCardLayout.streakButtonEdgeInset == 12)
+    }
+}
