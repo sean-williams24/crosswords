@@ -18,6 +18,21 @@ struct BackwordStats: Codable {
         lastCompletedDate = nil
     }
 
+    var liveCurrentStreak: Int {
+        guard
+            currentStreak > 0,
+            let lastCompletedDate,
+            let lastDate = Self.dateFormatter.date(from: lastCompletedDate)
+        else { return 0 }
+
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: today)!
+        guard calendar.isDate(lastDate, inSameDayAs: today) ||
+              calendar.isDate(lastDate, inSameDayAs: yesterday) else { return 0 }
+        return currentStreak
+    }
+
     // MARK: - Recording
 
     mutating func record(guessCount: Int?, date: String) {

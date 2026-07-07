@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import Backword
 
@@ -29,10 +30,38 @@ struct HomeTabBarViewTests {
     }
 }
 
-@Suite("Daily crossword card layout")
-struct DailyCrosswordCardLayoutTests {
+@Suite("Home card streak layout")
+struct HomeCardStreakLayoutTests {
     @Test("Streak button uses one edge inset for bottom and trailing padding")
     func streakButtonUsesSharedEdgeInset() {
-        #expect(DailyCrosswordCardLayout.streakButtonEdgeInset == 12)
+        #expect(HomeCardStreakLayout.streakButtonEdgeInset == 12)
+    }
+}
+
+@Suite("Backword streak")
+struct BackwordStreakTests {
+    @Test("Live streak is visible for completions today")
+    func liveStreakIncludesToday() {
+        var stats = BackwordStats()
+        stats.currentStreak = 3
+        stats.lastCompletedDate = Self.dateString(for: Date())
+
+        #expect(stats.liveCurrentStreak == 3)
+    }
+
+    @Test("Live streak hides stale completions")
+    func liveStreakHidesStaleCompletion() {
+        var stats = BackwordStats()
+        stats.currentStreak = 3
+        let staleDate = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
+        stats.lastCompletedDate = Self.dateString(for: staleDate)
+
+        #expect(stats.liveCurrentStreak == 0)
+    }
+
+    private static func dateString(for date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.string(from: date)
     }
 }

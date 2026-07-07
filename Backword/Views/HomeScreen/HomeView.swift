@@ -11,6 +11,7 @@ struct HomeView: View {
     @ObservedObject private var settings = AppSettings.shared
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
+    @StateObject private var backwordStatsService = BackwordStatsService()
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.launchSplashDidComplete) private var launchSplashDidComplete
     @Environment(\.horizontalSizeClass) var sizeClass
@@ -152,6 +153,7 @@ struct HomeView: View {
                 await wotdService.refreshIfNeeded()
                 await backwordService.refreshIfNeeded()
                 await viewModel.prefetchCurrentArchiveMonthIfNeeded()
+                backwordStatsService.refresh()
                 ratingService.refresh()
                 ratingService.recordCurrentPuzzles(
                     daily: viewModel.todaysPuzzle,
@@ -168,6 +170,7 @@ struct HomeView: View {
                     await wotdService.refreshIfNeeded()
                     await backwordService.refreshIfNeeded()
                     await viewModel.prefetchCurrentArchiveMonthIfNeeded()
+                    backwordStatsService.refresh()
                     ratingService.refresh()
                     ratingService.recordCurrentPuzzles(
                         daily: viewModel.todaysPuzzle,
@@ -183,6 +186,7 @@ struct HomeView: View {
                 Task {
                     await viewModel.refreshIfNeeded()
                     await viewModel.prefetchCurrentArchiveMonthIfNeeded()
+                    backwordStatsService.refresh()
                 }
             }
             .onChange(of: launchSplashDidComplete) { _, _ in
@@ -197,6 +201,7 @@ struct HomeView: View {
             .onChange(of: navigationPath) { oldPath, newPath in
                 if !oldPath.isEmpty, newPath.isEmpty, hasOpenedDailyGameThisSession {
                     didReturnFromDailyGame = true
+                    backwordStatsService.refresh()
                 }
                 updateSettingsTipReadiness()
             }
@@ -389,6 +394,7 @@ struct HomeView: View {
         ) {
             openDailyGame(.backword)
         }
+        .environmentObject(backwordStatsService)
     }
 
     private var dailyCrosswordCard: some View {

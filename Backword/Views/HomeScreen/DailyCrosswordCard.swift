@@ -2,17 +2,15 @@
 
 import SwiftUI
 
-enum DailyCrosswordCardLayout {
+enum HomeCardStreakLayout {
     static let streakButtonEdgeInset: CGFloat = 12
 }
 
 struct DailyCrosswordCard: View {
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.horizontalSizeClass) var sizeClass
     @EnvironmentObject private var statsService: StatsService
     @ObservedObject var viewModel: HomeViewModel
     @ScaledMetric private var iconSize: CGFloat = 10
-    @State private var showStreakPopup = false
     var showDailyCrossword: () -> Void
 
     private var appLayout: AppLayout {
@@ -88,55 +86,8 @@ struct DailyCrosswordCard: View {
                 .fill(Color.dailyCardBackground)
         )
         .overlay(alignment: .bottomTrailing) {
-            streakButton
-                .padding(DailyCrosswordCardLayout.streakButtonEdgeInset)
-        }
-    }
-
-    @ViewBuilder
-    private var streakButton: some View {
-        if statsService.stats.liveCurrentStreak > 0 {
-            Button {
-                showStreakPopup.toggle()
-                if showStreakPopup {
-                    Task {
-                        try? await Task.sleep(nanoseconds: 4_000_000_000)
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            showStreakPopup = false
-                        }
-                    }
-                }
-            } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "flame.fill")
-                        .foregroundColor(.orange)
-                        .font(.caption)
-                    Text("\(statsService.stats.liveCurrentStreak)")
-                        .font(AppFont.clueLabel(12))
-                        .foregroundColor(.appTextPrimary)
-                }
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .background(Color.appSurface.opacity(0.5))
-                .cornerRadius(AppLayout.cardCornerRadius)
-            }
-            .buttonStyle(.plain)
-            .overlay(alignment: .topTrailing) {
-                if showStreakPopup {
-                    Text("\(statsService.stats.liveCurrentStreak)-day streak")
-                        .fixedSize()
-                        .font(AppFont.clueLabel(12))
-                        .foregroundColor(.appTextPrimary)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(Color.appSurface)
-                        .cornerRadius(10)
-                        .shadow(color: .black.opacity(0.15), radius: 8, y: 2)
-                        .offset(y: dynamicTypeSize >= .accessibility1 ? -60 : 0)
-                        .transition(.opacity.combined(with: .move(edge: .bottom)))
-                }
-            }
-            .animation(.easeInOut(duration: 0.2), value: showStreakPopup)
+            StreakButton(streak: statsService.stats.liveCurrentStreak)
+                .padding(HomeCardStreakLayout.streakButtonEdgeInset)
         }
     }
 }

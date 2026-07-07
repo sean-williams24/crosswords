@@ -94,6 +94,7 @@
 		86E5BFFE2FA2BECA00A42156 /* Outfit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */; };
 		86E5C00A2FA9211200A42156 /* WeeklyCrosswordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */; };
 		86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */; };
+		86E5C00E2FA94D8A00A42156 /* StreakButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C00D2FA94D8A00A42156 /* StreakButton.swift */; };
 		86F02E462FB9BE220083B752 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 86F02E452FB9BE220083B752 /* Supabase */; };
 		86F02E482FBA14FF0083B752 /* StatusLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F02E472FBA14FF0083B752 /* StatusLabelView.swift */; };
 		86F02E4A2FBA15550083B752 /* PuzzleStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F02E492FBA15550083B752 /* PuzzleStatus.swift */; };
@@ -232,6 +233,7 @@
 		86E5BFF42FA2BECA00A42156 /* Outfit-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Thin.ttf"; sourceTree = "<group>"; };
 		86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCrosswordCard.swift; sourceTree = "<group>"; };
 		86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordCard.swift; sourceTree = "<group>"; };
+		86E5C00D2FA94D8A00A42156 /* StreakButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakButton.swift; sourceTree = "<group>"; };
 		86F02E472FBA14FF0083B752 /* StatusLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusLabelView.swift; sourceTree = "<group>"; };
 		86F02E492FBA15550083B752 /* PuzzleStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleStatus.swift; sourceTree = "<group>"; };
 		86FAA14E2FB4F8C00022EFF6 /* CustomKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomKeyboardView.swift; sourceTree = "<group>"; };
@@ -471,6 +473,7 @@
 				867281252FE2D39C00000001 /* HomeTabBarView.swift */,
 				809E28C82FF638D200FF7B33 /* AdFreeExperienceButton.swift */,
 				86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */,
+				86E5C00D2FA94D8A00A42156 /* StreakButton.swift */,
 				86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */,
 				86F02E472FBA14FF0083B752 /* StatusLabelView.swift */,
 				86F02E492FBA15550083B752 /* PuzzleStatus.swift */,
@@ -760,6 +763,7 @@
 				F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */,
 				86AFC3D32FC20460007623C3 /* BackwordInstructionsContentView.swift in Sources */,
 				86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */,
+				86E5C00E2FA94D8A00A42156 /* StreakButton.swift in Sources */,
 				E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */,
 				869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */,
 				86FAA1592FB9B9150022EFF6 /* SupabaseClient.swift in Sources */,

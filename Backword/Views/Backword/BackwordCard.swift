@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BackwordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
+    @EnvironmentObject private var statsService: BackwordStatsService
     @ScaledMetric private var spacing: CGFloat = 10
     @ObservedObject var service: BackwordService
     let progress: BackwordProgress?
@@ -52,6 +53,10 @@ struct BackwordCard: View {
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .strokeBorder(Color.appAccent, lineWidth: 2)
         )
+        .overlay(alignment: .bottomTrailing) {
+            StreakButton(streak: statsService.stats.liveCurrentStreak)
+                .padding(HomeCardStreakLayout.streakButtonEdgeInset)
+        }
     }
 
     @ViewBuilder
@@ -183,6 +188,7 @@ private var guessCounter: some View {
         progress: progress,
         showBackword: {}
     )
+    .environmentObject(BackwordStatsService())
 }
 
 #Preview("Failed") {
@@ -195,6 +201,7 @@ private var guessCounter: some View {
         progress: progress,
         showBackword: {}
     )
+    .environmentObject(BackwordStatsService())
 }
 
 #Preview {
@@ -203,4 +210,5 @@ private var guessCounter: some View {
         progress: nil,
         showBackword: {}
     )
+    .environmentObject(BackwordStatsService())
 }
