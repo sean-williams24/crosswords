@@ -80,4 +80,16 @@ struct AppLayout {
     var homeHorizontalPadding: CGFloat {
         isiPad ? AppLayout.screenPaddingLarge : AppLayout.screenPadding
     }
+
+    var iconSize: CGFloat {
+        isiPad ? 54 : 30
+    }
+
+    var iconGlyphSize: CGFloat {
+        isiPad ? 30 : 18
+    }
+
+    var iconTextSize: CGFloat {
+        isiPad ? 20 : 16
+    }
 }

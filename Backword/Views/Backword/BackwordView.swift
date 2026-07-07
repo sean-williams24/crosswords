@@ -127,6 +127,10 @@ struct BackwordView: View {
         sizeClass == .regular
     }
 
+    private var appLayout: AppLayout {
+        AppLayout(sizeClass: sizeClass)
+    }
+
     private func showInstructionsOnFirstLaunch() {
         guard viewModel.showOnboarding else { return }
         showInstructions = true
@@ -144,20 +148,22 @@ struct BackwordView: View {
                     dismiss()
                 } label: {
                     Image(systemName: "chevron.left")
-                        .font(.system(size: 17, weight: .semibold))
+                        .font(AppFont.body(appLayout.iconGlyphSize))
+                        .frame(width: appLayout.iconSize)
                         .foregroundColor(.appTextPrimary)
                         .padding(.vertical, 8)
                 }
 
                 Spacer()
 
-                HStack(spacing: 4) {
+                HStack(spacing: 8) {
                     Button {
                         statsService.refresh()
                         showStats = true
                     } label: {
                         Image(systemName: "brain.head.profile")
-                            .frame(width: 34)
+                            .font(AppFont.body(appLayout.iconGlyphSize))
+                            .frame(width: appLayout.iconSize)
                             .padding(.vertical, 8)
                             .foregroundColor(viewModel.statsIconColour)
                             .scaleEffect(pulses ? 0.7 : 1)
@@ -168,7 +174,8 @@ struct BackwordView: View {
                         showInstructions = true
                     } label: {
                         Image(systemName: "info.circle")
-                            .frame(width: 34)
+                            .font(AppFont.body(appLayout.iconGlyphSize))
+                            .frame(width: appLayout.iconSize)
                             .foregroundColor(.appTextPrimary)
                             .padding(.vertical, 8)
                     }
@@ -182,7 +189,7 @@ struct BackwordView: View {
 
                 }
             }
-            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         }
     }
 

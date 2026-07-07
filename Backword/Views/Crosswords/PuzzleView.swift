@@ -9,6 +9,7 @@ struct PuzzleView: View {
     @EnvironmentObject var appReviewPromptService: AppReviewPromptService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.horizontalSizeClass) var sizeClass
     @ScaledMetric private var buttonWidth: CGFloat = 60
     @State private var showPaywall = false
     @State private var showRewardedHintBanner = false
@@ -338,18 +339,8 @@ struct PuzzleView: View {
 
     // MARK: - Toolbar
 
-    @Environment(\.horizontalSizeClass) var sizeClass
-
-    private var iconSize: CGFloat {
-        AppLayout(sizeClass: sizeClass).isiPad ? 54 : 30
-    }
-
-    private var iconGlyphSize: CGFloat {
-        AppLayout(sizeClass: sizeClass).isiPad ? 30 : 18
-    }
-
-    private var iconTextSize: CGFloat {
-        AppLayout(sizeClass: sizeClass).isiPad ? 20 : 16
+    private var appLayout: AppLayout {
+        AppLayout(sizeClass: sizeClass)
     }
 
     @ViewBuilder
@@ -361,8 +352,8 @@ struct PuzzleView: View {
                 showGiveUpConfirmation = true
             } label: {
                 Image(systemName: "flag.fill")
-                    .font(AppFont.body(iconGlyphSize))
-                    .frame(width: iconSize)
+                    .font(AppFont.body(appLayout.iconGlyphSize))
+                    .frame(width: appLayout.iconSize)
                     .foregroundColor(.appTextPrimary)
             }
             .accessibilityLabel("Give up")
@@ -372,8 +363,8 @@ struct PuzzleView: View {
             showCrosswordStats = true
         } label: {
             Image(systemName: "brain.head.profile")
-                .font(AppFont.body(iconGlyphSize))
-                .frame(width: iconSize)
+                .font(AppFont.body(appLayout.iconGlyphSize))
+                .frame(width: appLayout.iconSize)
                 .foregroundColor(.appTextPrimary)
         }
 
@@ -381,8 +372,8 @@ struct PuzzleView: View {
             viewModel.showClueList = true
         } label: {
             Image(systemName: "list.bullet")
-                .font(AppFont.body(iconGlyphSize))
-                .frame(width: iconSize)
+                .font(AppFont.body(appLayout.iconGlyphSize))
+                .frame(width: appLayout.iconSize)
                 .foregroundColor(.appTextPrimary)
         }
 
@@ -391,8 +382,8 @@ struct PuzzleView: View {
                 showInstructions = true
             } label: {
                 Image(systemName: "info.circle")
-                    .font(AppFont.body(iconGlyphSize))
-                    .frame(width: iconSize)
+                    .font(AppFont.body(appLayout.iconGlyphSize))
+                    .frame(width: appLayout.iconSize)
                     .foregroundColor(.appTextPrimary)
             }
             .accessibilityLabel("How to play")
@@ -413,10 +404,10 @@ struct PuzzleView: View {
             HStack(spacing: 6) {
                 let hintsRemaining = storeService.isProUser ? 1 : max(0, freeHintLimit + viewModel.adBonusHints - viewModel.progress.hintedClueIds.count)
                 Text(viewModel.activeClueIsHinted || hintsRemaining > 0 ? "Hint" : "Get hint")
-                    .font(AppFont.body(iconTextSize))
+                    .font(AppFont.body(appLayout.iconTextSize))
                 Image(systemName: viewModel.activeClueIsHinted ? "lightbulb.fill" : "lightbulb")
-                    .font(AppFont.body(iconGlyphSize))
-                    .frame(height: iconSize)
+                    .font(AppFont.body(appLayout.iconGlyphSize))
+                    .frame(height: appLayout.iconSize)
             }
             .foregroundColor(viewModel.activeClueIsHinted ? .appCorrect : .appAccent)
         }
