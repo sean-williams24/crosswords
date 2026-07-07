@@ -50,7 +50,7 @@ struct BackwordCard: View {
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .strokeBorder(Color.appAccent, lineWidth: 1)
+                .strokeBorder(Color.appAccent, lineWidth: 2)
         )
     }
 

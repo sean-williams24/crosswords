@@ -278,7 +278,7 @@ struct HomeView: View {
             } else {
                 Group {
                     backwordCard
-                        .shadow(color: .primary, radius: 2, x: 0, y: 1)
+//                        .shadow(color: .primary, radius: 2, x: 0, y: 1)
                         .padding(.bottom, 20)
                     dailyCrosswordCard
                 }
