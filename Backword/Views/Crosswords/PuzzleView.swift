@@ -341,15 +341,15 @@ struct PuzzleView: View {
     @Environment(\.horizontalSizeClass) var sizeClass
 
     private var iconSize: CGFloat {
-        AppLayout(sizeClass: sizeClass).isiPad ? 54 : 26
+        AppLayout(sizeClass: sizeClass).isiPad ? 54 : 30
     }
 
     private var iconGlyphSize: CGFloat {
-        AppLayout(sizeClass: sizeClass).isiPad ? 30 : 14
+        AppLayout(sizeClass: sizeClass).isiPad ? 30 : 18
     }
 
     private var iconTextSize: CGFloat {
-        AppLayout(sizeClass: sizeClass).isiPad ? 20 : 13
+        AppLayout(sizeClass: sizeClass).isiPad ? 20 : 16
     }
 
     @ViewBuilder
@@ -361,7 +361,7 @@ struct PuzzleView: View {
                 showGiveUpConfirmation = true
             } label: {
                 Image(systemName: "flag.fill")
-                    .font(.system(size: iconGlyphSize))
+                    .font(AppFont.body(iconGlyphSize))
                     .frame(width: iconSize)
                     .foregroundColor(.appTextPrimary)
             }
@@ -372,7 +372,7 @@ struct PuzzleView: View {
             showCrosswordStats = true
         } label: {
             Image(systemName: "brain.head.profile")
-                .font(.system(size: iconGlyphSize))
+                .font(AppFont.body(iconGlyphSize))
                 .frame(width: iconSize)
                 .foregroundColor(.appTextPrimary)
         }
@@ -381,7 +381,7 @@ struct PuzzleView: View {
             viewModel.showClueList = true
         } label: {
             Image(systemName: "list.bullet")
-                .font(.system(size: iconGlyphSize))
+                .font(AppFont.body(iconGlyphSize))
                 .frame(width: iconSize)
                 .foregroundColor(.appTextPrimary)
         }
@@ -391,7 +391,7 @@ struct PuzzleView: View {
                 showInstructions = true
             } label: {
                 Image(systemName: "info.circle")
-                    .font(.system(size: iconGlyphSize))
+                    .font(AppFont.body(iconGlyphSize))
                     .frame(width: iconSize)
                     .foregroundColor(.appTextPrimary)
             }
@@ -410,13 +410,13 @@ struct PuzzleView: View {
                 }
             }
         } label: {
-            HStack(spacing: 4) {
-                Image(systemName: viewModel.activeClueIsHinted ? "lightbulb.fill" : "lightbulb")
-                    .font(.system(size: iconGlyphSize))
-                    .frame(height: iconSize)
+            HStack(spacing: 6) {
                 let hintsRemaining = storeService.isProUser ? 1 : max(0, freeHintLimit + viewModel.adBonusHints - viewModel.progress.hintedClueIds.count)
                 Text(viewModel.activeClueIsHinted || hintsRemaining > 0 ? "Hint" : "Get hint")
                     .font(AppFont.body(iconTextSize))
+                Image(systemName: viewModel.activeClueIsHinted ? "lightbulb.fill" : "lightbulb")
+                    .font(AppFont.body(iconGlyphSize))
+                    .frame(height: iconSize)
             }
             .foregroundColor(viewModel.activeClueIsHinted ? .appCorrect : .appAccent)
         }
