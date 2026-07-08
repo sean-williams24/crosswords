@@ -36,6 +36,12 @@ struct HomeCardStreakLayoutTests {
     func streakButtonUsesSharedEdgeInset() {
         #expect(HomeCardStreakLayout.streakButtonEdgeInset == 12)
     }
+
+    @Test("Won crossword shows finished label")
+    func wonCrosswordShowsFinishedLabel() {
+        #expect(PuzzleStatus.completedOnTime.label == "Finished")
+        #expect(PuzzleStatus.completedLate.label == "Finished")
+    }
 }
 
 @Suite("Backword streak")

@@ -23,7 +23,7 @@ enum PuzzleStatus {
 
     var label: String {
         switch self {
-        case .completedOnTime:         return "Solved"
+        case .completedOnTime:         return "Finished"
         case .completedLate:           return "Finished"
         case .wonBackword(let count):  return "\(count) guess\(count == 1 ? "" : "es")"
         case .failedBackword:          return "Failed"
@@ -34,7 +34,7 @@ enum PuzzleStatus {
 
     var color: Color {
         switch self {
-        case .completedOnTime: return .solvedGold
+        case .completedOnTime: return .appCorrect
         case .completedLate:   return .appCorrect
         case .wonBackword:     return .appCorrect
         case .failedBackword:  return .red.opacity(0.7)
