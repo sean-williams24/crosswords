@@ -61,12 +61,12 @@ struct BackwordCard: View {
 
     @ViewBuilder
     private var playView: some View {
-        todaysWordView
+//        todaysWordView
 
-        Text(guessInfoText)
-            .font(AppFont.caption())
-            .foregroundColor(.appTextPrimary)
-            .padding(.bottom, 16)
+//        Text(guessInfoText)
+//            .font(AppFont.caption())
+//            .foregroundColor(.appTextPrimary)
+//            .padding(.bottom, 16)
 
         if let status {
             StatusLabelView(status: status)
