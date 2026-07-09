@@ -34,7 +34,7 @@ enum PuzzleStatus {
 
     var color: Color {
         switch self {
-        case .completedOnTime: return .appCorrect
+        case .completedOnTime: return .solvedGold
         case .completedLate:   return .appCorrect
         case .wonBackword:     return .appCorrect
         case .failedBackword:  return .red.opacity(0.7)
