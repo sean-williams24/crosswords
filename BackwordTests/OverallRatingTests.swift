@@ -335,3 +335,104 @@ struct OverallRatingTests {
         ContentReleaseCalendar().dailyDateString(offsetByDays: offset)!
     }
 }
+
+@Suite("OverallRatingService crossword score window")
+struct OverallRatingServiceScoreWindowTests {
+    @Test("Daily crossword can score only on its puzzle date")
+    @MainActor
+    func dailyCrosswordScoresOnlyOnPuzzleDate() {
+        let service = OverallRatingService(rating: OverallRating())
+        let releaseCalendar = makeReleaseCalendar("2026-07-04")
+
+        service.recordDailyCrossword(
+            completedClues: 10,
+            totalClues: 10,
+            date: "2026-07-04",
+            releaseCalendar: releaseCalendar,
+            shouldSave: false
+        )
+        service.recordDailyCrossword(
+            completedClues: 10,
+            totalClues: 10,
+            date: "2026-07-03",
+            releaseCalendar: releaseCalendar,
+            shouldSave: false
+        )
+
+        #expect(service.rating.dailyScores.count == 1)
+        #expect(service.rating.dailyScores[0].date == "2026-07-04")
+        #expect(service.rating.dailyScores[0].dailyCrossword == 5)
+    }
+
+    @Test("Late archive daily crossword completion does not improve an existing score")
+    @MainActor
+    func lateArchiveDailyCompletionDoesNotImproveExistingScore() {
+        var rating = OverallRating()
+        rating.upsertDailyCrossword(score: 2, date: "2026-07-04")
+        let service = OverallRatingService(rating: rating)
+
+        service.recordDailyCrossword(
+            completedClues: 10,
+            totalClues: 10,
+            date: "2026-07-04",
+            releaseCalendar: makeReleaseCalendar("2026-07-05"),
+            shouldSave: false
+        )
+
+        #expect(service.rating.dailyScores.count == 1)
+        #expect(service.rating.dailyScores[0].dailyCrossword == 2)
+    }
+
+    @Test("Rollover scoring can use the pre-midnight calendar")
+    @MainActor
+    func rolloverScoringUsesPreMidnightCalendar() {
+        let service = OverallRatingService(rating: OverallRating())
+
+        service.recordDailyCrossword(
+            completedClues: 5,
+            totalClues: 10,
+            date: "2026-07-04",
+            releaseCalendar: makeReleaseCalendar("2026-07-04"),
+            shouldSave: false
+        )
+
+        #expect(service.rating.dailyScores.count == 1)
+        #expect(service.rating.dailyScores[0].date == "2026-07-04")
+        #expect(service.rating.dailyScores[0].dailyCrossword == 3)
+    }
+
+    @Test("Weekly crossword uses the active weekly release date")
+    @MainActor
+    func weeklyCrosswordUsesActiveWeeklyReleaseDate() {
+        let service = OverallRatingService(rating: OverallRating())
+        let releaseCalendar = makeReleaseCalendar("2026-07-09")
+
+        service.recordWeeklyCrossword(
+            completedClues: 20,
+            totalClues: 20,
+            date: "2026-07-05",
+            releaseCalendar: releaseCalendar,
+            shouldSave: false
+        )
+        service.recordWeeklyCrossword(
+            completedClues: 20,
+            totalClues: 20,
+            date: "2026-06-28",
+            releaseCalendar: releaseCalendar,
+            shouldSave: false
+        )
+
+        #expect(service.rating.dailyScores.count == 1)
+        #expect(service.rating.dailyScores[0].date == "2026-07-05")
+        #expect(service.rating.dailyScores[0].weeklyCrossword == 5)
+    }
+
+    private func makeReleaseCalendar(_ dateString: String) -> ContentReleaseCalendar {
+        var formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let date = formatter.date(from: "\(dateString) 12:00:00")!
+        return ContentReleaseCalendar(now: date, timeZone: TimeZone(secondsFromGMT: 0)!)
+    }
+}

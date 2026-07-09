@@ -163,19 +163,21 @@ struct HomeView: View {
             .task {
                 // Sleep until local midnight then trigger a full refresh, then repeat each day.
                 while !Task.isCancelled {
+                    let rolloverScoringCalendar = ContentReleaseCalendar()
                     guard let delay = secondsUntilMidnight(), delay > 0 else { break }
                     try? await Task.sleep(for: .seconds(delay))
                     guard !Task.isCancelled else { break }
+                    ratingService.recordCurrentPuzzles(
+                        daily: viewModel.todaysPuzzle,
+                        weekly: viewModel.weeklyPuzzle,
+                        releaseCalendar: rolloverScoringCalendar
+                    )
                     await viewModel.loadTodaysPuzzle()
                     await wotdService.refreshIfNeeded()
                     await backwordService.refreshIfNeeded()
                     await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                     backwordStatsService.refresh()
                     ratingService.refresh()
-                    ratingService.recordCurrentPuzzles(
-                        daily: viewModel.todaysPuzzle,
-                        weekly: viewModel.weeklyPuzzle
-                    )
                 }
             }
             .onAppear {
