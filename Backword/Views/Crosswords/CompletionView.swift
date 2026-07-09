@@ -13,6 +13,14 @@ struct CompletionView: View {
     @State private var hasShownAd = false
     @Binding var shouldPop: Bool
 
+    private var displayState: CompletionDisplayState {
+        CompletionDisplayState.make(
+            puzzle: viewModel.puzzle,
+            progress: viewModel.progress,
+            hasGivenUp: viewModel.hasGivenUp
+        )
+    }
+
     var body: some View {
         ZStack {
             Color.appBackground
@@ -23,9 +31,9 @@ struct CompletionView: View {
 
                 // Celebration header
                 VStack(spacing: 8) {
-                    Text(viewModel.hasGivenUp ? "Gave up" : "Solved!")
+                    Text(displayState.title)
                         .font(AppFont.header(40))
-                        .foregroundColor(.appTextHeading)
+                        .foregroundColor(titleColor)
 
                     Text("PUZZLE #\(viewModel.puzzle.puzzleNumber)")
                         .font(AppFont.clueLabel(14))
@@ -35,40 +43,15 @@ struct CompletionView: View {
                 .scaleEffect(showContent ? 1.0 : 0.6)
                 .opacity(showContent ? 1.0 : 0.0)
 
-                // Stats card
-                VStack {
-                    HStack(spacing: 24) {
-                        statItem(
-                            value: "\(statsService.stats.currentStreak)",
-                            label: "STREAK"
-                            )
-                        statDivider
-                        statItem(
-                            value: "\(viewModel.progress.hintsUsed)",
-                            label: "HINTS"
-                        )
-                    }
-                    HStack(spacing: 24) {
-                        statItem(
-                            value: "\(completionScore)/5",
-                            label: "SCORE"
-                        )
-                        statDivider
-                        statItem(
-                            value: viewModel.progress.formattedTime,
-                            label: "TIME"
-                        )
+                Group {
+                    if displayState.showsStats {
+                        statsCard
+                    } else if let message = displayState.message {
+                        completionMessage(message)
                     }
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 32)
-                .padding(.vertical, 20)
-                .background(Color.appSurface)
-                .cornerRadius(AppLayout.cardCornerRadius)
-                .padding(.horizontal, AppLayout.screenPadding)
                 .opacity(showContent ? 1.0 : 0.0)
                 .offset(y: showContent ? 0 : 20)
-                .dynamicTypeSize(...DynamicTypeSize.accessibility2)
 
                 Spacer()
 
@@ -127,6 +110,64 @@ struct CompletionView: View {
     }
 
     // MARK: - Components
+
+    private var titleColor: Color {
+        switch displayState.titleStyle {
+        case .solved, .gaveUp:
+            return .appTextHeading
+        case .finished:
+            return .appCorrect
+        }
+    }
+
+    private var statsCard: some View {
+        VStack {
+            HStack(spacing: 24) {
+                statItem(
+                    value: "\(statsService.stats.currentStreak)",
+                    label: "STREAK"
+                )
+                statDivider
+                statItem(
+                    value: "\(viewModel.progress.hintsUsed)",
+                    label: "HINTS"
+                )
+            }
+            HStack(spacing: 24) {
+                statItem(
+                    value: "\(completionScore)/5",
+                    label: "SCORE"
+                )
+                statDivider
+                statItem(
+                    value: viewModel.progress.formattedTime,
+                    label: "TIME"
+                )
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 32)
+        .padding(.vertical, 20)
+        .background(Color.appSurface)
+        .cornerRadius(AppLayout.cardCornerRadius)
+        .padding(.horizontal, AppLayout.screenPadding)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+    }
+
+    private func completionMessage(_ message: String) -> some View {
+        Text(message)
+            .font(AppFont.body())
+            .foregroundColor(.appTextSecondary)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 32)
+            .padding(.vertical, 24)
+            .background(Color.appSurface)
+            .cornerRadius(AppLayout.cardCornerRadius)
+            .padding(.horizontal, AppLayout.screenPadding)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+    }
 
     @ViewBuilder
     private func statItem(value: String, label: String) -> some View {

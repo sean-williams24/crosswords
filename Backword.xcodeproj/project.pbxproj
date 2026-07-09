@@ -26,6 +26,8 @@
 		05AD30042FFF100000000001 /* AppReviewPromptServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */; };
 		05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */; };
 		05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */; };
+		05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */; };
+		05D1A0073001000000000001 /* CompletionDisplayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0063001000000000001 /* CompletionDisplayState.swift */; };
 		05D2A0013002000000000001 /* DailyCrosswordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */; };
 		05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */; };
 		05F1E1A62FFCFD9300F1E1A5 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A32FFCFD9300F1E1A5 /* FirebaseCore */; };
@@ -164,6 +166,8 @@
 		05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewPromptServiceTests.swift; sourceTree = "<group>"; };
 		05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReleaseCalendarTests.swift; sourceTree = "<group>"; };
 		05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAuxiliaryContentServiceTests.swift; sourceTree = "<group>"; };
+		05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayStateTests.swift; sourceTree = "<group>"; };
+		05D1A0063001000000000001 /* CompletionDisplayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayState.swift; sourceTree = "<group>"; };
 		05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordInstructionsContentView.swift; sourceTree = "<group>"; };
 		05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLogger.swift; sourceTree = "<group>"; };
 		0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewTests.swift; sourceTree = "<group>"; };
@@ -333,6 +337,7 @@
 				05A1D9B62FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift */,
 				05AD00032FFD000000000001 /* AdConsentServiceTests.swift */,
 				05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */,
+				05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */,
 				A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */,
 				05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */,
 				05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */,
@@ -358,6 +363,7 @@
 				04ADAE922FFD100000000001 /* AdExplainerPresentationPolicy.swift */,
 				B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */,
 				41BD8C5299844A6BAF87B504 /* AppSettings.swift */,
+				05D1A0063001000000000001 /* CompletionDisplayState.swift */,
 				15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */,
 				E6124F655D1ABA64F820B278 /* BackwordProgress.swift */,
 				C99766A650EBD6521697BD6C /* BackwordStats.swift */,
@@ -716,6 +722,7 @@
 				05A1D9B72FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift in Sources */,
 				05AD00042FFD000000000001 /* AdConsentServiceTests.swift in Sources */,
 				05AD30042FFF100000000001 /* AppReviewPromptServiceTests.swift in Sources */,
+				05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */,
 				05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */,
 				05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */,
 				ABCD10000000000000000004 /* FeedbackEmailContentTests.swift in Sources */,
@@ -786,6 +793,7 @@
 				BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */,
 				C2A2E6FA90B85E2884F67538 /* ClueListView.swift in Sources */,
 				AC638DF36320A3F8C6EFDE6E /* CompletionView.swift in Sources */,
+				05D1A0073001000000000001 /* CompletionDisplayState.swift in Sources */,
 				86AFC3D52FC2402F007623C3 /* StatsView.swift in Sources */,
 				21618E85BCB44C8BE6735598 /* DebugSettingsView.swift in Sources */,
 				9344322FC4BD6682AB74BE2A /* GameViewModel.swift in Sources */,
