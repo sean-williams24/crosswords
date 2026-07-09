@@ -390,7 +390,6 @@ final class AdService: NSObject, ObservableObject {
     private func completeRewardedAd(with result: RewardedAdResult) {
         guard let context = rewardedAdContext else { return }
         rewardedAdContext = nil
-        context.stuckAdTask?.cancel()
         logger.rewardedAdCompleted(with: result, attemptID: context.attemptID, presentedAt: context.presentedAt)
         context.completion(result)
     }
@@ -398,24 +397,11 @@ final class AdService: NSObject, ObservableObject {
     private func completeInterstitial() {
         guard let context = interstitialContext else { return }
         interstitialContext = nil
-        context.stuckAdTask?.cancel()
         context.onDismiss()
     }
 
     private func clearDirectInterstitialContext() {
-        directInterstitialContext?.stuckAdTask?.cancel()
         directInterstitialContext = nil
-    }
-
-    private func dismissTopAdControllerIfNeeded() {
-        guard let top = topViewController() else { return }
-        let className = String(describing: type(of: top))
-        guard Self.isGoogleFullScreenAdControllerClassName(className) else { return }
-        top.dismiss(animated: true)
-    }
-
-    nonisolated static func isGoogleFullScreenAdControllerClassName(_ className: String) -> Bool {
-        className.contains("GAD") || className.contains("GoogleMobileAds")
     }
 
     private func presentInterstitialIfReady(for type: UserDefaultsKey, onDismiss: @escaping @MainActor () -> Void) -> Bool {
@@ -459,12 +445,6 @@ final class AdService: NSObject, ObservableObject {
         guard var context = interstitialContext else { return (nil, nil) }
         let presentedAt = Date()
         context.presentedAt = presentedAt
-        context.stuckAdTask = makePossibleStuckAdTask(
-            format: .interstitial,
-            placement: context.type,
-            attemptID: context.attemptID,
-            presentedAt: presentedAt
-        )
         interstitialContext = context
         return (context.attemptID, presentedAt)
     }
@@ -473,12 +453,6 @@ final class AdService: NSObject, ObservableObject {
         guard var context = directInterstitialContext else { return (nil, nil) }
         let presentedAt = Date()
         context.presentedAt = presentedAt
-        context.stuckAdTask = makePossibleStuckAdTask(
-            format: .interstitial,
-            placement: nil,
-            attemptID: context.attemptID,
-            presentedAt: presentedAt
-        )
         directInterstitialContext = context
         return (context.attemptID, presentedAt)
     }
@@ -487,75 +461,8 @@ final class AdService: NSObject, ObservableObject {
         guard var context = rewardedAdContext else { return (nil, nil) }
         let presentedAt = Date()
         context.presentedAt = presentedAt
-        context.stuckAdTask = makePossibleStuckAdTask(
-            format: .rewarded,
-            placement: nil,
-            attemptID: context.attemptID,
-            presentedAt: presentedAt
-        )
         rewardedAdContext = context
         return (context.attemptID, presentedAt)
-    }
-
-    private func makePossibleStuckAdTask(
-        format: BackwordAnalyticsEvent.AdFormat,
-        placement: UserDefaultsKey?,
-        attemptID: String,
-        presentedAt: Date
-    ) -> Task<Void, Never> {
-        Task { @MainActor [weak self] in
-            try? await Task.sleep(nanoseconds: 45_000_000_000)
-            guard !Task.isCancelled else { return }
-            self?.logger.possibleStuckAd(
-                format: format,
-                placement: placement,
-                attemptID: attemptID,
-                presentedAt: presentedAt
-            )
-            self?.recoverPossiblyStuckAd(format: format, attemptID: attemptID)
-        }
-    }
-
-    private func recoverPossiblyStuckAd(format: BackwordAnalyticsEvent.AdFormat, attemptID: String) {
-        switch format {
-        case .interstitial:
-            let matchesInterstitial = interstitialContext?.attemptID == attemptID
-            let matchesDirectInterstitial = directInterstitialContext?.attemptID == attemptID
-            guard matchesInterstitial || matchesDirectInterstitial else { return }
-
-            logger.recoveringPossiblyStuckAd(format: format, attemptID: attemptID)
-            dismissTopAdControllerIfNeeded()
-            interstitial = nil
-            isPresentingFullScreenAd = false
-
-            if matchesInterstitial {
-                completeInterstitial()
-            }
-            if matchesDirectInterstitial {
-                clearDirectInterstitialContext()
-            }
-
-            Task { @MainActor [self] in
-                await loadAd()
-            }
-
-        case .rewarded:
-            guard rewardedAdContext?.attemptID == attemptID else { return }
-
-            logger.recoveringPossiblyStuckAd(format: format, attemptID: attemptID)
-            dismissTopAdControllerIfNeeded()
-            rewarded = nil
-            isPresentingFullScreenAd = false
-            rewardGranted = false
-            completeRewardedAd(with: .dismissedWithoutReward)
-
-            Task { @MainActor [self] in
-                await loadRewardedAd()
-            }
-
-        case .unknown:
-            return
-        }
     }
 
     private struct InterstitialPresentationContext {
@@ -563,7 +470,6 @@ final class AdService: NSObject, ObservableObject {
         let attemptID: String
         let requestedAt: Date
         var presentedAt: Date?
-        var stuckAdTask: Task<Void, Never>?
         let onDismiss: @MainActor () -> Void
     }
 
@@ -571,7 +477,6 @@ final class AdService: NSObject, ObservableObject {
         let attemptID: String
         let requestedAt: Date
         var presentedAt: Date?
-        var stuckAdTask: Task<Void, Never>?
         let completion: @MainActor (RewardedAdResult) -> Void
     }
 
@@ -579,7 +484,6 @@ final class AdService: NSObject, ObservableObject {
         let attemptID: String
         let requestedAt: Date
         var presentedAt: Date?
-        var stuckAdTask: Task<Void, Never>?
     }
 }
 

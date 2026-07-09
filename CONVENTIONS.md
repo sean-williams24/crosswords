@@ -284,8 +284,8 @@ Current slots:
 
 Slots are independent — each resets at the next calendar midnight (device local time, via `Calendar.current`).
 
-### Full-screen ad recovery
+### Full-screen ad lifecycle
 
-`AdService` treats a full-screen ad with no dismiss/failure callback after 45 seconds as possibly stuck. The watchdog logs `possible_stuck`, clears the app's in-progress presentation state, dismisses the visible Google ad controller if it is still top-most, and reloads the affected ad format. For once-per-day interstitials, the original continuation is allowed to proceed during this recovery so users are not trapped behind a missing SDK callback.
+Full-screen ads are SDK-owned view controllers. `AdService` must not automatically dismiss interstitial or rewarded ads with app-owned timers; some real-world ads can take over a minute to fully show. Ad state should be cleared only from Google Mobile Ads delegate callbacks such as failure or dismissal.
 
-Avoid starting home-screen refresh work while `adService.isPresentingFullScreenAd` is true. Full-screen ads are SDK-owned view controllers, and unrelated SwiftUI/TipKit presentation churn while they are active can make lifecycle and touch handling harder to reason about.
+Avoid starting home-screen refresh work while `adService.isPresentingFullScreenAd` is true. Unrelated SwiftUI/TipKit presentation churn while full-screen ads are active can make lifecycle and touch handling harder to reason about.

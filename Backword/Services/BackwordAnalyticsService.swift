@@ -123,7 +123,6 @@ struct BackwordAnalyticsEvent: Equatable {
         case willPresent = "will_present"
         case willDismiss = "will_dismiss"
         case didDismiss = "did_dismiss"
-        case possibleStuck = "possible_stuck"
         case rewardEarned = "reward_earned"
         case completed
     }

@@ -198,23 +198,6 @@ struct AdLogger {
         )
     }
 
-    func possibleStuckAd(format: BackwordAnalyticsEvent.AdFormat, placement: AdService.UserDefaultsKey?, attemptID: String, presentedAt: Date) {
-        logger.error("\(format.rawValue, privacy: .public) ad possible stuck after 45 seconds for attempt \(attemptID, privacy: .public)")
-        logAnalytics(
-            .possibleStuck,
-            format: format,
-            placement: placement,
-            attemptID: attemptID,
-            result: "no_dismiss_callback_after_45_seconds",
-            presentedAt: presentedAt,
-            secondsSincePresent: secondsSince(presentedAt)
-        )
-    }
-
-    func recoveringPossiblyStuckAd(format: BackwordAnalyticsEvent.AdFormat, attemptID: String) {
-        logger.error("Recovering possibly stuck \(format.rawValue, privacy: .public) ad for attempt \(attemptID, privacy: .public)")
-    }
-
     private var appEnvironment: String {
         #if DEBUG
         return "debug"
