@@ -19,11 +19,11 @@ struct BackwordArchiveRow: View {
                 HStack(spacing: 16) {
                     DateSection(date: word.date)
                     Spacer()
-                    StatusLabelView(status: .status(for: progress))
+                    StatusLabelView(status: .status(for: progress, puzzleDate: word.date))
                 }
                 VStack(alignment: .leading) {
                     DateSection(date: word.date)
-                    StatusLabelView(status: .status(for: progress))
+                    StatusLabelView(status: .status(for: progress, puzzleDate: word.date))
                 }
             }
             .frame(minHeight: 50)

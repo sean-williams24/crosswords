@@ -427,6 +427,47 @@ struct OverallRatingServiceScoreWindowTests {
         #expect(service.rating.dailyScores[0].weeklyCrossword == 5)
     }
 
+    @Test("Backword can score only on its release date")
+    @MainActor
+    func backwordScoresOnlyOnReleaseDate() {
+        let service = OverallRatingService(rating: OverallRating())
+
+        service.recordBackword(
+            guessCount: 1,
+            date: "2026-07-04",
+            releaseCalendar: makeReleaseCalendar("2026-07-04"),
+            shouldSave: false
+        )
+        service.recordBackword(
+            guessCount: 1,
+            date: "2026-07-03",
+            releaseCalendar: makeReleaseCalendar("2026-07-04"),
+            shouldSave: false
+        )
+
+        #expect(service.rating.dailyScores.count == 1)
+        #expect(service.rating.dailyScores[0].date == "2026-07-04")
+        #expect(service.rating.dailyScores[0].backword == 5)
+    }
+
+    @Test("Late archive Backword completion does not improve an existing score")
+    @MainActor
+    func lateArchiveBackwordCompletionDoesNotImproveExistingScore() {
+        var rating = OverallRating()
+        rating.upsertBackword(score: 2, date: "2026-07-04")
+        let service = OverallRatingService(rating: rating)
+
+        service.recordBackword(
+            guessCount: 1,
+            date: "2026-07-04",
+            releaseCalendar: makeReleaseCalendar("2026-07-05"),
+            shouldSave: false
+        )
+
+        #expect(service.rating.dailyScores.count == 1)
+        #expect(service.rating.dailyScores[0].backword == 2)
+    }
+
     private func makeReleaseCalendar(_ dateString: String) -> ContentReleaseCalendar {
         var formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)

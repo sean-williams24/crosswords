@@ -5,6 +5,7 @@ import SwiftUI
 enum PuzzleStatus {
     case completedOnTime
     case completedLate
+    case wonBackwordOnTime(Int)
     case wonBackword(Int)
     case failedBackword
     case inProgress
@@ -14,6 +15,8 @@ enum PuzzleStatus {
         switch self {
         case .completedOnTime: return "checkmark.circle.fill"
         case .completedLate:   return "checkmark.circle.fill"
+        case .wonBackwordOnTime:
+            return "checkmark.circle.fill"
         case .wonBackword:     return "checkmark.circle.fill"
         case .failedBackword:  return "xmark.circle.fill"
         case .inProgress:      return "pencil.circle"
@@ -25,6 +28,8 @@ enum PuzzleStatus {
         switch self {
         case .completedOnTime:         return "Solved"
         case .completedLate:           return "Finished"
+        case .wonBackwordOnTime(let count):
+            return "\(count) guess\(count == 1 ? "" : "es")"
         case .wonBackword(let count):  return "\(count) guess\(count == 1 ? "" : "es")"
         case .failedBackword:          return "Failed"
         case .inProgress:              return "In Progress"
@@ -36,6 +41,8 @@ enum PuzzleStatus {
         switch self {
         case .completedOnTime: return .solvedGold
         case .completedLate:   return .appCorrect
+        case .wonBackwordOnTime:
+            return .solvedGold
         case .wonBackword:     return .appCorrect
         case .failedBackword:  return .red.opacity(0.7)
         case .inProgress:      return .appAccent
@@ -69,5 +76,18 @@ enum PuzzleStatus {
             return progress.isWon ? .wonBackword(progress.guesses.count) : .failedBackword
         }
         return progress.guesses.isEmpty ? .notStarted : .inProgress
+    }
+
+    static func status(for progress: BackwordProgress?, puzzleDate: String) -> PuzzleStatus {
+        guard let progress else { return .notStarted }
+        guard progress.isComplete, let completedAt = progress.completedAt else {
+            return progress.guesses.isEmpty ? .notStarted : .inProgress
+        }
+        guard progress.isWon else { return .failedBackword }
+
+        let completionDate = ContentReleaseCalendar(now: completedAt).dailyDateString
+        return completionDate == puzzleDate
+            ? .wonBackwordOnTime(progress.guesses.count)
+            : .wonBackword(progress.guesses.count)
     }
 }

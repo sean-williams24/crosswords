@@ -88,6 +88,38 @@ struct HomeCardStreakLayoutTests {
         #expect(PuzzleStatus.status(for: entry, isWeekly: true).label == "Finished")
     }
 
+    @Test("Backword archive status uses gold for on-time wins")
+    func backwordArchiveStatusUsesGoldForOnTimeWins() throws {
+        var progress = BackwordProgress(date: "2026-07-09")
+        progress.guesses = ["CASTLE"]
+        progress.wonFlag = true
+        progress.completedAt = try #require(Self.date(from: "2026-07-09 12:00:00"))
+
+        let status = PuzzleStatus.status(for: progress, puzzleDate: "2026-07-09")
+
+        guard case .wonBackwordOnTime(1) = status else {
+            Issue.record("Expected on-time Backword win status, got \(status)")
+            return
+        }
+        #expect(status.label == "1 guess")
+    }
+
+    @Test("Backword archive status uses correct green for late wins")
+    func backwordArchiveStatusUsesCorrectGreenForLateWins() throws {
+        var progress = BackwordProgress(date: "2026-07-09")
+        progress.guesses = ["POETRY", "CASTLE"]
+        progress.wonFlag = true
+        progress.completedAt = try #require(Self.date(from: "2026-07-10 12:00:00"))
+
+        let status = PuzzleStatus.status(for: progress, puzzleDate: "2026-07-09")
+
+        guard case .wonBackword(2) = status else {
+            Issue.record("Expected late Backword win status, got \(status)")
+            return
+        }
+        #expect(status.label == "2 guesses")
+    }
+
     private static func date(from string: String) -> Date? {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)

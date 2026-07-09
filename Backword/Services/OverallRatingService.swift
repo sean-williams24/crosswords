@@ -30,6 +30,7 @@ final class OverallRatingService: ObservableObject {
         // Backword
         for bw in BackwordProgress.loadAll() where bw.date >= cutoff {
             guard bw.isComplete else { continue }
+            guard Self.canScoreBackword(progress: bw) else { continue }
             let score = bw.isWon ? Int.backwordScore(guessCount: bw.guesses.count) : 0
             rating.upsertBackword(score: score, date: bw.date)
         }
@@ -54,6 +55,7 @@ final class OverallRatingService: ObservableObject {
         }
 
         removeInvalidPerfectCrosswordScores(using: progressRecords)
+        removeInvalidBackwordScores()
         rating.save()
     }
 
@@ -84,6 +86,23 @@ final class OverallRatingService: ObservableObject {
             if rating.dailyScores[idx].weeklyCrossword == 5,
                !onTimeWeeklySolvedDates.contains(date) {
                 rating.dailyScores[idx].weeklyCrossword = 0
+            }
+        }
+        rating.trim()
+    }
+
+    private func removeInvalidBackwordScores() {
+        let onTimeWonDates = Set(BackwordProgress.loadAll().compactMap { progress -> String? in
+            guard Self.canScoreBackword(progress: progress),
+                  progress.isWon else { return nil }
+            return progress.date
+        })
+
+        for idx in rating.dailyScores.indices {
+            let date = rating.dailyScores[idx].date
+            if rating.dailyScores[idx].backword > 0,
+               !onTimeWonDates.contains(date) {
+                rating.dailyScores[idx].backword = 0
             }
         }
         rating.trim()
@@ -185,9 +204,27 @@ final class OverallRatingService: ObservableObject {
     // MARK: - Backword Scoring
 
     /// Record a Backword result. `guessCount` is nil on a loss.
-    func recordBackword(guessCount: Int?, date: String) {
+    func recordBackword(
+        guessCount: Int?,
+        date: String,
+        releaseCalendar: ContentReleaseCalendar = ContentReleaseCalendar(),
+        shouldSave: Bool = true
+    ) {
+        guard Self.canScoreBackword(date: date, releaseCalendar: releaseCalendar) else { return }
         let score = Int.backwordScore(guessCount: guessCount)
         rating.upsertBackword(score: score, date: date)
-        rating.save()
+        if shouldSave { rating.save() }
+    }
+
+    static func canScoreBackword(
+        date: String,
+        releaseCalendar: ContentReleaseCalendar = ContentReleaseCalendar()
+    ) -> Bool {
+        date == releaseCalendar.dailyDateString
+    }
+
+    static func canScoreBackword(progress: BackwordProgress) -> Bool {
+        guard progress.isComplete, let completedAt = progress.completedAt else { return false }
+        return ContentReleaseCalendar(now: completedAt).dailyDateString == progress.date
     }
 }
