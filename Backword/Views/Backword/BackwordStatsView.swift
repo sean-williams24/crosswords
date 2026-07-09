@@ -92,6 +92,7 @@ struct BackwordStatsView: View {
                         completionMessage(message)
                     }
                 }
+                .padding(.horizontal)
 
                 Spacer()
 
@@ -127,7 +128,7 @@ struct BackwordStatsView: View {
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity)
-            .padding(.horizontal, 32)
+            .padding(.horizontal, 8)
             .padding(.vertical, 24)
             .background(Color.appSurface)
             .cornerRadius(AppLayout.cardCornerRadius)
@@ -243,4 +244,20 @@ struct BackwordStatsView: View {
 #Preview("Empty") {
     BackwordStatsView(stats: BackwordStats(), shouldPop: .constant(false))
         .preferredColorScheme(.dark)
+}
+
+#Preview("Finished") {
+    var progress = BackwordProgress(date: "2026-04-18")
+    progress.guesses = ["CASTLE"]
+    progress.wonFlag = true
+    progress.completedAt = Calendar.current.date(from: DateComponents(year: 2026, month: 4, day: 19))
+
+    return BackwordStatsView(
+        stats: BackwordStats(),
+        highlightGuessCount: 1,
+        shouldPop: .constant(false),
+        isCompleted: true,
+        completionProgress: progress
+    )
+    .preferredColorScheme(.dark)
 }
