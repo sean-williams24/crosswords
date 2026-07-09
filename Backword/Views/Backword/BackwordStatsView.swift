@@ -8,21 +8,41 @@ struct BackwordStatsView: View {
     /// Injected so previews can compile; unused at runtime.
     @Binding var shouldPop: Bool
     var isCompleted = false
+    var completionProgress: BackwordProgress?
 
     @State private var animatesBars = false
 
+    private var displayState: BackwordCompletionDisplayState {
+        BackwordCompletionDisplayState.make(
+            progress: completionProgress,
+            isCompletion: isCompleted
+        )
+    }
+
     var body: some View {
+        Group {
+            if isCompleted {
+                completionBody
+            } else {
+                statsBody
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
+                    animatesBars = true
+                }
+            }
+        }
+    }
+
+    private var statsBody: some View {
         NavigationStack {
             ZStack {
                 AppBackgroundGradient()
 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 28) {
-                        if isCompleted {
-                            Text("Solved!")
-                                .font(AppFont.header(40))
-                                .foregroundColor(.appTextHeading)
-                        }
                         StatsView(stats: stats)
                         distributionSection
                     }
@@ -47,13 +67,80 @@ struct BackwordStatsView: View {
                 }
             }
         }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
-                    animatesBars = true
+    }
+
+    private var completionBody: some View {
+        ZStack {
+            Color.appBackground
+                .ignoresSafeArea()
+
+            VStack(spacing: 32) {
+                Spacer()
+
+                VStack(spacing: 8) {
+                    if let title = displayState.title {
+                        Text(title)
+                            .font(AppFont.header(40))
+                            .foregroundColor(titleColor)
+                    }
                 }
+
+                Group {
+                    if displayState.showsStats {
+                        completedStatsContent
+                    } else if let message = displayState.message {
+                        completionMessage(message)
+                    }
+                }
+
+                Spacer()
+
+                Button {
+                    dismiss()
+                    shouldPop = true
+                } label: {
+                    Text("HOME")
+                        .font(AppFont.body())
+                        .foregroundColor(.appTextSecondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                }
+                .padding(.horizontal, AppLayout.screenPadding)
+                .padding(.bottom, 32)
             }
         }
+    }
+
+    private var titleColor: Color {
+        switch displayState.titleStyle {
+        case .solved:
+            return .appTextHeading
+        case .finished:
+            return .appCorrect
+        }
+    }
+
+    private func completionMessage(_ message: String) -> some View {
+        Text(message)
+            .font(AppFont.body())
+            .foregroundColor(.appTextSecondary)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 32)
+            .padding(.vertical, 24)
+            .background(Color.appSurface)
+            .cornerRadius(AppLayout.cardCornerRadius)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+    }
+
+    private var completedStatsContent: some View {
+        VStack(spacing: 28) {
+            StatsView(stats: stats)
+            distributionSection
+        }
+        .padding(.horizontal, AppLayout.screenPadding)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
     // MARK: - Distribution

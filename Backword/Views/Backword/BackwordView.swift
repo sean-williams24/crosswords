@@ -118,7 +118,8 @@ struct BackwordView: View {
                 stats: statsService.stats,
                 highlightGuessCount: viewModel.isWon ? viewModel.guessCount : nil,
                 shouldPop: $shouldPopAfterCompletionSheet,
-                isCompleted: viewModel.didComplete
+                isCompleted: viewModel.didComplete,
+                completionProgress: viewModel.progress
             )
         }
         .presentationDetents([.large])
