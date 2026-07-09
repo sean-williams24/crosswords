@@ -98,9 +98,10 @@ struct BackwordView: View {
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
         .animation(.easeInOut(duration: 0.3), value: viewModel.invalidWordMessage != nil)
         .onChange(of: viewModel.isComplete) { _, complete in
-            if complete {
+            if complete && viewModel.isWon {
                 statsService.refresh()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                    guard viewModel.isWon else { return }
                     showStats = true
                 }
             }
