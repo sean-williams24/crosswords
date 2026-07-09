@@ -51,7 +51,7 @@ Backword keeps its onboarding-first behaviour: the Backword ad gate is skipped u
 
 Daily and weekly crossword cards display summary scores from `HomeViewModel`, not by reading progress files directly in the view. Cards ask the view model to refresh saved `UserProgress` when they appear; scores fall back to the loaded puzzle's clue count if legacy progress has no `totalClues` metadata. Weekly cards use `UserStats.currentStreak(isWeekly: true)` for their streak display.
 
-The Backword card uses the same bottom stats row shape, but its score is hidden until `BackwordProgress.isComplete` because Backword only awards points at the end of a game.
+The Backword card uses the same stats row shape, but its score is hidden until `BackwordProgress.isComplete` because Backword only awards points at the end of a game. In the completed state, the Backword status label is centered over the score/streak row at regular Dynamic Type sizes and falls back above that row for accessibility Dynamic Type sizes.
 
 ---
 

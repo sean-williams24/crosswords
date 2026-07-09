@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BackwordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject private var statsService: BackwordStatsService
     @ScaledMetric private var spacing: CGFloat = 10
     @ObservedObject var service: BackwordService
@@ -38,8 +39,8 @@ struct BackwordCard: View {
                     .padding(.vertical, 10)
 
                 if let progress, progress.isComplete {
-                    completionContent(progress: progress)
-                        .padding(.top, 8)
+                    completedPuzzleContent(progress: progress)
+                        .padding(.bottom, 8)
                 } else if service.isLoading {
                     loadingView
                 } else if service.todaysWord == nil {
@@ -51,9 +52,15 @@ struct BackwordCard: View {
             .padding(.horizontal, 24)
             .padding(.top, 10)
 
-            bottomStatsView
-                .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
-                .padding(.bottom, 10)
+            if let progress, progress.isComplete {
+                completedStatsView(progress: progress)
+                    .padding(.top, 8)
+                    .padding(.bottom, 10)
+            } else {
+                bottomStatsView
+                    .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
+                    .padding(.bottom, 10)
+            }
         }
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(Color.appCrosswordBackground)
@@ -173,18 +180,44 @@ struct BackwordCard: View {
     }
 
     @ViewBuilder
-    private func completionContent(progress: BackwordProgress) -> some View {
+    private func completedPuzzleContent(progress: BackwordProgress) -> some View {
         VStack(spacing: 8) {
             if progress.isFailed {
                 guessCounter
             } else {
                 todaysWordView
             }
+        }
+    }
+
+    @ViewBuilder
+    private func completedStatsView(progress: BackwordProgress) -> some View {
+        if dynamicTypeSize > .accessibility1 {
+            VStack(spacing: 8) {
+                StatusLabelView(status: .status(for: progress))
+                    .fixedSize(horizontal: true, vertical: false)
+                bottomStatsView
+            }
+            .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
+            .frame(maxWidth: .infinity)
+        } else {
+            horizontalCompletedStatsView(progress: progress)
+        }
+    }
+
+    private func horizontalCompletedStatsView(progress: BackwordProgress) -> some View {
+        ZStack {
+            HStack(alignment: .center) {
+                scoreView
+                Spacer(minLength: 2)
+                StreakButton(streak: statsService.stats.liveCurrentStreak)
+            }
 
             StatusLabelView(status: .status(for: progress))
-                .padding(.top, 8)
-                .padding(.bottom, 16)
+                .fixedSize(horizontal: true, vertical: false)
         }
+        .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
+        .frame(maxWidth: .infinity)
     }
 }
 
