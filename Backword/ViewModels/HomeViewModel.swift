@@ -50,12 +50,16 @@ final class HomeViewModel: ObservableObject {
         } else {
             // Puzzle is still current — just refresh progress from disk in case
             // the user played since we last loaded (e.g. returned from PuzzleView)
-            if let puzzle = todaysPuzzle {
-                todaysProgress = UserProgress.load(puzzleId: puzzle.id)
-            }
-            if let weekly = weeklyPuzzle {
-                weeklyProgress = UserProgress.load(puzzleId: weekly.id)
-            }
+            refreshProgressFromDisk()
+        }
+    }
+
+    func refreshProgressFromDisk() {
+        if let puzzle = todaysPuzzle {
+            todaysProgress = UserProgress.load(puzzleId: puzzle.id)
+        }
+        if let weekly = weeklyPuzzle {
+            weeklyProgress = UserProgress.load(puzzleId: weekly.id)
         }
     }
 
@@ -92,8 +96,16 @@ final class HomeViewModel: ObservableObject {
     }
 
     var dailyCrosswordScore: Int? {
-        guard let progress = todaysProgress,
-              let total = progress.totalClues, total > 0,
+        crosswordScore(progress: todaysProgress, totalClues: todaysPuzzle?.clues.count)
+    }
+
+    var weeklyCrosswordScore: Int? {
+        crosswordScore(progress: weeklyProgress, totalClues: weeklyPuzzle?.clues.count)
+    }
+
+    private func crosswordScore(progress: UserProgress?, totalClues: Int?) -> Int? {
+        guard let progress,
+              let total = progress.totalClues ?? totalClues, total > 0,
               progress.completedClueIds.count > 0 else { return nil }
         let pct = Int(Double(progress.completedClueIds.count) / Double(total) * 100)
         return max(0, Int.crosswordScore(percentComplete: pct) - progress.hintsUsed / 3)

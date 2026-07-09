@@ -83,6 +83,9 @@ struct DailyCrosswordCard: View {
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .fill(Color.dailyCardBackground)
         )
+        .onAppear {
+            viewModel.refreshProgressFromDisk()
+        }
     }
 
     private var bottomStatsView: some View {

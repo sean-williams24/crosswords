@@ -47,6 +47,10 @@ Non-Pro users can see a full-screen explainer before the Backword or daily cross
 
 Backword keeps its onboarding-first behaviour: the Backword ad gate is skipped until the user has seen Backword onboarding.
 
+## Home Card Progress Refresh
+
+Daily and weekly crossword cards display summary scores from `HomeViewModel`, not by reading progress files directly in the view. Cards ask the view model to refresh saved `UserProgress` when they appear; scores fall back to the loaded puzzle's clue count if legacy progress has no `totalClues` metadata. Weekly cards use `UserStats.currentStreak(isWeekly: true)` for their streak display.
+
 ---
 
 ## App Store Review Prompt

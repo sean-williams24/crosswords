@@ -5,6 +5,7 @@ import SwiftUI
 
 struct WeeklyCrosswordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
+    @EnvironmentObject private var statsService: StatsService
     @EnvironmentObject var storeService: StoreService
     @ScaledMetric private var iconSize: CGFloat = 10
     @ScaledMetric private var offset: CGFloat = 1
@@ -54,41 +55,49 @@ struct WeeklyCrosswordCard: View {
     }
 
     private var content: some View {
-        VStack(spacing: 12) {
-            ViewThatFits {
-                horizontalTitleContent
-                verticalTitleContent
-            }
+        VStack(spacing: 0) {
+            VStack(spacing: 12) {
+                ViewThatFits {
+                    horizontalTitleContent
+                    verticalTitleContent
+                }
 
-            Text("13×13")
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary)
+                Text("13×13")
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
 
-            if viewModel.state == .loading {
-                ProgressView()
-            } else {
-                if isProUser {
-                    if viewModel.weeklyPuzzle == nil {
-                        Text("Failed to fetch today's crossword.\nTap here to try again.")
-                            .font(AppFont.caption())
-                            .foregroundColor(.appTextSecondary)
-                    } else {
-                        StatusLabelView(status: viewModel.weeklyPuzzleStatus)
-                    }
+                if viewModel.state == .loading {
+                    ProgressView()
                 } else {
-                    HStack(spacing: 6) {
-                        Text("Pro Only")
-                            .font(AppFont.caption())
-                            .foregroundColor(.appAccent)
-                        Image(systemName: "lock.fill")
-                            .font(.system(size: iconSize))
-                            .foregroundColor(.appAccent)
-                            .offset(y: offset)
+                    if isProUser {
+                        if viewModel.weeklyPuzzle == nil {
+                            Text("Failed to fetch today's crossword.\nTap here to try again.")
+                                .font(AppFont.caption())
+                                .foregroundColor(.appTextSecondary)
+                        } else {
+                            StatusLabelView(status: viewModel.weeklyPuzzleStatus)
+                        }
+                    } else {
+                        HStack(spacing: 6) {
+                            Text("Pro Only")
+                                .font(AppFont.caption())
+                                .foregroundColor(.appAccent)
+                            Image(systemName: "lock.fill")
+                                .font(.system(size: iconSize))
+                                .foregroundColor(.appAccent)
+                                .offset(y: offset)
+                        }
                     }
                 }
             }
+            .padding(.horizontal, 24)
+            .padding(.top, 24)
+            .padding(.bottom, 8)
+
+            bottomStatsView
+                .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
+                .padding(.bottom, 10)
         }
-        .padding(24)
         .frame(maxWidth: isIpad ? 400 : .infinity, minHeight: appLayout.cardHeight)
         .background(
             Color.appSurface.overlay(
@@ -103,6 +112,31 @@ struct WeeklyCrosswordCard: View {
         .sheet(isPresented: $showPaywall) {
             PaywallView()
                 .environmentObject(storeService)
+        }
+        .onAppear {
+            viewModel.refreshProgressFromDisk()
+        }
+    }
+
+    private var bottomStatsView: some View {
+        HStack {
+            scoreView
+            Spacer(minLength: 2)
+            StreakButton(streak: statsService.stats.currentStreak(isWeekly: true))
+        }
+    }
+
+    @ViewBuilder
+    private var scoreView: some View {
+        if let score = viewModel.weeklyCrosswordScore {
+            HStack(spacing: 4) {
+                Text("\(score)")
+                    .font(AppFont.header(24))
+                    .foregroundColor(score == 5 ? .appCorrect : .appAccent)
+                Text("/ 5")
+                    .font(AppFont.header(12))
+                    .foregroundColor(.appTextSecondary)
+            }
         }
     }
 
@@ -158,4 +192,6 @@ struct WeeklyCrosswordCard: View {
 
 #Preview {
     WeeklyCrosswordCard(viewModel: HomeViewModel(puzzleService: PuzzleService(), storeService: StoreService()))
+        .environmentObject(StatsService())
+        .environmentObject(StoreService())
 }
