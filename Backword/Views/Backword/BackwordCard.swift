@@ -33,18 +33,27 @@ struct BackwordCard: View {
 
     private var cardContainer: some View {
         VStack(alignment: .center, spacing: 0) {
-            BackwordLogo(frame: 48)
-                .padding(.vertical, 10)
+            VStack(alignment: .center, spacing: 0) {
+                BackwordLogo(frame: 48)
+                    .padding(.vertical, 10)
 
-            if let progress, progress.isComplete {
-                completionContent(progress: progress)
-            } else if service.isLoading {
-                loadingView
-            } else if service.todaysWord == nil {
-                errorView
-            } else {
-                playView
+                if let progress, progress.isComplete {
+                    completionContent(progress: progress)
+                        .padding(.top, 8)
+                } else if service.isLoading {
+                    loadingView
+                } else if service.todaysWord == nil {
+                    errorView
+                } else {
+                    playView
+                }
             }
+            .padding(.horizontal, 24)
+            .padding(.top, 10)
+
+            bottomStatsView
+                .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
+                .padding(.bottom, 10)
         }
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(Color.appCrosswordBackground)
@@ -53,9 +62,27 @@ struct BackwordCard: View {
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .strokeBorder(Color.appAccent, lineWidth: 2)
         )
-        .overlay(alignment: .bottomTrailing) {
+    }
+
+    private var bottomStatsView: some View {
+        HStack {
+            scoreView
+            Spacer(minLength: 2)
             StreakButton(streak: statsService.stats.liveCurrentStreak)
-                .padding(HomeCardStreakLayout.streakButtonEdgeInset)
+        }
+    }
+
+    @ViewBuilder
+    private var scoreView: some View {
+        if let score = progress?.completedScore {
+            HStack(spacing: 4) {
+                Text("\(score)")
+                    .font(AppFont.header(24))
+                    .foregroundColor(score == 5 ? .appCorrect : .appAccent)
+                Text("/ 5")
+                    .font(AppFont.header(12))
+                    .foregroundColor(.appTextSecondary)
+            }
         }
     }
 
@@ -142,7 +169,6 @@ struct BackwordCard: View {
                     }
                 }
             }
-            .padding(.bottom, 10)
         }
     }
 
@@ -156,6 +182,7 @@ struct BackwordCard: View {
             }
 
             StatusLabelView(status: .status(for: progress))
+                .padding(.top, 8)
                 .padding(.bottom, 16)
         }
     }

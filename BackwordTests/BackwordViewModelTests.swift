@@ -38,6 +38,33 @@ struct BackwordViewModelTests {
         #expect(vm.isComplete == false)
     }
 
+    @Test("Backword progress has no score before completion")
+    func progressHasNoScoreBeforeCompletion() {
+        var progress = BackwordProgress(date: "2026-07-09")
+        progress.guesses = ["BRIDGX", "FXASXE"]
+
+        #expect(progress.completedScore == nil)
+    }
+
+    @Test("Winning Backword progress scores from guess count")
+    func winningProgressScoresFromGuessCount() {
+        var progress = BackwordProgress(date: "2026-07-09")
+        progress.guesses = ["BRIDGX", "FXASXE", "CASTLE"]
+        progress.wonFlag = true
+        progress.completedAt = Date()
+
+        #expect(progress.completedScore == 3)
+    }
+
+    @Test("Failed Backword progress scores zero")
+    func failedProgressScoresZero() {
+        var progress = BackwordProgress(date: "2026-07-09")
+        progress.guesses = ["BRIDGX", "FXASXE", "MAXXXX", "PUZZLE", "CASTER"]
+        progress.completedAt = Date()
+
+        #expect(progress.completedScore == 0)
+    }
+
     // MARK: - Reveal Logic
 
     @Test("Wrong guess reveals letters matching from the end")
