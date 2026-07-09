@@ -58,7 +58,7 @@ struct ArchivePuzzleRow: View {
 
             Spacer()
 
-            StatusLabelView(status: .status(for: archiveEntry))
+            StatusLabelView(status: .status(for: archiveEntry, isWeekly: isWeekly))
         }
     }
 

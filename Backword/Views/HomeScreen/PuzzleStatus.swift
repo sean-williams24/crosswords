@@ -51,14 +51,16 @@ enum PuzzleStatus {
         }
     }
 
-    static func status(for entry: ArchiveEntry) -> PuzzleStatus {
+    static func status(for entry: ArchiveEntry, isWeekly: Bool = false) -> PuzzleStatus {
         guard let progress = UserProgress.load(puzzleId: entry.id) else {
             return .notStarted
         }
         guard progress.isComplete, let completedAt = progress.completedAt else {
             return .inProgress
         }
-        return ContentReleaseCalendar(now: completedAt).dailyDateString == entry.date ? .completedOnTime : .completedLate
+        let releaseCalendar = ContentReleaseCalendar(now: completedAt)
+        let completionDate = isWeekly ? releaseCalendar.weeklyDateString : releaseCalendar.dailyDateString
+        return completionDate == entry.date ? .completedOnTime : .completedLate
     }
 
     static func status(for progress: BackwordProgress?) -> PuzzleStatus {

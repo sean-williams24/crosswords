@@ -37,10 +37,63 @@ struct HomeCardStreakLayoutTests {
         #expect(HomeCardStreakLayout.streakButtonEdgeInset == 12)
     }
 
-    @Test("Won crossword shows finished label")
-    func wonCrosswordShowsFinishedLabel() {
-        #expect(PuzzleStatus.completedOnTime.label == "Finished")
+    @Test("Won crossword distinguishes on-time and late labels")
+    func wonCrosswordDistinguishesOnTimeAndLateLabels() {
+        #expect(PuzzleStatus.completedOnTime.label == "Solved")
         #expect(PuzzleStatus.completedLate.label == "Finished")
+    }
+
+    @Test("Archive weekly status uses weekly release date")
+    func archiveWeeklyStatusUsesWeeklyReleaseDate() throws {
+        let puzzleId = "archive-weekly-status-\(UUID().uuidString)"
+        UserProgress.delete(puzzleId: puzzleId)
+        defer { UserProgress.delete(puzzleId: puzzleId) }
+
+        var progress = UserProgress(
+            puzzleId: puzzleId,
+            size: 1,
+            puzzleDate: "2026-07-05",
+            totalClues: 1,
+            isWeekly: true
+        )
+        progress.completedClueIds = [0]
+        progress.completedAt = try #require(Self.date(from: "2026-07-09 12:00:00"))
+        progress.save()
+
+        let entry = ArchiveEntry(id: puzzleId, puzzleNumber: 1, date: "2026-07-05")
+
+        #expect(PuzzleStatus.status(for: entry, isWeekly: true).label == "Solved")
+        #expect(PuzzleStatus.status(for: entry, isWeekly: false).label == "Finished")
+    }
+
+    @Test("Archive weekly status is late after its release week")
+    func archiveWeeklyStatusIsLateAfterReleaseWeek() throws {
+        let puzzleId = "archive-weekly-late-status-\(UUID().uuidString)"
+        UserProgress.delete(puzzleId: puzzleId)
+        defer { UserProgress.delete(puzzleId: puzzleId) }
+
+        var progress = UserProgress(
+            puzzleId: puzzleId,
+            size: 1,
+            puzzleDate: "2026-07-05",
+            totalClues: 1,
+            isWeekly: true
+        )
+        progress.completedClueIds = [0]
+        progress.completedAt = try #require(Self.date(from: "2026-07-12 12:00:00"))
+        progress.save()
+
+        let entry = ArchiveEntry(id: puzzleId, puzzleNumber: 1, date: "2026-07-05")
+
+        #expect(PuzzleStatus.status(for: entry, isWeekly: true).label == "Finished")
+    }
+
+    private static func date(from string: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return formatter.date(from: string)
     }
 }
 
