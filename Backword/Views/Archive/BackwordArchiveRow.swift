@@ -6,12 +6,11 @@ struct BackwordArchiveRow: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
     @State private var showBackword = false
+    @State private var progress: BackwordProgress?
 
     let word: BackwordWord
 
     var body: some View {
-        let progress = BackwordProgress.load(date: word.date)
-
         Button {
             showBackword = true
         } label: {
@@ -39,6 +38,20 @@ struct BackwordArchiveRow: View {
                 .environmentObject(storeService)
                 .environmentObject(adService)
         }
+        .onAppear(perform: refreshProgress)
+        .onChange(of: showBackword) { _, isPresented in
+            guard !isPresented else { return }
+            refreshProgress()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .backwordProgressDidChange)) { notification in
+            guard let changedDate = notification.userInfo?[BackwordProgress.changedDateUserInfoKey] as? String,
+                  changedDate == word.date else { return }
+            refreshProgress()
+        }
+    }
+
+    private func refreshProgress() {
+        progress = BackwordProgress.load(date: word.date)
     }
 }
 

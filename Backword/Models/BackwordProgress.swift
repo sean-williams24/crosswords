@@ -38,6 +38,8 @@ struct BackwordProgress: Codable {
 // MARK: - Persistence
 
 extension BackwordProgress {
+    static let changedDateUserInfoKey = "date"
+
     private static var directory: URL {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("Backword", isDirectory: true)
@@ -52,6 +54,7 @@ extension BackwordProgress {
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         if let data = try? JSONEncoder().encode(self) {
             try? data.write(to: Self.fileURL(for: date), options: .atomic)
+            Self.postDidChange(for: date)
         }
     }
 
@@ -62,6 +65,7 @@ extension BackwordProgress {
 
     static func delete(date: String) {
         try? FileManager.default.removeItem(at: fileURL(for: date))
+        postDidChange(for: date)
     }
 
     static func loadAll() -> [BackwordProgress] {
@@ -75,4 +79,16 @@ extension BackwordProgress {
             }
             .sorted { $0.date > $1.date }
     }
+
+    private static func postDidChange(for date: String) {
+        NotificationCenter.default.post(
+            name: .backwordProgressDidChange,
+            object: nil,
+            userInfo: [changedDateUserInfoKey: date]
+        )
+    }
+}
+
+extension Notification.Name {
+    static let backwordProgressDidChange = Notification.Name("BackwordProgressDidChange")
 }

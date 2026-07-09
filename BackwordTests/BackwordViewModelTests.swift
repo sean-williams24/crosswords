@@ -65,6 +65,27 @@ struct BackwordViewModelTests {
         #expect(progress.completedScore == 0)
     }
 
+    @Test("Saving Backword progress posts changed date notification")
+    func savingProgressPostsChangedDateNotification() {
+        let date = "test-\(UUID().uuidString)"
+        var receivedDate: String?
+        let observer = NotificationCenter.default.addObserver(
+            forName: .backwordProgressDidChange,
+            object: nil,
+            queue: nil
+        ) { notification in
+            receivedDate = notification.userInfo?[BackwordProgress.changedDateUserInfoKey] as? String
+        }
+        defer {
+            NotificationCenter.default.removeObserver(observer)
+            BackwordProgress.delete(date: date)
+        }
+
+        BackwordProgress(date: date).save()
+
+        #expect(receivedDate == date)
+    }
+
     // MARK: - Reveal Logic
 
     @Test("Wrong guess reveals letters matching from the end")
