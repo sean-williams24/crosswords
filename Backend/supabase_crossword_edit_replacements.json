@@ -357,7 +357,7 @@
       "supabaseField": "hint",
       "field": "hard_text",
       "current": "A sound indicating something is clear",
-      "proposed": "A sound indicating something is clear."
+      "proposed": "A sound indicating something is clear"
     },
     {
       "id": "weekly:2026-07-12:8:LOUDER:text",
@@ -374,7 +374,7 @@
       "supabaseField": "text",
       "field": "clues[0]",
       "current": "Increasing sound levels",
-      "proposed": "Increasing sound levels.",
+      "proposed": "Increasing sound levels",
       "reason": "Missing source metadata for edited clues[] value",
       "candidateFields": [
         {
@@ -407,7 +407,7 @@
       "supabaseField": "hint",
       "field": "hard_text",
       "current": "Having a higher volume",
-      "proposed": "Having a higher volume."
+      "proposed": "Having a higher volume"
     },
     {
       "id": "weekly:2026-07-12:12:DEATHS:text",
@@ -424,7 +424,7 @@
       "supabaseField": "text",
       "field": "clues[1]",
       "current": "Loss of life occurrences",
-      "proposed": "Loss of life occurrences.",
+      "proposed": "Loss of life occurrences",
       "reason": "Missing source metadata for edited clues[] value",
       "candidateFields": [
         {
@@ -457,7 +457,7 @@
       "supabaseField": "hint",
       "field": "hard_text",
       "current": "Final exits from existence",
-      "proposed": "Final exits from existence."
+      "proposed": "Final exits from existence"
     },
     {
       "id": "weekly:2026-07-12:13:IRAN:text",
@@ -474,7 +474,7 @@
       "supabaseField": "text",
       "field": "clues[0]",
       "current": "Historic empire's modern location",
-      "proposed": "Historic empire's modern location.",
+      "proposed": "Historic empire's modern location",
       "reason": "Missing source metadata for edited clues[] value",
       "candidateFields": [
         {
@@ -507,7 +507,7 @@
       "supabaseField": "hint",
       "field": "hard_text",
       "current": "This nation is home to the ancient Persians",
-      "proposed": "This nation is home to the ancient Persians."
+      "proposed": "This nation is home to the ancient Persians"
     },
     {
       "id": "weekly:2026-07-12:15:WAN:hint",
@@ -541,7 +541,7 @@
       "supabaseField": "text",
       "field": "clues[1]",
       "current": "Caretaker of resources",
-      "proposed": "Caretaker of resources.",
+      "proposed": "Caretaker of resources",
       "reason": "Missing source metadata for edited clues[] value",
       "candidateFields": [
         {
@@ -574,7 +574,7 @@
       "supabaseField": "hint",
       "field": "hard_text",
       "current": "Guardian of the ship or flight",
-      "proposed": "Guardian of the ship or flight."
+      "proposed": "Guardian of the ship or flight"
     },
     {
       "id": "weekly:2026-07-12:32:NEO:text",
@@ -591,7 +591,7 @@
       "supabaseField": "text",
       "field": "clues[0]",
       "current": "Prefix meaning new",
-      "proposed": "Prefix meaning new.",
+      "proposed": "Prefix meaning new",
       "reason": "Missing source metadata for edited clues[] value",
       "candidateFields": [
         {
@@ -624,7 +624,7 @@
       "supabaseField": "hint",
       "field": "hard_text",
       "current": "A term for something that is not old",
-      "proposed": "A term for something that is not old."
+      "proposed": "A term for something that is not old"
     },
     {
       "id": "weekly:2026-07-12:35:ROUTINE:hint",

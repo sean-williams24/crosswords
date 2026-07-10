@@ -92,7 +92,7 @@ def load_entries(path: Path) -> list[dict[str, Any]]:
 
 
 def save_entries(path: Path, entries: list[dict[str, Any]]) -> None:
-    path.write_text(json.dumps(entries, indent=2, ensure_ascii=False) + "\n")
+    path.write_text(json.dumps(entries, indent=4) + "\n")
 
 
 def fetch_rows(table_key: str, start_date: str, end_date: str) -> list[dict[str, Any]]:
@@ -127,6 +127,12 @@ def normalize_review_match(value: Any) -> str:
     normalized = normalized.rstrip(".?!")
     normalized = re.sub(r"\s+", " ", normalized)
     return normalized.lower()
+
+
+def canonicalize_proposed_value(value: Any) -> str:
+    normalized = normalize_value(value).translate(SMART_TRANSLATION)
+    normalized = re.sub(r"\s+", " ", normalized)
+    return normalized.rstrip(".").strip()
 
 
 def clue_label(index: int) -> str:
@@ -213,7 +219,7 @@ def direct_replacement(
     supabase_field: str,
     target_field: str,
 ) -> dict[str, Any] | None:
-    proposed = normalize_value(clue.get(supabase_field))
+    proposed = canonicalize_proposed_value(clue.get(supabase_field))
     current = get_field(entry, target_field)
     if not proposed or proposed == current:
         return None
@@ -239,7 +245,7 @@ def clue_array_replacement(
     entry: dict[str, Any],
     supabase_field: str,
 ) -> dict[str, Any] | None:
-    proposed = normalize_value(clue.get(supabase_field))
+    proposed = canonicalize_proposed_value(clue.get(supabase_field))
     if not proposed:
         return None
 
@@ -413,15 +419,15 @@ def build_report(
 def apply_report(entries: list[dict[str, Any]], report: dict[str, Any]) -> int:
     changed = 0
     for item in report.get("replacements", []):
-        apply_replacement_item(entries, item)
-        changed += 1
+        if apply_replacement_item(entries, item):
+            changed += 1
     return changed
 
 
-def apply_replacement_item(entries: list[dict[str, Any]], item: dict[str, Any]) -> None:
+def apply_replacement_item(entries: list[dict[str, Any]], item: dict[str, Any]) -> bool:
     field = item.get("field")
     current = item.get("current")
-    proposed = normalize_value(item.get("proposed"))
+    proposed = canonicalize_proposed_value(item.get("proposed"))
     status = item.get("status")
     if not field or current is None:
         raise ValueError(f"{item.get('id')} requires manual field/current review before apply")
@@ -437,8 +443,13 @@ def apply_replacement_item(entries: list[dict[str, Any]], item: dict[str, Any]) 
             f"Word mismatch at index {index}: expected {item.get('answer')}, found {entry.get('word')}"
         )
 
+    actual = get_field(entry, str(field))
+    if actual == proposed:
+        return False
+
     validate_replacement(entry, str(field), str(current), proposed)
     set_field(entry, str(field), proposed)
+    return True
 
 
 def validate_report(entries: list[dict[str, Any]], report: dict[str, Any]) -> list[str]:

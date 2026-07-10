@@ -1,5 +1,6 @@
 import random
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -124,6 +125,56 @@ class SupabaseCrosswordEditSyncTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "changed since export"):
             sync.apply_report(entries, report)
+
+    def test_apply_skips_already_applied_replacement(self) -> None:
+        entries = [entry()]
+        entries[0]["text"] = "Track around a planet"
+        report = {
+            "replacements": [
+                {
+                    "id": "daily:2026-07-01:3:ORBIT:text",
+                    "status": "ready",
+                    "wordBankIndex": 0,
+                    "answer": "ORBIT",
+                    "field": "text",
+                    "current": "Path around a star",
+                    "proposed": "Track around a planet",
+                }
+            ]
+        }
+
+        changed = sync.apply_report(entries, report)
+        errors = sync.validate_report(entries, report)
+
+        self.assertEqual(changed, 0)
+        self.assertEqual(errors, [])
+
+    def test_apply_canonicalizes_supabase_punctuation(self) -> None:
+        entries = [entry()]
+        report = {
+            "replacements": [
+                {
+                    "id": "weekly:2026-07-12:5:ORBIT:hint",
+                    "status": "ready",
+                    "wordBankIndex": 0,
+                    "answer": "ORBIT",
+                    "field": "hard_text",
+                    "current": "Celestial route",
+                    "proposed": "Satellite\u2019s regular path.",
+                }
+            ]
+        }
+
+        sync.apply_report(entries, report)
+
+        self.assertEqual(entries[0]["hard_text"], "Satellite's regular path")
+
+    def test_save_entries_uses_word_bank_indentation(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "word_bank.json"
+            sync.save_entries(path, [entry()])
+
+            self.assertTrue(path.read_text().startswith('[\n    {\n        "word": "ORBIT"'))
 
     def test_resolve_obvious_manual_items_fills_normalized_match(self) -> None:
         report = {
