@@ -41,6 +41,18 @@ Generated daily and weekly crossword payloads are uploaded as GitHub Actions art
 
 Use `Backend/sync_supabase_crossword_edits.py export` to compare reviewed Supabase rows with `Backend/word_bank.json`. Historical rows generated before clue-source metadata may require manual `clues[N]` selection; future rows include `textSourceField`/`textSourceIndex` and `hintSourceField`/`hintSourceIndex` inside each clue JSON object so the sync script can target the original word-bank field deterministically.
 
+For rows that have matching generated JSON artifacts, prefer `export-from-artifacts`. This compares each artifact's original generated clue values against the current Supabase row, so only actual Supabase edits become proposed word-bank replacements:
+
+```bash
+Backend/.venv/bin/python3 Backend/sync_supabase_crossword_edits.py export-from-artifacts \
+  --artifact-dir Backend/generated_puzzle_artifacts \
+  --start-date 2026-07-01 \
+  --end-date 2026-07-07 \
+  --tables daily,weekly
+```
+
+The artifact-backed export still writes the normal `Backend/supabase_crossword_edit_replacements.json`, so the existing `validate` and `apply` commands remain the final safety gate. If an artifact does not contain clue-source metadata for a `clues[]` update, the script fails closed by exporting a manual-review item instead of guessing.
+
 ## Crossword Correct Highlight Locking
 
 When `AppSettings.crosswordCorrectHighlight` is enabled, cells belonging to completed crossword clues are treated as locked input. `GameViewModel` must reject deletion and typed replacement for those cells, because the green highlight is the user's signal that the answer has been accepted and should no longer be editable. Retyping the same letter already in a locked cell is allowed as navigation input and advances to the next cell without changing the answer.

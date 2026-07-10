@@ -4,6 +4,7 @@ Sync reviewed Supabase crossword clue edits back into word_bank.json.
 
 Review-first workflow:
   python3 Backend/sync_supabase_crossword_edits.py export --start-date 2026-07-01 --end-date 2026-07-07
+  python3 Backend/sync_supabase_crossword_edits.py export-from-artifacts --artifact-dir generated_puzzles --start-date 2026-07-01 --end-date 2026-07-07
   python3 Backend/sync_supabase_crossword_edits.py apply --input Backend/supabase_crossword_edit_replacements.json
 
 Export never mutates Supabase or word_bank.json. Apply only updates word_bank.json
@@ -49,6 +50,8 @@ TABLES = {
         "hintTarget": "hard_text",
     },
 }
+
+TABLE_BY_SUPABASE_NAME = {config["table"]: key for key, config in TABLES.items()}
 
 
 _env_file = Path(__file__).parent / ".env"
@@ -107,6 +110,58 @@ def fetch_rows(table_key: str, start_date: str, end_date: str) -> list[dict[str,
         .execute()
     )
     return rows.data or []
+
+
+def infer_table_key(payload: dict[str, Any], path: Path | None = None) -> str | None:
+    table_name = normalize_value(payload.get("table"))
+    if table_name in TABLE_BY_SUPABASE_NAME:
+        return TABLE_BY_SUPABASE_NAME[table_name]
+
+    is_free = payload.get("is_free")
+    if is_free is True:
+        return "daily"
+    if is_free is False:
+        return "weekly"
+
+    if path:
+        name = path.name.lower()
+        if name.startswith("weekly_") or "weekly" in name:
+            return "weekly"
+        if name.startswith("puzzle_") or "daily" in name:
+            return "daily"
+
+    return None
+
+
+def load_artifact_payloads(
+    artifact_dir: Path,
+    table_keys: list[str],
+    start_date: str,
+    end_date: str,
+) -> dict[str, list[dict[str, Any]]]:
+    if not artifact_dir.exists():
+        raise FileNotFoundError(f"Artifact directory not found: {artifact_dir}")
+
+    selected_tables = set(table_keys)
+    payloads: dict[str, list[dict[str, Any]]] = {key: [] for key in table_keys}
+    for path in sorted(artifact_dir.rglob("*.json")):
+        with path.open() as handle:
+            data = json.load(handle)
+        candidates = data if isinstance(data, list) else [data]
+        for payload in candidates:
+            if not isinstance(payload, dict):
+                continue
+            table_key = infer_table_key(payload, path)
+            if table_key not in selected_tables:
+                continue
+            puzzle_date = normalize_value(payload.get("date"))
+            if not puzzle_date or puzzle_date < start_date or puzzle_date > end_date:
+                continue
+            payload = dict(payload)
+            payload["_artifactPath"] = str(path)
+            payloads[table_key].append(payload)
+
+    return payloads
 
 
 def build_word_index(entries: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
@@ -293,6 +348,82 @@ def clue_array_replacement(
     return item
 
 
+def source_field_for_artifact_clue(
+    *,
+    table_key: str,
+    original_clue: dict[str, Any],
+    supabase_field: str,
+    entry: dict[str, Any],
+) -> tuple[str | None, str | None, str | None]:
+    source_field = original_clue.get(f"{supabase_field}SourceField")
+    source_index = original_clue.get(f"{supabase_field}SourceIndex")
+
+    if source_field == "clues":
+        clues = entry.get("clues") or []
+        if isinstance(source_index, int) and 0 <= source_index < len(clues):
+            field = clue_label(source_index)
+            return field, get_field(entry, field), None
+        return None, None, "Artifact source metadata points outside word_bank.clues[]"
+
+    if source_field in {"text", "hard_text"}:
+        return str(source_field), get_field(entry, str(source_field)), None
+
+    if source_field == "hint":
+        return None, None, "Artifact source metadata points to dormant word_bank.hint"
+
+    target = TABLES[table_key][f"{supabase_field}Target"]
+    if target in {"text", "hard_text"}:
+        return target, get_field(entry, target), None
+
+    return None, None, "Artifact is missing source metadata for a clues[] target"
+
+
+def artifact_replacement(
+    *,
+    table_key: str,
+    artifact_row: dict[str, Any],
+    supabase_row: dict[str, Any],
+    original_clue: dict[str, Any],
+    supabase_clue: dict[str, Any],
+    entry_index: int,
+    entry: dict[str, Any],
+    supabase_field: str,
+) -> dict[str, Any] | None:
+    original_value = canonicalize_proposed_value(original_clue.get(supabase_field))
+    proposed = canonicalize_proposed_value(supabase_clue.get(supabase_field))
+    if not proposed or proposed == original_value:
+        return None
+
+    field, current, reason = source_field_for_artifact_clue(
+        table_key=table_key,
+        original_clue=original_clue,
+        supabase_field=supabase_field,
+        entry=entry,
+    )
+    status = "ready" if field and current is not None else "manualReviewRequired"
+    item = replacement_item(
+        status=status,
+        table_key=table_key,
+        row=supabase_row,
+        clue=supabase_clue,
+        entry_index=entry_index,
+        field=field,
+        current=current,
+        proposed=proposed,
+        supabase_field=supabase_field,
+    )
+    item["original"] = original_value
+    item["artifactPath"] = artifact_row.get("_artifactPath")
+    if reason:
+        item["reason"] = reason
+    if status == "manualReviewRequired":
+        item["candidateFields"] = [
+            {"field": clue_label(index), "current": normalize_value(value)}
+            for index, value in enumerate(entry.get("clues") or [])
+        ]
+    return item
+
+
 def replacement_item(
     *,
     status: str,
@@ -323,6 +454,85 @@ def replacement_item(
         "current": current,
         "proposed": proposed,
     }
+
+
+def puzzle_match_key(row: dict[str, Any]) -> tuple[str, Any]:
+    return (normalize_value(row.get("date")), row.get("puzzle_number"))
+
+
+def build_supabase_row_index(rows: list[dict[str, Any]]) -> dict[tuple[str, Any], dict[str, Any]]:
+    index: dict[tuple[str, Any], dict[str, Any]] = {}
+    for row in rows:
+        key = puzzle_match_key(row)
+        if key[0]:
+            index[key] = row
+            index.setdefault((key[0], None), row)
+    return index
+
+
+def find_matching_supabase_row(
+    supabase_index: dict[tuple[str, Any], dict[str, Any]],
+    artifact_row: dict[str, Any],
+) -> dict[str, Any] | None:
+    exact = supabase_index.get(puzzle_match_key(artifact_row))
+    if exact:
+        return exact
+    return supabase_index.get((normalize_value(artifact_row.get("date")), None))
+
+
+def build_clue_index(clues: list[dict[str, Any]]) -> dict[tuple[Any, str], dict[str, Any]]:
+    index: dict[tuple[Any, str], dict[str, Any]] = {}
+    for clue in clues:
+        answer = normalize_value(clue.get("answer")).upper()
+        clue_id = clue.get("id")
+        if answer:
+            index[(clue_id, answer)] = clue
+            index.setdefault((None, answer), clue)
+    return index
+
+
+def scan_artifact_diffs(
+    entries: list[dict[str, Any]],
+    artifact_rows_by_table: dict[str, list[dict[str, Any]]],
+    supabase_rows_by_table: dict[str, list[dict[str, Any]]],
+) -> list[dict[str, Any]]:
+    word_index = build_word_index(entries)
+    replacements: list[dict[str, Any]] = []
+
+    for table_key, artifact_rows in artifact_rows_by_table.items():
+        supabase_index = build_supabase_row_index(supabase_rows_by_table.get(table_key, []))
+        for artifact_row in artifact_rows:
+            supabase_row = find_matching_supabase_row(supabase_index, artifact_row)
+            if not supabase_row:
+                continue
+
+            supabase_clues = build_clue_index(supabase_row.get("clues") or [])
+            for original_clue in artifact_row.get("clues") or []:
+                answer = normalize_value(original_clue.get("answer")).upper()
+                supabase_clue = supabase_clues.get((original_clue.get("id"), answer))
+                if not supabase_clue:
+                    supabase_clue = supabase_clues.get((None, answer))
+                indexed = word_index.get(answer)
+                if not supabase_clue or not indexed:
+                    continue
+
+                entry_index = int(indexed["index"])
+                entry = indexed["entry"]
+                for supabase_field in ("text", "hint"):
+                    item = artifact_replacement(
+                        table_key=table_key,
+                        artifact_row=artifact_row,
+                        supabase_row=supabase_row,
+                        original_clue=original_clue,
+                        supabase_clue=supabase_clue,
+                        entry_index=entry_index,
+                        entry=entry,
+                        supabase_field=supabase_field,
+                    )
+                    if item:
+                        replacements.append(item)
+
+    return deduplicate_ready_replacements(replacements)
 
 
 def scan_rows(entries: list[dict[str, Any]], rows_by_table: dict[str, list[dict[str, Any]]]) -> list[dict[str, Any]]:
@@ -394,17 +604,21 @@ def build_report(
     bank_path: Path,
     start_date: str,
     end_date: str,
+    source: str = "supabase-word-bank",
+    artifact_rows_by_table: dict[str, list[dict[str, Any]]] | None = None,
 ) -> dict[str, Any]:
     ready = sum(1 for item in replacements if item.get("status") == "ready")
     manual = sum(1 for item in replacements if item.get("status") == "manualReviewRequired")
     return {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "source": source,
         "sourceBank": str(bank_path),
         "startDate": start_date,
         "endDate": end_date,
         "tables": [TABLES[key]["table"] for key in rows_by_table],
         "wordBankEntryCount": len(entries),
         "rowCount": sum(len(rows) for rows in rows_by_table.values()),
+        "artifactRowCount": sum(len(rows) for rows in (artifact_rows_by_table or {}).values()),
         "replacementCount": len(replacements),
         "readyReplacementCount": ready,
         "manualReviewCount": manual,
@@ -513,6 +727,17 @@ def parse_args() -> argparse.Namespace:
     export.add_argument("--bank", type=Path, default=BANK_PATH)
     export.add_argument("--output", type=Path, default=OUTPUT_PATH)
 
+    artifact_export = subparsers.add_parser(
+        "export-from-artifacts",
+        help="Compare original generated artifacts with edited Supabase rows and export word-bank replacements.",
+    )
+    artifact_export.add_argument("--artifact-dir", type=Path, required=True)
+    artifact_export.add_argument("--start-date", required=True, help="Inclusive start date, YYYY-MM-DD")
+    artifact_export.add_argument("--end-date", required=True, help="Inclusive end date, YYYY-MM-DD")
+    artifact_export.add_argument("--tables", type=parse_tables, default=["daily", "weekly"], help="Comma-separated: daily,weekly")
+    artifact_export.add_argument("--bank", type=Path, default=BANK_PATH)
+    artifact_export.add_argument("--output", type=Path, default=OUTPUT_PATH)
+
     apply = subparsers.add_parser("apply", help="Apply a reviewed replacement file to word_bank.json.")
     apply.add_argument("--input", type=Path, default=OUTPUT_PATH, dest="input_path")
     apply.add_argument("--bank", type=Path, default=BANK_PATH)
@@ -551,6 +776,38 @@ def main() -> None:
             f"Exported {report['replacementCount']} replacement(s) "
             f"({report['readyReplacementCount']} ready, {report['manualReviewCount']} manual) "
             f"from {report['rowCount']} row(s) to {args.output}"
+        )
+        return
+
+    if args.command == "export-from-artifacts":
+        entries = load_entries(args.bank)
+        artifact_rows_by_table = load_artifact_payloads(
+            args.artifact_dir,
+            args.tables,
+            args.start_date,
+            args.end_date,
+        )
+        supabase_rows_by_table = {
+            table_key: fetch_rows(table_key, args.start_date, args.end_date)
+            for table_key in args.tables
+        }
+        replacements = scan_artifact_diffs(entries, artifact_rows_by_table, supabase_rows_by_table)
+        report = build_report(
+            entries=entries,
+            rows_by_table=supabase_rows_by_table,
+            replacements=replacements,
+            bank_path=args.bank,
+            start_date=args.start_date,
+            end_date=args.end_date,
+            source="artifact-supabase-diff",
+            artifact_rows_by_table=artifact_rows_by_table,
+        )
+        args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+        print(
+            f"Exported {report['replacementCount']} artifact-backed replacement(s) "
+            f"({report['readyReplacementCount']} ready, {report['manualReviewCount']} manual) "
+            f"from {report['artifactRowCount']} artifact row(s) and {report['rowCount']} Supabase row(s) "
+            f"to {args.output}"
         )
         return
 

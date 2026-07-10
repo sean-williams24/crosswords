@@ -1,3 +1,4 @@
+import json
 import random
 import sys
 import tempfile
@@ -106,6 +107,130 @@ class SupabaseCrosswordEditSyncTests(unittest.TestCase):
         self.assertEqual(changed, 1)
         self.assertEqual(entries[0]["clues"][0], "Circular path")
         self.assertEqual(entries[0]["clues"][1], "Path followed by a satellite")
+
+    def test_artifact_diff_uses_original_value_and_source_metadata(self) -> None:
+        entries = [entry()]
+        artifact_clue = clue(
+            hint="Route around a planet",
+            hintSourceField="clues",
+            hintSourceIndex=1,
+        )
+        supabase_clue = clue(
+            hint="Path followed by a satellite",
+            hintSourceField="clues",
+            hintSourceIndex=1,
+        )
+
+        replacements = sync.scan_artifact_diffs(
+            entries,
+            {"daily": [row("2026-07-01", artifact_clue)]},
+            {"daily": [row("2026-07-01", supabase_clue)]},
+        )
+
+        self.assertEqual(len(replacements), 1)
+        self.assertEqual(replacements[0]["status"], "ready")
+        self.assertEqual(replacements[0]["field"], "clues[1]")
+        self.assertEqual(replacements[0]["current"], "Route around a planet")
+        self.assertEqual(replacements[0]["original"], "Route around a planet")
+        self.assertEqual(replacements[0]["proposed"], "Path followed by a satellite")
+
+    def test_artifact_diff_ignores_unchanged_supabase_values(self) -> None:
+        entries = [entry()]
+        artifact_clue = clue(
+            hint="Route around a planet",
+            hintSourceField="clues",
+            hintSourceIndex=1,
+        )
+        supabase_clue = clue(
+            hint="Route around a planet",
+            hintSourceField="clues",
+            hintSourceIndex=1,
+        )
+
+        replacements = sync.scan_artifact_diffs(
+            entries,
+            {"daily": [row("2026-07-01", artifact_clue)]},
+            {"daily": [row("2026-07-01", supabase_clue)]},
+        )
+
+        self.assertEqual(replacements, [])
+
+    def test_artifact_diff_updates_weekly_hard_text_from_hint_edit(self) -> None:
+        entries = [entry()]
+        artifact_clue = clue(
+            text="Circular path",
+            hint="Celestial route",
+            textSourceField="clues",
+            textSourceIndex=0,
+            hintSourceField="hard_text",
+            hintSourceIndex=None,
+        )
+        supabase_clue = clue(
+            text="Circular path",
+            hint="Route followed by a satellite",
+            textSourceField="clues",
+            textSourceIndex=0,
+            hintSourceField="hard_text",
+            hintSourceIndex=None,
+        )
+
+        replacements = sync.scan_artifact_diffs(
+            entries,
+            {"weekly": [row("2026-07-05", artifact_clue)]},
+            {"weekly": [row("2026-07-05", supabase_clue)]},
+        )
+
+        self.assertEqual(len(replacements), 1)
+        self.assertEqual(replacements[0]["status"], "ready")
+        self.assertEqual(replacements[0]["field"], "hard_text")
+        self.assertEqual(replacements[0]["current"], "Celestial route")
+        self.assertEqual(replacements[0]["original"], "Celestial route")
+        self.assertEqual(replacements[0]["proposed"], "Route followed by a satellite")
+
+    def test_artifact_diff_missing_clue_metadata_stays_manual(self) -> None:
+        entries = [entry()]
+        artifact_clue = clue(hint="Route around a planet")
+        supabase_clue = clue(hint="Path followed by a satellite")
+
+        replacements = sync.scan_artifact_diffs(
+            entries,
+            {"daily": [row("2026-07-01", artifact_clue)]},
+            {"daily": [row("2026-07-01", supabase_clue)]},
+        )
+
+        self.assertEqual(len(replacements), 1)
+        self.assertEqual(replacements[0]["status"], "manualReviewRequired")
+        self.assertIsNone(replacements[0]["field"])
+        self.assertEqual(replacements[0]["reason"], "Artifact is missing source metadata for a clues[] target")
+
+    def test_load_artifact_payloads_filters_by_date_and_table(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            artifact_dir = Path(directory)
+            daily_payload = {
+                "date": "2026-07-01",
+                "puzzle_number": 10,
+                "is_free": True,
+                "clues": [clue()],
+            }
+            weekly_payload = {
+                "date": "2026-07-05",
+                "puzzle_number": 3,
+                "is_free": False,
+                "clues": [clue()],
+            }
+            (artifact_dir / "puzzle_10.json").write_text(json.dumps(daily_payload))
+            (artifact_dir / "weekly_3.json").write_text(json.dumps(weekly_payload))
+
+            payloads = sync.load_artifact_payloads(
+                artifact_dir,
+                ["daily"],
+                "2026-07-01",
+                "2026-07-01",
+            )
+
+        self.assertEqual(len(payloads["daily"]), 1)
+        self.assertEqual(payloads["daily"][0]["date"], "2026-07-01")
+        self.assertIn("_artifactPath", payloads["daily"][0])
 
     def test_stale_word_bank_current_value_fails_apply(self) -> None:
         entries = [entry()]
