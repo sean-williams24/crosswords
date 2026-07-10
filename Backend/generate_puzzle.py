@@ -526,13 +526,24 @@ def assemble_raw(
         entry = item["entry"]
         clue_variants = entry.get("clues", [])
         text = entry["text"]
-        hint = rng.choice(clue_variants) if clue_variants and rng else entry.get("hint", "")
+        hint_source_field = "hint"
+        hint_source_index = None
+        if clue_variants and rng:
+            hint_source_index = rng.randrange(len(clue_variants))
+            hint = clue_variants[hint_source_index]
+            hint_source_field = "clues"
+        else:
+            hint = entry.get("hint", "")
         words.append({
             "direction": slot.direction,
             "number": 0,  # assigned later by build_puzzle_payload
             "answer": entry["word"].upper(),
             "text": text,
             "hint": hint,
+            "textSourceField": "text",
+            "textSourceIndex": None,
+            "hintSourceField": hint_source_field,
+            "hintSourceIndex": hint_source_index,
             "startRow": slot.row,
             "startCol": slot.col,
         })
@@ -666,6 +677,10 @@ def build_puzzle_payload(raw: dict, puzzle_number: int, puzzle_date: str) -> dic
             "number": num,
             "text": word["text"],
             "hint": word["hint"],
+            "textSourceField": word.get("textSourceField"),
+            "textSourceIndex": word.get("textSourceIndex"),
+            "hintSourceField": word.get("hintSourceField"),
+            "hintSourceIndex": word.get("hintSourceIndex"),
             "answer": word["answer"].upper(),
             "startRow": r,
             "startCol": c,

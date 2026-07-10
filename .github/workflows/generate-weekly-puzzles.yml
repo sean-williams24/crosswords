@@ -110,4 +110,13 @@ jobs:
             --date "${{ steps.check.outputs.next_date }}" \
             --start-number "${{ steps.check.outputs.next_number }}" \
             --count 10 \
+            --output generated_weekly_puzzles \
             --exclude-words /tmp/used_words.json
+
+      - name: Upload generated weekly puzzle JSON artifact
+        if: steps.check.outputs.enough == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-crossword-json-${{ steps.check.outputs.next_date }}
+          path: generated_weekly_puzzles/*.json
+          if-no-files-found: ignore

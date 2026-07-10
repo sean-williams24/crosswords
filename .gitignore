@@ -17,8 +17,10 @@ Backend/*.py
 !Backend/recategorise_backword.py
 !Backend/fix_answer_leakage.py
 !Backend/fix_duplicate_clues.py
+!Backend/sync_supabase_crossword_edits.py
 !Backend/test_generate_backword.py
 !Backend/test_generate_wotd.py
+!Backend/test_sync_supabase_crossword_edits.py
 Backend/clean_progress.json
 Backend/word_bank_backup.json
 Backend/word_bank_backup_*.json

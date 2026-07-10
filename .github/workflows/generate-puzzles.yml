@@ -81,4 +81,12 @@ jobs:
             --date "${{ steps.dates.outputs.start }}" \
             --count 7 \
             --start-number "${{ steps.dates.outputs.start_number }}" \
+            --output generated_puzzles \
             --exclude-words /tmp/used_words.json
+
+      - name: Upload generated puzzle JSON artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-crossword-json-${{ steps.dates.outputs.start }}
+          path: generated_puzzles/*.json
+          if-no-files-found: ignore

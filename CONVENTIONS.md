@@ -35,6 +35,12 @@ Both generators share the same exclusion mechanism to avoid repeating answers ac
 - Each puzzle in a batch records its answers into a `batch_used` set.
 - Every subsequent puzzle in the same batch adds `batch_used` to the exclusion set, so no word appears twice within a single generation run regardless of the Supabase history.
 
+### Supabase edit sync and generation artifacts
+
+Generated daily and weekly crossword payloads are uploaded as GitHub Actions artifacts as well as inserted into Supabase. These JSON artifacts preserve the original generated `text`/`hint` values before any manual Supabase edits, making later word-bank sync review easier.
+
+Use `Backend/sync_supabase_crossword_edits.py export` to compare reviewed Supabase rows with `Backend/word_bank.json`. Historical rows generated before clue-source metadata may require manual `clues[N]` selection; future rows include `textSourceField`/`textSourceIndex` and `hintSourceField`/`hintSourceIndex` inside each clue JSON object so the sync script can target the original word-bank field deterministically.
+
 ## Crossword Correct Highlight Locking
 
 When `AppSettings.crosswordCorrectHighlight` is enabled, cells belonging to completed crossword clues are treated as locked input. `GameViewModel` must reject deletion and typed replacement for those cells, because the green highlight is the user's signal that the answer has been accepted and should no longer be editable. Retyping the same letter already in a locked cell is allowed as navigation input and advances to the next cell without changing the answer.

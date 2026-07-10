@@ -463,14 +463,31 @@ def assemble_raw(
         slot: Slot = item["slot"]
         entry = item["entry"]
         clue_variants = entry.get("clues", [])
-        text = rng.choice(clue_variants) if clue_variants and rng else entry["text"]
-        hint = entry.get("hard_text", entry.get("hint", ""))
+        text_source_field = "text"
+        text_source_index = None
+        if clue_variants and rng:
+            text_source_index = rng.randrange(len(clue_variants))
+            text = clue_variants[text_source_index]
+            text_source_field = "clues"
+        else:
+            text = entry["text"]
+
+        if entry.get("hard_text"):
+            hint = entry["hard_text"]
+            hint_source_field = "hard_text"
+        else:
+            hint = entry.get("hint", "")
+            hint_source_field = "hint"
         words.append({
             "direction": slot.direction,
             "number": 0,
             "answer": entry["word"].upper(),
             "text": text,
             "hint": hint,
+            "textSourceField": text_source_field,
+            "textSourceIndex": text_source_index,
+            "hintSourceField": hint_source_field,
+            "hintSourceIndex": None,
             "startRow": slot.row,
             "startCol": slot.col,
         })
@@ -602,6 +619,10 @@ def build_puzzle_payload(raw: dict, puzzle_number: int, puzzle_date: str) -> dic
             "number": num,
             "text": word["text"],
             "hint": word["hint"],
+            "textSourceField": word.get("textSourceField"),
+            "textSourceIndex": word.get("textSourceIndex"),
+            "hintSourceField": word.get("hintSourceField"),
+            "hintSourceIndex": word.get("hintSourceIndex"),
             "answer": word["answer"].upper(),
             "startRow": r,
             "startCol": c,

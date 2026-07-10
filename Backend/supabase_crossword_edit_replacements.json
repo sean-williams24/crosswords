@@ -1,0 +1,647 @@
+{
+  "generatedAt": "2026-07-10T09:06:34.199972+00:00",
+  "sourceBank": "/Users/sean.williams2/src/Crosswords/Backend/word_bank.json",
+  "startDate": "2026-07-07",
+  "endDate": "2026-07-14",
+  "tables": [
+    "puzzles",
+    "weekly_puzzles"
+  ],
+  "wordBankEntryCount": 22811,
+  "rowCount": 9,
+  "replacementCount": 27,
+  "readyReplacementCount": 27,
+  "manualReviewCount": 0,
+  "instructions": "Rows with status=manualReviewRequired need field/current copied from one candidateFields item before apply. The dormant word_bank hint field is intentionally not updated.",
+  "replacements": [
+    {
+      "id": "daily:2026-07-08:8:LESS:hint",
+      "status": "manualReviewRequired",
+      "table": "puzzles",
+      "date": "2026-07-08",
+      "puzzleNumber": 122,
+      "rowId": "3ee04198-8a39-46cb-a24c-965289682d47",
+      "clueId": 8,
+      "clueNumber": 19,
+      "direction": "across",
+      "answer": "LESS",
+      "wordBankIndex": 1128,
+      "supabaseField": "hint",
+      "field": "clues[0]",
+      "current": "Opposite of more",
+      "proposed": "Fewer",
+      "reason": "Missing source metadata for edited clues[] value",
+      "candidateFields": [
+        {
+          "field": "clues[0]",
+          "current": "Opposite of more"
+        },
+        {
+          "field": "clues[1]",
+          "current": "Smaller amount, in comparison"
+        },
+        {
+          "field": "clues[2]",
+          "current": "Reduction in quantity"
+        }
+      ]
+    },
+    {
+      "id": "daily:2026-07-08:13:ALIBI:hint",
+      "status": "manualReviewRequired",
+      "table": "puzzles",
+      "date": "2026-07-08",
+      "puzzleNumber": 122,
+      "rowId": "3ee04198-8a39-46cb-a24c-965289682d47",
+      "clueId": 13,
+      "clueNumber": 2,
+      "direction": "down",
+      "answer": "ALIBI",
+      "wordBankIndex": 30,
+      "supabaseField": "hint",
+      "field": "clues[1]",
+      "current": "Defense in a courtroom drama",
+      "proposed": "Excuse in a courtroom",
+      "reason": "Missing source metadata for edited clues[] value",
+      "candidateFields": [
+        {
+          "field": "clues[0]",
+          "current": "Criminal's excuse"
+        },
+        {
+          "field": "clues[1]",
+          "current": "Defense in a courtroom drama"
+        },
+        {
+          "field": "clues[2]",
+          "current": "Proof of presence elsewhere"
+        }
+      ]
+    },
+    {
+      "id": "daily:2026-07-08:14:AID:text",
+      "status": "ready",
+      "table": "puzzles",
+      "date": "2026-07-08",
+      "puzzleNumber": 122,
+      "rowId": "3ee04198-8a39-46cb-a24c-965289682d47",
+      "clueId": 14,
+      "clueNumber": 18,
+      "direction": "down",
+      "answer": "AID",
+      "wordBankIndex": 22192,
+      "supabaseField": "text",
+      "field": "text",
+      "current": "Help or assistance",
+      "proposed": "Assistance"
+    },
+    {
+      "id": "daily:2026-07-08:14:AID:hint",
+      "status": "manualReviewRequired",
+      "table": "puzzles",
+      "date": "2026-07-08",
+      "puzzleNumber": 122,
+      "rowId": "3ee04198-8a39-46cb-a24c-965289682d47",
+      "clueId": 14,
+      "clueNumber": 18,
+      "direction": "down",
+      "answer": "AID",
+      "wordBankIndex": 22192,
+      "supabaseField": "hint",
+      "field": "clues[2]",
+      "current": "A friend in need",
+      "proposed": "Help a friend in need",
+      "reason": "Missing source metadata for edited clues[] value",
+      "candidateFields": [
+        {
+          "field": "clues[0]",
+          "current": "First ___ kit"
+        },
+        {
+          "field": "clues[1]",
+          "current": "Emergency support, in a pinch"
+        },
+        {
+          "field": "clues[2]",
+          "current": "A friend in need"
+        }
+      ]
+    },
+    {
+      "id": "daily:2026-07-09:4:CAB:text",
+      "status": "ready",
+      "table": "puzzles",
+      "date": "2026-07-09",
+      "puzzleNumber": 123,
+      "rowId": "b6f9512a-ebb5-48f1-9352-0262f9baea5a",
+      "clueId": 4,
+      "clueNumber": 12,
+      "direction": "across",
+      "answer": "CAB",
+      "wordBankIndex": 22221,
+      "supabaseField": "text",
+      "field": "text",
+      "current": "Taxi",
+      "proposed": "Something you might hail down"
+    },
+    {
+      "id": "daily:2026-07-09:5:OUT:text",
+      "status": "ready",
+      "table": "puzzles",
+      "date": "2026-07-09",
+      "puzzleNumber": 123,
+      "rowId": "b6f9512a-ebb5-48f1-9352-0262f9baea5a",
+      "clueId": 5,
+      "clueNumber": 14,
+      "direction": "across",
+      "answer": "OUT",
+      "wordBankIndex": 22368,
+      "supabaseField": "text",
+      "field": "text",
+      "current": "Not inside",
+      "proposed": "Umpire's call"
+    },
+    {
+      "id": "daily:2026-07-09:5:OUT:hint",
+      "status": "manualReviewRequired",
+      "table": "puzzles",
+      "date": "2026-07-09",
+      "puzzleNumber": 123,
+      "rowId": "b6f9512a-ebb5-48f1-9352-0262f9baea5a",
+      "clueId": 5,
+      "clueNumber": 14,
+      "direction": "across",
+      "answer": "OUT",
+      "wordBankIndex": 22368,
+      "supabaseField": "hint",
+      "field": "clues[0]",
+      "current": "Opposite of in",
+      "proposed": "Over and ___",
+      "reason": "Missing source metadata for edited clues[] value",
+      "candidateFields": [
+        {
+          "field": "clues[0]",
+          "current": "Opposite of in"
+        },
+        {
+          "field": "clues[1]",
+          "current": "A term that can mean revealed or exposed"
+        },
+        {
+          "field": "clues[2]",
+          "current": "Beyond the usual confines or boundaries"
+        }
+      ]
+    },
+    {
+      "id": "daily:2026-07-09:10:SEA:text",
+      "status": "ready",
+      "table": "puzzles",
+      "date": "2026-07-09",
+      "puzzleNumber": 123,
+      "rowId": "b6f9512a-ebb5-48f1-9352-0262f9baea5a",
+      "clueId": 10,
+      "clueNumber": 2,
+      "direction": "down",
+      "answer": "SEA",
+      "wordBankIndex": 22417,
+      "supabaseField": "text",
+      "field": "text",
+      "current": "Large body of salt water",
+      "proposed": "Large body of salty liquid"
+    },
+    {
+      "id": "daily:2026-07-09:14:GALA:hint",
+      "status": "manualReviewRequired",
+      "table": "puzzles",
+      "date": "2026-07-09",
+      "puzzleNumber": 123,
+      "rowId": "b6f9512a-ebb5-48f1-9352-0262f9baea5a",
+      "clueId": 14,
+      "clueNumber": 16,
+      "direction": "down",
+      "answer": "GALA",
+      "wordBankIndex": 4488,
+      "supabaseField": "hint",
+      "field": "clues[0]",
+      "current": "Extravagant celebration or event",
+      "proposed": "Celebration or event",
+      "reason": "Missing source metadata for edited clues[] value",
+      "candidateFields": [
+        {
+          "field": "clues[0]",
+          "current": "Extravagant celebration or event"
+        },
+        {
+          "field": "clues[1]",
+          "current": "Celebration with elegance"
+        },
+        {
+          "field": "clues[2]",
+          "current": "An occasion for festivities"
+        }
+      ]
+    },
+    {
+      "id": "daily:2026-07-09:20:BOY:text",
+      "status": "ready",
+      "table": "puzzles",
+      "date": "2026-07-09",
+      "puzzleNumber": 123,
+      "rowId": "b6f9512a-ebb5-48f1-9352-0262f9baea5a",
+      "clueId": 20,
+      "clueNumber": 19,
+      "direction": "down",
+      "answer": "BOY",
+      "wordBankIndex": 22499,
+      "supabaseField": "text",
+      "field": "text",
+      "current": "Young male child",
+      "proposed": "Young chap"
+    },
+    {
+      "id": "daily:2026-07-10:0:ICY:text",
+      "status": "ready",
+      "table": "puzzles",
+      "date": "2026-07-10",
+      "puzzleNumber": 124,
+      "rowId": "4dac312f-86cb-4ef5-b420-c3574ceb14c8",
+      "clueId": 0,
+      "clueNumber": 1,
+      "direction": "across",
+      "answer": "ICY",
+      "wordBankIndex": 22305,
+      "supabaseField": "text",
+      "field": "text",
+      "current": "Covered in ice",
+      "proposed": "Like winter roads"
+    },
+    {
+      "id": "daily:2026-07-10:2:EQUATE:text",
+      "status": "ready",
+      "table": "puzzles",
+      "date": "2026-07-10",
+      "puzzleNumber": 124,
+      "rowId": "4dac312f-86cb-4ef5-b420-c3574ceb14c8",
+      "clueId": 2,
+      "clueNumber": 6,
+      "direction": "across",
+      "answer": "EQUATE",
+      "wordBankIndex": 19741,
+      "supabaseField": "text",
+      "field": "text",
+      "current": "To consider as equal",
+      "proposed": "Draw a parallel between"
+    },
+    {
+      "id": "daily:2026-07-10:10:EDGE:text",
+      "status": "ready",
+      "table": "puzzles",
+      "date": "2026-07-10",
+      "puzzleNumber": 124,
+      "rowId": "4dac312f-86cb-4ef5-b420-c3574ceb14c8",
+      "clueId": 10,
+      "clueNumber": 11,
+      "direction": "down",
+      "answer": "EDGE",
+      "wordBankIndex": 555,
+      "supabaseField": "text",
+      "field": "text",
+      "current": "Brink or advantage",
+      "proposed": "Advantage"
+    },
+    {
+      "id": "daily:2026-07-10:16:TOED:hint",
+      "status": "manualReviewRequired",
+      "table": "puzzles",
+      "date": "2026-07-10",
+      "puzzleNumber": 124,
+      "rowId": "4dac312f-86cb-4ef5-b420-c3574ceb14c8",
+      "clueId": 16,
+      "clueNumber": 4,
+      "direction": "down",
+      "answer": "TOED",
+      "wordBankIndex": 9638,
+      "supabaseField": "hint",
+      "field": "clues[1]",
+      "current": "Foot's last letter is found here",
+      "proposed": "Hit off the end of the clubface (in golf)",
+      "reason": "Missing source metadata for edited clues[] value",
+      "candidateFields": [
+        {
+          "field": "clues[0]",
+          "current": "Footed creature's appendage"
+        },
+        {
+          "field": "clues[1]",
+          "current": "Foot's last letter is found here"
+        },
+        {
+          "field": "clues[2]",
+          "current": "In a state of footwear"
+        }
+      ]
+    },
+    {
+      "id": "weekly:2026-07-12:5:DUH:hint",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 5,
+      "clueNumber": 13,
+      "direction": "across",
+      "answer": "DUH",
+      "wordBankIndex": 22710,
+      "supabaseField": "hint",
+      "field": "hard_text",
+      "current": "A sound indicating something is clear",
+      "proposed": "A sound indicating something is clear."
+    },
+    {
+      "id": "weekly:2026-07-12:8:LOUDER:text",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 8,
+      "clueNumber": 18,
+      "direction": "across",
+      "answer": "LOUDER",
+      "wordBankIndex": 15289,
+      "supabaseField": "text",
+      "field": "clues[0]",
+      "current": "Increasing sound levels",
+      "proposed": "Increasing sound levels.",
+      "reason": "Missing source metadata for edited clues[] value",
+      "candidateFields": [
+        {
+          "field": "clues[0]",
+          "current": "Increasing sound levels"
+        },
+        {
+          "field": "clues[1]",
+          "current": "More boisterous than before"
+        },
+        {
+          "field": "clues[2]",
+          "current": "Amplified sound in comparison"
+        }
+      ],
+      "autoResolvedReason": "candidate matched proposed value after punctuation/smart-quote normalization"
+    },
+    {
+      "id": "weekly:2026-07-12:8:LOUDER:hint",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 8,
+      "clueNumber": 18,
+      "direction": "across",
+      "answer": "LOUDER",
+      "wordBankIndex": 15289,
+      "supabaseField": "hint",
+      "field": "hard_text",
+      "current": "Having a higher volume",
+      "proposed": "Having a higher volume."
+    },
+    {
+      "id": "weekly:2026-07-12:12:DEATHS:text",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 12,
+      "clueNumber": 26,
+      "direction": "across",
+      "answer": "DEATHS",
+      "wordBankIndex": 13006,
+      "supabaseField": "text",
+      "field": "clues[1]",
+      "current": "Loss of life occurrences",
+      "proposed": "Loss of life occurrences.",
+      "reason": "Missing source metadata for edited clues[] value",
+      "candidateFields": [
+        {
+          "field": "clues[0]",
+          "current": "The ultimate farewells"
+        },
+        {
+          "field": "clues[1]",
+          "current": "Loss of life occurrences"
+        },
+        {
+          "field": "clues[2]",
+          "current": "Departures from the living"
+        }
+      ],
+      "autoResolvedReason": "candidate matched proposed value after punctuation/smart-quote normalization"
+    },
+    {
+      "id": "weekly:2026-07-12:12:DEATHS:hint",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 12,
+      "clueNumber": 26,
+      "direction": "across",
+      "answer": "DEATHS",
+      "wordBankIndex": 13006,
+      "supabaseField": "hint",
+      "field": "hard_text",
+      "current": "Final exits from existence",
+      "proposed": "Final exits from existence."
+    },
+    {
+      "id": "weekly:2026-07-12:13:IRAN:text",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 13,
+      "clueNumber": 28,
+      "direction": "across",
+      "answer": "IRAN",
+      "wordBankIndex": 9582,
+      "supabaseField": "text",
+      "field": "clues[0]",
+      "current": "Historic empire's modern location",
+      "proposed": "Historic empire's modern location.",
+      "reason": "Missing source metadata for edited clues[] value",
+      "candidateFields": [
+        {
+          "field": "clues[0]",
+          "current": "Historic empire's modern location"
+        },
+        {
+          "field": "clues[1]",
+          "current": "Capital is Tehran"
+        },
+        {
+          "field": "clues[2]",
+          "current": "Site of significant nuclear discussions"
+        }
+      ],
+      "autoResolvedReason": "candidate matched proposed value after punctuation/smart-quote normalization"
+    },
+    {
+      "id": "weekly:2026-07-12:13:IRAN:hint",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 13,
+      "clueNumber": 28,
+      "direction": "across",
+      "answer": "IRAN",
+      "wordBankIndex": 9582,
+      "supabaseField": "hint",
+      "field": "hard_text",
+      "current": "This nation is home to the ancient Persians",
+      "proposed": "This nation is home to the ancient Persians."
+    },
+    {
+      "id": "weekly:2026-07-12:15:WAN:hint",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 15,
+      "clueNumber": 31,
+      "direction": "across",
+      "answer": "WAN",
+      "wordBankIndex": 22597,
+      "supabaseField": "hint",
+      "field": "hard_text",
+      "current": "Pale as a ghost",
+      "proposed": "Pale as a ghost, perhaps"
+    },
+    {
+      "id": "weekly:2026-07-12:22:STEWARD:text",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 22,
+      "clueNumber": 22,
+      "direction": "down",
+      "answer": "STEWARD",
+      "wordBankIndex": 17691,
+      "supabaseField": "text",
+      "field": "clues[1]",
+      "current": "Caretaker of resources",
+      "proposed": "Caretaker of resources.",
+      "reason": "Missing source metadata for edited clues[] value",
+      "candidateFields": [
+        {
+          "field": "clues[0]",
+          "current": "Overseer of services"
+        },
+        {
+          "field": "clues[1]",
+          "current": "Caretaker of resources"
+        },
+        {
+          "field": "clues[2]",
+          "current": "One who facilitates comfort"
+        }
+      ],
+      "autoResolvedReason": "candidate matched proposed value after punctuation/smart-quote normalization"
+    },
+    {
+      "id": "weekly:2026-07-12:22:STEWARD:hint",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 22,
+      "clueNumber": 22,
+      "direction": "down",
+      "answer": "STEWARD",
+      "wordBankIndex": 17691,
+      "supabaseField": "hint",
+      "field": "hard_text",
+      "current": "Guardian of the ship or flight",
+      "proposed": "Guardian of the ship or flight."
+    },
+    {
+      "id": "weekly:2026-07-12:32:NEO:text",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 32,
+      "clueNumber": 24,
+      "direction": "down",
+      "answer": "NEO",
+      "wordBankIndex": 22793,
+      "supabaseField": "text",
+      "field": "clues[0]",
+      "current": "Prefix meaning new",
+      "proposed": "Prefix meaning new.",
+      "reason": "Missing source metadata for edited clues[] value",
+      "candidateFields": [
+        {
+          "field": "clues[0]",
+          "current": "Prefix meaning new"
+        },
+        {
+          "field": "clues[1]",
+          "current": "Modern or recent"
+        },
+        {
+          "field": "clues[2]",
+          "current": "A fresh perspective"
+        }
+      ],
+      "autoResolvedReason": "candidate matched proposed value after punctuation/smart-quote normalization"
+    },
+    {
+      "id": "weekly:2026-07-12:32:NEO:hint",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 32,
+      "clueNumber": 24,
+      "direction": "down",
+      "answer": "NEO",
+      "wordBankIndex": 22793,
+      "supabaseField": "hint",
+      "field": "hard_text",
+      "current": "A term for something that is not old",
+      "proposed": "A term for something that is not old."
+    },
+    {
+      "id": "weekly:2026-07-12:35:ROUTINE:hint",
+      "status": "ready",
+      "table": "weekly_puzzles",
+      "date": "2026-07-12",
+      "puzzleNumber": 18,
+      "rowId": "fc51988c-f1c7-462c-b176-bd243c066a5d",
+      "clueId": 35,
+      "clueNumber": 17,
+      "direction": "down",
+      "answer": "ROUTINE",
+      "wordBankIndex": 7500,
+      "supabaseField": "hint",
+      "field": "hard_text",
+      "current": "Daily practice a bit dull",
+      "proposed": "Daily practice, sometimes a bit dull"
+    }
+  ]
+}
