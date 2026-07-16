@@ -152,6 +152,10 @@ struct PuzzleView: View {
             Text("This will reveal and lock every answer for this archive puzzle.")
         }
         .navigationBarBackButtonHidden(true)
+        .onChange(of: storeService.isProUser) { _, isProUser in
+            guard isProUser else { return }
+            showRewardedHintBanner = false
+        }
         .onDisappear {
             // Ensure metadata is saved for rating backfill
             if viewModel.progress.puzzleDate == nil {
@@ -392,8 +396,13 @@ struct PuzzleView: View {
 
     private var getHintButton: some View {
         Button {
-            let totalAllowed = freeHintLimit + viewModel.adBonusHints
-            if storeService.isProUser || viewModel.activeClueIsHinted || viewModel.progress.hintedClueIds.count < totalAllowed {
+            if GameViewModel.canUseHintWithoutRewardedBanner(
+                isProUser: storeService.isProUser,
+                activeClueIsHinted: viewModel.activeClueIsHinted,
+                hintedClueCount: viewModel.progress.hintedClueIds.count,
+                freeHintLimit: freeHintLimit,
+                adBonusHints: viewModel.adBonusHints
+            ) {
                 viewModel.useHint()
             } else {
                 withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {

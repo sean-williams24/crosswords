@@ -126,6 +126,39 @@ struct GameViewModelTests {
         #expect(!vm.showHint)
     }
 
+    @Test("Pro users can use hints without rewarded banner after free hint limit")
+    func proUsersCanUseHintsWithoutRewardedBannerAfterFreeHintLimit() {
+        #expect(GameViewModel.canUseHintWithoutRewardedBanner(
+            isProUser: true,
+            activeClueIsHinted: false,
+            hintedClueCount: 3,
+            freeHintLimit: 0,
+            adBonusHints: 0
+        ))
+    }
+
+    @Test("Free users see rewarded banner after hint allowance is used")
+    func freeUsersSeeRewardedBannerAfterHintAllowanceIsUsed() {
+        #expect(!GameViewModel.canUseHintWithoutRewardedBanner(
+            isProUser: false,
+            activeClueIsHinted: false,
+            hintedClueCount: 1,
+            freeHintLimit: 1,
+            adBonusHints: 0
+        ))
+    }
+
+    @Test("Already hinted clue can be shown without rewarded banner")
+    func alreadyHintedClueCanBeShownWithoutRewardedBanner() {
+        #expect(GameViewModel.canUseHintWithoutRewardedBanner(
+            isProUser: false,
+            activeClueIsHinted: true,
+            hintedClueCount: 1,
+            freeHintLimit: 0,
+            adBonusHints: 0
+        ))
+    }
+
     @Test("Give up fills answers, completes clues, and persists metadata")
     func giveUpFillsAnswersCompletesCluesAndPersistsMetadata() async throws {
         let puzzle = makePuzzle()

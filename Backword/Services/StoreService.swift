@@ -8,6 +8,8 @@ final class StoreService: ObservableObject {
     static let monthlyID = "com.backword.monthlypro"
     static let annualID = "com.backword.annualpro"
     private static let productIDs = [monthlyID, annualID]
+    private static let cachedProExpirationDateKey = "store_cached_pro_expiration_date"
+    private static let cachedProValidationGraceInterval: TimeInterval = 3 * 24 * 60 * 60
 
     // MARK: - Published State
     @Published private(set) var products: [Product] = []
@@ -41,6 +43,17 @@ final class StoreService: ObservableObject {
             subscriptionStatusLoaded = true
         }
         #endif
+
+        if isProUser == false,
+           let cachedExpirationDate = Self.cachedProExpirationDate(),
+           Self.cachedProAccessIsActive(expirationDate: cachedExpirationDate) {
+            isProUser = true
+            subscriptionStatusLoaded = true
+            scheduleSubscriptionExpirationRefresh(
+                nextExpirationDate: Self.cachedProRefreshDate(expirationDate: cachedExpirationDate),
+                source: "cached_pro"
+            )
+        }
 
         Task {
             await withTaskGroup(of: Void.self) { group in
@@ -117,6 +130,7 @@ final class StoreService: ObservableObject {
 
             if grantsProAccess(transaction) {
                 isProUser = true
+                Self.cacheProExpirationDate(transaction.expirationDate)
                 scheduleSubscriptionExpirationRefresh(
                     nextExpirationDate: transaction.expirationDate,
                     source: "purchase"
@@ -265,10 +279,22 @@ final class StoreService: ObservableObject {
             }
         }
 
-        isProUser = hasActiveSubscription
+        let storeKitExpirationDate = Self.nextProExpiration(from: proEntitlements)
+        if hasActiveSubscription {
+            Self.cacheProExpirationDate(storeKitExpirationDate)
+        }
+
+        let cachedExpirationDate = Self.cachedProExpirationDate()
+        isProUser = Self.resolvedProStatus(
+            hasActiveSubscription: hasActiveSubscription,
+            entitlementCount: entitlementCount,
+            cachedExpirationDate: cachedExpirationDate
+        )
         subscriptionStatusLoaded = true
         scheduleSubscriptionExpirationRefresh(
-            nextExpirationDate: Self.nextProExpiration(from: proEntitlements),
+            nextExpirationDate: hasActiveSubscription
+                ? storeKitExpirationDate
+                : Self.cachedProRefreshDate(expirationDate: cachedExpirationDate),
             source: source
         )
         logger.subscriptionStatusRefreshCompleted(
@@ -304,6 +330,45 @@ final class StoreService: ObservableObject {
         guard revocationDate == nil else { return false }
         guard expirationDate.map({ $0 > now }) ?? true else { return false }
         return true
+    }
+
+    static func resolvedProStatus(
+        hasActiveSubscription: Bool,
+        entitlementCount: Int,
+        cachedExpirationDate: Date?,
+        now: Date = Date()
+    ) -> Bool {
+        hasActiveSubscription || (
+            entitlementCount == 0
+                && cachedProAccessIsActive(expirationDate: cachedExpirationDate, now: now)
+        )
+    }
+
+    static func cachedProAccessIsActive(
+        expirationDate: Date?,
+        now: Date = Date()
+    ) -> Bool {
+        guard let expirationDate else { return false }
+        return expirationDate.addingTimeInterval(cachedProValidationGraceInterval) > now
+    }
+
+    static func cachedProRefreshDate(expirationDate: Date?) -> Date? {
+        expirationDate?.addingTimeInterval(cachedProValidationGraceInterval)
+    }
+
+    private static func cachedProExpirationDate() -> Date? {
+        let timestamp = UserDefaults.standard.double(forKey: cachedProExpirationDateKey)
+        guard timestamp > 0 else { return nil }
+        return Date(timeIntervalSince1970: timestamp)
+    }
+
+    private static func cacheProExpirationDate(_ expirationDate: Date?) {
+        guard let expirationDate else {
+            UserDefaults.standard.removeObject(forKey: cachedProExpirationDateKey)
+            return
+        }
+
+        UserDefaults.standard.set(expirationDate.timeIntervalSince1970, forKey: cachedProExpirationDateKey)
     }
 
     static func nextProExpiration(

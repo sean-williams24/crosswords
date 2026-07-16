@@ -117,6 +117,10 @@ struct PuzzleView: View {
                 .environmentObject(ratingService)
         }
         .navigationBarBackButtonHidden(true)
+        .onChange(of: storeService.isProUser) { _, isProUser in
+            guard isProUser else { return }
+            showRewardedHintBanner = false
+        }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                 isKeyboardReady = true
@@ -254,8 +258,13 @@ struct PuzzleView: View {
         }
 
         Button {
-            let totalAllowed = freeHintLimit + viewModel.adBonusHints
-            if storeService.isProUser || viewModel.activeClueIsHinted || viewModel.progress.hintedClueIds.count < totalAllowed {
+            if GameViewModel.canUseHintWithoutRewardedBanner(
+                isProUser: storeService.isProUser,
+                activeClueIsHinted: viewModel.activeClueIsHinted,
+                hintedClueCount: viewModel.progress.hintedClueIds.count,
+                freeHintLimit: freeHintLimit,
+                adBonusHints: viewModel.adBonusHints
+            ) {
                 viewModel.useHint()
             } else {
                 withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {

@@ -113,6 +113,66 @@ struct StoreServiceTests {
         #expect(expiration == nil)
     }
 
+    @Test("Resolved Pro status keeps active StoreKit subscription")
+    func resolvedProStatusKeepsActiveStoreKitSubscription() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+
+        #expect(StoreService.resolvedProStatus(
+            hasActiveSubscription: true,
+            entitlementCount: 1,
+            cachedExpirationDate: nil,
+            now: now
+        ))
+    }
+
+    @Test("Resolved Pro status falls back to active cache when StoreKit returns no entitlements")
+    func resolvedProStatusFallsBackToActiveCacheForEmptyEntitlements() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+
+        #expect(StoreService.resolvedProStatus(
+            hasActiveSubscription: false,
+            entitlementCount: 0,
+            cachedExpirationDate: now.addingTimeInterval(60),
+            now: now
+        ))
+    }
+
+    @Test("Resolved Pro status uses recently expired cache during validation grace")
+    func resolvedProStatusUsesRecentlyExpiredCacheDuringValidationGrace() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+
+        #expect(StoreService.resolvedProStatus(
+            hasActiveSubscription: false,
+            entitlementCount: 0,
+            cachedExpirationDate: now.addingTimeInterval(-60),
+            now: now
+        ))
+    }
+
+    @Test("Resolved Pro status ignores stale expired cache")
+    func resolvedProStatusIgnoresStaleExpiredCache() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+
+        #expect(!StoreService.resolvedProStatus(
+            hasActiveSubscription: false,
+            entitlementCount: 0,
+            cachedExpirationDate: now.addingTimeInterval(-4 * 24 * 60 * 60),
+            now: now
+        ))
+    }
+
+    @Test("Resolved Pro status does not use cache when StoreKit returns non-granting entitlements")
+    func resolvedProStatusDoesNotUseCacheForNonGrantingEntitlements() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+
+        #expect(!StoreService.resolvedProStatus(
+            hasActiveSubscription: false,
+            entitlementCount: 1,
+            cachedExpirationDate: now.addingTimeInterval(60),
+            now: now
+        ))
+    }
+
     #if DEBUG
     @Test("Debug override true forces Pro")
     func debugOverrideTrueForcesPro() {

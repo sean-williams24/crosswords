@@ -287,6 +287,16 @@ final class GameViewModel: ObservableObject {
 
     // MARK: - Hints
 
+    static func canUseHintWithoutRewardedBanner(
+        isProUser: Bool,
+        activeClueIsHinted: Bool,
+        hintedClueCount: Int,
+        freeHintLimit: Int,
+        adBonusHints: Int
+    ) -> Bool {
+        isProUser || activeClueIsHinted || hintedClueCount < freeHintLimit + adBonusHints
+    }
+
     func useHint() {
         guard progress.gaveUpAt == nil else { return }
         guard let clue = activeClue else { return }
