@@ -16,11 +16,11 @@ struct StatsView: View {
         winRate = stats.winRate
     }
 
-    init(stats: UserStats, isWeekly: Bool) {
+    init(stats: UserStats, isWeekly: Bool, averageTimeSeconds: String? = nil) {
         currentStreak = stats.currentStreak(isWeekly: isWeekly)
         longestStreak = stats.longestStreak(isWeekly: isWeekly)
         totalCompleted = stats.totalCompleted(isWeekly: isWeekly)
-        averageTimeSeconds = stats.formattedAverageTime(isWeekly: isWeekly)
+        self.averageTimeSeconds = averageTimeSeconds ?? stats.formattedAverageTime(isWeekly: isWeekly)
     }
 
     var body: some View {

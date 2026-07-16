@@ -16,7 +16,11 @@ struct CrosswordStatsView: View {
                 } else {
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 28) {
-                            StatsView(stats: statsService.stats, isWeekly: isWeekly)
+                            StatsView(
+                                stats: statsService.stats,
+                                isWeekly: isWeekly,
+                                averageTimeSeconds: averageSolveTime
+                            )
                                 .padding(.horizontal, AppLayout.screenPadding)
                             recentHistory
                                 .dynamicTypeSize(...DynamicTypeSize.accessibility1)
@@ -59,6 +63,12 @@ struct CrosswordStatsView: View {
         } else {
             historySection(title: "LAST 14 DAYS", rows: dailyBreakdownRows)
         }
+    }
+
+    private var averageSolveTime: String? {
+        CrosswordSolveTimeSummary.formattedAverageTime(
+            from: (isWeekly ? weeklyBreakdownRows : dailyBreakdownRows).compactMap(\.solveTime)
+        )
     }
 
     @ViewBuilder
@@ -152,17 +162,7 @@ struct CrosswordStatsView: View {
         let scoreMap: [String: Int] = Dictionary(uniqueKeysWithValues:
             ratingService.rating.dailyScores.map { ($0.date, $0.dailyCrossword) }
         )
-        // Only include puzzles completed on the same local content date as the puzzle date (i.e. solved on time),
-        // matching the "Solved" status shown in the archive view.
-        var timeMap = [String: Int]()
-        for progress in UserProgress.loadAll() {
-            guard progress.isWeekly != true,
-                  progress.gaveUpAt == nil,
-                  let puzzleDate = progress.puzzleDate,
-                  let completedAt = progress.completedAt,
-                  ContentReleaseCalendar(now: completedAt).dailyDateString == puzzleDate else { continue }
-            timeMap[puzzleDate] = Int(progress.elapsedTime)
-        }
+        let timeMap = CrosswordSolveTimeSummary.solveTimeByDailyDate(from: UserProgress.loadAll())
         let todayStr = ContentReleaseCalendar().dailyDateString
         return (0..<14).compactMap { offset -> HistoryRow? in
             guard let dateStr = ContentReleaseCalendar().dailyDateString(offsetByDays: -offset),
@@ -192,11 +192,10 @@ struct CrosswordStatsView: View {
         )
 
         return UserProgress.loadAll()
-            .filter { $0.isWeekly == true && $0.completedAt != nil && $0.gaveUpAt == nil }
             .compactMap { progress -> HistoryRow? in
                 guard let puzzleDate = progress.puzzleDate,
-                      let date = OverallRating.dateFormatter.date(from: puzzleDate) else { return nil }
-                let solveTime = Int(progress.elapsedTime)
+                      let date = OverallRating.dateFormatter.date(from: puzzleDate),
+                      let solveTime = CrosswordSolveTimeSummary.solveTime(from: progress, isWeekly: true) else { return nil }
                 let ratingScore = scoreMap[puzzleDate]
                 let score = ratingScore ?? 5
                 return HistoryRow(

@@ -30,6 +30,8 @@
 		05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */; };
 		05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */; };
 		05D1A0073001000000000001 /* CompletionDisplayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0063001000000000001 /* CompletionDisplayState.swift */; };
+		05D1A0093001000000000001 /* CrosswordSolveTimeSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */; };
+		05D1A00B3001000000000001 /* CrosswordSolveTimeSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */; };
 		05D2A0013002000000000001 /* DailyCrosswordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */; };
 		05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */; };
 		05F1E1A62FFCFD9300F1E1A5 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A32FFCFD9300F1E1A5 /* FirebaseCore */; };
@@ -172,6 +174,8 @@
 		05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAuxiliaryContentServiceTests.swift; sourceTree = "<group>"; };
 		05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayStateTests.swift; sourceTree = "<group>"; };
 		05D1A0063001000000000001 /* CompletionDisplayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayState.swift; sourceTree = "<group>"; };
+		05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordSolveTimeSummary.swift; sourceTree = "<group>"; };
+		05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordSolveTimeSummaryTests.swift; sourceTree = "<group>"; };
 		05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordInstructionsContentView.swift; sourceTree = "<group>"; };
 		05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLogger.swift; sourceTree = "<group>"; };
 		0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewTests.swift; sourceTree = "<group>"; };
@@ -345,6 +349,7 @@
 				05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */,
 				A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */,
 				05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */,
+				05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */,
 				05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */,
 				ABCD10000000000000000001 /* FeedbackEmailContentTests.swift */,
 				91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */,
@@ -370,6 +375,7 @@
 				41BD8C5299844A6BAF87B504 /* AppSettings.swift */,
 				05C0A0003005000000000001 /* BackwordCompletionDisplayState.swift */,
 				05D1A0063001000000000001 /* CompletionDisplayState.swift */,
+				05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */,
 				15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */,
 				E6124F655D1ABA64F820B278 /* BackwordProgress.swift */,
 				C99766A650EBD6521697BD6C /* BackwordStats.swift */,
@@ -731,6 +737,7 @@
 				05C0A0033005000000000001 /* BackwordCompletionDisplayStateTests.swift in Sources */,
 				05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */,
 				05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */,
+				05D1A00B3001000000000001 /* CrosswordSolveTimeSummaryTests.swift in Sources */,
 				05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */,
 				ABCD10000000000000000004 /* FeedbackEmailContentTests.swift in Sources */,
 				05AD10042FFE000000000001 /* LegalLinkTests.swift in Sources */,
@@ -802,6 +809,7 @@
 				C2A2E6FA90B85E2884F67538 /* ClueListView.swift in Sources */,
 				AC638DF36320A3F8C6EFDE6E /* CompletionView.swift in Sources */,
 				05D1A0073001000000000001 /* CompletionDisplayState.swift in Sources */,
+				05D1A0093001000000000001 /* CrosswordSolveTimeSummary.swift in Sources */,
 				86AFC3D52FC2402F007623C3 /* StatsView.swift in Sources */,
 				21618E85BCB44C8BE6735598 /* DebugSettingsView.swift in Sources */,
 				9344322FC4BD6682AB74BE2A /* GameViewModel.swift in Sources */,
