@@ -15,6 +15,7 @@ STOPWORDS = {
     "is", "it", "of", "on", "one", "or", "that", "the", "thing", "to", "who", "with",
     "what", "where", "when", "why", "how", "your", "you", "that", "this", "these",
     "those", "to", "do", "does", "did", "done", "can", "might", "may",
+    "something", "someone", "somebody", "anything", "anyone",
 }
 CLUE_PREFIX_RE = re.compile(
     r"^(?:"
@@ -27,6 +28,18 @@ CLUE_PREFIX_RE = re.compile(
 CLUE_SUFFIX_RE = re.compile(
     r",?\s*(?:perhaps|maybe|sometimes|loosely|for\s+one|in\s+a\s+way|of\s+sorts)$",
     re.IGNORECASE,
+)
+
+ANTONYM_ONLY_PATTERNS = (
+    re.compile(r"^(?:the\s+)?opposite\s+(?:of|to)\b", re.IGNORECASE),
+    re.compile(r"^(?:an?\s+)?antonym\s+of\b", re.IGNORECASE),
+    re.compile(
+        r"^(?:(?:cardinal|compass|spatial|gender|market|chemical|musical|anatomical)\s+)?"
+        r"(?:direction|position|end|side|gender|charge|trend)\s+(?:directly\s+)?opposite\s+(?:of|to)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(r"^(?:going|moving|pointing|facing)\s+(?:in\s+)?(?:the\s+)?opposite\s+(?:of|to)\b", re.IGNORECASE),
+    re.compile(r"^(?:correct|incorrect|right|left)\s+or\s+(?:the\s+)?opposite\s+(?:of|to)\b", re.IGNORECASE),
 )
 
 ORDINAL_ROOTS = {
@@ -125,6 +138,83 @@ def clue_content_tokens(text: str) -> set[str]:
     }
 
 
+def stem_clue_token(token: str) -> str:
+    """Return a conservative stem used only to broaden review candidates."""
+    token = token.lower()
+    suffixes = (
+        "fulness", "ousness", "iveness", "ational", "tional", "lessly",
+        "ments", "ment", "ingly", "edly", "ness", "ation", "ition",
+        "tion", "sion", "ance", "ence", "able", "ible", "ally", "ity",
+        "ing", "ied", "ies", "ed", "ly", "ive", "ous", "ant", "ent", "al", "er", "est", "s",
+    )
+    for suffix in suffixes:
+        if len(token) > len(suffix) + 2 and token.endswith(suffix):
+            stem = token[:-len(suffix)]
+            if suffix in {"ied", "ies"}:
+                stem += "y"
+            return _undouble(stem)
+    return token
+
+
+def clue_content_stems(text: str) -> set[str]:
+    return {stem_clue_token(token) for token in clue_content_tokens(text)}
+
+
+def clue_ideas_may_be_redundant(left: str, right: str) -> bool:
+    """Broad review-only check; false positives are expected and reviewed manually."""
+    if clue_ideas_are_redundant(left, right):
+        return True
+
+    left_tokens = clue_content_tokens(left)
+    right_tokens = clue_content_tokens(right)
+    left_stems = clue_content_stems(left)
+    right_stems = clue_content_stems(right)
+    overlap = left_stems & right_stems
+    if not overlap:
+        return False
+    overlap_ratio = len(overlap) / min(len(left_stems), len(right_stems))
+    if len(overlap) >= 2 and overlap_ratio >= 0.6:
+        return True
+
+    # A shared stem that is not already the same surface token catches pairs such
+    # as "important"/"importance" and "cut"/"cutting" for manual review.
+    return (
+        not (left_tokens & right_tokens)
+        and len(next(iter(overlap))) >= 3
+        and len(left_stems) <= 2
+        and len(right_stems) <= 2
+    )
+
+
+def or_clause_repeats_other(or_clue: str, other: str) -> bool:
+    """True when one side of an `or` clue reuses content from another clue."""
+    clauses = re.split(r"\bor\b", normalize_clue_idea(or_clue), flags=re.IGNORECASE)
+    if len(clauses) < 2:
+        return False
+    other_stems = clue_content_stems(other)
+    if not other_stems:
+        return False
+    for clause in clauses:
+        if not clause.strip():
+            continue
+        if clue_ideas_are_redundant(clause, other):
+            return True
+        clause_stems = clue_content_stems(clause)
+        if len(other_stems) == 1 and len(clause_stems) <= 2 and other_stems <= clause_stems:
+            return True
+    return False
+
+
+def is_antonym_only_clue(text: str) -> bool:
+    """Detect clues whose definition is merely an answer's opposite/antonym."""
+    normalized = re.sub(r"\s+", " ", text).strip().rstrip(".?!")
+    if re.match(r"^(?:when|expressing|conveying)\b", normalized, re.IGNORECASE):
+        return False
+    if re.search(r"\b(?:opposite|antonym)\s+(?:of|to)\b", normalized, re.IGNORECASE):
+        return True
+    return any(pattern.search(normalized) for pattern in ANTONYM_ONLY_PATTERNS)
+
+
 def clue_ideas_are_redundant(left: str, right: str) -> bool:
     left_idea = normalize_clue_idea(left)
     right_idea = normalize_clue_idea(right)
@@ -208,6 +298,7 @@ def answer_roots(answer_token: str) -> list[tuple[str, str]]:
         roots.append((ORDINAL_ROOTS[word], "ordinal_to_cardinal"))
 
     suffix_rules = [
+        ("able", "adjective_able_to_root"),
         ("ed", "past_tense_to_verb"),
         ("ing", "gerund_to_verb"),
         ("er", "agent_er_to_verb"),
@@ -229,7 +320,7 @@ def answer_roots(answer_token: str) -> list[tuple[str, str]]:
         raw_root = word[:-len(suffix)]
         root = _undouble(raw_root)
         candidates = {raw_root, root}
-        if suffix in {"ed", "er", "or", "istic", "ical", "ic"}:
+        if suffix in {"able", "ed", "er", "or", "istic", "ical", "ic"}:
             candidates.add(root + "e")
         for candidate in candidates:
             if suffix == "y" and candidate not in SAFE_SHORT_ROOTS:

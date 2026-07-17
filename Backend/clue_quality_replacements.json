@@ -1,0 +1,5468 @@
+{
+  "schemaVersion": 1,
+  "bankSha256": "2d5b93fe82d3f003d12795bce1dd6c6a2f3417cb22408abe0a430a28a4eff840",
+  "resultBankSha256": "9deafd43ab4260c068120e1131148bf5d2dc9b0cf1bafb4e3e51e1d5075a1106",
+  "reviewMethod": "deterministic full-bank scan with chat-authored adjudication",
+  "candidateEntryCount": 1556,
+  "acceptedBroadEntryCount": 80,
+  "changes": [
+    {
+      "index": 197,
+      "word": "CARELESS",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of cautious",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Type of mistake in a game",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 393,
+      "word": "CURRENT",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Present as in now, but also flowing",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Trending or flow in motion",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "River or electrical flow",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 429,
+      "word": "DECREASE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of increase",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Economic contraction during a recession",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 432,
+      "word": "DEEP",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of shallow",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Submarine depth, for example",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 467,
+      "word": "DIGITAL",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of analog",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Common in smartphones and computers",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 506,
+      "word": "DOWN",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of up, naturally?",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "In a negative mood, colloquially",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Opposite of up",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 545,
+      "word": "EARLY",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of late",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Common in morning routines",
+          "source": "hint"
+        },
+        {
+          "field": "clues[2]",
+          "before": "The opposite of running behind",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 550,
+      "word": "EAST",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of west",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Direction on a map, not south",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 555,
+      "word": "EDGE",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "A sharp line or a competitive advantage",
+          "reasons": [
+            "chat_review",
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "A nervous sharpness in someone's voice",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[2]",
+          "before": "What might help you cut through the clutter",
+          "reasons": [
+            "chat_review"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 579,
+      "word": "EMPTY",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of full",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Describes a vacant room",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 584,
+      "word": "ENEMY",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of friend",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Adversary in a conflict",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 639,
+      "word": "FAIL",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of pass",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Setback in an endeavor",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 714,
+      "word": "FLINT",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Stone that sparks creation",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Used in survival skills",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 766,
+      "word": "FRONT",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of back",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Face of a building",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 801,
+      "word": "GIGGLE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Schoolgirl's laugh",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Sound at a children's party",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "What you do when you can't stop laughing",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 804,
+      "word": "GIVE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of take",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Commonly seen in gift exchanges",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 831,
+      "word": "GOOD",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of bad",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Commonly used in positive reviews",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 895,
+      "word": "HAPPY",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of sad",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Emotion often felt during celebrations",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 897,
+      "word": "HARD",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of soft, but can also mean tough",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Challenging task or condition",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 903,
+      "word": "HATE",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of love, but equally strong",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Common theme in drama",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 918,
+      "word": "HEAVY",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of light",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Weighty load to carry",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 935,
+      "word": "HIGH",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of low",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Elevated relative to surroundings",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 994,
+      "word": "IMPORT",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of export",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Trade term for incoming items",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1124,
+      "word": "LEFT",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Opposite of right",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Gone but still remaining",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1139,
+      "word": "LIGHT",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of dark, or a feather's weight",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Common requirement in photography",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1168,
+      "word": "LONG",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of short",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Extended period in a story",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1172,
+      "word": "LOOSE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of snug",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Describes a free-running bolt",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Opposite of tight, in more ways than one",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 1175,
+      "word": "LOSE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of find or win",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "What might happen in a game",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1178,
+      "word": "LOUD",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of quiet",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Common at concerts or celebrations",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1235,
+      "word": "MENTAL",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of physical",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Cognitive processes in psychology",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1261,
+      "word": "MODERN",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of ancient",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Contemporary art movement",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1306,
+      "word": "NEGATIVE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of positive",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Often seen in pessimistic contexts",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1393,
+      "word": "PEACE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of war",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Calm state sought in meditation",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1478,
+      "word": "PRINTABLE",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Suitable for printing",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "Digital content you can produce",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1540,
+      "word": "QUIET",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of loud",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Condition of low volume",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1617,
+      "word": "RIGHT",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Correct or opposite of left",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Often associated with justice",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1641,
+      "word": "RURAL",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of urban",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Setting for agricultural practices",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1715,
+      "word": "SHORT",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of long",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Common descriptor for a novella",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1752,
+      "word": "SMALL",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of large",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Common in children's toys",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1781,
+      "word": "SOUTH",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Direction opposite of north",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Popular destination for summer vacations",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1789,
+      "word": "SPARSE",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of overcrowded",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Common in minimalism art",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1829,
+      "word": "START",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of stop",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Beginning of a race or project",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1861,
+      "word": "STRAIGHT",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of curved or twisted",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Linear as a geometric concept",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1874,
+      "word": "STRONG",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of weak",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Sturdy material, like steel",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1889,
+      "word": "SUCCESS",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of failure",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Achievement after hard work",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 1968,
+      "word": "TIGHT",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of loose",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Form-fitting apparel choice",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 2004,
+      "word": "TREAT",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Special indulgence or medical intervention",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Sweet reward after good behavior",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 2020,
+      "word": "TRUTH",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of a lie",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Foundation of philosophy and ethics",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 2034,
+      "word": "UNDER",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of over",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Location in a basement",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 2049,
+      "word": "URBAN",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of rural",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "City life vs. countryside",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 2134,
+      "word": "WHOLE",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of partial or divided",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Completeness in a philosophical sense",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 2137,
+      "word": "WIDTH",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "The opposite of height in dimensions",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Dimension analyzed in design",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 2173,
+      "word": "YOUNG",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of elderly",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Often associated with childhood",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 2202,
+      "word": "COMPLEXITY",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of simplicity",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Often found in intricate designs",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 2224,
+      "word": "FOREGROUND",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of background",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Focus of a cinematic shot",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 2433,
+      "word": "TIMESTAMP",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Marking time's passage. (4,5)",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Date and time reference in tech. (4,5)",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Recording a moment's essence. (4,5)",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 2623,
+      "word": "DISGUSTING",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "The opposite of delightful?",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Provoking a strong aversion",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 2993,
+      "word": "COUNTERCLOCKWISE",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Opposite to clock direction",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Direction used in certain board games",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 3034,
+      "word": "QUESTIONABLE",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Doubts linger, integrity in question",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "Actions that raise eyebrows",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 3136,
+      "word": "AMMO",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "What a gun needs",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Bullets",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Rounds for guns",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 3148,
+      "word": "ARMS",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Appendages or weapons",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "Battle gear or limbs",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Limbs or weapons",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 3168,
+      "word": "BACK",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Opposite of front",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Rear",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 3171,
+      "word": "BAIT",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Tempt or tease",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Enticement for catch",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Fishing temptation",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 3189,
+      "word": "BEEN",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Past existence",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Formerly present",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Had existence",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 3241,
+      "word": "BULK",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Mass quantity",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Significant quantity",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Massive quantity",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 3242,
+      "word": "BULL",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of bear",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Male cow",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 3276,
+      "word": "CHUB",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "River fish",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Fish type",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Chunky fish",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        },
+        {
+          "field": "clues[2]",
+          "before": "Fishing catch",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 3297,
+      "word": "COSY",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Tea warmer",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Like a chair by the fireplace",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 3331,
+      "word": "DEAD",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of alive",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Commonly associated with zombies",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 3332,
+      "word": "DEAF",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Lacking hearing",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Hearing loss",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Hearing-impaired",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Hard of hearing",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 3349,
+      "word": "DILL",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Pickle flavoring",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Culinary seasoning",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Pickle plant",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 3350,
+      "word": "DIME",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Ten-cent piece",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Value of a certain coin",
+          "source": "hint"
+        },
+        {
+          "field": "clues[2]",
+          "before": "10-cent coin",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 3363,
+      "word": "DOER",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Person who acts",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Actor",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 3365,
+      "word": "DOFF",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of don",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Lift off a garment",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 3561,
+      "word": "AUDIO",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Pertaining to what you can hear?",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Sound-related",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Related to hearing",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 3760,
+      "word": "ACCORD",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "In agreement",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "Formal agreement or treaty",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "To be in harmony",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 3765,
+      "word": "ACIDIC",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of basic",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Common in citrus fruits",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 4264,
+      "word": "erie",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Great lake with a famous city",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Home to a city with a famous annual festival",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Fifth largest Great Lake",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 4347,
+      "word": "real",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Opposite of fictional or false",
+          "reasons": [
+            "antonym_only",
+            "chat_review"
+          ],
+          "action": "replace",
+          "after": "Existing in fact",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 4368,
+      "word": "sail",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "To navigate on water or a fabric for wind",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "Essential for a boat's movement",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Wind-catching maritime fabric",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 4373,
+      "word": "sans",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Without in French or lacking something",
+          "reasons": [
+            "or_overlap",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Lacking, often in design contexts",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 4412,
+      "word": "solo",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Single act or performance",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "Performed without partners or teammates",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Performance by one?",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 4418,
+      "word": "stir",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Mixing things up?",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "To provoke reaction or interest",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Mixing action",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 4433,
+      "word": "thin",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of thick?",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Common descriptor for diets",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 4460,
+      "word": "true",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of false",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 4478,
+      "word": "axel",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "A figure in skating",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "One-and-a-half turns before landing, at minimum",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Jump named after a Norwegian figure skater",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 4696,
+      "word": "purl",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Knit with a twist",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "A stitch worked with yarn held in front",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 4734,
+      "word": "safe",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of risky, often found in banks",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 4783,
+      "word": "soft",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of firm",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 4834,
+      "word": "tiny",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "The opposite of massive, often cute",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 4892,
+      "word": "west",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Cardinal direction opposite of east",
+          "reasons": [
+            "antonym_only",
+            "chat_review"
+          ],
+          "action": "replace",
+          "after": "Compass bearing of 270 degrees",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 4895,
+      "word": "wide",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of narrow in measure",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 4969,
+      "word": "kiwi",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "A New Zealand native",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 5015,
+      "word": "pave",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "To cover a road's surface",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Prepare the way, figuratively",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Pathway to smooth travels",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 5173,
+      "word": "harsh",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of soft or mild",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 5204,
+      "word": "ladle",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Tool for serving soup or stew",
+          "reasons": [
+            "chat_review",
+            "or_overlap",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "It dips into the pot before the bowl",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 5222,
+      "word": "nadir",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of zenith",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 5346,
+      "word": "tuner",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Musical pitch adjuster",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        },
+        {
+          "field": "clues[1]",
+          "before": "One who adjusts the pitch",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 5415,
+      "word": "debit",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of credit, in finance",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 5504,
+      "word": "frill",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Something that adds charm or style",
+          "reasons": [
+            "or_overlap",
+            "repetitive_clue"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 5567,
+      "word": "humid",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of dry air",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 5646,
+      "word": "lower",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of elevate",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 5679,
+      "word": "monte",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Hill in Spanish, not just a view",
+          "reasons": [
+            "chat_review",
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "Three-card game with a queen to find",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Spanish term for a slope or hill",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "Spanish term for a slope or hill?",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 5961,
+      "word": "thank",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Gratitude expressed verbally?",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "What an Oscar winner does at the microphone",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Expression of gratitude",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Expression of gratitude, for one",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 6098,
+      "word": "crepe",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Delicate French dish or textile",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        },
+        {
+          "field": "clues[1]",
+          "before": "French pancake, often delicate",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6117,
+      "word": "dowry",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Something valuable given at marriage",
+          "reasons": [
+            "or_overlap",
+            "repetitive_clue"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6137,
+      "word": "fatty",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "The opposite of lean in culinary terms",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6184,
+      "word": "gapes",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opens wide in astonishment",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "A wound does this when its edges separate",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 6353,
+      "word": "inhale",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of exhale",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6394,
+      "word": "loosen",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of tighten",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6400,
+      "word": "neaten",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Make tidy, like a meticulous artist",
+          "reasons": [
+            "chat_review",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Straighten up before company arrives",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 6408,
+      "word": "nettle",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Plant that stings with a touch",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Annoy persistently",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Irritating plant with stinging hairs",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Associated with irritating plant with stinging hairs",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 6494,
+      "word": "sedate",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of hyperactive",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6507,
+      "word": "shears",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Tool for cutting fabric or hair",
+          "reasons": [
+            "chat_review",
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "They remove a sheep's winter coat",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Garden tool for trimming plants",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Garden tool for trimming plants, for one",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 6519,
+      "word": "silent",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of loud",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6523,
+      "word": "slater",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "One who might roof your home",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Woodlouse, regionally",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Roofing material",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6743,
+      "word": "closed",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of open",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6744,
+      "word": "coarse",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Opposite of fine or smooth",
+          "reasons": [
+            "antonym_only",
+            "chat_review"
+          ],
+          "action": "replace",
+          "after": "Made of large, uneven particles",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Opposite of refined, but not in taste?",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6749,
+      "word": "colder",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of warmer",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6789,
+      "word": "darken",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of brighten",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6829,
+      "word": "dexter",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of sinister",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6850,
+      "word": "domino",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Game involving falling pieces",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Often game involving falling pieces",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Tumbling tiles game",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 6872,
+      "word": "easing",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Making something less intense?",
+          "reasons": [
+            "chat_review",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Letting the pressure off gradually",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 6905,
+      "word": "extant",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of extinct, in more ways than one?",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7105,
+      "word": "losing",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Antonym of winning",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7108,
+      "word": "lucent",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Shining with a soft glow?",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Seen as glowing, shimmering quality",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Radiating a soft light",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7186,
+      "word": "negate",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of affirm",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7204,
+      "word": "obtain",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Secure through effort or request",
+          "reasons": [
+            "or_overlap",
+            "repetitive_clue"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7364,
+      "word": "diurnal",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of nocturnal behavior",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7442,
+      "word": "lenient",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "The opposite of tough love",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7447,
+      "word": "literal",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of metaphorical, but dry",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7500,
+      "word": "routine",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Daily practice, sometimes a bit dull",
+          "reasons": [
+            "chat_review",
+            "discouraged_qualifier"
+          ],
+          "action": "replace",
+          "after": "A comedian's prepared material",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 7520,
+      "word": "shorter",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of longer",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7667,
+      "word": "broaden",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Make a narrow view more inclusive",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7769,
+      "word": "declare",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Officially state, but not in a whisper",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7771,
+      "word": "decried",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Spoke against in a loud voice",
+          "reasons": [
+            "chat_review",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Was loudly condemned",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 7772,
+      "word": "defiant",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of compliant",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7819,
+      "word": "dislike",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Opposite of affection",
+          "reasons": [
+            "antonym_only",
+            "chat_review"
+          ],
+          "action": "replace",
+          "after": "Feel aversion toward",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 7847,
+      "word": "dryness",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of humidity",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7864,
+      "word": "earthly",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of heavenly or divine",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 7929,
+      "word": "flutter",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "To move lightly and quickly?",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "A brief spell of nervous excitement",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 8030,
+      "word": "hostage",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Someone held for leverage in negotiations",
+          "reasons": [
+            "chat_review",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Human collateral in a standoff",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 8063,
+      "word": "inverse",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of the usual order?",
+          "reasons": [
+            "antonym_only",
+            "chat_review"
+          ],
+          "action": "replace",
+          "after": "Operation that undoes another",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 8065,
+      "word": "inwards",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Direction opposite to outwards",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 8125,
+      "word": "anterior",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of posterior",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 8501,
+      "word": "definite",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of uncertain or vague",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 8543,
+      "word": "disclose",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Make something known publicly",
+          "reasons": [
+            "or_overlap",
+            "repetitive_clue"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 8550,
+      "word": "disloyal",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of loyal",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 8582,
+      "word": "eastward",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Direction opposite of west",
+          "reasons": [
+            "antonym_only",
+            "chat_review"
+          ],
+          "action": "replace",
+          "after": "Toward a bearing of ninety degrees",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 8682,
+      "word": "deterrent",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "A strategy to prevent undesirable actions?",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 8715,
+      "word": "institute",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Where education is established, but not always a school",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Put a policy into effect",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Educational organization or establishment",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 8949,
+      "word": "cruelness",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of compassion",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 9005,
+      "word": "dismantle",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "To take apart, not just for repair",
+          "reasons": [
+            "chat_review",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Bring an institution down piece by piece",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 9012,
+      "word": "disregard",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "The opposite of paying attention",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 9094,
+      "word": "initiation",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "The start of something, often with a ritual",
+          "reasons": [
+            "chat_review",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "First ordeal for a new member",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 9196,
+      "word": "attainable",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Within reach, but not always easy",
+          "reasons": [
+            "chat_review",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Possible without requiring a miracle",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 9513,
+      "word": "interrelated",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Mutual connections or dependencies",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Connected by mutual dependency",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 9554,
+      "word": "discourteous",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of courteous",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 9555,
+      "word": "dishonorable",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of honorable",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 9649,
+      "word": "ANION",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of cation in chemistry",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "negative ion",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 9650,
+      "word": "ANODE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of cathode in electrochemistry",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "positive electrode",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 9660,
+      "word": "DRIED",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of fresh, often used in cooking",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "dehydrated",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 9673,
+      "word": "LENTO",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of allegro in music",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "tempo",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 9676,
+      "word": "LOATH",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of eager",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Strongly opposed to something",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 9786,
+      "word": "LEADEN",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of buoyant",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Dull and heavy in nature",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 9923,
+      "word": "OUTLAST",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Last longer than competitors",
+          "reasons": [
+            "or_overlap",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "endure",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 9980,
+      "word": "UNTRUTH",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "The opposite of veracity",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "falsehood",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10005,
+      "word": "DISTASTE",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of savoring a meal",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Unpleasant reaction to something",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10150,
+      "word": "ORDERLINESS",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of disarray",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "neatness",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10204,
+      "word": "IRRATIONALITY",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "The opposite of logical reasoning",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "lack of logic",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10254,
+      "word": "UNINTELLIGENT",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "The opposite of wise in thought",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "not smart",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10403,
+      "word": "BEARISHNESS",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Antonym of bull market sentiment",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 10426,
+      "word": "DISSOLVABLE",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Capable of being dissolved",
+          "reasons": [
+            "answer_leakage",
+            "chat_review"
+          ],
+          "action": "replace",
+          "after": "Able to disappear into solution",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 10529,
+      "word": "REINVENTION",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Transforming the old into something fresh",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "innovation",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10859,
+      "word": "RELAXATION",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of tension in yoga classes",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "calmness",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10864,
+      "word": "REPATRIATE",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Return a citizen to their roots",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Reinstate in one's country",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10869,
+      "word": "REPUTATION",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "What others say about one's character",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "How others view you",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10883,
+      "word": "RETROGRADE",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of advancing in progress",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "backward motion",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10884,
+      "word": "RETURNABLE",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Fit for return to sender",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 10945,
+      "word": "STILLWATER",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of turbulent waves",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "tranquil pond",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10947,
+      "word": "STINGINESS",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of generosity",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "lack of generosity",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 10989,
+      "word": "TRANSVERSE",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "A direction opposite to the main flow",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "crosswise",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11107,
+      "word": "DECIDUOUS",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of evergreen",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "leaf-shedding",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11286,
+      "word": "INVERSION",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of the norm",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Transformation or alteration",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11319,
+      "word": "LIGHTNESS",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of heaviness in a feather",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "weightlessness",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11356,
+      "word": "MOISTNESS",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "The opposite of aridity",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "dampness",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11378,
+      "word": "NOCTURNAL",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of diurnal",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "nightly",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11382,
+      "word": "NORTHERLY",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of southerly",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Directional",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11446,
+      "word": "POSTERIOR",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of anterior",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "rear end",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11510,
+      "word": "RETRACTOR",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Tool that draws back or withdraws",
+          "reasons": [
+            "or_overlap",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "pulling tool",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11511,
+      "word": "RETRIEVAL",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Act of bringing back from a loss",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "recovery",
+          "source": "hint"
+        },
+        {
+          "field": "clues[2]",
+          "before": "Getting back what was misplaced",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 11597,
+      "word": "STARBOARD",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of port in a vessel",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Sailing terminology",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11783,
+      "word": "ALKALINE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of acidic in chemistry",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Related to a type of mineral water",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11799,
+      "word": "ARROGATE",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Take what isn't yours, boldly",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "seize",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 11919,
+      "word": "HANDMADE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of mass-produced",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Artisanal",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 12084,
+      "word": "LONGHAND",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of abbreviated notes",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "handwriting",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 12117,
+      "word": "MILDNESS",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of sharpness in demeanor",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Gentle quality",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 12138,
+      "word": "MOONRISE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "The opposite of moonset",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Lunar ascent",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 12150,
+      "word": "NEGATION",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of affirmation in logic",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "denial",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 12190,
+      "word": "OUTBOUND",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Direction opposite to inbound",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "departing",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 12306,
+      "word": "HAVING",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "In the state of possession",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "owning",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 12314,
+      "word": "SUPPORT",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Assisting someone or something",
+          "reasons": [
+            "or_overlap",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "aid",
+          "source": "hint"
+        },
+        {
+          "field": "clues[2]",
+          "before": "Upholding or reinforcing",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 12411,
+      "word": "FORWARD",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Direction opposite of backward",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Moving toward a goal",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 12470,
+      "word": "FEMALE",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Gender opposite of male",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Biological sex designation",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 12514,
+      "word": "STUPID",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "The opposite of wise or clever",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Foolish",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 12595,
+      "word": "BOTTOM",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "The end opposite of the top",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "base",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 12855,
+      "word": "SLOWLY",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of quickly",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Gradually",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 13188,
+      "word": "PUSHING",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Applying force against an object",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "shoving",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 13212,
+      "word": "SISTERS",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Female kin",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "relatives",
+          "source": "hint"
+        },
+        {
+          "field": "clues[2]",
+          "before": "Related females",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 13320,
+      "word": "SUITABLE",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Well-suited for a designated role",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "Fitting",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 13438,
+      "word": "FIGHTER",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Combatant in a conflict",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "combater",
+          "source": "hint"
+        },
+        {
+          "field": "clues[2]",
+          "before": "Ring combatant",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 13541,
+      "word": "PEACEFUL",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of a tumultuous state",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Serene",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 13544,
+      "word": "PUBLICLY",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of privately, in a shared space",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Openly",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 13603,
+      "word": "REMOVING",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Taking off or getting rid of",
+          "reasons": [
+            "or_overlap",
+            "repetitive_clue"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 13671,
+      "word": "CIVILIAN",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of a combatant",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "non-military",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 14208,
+      "word": "NOTABLE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Deserving recognition or note",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "Remarkable",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 14687,
+      "word": "MAINLAND",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of island in geography",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "continent",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 14729,
+      "word": "INCORRECT",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of right, often leading astray",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "wrong",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 14825,
+      "word": "BORROWED",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Temporarily taken with intent to return",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Loaned",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 14894,
+      "word": "GIBSON",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Brand of guitars",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Musical instrument",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 15125,
+      "word": "FAVORABLE",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Conditions that favor a positive outcome",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "beneficial",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 15132,
+      "word": "LENGTHY",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of brief",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Extended",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 15167,
+      "word": "HATING",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "An emotion opposite of loving",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Loathing",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 15380,
+      "word": "FILTHY",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of pristine, quite disgusting",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Grimy",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 15580,
+      "word": "SEATING",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Where one finds a place to sit",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Dining arrangement, for example",
+          "source": "hint"
+        },
+        {
+          "field": "clues[2]",
+          "before": "Arrangement of places to sit",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 15626,
+      "word": "PAYROLL",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Financial record of employee compensation",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Employee compensation overview",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Salary distribution list",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 15773,
+      "word": "PSYCHO",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Used informally for unstable behavior",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Unstable character in a classic film",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Mind-related",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 15793,
+      "word": "ANALOG",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of digital in representation",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "continuous",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 15917,
+      "word": "DOWNWARD",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Going in the opposite of ascending",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "descending",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 16224,
+      "word": "DAYTIME",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of nighttime",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "sunlit hours",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 16388,
+      "word": "STITCH",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Joining fabric with loops",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "seam",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Unit of sewing",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 16442,
+      "word": "SLICES",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "To cut into thin pieces",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Portions from a larger item",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 16533,
+      "word": "CAVITY",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "An enclosed space within something",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "hole",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 16829,
+      "word": "SHORTEST",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of longest",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "briefest",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 16850,
+      "word": "ANTARCTIC",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of Arctic",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "polar",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 16910,
+      "word": "UPSTREAM",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite to the current's path",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 17033,
+      "word": "REACTIVE",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of proactive in approach",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Responsive",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 17066,
+      "word": "BOTTOMS",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of tops",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Underneath",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 17113,
+      "word": "RUNOFF",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Water that collects and flows away",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Drainage",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Flowing water after precipitation",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 17138,
+      "word": "BEGINNER",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Learning the ropes in a new field",
+          "reasons": [
+            "or_overlap",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "novice",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 17225,
+      "word": "DESCEND",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of ascend in motion",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "go down",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 17810,
+      "word": "FORTIFIED",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Secured against unwanted intruders",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "Enhanced for security",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Secured against attacks or dangers",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 17954,
+      "word": "DISLIKED",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Not favored or appreciated by someone",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "hated",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 18071,
+      "word": "PLAYABLE",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Capable of being played",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "Usable",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 18327,
+      "word": "SIZABLE",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Considerable in size",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "Large",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Rather ample in size",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 18603,
+      "word": "FLOWED",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Poured forth in a continuous stream",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Traffic did this freely after the blockage cleared",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[2]",
+          "before": "Moved in a smooth manner",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 18632,
+      "word": "MONSOON",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Season of torrential rains",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "rainy season",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Heavy rains in tropical areas",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 18659,
+      "word": "SOLIDS",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of liquids and gases",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "firm",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 18974,
+      "word": "REMOVABLE",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Able to be disassembled or removed",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "Detachable",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 18997,
+      "word": "WEARABLE",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Suitable for wearing",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "Fashion tech",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 19074,
+      "word": "TENDERS",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Soft cuts served in dishes",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "Cuts often enjoyed in fine dining",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Soft meat portions, easily chewable",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 19108,
+      "word": "DISTAL",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Opposite of proximal in anatomy",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Distant part of a limb",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 19180,
+      "word": "BANDWAGON",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Enthusiastic following of a trend",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Social phenomenon gaining traction",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Refers to following popular trends",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 19396,
+      "word": "MODESTY",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of arrogance",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Quality of self-restraint",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 19478,
+      "word": "EQUITIES",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Financial instruments reflecting ownership stake",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Financial assets traded on exchanges",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Assets representing value and ownership",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 19491,
+      "word": "LOVABLE",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Endearing and easy to love",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "Adorable",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 19516,
+      "word": "SIZEABLE",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Considerable in size",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "Large",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 19785,
+      "word": "STIFFNESS",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of limberness",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "rigidity",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 20004,
+      "word": "FLAMMABLE",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Dangerous when exposed to flames",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "combustible",
+          "source": "hint"
+        },
+        {
+          "field": "clues[2]",
+          "before": "Requires caution around open flames",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 20007,
+      "word": "GLANCED",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Took a quick look, not a stare",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "peeked",
+          "source": "hint"
+        },
+        {
+          "field": "clues[2]",
+          "before": "A brief look, often with intent",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 20158,
+      "word": "CRUNCHING",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Sound of chewing on something hard",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "chewing noisily",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 20327,
+      "word": "SPADES",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Card suit resembling a shovel",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        },
+        {
+          "field": "clues[2]",
+          "before": "One of the four card suits",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 20551,
+      "word": "INDULGING",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Allowing oneself a guilty pleasure",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Pampering",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 20574,
+      "word": "POINTY",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "The opposite of rounded",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Tapered shape often found in nature",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 20695,
+      "word": "VALUABLES",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Things of high monetary or sentimental value",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "Treasures",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 20706,
+      "word": "BLACKNESS",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of brightness and clarity",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Darkness",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 20863,
+      "word": "SWAYING",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Influencing opinions while in motion",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "rocking",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21019,
+      "word": "PALATABLE",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "A flavor that pleases the palate",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "tasty",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21038,
+      "word": "SCRAPPING",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Getting rid of outdated or broken items",
+          "reasons": [
+            "or_overlap",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Removing items for new purposes",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21059,
+      "word": "UNITARY",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of federal",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "single",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21139,
+      "word": "WANING",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of waxing",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "diminishing",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21187,
+      "word": "NOTCHED",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Indented",
+          "reasons": [
+            "chat_review",
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "Like a belt adjusted one hole tighter",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[2]",
+          "before": "Having a characteristic groove or cut",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 21189,
+      "word": "OBTAINS",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Secures something through effort or request",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "Acquires",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21197,
+      "word": "SANCTITY",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Quality of being revered or respected",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "replace",
+          "after": "Holiness",
+          "source": "hint"
+        },
+        {
+          "field": "clues[1]",
+          "before": "State of being inviolable and revered",
+          "reasons": [
+            "or_overlap"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 21206,
+      "word": "SMOOTHING",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Process of making surfaces level and even",
+          "reasons": [
+            "or_overlap",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Flattening",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21354,
+      "word": "CONCAVE",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of convex in geometry",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Hollow",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21394,
+      "word": "LIKEABLE",
+      "actions": [
+        {
+          "field": "text",
+          "before": "Pleasant and easy to like",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "friendly",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21829,
+      "word": "UGLINESS",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "The opposite of aesthetic appeal",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "lack of beauty",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21834,
+      "word": "ALLOWABLE",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Allowed according to regulations",
+          "reasons": [
+            "answer_leakage"
+          ],
+          "action": "replace",
+          "after": "permitted",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21902,
+      "word": "REWATCH",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Going back for a second viewing",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "See again",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 21991,
+      "word": "NAUGHT",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "The opposite of everything",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Something that doesn't exist",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 22088,
+      "word": "LIGHTEST",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of heaviest in a selection",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "featherweight",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 22204,
+      "word": "BAD",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of good",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22211,
+      "word": "BIG",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of small",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22237,
+      "word": "DAY",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of night",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22246,
+      "word": "DRY",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of damp",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22257,
+      "word": "END",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of beginning",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22263,
+      "word": "FAR",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of near in geography",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22288,
+      "word": "HAD",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Once possessed, now just a memory",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Was obliged to, before 'to'",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Possessed formerly",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Seen as possessed formerly",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 22298,
+      "word": "HOT",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of cold",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22354,
+      "word": "NOT",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Indicates the opposite of affirmation",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "A sign of used to deny something",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 22412,
+      "word": "SAD",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of happy",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22460,
+      "word": "WAR",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of peace",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22465,
+      "word": "WET",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of dry",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22468,
+      "word": "WIN",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of lose",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22484,
+      "word": "AMP",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Common unit for measuring electricity",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Electric measure",
+          "source": "hint"
+        },
+        {
+          "field": "clues[2]",
+          "before": "Abbreviation used in electrical units",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22539,
+      "word": "LEE",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of windward?",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22540,
+      "word": "LIT",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Something that has been illuminated",
+          "reasons": [
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Made visible by a source of light",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 22549,
+      "word": "MEN",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Plural form of adult male individuals",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "gents",
+          "source": "hint"
+        },
+        {
+          "field": "clues[0]",
+          "before": "Group of males?",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Male adults",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22558,
+      "word": "NON",
+      "actions": [
+        {
+          "field": "clues[0]",
+          "before": "Opposite of pro",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Indicates negation or opposition",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 22597,
+      "word": "wan",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Pale as a ghost, perhaps",
+          "reasons": [
+            "chat_review",
+            "discouraged_qualifier"
+          ],
+          "action": "replace",
+          "after": "Looking as though the blood had left one's face",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 22658,
+      "word": "OUI",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of 'non'",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Affirmative in French",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 22684,
+      "word": "REM",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Dream-heavy sleep phase (abbr)",
+          "reasons": [
+            "chat_review",
+            "stem_repetition"
+          ],
+          "action": "replace",
+          "after": "Band fronted by Michael Stipe",
+          "source": "chat_authored"
+        },
+        {
+          "field": "clues[1]",
+          "before": "Where dreams happen (abbr)",
+          "reasons": [
+            "stem_repetition"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    },
+    {
+      "index": 22724,
+      "word": "CDS",
+      "actions": [
+        {
+          "field": "hard_text",
+          "before": "Shiny discs for tunes (abbr)",
+          "reasons": [
+            "chat_review",
+            "repetitive_clue"
+          ],
+          "action": "replace",
+          "after": "Albums once sold in jewel cases",
+          "source": "chat_authored"
+        }
+      ]
+    },
+    {
+      "index": 22730,
+      "word": "AFT",
+      "actions": [
+        {
+          "field": "clues[2]",
+          "before": "Opposite of bow",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "replace",
+          "after": "Rear of a vessel",
+          "source": "hint"
+        }
+      ]
+    },
+    {
+      "index": 22740,
+      "word": "GOP",
+      "actions": [
+        {
+          "field": "clues[1]",
+          "before": "Opposite of the donkey (abbr)",
+          "reasons": [
+            "antonym_only"
+          ],
+          "action": "delete",
+          "source": "chat_review"
+        }
+      ]
+    }
+  ]
+}

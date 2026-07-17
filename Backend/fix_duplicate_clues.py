@@ -10,6 +10,8 @@ Usage:
     python3 fix_duplicate_clues.py scan
     python3 fix_duplicate_clues.py scan-leaks
     python3 fix_duplicate_clues.py scan-similar
+    python3 fix_duplicate_clues.py export-quality
+    python3 fix_duplicate_clues.py build-quality-report audit_quality_chat_decisions.json
     python3 fix_duplicate_clues.py export --output duplicate_clue_batches.json
     python3 fix_duplicate_clues.py repair --dry-run
     python3 fix_duplicate_clues.py repair-leaks --dry-run
@@ -18,12 +20,14 @@ Usage:
     python3 fix_duplicate_clues.py repair-similar
     python3 fix_duplicate_clues.py repair
     python3 fix_duplicate_clues.py apply replacements.json
+    python3 fix_duplicate_clues.py apply-quality clue_quality_replacements.json --dry-run
     python3 fix_duplicate_clues.py validate
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -33,7 +37,14 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from answer_leakage import clue_ideas_are_redundant, normalize_clue_idea, scan_text
+from answer_leakage import (
+    clue_ideas_are_redundant,
+    clue_ideas_may_be_redundant,
+    is_antonym_only_clue,
+    normalize_clue_idea,
+    or_clause_repeats_other,
+    scan_text,
+)
 
 
 BANK_PATH = Path(__file__).parent / "word_bank.json"
@@ -41,6 +52,8 @@ EXPORT_PATH = Path(__file__).parent / "duplicate_clue_batches.json"
 PROPOSALS_PATH = Path(__file__).parent / "duplicate_clue_replacements.json"
 LEAK_PROPOSALS_PATH = Path(__file__).parent / "leaking_clue_replacements.json"
 SIMILAR_PROPOSALS_PATH = Path(__file__).parent / "similar_clue_replacements.json"
+QUALITY_CANDIDATES_PATH = Path(__file__).parent / "audit_quality_candidates.json"
+QUALITY_REPORT_PATH = Path(__file__).parent / "clue_quality_replacements.json"
 MIN_CONSTITUENT_LEN = 3
 REWRITE_PRIORITY = {
     "hard_text": 1,
@@ -69,6 +82,15 @@ def load_entries(path: Path) -> list[dict[str, Any]]:
     if not isinstance(data, list):
         raise ValueError(f"Expected top-level JSON array in {path}")
     return data
+
+
+def load_json_document(path: Path) -> Any:
+    with path.open() as handle:
+        return json.load(handle)
+
+
+def bank_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def save_entries(path: Path, entries: list[dict[str, Any]]) -> None:
@@ -226,6 +248,94 @@ def scan_similar(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "index": index,
             "word": entry.get("word", ""),
             "fixes": fixes,
+            "entry": entry,
+        })
+    return findings
+
+
+def hint_is_safe_for_field(entry: dict[str, Any], field: str) -> bool:
+    """Whether dormant hint metadata is safe to copy into one active field."""
+    hint = entry.get("hint")
+    if not isinstance(hint, str) or not hint.strip():
+        return False
+    hint = hint.strip()
+    word = str(entry.get("word", ""))
+    if replacement_issue(word, hint) or is_antonym_only_clue(hint):
+        return False
+    if DISCOURAGED_QUALIFIER_RE.search(hint):
+        return False
+    return not repeats_existing_idea(entry, hint, replacing=field)
+
+
+def scan_quality(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Return broad, deterministic candidates for chat-based semantic review."""
+    findings: list[dict[str, Any]] = []
+    for index, entry in enumerate(entries):
+        word = str(entry.get("word", ""))
+        values = field_values(entry)
+        issues: list[dict[str, Any]] = []
+
+        for field, value in values:
+            leakage = replacement_issue(word, value)
+            if leakage:
+                issues.append({
+                    "type": "answer_leakage",
+                    "fields": [field],
+                    "values": [value],
+                    "reasons": leakage.get("reasons", ["UNKNOWN"]),
+                })
+            if is_antonym_only_clue(value):
+                issues.append({
+                    "type": "antonym_only",
+                    "fields": [field],
+                    "values": [value],
+                })
+            if DISCOURAGED_QUALIFIER_RE.search(value):
+                issues.append({
+                    "type": "discouraged_qualifier",
+                    "fields": [field],
+                    "values": [value],
+                })
+
+        seen_pairs: set[tuple[str, str, str]] = set()
+        for left_index, (left_field, left_value) in enumerate(values):
+            for right_field, right_value in values[left_index + 1:]:
+                if clue_ideas_are_redundant(left_value, right_value):
+                    issue_type = "repetitive_clue"
+                elif clue_ideas_may_be_redundant(left_value, right_value):
+                    issue_type = "stem_repetition"
+                else:
+                    issue_type = None
+                if issue_type:
+                    key = (issue_type, left_field, right_field)
+                    if key not in seen_pairs:
+                        seen_pairs.add(key)
+                        issues.append({
+                            "type": issue_type,
+                            "fields": [left_field, right_field],
+                            "values": [left_value, right_value],
+                        })
+                if or_clause_repeats_other(left_value, right_value) or or_clause_repeats_other(right_value, left_value):
+                    key = ("or_overlap", left_field, right_field)
+                    if key not in seen_pairs:
+                        seen_pairs.add(key)
+                        issues.append({
+                            "type": "or_overlap",
+                            "fields": [left_field, right_field],
+                            "values": [left_value, right_value],
+                        })
+
+        if not issues:
+            continue
+        affected_fields = {field for issue in issues for field in issue["fields"]}
+        findings.append({
+            "index": index,
+            "word": word,
+            "issues": issues,
+            "safeHintFor": [
+                field for field in sorted(affected_fields)
+                if hint_is_safe_for_field(entry, field)
+            ],
             "entry": entry,
         })
     return findings
@@ -525,6 +635,8 @@ def validate_entry(entry: dict[str, Any]) -> list[str]:
     for field, value in field_values(entry):
         if DISCOURAGED_QUALIFIER_RE.search(value):
             errors.append(f"{field} uses discouraged qualifier -> {value!r}")
+        if is_antonym_only_clue(value):
+            errors.append(f"{field} uses antonym-only clue -> {value!r}")
         issue = replacement_issue(word, value)
         if issue:
             reasons = ",".join(issue.get("reasons", ["UNKNOWN"]))
@@ -690,6 +802,182 @@ def apply_replacements(entries: list[dict[str, Any]], replacements: list[dict[st
         entries[index] = trial
 
 
+def apply_quality_report(
+    entries: list[dict[str, Any]],
+    report: dict[str, Any],
+    bank_path: Path,
+) -> None:
+    """Apply a chat-reviewed report in memory, failing before any bank write."""
+    if report.get("schemaVersion") != 1:
+        raise ValueError("Unsupported clue-quality report schema")
+    expected_hash = report.get("bankSha256")
+    actual_hash = bank_sha256(bank_path)
+    if expected_hash != actual_hash:
+        raise ValueError(f"Stale clue-quality report: expected {expected_hash}, found {actual_hash}")
+    changes = report.get("changes")
+    if not isinstance(changes, list):
+        raise ValueError("Clue-quality report must contain a changes array")
+
+    seen_indexes: set[int] = set()
+    for item in changes:
+        index = int(item["index"])
+        word = item["word"]
+        if index in seen_indexes:
+            raise ValueError(f"Duplicate report entry index: {index}")
+        seen_indexes.add(index)
+        if not 0 <= index < len(entries):
+            raise IndexError(f"Replacement index out of range: {index}")
+        if entries[index].get("word") != word:
+            raise ValueError(f"Word mismatch at index {index}: expected {word}, found {entries[index].get('word')}")
+        actions = item.get("actions")
+        if not isinstance(actions, list) or not actions:
+            raise ValueError(f"Quality report item for {word} has no actions")
+
+        original = entries[index]
+        trial = deepcopy(original)
+        delete_indexes: list[int] = []
+        seen_fields: set[str] = set()
+        for action in actions:
+            field = action.get("field")
+            if not isinstance(field, str) or field in seen_fields:
+                raise ValueError(f"Duplicate or invalid field action for {word}: {field}")
+            if field not in ACTIVE_SCALAR_FIELDS and not re.fullmatch(r"clues\[\d+\]", field):
+                raise ValueError(f"Quality reports can only change active clue fields: {word} {field}")
+            seen_fields.add(field)
+            before = action.get("before")
+            if get_field(original, field) != before:
+                raise ValueError(f"Stale field value for {word} {field}")
+            operation = action.get("action")
+            clue_match = re.fullmatch(r"clues\[(\d+)\]", field)
+            if operation == "delete":
+                if not clue_match:
+                    raise ValueError(f"Only clues[] items can be deleted: {word} {field}")
+                delete_indexes.append(int(clue_match.group(1)))
+                continue
+            if operation != "replace":
+                raise ValueError(f"Unknown action for {word} {field}: {operation}")
+            after = action.get("after")
+            if not isinstance(after, str) or not after.strip():
+                raise ValueError(f"Empty replacement for {word} {field}")
+            set_field(trial, field, after.strip().rstrip("."))
+
+        clues = trial.get("clues") or []
+        for clue_index in sorted(delete_indexes, reverse=True):
+            if clue_index >= len(clues):
+                raise IndexError(f"Missing clue deletion target for {word}: clues[{clue_index}]")
+            del clues[clue_index]
+        trial["clues"] = clues
+        if not clues:
+            raise ValueError(f"Quality report cannot leave clues[] empty for {word}")
+        entry_errors = validate_entry(trial)
+        if entry_errors:
+            raise ValueError(f"Quality report leaves invalid entry for {word}: {entry_errors[:5]}")
+        entries[index] = trial
+
+
+def build_quality_report(
+    entries: list[dict[str, Any]],
+    bank_path: Path,
+    decisions: dict[str, Any],
+) -> dict[str, Any]:
+    """Build the final report from deterministic findings and chat decisions."""
+    findings = scan_quality(entries)
+    findings_by_index = {finding["index"]: finding for finding in findings}
+    accepted_broad = {int(index) for index in decisions.get("acceptedBroadIndexes", [])}
+    unknown_indexes = accepted_broad - set(findings_by_index)
+    if unknown_indexes:
+        raise ValueError(f"Unknown accepted broad candidate indexes: {sorted(unknown_indexes)[:10]}")
+
+    manual: dict[tuple[int, str], dict[str, Any]] = {}
+    for item in decisions.get("manualReplacements", []):
+        key = (int(item["index"]), item["field"])
+        if key in manual:
+            raise ValueError(f"Duplicate manual replacement: {key}")
+        manual[key] = item
+    forced_deletes = {
+        (int(item["index"]), item["field"]): item
+        for item in decisions.get("forcedDeletes", [])
+    }
+
+    mandatory_types = {"answer_leakage", "antonym_only", "discouraged_qualifier", "repetitive_clue"}
+    report_changes: list[dict[str, Any]] = []
+    for index, entry in enumerate(entries):
+        finding = findings_by_index.get(index)
+        target_reasons: dict[str, set[str]] = defaultdict(set)
+        if finding:
+            for issue in finding["issues"]:
+                issue_type = issue["type"]
+                if issue_type in mandatory_types:
+                    fields = issue["fields"]
+                    if issue_type == "repetitive_clue":
+                        fields = redundant_replacement_fields(fields)
+                    for field in fields:
+                        target_reasons[field].add(issue_type)
+                elif index in accepted_broad:
+                    for field in redundant_replacement_fields(issue["fields"]):
+                        target_reasons[field].add(issue_type)
+
+        for manual_index, field in manual:
+            if manual_index == index:
+                target_reasons[field].add("chat_review")
+        for delete_index, field in forced_deletes:
+            if delete_index == index:
+                target_reasons[field].add("chat_review")
+        if not target_reasons:
+            continue
+
+        used_hint = False
+        actions: list[dict[str, Any]] = []
+        for field in sorted(target_reasons, key=lambda value: (value.startswith("clues["), value)):
+            before = get_field(entry, field)
+            if not before:
+                raise ValueError(f"Missing target field for {entry.get('word')} {field}")
+            base = {
+                "field": field,
+                "before": before,
+                "reasons": sorted(target_reasons[field]),
+            }
+            manual_item = manual.get((index, field))
+            if manual_item:
+                actions.append({
+                    **base,
+                    "action": "replace",
+                    "after": manual_item["after"],
+                    "source": manual_item.get("source", "chat_authored"),
+                })
+            elif (index, field) in forced_deletes:
+                if not field.startswith("clues["):
+                    raise ValueError(f"Forced scalar deletion is not allowed: {entry.get('word')} {field}")
+                actions.append({**base, "action": "delete", "source": "chat_review"})
+            elif not used_hint and hint_is_safe_for_field(entry, field):
+                actions.append({
+                    **base,
+                    "action": "replace",
+                    "after": entry["hint"].strip(),
+                    "source": "hint",
+                })
+                used_hint = True
+            elif field.startswith("clues["):
+                actions.append({**base, "action": "delete", "source": "chat_review"})
+            else:
+                raise ValueError(f"Missing chat-authored scalar replacement for {index} {entry.get('word')} {field}")
+
+        report_changes.append({
+            "index": index,
+            "word": entry.get("word"),
+            "actions": actions,
+        })
+
+    return {
+        "schemaVersion": 1,
+        "bankSha256": bank_sha256(bank_path),
+        "reviewMethod": "deterministic full-bank scan with chat-authored adjudication",
+        "candidateEntryCount": len(findings),
+        "acceptedBroadEntryCount": len(accepted_broad),
+        "changes": report_changes,
+    }
+
+
 def validation_errors(entries: list[dict[str, Any]]) -> list[str]:
     errors: list[str] = []
     for index, entry in enumerate(entries):
@@ -759,11 +1047,15 @@ def parse_args() -> argparse.Namespace:
         "scan",
         "scan-leaks",
         "scan-similar",
+        "scan-quality",
+        "export-quality",
+        "build-quality-report",
         "export",
         "repair",
         "repair-leaks",
         "repair-similar",
         "apply",
+        "apply-quality",
         "validate",
     ])
     parser.add_argument("replacement_file", nargs="?", type=Path)
@@ -791,6 +1083,36 @@ def main() -> None:
 
     if args.command == "scan-similar":
         print_similar_report(scan_similar(entries))
+        return
+
+    if args.command in {"scan-quality", "export-quality"}:
+        findings = scan_quality(entries)
+        type_counts = Counter(
+            issue["type"]
+            for finding in findings
+            for issue in finding["issues"]
+        )
+        print(f"Quality candidate entries: {len(findings)}")
+        print(f"Issue counts: {dict(type_counts)}")
+        if args.command == "export-quality":
+            output = args.output or QUALITY_CANDIDATES_PATH
+            output.write_text(json.dumps(findings, indent=2, ensure_ascii=False) + "\n")
+            print(f"Exported chat-review candidates to {output}")
+        else:
+            for finding in findings[:20]:
+                print(f"  {finding['index']} {finding['word']}: {[issue['type'] for issue in finding['issues']]}")
+        return
+
+    if args.command == "build-quality-report":
+        if not args.replacement_file:
+            raise SystemExit("build-quality-report requires a chat decisions JSON file")
+        decisions = load_json_document(args.replacement_file)
+        if not isinstance(decisions, dict):
+            raise ValueError("Expected a chat decisions object")
+        report = build_quality_report(entries, args.bank, decisions)
+        output = args.output or QUALITY_REPORT_PATH
+        output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+        print(f"Built {len(report['changes'])} chat-reviewed quality report entries at {output}")
         return
 
     if args.command == "export":
@@ -875,6 +1197,26 @@ def main() -> None:
         print(f"Applied {len(replacements)} replacement records to {args.bank}")
         return
 
+    if args.command == "apply-quality":
+        if not args.replacement_file:
+            raise SystemExit("apply-quality requires a clue-quality report JSON file")
+        report = load_json_document(args.replacement_file)
+        if not isinstance(report, dict):
+            raise ValueError("Expected a clue-quality report object")
+        apply_quality_report(entries, report, args.bank)
+        errors = validation_errors(entries)
+        if errors:
+            print(f"Validation failed after quality apply ({len(errors)} errors):", file=sys.stderr)
+            for error in errors[:50]:
+                print(f"  {error}", file=sys.stderr)
+            raise SystemExit(1)
+        if args.dry_run:
+            print(f"Dry run: {len(report['changes'])} quality report entries validated; no bank changes written.")
+            return
+        save_entries(args.bank, entries)
+        print(f"Applied {len(report['changes'])} quality report entries to {args.bank}")
+        return
+
     if args.command == "validate":
         errors = validation_errors(entries)
         if errors:
@@ -882,7 +1224,7 @@ def main() -> None:
             for error in errors[:100]:
                 print(f"  {error}", file=sys.stderr)
             raise SystemExit(1)
-        print("Validation passed: no duplicates, similar clues, exact leakage, or derivability issues.")
+        print("Validation passed: no duplicates, similar clues, antonym-only clues, exact leakage, or derivability issues.")
 
 
 if __name__ == "__main__":

@@ -170,7 +170,7 @@ let isToday = day.date == ContentReleaseCalendar().dailyDateString
 | `clues` | `generate_puzzle.py` | **Primary clue source.** One item is randomly selected at puzzle-generation time and becomes the `text` field in the final puzzle JSON. Randomisation means the same word can have different clues across puzzles. |
 | `hard_text` | `generate_puzzle.py` | Fallback clue if `clues[]` is empty or missing. |
 | `text` | `generate_puzzle.py` | Last-resort fallback if both `clues[]` and `hard_text` are absent. |
-| `hint` | Fallback metadata only | Dormant fallback clue text. Current daily/weekly generation paths use hardcoded clue sources before this field, so word-bank leakage and similarity cleanup intentionally ignores `hint`. |
+| `hint` | Fallback metadata only | Dormant fallback clue text. It is not scanned as an active clue, but quality cleanup may copy a good hint into a flagged active field after validating it for leakage, repetition, and clue quality. |
 
 ### Clue selection logic
 
@@ -194,13 +194,31 @@ hint = entry.get("hard_text", entry.get("hint", ""))                   # hard_te
 
 Derived forms are blocked when they are clear inflections or common ordinal/cardinal pairs, e.g. `BAGGED` must not be clued with `bag`, `SMOKER` with `smokes`, `RUNNER` with `runs`, and `TENTH` with `ten`.
 
-Run `Backend/fix_answer_leakage.py` to scan for violations and regenerate affected fields via OpenAI. Backend clue-generation scripts should enforce the same rule through `Backend/answer_leakage.py`.
+Run `Backend/fix_answer_leakage.py` or `python3 Backend/fix_duplicate_clues.py scan-quality` to scan for violations. Backend clue-generation scripts should enforce the same rule through `Backend/answer_leakage.py`.
 
 ### Clue redundancy rule
 
 Active clue fields inside the same word-bank object must use genuinely different clue ideas. `hint` is ignored for this cleanup rule. Do not repair one active field by reusing another field with wrapper text such as "Maybe", "Could be", "Often", "Seen as", "Associated with", "A sign of", or suffixes such as "perhaps", "sometimes", "for one", or a trailing question mark. Active clue fields should also avoid filler qualifiers such as "perhaps", "maybe", "possibly", "sometimes", and "loosely" anywhere in the clue; remove the qualifier or write a fresh clue instead.
 
 For example, `text: "Maybe burning fiercely"` is considered the same clue idea as `clues[0]: "Burning fiercely"` and must be replaced with a fresh angle. Run `python3 Backend/fix_duplicate_clues.py scan-similar` to find these cases, and `python3 Backend/fix_duplicate_clues.py validate` before shipping word-bank changes.
+
+### Antonym-only clues and quality cleanup
+
+Do not clue an answer solely as the opposite or antonym of another word, for example `"Opposite of cautious"`. Explanatory clues where opposition is the concept being defined, such as a description of irony, are allowed. An `or` clue is not automatically invalid, but it should be simplified or split when one branch merely repeats another active clue.
+
+Quality repairs follow this order: copy a safe and distinct `hint`, simplify or split a useful `or` clue, write a genuinely fresh clue, then delete an unresolved `clues[]` item. `text` and `hard_text` must never be deleted. A `clues[]` array may shrink below three items, but must retain at least one item so the dormant hint fallback is not reactivated.
+
+The review workflow is local and does not require an LLM API call:
+
+```bash
+python3 Backend/fix_duplicate_clues.py export-quality
+python3 Backend/fix_duplicate_clues.py build-quality-report Backend/audit_quality_chat_decisions.json
+python3 Backend/fix_duplicate_clues.py apply-quality Backend/clue_quality_replacements.json --dry-run
+python3 Backend/fix_duplicate_clues.py apply-quality Backend/clue_quality_replacements.json
+python3 Backend/fix_duplicate_clues.py validate
+```
+
+`export-quality` intentionally produces a broad, ignored candidate file for chat review. The retained replacement report includes original-value preconditions and a hash of the source word bank; applying it fails closed if either has changed. Hint text is copied into the active field and remains unchanged in `hint`.
 
 ### Inflection review workflow
 
