@@ -10,7 +10,7 @@ struct BackwordInstructionsContentView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 10) {
-                    instructionRow(number: "1", text: "Guess the six-letter word. After each wrong guess, at least one correct letter reveals from the end.")
+                    instructionRow(number: "1", text: "Guess the six-letter word. After each wrong guess, a letter reveals from the end if not already revealed.")
                     instructionRow(number: "2", text: "Letters only reveal right-to-left, if you guess a correct letter at the start of the word, it will stay hidden until it connects to the end letters.")
                     instructionRow(number: "3", text: "The fewer guesses you need, the more points you score.")
                     instructionRow(number: nil, text: "If you're stuck, submit any word that fits to reveal more letters from the end.")
