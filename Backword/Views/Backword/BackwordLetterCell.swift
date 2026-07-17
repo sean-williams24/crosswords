@@ -6,6 +6,7 @@ struct BackwordLetterCell: View {
     var isCursor: Bool = false
     var isNew: Bool = false
     var isCorrect: Bool = false
+    var isCelebrating: Bool = false
     var size: CGFloat = 44
 
     @State private var flashed = false
@@ -39,6 +40,7 @@ struct BackwordLetterCell: View {
             }
         }
         .frame(width: size, height: size)
+        .animation(.easeInOut(duration: 0.28), value: isCelebrating)
         .onChange(of: isNew) { _, newValue in
             guard newValue else { return }
             flashed = true
@@ -57,6 +59,7 @@ struct BackwordLetterCell: View {
     }
 
     private var staticBorderColor: Color {
+        if isCelebrating { return .appAccent }
         if isCorrect { return .appCorrect.opacity(0.6) }
         if flashed { return .appAccent }
         if letter != nil { return .appAccent.opacity(0.5) }

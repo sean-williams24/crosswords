@@ -59,10 +59,10 @@ struct BackwordView: View {
                             guessHistory
                         }
 
-                        if viewModel.isComplete {
-                            completionBanner
-                                .transition(.move(edge: .bottom).combined(with: .opacity))
-                        }
+//                        if viewModel.isComplete {
+//                            completionBanner
+//                                .transition(.move(edge: .bottom).combined(with: .opacity))
+//                        }
                     }
                     .padding(.horizontal, AppLayout.screenPadding)
                     .padding([.top, .bottom], 16)
@@ -100,7 +100,7 @@ struct BackwordView: View {
         .onChange(of: viewModel.isComplete) { _, complete in
             if complete && viewModel.isWon {
                 statsService.refresh()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     guard viewModel.isWon else { return }
                     showStats = true
                 }
@@ -120,7 +120,8 @@ struct BackwordView: View {
                 highlightGuessCount: viewModel.isWon ? viewModel.guessCount : nil,
                 shouldPop: $shouldPopAfterCompletionSheet,
                 isCompleted: viewModel.didComplete,
-                completionProgress: viewModel.progress
+                completionProgress: viewModel.progress,
+                completionWord: viewModel.word.word
             )
         }
         .presentationDetents([.large])
@@ -347,7 +348,7 @@ struct BackwordView: View {
 
     @ViewBuilder
     private var categoryContent: some View {
-        Text("Clue: ")
+        Text("Connection: ")
             .font(AppFont.clueLabel(isIpad ? 25 : 16))
             .foregroundColor(.appAccent)
 

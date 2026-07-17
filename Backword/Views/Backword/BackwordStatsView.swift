@@ -9,6 +9,7 @@ struct BackwordStatsView: View {
     @Binding var shouldPop: Bool
     var isCompleted = false
     var completionProgress: BackwordProgress?
+    var completionWord: String?
 
     @State private var animatesBars = false
 
@@ -74,27 +75,40 @@ struct BackwordStatsView: View {
             Color.appBackground
                 .ignoresSafeArea()
 
-            VStack(spacing: 32) {
-                Spacer()
+            VStack(spacing: 0) {
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 20) {
+                        if let title = displayState.title {
+                            Text(title)
+                                .font(AppFont.header(40))
+                                .foregroundColor(titleColor)
+                        }
 
-                VStack(spacing: 8) {
-                    if let title = displayState.title {
-                        Text(title)
-                            .font(AppFont.header(40))
-                            .foregroundColor(titleColor)
+                        if let completionWord {
+                            if let completionGuessSummary {
+                                Text(completionGuessSummary)
+                                    .font(AppFont.body(16))
+                                    .foregroundColor(.appTextSecondary)
+                            }
+
+                            BackwordCompletionWordView(word: completionWord)
+                        }
+
+                        nextBackwordCountdown
+
+                        Group {
+                            if displayState.showsStats {
+                                completedStatsContent
+                            } else if let message = displayState.message {
+                                completionMessage(message)
+                            }
+                        }
+                        .padding(.horizontal)
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 36)
+                    .padding(.bottom, 28)
                 }
-
-                Group {
-                    if displayState.showsStats {
-                        completedStatsContent
-                    } else if let message = displayState.message {
-                        completionMessage(message)
-                    }
-                }
-                .padding(.horizontal)
-
-                Spacer()
 
                 Button {
                     dismiss()
@@ -104,11 +118,36 @@ struct BackwordStatsView: View {
                         .font(AppFont.body())
                         .foregroundColor(.appTextSecondary)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
+                        .padding(.top, 14)
                 }
                 .padding(.horizontal, AppLayout.screenPadding)
-                .padding(.bottom, 32)
+//                .padding(.bottom, 32)
             }
+        }
+    }
+
+    private var completionGuessSummary: String? {
+        guard let completionProgress, completionProgress.isWon else { return nil }
+        return BackwordCompletionText.guessSummary(
+            guessCount: completionProgress.guesses.count,
+            titleStyle: displayState.titleStyle
+        )
+    }
+
+    private var nextBackwordCountdown: some View {
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            VStack(spacing: 6) {
+                Text("NEXT BACKWORD IN")
+                    .font(AppFont.clueLabel(12))
+                    .foregroundColor(.appAccent)
+                    .tracking(2)
+
+                Text(BackwordCountdownText.value(at: context.date))
+                    .font(AppFont.header(24))
+                    .foregroundColor(.appTextPrimary)
+                    .monospacedDigit()
+            }
+            .accessibilityElement(children: .combine)
         }
     }
 
@@ -237,7 +276,11 @@ struct BackwordStatsView: View {
     s.record(guessCount: 2, date: "2026-04-20")
     s.record(guessCount: 3, date: "2026-04-21")
     s.record(guessCount: nil, date: "2026-04-22")
-    return BackwordStatsView(stats: s, highlightGuessCount: 2, shouldPop: .constant(false))
+    return BackwordStatsView(
+        stats: s,
+        highlightGuessCount: 2,
+        shouldPop: .constant(false)
+    )
         .preferredColorScheme(.dark)
 }
 
@@ -257,7 +300,8 @@ struct BackwordStatsView: View {
         highlightGuessCount: 1,
         shouldPop: .constant(false),
         isCompleted: true,
-        completionProgress: progress
+        completionProgress: progress,
+        completionWord: "CASTLE"
     )
     .preferredColorScheme(.dark)
 }

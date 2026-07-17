@@ -26,6 +26,9 @@
 		05AD30042FFF100000000001 /* AppReviewPromptServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */; };
 		05C0A0013005000000000001 /* BackwordCompletionDisplayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0A0003005000000000001 /* BackwordCompletionDisplayState.swift */; };
 		05C0A0033005000000000001 /* BackwordCompletionDisplayStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0A0023005000000000001 /* BackwordCompletionDisplayStateTests.swift */; };
+		05C0B0013006000000000001 /* BackwordCompletionPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0B0003006000000000001 /* BackwordCompletionPresentation.swift */; };
+		05C0B0033006000000000001 /* BackwordCompletionWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0B0023006000000000001 /* BackwordCompletionWordView.swift */; };
+		05C0B0053006000000000001 /* BackwordCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0B0043006000000000001 /* BackwordCompletionPresentationTests.swift */; };
 		05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */; };
 		05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */; };
 		05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */; };
@@ -170,6 +173,9 @@
 		05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewPromptServiceTests.swift; sourceTree = "<group>"; };
 		05C0A0003005000000000001 /* BackwordCompletionDisplayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordCompletionDisplayState.swift; sourceTree = "<group>"; };
 		05C0A0023005000000000001 /* BackwordCompletionDisplayStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordCompletionDisplayStateTests.swift; sourceTree = "<group>"; };
+		05C0B0003006000000000001 /* BackwordCompletionPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordCompletionPresentation.swift; sourceTree = "<group>"; };
+		05C0B0023006000000000001 /* BackwordCompletionWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordCompletionWordView.swift; sourceTree = "<group>"; };
+		05C0B0043006000000000001 /* BackwordCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordCompletionPresentationTests.swift; sourceTree = "<group>"; };
 		05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReleaseCalendarTests.swift; sourceTree = "<group>"; };
 		05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAuxiliaryContentServiceTests.swift; sourceTree = "<group>"; };
 		05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayStateTests.swift; sourceTree = "<group>"; };
@@ -343,6 +349,7 @@
 				0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */,
 				30AAC0EA05C940EEA05D4CE9 /* ArchiveViewModelTests.swift */,
 				05C0A0023005000000000001 /* BackwordCompletionDisplayStateTests.swift */,
+				05C0B0043006000000000001 /* BackwordCompletionPresentationTests.swift */,
 				05A1D9B62FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift */,
 				05AD00032FFD000000000001 /* AdConsentServiceTests.swift */,
 				05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */,
@@ -374,6 +381,7 @@
 				B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */,
 				41BD8C5299844A6BAF87B504 /* AppSettings.swift */,
 				05C0A0003005000000000001 /* BackwordCompletionDisplayState.swift */,
+				05C0B0003006000000000001 /* BackwordCompletionPresentation.swift */,
 				05D1A0063001000000000001 /* CompletionDisplayState.swift */,
 				05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */,
 				15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */,
@@ -535,6 +543,7 @@
 				86AE8C962F913EAB001D69EE /* BackwordLogo.swift */,
 				86AE8C982FE31F01001D69EE /* LaunchSplashView.swift */,
 				869FCBE32F99871800A280F2 /* BackwordStatsView.swift */,
+				05C0B0023006000000000001 /* BackwordCompletionWordView.swift */,
 			);
 			path = Backword;
 			sourceTree = "<group>";
@@ -735,6 +744,7 @@
 				05AD00042FFD000000000001 /* AdConsentServiceTests.swift in Sources */,
 				05AD30042FFF100000000001 /* AppReviewPromptServiceTests.swift in Sources */,
 				05C0A0033005000000000001 /* BackwordCompletionDisplayStateTests.swift in Sources */,
+				05C0B0053006000000000001 /* BackwordCompletionPresentationTests.swift in Sources */,
 				05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */,
 				05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */,
 				05D1A00B3001000000000001 /* CrosswordSolveTimeSummaryTests.swift in Sources */,
@@ -791,6 +801,8 @@
 				86AFC3D72FC25567007623C3 /* ScoreChipView.swift in Sources */,
 				CF96B7A7D6669B73DBA8125E /* BackwordCard.swift in Sources */,
 				05C0A0013005000000000001 /* BackwordCompletionDisplayState.swift in Sources */,
+				05C0B0013006000000000001 /* BackwordCompletionPresentation.swift in Sources */,
+				05C0B0033006000000000001 /* BackwordCompletionWordView.swift in Sources */,
 				7D3636249D4EA1ACE0D6916C /* BackwordGuessRow.swift in Sources */,
 				87051E8136E314CB2A272A91 /* BackwordLetterCell.swift in Sources */,
 				86AFC3D12FBFC367007623C3 /* ScoringRuleView.swift in Sources */,

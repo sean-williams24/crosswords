@@ -85,6 +85,12 @@ The Backword card uses the same stats row shape, but its score is hidden until `
 
 Backword archive rows keep the guess-count status label after a win. On-time wins use the same solved gold as on-time crossword archive completions, while wins finished on a later local release date use the normal correct green. Only on-time Backword wins contribute points to the overall rating; late archive wins remain visible in progress but score zero.
 
+## Backword Completion Moment
+
+The winning completion sheet receives the solved word explicitly. A `Solved in N guesses` or `Finished in N guesses` label sits directly above its cells. The cells reveal from right to left, followed by a single whole-word celebration animation in which their borders and glow transition from correct green to accent blue. Reduce Motion skips the staged animation and shows the completed word immediately.
+
+The completion sheet also shows a live `NEXT BACKWORD IN` countdown. It must derive the next release from `ContentReleaseCalendar` on every tick so it follows local midnight and remains correct across timezone and daylight-saving transitions.
+
 ## Crossword Rating Score Window
 
 Daily and weekly crossword rating points are only awarded during the puzzle's own local release window. Daily crossword scores can be written only when `ContentReleaseCalendar.dailyDateString` equals the puzzle date; weekly crossword scores can be written only when `ContentReleaseCalendar.weeklyDateString` equals the puzzle date.
