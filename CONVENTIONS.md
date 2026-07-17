@@ -53,6 +53,18 @@ Backend/.venv/bin/python3 Backend/sync_supabase_crossword_edits.py export-from-a
 
 The artifact-backed export still writes the normal `Backend/supabase_crossword_edit_replacements.json`, so the existing `validate` and `apply` commands remain the final safety gate. If an artifact does not contain clue-source metadata for a `clues[]` update, the script fails closed by exporting a manual-review item instead of guessing.
 
+### Released weekly duplicate-clue repair
+
+Use `Backend/repair_weekly_duplicate_clues.py` when historical weekly puzzle rows have identical `text` and `hint` values. The export is limited to rows whose release `date` is on or before the local execution date; scheduled future puzzles are intentionally excluded. For each duplicate, the first non-identical value in the answer's current `word_bank.clues[]` becomes the proposed `text`, while `hint` remains unchanged.
+
+```bash
+Backend/.venv/bin/python3 Backend/repair_weekly_duplicate_clues.py export
+Backend/.venv/bin/python3 Backend/repair_weekly_duplicate_clues.py validate
+Backend/.venv/bin/python3 Backend/repair_weekly_duplicate_clues.py apply
+```
+
+The workflow is review-first: `export` and `validate` never mutate Supabase, and `apply` re-fetches every ready row and fails closed if either the Supabase clue or selected word-bank source changed. Missing word-bank answers remain unresolved in the report and are never updated automatically. Successful repairs also set `textSourceField: "clues"` and the matching `textSourceIndex` for future traceability.
+
 ## Crossword Correct Highlight Locking
 
 When `AppSettings.crosswordCorrectHighlight` is enabled, cells belonging to completed crossword clues are treated as locked input. `GameViewModel` must reject deletion and typed replacement for those cells, because the green highlight is the user's signal that the answer has been accepted and should no longer be editable. Retyping the same letter already in a locked cell is allowed as navigation input and advances to the next cell without changing the answer.
