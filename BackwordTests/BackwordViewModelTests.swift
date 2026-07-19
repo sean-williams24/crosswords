@@ -51,9 +51,40 @@ struct BackwordViewModelTests {
         var progress = BackwordProgress(date: "2026-07-09")
         progress.guesses = ["BRIDGX", "FXASXE", "CASTLE"]
         progress.wonFlag = true
-        progress.completedAt = Date()
+        progress.completedAt = Self.date("2026-07-09 12:00:00")
 
         #expect(progress.completedScore == 3)
+    }
+
+    @Test("Archive Backword win scores zero")
+    func archiveBackwordWinScoresZero() {
+        var progress = BackwordProgress(date: "2026-07-08")
+        progress.guesses = ["BRIDGX", "CASTLE"]
+        progress.wonFlag = true
+        progress.completedAt = Self.date("2026-07-09 12:00:00")
+
+        #expect(progress.wasCompletedOnReleaseDate == false)
+        #expect(progress.completedScore == 0)
+    }
+
+    @Test("Archive Backword completion does not update player statistics")
+    func archiveBackwordCompletionDoesNotUpdatePlayerStatistics() {
+        let word = BackwordWord(
+            id: UUID().uuidString,
+            date: "2000-01-01",
+            word: "CASTLE",
+            clue: "FORTRESS"
+        )
+        let vm = BackwordViewModel(word: word, progress: BackwordProgress(date: word.date))
+        let gamesPlayedBeforeCompletion = vm.stats.gamesPlayed
+        defer { BackwordProgress.delete(date: word.date) }
+
+        vm.currentInput = "CASTL"
+        vm.submitGuess()
+
+        #expect(vm.isWon == true)
+        #expect(vm.progress.completedScore == 0)
+        #expect(vm.stats.gamesPlayed == gamesPlayedBeforeCompletion)
     }
 
     @Test("Failed Backword progress scores zero")
@@ -63,6 +94,15 @@ struct BackwordViewModelTests {
         progress.completedAt = Date()
 
         #expect(progress.completedScore == 0)
+    }
+
+    private static func date(_ string: String) -> Date {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = .current
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return formatter.date(from: string)!
     }
 
     @Test("Saving Backword progress posts changed date notification")

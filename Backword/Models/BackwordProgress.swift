@@ -29,9 +29,14 @@ struct BackwordProgress: Codable {
     var isWon: Bool { wonFlag && completedAt != nil }
     var isFailed: Bool { !wonFlag && completedAt != nil }
     var isComplete: Bool { completedAt != nil }
+    var wasCompletedOnReleaseDate: Bool {
+        guard let completedAt else { return false }
+        return ContentReleaseCalendar(now: completedAt).dailyDateString == date
+    }
     var completedScore: Int? {
         guard isComplete else { return nil }
-        return isWon ? Int.backwordScore(guessCount: guesses.count) : 0
+        guard isWon, wasCompletedOnReleaseDate else { return 0 }
+        return Int.backwordScore(guessCount: guesses.count)
     }
 }
 

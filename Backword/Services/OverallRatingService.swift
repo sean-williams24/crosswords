@@ -224,7 +224,6 @@ final class OverallRatingService: ObservableObject {
     }
 
     static func canScoreBackword(progress: BackwordProgress) -> Bool {
-        guard progress.isComplete, let completedAt = progress.completedAt else { return false }
-        return ContentReleaseCalendar(now: completedAt).dailyDateString == progress.date
+        progress.isComplete && progress.wasCompletedOnReleaseDate
     }
 }

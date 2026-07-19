@@ -155,15 +155,13 @@ final class BackwordViewModel: ObservableObject {
             didComplete = true
             progress.completedAt = Date()
             progress.save()
-            stats.record(guessCount: progress.guesses.count, date: word.date)
-            OverallRatingService().recordBackword(guessCount: progress.guesses.count, date: word.date)
+            recordCompletion(guessCount: progress.guesses.count)
         } else if progress.guesses.count >= maxGuesses {
             progress.wonFlag = false
             didComplete = true
             progress.completedAt = Date()
             progress.save()
-            stats.record(guessCount: nil, date: word.date)
-            OverallRatingService().recordBackword(guessCount: nil, date: word.date)
+            recordCompletion(guessCount: nil)
         } else {
             let justRevealed = revealedIndices.subtracting(prevRevealed)
             progress.save()
@@ -175,6 +173,17 @@ final class BackwordViewModel: ObservableObject {
                 }
             }
         }
+    }
+
+    private func recordCompletion(guessCount: Int?) {
+        guard progress.wasCompletedOnReleaseDate, let completedAt = progress.completedAt else { return }
+
+        stats.record(guessCount: guessCount, date: word.date)
+        OverallRatingService().recordBackword(
+            guessCount: guessCount,
+            date: word.date,
+            releaseCalendar: ContentReleaseCalendar(now: completedAt)
+        )
     }
 
     /// Assembles the full 6-letter guess by placing typed characters into unrevealed positions

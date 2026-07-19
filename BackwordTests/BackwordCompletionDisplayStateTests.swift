@@ -32,8 +32,8 @@ struct BackwordCompletionDisplayStateTests {
         #expect(state.message == nil)
     }
 
-    @Test("Backword won after release date shows finished message")
-    func lateWinShowsFinishedMessage() throws {
+    @Test("Backword won after release date shows finished message and stats")
+    func lateWinShowsFinishedMessageAndStats() throws {
         let state = BackwordCompletionDisplayState.make(
             progress: progress(date: "2026-05-10", completedAt: try date("2026-05-11T10:00:00Z")),
             isCompletion: true,
@@ -42,8 +42,8 @@ struct BackwordCompletionDisplayStateTests {
 
         #expect(state.title == "Finished")
         #expect(state.titleStyle == .finished)
-        #expect(!state.showsStats)
-        #expect(state.message == "Complete Backword on its release date to earn maximum points.")
+        #expect(state.showsStats)
+        #expect(state.message == "Complete Backword on its release date to earn points.")
     }
 
     @Test("Failed Backword shows failed stats")

@@ -100,10 +100,12 @@ struct BackwordStatsView: View {
                         nextBackwordCountdown
 
                         Group {
+                            if let message = displayState.message {
+                                completionMessage(message)
+                            }
+
                             if displayState.showsStats {
                                 completedStatsContent
-                            } else if let message = displayState.message {
-                                completionMessage(message)
                             }
                         }
                         .padding(.horizontal)

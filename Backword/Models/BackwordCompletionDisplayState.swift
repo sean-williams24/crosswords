@@ -47,8 +47,8 @@ struct BackwordCompletionDisplayState: Equatable {
         return BackwordCompletionDisplayState(
             title: "Finished",
             titleStyle: .finished,
-            showsStats: false,
-            message: "Complete Backword on its release date to earn maximum points."
+            showsStats: true,
+            message: "Complete Backword on its release date to earn points."
         )
     }
 
