@@ -279,6 +279,7 @@ final class GameViewModel: ObservableObject {
         progress.gaveUpRevealedCells = revealedCells
         haptics.play(.puzzleCompleted)
         saveProgress()
+        isComplete = true
     }
 
     func isGaveUpRevealed(row: Int, col: Int) -> Bool {

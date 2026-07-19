@@ -99,6 +99,8 @@ Daily and weekly crossword completion sheets use the solved grid as their visual
 
 All crossword completion outcomes show a live release countdown derived from `ContentReleaseCalendar` on every tick. Daily puzzles count down to the next local midnight; weekly puzzles count down to the next local Sunday at midnight and include days in the display. A late `Finished` result shows its no-points message above the standard stats card and displays a score of zero.
 
+Giving up from an eligible archive crossword completes and saves the revealed puzzle before setting the same `isComplete` presentation trigger used by a solve. This presents the red `Gave up` completion experience immediately without recording a successful completion.
+
 ## Crossword Rating Score Window
 
 Daily and weekly crossword rating points are only awarded during the puzzle's own local release window. Daily crossword scores can be written only when `ContentReleaseCalendar.dailyDateString` equals the puzzle date; weekly crossword scores can be written only when `ContentReleaseCalendar.weeklyDateString` equals the puzzle date.

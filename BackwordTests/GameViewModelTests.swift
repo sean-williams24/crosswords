@@ -179,7 +179,7 @@ struct GameViewModelTests {
         #expect(vm.progress.gaveUpAt != nil)
         #expect(vm.progress.gaveUpScore == 3)
         #expect(vm.progress.gaveUpRevealedCells == ["0,0", "0,1"])
-        #expect(!vm.isComplete)
+        #expect(vm.isComplete)
 
         let saved = try #require(UserProgress.load(puzzleId: puzzle.id))
         #expect(saved.gaveUpAt != nil)
