@@ -93,6 +93,12 @@ The completion sheet also shows a live `NEXT BACKWORD IN` countdown. It must der
 
 In DEBUG builds, the Backword header includes a ladybug button that simulates a five-guess failure and presents the real failure completion flow. The simulation is intentionally in-memory only: it must not save progress or record player stats.
 
+## Crossword Completion Moment
+
+Daily and weekly crossword completion sheets use the solved grid as their visual centerpiece. Playable cells reveal in a diagonal wave; on-time solves finish with an accent bounce, glow, and restrained sparkle burst, late `Finished` solves use the wave and a softer bounce without sparkles, and `Gave up` reveals in red without a celebratory finish. Reduce Motion shows the final state immediately.
+
+All crossword completion outcomes show a live release countdown derived from `ContentReleaseCalendar` on every tick. Daily puzzles count down to the next local midnight; weekly puzzles count down to the next local Sunday at midnight and include days in the display. A late `Finished` result shows its no-points message above the standard stats card and displays a score of zero.
+
 ## Crossword Rating Score Window
 
 Daily and weekly crossword rating points are only awarded during the puzzle's own local release window. Daily crossword scores can be written only when `ContentReleaseCalendar.dailyDateString` equals the puzzle date; weekly crossword scores can be written only when `ContentReleaseCalendar.weeklyDateString` equals the puzzle date.

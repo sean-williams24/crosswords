@@ -36,6 +36,10 @@
 		05D1A0093001000000000001 /* CrosswordSolveTimeSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */; };
 		05D1A00B3001000000000001 /* CrosswordSolveTimeSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */; };
 		05D2A0013002000000000001 /* DailyCrosswordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */; };
+		06CC00013007000000000001 /* CrosswordCompletionPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00003007000000000001 /* CrosswordCompletionPresentation.swift */; };
+		06CC00033007000000000001 /* CrosswordCompletionGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00023007000000000001 /* CrosswordCompletionGridView.swift */; };
+		06CC00053007000000000001 /* CrosswordCompletionSparkleBurstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00043007000000000001 /* CrosswordCompletionSparkleBurstView.swift */; };
+		06CC00073007000000000001 /* CrosswordCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */; };
 		05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */; };
 		05F1E1A62FFCFD9300F1E1A5 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A32FFCFD9300F1E1A5 /* FirebaseCore */; };
 		05F1E1A72FFCFD9300F1E1A5 /* StoreLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */; };
@@ -183,6 +187,10 @@
 		05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordSolveTimeSummary.swift; sourceTree = "<group>"; };
 		05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordSolveTimeSummaryTests.swift; sourceTree = "<group>"; };
 		05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordInstructionsContentView.swift; sourceTree = "<group>"; };
+		06CC00003007000000000001 /* CrosswordCompletionPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionPresentation.swift; sourceTree = "<group>"; };
+		06CC00023007000000000001 /* CrosswordCompletionGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionGridView.swift; sourceTree = "<group>"; };
+		06CC00043007000000000001 /* CrosswordCompletionSparkleBurstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionSparkleBurstView.swift; sourceTree = "<group>"; };
+		06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionPresentationTests.swift; sourceTree = "<group>"; };
 		05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLogger.swift; sourceTree = "<group>"; };
 		0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewTests.swift; sourceTree = "<group>"; };
 		0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTabBarViewTests.swift; sourceTree = "<group>"; };
@@ -354,6 +362,7 @@
 				05AD00032FFD000000000001 /* AdConsentServiceTests.swift */,
 				05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */,
 				05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */,
+				06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */,
 				A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */,
 				05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */,
 				05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */,
@@ -383,6 +392,7 @@
 				05C0A0003005000000000001 /* BackwordCompletionDisplayState.swift */,
 				05C0B0003006000000000001 /* BackwordCompletionPresentation.swift */,
 				05D1A0063001000000000001 /* CompletionDisplayState.swift */,
+				06CC00003007000000000001 /* CrosswordCompletionPresentation.swift */,
 				05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */,
 				15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */,
 				E6124F655D1ABA64F820B278 /* BackwordProgress.swift */,
@@ -527,6 +537,8 @@
 				D84C8AB718DDE4C9E0EDDE1F /* ClueListView.swift */,
 				6C44B7584617BA53797B0963 /* ZoomableView.swift */,
 				741EF0B3C1470452272529E1 /* CompletionView.swift */,
+				06CC00023007000000000001 /* CrosswordCompletionGridView.swift */,
+				06CC00043007000000000001 /* CrosswordCompletionSparkleBurstView.swift */,
 				05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */,
 			);
 			path = Crosswords;
@@ -746,6 +758,7 @@
 				05C0A0033005000000000001 /* BackwordCompletionDisplayStateTests.swift in Sources */,
 				05C0B0053006000000000001 /* BackwordCompletionPresentationTests.swift in Sources */,
 				05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */,
+				06CC00073007000000000001 /* CrosswordCompletionPresentationTests.swift in Sources */,
 				05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */,
 				05D1A00B3001000000000001 /* CrosswordSolveTimeSummaryTests.swift in Sources */,
 				05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */,
@@ -821,6 +834,9 @@
 				C2A2E6FA90B85E2884F67538 /* ClueListView.swift in Sources */,
 				AC638DF36320A3F8C6EFDE6E /* CompletionView.swift in Sources */,
 				05D1A0073001000000000001 /* CompletionDisplayState.swift in Sources */,
+				06CC00013007000000000001 /* CrosswordCompletionPresentation.swift in Sources */,
+				06CC00033007000000000001 /* CrosswordCompletionGridView.swift in Sources */,
+				06CC00053007000000000001 /* CrosswordCompletionSparkleBurstView.swift in Sources */,
 				05D1A0093001000000000001 /* CrosswordSolveTimeSummary.swift in Sources */,
 				86AFC3D52FC2402F007623C3 /* StatsView.swift in Sources */,
 				21618E85BCB44C8BE6735598 /* DebugSettingsView.swift in Sources */,

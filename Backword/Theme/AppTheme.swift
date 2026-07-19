@@ -68,6 +68,12 @@ struct AppLayout {
     static let cardHeightLarge: CGFloat = 194
     static let screenPadding: CGFloat = 20
     static let screenPaddingLarge: CGFloat = 45
+    static let dailyCompletionGridWidth: CGFloat = 238
+    static let weeklyCompletionGridWidth: CGFloat = 286
+    static let completionGridSpacing: CGFloat = 2
+    static let dailyCompletionGridLetterSize: CGFloat = 13
+    static let weeklyCompletionGridLetterSize: CGFloat = 8
+    static let completionSparkleSize: CGFloat = 15
 
     var isiPad: Bool {
         sizeClass == .regular

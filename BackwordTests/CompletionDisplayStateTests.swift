@@ -23,8 +23,8 @@ struct CompletionDisplayStateTests {
         #expect(state.message == nil)
     }
 
-    @Test("Daily archive crossword completed after release date shows finished message")
-    func dailyLateCompletionShowsFinishedMessage() throws {
+    @Test("Daily archive crossword completed after release date shows finished message and stats")
+    func dailyLateCompletionShowsFinishedMessageAndStats() throws {
         let completedAt = try date("2026-05-11T10:00:00Z")
         let progress = progress(completedAt: completedAt)
 
@@ -37,7 +37,7 @@ struct CompletionDisplayStateTests {
 
         #expect(state.title == "Finished")
         #expect(state.titleStyle == .finished)
-        #expect(!state.showsStats)
+        #expect(state.showsStats)
         #expect(state.message == "Complete the puzzle on its release date to earn maximum points.")
     }
 
@@ -57,8 +57,8 @@ struct CompletionDisplayStateTests {
         #expect(state.showsStats)
     }
 
-    @Test("Weekly archive crossword completed after release week shows finished message")
-    func weeklyLateCompletionShowsFinishedMessage() throws {
+    @Test("Weekly archive crossword completed after release week shows finished message and stats")
+    func weeklyLateCompletionShowsFinishedMessageAndStats() throws {
         let completedAt = try date("2026-05-17T10:00:00Z")
         let progress = progress(completedAt: completedAt)
 
@@ -70,7 +70,7 @@ struct CompletionDisplayStateTests {
         )
 
         #expect(state.title == "Finished")
-        #expect(!state.showsStats)
+        #expect(state.showsStats)
         #expect(state.message == "Complete the puzzle during its release week to earn maximum points.")
     }
 

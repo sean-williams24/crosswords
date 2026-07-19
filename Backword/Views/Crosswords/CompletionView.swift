@@ -9,8 +9,11 @@ struct CompletionView: View {
     @EnvironmentObject var appReviewPromptService: AppReviewPromptService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    @State private var showContent = false
-    @State private var hasShownAd = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var showHeader = false
+    @State private var showGrid = false
+    @State private var showCountdown = false
+    @State private var showDetails = false
     @Binding var shouldPop: Bool
 
     private var displayState: CompletionDisplayState {
@@ -26,61 +29,55 @@ struct CompletionView: View {
             Color.appBackground
                 .ignoresSafeArea()
 
-            VStack(spacing: 32) {
-                Spacer()
+            VStack(spacing: 0) {
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 24) {
+                        celebrationHeader
 
-                // Celebration header
-                VStack(spacing: 8) {
-                    Text(displayState.title)
-                        .font(AppFont.header(40))
-                        .foregroundColor(titleColor)
+                        if showGrid {
+                            CrosswordCompletionGridView(
+                                puzzle: viewModel.puzzle,
+                                style: gridStyle
+                            )
+                            .transition(.scale(scale: 0.88).combined(with: .opacity))
+                        }
 
-                    Text("PUZZLE #\(viewModel.puzzle.puzzleNumber)")
-                        .font(AppFont.clueLabel(14))
+                        if showCountdown {
+                            nextCrosswordCountdown
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                        }
+
+                        if showDetails {
+                            VStack(spacing: 20) {
+                                if let message = displayState.message {
+                                    completionMessage(message)
+                                }
+
+                                if displayState.showsStats {
+                                    statsCard
+                                }
+                            }
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 32)
+                    .padding(.bottom, 28)
+                }
+
+                Button {
+                    dismiss()
+                    shouldPop = true
+                } label: {
+                    Text("HOME")
+                        .font(AppFont.body())
                         .foregroundColor(.appTextSecondary)
-                        .tracking(3)
-                }
-                .scaleEffect(showContent ? 1.0 : 0.6)
-                .opacity(showContent ? 1.0 : 0.0)
-
-                Group {
-                    if displayState.showsStats {
-                        statsCard
-                    } else if let message = displayState.message {
-                        completionMessage(message)
-                    }
-                }
-                .opacity(showContent ? 1.0 : 0.0)
-                .offset(y: showContent ? 0 : 20)
-
-                Spacer()
-
-                // Action buttons
-                VStack(spacing: 12) {
-//                    ShareLink(item: shareText) {
-//                        Label("Share Result", systemImage: "square.and.arrow.up")
-//                            .font(AppFont.body())
-//                            .foregroundColor(.white)
-//                            .frame(maxWidth: .infinity)
-//                            .padding(.vertical, 14)
-//                            .background(Color.appAccent)
-//                            .cornerRadius(AppLayout.cardCornerRadius)
-//                    }
-
-                    Button {
-                        dismiss()
-                        shouldPop = true
-                    } label: {
-                        Text("HOME")
-                            .font(AppFont.body())
-                            .foregroundColor(.appTextSecondary)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                    }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
                 }
                 .padding(.horizontal, AppLayout.screenPadding)
-                .padding(.bottom, 32)
-                .opacity(showContent ? 1.0 : 0.0)
+                .padding(.bottom, 20)
+                .opacity(showDetails ? 1 : 0)
             }
         }
         .onAppear {
@@ -93,10 +90,6 @@ struct CompletionView: View {
                 )
             }
 
-            withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.2)) {
-                showContent = true
-            }
-
             if !viewModel.hasGivenUp {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     appReviewPromptService.recordEligibleCrosswordCompletion(
@@ -106,6 +99,9 @@ struct CompletionView: View {
                 }
             }
         }
+        .task {
+            await runPresentation()
+        }
         .interactiveDismissDisabled(false)
     }
 
@@ -113,10 +109,57 @@ struct CompletionView: View {
 
     private var titleColor: Color {
         switch displayState.titleStyle {
-        case .solved, .gaveUp:
+        case .solved:
             return .appTextHeading
         case .finished:
             return .appCorrect
+        case .gaveUp:
+            return .appGaveUp
+        }
+    }
+
+    private var celebrationHeader: some View {
+        VStack(spacing: 8) {
+            Text(displayState.title)
+                .font(AppFont.header(40))
+                .foregroundColor(titleColor)
+
+            Text("PUZZLE #\(viewModel.puzzle.puzzleNumber)")
+                .font(AppFont.clueLabel(14))
+                .foregroundColor(.appTextSecondary)
+                .tracking(3)
+        }
+        .scaleEffect(showHeader ? 1 : 0.62)
+        .opacity(showHeader ? 1 : 0)
+    }
+
+    private var gridStyle: CrosswordCompletionGridStyle {
+        CrosswordCompletionGridStyle(titleStyle: displayState.titleStyle)
+    }
+
+    private var releaseKind: CrosswordReleaseKind {
+        isWeekly ? .weekly : .daily
+    }
+
+    private var isWeekly: Bool {
+        viewModel.puzzle.size > 12
+    }
+
+    private var nextCrosswordCountdown: some View {
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            VStack(spacing: 6) {
+                Text(releaseKind.label)
+                    .font(AppFont.clueLabel(12))
+                    .foregroundColor(.appAccent)
+                    .tracking(2)
+                    .multilineTextAlignment(.center)
+
+                Text(CrosswordCountdownText.value(at: context.date, kind: releaseKind))
+                    .font(AppFont.header(24))
+                    .foregroundColor(.appTextPrimary)
+                    .monospacedDigit()
+            }
+            .accessibilityElement(children: .combine)
         }
     }
 
@@ -124,7 +167,7 @@ struct CompletionView: View {
         VStack {
             HStack(spacing: 24) {
                 statItem(
-                    value: "\(statsService.stats.currentStreak)",
+                    value: "\(CrosswordCompletionMetrics.streak(stats: statsService.stats, isWeekly: isWeekly))",
                     label: "STREAK"
                 )
                 statDivider
@@ -190,10 +233,13 @@ struct CompletionView: View {
     }
 
     private var completionScore: Int {
-        if viewModel.hasGivenUp {
-            return savedReleaseDateScore ?? viewModel.progress.gaveUpScore ?? 0
-        }
-        return max(0, 5 - viewModel.progress.hintsUsed / 3)
+        CrosswordCompletionMetrics.score(
+            titleStyle: displayState.titleStyle,
+            hasGivenUp: viewModel.hasGivenUp,
+            hintsUsed: viewModel.progress.hintsUsed,
+            gaveUpScore: viewModel.progress.gaveUpScore,
+            savedReleaseDateScore: savedReleaseDateScore
+        )
     }
 
     private var savedReleaseDateScore: Int? {
@@ -202,6 +248,44 @@ struct CompletionView: View {
             .flatMap { day in
                 viewModel.puzzle.size > 12 ? day.weeklyCrossword : day.dailyCrossword
             }
+    }
+
+    @MainActor
+    private func runPresentation() async {
+        if reduceMotion {
+            showHeader = true
+            showGrid = true
+            showCountdown = true
+            showDetails = true
+            return
+        }
+
+        withAnimation(.spring(response: 0.55, dampingFraction: 0.68)) {
+            showHeader = true
+        }
+        try? await Task.sleep(nanoseconds: 220_000_000)
+        guard !Task.isCancelled else { return }
+
+        withAnimation(.spring(response: 0.45, dampingFraction: 0.76)) {
+            showGrid = true
+        }
+
+        let duration = CrosswordCompletionAnimation.presentationDuration(
+            cells: viewModel.puzzle.cells,
+            celebrates: gridStyle.performsBounce
+        )
+        try? await Task.sleep(nanoseconds: UInt64(duration * 1_000_000_000))
+        guard !Task.isCancelled else { return }
+
+        withAnimation(.easeOut(duration: 0.3)) {
+            showCountdown = true
+        }
+        try? await Task.sleep(nanoseconds: 180_000_000)
+        guard !Task.isCancelled else { return }
+
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.82)) {
+            showDetails = true
+        }
     }
 
     // MARK: - Share

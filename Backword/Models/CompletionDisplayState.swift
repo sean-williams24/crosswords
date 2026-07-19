@@ -41,7 +41,7 @@ struct CompletionDisplayState: Equatable {
             return CompletionDisplayState(
                 title: "Finished",
                 titleStyle: .finished,
-                showsStats: false,
+                showsStats: true,
                 message: message
             )
         }
