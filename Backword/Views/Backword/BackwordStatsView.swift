@@ -91,7 +91,10 @@ struct BackwordStatsView: View {
                                     .foregroundColor(.appTextSecondary)
                             }
 
-                            BackwordCompletionWordView(word: completionWord)
+                            BackwordCompletionWordView(
+                                word: completionWord,
+                                isFailed: isFailedCompletion
+                            )
                         }
 
                         nextBackwordCountdown
@@ -127,11 +130,16 @@ struct BackwordStatsView: View {
     }
 
     private var completionGuessSummary: String? {
-        guard let completionProgress, completionProgress.isWon else { return nil }
-        return BackwordCompletionText.guessSummary(
+        guard let completionProgress, completionProgress.isComplete else { return nil }
+        return BackwordCompletionText.summary(
             guessCount: completionProgress.guesses.count,
-            titleStyle: displayState.titleStyle
+            isFailed: completionProgress.isFailed
         )
+    }
+
+    private var isFailedCompletion: Bool {
+        if case .failed = displayState.titleStyle { return true }
+        return false
     }
 
     private var nextBackwordCountdown: some View {
@@ -157,6 +165,8 @@ struct BackwordStatsView: View {
             return .appTextHeading
         case .finished:
             return .appCorrect
+        case .failed:
+            return .appGaveUp
         }
     }
 

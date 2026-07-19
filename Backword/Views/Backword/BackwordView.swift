@@ -98,10 +98,10 @@ struct BackwordView: View {
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
         .animation(.easeInOut(duration: 0.3), value: viewModel.invalidWordMessage != nil)
         .onChange(of: viewModel.isComplete) { _, complete in
-            if complete && viewModel.isWon {
+            if complete {
                 statsService.refresh()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    guard viewModel.isWon else { return }
+                    guard viewModel.isComplete else { return }
                     showStats = true
                 }
             }
@@ -162,6 +162,21 @@ struct BackwordView: View {
                 Spacer()
 
                 HStack(spacing: 8) {
+                    #if DEBUG
+                    if !viewModel.isComplete {
+                        Button {
+                            viewModel.debugSimulateFailure()
+                        } label: {
+                            Image(systemName: "ladybug")
+                                .font(AppFont.body(appLayout.iconGlyphSize))
+                                .frame(width: appLayout.iconSize)
+                                .padding(.vertical, 8)
+                                .foregroundColor(.appGaveUp)
+                        }
+                        .accessibilityLabel("Simulate failed game")
+                    }
+                    #endif
+
                     Button {
                         statsService.refresh()
                         showStats = true

@@ -87,9 +87,11 @@ Backword archive rows keep the guess-count status label after a win. On-time win
 
 ## Backword Completion Moment
 
-The winning completion sheet receives the solved word explicitly. A `Solved in N guesses` or `Finished in N guesses` label sits directly above its cells. The cells reveal from right to left, followed by a single whole-word celebration animation in which their borders and glow transition from correct green to accent blue. Reduce Motion skips the staged animation and shows the completed word immediately.
+The completion sheet is presented after both wins and failures and receives the answer explicitly. Its title is `Solved!`, `Finished`, or `Failed`. Wins show an `... in N guesses` label directly above the cells; failures show `The answer was...`. The cells reveal from right to left and perform a single whole-word bounce. Winning cells transition from correct green to accent blue during the glow; failed cells and their glow remain red. Reduce Motion skips the staged animation and shows the completed word immediately.
 
 The completion sheet also shows a live `NEXT BACKWORD IN` countdown. It must derive the next release from `ContentReleaseCalendar` on every tick so it follows local midnight and remains correct across timezone and daylight-saving transitions.
+
+In DEBUG builds, the Backword header includes a ladybug button that simulates a five-guess failure and presents the real failure completion flow. The simulation is intentionally in-memory only: it must not save progress or record player stats.
 
 ## Crossword Rating Score Window
 

@@ -9,17 +9,8 @@ enum BackwordCompletionAnimation {
 }
 
 enum BackwordCompletionText {
-    static func guessSummary(
-        guessCount: Int,
-        titleStyle: BackwordCompletionDisplayState.TitleStyle
-    ) -> String {
-        let verb: String
-        switch titleStyle {
-        case .solved:
-            verb = "Solved"
-        case .finished:
-            verb = "Finished"
-        }
+    static func summary(guessCount: Int, isFailed: Bool) -> String {
+        guard !isFailed else { return "The answer was..." }
 
         let noun = guessCount == 1 ? "guess" : "guesses"
         return "... in \(guessCount) \(noun)"

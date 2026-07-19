@@ -176,6 +176,7 @@ struct BackwordViewModelTests {
         #expect(vm.isFailed == true)
         #expect(vm.isWon == false)
         #expect(vm.isComplete == true)
+        #expect(vm.didComplete == true)
         #expect(vm.guessCount == 5)
     }
 
@@ -193,6 +194,21 @@ struct BackwordViewModelTests {
 
         #expect(vm.guessCount == 5)
     }
+
+    #if DEBUG
+    @Test("Debug failure simulation creates a transient failed game")
+    func debugFailureSimulation() {
+        let vm = makeViewModel("CASTLE")
+
+        vm.debugSimulateFailure()
+
+        #expect(vm.isFailed == true)
+        #expect(vm.isWon == false)
+        #expect(vm.didComplete == true)
+        #expect(vm.guessCount == vm.maxGuesses)
+        #expect(vm.progress.guesses.contains("CASTLE") == false)
+    }
+    #endif
 
     // MARK: - Input Validation
 

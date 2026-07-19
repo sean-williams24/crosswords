@@ -4,6 +4,7 @@ struct BackwordCompletionDisplayState: Equatable {
     enum TitleStyle {
         case solved
         case finished
+        case failed
     }
 
     let title: String?
@@ -27,6 +28,15 @@ struct BackwordCompletionDisplayState: Equatable {
 
         guard let progress, let completedAt = progress.completedAt else {
             return solved
+        }
+
+        if progress.isFailed {
+            return BackwordCompletionDisplayState(
+                title: "Failed",
+                titleStyle: .failed,
+                showsStats: true,
+                message: nil
+            )
         }
 
         guard progress.isWon,

@@ -6,6 +6,7 @@ struct BackwordLetterCell: View {
     var isCursor: Bool = false
     var isNew: Bool = false
     var isCorrect: Bool = false
+    var isFailed: Bool = false
     var isCelebrating: Bool = false
     var size: CGFloat = 44
 
@@ -52,6 +53,7 @@ struct BackwordLetterCell: View {
     }
 
     private var cellBackground: Color {
+        if isFailed { return .appGaveUp.opacity(0.15) }
         if isCorrect { return .appCorrect.opacity(0.15) }
         if flashed { return .appAccent.opacity(0.25) }
         if letter != nil || inputLetter != nil { return .appSurface }
@@ -59,6 +61,7 @@ struct BackwordLetterCell: View {
     }
 
     private var staticBorderColor: Color {
+        if isFailed { return .appGaveUp.opacity(0.75) }
         if isCelebrating { return .appAccent }
         if isCorrect { return .appCorrect.opacity(0.6) }
         if flashed { return .appAccent }

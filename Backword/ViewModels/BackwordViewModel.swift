@@ -106,6 +106,23 @@ final class BackwordViewModel: ObservableObject {
         return .appTextPrimary
     }
 
+    #if DEBUG
+    /// Moves the current game into a transient failed state so the failure
+    /// completion experience can be exercised without changing saved progress or stats.
+    func debugSimulateFailure() {
+        guard !progress.isComplete else { return }
+
+        let target = word.word.uppercased()
+        let mockGuesses = ["PLANET", "STREAM", "BRIDGE", "MARKET", "SILVER", "GARDEN"]
+            .filter { $0 != target }
+
+        progress.guesses = Array(mockGuesses.prefix(maxGuesses))
+        progress.wonFlag = false
+        didComplete = true
+        progress.completedAt = Date()
+    }
+    #endif
+
     // MARK: - Submit Guess
 
     func submitGuess() {
@@ -142,6 +159,7 @@ final class BackwordViewModel: ObservableObject {
             OverallRatingService().recordBackword(guessCount: progress.guesses.count, date: word.date)
         } else if progress.guesses.count >= maxGuesses {
             progress.wonFlag = false
+            didComplete = true
             progress.completedAt = Date()
             progress.save()
             stats.record(guessCount: nil, date: word.date)

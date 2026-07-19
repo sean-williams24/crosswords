@@ -46,6 +46,24 @@ struct BackwordCompletionDisplayStateTests {
         #expect(state.message == "Complete Backword on its release date to earn maximum points.")
     }
 
+    @Test("Failed Backword shows failed stats")
+    func failedBackwordShowsFailedStats() throws {
+        var failedProgress = BackwordProgress(date: "2026-05-10")
+        failedProgress.guesses = ["BRIDGX", "FXASXE", "MAXXXX", "PUZZLE", "CASTER"]
+        failedProgress.completedAt = try date("2026-05-10T10:00:00Z")
+
+        let state = BackwordCompletionDisplayState.make(
+            progress: failedProgress,
+            isCompletion: true,
+            calendar: { calendar(for: $0) }
+        )
+
+        #expect(state.title == "Failed")
+        #expect(state.titleStyle == .failed)
+        #expect(state.showsStats)
+        #expect(state.message == nil)
+    }
+
     private func progress(date: String, completedAt: Date) -> BackwordProgress {
         var progress = BackwordProgress(date: date)
         progress.guesses = ["CASTLE"]

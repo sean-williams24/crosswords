@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BackwordCompletionWordView: View {
     let word: String
+    var isFailed = false
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -26,8 +27,9 @@ struct BackwordCompletionWordView: View {
 
                 BackwordLetterCell(
                     letter: isRevealed ? letter : nil,
-                    isCorrect: isRevealed,
-                    isCelebrating: isRevealed && celebrates,
+                    isCorrect: isRevealed && !isFailed,
+                    isFailed: isRevealed && isFailed,
+                    isCelebrating: isRevealed && celebrates && !isFailed,
                     size: cellSize
                 )
             }
@@ -35,7 +37,8 @@ struct BackwordCompletionWordView: View {
         .scaleEffect(celebrates ? 1.08 : 1)
         .offset(y: celebrates ? -6 : 0)
         .shadow(
-            color: Color.appAccent.opacity(celebrates ? 0.45 : 0),
+            color: (isFailed ? Color.appGaveUp : Color.appAccent)
+                .opacity(celebrates ? 0.45 : 0),
             radius: celebrates ? 14 : 0
         )
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)

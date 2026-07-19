@@ -18,11 +18,15 @@ struct BackwordCompletionPresentationTests {
         #expect(BackwordCompletionAnimation.revealedIndices(letterCount: 0, revealStep: 1) == [])
     }
 
-    @Test("Completion guess summary handles solved and finished wording")
-    func completionGuessSummaryHandlesSolvedAndFinishedWording() {
-        #expect(BackwordCompletionText.guessSummary(guessCount: 1, titleStyle: .solved) == "Solved in 1 guess")
-        #expect(BackwordCompletionText.guessSummary(guessCount: 3, titleStyle: .solved) == "Solved in 3 guesses")
-        #expect(BackwordCompletionText.guessSummary(guessCount: 2, titleStyle: .finished) == "Finished in 2 guesses")
+    @Test("Completion guess summary handles singular and plural wording")
+    func completionGuessSummaryHandlesSingularAndPluralWording() {
+        #expect(BackwordCompletionText.summary(guessCount: 1, isFailed: false) == "... in 1 guess")
+        #expect(BackwordCompletionText.summary(guessCount: 3, isFailed: false) == "... in 3 guesses")
+    }
+
+    @Test("Failed completion introduces the answer")
+    func failedCompletionIntroducesTheAnswer() {
+        #expect(BackwordCompletionText.summary(guessCount: 5, isFailed: true) == "The answer was...")
     }
 
     @Test("Countdown formats hours minutes and seconds")
