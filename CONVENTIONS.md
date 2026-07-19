@@ -8,8 +8,15 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 ### Daily crossword (9×9)
 
-- **Grid:** 9×9, ~15 clues, `is_free: true`
+- **Grid:** 9×9, 18–22 clues, `is_free: true`
 - **Generator:** `Backend/generate_puzzle.py`
+- **Answer lengths:** the 12 eligible layouts contain at most four 3-letter
+  slots and at least six slots of 5+ letters. Nine layouts include 7- or
+  8-letter answers; eight letters is the daily maximum.
+- **Layout rotation:** layouts are filtered before the solver runs, so the 13
+  retained legacy layouts that fail the length profile are never attempted.
+  A generation batch uses every eligible layout once before starting a new
+  cycle, which prevents repeats in the normal seven-puzzle workflow run.
 - **Clue selection:** uses `text` as the main clue; picks randomly from `clues[]` as the in-game hint (falls back to `hint` if `clues` is empty).
 - **Scheduling:** generated weekly in batches of 7 via the `generate-puzzles` GitHub Actions workflow.
 

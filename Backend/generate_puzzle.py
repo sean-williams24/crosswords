@@ -25,7 +25,15 @@ from datetime import date, timedelta
 from pathlib import Path
 
 GRID_SIZE = 9
-TARGET_CLUES = 15
+TARGET_CLUES = 20
+MAX_THREE_LETTER_SLOTS = 4
+MIN_LONG_WORD_LENGTH = 5
+MIN_LONG_WORD_SLOTS = 6
+MAX_DAILY_WORD_LENGTH = 8
+MIN_DAILY_CLUES = 18
+MAX_DAILY_CLUES = 22
+TARGET_DAILY_TEMPLATE_COUNT = 12
+LEGACY_TEMPLATE_COUNT = 16
 
 # ── Grid Templates ──────────────────────────────────────────────────────────
 # Each template is a 9×9 grid. True = white (letter), False = black square.
@@ -40,7 +48,9 @@ def _t(s: str) -> list[list[bool]]:
 
 
 # All templates have 180° rotational symmetry. No 2-cell runs.
-# Every run is length 1 (part of perpendicular word only) or ≥ 3 (word slot, max 6).
+# Every run is length 1 (part of a perpendicular word only) or ≥ 3.
+# The first 16 legacy layouts have a maximum answer length of 6. The final 9
+# layouts add 7- and 8-letter answers.
 TEMPLATES = [
     _t("""
         #.....##.
@@ -218,6 +228,114 @@ TEMPLATES = [
         ....#.#.#
         #.#......
     """),
+    # Long-word template 0 — 21 slots, lengths 3:4, 4:6, 5:4, 6:4, 7:1, 8:2
+    _t("""
+        ###.....#
+        ....#....
+        ##......#
+        ...##....
+        #.......#
+        ....##...
+        #......##
+        ....#....
+        #.....###
+    """),
+    # Long-word template 1 — 18 slots, lengths 3:4, 4:4, 5:5, 6:2, 7:3
+    _t("""
+        ....#...#
+        ##.#.#.#.
+        .#.......
+        .##....#.
+        .#.....#.
+        .#....##.
+        .......#.
+        .#.#.#.##
+        #...#....
+    """),
+    # Long-word template 2 — 19 slots, lengths 3:4, 4:6, 5:3, 6:2, 7:2, 8:2
+    _t("""
+        ##....#.#
+        .#.##...#
+        .#.......
+        ...##....
+        .#.....#.
+        ....##...
+        .......#.
+        #...##.#.
+        #.#....##
+    """),
+    # Long-word template 3 — 18 slots, lengths 3:4, 4:4, 5:5, 6:2, 7:1, 8:2
+    _t("""
+        ......##.
+        .#.###.#.
+        .....#...
+        ##.....#.
+        #.......#
+        .#.....##
+        ...#.....
+        .#.###.#.
+        .##......
+    """),
+    # Long-word template 4 — 19 slots, lengths 3:4, 4:6, 5:4, 7:1, 8:4
+    _t("""
+        #.#.##.#.
+        .....#...
+        .....#.#.
+        ........#
+        .#.#.#.#.
+        #........
+        .#.#.....
+        ...#.....
+        .#.##.#.#
+    """),
+    # Long-word template 5 — 21 slots, lengths 3:4, 4:8, 5:5, 7:2, 8:2
+    _t("""
+        #.....##.
+        ....##.#.
+        .......#.
+        ....##...
+        ##.....##
+        ...##....
+        .#.......
+        .#.##....
+        .##.....#
+    """),
+    # Long-word template 6 — 18 slots, lengths 3:4, 4:6, 5:6, 7:2
+    _t("""
+        .....#.##
+        ####.#.##
+        ...#.....
+        ##.....#.
+        ....#....
+        .#.....##
+        .....#...
+        ##.#.####
+        ##.#.....
+    """),
+    # Long-word template 7 — 18 slots, lengths 3:4, 4:6, 5:4, 8:4
+    _t("""
+        .....##.#
+        ##.#.#...
+        ........#
+        .#.#.#...
+        ....#....
+        ...#.#.#.
+        #........
+        ...#.#.##
+        #.##.....
+    """),
+    # Long-word template 8 — 21 slots, lengths 3:4, 4:10, 5:3, 7:4
+    _t("""
+        ....#....
+        #...##.#.
+        .......#.
+        .....###.
+        .###.###.
+        .###.....
+        .#.......
+        .#.##...#
+        ....#....
+    """),
 ]
 
 
@@ -296,6 +414,32 @@ def extract_slots(template: list[list[bool]]) -> list[Slot]:
                 r += 1
 
     return slots
+
+
+def daily_template_indices() -> list[int]:
+    """Return layouts that keep short fill from dominating daily puzzles."""
+    eligible = []
+    for index, template in enumerate(TEMPLATES):
+        slots = extract_slots(template)
+        three_letter_count = sum(slot.length == 3 for slot in slots)
+        long_word_count = sum(slot.length >= MIN_LONG_WORD_LENGTH for slot in slots)
+        max_word_length = max(slot.length for slot in slots)
+        if (
+            three_letter_count <= MAX_THREE_LETTER_SLOTS
+            and long_word_count >= MIN_LONG_WORD_SLOTS
+            and max_word_length <= MAX_DAILY_WORD_LENGTH
+            and MIN_DAILY_CLUES <= len(slots) <= MAX_DAILY_CLUES
+        ):
+            eligible.append(index)
+    return eligible
+
+
+def template_exclusions_for_next_puzzle(used_template_indices: set[int]) -> set[int]:
+    """Reset layout exclusions after every eligible layout has been used."""
+    eligible = set(daily_template_indices())
+    if eligible and eligible.issubset(used_template_indices):
+        return set()
+    return used_template_indices & eligible
 
 
 # ── Constraint-Satisfaction Solver ──────────────────────────────────────────
@@ -551,12 +695,22 @@ def assemble_raw(
     return {"grid": grid, "words": words}
 
 
-def generate_puzzle(word_bank: dict[int, list[dict]], seed: int | None = None) -> dict | None:
+def generate_puzzle(
+    word_bank: dict[int, list[dict]],
+    seed: int | None = None,
+    excluded_template_indices: set[int] | None = None,
+) -> dict | None:
     """Generate a single puzzle. Returns raw dict or None on failure."""
     rng = random.Random(seed)
 
-    # Try templates in shuffled order, with multiple attempts per template
-    template_indices = list(range(len(TEMPLATES)))
+    # Short answers make the daily puzzle noticeably easier. Only use layouts
+    # whose structure caps the number of three-letter slots, while retaining
+    # longer entries. Batch generation also excludes layouts already used in
+    # the current cycle.
+    excluded = excluded_template_indices or set()
+    template_indices = [
+        index for index in daily_template_indices() if index not in excluded
+    ]
     rng.shuffle(template_indices)
 
     for ti in template_indices:
@@ -575,7 +729,9 @@ def generate_puzzle(word_bank: dict[int, list[dict]], seed: int | None = None) -
             solution = solve_grid(slots, word_bank, sub_rng)
             if solution:
                 print("SUCCESS")
-                return assemble_raw(template, solution, sub_rng)
+                raw = assemble_raw(template, solution, sub_rng)
+                raw["_template_index"] = ti
+                return raw
             else:
                 print("failed")
 
@@ -788,6 +944,7 @@ def main():
 
     generated = 0
     batch_used: set[str] = set()
+    batch_used_template_indices: set[int] = set()
     for i in range(args.count):
         puzzle_number = args.start_number + i
         puzzle_date = (start_date + timedelta(days=i)).isoformat()
@@ -801,10 +958,19 @@ def main():
         else:
             current_bank = word_bank
 
-        raw = generate_puzzle(current_bank, seed=seed)
+        batch_used_template_indices = template_exclusions_for_next_puzzle(
+            batch_used_template_indices
+        )
+        raw = generate_puzzle(
+            current_bank,
+            seed=seed,
+            excluded_template_indices=batch_used_template_indices,
+        )
         if raw is None:
             print("  Generation failed: could not fill grid")
             continue
+
+        batch_used_template_indices.add(raw["_template_index"])
 
         if not validate_puzzle(raw):
             print("  Validation failed, skipping.")
