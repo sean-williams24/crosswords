@@ -3,6 +3,7 @@
 import SwiftUI
 
 struct BackwordArchiveRow: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
     @State private var showBackword = false
@@ -11,29 +12,16 @@ struct BackwordArchiveRow: View {
     let word: BackwordWord
 
     var body: some View {
-        let progress = BackwordProgress.load(date: word.date)
-        let content = BackwordArchiveRowContent(word: word)
-
         Button {
             showBackword = true
         } label: {
-            ViewThatFits {
-                HStack(spacing: 16) {
-                    ArchiveDetails(content: content)
-                    Spacer()
-                    StatusLabelView(status: .status(for: progress, puzzleDate: word.date))
-                }
-                VStack(alignment: .leading) {
-                    ArchiveDetails(content: content)
-                    StatusLabelView(status: .status(for: progress, puzzleDate: word.date))
-                }
-            }
-            .frame(minHeight: 50)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 14)
-            .background(Color.appSurface)
-            .cornerRadius(AppLayout.cardCornerRadius)
+            dynamicContent
+                .frame(minHeight: 50)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 14)
+                .background(Color.appSurface)
+                .cornerRadius(AppLayout.cardCornerRadius)
         }
         .buttonStyle(.plain)
         .navigationDestination(isPresented: $showBackword) {
@@ -50,6 +38,25 @@ struct BackwordArchiveRow: View {
             guard let changedDate = notification.userInfo?[BackwordProgress.changedDateUserInfoKey] as? String,
                   changedDate == word.date else { return }
             refreshProgress()
+        }
+    }
+
+    @ViewBuilder
+    private var dynamicContent: some View {
+        let progress = BackwordProgress.load(date: word.date)
+        let content = BackwordArchiveRowContent(word: word)
+
+        if dynamicTypeSize > .xxxLarge {
+            VStack(alignment: .leading) {
+                ArchiveDetails(content: content)
+                StatusLabelView(status: .status(for: progress, puzzleDate: word.date))
+            }
+        } else {
+            HStack(spacing: 16) {
+                ArchiveDetails(content: content)
+                Spacer()
+                StatusLabelView(status: .status(for: progress, puzzleDate: word.date))
+            }
         }
     }
 
