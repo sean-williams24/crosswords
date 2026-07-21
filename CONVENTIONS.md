@@ -255,6 +255,50 @@ python3 Backend/fix_duplicate_clues.py validate
 
 `export-quality` intentionally produces a broad, ignored candidate file for chat review. The retained replacement report includes original-value preconditions and a hash of the source word bank; applying it fails closed if either has changed. Hint text is copied into the active field and remains unchanged in `hint`.
 
+### Daily main-clue difficulty audit
+
+`Backend/audit_easy_daily_clues.py` manages the review-first cleanup of overly
+easy daily `text` clues. Its scope exactly matches the daily generator: non-empty
+`text` fields whose stored answers are 3–8 characters long. Longer weekly-only
+answers and every other clue field are excluded.
+
+The audit and replacement clues are authored through the Codex chat, not by a
+backend API call. The tool only exports batches, records chat decisions, runs
+the canonical leakage/redundancy/inflection checks, and applies a fully approved
+replacement set. `word_bank.json` must remain unchanged until every confirmed
+replacement has an accepted proposal. Audit and proposal artifacts store the
+source bank hash plus exact index/word/current-value preconditions and fail
+closed when stale.
+
+If an intentional source commit removes exactly one bank entry during an
+unfinished review, `rebase-removed-entry` can migrate later report indexes. It
+requires the exact pre-change bank, verifies that deletion is the only semantic
+change, refuses to remove an entry referenced by a proposal, and validates both
+rebased reports before writing them.
+
+After recording the human calibration batches, `triage-local` can apply the
+chat-calibrated first pass across the remaining bank. It uses only explainable
+local signals (word frequency, clue directness and length, specialist wording,
+and dual meanings), never a network model. Scores in its deliberately narrow
+uncertain band remain `borderline` for an independent chat review.
+
+```bash
+python3 Backend/audit_easy_daily_clues.py init
+python3 Backend/audit_easy_daily_clues.py export-classification-batch --limit 100
+python3 Backend/audit_easy_daily_clues.py record-classifications decisions.json
+python3 Backend/audit_easy_daily_clues.py triage-local
+python3 Backend/audit_easy_daily_clues.py export-classification-batch --second-pass
+python3 Backend/audit_easy_daily_clues.py export-proposal-batch --limit 20
+python3 Backend/audit_easy_daily_clues.py record-proposals proposals.json
+python3 Backend/audit_easy_daily_clues.py rebase-removed-entry --old-bank old.json --removed-index 5136
+python3 Backend/audit_easy_daily_clues.py validate
+python3 Backend/audit_easy_daily_clues.py apply
+```
+
+The full audit report is a local checkpoint and is ignored by Git. The smaller
+reviewed replacement report may be retained with the other word-bank repair
+artifacts.
+
 ### Inflection review workflow
 
 Clues should resolve to the exact stored answer form: tense, number, inflection, and part of speech should match the `word` value. Review suspected mismatches with:
