@@ -49,7 +49,10 @@ struct BackwordArchiveRow: View {
         if dynamicTypeSize > .xxxLarge {
             VStack(alignment: .leading) {
                 ArchiveDetails(content: content)
-                StatusLabelView(status: .status(for: progress, puzzleDate: word.date))
+                HStack {
+                    Spacer()
+                    StatusLabelView(status: .status(for: progress, puzzleDate: word.date))
+                }
             }
         } else {
             HStack(spacing: 16) {

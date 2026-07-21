@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ArchivePuzzleRow: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let puzzle: Puzzle
     let isWeekly: Bool
     let onTap: () -> Void
@@ -10,18 +11,11 @@ struct ArchivePuzzleRow: View {
 
         Button(action: onTap) {
             VStack(spacing: 0) {
-                ViewThatFits {
-                    HStack(spacing: 16) {
-                        rowContent
-                    }
-                    VStack(alignment: .leading) {
-                        rowContent
-                    }
-                }
-                .frame(minHeight: 50)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 14)
+                dynamicContent
+                    .frame(minHeight: 50)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 14)
 
                 if fraction > 0 {
                     GeometryReader { geo in
@@ -41,11 +35,24 @@ struct ArchivePuzzleRow: View {
         .buttonStyle(.plain)
     }
 
+    @ViewBuilder
+    private var dynamicContent: some View {
+        if dynamicTypeSize > .xxxLarge {
+            VStack(alignment: .leading) {
+                rowContent
+            }
+        } else {
+            HStack(spacing: 16) {
+                rowContent
+            }
+        }
+    }
+
     private var rowContent: some View {
         Group {
             VStack(alignment: .leading, spacing: 2) {
                 Text(ArchivePuzzleRowContent.puzzleNumber(puzzle.puzzleNumber))
-                    .font(AppFont.clueLabel(12))
+                    .font(AppFont.clueLabel(16))
                     .foregroundColor(.appAccent)
 
                 Text(formattedDate(puzzle.date))
@@ -60,9 +67,10 @@ struct ArchivePuzzleRow: View {
                 }
             }
 
-            Spacer()
-
-            StatusLabelView(status: .status(for: archiveEntry, isWeekly: isWeekly))
+            HStack {
+                Spacer()
+                StatusLabelView(status: .status(for: archiveEntry, isWeekly: isWeekly))
+            }
         }
     }
 
