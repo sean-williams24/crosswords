@@ -11,18 +11,19 @@ struct BackwordArchiveRow: View {
 
     var body: some View {
         let progress = BackwordProgress.load(date: word.date)
+        let content = BackwordArchiveRowContent(word: word)
 
         Button {
             showBackword = true
         } label: {
             ViewThatFits {
                 HStack(spacing: 16) {
-                    DateSection(date: word.date)
+                    ArchiveDetails(content: content)
                     Spacer()
                     StatusLabelView(status: .status(for: progress))
                 }
                 VStack(alignment: .leading) {
-                    DateSection(date: word.date)
+                    ArchiveDetails(content: content)
                     StatusLabelView(status: .status(for: progress))
                 }
             }
@@ -44,16 +45,20 @@ struct BackwordArchiveRow: View {
 
 // MARK: - Extracted Subviews
 
-private struct DateSection: View {
-    let date: String
+private struct ArchiveDetails: View {
+    let content: BackwordArchiveRowContent
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(formattedDate(date))
+            Text(content.clue.uppercased())
+                .font(AppFont.clueLabel(12))
+                .foregroundColor(.appAccent)
+
+            Text(content.formattedDate)
                 .font(AppFont.body())
                 .foregroundColor(.appTextPrimary)
 
-            if isToday(date) {
+            if content.isToday {
                 Text("TODAY")
                     .font(AppFont.clueLabel(10))
                     .foregroundColor(.appAccent)
@@ -63,18 +68,27 @@ private struct DateSection: View {
     }
 }
 
-private func formattedDate(_ dateString: String) -> String {
-    let inputFmt = DateFormatter()
-    inputFmt.dateFormat = "yyyy-MM-dd"
-    guard let date = inputFmt.date(from: dateString) else { return dateString }
+struct BackwordArchiveRowContent: Equatable {
+    let clue: String
+    let formattedDate: String
+    let isToday: Bool
 
-    let outputFmt = DateFormatter()
-    outputFmt.dateFormat = "EEEE, MMM d"
-    return outputFmt.string(from: date)
-}
+    init(word: BackwordWord, today: String = ContentReleaseCalendar().dailyDateString) {
+        clue = word.clue
+        formattedDate = Self.formatDate(word.date)
+        isToday = word.date == today
+    }
 
-private func isToday(_ dateString: String) -> Bool {
-    dateString == ContentReleaseCalendar().dailyDateString
+    private static func formatDate(_ dateString: String) -> String {
+        let inputFmt = DateFormatter()
+        inputFmt.dateFormat = "yyyy-MM-dd"
+        guard let date = inputFmt.date(from: dateString) else { return dateString }
+
+        let outputFmt = DateFormatter()
+        outputFmt.dateFormat = "EEEE, MMM d"
+        return outputFmt.string(from: date)
+    }
+
 }
 
 

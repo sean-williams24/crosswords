@@ -44,6 +44,10 @@ struct ArchivePuzzleRow: View {
     private var rowContent: some View {
         Group {
             VStack(alignment: .leading, spacing: 2) {
+                Text(ArchivePuzzleRowContent.puzzleNumber(puzzle.puzzleNumber))
+                    .font(AppFont.clueLabel(12))
+                    .foregroundColor(.appAccent)
+
                 Text(formattedDate(puzzle.date))
                     .font(AppFont.body())
                     .foregroundColor(.appTextPrimary)
@@ -95,6 +99,12 @@ struct ArchivePuzzleRow: View {
 
     private func isToday(_ dateString: String) -> Bool {
         dateString == ContentReleaseCalendar().dailyDateString
+    }
+}
+
+enum ArchivePuzzleRowContent {
+    static func puzzleNumber(_ number: Int) -> String {
+        "# \(number)"
     }
 }
 
