@@ -137,12 +137,13 @@ final class BackwordViewModel: ObservableObject {
             return
         }
 
-        // Always accept the target word; otherwise validate against system dictionary
-        let isTarget = guess == word.word.uppercased()
-        if !isTarget && !wordValidator(guess) {
-            triggerInvalidWord()
-            return
-        }
+        // Temporarily allow any six-letter guess. Keep the validation logic here so
+        // it can be restored when legitimate-word enforcement is re-enabled.
+//        let isTarget = guess == word.word.uppercased()
+//        if !isTarget && !wordValidator(guess) {
+//            triggerInvalidWord()
+//            return
+//        }
 
         let prevRevealed = revealedIndices
         progress.guesses.append(guess)

@@ -338,49 +338,15 @@ struct BackwordViewModelTests {
 
     // MARK: - Word Validation
 
-    @Test("Invalid word is rejected and guess not consumed")
-    func invalidWordRejected() async throws {
+    @Test("Any guess is accepted while word validation is disabled")
+    func arbitraryGuessAccepted() async throws {
         let vm = makeViewModel("CASTLE")
         vm.wordValidator = { _ in false }
-        vm.currentInput = "ABCDE"  // 5 chars for unrevealed [0,1,2,3,4]
-        vm.submitGuess()
-
-        #expect(vm.guessCount == 0)
-        #expect(vm.invalidWordMessage != nil)
-    }
-
-    @Test("Valid word is accepted")
-    func validWordAccepted() async throws {
-        let vm = makeViewModel("CASTLE")
-        vm.wordValidator = { _ in true }
-        vm.currentInput = "ABCDE"  // 5 chars for unrevealed [0,1,2,3,4]
-        vm.submitGuess()
-
-        #expect(vm.guessCount == 1)
-        #expect(vm.invalidWordMessage == nil)
-    }
-
-    @Test("Target word always accepted even if validator rejects it")
-    func targetWordAlwaysAccepted() async throws {
-        let vm = makeViewModel("CASTLE")
-        vm.wordValidator = { _ in false }
-        // Unrevealed [0,1,2,3,4] for CASTLE with E(5) revealed: type C,A,S,T,L
-        vm.currentInput = "CASTL"
-        vm.submitGuess()
-
-        #expect(vm.guessCount == 1)
-        #expect(vm.isWon == true)
-    }
-
-    @Test("Invalid word does not reveal next letter")
-    func invalidWordDoesNotRevealLetter() async throws {
-        let vm = makeViewModel("CASTLE")
-        vm.wordValidator = { _ in false }
-        let revealedBefore = vm.progress.revealedCount
         vm.currentInput = "XYZQB"  // 5 chars for unrevealed [0,1,2,3,4]
         vm.submitGuess()
 
-        #expect(vm.progress.revealedCount == revealedBefore)
-        #expect(vm.guessCount == 0)
+        #expect(vm.guessCount == 1)
+        #expect(vm.progress.guesses == ["XYZQBE"])
+        #expect(vm.invalidWordMessage == nil)
     }
 }
