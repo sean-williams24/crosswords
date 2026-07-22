@@ -15,6 +15,13 @@ struct BackwordViewModelTests {
         return BackwordViewModel(word: word, progress: BackwordProgress(date: word.date))
     }
 
+    private func withIsolatedSettings(_ assertions: (AppSettings) -> Void) {
+        let suiteName = "BackwordViewModelTests-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        assertions(AppSettings(userDefaults: defaults))
+    }
+
     // MARK: - Initial State
 
     @Test("Initial state reveals only the last letter")
@@ -36,6 +43,84 @@ struct BackwordViewModelTests {
         let vm = makeViewModel()
         #expect(vm.guessCount == 0)
         #expect(vm.isComplete == false)
+    }
+
+    @Test("New player receives onboarding instead of a rules update")
+    func newPlayerReceivesOnboarding() {
+        withIsolatedSettings { settings in
+            #expect(settings.automaticBackwordInstructionsPresentation == .onboarding)
+        }
+    }
+
+    @Test("Dismissing onboarding records onboarding and the current rules version")
+    func dismissingOnboardingRecordsCurrentRules() {
+        withIsolatedSettings { settings in
+            settings.markBackwordInstructionsSeen(.onboarding)
+
+            #expect(settings.hasSeenBackwordOnboarding)
+            #expect(settings.lastSeenBackwordRulesVersion == AppSettings.currentBackwordRulesVersion)
+            #expect(settings.automaticBackwordInstructionsPresentation == nil)
+        }
+    }
+
+    @Test("Returning player with legacy rules receives the update")
+    func returningPlayerReceivesRulesUpdate() {
+        withIsolatedSettings { settings in
+            settings.hasSeenBackwordOnboarding = true
+            settings.lastSeenBackwordRulesVersion = 0
+
+            #expect(settings.automaticBackwordInstructionsPresentation == .rulesUpdate)
+        }
+    }
+
+    @Test("Dismissing the rules update prevents it appearing again")
+    func dismissingRulesUpdateRecordsCurrentVersion() {
+        withIsolatedSettings { settings in
+            settings.hasSeenBackwordOnboarding = true
+
+            settings.markBackwordInstructionsSeen(.rulesUpdate)
+
+            #expect(settings.lastSeenBackwordRulesVersion == AppSettings.currentBackwordRulesVersion)
+            #expect(settings.automaticBackwordInstructionsPresentation == nil)
+        }
+    }
+
+    @Test("Opening instructions manually does not change announcement state")
+    func manualInstructionsDoNotChangeAnnouncementState() {
+        withIsolatedSettings { settings in
+            settings.hasSeenBackwordOnboarding = true
+            settings.lastSeenBackwordRulesVersion = 0
+
+            settings.markBackwordInstructionsSeen(.manual)
+
+            #expect(settings.automaticBackwordInstructionsPresentation == .rulesUpdate)
+        }
+    }
+
+    @Test("Resetting Backword onboarding clears the rules version")
+    func resettingOnboardingClearsRulesVersion() {
+        withIsolatedSettings { settings in
+            settings.markBackwordInstructionsSeen(.onboarding)
+
+            settings.resetBackwordOnboarding()
+
+            #expect(settings.hasSeenBackwordOnboarding == false)
+            #expect(settings.lastSeenBackwordRulesVersion == 0)
+            #expect(settings.automaticBackwordInstructionsPresentation == .onboarding)
+        }
+    }
+
+    @Test("Resetting the rules notice reproduces the returning-player update")
+    func resettingRulesNoticeReplaysUpdate() {
+        withIsolatedSettings { settings in
+            settings.markBackwordInstructionsSeen(.onboarding)
+
+            settings.resetBackwordRulesNotice()
+
+            #expect(settings.hasSeenBackwordOnboarding)
+            #expect(settings.lastSeenBackwordRulesVersion == 0)
+            #expect(settings.automaticBackwordInstructionsPresentation == .rulesUpdate)
+        }
     }
 
     @Test("Guess history identifies the connected correct suffix")

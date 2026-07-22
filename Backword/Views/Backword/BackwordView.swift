@@ -9,6 +9,7 @@ struct BackwordView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @State private var showInstructions = false
+    @State private var instructionsPresentation: BackwordInstructionsPresentation?
     @State private var showStats = false
     @State private var pulses = false
     @State private var selectedFailureMessage: String = ""
@@ -93,7 +94,7 @@ struct BackwordView: View {
         .enableSwipeBack()
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            showInstructionsOnFirstLaunch()
+            showAutomaticInstructionsIfNeeded()
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
         .animation(.easeInOut(duration: 0.3), value: viewModel.invalidWordMessage != nil)
@@ -124,6 +125,12 @@ struct BackwordView: View {
                 completionWord: viewModel.word.word
             )
         }
+        .sheet(
+            isPresented: $showInstructions,
+            onDismiss: instructionsDidDismiss
+        ) {
+            instructionsSheet
+        }
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
     }
@@ -136,9 +143,18 @@ struct BackwordView: View {
         AppLayout(sizeClass: sizeClass)
     }
 
-    private func showInstructionsOnFirstLaunch() {
-        guard viewModel.showOnboarding else { return }
+    private func showAutomaticInstructionsIfNeeded() {
+        guard !showInstructions,
+              instructionsPresentation == nil,
+              let presentation = viewModel.automaticInstructionsPresentation else { return }
+        instructionsPresentation = presentation
         showInstructions = true
+    }
+
+    private func instructionsDidDismiss() {
+        guard let presentation = instructionsPresentation else { return }
+        viewModel.markInstructionsSeen(presentation)
+        instructionsPresentation = nil
     }
 
     // MARK: - Nav Bar
@@ -191,6 +207,7 @@ struct BackwordView: View {
                     }
 
                     Button {
+                        instructionsPresentation = .manual
                         showInstructions = true
                     } label: {
                         Image(systemName: "info.circle")
@@ -200,12 +217,6 @@ struct BackwordView: View {
                             .padding(.vertical, 8)
                     }
                     .popoverTip(BackwordInstructionsTip())
-                    .sheet(isPresented: $showInstructions) {
-                        viewModel.hasSeenOnboarding()
-                        BackwordInstructionsTip.actionCompleted = true
-                    } content: {
-                        instructionsSheet
-                    }
 
                 }
             }
@@ -217,7 +228,9 @@ struct BackwordView: View {
 
     private var instructionsSheet: some View {
         NavigationStack {
-            BackwordInstructionsContentView()
+            BackwordInstructionsContentView(
+                showsRulesUpdateNotice: instructionsPresentation == .rulesUpdate
+            )
                 .navigationTitle("How to Play")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
@@ -235,6 +248,9 @@ struct BackwordView: View {
         }
         .presentationDetents([.fraction(0.85)])
         .presentationDragIndicator(.visible)
+        .onDisappear {
+            BackwordInstructionsTip.actionCompleted = true
+        }
     }
 
     // MARK: - Letter Row

@@ -216,11 +216,18 @@ struct DebugSettingsView: View {
                     Button(role: .destructive) {
                         showOnboardingResetConfirmation = true
                     } label: {
-                        Label("Reset onboarding flags", systemImage: "trash")
+                        Label("Reset first-time onboarding", systemImage: "trash")
+                    }
+
+                    Button {
+                        settings.resetBackwordRulesNotice()
+                        dismiss()
+                    } label: {
+                        Label("Replay Backword rules update", systemImage: "arrow.counterclockwise")
                     }
                 }
                 confirmationDialog(
-                    "Reset onboarding flags?",
+                    "Reset first-time onboarding?",
                     isPresented: $showOnboardingResetConfirmation,
                     titleVisibility: .visible
                 ) {
@@ -229,12 +236,12 @@ struct DebugSettingsView: View {
                         try? Tips.configure([
                             .datastoreLocation(.applicationDefault)
                         ])
-                        settings.hasSeenBackwordOnboarding = false
+                        settings.resetBackwordOnboarding()
                         dismiss()
                     }
                     Button("Cancel", role: .cancel) {}
                 } message: {
-                    Text("Onboarding tooltips and user defaults flags will be reset.")
+                    Text("Onboarding tooltips and the first-time Backword introduction will be reset.")
                 }
 
                 // MARK: - Cache

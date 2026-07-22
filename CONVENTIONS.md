@@ -98,6 +98,8 @@ Backword starts with only the final letter visible. After a wrong guess, reveal 
 
 Each row in the previous-guesses history independently highlights its correctly positioned suffix. Those connected cells use semantic correct green for the letter and the same semantic accent blue as the main cells for a stronger border; disconnected correct letters do not receive this progress highlight.
 
+Backword rule changes use an integer rules version stored separately from the app version. New players see the current rules through normal onboarding and record that version when onboarding is dismissed. Returning players whose stored version is older automatically receive a one-time `Rules Updated` callout in the How to Play sheet on their next Backword entry; the version is recorded only when that sheet is dismissed. Manually opening How to Play never changes announcement state. Debug settings keep first-time onboarding reset separate from replaying the returning-player rules update.
+
 ## Backword Completion Moment
 
 The completion sheet is presented after both wins and failures and receives the answer explicitly. Its title is `Solved!`, `Finished`, or `Failed`. Wins show an `... in N guesses` label directly above the cells; failures show `The answer was...`. A late `Finished` result shows the no-points message above the standard completed stats content. The cells reveal from right to left and perform a single whole-word bounce. Winning cells transition from correct green to accent blue during the glow; failed cells and their glow remain red. Reduce Motion skips the staged animation and shows the completed word immediately.

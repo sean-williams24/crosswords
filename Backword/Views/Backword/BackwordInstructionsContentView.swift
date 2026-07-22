@@ -3,12 +3,18 @@
 import SwiftUI
 
 struct BackwordInstructionsContentView: View {
+    var showsRulesUpdateNotice = false
+
     @ScaledMetric private var iconFrame: CGFloat = 20
     @ScaledMetric private var cellFrame: CGFloat = 36
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+                if showsRulesUpdateNotice {
+                    rulesUpdateNotice
+                }
+
                 VStack(alignment: .leading, spacing: 10) {
                     instructionRow(number: "1", text: "Guess the six-letter word, starting with the final letter revealed.")
                     instructionRow(number: "2", text: "Correctly placed letters only reveal when they form an unbroken chain from the end of the word.")
@@ -41,6 +47,44 @@ struct BackwordInstructionsContentView: View {
             .padding(20)
         }
         .background(Color.appBackground)
+    }
+
+    private var rulesUpdateNotice: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Label {
+                Text("Rules Updated")
+                    .font(AppFont.header(22))
+                    .foregroundColor(.appTextHeading)
+            } icon: {
+                Image(systemName: "sparkles")
+                    .foregroundColor(.appAccent)
+            }
+
+            updateRow("Guesses now reveal only correctly placed letters connected to the end. A guess may reveal nothing new.")
+            updateRow("After three unsuccessful guesses, the third letter reveals as an extra hint.")
+            updateRow("Previous guesses highlight the correctly placed ending.")
+        }
+        .padding(16)
+        .background(Color.appSurface)
+        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        .overlay {
+            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                .strokeBorder(Color.appAccent.opacity(0.6), lineWidth: 1.5)
+        }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+    }
+
+    private func updateRow(_ text: String) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "checkmark.circle.fill")
+                .foregroundColor(.appCorrect)
+                .frame(width: iconFrame, height: iconFrame)
+
+            Text(text)
+                .font(AppFont.body(14))
+                .foregroundColor(.appTextSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 
     private func instructionRow(number: String?, text: String) -> some View {

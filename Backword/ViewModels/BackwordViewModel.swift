@@ -13,10 +13,11 @@ final class BackwordViewModel: ObservableObject {
     @Published var inputError: Bool = false
     @Published var invalidWordMessage: String? = nil
 
-    private let settings = AppSettings.shared
+    private let settings: AppSettings
 
-    init(word: BackwordWord) {
+    init(word: BackwordWord, settings: AppSettings = .shared) {
         self.word = word
+        self.settings = settings
         self.stats = BackwordStats.load()
         let prog = BackwordProgress.load(date: word.date) ?? BackwordProgress(date: word.date)
         self.progress = prog
@@ -24,8 +25,9 @@ final class BackwordViewModel: ObservableObject {
     }
 
     /// Preview-only initialiser — injects a pre-built progress state.
-    init(word: BackwordWord, progress: BackwordProgress) {
+    init(word: BackwordWord, progress: BackwordProgress, settings: AppSettings = .shared) {
         self.word = word
+        self.settings = settings
         self.stats = BackwordStats.load()
         self.progress = progress
         self.clueRevealed = progress.clueRevealed
@@ -109,12 +111,12 @@ final class BackwordViewModel: ObservableObject {
         settings.backwordLetterFeedback
     }
 
-    var showOnboarding: Bool {
-        !settings.hasSeenBackwordOnboarding
+    var automaticInstructionsPresentation: BackwordInstructionsPresentation? {
+        settings.automaticBackwordInstructionsPresentation
     }
 
-    func hasSeenOnboarding() {
-        settings.hasSeenBackwordOnboarding = true
+    func markInstructionsSeen(_ presentation: BackwordInstructionsPresentation) {
+        settings.markBackwordInstructionsSeen(presentation)
     }
 
     var statsIconColour: Color {
