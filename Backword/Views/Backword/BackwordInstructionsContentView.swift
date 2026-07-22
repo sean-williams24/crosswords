@@ -60,9 +60,9 @@ struct BackwordInstructionsContentView: View {
                     .foregroundColor(.appAccent)
             }
 
-            updateRow("Guesses now reveal only correctly placed letters connected to the end. A guess may reveal nothing new.")
+            updateRow("Guesses now reveal only correctly placed letters connected to the end.")
             updateRow("After three unsuccessful guesses, the third letter reveals as an extra hint.")
-            updateRow("Previous guesses highlight the correctly placed ending.")
+            updateRow("A letter from the end is no longer revealed for an incorrect guess.")
         }
         .padding(16)
         .background(Color.appSurface)
