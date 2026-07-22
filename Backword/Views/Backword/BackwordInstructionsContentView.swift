@@ -12,7 +12,7 @@ struct BackwordInstructionsContentView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 if showsRulesUpdateNotice {
-                    rulesUpdateNotice
+                    BackwordRulesUpdateNotice()
                 }
 
                 VStack(alignment: .leading, spacing: 10) {
@@ -47,44 +47,6 @@ struct BackwordInstructionsContentView: View {
             .padding(20)
         }
         .background(Color.appBackground)
-    }
-
-    private var rulesUpdateNotice: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Label {
-                Text("Rules Updated")
-                    .font(AppFont.header(22))
-                    .foregroundColor(.appTextHeading)
-            } icon: {
-                Image(systemName: "sparkles")
-                    .foregroundColor(.appAccent)
-            }
-
-            updateRow("Guesses now reveal only correctly placed letters connected to the end.")
-            updateRow("After three unsuccessful guesses, the third letter reveals as an extra hint.")
-            updateRow("A letter from the end is no longer revealed for an incorrect guess.")
-        }
-        .padding(16)
-        .background(Color.appSurface)
-        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
-        .overlay {
-            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .strokeBorder(Color.appAccent.opacity(0.6), lineWidth: 1.5)
-        }
-        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
-    }
-
-    private func updateRow(_ text: String) -> some View {
-        HStack(alignment: .top, spacing: 10) {
-            Image(systemName: "checkmark.circle.fill")
-                .foregroundColor(.appCorrect)
-                .frame(width: iconFrame, height: iconFrame)
-
-            Text(text)
-                .font(AppFont.body(14))
-                .foregroundColor(.appTextSecondary)
-                .fixedSize(horizontal: false, vertical: true)
-        }
     }
 
     private func instructionRow(number: String?, text: String) -> some View {

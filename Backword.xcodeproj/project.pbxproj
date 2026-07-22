@@ -91,6 +91,8 @@
 		86AFC3CE2FBE53CA007623C3 /* BackwordArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */; };
 		86AFC3D12FBFC367007623C3 /* ScoringRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D02FBFC367007623C3 /* ScoringRuleView.swift */; };
 		86AFC3D32FC20460007623C3 /* BackwordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */; };
+		07AB00023008000000000001 /* BackwordRulesUpdateNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */; };
+		07AB00043008000000000001 /* BackwordRulesUpdateNoticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */; };
 		86AFC3D52FC2402F007623C3 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D42FC2402F007623C3 /* StatsView.swift */; };
 		86AFC3D72FC25567007623C3 /* ScoreChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D62FC25567007623C3 /* ScoreChipView.swift */; };
 		86BEEF012FDD000100000001 /* StoreServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BEEF002FDD000100000001 /* StoreServiceTests.swift */; };
@@ -242,6 +244,8 @@
 		86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordArchiveRow.swift; sourceTree = "<group>"; };
 		86AFC3D02FBFC367007623C3 /* ScoringRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringRuleView.swift; sourceTree = "<group>"; };
 		86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordInstructionsContentView.swift; sourceTree = "<group>"; };
+		07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNotice.swift; sourceTree = "<group>"; };
+		07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNoticeTests.swift; sourceTree = "<group>"; };
 		86AFC3D42FC2402F007623C3 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		86AFC3D62FC25567007623C3 /* ScoreChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreChipView.swift; sourceTree = "<group>"; };
 		86BEEF002FDD000100000001 /* StoreServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreServiceTests.swift; sourceTree = "<group>"; };
@@ -349,6 +353,7 @@
 		00EC67C42E7E2A26C6A44CB3 /* BackwordTests */ = {
 			isa = PBXGroup;
 			children = (
+				07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */,
 				04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */,
 				049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */,
 				04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */,
@@ -549,6 +554,7 @@
 				2259B66045D006E89462572C /* BackwordLetterCell.swift */,
 				464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */,
 				86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */,
+				07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */,
 				86AE8C962F913EAB001D69EE /* BackwordLogo.swift */,
 				86AE8C982FE31F01001D69EE /* LaunchSplashView.swift */,
 				869FCBE32F99871800A280F2 /* BackwordStatsView.swift */,
@@ -745,6 +751,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07AB00043008000000000001 /* BackwordRulesUpdateNoticeTests.swift in Sources */,
 				049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */,
 				04ADAE912FFD100000000001 /* AdExplainerPresentationPolicyTests.swift in Sources */,
 				04F1AE892FE2A3E6007A1001 /* AppVersionInfoTests.swift in Sources */,
@@ -802,6 +809,7 @@
 				05AD10022FFE000000000001 /* LegalLink.swift in Sources */,
 				F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */,
 				86AFC3D32FC20460007623C3 /* BackwordInstructionsContentView.swift in Sources */,
+				07AB00023008000000000001 /* BackwordRulesUpdateNotice.swift in Sources */,
 				86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */,
 				86E5C00E2FA94D8A00A42156 /* StreakButton.swift in Sources */,
 				E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */,
