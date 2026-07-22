@@ -334,6 +334,7 @@ struct BackwordView: View {
                 BackwordGuessRow(
                     guess: guess,
                     matchingLetters: viewModel.lettersInWord(for: guess),
+                    correctlyPositionedIndices: viewModel.correctlyPositionedSuffixIndices(for: guess),
                     showFeedback: viewModel.showLetterFeedback && storeService.isProUser,
                     isWinningGuess: false
                 )

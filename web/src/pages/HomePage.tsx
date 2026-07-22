@@ -22,7 +22,7 @@ export function HomePage() {
       <ScreenshotSection
         eyebrow="Backword"
         title="Guess forwards. Reveal backwards."
-        body="Solve a six-letter word as each guess reveals correct letters from the end. Fewer guesses means a better score."
+        body="Solve a six-letter word by extending its correct ending from right to left. A guess may reveal a connected chain or nothing new, with an extra letter revealed after three misses."
         headingLevel="h2"
         screenshotAlt="Backword gameplay screen"
         screenshotPosition="left"

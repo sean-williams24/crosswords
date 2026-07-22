@@ -92,6 +92,12 @@ The Backword card uses the same stats row shape, but its score is hidden until `
 
 Backword archive rows keep the guess-count status label after a win. On-time wins use the same solved gold as on-time crossword archive completions, while wins finished on a later local release date use the normal correct green. Only Backwords completed on their local release date contribute points or update Backword statistics; archive completions remain visible in progress but score zero.
 
+## Backword Letter Reveals
+
+Backword starts with only the final letter visible. After a wrong guess, reveal the longest correctly positioned suffix connected to the end of the answer; never extend that suffix merely because a guess was submitted. If the game remains active after three guesses, also reveal the third letter from the left as a disconnected extra hint. Other correct letters separated from the revealed suffix by an incorrect letter remain hidden, and revealed letters never disappear on later guesses. Reveal state is derived from saved guesses, so unfinished games always use the current rule without a persistence migration.
+
+Each row in the previous-guesses history independently highlights its correctly positioned suffix. Those connected cells use semantic correct green for the letter and the same semantic accent blue as the main cells for a stronger border; disconnected correct letters do not receive this progress highlight.
+
 ## Backword Completion Moment
 
 The completion sheet is presented after both wins and failures and receives the answer explicitly. Its title is `Solved!`, `Finished`, or `Failed`. Wins show an `... in N guesses` label directly above the cells; failures show `The answer was...`. A late `Finished` result shows the no-points message above the standard completed stats content. The cells reveal from right to left and perform a single whole-word bounce. Winning cells transition from correct green to accent blue during the glow; failed cells and their glow remain red. Reduce Motion skips the staged animation and shows the completed word immediately.

@@ -3,19 +3,20 @@ import SwiftUI
 struct BackwordGuessRow: View {
     let guess: String
     let matchingLetters: Set<Character>
+    let correctlyPositionedIndices: Set<Int>
     let showFeedback: Bool
     let isWinningGuess: Bool
 
     var body: some View {
         HStack(spacing: 6) {
             ForEach(Array(guess.uppercased().enumerated()), id: \.offset) { index, char in
-                chipView(char: char)
+                chipView(char: char, isCorrectlyPositioned: correctlyPositionedIndices.contains(index))
             }
         }
     }
 
     @ViewBuilder
-    private func chipView(char: Character) -> some View {
+    private func chipView(char: Character, isCorrectlyPositioned: Bool) -> some View {
         let isMatch = showFeedback && matchingLetters.contains(char)
 
         ZStack {
@@ -23,12 +24,15 @@ struct BackwordGuessRow: View {
                 .fill(chipBackground(isMatch: isMatch))
                 .overlay(
                     RoundedRectangle(cornerRadius: 5)
-                        .strokeBorder(chipBorder(isMatch: isMatch), lineWidth: 1)
+                        .strokeBorder(
+                            chipBorder(isMatch: isMatch, isCorrectlyPositioned: isCorrectlyPositioned),
+                            lineWidth: 1
+                        )
                 )
 
             Text(String(char))
                 .font(AppFont.gridLetter(16))
-                .foregroundColor(isWinningGuess ? .appCorrect : .appTextPrimary)
+                .foregroundColor(isWinningGuess || isCorrectlyPositioned ? .appCorrect : .appTextPrimary)
         }
         .frame(width: 38, height: 38)
     }
@@ -39,8 +43,9 @@ struct BackwordGuessRow: View {
         return .appSurface
     }
 
-    private func chipBorder(isMatch: Bool) -> Color {
+    private func chipBorder(isMatch: Bool, isCorrectlyPositioned: Bool) -> Color {
         if isWinningGuess { return .appCorrect.opacity(0.6) }
+        if isCorrectlyPositioned { return .appAccent.opacity(0.75) }
         if isMatch { return .appAccent.opacity(0.5) }
         return .appGridLine
     }

@@ -34,30 +34,50 @@ final class BackwordViewModel: ObservableObject {
     // MARK: - Reveal Sequence
 
     private var revealedIndices: Set<Int> {
-        BackwordViewModel.suffixRevealedIndices(progress: progress, word: word.word)
+        BackwordViewModel.calculatedRevealedIndices(progress: progress, word: word.word)
     }
 
     /// Exposed for views that display letter cells without a full ViewModel (e.g. BackwordCard).
     static func revealedIndices(for progress: BackwordProgress?, word: String) -> Set<Int> {
-        suffixRevealedIndices(progress: progress, word: word)
+        calculatedRevealedIndices(progress: progress, word: word)
     }
 
-    private static func suffixRevealedIndices(progress: BackwordProgress?, word: String) -> Set<Int> {
+    /// Correctly positioned letters that form an unbroken suffix for one guess.
+    func correctlyPositionedSuffixIndices(for guess: String) -> Set<Int> {
+        let suffixLength = Self.matchingSuffixLength(guess: guess, word: word.word)
+        guard suffixLength > 0 else { return [] }
+        return Set((6 - suffixLength)..<6)
+    }
+
+    private static func calculatedRevealedIndices(progress: BackwordProgress?, word: String) -> Set<Int> {
         guard let progress else { return [5] }
         if progress.isFailed { return Set(0..<6) }
-        let target = Array(word.uppercased())
         let wrongGuesses = progress.isWon ? Array(progress.guesses.dropLast()) : progress.guesses
-        var maxSuffix = wrongGuesses.count + 1
+        var maxSuffix = 1
         for guess in wrongGuesses {
-            let g = Array(guess.uppercased())
-            guard g.count == 6, target.count == 6 else { continue }
-            var match = 0
-            for i in stride(from: 5, through: 0, by: -1) {
-                if g[i] == target[i] { match += 1 } else { break }
-            }
-            maxSuffix = max(maxSuffix, match)
+            maxSuffix = max(maxSuffix, matchingSuffixLength(guess: guess, word: word))
         }
-        return Set((6 - maxSuffix)..<6)
+        var revealed = Set((6 - maxSuffix)..<6)
+        if wrongGuesses.count >= 3 {
+            revealed.insert(2)
+        }
+        return revealed
+    }
+
+    private static func matchingSuffixLength(guess: String, word: String) -> Int {
+        let guessLetters = Array(guess.uppercased())
+        let targetLetters = Array(word.uppercased())
+        guard guessLetters.count == 6, targetLetters.count == 6 else { return 0 }
+
+        var match = 0
+        for index in stride(from: 5, through: 0, by: -1) {
+            if guessLetters[index] == targetLetters[index] {
+                match += 1
+            } else {
+                break
+            }
+        }
+        return match
     }
 
     // MARK: - Computed

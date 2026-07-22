@@ -23,9 +23,6 @@ struct BackwordProgress: Codable {
 
     // MARK: - Computed
 
-    /// Letters revealed so far. Starts at 1 (last letter only), +1 per wrong guess, max 6.
-    var revealedCount: Int { min(guesses.count + 1, 6) }
-
     var isWon: Bool { wonFlag && completedAt != nil }
     var isFailed: Bool { !wonFlag && completedAt != nil }
     var isComplete: Bool { completedAt != nil }

@@ -10,10 +10,11 @@ struct BackwordInstructionsContentView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 10) {
-                    instructionRow(number: "1", text: "Guess the six-letter word. After each wrong guess, a letter reveals from the end if not already revealed.")
-                    instructionRow(number: "2", text: "Letters only reveal right-to-left, if you guess a correct letter at the start of the word, it will stay hidden until it connects to the end letters.")
-                    instructionRow(number: "3", text: "The fewer guesses you need, the more points you score.")
-                    instructionRow(number: nil, text: "If you're stuck, submit any word that fits to reveal more letters from the end.")
+                    instructionRow(number: "1", text: "Guess the six-letter word, starting with the final letter revealed.")
+                    instructionRow(number: "2", text: "Correctly placed letters only reveal when they form an unbroken chain from the end of the word.")
+                    instructionRow(number: "3", text: "If the word is still unsolved after three guesses, the third letter reveals as an extra hint.")
+                    instructionRow(number: "4", text: "The fewer guesses you need, the more points you score.")
+                    instructionRow(number: nil, text: "Apart from the extra hint, a correct letter elsewhere stays hidden until it connects to the revealed ending. A guess may reveal no new letters.")
                 }
 
                 Divider()
@@ -29,7 +30,7 @@ struct BackwordInstructionsContentView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
 
-                Text("After 2 wrong guesses — 3 letters revealed")
+                Text("A guess ending in TLE reveals the connected suffix")
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
                     .frame(maxWidth: .infinity, alignment: .center)

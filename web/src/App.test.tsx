@@ -19,10 +19,15 @@ describe("Backword website routes", () => {
     ).toBeInTheDocument();
     expect(screen.getByLabelText("Download Backword on the App Store")).toHaveAttribute(
       "href",
-      "https://apps.apple.com/app/backword/id0000000000"
+      "https://apps.apple.com/app/backword/id6773428497"
     );
     expect(screen.getAllByRole("link", { name: "Privacy" })).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: "Terms" })).toHaveLength(2);
+    expect(
+      screen.getByText(
+        "Solve a six-letter word by extending its correct ending from right to left. A guess may reveal a connected chain or nothing new, with an extra letter revealed after three misses."
+      )
+    ).toBeInTheDocument();
   });
 
   it("keeps homepage section text before screenshots in mobile source order", () => {
