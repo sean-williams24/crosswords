@@ -36,13 +36,15 @@
 		05D1A0093001000000000001 /* CrosswordSolveTimeSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */; };
 		05D1A00B3001000000000001 /* CrosswordSolveTimeSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */; };
 		05D2A0013002000000000001 /* DailyCrosswordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */; };
+		05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */; };
+		05F1E1A62FFCFD9300F1E1A5 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A32FFCFD9300F1E1A5 /* FirebaseCore */; };
+		05F1E1A72FFCFD9300F1E1A5 /* StoreLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */; };
 		06CC00013007000000000001 /* CrosswordCompletionPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00003007000000000001 /* CrosswordCompletionPresentation.swift */; };
 		06CC00033007000000000001 /* CrosswordCompletionGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00023007000000000001 /* CrosswordCompletionGridView.swift */; };
 		06CC00053007000000000001 /* CrosswordCompletionSparkleBurstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00043007000000000001 /* CrosswordCompletionSparkleBurstView.swift */; };
 		06CC00073007000000000001 /* CrosswordCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */; };
-		05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */; };
-		05F1E1A62FFCFD9300F1E1A5 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A32FFCFD9300F1E1A5 /* FirebaseCore */; };
-		05F1E1A72FFCFD9300F1E1A5 /* StoreLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */; };
+		07AB00023008000000000001 /* BackwordRulesUpdateNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */; };
+		07AB00043008000000000001 /* BackwordRulesUpdateNoticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */; };
 		0838E5D52FE2D3A200000001 /* HomeTabBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */; };
 		0838E5D72FE2E5AB00000001 /* ArchiveTabBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */; };
 		0A5F0E3C2FE322C700F00E3C /* LaunchSplashViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */; };
@@ -91,8 +93,6 @@
 		86AFC3CE2FBE53CA007623C3 /* BackwordArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */; };
 		86AFC3D12FBFC367007623C3 /* ScoringRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D02FBFC367007623C3 /* ScoringRuleView.swift */; };
 		86AFC3D32FC20460007623C3 /* BackwordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */; };
-		07AB00023008000000000001 /* BackwordRulesUpdateNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */; };
-		07AB00043008000000000001 /* BackwordRulesUpdateNoticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */; };
 		86AFC3D52FC2402F007623C3 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D42FC2402F007623C3 /* StatsView.swift */; };
 		86AFC3D72FC25567007623C3 /* ScoreChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D62FC25567007623C3 /* ScoreChipView.swift */; };
 		86BEEF012FDD000100000001 /* StoreServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BEEF002FDD000100000001 /* StoreServiceTests.swift */; };
@@ -188,11 +188,13 @@
 		05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordSolveTimeSummary.swift; sourceTree = "<group>"; };
 		05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordSolveTimeSummaryTests.swift; sourceTree = "<group>"; };
 		05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordInstructionsContentView.swift; sourceTree = "<group>"; };
+		05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLogger.swift; sourceTree = "<group>"; };
 		06CC00003007000000000001 /* CrosswordCompletionPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionPresentation.swift; sourceTree = "<group>"; };
 		06CC00023007000000000001 /* CrosswordCompletionGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionGridView.swift; sourceTree = "<group>"; };
 		06CC00043007000000000001 /* CrosswordCompletionSparkleBurstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionSparkleBurstView.swift; sourceTree = "<group>"; };
 		06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionPresentationTests.swift; sourceTree = "<group>"; };
-		05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLogger.swift; sourceTree = "<group>"; };
+		07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNotice.swift; sourceTree = "<group>"; };
+		07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNoticeTests.swift; sourceTree = "<group>"; };
 		0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewTests.swift; sourceTree = "<group>"; };
 		0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTabBarViewTests.swift; sourceTree = "<group>"; };
 		0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchSplashViewTests.swift; sourceTree = "<group>"; };
@@ -244,8 +246,6 @@
 		86AFC3CD2FBE53CA007623C3 /* BackwordArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordArchiveRow.swift; sourceTree = "<group>"; };
 		86AFC3D02FBFC367007623C3 /* ScoringRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringRuleView.swift; sourceTree = "<group>"; };
 		86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordInstructionsContentView.swift; sourceTree = "<group>"; };
-		07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNotice.swift; sourceTree = "<group>"; };
-		07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNoticeTests.swift; sourceTree = "<group>"; };
 		86AFC3D42FC2402F007623C3 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		86AFC3D62FC25567007623C3 /* ScoreChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreChipView.swift; sourceTree = "<group>"; };
 		86BEEF002FDD000100000001 /* StoreServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreServiceTests.swift; sourceTree = "<group>"; };
@@ -915,7 +915,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1106,7 +1106,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
