@@ -60,7 +60,7 @@
         "hint": "Incorporate knowledge or information",
         "hard_text": "Take in knowledge like a sponge",
         "clues": [
-            "What a sponge does",
+            "Soak up a spill",
             "Engulf in a liquid embrace",
             "Become one with the environment"
         ]
@@ -1081,10 +1081,10 @@
         "word": "BESTOW",
         "text": "Give formally",
         "hint": "Formal gift in ceremonies",
-        "hard_text": "Gives the royal treatment",
+        "hard_text": "Give the royal treatment",
         "clues": [
             "Confer an honor",
-            "Presents without a contest",
+            "Present without a contest",
             "To confer with grace"
         ]
     },
@@ -1160,7 +1160,7 @@
         "hint": "Action in a food contest",
         "hard_text": "To take a chunk out of",
         "clues": [
-            "What a mosquito does",
+            "Use teeth or a stinger",
             "Dent into something edible",
             "Nip at a tasty treat"
         ]
@@ -1259,8 +1259,8 @@
         "hint": "Common reaction to cold weather",
         "hard_text": "Forceful expulsion of air",
         "clues": [
-            "What wind does",
-            "What wind does to trees",
+            "Move as wind does",
+            "Move tree branches with a gust",
             "To exert a gust"
         ]
     },
@@ -1349,7 +1349,7 @@
         "clues": [
             "Sign of future events",
             "Foretell good or bad fortune",
-            "Indicates what's to come"
+            "Indicate what's to come"
         ]
     },
     {
@@ -1358,7 +1358,7 @@
         "hint": "Common kitchen technique for vegetables",
         "hard_text": "Heat until bubbling over",
         "clues": [
-            "What water does before steam",
+            "Bubble under sustained heat",
             "Process in cooking pasta",
             "To bring to a rolling state"
         ]
@@ -1490,9 +1490,9 @@
         "hint": "Common in many sports",
         "hard_text": "Resilient response to a setback",
         "clues": [
-            "What a ball does",
+            "Rebound like a ball",
             "Lively reaction to a drop",
-            "What a ball does on impact"
+            "Rebound on impact"
         ]
     },
     {
@@ -1644,7 +1644,7 @@
         "hint": "Crafting a warm beverage",
         "hard_text": "Create a warm drink from grains",
         "clues": [
-            "What a barista does",
+            "Prepare a drink like a barista",
             "To concoct something special",
             "Steeped mixture for enjoyment"
         ]
@@ -1897,7 +1897,7 @@
         "hint": "Popular sound at a lively event",
         "hard_text": "Excited chatter or constant vibration?",
         "clues": [
-            "What a bee does",
+            "Make a bee-like hum",
             "Sound of activity or interest?",
             "Humming presence in a crowded room?"
         ]
@@ -2194,7 +2194,7 @@
         "hint": "Common task for porters",
         "hard_text": "To transport with effort",
         "clues": [
-            "What a waiter does with trays",
+            "Transport trays like a waiter",
             "Holding something from one place to another",
             "Support and move at the same time"
         ]
@@ -2271,7 +2271,7 @@
         "hint": "Action in a game of tag",
         "hard_text": "To seize a fleeting opportunity",
         "clues": [
-            "What an outfielder does with a ball",
+            "Field a ball like an outfielder",
             "What you do with a ball in motion",
             "To intercept or grab suddenly"
         ]
@@ -3241,7 +3241,7 @@
         "clues": [
             "Spiral shape",
             "Snake's movement",
-            "What a spring does when compressed"
+            "Compress like a spring"
         ]
     },
     {
@@ -3285,7 +3285,7 @@
         "clues": [
             "Gather into one place",
             "Set aside for future use",
-            "What a curator does with artifacts"
+            "Curate a group of artifacts"
         ]
     },
     {
@@ -3471,7 +3471,7 @@
         "hard_text": "To reach a final decision",
         "clues": [
             "Finish or wrap up",
-            "What a story does at the end",
+            "Bring a story to its end",
             "To tie up loose ends"
         ]
     },
@@ -3745,7 +3745,7 @@
         "hint": "Baking, grilling, or sautéing",
         "hard_text": "Crafting meals like an artist",
         "clues": [
-            "What a chef does",
+            "Prepare food like a chef",
             "Transforming ingredients with heat",
             "Creating flavors in a bubbling pot"
         ]
@@ -4109,7 +4109,7 @@
         "hard_text": "Breaking the law, oh my?",
         "clues": [
             "What detectives investigate",
-            "What one does in shadows?",
+            "An offence committed in the shadows?",
             "Act that disrupts the peace?"
         ]
     },
@@ -4306,7 +4306,7 @@
         "hint": "To bend or twist around",
         "hard_text": "To twist tightly, not just hair",
         "clues": [
-            "What wavy hair does",
+            "Form waves in a lock of hair",
             "What you might do with a ribbon",
             "A motion often used in yoga"
         ]
@@ -4791,7 +4791,7 @@
         "clues": [
             "Guarding the goal",
             "Protecting a title or a goal",
-            "What a lawyer does in court"
+            "Arguing a client's case in court"
         ]
     },
     {
@@ -5307,7 +5307,7 @@
         "hard_text": "Exhibition of talent?",
         "clues": [
             "Screen or showcase",
-            "What a show-off does?",
+            "Show something off?",
             "Visual representation of data?"
         ]
     },
@@ -5615,7 +5615,7 @@
         "clues": [
             "Remove moisture from a flooded area",
             "Where water goes after a heavy rain?",
-            "What a sponge does to a puddle"
+            "Remove liquid from a puddle"
         ]
     },
     {
@@ -5757,7 +5757,7 @@
         "hard_text": "A sound that can be maddening",
         "clues": [
             "Falling liquid in a rhythm",
-            "What a leaky faucet does?",
+            "Leak from a faulty faucet?",
             "Liquid leaves a surface slowly"
         ]
     },
@@ -7307,7 +7307,7 @@
         "clues": [
             "Experience an emotion",
             "To experience a physical sensation",
-            "What one does with their hands"
+            "Explore through touch"
         ]
     },
     {
@@ -7877,7 +7877,7 @@
         "hint": "Associated with buoyant objects",
         "hard_text": "Hover without sinking",
         "clues": [
-            "What a rubber duck does",
+            "Stay atop water like a rubber duck",
             "Resting gently on the surface",
             "To drift in a gentle manner"
         ]
@@ -7952,7 +7952,7 @@
         "word": "FLOW",
         "text": "Mental state of effortless concentration",
         "hint": "Movement in a natural setting",
-        "hard_text": "What a river does with ease",
+        "hard_text": "Move steadily like a river",
         "clues": [
             "Go with the ___",
             "Movement of ideas through time",
@@ -8121,7 +8121,7 @@
         "clues": [
             "What bears do",
             "Hunt for food in nature",
-            "What a scavenger does"
+            "Seek provisions like a scavenger"
         ]
     },
     {
@@ -9044,7 +9044,7 @@
         "clues": [
             "Egg on",
             "A sharp stick for driving cattle",
-            "What a provocateur does"
+            "Provoke like an agitator"
         ]
     },
     {
@@ -9449,7 +9449,7 @@
         "hint": "To process with force",
         "hard_text": "Daily routine that wears you down",
         "clues": [
-            "What a coffee mill does",
+            "Reduce beans to coarse particles",
             "Make coffee from beans",
             "Rub away with friction"
         ]
@@ -9693,7 +9693,7 @@
         "clues": [
             "Life ___ or computer break-in",
             "Cut as if in a rush",
-            "What a woodchopper does"
+            "Chop wood roughly"
         ]
     },
     {
@@ -10017,7 +10017,7 @@
     },
     {
         "word": "HEAL",
-        "text": "What skin gradually does beneath a bandage",
+        "text": "Close gradually beneath a bandage",
         "hint": "Process of recovery",
         "hard_text": "What a doctor tries to do?",
         "clues": [
@@ -10902,7 +10902,7 @@
         "hard_text": "Picture it in your mind's eye",
         "clues": [
             "John Lennon sang this",
-            "What a dreamer does best",
+            "Dream up possibilities",
             "Conjure up a scene mentally"
         ]
     },
@@ -11122,7 +11122,7 @@
         "hard_text": "Look closely at a hidden prize",
         "clues": [
             "Check for quality",
-            "What a detective does at a crime scene",
+            "Examine a crime scene",
             "Examine the fine details too much"
         ]
     },
@@ -11166,7 +11166,7 @@
         "hard_text": "Remark that cuts deeper than a knife",
         "clues": [
             "Verbal sting",
-            "What a bully often does?",
+            "Taunt someone like a bully?",
             "Hurtful comment, though not physically"
         ]
     },
@@ -11189,7 +11189,7 @@
         "clues": [
             "Translate or decode",
             "Deciphering your friend's cryptic text",
-            "What an artist does with symbolism"
+            "Explain artistic symbolism"
         ]
     },
     {
@@ -15014,7 +15014,7 @@
         "hint": "Similar themes in art",
         "hard_text": "Two stories share a detail",
         "clues": [
-            "Shares common area",
+            "Share a common area",
             "Intersecting paths in life",
             "To cover a bit extra"
         ]
@@ -15300,7 +15300,7 @@
         "hint": "Break during a concert or show",
         "hard_text": "What you do before hitting play again",
         "clues": [
-            "What the || button does",
+            "Halt playback temporarily",
             "A brief break in a performance",
             "Stop for a moment"
         ]
@@ -15841,7 +15841,7 @@
         "clues": [
             "Using a finger to indicate",
             "Indicating with precision",
-            "What one does when giving directions"
+            "Giving directions with a gesture"
         ]
     },
     {
@@ -16062,7 +16062,7 @@
         "clues": [
             "Forecast the future",
             "Make an educated guess on the future",
-            "What a fortune teller does"
+            "Foretell events like a fortune teller"
         ]
     },
     {
@@ -16150,7 +16150,7 @@
         "clues": [
             "Block or hinder",
             "Block a goal in soccer?",
-            "What a safety net does"
+            "Stop a fall like a safety net"
         ]
     },
     {
@@ -16359,7 +16359,7 @@
         "clues": [
             "Space ___ or medical examination",
             "Tool used to examine the unknown",
-            "What a detective does to uncover truths"
+            "Investigate to uncover the truth"
         ]
     },
     {
@@ -16435,7 +16435,7 @@
         "hard_text": "Creating output through effort",
         "clues": [
             "Manufacturing",
-            "What a factory does day in and day out",
+            "Manufacturing day in and day out",
             "Yielding results from effort and resources"
         ]
     },
@@ -16634,7 +16634,7 @@
         "clues": [
             "Furnishing what's needed",
             "Offering resources or support",
-            "To furnish what is necessary"
+            "Furnishing what is necessary"
         ]
     },
     {
@@ -17279,7 +17279,7 @@
         "word": "RECORDING",
         "text": "Captured audio or video",
         "hint": "Capturing live performances",
-        "hard_text": "To save sound for future listening",
+        "hard_text": "Saving sound for future listening",
         "clues": [
             "Music studio activity",
             "An audio catch, but not a simple note",
@@ -17315,7 +17315,7 @@
         "hard_text": "Think deeply or literally bounce back",
         "clues": [
             "Ponder deeply",
-            "What a mirror does, or a mind's task",
+            "Return an image like a mirror",
             "Consideration or a shiny surface's action"
         ]
     },
@@ -17712,7 +17712,7 @@
         "clues": [
             "Going over material",
             "Looking back at past work carefully",
-            "To reassess thoughts on a matter"
+            "Reassessing thoughts on a matter"
         ]
     },
     {
@@ -18612,7 +18612,7 @@
         "hint": "Action in a restaurant environment",
         "hard_text": "Dish up with a smile",
         "clues": [
-            "What a waiter does",
+            "Wait on a restaurant table",
             "To assist in a role",
             "Present in a helpful manner"
         ]
@@ -18702,7 +18702,7 @@
         "clues": [
             "Market ___",
             "Partnership in gossip or ownership?",
-            "What a group does with a pizza"
+            "Split a pizza among a group"
         ]
     },
     {
@@ -18811,7 +18811,7 @@
         "hard_text": "To stand out brightly or polish something",
         "clues": [
             "Rise and ___",
-            "What a star does, or a manager expects",
+            "Glow like a star",
             "Reflective quality, both in objects and people"
         ]
     },
@@ -18932,7 +18932,7 @@
         "hard_text": "To contract, as time does in memories",
         "clues": [
             "Dry up and wither",
-            "What aging does to skin or enthusiasm",
+            "Contract with age",
             "To wither away, both physically and metaphorically"
         ]
     },
@@ -19230,7 +19230,7 @@
         "clues": [
             "A piece of pizza or cake",
             "Piece of pie, but not whole?",
-            "What a knife does to bread"
+            "Cut bread with a knife"
         ]
     },
     {
@@ -19691,7 +19691,7 @@
         "hard_text": "To verbally express thoughts",
         "clues": [
             "Talk or communicate verbally",
-            "What a politician often does",
+            "Address a crowd like a politician",
             "Engage in dialogue or conversation"
         ]
     },
@@ -20295,7 +20295,7 @@
         "hint": "Painful reminder of a careless action",
         "hard_text": "A sudden jolt from nature's needle",
         "clues": [
-            "What a bee does",
+            "Prick like a bee",
             "What a bee leaves behind",
             "The sharp reminder of a misstep"
         ]
@@ -21428,7 +21428,7 @@
         "hint": "Cognitive action often taken",
         "hard_text": "To ponder or reflect?",
         "clues": [
-            "What your brain does",
+            "Use one's brain",
             "Mental exercise for ideas?",
             "What you do with a problem?"
         ]
@@ -21473,7 +21473,7 @@
         "hard_text": "To beat in a frenzy?",
         "clues": [
             "Flail about",
-            "What a fish does on the line?",
+            "Struggle like a hooked fish?",
             "To move wildly in struggle?"
         ]
     },
@@ -21657,7 +21657,7 @@
         "word": "TILT",
         "text": "Contest between mounted knights with lances",
         "hint": "Angle adjustment in photography",
-        "hard_text": "What a scale does when unbalanced",
+        "hard_text": "Tip like an unbalanced scale",
         "clues": [
             "Pinball penalty",
             "Gravity's gentle suggestion?",
@@ -23443,7 +23443,7 @@
         "clues": [
             "Dervish movement",
             "A dizzying motion you can't resist",
-            "What a tornado does with wind"
+            "Spin like a tornado"
         ]
     },
     {
@@ -23520,7 +23520,7 @@
         "clues": [
             "___ power",
             "Possess power or influence over",
-            "What a knight does with a sword"
+            "Handle a sword like a knight"
         ]
     },
     {
@@ -28633,7 +28633,7 @@
         "clues": [
             "Hard to argue with",
             "Too persuasive for the skeptics?",
-            "What a good lawyer does best?"
+            "Persuading as a good lawyer might"
         ],
         "hard_text": "Powerful argument's secret weapon?"
     },
@@ -29909,7 +29909,7 @@
         "clues": [
             "Tipped the scales",
             "Considered more significant",
-            "To tip the scales in favor"
+            "Carried greater importance in a decision"
         ],
         "hard_text": "Dominated in importance or weight"
     },
@@ -30931,7 +30931,7 @@
         "hint": "Essential for financial accuracy",
         "clues": [
             "Accounts tracking. (4,7)",
-            "What a librarian does with accounts. (4,7)",
+            "Maintaining financial accounts. (4,7)",
             "Financial juggling act. (4,7)"
         ],
         "hard_text": "Numbers that tell a story. (4,7)"
@@ -31330,7 +31330,7 @@
             "A test that probes deeper",
             "Inspection that seeks clarity"
         ],
-        "hard_text": "What a doctor does before diagnosing?"
+        "hard_text": "A doctor's assessment before diagnosing?"
     },
     {
         "word": "EXCEPTIONAL",
@@ -31601,11 +31601,11 @@
         "text": "Act of watching carefully",
         "hint": "Key skill for researchers",
         "clues": [
-            "What a scientist does",
+            "A scientist's recorded finding",
             "Careful scrutiny or a view",
             "Eyeing something carefully"
         ],
-        "hard_text": "What a detective does well"
+        "hard_text": "A detective's noted detail"
     },
     {
         "word": "OPPORTUNITY",
@@ -31976,7 +31976,7 @@
         "hint": "Old-school method of composing text",
         "hard_text": "Tapping away on an old-fashioned machine. (4,7)",
         "clues": [
-            "What a typist does. (4,7)",
+            "Operating a machine with lettered keys. (4,7)",
             "Crafting letters with rhythmic clacks. (4,7)",
             "Creating text with a mechanical touch. (4,7)"
         ]
@@ -32778,7 +32778,7 @@
         "text": "Transmitting by radio or TV",
         "hint": "Sending signals to many. (5,7)",
         "clues": [
-            "What the BBC does",
+            "Transmitting programmes, as the BBC does",
             "Sharing signals across the airwaves",
             "Reaching audiences through transmission"
         ],
@@ -38279,7 +38279,7 @@
         "hint": "Growing old",
         "hard_text": "Time's effect on the body",
         "clues": [
-            "What time does to us?",
+            "Growing older with the passage of time",
             "The passing of years",
             "Natural progression of life"
         ]
@@ -40509,7 +40509,7 @@
         "word": "BOWED",
         "text": "Bent forward",
         "hint": "Hunched",
-        "hard_text": "To submit or show respect in gesture",
+        "hard_text": "Submitted or showed respect with a gesture",
         "clues": [
             "A posture of humility or greeting",
             "Seen in performances or ceremonies",
@@ -40553,7 +40553,7 @@
         "word": "BOWLS",
         "text": "Delivers balls toward the batter in cricket",
         "hint": "Serving dishes",
-        "hard_text": "To roll a sphere towards targets in a game",
+        "hard_text": "Rolls a sphere towards targets in a game",
         "clues": [
             "Used for soup, cereal, or a game",
             "Round objects in a competitive sport",
@@ -41707,7 +41707,7 @@
         "word": "AIRING",
         "text": "Drying clothes outdoors in fresh air",
         "hint": "Showing",
-        "hard_text": "To expose to public view or discussion",
+        "hard_text": "Exposing to public view or discussion",
         "clues": [
             "Giving a show time?",
             "Letting ideas circulate",
@@ -41936,11 +41936,11 @@
     },
     {
         "word": "AMENDS",
-        "text": "To make reparations or compensate",
+        "text": "Makes reparations or compensates",
         "hint": "Repairs damage",
-        "hard_text": "To rectify past wrongs",
+        "hard_text": "Rectifies past wrongs",
         "clues": [
-            "To apologize and fix mistakes",
+            "Apologizes and fixes mistakes",
             "Patch things up",
             "Make things right again"
         ]
@@ -47021,7 +47021,7 @@
         "clues": [
             "Sharpening technique in craftsmanship",
             "Refining something to perfection",
-            "What a craftsman does with care"
+            "Sharpen with a craftsperson's care"
         ],
         "hard_text": "To sharpen skills, not just blades"
     },
@@ -47075,7 +47075,7 @@
         "hint": "Action in sports to advance ball",
         "clues": [
             "Forceful toss or throw",
-            "What a quarterback does with the ball",
+            "Throw like a quarterback",
             "Launch something like a projectile"
         ],
         "hard_text": "To throw with force, not gently"
@@ -47152,7 +47152,7 @@
         "hint": "Cargo action at sea",
         "clues": [
             "Fill to capacity",
-            "What one does to fill a vessel",
+            "Fill a vessel with cargo",
             "To burden someone with responsibility"
         ],
         "hard_text": "To load up, not just with cargo"
@@ -47230,7 +47230,7 @@
         "clues": [
             "Sinister gaze",
             "A sly glance of inappropriate intent",
-            "What one does with mischievous intent"
+            "Stare with mischievous intent"
         ],
         "hard_text": "Look that suggests something untoward"
     },
@@ -47870,7 +47870,7 @@
             "Ascend in status or altitude",
             "Overambitious lift from below"
         ],
-        "hard_text": "What the sun does each morning?"
+        "hard_text": "Ascend like the morning sun?"
     },
     {
         "word": "rite",
@@ -48987,7 +48987,7 @@
         "clues": [
             "Excursion or journey",
             "A trip around a location",
-            "What a band does on the road?"
+            "Travel and perform on the road?"
         ],
         "hard_text": "Journey through sights"
     },
@@ -51262,7 +51262,7 @@
         "clues": [
             "To be in a state of waiting",
             "Awaiting a decision?",
-            "What a jury does in deliberation?"
+            "Await a jury's decision?"
         ],
         "hard_text": "To hang in balance?"
     },
@@ -51647,7 +51647,7 @@
         "clues": [
             "Happy cat noise",
             "A soothing engine note",
-            "What a happy feline does"
+            "Make a happy feline's sound"
         ],
         "hard_text": "Cat's contented sound"
     },
@@ -52185,7 +52185,7 @@
         "clues": [
             "Swift movement in the air or water",
             "Clouds flying low, racing in the sky",
-            "What a boat does when caught in a breeze"
+            "Move swiftly before a breeze"
         ],
         "hard_text": "To move swiftly, often driven by wind"
     },
@@ -52218,7 +52218,7 @@
         "clues": [
             "Flow gradually through small openings",
             "Liquid finding its way through cracks",
-            "What water does in a porous material"
+            "Percolate through tiny openings"
         ],
         "hard_text": "To ooze through, often slowly"
     },
@@ -52297,7 +52297,7 @@
             "A demonstration of talent or a passing glance",
             "When a film is on display for all"
         ],
-        "hard_text": "What a clown does to entertain the crowd?"
+        "hard_text": "Entertain a crowd like a clown?"
     },
     {
         "word": "sigh",
@@ -52341,7 +52341,7 @@
             "To vocalize melodies, with or without a tune",
             "A pastime for birds and shower performers alike"
         ],
-        "hard_text": "What one does to express joy or heartbreak?"
+        "hard_text": "Vocalize joy or heartbreak?"
     },
     {
         "word": "sink",
@@ -52396,7 +52396,7 @@
             "To forcefully close, or critique harshly",
             "A loud statement often followed by silence"
         ],
-        "hard_text": "What a door does when emotions run high?"
+        "hard_text": "Close with an emotional bang?"
     },
     {
         "word": "slap",
@@ -52426,7 +52426,7 @@
         "hint": "Could be impress with style",
         "clues": [
             "Impress with style",
-            "What a performer does when they steal the show?",
+            "Impress like a show-stealing performer?",
             "To execute with flair, or take your breath away"
         ],
         "hard_text": "To impress deeply, not just to kill"
@@ -52558,10 +52558,10 @@
         "hint": "Could be drench thoroughly",
         "clues": [
             "Drench thoroughly",
-            "What a sponge does well, especially in water",
+            "Take in liquid like a sponge",
             "To absorb thoroughly, often in a tub"
         ],
-        "hard_text": "To immerse fully, or what rain does?"
+        "hard_text": "Immerse fully, as rain can?"
     },
     {
         "word": "soap",
@@ -57249,7 +57249,7 @@
         "hint": "A sign of paths taken by guides",
         "clues": [
             "Paths taken by guides",
-            "To be in front, taking charge",
+            "Is in front, taking charge",
             "What detectives follow to solve mysteries"
         ],
         "hard_text": "Guides or directions, in various contexts"
@@ -58175,7 +58175,7 @@
             "Clear as a bell",
             "Hearing's counterpart in physics?"
         ],
-        "hard_text": "What a dog does when it alerts?"
+        "hard_text": "Raise an alert like a dog?"
     },
     {
         "word": "stain",
@@ -59126,7 +59126,7 @@
         "hint": "Could be process used in making butter",
         "clues": [
             "Process used in making butter",
-            "What a blender does",
+            "Set contents moving in a circular current",
             "To shake or agitate a mixture"
         ],
         "hard_text": "To agitate for butter"
@@ -59708,7 +59708,7 @@
         "hint": "Action in a game of tag, for one",
         "clues": [
             "Action in a game of tag",
-            "What a car does in traffic",
+            "Swerve around traffic",
             "A quick movement to escape"
         ],
         "hard_text": "To evade or avoid"
@@ -59810,7 +59810,7 @@
             "To sag under pressure",
             "Lowered in defeat"
         ],
-        "hard_text": "What a wilting flower does"
+        "hard_text": "Sag like a wilting flower"
     },
     {
         "word": "drove",
@@ -60731,7 +60731,7 @@
         "clues": [
             "Subtle shine or sparkle",
             "Shiny reflection that catches the eye?",
-            "What a diamond does in sunlight?"
+            "Flash briefly like a diamond?"
         ],
         "hard_text": "A brief flash, but not always seen?"
     },
@@ -61039,7 +61039,7 @@
         "clues": [
             "Abundance or multitude",
             "Piles of stuff, but not in order",
-            "A lot of something, but messy"
+            "Lots of something in a messy arrangement"
         ],
         "hard_text": "Large amounts but not a precise measure"
     },
@@ -61532,7 +61532,7 @@
         "hint": "Craving or longing?",
         "clues": [
             "Craving or longing",
-            "To have a craving or desire",
+            "Has a craving or desire",
             "Seen in American history"
         ],
         "hard_text": "Common surname among the populous"
@@ -63083,7 +63083,7 @@
         "clues": [
             "Suffered from unfulfilled desire",
             "Yearned deeply with sorrow?",
-            "To miss dearly, often with nostalgia"
+            "Missed dearly, often with nostalgia"
         ],
         "hard_text": "Longed for something just out of reach"
     },
@@ -63122,10 +63122,10 @@
     },
     {
         "word": "plied",
-        "text": "To engage in a particular activity",
+        "text": "Engaged in a particular activity",
         "hint": "Often to engage in a specific task",
         "clues": [
-            "To engage in a specific task",
+            "Engaged in a specific task",
             "Worked at steadily",
             "Used for a different cause?"
         ],
@@ -63292,7 +63292,7 @@
         "clues": [
             "Smooth food preparation technique",
             "Made from fruits, yet not a whole snack",
-            "Transforms texture, but not taste"
+            "Transform texture, but not taste"
         ],
         "hard_text": "To blend smooth, but not a drink"
     },
@@ -63512,7 +63512,7 @@
         "clues": [
             "Respond to a trigger",
             "To act again, but in a new way",
-            "What one does when surprised, often instinctively"
+            "Respond instinctively to surprise"
         ],
         "hard_text": "Respond to a stimulus with feelings"
     },
@@ -63676,7 +63676,7 @@
         "hint": "Associated with search through belongings",
         "clues": [
             "Search through belongings",
-            "What a thief does to a drawer, not a weapon",
+            "Search a drawer like a thief",
             "Go through someone's things, not just to shoot"
         ],
         "hard_text": "To search thoroughly, not just a firearm"
@@ -64744,7 +64744,7 @@
         "clues": [
             "Strike with intent or fury",
             "A biblical term for divine retribution",
-            "What a warrior does with righteous fury"
+            "Deal a righteous blow"
         ],
         "hard_text": "To strike down with great force"
     },
@@ -65250,7 +65250,7 @@
         "clues": [
             "Spinning motion or twist",
             "Spiraling motion in art?",
-            "What a dancer does gracefully?"
+            "Spin like a graceful dancer?"
         ],
         "hard_text": "Vortex in a drink?"
     },
@@ -65526,7 +65526,7 @@
             "To acknowledge a kind act?",
             "Words of appreciation"
         ],
-        "hard_text": "What an Oscar winner does at the microphone"
+        "hard_text": "Acknowledge helpers at an awards microphone"
     },
     {
         "word": "theft",
@@ -67369,7 +67369,7 @@
         "clues": [
             "Summon to consciousness",
             "To call forth a feeling or image",
-            "What a painting does to your emotions"
+            "Stir emotions like a painting"
         ],
         "hard_text": "Bring memories back to the surface"
     },
@@ -67522,7 +67522,7 @@
         "clues": [
             "Go after and retrieve",
             "A command for a well-trained pet",
-            "What a dog does when given a stick"
+            "Carry a stick back to its owner"
         ],
         "hard_text": "To go and bring something back"
     },
@@ -67972,7 +67972,7 @@
         "hint": "Showing shock or disbelief?",
         "clues": [
             "Showing shock or disbelief",
-            "To look with mouth wide open",
+            "Looks with mouth wide open",
             "Staring in disbelief"
         ],
         "hard_text": "A wound does this when its edges separate"
@@ -68767,7 +68767,7 @@
             "To mark a distinction, say",
             "A symbol that points to something"
         ],
-        "hard_text": "Signifies more than one meaning"
+        "hard_text": "Signify more than one meaning"
     },
     {
         "word": "derail",
@@ -68925,7 +68925,7 @@
     },
     {
         "word": "dished",
-        "text": "To serve or provide food",
+        "text": "Served or provided food",
         "hint": "Common term for serving food, sometimes",
         "clues": [
             "Common term for serving food",
@@ -69007,7 +69007,7 @@
         "clues": [
             "Spotted pattern in textiles",
             "Patterned with little circles",
-            "To decorate with pinpricks"
+            "Decorated with pinpricks"
         ],
         "hard_text": "Marked with tiny spots"
     },
@@ -69739,7 +69739,7 @@
     },
     {
         "word": "hurled",
-        "text": "To throw something forcefully",
+        "text": "Threw something forcefully",
         "hint": "Forceful toss, perhaps",
         "clues": [
             "Forceful toss",
@@ -70412,7 +70412,7 @@
         "hint": "Seen as entangled in a fishing tool",
         "clues": [
             "Entangled in a fishing tool",
-            "To be ensnared, like a fish",
+            "Was ensnared, like a fish",
             "Trapped within a designed pattern"
         ],
         "hard_text": "Caught in a web of consequences"
@@ -71589,7 +71589,7 @@
         "clues": [
             "Characteristic of a loud scream",
             "Voice that demands attention",
-            "What a whistle often does"
+            "Thin and intensely loud"
         ],
         "hard_text": "High-pitched sound that pierces"
     },
@@ -71611,7 +71611,7 @@
         "clues": [
             "Cloak or cover, often used metaphorically",
             "Garment for the deceased",
-            "What a fog does to a landscape"
+            "Veil a landscape like fog"
         ],
         "hard_text": "To cover or conceal completely"
     },
@@ -71653,7 +71653,7 @@
         "text": "Letter written but not pronounced",
         "hint": "Opposite of loud, for one",
         "clues": [
-            "What a mime does best",
+            "Like a mime at their best",
             "Describes a library, often"
         ],
         "hard_text": "Not making a sound at all"
@@ -74585,7 +74585,7 @@
         "hint": "Move in a playful manner, loosely",
         "clues": [
             "Move in a playful manner",
-            "What a pendulum does?",
+            "Hang and swing like a pendulum?",
             "To sway without support?"
         ],
         "hard_text": "To hang from above?"
@@ -75946,9 +75946,9 @@
         "clues": [
             "Collapse due to weakness",
             "What happens when one gets overwhelmed?",
-            "A sudden swoon might lead to this?"
+            "Sudden swoons might lead to these?"
         ],
-        "hard_text": "To drop out of sight suddenly?"
+        "hard_text": "Drops out of sight suddenly?"
     },
     {
         "word": "fairer",
@@ -77288,7 +77288,7 @@
         "clues": [
             "Start a fire or enthusiasm",
             "To set alight, literally or figuratively",
-            "What a match does to wood"
+            "Set wood alight with a match"
         ],
         "hard_text": "Spark that starts a flame or passion"
     },
@@ -77827,7 +77827,7 @@
         "clues": [
             "Raising agent for baked goods",
             "Ingredient for a fluffy outcome",
-            "What yeast does to dough"
+            "Aerate dough through fermentation"
         ],
         "hard_text": "To make rise, in baking"
     },
@@ -78199,7 +78199,7 @@
         "clues": [
             "Delivered item or message",
             "Deliberately delivered to someone's door",
-            "To send off like a letter, but not always safely"
+            "Sent off like a letter, but not always safely"
         ],
         "hard_text": "Sent through the postal system?"
     },
@@ -79264,7 +79264,7 @@
         "clues": [
             "Flipped breakfast favorite",
             "A breakfast classic, not an easy scramble",
-            "What a chef does to eggs in a pan"
+            "A folded egg dish made in a pan"
         ],
         "hard_text": "Egg dish that you can flip for breakfast"
     },
@@ -80045,7 +80045,7 @@
         "clues": [
             "Discipline for wrongdoing",
             "To impose consequences for bad behavior",
-            "What a judge does after a crime"
+            "Impose a penalty after a crime"
         ],
         "hard_text": "Act of making someone pay for misdeeds"
     },
@@ -80727,7 +80727,7 @@
         "clues": [
             "Impress greatly",
             "To shock with brilliance",
-            "What a magician does with tricks"
+            "Amaze an audience like a magician"
         ],
         "hard_text": "Leave someone in awe"
     },
@@ -80925,7 +80925,7 @@
         "clues": [
             "Misrepresent or mislead",
             "Altered appearance or sound",
-            "What a funhouse mirror does"
+            "Warp an image like a funhouse mirror"
         ],
         "hard_text": "Twist the truth"
     },
@@ -81727,7 +81727,7 @@
         "clues": [
             "Relating to a side position",
             "Not the main path but still significant",
-            "What a baseball player does to avoid a tag"
+            "A sideways move to avoid a tag"
         ],
         "hard_text": "Taking the side road in a decision"
     },
@@ -81857,7 +81857,7 @@
         "clues": [
             "Provide an account of events",
             "Guide through events with words",
-            "What a storyteller does best"
+            "Provide spoken commentary"
         ],
         "hard_text": "To tell a story with a voice"
     },
@@ -83295,7 +83295,7 @@
         "text": "To move on wheels or rollers",
         "hint": "Rolls or moves along, sometimes",
         "clues": [
-            "Rolls or moves along",
+            "Proceed with a rumbling gait",
             "Move slowly like a heavy cart?",
             "A child's toy that goes round?"
         ],
@@ -83682,7 +83682,7 @@
         "clues": [
             "Steered clear of trouble",
             "Avoided disaster with a swift movement",
-            "To prevent more than just a glance"
+            "Prevented more than just a glance"
         ],
         "hard_text": "Turned away from misfortune, not confrontation"
     },
@@ -84132,7 +84132,7 @@
         "hint": "Maybe popular packaging for drinks",
         "clues": [
             "Popular packaging for drinks",
-            "To capture essence, but kept inside?",
+            "Captured essence, but kept inside?",
             "Sealed tight, yet full of life?"
         ],
         "hard_text": "Contained liquid, but in what form?"
@@ -85220,7 +85220,7 @@
         "hint": "Went from one side to another",
         "clues": [
             "Marked with an X",
-            "To go against, but not in a fight",
+            "Went against, but not in a fight",
             "When two lines meet, what happens?"
         ],
         "hard_text": "Intersecting paths or a gesture of frustration"
@@ -85264,7 +85264,7 @@
         "hint": "Often flattened or defeated thoroughly",
         "clues": [
             "Flattened or defeated thoroughly",
-            "To break down, whether grapes or hopes",
+            "Broke down, whether grapes or hopes",
             "Pounded into submission, but not always in battle"
         ],
         "hard_text": "Reduced to tiny pieces, not just defeated"
@@ -87071,12 +87071,12 @@
     },
     {
         "word": "fleshed",
-        "text": "To provide detail or substance",
+        "text": "Provided detail or substance",
         "hint": "A sign of to add detail or context",
         "clues": [
-            "To add detail or context",
-            "To make more substantial in writing?",
-            "To develop the full form of an idea?"
+            "Added detail or context",
+            "Made more substantial in writing?",
+            "Developed the full form of an idea?"
         ],
         "hard_text": "Anatomy term for adding skin?"
     },
@@ -87098,7 +87098,7 @@
         "clues": [
             "Overcome with water or emotion",
             "Drenched beyond capacity?",
-            "To have an excess of something, like responses?"
+            "Had an excess of something, like responses?"
         ],
         "hard_text": "Inundated with excessive liquid"
     },
@@ -87251,7 +87251,7 @@
         "hint": "Led with confidence or boldness, sometimes",
         "clues": [
             "Led with confidence or boldness",
-            "To have a head-on approach?",
+            "Had a head-on approach?",
             "Dealt with directly or openly?"
         ],
         "hard_text": "Presented or faced in a bold manner?"
@@ -88187,7 +88187,7 @@
         "clues": [
             "Grasp or ownership",
             "An investment that yields security",
-            "To possess or maintain, often temporarily"
+            "Possessing or maintaining, often temporarily"
         ],
         "hard_text": "Grasping something tightly an asset"
     },
@@ -90022,7 +90022,7 @@
         "clues": [
             "Put into a larger context",
             "Put something in where it belongs?",
-            "To add discreetly?"
+            "Added discreetly?"
         ],
         "hard_text": "Placed within without a trace?"
     },
@@ -91815,7 +91815,7 @@
         "clues": [
             "Secured vessel's position",
             "Stabilized to resist movement",
-            "To secure firmly"
+            "Secured firmly"
         ],
         "hard_text": "Firmly held in place, like a ship"
     },
@@ -92518,7 +92518,7 @@
         "hint": "Term for a part of the body, perhaps",
         "clues": [
             "Term for a part of the body",
-            "To face head-on, not just a bird",
+            "Faced head-on, not just a bird",
             "Confronted with valor"
         ],
         "hard_text": "Fronted with a particular quality"
@@ -96540,7 +96540,7 @@
         "clues": [
             "Ongoing support or endurance",
             "Maintained effort or support?",
-            "To continue without faltering?"
+            "Endured without faltering?"
         ],
         "hard_text": "Kept up over time"
     },
@@ -96810,7 +96810,7 @@
     },
     {
         "word": "unleashed",
-        "text": "To let loose or set free",
+        "text": "Let loose or set free",
         "hint": "Synonym for liberated?",
         "clues": [
             "Synonym for liberated",
@@ -98214,7 +98214,7 @@
             "What happens after a cliffhanger",
             "Not finished, but still in progress"
         ],
-        "hard_text": "To carry on with a story"
+        "hard_text": "Carried on with a story"
     },
     {
         "word": "coriander",
@@ -98244,7 +98244,7 @@
         "hint": "Could be form of decay often seen in metals",
         "clues": [
             "Form of decay often seen in metals",
-            "What rust does to metal, metaphorically",
+            "Damage caused by rust on metal",
             "Gradual decline in quality, like friendships"
         ],
         "hard_text": "Slowly eating away at something's surface"
@@ -99078,7 +99078,7 @@
         "hint": "A sign of disappear gradually",
         "clues": [
             "Disappear gradually",
-            "What smoke does when the fire dies down",
+            "Disperse like smoke after a fire",
             "To scatter until nothing remains"
         ],
         "hard_text": "To vanish like morning mist"
@@ -104829,7 +104829,7 @@
         "hint": "Verify something's legitimacy, sometimes",
         "clues": [
             "Verify something's legitimacy",
-            "What a detective does to verify evidence",
+            "Verify evidence like a detective",
             "Make a claim credible"
         ],
         "hard_text": "Prove someone's identity in court"
@@ -105069,8 +105069,8 @@
         "hint": "A sign of captivating performance or show",
         "clues": [
             "Captivating performance or show",
-            "What a good movie does",
-            "To amuse or engage actively"
+            "Holding an audience like a good movie",
+            "Amusing or actively engaging"
         ],
         "hard_text": "Keeping an audience's attention"
     },
@@ -105290,7 +105290,7 @@
         "hard_text": "Not full, but in need of a cavity",
         "clues": [
             "To remove material from a surface",
-            "What a miner does to the ground",
+            "Excavate ground like a miner",
             "Create an empty space in something"
         ]
     },
@@ -107380,7 +107380,7 @@
         "hard_text": "Equipped with a sharp advantage",
         "clues": [
             "Refers to stylish fancy shoes",
-            "To have an edge in a situation",
+            "Had an edge in a situation",
             "Also means to have a gun"
         ]
     },
@@ -107722,7 +107722,7 @@
         "clues": [
             "Caught off guard and spun around",
             "Brought in on a fishing line",
-            "To be taken aback unexpectedly"
+            "Was taken aback unexpectedly"
         ]
     },
     {
@@ -109085,7 +109085,7 @@
         "hard_text": "Causes a disturbance, often in a playful way",
         "clues": [
             "Creates noise when agitated",
-            "To disturb the peace with sound",
+            "Disturbs the peace with sound",
             "Sound made by a child's toy"
         ]
     },
@@ -117122,7 +117122,7 @@
         "word": "CONTORTION",
         "text": "Twisting or bending of the body",
         "hint": "twist",
-        "hard_text": "What a pretzel does to itself?",
+        "hard_text": "A pretzel-like twist?",
         "clues": [
             "Extreme bending of limbs",
             "Gymnastic flexibility demonstration",
@@ -124097,7 +124097,7 @@
         "hint": "repeating",
         "hard_text": "A process that builds upon itself",
         "clues": [
-            "Describes a method in cycles",
+            "Method involving repeated cycles",
             "Repeatedly refining an approach",
             "To do again and again"
         ]
@@ -127711,7 +127711,7 @@
     },
     {
         "word": "STRANGLES",
-        "text": "To choke or restrict",
+        "text": "Chokes or restricts",
         "hint": "suffocates",
         "hard_text": "Holds tightly, but not in love",
         "clues": [
@@ -131453,7 +131453,7 @@
         "word": "HOARDING",
         "text": "Accumulation of items for future use",
         "hint": "storage",
-        "hard_text": "To store away for future needs",
+        "hard_text": "Storing away for future needs",
         "clues": [
             "Stockpiling for a rainy day",
             "Gathering and saving excessively",
@@ -136460,7 +136460,7 @@
         "hard_text": "Examined something in the past",
         "clues": [
             "Past tense of observe",
-            "To have cast an eye",
+            "Had cast an eye",
             "Checked something out previously"
         ]
     },
@@ -136668,7 +136668,7 @@
         "hint": "First step in a sequence",
         "hard_text": "The act of commencing an action",
         "clues": [
-            "To begin an action",
+            "Beginning an action",
             "Initiating a process",
             "Setting something in motion"
         ]
@@ -136734,7 +136734,7 @@
         "hint": "produced",
         "hard_text": "Made something new or original",
         "clues": [
-            "To have initiated or formed",
+            "Had initiated or formed",
             "Brought forth from imagination",
             "Brought into being"
         ]
@@ -136745,7 +136745,7 @@
         "hint": "tracked",
         "hard_text": "Past tense of trail or observe",
         "clues": [
-            "To have gone after",
+            "Had gone after",
             "Came in sequence",
             "Chased or pursued someone"
         ]
@@ -139519,7 +139519,7 @@
         "clues": [
             "Disruption in continuity",
             "A sudden rupture",
-            "To breach or split"
+            "Breaching or splitting"
         ]
     },
     {
@@ -139669,7 +139669,7 @@
         "word": "DROPPED",
         "text": "Omitted from a team or list",
         "hint": "Lost grip on something",
-        "hard_text": "To let go suddenly",
+        "hard_text": "Let go suddenly",
         "clues": [
             "Let something go",
             "Fell unexpectedly",
@@ -142707,7 +142707,7 @@
         "hint": "Not departing soon",
         "hard_text": "Not leaving, but not always settled",
         "clues": [
-            "To continue being present",
+            "Continuing being present",
             "Taking root for a time",
             "Residing temporarily"
         ]
@@ -143376,7 +143376,7 @@
         "word": "ENTITLED",
         "text": "Given a right or claim",
         "hint": "Authorized",
-        "hard_text": "To be granted a title or privilege",
+        "hard_text": "Was granted a title or privilege",
         "clues": [
             "Privileged by name",
             "Designated to receive something",
@@ -143959,7 +143959,7 @@
         "word": "EXISTS",
         "text": "Can be found in reality rather than theory",
         "hint": "Lives",
-        "hard_text": "To have reality or presence",
+        "hard_text": "Occurs beyond mere theory",
         "clues": [
             "Has being or presence",
             "Occurs in reality",
@@ -144266,7 +144266,7 @@
         "word": "ROLLING",
         "text": "Process of flattening dough with a cylindrical pin",
         "hint": "Like a ball in motion",
-        "hard_text": "To turn over repeatedly",
+        "hard_text": "Moving onward on wheels",
         "clues": [
             "Spinning or turning over",
             "Movement in a circular path",
@@ -144632,7 +144632,7 @@
         "hard_text": "Putting a lid on a situation",
         "clues": [
             "Hiding beneath a surface",
-            "What a blanket does",
+            "Enveloping something like a blanket",
             "Enveloping an exposed area"
         ]
     },
@@ -145017,7 +145017,7 @@
         "hard_text": "Triumphing over an opponent",
         "clues": [
             "Overcoming in a contest",
-            "What a drum does rhythmically",
+            "Sounding rhythmically like a drum",
             "Winning by a large margin"
         ]
     },
@@ -145827,7 +145827,7 @@
         "word": "DESCRIBES",
         "text": "Gives details about",
         "hint": "explains",
-        "hard_text": "To characterize or portray something",
+        "hard_text": "Characterizes or portrays something",
         "clues": [
             "Presents the qualities of something",
             "Used in storytelling",
@@ -148686,7 +148686,7 @@
         "word": "CREATES",
         "text": "Assigns a new title, as a monarch does",
         "hint": "Develops a new concept",
-        "hard_text": "To make or form anew",
+        "hard_text": "Makes or forms anew",
         "clues": [
             "Generates or produces",
             "Brings forth new ideas",
@@ -148864,7 +148864,7 @@
         "hint": "Boosting or supporting an effort",
         "hard_text": "Raising awareness for a particular initiative",
         "clues": [
-            "To elevate a product's visibility",
+            "Elevating a product's visibility",
             "Act of advocating for something",
             "Enhancing public recognition of an event"
         ]
@@ -148895,9 +148895,9 @@
         "word": "REPLIED",
         "text": "Sent a response to a message or email",
         "hint": "Responded",
-        "hard_text": "To answer someone after a prompt",
+        "hard_text": "Answered someone after a prompt",
         "clues": [
-            "To give a response in conversation",
+            "Gave a response in conversation",
             "Answered in return to a question",
             "Engaged in back-and-forth communication"
         ]
@@ -148932,7 +148932,7 @@
         "clues": [
             "Acts that convey information non-verbally",
             "Communication through visual or auditory cues",
-            "To alert someone through a sign"
+            "Alerts someone through a sign"
         ]
     },
     {
@@ -149040,7 +149040,7 @@
         "hint": "Serene",
         "hard_text": "Maintaining poise in a challenging situation",
         "clues": [
-            "To be collected and self-possessed",
+            "Was collected and self-possessed",
             "In a state of tranquility under pressure",
             "Not easily rattled or disturbed"
         ]
@@ -149093,9 +149093,9 @@
         "word": "EXECUTED",
         "text": "Carried out or performed a task",
         "hint": "Completed a legal sentence",
-        "hard_text": "To put into effect a plan or order",
+        "hard_text": "Implemented a plan or order",
         "clues": [
-            "To carry out a directive",
+            "Obeyed a directive",
             "Final act in a legal context",
             "Implemented with precision"
         ]
@@ -149139,18 +149139,18 @@
         "hint": "Put together for a purpose",
         "hard_text": "Bringing together from different locations",
         "clues": [
-            "To accumulate from various places",
+            "Accumulated from various places",
             "Assembled items or people in one place",
-            "To convene or compile resources"
+            "Convened or compiled resources"
         ]
     },
     {
         "word": "IGNORED",
         "text": "Disregarded or overlooked intentionally",
         "hint": "Neglected",
-        "hard_text": "To pay no attention to something",
+        "hard_text": "Paid no attention to something",
         "clues": [
-            "To refrain from noticing or addressing",
+            "Refrained from noticing or addressing",
             "Overlooked on purpose",
             "Dismissed without consideration"
         ]
@@ -150181,7 +150181,7 @@
         "word": "APPLIES",
         "text": "Puts into effect or use",
         "hint": "utilizes",
-        "hard_text": "To make relevant in context",
+        "hard_text": "Makes relevant in context",
         "clues": [
             "Relates to a situation",
             "Brings into practical use",
@@ -150247,7 +150247,7 @@
         "word": "CARRIES",
         "text": "Has a product available for sale",
         "hint": "Moves from one place to another",
-        "hard_text": "To bear or convey something",
+        "hard_text": "Bears or conveys something",
         "clues": [
             "Holds something while moving",
             "Conveys an object or idea",
@@ -150448,7 +150448,7 @@
         "hard_text": "Illegally taking something that isn't yours",
         "clues": [
             "Taking what doesn't belong",
-            "To thieve or pilfer",
+            "Thieving or pilfering",
             "Unlawfully appropriating property"
         ]
     },
@@ -151864,11 +151864,11 @@
         "word": "RECEIVES",
         "text": "Gets or accepts something",
         "hint": "Takes",
-        "hard_text": "To take in or get something",
+        "hard_text": "Takes in or gets something",
         "clues": [
-            "To come into possession of",
+            "Comes into possession of",
             "Awaits a delivery",
-            "To accept a gift graciously"
+            "Accepts a gift graciously"
         ]
     },
     {
@@ -151919,7 +151919,7 @@
         "word": "SPREADING",
         "text": "Extending or distributing widely",
         "hint": "Dispersing",
-        "hard_text": "To expand across an area",
+        "hard_text": "Expanding across an area",
         "clues": [
             "Distributing over a surface",
             "Increasing in area",
@@ -152736,7 +152736,7 @@
         "hard_text": "An action in sports",
         "clues": [
             "Football action",
-            "To hit with a foot",
+            "Hitting with a foot",
             "A move in martial arts"
         ]
     },
@@ -152843,7 +152843,7 @@
         "word": "REACHES",
         "text": "Sections of river between bends or locks",
         "hint": "stretches",
-        "hard_text": "To arrive at a destination",
+        "hard_text": "Arrives at a destination",
         "clues": [
             "Grasps or touches",
             "Attains a goal",
@@ -152988,7 +152988,7 @@
         "hint": "fears",
         "hard_text": "Things that cause distress",
         "clues": [
-            "To fret over something",
+            "Frets over something",
             "Mental preoccupations",
             "Sources of unease"
         ]
@@ -153001,7 +153001,7 @@
         "clues": [
             "Coming into view",
             "Showing up unexpectedly",
-            "To be present visibly"
+            "Being present visibly"
         ]
     },
     {
@@ -153272,7 +153272,7 @@
         "word": "STATING",
         "text": "Setting out terms or facts explicitly",
         "hint": "declaring",
-        "hard_text": "To articulate facts or opinions plainly",
+        "hard_text": "Articulating facts or opinions plainly",
         "clues": [
             "Making a claim or assertion",
             "Presenting information formally",
@@ -153888,7 +153888,7 @@
         "word": "DOZENS",
         "text": "Quantities frequently used for eggs and bakery goods",
         "hint": "many",
-        "hard_text": "A common count for eggs or roses",
+        "hard_text": "Common counts for eggs or roses",
         "clues": [
             "Sets containing twelve items each",
             "Count often seen in bakeries",
@@ -154790,11 +154790,11 @@
         "word": "REFLECTS",
         "text": "Shows qualities or consequences of",
         "hint": "mirrors",
-        "hard_text": "To cast back light or thought",
+        "hard_text": "Casts back light or thought",
         "clues": [
-            "To think deeply about something",
+            "Thinks deeply about something",
             "Bounces back from a surface",
-            "To represent in a new light"
+            "Represents in a new light"
         ]
     },
     {
@@ -154848,7 +154848,7 @@
         "hard_text": "Throwing away resources unnecessarily",
         "clues": [
             "Letting go of value or time",
-            "To use inefficiently or recklessly",
+            "Using inefficiently or recklessly",
             "Allowing to go to waste"
         ]
     },
@@ -155043,7 +155043,7 @@
         "word": "LIFTED",
         "text": "Stole an item, informally",
         "hint": "Raised, as in a burden",
-        "hard_text": "To move upwards from below",
+        "hard_text": "Moved upwards from below",
         "clues": [
             "Hoisted to a higher position",
             "Raised, often with effort",
@@ -155728,7 +155728,7 @@
         "hard_text": "An urgent matter requires immediate attention",
         "clues": [
             "An immediate issue that can't be ignored",
-            "To apply heat and force for a flat result",
+            "Applying heat and force for a flat result",
             "Demanding quick resolution or response"
         ]
     },
@@ -155772,7 +155772,7 @@
         "hard_text": "A physical reaction often due to emotion",
         "clues": [
             "Vibrating in response to fear",
-            "To move with quick, short motions",
+            "Moving with quick, short motions",
             "A gesture of greeting or farewell"
         ]
     },
@@ -155848,7 +155848,7 @@
         "hint": "flings",
         "hard_text": "Launches objects through the air",
         "clues": [
-            "To cast away with a sudden motion",
+            "Casts away with a sudden motion",
             "Discards items in a swift manner",
             "Motions often seen in sports"
         ]
@@ -156957,11 +156957,11 @@
         "word": "RAISES",
         "text": "Lifts or increases something",
         "hint": "elevates",
-        "hard_text": "To bring up or enhance",
+        "hard_text": "Brings up or enhances",
         "clues": [
             "Increases salary or stature",
             "Brings something higher",
-            "To elevate one's position"
+            "Elevates one's position"
         ]
     },
     {
@@ -159359,7 +159359,7 @@
         "clues": [
             "Developed a fissure or break",
             "Surface damage without total failure",
-            "To have a small break or split"
+            "Had a small break or split"
         ]
     },
     {
@@ -160400,7 +160400,7 @@
         "word": "PERFORMS",
         "text": "Carries out a task or function",
         "hint": "Executes",
-        "hard_text": "To carry out an act or show",
+        "hard_text": "Carries out an act or show",
         "clues": [
             "Completes a task skillfully",
             "Delivers a performance",
@@ -160719,7 +160719,7 @@
         "word": "CLOSES",
         "text": "Shuts a shop at the end of day",
         "hint": "Finishes",
-        "hard_text": "To shut or conclude",
+        "hard_text": "Shuts or concludes",
         "clues": [
             "Ends or terminates something",
             "Brings to a halt",
@@ -161742,7 +161742,7 @@
         "word": "ADMITS",
         "text": "Confesses or acknowledges",
         "hint": "Fesses up to something",
-        "hard_text": "To let the truth slip out",
+        "hard_text": "Lets the truth slip out",
         "clues": [
             "Acknowledges a fact reluctantly",
             "Grants entry or access to information",
@@ -162446,7 +162446,7 @@
         "word": "REMEMBERS",
         "text": "Recalls or retains in memory",
         "hint": "Calls to mind an earlier event",
-        "hard_text": "To bring back to mind past events",
+        "hard_text": "Revisits an earlier event mentally",
         "clues": [
             "Brings to mind a past experience",
             "Retains knowledge of something",
@@ -164572,7 +164572,7 @@
         "hard_text": "Results from an investment or effort",
         "clues": [
             "Generates or brings forth results",
-            "To produce or create, often in farming",
+            "Produces or creates, often in farming",
             "Gives in, but not in an argument"
         ]
     },
@@ -165442,7 +165442,7 @@
         "clues": [
             "Shifting smoothly from one place to another",
             "Movement characterized by ease and flow",
-            "To move down a slope effortlessly"
+            "Moving down a slope effortlessly"
         ]
     },
     {
@@ -165625,11 +165625,11 @@
         "word": "CROSSES",
         "text": "Intersects or marks with a cross",
         "hint": "Lines that create an X shape",
-        "hard_text": "To meet or overlap in a crisscross manner",
+        "hard_text": "Meets or overlaps in a crisscross manner",
         "clues": [
             "Marks of faith or intersection points",
             "Where paths meet at right angles",
-            "To go over or mark out"
+            "Goes over or marks out"
         ]
     },
     {
@@ -165647,7 +165647,7 @@
         "word": "DEFINES",
         "text": "Specifies the limits of a project",
         "hint": "describes",
-        "hard_text": "To clarify boundaries or characteristics",
+        "hard_text": "Clarifies boundaries or characteristics",
         "clues": [
             "Sets the parameters of a concept",
             "Establishes what something is",
@@ -165658,7 +165658,7 @@
         "word": "DELIVERS",
         "text": "Brings or hands over to a destination",
         "hint": "Transports to a recipient",
-        "hard_text": "To provide something at its intended place",
+        "hard_text": "Provides something at its intended place",
         "clues": [
             "Brings packages right to your door",
             "Conveys messages or goods",
@@ -165735,9 +165735,9 @@
         "word": "HONORS",
         "text": "Recognizes achievements or qualities",
         "hint": "Distinctions for achievements",
-        "hard_text": "To give distinction or praise",
+        "hard_text": "Gives distinction or praise",
         "clues": [
-            "To show respect and admiration",
+            "Shows respect and admiration",
             "Awards given for excellence",
             "Celebrates notable accomplishments"
         ]
@@ -165801,7 +165801,7 @@
         "word": "LOWERED",
         "text": "Reduced a flag to half-mast",
         "hint": "Maybe dropped",
-        "hard_text": "To bring something down in elevation",
+        "hard_text": "Brought something down in elevation",
         "clues": [
             "Reduced in height or intensity",
             "Diminished from a higher point",
@@ -165812,7 +165812,7 @@
         "word": "MANNING",
         "text": "Staffing or operating a position",
         "hint": "Providing personnel for a duty",
-        "hard_text": "To provide personnel for a task or duty",
+        "hard_text": "Providing personnel for a task or duty",
         "clues": [
             "Occupying a role or responsibility",
             "Ensuring a team is ready for action",
@@ -165900,7 +165900,7 @@
         "word": "PATCHES",
         "text": "Pieces used to mend or cover",
         "hint": "repairs",
-        "hard_text": "To fix something with a smaller piece",
+        "hard_text": "Fixes something with a smaller piece",
         "clues": [
             "Small sections used to cover holes",
             "What you use to mend torn fabric",
@@ -167231,7 +167231,7 @@
         "word": "CONVEY",
         "text": "Communicate or express",
         "hint": "Deliver a message or meaning",
-        "hard_text": "Transmits information or feelings",
+        "hard_text": "Transmit information or feelings",
         "clues": [
             "To make known or show",
             "Express a message clearly",
@@ -167553,7 +167553,7 @@
         "hard_text": "Sound made when a balloon meets its end",
         "clues": [
             "Explosive sound in a kitchen",
-            "What popcorn does when heated",
+            "Bursting open under heat",
             "Quickly emerging unexpectedly"
         ]
     },
@@ -168839,7 +168839,7 @@
         "hint": "Act of gaining something new",
         "hard_text": "Taking over control or ownership",
         "clues": [
-            "To get or come into possession of",
+            "Getting or coming into possession of",
             "Securing an asset or knowledge",
             "The process of obtaining through effort"
         ]
@@ -168859,11 +168859,11 @@
         "word": "ADMITTING",
         "text": "Confessing or allowing entry",
         "hint": "Acknowledging a mistake",
-        "hard_text": "To acknowledge or let in",
+        "hard_text": "Permitting access through a doorway",
         "clues": [
             "Granting entry or confirming a truth",
             "Recognizing one's fault or allowing access",
-            "To concede a point in an argument"
+            "Conceding a point in an argument"
         ]
     },
     {
@@ -168903,7 +168903,7 @@
         "word": "BANNING",
         "text": "Prohibiting or forbidding something",
         "hint": "Legally restricting an action",
-        "hard_text": "To declare something off-limits",
+        "hard_text": "Declaring something off-limits",
         "clues": [
             "Making an activity illegal or disallowed",
             "Outlawing practices deemed harmful or unwanted",
@@ -169534,7 +169534,7 @@
         "clues": [
             "Reproduced from an original",
             "Imitated or mimicked closely",
-            "To take as a model"
+            "Took as a model"
         ]
     },
     {
@@ -170025,7 +170025,7 @@
         "word": "ASSUMES",
         "text": "Adopts responsibility for a debt",
         "hint": "presumes",
-        "hard_text": "To accept without proof",
+        "hard_text": "Accepts without proof",
         "clues": [
             "Takes on a role or responsibility",
             "Acts as if something is true",
@@ -170126,7 +170126,7 @@
         "hint": "initiated",
         "hard_text": "The first step in a process",
         "clues": [
-            "To kick off an event or activity",
+            "Kicked off an event or activity",
             "Officially started something new",
             "Inaugurated with a ceremony"
         ]
@@ -170302,7 +170302,7 @@
         "hint": "diminishing",
         "hard_text": "Reducing in height or intensity",
         "clues": [
-            "To make something less high",
+            "Making something less high",
             "Decreasing altitude or status",
             "Moving downwards in a controlled manner"
         ]
@@ -170897,7 +170897,7 @@
         "hard_text": "Portrayed in art or narrative",
         "clues": [
             "Represented visually or descriptively",
-            "To show in a specific manner",
+            "Showed in a specific manner",
             "Illustrated with detail"
         ]
     },
@@ -170953,7 +170953,7 @@
         "clues": [
             "Shattered with force",
             "Detonated with great impact",
-            "To expand and burst outward"
+            "Expanded and burst outward"
         ]
     },
     {
@@ -171501,7 +171501,7 @@
         "hard_text": "Grabbing hold or making a record",
         "clues": [
             "Taking in or recording for later",
-            "To trap or ensnare an object",
+            "Trapping or ensnaring an object",
             "Making a permanent impression of"
         ]
     },
@@ -171611,7 +171611,7 @@
         "hard_text": "Went over the allowable threshold",
         "clues": [
             "Surpassed expectations or limits",
-            "To go beyond what was set",
+            "Passed a previously set point",
             "Outperformed a predetermined standard"
         ]
     },
@@ -171798,7 +171798,7 @@
         "clues": [
             "Exerts force to move forward",
             "Action against resistance",
-            "To shove with effort"
+            "Shoves with effort"
         ]
     },
     {
@@ -171838,11 +171838,11 @@
         "word": "RESUMED",
         "text": "Began again after a pause",
         "hint": "Restarted",
-        "hard_text": "To continue after an interruption",
+        "hard_text": "Continued after an interruption",
         "clues": [
             "Picked up where left off",
             "Started again after a break",
-            "To continue an activity"
+            "Continued an activity"
         ]
     },
     {
@@ -173685,7 +173685,7 @@
         "word": "CONFESSED",
         "text": "Admitted wrongdoing",
         "hint": "acknowledged",
-        "hard_text": "To reveal guilt or secrets openly",
+        "hard_text": "Revealed guilt or secrets openly",
         "clues": [
             "Came clean about a hidden truth",
             "Said out loud what was kept quiet",
@@ -173843,7 +173843,7 @@
         "clues": [
             "Key ingredient in many desserts",
             "Found in bunches on vines",
-            "A popular fruit for snacking and juicing"
+            "Popular fruits for snacking and juicing"
         ]
     },
     {
@@ -174392,7 +174392,7 @@
         "hard_text": "Manufactured or formed through effort",
         "clues": [
             "Crafted with strength and skill",
-            "To shape or form, often with heat",
+            "Shaped or formed, often with heat",
             "Imitation created with deceptive intent"
         ]
     },
@@ -174567,8 +174567,8 @@
         "hint": "takes out",
         "hard_text": "Acts to clear from a location",
         "clues": [
-            "To get rid of something unwanted",
-            "To extract from a place",
+            "Gets rid of something unwanted",
+            "Extracts from a place",
             "Clears away or withdraws"
         ]
     },
@@ -174590,7 +174590,7 @@
         "hard_text": "Joined again after a separation",
         "clues": [
             "Coming together after a period apart",
-            "To meet again after a long time",
+            "Met again after a long time",
             "Reconnecting after a split"
         ]
     },
@@ -176578,7 +176578,7 @@
         "word": "PROPOSING",
         "text": "Suggesting a plan or idea",
         "hint": "Making an offer, often romantic",
-        "hard_text": "To put forward a potential commitment",
+        "hard_text": "Putting forward a potential commitment",
         "clues": [
             "Making a formal suggestion",
             "Offering a plan for consideration",
@@ -176691,8 +176691,8 @@
         "hard_text": "Distributing something widely",
         "clues": [
             "Extends over a surface",
-            "To disseminate widely",
-            "To open out or unfold"
+            "Disseminates widely",
+            "Opens out or unfolds"
         ]
     },
     {
@@ -176763,13 +176763,13 @@
     },
     {
         "word": "TAPPED",
-        "text": "To lightly strike or touch",
+        "text": "Lightly struck or touched",
         "hint": "Lightly hit",
         "hard_text": "Accessing something electronically",
         "clues": [
             "Gently hit or struck",
-            "To access a resource",
-            "To connect to a source"
+            "Accessed a resource",
+            "Connected to a source"
         ]
     },
     {
@@ -176823,7 +176823,7 @@
         "hard_text": "Determines how heavy something is",
         "clues": [
             "Assesses an object's mass",
-            "To find out heaviness",
+            "Finds out heaviness",
             "Measures mass in units"
         ]
     },
@@ -176867,8 +176867,8 @@
         "hard_text": "Changing shape without breaking",
         "clues": [
             "Alteration in straightness",
-            "To change direction or shape",
-            "What a flexible object does"
+            "Changing course or becoming curved",
+            "Flexing under pressure"
         ]
     },
     {
@@ -176911,7 +176911,7 @@
         "hard_text": "What keeps something within its territory",
         "clues": [
             "Defined edges of an area",
-            "To leap forward energetically",
+            "Leaps forward energetically",
             "The border of a defined space"
         ]
     },
@@ -176923,7 +176923,7 @@
         "clues": [
             "Categories of domesticated animals",
             "Lines of descent in genetics",
-            "To produce offspring intentionally"
+            "Produces offspring intentionally"
         ]
     },
     {
@@ -176956,7 +176956,7 @@
         "clues": [
             "Making a replica of a document",
             "What students might do in exams",
-            "To mimic someone else's actions"
+            "Mimicking someone else's actions"
         ]
     },
     {
@@ -177043,7 +177043,7 @@
         "hard_text": "Taking advantage of someone or something",
         "clues": [
             "Extracting value from others without fairness",
-            "To make unfair use of resources",
+            "Made unfair use of resources",
             "Using someone for personal gain"
         ]
     },
@@ -177051,11 +177051,11 @@
         "word": "EXTRACTED",
         "text": "Removed or drawn out",
         "hint": "Taken out",
-        "hard_text": "To take away from a larger whole",
+        "hard_text": "Took away from a larger whole",
         "clues": [
             "Pulled out from a source",
             "Obtained by removing or separating",
-            "To derive something from a larger entity"
+            "Derived something from a larger entity"
         ]
     },
     {
@@ -177086,9 +177086,9 @@
         "hint": "Blinking",
         "hard_text": "Brief illumination that captures attention",
         "clues": [
-            "What a camera does for a photo",
-            "What a neon sign does",
-            "To signal with quick light sequences"
+            "Producing a camera's burst of light",
+            "Blinking like a neon sign",
+            "Signalling with quick light sequences"
         ]
     },
     {
@@ -177108,7 +177108,7 @@
         "hint": "Allowing",
         "hard_text": "Bestowing a favor or opportunity",
         "clues": [
-            "To give a request or wish",
+            "Giving approval to a request",
             "Conceding a right to someone",
             "What a judge may do in court"
         ]
@@ -178363,7 +178363,7 @@
         "hard_text": "What sets one apart from another?",
         "clues": [
             "Varies from a standard",
-            "To be unlike something else",
+            "Is unlike something else",
             "Changes from the expected"
         ]
     },
@@ -178604,7 +178604,7 @@
         "hint": "Gears up for a task",
         "hard_text": "Sets the stage for what's to come",
         "clues": [
-            "To make arrangements in advance",
+            "Makes arrangements in advance",
             "Readies for an event",
             "Gets set for what's next"
         ]
@@ -178657,7 +178657,7 @@
         "word": "SCARES",
         "text": "Frightens someone with a sudden surprise",
         "hint": "frights",
-        "hard_text": "To provoke anxiety or trepidation",
+        "hard_text": "Provokes anxiety or trepidation",
         "clues": [
             "Intimidates or terrifies",
             "Surprises with fear",
@@ -178813,7 +178813,7 @@
         "hint": "Oscillates",
         "hard_text": "Arcs in a rhythmic motion",
         "clues": [
-            "A motion seen in a playground",
+            "Playground seats suspended by chains",
             "Changes direction with ease",
             "Moves like a pendulum"
         ]
@@ -179405,7 +179405,7 @@
         "word": "SHAKES",
         "text": "Milk-based drinks blended with ice cream",
         "hint": "trembles",
-        "hard_text": "To vibrate or jolt suddenly",
+        "hard_text": "Vibrates or jolts suddenly",
         "clues": [
             "Done in excitement or fear",
             "Moves rapidly, either side to side or up and down",
@@ -179739,7 +179739,7 @@
         "clues": [
             "Money set aside in an account",
             "Placed as a security or guarantee",
-            "To put in a safe location"
+            "Put in a safe location"
         ]
     },
     {
@@ -180129,7 +180129,7 @@
     },
     {
         "word": "SPARED",
-        "text": "To keep from harm or punishment",
+        "text": "Kept from harm or punishment",
         "hint": "saved",
         "hard_text": "Left out of a tough spot",
         "clues": [
@@ -180658,11 +180658,11 @@
         "word": "REPLACES",
         "text": "Substitutes one thing for another",
         "hint": "Swap",
-        "hard_text": "To take the place of something",
+        "hard_text": "Takes the place of something",
         "clues": [
-            "To put back something new",
-            "To exchange one for another",
-            "To supersede with a new item"
+            "Puts back something new",
+            "Exchanges one for another",
+            "Supersedes with a new item"
         ]
     },
     {
@@ -180702,7 +180702,7 @@
         "word": "SCALING",
         "text": "Increasing in size or extent",
         "hint": "Ascend a steep surface",
-        "hard_text": "To rise to a higher level",
+        "hard_text": "Rising to a higher level",
         "clues": [
             "Climbing to the top of something",
             "Increasing proportionally",
@@ -181065,11 +181065,11 @@
         "word": "COMPRISE",
         "text": "Contain as the constituent parts of a whole",
         "hint": "Make up",
-        "hard_text": "Forms a whole from various parts",
+        "hard_text": "Form a whole from various parts",
         "clues": [
             "Composed of several elements",
             "To contain or consist of",
-            "Includes as components"
+            "Include as components"
         ]
     },
     {
@@ -181725,9 +181725,9 @@
         "word": "BOASTS",
         "text": "Contains an impressive feature, as a hotel might",
         "hint": "proud claims",
-        "hard_text": "To speak with excessive pride",
+        "hard_text": "Speaks with excessive pride",
         "clues": [
-            "To show off one's accomplishments",
+            "Shows off one's accomplishments",
             "Proudly talks about one's merits",
             "Vents about greatness to others"
         ]
@@ -181784,7 +181784,7 @@
         "clues": [
             "Becomes apparent or visible",
             "Coming out from a hidden state",
-            "To develop from a background"
+            "Develops from a background"
         ]
     },
     {
@@ -181804,7 +181804,7 @@
         "hint": "Reveals inner thoughts",
         "hard_text": "Articulates sentiments in various forms",
         "clues": [
-            "To share emotions with others",
+            "Shares emotions with others",
             "Communicates ideas through actions",
             "Demonstrates feelings clearly"
         ]
@@ -183631,7 +183631,7 @@
         "hard_text": "A tremor felt through the air",
         "clues": [
             "Sound waves in motion",
-            "What your phone does for alerts",
+            "A phone's alerting movement",
             "Movement felt in a surface"
         ]
     },
@@ -186465,7 +186465,7 @@
         "word": "REPLICATE",
         "text": "Make a copy of",
         "hint": "Duplicate",
-        "hard_text": "Creates a carbon copy",
+        "hard_text": "Create a carbon copy",
         "clues": [
             "Imitate or reproduce",
             "Mirror image in biology",
@@ -187282,7 +187282,7 @@
         "hard_text": "Where one makes their home",
         "clues": [
             "Occupies a particular residence",
-            "To be situated in a location",
+            "Is situated in a location",
             "Inhabit a specific area"
         ]
     },
@@ -187337,7 +187337,7 @@
         "hard_text": "Vocal outbursts often expressing strong emotion",
         "clues": [
             "Calls out loudly, often in excitement",
-            "To raise one's voice significantly",
+            "Raises one's voice significantly",
             "Loud calls expressing urgency"
         ]
     },
@@ -187447,7 +187447,7 @@
         "hard_text": "Put up with, even if unwelcome",
         "clues": [
             "Accepted behavior that is not liked",
-            "To bear something unpleasant",
+            "Bore something unpleasant",
             "Allowed to continue despite objections"
         ]
     },
@@ -189491,7 +189491,7 @@
         "hint": "notifies",
         "hard_text": "Acts of conveying knowledge or news",
         "clues": [
-            "To make someone aware of facts",
+            "Makes someone aware of facts",
             "Delivering news or updates",
             "Providing information to another"
         ]
@@ -189533,7 +189533,7 @@
         "word": "LICKING",
         "text": "Act of using the tongue on something",
         "hint": "Action of a playful pet",
-        "hard_text": "What a cat does to its fur",
+        "hard_text": "Suffering a decisive defeat",
         "clues": [
             "Tasting action often seen in pets",
             "Cleaning method involving the tongue",
@@ -189955,7 +189955,7 @@
         "clues": [
             "Gave up possession",
             "Let someone pass by",
-            "To produce a return or outcome"
+            "Produced a return or outcome"
         ]
     },
     {
@@ -190097,7 +190097,7 @@
         "hard_text": "Applying a tool to a surface lightly",
         "clues": [
             "Action done with a toothbrush",
-            "To remove dust or dirt gently",
+            "Removing dust or dirt gently",
             "Lightly touching to achieve a clean finish"
         ]
     },
@@ -191318,7 +191318,7 @@
         "hard_text": "Once closed, now back in action",
         "clues": [
             "Returned to activity after a pause",
-            "To open once more after being shut",
+            "Opened once more after being shut",
             "Resuming operations after a break"
         ]
     },
@@ -191330,7 +191330,7 @@
         "clues": [
             "Nullified an earlier decision",
             "Officially rescinded or undone",
-            "To take away rights or privileges"
+            "Took away rights or privileges"
         ]
     },
     {
@@ -191931,7 +191931,7 @@
         "word": "PATROLS",
         "text": "Regularly monitoring an area",
         "hint": "watch",
-        "hard_text": "To guard or oversee",
+        "hard_text": "Guards or oversees",
         "clues": [
             "Surveillance activity",
             "Guarding a territory",
@@ -192935,7 +192935,7 @@
         "hard_text": "Outperforms in a competition",
         "clues": [
             "In card games, beats other cards",
-            "To prevail over in a contest",
+            "Prevails over in a contest",
             "Winning move in a strategic play"
         ]
     },
@@ -193386,7 +193386,7 @@
         "hard_text": "The act of assembling things into a unit",
         "clues": [
             "The process of organizing into sets or clusters",
-            "To categorize items based on shared traits",
+            "Categorizing items based on shared traits",
             "Creating a collective from various individual parts"
         ]
     },
@@ -193574,7 +193574,7 @@
         "clues": [
             "Refers to ears, but can apply elsewhere",
             "Created a hole through an object",
-            "To have openings created through a surface"
+            "Had openings created through a surface"
         ]
     },
     {
@@ -193603,11 +193603,11 @@
         "word": "PRESIDING",
         "text": "In charge of a meeting or gathering",
         "hint": "leading",
-        "hard_text": "To oversee proceedings, directing the flow",
+        "hard_text": "Overseeing proceedings, directing the flow",
         "clues": [
             "In a position of authority during an event",
             "Acting as the chair, guiding discussions",
-            "To lead a session, ensuring order and focus"
+            "Leading a session, ensuring order and focus"
         ]
     },
     {
@@ -194034,7 +194034,7 @@
         "hint": "splits",
         "hard_text": "Cuts something in two or more",
         "clues": [
-            "To separate or partition",
+            "Separates or partitions",
             "Breaks into distinct sections",
             "Creates gaps between groups"
         ]
@@ -194890,7 +194890,7 @@
         "word": "DEPENDED",
         "text": "Relied upon for support",
         "hint": "counted on",
-        "hard_text": "To be contingent on someone or something",
+        "hard_text": "Was contingent on someone or something",
         "clues": [
             "Relying on another for assistance",
             "Trusting someone to fulfill a role",
@@ -195828,17 +195828,17 @@
         "clues": [
             "Smashed or beaten, often in construction",
             "Intoxicated, as if struck by a drink",
-            "To be hit hard or inebriated"
+            "Was hit hard or inebriated"
         ]
     },
     {
         "word": "HARASSING",
         "text": "Persistently annoying or intimidating",
         "hint": "Bullying",
-        "hard_text": "To bother someone without relent",
+        "hard_text": "Bothering someone without relent",
         "clues": [
             "Repeatedly bothering someone, causing distress",
-            "To pester with unwanted attention",
+            "Pestering with unwanted attention",
             "Creating discomfort through nagging actions"
         ]
     },
@@ -195881,7 +195881,7 @@
         "hint": "Cloaked in warmth",
         "hard_text": "Wrapped arms around someone warmly",
         "clues": [
-            "To hold someone closely in affection",
+            "Held someone closely in affection",
             "Encircled by arms for comfort",
             "A physical expression of warmth and love"
         ]
@@ -195971,7 +195971,7 @@
         "clues": [
             "Prolonged presence, often unwelcome",
             "Remaining in one space despite the time",
-            "To delay departure, often aimlessly"
+            "Delaying departure, often aimlessly"
         ]
     },
     {
@@ -197389,7 +197389,7 @@
         "hard_text": "Wandered or flowed without direction",
         "clues": [
             "Moved gradually, often with the wind",
-            "To be carried along by currents",
+            "Was carried along by currents",
             "Glided aimlessly through the air"
         ]
     },
@@ -197452,11 +197452,11 @@
         "word": "EXPLODES",
         "text": "Bursts violently or suddenly",
         "hint": "blows up",
-        "hard_text": "To go off with a bang",
+        "hard_text": "Goes off with a bang",
         "clues": [
             "Detonates in dramatic fashion",
             "Sudden and powerful burst",
-            "To increase dramatically"
+            "Increases dramatically"
         ]
     },
     {
@@ -197606,7 +197606,7 @@
         "word": "LUNCHES",
         "text": "Midday meals",
         "hint": "midday meals",
-        "hard_text": "A break from work with food",
+        "hard_text": "Breaks from work that include food",
         "clues": [
             "Noon repasts",
             "Meals between breakfast and dinner",
@@ -198401,7 +198401,7 @@
         "hard_text": "City waterworks in a state of excitement",
         "clues": [
             "Color change from embarrassment",
-            "To cleanse completely",
+            "Cleansing completely",
             "New York neighborhood known for parks"
         ]
     },
@@ -199194,7 +199194,7 @@
         "clues": [
             "Draws someone into a conversation",
             "Commits to an activity or interaction",
-            "To attract and hold attention"
+            "Attracts and holds attention"
         ]
     },
     {
@@ -199727,7 +199727,7 @@
     },
     {
         "word": "SETTLES",
-        "text": "To resolve or reach agreement",
+        "text": "Resolves or reaches agreement",
         "hint": "resolves",
         "hard_text": "Coming to rest after a dispute",
         "clues": [
@@ -199806,7 +199806,7 @@
         "word": "SPOTTING",
         "text": "Identifying or noticing something",
         "hint": "Recognizing a detail",
-        "hard_text": "To see or mark with a dot",
+        "hard_text": "Seeing or marking with a dot",
         "clues": [
             "Observing with keen eyesight",
             "Detecting with precision",
@@ -200004,7 +200004,7 @@
         "word": "ASSERTS",
         "text": "States firmly or confidently",
         "hint": "Declares",
-        "hard_text": "To insist on a point with conviction",
+        "hard_text": "Insists on a point with conviction",
         "clues": [
             "Proclaims with certainty",
             "Affirms a position strongly",
@@ -200876,7 +200876,7 @@
         "hard_text": "Slicing into manageable bits in a kitchen",
         "clues": [
             "Preparation technique for veggies",
-            "What a lumberjack does to trees",
+            "Cutting trees like a lumberjack",
             "Severing with precision"
         ]
     },
@@ -200921,7 +200921,7 @@
         "clues": [
             "Complete failures under pressure",
             "What happens to a house of cards",
-            "To fall inwards or downwards"
+            "Falls inwards or downwards"
         ]
     },
     {
@@ -200942,7 +200942,7 @@
         "hard_text": "To keep intact or safe from harm",
         "clues": [
             "To save resources",
-            "What a museum does to artifacts",
+            "Preserve artifacts like a museum",
             "To maintain in original state"
         ]
     },
@@ -201049,9 +201049,9 @@
         "word": "ENTAILS",
         "text": "Involves as a necessary part",
         "hint": "Includes",
-        "hard_text": "To include as a necessary consequence",
+        "hard_text": "Includes as a necessary consequence",
         "clues": [
-            "To require as part of a process",
+            "Requires as part of a process",
             "Necessitates certain actions",
             "Involves specific conditions"
         ]
@@ -202174,7 +202174,7 @@
         "clues": [
             "Fruits sealed in jars for longevity",
             "Conserved fruits, often sweet and sticky",
-            "A favorite for breakfast alongside butter"
+            "Breakfast favorites alongside butter"
         ]
     },
     {
@@ -202273,7 +202273,7 @@
         "clues": [
             "Action that can be both playful and harsh",
             "A sudden, loud smack",
-            "To hit with an open palm"
+            "Hitting with an open palm"
         ]
     },
     {
@@ -202470,7 +202470,7 @@
         "hard_text": "Action that implies force and speed",
         "clues": [
             "Striking with a quick motion",
-            "To mix vigorously, as in cooking",
+            "Mixing vigorously, as in cooking",
             "Imposing punishment through strikes"
         ]
     },
@@ -203919,7 +203919,7 @@
         "word": "ROASTING",
         "text": "Cooking by dry heat, especially in an oven",
         "hint": "Cooking method",
-        "hard_text": "To cook until browned and tender",
+        "hard_text": "Cooking until browned and tender",
         "clues": [
             "Method often used for meats",
             "Cooking technique that adds flavor",
@@ -204953,7 +204953,7 @@
         "hint": "Shows through acting",
         "hard_text": "Acts the role of someone or something",
         "clues": [
-            "To show in a certain light",
+            "Shows in a certain light",
             "Illustrates character or scene",
             "Acts out in a performance"
         ]
@@ -205050,7 +205050,7 @@
         "word": "RESIDED",
         "text": "Lived or made a home in",
         "hint": "inhabited",
-        "hard_text": "To have a place of dwelling",
+        "hard_text": "Had a place of dwelling",
         "clues": [
             "Called a place home",
             "Dwelt in a specific location",
@@ -205536,7 +205536,7 @@
         "hint": "Forsakes",
         "hard_text": "Leaves behind in a desolate state",
         "clues": [
-            "To leave someone or something",
+            "Leaves someone or something",
             "Turns one's back on",
             "Abandons to solitude"
         ]
@@ -206150,7 +206150,7 @@
         "word": "TEASED",
         "text": "Made fun of playfully",
         "hint": "mocked",
-        "hard_text": "To provoke with light-hearted ridicule",
+        "hard_text": "Provoked with light-hearted ridicule",
         "clues": [
             "Jokingly poked fun at someone",
             "Gently mocked in a playful manner",
@@ -206161,7 +206161,7 @@
         "word": "TOWING",
         "text": "Pulling a vehicle or load",
         "hint": "hauling",
-        "hard_text": "To pull something behind another vehicle",
+        "hard_text": "Assisting a disabled car by pulling it",
         "clues": [
             "Moving a vehicle by attachment",
             "Dragging something along behind",
@@ -206920,7 +206920,7 @@
         "word": "REGULATES",
         "text": "Controls or manages according to rules",
         "hint": "Imposes limitations or requirements",
-        "hard_text": "To oversee and maintain order",
+        "hard_text": "Oversees and maintains order",
         "clues": [
             "Establishes guidelines for behavior",
             "Ensures compliance with established standards",
@@ -208229,11 +208229,11 @@
         "word": "FREEZES",
         "text": "Turns into ice",
         "hint": "solidifies",
-        "hard_text": "To halt in cold temperatures",
+        "hard_text": "Halts in cold temperatures",
         "clues": [
             "Liquid turns solid",
             "Seasonal changes for water",
-            "To solidify in a chill"
+            "Solidifies in a chill"
         ]
     },
     {
@@ -209383,7 +209383,7 @@
         "word": "LEGGINGS",
         "text": "Tight-fitting pants often worn for exercise",
         "hint": "Tights",
-        "hard_text": "A snug fit for your lower half",
+        "hard_text": "Snug garments for your lower half",
         "clues": [
             "Athletic attire for the legs",
             "Stretchy fabric that hugs the body",
@@ -209394,11 +209394,11 @@
         "word": "LEGIONS",
         "text": "Large groups or multitudes",
         "hint": "Armies",
-        "hard_text": "An army of followers",
+        "hard_text": "Armies of followers",
         "clues": [
             "Countless numbers in formation",
             "Many troops in a vast assembly",
-            "A multitude, often in a military context"
+            "Multitudes, often in a military context"
         ]
     },
     {
@@ -210526,7 +210526,7 @@
         "word": "RALLIED",
         "text": "Came together for a cause",
         "hint": "Gathered",
-        "hard_text": "To unite in support or resistance",
+        "hard_text": "United in support or resistance",
         "clues": [
             "Joined in a cause",
             "Regrouped in support",
@@ -210537,7 +210537,7 @@
         "word": "RECOVERS",
         "text": "Gains back health or strength",
         "hint": "Regains",
-        "hard_text": "To return to a previous state of wellness",
+        "hard_text": "Returns to a previous state of wellness",
         "clues": [
             "Returns to health",
             "Gets back on track",
@@ -210748,7 +210748,7 @@
         "hint": "puts to work",
         "hard_text": "Effectively applies resources for benefit",
         "clues": [
-            "To put to good use in a situation",
+            "Puts to good use in a situation",
             "Employs effectively to achieve an end",
             "Makes the most of available resources"
         ]
@@ -210814,7 +210814,7 @@
         "hint": "embraces",
         "hard_text": "Legally takes responsibility for another",
         "clues": [
-            "To choose to take something as one's own",
+            "Chooses to take something as one's own",
             "Accepting new ideas or practices",
             "Legally bringing someone into a family"
         ]
@@ -213583,7 +213583,7 @@
         "word": "SPECIFIES",
         "text": "States explicitly; makes clear",
         "hint": "defines",
-        "hard_text": "To detail with precision",
+        "hard_text": "Details with precision",
         "clues": [
             "Clarifies with exact details",
             "Indicates exact requirements clearly",
@@ -213858,7 +213858,7 @@
         "word": "ASSIGNS",
         "text": "Designates or allocates responsibilities",
         "hint": "Allocates roles or tasks",
-        "hard_text": "To allocate roles in a task or project",
+        "hard_text": "Allocates roles in a task or project",
         "clues": [
             "Delegates duties to others",
             "Apportions tasks within a team",
@@ -213869,7 +213869,7 @@
         "word": "ASSURES",
         "text": "Gives confidence or guarantees",
         "hint": "Pledges or vows to someone",
-        "hard_text": "To provide certainty in uncertain times",
+        "hard_text": "Provides certainty in uncertain times",
         "clues": [
             "Makes promises for reassurance",
             "Confirms with utmost confidence",
@@ -214048,7 +214048,7 @@
         "hard_text": "Strongly held negative opinions on something",
         "clues": [
             "Things that provoke discomfort or disdain",
-            "To have a strong aversion towards",
+            "Has a strong aversion towards",
             "Not fond of certain preferences or actions"
         ]
     },
@@ -214838,7 +214838,7 @@
         "hint": "rises",
         "hard_text": "Emerging from slumber or ignorance",
         "clues": [
-            "To stir from sleep",
+            "Stirs from sleep",
             "Brings awareness to a situation",
             "Rouses from a dormant state"
         ]
@@ -214860,7 +214860,7 @@
         "hint": "bragged",
         "hard_text": "Touted one's own accomplishments",
         "clues": [
-            "To speak highly of oneself",
+            "Spoke highly of oneself",
             "Claimed superiority in a proud manner",
             "Drew attention to personal success"
         ]
@@ -214904,7 +214904,7 @@
         "hint": "contests",
         "hard_text": "Engages in rivalry for a prize",
         "clues": [
-            "To vie for success or superiority",
+            "Vies for success or superiority",
             "Rivalry in sports or academics",
             "Participants in a race or contest"
         ]
@@ -214950,7 +214950,7 @@
         "clues": [
             "Regarded with strong dislike",
             "Detested for significant reasons",
-            "To feel aversion towards someone"
+            "Felt aversion towards someone"
         ]
     },
     {
@@ -215892,7 +215892,7 @@
         "word": "CONDEMNS",
         "text": "Expresses disapproval or criticism",
         "hint": "denounces",
-        "hard_text": "To declare something as wrong or evil",
+        "hard_text": "Declares something as wrong or evil",
         "clues": [
             "Publicly rebukes or criticizes",
             "Strongly disapproves of certain actions",
@@ -215983,7 +215983,7 @@
         "hard_text": "Letting something escape into the air",
         "clues": [
             "Releasing light or sound",
-            "To give off something tangible",
+            "Giving off something tangible",
             "Sending signals into the void"
         ]
     },
@@ -217223,7 +217223,7 @@
         "word": "IMPOSES",
         "text": "Forces something onto someone",
         "hint": "Enforces",
-        "hard_text": "To place a burden, often unwanted",
+        "hard_text": "Places a burden, often unwanted",
         "clues": [
             "Asserts authority over others",
             "Enacts rules on a group",
@@ -217487,10 +217487,10 @@
         "word": "SPRAYS",
         "text": "Fine mists of liquid",
         "hint": "Technique for applying liquid",
-        "hard_text": "To disperse liquid in tiny droplets",
+        "hard_text": "Disperses liquid in tiny droplets",
         "clues": [
             "Commonly used for fragrance",
-            "To apply a liquid evenly",
+            "Applies a liquid evenly",
             "Methods of applying paint or perfume"
         ]
     },
@@ -217522,7 +217522,7 @@
         "hint": "Moved unsteadily",
         "hard_text": "Influenced or affected by something",
         "clues": [
-            "To lean or tilt gently",
+            "Leaned or tilted gently",
             "Persuaded to a different viewpoint",
             "Caused to change direction subtly"
         ]
@@ -217575,7 +217575,7 @@
         "word": "VAULTS",
         "text": "Arched structures or secure storage",
         "hint": "Safe deposit location",
-        "hard_text": "To leap or store valuables",
+        "hard_text": "Leaps or stores valuables",
         "clues": [
             "Places to keep important documents",
             "Strong, arched architectural features",
@@ -218433,7 +218433,7 @@
         "word": "UNDERGOES",
         "text": "Experiences or goes through something",
         "hint": "Endures",
-        "hard_text": "To be subject to change",
+        "hard_text": "Is subject to change",
         "clues": [
             "Faces transformation",
             "Experiences a process",
@@ -219786,11 +219786,11 @@
         "word": "DEFLECT",
         "text": "To turn aside or redirect",
         "hint": "divert",
-        "hard_text": "Bends the path of something away",
+        "hard_text": "Bend the path of something away",
         "clues": [
-            "Redirects attention or force",
-            "Causes to veer off course",
-            "Shifts focus away from a target"
+            "Redirect attention or force",
+            "Cause something to veer off course",
+            "Shift focus away from a target"
         ]
     },
     {
@@ -219874,11 +219874,11 @@
         "word": "EMBODY",
         "text": "To represent or personify",
         "hint": "Take on a physical form",
-        "hard_text": "Takes physical form of an idea",
+        "hard_text": "Take physical form of an idea",
         "clues": [
             "Manifest an abstract concept in reality",
-            "Personifies qualities in a tangible form",
-            "Exemplifies characteristics through action"
+            "Personify qualities in a tangible form",
+            "Exemplify characteristics through action"
         ]
     },
     {
@@ -220019,7 +220019,7 @@
         "clues": [
             "Spoke glowingly of someone's achievements",
             "Acclaimed for exceptional performance",
-            "To praise someone publicly"
+            "Praised someone publicly"
         ]
     },
     {
@@ -220314,7 +220314,7 @@
         "hint": "Backed",
         "hard_text": "Formal approval to support a motion",
         "clues": [
-            "To give formal backing to a proposal",
+            "Gave formal backing to a proposal",
             "Endorsed for further consideration",
             "Agreed to support a suggestion"
         ]
@@ -220477,9 +220477,9 @@
         "word": "UPHOLDING",
         "text": "Maintaining or supporting",
         "hint": "Defending a rule or principle",
-        "hard_text": "To keep something in its rightful place",
+        "hard_text": "Keeping something in its rightful place",
         "clues": [
-            "To advocate for a principle or law",
+            "Advocating for a principle or law",
             "Ensuring standards remain high",
             "Carrying the weight of responsibility"
         ]
@@ -221106,7 +221106,7 @@
         "hint": "Understands",
         "hard_text": "Comes to an important realization",
         "clues": [
-            "To become conscious of a truth",
+            "Becomes conscious of a truth",
             "Grasp a concept fully",
             "Awaken to a new understanding"
         ]
@@ -222416,7 +222416,7 @@
         "hard_text": "Develops or spreads out over time",
         "clues": [
             "Like a story that reveals its plot",
-            "To open or expand gradually",
+            "Opens or expands gradually",
             "Process that becomes clear over time"
         ]
     },
@@ -222437,7 +222437,7 @@
         "hint": "Brings together",
         "hard_text": "Combines separate entities into one",
         "clues": [
-            "To bring factions together",
+            "Brings factions together",
             "Creating a single whole from parts",
             "Merging to form a collective"
         ]
@@ -222504,7 +222504,7 @@
         "hard_text": "Demonstrated firm determination in action",
         "clues": [
             "Expressed a strong desire for",
-            "To convey intent, often legally",
+            "Conveyed intent, often legally",
             "Decided upon with intention"
         ]
     },
@@ -223511,7 +223511,7 @@
         "word": "STUFFS",
         "text": "Fills something to capacity",
         "hint": "Packs",
-        "hard_text": "To cram with materials or items",
+        "hard_text": "Crams with materials or items",
         "clues": [
             "Fills tightly into a space",
             "Cramming full of contents",
@@ -223700,7 +223700,7 @@
         "hint": "Clinging",
         "hard_text": "Clinging firmly to an object",
         "clues": [
-            "To hold fast to a principle",
+            "Holding fast to a principle",
             "Sticking closely to an idea",
             "Remaining loyal or attached"
         ]
@@ -224801,7 +224801,7 @@
         "hard_text": "Reverses decisions made",
         "clues": [
             "Puts an end to an arrangement",
-            "To void or annul",
+            "Voids or annuls",
             "Says 'no' to previously planned"
         ]
     },
@@ -224822,7 +224822,7 @@
         "hint": "Agitating",
         "hard_text": "Creating butter through agitation",
         "clues": [
-            "To stir or shake vigorously",
+            "Stirring or shaking vigorously",
             "Agitation leads to transformation",
             "Whipping into a creamy state"
         ]
@@ -225093,13 +225093,13 @@
     },
     {
         "word": "GREETS",
-        "text": "To welcome or acknowledge",
+        "text": "Welcomes or acknowledges",
         "hint": "Warm reception for newcomers",
         "hard_text": "Offers a friendly acknowledgment upon arrival",
         "clues": [
-            "To say hello with enthusiasm",
+            "Says hello with enthusiasm",
             "Welcomes someone at the door",
-            "To meet with a smile or gesture"
+            "Meets with a smile or gesture"
         ]
     },
     {
@@ -225143,7 +225143,7 @@
         "clues": [
             "To rouse people to protest or act",
             "Fueling unrest or agitation",
-            "Instigates trouble or conflict"
+            "Instigate trouble or conflict"
         ]
     },
     {
@@ -225153,8 +225153,8 @@
         "hard_text": "Concluded based on indirect information",
         "clues": [
             "Read between the lines to understand",
-            "To draw a conclusion from clues",
-            "To understand something not directly stated"
+            "Drew a conclusion from clues",
+            "Understood something not directly stated"
         ]
     },
     {
@@ -226129,7 +226129,7 @@
         "word": "PARDONED",
         "text": "Forgiven or excused",
         "hint": "Officially excused from punishment",
-        "hard_text": "To be let off the hook legally",
+        "hard_text": "Was let off the hook legally",
         "clues": [
             "Released from legal penalties",
             "Graced with forgiveness",
@@ -226173,11 +226173,11 @@
         "word": "PLUGGING",
         "text": "Stopping a leak",
         "hint": "Sealing",
-        "hard_text": "To fill a void in a structure",
+        "hard_text": "Filling a void in a structure",
         "clues": [
             "Needed for water damage",
             "Can refer to promoting a product",
-            "To fill gaps, both literally and figuratively"
+            "Filling gaps, both literally and figuratively"
         ]
     },
     {
@@ -226228,7 +226228,7 @@
         "word": "REWORKED",
         "text": "Revised or altered",
         "hint": "Updated version of something",
-        "hard_text": "To redo something for improvement",
+        "hard_text": "Redid something for improvement",
         "clues": [
             "Modified for better results",
             "Adjusted to meet new standards",
@@ -226349,7 +226349,7 @@
         "word": "SPANNED",
         "text": "Extended across",
         "hint": "Crossed",
-        "hard_text": "To stretch from one point to another",
+        "hard_text": "Stretched from one point to another",
         "clues": [
             "Bridged a distance or divide",
             "Covered a range or area",
@@ -227271,7 +227271,7 @@
     },
     {
         "word": "RESTARTED",
-        "text": "To begin again after stopping",
+        "text": "Began again after stopping",
         "hint": "resumed",
         "hard_text": "Began anew after a pause",
         "clues": [
@@ -228162,13 +228162,13 @@
     },
     {
         "word": "PREVAILS",
-        "text": "To win or triumph",
+        "text": "Wins or triumphs",
         "hint": "succeed",
         "hard_text": "Seen in contests or struggles",
         "clues": [
-            "To dominate in influence or outcome",
-            "To remain in force or effect",
-            "To come out on top against odds"
+            "Dominates in influence or outcome",
+            "Remains in force or effect",
+            "Comes out on top against odds"
         ]
     },
     {
@@ -228222,7 +228222,7 @@
         "hard_text": "Not discarded but given new life",
         "clues": [
             "Second life for an item",
-            "To employ again in another context",
+            "Employed again in another context",
             "Not thrown away but re-embraced"
         ]
     },
@@ -228802,7 +228802,7 @@
         "word": "EVOKES",
         "text": "Brings to mind or recollection",
         "hint": "calls forth",
-        "hard_text": "To summon memories or feelings from within",
+        "hard_text": "Summons memories or feelings from within",
         "clues": [
             "Stirs emotions or thoughts in the observer",
             "Conjures images or feelings from the past",
@@ -228813,9 +228813,9 @@
         "word": "FINGERED",
         "text": "Identified by a specific action",
         "hint": "identified by a specific action",
-        "hard_text": "To point out or handle with dexterity",
+        "hard_text": "Pointed out or handled with dexterity",
         "clues": [
-            "To handle or manipulate with one's digits",
+            "Handled or manipulated with one's digits",
             "Identified by a gentle touch or indication",
             "Marked or implicated by someone's hand"
         ]
@@ -229541,7 +229541,7 @@
         "hint": "swellings",
         "hard_text": "Painful pockets forming on skin's surface",
         "clues": [
-            "A result of friction or burns",
+            "Results of friction or burns",
             "Skin's response to irritation or pressure",
             "Pockets of fluid that can cause discomfort"
         ]
@@ -229675,7 +229675,7 @@
         "clues": [
             "Wiped out, often in a brutal manner",
             "A term for heavy loss or destruction",
-            "To drastically reduce a population"
+            "Drastically reduced a population"
         ]
     },
     {
@@ -229697,7 +229697,7 @@
         "clues": [
             "Bounced off an obstacle",
             "Altered direction away from target",
-            "To turn aside from a path"
+            "Turned aside from a path"
         ]
     },
     {
@@ -229763,7 +229763,7 @@
         "clues": [
             "Overwhelmed by a force or element",
             "Immersed in something completely",
-            "To be completely enveloped"
+            "Was completely enveloped"
         ]
     },
     {
@@ -229818,7 +229818,7 @@
         "clues": [
             "Demonstrating physical power",
             "Seen in bodybuilding",
-            "To bend a limb or muscle"
+            "Bending a limb or muscle"
         ]
     },
     {
@@ -230813,13 +230813,13 @@
     },
     {
         "word": "EQUATES",
-        "text": "To consider as equal or the same",
+        "text": "Considers as equal or the same",
         "hint": "equals",
         "hard_text": "Links two concepts as identical",
         "clues": [
             "Considers two things equivalent",
             "Mathematically, they balance each other",
-            "To make synonymous in meaning"
+            "Makes synonymous in meaning"
         ]
     },
     {
@@ -230837,7 +230837,7 @@
         "word": "EXECUTES",
         "text": "Carries out a task or order",
         "hint": "performs",
-        "hard_text": "To put a plan into action effectively",
+        "hard_text": "Puts a plan into action effectively",
         "clues": [
             "Implements a directive with precision",
             "Brings to fruition a decided course",
@@ -231114,9 +231114,9 @@
         "hint": "dropping",
         "hard_text": "A rapid descent into something deeper",
         "clues": [
-            "To dive headfirst or drop dramatically",
+            "Diving headfirst or dropping dramatically",
             "A steep fall, often with intensity",
-            "To descend quickly, like a rollercoaster"
+            "Descending quickly, like a rollercoaster"
         ]
     },
     {
@@ -231543,7 +231543,7 @@
         "hint": "oscillate",
         "hard_text": "Feel the rhythm?",
         "clues": [
-            "What a phone does on silent",
+            "Buzz like a phone on silent",
             "To resonate or shake",
             "Produce a quivering motion"
         ]
@@ -231805,7 +231805,7 @@
         "word": "EXCITES",
         "text": "Stirs up enthusiasm or energy",
         "hint": "Arouses strong feelings",
-        "hard_text": "To cause a spark or thrill in someone",
+        "hard_text": "Causes a spark or thrill in someone",
         "clues": [
             "What a surprise party does to someone",
             "Stimulates interest or passion",
@@ -231919,7 +231919,7 @@
         "clues": [
             "Struggling for air after a surprise",
             "Inhaling sharply due to astonishment",
-            "What one does when breath is stifled"
+            "Struggling for breath"
         ]
     },
     {
@@ -231941,7 +231941,7 @@
         "clues": [
             "To make something seem more splendid",
             "To depict with excessive admiration",
-            "What one does to a hero in stories"
+            "Praise a hero extravagantly"
         ]
     },
     {
@@ -232007,7 +232007,7 @@
         "clues": [
             "Shrink down to the bare essentials",
             "Lessened in significance or size",
-            "To make something seem less important"
+            "Made something seem less important"
         ]
     },
     {
@@ -232313,7 +232313,7 @@
         "hint": "Formally proposed something",
         "hard_text": "Presented as a proposal or bid",
         "clues": [
-            "To submit an application or offer",
+            "Submitted an application or offer",
             "Making an offer, often in business",
             "Proposed something formally"
         ]
@@ -232489,7 +232489,7 @@
         "hint": "misfired",
         "hard_text": "Plan that went wrong unexpectedly",
         "clues": [
-            "To result in the opposite effect",
+            "Resulted in the opposite effect",
             "A strategy that failed spectacularly",
             "When a scheme blows up in your face"
         ]
@@ -232531,7 +232531,7 @@
         "word": "BLEEDS",
         "text": "Loses blood or color",
         "hint": "drains",
-        "hard_text": "To lose vital fluid or pigment",
+        "hard_text": "Loses vital fluid or pigment",
         "clues": [
             "Can refer to injuries or art",
             "Occurs with ink on paper",
@@ -232566,9 +232566,9 @@
         "hint": "Made more inclusive or comprehensive",
         "hard_text": "Made larger in scope or area",
         "clues": [
-            "To increase range or influence",
+            "Increased range or influence",
             "Enlarged perspective or view",
-            "To stretch beyond original limits"
+            "Stretched beyond original limits"
         ]
     },
     {
@@ -232751,7 +232751,7 @@
         "word": "DEFIES",
         "text": "Resists or challenges",
         "hint": "Opposes",
-        "hard_text": "To stand against authority boldly",
+        "hard_text": "Stands against authority boldly",
         "clues": [
             "Challenges norms and expectations",
             "Refuses to obey or conform",
@@ -232809,7 +232809,7 @@
         "hard_text": "Placed in a revered position",
         "clues": [
             "Set apart as worthy of reverence",
-            "To honor with a special status",
+            "Honored with a special status",
             "Dedicated to a sacred purpose"
         ]
     },
@@ -232819,7 +232819,7 @@
         "hint": "Deleting",
         "hard_text": "Making something disappear completely",
         "clues": [
-            "To remove all traces of",
+            "Removing all traces of",
             "Wiping the slate clean",
             "Eliminating from memory or existence"
         ]
@@ -232950,7 +232950,7 @@
         "hint": "Acquires",
         "hard_text": "Acquires",
         "clues": [
-            "To come into possession of",
+            "Comes into possession of",
             "Achieves possession, often through effort",
             "Secures items through action or process"
         ]
@@ -233136,7 +233136,7 @@
         "hint": "Flattening",
         "hard_text": "Flattening",
         "clues": [
-            "To make surfaces free of bumps",
+            "Making surfaces free of bumps",
             "Action of reducing roughness or irregularity",
             "Technique for improving texture and appearance"
         ]
@@ -233170,7 +233170,7 @@
         "hard_text": "Ejecting forcefully, often in large amounts",
         "clues": [
             "Discharging liquid or substance rapidly",
-            "To emit something in a forceful manner",
+            "Emitting something in a forceful manner",
             "Pouring out rapidly, often used with liquids"
         ]
     },
@@ -233319,7 +233319,7 @@
     },
     {
         "word": "WANDERS",
-        "text": "To move about without a fixed course",
+        "text": "Moves about without a fixed course",
         "hint": "Explores without a destination",
         "hard_text": "Drifts aimlessly, like thoughts in daydreams",
         "clues": [
@@ -233330,7 +233330,7 @@
     },
     {
         "word": "WEAKENS",
-        "text": "To make or become less strong",
+        "text": "Makes or becomes less strong",
         "hint": "Lessens in intensity or force",
         "hard_text": "Loses strength over time or pressure",
         "clues": [
@@ -233363,7 +233363,7 @@
     },
     {
         "word": "ADJUSTS",
-        "text": "To change or alter slightly",
+        "text": "Makes a small corrective change",
         "hint": "Makes small changes",
         "hard_text": "Tweaks for a better fit or outcome",
         "clues": [
@@ -233819,7 +233819,7 @@
         "hard_text": "Gathering of creatures, often in flight",
         "clues": [
             "Birds gather, homing in together",
-            "A congregation of similar beings",
+            "Congregations of similar beings",
             "Groups that move as one, often"
         ]
     },
@@ -234073,7 +234073,7 @@
         "clues": [
             "Acting in accordance with orders",
             "Yielding to someone's directives",
-            "To follow instructions dutifully"
+            "Following instructions dutifully"
         ]
     },
     {
@@ -234149,7 +234149,7 @@
         "hard_text": "What you do when you want to tease",
         "clues": [
             "A playful act of grabbing skin",
-            "To tighten one's grip on something",
+            "Tightening one's grip on something",
             "Action often seen in sibling rivalry"
         ]
     },
@@ -234586,7 +234586,7 @@
         "word": "ACCORDED",
         "text": "Given or granted",
         "hint": "Conferred honor or privilege",
-        "hard_text": "To have been granted something, often rights",
+        "hard_text": "Had been granted something, often rights",
         "clues": [
             "Granted status",
             "Bestowed upon",
@@ -234854,7 +234854,7 @@
         "clues": [
             "Clearing out unwanted items",
             "Removing things from your possession",
-            "To make something no longer present"
+            "Making something no longer present"
         ]
     },
     {
@@ -234874,9 +234874,9 @@
         "hint": "Chooses by ballot",
         "hard_text": "Decides through a democratic process",
         "clues": [
-            "To pick leaders through ballots",
+            "Picks leaders through ballots",
             "Determines by popular vote",
-            "To choose representatives in an election"
+            "Chooses representatives in an election"
         ]
     },
     {
@@ -234886,7 +234886,7 @@
         "hard_text": "Uplifting in both physical and metaphorical sense",
         "clues": [
             "Making something rise, literally or figuratively",
-            "To promote to a higher status",
+            "Promoting to a higher status",
             "Ascending to new heights or levels"
         ]
     },
@@ -234896,9 +234896,9 @@
         "hint": "Backs",
         "hard_text": "Gives public approval or recommendation",
         "clues": [
-            "To put one's name behind a cause",
+            "Puts one's name behind a cause",
             "Gives support to a candidate publicly",
-            "To vouch for someone or something"
+            "Vouches for someone or something"
         ]
     },
     {
@@ -235004,11 +235004,11 @@
         "word": "GRASPED",
         "text": "Held tightly or understood",
         "hint": "Took hold of something",
-        "hard_text": "To take hold of something mentally or physically",
+        "hard_text": "Took hold in mind or hand",
         "clues": [
             "Caught in both mind and hand",
             "Firmly seized or comprehended",
-            "To comprehend or firmly hold"
+            "Caught the meaning at last"
         ]
     },
     {
@@ -235191,7 +235191,7 @@
         "word": "LEVIES",
         "text": "Impose taxes or fines",
         "hint": "Government-imposed charges",
-        "hard_text": "A government's way to collect dues",
+        "hard_text": "Government measures for collecting dues",
         "clues": [
             "Seen in budgets and financial plans",
             "Required payments enforced by authority",
@@ -235809,7 +235809,7 @@
         "hint": "decline",
         "hard_text": "To dry up, as a plant does",
         "clues": [
-            "Fades away, often due to neglect",
+            "Fade away, often due to neglect",
             "To dry out and lose health",
             "Gradually diminish in strength or vitality"
         ]
@@ -237127,11 +237127,11 @@
         "word": "BLUFFS",
         "text": "Steep cliffs or deceptive actions",
         "hint": "Natural formations by water's edge",
-        "hard_text": "To mislead while on the edge?",
+        "hard_text": "Misleads while on the edge?",
         "clues": [
             "High ground with a ruse",
             "Courageous front or steep bank",
-            "To trick while standing tall"
+            "Tricks while standing tall"
         ]
     },
     {
@@ -237204,7 +237204,7 @@
         "word": "COMBING",
         "text": "Untangling hair or searching",
         "hint": "sifting",
-        "hard_text": "To search through with fingers?",
+        "hard_text": "Searching through with fingers?",
         "clues": [
             "Brushing through strands",
             "Searching meticulously for details",
@@ -237259,7 +237259,7 @@
         "word": "EMBEDDING",
         "text": "Incorporating deeply into something",
         "hint": "inserting",
-        "hard_text": "To plant firmly within another?",
+        "hard_text": "Planting firmly within another?",
         "clues": [
             "Fixing something into a material",
             "Ingraining deeply within",
@@ -237380,7 +237380,7 @@
         "word": "HERALDED",
         "text": "Announced or proclaimed",
         "hint": "Made public with excitement",
-        "hard_text": "To publicly declare something significant?",
+        "hard_text": "Publicly declared something significant?",
         "clues": [
             "Proclaimed with great fanfare",
             "Publicly celebrated or introduced",
@@ -237413,11 +237413,11 @@
         "word": "ISOLATES",
         "text": "Separates or sets apart",
         "hint": "secludes",
-        "hard_text": "To cut off from the rest?",
+        "hard_text": "Cuts off from the rest?",
         "clues": [
-            "To make something alone",
-            "To detach from a group",
-            "To keep separate from others"
+            "Makes something alone",
+            "Detaches from a group",
+            "Keeps separate from others"
         ]
     },
     {
@@ -238601,9 +238601,9 @@
         "word": "OFFENDS",
         "text": "Causes displeasure or hurt feelings",
         "hint": "insults",
-        "hard_text": "To transgress social norms or sensitivities",
+        "hard_text": "Transgresses social norms or sensitivities",
         "clues": [
-            "To provoke anger or resentment",
+            "Provokes anger or resentment",
             "Doing something that displeases others",
             "Breach of etiquette or decorum"
         ]
@@ -238777,7 +238777,7 @@
         "word": "SCOURING",
         "text": "Cleaning vigorously",
         "hint": "scrubbing",
-        "hard_text": "To scrub or search thoroughly",
+        "hard_text": "Scrubbing or searching thoroughly",
         "clues": [
             "Cleaning with intensity and effort",
             "Searching diligently for something",
@@ -238799,11 +238799,11 @@
         "word": "SHUFFLED",
         "text": "Mixed up or rearranged",
         "hint": "Jumbled arrangement",
-        "hard_text": "To disorder or mix randomly",
+        "hard_text": "Disordered or mixed randomly",
         "clues": [
             "Changed order, like cards in a game",
             "Disconnected arrangement or sequence",
-            "To mix things up in a haphazard way"
+            "Mixed things up in a haphazard way"
         ]
     },
     {
@@ -240327,7 +240327,7 @@
         "word": "EXPENDED",
         "text": "Used up or consumed",
         "hint": "Spent",
-        "hard_text": "To have utilized resources fully",
+        "hard_text": "Had utilized resources fully",
         "clues": [
             "Depleted supplies after use",
             "Employed efforts to their limit",
@@ -241288,7 +241288,7 @@
         "clues": [
             "Losing focus in a photograph",
             "Lines that lose definition",
-            "To make vision less clear"
+            "Making vision less clear"
         ]
     },
     {
@@ -241306,7 +241306,7 @@
         "word": "BUNCHES",
         "text": "Groups or clusters of items",
         "hint": "Bundles of produce, perhaps",
-        "hard_text": "A cluster often seen in fruit",
+        "hard_text": "Clusters often seen in fruit",
         "clues": [
             "A collection tied with care",
             "Several items grouped closely",
@@ -241354,7 +241354,7 @@
         "clues": [
             "Initiates a sequence of actions",
             "The start of something new",
-            "To set in motion"
+            "Sets in motion"
         ]
     },
     {
@@ -241827,7 +241827,7 @@
         "clues": [
             "Stealthily looking at something",
             "Glancing surreptitiously",
-            "To spy on with curiosity"
+            "Spying on with curiosity"
         ]
     },
     {
@@ -243543,7 +243543,7 @@
         "clues": [
             "Protested by abstaining from involvement",
             "Banned from engaging with a group",
-            "To shun or avoid actively"
+            "Shunned or actively avoided"
         ]
     },
     {
@@ -244388,7 +244388,7 @@
         "clues": [
             "What babies do a lot",
             "A sound made when emotions overflow",
-            "What a baby does to express needs"
+            "Express needs like a baby"
         ]
     },
     {
@@ -244627,7 +244627,7 @@
         "hard_text": "To fuel the body's engine",
         "clues": [
             "What you do at dinner",
-            "What one does at a feast",
+            "Consume food at a feast",
             "A necessary daily ritual for survival"
         ]
     },
@@ -246137,12 +246137,12 @@
     },
     {
         "word": "PUT",
-        "text": "Shot played close to a golf hole",
+        "text": "Invest money or effort in something",
         "hint": "Seen as set down",
         "hard_text": "To place something in its spot?",
         "clues": [
             "Set down",
-            "What a golfer does with a short stroke?",
+            "Throw a heavy ball in an athletics event?",
             "Can mean to express a thought"
         ]
     },
@@ -246317,7 +246317,7 @@
         "hint": "A sign of what fruit does when left out",
         "hard_text": "What happens when food gets old",
         "clues": [
-            "What fruit does when left out",
+            "Decay like fruit left out",
             "Process that might smell quite foul",
             "Decomposition's slow and smelly progress"
         ]
@@ -246470,7 +246470,7 @@
         "hint": "Could be what a tailor does",
         "hard_text": "Join fabric with needle's help",
         "clues": [
-            "What a tailor does",
+            "Operate a tailor's machine",
             "Create with thread and skill",
             "Crafting clothes one stitch at a time"
         ]
@@ -246810,7 +246810,7 @@
         "hint": "What a truck does to a broken car, for one",
         "hard_text": "Pull along the road",
         "clues": [
-            "What a truck does to a broken car",
+            "Pull a broken car with a truck",
             "Assist a stranded vehicle",
             "Haul with a vehicle's help"
         ]
@@ -246844,7 +246844,7 @@
         "hard_text": "Forceful pull in a game",
         "clues": [
             "Yank or haul",
-            "What a rope does in a contest",
+            "Pull hard in a rope contest",
             "A strong yank on a line"
         ]
     },
@@ -247818,7 +247818,7 @@
         "hard_text": "Sever part of a plant or limb",
         "clues": [
             "To prune a tree?",
-            "What a gardener does to branches?",
+            "Cut branches like a gardener?",
             "Cutting off the top"
         ]
     },
@@ -247873,7 +247873,7 @@
         "hard_text": "To impair the perfection of something",
         "clues": [
             "To spoil or injure?",
-            "What a scratch does to a surface?",
+            "Damage a surface like a scratch?",
             "To tarnish one's reputation?"
         ]
     },
@@ -248102,7 +248102,7 @@
         "clues": [
             "Artistic textile creation",
             "Craft involving threads",
-            "What a crafty person does"
+            "Make decorative lace by hand"
         ],
         "hard_text": "Decorative stitching gone wrong"
     },

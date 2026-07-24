@@ -319,6 +319,27 @@ python3 Backend/audit_word_bank_inflections.py apply --input Backend/word_bank_i
 
 `sample` and `export` are review-only and never modify `word_bank.json`. The full bank should only be changed by applying an approved replacement file.
 
+For an exhaustive review, use the resumable Codex-chat workflow. It covers only
+active puzzle clue fields (`text`, `hard_text`/`hardText`, and every `clues[]`
+item); dormant `hint` metadata is intentionally excluded. The audit tool only
+manages local batches, hashes, review state, and validation. It never calls an
+LLM API or any other network service.
+
+```bash
+python3 Backend/audit_word_bank_inflections.py init-chat-review
+python3 Backend/audit_word_bank_inflections.py export-chat-batch --limit 100
+python3 Backend/audit_word_bank_inflections.py record-chat-batch decisions.json
+python3 Backend/audit_word_bank_inflections.py validate-chat-review
+python3 Backend/audit_word_bank_inflections.py apply-chat-review
+```
+
+Each recorded batch must explicitly confirm that every omitted field already
+matches the answer and list only required replacements. The audit records exact
+index, word, field, current-value, batch-hash, and source-bank-hash
+preconditions. Validation fails closed if any active field is unreviewed, a
+replacement is unresolved or unsafe, or the source bank changes. The bank is
+written only after the entire review validates.
+
 Backword uses the same review-first pattern for existing Supabase rows:
 
 ```bash

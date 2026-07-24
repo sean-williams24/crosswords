@@ -33,6 +33,9 @@ Backend/fix_progress.json
 Backend/answer_derivability_*.json
 Backend/audit_quality_*.json
 Backend/easy_daily_clue_audit.json
+Backend/word_bank_inflection_chat_audit.json
+Backend/word_bank_inflection_chat_batch.json
+Backend/word_bank_inflection_chat_decisions*.json
 Backend/test_answer_derivability_fixture.json
 Backend/.cache/
 Backend/.venv/

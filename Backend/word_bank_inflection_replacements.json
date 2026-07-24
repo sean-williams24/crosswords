@@ -1,0 +1,4724 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-23T21:54:03.883412+00:00",
+  "updatedAt": "2026-07-23T22:07:42.818758+00:00",
+  "sourceBank": "/Users/sean.williams2/src/Crosswords/Backend/word_bank.json",
+  "bankSha256": "175df23941894dad7e011f2b2891f70bd4693ff488f2ade5d0ec352e713f1184",
+  "activeFieldCount": 113912,
+  "batchHashes": {
+    "0-22808-22809": "0ed00255476c0834cd924bc1bbe9ea68abba4069300fd80e2682484d9819c165"
+  },
+  "replacements": [
+    {
+      "index": 5,
+      "word": "ABSORB",
+      "field": "clues[0]",
+      "current": "What a sponge does",
+      "proposed": "Soak up a spill",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 98,
+      "word": "BESTOW",
+      "field": "clues[1]",
+      "current": "Presents without a contest",
+      "proposed": "Present without a contest",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 98,
+      "word": "BESTOW",
+      "field": "hard_text",
+      "current": "Gives the royal treatment",
+      "proposed": "Give the royal treatment",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 105,
+      "word": "BITE",
+      "field": "clues[0]",
+      "current": "What a mosquito does",
+      "proposed": "Use teeth or a stinger",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 114,
+      "word": "BLOW",
+      "field": "clues[0]",
+      "current": "What wind does",
+      "proposed": "Move as wind does",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 114,
+      "word": "BLOW",
+      "field": "clues[1]",
+      "current": "What wind does to trees",
+      "proposed": "Move tree branches with a gust",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 122,
+      "word": "BODE",
+      "field": "clues[2]",
+      "current": "Indicates what's to come",
+      "proposed": "Indicate what's to come",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 123,
+      "word": "BOIL",
+      "field": "clues[0]",
+      "current": "What water does before steam",
+      "proposed": "Bubble under sustained heat",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 135,
+      "word": "BOUNCE",
+      "field": "clues[0]",
+      "current": "What a ball does",
+      "proposed": "Rebound like a ball",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 135,
+      "word": "BOUNCE",
+      "field": "clues[2]",
+      "current": "What a ball does on impact",
+      "proposed": "Rebound on impact",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 149,
+      "word": "BREW",
+      "field": "clues[0]",
+      "current": "What a barista does",
+      "proposed": "Prepare a drink like a barista",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 172,
+      "word": "BUZZ",
+      "field": "clues[0]",
+      "current": "What a bee does",
+      "proposed": "Make a bee-like hum",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 199,
+      "word": "CARRY",
+      "field": "clues[0]",
+      "current": "What a waiter does with trays",
+      "proposed": "Transport trays like a waiter",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 206,
+      "word": "CATCH",
+      "field": "clues[0]",
+      "current": "What an outfielder does with a ball",
+      "proposed": "Field a ball like an outfielder",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 294,
+      "word": "COIL",
+      "field": "clues[2]",
+      "current": "What a spring does when compressed",
+      "proposed": "Compress like a spring",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 298,
+      "word": "COLLECT",
+      "field": "clues[2]",
+      "current": "What a curator does with artifacts",
+      "proposed": "Curate a group of artifacts",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 315,
+      "word": "CONCLUDE",
+      "field": "clues[1]",
+      "current": "What a story does at the end",
+      "proposed": "Bring a story to its end",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 340,
+      "word": "COOK",
+      "field": "clues[0]",
+      "current": "What a chef does",
+      "proposed": "Prepare food like a chef",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 373,
+      "word": "CRIME",
+      "field": "clues[1]",
+      "current": "What one does in shadows?",
+      "proposed": "An offence committed in the shadows?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 391,
+      "word": "CURL",
+      "field": "clues[0]",
+      "current": "What wavy hair does",
+      "proposed": "Form waves in a lock of hair",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 435,
+      "word": "DEFENDING",
+      "field": "clues[2]",
+      "current": "What a lawyer does in court",
+      "proposed": "Arguing a client's case in court",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 482,
+      "word": "DISPLAY",
+      "field": "clues[1]",
+      "current": "What a show-off does?",
+      "proposed": "Show something off?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 510,
+      "word": "DRAIN",
+      "field": "clues[2]",
+      "current": "What a sponge does to a puddle",
+      "proposed": "Remove liquid from a puddle",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 523,
+      "word": "DRIP",
+      "field": "clues[1]",
+      "current": "What a leaky faucet does?",
+      "proposed": "Leak from a faulty faucet?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 664,
+      "word": "FEEL",
+      "field": "clues[2]",
+      "current": "What one does with their hands",
+      "proposed": "Explore through touch",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 716,
+      "word": "FLOAT",
+      "field": "clues[0]",
+      "current": "What a rubber duck does",
+      "proposed": "Stay atop water like a rubber duck",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 723,
+      "word": "FLOW",
+      "field": "hard_text",
+      "current": "What a river does with ease",
+      "proposed": "Move steadily like a river",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 738,
+      "word": "FORAGE",
+      "field": "clues[2]",
+      "current": "What a scavenger does",
+      "proposed": "Seek provisions like a scavenger",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 822,
+      "word": "GOAD",
+      "field": "clues[2]",
+      "current": "What a provocateur does",
+      "proposed": "Provoke like an agitator",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 859,
+      "word": "GRIND",
+      "field": "clues[0]",
+      "current": "What a coffee mill does",
+      "proposed": "Reduce beans to coarse particles",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 881,
+      "word": "HACK",
+      "field": "clues[2]",
+      "current": "What a woodchopper does",
+      "proposed": "Chop wood roughly",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 911,
+      "word": "HEAL",
+      "field": "text",
+      "current": "What skin gradually does beneath a bandage",
+      "proposed": "Close gradually beneath a bandage",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 991,
+      "word": "IMAGINE",
+      "field": "clues[1]",
+      "current": "What a dreamer does best",
+      "proposed": "Dream up possibilities",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1011,
+      "word": "INSPECT",
+      "field": "clues[1]",
+      "current": "What a detective does at a crime scene",
+      "proposed": "Examine a crime scene",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1015,
+      "word": "INSULT",
+      "field": "clues[1]",
+      "current": "What a bully often does?",
+      "proposed": "Taunt someone like a bully?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1017,
+      "word": "INTERPRET",
+      "field": "clues[2]",
+      "current": "What an artist does with symbolism",
+      "proposed": "Explain artistic symbolism",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1365,
+      "word": "OVERLAP",
+      "field": "clues[0]",
+      "current": "Shares common area",
+      "proposed": "Share a common area",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1391,
+      "word": "PAUSE",
+      "field": "clues[0]",
+      "current": "What the || button does",
+      "proposed": "Halt playback temporarily",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1440,
+      "word": "POINTING",
+      "field": "clues[2]",
+      "current": "What one does when giving directions",
+      "proposed": "Giving directions with a gesture",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1460,
+      "word": "PREDICT",
+      "field": "clues[2]",
+      "current": "What a fortune teller does",
+      "proposed": "Foretell events like a fortune teller",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1468,
+      "word": "PREVENT",
+      "field": "clues[2]",
+      "current": "What a safety net does",
+      "proposed": "Stop a fall like a safety net",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1487,
+      "word": "PROBE",
+      "field": "clues[2]",
+      "current": "What a detective does to uncover truths",
+      "proposed": "Investigate to uncover the truth",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1494,
+      "word": "PRODUCING",
+      "field": "clues[1]",
+      "current": "What a factory does day in and day out",
+      "proposed": "Manufacturing day in and day out",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1512,
+      "word": "PROVIDING",
+      "field": "clues[2]",
+      "current": "To furnish what is necessary",
+      "proposed": "Furnishing what is necessary",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1571,
+      "word": "RECORDING",
+      "field": "hard_text",
+      "current": "To save sound for future listening",
+      "proposed": "Saving sound for future listening",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1574,
+      "word": "REFLECT",
+      "field": "clues[1]",
+      "current": "What a mirror does, or a mind's task",
+      "proposed": "Return an image like a mirror",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1610,
+      "word": "REVIEWING",
+      "field": "clues[2]",
+      "current": "To reassess thoughts on a matter",
+      "proposed": "Reassessing thoughts on a matter",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1692,
+      "word": "SERVE",
+      "field": "clues[0]",
+      "current": "What a waiter does",
+      "proposed": "Wait on a restaurant table",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1700,
+      "word": "SHARE",
+      "field": "clues[2]",
+      "current": "What a group does with a pizza",
+      "proposed": "Split a pizza among a group",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1710,
+      "word": "SHINE",
+      "field": "clues[1]",
+      "current": "What a star does, or a manager expects",
+      "proposed": "Glow like a star",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1721,
+      "word": "SHRIVEL",
+      "field": "clues[1]",
+      "current": "What aging does to skin or enthusiasm",
+      "proposed": "Contract with age",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1748,
+      "word": "SLICE",
+      "field": "clues[2]",
+      "current": "What a knife does to bread",
+      "proposed": "Cut bread with a knife",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1790,
+      "word": "SPEAK",
+      "field": "clues[1]",
+      "current": "What a politician often does",
+      "proposed": "Address a crowd like a politician",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1845,
+      "word": "STING",
+      "field": "clues[0]",
+      "current": "What a bee does",
+      "proposed": "Prick like a bee",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1948,
+      "word": "THINK",
+      "field": "clues[0]",
+      "current": "What your brain does",
+      "proposed": "Use one's brain",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1952,
+      "word": "THRASH",
+      "field": "clues[1]",
+      "current": "What a fish does on the line?",
+      "proposed": "Struggle like a hooked fish?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 1969,
+      "word": "TILT",
+      "field": "hard_text",
+      "current": "What a scale does when unbalanced",
+      "proposed": "Tip like an unbalanced scale",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 2131,
+      "word": "WHIRL",
+      "field": "clues[2]",
+      "current": "What a tornado does with wind",
+      "proposed": "Spin like a tornado",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 2138,
+      "word": "WIELD",
+      "field": "clues[2]",
+      "current": "What a knight does with a sword",
+      "proposed": "Handle a sword like a knight",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 2603,
+      "word": "CONVINCING",
+      "field": "clues[2]",
+      "current": "What a good lawyer does best?",
+      "proposed": "Persuading as a good lawyer might",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 2719,
+      "word": "OUTWEIGHED",
+      "field": "clues[2]",
+      "current": "To tip the scales in favor",
+      "proposed": "Carried greater importance in a decision",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 2812,
+      "word": "BOOKKEEPING",
+      "field": "clues[1]",
+      "current": "What a librarian does with accounts. (4,7)",
+      "proposed": "Maintaining financial accounts. (4,7)",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 2848,
+      "word": "EXAMINATION",
+      "field": "hard_text",
+      "current": "What a doctor does before diagnosing?",
+      "proposed": "A doctor's assessment before diagnosing?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 2873,
+      "word": "OBSERVATION",
+      "field": "clues[0]",
+      "current": "What a scientist does",
+      "proposed": "A scientist's recorded finding",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 2873,
+      "word": "OBSERVATION",
+      "field": "hard_text",
+      "current": "What a detective does well",
+      "proposed": "A detective's noted detail",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 2907,
+      "word": "TYPEWRITING",
+      "field": "clues[0]",
+      "current": "What a typist does. (4,7)",
+      "proposed": "Operating a machine with lettered keys. (4,7)",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 2980,
+      "word": "BROADCASTING",
+      "field": "clues[0]",
+      "current": "What the BBC does",
+      "proposed": "Transmitting programmes, as the BBC does",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 3481,
+      "word": "AGING",
+      "field": "clues[0]",
+      "current": "What time does to us?",
+      "proposed": "Growing older with the passage of time",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 3684,
+      "word": "BOWED",
+      "field": "hard_text",
+      "current": "To submit or show respect in gesture",
+      "proposed": "Submitted or showed respect with a gesture",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 3688,
+      "word": "BOWLS",
+      "field": "hard_text",
+      "current": "To roll a sphere towards targets in a game",
+      "proposed": "Rolls a sphere towards targets in a game",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 3793,
+      "word": "AIRING",
+      "field": "hard_text",
+      "current": "To expose to public view or discussion",
+      "proposed": "Exposing to public view or discussion",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 3814,
+      "word": "AMENDS",
+      "field": "clues[0]",
+      "current": "To apologize and fix mistakes",
+      "proposed": "Apologizes and fixes mistakes",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 3814,
+      "word": "AMENDS",
+      "field": "hard_text",
+      "current": "To rectify past wrongs",
+      "proposed": "Rectifies past wrongs",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 3814,
+      "word": "AMENDS",
+      "field": "text",
+      "current": "To make reparations or compensate",
+      "proposed": "Makes reparations or compensates",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4276,
+      "word": "hone",
+      "field": "clues[2]",
+      "current": "What a craftsman does with care",
+      "proposed": "Sharpen with a craftsperson's care",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4281,
+      "word": "hurl",
+      "field": "clues[1]",
+      "current": "What a quarterback does with the ball",
+      "proposed": "Throw like a quarterback",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4288,
+      "word": "lade",
+      "field": "clues[1]",
+      "current": "What one does to fill a vessel",
+      "proposed": "Fill a vessel with cargo",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4295,
+      "word": "leer",
+      "field": "clues[2]",
+      "current": "What one does with mischievous intent",
+      "proposed": "Stare with mischievous intent",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4353,
+      "word": "rise",
+      "field": "hard_text",
+      "current": "What the sun does each morning?",
+      "proposed": "Ascend like the morning sun?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4455,
+      "word": "tour",
+      "field": "clues[2]",
+      "current": "What a band does on the road?",
+      "proposed": "Travel and perform on the road?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4662,
+      "word": "pend",
+      "field": "clues[2]",
+      "current": "What a jury does in deliberation?",
+      "proposed": "Await a jury's decision?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4697,
+      "word": "purr",
+      "field": "clues[2]",
+      "current": "What a happy feline does",
+      "proposed": "Make a happy feline's sound",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4746,
+      "word": "scud",
+      "field": "clues[2]",
+      "current": "What a boat does when caught in a breeze",
+      "proposed": "Move swiftly before a breeze",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4749,
+      "word": "seep",
+      "field": "clues[2]",
+      "current": "What water does in a porous material",
+      "proposed": "Percolate through tiny openings",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4756,
+      "word": "show",
+      "field": "hard_text",
+      "current": "What a clown does to entertain the crowd?",
+      "proposed": "Entertain a crowd like a clown?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4760,
+      "word": "sing",
+      "field": "hard_text",
+      "current": "What one does to express joy or heartbreak?",
+      "proposed": "Vocalize joy or heartbreak?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4765,
+      "word": "slam",
+      "field": "hard_text",
+      "current": "What a door does when emotions run high?",
+      "proposed": "Close with an emotional bang?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4768,
+      "word": "slay",
+      "field": "clues[1]",
+      "current": "What a performer does when they steal the show?",
+      "proposed": "Impress like a show-stealing performer?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4780,
+      "word": "soak",
+      "field": "clues[1]",
+      "current": "What a sponge does well, especially in water",
+      "proposed": "Take in liquid like a sponge",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 4780,
+      "word": "soak",
+      "field": "hard_text",
+      "current": "To immerse fully, or what rain does?",
+      "proposed": "Immerse fully, as rain can?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5207,
+      "word": "leads",
+      "field": "clues[1]",
+      "current": "To be in front, taking charge",
+      "proposed": "Is in front, taking charge",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5291,
+      "word": "sound",
+      "field": "hard_text",
+      "current": "What a dog does when it alerts?",
+      "proposed": "Raise an alert like a dog?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5378,
+      "word": "churn",
+      "field": "clues[1]",
+      "current": "What a blender does",
+      "proposed": "Set contents moving in a circular current",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5431,
+      "word": "dodge",
+      "field": "clues[1]",
+      "current": "What a car does in traffic",
+      "proposed": "Swerve around traffic",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5440,
+      "word": "droop",
+      "field": "hard_text",
+      "current": "What a wilting flower does",
+      "proposed": "Sag like a wilting flower",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5524,
+      "word": "glint",
+      "field": "clues[2]",
+      "current": "What a diamond does in sunlight?",
+      "proposed": "Flash briefly like a diamond?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5552,
+      "word": "heaps",
+      "field": "clues[2]",
+      "current": "A lot of something, but messy",
+      "proposed": "Lots of something in a messy arrangement",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5597,
+      "word": "jones",
+      "field": "clues[1]",
+      "current": "To have a craving or desire",
+      "proposed": "Has a craving or desire",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5738,
+      "word": "pined",
+      "field": "clues[2]",
+      "current": "To miss dearly, often with nostalgia",
+      "proposed": "Missed dearly, often with nostalgia",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5742,
+      "word": "plied",
+      "field": "clues[0]",
+      "current": "To engage in a specific task",
+      "proposed": "Engaged in a specific task",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5742,
+      "word": "plied",
+      "field": "text",
+      "current": "To engage in a particular activity",
+      "proposed": "Engaged in a particular activity",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5757,
+      "word": "puree",
+      "field": "clues[2]",
+      "current": "Transforms texture, but not taste",
+      "proposed": "Transform texture, but not taste",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5777,
+      "word": "react",
+      "field": "clues[2]",
+      "current": "What one does when surprised, often instinctively",
+      "proposed": "Respond instinctively to surprise",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5792,
+      "word": "rifle",
+      "field": "clues[1]",
+      "current": "What a thief does to a drawer, not a weapon",
+      "proposed": "Search a drawer like a thief",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5889,
+      "word": "smite",
+      "field": "clues[2]",
+      "current": "What a warrior does with righteous fury",
+      "proposed": "Deal a righteous blow",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5935,
+      "word": "swirl",
+      "field": "clues[2]",
+      "current": "What a dancer does gracefully?",
+      "proposed": "Spin like a graceful dancer?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 5960,
+      "word": "thank",
+      "field": "hard_text",
+      "current": "What an Oscar winner does at the microphone",
+      "proposed": "Acknowledge helpers at an awards microphone",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6128,
+      "word": "evoke",
+      "field": "clues[2]",
+      "current": "What a painting does to your emotions",
+      "proposed": "Stir emotions like a painting",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6142,
+      "word": "fetch",
+      "field": "clues[2]",
+      "current": "What a dog does when given a stick",
+      "proposed": "Carry a stick back to its owner",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6183,
+      "word": "gapes",
+      "field": "clues[1]",
+      "current": "To look with mouth wide open",
+      "proposed": "Looks with mouth wide open",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6255,
+      "word": "denote",
+      "field": "hard_text",
+      "current": "Signifies more than one meaning",
+      "proposed": "Signify more than one meaning",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6270,
+      "word": "dished",
+      "field": "text",
+      "current": "To serve or provide food",
+      "proposed": "Served or provided food",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6277,
+      "word": "dotted",
+      "field": "clues[2]",
+      "current": "To decorate with pinpricks",
+      "proposed": "Decorated with pinpricks",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6344,
+      "word": "hurled",
+      "field": "text",
+      "current": "To throw something forcefully",
+      "proposed": "Threw something forcefully",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6405,
+      "word": "netted",
+      "field": "clues[1]",
+      "current": "To be ensnared, like a fish",
+      "proposed": "Was ensnared, like a fish",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6512,
+      "word": "shrill",
+      "field": "clues[2]",
+      "current": "What a whistle often does",
+      "proposed": "Thin and intensely loud",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6514,
+      "word": "shroud",
+      "field": "clues[2]",
+      "current": "What a fog does to a landscape",
+      "proposed": "Veil a landscape like fog",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6518,
+      "word": "silent",
+      "field": "clues[0]",
+      "current": "What a mime does best",
+      "proposed": "Like a mime at their best",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6785,
+      "word": "dangle",
+      "field": "clues[1]",
+      "current": "What a pendulum does?",
+      "proposed": "Hang and swing like a pendulum?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6909,
+      "word": "faints",
+      "field": "clues[2]",
+      "current": "A sudden swoon might lead to this?",
+      "proposed": "Sudden swoons might lead to these?",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 6909,
+      "word": "faints",
+      "field": "hard_text",
+      "current": "To drop out of sight suddenly?",
+      "proposed": "Drops out of sight suddenly?",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7031,
+      "word": "ignite",
+      "field": "clues[2]",
+      "current": "What a match does to wood",
+      "proposed": "Set wood alight with a match",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7080,
+      "word": "leaven",
+      "field": "clues[2]",
+      "current": "What yeast does to dough",
+      "proposed": "Aerate dough through fermentation",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7114,
+      "word": "mailed",
+      "field": "clues[2]",
+      "current": "To send off like a letter, but not always safely",
+      "proposed": "Sent off like a letter, but not always safely",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7211,
+      "word": "omelet",
+      "field": "clues[2]",
+      "current": "What a chef does to eggs in a pan",
+      "proposed": "A folded egg dish made in a pan",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7282,
+      "word": "punish",
+      "field": "clues[2]",
+      "current": "What a judge does after a crime",
+      "proposed": "Impose a penalty after a crime",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7344,
+      "word": "astound",
+      "field": "clues[2]",
+      "current": "What a magician does with tricks",
+      "proposed": "Amaze an audience like a magician",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7362,
+      "word": "distort",
+      "field": "clues[2]",
+      "current": "What a funhouse mirror does",
+      "proposed": "Warp an image like a funhouse mirror",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7435,
+      "word": "lateral",
+      "field": "clues[2]",
+      "current": "What a baseball player does to avoid a tag",
+      "proposed": "A sideways move to avoid a tag",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7447,
+      "word": "narrate",
+      "field": "clues[2]",
+      "current": "What a storyteller does best",
+      "proposed": "Provide spoken commentary",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7578,
+      "word": "trundle",
+      "field": "clues[0]",
+      "current": "Rolls or moves along",
+      "proposed": "Proceed with a rumbling gait",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7613,
+      "word": "averted",
+      "field": "clues[2]",
+      "current": "To prevent more than just a glance",
+      "proposed": "Prevented more than just a glance",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7654,
+      "word": "bottled",
+      "field": "clues[1]",
+      "current": "To capture essence, but kept inside?",
+      "proposed": "Captured essence, but kept inside?",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7753,
+      "word": "crossed",
+      "field": "clues[1]",
+      "current": "To go against, but not in a fight",
+      "proposed": "Went against, but not in a fight",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7757,
+      "word": "crushed",
+      "field": "clues[1]",
+      "current": "To break down, whether grapes or hopes",
+      "proposed": "Broke down, whether grapes or hopes",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7922,
+      "word": "fleshed",
+      "field": "clues[0]",
+      "current": "To add detail or context",
+      "proposed": "Added detail or context",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7922,
+      "word": "fleshed",
+      "field": "clues[1]",
+      "current": "To make more substantial in writing?",
+      "proposed": "Made more substantial in writing?",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7922,
+      "word": "fleshed",
+      "field": "clues[2]",
+      "current": "To develop the full form of an idea?",
+      "proposed": "Developed the full form of an idea?",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7922,
+      "word": "fleshed",
+      "field": "text",
+      "current": "To provide detail or substance",
+      "proposed": "Provided detail or substance",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7924,
+      "word": "flooded",
+      "field": "clues[2]",
+      "current": "To have an excess of something, like responses?",
+      "proposed": "Had an excess of something, like responses?",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 7938,
+      "word": "fronted",
+      "field": "clues[1]",
+      "current": "To have a head-on approach?",
+      "proposed": "Had a head-on approach?",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 8023,
+      "word": "holding",
+      "field": "clues[2]",
+      "current": "To possess or maintain, often temporarily",
+      "proposed": "Possessing or maintaining, often temporarily",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 8190,
+      "word": "inserted",
+      "field": "clues[2]",
+      "current": "To add discreetly?",
+      "proposed": "Added discreetly?",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 8353,
+      "word": "anchored",
+      "field": "clues[2]",
+      "current": "To secure firmly",
+      "proposed": "Secured firmly",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 8417,
+      "word": "breasted",
+      "field": "clues[1]",
+      "current": "To face head-on, not just a bird",
+      "proposed": "Faced head-on, not just a bird",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 8783,
+      "word": "sustained",
+      "field": "clues[2]",
+      "current": "To continue without faltering?",
+      "proposed": "Endured without faltering?",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 8808,
+      "word": "unleashed",
+      "field": "text",
+      "current": "To let loose or set free",
+      "proposed": "Let loose or set free",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 8935,
+      "word": "continued",
+      "field": "hard_text",
+      "current": "To carry on with a story",
+      "proposed": "Carried on with a story",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 8938,
+      "word": "corrosion",
+      "field": "clues[1]",
+      "current": "What rust does to metal, metaphorically",
+      "proposed": "Damage caused by rust on metal",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 9014,
+      "word": "dissipate",
+      "field": "clues[1]",
+      "current": "What smoke does when the fire dies down",
+      "proposed": "Disperse like smoke after a fire",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 9537,
+      "word": "authenticate",
+      "field": "clues[1]",
+      "current": "What a detective does to verify evidence",
+      "proposed": "Verify evidence like a detective",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 9559,
+      "word": "entertaining",
+      "field": "clues[1]",
+      "current": "What a good movie does",
+      "proposed": "Holding an audience like a good movie",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 9559,
+      "word": "entertaining",
+      "field": "clues[2]",
+      "current": "To amuse or engage actively",
+      "proposed": "Amusing or actively engaging",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 9579,
+      "word": "HOLL",
+      "field": "clues[1]",
+      "current": "What a miner does to the ground",
+      "proposed": "Excavate ground like a miner",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 9769,
+      "word": "HEELED",
+      "field": "clues[1]",
+      "current": "To have an edge in a situation",
+      "proposed": "Had an edge in a situation",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 9800,
+      "word": "REELED",
+      "field": "clues[2]",
+      "current": "To be taken aback unexpectedly",
+      "proposed": "Was taken aback unexpectedly",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 9924,
+      "word": "RATTLES",
+      "field": "clues[1]",
+      "current": "To disturb the peace with sound",
+      "proposed": "Disturbs the peace with sound",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 10655,
+      "word": "CONTORTION",
+      "field": "hard_text",
+      "current": "What a pretzel does to itself?",
+      "proposed": "A pretzel-like twist?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 11289,
+      "word": "ITERATIVE",
+      "field": "clues[0]",
+      "current": "Describes a method in cycles",
+      "proposed": "Method involving repeated cycles",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 11618,
+      "word": "STRANGLES",
+      "field": "text",
+      "current": "To choke or restrict",
+      "proposed": "Chokes or restricts",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 11958,
+      "word": "HOARDING",
+      "field": "hard_text",
+      "current": "To store away for future needs",
+      "proposed": "Storing away for future needs",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 12413,
+      "word": "LOOKED",
+      "field": "clues[1]",
+      "current": "To have cast an eye",
+      "proposed": "Had cast an eye",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 12432,
+      "word": "STARTING",
+      "field": "clues[0]",
+      "current": "To begin an action",
+      "proposed": "Beginning an action",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 12438,
+      "word": "CREATED",
+      "field": "clues[0]",
+      "current": "To have initiated or formed",
+      "proposed": "Had initiated or formed",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 12439,
+      "word": "FOLLOWED",
+      "field": "clues[0]",
+      "current": "To have gone after",
+      "proposed": "Had gone after",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 12691,
+      "word": "BREAKING",
+      "field": "clues[2]",
+      "current": "To breach or split",
+      "proposed": "Breaching or splitting",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 12705,
+      "word": "DROPPED",
+      "field": "hard_text",
+      "current": "To let go suddenly",
+      "proposed": "Let go suddenly",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 12981,
+      "word": "STAYING",
+      "field": "clues[0]",
+      "current": "To continue being present",
+      "proposed": "Continuing being present",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13042,
+      "word": "ENTITLED",
+      "field": "hard_text",
+      "current": "To be granted a title or privilege",
+      "proposed": "Was granted a title or privilege",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13095,
+      "word": "EXISTS",
+      "field": "hard_text",
+      "current": "To have reality or presence",
+      "proposed": "Occurs beyond mere theory",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13123,
+      "word": "ROLLING",
+      "field": "hard_text",
+      "current": "To turn over repeatedly",
+      "proposed": "Moving onward on wheels",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13156,
+      "word": "COVERING",
+      "field": "clues[1]",
+      "current": "What a blanket does",
+      "proposed": "Enveloping something like a blanket",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13191,
+      "word": "BEATING",
+      "field": "clues[1]",
+      "current": "What a drum does rhythmically",
+      "proposed": "Sounding rhythmically like a drum",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13265,
+      "word": "DESCRIBES",
+      "field": "hard_text",
+      "current": "To characterize or portray something",
+      "proposed": "Characterizes or portrays something",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13525,
+      "word": "CREATES",
+      "field": "hard_text",
+      "current": "To make or form anew",
+      "proposed": "Makes or forms anew",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13541,
+      "word": "PROMOTING",
+      "field": "clues[0]",
+      "current": "To elevate a product's visibility",
+      "proposed": "Elevating a product's visibility",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13544,
+      "word": "REPLIED",
+      "field": "clues[0]",
+      "current": "To give a response in conversation",
+      "proposed": "Gave a response in conversation",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13544,
+      "word": "REPLIED",
+      "field": "hard_text",
+      "current": "To answer someone after a prompt",
+      "proposed": "Answered someone after a prompt",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13547,
+      "word": "SIGNALS",
+      "field": "clues[2]",
+      "current": "To alert someone through a sign",
+      "proposed": "Alerts someone through a sign",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13557,
+      "word": "COMPOSED",
+      "field": "clues[0]",
+      "current": "To be collected and self-possessed",
+      "proposed": "Was collected and self-possessed",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13562,
+      "word": "EXECUTED",
+      "field": "clues[0]",
+      "current": "To carry out a directive",
+      "proposed": "Obeyed a directive",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13562,
+      "word": "EXECUTED",
+      "field": "hard_text",
+      "current": "To put into effect a plan or order",
+      "proposed": "Implemented a plan or order",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13566,
+      "word": "GATHERED",
+      "field": "clues[0]",
+      "current": "To accumulate from various places",
+      "proposed": "Accumulated from various places",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13566,
+      "word": "GATHERED",
+      "field": "clues[2]",
+      "current": "To convene or compile resources",
+      "proposed": "Convened or compiled resources",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13567,
+      "word": "IGNORED",
+      "field": "clues[0]",
+      "current": "To refrain from noticing or addressing",
+      "proposed": "Refrained from noticing or addressing",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13567,
+      "word": "IGNORED",
+      "field": "hard_text",
+      "current": "To pay no attention to something",
+      "proposed": "Paid no attention to something",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13661,
+      "word": "APPLIES",
+      "field": "hard_text",
+      "current": "To make relevant in context",
+      "proposed": "Makes relevant in context",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13667,
+      "word": "CARRIES",
+      "field": "hard_text",
+      "current": "To bear or convey something",
+      "proposed": "Bears or conveys something",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13685,
+      "word": "STEALING",
+      "field": "clues[1]",
+      "current": "To thieve or pilfer",
+      "proposed": "Thieving or pilfering",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13814,
+      "word": "RECEIVES",
+      "field": "clues[0]",
+      "current": "To come into possession of",
+      "proposed": "Comes into possession of",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13814,
+      "word": "RECEIVES",
+      "field": "clues[2]",
+      "current": "To accept a gift graciously",
+      "proposed": "Accepts a gift graciously",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13814,
+      "word": "RECEIVES",
+      "field": "hard_text",
+      "current": "To take in or get something",
+      "proposed": "Takes in or gets something",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13819,
+      "word": "SPREADING",
+      "field": "hard_text",
+      "current": "To expand across an area",
+      "proposed": "Expanding across an area",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13893,
+      "word": "KICKING",
+      "field": "clues[1]",
+      "current": "To hit with a foot",
+      "proposed": "Hitting with a foot",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13903,
+      "word": "REACHES",
+      "field": "hard_text",
+      "current": "To arrive at a destination",
+      "proposed": "Arrives at a destination",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13916,
+      "word": "WORRIES",
+      "field": "clues[0]",
+      "current": "To fret over something",
+      "proposed": "Frets over something",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13917,
+      "word": "APPEARING",
+      "field": "clues[2]",
+      "current": "To be present visibly",
+      "proposed": "Being present visibly",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13942,
+      "word": "STATING",
+      "field": "hard_text",
+      "current": "To articulate facts or opinions plainly",
+      "proposed": "Articulating facts or opinions plainly",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 13998,
+      "word": "DOZENS",
+      "field": "hard_text",
+      "current": "A common count for eggs or roses",
+      "proposed": "Common counts for eggs or roses",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14080,
+      "word": "REFLECTS",
+      "field": "clues[0]",
+      "current": "To think deeply about something",
+      "proposed": "Thinks deeply about something",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14080,
+      "word": "REFLECTS",
+      "field": "clues[2]",
+      "current": "To represent in a new light",
+      "proposed": "Represents in a new light",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14080,
+      "word": "REFLECTS",
+      "field": "hard_text",
+      "current": "To cast back light or thought",
+      "proposed": "Casts back light or thought",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14085,
+      "word": "WASTING",
+      "field": "clues[1]",
+      "current": "To use inefficiently or recklessly",
+      "proposed": "Using inefficiently or recklessly",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14103,
+      "word": "LIFTED",
+      "field": "hard_text",
+      "current": "To move upwards from below",
+      "proposed": "Moved upwards from below",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14165,
+      "word": "PRESSING",
+      "field": "clues[1]",
+      "current": "To apply heat and force for a flat result",
+      "proposed": "Applying heat and force for a flat result",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14169,
+      "word": "SHAKING",
+      "field": "clues[1]",
+      "current": "To move with quick, short motions",
+      "proposed": "Moving with quick, short motions",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14176,
+      "word": "THROWS",
+      "field": "clues[0]",
+      "current": "To cast away with a sudden motion",
+      "proposed": "Casts away with a sudden motion",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14277,
+      "word": "RAISES",
+      "field": "clues[2]",
+      "current": "To elevate one's position",
+      "proposed": "Elevates one's position",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14277,
+      "word": "RAISES",
+      "field": "hard_text",
+      "current": "To bring up or enhance",
+      "proposed": "Brings up or enhances",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14495,
+      "word": "CRACKED",
+      "field": "clues[2]",
+      "current": "To have a small break or split",
+      "proposed": "Had a small break or split",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14590,
+      "word": "PERFORMS",
+      "field": "hard_text",
+      "current": "To carry out an act or show",
+      "proposed": "Carries out an act or show",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14619,
+      "word": "CLOSES",
+      "field": "hard_text",
+      "current": "To shut or conclude",
+      "proposed": "Shuts or concludes",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14712,
+      "word": "ADMITS",
+      "field": "hard_text",
+      "current": "To let the truth slip out",
+      "proposed": "Lets the truth slip out",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14776,
+      "word": "REMEMBERS",
+      "field": "hard_text",
+      "current": "To bring back to mind past events",
+      "proposed": "Revisits an earlier event mentally",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 14969,
+      "word": "YIELDS",
+      "field": "clues[1]",
+      "current": "To produce or create, often in farming",
+      "proposed": "Produces or creates, often in farming",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15048,
+      "word": "SLIDING",
+      "field": "clues[2]",
+      "current": "To move down a slope effortlessly",
+      "proposed": "Moving down a slope effortlessly",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15065,
+      "word": "CROSSES",
+      "field": "clues[2]",
+      "current": "To go over or mark out",
+      "proposed": "Goes over or marks out",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15065,
+      "word": "CROSSES",
+      "field": "hard_text",
+      "current": "To meet or overlap in a crisscross manner",
+      "proposed": "Meets or overlaps in a crisscross manner",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15067,
+      "word": "DEFINES",
+      "field": "hard_text",
+      "current": "To clarify boundaries or characteristics",
+      "proposed": "Clarifies boundaries or characteristics",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15068,
+      "word": "DELIVERS",
+      "field": "hard_text",
+      "current": "To provide something at its intended place",
+      "proposed": "Provides something at its intended place",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15075,
+      "word": "HONORS",
+      "field": "clues[0]",
+      "current": "To show respect and admiration",
+      "proposed": "Shows respect and admiration",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15075,
+      "word": "HONORS",
+      "field": "hard_text",
+      "current": "To give distinction or praise",
+      "proposed": "Gives distinction or praise",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15081,
+      "word": "LOWERED",
+      "field": "hard_text",
+      "current": "To bring something down in elevation",
+      "proposed": "Brought something down in elevation",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15082,
+      "word": "MANNING",
+      "field": "hard_text",
+      "current": "To provide personnel for a task or duty",
+      "proposed": "Providing personnel for a task or duty",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15090,
+      "word": "PATCHES",
+      "field": "hard_text",
+      "current": "To fix something with a smaller piece",
+      "proposed": "Fixes something with a smaller piece",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15211,
+      "word": "CONVEY",
+      "field": "hard_text",
+      "current": "Transmits information or feelings",
+      "proposed": "Transmit information or feelings",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15240,
+      "word": "POPPING",
+      "field": "clues[1]",
+      "current": "What popcorn does when heated",
+      "proposed": "Bursting open under heat",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15357,
+      "word": "ACQUIRING",
+      "field": "clues[0]",
+      "current": "To get or come into possession of",
+      "proposed": "Getting or coming into possession of",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15359,
+      "word": "ADMITTING",
+      "field": "clues[2]",
+      "current": "To concede a point in an argument",
+      "proposed": "Conceding a point in an argument",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15359,
+      "word": "ADMITTING",
+      "field": "hard_text",
+      "current": "To acknowledge or let in",
+      "proposed": "Permitting access through a doorway",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15363,
+      "word": "BANNING",
+      "field": "hard_text",
+      "current": "To declare something off-limits",
+      "proposed": "Declaring something off-limits",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15420,
+      "word": "COPIED",
+      "field": "clues[2]",
+      "current": "To take as a model",
+      "proposed": "Took as a model",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15465,
+      "word": "ASSUMES",
+      "field": "hard_text",
+      "current": "To accept without proof",
+      "proposed": "Accepts without proof",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15474,
+      "word": "COMMENCED",
+      "field": "clues[0]",
+      "current": "To kick off an event or activity",
+      "proposed": "Kicked off an event or activity",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15490,
+      "word": "LOWERING",
+      "field": "clues[0]",
+      "current": "To make something less high",
+      "proposed": "Making something less high",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15544,
+      "word": "DEPICTED",
+      "field": "clues[1]",
+      "current": "To show in a specific manner",
+      "proposed": "Showed in a specific manner",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15549,
+      "word": "EXPLODED",
+      "field": "clues[2]",
+      "current": "To expand and burst outward",
+      "proposed": "Expanded and burst outward",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15599,
+      "word": "CAPTURING",
+      "field": "clues[1]",
+      "current": "To trap or ensnare an object",
+      "proposed": "Trapping or ensnaring an object",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15609,
+      "word": "EXCEEDED",
+      "field": "clues[1]",
+      "current": "To go beyond what was set",
+      "proposed": "Passed a previously set point",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15626,
+      "word": "PUSHES",
+      "field": "clues[2]",
+      "current": "To shove with effort",
+      "proposed": "Shoves with effort",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15630,
+      "word": "RESUMED",
+      "field": "clues[2]",
+      "current": "To continue an activity",
+      "proposed": "Continued an activity",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15630,
+      "word": "RESUMED",
+      "field": "hard_text",
+      "current": "To continue after an interruption",
+      "proposed": "Continued after an interruption",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15798,
+      "word": "CONFESSED",
+      "field": "hard_text",
+      "current": "To reveal guilt or secrets openly",
+      "proposed": "Revealed guilt or secrets openly",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15812,
+      "word": "GRAPES",
+      "field": "clues[2]",
+      "current": "A popular fruit for snacking and juicing",
+      "proposed": "Popular fruits for snacking and juicing",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15862,
+      "word": "FORGED",
+      "field": "clues[1]",
+      "current": "To shape or form, often with heat",
+      "proposed": "Shaped or formed, often with heat",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15878,
+      "word": "REMOVES",
+      "field": "clues[0]",
+      "current": "To get rid of something unwanted",
+      "proposed": "Gets rid of something unwanted",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15878,
+      "word": "REMOVES",
+      "field": "clues[1]",
+      "current": "To extract from a place",
+      "proposed": "Extracts from a place",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 15880,
+      "word": "REUNITED",
+      "field": "clues[1]",
+      "current": "To meet again after a long time",
+      "proposed": "Met again after a long time",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16061,
+      "word": "PROPOSING",
+      "field": "hard_text",
+      "current": "To put forward a potential commitment",
+      "proposed": "Putting forward a potential commitment",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16071,
+      "word": "SPREADS",
+      "field": "clues[1]",
+      "current": "To disseminate widely",
+      "proposed": "Disseminates widely",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16071,
+      "word": "SPREADS",
+      "field": "clues[2]",
+      "current": "To open out or unfold",
+      "proposed": "Opens out or unfolds",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16078,
+      "word": "TAPPED",
+      "field": "clues[1]",
+      "current": "To access a resource",
+      "proposed": "Accessed a resource",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16078,
+      "word": "TAPPED",
+      "field": "clues[2]",
+      "current": "To connect to a source",
+      "proposed": "Connected to a source",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16078,
+      "word": "TAPPED",
+      "field": "text",
+      "current": "To lightly strike or touch",
+      "proposed": "Lightly struck or touched",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16083,
+      "word": "WEIGHS",
+      "field": "clues[1]",
+      "current": "To find out heaviness",
+      "proposed": "Finds out heaviness",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16087,
+      "word": "BENDING",
+      "field": "clues[1]",
+      "current": "To change direction or shape",
+      "proposed": "Changing course or becoming curved",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16087,
+      "word": "BENDING",
+      "field": "clues[2]",
+      "current": "What a flexible object does",
+      "proposed": "Flexing under pressure",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16091,
+      "word": "BOUNDS",
+      "field": "clues[1]",
+      "current": "To leap forward energetically",
+      "proposed": "Leaps forward energetically",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16092,
+      "word": "BREEDS",
+      "field": "clues[2]",
+      "current": "To produce offspring intentionally",
+      "proposed": "Produces offspring intentionally",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16095,
+      "word": "COPYING",
+      "field": "clues[2]",
+      "current": "To mimic someone else's actions",
+      "proposed": "Mimicking someone else's actions",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16103,
+      "word": "EXPLOITED",
+      "field": "clues[1]",
+      "current": "To make unfair use of resources",
+      "proposed": "Made unfair use of resources",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16104,
+      "word": "EXTRACTED",
+      "field": "clues[2]",
+      "current": "To derive something from a larger entity",
+      "proposed": "Derived something from a larger entity",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16104,
+      "word": "EXTRACTED",
+      "field": "hard_text",
+      "current": "To take away from a larger whole",
+      "proposed": "Took away from a larger whole",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16107,
+      "word": "FLASHING",
+      "field": "clues[0]",
+      "current": "What a camera does for a photo",
+      "proposed": "Producing a camera's burst of light",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16107,
+      "word": "FLASHING",
+      "field": "clues[1]",
+      "current": "What a neon sign does",
+      "proposed": "Blinking like a neon sign",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16107,
+      "word": "FLASHING",
+      "field": "clues[2]",
+      "current": "To signal with quick light sequences",
+      "proposed": "Signalling with quick light sequences",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16109,
+      "word": "GRANTING",
+      "field": "clues[0]",
+      "current": "To give a request or wish",
+      "proposed": "Giving approval to a request",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16223,
+      "word": "DIFFERS",
+      "field": "clues[1]",
+      "current": "To be unlike something else",
+      "proposed": "Is unlike something else",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16245,
+      "word": "PREPARES",
+      "field": "clues[0]",
+      "current": "To make arrangements in advance",
+      "proposed": "Makes arrangements in advance",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16250,
+      "word": "SCARES",
+      "field": "hard_text",
+      "current": "To provoke anxiety or trepidation",
+      "proposed": "Provokes anxiety or trepidation",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16264,
+      "word": "SWINGS",
+      "field": "clues[0]",
+      "current": "A motion seen in a playground",
+      "proposed": "Playground seats suspended by chains",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16318,
+      "word": "SHAKES",
+      "field": "hard_text",
+      "current": "To vibrate or jolt suddenly",
+      "proposed": "Vibrates or jolts suddenly",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16348,
+      "word": "DEPOSITED",
+      "field": "clues[2]",
+      "current": "To put in a safe location",
+      "proposed": "Put in a safe location",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16384,
+      "word": "SPARED",
+      "field": "text",
+      "current": "To keep from harm or punishment",
+      "proposed": "Kept from harm or punishment",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16432,
+      "word": "REPLACES",
+      "field": "clues[0]",
+      "current": "To put back something new",
+      "proposed": "Puts back something new",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16432,
+      "word": "REPLACES",
+      "field": "clues[1]",
+      "current": "To exchange one for another",
+      "proposed": "Exchanges one for another",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16432,
+      "word": "REPLACES",
+      "field": "clues[2]",
+      "current": "To supersede with a new item",
+      "proposed": "Supersedes with a new item",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16432,
+      "word": "REPLACES",
+      "field": "hard_text",
+      "current": "To take the place of something",
+      "proposed": "Takes the place of something",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16436,
+      "word": "SCALING",
+      "field": "hard_text",
+      "current": "To rise to a higher level",
+      "proposed": "Rising to a higher level",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16469,
+      "word": "COMPRISE",
+      "field": "clues[2]",
+      "current": "Includes as components",
+      "proposed": "Include as components",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16469,
+      "word": "COMPRISE",
+      "field": "hard_text",
+      "current": "Forms a whole from various parts",
+      "proposed": "Form a whole from various parts",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16529,
+      "word": "BOASTS",
+      "field": "clues[0]",
+      "current": "To show off one's accomplishments",
+      "proposed": "Shows off one's accomplishments",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16529,
+      "word": "BOASTS",
+      "field": "hard_text",
+      "current": "To speak with excessive pride",
+      "proposed": "Speaks with excessive pride",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16534,
+      "word": "EMERGES",
+      "field": "clues[2]",
+      "current": "To develop from a background",
+      "proposed": "Develops from a background",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16536,
+      "word": "EXPRESSES",
+      "field": "clues[0]",
+      "current": "To share emotions with others",
+      "proposed": "Shares emotions with others",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16702,
+      "word": "VIBRATION",
+      "field": "clues[1]",
+      "current": "What your phone does for alerts",
+      "proposed": "A phone's alerting movement",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 16960,
+      "word": "REPLICATE",
+      "field": "hard_text",
+      "current": "Creates a carbon copy",
+      "proposed": "Create a carbon copy",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17034,
+      "word": "RESIDES",
+      "field": "clues[1]",
+      "current": "To be situated in a location",
+      "proposed": "Is situated in a location",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17039,
+      "word": "SHOUTS",
+      "field": "clues[1]",
+      "current": "To raise one's voice significantly",
+      "proposed": "Raises one's voice significantly",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17049,
+      "word": "TOLERATED",
+      "field": "clues[1]",
+      "current": "To bear something unpleasant",
+      "proposed": "Bore something unpleasant",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17235,
+      "word": "INFORMS",
+      "field": "clues[0]",
+      "current": "To make someone aware of facts",
+      "proposed": "Makes someone aware of facts",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17239,
+      "word": "LICKING",
+      "field": "hard_text",
+      "current": "What a cat does to its fur",
+      "proposed": "Suffering a decisive defeat",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17277,
+      "word": "YIELDED",
+      "field": "clues[2]",
+      "current": "To produce a return or outcome",
+      "proposed": "Produced a return or outcome",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17290,
+      "word": "BRUSHING",
+      "field": "clues[1]",
+      "current": "To remove dust or dirt gently",
+      "proposed": "Removing dust or dirt gently",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17401,
+      "word": "REOPENED",
+      "field": "clues[1]",
+      "current": "To open once more after being shut",
+      "proposed": "Opened once more after being shut",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17402,
+      "word": "REVOKED",
+      "field": "clues[2]",
+      "current": "To take away rights or privileges",
+      "proposed": "Took away rights or privileges",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17457,
+      "word": "PATROLS",
+      "field": "hard_text",
+      "current": "To guard or oversee",
+      "proposed": "Guards or oversees",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17548,
+      "word": "TRUMPS",
+      "field": "clues[1]",
+      "current": "To prevail over in a contest",
+      "proposed": "Prevails over in a contest",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17589,
+      "word": "GROUPING",
+      "field": "clues[1]",
+      "current": "To categorize items based on shared traits",
+      "proposed": "Categorizing items based on shared traits",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17606,
+      "word": "PIERCED",
+      "field": "clues[2]",
+      "current": "To have openings created through a surface",
+      "proposed": "Had openings created through a surface",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17609,
+      "word": "PRESIDING",
+      "field": "clues[2]",
+      "current": "To lead a session, ensuring order and focus",
+      "proposed": "Leading a session, ensuring order and focus",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17609,
+      "word": "PRESIDING",
+      "field": "hard_text",
+      "current": "To oversee proceedings, directing the flow",
+      "proposed": "Overseeing proceedings, directing the flow",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17648,
+      "word": "DIVIDES",
+      "field": "clues[0]",
+      "current": "To separate or partition",
+      "proposed": "Separates or partitions",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17726,
+      "word": "DEPENDED",
+      "field": "hard_text",
+      "current": "To be contingent on someone or something",
+      "proposed": "Was contingent on someone or something",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17811,
+      "word": "HAMMERED",
+      "field": "clues[2]",
+      "current": "To be hit hard or inebriated",
+      "proposed": "Was hit hard or inebriated",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17812,
+      "word": "HARASSING",
+      "field": "clues[1]",
+      "current": "To pester with unwanted attention",
+      "proposed": "Pestering with unwanted attention",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17812,
+      "word": "HARASSING",
+      "field": "hard_text",
+      "current": "To bother someone without relent",
+      "proposed": "Bothering someone without relent",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17816,
+      "word": "HUGGED",
+      "field": "clues[0]",
+      "current": "To hold someone closely in affection",
+      "proposed": "Held someone closely in affection",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17824,
+      "word": "LINGERING",
+      "field": "clues[2]",
+      "current": "To delay departure, often aimlessly",
+      "proposed": "Delaying departure, often aimlessly",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17953,
+      "word": "DRIFTED",
+      "field": "clues[1]",
+      "current": "To be carried along by currents",
+      "proposed": "Was carried along by currents",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17959,
+      "word": "EXPLODES",
+      "field": "clues[2]",
+      "current": "To increase dramatically",
+      "proposed": "Increases dramatically",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17959,
+      "word": "EXPLODES",
+      "field": "hard_text",
+      "current": "To go off with a bang",
+      "proposed": "Goes off with a bang",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 17973,
+      "word": "LUNCHES",
+      "field": "hard_text",
+      "current": "A break from work with food",
+      "proposed": "Breaks from work that include food",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18045,
+      "word": "FLUSHING",
+      "field": "clues[1]",
+      "current": "To cleanse completely",
+      "proposed": "Cleansing completely",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18117,
+      "word": "ENGAGES",
+      "field": "clues[2]",
+      "current": "To attract and hold attention",
+      "proposed": "Attracts and holds attention",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18166,
+      "word": "SETTLES",
+      "field": "text",
+      "current": "To resolve or reach agreement",
+      "proposed": "Resolves or reaches agreement",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18173,
+      "word": "SPOTTING",
+      "field": "hard_text",
+      "current": "To see or mark with a dot",
+      "proposed": "Seeing or marking with a dot",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18191,
+      "word": "ASSERTS",
+      "field": "hard_text",
+      "current": "To insist on a point with conviction",
+      "proposed": "Insists on a point with conviction",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18270,
+      "word": "CHOPPING",
+      "field": "clues[1]",
+      "current": "What a lumberjack does to trees",
+      "proposed": "Cutting trees like a lumberjack",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18274,
+      "word": "COLLAPSES",
+      "field": "clues[2]",
+      "current": "To fall inwards or downwards",
+      "proposed": "Falls inwards or downwards",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18276,
+      "word": "CONSERVE",
+      "field": "clues[1]",
+      "current": "What a museum does to artifacts",
+      "proposed": "Preserve artifacts like a museum",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18286,
+      "word": "ENTAILS",
+      "field": "clues[0]",
+      "current": "To require as part of a process",
+      "proposed": "Requires as part of a process",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18286,
+      "word": "ENTAILS",
+      "field": "hard_text",
+      "current": "To include as a necessary consequence",
+      "proposed": "Includes as a necessary consequence",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18388,
+      "word": "PRESERVES",
+      "field": "clues[2]",
+      "current": "A favorite for breakfast alongside butter",
+      "proposed": "Breakfast favorites alongside butter",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18397,
+      "word": "SLAPPING",
+      "field": "clues[2]",
+      "current": "To hit with an open palm",
+      "proposed": "Hitting with an open palm",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18415,
+      "word": "WHIPPING",
+      "field": "clues[1]",
+      "current": "To mix vigorously, as in cooking",
+      "proposed": "Mixing vigorously, as in cooking",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18547,
+      "word": "ROASTING",
+      "field": "hard_text",
+      "current": "To cook until browned and tender",
+      "proposed": "Cooking until browned and tender",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18641,
+      "word": "PORTRAYS",
+      "field": "clues[0]",
+      "current": "To show in a certain light",
+      "proposed": "Shows in a certain light",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18650,
+      "word": "RESIDED",
+      "field": "hard_text",
+      "current": "To have a place of dwelling",
+      "proposed": "Had a place of dwelling",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18694,
+      "word": "DESERTS",
+      "field": "clues[0]",
+      "current": "To leave someone or something",
+      "proposed": "Leaves someone or something",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18750,
+      "word": "TEASED",
+      "field": "hard_text",
+      "current": "To provoke with light-hearted ridicule",
+      "proposed": "Provoked with light-hearted ridicule",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18751,
+      "word": "TOWING",
+      "field": "hard_text",
+      "current": "To pull something behind another vehicle",
+      "proposed": "Assisting a disabled car by pulling it",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18820,
+      "word": "REGULATES",
+      "field": "hard_text",
+      "current": "To oversee and maintain order",
+      "proposed": "Oversees and maintains order",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18939,
+      "word": "FREEZES",
+      "field": "clues[2]",
+      "current": "To solidify in a chill",
+      "proposed": "Solidifies in a chill",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 18939,
+      "word": "FREEZES",
+      "field": "hard_text",
+      "current": "To halt in cold temperatures",
+      "proposed": "Halts in cold temperatures",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19044,
+      "word": "LEGGINGS",
+      "field": "hard_text",
+      "current": "A snug fit for your lower half",
+      "proposed": "Snug garments for your lower half",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19045,
+      "word": "LEGIONS",
+      "field": "clues[2]",
+      "current": "A multitude, often in a military context",
+      "proposed": "Multitudes, often in a military context",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19045,
+      "word": "LEGIONS",
+      "field": "hard_text",
+      "current": "An army of followers",
+      "proposed": "Armies of followers",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19148,
+      "word": "RALLIED",
+      "field": "hard_text",
+      "current": "To unite in support or resistance",
+      "proposed": "United in support or resistance",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19149,
+      "word": "RECOVERS",
+      "field": "hard_text",
+      "current": "To return to a previous state of wellness",
+      "proposed": "Returns to a previous state of wellness",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19168,
+      "word": "UTILIZES",
+      "field": "clues[0]",
+      "current": "To put to good use in a situation",
+      "proposed": "Puts to good use in a situation",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19174,
+      "word": "ADOPTS",
+      "field": "clues[0]",
+      "current": "To choose to take something as one's own",
+      "proposed": "Chooses to take something as one's own",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19426,
+      "word": "SPECIFIES",
+      "field": "hard_text",
+      "current": "To detail with precision",
+      "proposed": "Details with precision",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19451,
+      "word": "ASSIGNS",
+      "field": "hard_text",
+      "current": "To allocate roles in a task or project",
+      "proposed": "Allocates roles in a task or project",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19452,
+      "word": "ASSURES",
+      "field": "hard_text",
+      "current": "To provide certainty in uncertain times",
+      "proposed": "Provides certainty in uncertain times",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19468,
+      "word": "DISLIKES",
+      "field": "clues[1]",
+      "current": "To have a strong aversion towards",
+      "proposed": "Has a strong aversion towards",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19540,
+      "word": "AWAKENS",
+      "field": "clues[0]",
+      "current": "To stir from sleep",
+      "proposed": "Stirs from sleep",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19542,
+      "word": "BOASTED",
+      "field": "clues[0]",
+      "current": "To speak highly of oneself",
+      "proposed": "Spoke highly of oneself",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19546,
+      "word": "COMPETES",
+      "field": "clues[0]",
+      "current": "To vie for success or superiority",
+      "proposed": "Vies for success or superiority",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19550,
+      "word": "DESPISED",
+      "field": "clues[2]",
+      "current": "To feel aversion towards someone",
+      "proposed": "Felt aversion towards someone",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19636,
+      "word": "CONDEMNS",
+      "field": "hard_text",
+      "current": "To declare something as wrong or evil",
+      "proposed": "Declares something as wrong or evil",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19644,
+      "word": "EMITTING",
+      "field": "clues[1]",
+      "current": "To give off something tangible",
+      "proposed": "Giving off something tangible",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19757,
+      "word": "IMPOSES",
+      "field": "hard_text",
+      "current": "To place a burden, often unwanted",
+      "proposed": "Places a burden, often unwanted",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19781,
+      "word": "SPRAYS",
+      "field": "clues[1]",
+      "current": "To apply a liquid evenly",
+      "proposed": "Applies a liquid evenly",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19781,
+      "word": "SPRAYS",
+      "field": "hard_text",
+      "current": "To disperse liquid in tiny droplets",
+      "proposed": "Disperses liquid in tiny droplets",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19784,
+      "word": "SWAYED",
+      "field": "clues[0]",
+      "current": "To lean or tilt gently",
+      "proposed": "Leaned or tilted gently",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19789,
+      "word": "VAULTS",
+      "field": "hard_text",
+      "current": "To leap or store valuables",
+      "proposed": "Leaps or stores valuables",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19867,
+      "word": "UNDERGOES",
+      "field": "hard_text",
+      "current": "To be subject to change",
+      "proposed": "Is subject to change",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19990,
+      "word": "DEFLECT",
+      "field": "clues[0]",
+      "current": "Redirects attention or force",
+      "proposed": "Redirect attention or force",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19990,
+      "word": "DEFLECT",
+      "field": "clues[1]",
+      "current": "Causes to veer off course",
+      "proposed": "Cause something to veer off course",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19990,
+      "word": "DEFLECT",
+      "field": "clues[2]",
+      "current": "Shifts focus away from a target",
+      "proposed": "Shift focus away from a target",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19990,
+      "word": "DEFLECT",
+      "field": "hard_text",
+      "current": "Bends the path of something away",
+      "proposed": "Bend the path of something away",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19998,
+      "word": "EMBODY",
+      "field": "clues[1]",
+      "current": "Personifies qualities in a tangible form",
+      "proposed": "Personify qualities in a tangible form",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19998,
+      "word": "EMBODY",
+      "field": "clues[2]",
+      "current": "Exemplifies characteristics through action",
+      "proposed": "Exemplify characteristics through action",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 19998,
+      "word": "EMBODY",
+      "field": "hard_text",
+      "current": "Takes physical form of an idea",
+      "proposed": "Take physical form of an idea",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20011,
+      "word": "LAUDED",
+      "field": "clues[2]",
+      "current": "To praise someone publicly",
+      "proposed": "Praised someone publicly",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20038,
+      "word": "SECONDED",
+      "field": "clues[0]",
+      "current": "To give formal backing to a proposal",
+      "proposed": "Gave formal backing to a proposal",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20053,
+      "word": "UPHOLDING",
+      "field": "clues[0]",
+      "current": "To advocate for a principle or law",
+      "proposed": "Advocating for a principle or law",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20053,
+      "word": "UPHOLDING",
+      "field": "hard_text",
+      "current": "To keep something in its rightful place",
+      "proposed": "Keeping something in its rightful place",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20110,
+      "word": "REALISES",
+      "field": "clues[0]",
+      "current": "To become conscious of a truth",
+      "proposed": "Becomes conscious of a truth",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20229,
+      "word": "UNFOLDS",
+      "field": "clues[1]",
+      "current": "To open or expand gradually",
+      "proposed": "Opens or expands gradually",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20231,
+      "word": "UNITES",
+      "field": "clues[0]",
+      "current": "To bring factions together",
+      "proposed": "Brings factions together",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20237,
+      "word": "WILLED",
+      "field": "clues[1]",
+      "current": "To convey intent, often legally",
+      "proposed": "Conveyed intent, often legally",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20329,
+      "word": "STUFFS",
+      "field": "hard_text",
+      "current": "To cram with materials or items",
+      "proposed": "Crams with materials or items",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20346,
+      "word": "ADHERING",
+      "field": "clues[0]",
+      "current": "To hold fast to a principle",
+      "proposed": "Holding fast to a principle",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20446,
+      "word": "CANCELS",
+      "field": "clues[1]",
+      "current": "To void or annul",
+      "proposed": "Voids or annuls",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20448,
+      "word": "CHURNING",
+      "field": "clues[0]",
+      "current": "To stir or shake vigorously",
+      "proposed": "Stirring or shaking vigorously",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20473,
+      "word": "GREETS",
+      "field": "clues[0]",
+      "current": "To say hello with enthusiasm",
+      "proposed": "Says hello with enthusiasm",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20473,
+      "word": "GREETS",
+      "field": "clues[2]",
+      "current": "To meet with a smile or gesture",
+      "proposed": "Meets with a smile or gesture",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20473,
+      "word": "GREETS",
+      "field": "text",
+      "current": "To welcome or acknowledge",
+      "proposed": "Welcomes or acknowledges",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20477,
+      "word": "INCITE",
+      "field": "clues[2]",
+      "current": "Instigates trouble or conflict",
+      "proposed": "Instigate trouble or conflict",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20478,
+      "word": "INFERRED",
+      "field": "clues[1]",
+      "current": "To draw a conclusion from clues",
+      "proposed": "Drew a conclusion from clues",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20478,
+      "word": "INFERRED",
+      "field": "clues[2]",
+      "current": "To understand something not directly stated",
+      "proposed": "Understood something not directly stated",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20567,
+      "word": "PARDONED",
+      "field": "hard_text",
+      "current": "To be let off the hook legally",
+      "proposed": "Was let off the hook legally",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20571,
+      "word": "PLUGGING",
+      "field": "clues[2]",
+      "current": "To fill gaps, both literally and figuratively",
+      "proposed": "Filling gaps, both literally and figuratively",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20571,
+      "word": "PLUGGING",
+      "field": "hard_text",
+      "current": "To fill a void in a structure",
+      "proposed": "Filling a void in a structure",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20576,
+      "word": "REWORKED",
+      "field": "hard_text",
+      "current": "To redo something for improvement",
+      "proposed": "Redid something for improvement",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20587,
+      "word": "SPANNED",
+      "field": "hard_text",
+      "current": "To stretch from one point to another",
+      "proposed": "Stretched from one point to another",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20671,
+      "word": "RESTARTED",
+      "field": "text",
+      "current": "To begin again after stopping",
+      "proposed": "Began again after stopping",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20752,
+      "word": "PREVAILS",
+      "field": "clues[0]",
+      "current": "To dominate in influence or outcome",
+      "proposed": "Dominates in influence or outcome",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20752,
+      "word": "PREVAILS",
+      "field": "clues[1]",
+      "current": "To remain in force or effect",
+      "proposed": "Remains in force or effect",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20752,
+      "word": "PREVAILS",
+      "field": "clues[2]",
+      "current": "To come out on top against odds",
+      "proposed": "Comes out on top against odds",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20752,
+      "word": "PREVAILS",
+      "field": "text",
+      "current": "To win or triumph",
+      "proposed": "Wins or triumphs",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20757,
+      "word": "REUSED",
+      "field": "clues[1]",
+      "current": "To employ again in another context",
+      "proposed": "Employed again in another context",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20810,
+      "word": "EVOKES",
+      "field": "hard_text",
+      "current": "To summon memories or feelings from within",
+      "proposed": "Summons memories or feelings from within",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20811,
+      "word": "FINGERED",
+      "field": "clues[0]",
+      "current": "To handle or manipulate with one's digits",
+      "proposed": "Handled or manipulated with one's digits",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20811,
+      "word": "FINGERED",
+      "field": "hard_text",
+      "current": "To point out or handle with dexterity",
+      "proposed": "Pointed out or handled with dexterity",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20877,
+      "word": "BLISTERS",
+      "field": "clues[0]",
+      "current": "A result of friction or burns",
+      "proposed": "Results of friction or burns",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20889,
+      "word": "DECIMATED",
+      "field": "clues[2]",
+      "current": "To drastically reduce a population",
+      "proposed": "Drastically reduced a population",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20891,
+      "word": "DEFLECTED",
+      "field": "clues[2]",
+      "current": "To turn aside from a path",
+      "proposed": "Turned aside from a path",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20897,
+      "word": "ENGULFED",
+      "field": "clues[2]",
+      "current": "To be completely enveloped",
+      "proposed": "Was completely enveloped",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20902,
+      "word": "FLEXING",
+      "field": "clues[2]",
+      "current": "To bend a limb or muscle",
+      "proposed": "Bending a limb or muscle",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20993,
+      "word": "EQUATES",
+      "field": "clues[2]",
+      "current": "To make synonymous in meaning",
+      "proposed": "Makes synonymous in meaning",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20993,
+      "word": "EQUATES",
+      "field": "text",
+      "current": "To consider as equal or the same",
+      "proposed": "Considers as equal or the same",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 20995,
+      "word": "EXECUTES",
+      "field": "hard_text",
+      "current": "To put a plan into action effectively",
+      "proposed": "Puts a plan into action effectively",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21020,
+      "word": "PLUNGING",
+      "field": "clues[0]",
+      "current": "To dive headfirst or drop dramatically",
+      "proposed": "Diving headfirst or dropping dramatically",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21020,
+      "word": "PLUNGING",
+      "field": "clues[2]",
+      "current": "To descend quickly, like a rollercoaster",
+      "proposed": "Descending quickly, like a rollercoaster",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21059,
+      "word": "VIBRATE",
+      "field": "clues[0]",
+      "current": "What a phone does on silent",
+      "proposed": "Buzz like a phone on silent",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21083,
+      "word": "EXCITES",
+      "field": "hard_text",
+      "current": "To cause a spark or thrill in someone",
+      "proposed": "Causes a spark or thrill in someone",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21093,
+      "word": "GASPING",
+      "field": "clues[2]",
+      "current": "What one does when breath is stifled",
+      "proposed": "Struggling for breath",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21095,
+      "word": "GLORIFY",
+      "field": "clues[2]",
+      "current": "What one does to a hero in stories",
+      "proposed": "Praise a hero extravagantly",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21101,
+      "word": "MINIMIZED",
+      "field": "clues[2]",
+      "current": "To make something seem less important",
+      "proposed": "Made something seem less important",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21129,
+      "word": "TENDERED",
+      "field": "clues[0]",
+      "current": "To submit an application or offer",
+      "proposed": "Submitted an application or offer",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21145,
+      "word": "BACKFIRED",
+      "field": "clues[0]",
+      "current": "To result in the opposite effect",
+      "proposed": "Resulted in the opposite effect",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21149,
+      "word": "BLEEDS",
+      "field": "hard_text",
+      "current": "To lose vital fluid or pigment",
+      "proposed": "Loses vital fluid or pigment",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21152,
+      "word": "BROADENED",
+      "field": "clues[0]",
+      "current": "To increase range or influence",
+      "proposed": "Increased range or influence",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21152,
+      "word": "BROADENED",
+      "field": "clues[2]",
+      "current": "To stretch beyond original limits",
+      "proposed": "Stretched beyond original limits",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21169,
+      "word": "DEFIES",
+      "field": "hard_text",
+      "current": "To stand against authority boldly",
+      "proposed": "Stands against authority boldly",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21174,
+      "word": "ENSHRINED",
+      "field": "clues[1]",
+      "current": "To honor with a special status",
+      "proposed": "Honored with a special status",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21175,
+      "word": "ERASING",
+      "field": "clues[0]",
+      "current": "To remove all traces of",
+      "proposed": "Removing all traces of",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21187,
+      "word": "OBTAINS",
+      "field": "clues[0]",
+      "current": "To come into possession of",
+      "proposed": "Comes into possession of",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21204,
+      "word": "SMOOTHING",
+      "field": "clues[0]",
+      "current": "To make surfaces free of bumps",
+      "proposed": "Making surfaces free of bumps",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21207,
+      "word": "SPEWING",
+      "field": "clues[1]",
+      "current": "To emit something in a forceful manner",
+      "proposed": "Emitting something in a forceful manner",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21221,
+      "word": "WANDERS",
+      "field": "text",
+      "current": "To move about without a fixed course",
+      "proposed": "Moves about without a fixed course",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21222,
+      "word": "WEAKENS",
+      "field": "text",
+      "current": "To make or become less strong",
+      "proposed": "Makes or becomes less strong",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21225,
+      "word": "ADJUSTS",
+      "field": "text",
+      "current": "To change or alter slightly",
+      "proposed": "Makes a small corrective change",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21266,
+      "word": "FLOCKS",
+      "field": "clues[1]",
+      "current": "A congregation of similar beings",
+      "proposed": "Congregations of similar beings",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21289,
+      "word": "OBEYING",
+      "field": "clues[2]",
+      "current": "To follow instructions dutifully",
+      "proposed": "Following instructions dutifully",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21296,
+      "word": "PINCHING",
+      "field": "clues[1]",
+      "current": "To tighten one's grip on something",
+      "proposed": "Tightening one's grip on something",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21336,
+      "word": "ACCORDED",
+      "field": "hard_text",
+      "current": "To have been granted something, often rights",
+      "proposed": "Had been granted something, often rights",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21360,
+      "word": "DISPOSING",
+      "field": "clues[2]",
+      "current": "To make something no longer present",
+      "proposed": "Making something no longer present",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21362,
+      "word": "ELECTS",
+      "field": "clues[0]",
+      "current": "To pick leaders through ballots",
+      "proposed": "Picks leaders through ballots",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21362,
+      "word": "ELECTS",
+      "field": "clues[2]",
+      "current": "To choose representatives in an election",
+      "proposed": "Chooses representatives in an election",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21363,
+      "word": "ELEVATING",
+      "field": "clues[1]",
+      "current": "To promote to a higher status",
+      "proposed": "Promoting to a higher status",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21364,
+      "word": "ENDORSES",
+      "field": "clues[0]",
+      "current": "To put one's name behind a cause",
+      "proposed": "Puts one's name behind a cause",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21364,
+      "word": "ENDORSES",
+      "field": "clues[2]",
+      "current": "To vouch for someone or something",
+      "proposed": "Vouches for someone or something",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21374,
+      "word": "GRASPED",
+      "field": "clues[2]",
+      "current": "To comprehend or firmly hold",
+      "proposed": "Caught the meaning at last",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21374,
+      "word": "GRASPED",
+      "field": "hard_text",
+      "current": "To take hold of something mentally or physically",
+      "proposed": "Took hold in mind or hand",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21391,
+      "word": "LEVIES",
+      "field": "hard_text",
+      "current": "A government's way to collect dues",
+      "proposed": "Government measures for collecting dues",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21447,
+      "word": "WITHER",
+      "field": "clues[0]",
+      "current": "Fades away, often due to neglect",
+      "proposed": "Fade away, often due to neglect",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21567,
+      "word": "BLUFFS",
+      "field": "clues[2]",
+      "current": "To trick while standing tall",
+      "proposed": "Tricks while standing tall",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21567,
+      "word": "BLUFFS",
+      "field": "hard_text",
+      "current": "To mislead while on the edge?",
+      "proposed": "Misleads while on the edge?",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21574,
+      "word": "COMBING",
+      "field": "hard_text",
+      "current": "To search through with fingers?",
+      "proposed": "Searching through with fingers?",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21579,
+      "word": "EMBEDDING",
+      "field": "hard_text",
+      "current": "To plant firmly within another?",
+      "proposed": "Planting firmly within another?",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21590,
+      "word": "HERALDED",
+      "field": "hard_text",
+      "current": "To publicly declare something significant?",
+      "proposed": "Publicly declared something significant?",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21593,
+      "word": "ISOLATES",
+      "field": "clues[0]",
+      "current": "To make something alone",
+      "proposed": "Makes something alone",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21593,
+      "word": "ISOLATES",
+      "field": "clues[1]",
+      "current": "To detach from a group",
+      "proposed": "Detaches from a group",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21593,
+      "word": "ISOLATES",
+      "field": "clues[2]",
+      "current": "To keep separate from others",
+      "proposed": "Keeps separate from others",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21593,
+      "word": "ISOLATES",
+      "field": "hard_text",
+      "current": "To cut off from the rest?",
+      "proposed": "Cuts off from the rest?",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21701,
+      "word": "OFFENDS",
+      "field": "clues[0]",
+      "current": "To provoke anger or resentment",
+      "proposed": "Provokes anger or resentment",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21701,
+      "word": "OFFENDS",
+      "field": "hard_text",
+      "current": "To transgress social norms or sensitivities",
+      "proposed": "Transgresses social norms or sensitivities",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21717,
+      "word": "SCOURING",
+      "field": "hard_text",
+      "current": "To scrub or search thoroughly",
+      "proposed": "Scrubbing or searching thoroughly",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21719,
+      "word": "SHUFFLED",
+      "field": "clues[2]",
+      "current": "To mix things up in a haphazard way",
+      "proposed": "Mixed things up in a haphazard way",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21719,
+      "word": "SHUFFLED",
+      "field": "hard_text",
+      "current": "To disorder or mix randomly",
+      "proposed": "Disordered or mixed randomly",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21858,
+      "word": "EXPENDED",
+      "field": "hard_text",
+      "current": "To have utilized resources fully",
+      "proposed": "Had utilized resources fully",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21945,
+      "word": "BLURRING",
+      "field": "clues[2]",
+      "current": "To make vision less clear",
+      "proposed": "Making vision less clear",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21947,
+      "word": "BUNCHES",
+      "field": "hard_text",
+      "current": "A cluster often seen in fruit",
+      "proposed": "Clusters often seen in fruit",
+      "reason": "Codex chat review: exact inflection, number, or part-of-speech mismatch",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21951,
+      "word": "COMMENCES",
+      "field": "clues[2]",
+      "current": "To set in motion",
+      "proposed": "Sets in motion",
+      "reason": "INFINITIVE_CLUE_FOR_THIRD_PERSON",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 21994,
+      "word": "PEEKING",
+      "field": "clues[2]",
+      "current": "To spy on with curiosity",
+      "proposed": "Spying on with curiosity",
+      "reason": "INFINITIVE_CLUE_FOR_GERUND",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22150,
+      "word": "BOYCOTTED",
+      "field": "clues[2]",
+      "current": "To shun or avoid actively",
+      "proposed": "Shunned or actively avoided",
+      "reason": "INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22227,
+      "word": "CRY",
+      "field": "clues[2]",
+      "current": "What a baby does to express needs",
+      "proposed": "Express needs like a baby",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22249,
+      "word": "EAT",
+      "field": "clues[1]",
+      "current": "What one does at a feast",
+      "proposed": "Consume food at a feast",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22387,
+      "word": "PUT",
+      "field": "text",
+      "current": "Shot played close to a golf hole",
+      "proposed": "Invest money or effort in something",
+      "reason": "Codex chat review: clue resolves to PUTT rather than the stored answer",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22387,
+      "word": "PUT",
+      "field": "clues[1]",
+      "current": "What a golfer does with a short stroke?",
+      "proposed": "Throw a heavy ball in an athletics event?",
+      "reason": "Codex chat review: clue resolves to PUTT rather than the stored answer",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22403,
+      "word": "ROT",
+      "field": "clues[0]",
+      "current": "What fruit does when left out",
+      "proposed": "Decay like fruit left out",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22417,
+      "word": "SEW",
+      "field": "clues[0]",
+      "current": "What a tailor does",
+      "proposed": "Operate a tailor's machine",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22448,
+      "word": "TOW",
+      "field": "clues[0]",
+      "current": "What a truck does to a broken car",
+      "proposed": "Pull a broken car with a truck",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22451,
+      "word": "TUG",
+      "field": "clues[1]",
+      "current": "What a rope does in a contest",
+      "proposed": "Pull hard in a rope contest",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22540,
+      "word": "LOP",
+      "field": "clues[1]",
+      "current": "What a gardener does to branches?",
+      "proposed": "Cut branches like a gardener?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22545,
+      "word": "MAR",
+      "field": "clues[1]",
+      "current": "What a scratch does to a surface?",
+      "proposed": "Damage a surface like a scratch?",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    },
+    {
+      "index": 22566,
+      "word": "tat",
+      "field": "clues[2]",
+      "current": "What a crafty person does",
+      "proposed": "Make decorative lace by hand",
+      "reason": "THIRD_PERSON_CLUE",
+      "status": "accepted",
+      "batchId": "0-22808-22809"
+    }
+  ],
+  "reviewedFieldCount": 113912
+}

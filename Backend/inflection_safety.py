@@ -74,6 +74,16 @@ KNOWN_BAD_BACKWORD_PAIRS = {
     ("LARVAE", "TRANSFORMATION"): "ADJACENT_PROCESS",
 }
 
+FALSE_GERUND_ANSWERS = {
+    "anything", "bring", "cling", "everything", "fling", "hamstring", "king",
+    "nothing", "offspring", "ping", "ring", "sing", "sling", "something",
+    "spring", "sting", "string", "swing", "thing", "wing",
+}
+
+FALSE_REGULAR_PAST_ANSWERS = {
+    "shred",
+}
+
 
 @dataclass(frozen=True)
 class InflectionIssue:
@@ -138,9 +148,19 @@ def is_past_or_participle(answer: str) -> bool:
     return word in IRREGULAR_PAST_OR_PARTICIPLE or (len(word) > 3 and word.endswith("ed"))
 
 
+def has_regular_past_surface(answer: str) -> bool:
+    word = answer.lower()
+    return (
+        len(word) > 4
+        and word.endswith("ed")
+        and not word.endswith("eed")
+        and word not in FALSE_REGULAR_PAST_ANSWERS
+    )
+
+
 def is_gerund(answer: str) -> bool:
     word = answer.lower()
-    return len(word) > 5 and word.endswith("ing")
+    return len(word) > 5 and word.endswith("ing") and word not in FALSE_GERUND_ANSWERS
 
 
 def is_adverb(answer: str) -> bool:
@@ -197,6 +217,142 @@ def imperative_from_gerund(clue: str) -> str | None:
     return ensure_terminal(f"{base} {rest}".strip())
 
 
+def third_person_from_infinitive(clue: str) -> str | None:
+    """Convert a leading ``To <verb>`` clue to third-person singular wording."""
+    stripped = normalize_space(clue).rstrip(".?!")
+    terminal = clue.strip()[-1:] if TERMINAL_RE.search(clue.strip()) else ""
+    if not re.match(r"(?i)^to\s+[a-z]", stripped):
+        return None
+
+    def conjugate_phrase(phrase: str) -> str:
+        first, separator, rest = phrase.partition(" ")
+        lowered = first.lower()
+        irregular = {"be": "is", "do": "does", "go": "goes", "have": "has"}
+        if lowered in irregular:
+            verb = irregular[lowered]
+        elif re.search(r"[^aeiou]y$", lowered):
+            verb = f"{lowered[:-1]}ies"
+        elif lowered.endswith(("s", "x", "z", "ch", "sh", "o")):
+            verb = f"{lowered}es"
+        else:
+            verb = f"{lowered}s"
+        return f"{verb}{separator}{rest}"
+
+    body = re.sub(r"(?i)^to\s+", "", stripped, count=1)
+    coordination = re.fullmatch(r"(.+?)\s+(or|and)\s+(.+)", body, re.IGNORECASE)
+    if coordination:
+        left, conjunction, right = coordination.groups()
+        converted_left = conjugate_phrase(left)
+        left_words = left.lower().split()
+        verb_linking_prepositions = {
+            "at", "for", "from", "into", "off", "on", "out", "over", "through",
+            "to", "under", "up",
+        }
+        right_is_coordinated_verb = (
+            len(left_words) == 1
+            or left_words[-1] in verb_linking_prepositions
+        )
+        converted_right = conjugate_phrase(right) if right_is_coordinated_verb else right
+        converted = f"{converted_left} {conjunction} {converted_right}"
+    else:
+        converted = conjugate_phrase(body)
+    return f"{upper_first(converted)}{terminal}"
+
+
+def gerund_from_infinitive(clue: str) -> str | None:
+    """Convert a leading ``To <verb>`` clue to an -ING phrase."""
+    stripped = normalize_space(clue).rstrip(".?!")
+    terminal = clue.strip()[-1:] if TERMINAL_RE.search(clue.strip()) else ""
+    match = re.match(r"(?i)^to\s+([a-z]+)(.*)$", stripped)
+    if not match:
+        return None
+    verb, rest = match.groups()
+    lowered = verb.lower()
+    irregular = {
+        "be": "being",
+        "begin": "beginning",
+        "die": "dying",
+        "emit": "emitting",
+        "get": "getting",
+        "hit": "hitting",
+        "lie": "lying",
+        "put": "putting",
+        "run": "running",
+        "sit": "sitting",
+        "slap": "slapping",
+        "tie": "tying",
+        "win": "winning",
+    }
+    if lowered in irregular:
+        gerund = irregular[lowered]
+    elif lowered.endswith("ie"):
+        gerund = f"{lowered[:-2]}ying"
+    elif lowered.endswith("e") and not lowered.endswith(("ee", "oe", "ye")):
+        gerund = f"{lowered[:-1]}ing"
+    elif lowered.endswith("c"):
+        gerund = f"{lowered}king"
+    else:
+        gerund = f"{lowered}ing"
+    return f"{upper_first(gerund)}{rest}{terminal}"
+
+
+def past_from_infinitive(clue: str) -> str | None:
+    """Convert a leading ``To <verb>`` clue to a simple-past phrase."""
+    stripped = normalize_space(clue).rstrip(".?!")
+    terminal = clue.strip()[-1:] if TERMINAL_RE.search(clue.strip()) else ""
+    match = re.match(r"(?i)^to\s+([a-z]+)(.*)$", stripped)
+    if not match:
+        return None
+    verb, rest = match.groups()
+    lowered = verb.lower()
+    irregular = {
+        "be": "was",
+        "become": "became",
+        "begin": "began",
+        "bring": "brought",
+        "come": "came",
+        "do": "did",
+        "draw": "drew",
+        "drink": "drank",
+        "eat": "ate",
+        "fall": "fell",
+        "feel": "felt",
+        "get": "got",
+        "give": "gave",
+        "go": "went",
+        "have": "had",
+        "hold": "held",
+        "keep": "kept",
+        "lead": "led",
+        "leave": "left",
+        "make": "made",
+        "meet": "met",
+        "put": "put",
+        "read": "read",
+        "run": "ran",
+        "say": "said",
+        "see": "saw",
+        "send": "sent",
+        "show": "showed",
+        "speak": "spoke",
+        "stand": "stood",
+        "take": "took",
+        "throw": "threw",
+        "understand": "understood",
+        "win": "won",
+        "write": "wrote",
+    }
+    if lowered in irregular:
+        past = irregular[lowered]
+    elif lowered.endswith("e"):
+        past = f"{lowered}d"
+    elif re.search(r"[^aeiou]y$", lowered):
+        past = f"{lowered[:-1]}ied"
+    else:
+        past = f"{lowered}ed"
+    return f"{upper_first(past)}{rest}{terminal}"
+
+
 def proposal_for_what_does(clue: str) -> str:
     stripped = clue.strip().rstrip(".?!")
     stripped = re.sub(r",\s*(perhaps|sometimes|loosely|for one)$", "", stripped, flags=re.IGNORECASE)
@@ -245,6 +401,33 @@ def scan_clue(answer: str, clue: str, *, single_word_pair: bool = False) -> list
     if not clue_l:
         return issues
 
+    if is_pluralish_answer(answer) and re.match(r"^to\s+[a-z]", clue_l):
+        proposed = third_person_from_infinitive(clue)
+        if proposed:
+            issues.append(InflectionIssue(
+                reason="INFINITIVE_CLUE_FOR_THIRD_PERSON",
+                detail="Clue wording implies a base verb while the answer is third-person singular.",
+                proposed=proposed,
+            ))
+
+    if is_gerund(answer) and re.match(r"^to\s+[a-z]", clue_l):
+        proposed = gerund_from_infinitive(clue)
+        if proposed:
+            issues.append(InflectionIssue(
+                reason="INFINITIVE_CLUE_FOR_GERUND",
+                detail="Clue wording implies a base verb while the answer is an -ING form.",
+                proposed=proposed,
+            ))
+
+    if has_regular_past_surface(answer) and re.match(r"^to\s+[a-z]", clue_l):
+        proposed = past_from_infinitive(clue)
+        if proposed:
+            issues.append(InflectionIssue(
+                reason="INFINITIVE_CLUE_FOR_PAST_OR_PARTICIPLE",
+                detail="Clue wording implies a base verb while the answer is past/participle.",
+                proposed=proposed,
+            ))
+
     if single_word_pair and len(clue_words) == 1:
         clue_word = clue_words[0]
         if answer_l != clue_word:
@@ -261,13 +444,26 @@ def scan_clue(answer: str, clue: str, *, single_word_pair: bool = False) -> list
                     proposed=proposal_for_single_word_pair(answer, clue),
                 ))
 
+    what_does = (
+        bool(re.search(r"\bwhat\s+.+\s+does\b", clue_l))
+        and not re.match(r"^(?:to\s+do|do|doing)\s+what\b", clue_l)
+    )
+    if what_does and not answer_l.endswith("s") and not is_past_or_participle(answer):
+        proposed = proposal_for_what_does(clue)
+        if is_gerund(answer):
+            if proposed.startswith("Do "):
+                proposed = f"Doing {proposed[3:]}"
+            elif proposed.startswith("Act "):
+                proposed = f"Acting {proposed[4:]}"
+        issues.append(InflectionIssue(
+            reason="THIRD_PERSON_CLUE",
+            detail="Clue wording implies a third-person answer form.",
+            proposed=proposed,
+        ))
+
     if looks_like_base_verb(answer, clue):
-        if re.search(r"\bwhat\s+.+\s+does\b", clue_l):
-            issues.append(InflectionIssue(
-                reason="THIRD_PERSON_CLUE",
-                detail="Clue wording implies a third-person answer form, not the base verb.",
-                proposed=proposal_for_what_does(clue),
-            ))
+        if what_does:
+            pass
         elif clue_l.startswith(PARTICIPLE_PREFIXES):
             proposal = imperative_from_gerund(clue)
             if proposal:
@@ -278,7 +474,7 @@ def scan_clue(answer: str, clue: str, *, single_word_pair: bool = False) -> list
                 ))
 
     if is_past_or_participle(answer):
-        if "what " in clue_l and " does" in clue_l:
+        if what_does:
             issues.append(InflectionIssue(
                 reason="PRESENT_CLUE_FOR_PAST_OR_PARTICIPLE",
                 detail="Clue wording implies present-tense action while answer is past/participle.",
