@@ -23,3 +23,22 @@ struct BackwordRulesUpdateNoticeTests {
         #expect(BackwordRulesUpdateNotice.contentPadding == 16)
     }
 }
+
+@MainActor
+@Suite("Backword instructions layout")
+struct BackwordInstructionsLayoutTests {
+    @Test("Fits screen width at the largest Dynamic Type size")
+    func fitsScreenAtLargestDynamicTypeSize() {
+        let availableWidth: CGFloat = 320
+        let host = UIHostingController(
+            rootView: BackwordInstructionsContentView()
+                .environment(\.dynamicTypeSize, .accessibility5)
+        )
+
+        let fittedSize = host.sizeThatFits(
+            in: CGSize(width: availableWidth, height: 10_000)
+        )
+
+        #expect(fittedSize.width <= availableWidth + 0.5)
+    }
+}

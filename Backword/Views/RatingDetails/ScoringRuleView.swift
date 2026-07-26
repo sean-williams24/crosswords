@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ScoringRuleView: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric private var spacing: CGFloat = 14
     let icon: String
     let title: String
@@ -26,19 +27,46 @@ struct ScoringRuleView: View {
             }
             VStack(spacing: 4) {
                 ForEach(rows, id: \.0) { label, pts in
-                    HStack {
-                        Text(label)
-                            .font(AppFont.caption())
-                            .foregroundColor(.appTextSecondary)
-                        Spacer()
-                        Text(pts)
-                            .font(AppFont.clueLabel(11))
-                            .foregroundColor(.appAccent)
-                    }
-                    .padding(.leading, 34)
+                    scoreRow(label: label, points: pts)
                 }
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    @ViewBuilder
+    private func scoreRow(label: String, points: String) -> some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: 2) {
+                scoreLabel(label)
+                HStack {
+                    Spacer()
+                    scorePoints(points)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        } else {
+            HStack {
+                scoreLabel(label)
+                Spacer()
+                scorePoints(points)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private func scoreLabel(_ label: String) -> some View {
+        Text(label)
+            .font(AppFont.caption())
+            .foregroundColor(.appTextSecondary)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func scorePoints(_ points: String) -> some View {
+        Text(points)
+            .font(AppFont.clueLabel(11))
+            .foregroundColor(.appAccent)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     static func backword(title: String = "Backword") -> some View {

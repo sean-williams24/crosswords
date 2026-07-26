@@ -5,8 +5,9 @@ import SwiftUI
 struct BackwordInstructionsContentView: View {
     var showsRulesUpdateNotice = false
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric private var iconFrame: CGFloat = 20
-    @ScaledMetric private var cellFrame: CGFloat = 30
+    private let cellFrame: CGFloat = 30
 
     var body: some View {
         ScrollView {
@@ -23,6 +24,11 @@ struct BackwordInstructionsContentView: View {
 
                 Divider()
                     .background(Color.appGridLine)
+
+                Text("Answer: BUNDLE")
+                    .font(AppFont.clueLabel(12))
+                    .foregroundColor(.appTextSecondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(alignment: .leading, spacing: 10) {
                     revealExampleRow(label: "1st wrong guess", revealedSuffix: "E")
@@ -41,6 +47,7 @@ struct BackwordInstructionsContentView: View {
 
             }
             .padding(20)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .background(Color.appBackground)
     }
@@ -49,22 +56,44 @@ struct BackwordInstructionsContentView: View {
         let suffix = Array(revealedSuffix)
         let hiddenCount = 6 - suffix.count
 
-        return HStack(spacing: 8) {
-            Text(label)
-                .font(AppFont.clueLabel(12))
-                .foregroundColor(.appTextSecondary)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-
-            HStack(spacing: 4) {
-                ForEach(0..<6, id: \.self) { index in
-                    let suffixIndex = index - hiddenCount
-                    exampleCell(
-                        letter: suffixIndex >= 0 ? String(suffix[suffixIndex]) : "",
-                        isRevealed: suffixIndex >= 0
-                    )
+        return Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 10) {
+                    revealExampleLabel(label)
+                    HStack {
+                        Spacer()
+                        revealExampleCells(suffix: suffix, hiddenCount: hiddenCount)
+                    }
+                }
+            } else {
+                HStack(spacing: 8) {
+                    revealExampleLabel(label)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                    revealExampleCells(suffix: suffix, hiddenCount: hiddenCount)
                 }
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func revealExampleLabel(_ label: String) -> some View {
+        Text(label)
+            .font(AppFont.clueLabel(12))
+            .foregroundColor(.appTextSecondary)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func revealExampleCells(suffix: [Character], hiddenCount: Int) -> some View {
+        HStack(spacing: 4) {
+            ForEach(0..<6, id: \.self) { index in
+                let suffixIndex = index - hiddenCount
+                exampleCell(
+                    letter: suffixIndex >= 0 ? String(suffix[suffixIndex]) : "",
+                    isRevealed: suffixIndex >= 0
+                )
+            }
+        }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
     private func instructionRow(number: String?, text: String) -> some View {
@@ -85,6 +114,7 @@ struct BackwordInstructionsContentView: View {
                 .foregroundColor(.appTextSecondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func exampleCell(letter: String, isRevealed: Bool) -> some View {
