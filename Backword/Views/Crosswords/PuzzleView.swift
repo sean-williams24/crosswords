@@ -419,7 +419,7 @@ struct PuzzleView: View {
                     .frame(width: appLayout.iconSize, height: appLayout.iconSize)
                     .symbolEffect(.pulse, options: .repeating)
             }
-            .foregroundColor(viewModel.activeClueIsHinted ? .appCorrect : .appAccent)
+            .foregroundColor(viewModel.activeClueIsHinted ? .appCorrect : .solvedGold)
         }
     }
 

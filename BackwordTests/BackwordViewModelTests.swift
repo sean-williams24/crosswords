@@ -45,6 +45,34 @@ struct BackwordViewModelTests {
         #expect(vm.isComplete == false)
     }
 
+    @Test("Explainer banner is visible before the first guess")
+    func explainerBannerIsInitiallyVisible() {
+        let vm = makeViewModel()
+
+        #expect(vm.shouldShowExplainerBanner)
+        #expect(vm.explainerText == "Guess the 6 letter word...")
+    }
+
+    @Test("Explainer gives more context after its delay")
+    func explainerGivesMoreContextAfterDelay() {
+        let vm = makeViewModel()
+
+        vm.markExplainerDelayElapsed()
+
+        #expect(vm.shouldShowExplainerBanner)
+        #expect(vm.explainerText == "The clue is a word associated with the answer, or something connected to it.")
+    }
+
+    @Test("Explainer banner is hidden after the first guess")
+    func explainerBannerIsHiddenAfterFirstGuess() {
+        let vm = makeViewModel()
+        vm.currentInput = "XXXXX"
+
+        vm.submitGuess()
+
+        #expect(!vm.shouldShowExplainerBanner)
+    }
+
     @Test("New player receives onboarding instead of a rules update")
     func newPlayerReceivesOnboarding() {
         withIsolatedSettings { settings in

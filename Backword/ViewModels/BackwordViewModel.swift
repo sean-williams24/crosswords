@@ -12,8 +12,10 @@ final class BackwordViewModel: ObservableObject {
     @Published var newlyRevealedIndex: Int? = nil
     @Published var inputError: Bool = false
     @Published var invalidWordMessage: String? = nil
+    @Published private(set) var isDetailedExplainerVisible = false
 
     private let settings: AppSettings
+    private var explainerTask: Task<Void, Never>?
 
     init(word: BackwordWord, settings: AppSettings = .shared) {
         self.word = word
@@ -107,6 +109,14 @@ final class BackwordViewModel: ObservableObject {
     var guessCount: Int { progress.guesses.count }
     var maxGuesses: Int { 5 }
     var guessesRemaining: Int { maxGuesses - guessCount }
+    var shouldShowExplainerBanner: Bool { progress.guesses.isEmpty }
+
+    var explainerText: String {
+        if isDetailedExplainerVisible {
+            return "The clue is a word associated with the answer, or something connected to it"
+        }
+        return "Guess the 6 letter word..."
+    }
 
     /// Number of cells the user types into.
     var unrevealedCount: Int { unrevealedIndices.count }
@@ -122,6 +132,26 @@ final class BackwordViewModel: ObservableObject {
 
     func markInstructionsSeen(_ presentation: BackwordInstructionsPresentation) {
         settings.markBackwordInstructionsSeen(presentation)
+    }
+
+    func startExplainerCountdown() {
+        guard shouldShowExplainerBanner, explainerTask == nil else { return }
+
+        explainerTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 5_000_000_000)
+            guard !Task.isCancelled else { return }
+            self?.markExplainerDelayElapsed()
+        }
+    }
+
+    func stopExplainerCountdown() {
+        explainerTask?.cancel()
+        explainerTask = nil
+    }
+
+    func markExplainerDelayElapsed() {
+        guard shouldShowExplainerBanner else { return }
+        isDetailedExplainerVisible = true
     }
 
     var statsIconColour: Color {
@@ -174,6 +204,7 @@ final class BackwordViewModel: ObservableObject {
 
         let prevRevealed = revealedIndices
         progress.guesses.append(guess)
+        stopExplainerCountdown()
         currentInput = ""
 
         let isCorrect = guess == word.word.uppercased()

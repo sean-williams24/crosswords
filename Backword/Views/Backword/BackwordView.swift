@@ -60,10 +60,10 @@ struct BackwordView: View {
                             guessHistory
                         }
 
-//                        if viewModel.isComplete {
-//                            completionBanner
-//                                .transition(.move(edge: .bottom).combined(with: .opacity))
-//                        }
+                        if viewModel.shouldShowExplainerBanner {
+                            explainerBanner
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                        }
                     }
                     .padding(.horizontal, AppLayout.screenPadding)
                     .padding([.top, .bottom], 16)
@@ -95,9 +95,15 @@ struct BackwordView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             showAutomaticInstructionsIfNeeded()
+            viewModel.startExplainerCountdown()
+        }
+        .onDisappear {
+            viewModel.stopExplainerCountdown()
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
         .animation(.easeInOut(duration: 0.3), value: viewModel.invalidWordMessage != nil)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.shouldShowExplainerBanner)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.isDetailedExplainerVisible)
         .onChange(of: viewModel.isComplete) { _, complete in
             if complete {
                 statsService.refresh()
@@ -380,7 +386,7 @@ struct BackwordView: View {
 
     @ViewBuilder
     private var categoryContent: some View {
-        Text("Connection: ")
+        Text("Clue: ")
             .font(AppFont.clueLabel(isIpad ? 25 : 16))
             .foregroundColor(.appAccent)
 
@@ -391,57 +397,23 @@ struct BackwordView: View {
             .minimumScaleFactor(0.5)
     }
 
-    // MARK: - Completion Banner
+    // MARK: - Explainer Banner
 
-    private var failureMessages: [String] {
-        [
-            "It's good, but it's not the one,",
-            "That's unfortunate,",
-            "Solid efforts, but"
-        ]
-    }
-
-    private var successMessages: [String] {
-        [
-            " nice work.",
-            " well played.",
-            " solid efforts."
-        ]
-    }
-
-    private var completionBanner: some View {
-        VStack(spacing: 16) {
-            VStack {
-                if viewModel.isWon {
-                    VStack(spacing: 8) {
-                        Text("Completed in \(viewModel.guessCount) guess\(viewModel.guessCount == 1 ? "" : "es"), \(successMessages.randomElement() ?? "")")
-                            .font(AppFont.body(15))
-                            .foregroundColor(.appTextSecondary)
-                    }
-                } else {
-                    VStack(alignment: .center, spacing: 8) {
-                        Text(selectedFailureMessage + " the word was...")
-                            .font(AppFont.body(15))
-                            .foregroundColor(.appTextSecondary)
-                        Text(viewModel.word.word)
-                            .font(AppFont.header(28))
-                            .foregroundColor(.red)
-                            .tracking(4)
-                            .opacity(pulses ? 0.4 : 0.8)
-                    }
-                }
+    private var explainerBanner: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8,) {
+            if viewModel.isDetailedExplainerVisible {
+                Image(systemName: "lightbulb")
+                    .font(AppFont.body(15))
+                    .foregroundColor(.solvedGold)
             }
-            .padding(20)
-            .background(Color.appSurface)
-            .cornerRadius(AppLayout.cardCornerRadius)
 
-//            shareButton
+            Text(viewModel.explainerText)
+                .font(AppFont.body(15))
+                .foregroundColor(.appTextSecondary)
         }
-        .onAppear {
-            if selectedFailureMessage.isEmpty {
-                selectedFailureMessage = failureMessages.randomElement() ?? "Game Over"
-            }
-        }
+        .padding(20)
+        .background(Color.appSurface)
+        .cornerRadius(AppLayout.cardCornerRadius)
     }
 
     private var pulsatingCross: some View {
