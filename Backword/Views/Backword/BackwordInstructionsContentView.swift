@@ -62,9 +62,9 @@ struct BackwordInstructionsContentView: View {
 
                 Divider()
                     .background(Color.appGridLine)
-                
-                ScoringRuleView.backword(title: "Scoring")
+                    .padding(.top, 8)
 
+                ScoringRuleView.backword(title: "Scoring")
             }
             .padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
