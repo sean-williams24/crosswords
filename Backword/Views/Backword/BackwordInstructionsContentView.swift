@@ -40,6 +40,11 @@ struct BackwordInstructionsContentView: View {
                 Divider()
                     .background(Color.appGridLine)
 
+                Text(exampleCaption)
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+
                 Text("Answer: BUNDLE")
                     .font(AppFont.clueLabel(12))
                     .foregroundColor(.appTextSecondary)
@@ -55,11 +60,9 @@ struct BackwordInstructionsContentView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
 
-                Text(exampleCaption)
-                    .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
-                    .frame(maxWidth: .infinity, alignment: .center)
-
+                Divider()
+                    .background(Color.appGridLine)
+                
                 ScoringRuleView.backword(title: "Scoring")
 
             }
@@ -77,12 +80,7 @@ struct BackwordInstructionsContentView: View {
     ]
 
     private var firstRule: String {
-        switch mode {
-        case .normal:
-            return "Correctly placed letters reveal when they form an unbroken chain from the back of the word."
-        case .easy:
-            return "After each wrong guess, one more letter reveals from the back of the word."
-        }
+        "Correctly placed letters reveal when they form an unbroken chain from the back of the word."
     }
 
     private var secondRule: String {
@@ -90,7 +88,7 @@ struct BackwordInstructionsContentView: View {
         case .normal:
             return "If your guesses do not extend that chain, the second and third wrong guesses each reveal one more letter from the end."
         case .easy:
-            return "A longer correctly placed chain from the back can reveal letters earlier."
+            return "If your guesses do not extend that chain, each wrong guess reveals one more letter from the back of the word."
         }
     }
 
@@ -104,12 +102,7 @@ struct BackwordInstructionsContentView: View {
     }
 
     private var exampleCaption: String {
-        switch mode {
-        case .normal:
-            return "Minimum reveals when no longer suffix is guessed"
-        case .easy:
-            return "Minimum reveals after each wrong guess"
-        }
+        "Example of free reveals after each wrong guess"
     }
 
     private func revealExampleRow(label: String, revealedSuffix: String) -> some View {
