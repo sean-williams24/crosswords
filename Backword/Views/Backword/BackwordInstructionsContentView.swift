@@ -6,7 +6,7 @@ struct BackwordInstructionsContentView: View {
     var showsRulesUpdateNotice = false
 
     @ScaledMetric private var iconFrame: CGFloat = 20
-    @ScaledMetric private var cellFrame: CGFloat = 36
+    @ScaledMetric private var cellFrame: CGFloat = 30
 
     var body: some View {
         ScrollView {
@@ -16,27 +16,23 @@ struct BackwordInstructionsContentView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 10) {
-                    instructionRow(number: "1", text: "Guess the six-letter word, starting with the final letter revealed.")
-                    instructionRow(number: "2", text: "Correctly placed letters only reveal when they form an unbroken chain from the end of the word.")
-                    instructionRow(number: "3", text: "If the word is still unsolved after three guesses, the third letter reveals as an extra hint.")
-                    instructionRow(number: "4", text: "The fewer guesses you need, the more points you score.")
-                    instructionRow(number: nil, text: "Apart from the extra hint, a correct letter elsewhere stays hidden until it connects to the revealed ending. A guess may reveal no new letters.")
+                    instructionRow(number: "1", text: "Correctly placed letters reveal when they form an unbroken chain from the back of the word.")
+                    instructionRow(number: "2", text: "If your guesses do not extend that chain, the second and third wrong guesses each reveal one more letter from the end.")
+                    instructionRow(number: "3", text: "The fewer guesses you need, the more points you score.")
                 }
 
                 Divider()
                     .background(Color.appGridLine)
 
-                HStack(spacing: 12) {
-                    exampleCell(letter: "C", isRevealed: false)
-                    exampleCell(letter: "A", isRevealed: false)
-                    exampleCell(letter: "S", isRevealed: false)
-                    exampleCell(letter: "T", isRevealed: true)
-                    exampleCell(letter: "L", isRevealed: true)
-                    exampleCell(letter: "E", isRevealed: true)
+                VStack(alignment: .leading, spacing: 10) {
+                    revealExampleRow(label: "1st wrong guess", revealedSuffix: "E")
+                    revealExampleRow(label: "2nd wrong guess", revealedSuffix: "LE")
+                    revealExampleRow(label: "3rd wrong guess", revealedSuffix: "DLE")
+                    revealExampleRow(label: "4th wrong guess", revealedSuffix: "DLE")
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
 
-                Text("A guess ending in TLE reveals the connected suffix")
+                Text("Minimum reveals when no longer suffix was guessed")
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -47,6 +43,28 @@ struct BackwordInstructionsContentView: View {
             .padding(20)
         }
         .background(Color.appBackground)
+    }
+
+    private func revealExampleRow(label: String, revealedSuffix: String) -> some View {
+        let suffix = Array(revealedSuffix)
+        let hiddenCount = 6 - suffix.count
+
+        return HStack(spacing: 8) {
+            Text(label)
+                .font(AppFont.clueLabel(12))
+                .foregroundColor(.appTextSecondary)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+
+            HStack(spacing: 4) {
+                ForEach(0..<6, id: \.self) { index in
+                    let suffixIndex = index - hiddenCount
+                    exampleCell(
+                        letter: suffixIndex >= 0 ? String(suffix[suffixIndex]) : "",
+                        isRevealed: suffixIndex >= 0
+                    )
+                }
+            }
+        }
     }
 
     private func instructionRow(number: String?, text: String) -> some View {
@@ -84,7 +102,7 @@ struct BackwordInstructionsContentView: View {
                 .font(AppFont.gridLetter(16))
                 .foregroundColor(.appTextPrimary)
         }
-        .frame(width: 36, height: 36)
+        .frame(width: cellFrame, height: cellFrame)
     }
 }
 

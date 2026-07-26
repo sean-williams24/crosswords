@@ -55,15 +55,20 @@ final class BackwordViewModel: ObservableObject {
         guard let progress else { return [5] }
         if progress.isFailed { return Set(0..<6) }
         let wrongGuesses = progress.isWon ? Array(progress.guesses.dropLast()) : progress.guesses
-        var maxSuffix = 1
-        for guess in wrongGuesses {
-            maxSuffix = max(maxSuffix, matchingSuffixLength(guess: guess, word: word))
+        var revealedSuffixLength = 1
+        if wrongGuesses.count >= 2 {
+            revealedSuffixLength = 2
         }
-        var revealed = Set((6 - maxSuffix)..<6)
         if wrongGuesses.count >= 3 {
-            revealed.insert(2)
+            revealedSuffixLength = 3
         }
-        return revealed
+        for guess in wrongGuesses {
+            revealedSuffixLength = max(
+                revealedSuffixLength,
+                matchingSuffixLength(guess: guess, word: word)
+            )
+        }
+        return Set((6 - revealedSuffixLength)..<6)
     }
 
     private static func matchingSuffixLength(guess: String, word: String) -> Int {

@@ -67,8 +67,9 @@ struct BackwordViewModelTests {
     func returningPlayerReceivesRulesUpdate() {
         withIsolatedSettings { settings in
             settings.hasSeenBackwordOnboarding = true
-            settings.lastSeenBackwordRulesVersion = 0
+            settings.lastSeenBackwordRulesVersion = 1
 
+            #expect(AppSettings.currentBackwordRulesVersion == 2)
             #expect(settings.automaticBackwordInstructionsPresentation == .rulesUpdate)
         }
     }
@@ -234,8 +235,8 @@ struct BackwordViewModelTests {
 
     // MARK: - Reveal Logic
 
-    @Test("Wrong guess with no new suffix match reveals nothing")
-    func wrongGuessWithoutSuffixMatchRevealsNothing() {
+    @Test("First wrong guess reveals no new letters")
+    func firstWrongGuessRevealsNothing() {
         let vm = makeViewModel("CASTLE")
         vm.currentInput = "XXXXX"
 
@@ -246,100 +247,64 @@ struct BackwordViewModelTests {
         #expect(vm.newlyRevealedIndex == nil)
     }
 
-    @Test("One correctly positioned letter connected to the end is revealed")
-    func oneConnectedLetterReveals() {
-        let vm = makeViewModel("CASTLE")
-        vm.currentInput = "XXXXL"
+    @Test("Correctly positioned suffix reveals immediately in the main letter row")
+    func correctlyPositionedSuffixRevealsImmediately() {
+        let vm = makeViewModel("CHEESY")
+        vm.currentInput = "DREES"
 
         vm.submitGuess()
 
-        #expect(vm.revealedLetters == [nil, nil, nil, nil, Character("L"), Character("E")])
-        #expect(vm.unrevealedCount == 4)
-    }
-
-    @Test("Third letter stays hidden through two wrong guesses")
-    func thirdLetterStaysHiddenThroughTwoWrongGuesses() {
-        let vm = makeViewModel("CASTLE")
-        for _ in 0..<2 {
-            vm.currentInput = "XXXXX"
-            vm.submitGuess()
-        }
-
-        #expect(vm.revealedLetters == [nil, nil, nil, nil, nil, Character("E")])
-        #expect(vm.unrevealedCount == 5)
-    }
-
-    @Test("Third wrong guess reveals the third letter")
-    func thirdWrongGuessRevealsThirdLetter() {
-        let vm = makeViewModel("CASTLE")
-        for _ in 0..<3 {
-            vm.currentInput = "XXXXX"
-            vm.submitGuess()
-        }
-
-        #expect(vm.revealedLetters == [nil, nil, Character("S"), nil, nil, Character("E")])
-        #expect(vm.unrevealedCount == 4)
+        #expect(vm.progress.guesses == ["DREESY"])
+        #expect(vm.revealedLetters == [nil, nil, Character("E"), Character("E"), Character("S"), Character("Y")])
+        #expect(vm.unrevealedCount == 2)
         #expect(vm.newlyRevealedIndex == 2)
     }
 
-    @Test("Third-guess hint can remain disconnected from a revealed suffix")
-    func thirdGuessHintCanRemainDisconnectedFromSuffix() {
+    @Test("Second wrong guess reveals the penultimate letter")
+    func secondWrongGuessRevealsPenultimateLetter() {
         let vm = makeViewModel("CASTLE")
-        vm.currentInput = "XXXXL"
-        vm.submitGuess()
         for _ in 0..<2 {
-            vm.currentInput = "XXXX"
+            vm.currentInput = "XXXXX"
             vm.submitGuess()
         }
 
-        #expect(vm.revealedLetters == [nil, nil, Character("S"), nil, Character("L"), Character("E")])
+        #expect(vm.revealedLetters == [nil, nil, nil, nil, Character("L"), Character("E")])
+        #expect(vm.unrevealedCount == 4)
+        #expect(vm.newlyRevealedIndex == 4)
+    }
+
+    @Test("Third wrong guess reveals the next letter from the end")
+    func thirdWrongGuessRevealsNextLetterFromEnd() {
+        let vm = makeViewModel("CASTLE")
+        for _ in 0..<3 {
+            vm.currentInput = String(repeating: "X", count: vm.unrevealedCount)
+            vm.submitGuess()
+        }
+
+        #expect(vm.revealedLetters == [nil, nil, nil, Character("T"), Character("L"), Character("E")])
+        #expect(vm.unrevealedCount == 3)
+        #expect(vm.newlyRevealedIndex == 3)
+    }
+
+    @Test("Fourth wrong guess reveals no new letter")
+    func fourthWrongGuessRevealsNothing() {
+        let vm = makeViewModel("CASTLE")
+        for _ in 0..<3 {
+            vm.currentInput = String(repeating: "X", count: vm.unrevealedCount)
+            vm.submitGuess()
+        }
+        let revealedAfterThirdGuess = vm.revealedLetters
+
+        vm.currentInput = "XXX"
+        vm.submitGuess()
+
+        #expect(vm.revealedLetters == [nil, nil, nil, Character("T"), Character("L"), Character("E")])
+        #expect(vm.revealedLetters == revealedAfterThirdGuess)
         #expect(vm.unrevealedCount == 3)
     }
 
-    @Test("Wrong guess reveals letters matching from the end")
-    func wrongGuessRevealsSuffixMatch() async throws {
-        // CASTLE = C(0)-A(1)-S(2)-T(3)-L(4)-E(5). Initial unrevealed: [0,1,2,3,4].
-        // Type "XAXTL" → buildGuess → XAXTLE; suffix vs CASTLE: E✓,L✓,T✓,X≠S → 3 match
-        let vm = makeViewModel("CASTLE")
-        vm.wordValidator = { _ in true }
-        vm.currentInput = "XAXTL"
-        vm.submitGuess()
-
-        #expect(vm.revealedLetters[3] == Character("T"))
-        #expect(vm.revealedLetters[4] == Character("L"))
-        #expect(vm.revealedLetters[5] == Character("E"))
-        #expect(vm.revealedLetters[0] == nil)
-        #expect(vm.revealedLetters[1] == nil)
-        #expect(vm.revealedLetters[2] == nil)
-        #expect(vm.guessCount == 1)
-        #expect(vm.isComplete == false)
-    }
-
-    @Test("Maximum suffix match across guesses is used for reveal")
-    func multipleWrongGuessesRevealMaxSuffix() async throws {
-        // CASTLE = C(0)-A(1)-S(2)-T(3)-L(4)-E(5)
-        let vm = makeViewModel("CASTLE")
-        vm.wordValidator = { _ in true }
-        // Guess 1: "XXXXX" → XXXXXE, suffix=1, so no new letters reveal.
-        vm.currentInput = "XXXXX"
-        vm.submitGuess()
-        // Guess 2: unrevealed=[0,1,2,3,4], "XAXTL" → XAXTLE, suffix=3 (TLE).
-        vm.currentInput = "XAXTL"
-        vm.submitGuess()
-        // Guess 3: unrevealed=[0,1,2], "XBS" → XBSTLE, suffix=4 (STLE) → revealed {2,3,4,5}
-        vm.currentInput = "XBS"
-        vm.submitGuess()
-
-        #expect(vm.revealedLetters[2] == Character("S"))
-        #expect(vm.revealedLetters[3] == Character("T"))
-        #expect(vm.revealedLetters[4] == Character("L"))
-        #expect(vm.revealedLetters[5] == Character("E"))
-        #expect(vm.revealedLetters[0] == nil)
-        #expect(vm.revealedLetters[1] == nil)
-    }
-
-    @Test("Correct letter disconnected from the end stays hidden")
-    func disconnectedCorrectLetterStaysHidden() {
+    @Test("Correct letters disconnected from the ending remain hidden")
+    func disconnectedCorrectLettersRemainHidden() {
         let vm = makeViewModel("CASTLE")
         vm.currentInput = "CXXXX"
 
@@ -349,40 +314,34 @@ struct BackwordViewModelTests {
         #expect(vm.revealedLetters == [nil, nil, nil, nil, nil, Character("E")])
     }
 
-    @Test("Later guesses do not reduce the revealed suffix")
-    func laterGuessesPreserveLongestSuffix() {
-        let vm = makeViewModel("CASTLE")
-        vm.currentInput = "XAXTL"
-        vm.submitGuess()
-
-        vm.currentInput = "XXX"
-        vm.submitGuess()
-
-        #expect(vm.revealedLetters == [nil, nil, nil, Character("T"), Character("L"), Character("E")])
-    }
-
-    @Test("Saved progress is recalculated without automatic reveals")
-    func savedProgressUsesCorrectSuffixOnly() {
+    @Test("Saved progress with two wrong guesses reveals the final two letters")
+    func savedProgressWithTwoWrongGuessesRevealsFinalTwoLetters() {
         let word = makeWord("CASTLE")
         var progress = BackwordProgress(date: word.date)
-        progress.guesses = ["XXXXXE", "CXXXXE"]
+        progress.guesses = ["XXXXXE", "BXXXXE"]
 
         let vm = BackwordViewModel(word: word, progress: progress)
 
-        #expect(vm.revealedLetters == [nil, nil, nil, nil, nil, Character("E")])
-        #expect(vm.unrevealedCount == 5)
+        #expect(vm.revealedLetters == [nil, nil, nil, nil, Character("L"), Character("E")])
+        #expect(vm.unrevealedCount == 4)
     }
 
-    @Test("Saved progress receives the third-guess hint")
-    func savedProgressReceivesThirdGuessHint() {
+    @Test("Saved progress applies the same reveal after third and fourth wrong guesses")
+    func savedProgressAppliesScheduledReveals() {
         let word = makeWord("CASTLE")
         var progress = BackwordProgress(date: word.date)
         progress.guesses = ["XXXXXE", "CXXXXE", "BXXXXE"]
 
-        let vm = BackwordViewModel(word: word, progress: progress)
+        var vm = BackwordViewModel(word: word, progress: progress)
 
-        #expect(vm.revealedLetters == [nil, nil, Character("S"), nil, nil, Character("E")])
-        #expect(vm.unrevealedCount == 4)
+        #expect(vm.revealedLetters == [nil, nil, nil, Character("T"), Character("L"), Character("E")])
+        #expect(vm.unrevealedCount == 3)
+
+        progress.guesses.append("XXXXLE")
+        vm = BackwordViewModel(word: word, progress: progress)
+
+        #expect(vm.revealedLetters == [nil, nil, nil, Character("T"), Character("L"), Character("E")])
+        #expect(vm.unrevealedCount == 3)
     }
 
     // MARK: - Win Condition
@@ -404,23 +363,23 @@ struct BackwordViewModelTests {
     func correctGuessAfterWrongGuesses() async throws {
         let vm = makeViewModel("CASTLE")
         vm.wordValidator = { _ in true }
-        // Wrong guess reveals L because it is correctly positioned next to the known E.
-        vm.currentInput = "XXXXL"
-        vm.submitGuess()
-        // Win: type CAST for unrevealed [0,1,2,3]
-        vm.currentInput = "CAST"
+        for _ in 0..<3 {
+            vm.currentInput = String(repeating: "X", count: vm.unrevealedCount)
+            vm.submitGuess()
+        }
+        // After three wrong guesses, TLE is supplied by the revealed cells.
+        vm.currentInput = "CAS"
         vm.submitGuess()
 
         #expect(vm.isWon == true)
         #expect(vm.isComplete == true)
-        #expect(vm.guessCount == 2)
+        #expect(vm.guessCount == 4)
     }
 
     // MARK: - Fail Condition
 
     @Test("Five wrong guesses causes failure")
     func fiveWrongGuesessFail() async throws {
-        // X guesses always suffix=1, so unrevealedCount stays 5 throughout
         let vm = makeViewModel("CASTLE")
         vm.wordValidator = { _ in true }
         for _ in 0..<5 {

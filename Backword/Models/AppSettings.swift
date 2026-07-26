@@ -9,7 +9,7 @@ enum BackwordInstructionsPresentation: Equatable {
 /// App-wide user preferences, persisted in UserDefaults.
 final class AppSettings: ObservableObject {
     static let shared = AppSettings()
-    static let currentBackwordRulesVersion = 1
+    static let currentBackwordRulesVersion = 2
 
     private enum Keys {
         static let backwordLetterFeedback = "backwordLetterFeedback"
