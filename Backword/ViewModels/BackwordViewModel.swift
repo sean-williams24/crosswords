@@ -114,7 +114,7 @@ final class BackwordViewModel: ObservableObject {
 
     var explainerText: String {
         if isDetailedExplainerVisible {
-            return "The clue is a word associated with the answer, or something connected to it"
+            return "If you're stuck, guess any word to reveal letters"
         }
         return "Guess the 6 letter word..."
     }
@@ -139,7 +139,7 @@ final class BackwordViewModel: ObservableObject {
         guard shouldShowExplainerBanner, explainerTask == nil else { return }
 
         explainerTask = Task { [weak self] in
-            try? await Task.sleep(nanoseconds: 5_000_000_000)
+            try? await Task.sleep(nanoseconds: 30_000_000_000)
             guard !Task.isCancelled else { return }
             self?.markExplainerDelayElapsed()
         }

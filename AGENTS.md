@@ -37,7 +37,8 @@ python3 <script>.py
 - Test files go in `CrosswordsTests/` (create if it doesn't exist yet).
 - Use Swift Testing (`@Test`, `@Suite`) for new test files; XCTest is acceptable for expansions to existing files.
 - Test ViewModels and Services directly; do not write UI tests unless testing a specific interaction.
-- Run tests via `⌘U` in Xcode or `xcodebuild test` from the terminal.
+- The developer builds and runs the app in Xcode after changes. Agents should not run builds, launch simulators, or perform runtime verification unless explicitly requested.
+- When unit tests are added or edited, run only the focused affected tests. Do not run broader suites or retry simulator infrastructure failures unless explicitly requested.
 
 ## Commits
 

@@ -42,3 +42,19 @@ struct BackwordInstructionsLayoutTests {
         #expect(fittedSize.width <= availableWidth + 0.5)
     }
 }
+
+@MainActor
+@Suite("Backword clue explainer layout")
+struct BackwordClueExplainerLayoutTests {
+    @Test("White container fills the available horizontal width")
+    func fillsAvailableWidth() {
+        let availableWidth: CGFloat = 320
+        let host = UIHostingController(rootView: BackwordClueExplainerView())
+
+        let fittedSize = host.sizeThatFits(
+            in: CGSize(width: availableWidth, height: 1_000)
+        )
+
+        #expect(abs(fittedSize.width - availableWidth) < 0.5)
+    }
+}

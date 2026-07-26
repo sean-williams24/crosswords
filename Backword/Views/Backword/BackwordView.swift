@@ -58,11 +58,13 @@ struct BackwordView: View {
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
                         }
                     }
-                    .padding(.horizontal, AppLayout.screenPadding)
                     .padding([.top, .bottom], 16)
                 }
                 if !viewModel.isComplete {
                     VStack(spacing: 0) {
+                        clueExplainerView
+                        Spacer()
+                            .frame(height: 10)
                         if viewModel.currentInput.count == viewModel.unrevealedCount {
                             submitButton
                                 .padding(.horizontal, AppLayout.screenPadding)
@@ -366,19 +368,35 @@ struct BackwordView: View {
 
     // MARK: - Hint Row
 
+    @ViewBuilder
     private var categoryView: some View {
-        HStack(spacing: 12) {
-            ViewThatFits {
-                HStack(spacing: 6) {
-                    categoryContent
-                }
+        Group {
+            if dynamicTypeSize > .accessibility1 {
                 VStack(alignment: .leading) {
                     categoryContent
                 }
+            } else {
+                VStack(alignment: .leading, spacing: 10) {
+                    horizontalCategoryContent
+                }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 7)
+        }
+        .fixedSize(horizontal: false, vertical: true)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 7)
+    }
 
+    @ViewBuilder
+    private var clueExplainerView: some View {
+        if viewModel.shouldShowExplainerBanner {
+            BackwordClueExplainerView()
+        }
+    }
+
+    @ViewBuilder
+    private var horizontalCategoryContent: some View {
+        HStack(spacing: 6) {
+            categoryContent
             Spacer()
         }
     }
@@ -413,6 +431,7 @@ struct BackwordView: View {
         .padding(20)
         .background(Color.appSurface)
         .cornerRadius(AppLayout.cardCornerRadius)
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     private var pulsatingCross: some View {
@@ -453,6 +472,23 @@ struct BackwordView: View {
                 .cornerRadius(20)
             }
         }
+    }
+}
+
+struct BackwordClueExplainerView: View {
+    var body: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Image(systemName: "info.circle")
+                .font(AppFont.body(14))
+                .foregroundColor(.appCorrect)
+
+            Text("The clue is a word associated with the answer, or something connected to it")
+                .font(AppFont.body(14))
+                .foregroundColor(.appTextSecondary)
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, AppLayout.screenPadding)
     }
 }
 

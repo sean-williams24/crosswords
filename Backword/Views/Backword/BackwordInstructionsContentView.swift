@@ -20,6 +20,7 @@ struct BackwordInstructionsContentView: View {
                     instructionRow(number: "1", text: "Correctly placed letters reveal when they form an unbroken chain from the back of the word.")
                     instructionRow(number: "2", text: "If your guesses do not extend that chain, the second and third wrong guesses each reveal one more letter from the end.")
                     instructionRow(number: "3", text: "The fewer guesses you need, the more points you score.")
+                    instructionRow(number: nil, text: "The clue is a word associated with the answer, or something connected to it")
                 }
 
                 Divider()
