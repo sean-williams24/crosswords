@@ -173,6 +173,20 @@ struct BackwordViewModelTests {
         #expect(vm.correctlyPositionedSuffixIndices(for: "CASTLY").isEmpty)
     }
 
+    @Test("Guess history keeps every guess after a completed win")
+    func guessHistoryKeepsEveryGuessAfterCompletedWin() {
+        let word = makeWord()
+        var progress = BackwordProgress(date: word.date)
+        progress.guesses = ["BRIDGX", "CASTLE"]
+        progress.wonFlag = true
+        progress.completedAt = Date()
+
+        let vm = BackwordViewModel(word: word, progress: progress)
+
+        #expect(vm.isComplete)
+        #expect(vm.guessesForHistory == ["BRIDGX", "CASTLE"])
+    }
+
     @Test("Backword progress has no score before completion")
     func progressHasNoScoreBeforeCompletion() {
         var progress = BackwordProgress(date: "2026-07-09")

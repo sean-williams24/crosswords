@@ -100,6 +100,8 @@ The clue explainer banner is shown only while the player has made no guesses. Af
 
 Each row in the previous-guesses history independently highlights its correctly positioned suffix. Those connected cells use semantic correct green for the letter and the same semantic accent blue as the main cells for a stronger border; disconnected correct letters do not receive this progress highlight. The optional Pro letter-feedback setting may also highlight letters that occur anywhere in the answer.
 
+The previous-guesses history always lists every submitted guess after completion, including the winning guess even though the solved word is also displayed in the main letter row.
+
 Backword rule changes use an integer rules version stored separately from the app version. New players see the current rules through normal onboarding and record that version when onboarding is dismissed. Returning players whose stored version is older automatically receive a one-time `Rules Updated` callout in the How to Play sheet on their next Backword entry; the version is recorded only when that sheet is dismissed. Manually opening How to Play never changes announcement state. Debug settings keep first-time onboarding reset separate from replaying the returning-player rules update.
 
 ## Backword Completion Moment

@@ -40,7 +40,9 @@ struct BackwordView: View {
                             Spacer()
                                 .frame(height: 100)
                         }
+
                         categoryView
+                        guessCounter
                         revealedLetterRow
 
                         if let message = viewModel.invalidWordMessage {
@@ -49,16 +51,7 @@ struct BackwordView: View {
                                 .foregroundColor(.red.opacity(0.6))
                                 .transition(.opacity)
                         }
-
-                        guessCounter
-
-                        if !viewModel.progress.guesses.isEmpty {
-                            Text("Previous Guesses")
-                                .font(AppFont.caption(16))
-                                .foregroundColor(.appTextSecondary)
-                                .dynamicTypeSize(...DynamicTypeSize.accessibility2)
-                            guessHistory
-                        }
+                        guessHistoryView
 
                         if viewModel.shouldShowExplainerBanner {
                             explainerBanner
@@ -161,6 +154,17 @@ struct BackwordView: View {
         guard let presentation = instructionsPresentation else { return }
         viewModel.markInstructionsSeen(presentation)
         instructionsPresentation = nil
+    }
+
+    @ViewBuilder
+    private var guessHistoryView: some View {
+        if !viewModel.guessesForHistory.isEmpty {
+            Text("Previous Guesses")
+                .font(AppFont.caption(16))
+                .foregroundColor(.appTextSecondary)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+            guessHistory
+        }
     }
 
     // MARK: - Nav Bar
@@ -346,13 +350,8 @@ struct BackwordView: View {
     // MARK: - Guess History
 
     private var guessHistory: some View {
-        // When won, the winning guess is shown in the letter row — exclude it here
-        let guesses = viewModel.isWon
-            ? Array(viewModel.progress.guesses.dropLast())
-            : viewModel.progress.guesses
-
-        return VStack(alignment: .center, spacing: 8) {
-            ForEach(Array(guesses.enumerated()), id: \.offset) { _, guess in
+        VStack(alignment: .center, spacing: 8) {
+            ForEach(Array(viewModel.guessesForHistory.enumerated()), id: \.offset) { _, guess in
                 BackwordGuessRow(
                     guess: guess,
                     matchingLetters: viewModel.lettersInWord(for: guess),

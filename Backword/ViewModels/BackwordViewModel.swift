@@ -107,6 +107,7 @@ final class BackwordViewModel: ObservableObject {
     var isWon: Bool { progress.isWon }
     var isFailed: Bool { progress.isFailed }
     var guessCount: Int { progress.guesses.count }
+    var guessesForHistory: [String] { progress.guesses.reversed() }
     var maxGuesses: Int { 5 }
     var guessesRemaining: Int { maxGuesses - guessCount }
     var shouldShowExplainerBanner: Bool { progress.guesses.isEmpty }
