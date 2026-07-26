@@ -93,6 +93,7 @@ struct HomeView: View {
                     BackwordView(word: word)
                         .environmentObject(storeService)
                         .environmentObject(adService)
+                        .environmentObject(ratingService)
                 } else if destination == "puzzle",
                           let puzzle = viewModel.todaysPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))

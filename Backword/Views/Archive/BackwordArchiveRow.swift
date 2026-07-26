@@ -6,6 +6,7 @@ struct BackwordArchiveRow: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
+    @EnvironmentObject var ratingService: OverallRatingService
     @State private var showBackword = false
     @State private var progress: BackwordProgress?
 
@@ -28,6 +29,7 @@ struct BackwordArchiveRow: View {
             BackwordView(word: word)
                 .environmentObject(storeService)
                 .environmentObject(adService)
+                .environmentObject(ratingService)
         }
         .onAppear(perform: refreshProgress)
         .onChange(of: showBackword) { _, isPresented in
@@ -128,4 +130,5 @@ struct BackwordArchiveRowContent: Equatable {
     )
     .environmentObject(StoreService())
     .environmentObject(AdService())
+    .environmentObject(OverallRatingService())
 }

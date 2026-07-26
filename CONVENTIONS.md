@@ -130,6 +130,12 @@ Daily and weekly crossword rating points are only awarded during the puzzle's ow
 
 At local midnight, `HomeView` records the currently loaded puzzle scores using the pre-rollover release calendar before fetching the new daily puzzle. After that rollover, archive play can still update progress and solve status, but it must not add or improve rating points for an older puzzle date.
 
+## Per-Game Rolling Score Bars
+
+Game and stats screens show category-specific scores from the same rolling 14-day `OverallRating` window used by the Home rating. Backword and daily crossword each have a maximum of 70 points (14 releases × 5 points); weekly crossword has a maximum of 10 points because a 14-day window contains two weekly releases. Missing scores count as zero, and displayed progress is clamped to the category maximum.
+
+Daily and weekly crossword bars update the shared `OverallRatingService` as the current score changes during play, including changes caused by completion-percentage thresholds and each three-hint penalty. The existing release-window checks still prevent archive or late play from changing rating points. Backword refreshes the shared rating after its completion result has been recorded.
+
 ---
 
 ## App Store Review Prompt

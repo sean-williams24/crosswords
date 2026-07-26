@@ -12,6 +12,34 @@ struct DailyScore: Codable {
     var total: Int { dailyCrossword + (weeklyCrossword ?? 0) + backword }
 }
 
+// MARK: - Game Rating Category
+
+enum RatingGameCategory: String, CaseIterable {
+    case backword
+    case dailyCrossword
+    case weeklyCrossword
+
+    var displayName: String {
+        switch self {
+        case .backword:
+            return "Backword"
+        case .dailyCrossword:
+            return "Daily crossword"
+        case .weeklyCrossword:
+            return "Weekly crossword"
+        }
+    }
+
+    var maxPoints: Int {
+        switch self {
+        case .backword, .dailyCrossword:
+            return 14 * 5
+        case .weeklyCrossword:
+            return 2 * 5
+        }
+    }
+}
+
 // MARK: - Rating Tier
 
 enum RatingTier: CaseIterable {
@@ -124,6 +152,39 @@ struct OverallRating: Codable {
         let max = maxPoints(isPro: isPro)
         guard max > 0 else { return 0 }
         return min(Double(totalPoints(isPro: isPro)) / Double(max), 1.0)
+    }
+
+    func points(for category: RatingGameCategory) -> Int {
+        let total = window.reduce(0) { total, day in
+            let score: Int
+            switch category {
+            case .backword:
+                score = day.backword
+            case .dailyCrossword:
+                score = day.dailyCrossword
+            case .weeklyCrossword:
+                score = day.weeklyCrossword ?? 0
+            }
+            return total + Self.clampScore(score)
+        }
+        return min(total, category.maxPoints)
+    }
+
+    func maxPoints(for category: RatingGameCategory) -> Int {
+        category.maxPoints
+    }
+
+    func fraction(for category: RatingGameCategory) -> Double {
+        let maximum = maxPoints(for: category)
+        guard maximum > 0 else { return 0 }
+        return min(max(Double(points(for: category)) / Double(maximum), 0), 1)
+    }
+
+    func tier(for category: RatingGameCategory) -> RatingTier {
+        let categoryFraction = fraction(for: category)
+        return RatingTier.allCases.reversed().first {
+            $0.threshold <= categoryFraction
+        } ?? .novice
     }
 
     func tier(isPro: Bool) -> RatingTier {

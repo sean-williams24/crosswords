@@ -158,6 +158,75 @@ struct OverallRatingTests {
         #expect(abs(frac - 0.5) < 0.001)
     }
 
+    @Test("Per-game rolling totals use category-specific maximums")
+    func categoryTotalsAndMaximums() {
+        var rating = OverallRating()
+        for offset in 0..<14 {
+            let date = dateString(offsetByDays: -offset)
+            rating.upsertBackword(score: 3, date: date)
+            rating.upsertDailyCrossword(score: 2, date: date)
+            if offset == 0 || offset == 7 {
+                rating.upsertWeeklyCrossword(score: 4, date: date)
+            }
+        }
+
+        #expect(rating.points(for: .backword) == 42)
+        #expect(rating.maxPoints(for: .backword) == 70)
+        #expect(rating.points(for: .dailyCrossword) == 28)
+        #expect(rating.maxPoints(for: .dailyCrossword) == 70)
+        #expect(rating.points(for: .weeklyCrossword) == 8)
+        #expect(rating.maxPoints(for: .weeklyCrossword) == 10)
+    }
+
+    @Test("Per-game points and fractions clamp to category maximums")
+    func categoryFractions() {
+        var rating = OverallRating()
+        for offset in 0..<14 {
+            let date = dateString(offsetByDays: -offset)
+            rating.upsertBackword(score: 5, date: date)
+            rating.upsertDailyCrossword(score: offset < 7 ? 5 : 0, date: date)
+            if offset < 3 {
+                rating.upsertWeeklyCrossword(score: 5, date: date)
+            }
+        }
+
+        #expect(rating.fraction(for: .backword) == 1)
+        #expect(abs(rating.fraction(for: .dailyCrossword) - 0.5) < 0.001)
+        #expect(rating.points(for: .weeklyCrossword) == 10)
+        #expect(rating.fraction(for: .weeklyCrossword) == 1)
+    }
+
+    @Test("Per-game totals exclude scores outside the rolling window")
+    func categoryWindowFiltering() {
+        let today = dateString()
+        let expired = dateString(offsetByDays: -14)
+        let future = dateString(offsetByDays: 1)
+        let rating = OverallRating(dailyScores: [
+            DailyScore(
+                date: expired,
+                dailyCrossword: 5,
+                weeklyCrossword: 5,
+                backword: 5
+            ),
+            DailyScore(
+                date: today,
+                dailyCrossword: 2,
+                weeklyCrossword: 3,
+                backword: 4
+            ),
+            DailyScore(
+                date: future,
+                dailyCrossword: 5,
+                weeklyCrossword: 5,
+                backword: 5
+            )
+        ])
+
+        #expect(rating.points(for: .dailyCrossword) == 2)
+        #expect(rating.points(for: .weeklyCrossword) == 3)
+        #expect(rating.points(for: .backword) == 4)
+    }
+
     // MARK: tier
 
     @Test("Empty rating → Novice")
@@ -338,6 +407,33 @@ struct OverallRatingTests {
 
 @Suite("OverallRatingService crossword score window")
 struct OverallRatingServiceScoreWindowTests {
+    @Test("Daily crossword score updates across completion and hint boundaries")
+    @MainActor
+    func dailyCrosswordScoreUpdatesLive() {
+        let service = OverallRatingService(rating: OverallRating())
+        let releaseCalendar = ContentReleaseCalendar()
+        let date = releaseCalendar.dailyDateString
+
+        service.recordDailyCrossword(
+            completedClues: 75,
+            totalClues: 100,
+            date: date,
+            releaseCalendar: releaseCalendar,
+            shouldSave: false
+        )
+        #expect(service.rating.points(for: .dailyCrossword) == 4)
+
+        service.recordDailyCrossword(
+            completedClues: 75,
+            totalClues: 100,
+            date: date,
+            hintsUsed: 3,
+            releaseCalendar: releaseCalendar,
+            shouldSave: false
+        )
+        #expect(service.rating.points(for: .dailyCrossword) == 3)
+    }
+
     @Test("Daily crossword can score only on its puzzle date")
     @MainActor
     func dailyCrosswordScoresOnlyOnPuzzleDate() {
@@ -448,6 +544,24 @@ struct OverallRatingServiceScoreWindowTests {
         #expect(service.rating.dailyScores.count == 1)
         #expect(service.rating.dailyScores[0].date == "2026-07-04")
         #expect(service.rating.dailyScores[0].backword == 5)
+    }
+
+    @Test("Failed Backword publishes zero rolling points")
+    @MainActor
+    func failedBackwordPublishesZeroPoints() {
+        let service = OverallRatingService(rating: OverallRating())
+        let releaseCalendar = ContentReleaseCalendar()
+        let date = releaseCalendar.dailyDateString
+
+        service.recordBackword(
+            guessCount: nil,
+            date: date,
+            releaseCalendar: releaseCalendar,
+            shouldSave: false
+        )
+
+        #expect(service.rating.points(for: .backword) == 0)
+        #expect(service.rating.maxPoints(for: .backword) == 70)
     }
 
     @Test("Late archive Backword completion does not improve an existing score")

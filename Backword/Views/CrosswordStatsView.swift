@@ -10,23 +10,30 @@ struct CrosswordStatsView: View {
     
     var body: some View {
         NavigationStack {
-            Group {
-                if isWeekly && statsService.stats.totalCompleted(isWeekly: true) == 0 {
-                    emptyState
-                } else {
-                    ScrollView(showsIndicators: false) {
-                        VStack(spacing: 28) {
-                            StatsView(
-                                stats: statsService.stats,
-                                isWeekly: isWeekly,
-                                averageTimeSeconds: averageSolveTime
-                            )
-                                .padding(.horizontal, AppLayout.screenPadding)
-                            recentHistory
-                                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+            VStack(spacing: 0) {
+                GameScoreProgressBarView(
+                    rating: ratingService.rating,
+                    category: isWeekly ? .weeklyCrossword : .dailyCrossword
+                )
+
+                Group {
+                    if isWeekly && statsService.stats.totalCompleted(isWeekly: true) == 0 {
+                        emptyState
+                    } else {
+                        ScrollView(showsIndicators: false) {
+                            VStack(spacing: 28) {
+                                StatsView(
+                                    stats: statsService.stats,
+                                    isWeekly: isWeekly,
+                                    averageTimeSeconds: averageSolveTime
+                                )
+                                    .padding(.horizontal, AppLayout.screenPadding)
+                                recentHistory
+                                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                            }
+                            .padding(.top, 20)
+                            .padding(.bottom, 40)
                         }
-                        .padding(.top, 20)
-                        .padding(.bottom, 40)
                     }
                 }
             }

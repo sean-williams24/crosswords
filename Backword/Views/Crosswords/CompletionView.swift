@@ -32,6 +32,11 @@ struct CompletionView: View {
             VStack(spacing: 0) {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 24) {
+                        GameScoreProgressBarView(
+                            rating: ratingService.rating,
+                            category: isWeekly ? .weeklyCrossword : .dailyCrossword
+                        )
+
                         celebrationHeader
 
                         if showGrid {
@@ -81,6 +86,7 @@ struct CompletionView: View {
             }
         }
         .onAppear {
+            ratingService.refresh()
             if !viewModel.hasGivenUp {
                 statsService.recordCompletion(
                     puzzleId: viewModel.puzzle.id,

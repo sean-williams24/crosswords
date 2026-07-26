@@ -85,6 +85,12 @@ struct PuzzleView: View {
                 }
                 
                 Spacer(minLength: 8)
+
+                GameScoreProgressBarView(
+                    rating: ratingService.rating,
+                    category: ratingCategory
+                )
+
                 CustomKeyboardView { text in
                     Task { @MainActor in
                         if let char = text.uppercased().first,
@@ -104,6 +110,8 @@ struct PuzzleView: View {
         .toolbar(.hidden, for: .navigationBar)
         .enableSwipeBack()
         .onAppear {
+            ratingService.refresh()
+            recordLiveScore()
             showInstructionsOnFirstLaunch()
         }
         .sheet(isPresented: $viewModel.showClueList) {
@@ -156,6 +164,9 @@ struct PuzzleView: View {
             guard isProUser else { return }
             showRewardedHintBanner = false
         }
+        .onChange(of: viewModel.currentScore) { _, _ in
+            recordLiveScore()
+        }
         .onDisappear {
             // Ensure metadata is saved for rating backfill
             if viewModel.progress.puzzleDate == nil {
@@ -182,6 +193,35 @@ struct PuzzleView: View {
     private func showInstructionsOnFirstLaunch() {
         guard viewModel.shouldShowDailyCrosswordOnboarding else { return }
         showInstructions = true
+    }
+
+    private var ratingCategory: RatingGameCategory {
+        viewModel.puzzle.size > 12 ? .weeklyCrossword : .dailyCrossword
+    }
+
+    private func recordLiveScore() {
+        guard !viewModel.hasGivenUp else { return }
+
+        let completed = viewModel.progress.completedClueIds.count
+        let total = viewModel.puzzle.clues.count
+        let date = viewModel.puzzle.date
+        let hintsUsed = viewModel.progress.hintsUsed
+
+        if viewModel.puzzle.size > 12 {
+            ratingService.recordWeeklyCrossword(
+                completedClues: completed,
+                totalClues: total,
+                date: date,
+                hintsUsed: hintsUsed
+            )
+        } else {
+            ratingService.recordDailyCrossword(
+                completedClues: completed,
+                totalClues: total,
+                date: date,
+                hintsUsed: hintsUsed
+            )
+        }
     }
 
     private func showPaywallAfterInstructionsIfNeeded() {

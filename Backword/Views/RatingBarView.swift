@@ -18,42 +18,13 @@ struct RatingBarView: View {
         } label: {
             VStack(spacing: 8) {
                 // Bar track
-                GeometryReader { geo in
-                    ZStack(alignment: .leading) {
-                        // Bar track (8pt, centered vertically in the ZStack)
-                        Capsule()
-                            .fill(Color.appSurface)
-                            .frame(height: 8)
-
-                        // Gradient fill, masked to filled portion
-                        Rectangle()
-                            .fill(barGradient)
-                            .frame(height: 8)
-                            .mask(alignment: .leading) {
-                                Capsule()
-                                    .frame(width: animates ? max(geo.size.width * CGFloat(fraction), 6) : 6)
-                                    .animation(.spring(response: 0.8, dampingFraction: 0.75), value: animates)
-                            }
-
-                        // Dot (18pt — protrudes above/below the 8pt bar)
-                        ZStack {
-                            Circle()
-                                .fill(tier.color.opacity(pulses ? 0.08 : 0.3))
-                                .frame(width: 18, height: 18)
-                                .scaleEffect(pulses ? 1.7 : 1.0)
-                            Circle()
-                                .strokeBorder(tier.color, lineWidth: 2)
-                                .frame(width: 14, height: 14)
-                            Circle()
-                                .fill(.white)
-                                .frame(width: 8, height: 8)
-                        }
-                        .shadow(color: tier.color.opacity(0.5), radius: 4, x: 0, y: 0)
-                        .offset(x: animates ? max(geo.size.width * CGFloat(fraction) - 9, 0) : 0)
-                        .animation(.spring(response: 0.8, dampingFraction: 0.75).delay(0.05), value: animates)
-                    }
-                }
-                .frame(height: 18)
+                RatingProgressTrack(
+                    fraction: fraction,
+                    markerColor: tier.color,
+                    animates: animates,
+                    pulses: pulses,
+                    markerAnimationDelay: 0.05
+                )
 
                 // Tier label aligned under the dot
                 GeometryReader { geo in
@@ -108,24 +79,6 @@ struct RatingBarView: View {
         }
     }
 
-    /// A gradient that covers all tier colours from left to right, so the filled bar
-    /// colour progression matches the position on the bar.
-    private var barGradient: LinearGradient {
-        LinearGradient(
-            stops: [
-                .init(color: .white,                                         location: 0.0),
-                .init(color: Color(white: 0.72),                             location: 1.0 / 7.0),
-                .init(color: RatingTier.novice.color.opacity(0.6),          location: 2.0 / 7.0),
-                .init(color: RatingTier.scribe.color,                        location: 3.0 / 7.0),
-                .init(color: RatingTier.linguist.color,                      location: 4.0 / 7.0),
-                .init(color: RatingTier.grandmaster.color,                   location: 5.0 / 7.0),
-                .init(color: Color(red: 0.95, green: 0.8, blue: 0.3),       location: 6.0 / 7.0),
-                .init(color: Color(red: 0.85, green: 0.55, blue: 0.15),     location: 1.0)
-            ],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
-    }
 }
 
 enum RatingBarLabelLayout {

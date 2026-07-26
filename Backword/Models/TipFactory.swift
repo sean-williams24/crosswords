@@ -52,7 +52,7 @@ struct BackwordInstructionsTip: Tip {
     }
 
     var message: Text? {
-        Text("Tap the info icon at any time to view game information")
+        Text("Tap the info icon at any time to view game information and toggle difficulty")
             .font(AppFont.caption(13))
     }
 

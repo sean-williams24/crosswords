@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BackwordStatsView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var ratingService: OverallRatingService
     let stats: BackwordStats
     /// When non-nil, the bar for this guess count is highlighted (used on completion)
     var highlightGuessCount: Int? = nil
@@ -29,6 +30,7 @@ struct BackwordStatsView: View {
             }
         }
         .onAppear {
+            ratingService.refresh()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
                     animatesBars = true
@@ -44,10 +46,17 @@ struct BackwordStatsView: View {
 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 28) {
-                        StatsView(stats: stats)
-                        distributionSection
+                        GameScoreProgressBarView(
+                            rating: ratingService.rating,
+                            category: .backword
+                        )
+
+                        VStack(spacing: 28) {
+                            StatsView(stats: stats)
+                            distributionSection
+                        }
+                        .padding(.horizontal, AppLayout.screenPadding)
                     }
-                    .padding(.horizontal, AppLayout.screenPadding)
                     .padding(.top, 20)
                     .padding(.bottom, 40)
                 }
@@ -78,6 +87,11 @@ struct BackwordStatsView: View {
             VStack(spacing: 0) {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 20) {
+                        GameScoreProgressBarView(
+                            rating: ratingService.rating,
+                            category: .backword
+                        )
+
                         if let title = displayState.title {
                             Text(title)
                                 .font(AppFont.header(40))
@@ -294,11 +308,13 @@ struct BackwordStatsView: View {
         shouldPop: .constant(false)
     )
         .preferredColorScheme(.dark)
+        .environmentObject(OverallRatingService())
 }
 
 #Preview("Empty") {
     BackwordStatsView(stats: BackwordStats(), shouldPop: .constant(false))
         .preferredColorScheme(.dark)
+        .environmentObject(OverallRatingService())
 }
 
 #Preview("Finished") {
@@ -316,4 +332,5 @@ struct BackwordStatsView: View {
         completionWord: "CASTLE"
     )
     .preferredColorScheme(.dark)
+    .environmentObject(OverallRatingService())
 }

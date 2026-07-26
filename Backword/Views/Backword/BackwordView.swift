@@ -4,6 +4,7 @@ struct BackwordView: View {
     @StateObject private var viewModel: BackwordViewModel
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
+    @EnvironmentObject var ratingService: OverallRatingService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -60,26 +61,31 @@ struct BackwordView: View {
                     }
                     .padding([.top, .bottom], 16)
                 }
-                if !viewModel.isComplete {
-                    VStack(spacing: 0) {
-                        clueExplainerView
-                        Spacer()
-                            .frame(height: 10)
-                        if viewModel.currentInput.count == viewModel.unrevealedCount {
-                            submitButton
-                                .padding(.horizontal, AppLayout.screenPadding)
-                                .padding(.vertical, 12)
-                                .background(Color.appBackground)
-                                .transition(.move(edge: .bottom).combined(with: .opacity))
-                        }
+                VStack(spacing: 0) {
+                    clueExplainerView
+                    Spacer()
+                        .frame(height: 10)
 
-                        CustomKeyboardView { text in
-                            if let letter = text.first {
-                                viewModel.enterLetter(letter)
-                            }
-                        } onDelete: {
-                            viewModel.deleteLetter()
+                    GameScoreProgressBarView(
+                        rating: ratingService.rating,
+                        category: .backword
+                    )
+
+                    if !viewModel.isComplete,
+                       viewModel.currentInput.count == viewModel.unrevealedCount {
+                        submitButton
+                            .padding(.horizontal, AppLayout.screenPadding)
+                            .padding(.vertical, 12)
+                            .background(Color.appBackground)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+
+                    CustomKeyboardView { text in
+                        if let letter = text.first {
+                            viewModel.enterLetter(letter)
                         }
+                    } onDelete: {
+                        viewModel.deleteLetter()
                     }
                 }
             }
@@ -89,6 +95,7 @@ struct BackwordView: View {
         .enableSwipeBack()
         .navigationBarBackButtonHidden(true)
         .onAppear {
+            ratingService.refresh()
             showAutomaticInstructionsIfNeeded()
             viewModel.startExplainerCountdown()
         }
@@ -101,6 +108,7 @@ struct BackwordView: View {
         .animation(.easeInOut(duration: 0.3), value: viewModel.isDetailedExplainerVisible)
         .onChange(of: viewModel.isComplete) { _, complete in
             if complete {
+                ratingService.refresh()
                 statsService.refresh()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     guard viewModel.isComplete else { return }
@@ -508,6 +516,7 @@ private let previewWord = BackwordWord(
     BackwordView(word: previewWord)
         .environmentObject(StoreService())
         .environmentObject(AdService())
+        .environmentObject(OverallRatingService())
 }
 
 #Preview("Won — 3 guesses") {
@@ -519,6 +528,7 @@ private let previewWord = BackwordWord(
     return BackwordView(viewModel: vm)
         .environmentObject(StoreService())
         .environmentObject(AdService())
+        .environmentObject(OverallRatingService())
 }
 
 #Preview("Failed — 5 guesses") {
@@ -530,4 +540,5 @@ private let previewWord = BackwordWord(
     return BackwordView(viewModel: vm)
         .environmentObject(StoreService())
         .environmentObject(AdService())
+        .environmentObject(OverallRatingService())
 }
