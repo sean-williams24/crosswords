@@ -489,10 +489,10 @@ struct BackwordClueExplainerView: View {
             Text("The clue is a word associated with the answer, or something connected to it")
                 .font(AppFont.body(14))
                 .foregroundColor(.appTextSecondary)
-                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, AppLayout.screenPadding)
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 }
 
