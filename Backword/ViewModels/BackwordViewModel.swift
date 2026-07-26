@@ -13,6 +13,7 @@ final class BackwordViewModel: ObservableObject {
     @Published var inputError: Bool = false
     @Published var invalidWordMessage: String? = nil
     @Published private(set) var isDetailedExplainerVisible = false
+    @Published private(set) var mode: BackwordMode
 
     private let settings: AppSettings
     private var explainerTask: Task<Void, Never>?
@@ -20,6 +21,7 @@ final class BackwordViewModel: ObservableObject {
     init(word: BackwordWord, settings: AppSettings = .shared) {
         self.word = word
         self.settings = settings
+        self.mode = settings.backwordMode
         self.stats = BackwordStats.load()
         let prog = BackwordProgress.load(date: word.date) ?? BackwordProgress(date: word.date)
         self.progress = prog
@@ -30,6 +32,7 @@ final class BackwordViewModel: ObservableObject {
     init(word: BackwordWord, progress: BackwordProgress, settings: AppSettings = .shared) {
         self.word = word
         self.settings = settings
+        self.mode = settings.backwordMode
         self.stats = BackwordStats.load()
         self.progress = progress
         self.clueRevealed = progress.clueRevealed
@@ -38,12 +41,20 @@ final class BackwordViewModel: ObservableObject {
     // MARK: - Reveal Sequence
 
     private var revealedIndices: Set<Int> {
-        BackwordViewModel.calculatedRevealedIndices(progress: progress, word: word.word)
+        BackwordViewModel.calculatedRevealedIndices(
+            progress: progress,
+            word: word.word,
+            mode: mode
+        )
     }
 
     /// Exposed for views that display letter cells without a full ViewModel (e.g. BackwordCard).
-    static func revealedIndices(for progress: BackwordProgress?, word: String) -> Set<Int> {
-        calculatedRevealedIndices(progress: progress, word: word)
+    static func revealedIndices(
+        for progress: BackwordProgress?,
+        word: String,
+        mode: BackwordMode
+    ) -> Set<Int> {
+        calculatedRevealedIndices(progress: progress, word: word, mode: mode)
     }
 
     /// Correctly positioned letters that form an unbroken suffix for one guess.
@@ -53,16 +64,26 @@ final class BackwordViewModel: ObservableObject {
         return Set((6 - suffixLength)..<6)
     }
 
-    private static func calculatedRevealedIndices(progress: BackwordProgress?, word: String) -> Set<Int> {
+    private static func calculatedRevealedIndices(
+        progress: BackwordProgress?,
+        word: String,
+        mode: BackwordMode
+    ) -> Set<Int> {
         guard let progress else { return [5] }
         if progress.isFailed { return Set(0..<6) }
         let wrongGuesses = progress.isWon ? Array(progress.guesses.dropLast()) : progress.guesses
-        var revealedSuffixLength = 1
-        if wrongGuesses.count >= 2 {
-            revealedSuffixLength = 2
-        }
-        if wrongGuesses.count >= 3 {
-            revealedSuffixLength = 3
+        var revealedSuffixLength: Int
+        switch mode {
+        case .normal:
+            revealedSuffixLength = 1
+            if wrongGuesses.count >= 2 {
+                revealedSuffixLength = 2
+            }
+            if wrongGuesses.count >= 3 {
+                revealedSuffixLength = 3
+            }
+        case .easy:
+            revealedSuffixLength = min(wrongGuesses.count + 1, 5)
         }
         for guess in wrongGuesses {
             revealedSuffixLength = max(
@@ -125,6 +146,16 @@ final class BackwordViewModel: ObservableObject {
 
     var showLetterFeedback: Bool {
         settings.backwordLetterFeedback
+    }
+
+    func setMode(_ newMode: BackwordMode) {
+        guard mode != newMode else { return }
+        settings.backwordMode = newMode
+        mode = newMode
+        newlyRevealedIndex = nil
+        if !progress.isComplete {
+            currentInput = ""
+        }
     }
 
     var automaticInstructionsPresentation: BackwordInstructionsPresentation? {

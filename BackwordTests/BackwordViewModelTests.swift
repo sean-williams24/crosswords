@@ -10,9 +10,26 @@ struct BackwordViewModelTests {
         BackwordWord(id: UUID().uuidString, date: "test-\(UUID().uuidString)", word: word, clue: "FORTRESS")
     }
 
-    private func makeViewModel(_ word: String = "CASTLE") -> BackwordViewModel {
+    private func makeViewModel(
+        _ word: String = "CASTLE",
+        mode: BackwordMode = .normal
+    ) -> BackwordViewModel {
         let word = makeWord(word)
-        return BackwordViewModel(word: word, progress: BackwordProgress(date: word.date))
+        let settings = makeSettings(mode: mode)
+        return BackwordViewModel(
+            word: word,
+            progress: BackwordProgress(date: word.date),
+            settings: settings
+        )
+    }
+
+    private func makeSettings(mode: BackwordMode = .normal) -> AppSettings {
+        let suiteName = "BackwordViewModelTests-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defaults.removePersistentDomain(forName: suiteName)
+        let settings = AppSettings(userDefaults: defaults)
+        settings.backwordMode = mode
+        return settings
     }
 
     private func withIsolatedSettings(_ assertions: (AppSettings) -> Void) {
@@ -78,6 +95,22 @@ struct BackwordViewModelTests {
         withIsolatedSettings { settings in
             #expect(settings.automaticBackwordInstructionsPresentation == .onboarding)
         }
+    }
+
+    @Test("Backword mode defaults to Normal and persists both values")
+    func backwordModePersists() {
+        let suiteName = "BackwordModeTests-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let settings = AppSettings(userDefaults: defaults)
+        #expect(settings.backwordMode == .normal)
+
+        settings.backwordMode = .easy
+        #expect(AppSettings(userDefaults: defaults).backwordMode == .easy)
+
+        settings.backwordMode = .normal
+        #expect(AppSettings(userDefaults: defaults).backwordMode == .normal)
     }
 
     @Test("Dismissing onboarding records onboarding and the current rules version")
@@ -384,6 +417,99 @@ struct BackwordViewModelTests {
 
         #expect(vm.revealedLetters == [nil, nil, nil, Character("T"), Character("L"), Character("E")])
         #expect(vm.unrevealedCount == 3)
+    }
+
+    @Test("Easy mode reveals one additional letter after every wrong guess")
+    func easyModeRevealsAfterEveryWrongGuess() {
+        let vm = makeViewModel("CASTLE", mode: .easy)
+        let expectedReveals: [[Character?]] = [
+            [nil, nil, nil, nil, Character("L"), Character("E")],
+            [nil, nil, nil, Character("T"), Character("L"), Character("E")],
+            [nil, nil, Character("S"), Character("T"), Character("L"), Character("E")],
+            [nil, Character("A"), Character("S"), Character("T"), Character("L"), Character("E")]
+        ]
+
+        for expected in expectedReveals {
+            vm.currentInput = String(repeating: "X", count: vm.unrevealedCount)
+            vm.submitGuess()
+            #expect(vm.revealedLetters == expected)
+        }
+
+        #expect(vm.unrevealedCount == 1)
+    }
+
+    @Test("Easy mode reveals a longer correctly positioned suffix immediately")
+    func easyModeRevealsLongerCorrectSuffix() {
+        let vm = makeViewModel("CHEESY", mode: .easy)
+        vm.currentInput = "DREES"
+
+        vm.submitGuess()
+
+        #expect(vm.revealedLetters == [
+            nil,
+            nil,
+            Character("E"),
+            Character("E"),
+            Character("S"),
+            Character("Y")
+        ])
+    }
+
+    @Test("Easy mode derives reveals from saved progress")
+    func easyModeDerivesRevealsFromSavedProgress() {
+        let word = makeWord("CASTLE")
+        var progress = BackwordProgress(date: word.date)
+        progress.guesses = ["XXXXXE", "XXXXLE", "XXXTLE", "XXSTLE"]
+        let settings = makeSettings(mode: .easy)
+
+        let vm = BackwordViewModel(word: word, progress: progress, settings: settings)
+
+        #expect(vm.revealedLetters == [
+            nil,
+            Character("A"),
+            Character("S"),
+            Character("T"),
+            Character("L"),
+            Character("E")
+        ])
+    }
+
+    @Test("Changing mode recalculates reveals, persists the setting, and clears input")
+    func changingModeUpdatesActiveGame() {
+        let word = makeWord("CASTLE")
+        var progress = BackwordProgress(date: word.date)
+        progress.guesses = ["XXXXXE", "BXXXXE"]
+        let settings = makeSettings()
+        let vm = BackwordViewModel(word: word, progress: progress, settings: settings)
+        vm.currentInput = "CA"
+
+        vm.setMode(.easy)
+
+        #expect(settings.backwordMode == .easy)
+        #expect(vm.mode == .easy)
+        #expect(vm.currentInput.isEmpty)
+        #expect(vm.revealedLetters == [
+            nil,
+            nil,
+            nil,
+            Character("T"),
+            Character("L"),
+            Character("E")
+        ])
+
+        vm.currentInput = "C"
+        vm.setMode(.normal)
+
+        #expect(settings.backwordMode == .normal)
+        #expect(vm.currentInput.isEmpty)
+        #expect(vm.revealedLetters == [
+            nil,
+            nil,
+            nil,
+            nil,
+            Character("L"),
+            Character("E")
+        ])
     }
 
     // MARK: - Win Condition

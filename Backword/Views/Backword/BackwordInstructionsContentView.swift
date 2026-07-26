@@ -3,22 +3,36 @@
 import SwiftUI
 
 struct BackwordInstructionsContentView: View {
+    @Binding var mode: BackwordMode
     var showsRulesUpdateNotice = false
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric private var iconFrame: CGFloat = 20
     private let cellFrame: CGFloat = 30
 
+    init(
+        mode: Binding<BackwordMode> = .constant(.normal),
+        showsRulesUpdateNotice: Bool = false
+    ) {
+        _mode = mode
+        self.showsRulesUpdateNotice = showsRulesUpdateNotice
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                if showsRulesUpdateNotice {
+                BackwordModeToggle(mode: $mode)
+
+                Divider()
+                    .background(Color.appGridLine)
+
+                if showsRulesUpdateNotice && mode == .normal {
                     BackwordRulesUpdateNotice()
                 }
 
                 VStack(alignment: .leading, spacing: 10) {
-                    instructionRow(number: "1", text: "Correctly placed letters reveal when they form an unbroken chain from the back of the word.")
-                    instructionRow(number: "2", text: "If your guesses do not extend that chain, the second and third wrong guesses each reveal one more letter from the end.")
+                    instructionRow(number: "1", text: firstRule)
+                    instructionRow(number: "2", text: secondRule)
                     instructionRow(number: "3", text: "The fewer guesses you need, the more points you score.")
                     instructionRow(number: nil, text: "The clue is a word associated with the answer, or something connected to it")
                 }
@@ -32,14 +46,16 @@ struct BackwordInstructionsContentView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(alignment: .leading, spacing: 10) {
-                    revealExampleRow(label: "1st wrong guess", revealedSuffix: "E")
-                    revealExampleRow(label: "2nd wrong guess", revealedSuffix: "LE")
-                    revealExampleRow(label: "3rd wrong guess", revealedSuffix: "DLE")
-                    revealExampleRow(label: "4th wrong guess", revealedSuffix: "DLE")
+                    ForEach(Array(revealExamples.enumerated()), id: \.offset) { example in
+                        revealExampleRow(
+                            label: Self.wrongGuessLabels[example.offset],
+                            revealedSuffix: example.element
+                        )
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
 
-                Text("Minimum reveals when no longer suffix was guessed")
+                Text(exampleCaption)
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -51,6 +67,49 @@ struct BackwordInstructionsContentView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .background(Color.appBackground)
+    }
+
+    private static let wrongGuessLabels = [
+        "1st wrong guess",
+        "2nd wrong guess",
+        "3rd wrong guess",
+        "4th wrong guess"
+    ]
+
+    private var firstRule: String {
+        switch mode {
+        case .normal:
+            return "Correctly placed letters reveal when they form an unbroken chain from the back of the word."
+        case .easy:
+            return "After each wrong guess, one more letter reveals from the back of the word."
+        }
+    }
+
+    private var secondRule: String {
+        switch mode {
+        case .normal:
+            return "If your guesses do not extend that chain, the second and third wrong guesses each reveal one more letter from the end."
+        case .easy:
+            return "A longer correctly placed chain from the back can reveal letters earlier."
+        }
+    }
+
+    private var revealExamples: [String] {
+        switch mode {
+        case .normal:
+            return ["E", "LE", "DLE", "DLE"]
+        case .easy:
+            return ["LE", "DLE", "NDLE", "UNDLE"]
+        }
+    }
+
+    private var exampleCaption: String {
+        switch mode {
+        case .normal:
+            return "Minimum reveals when no longer suffix is guessed"
+        case .easy:
+            return "Minimum reveals after each wrong guess"
+        }
     }
 
     private func revealExampleRow(label: String, revealedSuffix: String) -> some View {

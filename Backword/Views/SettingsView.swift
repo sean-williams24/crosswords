@@ -24,6 +24,21 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    BackwordModeToggle(mode: $settings.backwordMode)
+                        .listRowBackground(Color.appSurface)
+                } header: {
+                    Text("BACKWORD")
+                        .font(AppFont.clueLabel(12))
+                        .foregroundColor(.appAccent)
+                        .tracking(2)
+                        .textCase(nil)
+                } footer: {
+                    Text("Easy Mode reveals another letter from the end after every wrong guess. Normal Mode uses correctly placed letter chains and fewer automatic reveals.")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                }
+
+                Section {
                     correctHighlightRow
                 } header: {
                     Text("CROSSWORDS")

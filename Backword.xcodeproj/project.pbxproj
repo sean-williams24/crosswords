@@ -45,6 +45,7 @@
 		06CC00073007000000000001 /* CrosswordCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */; };
 		07AB00023008000000000001 /* BackwordRulesUpdateNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */; };
 		07AB00043008000000000001 /* BackwordRulesUpdateNoticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */; };
+		07AC00023009000000000001 /* BackwordModeToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AC00013009000000000001 /* BackwordModeToggle.swift */; };
 		0838E5D52FE2D3A200000001 /* HomeTabBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */; };
 		0838E5D72FE2E5AB00000001 /* ArchiveTabBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */; };
 		0A5F0E3C2FE322C700F00E3C /* LaunchSplashViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */; };
@@ -195,6 +196,7 @@
 		06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionPresentationTests.swift; sourceTree = "<group>"; };
 		07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNotice.swift; sourceTree = "<group>"; };
 		07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNoticeTests.swift; sourceTree = "<group>"; };
+		07AC00013009000000000001 /* BackwordModeToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordModeToggle.swift; sourceTree = "<group>"; };
 		0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewTests.swift; sourceTree = "<group>"; };
 		0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTabBarViewTests.swift; sourceTree = "<group>"; };
 		0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchSplashViewTests.swift; sourceTree = "<group>"; };
@@ -554,6 +556,7 @@
 				2259B66045D006E89462572C /* BackwordLetterCell.swift */,
 				464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */,
 				86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */,
+				07AC00013009000000000001 /* BackwordModeToggle.swift */,
 				07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */,
 				86AE8C962F913EAB001D69EE /* BackwordLogo.swift */,
 				86AE8C982FE31F01001D69EE /* LaunchSplashView.swift */,
@@ -810,6 +813,7 @@
 				F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */,
 				86AFC3D32FC20460007623C3 /* BackwordInstructionsContentView.swift in Sources */,
 				07AB00023008000000000001 /* BackwordRulesUpdateNotice.swift in Sources */,
+				07AC00023009000000000001 /* BackwordModeToggle.swift in Sources */,
 				86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */,
 				86E5C00E2FA94D8A00A42156 /* StreakButton.swift in Sources */,
 				E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */,

@@ -27,11 +27,32 @@ struct BackwordRulesUpdateNoticeTests {
 @MainActor
 @Suite("Backword instructions layout")
 struct BackwordInstructionsLayoutTests {
+    @Test("Easy mode toggle title reflects its state")
+    func easyModeToggleTitleReflectsState() {
+        #expect(BackwordModeToggle.title(isEnabled: false) == "Easy Mode - off")
+        #expect(BackwordModeToggle.title(isEnabled: true) == "Easy Mode - on")
+    }
+
     @Test("Fits screen width at the largest Dynamic Type size")
     func fitsScreenAtLargestDynamicTypeSize() {
         let availableWidth: CGFloat = 320
         let host = UIHostingController(
             rootView: BackwordInstructionsContentView()
+                .environment(\.dynamicTypeSize, .accessibility5)
+        )
+
+        let fittedSize = host.sizeThatFits(
+            in: CGSize(width: availableWidth, height: 10_000)
+        )
+
+        #expect(fittedSize.width <= availableWidth + 0.5)
+    }
+
+    @Test("Easy rules fit screen width at the largest Dynamic Type size")
+    func easyRulesFitScreenAtLargestDynamicTypeSize() {
+        let availableWidth: CGFloat = 320
+        let host = UIHostingController(
+            rootView: BackwordInstructionsContentView(mode: .constant(.easy))
                 .environment(\.dynamicTypeSize, .accessibility5)
         )
 

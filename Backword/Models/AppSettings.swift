@@ -1,5 +1,10 @@
 import Foundation
 
+enum BackwordMode: String, CaseIterable {
+    case normal
+    case easy
+}
+
 enum BackwordInstructionsPresentation: Equatable {
     case onboarding
     case rulesUpdate
@@ -13,6 +18,7 @@ final class AppSettings: ObservableObject {
 
     private enum Keys {
         static let backwordLetterFeedback = "backwordLetterFeedback"
+        static let backwordMode = "backwordMode"
         static let crosswordCorrectHighlight = "crosswordCorrectHighlight"
         static let hasDismissedAdExplainer = "hasDismissedAdExplainer"
         static let hasSeenDailyCrosswordOnboarding = "hasSeenDailyCrosswordOnboarding"
@@ -25,6 +31,11 @@ final class AppSettings: ObservableObject {
     /// Pro-only: highlight letters in past guesses that appear anywhere in the target word.
     @Published var backwordLetterFeedback: Bool {
         didSet { userDefaults.set(backwordLetterFeedback, forKey: Keys.backwordLetterFeedback) }
+    }
+
+    /// Controls how quickly letters are revealed after incorrect Backword guesses.
+    @Published var backwordMode: BackwordMode {
+        didSet { userDefaults.set(backwordMode.rawValue, forKey: Keys.backwordMode) }
     }
 
     /// When enabled, correctly completed crossword cells are permanently highlighted green and locked from deletion.
@@ -87,6 +98,9 @@ final class AppSettings: ObservableObject {
     init(userDefaults: UserDefaults = .standard) {
         self.userDefaults = userDefaults
         backwordLetterFeedback = userDefaults.bool(forKey: Keys.backwordLetterFeedback)
+        backwordMode = BackwordMode(
+            rawValue: userDefaults.string(forKey: Keys.backwordMode) ?? ""
+        ) ?? .normal
         let stored = userDefaults.object(forKey: Keys.crosswordCorrectHighlight)
         crosswordCorrectHighlight = stored != nil ? userDefaults.bool(forKey: Keys.crosswordCorrectHighlight) : true
         hasDismissedAdExplainer = userDefaults.bool(forKey: Keys.hasDismissedAdExplainer)

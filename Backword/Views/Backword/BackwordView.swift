@@ -241,6 +241,10 @@ struct BackwordView: View {
     private var instructionsSheet: some View {
         NavigationStack {
             BackwordInstructionsContentView(
+                mode: Binding(
+                    get: { viewModel.mode },
+                    set: { viewModel.setMode($0) }
+                ),
                 showsRulesUpdateNotice: instructionsPresentation == .rulesUpdate
             )
                 .navigationTitle("How to Play")

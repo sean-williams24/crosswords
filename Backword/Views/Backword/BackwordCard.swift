@@ -5,6 +5,7 @@ struct BackwordCard: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject private var statsService: BackwordStatsService
     @ScaledMetric private var spacing: CGFloat = 10
+    @ObservedObject private var settings = AppSettings.shared
     @ObservedObject var service: BackwordService
     let progress: BackwordProgress?
     var showBackword: () -> Void
@@ -167,7 +168,11 @@ struct BackwordCard: View {
                             size: 40                        )
                     }
                 } else {
-                    let revealed = BackwordViewModel.revealedIndices(for: progress, word: word.word)
+                    let revealed = BackwordViewModel.revealedIndices(
+                        for: progress,
+                        word: word.word,
+                        mode: settings.backwordMode
+                    )
                     ForEach(0..<6, id: \.self) { i in
                         BackwordLetterCell(
                             letter: revealed.contains(i) ? letters[i] : nil,
