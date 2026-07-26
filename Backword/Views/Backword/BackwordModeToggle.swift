@@ -22,7 +22,7 @@ struct BackwordModeToggle: View {
     }
 
     static func title(isEnabled: Bool) -> String {
-        "Easy Mode - \(isEnabled ? "on" : "off")"
+        "Easy Mode - \(isEnabled ? "On" : "Off")"
     }
 
     private var isEasyMode: Binding<Bool> {

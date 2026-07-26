@@ -472,7 +472,6 @@ struct BackwordView: View {
                 .foregroundColor(.appAccent)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
-//                .background(Color.appAccent.opacity(0.1))
                 .cornerRadius(20)
             }
         }
