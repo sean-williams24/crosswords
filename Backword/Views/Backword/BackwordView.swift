@@ -71,11 +71,10 @@ struct BackwordView: View {
                         category: .backword
                     )
 
-                    if !viewModel.isComplete,
-                       viewModel.currentInput.count == viewModel.unrevealedCount {
+                    if shouldShowSubmitButton {
                         submitButton
                             .padding(.horizontal, AppLayout.screenPadding)
-                            .padding(.vertical, 12)
+                            .padding(.top, 10)
                             .background(Color.appBackground)
                             .transition(.move(edge: .bottom).combined(with: .opacity))
                     }
@@ -87,6 +86,10 @@ struct BackwordView: View {
                     } onDelete: {
                         viewModel.deleteLetter()
                     }
+                    .padding(
+                        .top,
+                        shouldShowSubmitButton ? 0 : -10
+                    )
                 }
             }
         }
@@ -102,7 +105,7 @@ struct BackwordView: View {
         .onDisappear {
             viewModel.stopExplainerCountdown()
         }
-        .animation(.easeInOut(duration: 0.2), value: viewModel.currentInput.count == viewModel.unrevealedCount)
+        .animation(.easeInOut(duration: 0.2), value: shouldShowSubmitButton)
         .animation(.easeInOut(duration: 0.3), value: viewModel.invalidWordMessage != nil)
         .animation(.easeInOut(duration: 0.3), value: viewModel.shouldShowExplainerBanner)
         .animation(.easeInOut(duration: 0.3), value: viewModel.isDetailedExplainerVisible)
@@ -330,6 +333,11 @@ struct BackwordView: View {
                 .background(Color.appAccent)
                 .cornerRadius(AppLayout.cardCornerRadius)
         }
+    }
+
+    private var shouldShowSubmitButton: Bool {
+        !viewModel.isComplete
+            && viewModel.currentInput.count == viewModel.unrevealedCount
     }
 
     // MARK: - Guess Counter

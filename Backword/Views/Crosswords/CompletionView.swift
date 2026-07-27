@@ -24,6 +24,10 @@ struct CompletionView: View {
         )
     }
 
+    private var category: RatingGameCategory {
+        isWeekly ? .weeklyCrossword : .dailyCrossword
+    }
+
     var body: some View {
         ZStack {
             Color.appBackground
@@ -32,11 +36,6 @@ struct CompletionView: View {
             VStack(spacing: 0) {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 24) {
-                        GameScoreProgressBarView(
-                            rating: ratingService.rating,
-                            category: isWeekly ? .weeklyCrossword : .dailyCrossword
-                        )
-
                         celebrationHeader
 
                         if showGrid {
@@ -54,12 +53,20 @@ struct CompletionView: View {
 
                         if showDetails {
                             VStack(spacing: 20) {
-                                if let message = displayState.message {
-                                    completionMessage(message)
-                                }
+                                RatingBarView(
+                                    rating: ratingService.rating,
+                                    isPro: storeService.isProUser,
+                                    fraction: ratingService.rating.fraction(for: category),
+                                    category: category,
+                                )
+                                .padding(.horizontal, AppLayout.screenPadding)
 
                                 if displayState.showsStats {
                                     statsCard
+                                }
+
+                                if let message = displayState.message {
+                                    completionMessage(message)
                                 }
                             }
                             .transition(.move(edge: .bottom).combined(with: .opacity))

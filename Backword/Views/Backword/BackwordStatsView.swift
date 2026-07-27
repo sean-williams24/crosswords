@@ -3,6 +3,7 @@ import SwiftUI
 struct BackwordStatsView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var ratingService: OverallRatingService
+    @EnvironmentObject var storeService: StoreService
     let stats: BackwordStats
     /// When non-nil, the bar for this guess count is highlighted (used on completion)
     var highlightGuessCount: Int? = nil
@@ -39,6 +40,16 @@ struct BackwordStatsView: View {
         }
     }
 
+    private var ratingBarview: some View {
+        RatingBarView(
+            rating: ratingService.rating,
+            isPro: storeService.isProUser,
+            fraction: ratingService.rating.fraction(for: .backword),
+            category: .backword,
+        )
+        .padding(.horizontal, AppLayout.screenPadding)
+    }
+
     private var statsBody: some View {
         NavigationStack {
             ZStack {
@@ -46,10 +57,7 @@ struct BackwordStatsView: View {
 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 28) {
-                        GameScoreProgressBarView(
-                            rating: ratingService.rating,
-                            category: .backword
-                        )
+                        ratingBarview
 
                         VStack(spacing: 28) {
                             StatsView(stats: stats)
@@ -87,11 +95,6 @@ struct BackwordStatsView: View {
             VStack(spacing: 0) {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 20) {
-                        GameScoreProgressBarView(
-                            rating: ratingService.rating,
-                            category: .backword
-                        )
-
                         if let title = displayState.title {
                             Text(title)
                                 .font(AppFont.header(40))
@@ -114,12 +117,13 @@ struct BackwordStatsView: View {
                         nextBackwordCountdown
 
                         Group {
-                            if let message = displayState.message {
-                                completionMessage(message)
-                            }
+                            ratingBarview
 
                             if displayState.showsStats {
                                 completedStatsContent
+                            }
+                            if let message = displayState.message {
+                                completionMessage(message)
                             }
                         }
                         .padding(.horizontal)
@@ -309,12 +313,14 @@ struct BackwordStatsView: View {
     )
         .preferredColorScheme(.dark)
         .environmentObject(OverallRatingService())
+        .environmentObject(StoreService())
 }
 
 #Preview("Empty") {
     BackwordStatsView(stats: BackwordStats(), shouldPop: .constant(false))
         .preferredColorScheme(.dark)
         .environmentObject(OverallRatingService())
+        .environmentObject(StoreService())
 }
 
 #Preview("Finished") {
@@ -333,4 +339,5 @@ struct BackwordStatsView: View {
     )
     .preferredColorScheme(.dark)
     .environmentObject(OverallRatingService())
+    .environmentObject(StoreService())
 }

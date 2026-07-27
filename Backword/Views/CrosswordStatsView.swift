@@ -4,17 +4,26 @@ struct CrosswordStatsView: View {
     @EnvironmentObject var statsService: StatsService
     @EnvironmentObject var ratingService: OverallRatingService
     let isWeekly: Bool
+    let isPro: Bool
     var onDismiss: (() -> Void)? = nil
     
     @State private var animates = false
-    
+
+    private var category: RatingGameCategory {
+        isWeekly ? .weeklyCrossword : .dailyCrossword
+    }
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                GameScoreProgressBarView(
+                RatingBarView(
                     rating: ratingService.rating,
-                    category: isWeekly ? .weeklyCrossword : .dailyCrossword
+                    isPro: isPro,
+                    fraction: ratingService.rating.fraction(for: category),
+                    category: category,
                 )
+                .padding(.top, 20)
+                .padding(.horizontal, AppLayout.screenPadding)
 
                 Group {
                     if isWeekly && statsService.stats.totalCompleted(isWeekly: true) == 0 {
@@ -248,13 +257,13 @@ struct CrosswordStatsView: View {
 }
 
 #Preview {
-    CrosswordStatsView(isWeekly: false) { }
+    CrosswordStatsView(isWeekly: false, isPro: false) { }
         .environmentObject(CrosswordStatsView.mockStatsService)
         .environmentObject(CrosswordStatsView.mockRatingService)
 }
 
 #Preview("Weekly") {
-    CrosswordStatsView(isWeekly: true) { }
+    CrosswordStatsView(isWeekly: true, isPro: true) { }
         .environmentObject(CrosswordStatsView.mockStatsService)
         .environmentObject(CrosswordStatsView.mockRatingService)
 }

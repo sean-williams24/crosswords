@@ -103,6 +103,7 @@ struct PuzzleView: View {
                         viewModel.deleteLetter()
                     }
                 }
+                .padding(.top, -10)
             }
             .padding(.bottom, layoutKeyboardHeight)
         }
@@ -138,7 +139,7 @@ struct PuzzleView: View {
                 .environmentObject(storeService)
         }
         .sheet(isPresented: $showCrosswordStats) {
-            CrosswordStatsView(isWeekly: viewModel.puzzle.size > 12) { showCrosswordStats = false }
+            CrosswordStatsView(isWeekly: viewModel.puzzle.size > 12, isPro: storeService.isProUser) { showCrosswordStats = false }
                 .environmentObject(statsService)
                 .environmentObject(ratingService)
         }

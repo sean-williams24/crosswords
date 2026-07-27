@@ -57,7 +57,8 @@ struct HomeView: View {
                     VStack(spacing: 20) {
                         RatingBarView(
                             rating: ratingService.rating,
-                            isPro: storeService.isProUser
+                            isPro: storeService.isProUser,
+                            fraction: ratingService.rating.fraction(isPro: storeService.isProUser)
                         )
                         .padding(.horizontal, appLayout.homeHorizontalPadding)
                         .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
