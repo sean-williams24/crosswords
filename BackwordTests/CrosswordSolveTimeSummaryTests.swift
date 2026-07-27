@@ -134,3 +134,69 @@ struct CrosswordSolveTimeSummaryTests {
         return try #require(formatter.date(from: isoString))
     }
 }
+
+@Suite("Weekly Crossword Stats History Tests")
+struct WeeklyCrosswordStatsHistoryTests {
+
+    @Test("History always shows two recent weeks and five previous games")
+    func historyIncludesUnplayedAndInProgressWeeks() throws {
+        let calendar = releaseCalendar()
+        let now = try date("2026-07-27T12:00:00Z")
+        var inProgress = UserProgress(
+            puzzleId: "weekly-current",
+            size: 13,
+            puzzleDate: "2026-07-26",
+            totalClues: 40,
+            isWeekly: true
+        )
+        inProgress.completedClueIds = [1, 2, 3]
+
+        var solved = UserProgress(
+            puzzleId: "weekly-solved",
+            size: 13,
+            puzzleDate: "2026-07-12",
+            totalClues: 40,
+            isWeekly: true
+        )
+        solved.startedAt = try date("2026-07-12T10:00:00Z")
+        solved.completedAt = try date("2026-07-12T10:05:00Z")
+
+        let rating = OverallRating(dailyScores: [
+            DailyScore(
+                date: "2026-07-26",
+                dailyCrossword: 0,
+                weeklyCrossword: 2,
+                backword: 0
+            )
+        ])
+
+        let history = WeeklyCrosswordStatsHistory.make(
+            rating: rating,
+            progressRecords: [inProgress, solved],
+            releaseCalendar: ContentReleaseCalendar(now: now, calendar: calendar)
+        )
+
+        #expect(history.last14Days.map(\.dateStr) == ["2026-07-26", "2026-07-19"])
+        #expect(
+            history.previousGames.map(\.dateStr)
+                == ["2026-07-12", "2026-07-05", "2026-06-28", "2026-06-21", "2026-06-14"]
+        )
+        #expect(history.last14Days[0].score == 2)
+        #expect(history.last14Days[0].solveTime == nil)
+        #expect(history.last14Days[1].score == 0)
+        #expect(history.previousGames[0].score == 5)
+        #expect(history.previousGames[0].solveTime == 300)
+        #expect(history.previousGames[0].isSolved)
+    }
+
+    private func releaseCalendar() -> Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        return calendar
+    }
+
+    private func date(_ isoString: String) throws -> Date {
+        let formatter = ISO8601DateFormatter()
+        return try #require(formatter.date(from: isoString))
+    }
+}

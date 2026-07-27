@@ -34,6 +34,7 @@
 		05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */; };
 		05D1A0073001000000000001 /* CompletionDisplayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0063001000000000001 /* CompletionDisplayState.swift */; };
 		05D1A0093001000000000001 /* CrosswordSolveTimeSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */; };
+		07AA10013008000000000001 /* CrosswordStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA10003008000000000001 /* CrosswordStatsHistory.swift */; };
 		05D1A00B3001000000000001 /* CrosswordSolveTimeSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */; };
 		05D2A0013002000000000001 /* DailyCrosswordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */; };
 		05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */; };
@@ -187,6 +188,7 @@
 		05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayStateTests.swift; sourceTree = "<group>"; };
 		05D1A0063001000000000001 /* CompletionDisplayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayState.swift; sourceTree = "<group>"; };
 		05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordSolveTimeSummary.swift; sourceTree = "<group>"; };
+		07AA10003008000000000001 /* CrosswordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordStatsHistory.swift; sourceTree = "<group>"; };
 		05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordSolveTimeSummaryTests.swift; sourceTree = "<group>"; };
 		05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordInstructionsContentView.swift; sourceTree = "<group>"; };
 		05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLogger.swift; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 				05C0B0003006000000000001 /* BackwordCompletionPresentation.swift */,
 				05D1A0063001000000000001 /* CompletionDisplayState.swift */,
 				06CC00003007000000000001 /* CrosswordCompletionPresentation.swift */,
+				07AA10003008000000000001 /* CrosswordStatsHistory.swift */,
 				05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */,
 				15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */,
 				E6124F655D1ABA64F820B278 /* BackwordProgress.swift */,
@@ -845,6 +848,7 @@
 				06CC00013007000000000001 /* CrosswordCompletionPresentation.swift in Sources */,
 				06CC00033007000000000001 /* CrosswordCompletionGridView.swift in Sources */,
 				06CC00053007000000000001 /* CrosswordCompletionSparkleBurstView.swift in Sources */,
+				07AA10013008000000000001 /* CrosswordStatsHistory.swift in Sources */,
 				05D1A0093001000000000001 /* CrosswordSolveTimeSummary.swift in Sources */,
 				86AFC3D52FC2402F007623C3 /* StatsView.swift in Sources */,
 				21618E85BCB44C8BE6735598 /* DebugSettingsView.swift in Sources */,

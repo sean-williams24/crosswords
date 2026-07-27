@@ -136,6 +136,8 @@ Game and stats screens show category-specific scores from the same rolling 14-da
 
 Daily and weekly crossword bars update the shared `OverallRatingService` as the current score changes during play, including changes caused by completion-percentage thresholds and each three-hint penalty. The existing release-window checks still prevent archive or late play from changing rating points. Backword refreshes the shared rating after its completion result has been recorded.
 
+Crossword stats histories are release-date based, so unplayed and in-progress puzzles remain visible rather than limiting the table to completions. Daily stats show all 14 releases in the rolling window. Weekly stats show the two releases in that same 14-day window under `Last 14 Days`, followed by the next five older weekly releases under `Previous Games`.
+
 ---
 
 ## App Store Review Prompt

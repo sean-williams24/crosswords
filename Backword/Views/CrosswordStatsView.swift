@@ -21,26 +21,21 @@ struct CrosswordStatsView: View {
                 )
                 .padding(.top, 20)
                 .padding(.horizontal, AppLayout.screenPadding)
+                .padding(.bottom, 10)
 
-                Group {
-                    if isWeekly && statsService.stats.totalCompleted(isWeekly: true) == 0 {
-                        emptyState
-                    } else {
-                        ScrollView(showsIndicators: false) {
-                            VStack(spacing: 28) {
-                                StatsView(
-                                    stats: statsService.stats,
-                                    isWeekly: isWeekly,
-                                    averageTimeSeconds: averageSolveTime
-                                )
-                                    .padding(.horizontal, AppLayout.screenPadding)
-                                recentHistory
-                                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
-                            }
-                            .padding(.top, 20)
-                            .padding(.bottom, 40)
-                        }
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 28) {
+                        StatsView(
+                            stats: statsService.stats,
+                            isWeekly: isWeekly,
+                            averageTimeSeconds: averageSolveTime
+                        )
+                            .padding(.horizontal, AppLayout.screenPadding)
+                        recentHistory
+                            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                     }
+                    .padding(.top, 20)
+                    .padding(.bottom, 40)
                 }
             }
             .background(AppBackgroundGradient())
@@ -67,7 +62,10 @@ struct CrosswordStatsView: View {
     @ViewBuilder
     private var recentHistory: some View {
         if isWeekly {
-            historySection(title: "RECENT GAMES", rows: weeklyBreakdownRows)
+            VStack(spacing: 28) {
+                historySection(title: "LAST 14 DAYS", rows: weeklyHistory.last14Days)
+                historySection(title: "PREVIOUS GAMES", rows: weeklyHistory.previousGames)
+            }
         } else {
             historySection(title: "LAST 14 DAYS", rows: dailyBreakdownRows)
         }
@@ -75,12 +73,12 @@ struct CrosswordStatsView: View {
 
     private var averageSolveTime: String? {
         CrosswordSolveTimeSummary.formattedAverageTime(
-            from: (isWeekly ? weeklyBreakdownRows : dailyBreakdownRows).compactMap(\.solveTime)
+            from: (isWeekly ? weeklyHistory.allRows : dailyBreakdownRows).compactMap(\.solveTime)
         )
     }
 
     @ViewBuilder
-    private func historySection(title: String, rows: [HistoryRow]) -> some View {
+    private func historySection(title: String, rows: [CrosswordStatsHistoryRow]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(AppFont.clueLabel(12))
@@ -156,87 +154,34 @@ struct CrosswordStatsView: View {
 
     // MARK: - Row Data
 
-    private struct HistoryRow {
-        let dateStr: String
-        let date: Date
-        let isToday: Bool
-        let score: Int
-        let hasEntry: Bool
-        let solveTime: Int?
-        let isSolved: Bool
-    }
-
-    private var dailyBreakdownRows: [HistoryRow] {
+    private var dailyBreakdownRows: [CrosswordStatsHistoryRow] {
         let scoreMap: [String: Int] = Dictionary(uniqueKeysWithValues:
             ratingService.rating.dailyScores.map { ($0.date, $0.dailyCrossword) }
         )
         let timeMap = CrosswordSolveTimeSummary.solveTimeByDailyDate(from: UserProgress.loadAll())
         let todayStr = ContentReleaseCalendar().dailyDateString
-        return (0..<14).compactMap { offset -> HistoryRow? in
+        return (0..<14).compactMap { offset -> CrosswordStatsHistoryRow? in
             guard let dateStr = ContentReleaseCalendar().dailyDateString(offsetByDays: -offset),
                   let date = OverallRating.dateFormatter.date(from: dateStr) else { return nil }
             let solveTime = timeMap[dateStr]
             let ratingScore = scoreMap[dateStr]
             let score = ratingScore ?? (solveTime != nil ? 5 : 0)
-            return HistoryRow(
+            return CrosswordStatsHistoryRow(
                 dateStr: dateStr,
                 date: date,
                 isToday: dateStr == todayStr,
                 score: score,
-                hasEntry: solveTime != nil || ratingScore != nil,
                 solveTime: solveTime,
                 isSolved: solveTime != nil
             )
         }
     }
 
-    private var weeklyBreakdownRows: [HistoryRow] {
-        let scoreMap: [String: Int] = Dictionary(
-            ratingService.rating.dailyScores.compactMap { entry -> (String, Int)? in
-                guard let ws = entry.weeklyCrossword else { return nil }
-                return (entry.date, ws)
-            },
-            uniquingKeysWith: { first, _ in first }
+    private var weeklyHistory: WeeklyCrosswordStatsHistory {
+        WeeklyCrosswordStatsHistory.make(
+            rating: ratingService.rating,
+            progressRecords: UserProgress.loadAll()
         )
-
-        return UserProgress.loadAll()
-            .compactMap { progress -> HistoryRow? in
-                guard let puzzleDate = progress.puzzleDate,
-                      let date = OverallRating.dateFormatter.date(from: puzzleDate),
-                      let solveTime = CrosswordSolveTimeSummary.solveTime(from: progress, isWeekly: true) else { return nil }
-                let ratingScore = scoreMap[puzzleDate]
-                let score = ratingScore ?? 5
-                return HistoryRow(
-                    dateStr: puzzleDate,
-                    date: date,
-                    isToday: false,
-                    score: score,
-                    hasEntry: true,
-                    solveTime: solveTime,
-                    isSolved: true
-                )
-            }
-            .sorted { $0.date > $1.date }
-            .prefix(10)
-            .map { $0 }
-    }
-    
-    // MARK: - Empty State
-    
-    private var emptyState: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "brain.head.profile")
-                .font(.system(size: 48))
-                .foregroundColor(.appTextSecondary.opacity(0.4))
-            Text("No puzzles solved yet")
-                .font(AppFont.body())
-                .foregroundColor(.appTextSecondary)
-            Text("Complete a crossword to see your stats here.")
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary.opacity(0.7))
-                .multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     // MARK: - Formatting
