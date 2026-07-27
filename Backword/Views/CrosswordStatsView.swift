@@ -6,8 +6,6 @@ struct CrosswordStatsView: View {
     let isWeekly: Bool
     let isPro: Bool
     var onDismiss: (() -> Void)? = nil
-    
-    @State private var animates = false
 
     private var category: RatingGameCategory {
         isWeekly ? .weeklyCrossword : .dailyCrossword
@@ -19,8 +17,7 @@ struct CrosswordStatsView: View {
                 RatingBarView(
                     rating: ratingService.rating,
                     isPro: isPro,
-                    fraction: ratingService.rating.fraction(for: category),
-                    category: category,
+                    category: category
                 )
                 .padding(.top, 20)
                 .padding(.horizontal, AppLayout.screenPadding)
@@ -62,11 +59,6 @@ struct CrosswordStatsView: View {
         }
         .onAppear {
             ratingService.refresh()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
-                    animates = true
-                }
-            }
         }
     }
     

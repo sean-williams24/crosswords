@@ -56,8 +56,7 @@ struct CompletionView: View {
                                 RatingBarView(
                                     rating: ratingService.rating,
                                     isPro: storeService.isProUser,
-                                    fraction: ratingService.rating.fraction(for: category),
-                                    category: category,
+                                    category: category
                                 )
                                 .padding(.horizontal, AppLayout.screenPadding)
 

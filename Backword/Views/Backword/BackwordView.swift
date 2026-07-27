@@ -70,6 +70,7 @@ struct BackwordView: View {
                         rating: ratingService.rating,
                         category: .backword
                     )
+                    .padding(.vertical, shouldShowSubmitButton ? 5 : 0)
 
                     if shouldShowSubmitButton {
                         submitButton
@@ -86,10 +87,6 @@ struct BackwordView: View {
                     } onDelete: {
                         viewModel.deleteLetter()
                     }
-                    .padding(
-                        .top,
-                        shouldShowSubmitButton ? 0 : -10
-                    )
                 }
             }
         }

@@ -103,7 +103,6 @@ struct PuzzleView: View {
                         viewModel.deleteLetter()
                     }
                 }
-                .padding(.top, -10)
             }
             .padding(.bottom, layoutKeyboardHeight)
         }

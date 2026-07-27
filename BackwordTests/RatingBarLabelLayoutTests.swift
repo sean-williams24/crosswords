@@ -37,3 +37,24 @@ struct RatingBarLabelLayoutTests {
         #expect(offset == -40)
     }
 }
+
+@Suite("Rating progress track style")
+struct RatingProgressTrackStyleTests {
+    @Test("Simple track reserves only its visible height")
+    func simpleTrackHeight() {
+        #expect(RatingProgressTrack.Style.simple.height == 8)
+        #expect(RatingProgressTrack.Style.simple.cornerRadius == 0)
+    }
+
+    @Test("Detailed track reserves room for its marker")
+    func detailedTrackHeight() {
+        let style = RatingProgressTrack.Style.detailed(
+            markerColor: .appAccent,
+            pulses: false,
+            markerAnimationDelay: 0.05
+        )
+
+        #expect(style.height == 18)
+        #expect(style.cornerRadius == 20)
+    }
+}

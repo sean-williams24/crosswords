@@ -40,12 +40,11 @@ struct BackwordStatsView: View {
         }
     }
 
-    private var ratingBarview: some View {
+    private var ratingBarView: some View {
         RatingBarView(
             rating: ratingService.rating,
             isPro: storeService.isProUser,
-            fraction: ratingService.rating.fraction(for: .backword),
-            category: .backword,
+            category: .backword
         )
         .padding(.horizontal, AppLayout.screenPadding)
     }
@@ -57,13 +56,12 @@ struct BackwordStatsView: View {
 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 28) {
-                        ratingBarview
+                        ratingBarView
 
                         VStack(spacing: 28) {
                             StatsView(stats: stats)
                             distributionSection
                         }
-                        .padding(.horizontal, AppLayout.screenPadding)
                     }
                     .padding(.top, 20)
                     .padding(.bottom, 40)
@@ -117,7 +115,7 @@ struct BackwordStatsView: View {
                         nextBackwordCountdown
 
                         Group {
-                            ratingBarview
+                            ratingBarView
 
                             if displayState.showsStats {
                                 completedStatsContent
@@ -126,7 +124,6 @@ struct BackwordStatsView: View {
                                 completionMessage(message)
                             }
                         }
-                        .padding(.horizontal)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.top, 36)
@@ -202,6 +199,7 @@ struct BackwordStatsView: View {
             .background(Color.appSurface)
             .cornerRadius(AppLayout.cardCornerRadius)
             .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+            .padding(.horizontal, AppLayout.screenPadding)
     }
 
     private var completedStatsContent: some View {

@@ -1,17 +1,45 @@
 import SwiftUI
 
 struct RatingProgressTrack: View {
-    enum TrackType {
+    enum Style {
         case simple
-        case detailed
+        case detailed(
+            markerColor: Color,
+            pulses: Bool,
+            markerAnimationDelay: Double
+        )
+
+        var height: CGFloat {
+            switch self {
+            case .simple:
+                return 8
+            case .detailed:
+                return 18
+            }
+        }
+
+        var cornerRadius: CGFloat {
+            switch self {
+            case .simple:
+                return 0
+            case .detailed:
+                return 20
+            }
+        }
+
+        var trackColor: Color {
+            switch self {
+            case .simple:
+                return .appBackground
+            case .detailed:
+                return .appSurface
+            }
+        }
     }
 
     let fraction: Double
-    let markerColor: Color
+    let style: Style
     let animates: Bool
-    let pulses: Bool
-    var markerAnimationDelay: Double = 0
-    let trackType: TrackType
 
     private var clampedFraction: CGFloat {
         CGFloat(min(max(fraction, 0), 1))
@@ -21,22 +49,18 @@ struct RatingProgressTrack: View {
         animates ? clampedFraction : 0
     }
 
-    private var cornerRadius: CGFloat {
-        trackType == .detailed ? 20 : 0
-    }
-
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 Rectangle()
-                    .fill(trackType == .detailed ? Color.appSurface : .appBackground)
+                    .fill(style.trackColor)
                     .frame(height: 8)
-                    .cornerRadius(cornerRadius)
+                    .cornerRadius(style.cornerRadius)
 
                 Rectangle()
                     .fill(Self.barGradient)
                     .frame(height: 8)
-                    .cornerRadius(cornerRadius)
+                    .cornerRadius(style.cornerRadius)
                     .mask(alignment: .leading) {
                         Rectangle()
                             .frame(
@@ -45,14 +69,14 @@ struct RatingProgressTrack: View {
                                     6
                                 )
                             )
-                            .cornerRadius(cornerRadius)
+                            .cornerRadius(style.cornerRadius)
                     }
                     .animation(
                         .spring(response: 0.8, dampingFraction: 0.75),
                         value: displayedFraction
                     )
 
-                if trackType == .detailed {
+                if case let .detailed(markerColor, pulses, markerAnimationDelay) = style {
                     ZStack {
                         Circle()
                             .fill(markerColor.opacity(pulses ? 0.08 : 0.3))
@@ -77,11 +101,10 @@ struct RatingProgressTrack: View {
                             .delay(markerAnimationDelay),
                         value: displayedFraction
                     )
-
                 }
             }
         }
-        .frame(height: 18)
+        .frame(height: style.height)
     }
 
     static var barGradient: LinearGradient {
@@ -107,47 +130,23 @@ struct GameScoreProgressBarView: View {
     let category: RatingGameCategory
 
     @State private var animates = false
-    @State private var pulses = false
-    @ScaledMetric private var scoreBoxWidth: CGFloat = 68
 
     var body: some View {
-        HStack(spacing: 0) {
-            RatingProgressTrack(
-                fraction: rating.fraction(for: category),
-                markerColor: rating.tier(for: category).color,
-                animates: animates,
-                pulses: pulses,
-                trackType: .simple
-            )
-        }
+        RatingProgressTrack(
+            fraction: rating.fraction(for: category),
+            style: .simple,
+            animates: animates
+        )
         .frame(maxWidth: .infinity)
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 animates = true
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.95) {
-                withAnimation(
-                    .easeInOut(duration: 1.2).repeatForever(autoreverses: true)
-                ) {
-                    pulses = true
-                }
-            }
         }
     }
 }
 
-private func makePreviewRating(days: Int, daily: Int, backword: Int) -> OverallRating {
-    var r = OverallRating()
-    for i in 0..<days {
-        let ds = ContentReleaseCalendar().dailyDateString(offsetByDays: -i)!
-        r.upsertDailyCrossword(score: daily, date: ds)
-        r.upsertBackword(score: backword, date: ds)
-    }
-    return r
-}
-
 #Preview {
-
     var rating = OverallRating()
     rating.upsertDailyCrossword(
         score: 5,
@@ -159,7 +158,7 @@ private func makePreviewRating(days: Int, daily: Int, backword: Int) -> OverallR
     )
 
     return VStack(spacing: 28) {
-        GameScoreProgressBarView(rating: makePreviewRating(days: 14, daily: 5, backword: 5), category: .backword)
+        GameScoreProgressBarView(rating: rating, category: .backword)
         GameScoreProgressBarView(rating: rating, category: .dailyCrossword)
         GameScoreProgressBarView(rating: rating, category: .weeklyCrossword)
     }

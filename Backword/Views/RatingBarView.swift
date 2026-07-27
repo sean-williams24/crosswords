@@ -6,24 +6,23 @@ struct RatingBarView: View {
     @State private var pulses = false
     @State private var showDetail = false
     private var tier: RatingTier { rating.tier(isPro: isPro) }
+    private var fraction: Double {
+        category.map { rating.fraction(for: $0) }
+            ?? rating.fraction(isPro: isPro)
+    }
 
     let rating: OverallRating
     let isPro: Bool
-    let fraction: Double
     var category: RatingGameCategory? = nil
 
     private func pointsView(category: RatingGameCategory) -> some View {
-        HStack {
-            Spacer()
-            Text("\(rating.points(for: category))/\(rating.maxPoints(for: category))")
-                .font(AppFont.clueLabel(14))
-                .foregroundColor(.accentColor)
-                .monospacedDigit()
-                .background(Color.clear)
-        }
+        Text("\(rating.points(for: category))/\(rating.maxPoints(for: category))")
+            .font(AppFont.clueLabel(14))
+            .foregroundColor(.accentColor)
+            .monospacedDigit()
+            .frame(maxWidth: .infinity, alignment: .trailing)
     }
 
-    @ViewBuilder
     private var tierLabelView: some View {
         GeometryReader { geo in
             ZStack(alignment: .topLeading) {
@@ -49,11 +48,12 @@ struct RatingBarView: View {
                 // Bar track
                 RatingProgressTrack(
                     fraction: fraction,
-                    markerColor: tier.color,
-                    animates: animates,
-                    pulses: pulses,
-                    markerAnimationDelay: 0.05,
-                    trackType: .detailed
+                    style: .detailed(
+                        markerColor: tier.color,
+                        pulses: pulses,
+                        markerAnimationDelay: 0.05
+                    ),
+                    animates: animates
                 )
 
                 if let category {
@@ -125,12 +125,9 @@ private func makePreviewRating(days: Int, daily: Int, backword: Int) -> OverallR
 #Preview {
     let r1 = makePreviewRating(days: 14, daily: 3, backword: 5)
     VStack(spacing: 40) {
-        RatingBarView(rating: r1, isPro: false, fraction: r1.fraction(for: .dailyCrossword), category: .backword)
-        RatingBarView(rating: makePreviewRating(days: 7, daily: 6, backword: 1), isPro: false, fraction: 0.8)
-        RatingBarView(rating: makePreviewRating(days: 7, daily: 8, backword: 1), isPro: false, fraction: 0.3)
-//        RatingBarView(rating: makePreviewRating(days: 7, daily: 8, backword: 6), isPro: false)
-//        RatingBarView(rating: makePreviewRating(days: 14, daily: 5, backword: 5), isPro: false)
-//        RatingBarView(rating: OverallRating(), isPro: false)
+        RatingBarView(rating: r1, isPro: false, category: .backword)
+        RatingBarView(rating: makePreviewRating(days: 7, daily: 5, backword: 1), isPro: false)
+        RatingBarView(rating: OverallRating(), isPro: false)
     }
     .padding(40)
     .background(Color.appBackground)
