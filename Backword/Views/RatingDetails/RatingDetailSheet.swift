@@ -42,7 +42,7 @@ struct RatingDetailSheet: View {
                 .padding(.bottom, 40)
             }
             .background(AppBackgroundGradient())
-            .navigationTitle("Your Rating")
+            .navigationTitle("Overall Rating")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
