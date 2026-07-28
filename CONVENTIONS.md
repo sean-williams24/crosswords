@@ -223,6 +223,32 @@ let isToday = day.date == ContentReleaseCalendar().dailyDateString
 }
 ```
 
+### Regional answer archive
+
+`Backend/word_bank.json` contains only answers approved for region-neutral
+generation. US- or UK-specific answer spellings and separated regional senses
+are kept in `Backend/US_UK_regional_words.json`; the daily and weekly
+generators intentionally do not load that archive.
+
+Archived objects retain the normal word-bank clue fields and add:
+
+- `region`: `US` or `UK`
+- `counterpart`: the corresponding answer used by the other region
+- `category`: `clear_spelling`, `context_split`, or `terminology`
+- `sense`: required for context splits and terminology records, and whenever
+  the same answer has multiple archived meanings
+
+An answer may intentionally exist in both files when its spelling has a
+region-neutral sense and a separate regional sense. The active record must
+contain only neutral clues, while each archived record contains clues for one
+named regional sense. `CHECKS`, `DRAFT`, and `DRAUGHTS` have multiple archived
+records distinguished by `sense`.
+
+The first regional audit archived 404 clear spelling records. It also separated
+19 mixed-context answers, and moved `MOM` and the board-game sense of
+`DRAUGHTS` out of active generation. Twenty-two terminology and word-form cases
+remain active pending a separate review.
+
 ### How each field is used
 
 | Field | Used by | Purpose |
