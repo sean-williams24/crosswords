@@ -53,17 +53,17 @@ struct BackwordStatsView: View {
         NavigationStack {
             ZStack {
                 AppBackgroundGradient()
-
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 28) {
-                        ratingBarView
-
+                VStack(spacing: 0) {
+                    ratingBarView
+                        .padding(.top, 20)
+                        .padding(.bottom, 10)
+                    ScrollView(showsIndicators: false) {
                         VStack(spacing: 28) {
                             StatsView(stats: stats)
                             distributionSection
                         }
                     }
-                    .padding(.top, 20)
+                    .padding(.horizontal, AppLayout.screenPadding)
                     .padding(.bottom, 40)
                 }
             }

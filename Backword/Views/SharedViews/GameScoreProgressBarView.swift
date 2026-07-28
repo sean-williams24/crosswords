@@ -12,7 +12,7 @@ struct RatingProgressTrack: View {
         var height: CGFloat {
             switch self {
             case .simple:
-                return 8
+                return 4
             case .detailed:
                 return 18
             }
