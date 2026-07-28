@@ -138,6 +138,8 @@ Daily and weekly crossword bars update the shared `OverallRatingService` as the 
 
 Crossword stats histories are release-date based, so unplayed and in-progress puzzles remain visible rather than limiting the table to completions. Daily stats show all 14 releases in the rolling window. Weekly stats show the two releases in that same 14-day window under `Last 14 Days`, followed by the next five older weekly releases under `Previous Games`.
 
+Backword stats use the same release-date-based 14-day history. Every daily release is shown, including unplayed and in-progress games. Rows show the saved guess count when play has started, distinguish solved and failed completions, and use the recorded Backword rating score with completed progress as a fallback.
+
 ---
 
 ## App Store Review Prompt

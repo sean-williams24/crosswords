@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BackwordStatsView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject var ratingService: OverallRatingService
     @EnvironmentObject var storeService: StoreService
     let stats: BackwordStats
@@ -60,11 +61,12 @@ struct BackwordStatsView: View {
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 28) {
                             StatsView(stats: stats)
+                                .padding(.horizontal, AppLayout.screenPadding)
                             distributionSection
+                                .padding(.horizontal, AppLayout.screenPadding)
+                            historySection
                         }
                     }
-                    .padding(.horizontal, AppLayout.screenPadding)
-                    .padding(.bottom, 40)
                 }
             }
             .navigationTitle("Backword Stats")
@@ -117,11 +119,9 @@ struct BackwordStatsView: View {
                         Group {
                             ratingBarView
 
+                            completionMessage
                             if displayState.showsStats {
                                 completedStatsContent
-                            }
-                            if let message = displayState.message {
-                                completionMessage(message)
                             }
                         }
                     }
@@ -141,7 +141,6 @@ struct BackwordStatsView: View {
                         .padding(.top, 14)
                 }
                 .padding(.horizontal, AppLayout.screenPadding)
-//                .padding(.bottom, 32)
             }
         }
     }
@@ -187,27 +186,33 @@ struct BackwordStatsView: View {
         }
     }
 
-    private func completionMessage(_ message: String) -> some View {
-        Text(message)
-            .font(AppFont.body())
-            .foregroundColor(.appTextSecondary)
-            .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 24)
-            .background(Color.appSurface)
-            .cornerRadius(AppLayout.cardCornerRadius)
-            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
-            .padding(.horizontal, AppLayout.screenPadding)
+    @ViewBuilder
+    private var completionMessage: some View {
+        if let message = displayState.message {
+            Text(message)
+                .font(AppFont.body())
+                .foregroundColor(.appTextSecondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 24)
+                .background(Color.appSurface)
+                .cornerRadius(AppLayout.cardCornerRadius)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+                .padding(.horizontal, AppLayout.screenPadding)
+        }
     }
 
     private var completedStatsContent: some View {
         VStack(spacing: 28) {
             StatsView(stats: stats)
+                .padding(.horizontal, AppLayout.screenPadding)
             distributionSection
+                .padding(.horizontal, AppLayout.screenPadding)
+
+            historySection
         }
-        .padding(.horizontal, AppLayout.screenPadding)
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
@@ -292,6 +297,138 @@ struct BackwordStatsView: View {
                 .animation(.spring(response: 0.4, dampingFraction: 0.6).delay(0.4), value: animatesBars)
         }
         .frame(height: 32)
+    }
+
+    // MARK: - Recent History
+
+    private var historySection: some View {
+        let rows = history.rows
+
+        return VStack(alignment: .leading, spacing: 12) {
+            Text("LAST 14 DAYS")
+                .font(AppFont.clueLabel(12))
+                .foregroundColor(.appAccent)
+                .tracking(2)
+                .padding(.leading)
+
+            VStack(spacing: 0) {
+                HStack(spacing: historyColumnSpacing) {
+                    Text("Date").frame(maxWidth: .infinity, alignment: .leading)
+                    Text("Score")
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .frame(width: historyScoreColumnWidth, alignment: .center)
+                    Text("Guesses")
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .frame(width: historyGuessesColumnWidth, alignment: .center)
+                }
+                .font(AppFont.clueLabel(10))
+                .foregroundColor(.appTextSecondary)
+                .tracking(1)
+                .padding(.leading, 14)
+                .padding(.trailing, dynamicTypeSize > .xxxLarge ? 14 : 0)
+                .padding(.vertical, 8)
+
+                Divider().background(Color.appGridLine)
+
+                ForEach(Array(rows.enumerated()), id: \.element.dateStr) { index, row in
+                    historyRow(row)
+
+                    if index < rows.count - 1 {
+                        Divider().background(Color.appGridLine.opacity(0.5))
+                    }
+                }
+            }
+            .background(Color.appSurface)
+        }
+    }
+
+    private func historyRow(_ row: BackwordStatsHistoryRow) -> some View {
+        HStack(spacing: historyColumnSpacing) {
+            VStack(alignment: .leading, spacing: 1) {
+                Text(formatDate(row.date))
+                    .font(AppFont.body(13))
+                    .foregroundColor(row.isToday ? .appAccent : .appTextPrimary)
+
+                if row.isToday {
+                    historyStatusLabel("TODAY", color: .appAccent)
+                }
+
+                switch row.outcome {
+                case .solved:
+                    historyStatusLabel("SOLVED", color: .solvedGold)
+                case .failed:
+                    historyStatusLabel("FAILED", color: .appGaveUp)
+                case .unplayed, .inProgress:
+                    EmptyView()
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            ScoreChipView(score: row.score)
+                .frame(width: historyScoreColumnWidth, alignment: .center)
+
+            Group {
+                if let guessCount = row.guessCount, guessCount > 0 {
+                    Text("\(guessCount)")
+                        .font(AppFont.body(13))
+                        .foregroundColor(guessCountColor(for: row.outcome))
+                        .monospacedDigit()
+                } else {
+                    Text("–")
+                        .font(AppFont.clueLabel(12))
+                        .foregroundColor(.appTextSecondary.opacity(0.3))
+                }
+            }
+            .frame(width: historyGuessesColumnWidth, alignment: .center)
+        }
+        .padding(.leading, 14)
+        .padding(.trailing, dynamicTypeSize > .xxxLarge ? 14 : 0)
+        .padding(.vertical, 10)
+    }
+
+    private func historyStatusLabel(_ title: String, color: Color) -> some View {
+        Text(title)
+            .font(AppFont.clueLabel(9))
+            .foregroundColor(color)
+            .tracking(1)
+    }
+
+    private func guessCountColor(for outcome: BackwordStatsHistoryRow.Outcome) -> Color {
+        switch outcome {
+        case .solved:
+            return .solvedGold
+        case .failed:
+            return .appGaveUp
+        case .unplayed, .inProgress:
+            return .appTextPrimary
+        }
+    }
+
+    private var historyColumnSpacing: CGFloat {
+        dynamicTypeSize.isAccessibilitySize ? 8 : 4
+    }
+
+    private var historyScoreColumnWidth: CGFloat {
+        dynamicTypeSize.isAccessibilitySize ? 60 : 50
+    }
+
+    private var historyGuessesColumnWidth: CGFloat {
+        72
+    }
+
+    private var history: BackwordStatsHistory {
+        BackwordStatsHistory.make(
+            rating: ratingService.rating,
+            progressRecords: BackwordProgress.loadAll()
+        )
+    }
+
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE, MMM d"
+        return formatter.string(from: date)
     }
 }
 
