@@ -8,6 +8,7 @@ enum HomeCardStreakLayout {
 
 struct DailyCrosswordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.colorScheme) private var systemColorScheme
     @EnvironmentObject private var statsService: StatsService
     @ObservedObject var viewModel: HomeViewModel
     @ScaledMetric private var iconSize: CGFloat = 10
@@ -82,13 +83,22 @@ struct DailyCrosswordCard: View {
                 .padding(.bottom, 10)
         }
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
-        .background(
-            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .fill(Color.dailyCardBackground)
-        )
+        .background(cardBackground)
         .environment(\.colorScheme, BackwordAppearance.colorScheme)
         .onAppear {
             viewModel.refreshProgressFromDisk()
+        }
+    }
+
+    private var cardBackground: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                .fill(Color.dailyCardBackground)
+
+            if HomeCardAppearance.shouldBrightenBackground(for: systemColorScheme) {
+                RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                    .fill(Color.appTextPrimary.opacity(HomeCardAppearance.lightModeBrightnessOverlayOpacity))
+            }
         }
     }
 

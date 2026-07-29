@@ -25,6 +25,14 @@ enum BackwordAppearance {
     static let colorScheme: ColorScheme = .dark
 }
 
+enum HomeCardAppearance {
+    static let lightModeBrightnessOverlayOpacity = 0.1
+
+    static func shouldBrightenBackground(for colorScheme: ColorScheme) -> Bool {
+        colorScheme == .light
+    }
+}
+
 // MARK: - Typography
 
 enum AppFont {

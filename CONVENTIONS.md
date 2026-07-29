@@ -94,7 +94,7 @@ Backword archive rows keep the guess-count status label after a win. On-time win
 
 ### Backword home-card appearance
 
-The home-screen Backword card always resolves its semantic colours in Dark Mode. Its dark crossword-colour backing is retained beneath the translucent Backword background, so the card background, border, logo, status, score, streak, loading/error, and completed-word states remain visually identical in Light and Dark Mode without changing the rest of the Home screen's appearance. Status labels keep their status-coloured icon and chip, while the label text uses the primary semantic colour for legibility.
+The home-screen Backword card always resolves its semantic colours in Dark Mode. Its dark crossword-colour backing is retained beneath the translucent Backword background, so the card background, border, logo, status, score, streak, loading/error, and completed-word states remain visually identical in Light and Dark Mode without changing the rest of the Home screen's appearance. Status labels keep their status-coloured icon and chip, while the label text uses the primary semantic colour for legibility. In Light Mode only, both daily-game card backgrounds receive a 10% primary-text-colour overlay; the contents retain the fixed Dark Mode palette.
 
 The Daily Crossword card uses the same fixed Dark Mode palette. Its in-progress status keeps the accent-coloured icon and chip, but uses the primary semantic text colour for its label so it remains light against the dark card.
 

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BackwordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.colorScheme) private var systemColorScheme
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject private var statsService: BackwordStatsService
     @ScaledMetric private var spacing: CGFloat = 10
@@ -64,7 +65,7 @@ struct BackwordCard: View {
             }
         }
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
-        .background(Color.backwordBackground).opacity(1)
+        .background(cardBackground)
         .background(Color.appCrosswordBackground)
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
@@ -72,6 +73,16 @@ struct BackwordCard: View {
                 .strokeBorder(Color.appAccent, lineWidth: 2)
         )
         .environment(\.colorScheme, BackwordAppearance.colorScheme)
+    }
+
+    private var cardBackground: some View {
+        ZStack {
+            Color.backwordBackground
+
+            if HomeCardAppearance.shouldBrightenBackground(for: systemColorScheme) {
+                Color.appTextPrimary.opacity(HomeCardAppearance.lightModeBrightnessOverlayOpacity)
+            }
+        }
     }
 
     private var bottomStatsView: some View {

@@ -37,6 +37,13 @@ struct HomeCardStreakLayoutTests {
         #expect(BackwordAppearance.colorScheme == .dark)
     }
 
+    @Test("Home card backgrounds are brighter only in Light Mode")
+    func homeCardBackgroundBrightness() {
+        #expect(HomeCardAppearance.shouldBrightenBackground(for: .light))
+        #expect(!HomeCardAppearance.shouldBrightenBackground(for: .dark))
+        #expect(HomeCardAppearance.lightModeBrightnessOverlayOpacity == 0.1)
+    }
+
     @Test("Backword status labels use the card's primary text colour")
     func backwordStatusUsesPrimaryText() {
         #expect(BackwordCardStatusStyle.textStyle == .primary)
