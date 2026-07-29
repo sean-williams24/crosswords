@@ -92,6 +92,12 @@ The Backword card uses the same stats row shape, but its score is hidden until `
 
 Backword archive rows keep the guess-count status label after a win. On-time wins use the same solved gold as on-time crossword archive completions, while wins finished on a later local release date use the normal correct green. Only Backwords completed on their local release date contribute points or update Backword statistics; archive completions remain visible in progress but score zero.
 
+### Backword home-card appearance
+
+The home-screen Backword card always resolves its semantic colours in Dark Mode. Its dark crossword-colour backing is retained beneath the translucent Backword background, so the card background, border, logo, status, score, streak, loading/error, and completed-word states remain visually identical in Light and Dark Mode without changing the rest of the Home screen's appearance. Status labels keep their status-coloured icon and chip, while the label text uses the primary semantic colour for legibility.
+
+The Daily Crossword card uses the same fixed Dark Mode palette. Its in-progress status keeps the accent-coloured icon and chip, but uses the primary semantic text colour for its label so it remains light against the dark card.
+
 ## Backword Letter Reveals
 
 Backword starts with only the final letter visible. After every wrong guess, reveal the longest correctly positioned suffix connected to the end of the answer. The guess-count schedule supplies a minimum suffix length: the first wrong guess adds no automatic letter, the second guarantees the final two letters, the third guarantees the final three letters, and the fourth adds no automatic letter. A correctly guessed suffix can advance beyond that minimum at any point, and revealed letters never disappear on later guesses. Reveal state is derived from saved guesses, so unfinished games always use the current rule without a persistence migration.

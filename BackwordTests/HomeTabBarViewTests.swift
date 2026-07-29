@@ -32,6 +32,22 @@ struct HomeTabBarViewTests {
 
 @Suite("Home card streak layout")
 struct HomeCardStreakLayoutTests {
+    @Test("Backword card always uses its dark colour palette")
+    func backwordCardUsesDarkAppearance() {
+        #expect(BackwordAppearance.colorScheme == .dark)
+    }
+
+    @Test("Backword status labels use the card's primary text colour")
+    func backwordStatusUsesPrimaryText() {
+        #expect(BackwordCardStatusStyle.textStyle == .primary)
+    }
+
+    @Test("Daily in-progress status labels use the card's primary text colour")
+    func dailyInProgressStatusUsesPrimaryText() {
+        #expect(DailyCrosswordCardStatusStyle.textStyle(for: .inProgress) == .primary)
+        #expect(DailyCrosswordCardStatusStyle.textStyle(for: .notStarted) == .statusColor)
+    }
+
     @Test("Streak button uses one edge inset for bottom and trailing padding")
     func streakButtonUsesSharedEdgeInset() {
         #expect(HomeCardStreakLayout.streakButtonEdgeInset == 12)

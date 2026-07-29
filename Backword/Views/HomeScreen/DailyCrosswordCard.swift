@@ -67,7 +67,10 @@ struct DailyCrosswordCard: View {
                         .foregroundColor(.appTextSecondary)
                         .multilineTextAlignment(.center)
                 } else {
-                    StatusLabelView(status: viewModel.puzzleStatus)
+                    StatusLabelView(
+                        status: viewModel.puzzleStatus,
+                        textStyle: DailyCrosswordCardStatusStyle.textStyle(for: viewModel.puzzleStatus)
+                    )
                 }
             }
             .padding(.horizontal, 24)
@@ -83,6 +86,7 @@ struct DailyCrosswordCard: View {
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .fill(Color.dailyCardBackground)
         )
+        .environment(\.colorScheme, BackwordAppearance.colorScheme)
         .onAppear {
             viewModel.refreshProgressFromDisk()
         }
@@ -108,6 +112,15 @@ struct DailyCrosswordCard: View {
                     .foregroundColor(.appTextSecondary)
             }
         }
+    }
+}
+
+enum DailyCrosswordCardStatusStyle {
+    static func textStyle(for status: PuzzleStatus) -> StatusLabelTextStyle {
+        if case .inProgress = status {
+            return .primary
+        }
+        return .statusColor
     }
 }
 

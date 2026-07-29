@@ -36,7 +36,7 @@ struct BackwordCard: View {
     private var cardContainer: some View {
         VStack(alignment: .center, spacing: 0) {
             VStack(alignment: .center, spacing: 0) {
-                BackwordLogo(frame: 48)
+                BackwordLogo(frame: 48, forceDark: true)
                     .padding(.vertical, 10)
 
                 if let progress, progress.isComplete {
@@ -64,12 +64,14 @@ struct BackwordCard: View {
             }
         }
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
+        .background(Color.backwordBackground).opacity(1)
         .background(Color.appCrosswordBackground)
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .strokeBorder(Color.appAccent, lineWidth: 2)
         )
+        .environment(\.colorScheme, BackwordAppearance.colorScheme)
     }
 
     private var bottomStatsView: some View {
@@ -96,15 +98,8 @@ struct BackwordCard: View {
 
     @ViewBuilder
     private var playView: some View {
-//        todaysWordView
-
-//        Text(guessInfoText)
-//            .font(AppFont.caption())
-//            .foregroundColor(.appTextPrimary)
-//            .padding(.bottom, 16)
-
         if let status {
-            StatusLabelView(status: status)
+            StatusLabelView(status: status, textStyle: BackwordCardStatusStyle.textStyle)
                 .padding(.bottom, 16)
         }
     }
@@ -199,7 +194,10 @@ struct BackwordCard: View {
     private func completedStatsView(progress: BackwordProgress) -> some View {
         if dynamicTypeSize > .accessibility1 {
             VStack(spacing: 8) {
-                StatusLabelView(status: .status(for: progress))
+                StatusLabelView(
+                    status: .status(for: progress),
+                    textStyle: BackwordCardStatusStyle.textStyle
+                )
                     .fixedSize(horizontal: true, vertical: false)
                 bottomStatsView
             }
@@ -218,12 +216,19 @@ struct BackwordCard: View {
                 StreakButton(streak: statsService.stats.liveCurrentStreak)
             }
 
-            StatusLabelView(status: .status(for: progress))
+            StatusLabelView(
+                status: .status(for: progress),
+                textStyle: BackwordCardStatusStyle.textStyle
+            )
                 .fixedSize(horizontal: true, vertical: false)
         }
         .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
         .frame(maxWidth: .infinity)
     }
+}
+
+enum BackwordCardStatusStyle {
+    static let textStyle: StatusLabelTextStyle = .primary
 }
 
 private var guessCounter: some View {

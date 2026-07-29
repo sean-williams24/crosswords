@@ -16,6 +16,13 @@ extension Color {
     static let dailyCardTitle = Color("DailyCardTitle")
     static let solvedGold = Color("SolvedGold")
     static let appCrosswordBackground = Color("CrosswordBackground")
+    static let backwordBackground = Color("BackwordBackground")
+}
+
+/// Keeps the home-screen Backword card visually consistent with its dark design
+/// in either system appearance.
+enum BackwordAppearance {
+    static let colorScheme: ColorScheme = .dark
 }
 
 // MARK: - Typography
