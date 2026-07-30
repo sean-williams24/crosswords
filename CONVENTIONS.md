@@ -114,6 +114,21 @@ The previous-guesses history always lists every submitted guess after completion
 
 Backword rule changes use an integer rules version stored separately from the app version. New players see the current rules through normal onboarding and record that version when onboarding is dismissed. Returning players whose stored version is older automatically receive a one-time `Rules Updated` callout in the How to Play sheet on their next Backword entry; the version is recorded only when that sheet is dismissed. Manually opening How to Play never changes announcement state. Debug settings keep first-time onboarding reset separate from replaying the returning-player rules update.
 
+## Backword Generation Quality Gate
+
+Backword generation validates every one-word answer/clue pair with a semantic
+reviewer and a separate adversarial word-form reviewer. Both must approve the
+literal clue word for the exact answer form; a pair is invalid when it would
+work only after silently changing a suffix, tense, number, derivative, or
+spelling (for example, `CHEESY`/`CORN` is rejected while `CHEESY`/`CORNY` is
+valid). Direct synonyms are allowed when they are the clearest natural clue,
+although lateral associations remain preferred.
+
+The gate fails closed. An API error, malformed response, missing verdict, or
+mismatched reviewer response rejects that candidate batch. The generator tries
+fresh candidates, then exits before uploading anything if it cannot fill the
+requested batch with pairs that both reviewers accept.
+
 ## Backword Completion Moment
 
 The completion sheet is presented after both wins and failures and receives the answer explicitly. Its title is `Solved!`, `Finished`, or `Failed`. Wins show an `... in N guesses` label directly above the cells; failures show `The answer was...`. A late `Finished` result shows the no-points message above the standard completed stats content. The cells reveal from right to left and perform a single whole-word bounce. Winning cells transition from correct green to accent blue during the glow; failed cells and their glow remain red. Reduce Motion skips the staged animation and shows the completed word immediately.

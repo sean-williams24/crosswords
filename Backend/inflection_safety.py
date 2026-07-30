@@ -72,6 +72,9 @@ ADJECTIVE_SUFFIXES = (
 
 KNOWN_BAD_BACKWORD_PAIRS = {
     ("LARVAE", "TRANSFORMATION"): "ADJACENT_PROCESS",
+    # CORN only works if a player silently changes it to CORNY. Backword clues
+    # must stand on their exact spelling and form.
+    ("CHEESY", "CORN"): "WRONG_WORD_FORM",
 }
 
 FALSE_GERUND_ANSWERS = {

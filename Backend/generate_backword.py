@@ -120,10 +120,11 @@ For each 6-letter English word provided, return a JSON object with:
   - "clue": exactly ONE single word — an abstract association, thematic link, or lateral hint
 
 STRICT CONSTRAINTS for "clue":
-  - Must NOT be a direct synonym of the word
   - Must NOT contain any part of the root word
   - Must be a single word only
   - Should require lateral thinking to connect to the word
+  - A direct synonym or descriptor is allowed when it is the clearest natural clue,
+    but prefer a non-identical lateral association where one is equally good
   - Must be a direct semantic fit for the exact answer:
     * The clue must point to something the answer directly is, has, does, causes, receives, or strongly evokes
     * Do NOT use clues that are merely a related process, phase, result, cause, container, setting, or neighboring concept
@@ -133,6 +134,8 @@ STRICT CONSTRAINTS for "clue":
     * plural answers need plural clue associations
     * nouns, adjectives, past tense, gerunds, comparatives, and superlatives must not be crossed
     * reject or rewrite mismatches like ACHIEVE/EXCELS, DUPLICATE/CLONES, CRUELTY/UNKIND
+  - Never rely on a player mentally correcting the clue to a nearby word, inflection,
+    derivative, or spelling. For example, CHEESY/CORNY is valid, but CHEESY/CORN is not.
 
 EXAMPLES of good clues (study these carefully):
   {"word": "WAITED", "clue": "PATIENCE"}   — hints at the state of mind required
@@ -141,6 +144,7 @@ EXAMPLES of good clues (study these carefully):
   {"word": "CASTLE", "clue": "CHESS"}      — lateral connection
   {"word": "CANDLE", "clue": "FLICKER"}    — focuses on a characteristic
   {"word": "WINTER", "clue": "FROST"}      — evokes the physical reality
+  {"word": "CHEESY", "clue": "CORNY"}     — exact adjective form and natural descriptor
 
 EXAMPLES of bad inflection matches:
   {"word": "ACHIEVE", "clue": "EXCELS"}     — EXCELS is third-person; ACHIEVE is base verb
@@ -179,21 +183,44 @@ Return a JSON object with a "reviews" array. Each review must include:
   - "clue": the clue in UPPERCASE
   - "accept": true only if the clue is safe to publish
   - "reason": "OK" if accepted, otherwise one of:
-    "ADJACENT_PROCESS", "TOO_BROAD", "WEAK_ASSOCIATION", "INFLECTION_MISMATCH", "DIRECT_SYNONYM", "ROOT_LEAK", "NOT_ONE_WORD"
+    "ADJACENT_PROCESS", "TOO_BROAD", "WEAK_ASSOCIATION", "INFLECTION_MISMATCH", "WRONG_WORD_FORM", "ROOT_LEAK", "NOT_ONE_WORD"
 
 Reject clues that are merely a related process, phase, result, cause, container,
 setting, product, or neighboring concept. The clue must be directly defensible
-for the exact answer.
+for the exact answer. Judge the literal clue word, not a word you can derive from
+it: reject a pair if it works only after adding, removing, or changing a suffix,
+tense, number, or spelling. Direct synonyms are allowed when they are an exact,
+natural clue for the answer.
 
 Reject examples:
   {"word": "LARVAE", "clue": "TRANSFORMATION"} because larvae are a stage within metamorphosis, not transformation itself.
   {"word": "PUPAE", "clue": "METAMORPHOSIS"} because pupae are a stage in the process, not the process.
   {"word": "BAKERS", "clue": "BREAD"} because plural people are not the singular product they make.
+  {"word": "CHEESY", "clue": "CORN"} because CORN is a food/plant; it becomes relevant only after silently changing it to CORNY.
 
 Accept examples:
   {"word": "CASTLE", "clue": "CHESS"}
   {"word": "SHIELD", "clue": "KNIGHT"}
   {"word": "WINTER", "clue": "FROST"}
+  {"word": "CHEESY", "clue": "CORNY"}
+
+Return ONLY a JSON object, no other text."""
+
+ADVERSARIAL_VALIDATE_SYSTEM = """You are the final adversarial safety reviewer for Backword clues.
+Each item has a six-letter answer and a proposed one-word clue. Look specifically
+for pairs that appear valid only because a reader might silently substitute a
+nearby word, derivative, inflection, spelling, or related concept.
+
+Return a JSON object with a "reviews" array. Each review must include the supplied
+"word" and "clue" in UPPERCASE, a boolean "accept", and a string "reason". Accept
+only when the literal clue word itself is a direct, natural association for the
+exact answer form. Reject weak, indirect, grammatical, or word-form substitutions.
+
+Examples:
+  {"word": "CHEESY", "clue": "CORN", "accept": false, "reason": "WRONG_WORD_FORM"}
+  {"word": "CHEESY", "clue": "CORNY", "accept": true, "reason": "OK"}
+  {"word": "ACHIEVE", "clue": "EXCELS", "accept": false, "reason": "INFLECTION_MISMATCH"}
+  {"word": "BAKERS", "clue": "BREAD", "accept": false, "reason": "WEAK_ASSOCIATION"}
 
 Return ONLY a JSON object, no other text."""
 
@@ -226,6 +253,55 @@ def local_rejection_reason(item: dict) -> str | None:
     if len(clue.split()) != 1:
         return "NOT_ONE_WORD"
     return known_bad_backword_pair_reason(word, clue)
+
+
+def validation_verdicts(
+    client,
+    batch: list[dict],
+    model: str,
+    system_prompt: str,
+) -> dict[tuple[str, str], dict] | None:
+    """Return a complete, exactly matched reviewer response, or fail closed."""
+    pairs = json.dumps(
+        [{"word": item.get("word", ""), "clue": item.get("clue", "")} for item in batch],
+        ensure_ascii=False,
+    )
+    expected_keys = {
+        (str(item.get("word", "")).upper(), str(item.get("clue", "")).upper())
+        for item in batch
+    }
+    if len(expected_keys) != len(batch):
+        print("  ⚠  Clue validation batch contains duplicate pairs; rejecting batch.", file=sys.stderr)
+        return None
+
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": VALIDATE_USER.format(pairs=pairs)},
+            ],
+            temperature=0,
+            response_format={"type": "json_object"},
+        )
+        parsed = json.loads(response.choices[0].message.content.strip())
+        if not isinstance(parsed, dict) or not isinstance(parsed.get("reviews"), list):
+            return None
+        items = parsed["reviews"]
+    except Exception as e:
+        print(f"  ⚠  Clue validation failed: {e}", file=sys.stderr)
+        return None
+
+    verdicts = {}
+    for item in items:
+        if not isinstance(item, dict) or not isinstance(item.get("accept"), bool):
+            return None
+        key = (str(item.get("word", "")).upper(), str(item.get("clue", "")).upper())
+        if key not in expected_keys or key in verdicts or not isinstance(item.get("reason"), str):
+            return None
+        verdicts[key] = item
+
+    return verdicts if set(verdicts) == expected_keys else None
 
 
 def enrich_words(words: list[str], model: str, api_key: str) -> list[dict]:
@@ -276,7 +352,7 @@ def enrich_words(words: list[str], model: str, api_key: str) -> list[dict]:
 
 
 def validate_clues(words: list[dict], model: str, api_key: str) -> list[dict]:
-    """Filter generated Backword clues through local and LLM validation."""
+    """Filter clues through local, semantic, and adversarial validation gates."""
     local_passed = []
     for item in words:
         reason = local_rejection_reason(item)
@@ -294,40 +370,36 @@ def validate_clues(words: list[dict], model: str, api_key: str) -> list[dict]:
 
     for i in range(0, len(local_passed), batch_size):
         batch = local_passed[i : i + batch_size]
-        pairs = json.dumps(
-            [{"word": item.get("word", ""), "clue": item.get("clue", "")} for item in batch],
-            ensure_ascii=False,
+        print(f"  Validating clues {i+1}–{i+len(batch)} with semantic reviewer")
+        semantic_verdicts = validation_verdicts(client, batch, model, VALIDATE_SYSTEM)
+        if semantic_verdicts is None:
+            print("    ✗ Rejected validation batch — incomplete or invalid semantic review")
+            continue
+
+        print(f"  Validating clues {i+1}–{i+len(batch)} with adversarial reviewer")
+        adversarial_verdicts = validation_verdicts(
+            client, batch, model, ADVERSARIAL_VALIDATE_SYSTEM
         )
-        print(f"  Validating clues {i+1}–{i+len(batch)}")
+        if adversarial_verdicts is None:
+            print("    ✗ Rejected validation batch — incomplete or invalid adversarial review")
+            continue
 
-        try:
-            response = client.chat.completions.create(
-                model=model,
-                messages=[
-                    {"role": "system", "content": VALIDATE_SYSTEM},
-                    {"role": "user", "content": VALIDATE_USER.format(pairs=pairs)},
-                ],
-                temperature=0,
-                response_format={"type": "json_object"},
+        for item in batch:
+            key = (str(item.get("word", "")).upper(), str(item.get("clue", "")).upper())
+            semantic_verdict = semantic_verdicts[key]
+            adversarial_verdict = adversarial_verdicts[key]
+            if semantic_verdict["accept"] and adversarial_verdict["accept"]:
+                accepted.append(item)
+                continue
+            reasons = [
+                str(verdict.get("reason") or "VALIDATION_REJECTED")
+                for verdict in (semantic_verdict, adversarial_verdict)
+                if not verdict["accept"]
+            ]
+            print(
+                f"    ✗ Rejected clue: {item['word']} [{item.get('clue', '')}] — "
+                f"{' / '.join(reasons)}"
             )
-            items = json_array_from_response(response.choices[0].message.content.strip())
-            verdicts = {
-                (str(item.get("word", "")).upper(), str(item.get("clue", "")).upper()): item
-                for item in items
-                if isinstance(item, dict)
-            }
-
-            for item in batch:
-                key = (str(item.get("word", "")).upper(), str(item.get("clue", "")).upper())
-                verdict = verdicts.get(key)
-                if verdict and verdict.get("accept") is True:
-                    accepted.append(item)
-                else:
-                    reason = str((verdict or {}).get("reason") or "VALIDATION_REJECTED")
-                    print(f"    ✗ Rejected clue: {item['word']} [{item.get('clue', '')}] — {reason}")
-        except Exception as e:
-            print(f"  ⚠  Clue validation failed for batch: {e}", file=sys.stderr)
-            accepted.extend(batch)
 
         if i + batch_size < len(local_passed):
             time.sleep(1)
