@@ -416,6 +416,49 @@ python3 Backend/audit_backword_inflections.py apply --input Backend/backword_inf
 
 Backword clues are one-word lateral associations, but they must still be directly defensible for the exact answer. Do not use adjacent-process clues where the answer is only a stage, participant, result, product, tool, container, or neighboring concept of the clue. For example, `LARVAE` should not be clued as `TRANSFORMATION`: larvae are a stage within metamorphosis, not transformation itself.
 
+### Full clue–answer alignment audit
+
+`Backend/audit_clue_answer_alignment.py` reviews every stored clue field,
+including dormant `hint`, for factual and semantic agreement with its exact
+answer. It supports fixed, hash-bound Codex-chat batches and an explicitly
+requested Terra Batch API mode. The API mode writes compact issue-only results,
+splits work into queue-limit-safe batches, and never changes the word bank.
+
+For the full-bank audit, Terra is the sole semantic reviewer. A Terra mismatch
+only makes an entry a pending removal proposal when *all* of its stored clue
+fields mismatch. Proposals still require explicit human approval, and the
+source-bank checksum plus exact clue values must still match before application.
+
+```bash
+python3 Backend/audit_clue_answer_alignment.py init
+python3 Backend/audit_clue_answer_alignment.py submit-terra-batch
+python3 Backend/audit_clue_answer_alignment.py terra-batch-status
+python3 Backend/audit_clue_answer_alignment.py collect-terra-batch
+python3 Backend/audit_clue_answer_alignment.py run-terra-batches --prior-spend-usd <usd> --prior-attempted-entries <count> --cost-ceiling-usd <usd>
+python3 Backend/audit_clue_answer_alignment.py propose-removals
+```
+
+Entries marked `repair` in the review file are not edited directly. Generate
+the replacement packages into a separate, hash-bound review artifact first:
+
+```bash
+python3 Backend/generate_clue_repairs.py
+```
+
+That artifact contains proposed `text`, `hint`, `hard_text`, and three
+crossword clues for each marked answer. It must be reviewed and approved before
+any change to `word_bank.json`. Apply only records marked `approved` with:
+
+```bash
+python3 Backend/generate_clue_repairs.py --apply --yes
+```
+
+Then confirm the repaired packages with a focused semantic audit:
+
+```bash
+python3 Backend/generate_clue_repairs.py --audit
+```
+
 ---
 
 ## Backend Python Scripts

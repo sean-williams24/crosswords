@@ -12689,17 +12689,6 @@
         ]
     },
     {
-        "word": "LOGISTIC",
-        "text": "Organization of movement",
-        "hint": "Essential for military operations planning",
-        "hard_text": "Planning the route, not just the supplies",
-        "clues": [
-            "Supply chain management",
-            "Navigating complexities of operations smoothly",
-            "The art of making things flow seamlessly"
-        ]
-    },
-    {
         "word": "LONG",
         "text": "Hold a financial position expecting its price to rise",
         "hint": "Extended period in a story",
@@ -26857,14 +26846,14 @@
     },
     {
         "word": "SUNFLOWER",
-        "text": "Tall yellow bloom. (3,6)",
-        "hint": "Garden favorite attracting pollinators. (3,6)",
+        "text": "Tall yellow oilseed plant with a large round head",
+        "hint": "Golden-headed oilseed crop",
         "clues": [
-            "Bright bloom often in fields. (3,6)",
-            "Bloom that follows the sun's path. (3,6)",
-            "Yellow beauty with a sunny disposition. (3,6)"
+            "Field crop with edible striped seeds",
+            "Yellow-rayed plant in the daisy family",
+            "Source of a popular cooking oil"
         ],
-        "hard_text": "Plant that turns to greet light. (3,6)"
+        "hard_text": "Helianthus plant cultivated for edible seeds"
     },
     {
         "word": "THUMBSCREW",
@@ -27957,14 +27946,14 @@
     },
     {
         "word": "CANDLEWICK",
-        "text": "String in the middle of wax. (6,4)",
-        "hint": "Essential for candle illumination. (6,4)",
+        "text": "Braided cord that feeds melted wax to a flame",
+        "hint": "Flame-feeding cord",
         "clues": [
-            "What you light. (6,4)",
-            "String that burns, but how does it work. (6,4)",
-            "Waxy holder, but what fuels the flame. (6,4)"
+            "Cord ignited in a wax light",
+            "Braided strand that sustains a flame",
+            "Part trimmed before lighting"
         ],
-        "hard_text": "Core of a candle, but what's its purpose. (6,4)"
+        "hard_text": "Capillary strand at the center of a wax light"
     },
     {
         "word": "CAPABILITY",
@@ -28584,47 +28573,47 @@
     },
     {
         "word": "DOWNSTAIRS",
-        "text": "On a lower floor. (5,6)",
-        "hint": "Location of a home’s den or playroom. (5,6)",
+        "text": "On a lower floor",
+        "hint": "Below one's current level",
         "clues": [
-            "Below this level. (5,6)",
-            "Where the laundry is. (5,6)",
-            "The lower level of a home. (5,6)"
+            "On the floor beneath this one",
+            "In a lower part of the house",
+            "Where one might go to reach the basement"
         ],
-        "hard_text": "Where the basement lies. (5,6)"
+        "hard_text": "At a lower story in a building"
     },
     {
         "word": "DRAGONFLY",
-        "text": "Large winged insect near water. (6,3)",
-        "hint": "Colorful flyer by wetlands. (6,3)",
+        "text": "Four-winged predatory insect often seen near ponds",
+        "hint": "Pondside aerial hunter",
         "clues": [
-            "Pond-hovering flyer. (6,3)",
-            "With wings like a fairy's, but fierce. (6,3)",
-            "An insect with a mythical name. (6,3)"
+            "Insect that catches prey in midair",
+            "Wetland hunter with two pairs of wings",
+            "Damselfly's bulkier relative"
         ],
-        "hard_text": "An aerial acrobat near ponds. (6,3)"
+        "hard_text": "Odonate with large compound eyes"
     },
     {
         "word": "DRAWBRIDGE",
-        "text": "Castle entrance that lifts. (4,6)",
-        "hint": "Used in fortifications. (4,6)",
+        "text": "Movable span over a moat",
+        "hint": "Castle defense feature",
         "clues": [
-            "Moat crossing. (4,6)",
-            "Entrance that rises for boats. (4,6)",
-            "A way to cross a moat. (4,6)"
+            "Moat-crossing structure",
+            "Castle entry that can be lifted",
+            "Span for keeping invaders out"
         ],
-        "hard_text": "A gate that rises to welcome. (4,6)"
+        "hard_text": "Fortification span raised by chains"
     },
     {
         "word": "DRUMSTICKS",
-        "text": "Percussion tools or chicken legs. (4,6)",
-        "hint": "Used in a popular marching band. (4,6)",
+        "text": "Percussion mallets or chicken legs",
+        "hint": "Band tools or poultry pieces",
         "clues": [
-            "Musician beats with these. (4,6)",
-            "Banging away at a meal. (4,6)",
-            "Part of a classic dinner plate. (4,6)"
+            "Tools for a percussionist",
+            "Poultry legs on a plate",
+            "Things used to strike a snare"
         ],
-        "hard_text": "Percussion tools or dinner parts. (4,6)"
+        "hard_text": "Items used for playing tom-toms or eating fried chicken"
     },
     {
         "word": "ELEMENTARY",
@@ -28738,36 +28727,36 @@
     },
     {
         "word": "FINGERNAIL",
-        "text": "Keratin covering on digit tip. (6,4)",
-        "hint": "Part of a manicure routine",
+        "text": "Hard keratin plate at a digit's end",
+        "hint": "Manicure subject",
         "clues": [
-            "Manicure target. (6,4)",
-            "It might be polished, but not a diamond. (6,4)",
-            "Tip's protection, but not from cold. (6,4)"
+            "Part trimmed during a manicure",
+            "Keratin covering on a fingertip",
+            "Polishable bit at the end of a digit"
         ],
-        "hard_text": "Keratin shield for a tiny appendage. (6,4)"
+        "hard_text": "Small growth often polished at a salon"
     },
     {
         "word": "FIRECRACKERS",
-        "text": "Small explosive fireworks. (4,8)",
-        "hint": "Small bangs for celebration",
+        "text": "Noisy celebratory pyrotechnics",
+        "hint": "Holiday noisemakers",
         "clues": [
-            "Chinese New Year bangers. (4,8)",
-            "They crackle but aren't about the weather. (4,8)",
-            "Celebratory pops that pack a punch. (4,8)"
+            "Festive items that go bang",
+            "Fourth of July noisemakers",
+            "Small pyrotechnics with a sharp report"
         ],
-        "hard_text": "Small explosions that light up the sky. (4,8)"
+        "hard_text": "Explosive noisemakers for Chinese New Year"
     },
     {
         "word": "FISHMONGER",
-        "text": "Seller of fish. (4,6)",
-        "hint": "Seller of aquatic delicacies",
+        "text": "Retailer of fresh catch",
+        "hint": "Seafood seller",
         "clues": [
-            "At the fish counter. (4,6)",
-            "Vendor of the ocean's finest catches. (4,6)",
-            "Seller of fins, but not on the road. (4,6)"
+            "Seller at a seafood market",
+            "Dealer in fillets and shellfish",
+            "Purveyor of ocean fare"
         ],
-        "hard_text": "One who scales the heights of seafood. (4,6)"
+        "hard_text": "Market vendor specializing in cod and salmon"
     },
     {
         "word": "FLASHBACKS",
@@ -28804,14 +28793,14 @@
     },
     {
         "word": "FORKLIFTED",
-        "text": "Raised with industrial truck. (4,6)",
-        "hint": "Heavy lifting in logistics",
+        "text": "Raised using a warehouse lift truck",
+        "hint": "Moved by warehouse vehicle",
         "clues": [
-            "Warehouse moving method. (4,6)",
-            "Raised with the help of machinery. (4,6)",
-            "Hoisted, but not by a hand. (4,6)"
+            "Raised by a warehouse machine",
+            "Moved with a pallet-handling vehicle",
+            "Moved by a tined warehouse truck"
         ],
-        "hard_text": "Elevated by an industrial lifter. (4,6)"
+        "hard_text": "Hoisted via a counterbalanced industrial vehicle"
     },
     {
         "word": "FOUNDATION",
@@ -29629,14 +29618,14 @@
     },
     {
         "word": "PATHFINDER",
-        "text": "One who blazes a trail. (4,6)",
-        "hint": "Trailblazer, for one. (4,6)",
+        "text": "Trailblazer",
+        "hint": "Route pioneer",
         "clues": [
-            "Trailblazer. (4,6)",
-            "One who discovers routes. (4,6)",
-            "Navigator of new paths. (4,6)"
+            "Scout for a new route",
+            "Pioneer of a new course",
+            "Guide through uncharted terrain"
         ],
-        "hard_text": "Pioneer in uncharted territory. (4,6)"
+        "hard_text": "Explorer who charts a way through unfamiliar terrain"
     },
     {
         "word": "PEACEFULLY",
@@ -30036,14 +30025,14 @@
     },
     {
         "word": "SPEAKEASY",
-        "text": "Prohibition-era secret bar. (5,4)",
-        "hint": "Secret social spot in the 1920s. (5,4)",
+        "text": "Illicit bar during Prohibition",
+        "hint": "Secret 1920s bar",
         "clues": [
-            "Hidden drinking den. (5,4)",
-            "Undercover watering hole of the Roaring Twenties. (5,4)",
-            "Where prohibitionists found their spirits. (5,4)"
+            "Hidden Prohibition-era tavern",
+            "Roaring Twenties gin joint",
+            "Underground watering hole"
         ],
-        "hard_text": "Hidden bar where whispers flow freely. (5,4)"
+        "hard_text": "Discreet establishment serving liquor when it was banned"
     },
     {
         "word": "SPOTLESSLY",
@@ -30058,14 +30047,14 @@
     },
     {
         "word": "SPRINGTIME",
-        "text": "Season of renewal. (6,4)",
-        "hint": "Month for planting and growth. (6,4)",
+        "text": "Season following winter",
+        "hint": "Vernal season",
         "clues": [
-            "When flowers bloom. (6,4)",
-            "Renewal's promise after winter's hold. (6,4)",
-            "Time of year for budding possibilities. (6,4)"
+            "Season of renewal",
+            "Time of budding plants",
+            "Vernal period"
         ],
-        "hard_text": "Season when flowers break through the frost. (6,4)"
+        "hard_text": "Period of emerging blossoms"
     },
     {
         "word": "STAGECOACH",
@@ -30652,14 +30641,14 @@
     },
     {
         "word": "CHEERLEADER",
-        "text": "Sideline supporter. (5,6)",
-        "hint": "Vocal supporter during sports events. (5,6)",
+        "text": "Sideline performer who rallies a crowd",
+        "hint": "Pom-pom performer",
         "clues": [
-            "Pom-pom waver. (5,6)",
-            "Spirit igniter on the sidelines. (5,6)",
-            "Champions of enthusiasm. (5,6)"
+            "Rallying voice at a game",
+            "Mascot's energetic counterpart",
+            "Athletic-event encourager"
         ],
-        "hard_text": "Pom-pom waving enthusiast. (5,6)"
+        "hard_text": "School-spirit squad member"
     },
     {
         "word": "CHIROPRACTIC",
@@ -33248,14 +33237,14 @@
     },
     {
         "word": "BREATHTAKING",
-        "text": "Astonishingly beautiful. (6,6)",
-        "hint": "Experience that leaves you speechless. (6,6)",
+        "text": "Awe-inspiringly beautiful",
+        "hint": "Stunning",
         "clues": [
-            "Stunningly impressive. (6,6)",
-            "View that leaves you gasping. (6,6)",
-            "A sight so grand, it's hard to inhale. (6,6)"
+            "Spectacularly impressive",
+            "Astonishing to behold",
+            "Exceptionally beautiful"
         ],
-        "hard_text": "So stunning it steals your breath. (6,6)"
+        "hard_text": "Striking enough to leave one speechless"
     },
     {
         "word": "AUTOMATICALLY",
@@ -33336,14 +33325,14 @@
     },
     {
         "word": "GRANDCHILDREN",
-        "text": "Children of your children. (5,8)",
-        "hint": "Ties to family gatherings. (5,8)",
+        "text": "Descendants two generations removed",
+        "hint": "A grandparent's descendants",
         "clues": [
-            "Two generations down. (5,8)",
-            "Offspring of your offspring, no less. (5,8)",
-            "Little ones who call you grand. (5,8)"
+            "Second-generation descendants",
+            "Kin two generations down",
+            "Offspring of one's sons or daughters"
         ],
-        "hard_text": "Next generation of family, at its core. (5,8)"
+        "hard_text": "Family members below one's sons or daughters"
     },
     {
         "word": "HEARTBREAKING",
@@ -61449,17 +61438,6 @@
         "hard_text": "Name linked to ancient kingdoms"
     },
     {
-        "word": "lynne",
-        "text": "Notable last name in literature",
-        "hint": "Famous author known for novels, for one",
-        "clues": [
-            "Famous author known for novels",
-            "Common name in pop culture circles",
-            "Last name synonymous with literary talent"
-        ],
-        "hard_text": "Surname of a famous British author"
-    },
-    {
         "word": "maine",
         "text": "State whose easternmost city is Eastport",
         "hint": "A sign of lobster-rich northeastern state",
@@ -76733,14 +76711,14 @@
     },
     {
         "word": "kilter",
-        "text": "Condition of being off balance",
-        "hint": "Maybe out of harmony",
+        "text": "Proper condition or order",
+        "hint": "Good working order",
         "clues": [
-            "Out of harmony",
-            "Not in proper alignment",
-            "State of disharmony, in short"
+            "Proper working condition",
+            "Orderly state",
+            "Correct alignment"
         ],
-        "hard_text": "Out of sync"
+        "hard_text": "State of correct alignment"
     },
     {
         "word": "kindle",
@@ -78775,14 +78753,14 @@
     },
     {
         "word": "pineal",
-        "text": "Endocrine gland in the brain",
-        "hint": "Melatonin-producing gland, perhaps",
+        "text": "Relating to a small brain gland",
+        "hint": "Of a melatonin-secreting organ",
         "clues": [
-            "Melatonin-producing gland",
-            "Third eye for some thinkers",
-            "Sleep regulator in the brain"
+            "Of a brain gland",
+            "Glandular, in the epithalamus",
+            "Pertaining to melatonin secretion"
         ],
-        "hard_text": "Gland that's a bit dreamy?"
+        "hard_text": "Describing the brain's epithalamic gland"
     },
     {
         "word": "pinion",
@@ -79773,17 +79751,6 @@
             "Garbed and ready to go"
         ],
         "hard_text": "Dressed for an occasion"
-    },
-    {
-        "word": "aurelia",
-        "text": "Stage in a jellyfish's life cycle",
-        "hint": "Stage after a polyp, sometimes",
-        "clues": [
-            "Stage after a polyp",
-            "A jellyfish with a regal hue",
-            "What the color of dawn evokes"
-        ],
-        "hard_text": "Golden sea creature's name"
     },
     {
         "word": "austere",
@@ -80961,14 +80928,14 @@
     },
     {
         "word": "onerous",
-        "text": "Difficult and burdensome responsibility",
-        "hint": "Heavy obligation or burden, perhaps",
+        "text": "Burdensome or difficult",
+        "hint": "Hard to carry out",
         "clues": [
-            "Heavy obligation or burden",
-            "Laborious duty that weighs heavily",
-            "A chore that feels like a weight"
+            "Taxing and troublesome",
+            "Hard to fulfill",
+            "Oppressively demanding"
         ],
-        "hard_text": "Burdensome task, but not a picnic"
+        "hard_text": "Demanding enough to feel like a heavy load"
     },
     {
         "word": "onshore",
@@ -85970,17 +85937,6 @@
         "hard_text": "Compliment to gain favor?"
     },
     {
-        "word": "fleshed",
-        "text": "Provided detail or substance",
-        "hint": "A sign of to add detail or context",
-        "clues": [
-            "Added detail or context",
-            "Made more substantial in writing?",
-            "Developed the full form of an idea?"
-        ],
-        "hard_text": "Anatomy term for adding skin?"
-    },
-    {
         "word": "floater",
         "text": "Object that remains suspended in water",
         "hint": "Could be something that drifts aimlessly",
@@ -86388,17 +86344,6 @@
         "hard_text": "Twisted and rugged, like an old tree"
     },
     {
-        "word": "goateed",
-        "text": "Style of facial hair on the chin",
-        "hint": "Facial style popular among some musicians, sometimes",
-        "clues": [
-            "Facial style popular among some musicians",
-            "Chin's adornment with a personality",
-            "Beard style with a hint of mischief"
-        ],
-        "hard_text": "Facial hair with a point of view"
-    },
-    {
         "word": "goddess",
         "text": "Female deity or divine figure",
         "hint": "Seen as mythical female figure of worship",
@@ -86730,14 +86675,14 @@
     },
     {
         "word": "hapless",
-        "text": "Unlucky or unfortunate person",
-        "hint": "One who faces mishaps, sometimes",
+        "text": "Unlucky or unfortunate",
+        "hint": "Plagued by bad luck",
         "clues": [
-            "One who faces mishaps",
-            "One who stumbles through life",
-            "Victim of circumstance, often humorously"
+            "Sadly unlucky",
+            "Down on one's luck",
+            "Unfortunate in circumstances"
         ],
-        "hard_text": "Unfortunate fellow with bad luck"
+        "hard_text": "Marked by a notably poor run of fortune"
     },
     {
         "word": "harpist",
@@ -98248,17 +98193,6 @@
         "hard_text": "To completely wipe out?"
     },
     {
-        "word": "erogenous",
-        "text": "Areas that elicit sexual arousal",
-        "hint": "Sensual body regions, perhaps",
-        "clues": [
-            "Sensual body regions",
-            "Stimulating zones, if you will?",
-            "Places that evoke desire"
-        ],
-        "hard_text": "Sensitive areas of the body?"
-    },
-    {
         "word": "escalator",
         "text": "Moving staircase in a public space",
         "hint": "Maybe conveyance between levels",
@@ -98975,14 +98909,14 @@
     },
     {
         "word": "senatorial",
-        "text": "Relating to a member of the legislature",
-        "hint": "A sign of related to legislative duties and responsibilities",
+        "text": "Of an elected member of a legislature's upper house",
+        "hint": "Upper-house lawmaker-related",
         "clues": [
-            "Related to legislative duties and responsibilities",
-            "Political behavior of a high-ranking member",
-            "Relating to those who create the laws"
+            "Of an upper-house legislator",
+            "Like a U.S. upper-house committee",
+            "Of the chamber with 100 U.S. members"
         ],
-        "hard_text": "Pertaining to legislative chambers of power"
+        "hard_text": "Pertaining to the U.S. upper legislative chamber"
     },
     {
         "word": "shouldered",
@@ -99008,14 +98942,14 @@
     },
     {
         "word": "slanderous",
-        "text": "False spoken statements harming someone's reputation",
-        "hint": "Often defamatory remarks",
+        "text": "Falsely damaging to someone's reputation",
+        "hint": "Defamatory",
         "clues": [
-            "Defamatory remarks",
-            "Spreading lies that cut like a knife",
-            "Malicious gossip that damages credibility"
+            "Reputation-harming and false",
+            "Defamatory in speech",
+            "Defamatory and untrue"
         ],
-        "hard_text": "Words that could tarnish a reputation"
+        "hard_text": "Like a malicious untrue accusation"
     },
     {
         "word": "southerner",
@@ -100427,14 +100361,14 @@
     },
     {
         "word": "diaphanous",
-        "text": "Lightweight and translucent material",
-        "hint": "Delicate and airy garment?",
+        "text": "Sheer, light, and nearly transparent",
+        "hint": "Almost see-through",
         "clues": [
-            "Delicate and airy garment",
-            "A quality of lightness and transparency?",
-            "What you might wear on a hot day?"
+            "Delicately translucent",
+            "Like a sheer veil",
+            "Light and filmy in appearance"
         ],
-        "hard_text": "Sheer fabric that's almost invisible?"
+        "hard_text": "Gauzy enough to admit much light"
     },
     {
         "word": "digression",
@@ -102692,17 +102626,6 @@
         "hard_text": "Wild ideas that could go awry"
     },
     {
-        "word": "headquarter",
-        "text": "Primary location for an organization",
-        "hint": "Main office or center of operations, sometimes",
-        "clues": [
-            "Main office or center of operations",
-            "Where top brass makes big decisions",
-            "Central command for military maneuvers"
-        ],
-        "hard_text": "The main site for strategic operations"
-    },
-    {
         "word": "heartlessly",
         "text": "Lacking kindness or warmth",
         "hint": "Emotionally cold behavior?",
@@ -103351,14 +103274,14 @@
     },
     {
         "word": "alliterative",
-        "text": "Descriptive technique with repetitive sounds",
-        "hint": "Poetic device for sound play, sometimes",
+        "text": "Marked by repeated initial consonant sounds",
+        "hint": "Sound-patterned",
         "clues": [
-            "Poetic device for sound play",
-            "Catchy language feature seen in poetry",
-            "Writers love this stylistic device"
+            "Like “wild winds whistle”",
+            "Like Peter Piper's tongue twister",
+            "Employing repeated starting consonants"
         ],
-        "hard_text": "Repetition of initial sounds in phrases"
+        "hard_text": "Using the same opening sound in nearby words"
     },
     {
         "word": "amelioration",
@@ -104435,17 +104358,6 @@
             "Culinary style from Bangkok",
             "Known for curries and noodles",
             "Festive food often served with rice"
-        ]
-    },
-    {
-        "word": "THAR",
-        "text": "Mountain range in Pakistan",
-        "hint": "Location of famous peaks",
-        "hard_text": "A place where peaks meet the sky",
-        "clues": [
-            "Himalayan foothills in South Asia",
-            "Mountainous area known for its beauty",
-            "Region of rugged terrain and altitude"
         ]
     },
     {
@@ -105780,17 +105692,6 @@
         ]
     },
     {
-        "word": "DORADO",
-        "text": "Mythical city of gold",
-        "hint": "Golden city",
-        "hard_text": "Legendary place sought by explorers",
-        "clues": [
-            "Fabled land of riches",
-            "Elusive treasure city",
-            "Legendary site of infinite wealth"
-        ]
-    },
-    {
         "word": "DORIAN",
         "text": "Character in Oscar Wilde's novel",
         "hint": "Literary figure",
@@ -106118,17 +106019,6 @@
             "Knowledge obtained previously",
             "Educated in years gone by",
             "Mastered through experience"
-        ]
-    },
-    {
-        "word": "LENTEN",
-        "text": "Period of fasting before Easter",
-        "hint": "Fasting season",
-        "hard_text": "Season of abstinence and reflection",
-        "clues": [
-            "Forty days of sacrifice",
-            "Time of reflection before Easter",
-            "Season of penance and prayer"
         ]
     },
     {
@@ -107702,17 +107592,6 @@
             "Legal do-over",
             "Court process repeated",
             "Judicial second chance"
-        ]
-    },
-    {
-        "word": "ROSETTA",
-        "text": "Famous stone key to Egyptian hieroglyphs",
-        "hint": "ancient artifact",
-        "hard_text": "Stone that unlocked a long-lost language",
-        "clues": [
-            "Deciphering tool for ancient scripts",
-            "Artifact that revealed secrets of the past",
-            "Key to understanding Egyptian writing"
         ]
     },
     {
@@ -109741,13 +109620,13 @@
     },
     {
         "word": "UNSHELLED",
-        "text": "Without its outer covering",
-        "hint": "bare",
-        "hard_text": "Naked nut awaiting a snack",
+        "text": "Still in its outer covering",
+        "hint": "Like an uncracked nut",
+        "hard_text": "Like nuts sold with their coverings intact",
         "clues": [
-            "Removed from its protective layer",
-            "Ready to eat, minus the shell",
-            "In a state of nakedness, culinary-wise"
+            "Like peanuts before opening",
+            "Not removed from its casing",
+            "Still enclosed in a hard covering"
         ]
     },
     {
@@ -110115,13 +109994,13 @@
     },
     {
         "word": "TETRAHEDRAL",
-        "text": "Four-faced geometric shape",
-        "hint": "four-sided",
-        "hard_text": "Shape with four triangular faces, mathematically speaking",
+        "text": "Having four triangular faces",
+        "hint": "four-faced",
+        "hard_text": "Shaped like a triangular pyramid",
         "clues": [
-            "Three-dimensional figure with four triangular faces",
-            "Geometric form resembling a pyramid with a triangular base",
-            "Solid with four triangular sides, it's quite acute"
+            "Like a four-faced solid",
+            "Having four vertices and four faces",
+            "Of a solid made of four triangles"
         ]
     },
     {
@@ -113667,13 +113546,13 @@
     },
     {
         "word": "NOTORIOUSLY",
-        "text": "Famed for negative reasons",
-        "hint": "Known for negative fame",
-        "hard_text": "Known widely for bad behavior or traits",
+        "text": "In a way known for something bad",
+        "hint": "infamously",
+        "hard_text": "With widespread disrepute",
         "clues": [
-            "Infamously recognizable in a certain field",
-            "Widely known for unsavory actions",
-            "Renowned, but not in a positive light"
+            "In a way famous for wrongdoing",
+            "In a famously disreputable way",
+            "So as to be widely condemned"
         ]
     },
     {
@@ -120750,13 +120629,13 @@
     },
     {
         "word": "FIRESTONE",
-        "text": "Material for a campfire",
-        "hint": "heat source",
-        "hard_text": "Rock that ignites during a heated discussion",
+        "text": "Stone that can produce sparks",
+        "hint": "flint",
+        "hard_text": "Rock once struck with steel to make sparks",
         "clues": [
-            "Ignitable rock used in warmth",
-            "A spark's best friend",
-            "Stone that can start a blaze"
+            "Spark-producing rock",
+            "Flint, for example",
+            "Stone used to help start a blaze"
         ]
     },
     {
@@ -130282,17 +130161,6 @@
             "Spot to peek through",
             "Wooden gap in a fence",
             "Natural eye in timber"
-        ]
-    },
-    {
-        "word": "KRISTIAN",
-        "text": "Name often associated with Christmas",
-        "hint": "Common name for a holiday baby",
-        "hard_text": "A Christian's favorite person in December",
-        "clues": [
-            "Holiday-themed name for a believer",
-            "Saintly figure in winter festivities",
-            "Moniker linked to a festive celebration"
         ]
     },
     {
@@ -140830,17 +140698,6 @@
             "Subject to influence",
             "Contingent upon circumstances",
             "Determined by external factors"
-        ]
-    },
-    {
-        "word": "FRANCISCO",
-        "text": "City in California",
-        "hint": "Bay Area",
-        "hard_text": "Golden Gate's famous urban center",
-        "clues": [
-            "A city known for its fog",
-            "Home of Lombard Street",
-            "California's hilly metropolis"
         ]
     },
     {
@@ -156185,17 +156042,6 @@
         ]
     },
     {
-        "word": "HAMPSHIRE",
-        "text": "U.S. state known for its lakes",
-        "hint": "New England location",
-        "hard_text": "New England state with a famous college",
-        "clues": [
-            "Home to Dartmouth College",
-            "Home of the first state primary",
-            "One of the original thirteen colonies"
-        ]
-    },
-    {
         "word": "LEBANON",
         "text": "Middle Eastern country, known for cedar trees",
         "hint": "Location of the cedars",
@@ -165986,17 +165832,6 @@
         ]
     },
     {
-        "word": "RODGERS",
-        "text": "Popular duo known for musical theater",
-        "hint": "Songwriters",
-        "hard_text": "Famous for their tunes, but not a single one",
-        "clues": [
-            "Creators of classic Broadway hits",
-            "Duo behind many musical favorites",
-            "Composers of timeless melodies"
-        ]
-    },
-    {
         "word": "ROOMMATE",
         "text": "Person responsible for half the rent in a shared flat",
         "hint": "Housemate",
@@ -168370,17 +168205,6 @@
             "Former senator from Arizona",
             "Presidential candidate in 2008",
             "A veteran of the Vietnam War"
-        ]
-    },
-    {
-        "word": "MCDONALD",
-        "text": "Famous fast-food chain",
-        "hint": "burger franchise",
-        "hard_text": "Golden arches signify this establishment",
-        "clues": [
-            "Known for burgers and fries",
-            "Fast-food giant with a global presence",
-            "Home of the Big Mac"
         ]
     },
     {
@@ -176188,17 +176012,6 @@
             "Six-stringed instrument played by many",
             "Essential for rock bands and solo artists",
             "Acoustic or electric, they make music"
-        ]
-    },
-    {
-        "word": "HAMPTON",
-        "text": "Coastal resort town in New York",
-        "hint": "beach area",
-        "hard_text": "Famous for summer escapes and celebrity sightings",
-        "clues": [
-            "Popular vacation spot for the wealthy",
-            "New York's chic seaside destination",
-            "Place known for its beaches and parties"
         ]
     },
     {
@@ -184736,17 +184549,6 @@
         ]
     },
     {
-        "word": "HILARY",
-        "text": "Former First Lady and politician",
-        "hint": "Famous surname",
-        "hard_text": "Known for a political climb in '90s",
-        "clues": [
-            "Clinton's first name",
-            "Last name of a presidential candidate",
-            "Name synonymous with a foundation"
-        ]
-    },
-    {
         "word": "IMPENDING",
         "text": "About to happen",
         "hint": "Upcoming",
@@ -192676,17 +192478,6 @@
         ]
     },
     {
-        "word": "LUMPUR",
-        "text": "Capital of Malaysia",
-        "hint": "Malaysian capital's name means 'muddy' in Malay",
-        "hard_text": "Metropolis known for its twin towers",
-        "clues": [
-            "Major city in Southeast Asia",
-            "Known for its cultural diversity",
-            "A hub of finance and tourism in Malaysia"
-        ]
-    },
-    {
         "word": "LUNATIC",
         "text": "A person exhibiting insane behavior",
         "hint": "Madman",
@@ -199100,17 +198891,6 @@
         ]
     },
     {
-        "word": "ASTROS",
-        "text": "Space explorers",
-        "hint": "Cosmonauts",
-        "hard_text": "Celestial beings, but not in a fairy tale",
-        "clues": [
-            "Galactic travelers",
-            "People who reach for the stars",
-            "Space voyagers, as seen on TV"
-        ]
-    },
-    {
         "word": "BESIEGED",
         "text": "Surrounded by attackers",
         "hint": "Under siege",
@@ -201079,17 +200859,6 @@
         ]
     },
     {
-        "word": "GLOVER",
-        "text": "Hand covering garment",
-        "hint": "handwear",
-        "hard_text": "What keeps your fingers warm?",
-        "clues": [
-            "Protective wear for hands",
-            "Worn to keep warm",
-            "Made of leather or knit"
-        ]
-    },
-    {
         "word": "GRIEVE",
         "text": "To feel deep sorrow",
         "hint": "Experience profound sadness",
@@ -201098,17 +200867,6 @@
             "Feel intense sadness",
             "Suffer the loss of someone",
             "To mourn deeply"
-        ]
-    },
-    {
-        "word": "GRIMES",
-        "text": "Unpleasant or dirty conditions",
-        "hint": "Messy situation",
-        "hard_text": "What might need a good scrubbing?",
-        "clues": [
-            "Filth or muck",
-            "Soil or stain",
-            "Dirt that requires cleaning"
         ]
     },
     {
@@ -203473,17 +203231,6 @@
             "Later installments of a narrative",
             "Following parts of a popular story",
             "Additional episodes that follow the original"
-        ]
-    },
-    {
-        "word": "SHEPPARD",
-        "text": "One who guides or protects a flock",
-        "hint": "herder",
-        "hard_text": "Guardian of woolly creatures",
-        "clues": [
-            "Protector of grazing animals",
-            "Leader of a flock in fields",
-            "Someone who oversees livestock"
         ]
     },
     {
@@ -208390,17 +208137,6 @@
         ]
     },
     {
-        "word": "DOWNEY",
-        "text": "Soft, fluffy texture",
-        "hint": "Like a cozy comforter",
-        "hard_text": "Feather-like softness in fabric or feathers",
-        "clues": [
-            "Describes a soft, silky quality",
-            "Feathered softness, often used in bedding",
-            "Softness akin to light feathers"
-        ]
-    },
-    {
         "word": "EXCAVATED",
         "text": "Dug out or removed from the ground",
         "hint": "Dug up",
@@ -211623,17 +211359,6 @@
         ]
     },
     {
-        "word": "PANICKING",
-        "text": "Experiencing sudden fear or anxiety",
-        "hint": "freaking out",
-        "hard_text": "Reacting with chaos in a crisis",
-        "clues": [
-            "Losing composure in a crisis",
-            "Suddenly overwhelmed by fear",
-            "Disconcerted in an emergency"
-        ]
-    },
-    {
         "word": "PICTORIAL",
         "text": "Represented in pictures or images",
         "hint": "visual",
@@ -213703,13 +213428,13 @@
     },
     {
         "word": "SPIDERMAN",
-        "text": "Comic book superhero with web powers",
-        "hint": "Web-slinging comic book character",
-        "hard_text": "Web-slinging character from Marvel",
+        "text": "Marvel superhero and Peter Parker's alter ego",
+        "hint": "Web-slinging Marvel hero",
+        "hard_text": "Comic-book crimefighter with a secret identity as Peter Parker",
         "clues": [
-            "Peter Parker's alter ego",
-            "Friendly neighborhood hero",
-            "Wall-crawler in red and blue"
+            "Marvel's wall-crawling hero",
+            "Hero with a spider-sense",
+            "Peter Parker, in costume"
         ]
     },
     {
@@ -218552,13 +218277,13 @@
     },
     {
         "word": "UTOPIAN",
-        "text": "Idealistic or perfect society",
-        "hint": "Perfect society",
-        "hard_text": "Vision of an ideal, often impractical world",
+        "text": "Idealistically perfect or impractical",
+        "hint": "Perfect-world in outlook",
+        "hard_text": "Describing a plan for an ideally flawless society",
         "clues": [
-            "Imaginary perfect community",
-            "Vision of paradise on earth",
-            "Philosophical concept of perfection"
+            "Like an ideal society",
+            "Impractically perfect",
+            "Concerned with a social paradise"
         ]
     },
     {
@@ -220119,17 +219844,6 @@
             "Insect with a luminous glow",
             "Illuminating summer evenings",
             "Creature that flickers at night"
-        ]
-    },
-    {
-        "word": "FLEETWOOD",
-        "text": "Band known for soft rock hits",
-        "hint": "Musicians",
-        "hard_text": "Famous for harmonies and melodies",
-        "clues": [
-            "Group with iconic songs",
-            "Soft rock legends of the '70s",
-            "Known for emotional ballads"
         ]
     },
     {
@@ -224255,17 +223969,6 @@
             "To honor and deeply respect",
             "To cherish or hold dear",
             "To idolize or exalt greatly"
-        ]
-    },
-    {
-        "word": "SARGENT",
-        "text": "Rank in military or police",
-        "hint": "military rank",
-        "hard_text": "Non-commissioned position in armed forces",
-        "clues": [
-            "Rank just above private",
-            "Enlisted leader in the military",
-            "Title held by many in uniform"
         ]
     },
     {
@@ -231362,17 +231065,6 @@
         ]
     },
     {
-        "word": "STREEP",
-        "text": "Famous actress known for versatility",
-        "hint": "Actress Meryl",
-        "hard_text": "Chameleon of the silver screen",
-        "clues": [
-            "Oscar-winning performer",
-            "Actress with diverse roles",
-            "Hollywood's leading lady"
-        ]
-    },
-    {
         "word": "STYLUS",
         "text": "Writing instrument for touchscreens",
         "hint": "Used for detailed digital drawing",
@@ -233031,17 +232723,6 @@
             "Severe legal violations",
             "Major offenses against the law",
             "Grave acts of wrongdoing"
-        ]
-    },
-    {
-        "word": "FRANKEN",
-        "text": "Fictional monster's creator",
-        "hint": "author of a classic novel",
-        "hard_text": "A scientist who crossed boundaries?",
-        "clues": [
-            "Inventor of a legendary creature",
-            "A name associated with horror",
-            "Creator of a stitched being"
         ]
     },
     {
@@ -235717,17 +235398,6 @@
         ]
     },
     {
-        "word": "BLOUNT",
-        "text": "Dull or not sharp",
-        "hint": "not sharp",
-        "hard_text": "Lacking a keen edge, metaphorically",
-        "clues": [
-            "Not pointed; lacks precision",
-            "In a figurative sense, lacking clarity",
-            "Bluntness in speech or object"
-        ]
-    },
-    {
         "word": "BUMBLE",
         "text": "To move awkwardly or clumsily",
         "hint": "fumble",
@@ -237180,17 +236850,6 @@
         ]
     },
     {
-        "word": "GEIGER",
-        "text": "Device measuring radiation",
-        "hint": "radiation meter",
-        "hard_text": "Counts particles, not fish",
-        "clues": [
-            "Nuclear detector",
-            "Instrument for detecting ionizing radiation",
-            "Counts invisible rays"
-        ]
-    },
-    {
         "word": "HEROINES",
         "text": "Brave women in stories",
         "hint": "brave women",
@@ -238002,17 +237661,6 @@
             "A kick of spice in cuisine",
             "Hot pepper with a vibrant hue",
             "Ingredient for a zesty dish"
-        ]
-    },
-    {
-        "word": "CLEARY",
-        "text": "Plainly or obviously",
-        "hint": "Obviously, perhaps",
-        "hard_text": "Evident to the observer without doubt",
-        "clues": [
-            "Unmistakably apparent",
-            "Plainly visible to all",
-            "Stated without ambiguity"
         ]
     },
     {
@@ -244929,13 +244577,13 @@
     },
     {
         "word": "SOS",
-        "text": "International distress signal (abbr)",
-        "hint": "Help needed (abbr)",
-        "hard_text": "Three letters signaling emergency (abbr)",
+        "text": "Morse-code distress signal",
+        "hint": "Emergency signal",
+        "hard_text": "Three-dot, three-dash, three-dot call",
         "clues": [
-            "Morse-code emergency call (abbr)",
-            "Mayday alternative (abbr)",
-            "Three-letter cry for help (abbr)"
+            "Mayday's Morse counterpart",
+            "International emergency signal",
+            "Radio plea for immediate help"
         ]
     },
     {
