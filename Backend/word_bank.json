@@ -56969,14 +56969,14 @@
     },
     {
         "word": "reuse",
-        "text": "Give packaging another purpose instead of discarding it",
+        "text": "Give packaging another purpose",
         "hint": "Sustainability practice, sometimes",
         "clues": [
             "Sustainability practice",
             "Put to work again for sustainability",
             "Give a second life to an item"
         ],
-        "hard_text": "Use again"
+        "hard_text": "Do this, instead of discarding?"
     },
     {
         "word": "riser",
@@ -87445,12 +87445,14 @@
     },
     {
         "word": "inverse",
-        "text": "Something that reverses or opposes",
+        "text": "Direct opposite",
         "hint": "A sign of mathematical term for reversal",
         "clues": [
             "Mathematical term for reversal",
             "Flipped relationship, mathematically speaking",
-            "Turned around, like a mirror's reflection"
+            "Turned around, like a mirror's reflection",
+            "Something that reverses or opposes",
+            "Diametrically opposed"
         ],
         "hard_text": "Operation that undoes another"
     },
