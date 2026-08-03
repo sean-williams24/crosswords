@@ -123687,13 +123687,14 @@
     },
     {
         "word": "PIANIST",
-        "text": "One who plays a keyboard instrument",
-        "hint": "musician",
-        "hard_text": "Expert performer on a grand or upright",
+        "text": "Musician performing a concerto on eighty-eight keys",
+        "hint": "keyboardist",
+        "hard_text": "Virtuoso of the ivories",
         "clues": [
-            "Virtuoso of the ivories",
-            "One skilled in playing a grand instrument",
-            "Person who keys in musical notes"
+            "Performer at a grand concert",
+            "Person who keys in musical notes",
+            "Musician with a forte for piano",
+            "One skilled in playing a grand instrument"
         ]
     },
     {
@@ -188505,17 +188506,6 @@
             "Surveillance activity",
             "Guarding a territory",
             "Monitoring for security"
-        ]
-    },
-    {
-        "word": "PIANIST",
-        "text": "Musician performing a concerto on eighty-eight keys",
-        "hint": "keyboardist",
-        "hard_text": "Virtuoso of the ivories",
-        "clues": [
-            "Performer at a grand concert",
-            "One who tickles the keys",
-            "Musician with a forte for piano"
         ]
     },
     {
