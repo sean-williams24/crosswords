@@ -60,11 +60,11 @@ final class HapticsEngine: HapticsPlaying {
             mediumImpact.prepare()
 
         case .backwordGuessProgress:
-            notification.notificationOccurred(.success)
-            notification.prepare()
+            heavyImpact.impactOccurred(intensity: 0.8)
+            lightImpact.prepare()
 
         case .backwordGameWon:
-            heavyImpact.impactOccurred()
+            heavyImpact.impactOccurred(intensity: 1.0)
             heavyImpact.prepare()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [self] in
                 notification.notificationOccurred(.success)
