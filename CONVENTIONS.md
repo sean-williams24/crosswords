@@ -459,6 +459,15 @@ Then confirm the repaired packages with a focused semantic audit:
 python3 Backend/generate_clue_repairs.py --audit
 ```
 
+After an audit-driven repair changes the bank, rebuild a current queue before
+starting another repair pass. The queue includes only audit findings whose exact
+field values are still present in the live bank; it excludes removed entries and
+flags duplicate answers for manual disambiguation.
+
+```bash
+python3 Backend/build_remaining_clue_repair_queue.py
+```
+
 ---
 
 ## Backend Python Scripts
