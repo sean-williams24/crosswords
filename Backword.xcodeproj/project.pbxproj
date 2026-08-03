@@ -34,9 +34,6 @@
 		05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */; };
 		05D1A0073001000000000001 /* CompletionDisplayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0063001000000000001 /* CompletionDisplayState.swift */; };
 		05D1A0093001000000000001 /* CrosswordSolveTimeSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */; };
-		07AA10013008000000000001 /* CrosswordStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA10003008000000000001 /* CrosswordStatsHistory.swift */; };
-		07AD10013010000000000001 /* BackwordStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AD10003010000000000001 /* BackwordStatsHistory.swift */; };
-		07AD10033010000000000001 /* BackwordStatsHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AD10023010000000000001 /* BackwordStatsHistoryTests.swift */; };
 		05D1A00B3001000000000001 /* CrosswordSolveTimeSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */; };
 		05D2A0013002000000000001 /* DailyCrosswordInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */; };
 		05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */; };
@@ -46,9 +43,12 @@
 		06CC00033007000000000001 /* CrosswordCompletionGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00023007000000000001 /* CrosswordCompletionGridView.swift */; };
 		06CC00053007000000000001 /* CrosswordCompletionSparkleBurstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00043007000000000001 /* CrosswordCompletionSparkleBurstView.swift */; };
 		06CC00073007000000000001 /* CrosswordCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */; };
+		07AA10013008000000000001 /* CrosswordStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA10003008000000000001 /* CrosswordStatsHistory.swift */; };
 		07AB00023008000000000001 /* BackwordRulesUpdateNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */; };
 		07AB00043008000000000001 /* BackwordRulesUpdateNoticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */; };
 		07AC00023009000000000001 /* BackwordModeToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AC00013009000000000001 /* BackwordModeToggle.swift */; };
+		07AD10013010000000000001 /* BackwordStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AD10003010000000000001 /* BackwordStatsHistory.swift */; };
+		07AD10033010000000000001 /* BackwordStatsHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AD10023010000000000001 /* BackwordStatsHistoryTests.swift */; };
 		0838E5D52FE2D3A200000001 /* HomeTabBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */; };
 		0838E5D72FE2E5AB00000001 /* ArchiveTabBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */; };
 		0A5F0E3C2FE322C700F00E3C /* LaunchSplashViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */; };
@@ -190,9 +190,6 @@
 		05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayStateTests.swift; sourceTree = "<group>"; };
 		05D1A0063001000000000001 /* CompletionDisplayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayState.swift; sourceTree = "<group>"; };
 		05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordSolveTimeSummary.swift; sourceTree = "<group>"; };
-		07AA10003008000000000001 /* CrosswordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordStatsHistory.swift; sourceTree = "<group>"; };
-		07AD10003010000000000001 /* BackwordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsHistory.swift; sourceTree = "<group>"; };
-		07AD10023010000000000001 /* BackwordStatsHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsHistoryTests.swift; sourceTree = "<group>"; };
 		05D1A00A3001000000000001 /* CrosswordSolveTimeSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordSolveTimeSummaryTests.swift; sourceTree = "<group>"; };
 		05D2A0003002000000000001 /* DailyCrosswordInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordInstructionsContentView.swift; sourceTree = "<group>"; };
 		05F1E1A82FFCFD9300F1E1A5 /* StoreLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreLogger.swift; sourceTree = "<group>"; };
@@ -200,9 +197,12 @@
 		06CC00023007000000000001 /* CrosswordCompletionGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionGridView.swift; sourceTree = "<group>"; };
 		06CC00043007000000000001 /* CrosswordCompletionSparkleBurstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionSparkleBurstView.swift; sourceTree = "<group>"; };
 		06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionPresentationTests.swift; sourceTree = "<group>"; };
+		07AA10003008000000000001 /* CrosswordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordStatsHistory.swift; sourceTree = "<group>"; };
 		07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNotice.swift; sourceTree = "<group>"; };
 		07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNoticeTests.swift; sourceTree = "<group>"; };
 		07AC00013009000000000001 /* BackwordModeToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordModeToggle.swift; sourceTree = "<group>"; };
+		07AD10003010000000000001 /* BackwordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsHistory.swift; sourceTree = "<group>"; };
+		07AD10023010000000000001 /* BackwordStatsHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsHistoryTests.swift; sourceTree = "<group>"; };
 		0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewTests.swift; sourceTree = "<group>"; };
 		0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTabBarViewTests.swift; sourceTree = "<group>"; };
 		0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchSplashViewTests.swift; sourceTree = "<group>"; };
@@ -917,7 +917,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
@@ -1108,7 +1108,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
