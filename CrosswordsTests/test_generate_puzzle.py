@@ -1,3 +1,4 @@
+import random
 import sys
 import unittest
 from collections import deque
@@ -9,6 +10,8 @@ BACKEND_DIR = Path(__file__).resolve().parents[1] / "Backend"
 sys.path.insert(0, str(BACKEND_DIR))
 
 import generate_puzzle
+import generate_weekly_puzzle
+from crossword_answer_similarity import are_too_similar_answers
 
 
 def line_runs(line: list[bool]) -> list[int]:
@@ -231,6 +234,37 @@ class DailyTemplateTests(unittest.TestCase):
                     visited.add(neighbour)
                     pending.append(neighbour)
         return visited == white_cells
+
+
+class CrosswordAnswerSimilarityTests(unittest.TestCase):
+    def test_rejects_observed_shared_stem_pair(self) -> None:
+        self.assertTrue(are_too_similar_answers("INVERSE", "INVERTER"))
+
+    def test_rejects_contained_answer(self) -> None:
+        self.assertTrue(are_too_similar_answers("INVERT", "INVERTER"))
+
+    def test_allows_unrelated_answers(self) -> None:
+        self.assertFalse(are_too_similar_answers("MARBLE", "PLANET"))
+
+    def test_preserves_distinct_short_answers(self) -> None:
+        self.assertFalse(are_too_similar_answers("CART", "CARD"))
+
+    def test_rejects_duplicate_answer_regardless_of_punctuation(self) -> None:
+        self.assertTrue(are_too_similar_answers("O'REILLY", "OREILLY"))
+
+    def test_daily_and_weekly_solvers_reject_similar_answers(self) -> None:
+        word_bank = {
+            7: [{"word": "INVERSE"}],
+            8: [{"word": "INVERTER"}],
+        }
+
+        for generator in (generate_puzzle, generate_weekly_puzzle):
+            with self.subTest(generator=generator.__name__):
+                slots = [
+                    generator.Slot(0, 0, "across", 7),
+                    generator.Slot(2, 0, "across", 8),
+                ]
+                self.assertIsNone(generator.solve_grid(slots, word_bank, random.Random(1)))
 
 
 if __name__ == "__main__":

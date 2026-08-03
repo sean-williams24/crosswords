@@ -23,6 +23,8 @@ import time
 from datetime import date, timedelta
 from pathlib import Path
 
+from crossword_answer_similarity import are_too_similar_answers
+
 GRID_SIZE = 13
 TARGET_CLUES = 35
 MIN_WORD_LENGTH = 3
@@ -303,6 +305,13 @@ def solve_grid(
     grid_letters: dict[tuple[int, int], str] = {}
     backtrack_count = [0]
 
+    def is_available(word: str) -> bool:
+        """Keep answer variants and near-derivatives out of one puzzle."""
+        return all(
+            not are_too_similar_answers(word, used_word)
+            for used_word in used_words
+        )
+
     def _constraint_sets(si: int) -> list[set[str]] | None:
         slot = slots[si]
         length = slot.length
@@ -328,7 +337,7 @@ def solve_grid(
         if not sets:
             result = []
             for w in all_words_by_length.get(slot.length, []):
-                if w not in used_words:
+                if is_available(w):
                     result.append(word_to_entry[w])
                     if len(result) >= MAX_CANDIDATES_PER_SLOT:
                         break
@@ -339,7 +348,7 @@ def solve_grid(
         rest = sets[1:]
         feasible = set()
         for word in smallest:
-            if word not in used_words and all(word in s for s in rest):
+            if is_available(word) and all(word in s for s in rest):
                 feasible.add(word)
 
         ordered = [w for w in all_words_by_length.get(slot.length, []) if w in feasible]
@@ -353,7 +362,7 @@ def solve_grid(
         if not sets:
             slot = slots[si]
             for w in all_words_by_length.get(slot.length, []):
-                if w not in used_words:
+                if is_available(w):
                     return True
             return False
 
@@ -361,7 +370,7 @@ def solve_grid(
         smallest = sets[0]
         rest = sets[1:]
         for word in smallest:
-            if word not in used_words and all(word in s for s in rest):
+            if is_available(word) and all(word in s for s in rest):
                 return True
         return False
 

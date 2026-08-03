@@ -31,6 +31,13 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 Both generators share the same exclusion mechanism to avoid repeating answers across puzzles.
 
+Within an individual puzzle, the shared `crossword_answer_similarity` rule also
+rejects answers that would be confusingly related. It rejects exact duplicates,
+one answer contained in another, and pairs of five or more letters sharing a
+prefix of at least five letters that covers 70% of the shorter answer (for
+example, `INVERSE` and `INVERTER`). Three- and four-letter answers are exempt
+from the near-match rule so the small short-word bank remains viable.
+
 **At generation time (via `--exclude-words`):**
 - The GitHub Actions workflow fetches an exclusion list from Supabase before calling the generator:
   - **Weekly generator:** last 13 weekly puzzles only (from `weekly_puzzles` table). Daily puzzle words are intentionally *not* excluded — cross-excluding them depletes the small short-word bank (only ~289 3-letter words) and causes the 13×13 solver to fail to find valid fills.

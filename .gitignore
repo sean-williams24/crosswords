@@ -8,6 +8,7 @@ Backend/.env
 
 # Backend – only track core files
 Backend/*.py
+!Backend/crossword_answer_similarity.py
 !Backend/generate_puzzle.py
 !Backend/generate_weekly_puzzle.py
 !Backend/generate_wotd.py
