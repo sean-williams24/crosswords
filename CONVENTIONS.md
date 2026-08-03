@@ -244,6 +244,15 @@ let isToday = day.date == ContentReleaseCalendar().dailyDateString
 }
 ```
 
+### Clue suffixes
+
+Every regenerated or repaired clue field for an abbreviation answer ends with
+` (abbr)`. Answers that are represented without spaces in the bank but have an
+established multi-word enumeration keep that enumeration at the end of each
+regenerated or repaired clue field, for example ` (5,4)`. Preserve these
+suffixes from the answer's existing clue fields rather than asking the model to
+infer the answer format.
+
 ### Regional answer archive
 
 `Backend/word_bank.json` contains only answers approved for region-neutral

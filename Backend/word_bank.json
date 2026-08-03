@@ -684,8 +684,8 @@
     {
         "word": "AWOL",
         "text": "Missing from duty (abbr)",
-        "hint": "Missing from duty without permission",
-        "hard_text": "Absent without leave",
+        "hint": "Missing from duty without permission (abbr)",
+        "hard_text": "Absent without leave (abbr)",
         "clues": [
             "Not on base, informally (abbr)",
             "Departed without clearance (abbr)",
@@ -26047,7 +26047,7 @@
         "text": "Exact tie in a race. (4,4)",
         "hint": "Common term in horse racing",
         "clues": [
-            "Tie in a race or contest",
+            "Tie in a race or contest (4,4)",
             "Photo finish with no clear winner. (4,4)",
             "Tied competitors in a race to the end. (4,4)"
         ],
@@ -26104,7 +26104,7 @@
         "clues": [
             "Hospital monitor's dreaded signal. (4,4)",
             "Final breath indicated on a chart. (4,4)",
-            "Electrocardiogram showing no cardiac activity."
+            "Electrocardiogram showing no cardiac activity. (4,4)"
         ],
         "hard_text": "Signal fades to nothingness. (4,4)"
     },
@@ -26377,7 +26377,7 @@
         "text": "Coming of darkness. (5,4)",
         "hint": "Transition to evening hours. (5,4)",
         "clues": [
-            "Onset of darkness after sunset.",
+            "Onset of darkness after sunset. (5,4)",
             "Twilight's gentle descent. (5,4)",
             "Time to say goodnight. (5,4)"
         ],
@@ -26408,7 +26408,7 @@
     {
         "word": "PITCHFORK",
         "text": "Pronged farm tool. (5,4)",
-        "hint": "Farm tool with a long handle and pointed tines.",
+        "hint": "Farm tool with a long handle and pointed tines. (5,4)",
         "clues": [
             "Used for tossing hay. (5,4)",
             "Instrument of rural persuasion. (5,4)",
@@ -26423,7 +26423,7 @@
         "clues": [
             "Secretary's quick notation. (5,4)",
             "Brevity's written art. (5,4)",
-            "Abbreviated system of rapid writing."
+            "Abbreviated system of rapid writing. (5,4)"
         ],
         "hard_text": "Quick notes in a hurry. (5,4)"
     },
@@ -26432,7 +26432,7 @@
         "text": "Divert from the main subject. (4,5)",
         "hint": "To divert from original plan. (4,5)",
         "clues": [
-            "Divert from an intended course or activity.",
+            "Divert from an intended course or activity. (4,5)",
             "Getting off the beaten path. (4,5)",
             "A diversion from the topic. (4,5)"
         ],
@@ -26567,7 +26567,7 @@
             "Thrifty individual with tight pockets. (5,5)",
             "Frugal friend at the store. (5,5)"
         ],
-        "hard_text": "Miserly person."
+        "hard_text": "Miserly person. (5,5)"
     },
     {
         "word": "CHEESECAKE",
@@ -26620,7 +26620,7 @@
         "clues": [
             "Festival paddling craft. (6,4)",
             "Colorful craft for a race. (6,4)",
-            "Long paddled racing craft."
+            "Long paddled racing craft. (6,4)"
         ],
         "hard_text": "Paddling vessel with flair. (6,4)"
     },
@@ -26685,7 +26685,7 @@
         "hint": "Talent seeker for high positions. (4,6)",
         "clues": [
             "Talent scout for top jobs. (4,6)",
-            "Recruiter for senior positions.",
+            "Recruiter for senior positions. (4,6)",
             "Talent scout with a decidedly fierce edge. (4,6)"
         ],
         "hard_text": "Recruiter on the hunt for top talent. (4,6)"
@@ -26696,7 +26696,7 @@
         "hint": "Loss often found in romance. (5,5)",
         "clues": [
             "Crushing emotional pain. (5,5)",
-            "Deep emotional distress.",
+            "Deep emotional distress. (5,5)",
             "A painful love story's climax. (5,5)"
         ],
         "hard_text": "What love can hit hard. (5,5)"
@@ -26719,9 +26719,9 @@
         "clues": [
             "Wading depth. (4,4)",
             "Submerged up to the joint. (4,4)",
-            "At a depth reaching the knees."
+            "At a depth reaching the knees. (4,4)"
         ],
-        "hard_text": "Submerged to the knees."
+        "hard_text": "Submerged to the knees. (4,4)"
     },
     {
         "word": "NIGHTWATCH",
@@ -26985,7 +26985,7 @@
             "Division for the most formidable fighters. (5,6)",
             "Top-tier competitor in combat sports. (5,6)"
         ],
-        "hard_text": "Boxer in the highest weight class"
+        "hard_text": "Boxer in the highest weight class (5,6)"
     },
     {
         "word": "HORSERADISH",
@@ -27051,7 +27051,7 @@
             "It's excellent, yet off the chart. (3,8)",
             "Remarkable, yet not in attendance. (3,8)"
         ],
-        "hard_text": "Exceptionally good"
+        "hard_text": "Exceptionally good (3,8)"
     },
     {
         "word": "QUICKSILVER",
@@ -27190,7 +27190,7 @@
         "text": "Tall structure with a timepiece. (5,5)",
         "hint": "Famous example in London. (5,5)",
         "clues": [
-            "Tower with a clock",
+            "Tower with a clock (5,5)",
             "Where time stands tall. (5,5)",
             "Landmark marking the passing minutes. (5,5)"
         ],
@@ -27225,7 +27225,7 @@
         "clues": [
             "Favourite to win. (5,6)",
             "Candidate ahead of the pack. (5,6)",
-            "Leading competitor"
+            "Leading competitor (5,6)"
         ],
         "hard_text": "Leading contender in a race. (5,6)"
     },
@@ -27236,9 +27236,9 @@
         "clues": [
             "Points from the boot. (4,7)",
             "Footwork for points. (4,7)",
-            "Skill of sending the ball between posts. (4,7)"
+            "Skill of sending the ball between posts. (4,7) (4,7)"
         ],
-        "hard_text": "Attempting points by kicking at goal"
+        "hard_text": "Attempting points by kicking at goal (4,7)"
     },
     {
         "word": "GOLDSTANDARD",
@@ -27388,7 +27388,7 @@
         "text": "Two games played consecutively. (6,6)",
         "hint": "Two contests in succession. (6,6)",
         "clues": [
-            "Pair of games played consecutively",
+            "Pair of games played consecutively (6,6)",
             "A pair of back-to-back events. (6,6)",
             "Two-for-one sports special. (6,6)"
         ],
@@ -27423,7 +27423,7 @@
         "clues": [
             "Equestrian expertise. (5,7)",
             "Rider's finesse in the saddle. (5,7)",
-            "Skill in riding and managing horses"
+            "Skill in riding and managing horses (5,7)"
         ],
         "hard_text": "Graceful handling of an equine partner. (5,7)"
     },
@@ -27521,7 +27521,7 @@
         "hint": "Impaired by illness or fatigue",
         "clues": [
             "Not quite right health-wise. (5,3,7)",
-            "Slightly ill",
+            "Slightly ill (5,3,7)",
             "Feeling sluggish and out. (5,3,7)"
         ],
         "hard_text": "Feeling less than stellar. (5,3,7)"
@@ -27847,47 +27847,47 @@
     },
     {
         "word": "BOOTLEGGER",
-        "text": "Illegal liquor seller",
+        "text": "Illegal liquor seller (4,6)",
         "hint": "Historically linked to speakeasies",
         "clues": [
-            "Prohibition-era liquor smuggler",
-            "Dealer in illegally sold spirits",
-            "Person who traffics in illicit alcohol"
+            "Prohibition-era liquor smuggler (4,6)",
+            "Dealer in illegally sold spirits (4,6)",
+            "Person who traffics in illicit alcohol (4,6)"
         ],
-        "hard_text": "Seller of illicit alcohol"
+        "hard_text": "Seller of illicit alcohol (4,6)"
     },
     {
         "word": "BRAINPOWER",
-        "text": "Mental ability",
+        "text": "Mental ability (5,5)",
         "hint": "Describes mental acuity levels",
         "clues": [
-            "Cognitive ability",
-            "Capacity for reasoning",
-            "Intellectual strength"
+            "Cognitive ability (5,5)",
+            "Capacity for reasoning (5,5)",
+            "Intellectual strength (5,5)"
         ],
-        "hard_text": "Intellectual capacity"
+        "hard_text": "Intellectual capacity (5,5)"
     },
     {
         "word": "BREAKWATER",
-        "text": "Offshore barrier that protects a coast from waves",
+        "text": "Offshore barrier that protects a coast from waves (5,5)",
         "hint": "Structure often seen at marinas",
         "clues": [
-            "Harbor-protecting wave barrier",
-            "Structure built to reduce wave force",
-            "Coastal barrier that shelters boats"
+            "Harbor-protecting wave barrier (5,5)",
+            "Structure built to reduce wave force (5,5)",
+            "Coastal barrier that shelters boats (5,5)"
         ],
         "hard_text": "Engineered to shield the coast"
     },
     {
         "word": "BRIDESMAID",
-        "text": "Woman attending a bride at a wedding",
+        "text": "Woman attending a bride at a wedding (6,4)",
         "hint": "Often helps with wedding plans",
         "clues": [
-            "Wedding-party attendant for the bride",
-            "Female attendant in a wedding ceremony",
-            "Bride's ceremonial helper"
+            "Wedding-party attendant for the bride (6,4)",
+            "Female attendant in a wedding ceremony (6,4)",
+            "Bride's ceremonial helper (6,4)"
         ],
-        "hard_text": "Member of a bride's wedding party"
+        "hard_text": "Member of a bride's wedding party (6,4)"
     },
     {
         "word": "BROADCASTS",
@@ -27902,25 +27902,25 @@
     },
     {
         "word": "BUMBLEBEES",
-        "text": "Large, hairy pollinating bees",
+        "text": "Large, hairy pollinating bees (6,4)",
         "hint": "Colorful insects seen in flower patches",
         "clues": [
-            "Fuzzy flower pollinators",
-            "Large bees with a low-pitched buzz",
-            "Hairy insects often seen on blossoms"
+            "Fuzzy flower pollinators (6,4)",
+            "Large bees with a low-pitched buzz (6,4)",
+            "Hairy insects often seen on blossoms (6,4)"
         ],
-        "hard_text": "Robust social insects that pollinate flowers"
+        "hard_text": "Robust social insects that pollinate flowers (6,4)"
     },
     {
         "word": "BUTTERSCOTCH",
-        "text": "Brown-sugar confection",
+        "text": "Brown-sugar confection (6,6)",
         "hint": "Dessert topping with a twist",
         "clues": [
-            "Brown-sugar candy flavor",
-            "Golden candy made with brown sugar",
-            "Caramelized-sugar confection"
+            "Brown-sugar candy flavor (6,6)",
+            "Golden candy made with brown sugar (6,6)",
+            "Caramelized-sugar confection (6,6)"
         ],
-        "hard_text": "Rich caramel-like candy"
+        "hard_text": "Rich caramel-like candy (6,6)"
     },
     {
         "word": "CALCULATOR",
@@ -28081,7 +28081,7 @@
         "text": "Internal mechanism of a timepiece. (5,5)",
         "hint": "Mechanics of vintage timepieces",
         "clues": [
-            "Spring-and-gear mechanisms in clocks",
+            "Spring-and-gear mechanisms in clocks (5,5)",
             "Precision mechanics behind every tick. (5,5)",
             "What makes your watch go round. (5,5)"
         ],
@@ -28364,14 +28364,14 @@
     },
     {
         "word": "COURTHOUSE",
-        "text": "Building where legal cases are heard",
+        "text": "Building where legal cases are heard (5,5)",
         "hint": "Venue for justice proceedings",
         "clues": [
-            "Building where trials are held",
-            "Place where judges hear cases",
-            "Venue for judicial proceedings"
+            "Building where trials are held (5,5)",
+            "Place where judges hear cases (5,5)",
+            "Venue for judicial proceedings (5,5)"
         ],
-        "hard_text": "Edifice containing courtrooms"
+        "hard_text": "Edifice containing courtrooms (5,5)"
     },
     {
         "word": "CREATIVITY",
@@ -28397,25 +28397,25 @@
     },
     {
         "word": "CROSSWORDS",
-        "text": "Interlocking word puzzles",
+        "text": "Interlocking word puzzles (5,5)",
         "hint": "Common pastime for puzzle lovers",
         "clues": [
-            "Interlocking letter-grid puzzles",
-            "Puzzles with clues and blank grids",
-            "Word games filled in from clues"
+            "Interlocking letter-grid puzzles (5,5)",
+            "Puzzles with clues and blank grids (5,5)",
+            "Word games filled in from clues (5,5)"
         ],
-        "hard_text": "Grid-based clue-solving puzzles"
+        "hard_text": "Grid-based clue-solving puzzles (5,5)"
     },
     {
         "word": "DEALERSHIP",
-        "text": "Business authorized to sell a manufacturer's vehicles.",
+        "text": "Business authorized to sell a manufacturer's vehicles. (6,4)",
         "hint": "Auto sales establishment",
         "clues": [
-            "Business that sells new cars for a manufacturer.",
-            "Authorized retailer of a vehicle brand.",
-            "Company licensed to sell a particular automaker's cars."
+            "Business that sells new cars for a manufacturer. (6,4)",
+            "Authorized retailer of a vehicle brand. (6,4)",
+            "Company licensed to sell a particular automaker's cars. (6,4)"
         ],
-        "hard_text": "Retail business representing an automobile maker."
+        "hard_text": "Retail business representing an automobile maker. (6,4)"
     },
     {
         "word": "DEFICIENCY",
@@ -28760,14 +28760,14 @@
     },
     {
         "word": "FLASHBACKS",
-        "text": "Sudden vivid returns of past memories.",
-        "hint": "Intrusive recollections of earlier events.",
+        "text": "Sudden vivid returns of past memories. (5,5)",
+        "hint": "Intrusive recollections of earlier events. (5,5)",
         "clues": [
-            "Film sequences showing earlier events.",
-            "Unexpected returns of vivid memories.",
-            "Recollections that abruptly revive the past."
+            "Film sequences showing earlier events. (5,5)",
+            "Unexpected returns of vivid memories. (5,5)",
+            "Recollections that abruptly revive the past. (5,5)"
         ],
-        "hard_text": "Narrative scenes that revisit an earlier time."
+        "hard_text": "Narrative scenes that revisit an earlier time. (5,5)"
     },
     {
         "word": "FLATTERING",
@@ -28782,14 +28782,14 @@
     },
     {
         "word": "FOOTPRINTS",
-        "text": "Marks made by feet",
-        "hint": "Tracks left by walkers",
+        "text": "Marks made by feet (4,6)",
+        "hint": "Tracks left by walkers (4,6)",
         "clues": [
-            "Tracks left in sand",
-            "Traces of someone's passage",
-            "Marks left by a walker"
+            "Tracks left in sand (4,6)",
+            "Traces of someone's passage (4,6)",
+            "Marks left by a walker (4,6)"
         ],
-        "hard_text": "Shoe impressions on the ground"
+        "hard_text": "Shoe impressions on the ground (4,6)"
     },
     {
         "word": "FORKLIFTED",
@@ -28826,14 +28826,14 @@
     },
     {
         "word": "FREESTYLED",
-        "text": "Improvised without preparation",
+        "text": "Improvised without preparation (4,6)",
         "hint": "Spontaneous performance with flair",
         "clues": [
-            "Improvised while performing",
-            "Created without a script",
-            "Performed without a plan"
+            "Improvised while performing (4,6)",
+            "Created without a script (4,6)",
+            "Performed without a plan (4,6)"
         ],
-        "hard_text": "Performed spontaneously"
+        "hard_text": "Performed spontaneously (4,6)"
     },
     {
         "word": "FREQUENTLY",
@@ -28929,7 +28929,7 @@
         "hint": "Showy seating for spectators",
         "clues": [
             "Show off, or stadium seating. (5,5)",
-            "Tiered seating for spectators",
+            "Tiered seating for spectators (5,5)",
             "Seating that draws attention to the performance. (5,5)"
         ],
         "hard_text": "Spectator area, but with flair. (5,5)"
@@ -29027,9 +29027,9 @@
         "text": "Dangerous overheating. (4,6)",
         "hint": "Potential risk during heat waves. (4,6)",
         "clues": [
-            "Dangerous illness caused by overheating",
+            "Dangerous illness caused by overheating (4,6)",
             "Overheated body from sun's relentless rays. (4,6)",
-            "Medical emergency from extreme body heat"
+            "Medical emergency from extreme body heat (4,6)"
         ],
         "hard_text": "Extreme condition requiring urgent care. (4,6)"
     },
@@ -29050,7 +29050,7 @@
         "hint": "Common mode of equine travel. (5,4)",
         "clues": [
             "Riding position. (5,4)",
-            "On a horse rather than in a vehicle",
+            "On a horse rather than in a vehicle (5,4)",
             "Seated atop a four-legged athlete. (5,4)"
         ],
         "hard_text": "Riding high with a hoofed companion. (5,4)"
@@ -29322,7 +29322,7 @@
     {
         "word": "LINEBACKER",
         "text": "Defensive football position. (4,6)",
-        "hint": "Defensive football player behind the line",
+        "hint": "Defensive football player behind the line (4,6)",
         "clues": [
             "NFL tackler. (4,6)",
             "Protector of the gridiron's backfield. (4,6)",
@@ -29365,14 +29365,14 @@
     },
     {
         "word": "MATCHSTICK",
-        "text": "Small wooden splint with a combustible head",
+        "text": "Small wooden splint with a combustible head (5,5)",
         "hint": "Basic tool for starting fires",
         "clues": [
-            "Wooden splint used to ignite a flame",
-            "Small igniter with a combustible tip",
-            "Slender wooden fire starter"
+            "Wooden splint used to ignite a flame (5,5)",
+            "Small igniter with a combustible tip (5,5)",
+            "Slender wooden fire starter (5,5)"
         ],
-        "hard_text": "Fire-starting wooden splint"
+        "hard_text": "Fire-starting wooden splint (5,5)"
     },
     {
         "word": "MECHANICAL",
@@ -29475,14 +29475,14 @@
     },
     {
         "word": "NATIONWIDE",
-        "text": "Throughout the country",
+        "text": "Throughout the country (6,4)",
         "hint": "Covers all states",
         "clues": [
-            "From one end of the country to the other",
-            "Extending across the country",
-            "Covering the entire country"
+            "From one end of the country to the other (6,4)",
+            "Extending across the country (6,4)",
+            "Covering the entire country (6,4)"
         ],
-        "hard_text": "Across the entire country"
+        "hard_text": "Across the entire country (6,4)"
     },
     {
         "word": "NEGLIGENCE",
@@ -29497,14 +29497,14 @@
     },
     {
         "word": "NIGHTSHADE",
-        "text": "Plant of the potato family",
+        "text": "Plant of the potato family (5,5)",
         "hint": "Botanicals with toxic qualities",
         "clues": [
-            "Poisonous plant of the potato family",
-            "Plant in the potato family",
-            "Potato-family plant"
+            "Poisonous plant of the potato family (5,5)",
+            "Plant in the potato family (5,5)",
+            "Potato-family plant (5,5)"
         ],
-        "hard_text": "Solanaceous plant"
+        "hard_text": "Solanaceous plant (5,5)"
     },
     {
         "word": "NOMINATION",
@@ -29695,14 +29695,14 @@
     },
     {
         "word": "POWERHOUSE",
-        "text": "Highly influential person or organization",
+        "text": "Highly influential person or organization (5,5)",
         "hint": "High-impact organization or entity",
         "clues": [
-            "Highly influential force",
-            "Person or group with great influence",
-            "Influential person or organization"
+            "Highly influential force (5,5)",
+            "Person or group with great influence (5,5)",
+            "Influential person or organization (5,5)"
         ],
-        "hard_text": "Exceptionally influential organization"
+        "hard_text": "Exceptionally influential organization (5,5)"
     },
     {
         "word": "PREVIOUSLY",
@@ -30014,14 +30014,14 @@
     },
     {
         "word": "SPACECRAFT",
-        "text": "Vehicle designed for travel beyond Earth's atmosphere",
+        "text": "Vehicle designed for travel beyond Earth's atmosphere (5,5)",
         "hint": "Used in cosmic missions",
         "clues": [
-            "Vehicle used for travel beyond Earth's atmosphere",
-            "Vehicle designed to travel in outer space",
-            "Vehicle for exploration beyond Earth's atmosphere"
+            "Vehicle used for travel beyond Earth's atmosphere (5,5)",
+            "Vehicle designed to travel in outer space (5,5)",
+            "Vehicle for exploration beyond Earth's atmosphere (5,5)"
         ],
-        "hard_text": "Vehicle built to operate beyond Earth's atmosphere"
+        "hard_text": "Vehicle built to operate beyond Earth's atmosphere (5,5)"
     },
     {
         "word": "SPEAKEASY",
@@ -30058,25 +30058,25 @@
     },
     {
         "word": "STAGECOACH",
-        "text": "Horse-drawn passenger vehicle of an earlier era",
-        "hint": "Horse-drawn public transport of the frontier era",
+        "text": "Horse-drawn passenger vehicle of an earlier era (5,5)",
+        "hint": "Horse-drawn public transport of the frontier era (5,5)",
         "clues": [
-            "Horse-drawn passenger transport of the Old West",
-            "Horse-drawn coach carrying travelers between towns",
-            "Horse-drawn passenger carriage used on scheduled routes"
+            "Horse-drawn passenger transport of the Old West (5,5)",
+            "Horse-drawn coach carrying travelers between towns (5,5)",
+            "Horse-drawn passenger carriage used on scheduled routes (5,5)"
         ],
-        "hard_text": "Horse-drawn carriage for passengers on regular routes"
+        "hard_text": "Horse-drawn carriage for passengers on regular routes (5,5)"
     },
     {
         "word": "STANDPOINT",
-        "text": "Position from which something is viewed or judged",
+        "text": "Position from which something is viewed or judged (5,5)",
         "hint": "Philosophical approach to a situation",
         "clues": [
-            "Perspective on a matter",
-            "Personal perspective on an issue",
-            "Position from which a subject is considered"
+            "Perspective on a matter (5,5)",
+            "Personal perspective on an issue (5,5)",
+            "Position from which a subject is considered (5,5)"
         ],
-        "hard_text": "Perspective from which a matter is considered"
+        "hard_text": "Perspective from which a matter is considered (5,5)"
     },
     {
         "word": "STRUCTURAL",
@@ -30256,14 +30256,14 @@
     },
     {
         "word": "TURNAROUND",
-        "text": "A reversal in direction or fortune",
-        "hint": "Business recovery after decline",
+        "text": "A reversal in direction or fortune (4,6)",
+        "hint": "Business recovery after decline (4,6)",
         "clues": [
-            "A complete reversal of direction",
-            "A major shift in fortune",
-            "A reversal that changes an expected course"
+            "A complete reversal of direction (4,6)",
+            "A major shift in fortune (4,6)",
+            "A reversal that changes an expected course (4,6)"
         ],
-        "hard_text": "A dramatic change for the better"
+        "hard_text": "A dramatic change for the better (4,6)"
     },
     {
         "word": "ULTIMATELY",
@@ -30369,7 +30369,7 @@
         "text": "Person who makes timepieces. (5,5)",
         "hint": "Creator of finely tuned mechanisms. (5,5)",
         "clues": [
-            "Person who makes or repairs watches",
+            "Person who makes or repairs watches (5,5)",
             "Builder of intricate timekeeping devices. (5,5)",
             "Artisan with a steady hand for seconds. (5,5)"
         ],
@@ -30564,25 +30564,25 @@
     },
     {
         "word": "BARBERSHOPS",
-        "text": "Businesses offering haircuts and shaves",
+        "text": "Businesses offering haircuts and shaves (6,5)",
         "hint": "Traditional men's grooming locale",
         "clues": [
-            "Places offering haircuts and shaves",
-            "Grooming establishments for men",
-            "Businesses specializing in men's haircuts"
+            "Places offering haircuts and shaves (6,5)",
+            "Grooming establishments for men (6,5)",
+            "Businesses specializing in men's haircuts (6,5)"
         ],
-        "hard_text": "Establishments for grooming men's hair"
+        "hard_text": "Establishments for grooming men's hair (6,5)"
     },
     {
         "word": "BITTERSWEET",
-        "text": "Both pleasant and painful",
+        "text": "Both pleasant and painful (6,5)",
         "hint": "Emotional complexity in a story",
         "clues": [
-            "Pleasantly painful",
-            "Involving joy mixed with sorrow",
-            "Evoking pleasure and sadness together"
+            "Pleasantly painful (6,5)",
+            "Involving joy mixed with sorrow (6,5)",
+            "Evoking pleasure and sadness together (6,5)"
         ],
-        "hard_text": "Marked by mingled pleasure and sadness"
+        "hard_text": "Marked by mingled pleasure and sadness (6,5)"
     },
     {
         "word": "BOMBARDMENT",
@@ -30597,14 +30597,14 @@
     },
     {
         "word": "BOOKKEEPING",
-        "text": "Maintenance of financial records",
+        "text": "Maintenance of financial records (4,7)",
         "hint": "Essential for financial accuracy",
         "clues": [
-            "Recording financial transactions",
-            "Keeping financial accounts",
-            "Management of account records"
+            "Recording financial transactions (4,7)",
+            "Keeping financial accounts (4,7)",
+            "Management of account records (4,7)"
         ],
-        "hard_text": "Systematic recording of business transactions"
+        "hard_text": "Systematic recording of business transactions (4,7)"
     },
     {
         "word": "CELEBRATION",
@@ -30630,14 +30630,14 @@
     },
     {
         "word": "CHAIRPERSON",
-        "text": "Person presiding over a meeting",
+        "text": "Person presiding over a meeting (5,6)",
         "hint": "Leader in formal meetings",
         "clues": [
-            "Leader of a board",
-            "Presiding officer of a committee (5,6)",
-            "Presiding officer"
+            "Leader of a board (5,6)",
+            "Presiding officer of a committee (5,6) (5,6)",
+            "Presiding officer (5,6)"
         ],
-        "hard_text": "Officer who leads a committee"
+        "hard_text": "Officer who leads a committee (5,6)"
     },
     {
         "word": "CHEERLEADER",
@@ -30817,14 +30817,14 @@
     },
     {
         "word": "CORNERSTONE",
-        "text": "Foundational element",
+        "text": "Foundational element (6,5)",
         "hint": "Fundamental part of something",
         "clues": [
-            "Fundamental supporting element",
-            "Ceremonial first block of a building",
-            "Basic principle or foundation"
+            "Fundamental supporting element (6,5)",
+            "Ceremonial first block of a building (6,5)",
+            "Basic principle or foundation (6,5)"
         ],
-        "hard_text": "Essential basis of a system"
+        "hard_text": "Essential basis of a system (6,5)"
     },
     {
         "word": "COUNTERFEIT",
@@ -31070,12 +31070,12 @@
     },
     {
         "word": "FINGERPRINT",
-        "text": "Distinctive ridge pattern on a person's skin",
+        "text": "Distinctive ridge pattern on a person's skin (6,5)",
         "hint": "Used in forensic identification",
         "clues": [
-            "Ridge impression used for identification",
-            "Unique pattern of skin ridges",
-            "Personal identifier formed by skin ridges"
+            "Ridge impression used for identification (6,5)",
+            "Unique pattern of skin ridges (6,5)",
+            "Personal identifier formed by skin ridges (6,5)"
         ],
         "hard_text": "Biometric marker for uniqueness"
     },
@@ -31609,25 +31609,25 @@
     },
     {
         "word": "TOOTHPASTES",
-        "text": "Dentifrices used to clean teeth",
+        "text": "Dentifrices used to clean teeth (5,6)",
         "hint": "Varieties include whitening and herbal",
         "clues": [
-            "Dentifrices squeezed onto brushes. (5,6)",
-            "Dentifrices with a thick consistency. (5,6)",
-            "Oral-cleaning compounds sold in tubes"
+            "Dentifrices squeezed onto brushes. (5,6) (5,6)",
+            "Dentifrices with a thick consistency. (5,6) (5,6)",
+            "Oral-cleaning compounds sold in tubes (5,6)"
         ],
-        "hard_text": "Thick dentifrices for brushing. (5,6)"
+        "hard_text": "Thick dentifrices for brushing. (5,6) (5,6)"
     },
     {
         "word": "TRAILBLAZER",
-        "text": "Innovative pioneer",
+        "text": "Innovative pioneer (5,6)",
         "hint": "Often revered in the world of innovation",
         "clues": [
-            "One who opens a new path",
-            "Pioneer in an unexplored area",
-            "Leader introducing a new approach"
+            "One who opens a new path (5,6)",
+            "Pioneer in an unexplored area (5,6)",
+            "Leader introducing a new approach (5,6)"
         ],
-        "hard_text": "Person first to explore a new field"
+        "hard_text": "Person first to explore a new field (5,6)"
     },
     {
         "word": "TRESPASSING",
@@ -31642,13 +31642,13 @@
     },
     {
         "word": "TYPEWRITING",
-        "text": "Producing text on a key-operated machine",
+        "text": "Producing text on a key-operated machine (4,7)",
         "hint": "Old-school method of composing text",
-        "hard_text": "Writing on a key-operated printing machine",
+        "hard_text": "Writing on a key-operated printing machine (4,7)",
         "clues": [
-            "Writing on a key-operated printing machine",
-            "Writing on a key-operated printing machine",
-            "Writing on a key-operated printing machine"
+            "Writing on a key-operated printing machine (4,7)",
+            "Writing on a key-operated printing machine (4,7)",
+            "Writing on a key-operated printing machine (4,7)"
         ]
     },
     {
@@ -31708,36 +31708,36 @@
     },
     {
         "word": "BOOKMARKED",
-        "text": "Marked for later reference",
+        "text": "Marked for later reference (4,6)",
         "hint": "Saved for future reference online",
         "clues": [
-            "Flagged as a browser favorite",
-            "Marked a page for later reference",
-            "Recorded as a page to revisit"
+            "Flagged as a browser favorite (4,6)",
+            "Marked a page for later reference (4,6)",
+            "Recorded as a page to revisit (4,6)"
         ],
-        "hard_text": "Saved for later retrieval"
+        "hard_text": "Saved for later retrieval (4,6)"
     },
     {
         "word": "BREADSTICK",
-        "text": "Long, thin baked bread served with meals",
+        "text": "Long, thin baked bread served with meals (5,5)",
         "hint": "Typical side at Italian meals",
-        "hard_text": "Slender crisp bread often served with pasta",
+        "hard_text": "Slender crisp bread often served with pasta (5,5)",
         "clues": [
-            "Thin bread served as an appetizer",
-            "Long, thin piece of bread",
-            "Crisp rod-shaped baked bread"
+            "Thin bread served as an appetizer (5,5)",
+            "Long, thin piece of bread (5,5)",
+            "Crisp rod-shaped baked bread (5,5)"
         ]
     },
     {
         "word": "CARDBOARD",
-        "text": "Stiff paper-based material used for boxes",
+        "text": "Stiff paper-based material used for boxes (4,5)",
         "hint": "Material for making boxes and crafts",
         "clues": [
-            "Material commonly used to make boxes",
-            "Rigid paper packaging material",
-            "Thick paper used for craft projects"
+            "Material commonly used to make boxes (4,5)",
+            "Rigid paper packaging material (4,5)",
+            "Thick paper used for craft projects (4,5)"
         ],
-        "hard_text": "Thick paper material used in packaging"
+        "hard_text": "Thick paper material used in packaging (4,5)"
     },
     {
         "word": "CHAMPIONED",
@@ -31752,14 +31752,14 @@
     },
     {
         "word": "CHANGEOVER",
-        "text": "Transition from one system or state to another",
+        "text": "Transition from one system or state to another (6,4)",
         "hint": "Swapping phases or roles",
         "clues": [
-            "Period of transition between arrangements",
-            "Switch from one operation to another",
-            "Replacement of one set of people by another"
+            "Period of transition between arrangements (6,4)",
+            "Switch from one operation to another (6,4)",
+            "Replacement of one set of people by another (6,4)"
         ],
-        "hard_text": "Replacement of one process by another"
+        "hard_text": "Replacement of one process by another (6,4)"
     },
     {
         "word": "CHAPERONED",
@@ -31796,14 +31796,14 @@
     },
     {
         "word": "COCKROACHES",
-        "text": "Common household insect pests",
+        "text": "Common household insect pests (4,7)",
         "hint": "Famed for survival skills",
         "clues": [
-            "Hardy insects that infest homes",
+            "Hardy insects that infest homes (4,7)",
             "Unwelcome guests that refuse to leave. (4,7)",
-            "Nocturnal insects often found in kitchens"
+            "Nocturnal insects often found in kitchens (4,7)"
         ],
-        "hard_text": "Insects known for surviving harsh conditions"
+        "hard_text": "Insects known for surviving harsh conditions (4,7)"
     },
     {
         "word": "COLLARBONE",
@@ -32054,7 +32054,7 @@
         "clues": [
             "Small digestive organ. (4,7)",
             "Digestive sac in the abdomen. (4,7)",
-            "Organ that stores bile"
+            "Organ that stores bile (4,7)"
         ],
         "hard_text": "Storage for digestive juices. (4,7)"
     },
@@ -32063,8 +32063,8 @@
         "text": "Spiced biscuit. (6,5)",
         "hint": "Holiday treat, often decorated",
         "clues": [
-            "Spiced sweet baked good",
-            "Spiced dough used for festive houses",
+            "Spiced sweet baked good (6,5)",
+            "Spiced dough used for festive houses (6,5)",
             "Delightfully spiced for holiday cheer. (6,5)"
         ],
         "hard_text": "Sweet treat from a fairy tale kitchen. (6,5)"
@@ -32116,13 +32116,13 @@
     {
         "word": "HEADQUARTERED",
         "text": "Based in a location. (4,9)",
-        "hint": "Based at a central office",
+        "hint": "Based at a central office (4,9)",
         "clues": [
             "Main office located at. (4,9)",
-            "Operating from a central office",
-            "Based in a main administrative location"
+            "Operating from a central office (4,9)",
+            "Based in a main administrative location (4,9)"
         ],
-        "hard_text": "Having main offices in a particular place"
+        "hard_text": "Having main offices in a particular place (4,9)"
     },
     {
         "word": "HEARTBROKEN",
@@ -32369,33 +32369,33 @@
     {
         "word": "BLOODSTAINED",
         "text": "Marked with red fluid. (5,7)",
-        "hint": "Marked with blood",
+        "hint": "Marked with blood (5,7)",
         "clues": [
-            "Marked with blood",
-            "Marked with blood",
-            "Marked with blood"
+            "Marked with blood (5,7)",
+            "Marked with blood (5,7)",
+            "Marked with blood (5,7)"
         ],
-        "hard_text": "Marked with blood"
+        "hard_text": "Marked with blood (5,7)"
     },
     {
         "word": "BOTTLENECKED",
         "text": "Slowed by a narrow point. (6,6)",
-        "hint": "Delayed by a constriction",
+        "hint": "Delayed by a constriction (6,6)",
         "clues": [
-            "Delayed by a constriction",
-            "Delayed by a constriction",
-            "Delayed by a constriction"
+            "Delayed by a constriction (6,6)",
+            "Delayed by a constriction (6,6)",
+            "Delayed by a constriction (6,6)"
         ],
         "hard_text": "Trapped in a narrow squeeze. (6,6)"
     },
     {
         "word": "BRAINSTORMED",
         "text": "Generated ideas collectively. (5,7)",
-        "hint": "Generated ideas collaboratively",
+        "hint": "Generated ideas collaboratively (5,7)",
         "clues": [
-            "Generated ideas collaboratively",
-            "Generated ideas collaboratively",
-            "Generated ideas collaboratively"
+            "Generated ideas collaboratively (5,7)",
+            "Generated ideas collaboratively (5,7)",
+            "Generated ideas collaboratively (5,7)"
         ],
         "hard_text": "Ideas sparked in a group setting. (5,7)"
     },
@@ -32413,24 +32413,24 @@
     {
         "word": "CATASTROPHIC",
         "text": "Causing sudden great damage",
-        "hint": "Causing great damage or suffering",
+        "hint": "Causing great damage or suffering (5,7)",
         "clues": [
             "Disastrous",
-            "Causing great damage or suffering",
-            "Causing great damage or suffering"
+            "Causing great damage or suffering (5,7)",
+            "Causing great damage or suffering (5,7)"
         ],
-        "hard_text": "Causing great damage or suffering"
+        "hard_text": "Causing great damage or suffering (5,7)"
     },
     {
         "word": "CIRCUMSTANCE",
         "text": "Fact or condition connected to an event",
-        "hint": "A fact affecting a situation",
+        "hint": "A fact affecting a situation (5,7)",
         "clues": [
             "Situation",
             "Condition that plays a key role",
             "Backdrop for life's unfolding drama"
         ],
-        "hard_text": "A condition affecting a situation"
+        "hard_text": "A condition affecting a situation (5,7)"
     },
     {
         "word": "CLIFFHANGING",
@@ -32446,7 +32446,7 @@
     {
         "word": "COMMISSIONER",
         "text": "Senior official in charge",
-        "hint": "Official appointed to oversee a public service",
+        "hint": "Official appointed to oversee a public service (6,9)",
         "clues": [
             "Head of a public body",
             "Top dog calling the shots",
@@ -32457,7 +32457,7 @@
     {
         "word": "COMMUNICATOR",
         "text": "One who conveys messages",
-        "hint": "Person or device that conveys information",
+        "hint": "Person or device that conveys information (5,7)",
         "clues": [
             "Star Trek device or good speaker",
             "One who connects through dialogue",
@@ -32468,7 +32468,7 @@
     {
         "word": "COMPENSATION",
         "text": "Payment for loss or injury",
-        "hint": "Payment for loss or injury",
+        "hint": "Payment for loss or injury (5,7)",
         "clues": [
             "Financial redress",
             "Payback for a previous loss",
@@ -32738,7 +32738,7 @@
             "Writing in shadows, unseen but heard. (5,7)",
             "An invisible author of another's tale. (5,7)"
         ],
-        "hard_text": "Writing credited to someone else"
+        "hard_text": "Writing credited to someone else (5,7)"
     },
     {
         "word": "GOALTENDING",
@@ -32952,7 +32952,7 @@
     {
         "word": "POCKETKNIVES",
         "text": "Folding blade tools. (6,6)",
-        "hint": "Folding knives carried in pockets",
+        "hint": "Folding knives carried in pockets (6,6)",
         "clues": [
             "Swiss Army products. (6,6)",
             "Foldable friend for outdoor mishaps. (6,6)",
@@ -33006,25 +33006,25 @@
     },
     {
         "word": "ROLLERBLADES",
-        "text": "Inline skates",
+        "text": "Inline skates (6,6)",
         "hint": "Sporty gear for gliding",
         "clues": [
             "Inline skates for urban movement",
-            "Inline wheeled footwear",
-            "Skates with aligned wheels"
+            "Inline wheeled footwear (6,6)",
+            "Skates with aligned wheels (6,6)"
         ],
-        "hard_text": "Skates with wheels in a single line"
+        "hard_text": "Skates with wheels in a single line (6,6)"
     },
     {
         "word": "SANDPAPERING",
-        "text": "Surface abrasion with a grit-coated sheet",
+        "text": "Surface abrasion with a grit-coated sheet (4,8)",
         "hint": "Preparation for smooth finishes",
         "clues": [
-            "Surface abrasion with a grit-coated sheet",
-            "Surface abrasion with a grit-coated sheet",
-            "Surface abrasion with a grit-coated sheet"
+            "Surface abrasion with a grit-coated sheet (4,8)",
+            "Surface abrasion with a grit-coated sheet (4,8)",
+            "Surface abrasion with a grit-coated sheet (4,8)"
         ],
-        "hard_text": "Surface abrasion with a grit-coated sheet"
+        "hard_text": "Surface abrasion with a grit-coated sheet (4,8)"
     },
     {
         "word": "SATISFACTORY",
@@ -33050,14 +33050,14 @@
     },
     {
         "word": "SLEEPWALKING",
-        "text": "Somnambulism",
+        "text": "Somnambulism (5,7)",
         "hint": "Unconscious night-time activity",
         "clues": [
-            "Somnambulism",
-            "Somnambulism",
-            "Somnambulism"
+            "Somnambulism (5,7)",
+            "Somnambulism (5,7)",
+            "Somnambulism (5,7)"
         ],
-        "hard_text": "Somnambulism"
+        "hard_text": "Somnambulism (5,7)"
     },
     {
         "word": "SOPHISTICATED",
@@ -33083,14 +33083,14 @@
     },
     {
         "word": "STOCKBROKERS",
-        "text": "Professionals who trade shares for clients",
+        "text": "Professionals who trade shares for clients (5,7)",
         "hint": "Professionals in financial markets",
         "clues": [
             "Advisors for investments and trades",
-            "Professionals who trade shares for clients",
-            "Professionals who trade shares for clients"
+            "Professionals who trade shares for clients (5,7)",
+            "Professionals who trade shares for clients (5,7)"
         ],
-        "hard_text": "Professionals who trade shares for clients"
+        "hard_text": "Professionals who trade shares for clients (5,7)"
     },
     {
         "word": "STORYTELLING",
@@ -33127,14 +33127,14 @@
     },
     {
         "word": "THANKSGIVING",
-        "text": "U.S. holiday observed on the fourth Thursday in November",
+        "text": "U.S. holiday observed on the fourth Thursday in November (6,6)",
         "hint": "Holiday with ample feasting traditions",
         "clues": [
-            "U.S. November holiday traditionally associated with turkey",
-            "Annual U.S. holiday of gratitude",
-            "Fourth-Thursday-in-November observance in the United States"
+            "U.S. November holiday traditionally associated with turkey (6,6)",
+            "Annual U.S. holiday of gratitude (6,6)",
+            "Fourth-Thursday-in-November observance in the United States (6,6)"
         ],
-        "hard_text": "U.S. holiday centered on gratitude and a traditional autumn meal"
+        "hard_text": "U.S. holiday centered on gratitude and a traditional autumn meal (6,6)"
     },
     {
         "word": "TOGETHERNESS",
@@ -33226,14 +33226,14 @@
     },
     {
         "word": "WHOLEHEARTED",
-        "text": "Complete and sincere",
+        "text": "Complete and sincere (5,7)",
         "hint": "Devotion reflected in a warm gesture",
         "clues": [
-            "Fully committed",
-            "Sincere and unreserved",
-            "Showing complete devotion"
+            "Fully committed (5,7)",
+            "Sincere and unreserved (5,7)",
+            "Showing complete devotion (5,7)"
         ],
-        "hard_text": "Marked by total sincerity and commitment"
+        "hard_text": "Marked by total sincerity and commitment (5,7)"
     },
     {
         "word": "BREATHTAKING",
@@ -33353,7 +33353,7 @@
         "clues": [
             "Old-fashioned punishment. (5,8)",
             "An act that leaves a mark, literally. (5,8)",
-            "Beating with a riding whip"
+            "Beating with a riding whip (5,8)"
         ]
     },
     {
@@ -33688,14 +33688,14 @@
     },
     {
         "word": "WHOLEHEARTEDLY",
-        "text": "With complete sincerity.",
-        "hint": "With full commitment.",
+        "text": "With complete sincerity. (5,9)",
+        "hint": "With full commitment. (5,9)",
         "clues": [
-            "Without reservation.",
-            "With sincere enthusiasm.",
-            "In a fully committed way."
+            "Without reservation. (5,9)",
+            "With sincere enthusiasm. (5,9)",
+            "In a fully committed way. (5,9)"
         ],
-        "hard_text": "With utter devotion."
+        "hard_text": "With utter devotion. (5,9)"
     },
     {
         "word": "INCONSISTENCIES",
@@ -244336,7 +244336,7 @@
     },
     {
         "word": "OCD",
-        "text": "Mental health condition marked by intrusive thoughts and rituals (abbr.)",
+        "text": "Mental health condition marked by intrusive thoughts and rituals (abbr.) (abbr)",
         "hint": "Condition involving repetitive behaviors (abbr)",
         "hard_text": "Struggles with unwanted thoughts and actions (abbr)",
         "clues": [
@@ -244407,7 +244407,7 @@
         "hard_text": "A device that dispenses money (abbr)",
         "clues": [
             "Get cash here (abbr)",
-            "Cash machine (abbr.)",
+            "Cash machine (abbr.) (abbr)",
             "Withdraw funds easily (abbr)"
         ]
     },
@@ -244527,7 +244527,7 @@
         "hint": "Document format (abbr)",
         "hard_text": "Portable format for sharing files (abbr)",
         "clues": [
-            "Portable document format, for short",
+            "Portable document format, for short (abbr)",
             "Universal file type (abbr)",
             "Easy to share (abbr)"
         ]
@@ -244539,7 +244539,7 @@
         "hard_text": "Round disc for films and data (abbr)",
         "clues": [
             "Watch movies here (abbr)",
-            "Digital video disc, for short",
+            "Digital video disc, for short (abbr)",
             "Old movie rental format (abbr)"
         ]
     },
@@ -244610,12 +244610,12 @@
     },
     {
         "word": "CSI",
-        "text": "Crime-scene investigation, briefly",
+        "text": "Crime-scene investigation, briefly (abbr)",
         "hint": "Detective work (abbr)",
         "hard_text": "Forensic science in solving crimes (abbr)",
         "clues": [
             "TV show about solving mysteries (abbr)",
-            "Crime-scene investigation, for short",
+            "Crime-scene investigation, for short (abbr)",
             "Uses science to catch criminals (abbr)"
         ]
     },
@@ -244634,11 +244634,11 @@
         "word": "PGA",
         "text": "Professional golf association (abbr)",
         "hint": "Golf organization (abbr)",
-        "hard_text": "Pro golfers' organization, briefly",
+        "hard_text": "Pro golfers' organization, briefly (abbr)",
         "clues": [
-            "Golf professionals' group, for short",
+            "Golf professionals' group, for short (abbr)",
             "Professional golfers' group (abbr)",
-            "Organization for golf pros, briefly"
+            "Organization for golf pros, briefly (abbr)"
         ]
     },
     {
@@ -244681,7 +244681,7 @@
         "hard_text": "Home of classic sitcoms (abbr)",
         "clues": [
             "Comedy broadcasting station (abbr)",
-            "Cable channel once called SuperStation (abbr.)",
+            "Cable channel once called SuperStation (abbr.) (abbr)",
             "Where humor lives (abbr)"
         ]
     },
@@ -244702,7 +244702,7 @@
         "hint": "More of the same (abbr)",
         "hard_text": "Indicates additional items (abbr)",
         "clues": [
-            "And so forth (abbr.)",
+            "And so forth (abbr.) (abbr)",
             "Continues the list (abbr)",
             "More things included (abbr)"
         ]
@@ -244966,8 +244966,8 @@
         "hint": "Special effects in movies (abbr)",
         "hard_text": "Digital visuals in films (abbr)",
         "clues": [
-            "Computer-generated imagery (abbr.)",
-            "Digitally created movie imagery (abbr.)",
+            "Computer-generated imagery (abbr.) (abbr)",
+            "Digitally created movie imagery (abbr.) (abbr)",
             "Pixel-made movie magic (abbr)"
         ]
     },
@@ -245264,7 +245264,7 @@
         "clues": [
             "April filing agency (abbr)",
             "Government revenue service (abbr)",
-            "Federal tax collector (abbr.)"
+            "Federal tax collector (abbr.) (abbr)"
         ]
     },
     {
@@ -245446,7 +245446,7 @@
     {
         "word": "IUD",
         "text": "Device for birth control (abbr)",
-        "hint": "Intrauterine contraceptive, briefly",
+        "hint": "Intrauterine contraceptive, briefly (abbr)",
         "hard_text": "Small device placed by a clinician (abbr)",
         "clues": [
             "Clinic-placed pregnancy prevention (abbr)",
@@ -245480,7 +245480,7 @@
         "word": "LBJ",
         "text": "U.S. President known for civil rights (abbr)",
         "hint": "President during Vietnam War (abbr)",
-        "hard_text": "President behind the Great Society, briefly",
+        "hard_text": "President behind the Great Society, briefly (abbr)",
         "clues": [
             "36th President of the USA (abbr)",
             "Known for social reforms (abbr)",
@@ -245614,7 +245614,7 @@
         "hint": "Genetic messenger (abbr)",
         "hard_text": "Molecule with vital roles (abbr)",
         "clues": [
-            "Nucleic acid involved in protein synthesis",
+            "Nucleic acid involved in protein synthesis (abbr)",
             "Essential for life processes (abbr)",
             "Cellular information carrier (abbr)"
         ]
@@ -245897,7 +245897,7 @@
     {
         "word": "DJS",
         "text": "People who play music at events (abbr)",
-        "hint": "Club music spinners",
+        "hint": "Club music spinners (abbr)",
         "hard_text": "They spin records and create vibes (abbr)",
         "clues": [
             "Club booth performers (abbr)",
