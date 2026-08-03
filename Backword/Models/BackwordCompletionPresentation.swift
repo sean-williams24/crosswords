@@ -1,6 +1,10 @@
 import Foundation
 
 enum BackwordCompletionAnimation {
+    static func revealSteps(letterCount: Int) -> Range<Int> {
+        1..<(max(0, letterCount) + 1)
+    }
+
     static func revealedIndices(letterCount: Int, revealStep: Int) -> Set<Int> {
         guard letterCount > 0, revealStep > 0 else { return [] }
         let visibleCount = min(revealStep, letterCount)

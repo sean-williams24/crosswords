@@ -16,11 +16,17 @@ final class BackwordViewModel: ObservableObject {
     @Published private(set) var mode: BackwordMode
 
     private let settings: AppSettings
+    private let haptics: HapticsPlaying
     private var explainerTask: Task<Void, Never>?
 
-    init(word: BackwordWord, settings: AppSettings = .shared) {
+    init(
+        word: BackwordWord,
+        settings: AppSettings = .shared,
+        haptics: HapticsPlaying = HapticsEngine()
+    ) {
         self.word = word
         self.settings = settings
+        self.haptics = haptics
         self.mode = settings.backwordMode
         self.stats = BackwordStats.load()
         let prog = BackwordProgress.load(date: word.date) ?? BackwordProgress(date: word.date)
@@ -29,9 +35,15 @@ final class BackwordViewModel: ObservableObject {
     }
 
     /// Preview-only initialiser — injects a pre-built progress state.
-    init(word: BackwordWord, progress: BackwordProgress, settings: AppSettings = .shared) {
+    init(
+        word: BackwordWord,
+        progress: BackwordProgress,
+        settings: AppSettings = .shared,
+        haptics: HapticsPlaying = HapticsEngine()
+    ) {
         self.word = word
         self.settings = settings
+        self.haptics = haptics
         self.mode = settings.backwordMode
         self.stats = BackwordStats.load()
         self.progress = progress
@@ -209,6 +221,7 @@ final class BackwordViewModel: ObservableObject {
         progress.wonFlag = false
         didComplete = true
         progress.completedAt = Date()
+        haptics.play(.backwordGameLost)
     }
     #endif
 
@@ -240,6 +253,10 @@ final class BackwordViewModel: ObservableObject {
         currentInput = ""
 
         let isCorrect = guess == word.word.uppercased()
+        let madeCorrectLetterProgress = Self.matchingSuffixLength(
+            guess: guess,
+            word: word.word
+        ) > prevRevealed.count
 
         if isCorrect {
             progress.wonFlag = true
@@ -247,15 +264,22 @@ final class BackwordViewModel: ObservableObject {
             progress.completedAt = Date()
             progress.save()
             recordCompletion(guessCount: progress.guesses.count)
+            haptics.play(.backwordGameWon)
         } else if progress.guesses.count >= maxGuesses {
             progress.wonFlag = false
             didComplete = true
             progress.completedAt = Date()
             progress.save()
             recordCompletion(guessCount: nil)
+            haptics.play(.backwordGameLost)
         } else {
             let justRevealed = revealedIndices.subtracting(prevRevealed)
             progress.save()
+            haptics.play(
+                madeCorrectLetterProgress
+                    ? .backwordGuessProgress
+                    : .backwordGuessIncorrect
+            )
             if !justRevealed.isEmpty {
                 newlyRevealedIndex = justRevealed.min()
                 Task {
@@ -316,11 +340,13 @@ final class BackwordViewModel: ObservableObject {
 
     func enterLetter(_ letter: Character) {
         guard !progress.isComplete else { return }
+        haptics.play(.letterEntered)
         onInputChange(currentInput + String(letter))
     }
 
     func deleteLetter() {
         guard !progress.isComplete, !currentInput.isEmpty else { return }
+        haptics.play(.letterEntered)
         currentInput.removeLast()
     }
 

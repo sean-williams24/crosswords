@@ -18,6 +18,12 @@ struct BackwordCompletionPresentationTests {
         #expect(BackwordCompletionAnimation.revealedIndices(letterCount: 0, revealStep: 1) == [])
     }
 
+    @Test("Completion produces one reveal step per letter")
+    func completionProducesOneRevealStepPerLetter() {
+        #expect(Array(BackwordCompletionAnimation.revealSteps(letterCount: 6)) == [1, 2, 3, 4, 5, 6])
+        #expect(BackwordCompletionAnimation.revealSteps(letterCount: 0).isEmpty)
+    }
+
     @Test("Completion guess summary handles singular and plural wording")
     func completionGuessSummaryHandlesSingularAndPluralWording() {
         #expect(BackwordCompletionText.summary(guessCount: 1, isFailed: false) == "... in 1 guess")

@@ -2,6 +2,14 @@ import Foundation
 import Testing
 @testable import Backword
 
+private final class BackwordHapticsSpy: HapticsPlaying {
+    private(set) var playedTypes: [HapticsEngine.HapticType] = []
+
+    func play(_ type: HapticsEngine.HapticType) {
+        playedTypes.append(type)
+    }
+}
+
 @Suite("BackwordViewModel Tests")
 @MainActor
 struct BackwordViewModelTests {
@@ -12,14 +20,16 @@ struct BackwordViewModelTests {
 
     private func makeViewModel(
         _ word: String = "CASTLE",
-        mode: BackwordMode = .normal
+        mode: BackwordMode = .normal,
+        haptics: HapticsPlaying = BackwordHapticsSpy()
     ) -> BackwordViewModel {
         let word = makeWord(word)
         let settings = makeSettings(mode: mode)
         return BackwordViewModel(
             word: word,
             progress: BackwordProgress(date: word.date),
-            settings: settings
+            settings: settings,
+            haptics: haptics
         )
     }
 
@@ -257,7 +267,11 @@ struct BackwordViewModelTests {
             word: "CASTLE",
             clue: "FORTRESS"
         )
-        let vm = BackwordViewModel(word: word, progress: BackwordProgress(date: word.date))
+        let vm = BackwordViewModel(
+            word: word,
+            progress: BackwordProgress(date: word.date),
+            haptics: BackwordHapticsSpy()
+        )
         let gamesPlayedBeforeCompletion = vm.stats.gamesPlayed
         defer { BackwordProgress.delete(date: word.date) }
 
@@ -333,6 +347,45 @@ struct BackwordViewModelTests {
         #expect(vm.revealedLetters == [nil, nil, Character("E"), Character("E"), Character("S"), Character("Y")])
         #expect(vm.unrevealedCount == 2)
         #expect(vm.newlyRevealedIndex == 2)
+    }
+
+    @Test("Wrong guess plays incorrect feedback")
+    func wrongGuessPlaysIncorrectFeedback() {
+        let haptics = BackwordHapticsSpy()
+        let vm = makeViewModel(haptics: haptics)
+        vm.currentInput = "XXXXX"
+
+        vm.submitGuess()
+
+        #expect(haptics.playedTypes == [.backwordGuessIncorrect])
+    }
+
+    @Test("Guess extending the correct suffix plays progress feedback")
+    func correctSuffixProgressPlaysSuccessFeedback() {
+        let haptics = BackwordHapticsSpy()
+        let vm = makeViewModel("CHEESY", haptics: haptics)
+        vm.currentInput = "DREES"
+
+        vm.submitGuess()
+
+        #expect(haptics.playedTypes == [.backwordGuessProgress])
+    }
+
+    @Test("Automatic reveal without a matching guessed letter stays incorrect feedback")
+    func automaticRevealStaysIncorrectFeedback() {
+        let haptics = BackwordHapticsSpy()
+        let vm = makeViewModel(haptics: haptics)
+
+        for _ in 0..<2 {
+            vm.currentInput = String(repeating: "X", count: vm.unrevealedCount)
+            vm.submitGuess()
+        }
+
+        #expect(vm.newlyRevealedIndex == 4)
+        #expect(haptics.playedTypes == [
+            .backwordGuessIncorrect,
+            .backwordGuessIncorrect
+        ])
     }
 
     @Test("Second wrong guess reveals the penultimate letter")
@@ -516,7 +569,8 @@ struct BackwordViewModelTests {
 
     @Test("Correct guess triggers win")
     func correctGuessTriggerWin() async throws {
-        let vm = makeViewModel("CASTLE")
+        let haptics = BackwordHapticsSpy()
+        let vm = makeViewModel("CASTLE", haptics: haptics)
         // Unrevealed [0,1,2,3,4]. Type C,A,S,T,L to form CASTLE.
         vm.currentInput = "CASTL"
         vm.submitGuess()
@@ -525,6 +579,7 @@ struct BackwordViewModelTests {
         #expect(vm.isWon == true)
         #expect(vm.isFailed == false)
         #expect(vm.guessCount == 1)
+        #expect(haptics.playedTypes == [.backwordGameWon])
     }
 
     @Test("Correct guess after wrong guesses wins")
@@ -548,7 +603,8 @@ struct BackwordViewModelTests {
 
     @Test("Five wrong guesses causes failure")
     func fiveWrongGuesessFail() async throws {
-        let vm = makeViewModel("CASTLE")
+        let haptics = BackwordHapticsSpy()
+        let vm = makeViewModel("CASTLE", haptics: haptics)
         vm.wordValidator = { _ in true }
         for _ in 0..<5 {
             vm.currentInput = String(repeating: "X", count: vm.unrevealedCount)
@@ -560,6 +616,13 @@ struct BackwordViewModelTests {
         #expect(vm.isComplete == true)
         #expect(vm.didComplete == true)
         #expect(vm.guessCount == 5)
+        #expect(haptics.playedTypes == [
+            .backwordGuessIncorrect,
+            .backwordGuessIncorrect,
+            .backwordGuessIncorrect,
+            .backwordGuessIncorrect,
+            .backwordGameLost
+        ])
     }
 
     @Test("No more guesses accepted after game complete")
@@ -596,11 +659,13 @@ struct BackwordViewModelTests {
 
     @Test("Input shorter than required is rejected")
     func shortInputRejected() async throws {
-        let vm = makeViewModel()
+        let haptics = BackwordHapticsSpy()
+        let vm = makeViewModel(haptics: haptics)
         // unrevealedCount == 5; "CA" (2 chars) is too short
         vm.currentInput = "CA"
         vm.submitGuess()
         #expect(vm.guessCount == 0)
+        #expect(haptics.playedTypes.isEmpty)
     }
 
     @Test("onInputChange filters to uppercase alpha and caps at unrevealedCount")
@@ -621,23 +686,27 @@ struct BackwordViewModelTests {
 
     @Test("Keyboard letter entry uppercases and caps at unrevealed count")
     func keyboardLetterEntryUppercasesAndCaps() async throws {
-        let vm = makeViewModel()
+        let haptics = BackwordHapticsSpy()
+        let vm = makeViewModel(haptics: haptics)
 
         for letter in "castle" {
             vm.enterLetter(letter)
         }
 
         #expect(vm.currentInput == "CASTL")
+        #expect(haptics.playedTypes == Array(repeating: .letterEntered, count: 6))
     }
 
     @Test("Keyboard delete removes the last typed letter")
     func keyboardDeleteRemovesLastTypedLetter() async throws {
-        let vm = makeViewModel()
+        let haptics = BackwordHapticsSpy()
+        let vm = makeViewModel(haptics: haptics)
 
         vm.onInputChange("CAST")
         vm.deleteLetter()
 
         #expect(vm.currentInput == "CAS")
+        #expect(haptics.playedTypes == [.letterEntered])
     }
 
     // MARK: - Clue Hint

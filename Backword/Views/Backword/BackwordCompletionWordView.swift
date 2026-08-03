@@ -2,12 +2,24 @@ import SwiftUI
 
 struct BackwordCompletionWordView: View {
     let word: String
-    var isFailed = false
+    let isFailed: Bool
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var revealStep = 0
     @State private var celebrates = false
+
+    private let haptics: HapticsPlaying
+
+    init(
+        word: String,
+        isFailed: Bool = false,
+        haptics: HapticsPlaying = HapticsEngine()
+    ) {
+        self.word = word
+        self.isFailed = isFailed
+        self.haptics = haptics
+    }
 
     private var letters: [Character] {
         Array(word.uppercased())
@@ -53,11 +65,12 @@ struct BackwordCompletionWordView: View {
         celebrates = false
         guard !reduceMotion else { return }
 
-        for step in 1...letters.count {
+        for step in BackwordCompletionAnimation.revealSteps(letterCount: letters.count) {
             guard await pause(nanoseconds: 140_000_000) else { return }
             withAnimation(.spring(response: 0.32, dampingFraction: 0.68)) {
                 revealStep = step
             }
+            haptics.play(.backwordCompletionLetterRevealed)
         }
 
         guard await pause(nanoseconds: 320_000_000) else { return }
