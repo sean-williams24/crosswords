@@ -49,6 +49,8 @@ describe("Backword browser game", () => {
   it("renders the score progress and keyboard within the game controls", async () => {
     const { container } = renderGame();
 
+    expect(await screen.findByText("FORTRESS")).toHaveClass("bw-clue");
+    expect(container.querySelector(".bw-explainer-card")).toBeInTheDocument();
     await screen.findByRole("group", { name: "Backword keyboard" });
     const controls = container.querySelector(".bw-game-controls");
     expect(controls?.querySelector(".bw-game-score")).toHaveClass("bw-game-score--keyboard-width");

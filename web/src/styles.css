@@ -256,6 +256,7 @@ a {
   display: flex;
   align-items: baseline;
   gap: 8px;
+  margin-top: 12px;
   padding: 18px 20px;
   border-radius: 12px;
   color: var(--bw-secondary);
@@ -525,6 +526,10 @@ a {
   .bw-modal-backdrop { align-items: center; padding: 30px; }
   .bw-modal { border-radius: 22px; }
   .bw-completion-modal { height: min(92svh, 900px); }
+}
+
+@media (max-width: 699px) {
+  .bw-clue { margin-bottom: 8px; }
 }
 
 @media (max-width: 410px) {
