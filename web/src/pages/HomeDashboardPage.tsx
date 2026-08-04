@@ -39,7 +39,6 @@ export function HomeDashboardPage({ showCrosswordPlaceholder = false }: HomeDash
 
       <section className="home-dashboard__content" aria-labelledby="daily-games-title">
         <div className="home-dashboard__heading">
-          <p className="home-dashboard__eyebrow">YOUR DAILY WORD GAMES</p>
           <h1 id="daily-games-title">Daily Games</h1>
           <p>{formattedToday()}</p>
         </div>
@@ -70,14 +69,13 @@ export function HomeDashboardPage({ showCrosswordPlaceholder = false }: HomeDash
 
         <section className="weekly-card-section" aria-labelledby="weekly-games-title">
           <div>
-            <p className="home-dashboard__eyebrow">A LONGER CHALLENGE</p>
             <h2 id="weekly-games-title">Weekly Games</h2>
             <p>Refreshes every Sunday</p>
           </div>
           <button className="weekly-card" onClick={() => setShowWeeklyModal(true)} type="button">
             <span className="weekly-card__crown" aria-hidden="true">♛</span>
             <span>PRO CROSSWORD</span>
-            <small>13×13 · iOS only</small>
+            <small>13×13</small>
             <span className="weekly-card__detail">Learn more →</span>
           </button>
         </section>
