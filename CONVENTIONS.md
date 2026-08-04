@@ -6,10 +6,10 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 ## Website Backword Parity
 
-The browser Backword game lives at `/backword` as an immersive route outside
-the marketing site's header and footer. It uses the same daily Supabase row,
-five-guess scoring, connected-suffix reveal rules, Normal/Easy modes, and local
-release-date rules as the iOS game. The root page remains the marketing page.
+The browser Backword game lives at `/` as an immersive route outside the
+marketing site's header and footer. Its marketing home page lives at `/home`.
+The game uses the same daily Supabase row, five-guess scoring, connected-suffix
+reveal rules, Normal/Easy modes, and local release-date rules as the iOS game.
 
 Until accounts are introduced, browser settings, cached daily content, per-date
 progress, and derived statistics are stored in versioned `localStorage`

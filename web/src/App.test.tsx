@@ -12,7 +12,7 @@ function renderRoute(route: string) {
 
 describe("Backword website routes", () => {
   it("renders the home page and footer links", () => {
-    renderRoute("/");
+    renderRoute("/home");
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Backword" })
@@ -24,6 +24,11 @@ describe("Backword website routes", () => {
     expect(screen.getAllByRole("link", { name: "Privacy" })).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: "Terms" })).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: /Play.*Backword/i }).length).toBeGreaterThan(1);
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/home");
+    expect(screen.getByRole("link", { name: "Play today’s Backword" })).toHaveAttribute(
+      "href",
+      "/"
+    );
     expect(
       screen.getByText(
         "Solve a six-letter word by extending its correct ending from right to left. A guess may reveal a connected chain or nothing new, with an extra letter revealed after three misses."
@@ -31,7 +36,7 @@ describe("Backword website routes", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders Backword as an immersive route without marketing chrome", () => {
+  it("renders Backword at the main URL without marketing chrome", () => {
     localStorage.setItem(
       "backword:web:settings:v1",
       JSON.stringify({
@@ -41,7 +46,7 @@ describe("Backword website routes", () => {
         lastSeenRulesVersion: 2
       })
     );
-    renderRoute("/backword");
+    renderRoute("/");
 
     expect(screen.queryByRole("link", { name: "Back to home" })).not.toBeInTheDocument();
     expect(screen.getAllByRole("img", { name: "Backword" })[0]).toHaveAttribute(
@@ -53,7 +58,7 @@ describe("Backword website routes", () => {
   });
 
   it("keeps homepage section text before screenshots in mobile source order", () => {
-    renderRoute("/");
+    renderRoute("/home");
 
     const backwordHeading = screen.getByRole("heading", {
       level: 2,

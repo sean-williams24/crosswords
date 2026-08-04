@@ -20,7 +20,7 @@ export function HomePage() {
         <div className="flex flex-wrap items-center gap-4">
           <Link
             className="rounded-xl bg-accent px-6 py-3 font-semibold text-white transition hover:bg-[#4387c1]"
-            to="/backword"
+            to="/"
           >
             Play today’s Backword
           </Link>
@@ -37,7 +37,7 @@ export function HomePage() {
         screenshotPosition="left"
         screenshotSrc="/screenshots/backword-game.png"
       >
-        <Link className="font-semibold text-accent transition hover:text-textPrimary" to="/backword">
+        <Link className="font-semibold text-accent transition hover:text-textPrimary" to="/">
           Play Backword online →
         </Link>
       </ScreenshotSection>

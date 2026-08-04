@@ -13,12 +13,12 @@ export function Layout({ children }: LayoutProps) {
         <div className="mx-auto flex max-w-6xl items-center justify-between">
           <Link
             className="text-lg font-semibold text-textPrimary transition hover:text-heading"
-            to="/"
+            to="/home"
           >
             Home
           </Link>
           <nav aria-label="Main" className="flex gap-5 text-sm text-textSecondary">
-            <Link className="font-medium text-accent transition hover:text-textPrimary" to="/backword">
+            <Link className="font-medium text-accent transition hover:text-textPrimary" to="/">
               Play Backword
             </Link>
             <Link className="transition hover:text-textPrimary" to="/privacy">

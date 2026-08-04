@@ -8,8 +8,8 @@ import { TermsPage } from "./pages/TermsPage";
 export default function App() {
   return (
     <Routes>
-      <Route path="/backword" element={<BackwordPage />} />
-      <Route path="/" element={<Layout><HomePage /></Layout>} />
+      <Route path="/" element={<BackwordPage />} />
+      <Route path="/home" element={<Layout><HomePage /></Layout>} />
       <Route path="/privacy" element={<Layout><PrivacyPage /></Layout>} />
       <Route path="/terms" element={<Layout><TermsPage /></Layout>} />
       <Route path="*" element={<Navigate to="/" replace />} />
