@@ -55,9 +55,10 @@ Both generators share the same exclusion mechanism to avoid repeating answers ac
 Within an individual puzzle, the shared `crossword_answer_similarity` rule also
 rejects answers that would be confusingly related. It rejects exact duplicates,
 one answer contained in another, and pairs of five or more letters sharing a
-prefix of at least five letters that covers 70% of the shorter answer (for
-example, `INVERSE` and `INVERTER`). Three- and four-letter answers are exempt
-from the near-match rule so the small short-word bank remains viable.
+prefix of at least five letters that covers 70% of the shorter answer *and*
+are within two spelling edits (for example, `INVERSE` and `INVERTER`). Three-
+and four-letter answers are exempt from the near-match rule so the small
+short-word bank remains viable.
 
 **At generation time (via `--exclude-words`):**
 - The GitHub Actions workflow fetches an exclusion list from Supabase before calling the generator:

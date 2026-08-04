@@ -23,7 +23,7 @@ import time
 from datetime import date, timedelta
 from pathlib import Path
 
-from crossword_answer_similarity import are_too_similar_answers
+from crossword_answer_similarity import AnswerSimilarityIndex
 
 GRID_SIZE = 13
 TARGET_CLUES = 35
@@ -301,16 +301,13 @@ def solve_grid(
                 words_index[length].setdefault(pos, {}).setdefault(ch, set()).add(word)
 
     assignment: list[dict | None] = [None] * len(slots)
-    used_words: set[str] = set()
+    answer_similarity_index = AnswerSimilarityIndex()
     grid_letters: dict[tuple[int, int], str] = {}
     backtrack_count = [0]
 
     def is_available(word: str) -> bool:
         """Keep answer variants and near-derivatives out of one puzzle."""
-        return all(
-            not are_too_similar_answers(word, used_word)
-            for used_word in used_words
-        )
+        return answer_similarity_index.is_available(word)
 
     def _constraint_sets(si: int) -> list[set[str]] | None:
         slot = slots[si]
@@ -415,7 +412,7 @@ def solve_grid(
         for entry in candidates:
             word = entry["word"].upper()
 
-            used_words.add(word)
+            answer_similarity_index.add(word)
             assigned_set.add(si)
             placed_cells: list[tuple[tuple[int, int], str | None]] = []
             for pi, cell in enumerate(slots[si].cells):
@@ -431,7 +428,7 @@ def solve_grid(
 
             assignment[si] = None
             assigned_set.discard(si)
-            used_words.discard(word)
+            answer_similarity_index.remove(word)
             for cell, old in placed_cells:
                 if old is None:
                     del grid_letters[cell]

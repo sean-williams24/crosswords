@@ -11,7 +11,7 @@ sys.path.insert(0, str(BACKEND_DIR))
 
 import generate_puzzle
 import generate_weekly_puzzle
-from crossword_answer_similarity import are_too_similar_answers
+from crossword_answer_similarity import AnswerSimilarityIndex, are_too_similar_answers
 
 
 def line_runs(line: list[bool]) -> list[int]:
@@ -246,11 +246,26 @@ class CrosswordAnswerSimilarityTests(unittest.TestCase):
     def test_allows_unrelated_answers(self) -> None:
         self.assertFalse(are_too_similar_answers("MARBLE", "PLANET"))
 
+    def test_allows_same_prefix_answers_that_are_not_close_spellings(self) -> None:
+        self.assertFalse(are_too_similar_answers("PROVIDER", "PROVISION"))
+
     def test_preserves_distinct_short_answers(self) -> None:
         self.assertFalse(are_too_similar_answers("CART", "CARD"))
 
     def test_rejects_duplicate_answer_regardless_of_punctuation(self) -> None:
         self.assertTrue(are_too_similar_answers("O'REILLY", "OREILLY"))
+
+    def test_index_rejects_similar_and_contained_answers(self) -> None:
+        index = AnswerSimilarityIndex()
+        index.add("INVERSE")
+        index.add("SOMETHING")
+
+        self.assertFalse(index.is_available("INVERTER"))
+        self.assertFalse(index.is_available("THING"))
+        self.assertTrue(index.is_available("MARBLE"))
+
+        index.remove("INVERSE")
+        self.assertTrue(index.is_available("INVERTER"))
 
     def test_daily_and_weekly_solvers_reject_similar_answers(self) -> None:
         word_bank = {
@@ -265,6 +280,26 @@ class CrosswordAnswerSimilarityTests(unittest.TestCase):
                     generator.Slot(2, 0, "across", 8),
                 ]
                 self.assertIsNone(generator.solve_grid(slots, word_bank, random.Random(1)))
+
+    def test_daily_and_weekly_solvers_use_distinct_alternative(self) -> None:
+        word_bank = {
+            7: [{"word": "INVERSE"}],
+            8: [{"word": "INVERTER"}, {"word": "OUTBURST"}],
+        }
+
+        for generator in (generate_puzzle, generate_weekly_puzzle):
+            with self.subTest(generator=generator.__name__):
+                slots = [
+                    generator.Slot(0, 0, "across", 7),
+                    generator.Slot(2, 0, "across", 8),
+                ]
+                solution = generator.solve_grid(slots, word_bank, random.Random(1))
+
+                self.assertIsNotNone(solution)
+                self.assertEqual(
+                    {"INVERSE", "OUTBURST"},
+                    {item["entry"]["word"] for item in solution},
+                )
 
 
 if __name__ == "__main__":
