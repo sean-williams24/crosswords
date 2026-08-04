@@ -654,12 +654,12 @@ body {
 .home-game-card {
   position: relative;
   display: flex;
-  min-height: 380px;
-  padding: 30px;
+  min-height: 130px;
+  padding: 18px;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 28px;
+  border-radius: 10px;
   color: #eee;
   text-align: center;
   text-decoration: none;
@@ -681,10 +681,10 @@ body {
 .home-game-card--backword::after { border: 3px solid #3377b1; }
 .home-game-card--crossword { background: linear-gradient(145deg, #30445e, #24364d); }
 .home-game-card__content { display: flex; position: relative; z-index: 1; flex-direction: column; align-items: center; }
-.home-game-card__logo { width: min(235px, 80%); height: auto; margin-bottom: 30px; object-fit: contain; }
-.home-game-card__title { margin: 0; color: #f6f6f6; font-size: clamp(21px, 2.3vw, 29px); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+.home-game-card__logo { width: min(130px, 64%); height: auto; margin-bottom: 12px; object-fit: contain; }
+.home-game-card__title { margin: 0; color: #f6f6f6; font-size: clamp(11px, 1.15vw, 13px); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
 .home-game-card--backword .home-game-card__title { display: none; }
-.home-game-card__description { margin: 15px 0 24px; color: #b4b4b8; font-size: 24px; font-weight: 500; }
+.home-game-card__description { margin: 15px 0 24px; color: #b4b4b8; font-size: 14px; font-weight: 500; }
 .home-game-card--backword .home-status { margin-top: 2px; }
 .home-game-card__cta { position: absolute; right: 27px; bottom: 24px; color: rgb(238 238 238 / 72%); font-size: 14px; font-weight: 600; letter-spacing: 0.05em; }
 
@@ -713,7 +713,7 @@ body {
   margin-top: 28px;
   padding: 27px 34px;
   align-items: center;
-  border-radius: 24px;
+  border-radius: 10px;
   color: #eee;
   background: #1a1a1a;
   text-align: center;
@@ -726,18 +726,18 @@ body {
 .wotd-card strong { grid-column: 2; margin-top: 9px; font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.035em; }
 .wotd-card > :last-child { grid-column: 3; justify-self: end; font-size: 26px; }
 
-.weekly-card-section { margin-top: 64px; }
+.weekly-card-section { margin-top: 54px; }
 .weekly-card {
   display: flex;
   width: 100%;
-  min-height: 210px;
+  min-height: 130px;
   margin-top: 24px;
   padding: 28px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border: 2px solid #b8872d;
-  border-radius: 28px;
+  border-radius: 10px;
   color: #d6be87;
   background: linear-gradient(135deg, #211e19, #171717 55%, #221d15);
   font: inherit;
@@ -792,8 +792,8 @@ body {
   .home-dashboard__header .bw-logo { height: 42px; }
   .home-dashboard__content { padding-top: 18px; }
   .home-dashboard__daily-cards { grid-template-columns: 1fr; gap: 20px; }
-  .home-game-card { min-height: 310px; border-radius: 24px; }
-  .wotd-card { min-height: 130px; margin-top: 20px; border-radius: 22px; }
+  .home-game-card { min-height: 190px; border-radius: 10px; }
+  .wotd-card { min-height: 130px; margin-top: 20px; border-radius: 10px; }
   .weekly-card-section { margin-top: 50px; }
   .weekly-modal__body { padding-inline: 26px; }
 }
