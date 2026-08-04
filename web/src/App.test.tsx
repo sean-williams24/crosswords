@@ -11,8 +11,25 @@ function renderRoute(route: string) {
 }
 
 describe("Backword website routes", () => {
-  it("renders the home page and footer links", () => {
+  it("renders the game dashboard at /home", () => {
     renderRoute("/home");
+
+    expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Quick Crossword/i })).toHaveAttribute(
+      "href",
+      "/crossword"
+    );
+  });
+
+  it("renders the Quick Crossword coming-soon route", () => {
+    renderRoute("/crossword");
+
+    expect(screen.getByRole("heading", { level: 1, name: "Coming soon" })).toBeInTheDocument();
+    expect(screen.getByAltText("Preview of the Quick Crossword game")).toBeInTheDocument();
+  });
+
+  it("keeps the marketing page and footer links at /info", () => {
+    renderRoute("/info");
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Backword" })
@@ -25,6 +42,7 @@ describe("Backword website routes", () => {
     expect(screen.getAllByRole("link", { name: "Terms" })).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: /Play.*Backword/i }).length).toBeGreaterThan(1);
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/home");
+    expect(screen.getByRole("link", { name: "Info" })).toHaveAttribute("href", "/info");
     expect(screen.getByRole("link", { name: "Play today’s Backword" })).toHaveAttribute(
       "href",
       "/"
@@ -57,8 +75,8 @@ describe("Backword website routes", () => {
     expect(screen.queryByRole("navigation", { name: "Footer" })).not.toBeInTheDocument();
   });
 
-  it("keeps homepage section text before screenshots in mobile source order", () => {
-    renderRoute("/home");
+  it("keeps marketing section text before screenshots in mobile source order", () => {
+    renderRoute("/info");
 
     const backwordHeading = screen.getByRole("heading", {
       level: 2,

@@ -21,6 +21,9 @@ export function Layout({ children }: LayoutProps) {
             <Link className="font-medium text-accent transition hover:text-textPrimary" to="/">
               Play Backword
             </Link>
+            <Link className="transition hover:text-textPrimary" to="/info">
+              Info
+            </Link>
             <Link className="transition hover:text-textPrimary" to="/privacy">
               Privacy
             </Link>

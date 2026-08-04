@@ -7,9 +7,10 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 ## Website Backword Parity
 
 The browser Backword game lives at `/` as an immersive route outside the
-marketing site's header and footer. Its marketing home page lives at `/home`.
-The game uses the same daily Supabase row, five-guess scoring, connected-suffix
-reveal rules, Normal/Easy modes, and local release-date rules as the iOS game.
+marketing site's header and footer. Its game dashboard lives at `/home`, while
+the marketing page lives at `/info`. The game uses the same daily Supabase row,
+five-guess scoring, connected-suffix reveal rules, Normal/Easy modes, and local
+release-date rules as the iOS game.
 
 Until accounts are introduced, browser settings, cached daily content, per-date
 progress, and derived statistics are stored in versioned `localStorage`
@@ -21,7 +22,12 @@ contribute to points and aggregate statistics.
 The browser accepts any alphabetic six-letter guess, matching the current iOS
 implementation. It supports both the in-page keyboard and physical keyboard
 input. Ads, Pro-only letter feedback, archives, crosswords, and account sync are
-not part of the browser Backword parity surface yet.
+not part of the browser Backword parity surface yet. The web dashboard reads
+today's Backword progress to present its card status, but Quick Crossword stays
+an explicitly unavailable web preview. Its `/crossword` route is a coming-soon
+screen; the weekly card directs players to the iOS App Store rather than
+implying browser Pro access. Word of the Day is presentation-only on the web
+until its browser experience is implemented.
 
 ---
 

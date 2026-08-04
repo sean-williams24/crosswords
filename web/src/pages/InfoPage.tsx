@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AppStoreBadge } from "../components/AppStoreBadge";
 import { PhoneMockup } from "../components/PhoneMockup";
 
-export function HomePage() {
+export function InfoPage() {
   return (
     <>
       <ScreenshotSection
