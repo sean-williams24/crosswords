@@ -10,7 +10,7 @@ export const privacySections = [
   {
     title: "Information We Collect",
     body: [
-      "Gameplay and settings data: Backword stores game progress, guesses, completed puzzles, scores, rating tier progress, preferences, onboarding state, and ad frequency state so the app can remember your progress and provide the game experience. This data is currently stored locally on your device.",
+      "Gameplay and settings data: Backword stores game progress, guesses, completed puzzles, scores, rating tier progress, preferences, onboarding state, and ad frequency state so the app and browser game can remember your progress and provide the game experience. This data is currently stored locally on your device or in your browser storage.",
       "Account and cloud sync data: Backword may introduce user accounts and cross-device sync. If you create an account or use sync features, we may collect account details such as your email address or user identifier, along with gameplay progress, scores, rating history, settings, and subscription-related access state so your progress can be restored across devices.",
       "Puzzle content requests: Backword connects to backend services to fetch daily Backword words, daily and weekly crosswords, archive content, and Word of the Day. These requests may involve standard technical information such as IP address, device or browser information, request timestamps, and network metadata.",
       "Purchase information: If you buy or restore a subscription or in-app purchase, Apple processes the payment. Backword receives purchase entitlement information from Apple so Pro features can be unlocked. We do not receive or store your payment card details.",
@@ -41,7 +41,7 @@ export const privacySections = [
   {
     title: "Data Retention and Deletion",
     body: [
-      "Local gameplay and settings data remains on your device until you delete the app, clear the data through app features where available, or overwrite it through normal use.",
+      "Local gameplay and settings data remains on your device until you delete the app, clear the website’s browser storage, clear the data through app features where available, or overwrite it through normal use.",
       "If account or cloud-sync features are enabled, account data, gameplay progress, scores, and settings may be retained while your account remains active or as needed to provide the service, comply with legal obligations, resolve disputes, prevent abuse, and maintain backups.",
       `You can request deletion of account-related personal information by contacting ${siteConfig.supportEmail}. Purchase history and subscription records handled by Apple must be managed through your Apple ID and App Store settings.`
     ]

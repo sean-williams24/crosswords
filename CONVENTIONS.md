@@ -4,6 +4,27 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 ---
 
+## Website Backword Parity
+
+The browser Backword game lives at `/backword` as an immersive route outside
+the marketing site's header and footer. It uses the same daily Supabase row,
+five-guess scoring, connected-suffix reveal rules, Normal/Easy modes, and local
+release-date rules as the iOS game. The root page remains the marketing page.
+
+Until accounts are introduced, browser settings, cached daily content, per-date
+progress, and derived statistics are stored in versioned `localStorage`
+records. Progress is the source of truth for browser statistics so a later sync
+task can migrate or merge per-date records without reconciling a second set of
+aggregate counters. Only results completed on their browser-local release date
+contribute to points and aggregate statistics.
+
+The browser accepts any alphabetic six-letter guess, matching the current iOS
+implementation. It supports both the in-page keyboard and physical keyboard
+input. Ads, Pro-only letter feedback, archives, crosswords, and account sync are
+not part of the browser Backword parity surface yet.
+
+---
+
 ## Crossword Configuration & Word Repeat Prevention
 
 ### Daily crossword (9×9)

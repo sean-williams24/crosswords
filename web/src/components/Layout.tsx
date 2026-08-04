@@ -18,6 +18,9 @@ export function Layout({ children }: LayoutProps) {
             Home
           </Link>
           <nav aria-label="Main" className="flex gap-5 text-sm text-textSecondary">
+            <Link className="font-medium text-accent transition hover:text-textPrimary" to="/backword">
+              Play Backword
+            </Link>
             <Link className="transition hover:text-textPrimary" to="/privacy">
               Privacy
             </Link>

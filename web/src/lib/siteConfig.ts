@@ -5,7 +5,7 @@ export const siteConfig = {
   developerName: "Sean Williams",
   supportEmail: "wilmslo@gmail.com",
   lastUpdated: "June 16, 2026",
-  futureEnvironment: {
+  environment: {
     supabaseUrl: "VITE_SUPABASE_URL",
     supabaseAnonKey: "VITE_SUPABASE_ANON_KEY"
   }

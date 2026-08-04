@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { AppStoreBadge } from "../components/AppStoreBadge";
 import { PhoneMockup } from "../components/PhoneMockup";
 
@@ -16,7 +17,15 @@ export function HomePage() {
         screenshotSize="compact"
         spacing="compact"
       >
-        <AppStoreBadge />
+        <div className="flex flex-wrap items-center gap-4">
+          <Link
+            className="rounded-xl bg-accent px-6 py-3 font-semibold text-white transition hover:bg-[#4387c1]"
+            to="/backword"
+          >
+            Play today’s Backword
+          </Link>
+          <AppStoreBadge />
+        </div>
       </ScreenshotSection>
 
       <ScreenshotSection
@@ -27,7 +36,11 @@ export function HomePage() {
         screenshotAlt="Backword gameplay screen"
         screenshotPosition="left"
         screenshotSrc="/screenshots/backword-game.png"
-      />
+      >
+        <Link className="font-semibold text-accent transition hover:text-textPrimary" to="/backword">
+          Play Backword online →
+        </Link>
+      </ScreenshotSection>
 
       <ScreenshotSection
         eyebrow="Daily Crossword"

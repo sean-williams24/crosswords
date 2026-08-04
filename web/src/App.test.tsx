@@ -23,11 +23,33 @@ describe("Backword website routes", () => {
     );
     expect(screen.getAllByRole("link", { name: "Privacy" })).toHaveLength(2);
     expect(screen.getAllByRole("link", { name: "Terms" })).toHaveLength(2);
+    expect(screen.getAllByRole("link", { name: /Play.*Backword/i }).length).toBeGreaterThan(1);
     expect(
       screen.getByText(
         "Solve a six-letter word by extending its correct ending from right to left. A guess may reveal a connected chain or nothing new, with an extra letter revealed after three misses."
       )
     ).toBeInTheDocument();
+  });
+
+  it("renders Backword as an immersive route without marketing chrome", () => {
+    localStorage.setItem(
+      "backword:web:settings:v1",
+      JSON.stringify({
+        schemaVersion: 1,
+        mode: "normal",
+        hasSeenOnboarding: true,
+        lastSeenRulesVersion: 2
+      })
+    );
+    renderRoute("/backword");
+
+    expect(screen.queryByRole("link", { name: "Back to home" })).not.toBeInTheDocument();
+    expect(screen.getAllByRole("img", { name: "Backword" })[0]).toHaveAttribute(
+      "src",
+      "/brand/backword-logo.png"
+    );
+    expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Footer" })).not.toBeInTheDocument();
   });
 
   it("keeps homepage section text before screenshots in mobile source order", () => {

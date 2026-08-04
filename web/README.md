@@ -18,9 +18,10 @@ npm run test
 - `src/content/legal.ts`: reviewed privacy policy and terms copy.
 - `public/app-ads.txt`: production Google AdMob publisher line.
 
-## Future Supabase Game
+## Backword game configuration
 
-When the browser game is added, use Vite environment variables:
+The browser game reads released daily content directly from Supabase. Create a
+local `.env` file and configure the same values in Vercel before deployment:
 
 ```bash
 VITE_SUPABASE_URL=
@@ -28,3 +29,7 @@ VITE_SUPABASE_ANON_KEY=
 ```
 
 Keep browser game integration in `src/lib` and page-level gameplay in `src/pages` or feature-specific folders.
+
+Anonymous game progress, settings, cached content, and statistics are stored in
+versioned browser-local storage. They do not sync between browsers or devices;
+account-backed synchronization is intentionally deferred to a later task.
