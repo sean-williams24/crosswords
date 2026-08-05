@@ -859,9 +859,9 @@ body {
 .weekly-modal__logo img { position: absolute; width: 100%; height: auto; object-fit: contain; }
 .weekly-modal__logo img:first-child { top: 11px; left: 0; }
 .weekly-modal__logo img:last-child {
-  top: 75px;
-  left: 26px;
-  transform: scale(0.94);
+  top: 57px;
+  left: 58px;
+  transform: scale(0.64);
 }
 .weekly-modal__body { padding: 30px 36px 35px; }
 .weekly-modal__eyebrow { margin: 0 0 9px; color: #3377b1; font-size: 11px; font-weight: 700; letter-spacing: 0.17em; }
