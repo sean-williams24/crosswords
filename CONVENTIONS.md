@@ -37,6 +37,26 @@ keeps the game destinations prominent and places Privacy and Terms in a
 secondary group, so players can navigate without leaving the immersive game
 surface for marketing-page chrome.
 
+### Browser daily crossword parity
+
+`/crossword` is the browser-local version of the released 9×9 daily puzzle.
+It reads the matching `puzzles` row from Supabase, caches valid payloads by
+plain local calendar date, and falls back to that cache offline. Per-puzzle
+entries, completed clues, timestamps, answer-feedback preference, onboarding,
+and release-date score are versioned `localStorage` records; no browser data
+syncs to iOS or another browser.
+
+The grid follows the iOS interaction model: tapping a selected cell switches
+direction, the clue bar navigates/toggles direction, correctly completed
+answers are green and input-locked by default, and turning Answer Feedback off
+keeps the harder editable mode. Hints, ads, archive access, paywalls, and
+account sync are intentionally absent from the browser crossword.
+
+Crossword points are captured only while the puzzle is the browser's local
+calendar-day release. The score remains in its historical progress record at
+midnight; late completion does not overwrite it. The rolling 14-day score,
+history, and streaks are all derived from saved per-date progress.
+
 ---
 
 ## Crossword Configuration & Word Repeat Prevention

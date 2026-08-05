@@ -2,18 +2,14 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
+import { localDateString } from "../features/backword/date";
 import { backwordDashboardStatus } from "../features/home/backwordStatus";
+import { crosswordDashboardStatus } from "../features/crossword/engine";
+import { createCrosswordStorage } from "../features/crossword/storage";
 import { DailyGameCard } from "../features/home/DailyGameCard";
 import { WeeklyCrosswordModal } from "../features/home/WeeklyCrosswordModal";
 import { WordOfTheDayCard } from "../features/wotd/components/WordOfTheDayCard";
 import { Footer } from "../components/Footer";
-import { CrosswordComingSoonPage } from "./CrosswordComingSoonPage";
-
-type HomeDashboardPageProps = {
-  showCrosswordPlaceholder?: boolean;
-};
-
-const newCrosswordStatus = { label: "New", tone: "new" } as const;
 
 function formattedToday() {
   return new Intl.DateTimeFormat("en-US", {
@@ -23,13 +19,14 @@ function formattedToday() {
   }).format(new Date());
 }
 
-export function HomeDashboardPage({ showCrosswordPlaceholder = false }: HomeDashboardPageProps) {
+export function HomeDashboardPage() {
   const [showWeeklyModal, setShowWeeklyModal] = useState(false);
   const backwordStatus = useMemo(() => backwordDashboardStatus(), []);
-
-  if (showCrosswordPlaceholder) {
-    return <CrosswordComingSoonPage />;
-  }
+  const crosswordStatus = useMemo(() => {
+    const storage = createCrosswordStorage();
+    const now = new Date();
+    return crosswordDashboardStatus(storage.loadProgressForDate(localDateString(now)), now, storage.loadAllProgress());
+  }, []);
 
   return (
     <main className="home-dashboard">
@@ -59,7 +56,9 @@ export function HomeDashboardPage({ showCrosswordPlaceholder = false }: HomeDash
             className="home-game-card--crossword"
             description="9×9"
             destination="/crossword"
-            status={newCrosswordStatus}
+            score={crosswordStatus.score}
+            status={crosswordStatus}
+            streak={crosswordStatus.streak}
             title="Quick Crossword"
           />
         </div>

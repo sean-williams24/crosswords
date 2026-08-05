@@ -23,11 +23,10 @@ describe("Backword website routes", () => {
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
   });
 
-  it("renders the Quick Crossword coming-soon route", () => {
+  it("renders the playable Quick Crossword route", () => {
     renderRoute("/crossword");
 
-    expect(screen.getByRole("heading", { level: 1, name: "Coming soon" })).toBeInTheDocument();
-    expect(screen.getByAltText("Preview of the Quick Crossword game")).toBeInTheDocument();
+    expect(screen.getByText("Loading today’s crossword…")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
   });
