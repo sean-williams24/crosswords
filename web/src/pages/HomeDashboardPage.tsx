@@ -5,6 +5,7 @@ import { GameMenu } from "../features/backword/components/GameMenu";
 import { backwordDashboardStatus } from "../features/home/backwordStatus";
 import { DailyGameCard } from "../features/home/DailyGameCard";
 import { WeeklyCrosswordModal } from "../features/home/WeeklyCrosswordModal";
+import { WordOfTheDayCard } from "../features/wotd/components/WordOfTheDayCard";
 import { Footer } from "../components/Footer";
 import { CrosswordComingSoonPage } from "./CrosswordComingSoonPage";
 
@@ -63,10 +64,7 @@ export function HomeDashboardPage({ showCrosswordPlaceholder = false }: HomeDash
           />
         </div>
 
-        <Link className="wotd-card" to="/info">
-          <span className="wotd-card__label">WORD OF THE DAY</span>
-          <strong>Sycophant</strong>
-        </Link>
+        <WordOfTheDayCard />
 
         <section className="weekly-card-section" aria-labelledby="weekly-games-title">
           <div>

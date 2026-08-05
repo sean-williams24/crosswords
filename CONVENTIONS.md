@@ -26,8 +26,11 @@ not part of the browser Backword parity surface yet. The web dashboard reads
 today's Backword progress to present its card status, but Quick Crossword stays
 an explicitly unavailable web preview. Its `/crossword` route is a coming-soon
 screen; the weekly card directs players to the iOS App Store rather than
-implying browser Pro access. Word of the Day is presentation-only on the web
-until its browser experience is implemented.
+implying browser Pro access. The web dashboard reads the released Word of the
+Day row for the browser's local calendar date. It has no browser fallback:
+during loading and when the row is unavailable, the WOTD section is not shown.
+On viewports up to 680px, the compact WOTD card toggles an animated detail
+drawer; larger viewports show the same content immediately in two columns.
 
 The browser's slide-out navigation drawer is rendered on every web route. It
 keeps the game destinations prominent and places Privacy and Terms in a

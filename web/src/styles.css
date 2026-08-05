@@ -725,6 +725,10 @@ body {
   font-weight: 700;
   letter-spacing: 0.24em;
 }
+.wotd-card__label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+}
 .home-dashboard__heading h1,
 .weekly-card-section h2 {
   margin: 8px 0 5px;
@@ -796,24 +800,71 @@ body {
 .home-status--solved { color: #d6be87; }
 .home-status--failed { color: #f17a7a; }
 
+.wotd-widget { margin-top: 28px; }
 .wotd-card {
   display: grid;
   grid-template-columns: 1fr;
   height: 95px;
+  width: 100%;
   min-height: 0;
-  margin-top: 28px;
   padding: 10px 34px;
   align-items: center;
+  border: 0;
   border-radius: 10px;
   color: #eee;
   background: #1a1a1a;
+  font: inherit;
   text-align: center;
-  text-decoration: none;
+  cursor: pointer;
   transition: background 160ms ease, transform 160ms ease;
 }
 .wotd-card:hover,
 .wotd-card:focus-visible { background: #222; outline: 2px solid #3377b1; outline-offset: 3px; transform: translateY(-2px); }
 .wotd-card strong { margin-top: 4px; font-size: clamp(22px, 2.5vw, 28px); letter-spacing: -0.035em; }
+.wotd-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: grid-template-rows 280ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms ease, transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.wotd-widget--expanded .wotd-drawer { grid-template-rows: 1fr; opacity: 1; transform: translateY(0); }
+.wotd-drawer__inner { min-height: 0; overflow: hidden; }
+.wotd-detail {
+  display: grid;
+  margin-top: 12px;
+  padding: 24px;
+  gap: 32px;
+  border-radius: 10px;
+  background: #1a1a1a;
+}
+.wotd-detail h3 {
+  margin: 0 0 12px;
+  color: #8d8d92;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+}
+.wotd-detail p { margin: 0; color: #eee; font-size: 18px; line-height: 1.35; }
+.wotd-detail .wotd-card__label {
+  color: #d6be87;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  line-height: 1.2;
+}
+.wotd-detail__desktop-heading { display: none; }
+.wotd-detail__meta { display: flex; margin-bottom: 24px !important; align-items: center; gap: 10px; }
+.wotd-detail__meta > span { color: #3377b1; }
+.wotd-detail__meta > b { color: #8d8d92; font-weight: 500; }
+.wotd-detail__meta > em { color: #8d8d92; }
+.wotd-detail__definition { padding: 20px; border-radius: 18px; background: #151515; box-shadow: 0 8px 18px rgb(0 0 0 / 24%); }
+.wotd-detail__secondary { display: grid; gap: 30px; }
+.wotd-detail__example { font-style: italic; }
+.wotd-detail__synonyms { display: flex; margin: 0; padding: 0; flex-wrap: wrap; gap: 10px; list-style: none; }
+.wotd-detail__synonyms li { padding: 7px 14px; border-radius: 999px; color: #3377b1; background: rgb(51 119 177 / 14%); font-size: 16px; }
+.wotd-detail__explainer { display: flex; gap: 12px; color: #8d8d92 !important; font-size: 15px !important; font-style: italic; }
+.wotd-detail__explainer > span { flex: none; color: #8d8d92; font-style: normal; }
 
 .weekly-card-section { margin-top: 54px; }
 .weekly-card {
@@ -906,10 +957,22 @@ body {
   .home-dashboard__content { padding-top: 6px; }
   .home-dashboard__daily-cards { grid-template-columns: 1fr; gap: 20px; }
   .home-game-card { min-height: 190px; border-radius: 10px; }
-  .wotd-card { height: 95px; min-height: 0; margin-top: 20px; border-radius: 10px; }
+  .wotd-widget { margin-top: 20px; }
+  .wotd-card { height: 95px; min-height: 0; border-radius: 10px; }
   .weekly-card-section { margin-top: 50px; }
   .weekly-modal__body { padding-inline: 26px; }
   .crossword-coming-soon__preview { margin: 36px auto auto; }
+}
+
+@media (min-width: 681px) {
+  .wotd-card { display: none; }
+  .wotd-drawer { display: block; opacity: 1; transform: none; }
+  .wotd-drawer__inner { overflow: visible; }
+  .wotd-detail { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin-top: 0; padding: 34px; gap: clamp(36px, 6vw, 72px); }
+  .wotd-detail__desktop-heading { display: block; margin-bottom: 24px; }
+  .wotd-detail__desktop-heading h2 { margin: 8px 0 10px; color: #eee; font-size: clamp(34px, 4vw, 48px); letter-spacing: -0.045em; }
+  .wotd-detail__meta { margin-bottom: 28px !important; }
+  .wotd-detail__definition { padding: 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

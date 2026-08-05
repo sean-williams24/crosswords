@@ -21,14 +21,13 @@ describe("web home dashboard", () => {
     localStorage.clear();
   });
 
-  it("renders the daily cards, word of the day, and playable Backword link", () => {
+  it("renders the daily cards and playable Backword link", () => {
     renderDashboard();
 
     expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
     const backwordLink = screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/");
     expect(backwordLink).toBeDefined();
     expect(screen.getByRole("link", { name: /Quick Crossword/i })).toHaveAttribute("href", "/crossword");
-    expect(screen.getByText("Sycophant")).toBeInTheDocument();
     expect(screen.getAllByLabelText("Status: New")).toHaveLength(2);
   });
 
