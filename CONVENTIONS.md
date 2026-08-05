@@ -60,7 +60,7 @@ surface for marketing-page chrome.
 - **Grid:** 13×13, ~35 clues, `is_free: false` (pro-only)
 - **Generator:** `Backend/generate_weekly_puzzle.py`
 - **Clue selection:** picks randomly from `clues[]` as the main clue (falls back to `text`); uses `hard_text` as the in-game hint (falls back to `hint`).
-- **Scheduling:** generated in batches of 10 via the `generate-weekly-puzzles` GitHub Actions workflow, triggered every Monday at 06:00 UTC. Weekly puzzle row dates are Sunday release dates, and generation is skipped if 5+ future weekly rows already exist in Supabase.
+- **Scheduling:** the `generate-weekly-puzzles` GitHub Actions workflow runs every Monday at 06:00 UTC and maintains three future Sunday release rows. It validates number/date continuity before checking that buffer, always repairs the earliest recoverable missing weekly slot first, and never skips a failed number or date. A failed slot is retried with fresh seeds until the workflow generation deadline; later slots wait so releases remain contiguous.
 
 ### Word repeat prevention
 

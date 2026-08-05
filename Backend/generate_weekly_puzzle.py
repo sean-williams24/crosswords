@@ -20,8 +20,10 @@ import os
 import random
 import sys
 import time
+from dataclasses import dataclass
 from datetime import date, timedelta
 from pathlib import Path
+from typing import Iterable, Mapping
 
 from crossword_answer_similarity import AnswerSimilarityIndex
 
@@ -34,6 +36,104 @@ MAX_WORD_LENGTH = 13
 def next_sunday_on_or_after(day: date) -> date:
     """Return the Sunday release date on or after `day`."""
     return day + timedelta(days=(6 - day.weekday()) % 7)
+
+
+FUTURE_BUFFER_WEEKS = 3
+
+
+@dataclass(frozen=True)
+class WeeklyPuzzleSlot:
+    puzzle_number: int
+    puzzle_date: date
+
+
+@dataclass(frozen=True)
+class WeeklyGenerationPlan:
+    """The next contiguous run that is safe to generate."""
+
+    start: WeeklyPuzzleSlot | None
+    count: int
+    future_count: int
+    reason: str
+
+
+def current_release_sunday(day: date) -> date:
+    """Return the Sunday beginning the current weekly release period."""
+    return day - timedelta(days=(day.weekday() + 1) % 7)
+
+
+def _parse_weekly_puzzle_slot(row: Mapping[str, object]) -> WeeklyPuzzleSlot:
+    try:
+        puzzle_number = int(row["puzzle_number"])
+        puzzle_date = date.fromisoformat(str(row["date"]))
+    except (KeyError, TypeError, ValueError) as error:
+        raise ValueError(f"Invalid weekly puzzle schedule row: {row!r}") from error
+
+    if puzzle_number < 1:
+        raise ValueError(f"Weekly puzzle numbers must be positive: {puzzle_number}")
+    if puzzle_date.weekday() != 6:
+        raise ValueError(f"Weekly puzzle #{puzzle_number} is not scheduled on a Sunday: {puzzle_date}")
+    return WeeklyPuzzleSlot(puzzle_number, puzzle_date)
+
+
+def plan_weekly_generation(
+    rows: Iterable[Mapping[str, object]],
+    *,
+    release_sunday: date,
+    future_buffer_weeks: int = FUTURE_BUFFER_WEEKS,
+) -> WeeklyGenerationPlan:
+    """Plan the next generation run without ever bypassing a missing slot."""
+    if release_sunday.weekday() != 6:
+        raise ValueError(f"Release date must be a Sunday: {release_sunday}")
+    if future_buffer_weeks < 1:
+        raise ValueError("Future buffer must contain at least one week")
+
+    slots = sorted((_parse_weekly_puzzle_slot(row) for row in rows), key=lambda slot: slot.puzzle_number)
+    numbers = [slot.puzzle_number for slot in slots]
+    dates = [slot.puzzle_date for slot in slots]
+    if len(set(numbers)) != len(numbers) or len(set(dates)) != len(dates):
+        raise ValueError("Weekly puzzle schedule contains duplicate numbers or dates")
+
+    first_gap: WeeklyPuzzleSlot | None = None
+    for previous, following in zip(slots, slots[1:]):
+        number_delta = following.puzzle_number - previous.puzzle_number
+        day_delta = (following.puzzle_date - previous.puzzle_date).days
+        if number_delta <= 0 or day_delta <= 0 or day_delta != number_delta * 7:
+            raise ValueError(
+                "Weekly puzzle schedule is inconsistent between "
+                f"#{previous.puzzle_number} ({previous.puzzle_date}) and "
+                f"#{following.puzzle_number} ({following.puzzle_date})"
+            )
+        if number_delta > 1 and first_gap is None:
+            first_gap = WeeklyPuzzleSlot(
+                previous.puzzle_number + 1,
+                previous.puzzle_date + timedelta(weeks=1),
+            )
+
+    future_count = sum(slot.puzzle_date > release_sunday for slot in slots)
+    if first_gap is not None:
+        return WeeklyGenerationPlan(first_gap, 1, future_count, "repair_gap")
+
+    if slots:
+        last = slots[-1]
+        desired_last_date = release_sunday + timedelta(weeks=future_buffer_weeks)
+        weeks_to_generate = max(0, (desired_last_date - last.puzzle_date).days // 7)
+        if weeks_to_generate:
+            return WeeklyGenerationPlan(
+                WeeklyPuzzleSlot(last.puzzle_number + 1, last.puzzle_date + timedelta(weeks=1)),
+                weeks_to_generate,
+                future_count,
+                "top_up_buffer",
+            )
+    else:
+        return WeeklyGenerationPlan(
+            WeeklyPuzzleSlot(1, release_sunday + timedelta(weeks=1)),
+            future_buffer_weeks,
+            0,
+            "initial_buffer",
+        )
+
+    return WeeklyGenerationPlan(None, 0, future_count, "buffer_full")
 
 # ── Grid Templates ──────────────────────────────────────────────────────────
 # Each template is a 13×13 grid. '#' = black, '.' = white.
@@ -692,6 +792,134 @@ def upload_to_supabase(payload: dict):
     return result
 
 
+def weekly_puzzle_exists_in_supabase(payload: dict) -> bool:
+    """Return whether an upload that raised still created this exact slot."""
+    try:
+        from supabase import create_client
+    except ImportError:
+        return False
+
+    url = os.environ.get("SUPABASE_URL")
+    key = os.environ.get("SUPABASE_KEY")
+    if not url or not key:
+        return False
+
+    client = create_client(url, key)
+    result = (
+        client.table("weekly_puzzles")
+        .select("id")
+        .eq("puzzle_number", payload["puzzle_number"])
+        .eq("date", payload["date"])
+        .limit(1)
+        .execute()
+    )
+    return bool(result.data)
+
+
+@dataclass(frozen=True)
+class GenerationResult:
+    generated: int
+    timed_out: bool
+
+
+def generate_scheduled_puzzles(
+    word_bank: dict[int, list[dict]],
+    *,
+    count: int,
+    start_number: int,
+    start_date: date,
+    exclude: set[str],
+    dry_run: bool,
+    output: str | None,
+    seed: int | None,
+    max_runtime_seconds: int | None,
+    generator=generate_puzzle,
+    validator=validate_puzzle,
+    payload_builder=build_puzzle_payload,
+    uploader=upload_to_supabase,
+    uploaded_exists=weekly_puzzle_exists_in_supabase,
+    bank_loader=load_word_bank,
+    clock=time.monotonic,
+) -> GenerationResult:
+    """Generate contiguous weekly slots, retrying a failed slot until expiry."""
+    started_at = clock()
+    generated = 0
+    retry_count = 0
+    batch_used: set[str] = set()
+    puzzle_number = start_number
+    puzzle_date = start_date
+
+    while generated < count:
+        if max_runtime_seconds is not None and clock() - started_at >= max_runtime_seconds:
+            print(
+                f"  Generation deadline reached with puzzle #{puzzle_number} for "
+                f"{puzzle_date.isoformat()} still unresolved.",
+                file=sys.stderr,
+            )
+            return GenerationResult(generated, True)
+
+        puzzle_date_str = puzzle_date.isoformat()
+        attempt_seed = (seed + generated + retry_count) if seed is not None else (
+            (hash(puzzle_date_str) + retry_count) & 0xFFFFFFFF
+        )
+        print(f"\nGenerating weekly puzzle #{puzzle_number} for {puzzle_date_str} (seed={attempt_seed})...")
+
+        current_bank = (
+            bank_loader(exclude=exclude | batch_used)
+            if batch_used
+            else word_bank
+        )
+        raw = generator(current_bank, seed=attempt_seed)
+        if raw is None:
+            retry_count += 1
+            print(f"  Generation failed: retrying the same puzzle with a different seed (attempt {retry_count + 1})...")
+            continue
+
+        if not validator(raw):
+            retry_count += 1
+            print(f"  Validation failed: retrying the same puzzle (attempt {retry_count + 1})...")
+            continue
+
+        payload = payload_builder(raw, puzzle_number, puzzle_date_str)
+        uploaded = dry_run
+        if dry_run:
+            print("  (dry run — not uploading)")
+        else:
+            try:
+                uploader(payload)
+                uploaded = True
+            except Exception as error:
+                print(f"  Upload failed: {error}")
+                try:
+                    uploaded = uploaded_exists(payload)
+                except Exception as verification_error:
+                    print(f"  Could not verify upload status: {verification_error}")
+                if uploaded:
+                    print("  The scheduled puzzle is present in Supabase; continuing.")
+                else:
+                    retry_count += 1
+                    print(f"  Retrying the same puzzle after upload failure (attempt {retry_count + 1})...")
+                    continue
+
+        if output:
+            os.makedirs(output, exist_ok=True)
+            path = os.path.join(output, f"weekly_{puzzle_number}.json")
+            with open(path, "w") as f:
+                json.dump(payload, f, indent=2)
+            print(f"  Saved to {path}")
+
+        for clue in payload.get("clues", []):
+            if clue.get("answer"):
+                batch_used.add(clue["answer"].upper())
+
+        generated += 1
+        retry_count = 0
+        puzzle_number += 1
+        puzzle_date += timedelta(weeks=1)
+
+    return GenerationResult(generated, False)
+
+
 # ── CLI ─────────────────────────────────────────────────────────────────────
 
 def main():
@@ -703,10 +931,19 @@ def main():
     parser.add_argument("--output", type=str, help="Output directory for JSON files")
     parser.add_argument("--seed", type=int, help="Random seed for reproducibility")
     parser.add_argument(
+        "--max-runtime-seconds",
+        type=int,
+        help="Retry unresolved slots until this overall generation deadline is reached",
+    )
+    parser.add_argument(
         "--exclude-words", type=str, dest="exclude_words",
         help="Path to JSON file containing list of words to exclude"
     )
     args = parser.parse_args()
+    if args.count < 1:
+        parser.error("--count must be at least 1")
+    if args.max_runtime_seconds is not None and args.max_runtime_seconds < 1:
+        parser.error("--max-runtime-seconds must be at least 1")
 
     exclude: set[str] = set()
     if args.exclude_words:
@@ -726,78 +963,20 @@ def main():
         date.fromisoformat(args.date) if args.date else next_sunday_on_or_after(date.today())
     )
 
-    generated = 0
-    retry_count = 0
-    max_retries_per_puzzle = 5
-    batch_used: set[str] = set()
-    puzzle_number = args.start_number
-    puzzle_date = start_date
-
-    while generated < args.count:
-        puzzle_date_str = puzzle_date.isoformat()
-        seed = (args.seed + generated + retry_count) if args.seed is not None else (
-            (hash(puzzle_date_str) + retry_count) & 0xFFFFFFFF
-        )
-
-        print(f"\nGenerating weekly puzzle #{puzzle_number} for {puzzle_date_str} (seed={seed})...")
-
-        # Rebuild word bank excluding words already used in this batch
-        if batch_used:
-            current_bank = load_word_bank(exclude=exclude | batch_used)
-        else:
-            current_bank = word_bank
-
-        raw = generate_puzzle(current_bank, seed=seed)
-        if raw is None:
-            retry_count += 1
-            if retry_count >= max_retries_per_puzzle:
-                print(f"  Generation failed after {max_retries_per_puzzle} retries — skipping puzzle #{puzzle_number}")
-                puzzle_number += 1
-                puzzle_date += timedelta(weeks=1)
-                retry_count = 0
-            else:
-                print(f"  Generation failed: retrying with different seed (attempt {retry_count + 1}/{max_retries_per_puzzle})...")
-            continue
-
-        if not validate_puzzle(raw):
-            retry_count += 1
-            if retry_count >= max_retries_per_puzzle:
-                print(f"  Validation failed after {max_retries_per_puzzle} retries — skipping puzzle #{puzzle_number}")
-                puzzle_number += 1
-                puzzle_date += timedelta(weeks=1)
-                retry_count = 0
-            else:
-                print(f"  Validation failed: retrying (attempt {retry_count + 1}/{max_retries_per_puzzle})...")
-            continue
-
-        retry_count = 0
-        payload = build_puzzle_payload(raw, puzzle_number, puzzle_date_str)
-
-        # Track words used in this puzzle so subsequent puzzles in the batch avoid them
-        for clue in payload.get("clues", []):
-            if clue.get("answer"):
-                batch_used.add(clue["answer"].upper())
-
-        if args.output:
-            os.makedirs(args.output, exist_ok=True)
-            path = os.path.join(args.output, f"weekly_{puzzle_number}.json")
-            with open(path, "w") as f:
-                json.dump(payload, f, indent=2)
-            print(f"  Saved to {path}")
-
-        if not args.dry_run:
-            try:
-                upload_to_supabase(payload)
-            except Exception as e:
-                print(f"  Upload failed: {e}")
-        else:
-            print("  (dry run — not uploading)")
-
-        generated += 1
-        puzzle_number += 1
-        puzzle_date += timedelta(weeks=1)
-
-    print(f"\nDone! Generated {generated}/{args.count} weekly puzzles.")
+    result = generate_scheduled_puzzles(
+        word_bank,
+        count=args.count,
+        start_number=args.start_number,
+        start_date=start_date,
+        exclude=exclude,
+        dry_run=args.dry_run,
+        output=args.output,
+        seed=args.seed,
+        max_runtime_seconds=args.max_runtime_seconds,
+    )
+    print(f"\nDone! Generated {result.generated}/{args.count} weekly puzzles.")
+    if result.timed_out:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

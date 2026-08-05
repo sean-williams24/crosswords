@@ -8,6 +8,7 @@ on:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
 
@@ -19,58 +20,43 @@ jobs:
       - name: Install dependencies
         run: pip install -r Backend/requirements.txt
 
-      - name: Check remaining puzzles and determine next params
+      - name: Check weekly schedule and determine next params
         id: check
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
-          python3 -c "
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          from datetime import date
+          import os
+          import sys
+
           from supabase import create_client
-          from datetime import date, timedelta
-          import os, sys
 
-          sb = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_KEY'])
+          sys.path.insert(0, "Backend")
+          from generate_weekly_puzzle import current_release_sunday, plan_weekly_generation
 
-          def current_release_sunday(day):
-              return day - timedelta(days=(day.weekday() + 1) % 7)
+          sb = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"])
+          rows = sb.table("weekly_puzzles").select("date,puzzle_number").order("puzzle_number").execute().data
+          release_sunday = current_release_sunday(date.today())
+          plan = plan_weekly_generation(rows, release_sunday=release_sunday)
 
-          def next_release_sunday_after(day):
-              days_until_sunday = (6 - day.weekday()) % 7
-              if days_until_sunday == 0:
-                  days_until_sunday = 7
-              return day + timedelta(days=days_until_sunday)
-
-          # Count puzzles remaining from the current local-release week onwards.
-          today = date.today()
-          current_sunday = current_release_sunday(today).isoformat()
-          remaining = sb.table('weekly_puzzles').select('id', count='exact').gte('date', current_sunday).execute()
-          count = remaining.count or 0
-          print(f'Remaining weekly puzzles from today: {count}', file=sys.stderr)
-
-          if count > 5:
-              print(f'enough=true')
-              print(f'remaining={count}')
+          print(f"Future weekly puzzles: {plan.future_count}", file=sys.stderr)
+          if plan.count == 0:
+              print("enough=true")
+              print(f"future_count={plan.future_count}")
           else:
-              # Get the last puzzle to determine next date and number
-              last = sb.table('weekly_puzzles').select('date,puzzle_number').order('date', desc=True).limit(1).execute()
-              if last.data:
-                  last_date = date.fromisoformat(last.data[0]['date'])
-                  last_num = last.data[0]['puzzle_number']
-                  next_date = next_release_sunday_after(last_date).isoformat()
-                  next_num = last_num + 1
-              else:
-                  next_date = current_release_sunday(today).isoformat()
-                  next_num = 1
-              print(f'enough=false')
-              print(f'remaining={count}')
-              print(f'next_date={next_date}')
-              print(f'next_number={next_num}')
-          " >> "$GITHUB_OUTPUT"
+              print("enough=false")
+              print(f"future_count={plan.future_count}")
+              print(f"generation_reason={plan.reason}")
+              print(f"generation_count={plan.count}")
+              print(f"next_date={plan.start.puzzle_date.isoformat()}")
+              print(f"next_number={plan.start.puzzle_number}")
+          PY
 
       - name: Skip if enough puzzles remain
         if: steps.check.outputs.enough == 'true'
-        run: echo "Skipping — ${{ steps.check.outputs.remaining }} weekly puzzles already queued."
+        run: echo "Skipping — ${{ steps.check.outputs.future_count }} future weekly puzzles are queued without gaps."
 
       - name: Fetch recently-used words
         if: steps.check.outputs.enough == 'false'
@@ -99,22 +85,23 @@ jobs:
           print(f'Fetched {len(used)} recently-used words from last 13 weekly puzzles')
           "
 
-      - name: Generate and upload 10 weekly puzzles
+      - name: Generate and upload required weekly puzzles
         if: steps.check.outputs.enough == 'false'
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
-          echo "Only ${{ steps.check.outputs.remaining }} puzzles remaining — generating 10 more from ${{ steps.check.outputs.next_date }} (#${{ steps.check.outputs.next_number }})"
+          echo "${{ steps.check.outputs.generation_reason }} — generating ${{ steps.check.outputs.generation_count }} puzzle(s) from ${{ steps.check.outputs.next_date }} (#${{ steps.check.outputs.next_number }})"
           python3 Backend/generate_weekly_puzzle.py \
             --date "${{ steps.check.outputs.next_date }}" \
             --start-number "${{ steps.check.outputs.next_number }}" \
-            --count 10 \
+            --count "${{ steps.check.outputs.generation_count }}" \
+            --max-runtime-seconds 20700 \
             --output generated_weekly_puzzles \
             --exclude-words /tmp/used_words.json
 
       - name: Upload generated weekly puzzle JSON artifact
-        if: steps.check.outputs.enough == 'false'
+        if: ${{ always() && steps.check.outputs.enough == 'false' }}
         uses: actions/upload-artifact@v4
         with:
           name: weekly-crossword-json-${{ steps.check.outputs.next_date }}

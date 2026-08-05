@@ -2,6 +2,7 @@ import random
 import sys
 import unittest
 from collections import deque
+from datetime import date
 from pathlib import Path
 from unittest.mock import patch
 
@@ -300,6 +301,147 @@ class CrosswordAnswerSimilarityTests(unittest.TestCase):
                     {"INVERSE", "OUTBURST"},
                     {item["entry"]["word"] for item in solution},
                 )
+
+
+class WeeklyPuzzleScheduleTests(unittest.TestCase):
+    def test_repairs_earliest_gap_even_when_future_buffer_is_full(self) -> None:
+        rows = [
+            {"puzzle_number": 21, "date": "2026-08-02"},
+            {"puzzle_number": 22, "date": "2026-08-09"},
+            {"puzzle_number": 23, "date": "2026-08-16"},
+            {"puzzle_number": 25, "date": "2026-08-30"},
+            {"puzzle_number": 26, "date": "2026-09-06"},
+            {"puzzle_number": 27, "date": "2026-09-13"},
+            {"puzzle_number": 28, "date": "2026-09-20"},
+        ]
+
+        plan = generate_weekly_puzzle.plan_weekly_generation(
+            rows,
+            release_sunday=date(2026, 8, 2),
+        )
+
+        self.assertEqual(plan.reason, "repair_gap")
+        self.assertEqual(plan.count, 1)
+        self.assertEqual(plan.start.puzzle_number, 24)
+        self.assertEqual(plan.start.puzzle_date, date(2026, 8, 23))
+        self.assertEqual(plan.future_count, 6)
+
+    def test_tops_up_only_to_three_future_sundays(self) -> None:
+        rows = [
+            {"puzzle_number": 21, "date": "2026-08-02"},
+            {"puzzle_number": 22, "date": "2026-08-09"},
+        ]
+
+        plan = generate_weekly_puzzle.plan_weekly_generation(
+            rows,
+            release_sunday=date(2026, 8, 2),
+        )
+
+        self.assertEqual(plan.reason, "top_up_buffer")
+        self.assertEqual(plan.count, 2)
+        self.assertEqual(plan.start.puzzle_number, 23)
+        self.assertEqual(plan.start.puzzle_date, date(2026, 8, 16))
+
+    def test_rejects_number_date_mismatch_that_cannot_be_repaired_safely(self) -> None:
+        rows = [
+            {"puzzle_number": 23, "date": "2026-08-16"},
+            {"puzzle_number": 25, "date": "2026-08-23"},
+        ]
+
+        with self.assertRaisesRegex(ValueError, "inconsistent"):
+            generate_weekly_puzzle.plan_weekly_generation(
+                rows,
+                release_sunday=date(2026, 8, 2),
+            )
+
+
+class WeeklyPuzzleGenerationTests(unittest.TestCase):
+    def test_generation_failure_retries_same_slot_before_advancing(self) -> None:
+        attempts = iter([None, {"answer": "FIRST"}, {"answer": "SECOND"}])
+        uploaded_slots = []
+
+        def payload_builder(raw, puzzle_number, puzzle_date):
+            return {
+                "puzzle_number": puzzle_number,
+                "date": puzzle_date,
+                "clues": [{"answer": raw["answer"]}],
+            }
+
+        result = generate_weekly_puzzle.generate_scheduled_puzzles(
+            {3: []},
+            count=2,
+            start_number=24,
+            start_date=date(2026, 8, 23),
+            exclude=set(),
+            dry_run=False,
+            output=None,
+            seed=1,
+            max_runtime_seconds=None,
+            generator=lambda _bank, seed: next(attempts),
+            validator=lambda _raw: True,
+            payload_builder=payload_builder,
+            uploader=lambda payload: uploaded_slots.append((payload["puzzle_number"], payload["date"])),
+        )
+
+        self.assertFalse(result.timed_out)
+        self.assertEqual(result.generated, 2)
+        self.assertEqual(uploaded_slots, [(24, "2026-08-23"), (25, "2026-08-30")])
+
+    def test_unconfirmed_upload_failure_retries_same_slot(self) -> None:
+        attempts = iter([{"answer": "FIRST"}, {"answer": "SECOND"}])
+        upload_attempts = []
+
+        def uploader(payload):
+            upload_attempts.append((payload["puzzle_number"], payload["date"]))
+            if len(upload_attempts) == 1:
+                raise RuntimeError("temporary outage")
+
+        result = generate_weekly_puzzle.generate_scheduled_puzzles(
+            {3: []},
+            count=1,
+            start_number=24,
+            start_date=date(2026, 8, 23),
+            exclude=set(),
+            dry_run=False,
+            output=None,
+            seed=1,
+            max_runtime_seconds=None,
+            generator=lambda _bank, seed: next(attempts),
+            validator=lambda _raw: True,
+            payload_builder=lambda raw, number, puzzle_date: {
+                "puzzle_number": number,
+                "date": puzzle_date,
+                "clues": [{"answer": raw["answer"]}],
+            },
+            uploader=uploader,
+            uploaded_exists=lambda _payload: False,
+        )
+
+        self.assertEqual(result.generated, 1)
+        self.assertEqual(upload_attempts, [(24, "2026-08-23"), (24, "2026-08-23")])
+
+    def test_generation_deadline_leaves_current_slot_unresolved(self) -> None:
+        times = iter([0.0, 0.0, 6.0])
+        generation_attempts = []
+
+        result = generate_weekly_puzzle.generate_scheduled_puzzles(
+            {3: []},
+            count=1,
+            start_number=24,
+            start_date=date(2026, 8, 23),
+            exclude=set(),
+            dry_run=True,
+            output=None,
+            seed=1,
+            max_runtime_seconds=5,
+            generator=lambda _bank, seed: generation_attempts.append(seed) or None,
+            validator=lambda _raw: True,
+            clock=lambda: next(times),
+        )
+
+        self.assertTrue(result.timed_out)
+        self.assertEqual(result.generated, 0)
+        self.assertEqual(len(generation_attempts), 1)
 
 
 if __name__ == "__main__":
