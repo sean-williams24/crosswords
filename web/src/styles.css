@@ -924,13 +924,12 @@ body {
 .weekly-modal__store-badge { display: flex; justify-content: center; }
 
 .crossword-coming-soon { position: relative; display: flex; min-height: 100svh; overflow: hidden; flex-direction: column; color: #eee; background: #111111; }
-.crossword-coming-soon__header { position: relative; z-index: 1; display: flex; padding: 22px clamp(22px, 5vw, 64px); align-items: center; gap: 18px; }
+.crossword-coming-soon__header { display: flex; padding: 22px clamp(22px, 5vw, 64px); align-items: center; gap: 18px; }
 .crossword-coming-soon__back { display: inline-block; color: #b8b8b8; font-weight: 600; text-decoration: none; }
 .crossword-coming-soon__back:hover,
 .crossword-coming-soon__back:focus-visible { color: #eee; outline: none; }
 .crossword-coming-soon__content {
   position: relative;
-  z-index: 1;
   display: grid;
   width: min(100% - 40px, 780px);
   flex: 1;
@@ -949,7 +948,7 @@ body {
   opacity: 0.72;
   object-fit: contain;
 }
-.crossword-coming-soon > footer { position: relative; z-index: 1; margin-top: auto; }
+.crossword-coming-soon > footer { margin-top: auto; }
 
 @media (max-width: 680px) {
   .home-dashboard__header { min-height: 96px; }
