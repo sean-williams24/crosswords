@@ -865,9 +865,9 @@ body {
 }
 .weekly-modal__body { padding: 30px 36px 35px; }
 .weekly-modal__eyebrow { margin: 0 0 9px; color: #3377b1; font-size: 11px; font-weight: 700; letter-spacing: 0.17em; }
-.weekly-modal__body h2 { margin: 0; color: #eee; font-size: 28px; letter-spacing: -0.035em; }
-.weekly-modal__intro { margin: 12px 0 26px; color: #b8b8b8; font-size: 17px; line-height: 1.45; }
-.weekly-modal__features { display: grid; gap: 17px; margin: 0 0 30px; padding: 0; list-style: none; color: #eee; font-size: 18px; }
+.weekly-modal__title { margin: 0; color: #eee; font-size: 25px; letter-spacing: -0.035em; text-align: center; }
+.weekly-modal__intro { margin: 12px 0 26px; color: #b8b8b8; font-size: 17px; line-height: 1.45;; text-align: center; }
+.weekly-modal__features { display: grid; width: fit-content; max-width: 100%; margin: 30px auto; padding: 0; gap: 17px; list-style: none; color: #eee; font-size: 18px; }
 .weekly-modal__features li { display: flex; gap: 16px; align-items: center; }
 .weekly-modal__features li > span { display: inline-grid; width: 28px; place-items: center; color: #3377b1; font-size: 25px; }
 .weekly-modal__store-badge { display: flex; justify-content: center; }

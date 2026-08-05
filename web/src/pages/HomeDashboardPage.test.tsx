@@ -57,7 +57,20 @@ describe("web home dashboard", () => {
     renderDashboard();
 
     await user.click(screen.getByRole("button", { name: /Pro Crossword/i }));
-    expect(screen.getByRole("dialog", { name: "The full game experience" })).toBeInTheDocument();
+    const modal = screen.getByRole("dialog", { name: "The full game experience" });
+    expect(modal).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "The full game experience" })).toHaveClass(
+      "weekly-modal__title"
+    );
+    const featureList = modal.querySelector(".weekly-modal__features");
+    const intro = screen.getByText("Available on the Backword iOS app...");
+    expect(featureList).not.toBeNull();
+    expect(
+      screen.getByRole("heading", { name: "The full game experience" }).compareDocumentPosition(
+        featureList!
+      ) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+    expect(featureList!.compareDocumentPosition(intro) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByText("Weekly challenging puzzles")).toBeInTheDocument();
     const appStoreBadge = screen.getByLabelText("Download Backword on the App Store");
     expect(appStoreBadge).toHaveAttribute(

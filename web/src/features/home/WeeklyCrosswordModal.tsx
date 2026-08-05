@@ -50,11 +50,7 @@ export function WeeklyCrosswordModal({ onClose }: WeeklyCrosswordModalProps) {
           </div>
         </div>
         <div className="weekly-modal__body">
-          <p className="weekly-modal__eyebrow">AVAILABLE ON IOS</p>
-          <h2 id="weekly-modal-title">The full game experience</h2>
-          <p className="weekly-modal__intro">
-            Weekly Crosswords are available in the Backword iOS app.
-          </p>
+          <h2 className="weekly-modal__title" id="weekly-modal-title">The full game experience</h2>
           <ul className="weekly-modal__features">
             {features.map(([icon, feature]) => (
               <li key={feature}>
@@ -63,6 +59,9 @@ export function WeeklyCrosswordModal({ onClose }: WeeklyCrosswordModalProps) {
               </li>
             ))}
           </ul>
+                 <p className="weekly-modal__intro">
+            Available on the Backword iOS app...
+          </p>
           <div className="weekly-modal__store-badge">
             <AppStoreBadge />
           </div>
