@@ -856,7 +856,11 @@ body {
 .weekly-modal__logo { position: relative; width: 220px; height: 130px; }
 .weekly-modal__logo img { position: absolute; width: 100%; height: auto; object-fit: contain; }
 .weekly-modal__logo img:first-child { top: 11px; left: 0; }
-.weekly-modal__logo img:last-child { top: 39px; left: 26px; transform: scale(0.62); }
+.weekly-modal__logo img:last-child {
+  top: 55px;
+  left: 26px;
+  transform: scale(0.94);
+}
 .weekly-modal__body { padding: 30px 36px 35px; }
 .weekly-modal__eyebrow { margin: 0 0 9px; color: #3377b1; font-size: 11px; font-weight: 700; letter-spacing: 0.17em; }
 .weekly-modal__body h2 { margin: 0; color: #eee; font-size: 28px; letter-spacing: -0.035em; }
@@ -870,11 +874,27 @@ body {
 .crossword-coming-soon__back { display: inline-block; color: #b8b8b8; font-weight: 600; text-decoration: none; }
 .crossword-coming-soon__back:hover,
 .crossword-coming-soon__back:focus-visible { color: #eee; outline: none; }
-.crossword-coming-soon__content { position: relative; z-index: 1; width: min(100% - 40px, 680px); margin: clamp(70px, 15vh, 160px) auto 0; text-align: center; }
+.crossword-coming-soon__content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(100% - 40px, 780px);
+  flex: 1;
+  grid-template-rows: auto 1fr;
+  margin: 0 auto;
+  padding: clamp(34px, 10vh, 208px) 0 clamp(28px, 5vh, 60px);
+  text-align: center;
+}
 .crossword-coming-soon__content p { margin: 0; color: #d6be87; font-size: 12px; font-weight: 700; letter-spacing: 0.25em; }
 .crossword-coming-soon__content h1 { margin: 12px 0; font-size: clamp(46px, 8vw, 78px); letter-spacing: -0.055em; }
 .crossword-coming-soon__content span { color: #aaa; font-size: clamp(17px, 2.6vw, 21px); }
-.crossword-coming-soon__preview { position: absolute; bottom: -520px; left: 50%; width: min(480px, 76vw); opacity: 0.22; filter: grayscale(1) contrast(0.82); mask-image: linear-gradient(to bottom, transparent 0, black 16%, black 68%, transparent 100%); transform: translateX(-50%); }
+.crossword-coming-soon__preview {
+  width: min(520px, 68vw);
+  max-height: min(620px, 46vh);
+  margin: auto;
+  opacity: 0.72;
+  object-fit: contain;
+}
 .crossword-coming-soon > footer { position: relative; z-index: 1; margin-top: auto; }
 
 @media (max-width: 680px) {

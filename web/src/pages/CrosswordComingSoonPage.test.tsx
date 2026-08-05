@@ -13,9 +13,11 @@ describe("CrosswordComingSoonPage", () => {
     expect(screen.getByRole("heading", { level: 1, name: "Coming soon" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
-    expect(screen.getByAltText("Preview of the Quick Crossword game")).toHaveAttribute(
+    const preview = screen.getByAltText("Preview of the Quick Crossword game");
+    expect(preview).toHaveAttribute(
       "src",
       "/screenshots/crossword.png"
     );
+    expect(preview.parentElement).toHaveClass("crossword-coming-soon__content");
   });
 });

@@ -9,15 +9,17 @@ export function CrosswordComingSoonPage() {
         {/* <Link className="crossword-coming-soon__back" to="/home">← Back to home</Link> */}
       </header>
       <div className="crossword-coming-soon__content">
-        <p>QUICK CROSSWORD</p>
-        <h1>Coming soon</h1>
-        <span>The daily 9×9 crossword is on its way to the web.</span>
+        <div className="crossword-coming-soon__copy">
+          <p>QUICK CROSSWORD</p>
+          <h1>Coming soon</h1>
+          <span>The daily 9×9 crossword is on its way to the web.</span>
+        </div>
+        <img
+          alt="Preview of the Quick Crossword game"
+          className="crossword-coming-soon__preview"
+          src="/screenshots/crossword.png"
+        />
       </div>
-      <img
-        alt="Preview of the Quick Crossword game"
-        className="crossword-coming-soon__preview"
-        src="/screenshots/crossword.png"
-      />
       <Footer />
     </main>
   );
