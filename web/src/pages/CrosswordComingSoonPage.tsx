@@ -1,9 +1,13 @@
-import { Link } from "react-router-dom";
+import { GameMenu } from "../features/backword/components/GameMenu";
+import { Footer } from "../components/Footer";
 
 export function CrosswordComingSoonPage() {
   return (
     <main className="crossword-coming-soon">
-      <Link className="crossword-coming-soon__back" to="/home">← Back to home</Link>
+      <header className="crossword-coming-soon__header">
+        <GameMenu />
+        {/* <Link className="crossword-coming-soon__back" to="/home">← Back to home</Link> */}
+      </header>
       <div className="crossword-coming-soon__content">
         <p>QUICK CROSSWORD</p>
         <h1>Coming soon</h1>
@@ -14,6 +18,7 @@ export function CrosswordComingSoonPage() {
         className="crossword-coming-soon__preview"
         src="/screenshots/crossword.png"
       />
+      <Footer />
     </main>
   );
 }

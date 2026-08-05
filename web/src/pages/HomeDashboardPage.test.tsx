@@ -30,6 +30,7 @@ describe("web home dashboard", () => {
     expect(screen.getByRole("link", { name: /Quick Crossword/i })).toHaveAttribute("href", "/crossword");
     expect(screen.getByText("Sycophant")).toBeInTheDocument();
     expect(screen.getAllByLabelText("Status: New")).toHaveLength(2);
+    expect(screen.queryByRole("link", { name: "Info" })).not.toBeInTheDocument();
   });
 
   it.each([

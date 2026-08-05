@@ -28,7 +28,6 @@ export function DailyGameCard({
         {description ? <p className="home-game-card__description">{description}</p> : null}
         <DashboardStatusLabel status={status} />
       </div>
-      <span className="home-game-card__cta" aria-hidden="true">Play →</span>
     </Link>
   );
 }

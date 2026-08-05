@@ -4,6 +4,8 @@ import { BackwordInstructions } from "../features/backword/components/BackwordIn
 import { BackwordKeyboard } from "../features/backword/components/BackwordKeyboard";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { BackwordStats } from "../features/backword/components/BackwordStats";
+import { GameMenu } from "../features/backword/components/GameMenu";
+import { Footer } from "../components/Footer";
 import { localDateString } from "../features/backword/date";
 import {
   BACKWORD_RULES_VERSION,
@@ -42,6 +44,7 @@ export function BackwordPage() {
   const [usingCache, setUsingCache] = useState(false);
   const [inputError, setInputError] = useState(false);
   const [showDetailedExplainer, setShowDetailedExplainer] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const loadWord = useCallback(async (requestedDate: string) => {
     setLoading(true);
@@ -143,7 +146,7 @@ export function BackwordPage() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (sheet || event.metaKey || event.ctrlKey || event.altKey) {
+      if (sheet || isMenuOpen || event.metaKey || event.ctrlKey || event.altKey) {
         return;
       }
       if (/^[a-zA-Z]$/.test(event.key)) {
@@ -159,7 +162,7 @@ export function BackwordPage() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [deleteLetter, enterLetter, handleSubmit, sheet]);
+  }, [deleteLetter, enterLetter, handleSubmit, isMenuOpen, sheet]);
 
   function closeInstructions() {
     const updated = storage.markInstructionsSeen(settings);
@@ -180,6 +183,11 @@ export function BackwordPage() {
     <div className="bw-page">
       <div className="bw-shell">
         <header className="bw-game-header bw-game-header--offset">
+          <GameMenu
+            isOpen={isMenuOpen}
+            onClose={() => setIsMenuOpen(false)}
+            onOpen={() => setIsMenuOpen(true)}
+          />
           <BackwordLogo large />
           <nav aria-label="Backword actions" className="bw-game-actions--top">
             <button
@@ -279,6 +287,7 @@ export function BackwordPage() {
           </>
         ) : null}
       </div>
+      <Footer />
 
       {sheet === "instructions" ? (
         <BackwordInstructions

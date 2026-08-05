@@ -19,6 +19,8 @@ describe("Backword website routes", () => {
       "href",
       "/crossword"
     );
+    expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
   });
 
   it("renders the Quick Crossword coming-soon route", () => {
@@ -26,6 +28,8 @@ describe("Backword website routes", () => {
 
     expect(screen.getByRole("heading", { level: 1, name: "Coming soon" })).toBeInTheDocument();
     expect(screen.getByAltText("Preview of the Quick Crossword game")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
   });
 
   it("keeps the marketing page and footer links at /info", () => {
@@ -38,11 +42,11 @@ describe("Backword website routes", () => {
       "href",
       "https://apps.apple.com/app/backword/id6773428497"
     );
-    expect(screen.getAllByRole("link", { name: "Privacy" })).toHaveLength(2);
-    expect(screen.getAllByRole("link", { name: "Terms" })).toHaveLength(2);
+    expect(screen.getAllByRole("link", { name: "Privacy" })).toHaveLength(1);
+    expect(screen.getAllByRole("link", { name: "Terms" })).toHaveLength(1);
     expect(screen.getAllByRole("link", { name: /Play.*Backword/i }).length).toBeGreaterThan(1);
-    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/home");
-    expect(screen.getByRole("link", { name: "Info" })).toHaveAttribute("href", "/info");
+    expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Play today’s Backword" })).toHaveAttribute(
       "href",
       "/"
@@ -54,7 +58,7 @@ describe("Backword website routes", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders Backword at the main URL without marketing chrome", () => {
+  it("renders Backword at the main URL with a footer but without marketing navigation", () => {
     localStorage.setItem(
       "backword:web:settings:v1",
       JSON.stringify({
@@ -72,7 +76,7 @@ describe("Backword website routes", () => {
       "/brand/backword-logo.png"
     );
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("navigation", { name: "Footer" })).not.toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
   });
 
   it("keeps marketing section text before screenshots in mobile source order", () => {
@@ -109,6 +113,9 @@ describe("Backword website routes", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: "Advertising and AdMob" })
     ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Home" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
   });
 
   it("renders the terms route", () => {
@@ -123,5 +130,8 @@ describe("Backword website routes", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: "Advertising and Rewards" })
     ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Home" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
   });
 });

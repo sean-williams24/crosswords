@@ -1,9 +1,11 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
+import { GameMenu } from "../features/backword/components/GameMenu";
 import { backwordDashboardStatus } from "../features/home/backwordStatus";
 import { DailyGameCard } from "../features/home/DailyGameCard";
 import { WeeklyCrosswordModal } from "../features/home/WeeklyCrosswordModal";
+import { Footer } from "../components/Footer";
 import { CrosswordComingSoonPage } from "./CrosswordComingSoonPage";
 
 type HomeDashboardPageProps = {
@@ -31,10 +33,10 @@ export function HomeDashboardPage({ showCrosswordPlaceholder = false }: HomeDash
   return (
     <main className="home-dashboard">
       <header className="home-dashboard__header">
+        <GameMenu />
         <Link aria-label="Backword home" to="/home">
           <BackwordLogo large />
         </Link>
-        <Link className="home-dashboard__info" to="/info">Info</Link>
       </header>
 
       <section className="home-dashboard__content" aria-labelledby="daily-games-title">
@@ -64,7 +66,6 @@ export function HomeDashboardPage({ showCrosswordPlaceholder = false }: HomeDash
         <Link className="wotd-card" to="/info">
           <span className="wotd-card__label">WORD OF THE DAY</span>
           <strong>Sycophant</strong>
-          <span aria-hidden="true">→</span>
         </Link>
 
         <section className="weekly-card-section" aria-labelledby="weekly-games-title">
@@ -76,10 +77,11 @@ export function HomeDashboardPage({ showCrosswordPlaceholder = false }: HomeDash
             <span className="weekly-card__crown" aria-hidden="true">♛</span>
             <span>PRO CROSSWORD</span>
             <small>13×13</small>
-            <span className="weekly-card__detail">Learn more →</span>
           </button>
         </section>
       </section>
+
+      <Footer />
 
       {showWeeklyModal ? <WeeklyCrosswordModal onClose={() => setShowWeeklyModal(false)} /> : null}
     </main>

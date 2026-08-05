@@ -29,6 +29,11 @@ screen; the weekly card directs players to the iOS App Store rather than
 implying browser Pro access. Word of the Day is presentation-only on the web
 until its browser experience is implemented.
 
+The browser's slide-out navigation drawer is rendered on every web route. It
+keeps the game destinations prominent and places Privacy and Terms in a
+secondary group, so players can navigate without leaving the immersive game
+surface for marketing-page chrome.
+
 ---
 
 ## Crossword Configuration & Word Repeat Prevention

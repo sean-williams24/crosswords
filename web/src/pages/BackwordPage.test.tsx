@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { localDateString } from "../features/backword/date";
@@ -35,7 +35,7 @@ describe("Backword browser game", () => {
     Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
   });
 
-  it("uses the iOS logo asset without showing a back button", async () => {
+  it("uses the iOS logo asset and provides the game navigation menu", async () => {
     renderGame();
 
     const logo = await screen.findByRole("img", { name: "Backword" });
@@ -44,6 +44,26 @@ describe("Backword browser game", () => {
     expect(logo.closest("header")).toHaveClass("bw-game-header--offset");
     expect(screen.getByRole("navigation", { name: "Backword actions" })).toHaveClass("bw-game-actions--top");
     expect(screen.queryByRole("link", { name: "Back to home" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
+  });
+
+  it("opens and closes a menu with game and legal routes", async () => {
+    const user = userEvent.setup();
+    renderGame();
+
+    await user.click(screen.getByRole("button", { name: "Open game menu" }));
+
+    const menu = screen.getByRole("dialog", { name: "Game navigation" });
+    expect(menu).toBeInTheDocument();
+    expect(within(menu).getByRole("link", { name: "Home" })).toHaveAttribute("href", "/home");
+    expect(within(menu).getByRole("link", { name: "Play Backword" })).toHaveAttribute("href", "/");
+    expect(within(menu).getByRole("link", { name: "Quick Crossword" })).toHaveAttribute("href", "/crossword");
+    expect(within(menu).getByRole("link", { name: "Info" })).toHaveAttribute("href", "/info");
+    expect(within(menu).getByRole("link", { name: "Privacy" })).toHaveAttribute("href", "/privacy");
+    expect(within(menu).getByRole("link", { name: "Terms" })).toHaveAttribute("href", "/terms");
+
+    await user.click(screen.getByRole("button", { name: "Close game menu" }));
+    expect(screen.queryByRole("dialog", { name: "Game navigation" })).not.toBeInTheDocument();
   });
 
   it("renders the score progress and keyboard within the game controls", async () => {
