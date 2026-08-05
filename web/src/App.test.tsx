@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "./App";
 
@@ -42,8 +42,24 @@ describe("Backword website routes", () => {
       "href",
       "https://apps.apple.com/app/backword/id6773428497"
     );
-    expect(screen.getAllByRole("link", { name: "Privacy" })).toHaveLength(1);
-    expect(screen.getAllByRole("link", { name: "Terms" })).toHaveLength(1);
+    const footer = screen.getByRole("navigation", { name: "Footer" });
+    const footerLinks = within(footer).getAllByRole("link");
+    expect(footerLinks.map((link) => link.textContent)).toEqual([
+      "Home",
+      "Backword",
+      "Crossword",
+      "Info",
+      "Privacy",
+      "Terms"
+    ]);
+    expect(footerLinks.map((link) => link.getAttribute("href"))).toEqual([
+      "/home",
+      "/",
+      "/crossword",
+      "/info",
+      "/privacy",
+      "/terms"
+    ]);
     expect(screen.getAllByRole("link", { name: /Play.*Backword/i }).length).toBeGreaterThan(1);
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
@@ -114,7 +130,6 @@ describe("Backword website routes", () => {
       screen.getByRole("heading", { level: 2, name: "Advertising and AdMob" })
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Home" })).not.toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
   });
 
@@ -131,7 +146,6 @@ describe("Backword website routes", () => {
       screen.getByRole("heading", { level: 2, name: "Advertising and Rewards" })
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Home" })).not.toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
   });
 });

@@ -32,7 +32,7 @@
 
 :root {
   color: #eeeeee;
-  background: #0a0a0a;
+  background: #111111;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -57,7 +57,7 @@ a {
   min-height: 100svh;
   flex-direction: column;
   color: var(--bw-primary);
-  background: #080808;
+  background: #111111;
 }
 
 .bw-shell {
@@ -68,7 +68,7 @@ a {
   flex: 1 0 auto;
   flex-direction: column;
   overflow: hidden;
-  background: #0a0a0a;
+  background: #111111;
 }
 
 .bw-game-header {
@@ -374,8 +374,7 @@ a {
   z-index: 2;
   flex: 0 0 auto;
   padding-bottom: env(safe-area-inset-bottom);
-  background: #0a0a0a;
-  box-shadow: 0 -15px 30px rgb(0 0 0 / 16%);
+  background: #111111;
 }
 
 .bw-clue-help {
@@ -625,6 +624,7 @@ a {
 
 @media (min-width: 700px) {
   .bw-shell { max-width: none; border-inline: 0; box-shadow: none; }
+  .bw-game-controls { padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
   .bw-modal-backdrop { align-items: center; padding: 30px; }
   .bw-modal { border-radius: 22px; }
   .bw-completion-modal { height: min(92svh, 900px); }
@@ -685,6 +685,8 @@ body {
   line-height: 1.8;
 }
 
+.site-footer { background: #0a0a0a; }
+
 /* Web home dashboard */
 .home-dashboard {
   display: flex;
@@ -692,7 +694,7 @@ body {
   overflow: hidden;
   flex-direction: column;
   color: #eee;
-  background: #0a0a0a;
+  background: #111111;
 }
 
 .home-dashboard > footer { margin-top: auto; }
@@ -735,7 +737,7 @@ body {
 .weekly-card-section > div > p:last-child {
   margin: 0;
   color: #8d8d92;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 0.08em;
 }
 
@@ -785,7 +787,7 @@ body {
   border-radius: 999px;
   background: rgb(255 255 255 / 10%);
   color: #eee;
-  font-size: 15px;
+  font-size: 11px;
   font-weight: 700;
 }
 .home-status__icon { display: grid; width: 19px; height: 19px; place-items: center; border: 2px solid currentColor; border-radius: 50%; font-size: 13px; font-weight: 700; line-height: 1; }
@@ -853,11 +855,11 @@ body {
 .weekly-modal__close:hover,
 .weekly-modal__close:focus-visible { background: rgb(255 255 255 / 22%); outline: 2px solid #3377b1; outline-offset: 2px; }
 .weekly-modal__hero { display: grid; height: 210px; place-items: center; background: #050505; }
-.weekly-modal__logo { position: relative; width: 220px; height: 130px; }
+.weekly-modal__logo { position: relative; width: 220px; height: 150px; }
 .weekly-modal__logo img { position: absolute; width: 100%; height: auto; object-fit: contain; }
 .weekly-modal__logo img:first-child { top: 11px; left: 0; }
 .weekly-modal__logo img:last-child {
-  top: 55px;
+  top: 75px;
   left: 26px;
   transform: scale(0.94);
 }
@@ -869,7 +871,7 @@ body {
 .weekly-modal__features li { display: flex; gap: 16px; align-items: center; }
 .weekly-modal__features li > span { display: inline-grid; width: 28px; place-items: center; color: #3377b1; font-size: 25px; }
 
-.crossword-coming-soon { position: relative; display: flex; min-height: 100svh; overflow: hidden; flex-direction: column; color: #eee; background: #080808; }
+.crossword-coming-soon { position: relative; display: flex; min-height: 100svh; overflow: hidden; flex-direction: column; color: #eee; background: #111111; }
 .crossword-coming-soon__header { position: relative; z-index: 1; display: flex; padding: 22px clamp(22px, 5vw, 64px); align-items: center; gap: 18px; }
 .crossword-coming-soon__back { display: inline-block; color: #b8b8b8; font-weight: 600; text-decoration: none; }
 .crossword-coming-soon__back:hover,
@@ -906,6 +908,7 @@ body {
   .wotd-card { height: 95px; min-height: 0; margin-top: 20px; border-radius: 10px; }
   .weekly-card-section { margin-top: 50px; }
   .weekly-modal__body { padding-inline: 26px; }
+  .crossword-coming-soon__preview { margin: 36px auto auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
