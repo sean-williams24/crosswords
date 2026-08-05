@@ -65,7 +65,6 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
         >
           <section aria-label="Game navigation" aria-modal="true" className="bw-menu-panel" id="game-navigation-menu" role="dialog">
             <div className="bw-menu-panel__heading">
-              <span>MENU</span>
               <button
                 aria-label="Close game menu"
                 className="bw-icon-button"

@@ -55,6 +55,7 @@ describe("Backword browser game", () => {
 
     const menu = screen.getByRole("dialog", { name: "Game navigation" });
     expect(menu).toBeInTheDocument();
+    expect(within(menu).queryByText("MENU")).not.toBeInTheDocument();
     expect(within(menu).getByRole("link", { name: "Home" })).toHaveAttribute("href", "/home");
     expect(within(menu).getByRole("link", { name: "Play Backword" })).toHaveAttribute("href", "/");
     expect(within(menu).getByRole("link", { name: "Quick Crossword" })).toHaveAttribute("href", "/crossword");

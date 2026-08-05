@@ -59,10 +59,12 @@ describe("web home dashboard", () => {
     await user.click(screen.getByRole("button", { name: /Pro Crossword/i }));
     expect(screen.getByRole("dialog", { name: "The full game experience" })).toBeInTheDocument();
     expect(screen.getByText("Weekly challenging puzzles")).toBeInTheDocument();
-    expect(screen.getByLabelText("Download Backword on the App Store")).toHaveAttribute(
+    const appStoreBadge = screen.getByLabelText("Download Backword on the App Store");
+    expect(appStoreBadge).toHaveAttribute(
       "href",
       "https://apps.apple.com/app/backword/id6773428497"
     );
+    expect(appStoreBadge.parentElement).toHaveClass("weekly-modal__store-badge");
 
     await user.click(screen.getByRole("button", { name: "Close weekly crossword details" }));
     expect(screen.queryByRole("dialog", { name: "The full game experience" })).not.toBeInTheDocument();

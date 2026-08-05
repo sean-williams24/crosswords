@@ -140,7 +140,7 @@ a {
   display: flex;
   padding: 2px 0 24px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   color: var(--bw-primary, #eee);
   font-size: 15px;
   font-weight: 700;
@@ -870,6 +870,7 @@ body {
 .weekly-modal__features { display: grid; gap: 17px; margin: 0 0 30px; padding: 0; list-style: none; color: #eee; font-size: 18px; }
 .weekly-modal__features li { display: flex; gap: 16px; align-items: center; }
 .weekly-modal__features li > span { display: inline-grid; width: 28px; place-items: center; color: #3377b1; font-size: 25px; }
+.weekly-modal__store-badge { display: flex; justify-content: center; }
 
 .crossword-coming-soon { position: relative; display: flex; min-height: 100svh; overflow: hidden; flex-direction: column; color: #eee; background: #111111; }
 .crossword-coming-soon__header { position: relative; z-index: 1; display: flex; padding: 22px clamp(22px, 5vw, 64px); align-items: center; gap: 18px; }

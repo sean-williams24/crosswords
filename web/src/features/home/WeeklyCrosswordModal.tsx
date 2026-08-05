@@ -63,7 +63,9 @@ export function WeeklyCrosswordModal({ onClose }: WeeklyCrosswordModalProps) {
               </li>
             ))}
           </ul>
-          <AppStoreBadge />
+          <div className="weekly-modal__store-badge">
+            <AppStoreBadge />
+          </div>
         </div>
       </section>
     </div>
