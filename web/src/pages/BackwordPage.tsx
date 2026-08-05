@@ -189,7 +189,7 @@ export function BackwordPage() {
             onOpen={() => setIsMenuOpen(true)}
           />
           <BackwordLogo large />
-          <nav aria-label="Backword actions" className="bw-game-actions--top">
+          <nav aria-label="Backword actions" className="bw-game-actions--top bw-game-actions--logo-header">
             <button
               aria-label="Backword stats"
               className="bw-icon-button"

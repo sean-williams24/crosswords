@@ -31,13 +31,13 @@ export function DailyGameCard({
         <p className="home-game-card__title">{title}</p>
         {description ? <p className="home-game-card__description">{description}</p> : null}
         <DashboardStatusLabel status={status} />
-        {score !== undefined || streak !== undefined ? (
-          <div className="home-game-card__stats">
-            {score !== null && score !== undefined ? <span><strong>{score}</strong> / 5</span> : <span />}
-            {streak !== undefined ? <span>🔥 {streak}</span> : null}
-          </div>
-        ) : null}
       </div>
+      {score !== undefined || streak !== undefined ? (
+        <div className="home-game-card__stats">
+          {score !== null && score !== undefined ? <span className={`home-game-card__score ${score === 5 ? "is-perfect" : ""}`}><strong>{score}</strong><small>/ 5</small></span> : <span />}
+          {streak && streak > 0 ? <span className="home-game-card__streak">🔥 {streak}</span> : null}
+        </div>
+      ) : null}
     </Link>
   );
 }

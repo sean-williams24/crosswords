@@ -180,8 +180,13 @@ export function CrosswordPage() {
           <GameMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} onOpen={() => setIsMenuOpen(true)} />
           <h1 className="cw-header-title">QUICK CROSSWORD</h1>
           <nav aria-label="Crossword actions" className="bw-game-actions--top">
+            <button aria-label="Show clue list" className="bw-icon-button cw-clues-action" onClick={() => setSheet("clues")} type="button">
+              <svg aria-hidden="true" className="cw-clues-action__icon" viewBox="0 0 20 20">
+                <path d="M2 2h4v4H2zM8 2h4v4H8zM14 2h4v4h-4zM2 8h4v4H2zM8 8h4v4H8zM14 8h4v4h-4zM2 14h4v4H2zM8 14h4v4H8zM14 14h4v4h-4z" />
+              </svg>
+              <span className="cw-clues-action__label">Clues</span>
+            </button>
             <button aria-label="Crossword stats" className="bw-icon-button" onClick={() => setSheet("stats")} type="button">🧠</button>
-            <button aria-label="Show clue list" className="bw-icon-button" onClick={() => setSheet("clues")} type="button">☷</button>
             <button aria-label="How to play" className="bw-icon-button bw-info-icon" onClick={() => setSheet("instructions")} type="button">ⓘ</button>
           </nav>
         </header>

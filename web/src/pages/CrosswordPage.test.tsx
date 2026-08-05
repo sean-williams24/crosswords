@@ -27,6 +27,12 @@ describe("CrosswordPage", () => {
     render(<MemoryRouter><CrosswordPage /></MemoryRouter>);
 
     expect(screen.getByRole("heading", { name: "QUICK CROSSWORD" })).toBeInTheDocument();
+    const actions = screen.getByRole("navigation", { name: "Crossword actions" });
+    const [cluesAction, statsAction] = Array.from(actions.querySelectorAll("button"));
+    expect(cluesAction).toHaveAccessibleName("Show clue list");
+    expect(cluesAction).toHaveClass("cw-clues-action");
+    expect(cluesAction).toHaveTextContent("Clues");
+    expect(statsAction).toHaveAccessibleName("Crossword stats");
     expect(await screen.findByRole("dialog", { name: "How to Play" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Close How to Play" }));
     expect(await screen.findByRole("grid", { name: "Crossword grid" })).toBeInTheDocument();

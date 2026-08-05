@@ -9,7 +9,7 @@ export function AppStoreBadge() {
     >
       <img
         alt="Download on the App Store"
-        className="h-12 w-auto"
+        className="h-14 w-auto"
         src="/Download_on_the_App_Store_Badge_US-UK_RGB_wht_092917.svg"
       />
     </a>

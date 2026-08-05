@@ -10,6 +10,7 @@ import { DailyGameCard } from "../features/home/DailyGameCard";
 import { WeeklyCrosswordModal } from "../features/home/WeeklyCrosswordModal";
 import { WordOfTheDayCard } from "../features/wotd/components/WordOfTheDayCard";
 import { Footer } from "../components/Footer";
+import { AppStoreBadge } from "../components/AppStoreBadge";
 
 function formattedToday() {
   return new Intl.DateTimeFormat("en-US", {
@@ -61,6 +62,9 @@ export function HomeDashboardPage() {
             streak={crosswordStatus.streak}
             title="Quick Crossword"
           />
+        </div>
+        <div className="home-dashboard__store-badge">
+          <AppStoreBadge />
         </div>
 
         <WordOfTheDayCard />

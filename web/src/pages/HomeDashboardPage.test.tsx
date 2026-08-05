@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { localDateString } from "../features/backword/date";
@@ -25,9 +25,17 @@ describe("web home dashboard", () => {
     renderDashboard();
 
     expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
+    const appStoreBadge = screen.getByLabelText("Download Backword on the App Store");
+    expect(appStoreBadge.parentElement).toHaveClass("home-dashboard__store-badge");
+    expect(appStoreBadge.parentElement?.parentElement).toHaveClass("home-dashboard__content");
     const backwordLink = screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/");
     expect(backwordLink).toBeDefined();
-    expect(screen.getByRole("link", { name: /Quick Crossword/i })).toHaveAttribute("href", "/crossword");
+    const crosswordCard = screen.getByRole("link", { name: /Quick Crossword/i });
+    expect(crosswordCard).toHaveAttribute("href", "/crossword");
+    const crosswordStats = crosswordCard.querySelector(".home-game-card__stats");
+    expect(crosswordStats).not.toBeNull();
+    expect(crosswordStats?.parentElement).toBe(crosswordCard);
+    expect(crosswordStats?.querySelector(".home-game-card__streak")).toBeNull();
     expect(screen.getAllByLabelText("Status: New")).toHaveLength(2);
   });
 
@@ -71,7 +79,7 @@ describe("web home dashboard", () => {
     ).toBeTruthy();
     expect(featureList!.compareDocumentPosition(intro) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByText("Weekly challenging puzzles")).toBeInTheDocument();
-    const appStoreBadge = screen.getByLabelText("Download Backword on the App Store");
+    const appStoreBadge = within(modal).getByLabelText("Download Backword on the App Store");
     expect(appStoreBadge).toHaveAttribute(
       "href",
       "https://apps.apple.com/app/backword/id6773428497"

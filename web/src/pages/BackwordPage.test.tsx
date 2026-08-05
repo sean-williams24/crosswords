@@ -42,7 +42,10 @@ describe("Backword browser game", () => {
     expect(logo).toHaveAttribute("src", "/brand/backword-logo.png");
     expect(logo).toHaveClass("bw-logo--large");
     expect(logo.closest("header")).toHaveClass("bw-game-header--offset");
-    expect(screen.getByRole("navigation", { name: "Backword actions" })).toHaveClass("bw-game-actions--top");
+    expect(screen.getByRole("navigation", { name: "Backword actions" })).toHaveClass(
+      "bw-game-actions--top",
+      "bw-game-actions--logo-header"
+    );
     expect(screen.queryByRole("link", { name: "Back to home" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
   });
@@ -60,6 +63,9 @@ describe("Backword browser game", () => {
     expect(within(menu).getByRole("link", { name: "Play Backword" })).toHaveAttribute("href", "/");
     expect(within(menu).getByRole("link", { name: "Quick Crossword" })).toHaveAttribute("href", "/crossword");
     expect(within(menu).getByRole("link", { name: "Info" })).toHaveAttribute("href", "/info");
+    expect(within(menu).getByLabelText("Download Backword on the App Store").parentElement).toHaveClass(
+      "bw-menu-store-badge"
+    );
     expect(within(menu).getByRole("link", { name: "Privacy" })).toHaveAttribute("href", "/privacy");
     expect(within(menu).getByRole("link", { name: "Terms" })).toHaveAttribute("href", "/terms");
 

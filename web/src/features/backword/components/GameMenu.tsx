@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { AppStoreBadge } from "../../../components/AppStoreBadge";
 
 type GameMenuProps = {
   isOpen?: boolean;
@@ -83,6 +84,9 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
               <div className="bw-menu-links__legal">
                 <Link className="bw-menu-link bw-menu-link--secondary" to="/privacy">Privacy</Link>
                 <Link className="bw-menu-link bw-menu-link--secondary" to="/terms">Terms</Link>
+                <div className="bw-menu-store-badge">
+                  <AppStoreBadge />
+                </div>
               </div>
             </nav>
           </section>
