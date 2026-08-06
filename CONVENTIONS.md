@@ -37,6 +37,12 @@ keeps the game destinations prominent and places Privacy and Terms in a
 secondary group, so players can navigate without leaving the immersive game
 surface for marketing-page chrome.
 
+### Browser feedback
+
+The browser contact page opens a blank `mailto:` message addressed to
+`backword.support@gmail.com`. It does not collect, submit, retain, or process
+feedback; the sender's configured email app delivers it instead.
+
 ### Browser daily crossword parity
 
 `/crossword` is the browser-local version of the released 9×9 daily puzzle.

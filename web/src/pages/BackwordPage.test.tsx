@@ -63,6 +63,7 @@ describe("Backword browser game", () => {
     expect(within(menu).getByRole("link", { name: "Play Backword" })).toHaveAttribute("href", "/");
     expect(within(menu).getByRole("link", { name: "Quick Crossword" })).toHaveAttribute("href", "/crossword");
     expect(within(menu).getByRole("link", { name: "Info" })).toHaveAttribute("href", "/info");
+    expect(within(menu).getByRole("link", { name: "Contact" })).toHaveAttribute("href", "/contact");
     expect(within(menu).getByLabelText("Download Backword on the App Store").parentElement).toHaveClass(
       "bw-menu-store-badge"
     );

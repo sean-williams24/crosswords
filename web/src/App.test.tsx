@@ -48,6 +48,7 @@ describe("Backword website routes", () => {
       "Backword",
       "Crossword",
       "Info",
+      "Contact",
       "Privacy",
       "Terms"
     ]);
@@ -56,6 +57,7 @@ describe("Backword website routes", () => {
       "/",
       "/crossword",
       "/info",
+      "/contact",
       "/privacy",
       "/terms"
     ]);
@@ -146,5 +148,18 @@ describe("Backword website routes", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
+  });
+
+  it("renders the contact route with an email hand-off", () => {
+    renderRoute("/contact");
+
+    expect(screen.getByText("Contact us")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Send email" })).toHaveAttribute(
+      "href",
+      "mailto:backword.support@gmail.com"
+    );
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
   });
 });

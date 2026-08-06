@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { BackwordPage } from "./pages/BackwordPage";
+import { ContactPage } from "./pages/ContactPage";
 import { CrosswordPage } from "./pages/CrosswordPage";
 import { HomeDashboardPage } from "./pages/HomeDashboardPage";
 import { InfoPage } from "./pages/InfoPage";
@@ -13,6 +14,7 @@ export default function App() {
       <Route path="/" element={<BackwordPage />} />
       <Route path="/home" element={<HomeDashboardPage />} />
       <Route path="/crossword" element={<CrosswordPage />} />
+      <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
       <Route path="/info" element={<Layout><InfoPage /></Layout>} />
       <Route path="/privacy" element={<Layout><PrivacyPage /></Layout>} />
       <Route path="/terms" element={<Layout><TermsPage /></Layout>} />
