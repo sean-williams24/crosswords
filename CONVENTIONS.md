@@ -101,6 +101,12 @@ calendar-day release. The score remains in its historical progress record at
 midnight; late completion does not overwrite it. The rolling 14-day score,
 history, and streaks are all derived from saved per-date progress.
 
+Backword follows the same release-window eligibility for its all-time account
+metrics: only a result completed on that Backword's own release date counts as
+played, won, a streak entry, a win-rate result, or a guess-distribution entry.
+Archive records remain synced and visible in release history, but never alter
+those performance metrics.
+
 Total solved includes every successful crossword completion, including Archive
 play. Current and best streaks, the Daily Stats average, and per-row times use
 only successful completions made during that puzzle's own release window. An

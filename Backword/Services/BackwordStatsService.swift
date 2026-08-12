@@ -10,14 +10,31 @@ final class BackwordStatsService: ObservableObject {
             return
         }
 
+        stats = BackwordStats.rebuiltForAccount(progressRecords: BackwordProgress.loadAll())
+    }
+}
+
+extension BackwordStats {
+    /// Account metrics are derived only from canonical release-day results.
+    /// Archive progress remains synced but never changes lifetime performance
+    /// metrics such as wins, streaks, win rate, or guess distribution.
+    static func rebuiltForAccount(
+        progressRecords: [BackwordProgress],
+        calendar: Calendar = .current
+    ) -> BackwordStats {
         var rebuilt = BackwordStats()
-        for progress in BackwordProgress.loadAll().filter(\.isComplete).sorted(by: { $0.date < $1.date }) {
+        for progress in progressRecords
+            .filter({ progress in
+                guard progress.isComplete, let completedAt = progress.completedAt else { return false }
+                return ContentReleaseCalendar(now: completedAt, calendar: calendar).dailyDateString == progress.date
+            })
+            .sorted(by: { $0.date < $1.date }) {
             rebuilt.record(
                 guessCount: progress.isWon ? progress.guesses.count : nil,
                 date: progress.date
             )
         }
-        stats = rebuilt
+        return rebuilt
     }
 }
 

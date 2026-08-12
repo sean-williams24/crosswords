@@ -5,6 +5,36 @@ import Testing
 @Suite("Backword Stats History Tests")
 struct BackwordStatsHistoryTests {
 
+    @Test("Account stats exclude archive results from all-time performance metrics")
+    func accountStatsExcludeArchiveResults() throws {
+        let calendar = releaseCalendar()
+        var onTimeWin = BackwordProgress(date: "2026-08-02")
+        onTimeWin.guesses = ["CASTLE"]
+        onTimeWin.wonFlag = true
+        onTimeWin.completedAt = try date("2026-08-02T12:00:00Z")
+
+        var archiveWin = BackwordProgress(date: "2026-07-20")
+        archiveWin.guesses = ["PLANET", "CASTLE"]
+        archiveWin.wonFlag = true
+        archiveWin.completedAt = try date("2026-08-03T12:00:00Z")
+
+        var onTimeFailure = BackwordProgress(date: "2026-08-03")
+        onTimeFailure.guesses = ["PLANET", "STREAM", "CANDLE", "MARKET", "FLOWER"]
+        onTimeFailure.completedAt = try date("2026-08-03T12:00:00Z")
+
+        let stats = BackwordStats.rebuiltForAccount(
+            progressRecords: [onTimeWin, archiveWin, onTimeFailure],
+            calendar: calendar
+        )
+
+        #expect(stats.gamesPlayed == 2)
+        #expect(stats.gamesWon == 1)
+        #expect(stats.winRate == 50)
+        #expect(stats.count(forGuess: 1) == 1)
+        #expect(stats.count(forGuess: 2) == 0)
+        #expect(stats.longestStreak == 1)
+    }
+
     @Test("History shows every release in the last 14 days")
     func historyIncludesPlayedInProgressAndUnplayedDays() throws {
         let calendar = releaseCalendar()
