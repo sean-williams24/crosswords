@@ -6,6 +6,18 @@ import Testing
 @MainActor
 struct StoreServiceTests {
 
+    @Test("Account entitlement grants Pro without replacing StoreKit state")
+    func accountEntitlementGrantsPro() {
+        let service = StoreService()
+        service.setAccountProStatus(true)
+
+        #expect(service.isProUser)
+        #expect(service.accountHasPro)
+
+        service.setAccountProStatus(false)
+        #expect(!service.accountHasPro)
+    }
+
     @Test("Active monthly entitlement grants Pro")
     func activeMonthlyEntitlementGrantsPro() {
         let now = Date(timeIntervalSince1970: 1_800_000_000)
@@ -118,58 +130,14 @@ struct StoreServiceTests {
         let now = Date(timeIntervalSince1970: 1_800_000_000)
 
         #expect(StoreService.resolvedProStatus(
-            hasActiveSubscription: true,
-            entitlementCount: 1,
-            cachedExpirationDate: nil,
-            now: now
+            hasActiveSubscription: true
         ))
     }
 
-    @Test("Resolved Pro status falls back to active cache when StoreKit returns no entitlements")
-    func resolvedProStatusFallsBackToActiveCacheForEmptyEntitlements() {
-        let now = Date(timeIntervalSince1970: 1_800_000_000)
-
-        #expect(StoreService.resolvedProStatus(
-            hasActiveSubscription: false,
-            entitlementCount: 0,
-            cachedExpirationDate: now.addingTimeInterval(60),
-            now: now
-        ))
-    }
-
-    @Test("Resolved Pro status uses recently expired cache during validation grace")
-    func resolvedProStatusUsesRecentlyExpiredCacheDuringValidationGrace() {
-        let now = Date(timeIntervalSince1970: 1_800_000_000)
-
-        #expect(StoreService.resolvedProStatus(
-            hasActiveSubscription: false,
-            entitlementCount: 0,
-            cachedExpirationDate: now.addingTimeInterval(-60),
-            now: now
-        ))
-    }
-
-    @Test("Resolved Pro status ignores stale expired cache")
-    func resolvedProStatusIgnoresStaleExpiredCache() {
-        let now = Date(timeIntervalSince1970: 1_800_000_000)
-
+    @Test("Resolved Pro status clears local access when StoreKit has no active subscription")
+    func resolvedProStatusDoesNotUseCachedSubscription() {
         #expect(!StoreService.resolvedProStatus(
-            hasActiveSubscription: false,
-            entitlementCount: 0,
-            cachedExpirationDate: now.addingTimeInterval(-4 * 24 * 60 * 60),
-            now: now
-        ))
-    }
-
-    @Test("Resolved Pro status does not use cache when StoreKit returns non-granting entitlements")
-    func resolvedProStatusDoesNotUseCacheForNonGrantingEntitlements() {
-        let now = Date(timeIntervalSince1970: 1_800_000_000)
-
-        #expect(!StoreService.resolvedProStatus(
-            hasActiveSubscription: false,
-            entitlementCount: 1,
-            cachedExpirationDate: now.addingTimeInterval(60),
-            now: now
+            hasActiveSubscription: false
         ))
     }
 

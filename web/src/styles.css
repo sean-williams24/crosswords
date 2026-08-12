@@ -176,6 +176,13 @@ a {
 .bw-menu-link--primary:hover,
 .bw-menu-link--primary:focus-visible { color: #5fa4dc; outline: none; }
 
+.bw-menu-auth {
+  display: flex;
+  margin-top: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
 .bw-menu-store-badge { margin-left: auto; }
 .bw-menu-store-badge img { display: block; height: 48px; width: auto; }
 
@@ -776,7 +783,34 @@ body {
 
 .home-dashboard__header > a[aria-label="Backword home"] { grid-column: 2; }
 .home-dashboard__header .bw-logo { display: block; height: 72px; }
-.home-dashboard__store-badge img { display: block; height: 48px; width: auto; }
+.home-dashboard__actions {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  right: clamp(20px, 4vw, 60px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.home-dashboard__actions img { display: block; height: 40px; width: auto; }
+.home-dashboard__actions .auth-button { width: 119.66407px; min-height: 40px; height: 40px; padding-inline: 0; border-radius: 6px; }
+.auth-button {
+  display: inline-flex;
+  min-height: 36px;
+  padding: 8px 13px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #4d93cd;
+  border-radius: 9px;
+  color: #fff;
+  background: #3377b1;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: background 160ms ease, transform 160ms ease;
+}
+.auth-button:hover,
+.auth-button:focus-visible { color: #fff; background: #4387c1; outline: 2px solid #fff; outline-offset: 2px; transform: translateY(-1px); }
 .home-dashboard__content {
   width: min(100% - 40px, 756px);
   margin: 0 auto;
@@ -810,10 +844,6 @@ body {
   color: #8d8d92;
   font-size: 16px;
   letter-spacing: 0.08em;
-}
-
-@media (min-width: 681px) {
-  .home-dashboard__store-badge { position: absolute; top: max(20px, env(safe-area-inset-top)); right: clamp(20px, 4vw, 60px); }
 }
 
 .home-dashboard__daily-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
@@ -1028,11 +1058,52 @@ body {
 }
 .crossword-coming-soon > footer { margin-top: auto; }
 
+/* Account sign-in and callback */
+.auth-page {
+  display: flex;
+  position: relative;
+  min-height: 100svh;
+  padding: clamp(104px, 16vh, 168px) 20px 72px;
+  align-items: flex-start;
+  justify-content: center;
+  color: #eee;
+  background: #111111;
+}
+
+.auth-content {
+  width: min(100%, 540px);
+}
+
+.auth-content__eyebrow { margin: 0 0 8px; color: #d6be87; font-size: 11px; font-weight: 700; letter-spacing: .18em; }
+.auth-content h1 { margin: 0; font-size: clamp(31px, 7vw, 44px); letter-spacing: -.045em; }
+.auth-content__intro { margin: 16px 0 0; color: #c5c7cd; font-size: 17px; line-height: 1.55; }
+.auth-content__benefits { display: grid; margin: 25px 0; padding: 0; gap: 10px; color: #e7e7e9; line-height: 1.45; list-style: none; }
+.auth-content__benefits li { display: flex; gap: 10px; }
+.auth-content__benefits li::before { color: #5fa4dc; content: "✓"; }
+.auth-content__providers { display: grid; gap: 12px; }
+.auth-provider { min-height: 50px; border: 1px solid #5a5e68; border-radius: 10px; color: #fff; background: #2a2d35; font: inherit; font-weight: 700; cursor: pointer; }
+.auth-provider:hover,
+.auth-provider:focus-visible { border-color: #79b7eb; background: #363a44; outline: 2px solid #79b7eb; outline-offset: 2px; }
+.auth-provider:disabled { opacity: .62; cursor: wait; }
+.auth-apple-button { display: block; width: min(100%, 375px); padding: 0; justify-self: center; border: 0; background: transparent; cursor: pointer; }
+.auth-apple-button img { display: block; width: 100%; height: auto; }
+.auth-apple-button:hover:not(:disabled) { filter: brightness(.96); }
+.auth-apple-button:focus-visible { outline: 2px solid #79b7eb; outline-offset: 3px; }
+.auth-apple-button:disabled { opacity: .62; cursor: wait; }
+.auth-provider--danger { border-color: #9e5454; color: #ffb9b9; background: #3a2528; }
+.auth-provider--danger:hover,
+.auth-provider--danger:focus-visible { border-color: #ff9e9e; background: #4a292d; outline-color: #ff9e9e; }
+.auth-content__error { margin: 16px 0 0; color: #ffa3a3; line-height: 1.4; }
+.auth-content__note { margin: 20px 0 0; color: #999da8; font-size: 13px; line-height: 1.45; }
+.auth-callback { color: #eee; font-size: 18px; }
+
 @media (max-width: 680px) {
   .home-dashboard__header { min-height: 96px; }
   .home-dashboard__header .bw-logo { height: 58px; }
+  .home-dashboard__actions { top: max(12px, env(safe-area-inset-top)); right: 12px; gap: 6px; }
+  .home-dashboard__actions img { height: 31px; }
+  .home-dashboard__actions .auth-button { width: 92.73966px; min-height: 31px; height: 31px; padding: 7px 0; border-radius: 6.5px; font-size: 12px; }
   .home-dashboard__content { width: min(100% - 24px, 756px); }
-  .home-dashboard__store-badge { display: flex; margin: 20px auto 0; justify-content: center; }
   .home-dashboard__content { padding-top: 6px; }
   .home-dashboard__daily-cards { grid-template-columns: 1fr; gap: 20px; }
   .home-game-card { min-height: 160px; border-radius: 10px; }

@@ -26,8 +26,10 @@ describe("web home dashboard", () => {
 
     expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
     const appStoreBadge = screen.getByLabelText("Download Backword on the App Store");
-    expect(appStoreBadge.parentElement).toHaveClass("home-dashboard__store-badge");
-    expect(appStoreBadge.parentElement?.parentElement).toHaveClass("home-dashboard__content");
+    const loginButton = screen.getByRole("link", { name: "Login" });
+    expect(appStoreBadge.parentElement).toHaveClass("home-dashboard__actions");
+    expect(loginButton.parentElement).toBe(appStoreBadge.parentElement);
+    expect(loginButton).toHaveAttribute("href", "/sign-in");
     const backwordLink = screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/");
     expect(backwordLink).toBeDefined();
     const crosswordCard = screen.getByRole("link", { name: /Quick Crossword/i });

@@ -32,6 +32,7 @@ Backend/*.py
 !Backend/test_audit_clue_answer_alignment.py
 !Backend/test_generate_clue_repairs.py
 !Backend/test_build_remaining_clue_repair_queue.py
+!Backend/test_supabase_account_schema.py
 Backend/clean_progress.json
 Backend/word_bank_backup.json
 Backend/word_bank_backup_*.json
@@ -96,6 +97,9 @@ Backend/puzzles_new/
 Backend/puzzles_weekly/
 Backend/supabase/*
 !Backend/supabase/schema.sql
+!Backend/supabase/config.toml
+!Backend/supabase/functions/
+!Backend/supabase/functions/**
 
 # Xcode
 *.xcodeproj/xcuserdata/

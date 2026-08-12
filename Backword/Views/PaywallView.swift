@@ -3,6 +3,7 @@ import StoreKit
 
 struct PaywallView: View {
     @EnvironmentObject var storeService: StoreService
+    @EnvironmentObject var accountService: AccountService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.openURL) private var openURL
@@ -379,9 +380,16 @@ struct PaywallView: View {
         }
 
         do {
-            let outcome = try await storeService.purchase(product)
+            let outcome = try await storeService.purchase(
+                product,
+                appAccountToken: accountService.purchaseAccountToken
+            )
             switch outcome {
             case .purchased:
+                // The notification path will also update the account, but
+                // claiming immediately gives the same signed-in user Pro on
+                // the web without waiting for Apple's server notification.
+                await accountService.refreshAccountData()
                 dismiss()
             case .pending:
                 statusMessage = "Purchase pending approval. Your Pro access will unlock when Apple confirms it."
@@ -431,4 +439,5 @@ private extension View {
 #Preview {
     PaywallView()
         .environmentObject(StoreService())
+        .environmentObject(AccountService())
 }

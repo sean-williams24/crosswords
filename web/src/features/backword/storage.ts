@@ -54,7 +54,17 @@ function isWord(value: unknown): value is BackwordWord {
 
 export type BackwordStorage = ReturnType<typeof createBackwordStorage>;
 
-export function createBackwordStorage(storage: Storage = window.localStorage) {
+type BackwordStorageOptions = {
+  userId?: string | null;
+  onProgressSaved?: (progress: BackwordProgress) => void;
+};
+
+export function createBackwordStorage(
+  storage: Storage = window.localStorage,
+  options: BackwordStorageOptions = {}
+) {
+  const scopedKey = (key: string) => options.userId ? `${key}:user:${options.userId}` : key;
+
   return {
     loadSettings(): BackwordSettings {
       try {
@@ -92,18 +102,32 @@ export function createBackwordStorage(storage: Storage = window.localStorage) {
     },
 
     loadProgress(date: string): BackwordProgress {
-      const progress = readRecord<unknown>(storage, PROGRESS_KEY)[date];
+      const progress = readRecord<unknown>(storage, scopedKey(PROGRESS_KEY))[date];
       return isProgress(progress) ? progress : emptyProgress(date);
     },
 
     loadAllProgress(): BackwordProgress[] {
-      return Object.values(readRecord<unknown>(storage, PROGRESS_KEY)).filter(isProgress);
+      return Object.values(readRecord<unknown>(storage, scopedKey(PROGRESS_KEY))).filter(isProgress);
     },
 
     saveProgress(progress: BackwordProgress): void {
-      const records = readRecord<BackwordProgress>(storage, PROGRESS_KEY);
+      progress.updatedAt = new Date().toISOString();
+      const records = readRecord<BackwordProgress>(storage, scopedKey(PROGRESS_KEY));
       records[progress.date] = progress;
-      storage.setItem(PROGRESS_KEY, JSON.stringify(records));
+      storage.setItem(scopedKey(PROGRESS_KEY), JSON.stringify(records));
+      options.onProgressSaved?.(progress);
+    },
+
+    replaceProgress(progress: BackwordProgress): void {
+      const records = readRecord<BackwordProgress>(storage, scopedKey(PROGRESS_KEY));
+      records[progress.date] = progress;
+      storage.setItem(scopedKey(PROGRESS_KEY), JSON.stringify(records));
+    },
+
+    deleteProgress(date: string): void {
+      const records = readRecord<BackwordProgress>(storage, scopedKey(PROGRESS_KEY));
+      delete records[date];
+      storage.setItem(scopedKey(PROGRESS_KEY), JSON.stringify(records));
     },
 
     loadCachedWord(date: string): BackwordWord | null {

@@ -4,16 +4,34 @@ struct SettingsView: View {
     @ObservedObject private var settings = AppSettings.shared
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
+    @EnvironmentObject var accountService: AccountService
     @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     @AppStorage("appColorScheme") private var appColorScheme: Int = 2
     @State private var isShowingMailComposer = false
     @State private var isFeedbackRowPressed = false
     @State private var isAdPrivacyChoicesRowPressed = false
+    @State private var showAccount = false
 
     var body: some View {
         NavigationStack {
             Form {
+                Section {
+                    accountRow
+                } header: {
+                    Text("ACCOUNT")
+                        .font(AppFont.clueLabel(12))
+                        .foregroundColor(.appAccent)
+                        .tracking(2)
+                        .textCase(nil)
+                } footer: {
+                    Text(accountService.isSignedIn
+                         ? "Your progress and stats sync wherever you use Backword."
+                         : "Sign in to keep your progress, stats, and Pro access with you.")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                }
+
                 Section(header: Text("Appearance")) {
                     Picker("Theme", selection: $appColorScheme) {
                         Text("Light").tag(1)
@@ -125,6 +143,10 @@ struct SettingsView: View {
                     isPresented: $isShowingMailComposer
                 )
             }
+            .sheet(isPresented: $showAccount) {
+                AccountSheet()
+                    .environmentObject(accountService)
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -163,6 +185,34 @@ struct SettingsView: View {
         }
         .listRowBackground(Color.appSurface)
         .dynamicTypeSize(...DynamicTypeSize.accessibility3)
+    }
+
+    private var accountRow: some View {
+        Button {
+            showAccount = true
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: accountService.isSignedIn ? "person.crop.circle.fill" : "person.crop.circle")
+                    .font(.title3)
+                    .foregroundColor(.appAccent)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(accountService.isSignedIn ? "Account" : "Create or Sign In")
+                        .font(AppFont.body(15))
+                        .foregroundColor(.appTextPrimary)
+                    Text(accountService.email ?? "Sync progress and stats across devices")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundColor(.appTextSecondary)
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .listRowBackground(Color.appSurface)
     }
 
     private var adExplanationRow: some View {
@@ -368,4 +418,5 @@ struct SettingsView: View {
     SettingsView()
         .environmentObject(StoreService())
         .environmentObject(AdService())
+        .environmentObject(AccountService())
 }

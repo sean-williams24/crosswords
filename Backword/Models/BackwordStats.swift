@@ -78,8 +78,9 @@ struct BackwordStats: Codable {
 
 extension BackwordStats {
     private static var fileURL: URL {
-        FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("Backword", isDirectory: true)
+        return ProgressStorageNamespace.directory(base: base)
             .appendingPathComponent("backword_stats.json")
     }
 

@@ -4,6 +4,33 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 ---
 
+## Accounts, Cloud Sync, and Pro Entitlements
+
+Accounts are optional. Guest records retain the historical local persistence
+location; a signed-in account uses a UUID-namespaced local cache so signing out
+does not expose another account's data. On sign-in, Backword and crossword
+records are uploaded and compared as whole records: solved wins, then a terminal
+record, then the furthest valid progress; two solved records use their release
+score and finally their latest update as tie-breakers. Grids and guesses are
+never merged cell-by-cell.
+
+Supabase `game_progress` is the cloud source of truth for cross-device progress;
+statistics, streaks, and ratings are derived from active progress rather than
+merged as aggregate counters. Local saves always complete first and cloud writes
+are retried on later account syncs.
+
+StoreKit remains a valid Pro source while signed out. Signed-in purchases pass
+the Supabase user UUID as StoreKit's `appAccountToken`; verified Apple
+transactions are then associated with a single Backword account. The server
+updates that account's entitlement from Apple transaction lookups and App Store
+Server Notifications. A locally cached expiry can only bridge initial app
+startup; after `Transaction.currentEntitlements` completes with no active Pro
+transaction, the cache is cleared and cannot keep Pro unlocked. Account
+deletion removes the Backword association and cloud gameplay data but never
+cancels the Apple subscription.
+
+---
+
 ## Website Backword Parity
 
 The browser Backword game lives at `/` as an immersive route outside the
@@ -12,22 +39,22 @@ the marketing page lives at `/info`. The game uses the same daily Supabase row,
 five-guess scoring, connected-suffix reveal rules, Normal/Easy modes, and local
 release-date rules as the iOS game.
 
-Until accounts are introduced, browser settings, cached daily content, per-date
-progress, and derived statistics are stored in versioned `localStorage`
-records. Progress is the source of truth for browser statistics so a later sync
-task can migrate or merge per-date records without reconciling a second set of
-aggregate counters. Only results completed on their browser-local release date
-contribute to points and aggregate statistics.
+Browser guest progress is stored in versioned `localStorage`; signed-in web
+progress is isolated by Supabase user UUID and synchronised with the canonical
+whole-record cloud payload. Settings and cached daily content remain
+device-local. Progress is the source of truth for browser statistics, so
+cross-device sync never reconciles a separate set of aggregate counters. Only
+results completed on their browser-local release date contribute to points and
+aggregate statistics.
 
 The browser accepts any alphabetic six-letter guess, matching the current iOS
 implementation. It supports both the in-page keyboard and physical keyboard
-input. Ads, Pro-only letter feedback, archives, crosswords, and account sync are
-not part of the browser Backword parity surface yet. The web dashboard reads
-today's Backword progress to present its card status, but Quick Crossword stays
-an explicitly unavailable web preview. Its `/crossword` route is a coming-soon
-screen; the weekly card directs players to the iOS App Store rather than
-implying browser Pro access. The web dashboard reads the released Word of the
-Day row for the browser's local calendar date. It has no browser fallback:
+input. Ads, Pro-only letter feedback, and archives are not part of the browser
+Backword parity surface yet. The web dashboard reads today's Backword and
+Quick Crossword progress to present card status; the weekly card still directs
+players to the iOS App Store rather than implying browser Pro access. The web
+dashboard reads the released Word of the Day row for the browser's local
+calendar date. It has no browser fallback:
 during loading and when the row is unavailable, the WOTD section is not shown.
 On viewports up to 680px, the compact WOTD card toggles an animated detail
 drawer; larger viewports show the same content immediately in two columns.
@@ -49,14 +76,14 @@ feedback; the sender's configured email app delivers it instead.
 It reads the matching `puzzles` row from Supabase, caches valid payloads by
 plain local calendar date, and falls back to that cache offline. Per-puzzle
 entries, completed clues, timestamps, answer-feedback preference, onboarding,
-and release-date score are versioned `localStorage` records; no browser data
-syncs to iOS or another browser.
+and release-date score are versioned local records. Signed-in progress is
+synced to iOS and other browsers; settings and puzzle caches remain local.
 
 The grid follows the iOS interaction model: tapping a selected cell switches
 direction, the clue bar navigates/toggles direction, correctly completed
 answers are green and input-locked by default, and turning Answer Feedback off
-keeps the harder editable mode. Hints, ads, archive access, paywalls, and
-account sync are intentionally absent from the browser crossword.
+keeps the harder editable mode. Hints, ads, archive access, and paywalls are
+intentionally absent from the browser crossword; account progress sync is not.
 
 Crossword points are captured only while the puzzle is the browser's local
 calendar-day release. The score remains in its historical progress record at

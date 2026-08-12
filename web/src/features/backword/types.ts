@@ -15,6 +15,8 @@ export type BackwordProgress = {
   guesses: string[];
   completedAt: string | null;
   outcome: BackwordOutcome;
+  /** ISO timestamp used only for deterministic cross-device conflict resolution. */
+  updatedAt?: string;
 };
 
 export type BackwordSettings = {

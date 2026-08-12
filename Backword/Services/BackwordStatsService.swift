@@ -5,7 +5,19 @@ final class BackwordStatsService: ObservableObject {
     @Published private(set) var stats: BackwordStats = BackwordStats()
 
     func refresh() {
-        stats = BackwordStats.load()
+        guard ProgressStorageNamespace.accountID != nil else {
+            stats = BackwordStats.load()
+            return
+        }
+
+        var rebuilt = BackwordStats()
+        for progress in BackwordProgress.loadAll().filter(\.isComplete).sorted(by: { $0.date < $1.date }) {
+            rebuilt.record(
+                guessCount: progress.isWon ? progress.guesses.count : nil,
+                date: progress.date
+            )
+        }
+        stats = rebuilt
     }
 }
 

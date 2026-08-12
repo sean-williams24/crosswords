@@ -10,8 +10,8 @@ export const privacySections = [
   {
     title: "Information We Collect",
     body: [
-      "Gameplay and settings data: Backword stores game progress, guesses, completed puzzles, scores, rating tier progress, preferences, onboarding state, and ad frequency state so the app and browser game can remember your progress and provide the game experience. This data is currently stored locally on your device or in your browser storage.",
-      "Account and cloud sync data: Backword may introduce user accounts and cross-device sync. If you create an account or use sync features, we may collect account details such as your email address or user identifier, along with gameplay progress, scores, rating history, settings, and subscription-related access state so your progress can be restored across devices.",
+      "Gameplay and settings data: Backword stores game progress, guesses, completed puzzles, scores, rating tier progress, preferences, onboarding state, and ad frequency state so the app and browser game can remember your progress and provide the game experience. Guest data is stored locally on your device or in browser storage.",
+      "Account and cloud sync data: If you choose to sign in with Apple or Google, Backword stores your account identifier and, where provided by the provider, your email address. We also store versioned gameplay progress, scores, rating history, and subscription entitlement state so your progress can be restored across devices. Account creation is optional.",
       "Puzzle content requests: Backword connects to backend services to fetch daily Backword words, daily and weekly crosswords, archive content, and Word of the Day. These requests may involve standard technical information such as IP address, device or browser information, request timestamps, and network metadata.",
       "Purchase information: If you buy or restore a subscription or in-app purchase, Apple processes the payment. Backword receives purchase entitlement information from Apple so Pro features can be unlocked. We do not receive or store your payment card details.",
       "Advertising information: Backword uses Google AdMob to show ads. Google and its partners may collect information such as device identifiers, advertising identifiers where permitted, ad interactions, approximate location, diagnostics, and usage information to deliver ads, limit ad frequency, prevent fraud, and report ad performance.",
@@ -34,7 +34,7 @@ export const privacySections = [
   {
     title: "Third-Party Services",
     body: [
-      "Backword uses third-party services that may process information according to their own privacy policies, including Apple for App Store purchases and subscriptions, Google AdMob for advertising, Supabase for backend content delivery and planned account/cloud-sync features, and website hosting providers for serving this website.",
+      "Backword uses third-party services that may process information according to their own privacy policies, including Apple for Sign in with Apple and App Store purchases and subscriptions, Google for optional sign-in and Google AdMob advertising, Supabase for authentication, cloud sync, and backend content delivery, and website hosting providers for serving this website.",
       "We expect service providers to protect information appropriately and use it only for the services they provide to Backword, subject to their own terms and policies."
     ]
   },
@@ -42,15 +42,15 @@ export const privacySections = [
     title: "Data Retention and Deletion",
     body: [
       "Local gameplay and settings data remains on your device until you delete the app, clear the website’s browser storage, clear the data through app features where available, or overwrite it through normal use.",
-      "If account or cloud-sync features are enabled, account data, gameplay progress, scores, and settings may be retained while your account remains active or as needed to provide the service, comply with legal obligations, resolve disputes, prevent abuse, and maintain backups.",
-      `You can request deletion of account-related personal information by contacting ${siteConfig.supportEmail}. Purchase history and subscription records handled by Apple must be managed through your Apple ID and App Store settings.`
+      "Account data and cloud gameplay progress are retained while your account remains active or as needed to provide the service, comply with legal obligations, resolve disputes, prevent abuse, and maintain backups.",
+      `You can delete your Backword account and its cloud progress in the app or website account screen. Purchase history and subscription records handled by Apple must be managed through your Apple ID and App Store settings. You may also contact ${siteConfig.supportEmail}.`
     ]
   },
   {
     title: "Your Choices",
     body: [
       "You can delete local app data by deleting the app from your device. You can manage subscriptions through your Apple ID and App Store settings. You can manage tracking permission in iOS Settings and may be able to manage ad personalization through your device settings or Google’s ad settings.",
-      "If account features are introduced, you may contact us to request access to, correction of, or deletion of personal information associated with your account, subject to applicable law and reasonable verification."
+      "You may use the account screen to sign out or delete your account. You may also contact us to request access to, correction of, or deletion of personal information associated with your account, subject to applicable law and reasonable verification."
     ]
   },
   {
@@ -102,7 +102,7 @@ export const termsSections = [
     title: "Eligibility and Accounts",
     body: [
       "Backword is intended for a general audience. If you are under the age required to agree to these terms in your country or region, you should use Backword only with permission from a parent or guardian.",
-      "Backword may introduce user accounts and cross-device sync. If you create an account, you are responsible for keeping your login details secure and for activity that occurs through your account. You must provide accurate information and must not impersonate another person."
+      "Backword offers optional accounts and cross-device sync through Apple and Google sign-in. If you create an account, you are responsible for activity that occurs through it and must not impersonate another person. You may continue to use Backword as a guest."
     ]
   },
   {
@@ -123,7 +123,7 @@ export const termsSections = [
     body: [
       "Backword may offer optional paid features, subscriptions, or other in-app purchases. Purchases are processed by Apple through the App Store. Apple’s terms, payment rules, cancellation process, refund process, and subscription management controls apply to those purchases.",
       "Prices, billing periods, trial availability, renewal terms, and included Pro features are shown in the app or App Store before purchase. Subscriptions renew automatically unless cancelled through your Apple ID settings before the renewal date. We do not receive your payment card details.",
-      "Pro features may change over time. If a purchase does not unlock correctly, use the restore purchases option in the app or contact us."
+      "When you sign in, Backword may associate a verified Apple subscription with your Backword account so eligible Pro access can follow you across supported devices and services. Deleting a Backword account does not cancel an Apple subscription. If a purchase does not unlock correctly, use the restore purchases option in the app or contact us."
     ]
   },
   {

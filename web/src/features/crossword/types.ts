@@ -37,6 +37,8 @@ export type CrosswordProgress = {
   startedAt: string;
   completedAt: string | null;
   releaseDateScore: number;
+  /** ISO timestamp used only for deterministic cross-device conflict resolution. */
+  updatedAt?: string;
 };
 
 export type CrosswordSettings = {

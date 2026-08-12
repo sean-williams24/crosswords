@@ -20,7 +20,8 @@ export function emptyProgress(date: string): BackwordProgress {
     date,
     guesses: [],
     completedAt: null,
-    outcome: "inProgress"
+    outcome: "inProgress",
+    updatedAt: new Date().toISOString()
   };
 }
 
@@ -134,7 +135,8 @@ export function submitGuess(
       ...progress,
       guesses,
       outcome: "won",
-      completedAt: completedAt.toISOString()
+      completedAt: completedAt.toISOString(),
+      updatedAt: completedAt.toISOString()
     };
   }
 
@@ -143,11 +145,12 @@ export function submitGuess(
       ...progress,
       guesses,
       outcome: "failed",
-      completedAt: completedAt.toISOString()
+      completedAt: completedAt.toISOString(),
+      updatedAt: completedAt.toISOString()
     };
   }
 
-  return { ...progress, guesses };
+  return { ...progress, guesses, updatedAt: completedAt.toISOString() };
 }
 
 export function backwordScore(progress: BackwordProgress): number {

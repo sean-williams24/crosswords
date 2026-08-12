@@ -123,3 +123,186 @@ CREATE POLICY "Public can read released backword words"
     ON backword_words
     FOR SELECT
     USING (date <= CURRENT_DATE);
+
+-- ============================================================
+-- Accounts, cloud progress, and account-linked subscriptions
+-- ============================================================
+
+-- Auth identities live in auth.users. Keep the public profile deliberately
+-- small: display information belongs in auth metadata and must never drive
+-- authorization decisions.
+CREATE TABLE profiles (
+    id          UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE OR REPLACE FUNCTION public.create_profile_for_new_user()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+    INSERT INTO public.profiles (id) VALUES (NEW.id)
+    ON CONFLICT (id) DO NOTHING;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER on_auth_user_created
+    AFTER INSERT ON auth.users
+    FOR EACH ROW EXECUTE PROCEDURE public.create_profile_for_new_user();
+
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can read their own profile"
+    ON profiles FOR SELECT USING (auth.uid() = id);
+
+-- `payload` is a versioned cross-platform record. The explicit ranking
+-- columns make conflict resolution deterministic without attempting to merge
+-- incompatible crossword grids or Backword guesses server-side.
+CREATE TABLE game_progress (
+    user_id             UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    game_type           TEXT NOT NULL CHECK (game_type IN ('backword', 'daily_crossword', 'weekly_crossword')),
+    content_key         TEXT NOT NULL,
+    release_date        DATE NOT NULL,
+    schema_version      INTEGER NOT NULL DEFAULT 1 CHECK (schema_version > 0),
+    status              TEXT NOT NULL CHECK (status IN ('in_progress', 'solved', 'failed', 'gave_up')),
+    progress_rank       INTEGER NOT NULL DEFAULT 0 CHECK (progress_rank >= 0),
+    release_score       INTEGER NOT NULL DEFAULT 0 CHECK (release_score BETWEEN 0 AND 5),
+    client_updated_at   TIMESTAMPTZ NOT NULL,
+    payload             JSONB NOT NULL,
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (user_id, game_type, content_key)
+);
+
+CREATE INDEX idx_game_progress_user_release_date
+    ON game_progress (user_id, release_date DESC);
+
+ALTER TABLE game_progress ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can read their own game progress"
+    ON game_progress FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert their own game progress"
+    ON game_progress FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update their own game progress"
+    ON game_progress FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can delete their own game progress"
+    ON game_progress FOR DELETE USING (auth.uid() = user_id);
+
+CREATE OR REPLACE FUNCTION merge_game_progress(
+    p_game_type TEXT,
+    p_content_key TEXT,
+    p_release_date DATE,
+    p_schema_version INTEGER,
+    p_status TEXT,
+    p_progress_rank INTEGER,
+    p_release_score INTEGER,
+    p_client_updated_at TIMESTAMPTZ,
+    p_payload JSONB
+)
+RETURNS game_progress
+LANGUAGE plpgsql
+SECURITY INVOKER
+SET search_path = public
+AS $$
+DECLARE
+    current_row game_progress;
+    incoming_terminal BOOLEAN := p_status IN ('solved', 'failed', 'gave_up');
+    current_terminal BOOLEAN;
+    use_incoming BOOLEAN := FALSE;
+BEGIN
+    IF auth.uid() IS NULL THEN
+        RAISE EXCEPTION 'Authentication required';
+    END IF;
+
+    SELECT * INTO current_row
+    FROM game_progress
+    WHERE user_id = auth.uid()
+      AND game_type = p_game_type
+      AND content_key = p_content_key
+    FOR UPDATE;
+
+    IF NOT FOUND THEN
+        INSERT INTO game_progress (
+            user_id, game_type, content_key, release_date, schema_version,
+            status, progress_rank, release_score, client_updated_at, payload
+        ) VALUES (
+            auth.uid(), p_game_type, p_content_key, p_release_date, p_schema_version,
+            p_status, p_progress_rank, p_release_score, p_client_updated_at, p_payload
+        ) RETURNING * INTO current_row;
+        RETURN current_row;
+    END IF;
+
+    current_terminal := current_row.status IN ('solved', 'failed', 'gave_up');
+    -- Solved records always win. Two solved records keep the higher valid
+    -- release score. For all remaining ties, terminal state, rank, then the
+    -- most recent client update win.
+    use_incoming :=
+        (p_status = 'solved' AND current_row.status <> 'solved') OR
+        (p_status = 'solved' AND current_row.status = 'solved' AND p_release_score > current_row.release_score) OR
+        (p_status <> 'solved' AND current_row.status <> 'solved' AND incoming_terminal AND NOT current_terminal) OR
+        (p_status <> 'solved' AND current_row.status <> 'solved' AND incoming_terminal = current_terminal AND p_progress_rank > current_row.progress_rank) OR
+        (p_status <> 'solved' AND current_row.status <> 'solved' AND incoming_terminal = current_terminal AND p_progress_rank = current_row.progress_rank AND p_client_updated_at > current_row.client_updated_at) OR
+        (p_status = 'solved' AND current_row.status = 'solved' AND p_release_score = current_row.release_score AND p_client_updated_at > current_row.client_updated_at);
+
+    IF use_incoming THEN
+        UPDATE game_progress
+        SET release_date = p_release_date,
+            schema_version = p_schema_version,
+            status = p_status,
+            progress_rank = p_progress_rank,
+            release_score = p_release_score,
+            client_updated_at = p_client_updated_at,
+            payload = p_payload,
+            updated_at = NOW()
+        WHERE user_id = auth.uid()
+          AND game_type = p_game_type
+          AND content_key = p_content_key
+        RETURNING * INTO current_row;
+    END IF;
+    RETURN current_row;
+END;
+$$;
+
+CREATE TABLE user_entitlements (
+    original_transaction_id TEXT PRIMARY KEY,
+    user_id                 UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    product_id              TEXT NOT NULL,
+    environment             TEXT NOT NULL CHECK (environment IN ('Sandbox', 'Production')),
+    status                  TEXT NOT NULL CHECK (status IN ('active', 'expired', 'revoked', 'billing_retry')),
+    expires_at              TIMESTAMPTZ,
+    revocation_at           TIMESTAMPTZ,
+    app_account_token       UUID,
+    updated_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_user_entitlements_user_status
+    ON user_entitlements (user_id, status, expires_at DESC);
+
+ALTER TABLE user_entitlements ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can read their own entitlement status"
+    ON user_entitlements FOR SELECT USING (auth.uid() = user_id);
+
+CREATE OR REPLACE FUNCTION current_user_pro_entitlement()
+RETURNS TABLE (is_pro BOOLEAN, expires_at TIMESTAMPTZ)
+LANGUAGE sql
+STABLE
+SECURITY INVOKER
+SET search_path = public
+AS $$
+    SELECT
+        EXISTS (
+            SELECT 1 FROM user_entitlements
+            WHERE user_id = auth.uid()
+              AND status IN ('active', 'billing_retry')
+              AND revocation_at IS NULL
+              AND (expires_at IS NULL OR expires_at > NOW())
+        ) AS is_pro,
+        MAX(expires_at) FILTER (
+            WHERE status IN ('active', 'billing_retry') AND revocation_at IS NULL
+        ) AS expires_at
+    FROM user_entitlements
+    WHERE user_id = auth.uid();
+$$;

@@ -7,6 +7,7 @@ struct HomeView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var adService: AdService
     @EnvironmentObject var ratingService: OverallRatingService
+    @EnvironmentObject var accountService: AccountService
     @ObservedObject private var viewModel: HomeViewModel
     @ObservedObject private var settings = AppSettings.shared
     @StateObject private var wotdService = WOTDService()
@@ -23,6 +24,7 @@ struct HomeView: View {
     @State private var showPaywall = false
     @State private var showWOTD = false
     @State private var showSettings = false
+    @State private var showAccount = false
     @State private var logoVisible = false
     @State private var proLogoVisible = false
     @State private var showRatingDetails = false
@@ -133,6 +135,10 @@ struct HomeView: View {
                 SettingsView()
                     .environmentObject(storeService)
             }
+            .sheet(isPresented: $showAccount) {
+                AccountSheet()
+                    .environmentObject(accountService)
+            }
             .sheet(isPresented: $showWOTD) {
                 if let word = wotdService.todaysWord {
                     WOTDDetailView(word: word)
@@ -242,8 +248,14 @@ struct HomeView: View {
                         await wotdService.refreshIfNeeded()
                         await backwordService.refreshIfNeeded()
                         await viewModel.prefetchCurrentArchiveMonthIfNeeded()
+                        await accountService.refreshAccountData()
                     }
                 }
+            }
+            .onChange(of: accountService.userID) { _, _ in
+                statsService.refreshForActiveProgress()
+                backwordStatsService.refresh()
+                ratingService.refresh()
             }
             .alert("There was a problem loading the games, please check your network.", isPresented: $viewModel.crosswordsFetchDidFail) {
                 Button("OK", role: .cancel) { }
@@ -335,6 +347,15 @@ struct HomeView: View {
             .frame(maxWidth: .infinity)
 
             HStack {
+                Button {
+                    showAccount = true
+                } label: {
+                    Image(systemName: accountService.isSignedIn ? "person.crop.circle.fill" : "person.crop.circle")
+                        .font(.body)
+                        .foregroundColor(.appTextSecondary)
+                }
+                .accessibilityLabel(accountService.isSignedIn ? "Account" : "Sign in")
+                .padding(.leading, AppLayout.screenPadding)
                 Spacer()
                 Button {
                     showSettings = true
@@ -699,6 +720,7 @@ private enum DailyGame {
         .environmentObject(storeService)
         .environmentObject(AdService())
         .environmentObject(OverallRatingService())
+        .environmentObject(AccountService())
 }
 
 #if DEBUG
@@ -711,5 +733,6 @@ private enum DailyGame {
         .environmentObject(StoreService())
         .environmentObject(AdService())
         .environmentObject(OverallRatingService())
+        .environmentObject(AccountService())
 }
 #endif

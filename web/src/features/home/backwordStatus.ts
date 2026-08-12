@@ -10,9 +10,10 @@ export type DashboardStatus = {
 
 export function backwordDashboardStatus(
   storage: Storage = window.localStorage,
-  date = localDateString()
+  date = localDateString(),
+  userId?: string | null
 ): DashboardStatus {
-  const progress = createBackwordStorage(storage).loadProgress(date);
+  const progress = createBackwordStorage(storage, { userId }).loadProgress(date);
 
   if (progress.outcome === "won") {
     const count = progress.guesses.length;

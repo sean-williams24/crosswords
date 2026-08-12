@@ -64,7 +64,17 @@ function isPuzzle(value: unknown): value is CrosswordPuzzle {
 
 export type CrosswordStorage = ReturnType<typeof createCrosswordStorage>;
 
-export function createCrosswordStorage(storage: Storage = window.localStorage) {
+type CrosswordStorageOptions = {
+  userId?: string | null;
+  onProgressSaved?: (progress: CrosswordProgress) => void;
+};
+
+export function createCrosswordStorage(
+  storage: Storage = window.localStorage,
+  options: CrosswordStorageOptions = {}
+) {
+  const scopedKey = (key: string) => options.userId ? `${key}:user:${options.userId}` : key;
+
   return {
     loadSettings(): CrosswordSettings {
       try {
@@ -88,14 +98,14 @@ export function createCrosswordStorage(storage: Storage = window.localStorage) {
     },
 
     loadProgress(puzzle: Pick<CrosswordPuzzle, "id" | "date" | "size">): CrosswordProgress {
-      const saved = readRecord<unknown>(storage, PROGRESS_KEY)[puzzle.id];
+      const saved = readRecord<unknown>(storage, scopedKey(PROGRESS_KEY))[puzzle.id];
       return isProgress(saved) && saved.date === puzzle.date && saved.size === puzzle.size
         ? saved
         : emptyProgress(puzzle);
     },
 
     loadAllProgress(): CrosswordProgress[] {
-      return Object.values(readRecord<unknown>(storage, PROGRESS_KEY)).filter(isProgress);
+      return Object.values(readRecord<unknown>(storage, scopedKey(PROGRESS_KEY))).filter(isProgress);
     },
 
     loadProgressForDate(date: string): CrosswordProgress | null {
@@ -103,9 +113,23 @@ export function createCrosswordStorage(storage: Storage = window.localStorage) {
     },
 
     saveProgress(progress: CrosswordProgress): void {
-      const records = readRecord<CrosswordProgress>(storage, PROGRESS_KEY);
+      progress.updatedAt = new Date().toISOString();
+      const records = readRecord<CrosswordProgress>(storage, scopedKey(PROGRESS_KEY));
       records[progress.puzzleId] = progress;
-      storage.setItem(PROGRESS_KEY, JSON.stringify(records));
+      storage.setItem(scopedKey(PROGRESS_KEY), JSON.stringify(records));
+      options.onProgressSaved?.(progress);
+    },
+
+    replaceProgress(progress: CrosswordProgress): void {
+      const records = readRecord<CrosswordProgress>(storage, scopedKey(PROGRESS_KEY));
+      records[progress.puzzleId] = progress;
+      storage.setItem(scopedKey(PROGRESS_KEY), JSON.stringify(records));
+    },
+
+    deleteProgress(puzzleId: string): void {
+      const records = readRecord<CrosswordProgress>(storage, scopedKey(PROGRESS_KEY));
+      delete records[puzzleId];
+      storage.setItem(scopedKey(PROGRESS_KEY), JSON.stringify(records));
     },
 
     loadCachedPuzzle(date: string): CrosswordPuzzle | null {

@@ -6,8 +6,9 @@ final class StatsService: ObservableObject {
     @Published var stats: UserStats
 
     private static var fileURL: URL {
-        FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("Backword", isDirectory: true)
+        return ProgressStorageNamespace.directory(base: base)
             .appendingPathComponent("stats.json")
     }
 
@@ -86,6 +87,11 @@ final class StatsService: ObservableObject {
 
         stats.recordCompletion(puzzleId: puzzleId, timeSeconds: timeSeconds, hintsUsed: hintsUsed, isWeekly: isWeekly)
         save()
+    }
+
+    func refreshForActiveProgress() {
+        stats = UserStats()
+        migrateFromUserProgress()
     }
 
     private func save() {

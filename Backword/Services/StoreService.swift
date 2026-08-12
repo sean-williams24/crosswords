@@ -16,6 +16,9 @@ final class StoreService: ObservableObject {
     @Published private(set) var isProUser = false
     @Published private(set) var subscriptionStatusLoaded = false
     @Published private(set) var purchaseInProgress = false
+    @Published private(set) var accountHasPro = false
+
+    private var storeKitHasPro = false
 
     var monthlyProduct: Product? { products.first { $0.id == Self.monthlyID } }
     var annualProduct: Product? { products.first { $0.id == Self.annualID } }
@@ -39,7 +42,7 @@ final class StoreService: ObservableObject {
         #if DEBUG
         if let override = UserDefaults.standard.object(forKey: Self.debugProOverrideKey) as? Bool {
             debugProOverride = override
-            isProUser = override
+            setStoreKitProStatus(override)
             subscriptionStatusLoaded = true
         }
         #endif
@@ -47,7 +50,7 @@ final class StoreService: ObservableObject {
         if isProUser == false,
            let cachedExpirationDate = Self.cachedProExpirationDate(),
            Self.cachedProAccessIsActive(expirationDate: cachedExpirationDate) {
-            isProUser = true
+            setStoreKitProStatus(true)
             subscriptionStatusLoaded = true
             scheduleSubscriptionExpirationRefresh(
                 nextExpirationDate: Self.cachedProRefreshDate(expirationDate: cachedExpirationDate),
@@ -95,7 +98,7 @@ final class StoreService: ObservableObject {
     }
 
     // MARK: - Purchase
-    func purchase(_ product: Product) async throws -> StorePurchaseOutcome {
+    func purchase(_ product: Product, appAccountToken: UUID? = nil) async throws -> StorePurchaseOutcome {
         logger.purchaseRequested(productID: product.id)
         purchaseInProgress = true
         defer { purchaseInProgress = false }
@@ -112,7 +115,11 @@ final class StoreService: ObservableObject {
 
         let result: Product.PurchaseResult
         do {
-            result = try await product.purchase()
+            if let appAccountToken {
+                result = try await product.purchase(options: [.appAccountToken(appAccountToken)])
+            } else {
+                result = try await product.purchase()
+            }
         } catch {
             logger.purchaseFailed(productID: product.id, error: error)
             throw error
@@ -129,7 +136,7 @@ final class StoreService: ObservableObject {
             }
 
             if grantsProAccess(transaction) {
-                isProUser = true
+                setStoreKitProStatus(true)
                 Self.cacheProExpirationDate(transaction.expirationDate)
                 scheduleSubscriptionExpirationRefresh(
                     nextExpirationDate: transaction.expirationDate,
@@ -168,7 +175,7 @@ final class StoreService: ObservableObject {
         if let simulatedOutcome = simulateNextRestoreOutcome {
             simulateNextRestoreOutcome = nil
             if simulatedOutcome == .restored {
-                isProUser = true
+                setStoreKitProStatus(true)
             }
             logger.restoreCompleted(simulatedOutcome, source: "debug_simulated")
             return simulatedOutcome
@@ -209,7 +216,7 @@ final class StoreService: ObservableObject {
     func updateSubscriptionStatus(source: String = "manual") async {
         #if DEBUG
         if let debugProOverride {
-            isProUser = debugProOverride
+            setStoreKitProStatus(debugProOverride)
             subscriptionStatusLoaded = true
             logger.subscriptionStatusRefreshCompleted(
                 source: "\(source):debug_override",
@@ -282,19 +289,17 @@ final class StoreService: ObservableObject {
         let storeKitExpirationDate = Self.nextProExpiration(from: proEntitlements)
         if hasActiveSubscription {
             Self.cacheProExpirationDate(storeKitExpirationDate)
+        } else {
+            // `currentEntitlements` completed successfully and found no
+            // active Pro product. Its result is authoritative: do not keep a
+            // former Sandbox or cancelled subscription unlocked from cache.
+            Self.cacheProExpirationDate(nil)
         }
 
-        let cachedExpirationDate = Self.cachedProExpirationDate()
-        isProUser = Self.resolvedProStatus(
-            hasActiveSubscription: hasActiveSubscription,
-            entitlementCount: entitlementCount,
-            cachedExpirationDate: cachedExpirationDate
-        )
+        setStoreKitProStatus(Self.resolvedProStatus(hasActiveSubscription: hasActiveSubscription))
         subscriptionStatusLoaded = true
         scheduleSubscriptionExpirationRefresh(
-            nextExpirationDate: hasActiveSubscription
-                ? storeKitExpirationDate
-                : Self.cachedProRefreshDate(expirationDate: cachedExpirationDate),
+            nextExpirationDate: storeKitExpirationDate,
             source: source
         )
         logger.subscriptionStatusRefreshCompleted(
@@ -333,15 +338,9 @@ final class StoreService: ObservableObject {
     }
 
     static func resolvedProStatus(
-        hasActiveSubscription: Bool,
-        entitlementCount: Int,
-        cachedExpirationDate: Date?,
-        now: Date = Date()
+        hasActiveSubscription: Bool
     ) -> Bool {
-        hasActiveSubscription || (
-            entitlementCount == 0
-                && cachedProAccessIsActive(expirationDate: cachedExpirationDate, now: now)
-        )
+        hasActiveSubscription
     }
 
     static func cachedProAccessIsActive(
@@ -388,6 +387,22 @@ final class StoreService: ObservableObject {
             .min()
     }
 
+    /// Account entitlement is an additional verified source of access. StoreKit
+    /// remains authoritative for a purchaser using the app while signed out.
+    func setAccountProStatus(_ value: Bool) {
+        accountHasPro = value
+        updateEffectiveProStatus()
+    }
+
+    private func setStoreKitProStatus(_ value: Bool) {
+        storeKitHasPro = value
+        updateEffectiveProStatus()
+    }
+
+    private func updateEffectiveProStatus() {
+        isProUser = storeKitHasPro || accountHasPro
+    }
+
     #if DEBUG
     static func debugEffectiveProStatus(
         storeKitStatus: Bool,
@@ -431,7 +446,7 @@ final class StoreService: ObservableObject {
 
     func setDebugProUser(_ value: Bool) {
         debugProOverride = value
-        isProUser = value
+        setStoreKitProStatus(value)
         UserDefaults.standard.set(value, forKey: Self.debugProOverrideKey)
         logger.debugOverrideChanged(value)
     }

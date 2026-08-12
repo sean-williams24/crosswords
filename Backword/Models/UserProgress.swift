@@ -1,5 +1,30 @@
 import Foundation
 
+/// Guest records retain the app's original location. Signed-in records live
+/// under a user UUID so signing out never exposes another account's cache.
+enum ProgressStorageNamespace {
+    private static let accountIDKey = "backword_progress_account_id"
+
+    static var accountID: String? {
+        UserDefaults.standard.string(forKey: accountIDKey)
+    }
+
+    static func activate(accountID: String?) {
+        if let accountID {
+            UserDefaults.standard.set(accountID, forKey: accountIDKey)
+        } else {
+            UserDefaults.standard.removeObject(forKey: accountIDKey)
+        }
+    }
+
+    static func directory(base: URL) -> URL {
+        guard let accountID else { return base }
+        return base
+            .appendingPathComponent("users", isDirectory: true)
+            .appendingPathComponent(accountID, isDirectory: true)
+    }
+}
+
 struct UserProgress: Codable {
     let puzzleId: String
     var entries: [[String?]]
@@ -14,6 +39,8 @@ struct UserProgress: Codable {
     var gaveUpAt: Date?
     var gaveUpScore: Int?
     var gaveUpRevealedCells: Set<String>
+    /// Persisted cross-device conflict tie-breaker. Local saves refresh it.
+    var updatedAt: Date
 
     var isComplete: Bool { completedAt != nil }
 
@@ -31,6 +58,39 @@ struct UserProgress: Codable {
         self.gaveUpAt = nil
         self.gaveUpScore = nil
         self.gaveUpRevealedCells = []
+        self.updatedAt = Date()
+    }
+
+    init(
+        puzzleId: String,
+        entries: [[String?]],
+        completedClueIds: Set<Int>,
+        hintedClueIds: Set<Int>,
+        hintsUsed: Int,
+        startedAt: Date,
+        completedAt: Date?,
+        puzzleDate: String?,
+        totalClues: Int?,
+        isWeekly: Bool?,
+        gaveUpAt: Date?,
+        gaveUpScore: Int?,
+        gaveUpRevealedCells: Set<String>,
+        updatedAt: Date = Date()
+    ) {
+        self.puzzleId = puzzleId
+        self.entries = entries
+        self.completedClueIds = completedClueIds
+        self.hintedClueIds = hintedClueIds
+        self.hintsUsed = hintsUsed
+        self.startedAt = startedAt
+        self.completedAt = completedAt
+        self.puzzleDate = puzzleDate
+        self.totalClues = totalClues
+        self.isWeekly = isWeekly
+        self.gaveUpAt = gaveUpAt
+        self.gaveUpScore = gaveUpScore
+        self.gaveUpRevealedCells = gaveUpRevealedCells
+        self.updatedAt = updatedAt
     }
 
     init(from decoder: Decoder) throws {
@@ -48,6 +108,7 @@ struct UserProgress: Codable {
         gaveUpAt = try container.decodeIfPresent(Date.self, forKey: .gaveUpAt)
         gaveUpScore = try container.decodeIfPresent(Int.self, forKey: .gaveUpScore)
         gaveUpRevealedCells = try container.decodeIfPresent(Set<String>.self, forKey: .gaveUpRevealedCells) ?? []
+        updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt) ?? completedAt ?? startedAt
     }
 
     var elapsedTime: TimeInterval {
@@ -64,8 +125,9 @@ struct UserProgress: Codable {
 
 extension UserProgress {
     private static var directory: URL {
-        FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("Backword", isDirectory: true)
+        return ProgressStorageNamespace.directory(base: base)
     }
 
     private static func fileURL(for puzzleId: String) -> URL {
@@ -75,8 +137,13 @@ extension UserProgress {
     func save() {
         let dir = Self.directory
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        if let data = try? JSONEncoder().encode(self) {
+        var progress = self
+        progress.updatedAt = Date()
+        if let data = try? JSONEncoder().encode(progress) {
             try? data.write(to: Self.fileURL(for: puzzleId), options: .atomic)
+        }
+        Task { @MainActor in
+            ProgressCloudSync.shared.scheduleUpload(progress)
         }
     }
 

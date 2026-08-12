@@ -28,11 +28,19 @@ import type {
   BackwordSettings,
   BackwordWord
 } from "../features/backword/types";
+import { useAuth } from "../features/auth/AuthProvider";
+import { backwordCloudRecord, migrateProgress, queueAndDebounce } from "../features/sync/progressSync";
 
 type Sheet = "instructions" | "stats" | "completion" | null;
 
 export function BackwordPage() {
-  const storage = useMemo(() => createBackwordStorage(), []);
+  const { user } = useAuth();
+  const storage = useMemo(() => createBackwordStorage(window.localStorage, {
+    userId: user?.id,
+    onProgressSaved: (progress) => {
+      if (user) queueAndDebounce(user.id, backwordCloudRecord(progress));
+    }
+  }), [user?.id]);
   const [date, setDate] = useState(() => localDateString());
   const [word, setWord] = useState<BackwordWord | null>(null);
   const [progress, setProgress] = useState<BackwordProgress>(() => storage.loadProgress(date));
@@ -76,6 +84,22 @@ export function BackwordPage() {
   useEffect(() => {
     void loadWord(date);
   }, [date, loadWord]);
+
+  useEffect(() => {
+    if (!user) {
+      setProgress(storage.loadProgress(date));
+      return;
+    }
+    const guestStorage = createBackwordStorage();
+    void migrateProgress(
+      user.id,
+      "backword",
+      guestStorage.loadAllProgress().map(backwordCloudRecord),
+      storage.loadAllProgress().map(backwordCloudRecord),
+      (record) => storage.replaceProgress(record.payload),
+      (record) => guestStorage.deleteProgress(record.content_key)
+    ).then(() => setProgress(storage.loadProgress(date)));
+  }, [date, storage, user?.id]);
 
   useEffect(() => {
     if (!settings.hasSeenOnboarding || settings.lastSeenRulesVersion < BACKWORD_RULES_VERSION) {

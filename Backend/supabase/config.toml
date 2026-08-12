@@ -1,0 +1,5 @@
+[functions.app-store-notifications]
+# Apple cannot attach a Supabase bearer token. The URL is protected by the
+# independently configured APPLE_NOTIFICATION_WEBHOOK_SECRET and every payload
+# is reconciled with the App Store Server API before an entitlement changes.
+verify_jwt = false

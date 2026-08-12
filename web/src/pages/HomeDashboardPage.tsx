@@ -11,6 +11,8 @@ import { WeeklyCrosswordModal } from "../features/home/WeeklyCrosswordModal";
 import { WordOfTheDayCard } from "../features/wotd/components/WordOfTheDayCard";
 import { Footer } from "../components/Footer";
 import { AppStoreBadge } from "../components/AppStoreBadge";
+import { AuthButton } from "../features/auth/AuthButton";
+import { useAuth } from "../features/auth/AuthProvider";
 
 function formattedToday() {
   return new Intl.DateTimeFormat("en-US", {
@@ -21,13 +23,14 @@ function formattedToday() {
 }
 
 export function HomeDashboardPage() {
+  const { user } = useAuth();
   const [showWeeklyModal, setShowWeeklyModal] = useState(false);
-  const backwordStatus = useMemo(() => backwordDashboardStatus(), []);
+  const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, localDateString(), user?.id), [user?.id]);
   const crosswordStatus = useMemo(() => {
-    const storage = createCrosswordStorage();
+    const storage = createCrosswordStorage(window.localStorage, { userId: user?.id });
     const now = new Date();
     return crosswordDashboardStatus(storage.loadProgressForDate(localDateString(now)), now, storage.loadAllProgress());
-  }, []);
+  }, [user?.id]);
 
   return (
     <main className="home-dashboard">
@@ -36,6 +39,10 @@ export function HomeDashboardPage() {
         <Link aria-label="Backword home" to="/home">
           <BackwordLogo large />
         </Link>
+        <div className="home-dashboard__actions">
+          <AuthButton />
+          <AppStoreBadge />
+        </div>
       </header>
 
       <section className="home-dashboard__content" aria-labelledby="daily-games-title">
@@ -63,10 +70,6 @@ export function HomeDashboardPage() {
             title="Quick Crossword"
           />
         </div>
-        <div className="home-dashboard__store-badge">
-          <AppStoreBadge />
-        </div>
-
         <WordOfTheDayCard />
 
         <section className="weekly-card-section" aria-labelledby="weekly-games-title">

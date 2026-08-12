@@ -22,7 +22,8 @@ export function emptyProgress(
     completedClueIds: [],
     startedAt: startedAt.toISOString(),
     completedAt: null,
-    releaseDateScore: 0
+    releaseDateScore: 0,
+    updatedAt: startedAt.toISOString()
   };
 }
 
@@ -219,7 +220,7 @@ export function enterLetter(
   if (updated.completedClueIds.length === puzzle.clues.length) {
     updated = { ...updated, completedAt: now.toISOString() };
   }
-  updated = saveReleaseDateScore(updated, puzzle, now);
+  updated = { ...saveReleaseDateScore(updated, puzzle, now), updatedAt: now.toISOString() };
   return { progress: updated, selection: advanceSelection(updated, clue, selection) };
 }
 
@@ -243,7 +244,7 @@ export function deleteLetter(
   if (!(correctHighlight && isCompletedCell(progress, puzzle, target.row, target.col))) {
     entries[target.row][target.col] = null;
   }
-  return { progress: saveReleaseDateScore({ ...progress, entries }, puzzle, now), selection: target };
+  return { progress: { ...saveReleaseDateScore({ ...progress, entries }, puzzle, now), updatedAt: now.toISOString() }, selection: target };
 }
 
 function solvedProgress(progress: CrosswordProgress): boolean {

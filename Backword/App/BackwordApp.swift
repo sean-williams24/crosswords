@@ -15,12 +15,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct BackwordApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var statsService: StatsService
     @StateObject private var puzzleService: PuzzleService
     @StateObject private var storeService: StoreService
     @StateObject private var adService: AdService
     @StateObject private var ratingService: OverallRatingService
     @StateObject private var appReviewPromptService: AppReviewPromptService
+    @StateObject private var accountService: AccountService
     @StateObject private var homeViewModel: HomeViewModel
     @AppStorage("appColorScheme") private var appColorScheme: Int = 2
 
@@ -36,6 +38,17 @@ struct BackwordApp: App {
                 .environmentObject(adService)
                 .environmentObject(ratingService)
                 .environmentObject(appReviewPromptService)
+                .environmentObject(accountService)
+                .onChange(of: accountService.isProUser) { _, isAccountProUser in
+                    storeService.setAccountProStatus(isAccountProUser)
+                }
+                .onOpenURL { url in
+                    Task { await accountService.handleAuthRedirect(url) }
+                }
+                .onChange(of: scenePhase) { _, newPhase in
+                    guard newPhase == .background || newPhase == .inactive else { return }
+                    Task { await ProgressCloudSync.shared.flushPendingUploads() }
+                }
                 .task {
                     await adService.prepareAdsIfNeeded()
                 }
@@ -43,6 +56,7 @@ struct BackwordApp: App {
     }
 
     init() {
+        let accountService = AccountService()
         let statsService = StatsService()
         let puzzleService = PuzzleService()
         let storeService = StoreService()
@@ -56,6 +70,7 @@ struct BackwordApp: App {
         _adService = StateObject(wrappedValue: adService)
         _ratingService = StateObject(wrappedValue: ratingService)
         _appReviewPromptService = StateObject(wrappedValue: appReviewPromptService)
+        _accountService = StateObject(wrappedValue: accountService)
         _homeViewModel = StateObject(wrappedValue: HomeViewModel(
             puzzleService: puzzleService,
             storeService: storeService

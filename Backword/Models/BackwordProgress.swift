@@ -7,9 +7,11 @@ struct BackwordProgress: Codable {
     var clueRevealed: Bool
     /// Set to true by BackwordViewModel when the winning guess is submitted.
     var wonFlag: Bool
+    /// Persisted cross-device conflict tie-breaker. Local saves refresh it.
+    var updatedAt: Date
 
     enum CodingKeys: String, CodingKey {
-        case date, guesses, completedAt, wonFlag
+        case date, guesses, completedAt, wonFlag, updatedAt
         case clueRevealed = "categoryHintUsed"
     }
 
@@ -19,6 +21,17 @@ struct BackwordProgress: Codable {
         self.completedAt = nil
         self.clueRevealed = false
         self.wonFlag = false
+        self.updatedAt = Date()
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        date = try container.decode(String.self, forKey: .date)
+        guesses = try container.decode([String].self, forKey: .guesses)
+        completedAt = try container.decodeIfPresent(Date.self, forKey: .completedAt)
+        clueRevealed = try container.decodeIfPresent(Bool.self, forKey: .clueRevealed) ?? false
+        wonFlag = try container.decodeIfPresent(Bool.self, forKey: .wonFlag) ?? false
+        updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt) ?? completedAt ?? Date()
     }
 
     // MARK: - Computed
@@ -43,8 +56,9 @@ extension BackwordProgress {
     static let changedDateUserInfoKey = "date"
 
     private static var directory: URL {
-        FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("Backword", isDirectory: true)
+        return ProgressStorageNamespace.directory(base: base)
     }
 
     private static func fileURL(for date: String) -> URL {
@@ -54,9 +68,14 @@ extension BackwordProgress {
     func save() {
         let dir = Self.directory
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        if let data = try? JSONEncoder().encode(self) {
+        var progress = self
+        progress.updatedAt = Date()
+        if let data = try? JSONEncoder().encode(progress) {
             try? data.write(to: Self.fileURL(for: date), options: .atomic)
             Self.postDidChange(for: date)
+        }
+        Task { @MainActor in
+            ProgressCloudSync.shared.scheduleUpload(progress)
         }
     }
 

@@ -30,6 +30,16 @@ VITE_SUPABASE_ANON_KEY=
 
 Keep browser game integration in `src/lib` and page-level gameplay in `src/pages` or feature-specific folders.
 
-Anonymous game progress, settings, cached content, and statistics are stored in
-versioned browser-local storage. They do not sync between browsers or devices;
-account-backed synchronization is intentionally deferred to a later task.
+Guest progress, settings, cached content, and statistics remain in versioned
+browser-local storage. Signing in with Apple or Google moves game progress into
+an account-scoped cache and synchronises it through Supabase. Settings and
+puzzle caches intentionally remain device-local.
+
+## Account setup
+
+Enable Google and Apple providers in Supabase Auth and allow these redirect
+URLs: the deployed site's `/auth/callback`, local development's
+`/auth/callback`, and `backword://login-callback` for iOS Google OAuth. Apple
+web login also needs a Services ID and client secret in Supabase. Apply
+`Backend/supabase/schema.sql`, then deploy the Edge Functions described in
+`Backend/supabase/functions/README.md` before enabling account-linked Pro.

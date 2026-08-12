@@ -23,11 +23,19 @@ import { CrosswordGrid } from "../features/crossword/components/CrosswordGrid";
 import { CrosswordInstructions } from "../features/crossword/components/CrosswordInstructions";
 import { CrosswordKeyboard } from "../features/crossword/components/CrosswordKeyboard";
 import { CrosswordStats } from "../features/crossword/components/CrosswordStats";
+import { useAuth } from "../features/auth/AuthProvider";
+import { crosswordCloudRecord, migrateProgress, queueAndDebounce } from "../features/sync/progressSync";
 
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
 export function CrosswordPage() {
-  const storage = useMemo(() => createCrosswordStorage(), []);
+  const { user } = useAuth();
+  const storage = useMemo(() => createCrosswordStorage(window.localStorage, {
+    userId: user?.id,
+    onProgressSaved: (progress) => {
+      if (user) queueAndDebounce(user.id, crosswordCloudRecord(progress));
+    }
+  }), [user?.id]);
   const [date, setDate] = useState(() => localDateString());
   const [puzzle, setPuzzle] = useState<CrosswordPuzzle | null>(null);
   const [progress, setProgress] = useState<CrosswordProgress | null>(null);
@@ -72,6 +80,21 @@ export function CrosswordPage() {
   }, [storage]);
 
   useEffect(() => { void loadPuzzle(date); }, [date, loadPuzzle]);
+
+  useEffect(() => {
+    if (!user) return;
+    const guestStorage = createCrosswordStorage();
+    void migrateProgress(
+      user.id,
+      "daily_crossword",
+      guestStorage.loadAllProgress().map(crosswordCloudRecord),
+      storage.loadAllProgress().map(crosswordCloudRecord),
+      (record) => storage.replaceProgress(record.payload),
+      (record) => guestStorage.deleteProgress(record.content_key)
+    ).then(() => {
+      if (puzzle) setProgress(storage.loadProgress(puzzle));
+    });
+  }, [puzzle, storage, user?.id]);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
