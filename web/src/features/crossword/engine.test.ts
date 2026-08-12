@@ -39,4 +39,32 @@ describe("crossword engine", () => {
     const completed = { ...emptyProgress(currentPuzzle, new Date("2026-08-05T09:00:00")), completedAt: "2026-08-05T09:03:00.000Z", completedClueIds: [0], releaseDateScore: 5 };
     expect(deriveCrosswordStats([completed], new Date("2026-08-05T10:00:00")).rollingScore).toBe(5);
   });
+
+  it("excludes archive completions from streaks and on-release average-time statistics", () => {
+    const currentPuzzle = puzzle();
+    const completed = (date: string, completedAt: string, durationSeconds: number, suffix: string) => ({
+      ...emptyProgress({ ...currentPuzzle, id: `puzzle-${suffix}` }, new Date(new Date(completedAt).getTime() - durationSeconds * 1_000)),
+      date,
+      completedAt,
+      releaseDateScore: 5
+    });
+    const records = [
+      // Archive completions remain total solves but never extend a streak or
+      // enter the release-day average.
+      completed("2026-07-01", "2026-08-01T10:00:00.000Z", 1, "1"),
+      completed("2026-07-02", "2026-08-02T10:00:00.000Z", 1, "2"),
+      completed("2026-07-03", "2026-08-03T10:00:00.000Z", 1, "3"),
+      completed("2026-07-04", "2026-08-04T10:00:00.000Z", 1, "4"),
+      completed("2026-08-05", "2026-08-05T10:00:00.000Z", 3_600, "5"),
+      completed("2026-08-06", "2026-08-06T10:00:00.000Z", 7_200, "6"),
+      completed("2026-08-07", "2026-08-07T10:00:00.000Z", 10_800, "7"),
+      completed("2026-08-08", "2026-08-08T10:00:00.000Z", 14_068, "8")
+    ];
+
+    const stats = deriveCrosswordStats(records, new Date("2026-08-12T12:00:00.000Z"));
+
+    expect(stats.totalSolved).toBe(8);
+    expect(stats.longestStreak).toBe(4);
+    expect(stats.averageSolveTimeSeconds).toBe(8_917);
+  });
 });

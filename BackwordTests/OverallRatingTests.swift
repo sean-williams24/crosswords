@@ -71,6 +71,35 @@ struct UserStatsTests {
         #expect(stats.longestStreak(isWeekly: true) == 2)
         #expect(stats.totalCompleted(isWeekly: false) == 1)
     }
+
+    @Test("Archive completions count as solved but never extend a daily streak")
+    func archiveCompletionDoesNotExtendDailyStreak() {
+        var stats = UserStats()
+        let today = Calendar.current.startOfDay(for: Date())
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: today)!
+
+        stats.history = [
+            PuzzleResult(
+                puzzleId: "on-release",
+                date: yesterday,
+                timeSeconds: 60,
+                hintsUsed: 0,
+                completedOnReleaseDate: true
+            ),
+            PuzzleResult(
+                puzzleId: "archive",
+                date: today,
+                timeSeconds: 60,
+                hintsUsed: 0,
+                completedOnReleaseDate: false
+            )
+        ]
+        stats.recomputeAggregates()
+
+        #expect(stats.totalCompleted(isWeekly: false) == 2)
+        #expect(stats.currentStreak(isWeekly: false) == 1)
+        #expect(stats.longestStreak(isWeekly: false) == 1)
+    }
 }
 
 // MARK: - OverallRating model

@@ -7,13 +7,24 @@ struct PuzzleResult: Codable, Identifiable {
     let timeSeconds: Int
     let hintsUsed: Int
     var isWeekly: Bool
+    /// Only a solve completed during this puzzle's own release window may
+    /// extend a crossword streak. Archive solves remain valid completions.
+    var completedOnReleaseDate: Bool
 
-    init(puzzleId: String, date: Date, timeSeconds: Int, hintsUsed: Int, isWeekly: Bool = false) {
+    init(
+        puzzleId: String,
+        date: Date,
+        timeSeconds: Int,
+        hintsUsed: Int,
+        isWeekly: Bool = false,
+        completedOnReleaseDate: Bool = true
+    ) {
         self.puzzleId = puzzleId
         self.date = date
         self.timeSeconds = timeSeconds
         self.hintsUsed = hintsUsed
         self.isWeekly = isWeekly
+        self.completedOnReleaseDate = completedOnReleaseDate
     }
 
     // Custom decoder so existing saved records (without isWeekly) default to false
@@ -24,6 +35,9 @@ struct PuzzleResult: Codable, Identifiable {
         timeSeconds = try container.decode(Int.self, forKey: .timeSeconds)
         hintsUsed = try container.decode(Int.self, forKey: .hintsUsed)
         isWeekly = (try? container.decode(Bool.self, forKey: .isWeekly)) ?? false
+        // Legacy values are corrected from their source UserProgress records
+        // by StatsService. Unknown records fail closed for streak purposes.
+        completedOnReleaseDate = (try? container.decode(Bool.self, forKey: .completedOnReleaseDate)) ?? false
     }
 }
 
@@ -55,37 +69,24 @@ struct UserStats: Codable {
         return currentStreak
     }
 
-    mutating func recordCompletion(puzzleId: String, timeSeconds: Int, hintsUsed: Int, isWeekly: Bool = false) {
+    mutating func recordCompletion(
+        puzzleId: String,
+        timeSeconds: Int,
+        hintsUsed: Int,
+        isWeekly: Bool = false,
+        completedOnReleaseDate: Bool = true
+    ) {
         let today = Calendar.current.startOfDay(for: Date())
         let result = PuzzleResult(
             puzzleId: puzzleId,
             date: today,
             timeSeconds: timeSeconds,
             hintsUsed: hintsUsed,
-            isWeekly: isWeekly
+            isWeekly: isWeekly,
+            completedOnReleaseDate: completedOnReleaseDate
         )
         history.append(result)
-        totalCompleted += 1
-
-        // Update average time
-        let totalTime = averageTimeSeconds * Double(totalCompleted - 1) + Double(timeSeconds)
-        averageTimeSeconds = totalTime / Double(totalCompleted)
-
-        // Update streak — use liveCurrentStreak so a multi-day gap resets correctly
-        if let lastDate = lastCompletedDate {
-            let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: today)!
-            if Calendar.current.isDate(lastDate, inSameDayAs: yesterday) {
-                currentStreak = liveCurrentStreak + 1
-            } else if !Calendar.current.isDate(lastDate, inSameDayAs: today) {
-                currentStreak = 1
-            }
-            // Same day → don't change streak
-        } else {
-            currentStreak = 1
-        }
-
-        longestStreak = max(longestStreak, currentStreak)
-        lastCompletedDate = today
+        recomputeAggregates()
     }
 
     var formattedAverageTime: String {
@@ -107,6 +108,7 @@ struct UserStats: Codable {
 
         let calendar = Calendar.current
         let dailyDates = filteredHistory(isWeekly: false)
+            .filter(\.completedOnReleaseDate)
             .map { calendar.startOfDay(for: $0.date) }
             .sorted()
 
@@ -169,6 +171,7 @@ struct UserStats: Codable {
         let today = calendar.startOfDay(for: Date())
         let maxGap = isWeekly ? 8 : 1
         let dates = filteredHistory(isWeekly: isWeekly)
+            .filter(\.completedOnReleaseDate)
             .map { calendar.startOfDay(for: $0.date) }
             .sorted()
         guard let last = dates.last else { return 0 }
@@ -186,6 +189,7 @@ struct UserStats: Codable {
         let calendar = Calendar.current
         let maxGap = isWeekly ? 8 : 1
         let dates = filteredHistory(isWeekly: isWeekly)
+            .filter(\.completedOnReleaseDate)
             .map { calendar.startOfDay(for: $0.date) }
             .sorted()
         guard !dates.isEmpty else { return 0 }

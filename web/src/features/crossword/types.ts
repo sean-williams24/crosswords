@@ -36,6 +36,8 @@ export type CrosswordProgress = {
   completedClueIds: number[];
   startedAt: string;
   completedAt: string | null;
+  /** Present on native records that were revealed rather than solved. */
+  gaveUpAt?: string | null;
   releaseDateScore: number;
   /** ISO timestamp used only for deterministic cross-device conflict resolution. */
   updatedAt?: string;

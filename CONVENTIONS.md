@@ -101,6 +101,12 @@ calendar-day release. The score remains in its historical progress record at
 midnight; late completion does not overwrite it. The rolling 14-day score,
 history, and streaks are all derived from saved per-date progress.
 
+Total solved includes every successful crossword completion, including Archive
+play. Current and best streaks, the Daily Stats average, and per-row times use
+only successful completions made during that puzzle's own release window. An
+archive completion must never extend a streak or inflate the release-day
+average on either platform.
+
 ---
 
 ## Crossword Configuration & Word Repeat Prevention

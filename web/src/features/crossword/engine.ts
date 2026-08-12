@@ -248,13 +248,7 @@ export function deleteLetter(
 }
 
 function solvedProgress(progress: CrosswordProgress): boolean {
-  return progress.completedAt !== null;
-}
-
-function completionDate(progress: CrosswordProgress): string | null {
-  if (!progress.completedAt) return null;
-  const completedAt = new Date(progress.completedAt);
-  return Number.isNaN(completedAt.getTime()) ? null : localDateString(completedAt);
+  return progress.completedAt !== null && !progress.gaveUpAt;
 }
 
 function longestConsecutive(dates: string[]): number {
@@ -280,34 +274,42 @@ function currentStreak(dates: string[], today: string): number {
   return streak;
 }
 
+/** iOS exposes solve times only for a successful completion on its release day. */
+function onTimeSolveTime(progress: CrosswordProgress): number | null {
+  if (!solvedProgress(progress) || !isCompletedOnReleaseDate(progress.date, progress.completedAt)) {
+    return null;
+  }
+  const end = new Date(progress.completedAt ?? "").getTime();
+  const start = new Date(progress.startedAt).getTime();
+  return Number.isFinite(end - start) ? Math.max(0, Math.floor((end - start) / 1000)) : null;
+}
+
 export function deriveCrosswordStats(progressRecords: CrosswordProgress[], now = new Date()): CrosswordStats {
   const today = localDateString(now);
   const byDate = new Map(progressRecords.map((progress) => [progress.date, progress]));
   const solved = progressRecords.filter(solvedProgress);
-  const completionDates = solved.map(completionDate).filter((date): date is string => date !== null);
-  const solveTimes = solved.map((progress) => {
-    const end = new Date(progress.completedAt ?? "").getTime();
-    const start = new Date(progress.startedAt).getTime();
-    return Number.isFinite(end - start) ? Math.max(0, Math.floor((end - start) / 1000)) : null;
-  }).filter((seconds): seconds is number => seconds !== null);
+  const onTimeSolved = solved.filter((progress) => isCompletedOnReleaseDate(progress.date, progress.completedAt));
+  const completionDates = onTimeSolved.map((progress) => progress.date);
   const history = Array.from({ length: 14 }, (_, offset) => {
     const date = localDateOffset(today, -offset);
     const progress = byDate.get(date);
-    const end = progress?.completedAt ? new Date(progress.completedAt).getTime() : NaN;
-    const start = progress ? new Date(progress.startedAt).getTime() : NaN;
+    const solveTimeSeconds = progress ? onTimeSolveTime(progress) : null;
     return {
       date,
       isToday: offset === 0,
       score: progress?.releaseDateScore ?? 0,
-      solveTimeSeconds: Number.isFinite(end - start) ? Math.max(0, Math.floor((end - start) / 1000)) : null,
-      outcome: progress ? solvedProgress(progress) ? "solved" : "inProgress" : "unplayed"
+      solveTimeSeconds,
+      outcome: progress ? solveTimeSeconds !== null ? "solved" : "inProgress" : "unplayed"
     } as const;
   });
+  const visibleSolveTimes = history
+    .map((row) => row.solveTimeSeconds)
+    .filter((seconds): seconds is number => seconds !== null);
   return {
     totalSolved: solved.length,
     currentStreak: currentStreak(completionDates, today),
     longestStreak: longestConsecutive(completionDates),
-    averageSolveTimeSeconds: solveTimes.length ? Math.floor(solveTimes.reduce((total, seconds) => total + seconds, 0) / solveTimes.length) : null,
+    averageSolveTimeSeconds: visibleSolveTimes.length ? Math.floor(visibleSolveTimes.reduce((total, seconds) => total + seconds, 0) / visibleSolveTimes.length) : null,
     rollingScore: history.reduce((total, row) => total + row.score, 0),
     history
   };
