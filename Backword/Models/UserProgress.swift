@@ -39,6 +39,9 @@ struct UserProgress: Codable {
     var gaveUpAt: Date?
     var gaveUpScore: Int?
     var gaveUpRevealedCells: Set<String>
+    /// The score legitimately earned during this puzzle's original release
+    /// window. Archive progress must never change this snapshot.
+    var releaseDateScore: Int
     /// Persisted cross-device conflict tie-breaker. Local saves refresh it.
     var updatedAt: Date
 
@@ -58,6 +61,7 @@ struct UserProgress: Codable {
         self.gaveUpAt = nil
         self.gaveUpScore = nil
         self.gaveUpRevealedCells = []
+        self.releaseDateScore = 0
         self.updatedAt = Date()
     }
 
@@ -75,6 +79,7 @@ struct UserProgress: Codable {
         gaveUpAt: Date?,
         gaveUpScore: Int?,
         gaveUpRevealedCells: Set<String>,
+        releaseDateScore: Int = 0,
         updatedAt: Date = Date()
     ) {
         self.puzzleId = puzzleId
@@ -90,6 +95,7 @@ struct UserProgress: Codable {
         self.gaveUpAt = gaveUpAt
         self.gaveUpScore = gaveUpScore
         self.gaveUpRevealedCells = gaveUpRevealedCells
+        self.releaseDateScore = releaseDateScore
         self.updatedAt = updatedAt
     }
 
@@ -108,6 +114,7 @@ struct UserProgress: Codable {
         gaveUpAt = try container.decodeIfPresent(Date.self, forKey: .gaveUpAt)
         gaveUpScore = try container.decodeIfPresent(Int.self, forKey: .gaveUpScore)
         gaveUpRevealedCells = try container.decodeIfPresent(Set<String>.self, forKey: .gaveUpRevealedCells) ?? []
+        releaseDateScore = try container.decodeIfPresent(Int.self, forKey: .releaseDateScore) ?? 0
         updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt) ?? completedAt ?? startedAt
     }
 

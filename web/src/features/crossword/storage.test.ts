@@ -14,4 +14,18 @@ describe("crossword storage", () => {
     localStorage.setItem("backword:web:crossword:progress:v1", "not json");
     expect(storage.loadProgress(puzzle).puzzleId).toBe("puzzle");
   });
+
+  it("accepts an unfinished iOS cloud payload that omits completedAt", () => {
+    const storage = createCrosswordStorage();
+    const progress = emptyProgress(puzzle, new Date("2026-08-05T09:00:00"));
+    const iosPayload = { ...progress } as Record<string, unknown>;
+    delete iosPayload.completedAt;
+
+    storage.replaceProgress(iosPayload as typeof progress);
+
+    expect(storage.loadProgress(puzzle)).toMatchObject({
+      puzzleId: "puzzle",
+      completedAt: null
+    });
+  });
 });

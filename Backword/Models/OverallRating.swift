@@ -170,6 +170,18 @@ struct OverallRating: Codable {
         return min(total, category.maxPoints)
     }
 
+    /// Returns the persisted release-window score for one game/date. This is
+    /// used once when guest progress becomes account-scoped, so old aggregate
+    /// data is converted into a durable per-puzzle snapshot.
+    func score(for category: RatingGameCategory, date: String) -> Int {
+        guard let day = dailyScores.first(where: { $0.date == date }) else { return 0 }
+        switch category {
+        case .backword: return day.backword
+        case .dailyCrossword: return day.dailyCrossword
+        case .weeklyCrossword: return day.weeklyCrossword ?? 0
+        }
+    }
+
     func maxPoints(for category: RatingGameCategory) -> Int {
         category.maxPoints
     }

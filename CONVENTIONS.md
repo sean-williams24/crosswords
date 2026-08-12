@@ -19,6 +19,17 @@ statistics, streaks, and ratings are derived from active progress rather than
 merged as aggregate counters. Local saves always complete first and cloud writes
 are retried on later account syncs.
 
+Crossword progress carries a `releaseDateScore` snapshot. iOS captures it only
+while the puzzle is in its own local release window and never changes it during
+later Archive play. On a first account sign-in, legacy guest aggregate rating
+points are copied onto their corresponding progress records before upload, so
+existing game state and earned scores remain available on every signed-in
+device. Accounts created before this snapshot existed receive the same one-time
+conversion from their account-scoped aggregate file on first refresh. A cloud
+conflict still selects one whole crossword grid, but preserves the higher
+release-window score snapshot as independent historical metadata; this stops
+later Archive progress on another device from erasing already-earned points.
+
 StoreKit remains a valid Pro source while signed out. Signed-in purchases pass
 the Supabase user UUID as StoreKit's `appAccountToken`; verified Apple
 transactions are then associated with a single Backword account. The server

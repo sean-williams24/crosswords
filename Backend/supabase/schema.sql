@@ -210,6 +210,8 @@ DECLARE
     current_row game_progress;
     incoming_terminal BOOLEAN := p_status IN ('solved', 'failed', 'gave_up');
     current_terminal BOOLEAN;
+    is_crossword BOOLEAN := p_game_type IN ('daily_crossword', 'weekly_crossword');
+    resolved_release_score INTEGER;
     use_incoming BOOLEAN := FALSE;
 BEGIN
     IF auth.uid() IS NULL THEN
@@ -235,6 +237,14 @@ BEGIN
     END IF;
 
     current_terminal := current_row.status IN ('solved', 'failed', 'gave_up');
+    -- Crossword grid conflicts remain whole-record decisions, but the
+    -- release-window score is an independent historical fact. Preserve the
+    -- highest captured value so a more advanced Archive grid on another
+    -- device cannot erase points earned on the original release day.
+    resolved_release_score := CASE
+        WHEN is_crossword THEN GREATEST(current_row.release_score, p_release_score)
+        ELSE p_release_score
+    END;
     -- Solved records always win. Two solved records keep the higher valid
     -- release score. For all remaining ties, terminal state, rank, then the
     -- most recent client update win.
@@ -252,9 +262,33 @@ BEGIN
             schema_version = p_schema_version,
             status = p_status,
             progress_rank = p_progress_rank,
-            release_score = p_release_score,
+            release_score = resolved_release_score,
             client_updated_at = p_client_updated_at,
-            payload = p_payload,
+            payload = CASE
+                WHEN is_crossword THEN jsonb_set(
+                    p_payload,
+                    '{releaseDateScore}',
+                    to_jsonb(resolved_release_score),
+                    TRUE
+                )
+                ELSE p_payload
+            END,
+            updated_at = NOW()
+        WHERE user_id = auth.uid()
+          AND game_type = p_game_type
+          AND content_key = p_content_key
+        RETURNING * INTO current_row;
+    ELSIF is_crossword AND p_release_score > current_row.release_score THEN
+        -- The current grid won the conflict, so retain it. Only promote the
+        -- immutable score snapshot stored alongside that grid.
+        UPDATE game_progress
+        SET release_score = resolved_release_score,
+            payload = jsonb_set(
+                current_row.payload,
+                '{releaseDateScore}',
+                to_jsonb(resolved_release_score),
+                TRUE
+            ),
             updated_at = NOW()
         WHERE user_id = auth.uid()
           AND game_type = p_game_type

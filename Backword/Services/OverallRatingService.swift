@@ -16,16 +16,36 @@ final class OverallRatingService: ObservableObject {
     // MARK: - Refresh
 
     func refresh() {
-        rating = .load()
-        backfillFromDisk()
+        // Account ratings are fully derived from account-scoped progress.
+        // Never retain a former guest aggregate row after account sync.
+        let savedRating = OverallRating.load()
+        if ProgressStorageNamespace.accountID != nil {
+            rating = OverallRating()
+        } else {
+            rating = savedRating
+        }
+        backfillFromDisk(legacyRating: savedRating)
     }
 
     // MARK: - Backfill from disk
 
-    private func backfillFromDisk() {
+    private func backfillFromDisk(legacyRating: OverallRating? = nil) {
         let releaseCalendar = ContentReleaseCalendar()
         let cutoff = releaseCalendar.dailyDateString(offsetByDays: -13) ?? DateFormatting().todayString()
-        let progressRecords = UserProgress.loadAll()
+        let storedProgressRecords = UserProgress.loadAll()
+        let rebuildsFromSnapshots = ProgressStorageNamespace.accountID != nil
+        let progressRecords: [UserProgress]
+        if rebuildsFromSnapshots, let legacyRating {
+            // An account created before releaseDateScore existed still has an
+            // account-scoped aggregate file. Convert it before rebuilding,
+            // otherwise the first refresh would discard its earned points.
+            progressRecords = AccountProgressMigration.persistLegacyReleaseDateScores(
+                in: storedProgressRecords,
+                rating: legacyRating
+            )
+        } else {
+            progressRecords = storedProgressRecords
+        }
 
         // Backword
         for bw in BackwordProgress.loadAll() where bw.date >= cutoff {
@@ -35,18 +55,17 @@ final class OverallRatingService: ObservableObject {
             rating.upsertBackword(score: score, date: bw.date)
         }
 
-        // Crosswords — scan all progress files that have metadata
+        // Crosswords — use the immutable release-window snapshot. Current
+        // grid state may include later archive progress and must not change a
+        // historical rating.
         for p in progressRecords {
             guard p.gaveUpAt == nil,
-                  let date = p.puzzleDate, date >= cutoff,
-                  let total = p.totalClues, total > 0 else { continue }
-            let scoringCalendar = p.completedAt.map { ContentReleaseCalendar(now: $0) } ?? releaseCalendar
-            guard Self.canScoreCrossword(date: date, isWeekly: p.isWeekly == true, releaseCalendar: scoringCalendar) else {
-                continue
-            }
-            let completed = p.completedClueIds.count
-            let pct = Int(Double(completed) / Double(total) * 100)
-            let score = max(0, Int.crosswordScore(percentComplete: pct) - p.hintsUsed / 3)
+                  let date = p.puzzleDate, date >= cutoff else { continue }
+            // Pre-account iOS builds kept the only historical score in the
+            // aggregate rating file. Leave that value alone until sign-in
+            // converts it to a per-puzzle snapshot.
+            guard rebuildsFromSnapshots || p.releaseDateScore > 0 else { continue }
+            let score = p.releaseDateScore
             if p.isWeekly == true {
                 rating.upsertWeeklyCrossword(score: score, date: date)
             } else {
@@ -54,41 +73,8 @@ final class OverallRatingService: ObservableObject {
             }
         }
 
-        removeInvalidPerfectCrosswordScores(using: progressRecords)
         removeInvalidBackwordScores()
         rating.save()
-    }
-
-    private func removeInvalidPerfectCrosswordScores(using progressRecords: [UserProgress]) {
-        let onTimeDailySolvedDates = Set(progressRecords.compactMap { progress -> String? in
-            guard progress.isWeekly != true,
-                  progress.gaveUpAt == nil,
-                  let puzzleDate = progress.puzzleDate,
-                  let completedAt = progress.completedAt,
-                  ContentReleaseCalendar(now: completedAt).dailyDateString == puzzleDate else { return nil }
-            return puzzleDate
-        })
-        let onTimeWeeklySolvedDates = Set(progressRecords.compactMap { progress -> String? in
-            guard progress.isWeekly == true,
-                  progress.gaveUpAt == nil,
-                  let puzzleDate = progress.puzzleDate,
-                  let completedAt = progress.completedAt,
-                  ContentReleaseCalendar(now: completedAt).weeklyDateString == puzzleDate else { return nil }
-            return puzzleDate
-        })
-
-        for idx in rating.dailyScores.indices {
-            let date = rating.dailyScores[idx].date
-            if rating.dailyScores[idx].dailyCrossword == 5,
-               !onTimeDailySolvedDates.contains(date) {
-                rating.dailyScores[idx].dailyCrossword = 0
-            }
-            if rating.dailyScores[idx].weeklyCrossword == 5,
-               !onTimeWeeklySolvedDates.contains(date) {
-                rating.dailyScores[idx].weeklyCrossword = 0
-            }
-        }
-        rating.trim()
     }
 
     private func removeInvalidBackwordScores() {

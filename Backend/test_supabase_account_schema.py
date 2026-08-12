@@ -4,6 +4,7 @@ import unittest
 
 SCHEMA = Path(__file__).parent / "supabase" / "schema.sql"
 FUNCTIONS = Path(__file__).parent / "supabase" / "functions"
+MIGRATION = Path(__file__).parent / "supabase" / "migrations" / "20260812_preserve_crossword_release_date_scores.sql"
 
 
 class SupabaseAccountSchemaTests(unittest.TestCase):
@@ -31,6 +32,16 @@ class SupabaseAccountSchemaTests(unittest.TestCase):
         self.assertIn("p_release_score > current_row.release_score", schema)
         self.assertIn("p_progress_rank > current_row.progress_rank", schema)
         self.assertIn("p_client_updated_at > current_row.client_updated_at", schema)
+
+    def test_crossword_conflicts_preserve_the_release_day_score_snapshot(self):
+        schema = SCHEMA.read_text()
+        migration = MIGRATION.read_text()
+
+        self.assertIn("resolved_release_score", schema)
+        self.assertIn("GREATEST(current_row.release_score, p_release_score)", schema)
+        self.assertIn("'{releaseDateScore}'", schema)
+        self.assertIn("CREATE OR REPLACE FUNCTION merge_game_progress", migration)
+        self.assertIn("GREATEST(current_row.release_score, p_release_score)", migration)
 
     def test_deletion_cascades_progress_and_releases_subscription_claim(self):
         schema = SCHEMA.read_text()

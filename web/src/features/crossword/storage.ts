@@ -43,9 +43,19 @@ function isProgress(value: unknown): value is CrosswordProgress {
     isEntryGrid(progress.entries, progress.size) &&
     Array.isArray(progress.completedClueIds) && progress.completedClueIds.every(Number.isInteger) &&
     typeof progress.startedAt === "string" &&
-    (progress.completedAt === null || typeof progress.completedAt === "string") &&
+    // Swift's JSONEncoder omits nil optionals, while browser saves use an
+    // explicit null. Both represent an unfinished shared crossword.
+    (progress.completedAt === undefined || progress.completedAt === null || typeof progress.completedAt === "string") &&
     typeof progress.releaseDateScore === "number" && progress.releaseDateScore >= 0 && progress.releaseDateScore <= 5
   );
+}
+
+/** Normalise the shared iOS payload to the browser's explicit-null shape. */
+function normalizedProgress(progress: CrosswordProgress): CrosswordProgress {
+  return {
+    ...progress,
+    completedAt: progress.completedAt ?? null
+  };
 }
 
 function isPuzzle(value: unknown): value is CrosswordPuzzle {
@@ -100,12 +110,14 @@ export function createCrosswordStorage(
     loadProgress(puzzle: Pick<CrosswordPuzzle, "id" | "date" | "size">): CrosswordProgress {
       const saved = readRecord<unknown>(storage, scopedKey(PROGRESS_KEY))[puzzle.id];
       return isProgress(saved) && saved.date === puzzle.date && saved.size === puzzle.size
-        ? saved
+        ? normalizedProgress(saved)
         : emptyProgress(puzzle);
     },
 
     loadAllProgress(): CrosswordProgress[] {
-      return Object.values(readRecord<unknown>(storage, scopedKey(PROGRESS_KEY))).filter(isProgress);
+      return Object.values(readRecord<unknown>(storage, scopedKey(PROGRESS_KEY)))
+        .filter(isProgress)
+        .map(normalizedProgress);
     },
 
     loadProgressForDate(date: string): CrosswordProgress | null {
@@ -122,7 +134,7 @@ export function createCrosswordStorage(
 
     replaceProgress(progress: CrosswordProgress): void {
       const records = readRecord<CrosswordProgress>(storage, scopedKey(PROGRESS_KEY));
-      records[progress.puzzleId] = progress;
+      records[progress.puzzleId] = normalizedProgress(progress);
       storage.setItem(scopedKey(PROGRESS_KEY), JSON.stringify(records));
     },
 

@@ -492,7 +492,22 @@ final class GameViewModel: ObservableObject {
     }
 
     private func saveProgress() {
+        captureReleaseDateScoreIfEligible()
         progress.save()
+    }
+
+    /// Freeze the score earned during the puzzle's own release window. Once
+    /// the date has passed, archive play can save the grid but cannot improve
+    /// this value; it is the cross-device source of truth for Overall Rating.
+    private func captureReleaseDateScoreIfEligible(
+        releaseCalendar: ContentReleaseCalendar = ContentReleaseCalendar()
+    ) {
+        guard progress.gaveUpAt == nil else { return }
+        let isReleaseDate = puzzle.size > 12
+            ? puzzle.date == releaseCalendar.weeklyDateString
+            : puzzle.date == releaseCalendar.dailyDateString
+        guard isReleaseDate else { return }
+        progress.releaseDateScore = currentScore
     }
 
     private static func cellKey(row: Int, col: Int) -> String {

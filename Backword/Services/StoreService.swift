@@ -20,6 +20,11 @@ final class StoreService: ObservableObject {
 
     private var storeKitHasPro = false
 
+    /// True when this device's App Store purchaser currently has Pro. This is
+    /// intentionally separate from an account-linked entitlement, which can
+    /// be used on the web and other devices.
+    var hasStoreKitPro: Bool { storeKitHasPro }
+
     var monthlyProduct: Product? { products.first { $0.id == Self.monthlyID } }
     var annualProduct: Product? { products.first { $0.id == Self.annualID } }
 

@@ -29,7 +29,7 @@ import type {
   BackwordWord
 } from "../features/backword/types";
 import { useAuth } from "../features/auth/AuthProvider";
-import { backwordCloudRecord, migrateProgress, queueAndDebounce } from "../features/sync/progressSync";
+import { backwordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountProgress } from "../features/sync/progressSync";
 
 type Sheet = "instructions" | "stats" | "completion" | null;
 
@@ -50,6 +50,7 @@ export function BackwordPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [usingCache, setUsingCache] = useState(false);
+  const [syncError, setSyncError] = useState("");
   const [inputError, setInputError] = useState(false);
   const [showDetailedExplainer, setShowDetailedExplainer] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -98,7 +99,43 @@ export function BackwordPage() {
       storage.loadAllProgress().map(backwordCloudRecord),
       (record) => storage.replaceProgress(record.payload),
       (record) => guestStorage.deleteProgress(record.content_key)
-    ).then(() => setProgress(storage.loadProgress(date)));
+    ).then(() => {
+      setSyncError("");
+      setProgress(storage.loadProgress(date));
+    }).catch(() => setSyncError("Your saved progress will sync when the connection is restored."));
+  }, [date, storage, user?.id]);
+
+  useEffect(() => {
+    if (!user) return;
+    let refreshing = false;
+    const refreshFromCloud = () => {
+      if (refreshing) return;
+      refreshing = true;
+      void refreshAccountProgress(
+        user.id,
+        "backword",
+        storage.loadAllProgress().map(backwordCloudRecord),
+        (record) => storage.replaceProgress(record.payload)
+      ).then(() => {
+        setSyncError("");
+        setProgress(storage.loadProgress(date));
+      }).catch(() => {
+        setSyncError("Your saved progress will sync when the connection is restored.");
+      }).finally(() => {
+        refreshing = false;
+      });
+    };
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === "visible") refreshFromCloud();
+    };
+    window.addEventListener("focus", refreshFromCloud);
+    window.addEventListener("online", refreshFromCloud);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+    return () => {
+      window.removeEventListener("focus", refreshFromCloud);
+      window.removeEventListener("online", refreshFromCloud);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+    };
   }, [date, storage, user?.id]);
 
   useEffect(() => {
@@ -246,6 +283,7 @@ export function BackwordPage() {
           <>
             <main className="bw-game-main">
               {usingCache ? <p className="bw-offline-note">Playing saved game offline</p> : null}
+              {syncError ? <p className="bw-offline-note">{syncError}</p> : null}
               <p className="bw-clue"><span>Clue:</span> {word.clue.toUpperCase()}</p>
 
               <div aria-label={`${progress.guesses.length} of ${MAX_GUESSES} guesses used`} className="bw-guess-counter">

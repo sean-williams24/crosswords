@@ -98,6 +98,8 @@ Backend/puzzles_weekly/
 Backend/supabase/*
 !Backend/supabase/schema.sql
 !Backend/supabase/config.toml
+!Backend/supabase/migrations/
+!Backend/supabase/migrations/**
 !Backend/supabase/functions/
 !Backend/supabase/functions/**
 

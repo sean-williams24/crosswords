@@ -75,4 +75,105 @@ struct AccountSyncTests {
             "Authorization": "Bearer session-token"
         ])
     }
+
+    @Test("A confirmed cross-account purchase conflict has clear device-only Pro copy")
+    func linkedElsewherePurchasePresentation() {
+        #expect(AccountEntitlementPresentation.isAlreadyLinkedPurchaseError(
+            "This purchase belongs to a different Backword account."
+        ))
+        #expect(AccountEntitlementPresentation.linkedElsewhereExplanation.contains("not shared"))
+        #expect(!AccountEntitlementPresentation.isAlreadyLinkedPurchaseError(
+            "Apple transaction lookup failed (500)."
+        ))
+    }
+
+    @Test("First account sync captures legacy guest release-day crossword points")
+    func capturesLegacyGuestReleaseDayScore() {
+        var rating = OverallRating()
+        rating.upsertDailyCrossword(score: 3, date: "2026-08-09")
+        var progress = UserProgress(
+            puzzleId: "daily-9",
+            size: 9,
+            puzzleDate: "2026-08-09",
+            totalClues: 21,
+            isWeekly: false
+        )
+        progress.completedClueIds = [1]
+
+        let migrated = AccountProgressMigration.captureGuestReleaseDateScores([progress], rating: rating)
+
+        #expect(migrated.first?.completedClueIds == [1])
+        #expect(migrated.first?.releaseDateScore == 3)
+    }
+
+    @Test("A migrated release-day score cannot be replaced by later archive progress")
+    func retainsReleaseDayScoreDuringArchiveProgress() {
+        var progress = UserProgress(
+            puzzleId: "daily-9",
+            size: 9,
+            puzzleDate: "2026-08-09",
+            totalClues: 21,
+            isWeekly: false
+        )
+        progress.releaseDateScore = 1
+        progress.completedClueIds = Set(1...21) // Later archive completion.
+
+        #expect(progress.releaseDateScore == 1)
+    }
+
+    @Test("Existing account progress converts its saved aggregate score only once")
+    func capturesExistingAccountLegacyScoreOnlyWhenSnapshotIsEmpty() {
+        var rating = OverallRating()
+        rating.upsertDailyCrossword(score: 2, date: "2026-08-12")
+        var progress = UserProgress(
+            puzzleId: "daily-12",
+            size: 9,
+            puzzleDate: "2026-08-12",
+            totalClues: 22,
+            isWeekly: false
+        )
+
+        let captured = AccountProgressMigration.captureGuestReleaseDateScores([progress], rating: rating)
+        progress.releaseDateScore = captured[0].releaseDateScore
+        rating.upsertDailyCrossword(score: 5, date: "2026-08-12")
+        let preserved = AccountProgressMigration.captureGuestReleaseDateScores([progress], rating: rating)
+
+        #expect(preserved[0].releaseDateScore == 2)
+    }
+
+    @Test("Legacy weekly points migrate without changing the saved grid")
+    func capturesLegacyWeeklyScoreWithoutChangingProgress() {
+        var rating = OverallRating()
+        rating.upsertWeeklyCrossword(score: 4, date: "2026-08-09")
+        var progress = UserProgress(
+            puzzleId: "weekly-9",
+            size: 13,
+            puzzleDate: "2026-08-09",
+            totalClues: 35,
+            isWeekly: true
+        )
+        progress.completedClueIds = [4, 8, 15]
+        progress.entries[0][0] = "A"
+
+        let migrated = AccountProgressMigration.captureGuestReleaseDateScores([progress], rating: rating)
+
+        #expect(migrated.first?.releaseDateScore == 4)
+        #expect(migrated.first?.completedClueIds == [4, 8, 15])
+        #expect(migrated.first?.entries[0][0] == "A")
+    }
+
+    @Test("A cloud grid conflict retains the higher release-day score")
+    func crosswordConflictPreservesReleaseDayScore() {
+        var local = UserProgress(puzzleId: "daily-9", size: 9, puzzleDate: "2026-08-09", totalClues: 21)
+        local.completedClueIds = [1]
+        local.releaseDateScore = 3
+
+        var remote = UserProgress(puzzleId: "daily-9", size: 9, puzzleDate: "2026-08-09", totalClues: 21)
+        remote.completedClueIds = [1, 2, 3]
+
+        let reconciled = CloudProgressRanking.preservingReleaseDateScore(from: local, in: remote)
+
+        #expect(reconciled.completedClueIds == [1, 2, 3])
+        #expect(reconciled.releaseDateScore == 3)
+    }
 }

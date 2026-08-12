@@ -190,3 +190,16 @@ export async function migrateProgress<T>(
     if (uploadedKeys.has(guest.content_key)) removeGuest(guest);
   }
 }
+
+/**
+ * Reconcile the account namespace with the cloud after another signed-in
+ * device may have played. There is no guest data to remove in this path.
+ */
+export async function refreshAccountProgress<T>(
+  userId: string,
+  gameType: CloudGameType,
+  accountRecords: CloudRecord<T>[],
+  applyWinner: (record: CloudRecord<T>) => void
+) {
+  await migrateProgress(userId, gameType, [], accountRecords, applyWinner, () => undefined);
+}

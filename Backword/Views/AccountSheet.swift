@@ -3,6 +3,7 @@ import SwiftUI
 
 struct AccountSheet: View {
     @EnvironmentObject private var accountService: AccountService
+    @EnvironmentObject private var storeService: StoreService
     @Environment(\.dismiss) private var dismiss
     @State private var showDeletionConfirmation = false
 
@@ -118,12 +119,7 @@ struct AccountSheet: View {
             .background(Color.appSurface)
             .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
 
-            Label(
-                accountService.isProUser ? "Pro is active for this account" : "No account-linked Pro subscription",
-                systemImage: accountService.isProUser ? "checkmark.seal.fill" : "person.crop.circle"
-            )
-            .font(AppFont.body(15))
-            .foregroundColor(accountService.isProUser ? .appAccent : .appTextSecondary)
+            proStatus
 
             Button("Sync Now") { Task { await accountService.refreshAccountData() } }
                 .font(AppFont.body(16))
@@ -142,6 +138,28 @@ struct AccountSheet: View {
         }
     }
 
+    @ViewBuilder
+    private var proStatus: some View {
+        if accountService.isProUser {
+            Label("Pro is active for this account", systemImage: "checkmark.seal.fill")
+                .font(AppFont.body(15))
+                .foregroundColor(.appAccent)
+        } else if storeService.hasStoreKitPro && accountService.localProLinkedElsewhere {
+            VStack(alignment: .leading, spacing: 6) {
+                Label("Pro is active on this iPhone", systemImage: "iphone")
+                    .font(AppFont.body(15))
+                    .foregroundColor(.appAccent)
+                Text(AccountEntitlementPresentation.linkedElsewhereExplanation)
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+            }
+        } else {
+            Label("No account-linked Pro subscription", systemImage: "person.crop.circle")
+                .font(AppFont.body(15))
+                .foregroundColor(.appTextSecondary)
+        }
+    }
+
     private var benefits: some View {
         VStack(alignment: .leading, spacing: 12) {
             benefit("arrow.triangle.2.circlepath", "Continue a game on another device or the web.")
@@ -154,5 +172,15 @@ struct AccountSheet: View {
         Label(text, systemImage: icon)
             .font(AppFont.body(15))
             .foregroundColor(.appTextPrimary)
+    }
+}
+
+enum AccountEntitlementPresentation {
+    static let linkedElsewhereExplanation =
+        "This App Store subscription is linked to another Backword account, so it is not shared with this account or on the web."
+
+    static func isAlreadyLinkedPurchaseError(_ message: String) -> Bool {
+        message == "This purchase belongs to a different Backword account."
+            || message == "This subscription is already linked to another Backword account."
     }
 }

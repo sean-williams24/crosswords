@@ -24,7 +24,7 @@ import { CrosswordInstructions } from "../features/crossword/components/Crosswor
 import { CrosswordKeyboard } from "../features/crossword/components/CrosswordKeyboard";
 import { CrosswordStats } from "../features/crossword/components/CrosswordStats";
 import { useAuth } from "../features/auth/AuthProvider";
-import { crosswordCloudRecord, migrateProgress, queueAndDebounce } from "../features/sync/progressSync";
+import { crosswordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountProgress } from "../features/sync/progressSync";
 
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
@@ -45,6 +45,7 @@ export function CrosswordPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [usingCache, setUsingCache] = useState(false);
+  const [syncError, setSyncError] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [clueDragStart, setClueDragStart] = useState<number | null>(null);
   const skipClueToggle = useRef(false);
@@ -92,8 +93,42 @@ export function CrosswordPage() {
       (record) => storage.replaceProgress(record.payload),
       (record) => guestStorage.deleteProgress(record.content_key)
     ).then(() => {
+      setSyncError("");
       if (puzzle) setProgress(storage.loadProgress(puzzle));
-    });
+    }).catch(() => setSyncError("Your saved progress will sync when the connection is restored."));
+  }, [puzzle, storage, user?.id]);
+
+  useEffect(() => {
+    if (!user) return;
+    let refreshing = false;
+    const refreshFromCloud = () => {
+      if (refreshing) return;
+      refreshing = true;
+      void refreshAccountProgress(
+        user.id,
+        "daily_crossword",
+        storage.loadAllProgress().map(crosswordCloudRecord),
+        (record) => storage.replaceProgress(record.payload)
+      ).then(() => {
+        setSyncError("");
+        if (puzzle) setProgress(storage.loadProgress(puzzle));
+      }).catch(() => {
+        setSyncError("Your saved progress will sync when the connection is restored.");
+      }).finally(() => {
+        refreshing = false;
+      });
+    };
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === "visible") refreshFromCloud();
+    };
+    window.addEventListener("focus", refreshFromCloud);
+    window.addEventListener("online", refreshFromCloud);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+    return () => {
+      window.removeEventListener("focus", refreshFromCloud);
+      window.removeEventListener("online", refreshFromCloud);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+    };
   }, [puzzle, storage, user?.id]);
 
   useEffect(() => {
@@ -219,6 +254,7 @@ export function CrosswordPage() {
           <>
             <main className="bw-game-main cw-game-main">
               {usingCache ? <p className="bw-offline-note">Playing saved crossword offline</p> : null}
+              {syncError ? <p className="bw-offline-note">{syncError}</p> : null}
               <p className="cw-puzzle-date">{puzzle.date}</p>
               <button
                 aria-label={`Current clue ${currentClue?.number ?? ""} ${currentClue?.direction ?? ""}: ${currentClue?.text ?? ""}`}

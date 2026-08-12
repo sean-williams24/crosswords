@@ -118,6 +118,8 @@ final class AccountService: ObservableObject {
     @Published private(set) var isProUser = false
     @Published private(set) var proExpirationDate: Date?
     @Published private(set) var errorMessage: String?
+    @Published private(set) var localProLinkedElsewhere = false
+    @Published private(set) var syncRevision = 0
 
     private let client: Supabase.SupabaseClient
     private var authStateTask: Task<Void, Never>?
@@ -180,6 +182,7 @@ final class AccountService: ObservableObject {
             activateProgressPersistence(for: nil)
             isProUser = false
             proExpirationDate = nil
+            localProLinkedElsewhere = false
             errorMessage = nil
         } catch {
             errorMessage = error.localizedDescription
@@ -196,6 +199,7 @@ final class AccountService: ObservableObject {
             activateProgressPersistence(for: nil)
             isProUser = false
             proExpirationDate = nil
+            localProLinkedElsewhere = false
             return true
         } catch {
             errorMessage = error.localizedDescription
@@ -217,6 +221,7 @@ final class AccountService: ObservableObject {
                 guestBackword: [],
                 guestCrosswords: []
             )
+            syncRevision &+= 1
         }
         await claimCurrentAppleEntitlements()
         await refreshProEntitlement()
@@ -266,11 +271,14 @@ final class AccountService: ObservableObject {
                         body: request
                     )
                 )
+                localProLinkedElsewhere = false
             } catch {
                 // A failed claim must not prevent local StoreKit access. The
                 // account sheet keeps the server's safe diagnostic available
                 // to retry or correct Apple API configuration.
-                errorMessage = AccountFunctionError.message(for: error)
+                let message = AccountFunctionError.message(for: error)
+                localProLinkedElsewhere = AccountEntitlementPresentation.isAlreadyLinkedPurchaseError(message)
+                errorMessage = message
             }
         }
     }
@@ -331,7 +339,9 @@ final class AccountService: ObservableObject {
     private func activateProgressPersistence(for newSession: Session?) {
         let isMigratingGuestProgress = ProgressStorageNamespace.accountID == nil && newSession != nil
         let guestBackword = isMigratingGuestProgress ? BackwordProgress.loadAll() : []
-        let guestCrosswords = isMigratingGuestProgress ? UserProgress.loadAll() : []
+        let guestCrosswords = isMigratingGuestProgress
+            ? AccountProgressMigration.captureGuestReleaseDateScores(UserProgress.loadAll(), rating: OverallRating.load())
+            : []
         ProgressStorageNamespace.activate(accountID: newSession?.user.id.uuidString)
 
         guard let accountID = newSession?.user.id.uuidString else { return }
@@ -342,6 +352,48 @@ final class AccountService: ObservableObject {
                 guestCrosswords: guestCrosswords
             )
         }
+    }
+
+}
+
+enum AccountProgressMigration {
+    /// Old guest builds kept release-window points only in OverallRating. On
+    /// first account sign-in, copy those values onto the real puzzle records
+    /// before upload so progress and score travel together from then on.
+    static func captureGuestReleaseDateScores(
+        _ progressRecords: [UserProgress],
+        rating: OverallRating
+    ) -> [UserProgress] {
+        progressRecords.map { captureLegacyReleaseDateScore(in: $0, rating: rating) }
+    }
+
+    /// Converts an older account-local aggregate into snapshots before that
+    /// aggregate is discarded. Only empty snapshots are filled: once a score
+    /// is captured, later Archive play cannot alter it.
+    @discardableResult
+    static func persistLegacyReleaseDateScores(
+        in progressRecords: [UserProgress],
+        rating: OverallRating
+    ) -> [UserProgress] {
+        progressRecords.map { progress in
+            let captured = captureLegacyReleaseDateScore(in: progress, rating: rating)
+            if captured.releaseDateScore != progress.releaseDateScore {
+                captured.save()
+            }
+            return captured
+        }
+    }
+
+    private static func captureLegacyReleaseDateScore(
+        in progress: UserProgress,
+        rating: OverallRating
+    ) -> UserProgress {
+        guard progress.releaseDateScore == 0,
+              let date = progress.puzzleDate else { return progress }
+        var captured = progress
+        let category: RatingGameCategory = progress.isWeekly == true ? .weeklyCrossword : .dailyCrossword
+        captured.releaseDateScore = rating.score(for: category, date: date)
+        return captured
     }
 }
 
@@ -517,13 +569,32 @@ final class ProgressCloudSync {
                 .value else { continue }
 
             for row in rows {
-                let remote = row.payload.progress(formatter: iso8601)
-                guard let remote else { continue }
-                if let local = UserProgress.load(puzzleId: remote.puzzleId),
-                   !CloudProgressRanking.shouldReplace(local: local, with: remote, formatter: iso8601) {
-                    await upload(local)
+                guard let decodedRemote = row.payload.progress(formatter: iso8601) else { continue }
+                if let storedLocal = UserProgress.load(puzzleId: decodedRemote.puzzleId) {
+                    let remote = CloudProgressRanking.preservingReleaseDateScore(
+                        from: storedLocal,
+                        in: decodedRemote
+                    )
+                    let local = CloudProgressRanking.preservingReleaseDateScore(
+                        from: decodedRemote,
+                        in: storedLocal
+                    )
+                    if local.releaseDateScore != storedLocal.releaseDateScore {
+                        local.save()
+                    }
+                    if !CloudProgressRanking.shouldReplace(local: local, with: remote, formatter: iso8601) {
+                        await upload(local)
+                    } else {
+                        remote.save()
+                        // The server's grid won, but a local device may hold
+                        // an earned release-day score from before snapshots
+                        // existed. Upload the promoted snapshot immediately.
+                        if remote.releaseDateScore != decodedRemote.releaseDateScore {
+                            await upload(remote)
+                        }
+                    }
                 } else {
-                    remote.save()
+                    decodedRemote.save()
                 }
             }
         }
@@ -653,7 +724,7 @@ private struct CloudCrosswordPayload: Codable {
         gaveUpAt = progress.gaveUpAt.map { formatter.string(from: $0) }
         gaveUpScore = progress.gaveUpScore
         gaveUpRevealedCells = Array(progress.gaveUpRevealedCells)
-        releaseDateScore = Self.releaseDateScore(for: progress)
+        releaseDateScore = progress.releaseDateScore
         updatedAt = formatter.string(from: progress.updatedAt)
     }
 
@@ -673,20 +744,9 @@ private struct CloudCrosswordPayload: Codable {
             gaveUpAt: gaveUpAt.flatMap { formatter.date(from: $0) },
             gaveUpScore: gaveUpScore,
             gaveUpRevealedCells: Set(gaveUpRevealedCells ?? []),
+            releaseDateScore: releaseDateScore,
             updatedAt: formatter.date(from: updatedAt) ?? completedAt.flatMap { formatter.date(from: $0) } ?? started
         )
-    }
-
-    private static func releaseDateScore(for progress: UserProgress) -> Int {
-        guard progress.gaveUpAt == nil,
-              let completedAt = progress.completedAt,
-              let puzzleDate = progress.puzzleDate,
-              ContentReleaseCalendar(now: completedAt).dailyDateString == puzzleDate,
-              let totalClues = progress.totalClues,
-              totalClues > 0 else { return 0 }
-
-        let percentComplete = Int(Double(progress.completedClueIds.count) / Double(totalClues) * 100)
-        return max(0, Int.crosswordScore(percentComplete: percentComplete) - progress.hintsUsed / 3)
     }
 }
 
@@ -698,7 +758,7 @@ enum CloudProgressRanking {
             return remote.guesses.count < local.guesses.count
         }
         if remote.guesses.count != local.guesses.count { return remote.guesses.count > local.guesses.count }
-        return (remote.completedAt ?? .distantPast) > (local.completedAt ?? .distantPast)
+        return remote.updatedAt > local.updatedAt
     }
 
     static func shouldReplace(local: UserProgress, with remote: UserProgress, formatter: ISO8601DateFormatter) -> Bool {
@@ -714,7 +774,17 @@ enum CloudProgressRanking {
         let localFilled = local.entries.flatMap { $0 }.compactMap { $0 }.count
         let remoteFilled = remote.entries.flatMap { $0 }.compactMap { $0 }.count
         if localFilled != remoteFilled { return remoteFilled > localFilled }
-        return (remote.completedAt ?? remote.startedAt) > (local.completedAt ?? local.startedAt)
+        return remote.updatedAt > local.updatedAt
+    }
+
+    /// Crosswords keep their grids as whole records, while release-day points
+    /// are a separate immutable historical fact. Preserve that fact before a
+    /// local conflict winner is uploaded or saved.
+    static func preservingReleaseDateScore(from source: UserProgress, in target: UserProgress) -> UserProgress {
+        guard source.releaseDateScore > target.releaseDateScore else { return target }
+        var result = target
+        result.releaseDateScore = source.releaseDateScore
+        return result
     }
 }
 

@@ -257,6 +257,11 @@ struct HomeView: View {
                 backwordStatsService.refresh()
                 ratingService.refresh()
             }
+            .onChange(of: accountService.syncRevision) { _, _ in
+                statsService.refreshForActiveProgress()
+                backwordStatsService.refresh()
+                ratingService.refresh()
+            }
             .alert("There was a problem loading the games, please check your network.", isPresented: $viewModel.crosswordsFetchDidFail) {
                 Button("OK", role: .cancel) { }
                 Button("Try again") {

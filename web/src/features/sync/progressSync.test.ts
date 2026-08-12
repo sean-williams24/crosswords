@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { chooseBestProgress } from "./progressSync";
+import { chooseBestProgress, crosswordCloudRecord } from "./progressSync";
 
 describe("cloud progress conflict selection", () => {
   it("keeps a solved result over an in-progress result", () => {
@@ -34,5 +34,23 @@ describe("cloud progress conflict selection", () => {
     const second = { ...first, release_score: 4, client_updated_at: "2026-08-06T11:00:00.000Z", payload: { source: "second" } };
 
     expect(chooseBestProgress(first, second).payload.source).toBe("second");
+  });
+
+  it("uses the shared crossword release-score snapshot", () => {
+    const record = crosswordCloudRecord({
+      schemaVersion: 1,
+      puzzleId: "ios-puzzle-id",
+      date: "2026-08-12",
+      size: 9,
+      entries: Array.from({ length: 9 }, () => Array(9).fill(null)),
+      completedClueIds: [1, 2, 3],
+      startedAt: "2026-08-12T09:00:00.000Z",
+      completedAt: null,
+      releaseDateScore: 3,
+      updatedAt: "2026-08-12T10:00:00.000Z"
+    });
+
+    expect(record.content_key).toBe("ios-puzzle-id");
+    expect(record.release_score).toBe(3);
   });
 });
