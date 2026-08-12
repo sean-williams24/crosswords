@@ -94,6 +94,18 @@ describe("Backword engine", () => {
     expect(stats.history[3]).toMatchObject({ date: "2026-07-31", outcome: "unplayed" });
   });
 
+  it("excludes archive progress from the 14-day stats history", () => {
+    const archiveProgress = {
+      ...progressWithGuesses(["A", "B"], "inProgress"),
+      date: "2026-08-01"
+    };
+
+    const stats = deriveStats([archiveProgress], new Date(2026, 7, 12, 12));
+    const archiveRow = stats.history.find((row) => row.date === "2026-08-01");
+
+    expect(archiveRow).toMatchObject({ score: 0, guessCount: null, outcome: "unplayed" });
+  });
+
   it("breaks the current streak after today's failed game", () => {
     const failedToday = progressWithGuesses(["A", "B", "C", "D", "E"], "failed");
     const wonYesterday = {

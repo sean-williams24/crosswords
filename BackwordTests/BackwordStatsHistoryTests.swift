@@ -35,8 +35,8 @@ struct BackwordStatsHistoryTests {
         #expect(stats.longestStreak == 1)
     }
 
-    @Test("History shows every release in the last 14 days")
-    func historyIncludesPlayedInProgressAndUnplayedDays() throws {
+    @Test("History shows only release-day Backword results")
+    func historyExcludesArchiveAndInProgressGames() throws {
         let calendar = releaseCalendar()
         let now = try date("2026-07-28T12:00:00Z")
 
@@ -72,8 +72,8 @@ struct BackwordStatsHistoryTests {
         #expect(history.rows.last?.dateStr == "2026-07-15")
 
         #expect(history.rows[0].isToday)
-        #expect(history.rows[0].guessCount == 2)
-        #expect(history.rows[0].outcome == .inProgress)
+        #expect(history.rows[0].guessCount == nil)
+        #expect(history.rows[0].outcome == .unplayed)
         #expect(history.rows[0].score == 0)
 
         #expect(history.rows[1].guessCount == 2)
@@ -87,6 +87,21 @@ struct BackwordStatsHistoryTests {
         #expect(history.rows[3].guessCount == nil)
         #expect(history.rows[3].outcome == .unplayed)
         #expect(history.rows[3].score == 0)
+
+        var archive = BackwordProgress(date: "2026-07-25")
+        archive.guesses = ["PLANET", "STREAM"]
+        archive.wonFlag = true
+        archive.completedAt = try date("2026-07-28T12:00:00Z")
+
+        let archiveHistory = BackwordStatsHistory.make(
+            rating: OverallRating(),
+            progressRecords: [archive],
+            releaseCalendar: ContentReleaseCalendar(now: now, calendar: calendar)
+        )
+        let archiveRow = try #require(archiveHistory.rows.first { $0.dateStr == "2026-07-25" })
+        #expect(archiveRow.guessCount == nil)
+        #expect(archiveRow.outcome == .unplayed)
+        #expect(archiveRow.score == 0)
     }
 
     @Test("Completed progress supplies a score when rating history is missing")

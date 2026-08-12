@@ -34,8 +34,17 @@ function isProgress(value: unknown): value is BackwordProgress {
     Array.isArray(progress.guesses) &&
     progress.guesses.every((guess) => typeof guess === "string") &&
     ["inProgress", "won", "failed"].includes(progress.outcome ?? "") &&
-    (progress.completedAt === null || typeof progress.completedAt === "string")
+    // Swift's Codable omits optional fields whose value is nil. Treat the
+    // absent native field as the browser's explicit null representation.
+    (progress.completedAt === undefined || progress.completedAt === null || typeof progress.completedAt === "string")
   );
+}
+
+function normalizeProgress(progress: BackwordProgress): BackwordProgress {
+  return {
+    ...progress,
+    completedAt: progress.completedAt ?? null
+  };
 }
 
 function isWord(value: unknown): value is BackwordWord {
@@ -103,11 +112,13 @@ export function createBackwordStorage(
 
     loadProgress(date: string): BackwordProgress {
       const progress = readRecord<unknown>(storage, scopedKey(PROGRESS_KEY))[date];
-      return isProgress(progress) ? progress : emptyProgress(date);
+      return isProgress(progress) ? normalizeProgress(progress) : emptyProgress(date);
     },
 
     loadAllProgress(): BackwordProgress[] {
-      return Object.values(readRecord<unknown>(storage, scopedKey(PROGRESS_KEY))).filter(isProgress);
+      return Object.values(readRecord<unknown>(storage, scopedKey(PROGRESS_KEY)))
+        .filter(isProgress)
+        .map(normalizeProgress);
     },
 
     saveProgress(progress: BackwordProgress): void {

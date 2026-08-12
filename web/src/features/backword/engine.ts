@@ -239,15 +239,19 @@ export function deriveStats(
   const history: BackwordHistoryRow[] = Array.from({ length: 14 }, (_, offset) => {
     const date = localDateOffset(today, -offset);
     const progress = byDate.get(date);
+    // Progress from an Archive game remains synced so it can be resumed on
+    // another device, but it is not a stats result. The 14-day view follows
+    // the same release-window rule as points, streaks, and distributions.
+    const statsProgress = progress && eligibleProgress(progress) ? progress : undefined;
     return {
       date,
       isToday: offset === 0,
-      score: progress ? backwordScore(progress) : 0,
-      guessCount: progress ? progress.guesses.length : null,
-      outcome: progress
-        ? progress.outcome === "won"
+      score: statsProgress ? backwordScore(statsProgress) : 0,
+      guessCount: statsProgress ? statsProgress.guesses.length : null,
+      outcome: statsProgress
+        ? statsProgress.outcome === "won"
           ? "solved"
-          : progress.outcome
+          : statsProgress.outcome
         : "unplayed"
     };
   });

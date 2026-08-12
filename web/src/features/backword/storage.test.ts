@@ -39,4 +39,25 @@ describe("Backword browser storage", () => {
     expect(storage.loadAllProgress()).toEqual([]);
     expect(storage.loadCachedWord("bad")).toBeNull();
   });
+
+  it("accepts iOS in-progress payloads that omit optional completedAt", () => {
+    const storage = createBackwordStorage(localStorage);
+    localStorage.setItem("backword:web:progress:v1", JSON.stringify({
+      "2026-08-06": {
+        schemaVersion: 1,
+        date: "2026-08-06",
+        guesses: ["PLANET", "CASTLE"],
+        outcome: "inProgress",
+        updatedAt: "2026-08-12T12:00:00.000Z"
+      }
+    }));
+
+    expect(storage.loadProgress("2026-08-06")).toMatchObject({
+      date: "2026-08-06",
+      guesses: ["PLANET", "CASTLE"],
+      completedAt: null,
+      outcome: "inProgress"
+    });
+    expect(storage.loadAllProgress()).toHaveLength(1);
+  });
 });

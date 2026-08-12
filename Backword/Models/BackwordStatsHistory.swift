@@ -44,14 +44,19 @@ struct BackwordStatsHistory {
                 return nil
             }
 
+            // Keep Archive progress in account storage for cross-device
+            // continuation, but exclude it from the stats history entirely.
+            // A release-date result is the only kind of Backword game that
+            // can show guesses, a status, or a score in this surface.
             let progress = progressByDate[dateStr]
+            let statsProgress = progress?.wasCompletedOnReleaseDate == true ? progress : nil
             return BackwordStatsHistoryRow(
                 dateStr: dateStr,
                 date: date,
                 isToday: dateStr == today,
-                score: scoreByDate[dateStr] ?? progress?.completedScore ?? 0,
-                guessCount: progress.map(\.guesses.count),
-                outcome: outcome(for: progress)
+                score: statsProgress.map { scoreByDate[dateStr] ?? $0.completedScore ?? 0 } ?? 0,
+                guessCount: statsProgress.map(\.guesses.count),
+                outcome: outcome(for: statsProgress)
             )
         }
 

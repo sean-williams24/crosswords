@@ -19,6 +19,11 @@ statistics, streaks, and ratings are derived from active progress rather than
 merged as aggregate counters. Local saves always complete first and cloud writes
 are retried on later account syncs.
 
+Shared payload decoders must accept an omitted optional timestamp from Swift's
+`Codable` output as equivalent to the web's explicit `null`. In particular, an
+unfinished iOS Backword record may omit `completedAt`; the web normalises it to
+`null` so its partial guesses remain visible in history and can sync onward.
+
 Crossword progress carries a `releaseDateScore` snapshot. iOS captures it only
 while the puzzle is in its own local release window and never changes it during
 later Archive play. On a first account sign-in, legacy guest aggregate rating
@@ -104,8 +109,9 @@ history, and streaks are all derived from saved per-date progress.
 Backword follows the same release-window eligibility for its all-time account
 metrics: only a result completed on that Backword's own release date counts as
 played, won, a streak entry, a win-rate result, or a guess-distribution entry.
-Archive records remain synced and visible in release history, but never alter
-those performance metrics.
+Archive records remain synced so they can be resumed on another device, but are
+shown as unplayed in the stats history: they never display guesses, a status,
+or points and never alter those performance metrics.
 
 The web Backword and Daily Crossword stats surfaces use the iOS semantic
 palette: solid Accent score chips, Correct green for perfect scores, muted
