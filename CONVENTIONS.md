@@ -107,6 +107,11 @@ played, won, a streak entry, a win-rate result, or a guess-distribution entry.
 Archive records remain synced and visible in release history, but never alter
 those performance metrics.
 
+The web Backword and Daily Crossword stats surfaces use the iOS semantic
+palette: solid Accent score chips, Correct green for perfect scores, muted
+secondary zero-score chips, solved gold, and the same rating-track tier
+gradient. This keeps stat meaning visually consistent across platforms.
+
 Total solved includes every successful crossword completion, including Archive
 play. Current and best streaks, the Daily Stats average, and per-row times use
 only successful completions made during that puzzle's own release window. An

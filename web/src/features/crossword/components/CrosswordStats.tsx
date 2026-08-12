@@ -36,8 +36,12 @@ export function CrosswordStatsContent({ stats }: { stats: CrosswordStatsModel })
           <div className="bw-history-heading"><span>Date</span><span>Score</span><span>Time</span></div>
           {stats.history.map((row) => (
             <div className="bw-history-row" key={row.date}>
-              <span>{formatDate(row.date)}<small className={`is-${row.outcome}`}>{row.isToday ? "TODAY" : row.outcome === "solved" ? "SOLVED" : ""}</small></span>
-              <strong className="bw-score-chip">{row.score}</strong>
+              <span>
+                {formatDate(row.date)}
+                {row.isToday ? <small className="is-today">TODAY</small> : null}
+                {row.outcome === "solved" ? <small className="is-solved">SOLVED</small> : null}
+              </span>
+              <strong className={`bw-score-chip ${scoreChipTone(row.score)}`}>{row.score}</strong>
               <span className={`is-${row.outcome}`}>{formatDuration(row.solveTimeSeconds)}</span>
             </div>
           ))}
@@ -54,4 +58,10 @@ function Stat({ label, value }: { label: string; value: string | number }) {
 function formatDate(dateString: string): string {
   const [year, month, day] = dateString.split("-").map(Number);
   return new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric" }).format(new Date(year, month - 1, day, 12));
+}
+
+function scoreChipTone(score: number): string {
+  if (score === 5) return "is-perfect";
+  if (score === 0) return "is-zero";
+  return "";
 }

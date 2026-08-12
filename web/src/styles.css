@@ -53,6 +53,12 @@ a {
   --bw-failed: #ec5454;
   --bw-primary: #eeeeee;
   --bw-secondary: #777777;
+  --bw-solved-gold: #ebb838;
+  --bw-rating-scribe: #6699e6;
+  --bw-rating-linguist: #3380f2;
+  --bw-rating-grandmaster: #1a59d9;
+  --bw-rating-virtuoso: #f2cc4d;
+  --bw-rating-virtuoso-deep: #d98c26;
   display: flex;
   min-height: 100svh;
   flex-direction: column;
@@ -427,7 +433,18 @@ a {
   height: 100%;
   min-width: 5px;
   border-radius: inherit;
-  background: linear-gradient(90deg, #fff, #b8b8b8 18%, #3377b1 60%, #d6be87 100%);
+  /* Mirrors RatingProgressTrack.barGradient in the iOS app. */
+  background: linear-gradient(
+    90deg,
+    #fff 0%,
+    #b8b8b8 14.2857%,
+    #8e8e93 28.5714%,
+    var(--bw-rating-scribe) 42.8571%,
+    var(--bw-rating-linguist) 57.1429%,
+    var(--bw-rating-grandmaster) 71.4286%,
+    var(--bw-rating-virtuoso) 85.7143%,
+    var(--bw-rating-virtuoso-deep) 100%
+  );
   transition: width 500ms ease;
 }
 
@@ -634,7 +651,7 @@ a {
 .bw-stats-scroll,
 .bw-completion-scroll { display: flex; flex-direction: column; gap: 22px; }
 .bw-rating-section { display: flex; flex-direction: column; align-items: flex-end; gap: 7px; }
-.bw-rating-track { width: 100%; height: 9px; overflow: hidden; border-radius: 20px; background: #1a1a1a; }
+.bw-rating-track { width: 100%; height: 9px; overflow: hidden; border-radius: 20px; background: #171717; }
 .bw-rating-section > strong { color: #3377b1; font-size: 14px; }
 .bw-stat-summary { display: grid; grid-template-columns: repeat(4, 1fr); padding: 18px 8px; border-radius: 12px; background: #1a1a1a; }
 .bw-stat-summary > div { display: flex; min-width: 0; padding: 0 6px; flex-direction: column; align-items: center; gap: 4px; border-right: 1px solid rgb(42 42 42 / 70%); text-align: center; }
@@ -660,10 +677,13 @@ a {
 .bw-history-row { min-height: 50px; font-size: 13px; }
 .bw-history-row > span:first-child { display: flex; flex-direction: column; gap: 1px; }
 .bw-history-row small { min-height: 10px; color: #777; font-size: 8px; font-weight: 700; letter-spacing: 0.12em; }
-.bw-history-row .is-solved { color: #d6be87; }
+.bw-history-row .is-today { color: var(--bw-accent); }
+.bw-history-row .is-solved { color: var(--bw-solved-gold); }
 .bw-history-row .is-failed { color: #ec5454; }
 .bw-history-row .is-inProgress { color: #eee; }
-.bw-score-chip { display: inline-grid; width: 28px; height: 28px; margin: auto; place-items: center; border-radius: 7px; color: #3377b1; background: rgb(51 119 177 / 12%); }
+.bw-score-chip { display: inline-grid; width: 28px; height: 28px; margin: auto; place-items: center; border-radius: 7px; color: #fff; background: var(--bw-accent); }
+.bw-score-chip.is-perfect { background: var(--bw-correct); }
+.bw-score-chip.is-zero { color: rgb(119 119 119 / 40%); background: rgb(119 119 119 / 25%); }
 
 .bw-completion-modal { height: min(100svh, 900px); max-height: 100svh; border-radius: 0; }
 .bw-completion-scroll { align-items: stretch; padding-top: 34px; }
