@@ -81,7 +81,7 @@ export function SignInPage() {
           >
             <img
               alt=""
-              src="https://appleid.cdn-apple.com/appleid/button?type=sign-in&color=white&border=true&border_radius=10&locale=en_GB&height=50&width=225&scale=2"
+              src="https://appleid.cdn-apple.com/appleid/button?type=sign-in&color=white&border=true&border_radius=10&locale=en_GB&height=50&width=375&scale=2"
             />
           </button>
           <button

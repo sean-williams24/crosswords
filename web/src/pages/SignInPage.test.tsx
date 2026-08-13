@@ -13,7 +13,7 @@ describe("SignInPage", () => {
       "src",
       expect.stringContaining("https://appleid.cdn-apple.com/appleid/button?type=sign-in&color=white&border=true")
     );
-    expect(appleButton.querySelector("img")).toHaveAttribute("src", expect.stringContaining("height=50&width=225"));
+    expect(appleButton.querySelector("img")).toHaveAttribute("src", expect.stringContaining("height=50&width=375"));
     const googleButton = screen.getByRole("button", { name: "Sign in with Google" });
     expect(googleButton).toHaveClass("auth-google-button");
     expect(googleButton.querySelector("img")).toHaveAttribute("src", "/brand/continue-with-google.png");

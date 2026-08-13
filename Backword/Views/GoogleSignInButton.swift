@@ -15,7 +15,7 @@ struct GoogleSignInButton: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 12) {
+            HStack(spacing: 8) {
                 GoogleSignInLogo()
 
                 Text(isLoading ? "Opening Google…" : GoogleSignInButtonAppearance.label)
