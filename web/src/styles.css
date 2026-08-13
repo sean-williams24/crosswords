@@ -1113,8 +1113,9 @@ body {
 .auth-provider:focus-visible { border-color: #79b7eb; background: #363a44; outline: 2px solid #79b7eb; outline-offset: 2px; }
 .auth-provider:disabled { opacity: .62; cursor: wait; }
 .auth-content__providers { --auth-sign-in-corner-radius: 6px; }
-.auth-apple-button { display: block; width: 100%; height: 50px; padding: 0; border: 0; background: transparent; cursor: pointer; }
-.auth-apple-button img { display: block; width: auto; max-width: 100%; height: 100%; margin: 0 auto; }
+.auth-apple-button { display: block; width: min(100%, 375px); height: 50px; padding: 0; justify-self: center; border: 1px solid #000; border-radius: var(--auth-sign-in-corner-radius); color: #000; background: #fff; font: 500 18px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; cursor: pointer; }
+.auth-apple-button__content { display: flex; height: 100%; align-items: center; justify-content: center; gap: 8px; }
+.auth-apple-button__content img { display: block; width: 40px; height: 40px; }
 .auth-apple-button:hover:not(:disabled) { filter: brightness(.96); }
 .auth-apple-button:focus-visible { outline: 2px solid #79b7eb; outline-offset: 3px; }
 .auth-apple-button:disabled { opacity: .62; cursor: wait; }

@@ -79,10 +79,13 @@ export function SignInPage() {
             onClick={() => void continueWith("apple")}
             type="button"
           >
-            <img
-              alt=""
-              src="https://appleid.cdn-apple.com/appleid/button?type=sign-in&color=white&border=true&border_radius=10&locale=en_GB&height=50&width=375&scale=2"
-            />
+            <span className="auth-apple-button__content">
+              <img
+                alt=""
+                src="https://appleid.cdn-apple.com/appleid/button/logo?color=white&border=false&border_radius=0&size=30&scale=2"
+              />
+              <span>Sign in with Apple</span>
+            </span>
           </button>
           <button
             aria-label={pending === "google" ? "Opening Google" : "Sign in with Google"}

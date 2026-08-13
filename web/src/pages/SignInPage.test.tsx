@@ -11,9 +11,9 @@ describe("SignInPage", () => {
     expect(appleButton).toHaveClass("auth-apple-button");
     expect(appleButton.querySelector("img")).toHaveAttribute(
       "src",
-      expect.stringContaining("https://appleid.cdn-apple.com/appleid/button?type=sign-in&color=white&border=true")
+      expect.stringContaining("https://appleid.cdn-apple.com/appleid/button/logo?color=white&border=false")
     );
-    expect(appleButton.querySelector("img")).toHaveAttribute("src", expect.stringContaining("height=50&width=375"));
+    expect(appleButton).toHaveTextContent("Sign in with Apple");
     const googleButton = screen.getByRole("button", { name: "Sign in with Google" });
     expect(googleButton).toHaveClass("auth-google-button");
     expect(googleButton.querySelector("img")).toHaveAttribute("src", "/brand/continue-with-google.png");
