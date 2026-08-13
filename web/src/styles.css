@@ -1112,13 +1112,14 @@ body {
 .auth-provider:hover,
 .auth-provider:focus-visible { border-color: #79b7eb; background: #363a44; outline: 2px solid #79b7eb; outline-offset: 2px; }
 .auth-provider:disabled { opacity: .62; cursor: wait; }
+.auth-content__providers { --auth-sign-in-corner-radius: 6px; }
 .auth-apple-button { display: block; width: 100%; height: 50px; padding: 0; border: 0; background: transparent; cursor: pointer; }
 .auth-apple-button img { display: block; width: auto; max-width: 100%; height: 100%; margin: 0 auto; }
 .auth-apple-button:hover:not(:disabled) { filter: brightness(.96); }
 .auth-apple-button:focus-visible { outline: 2px solid #79b7eb; outline-offset: 3px; }
 .auth-apple-button:disabled { opacity: .62; cursor: wait; }
-.auth-google-button { display: block; width: min(100%, 375px); height: 50px; padding: 0; justify-self: center; overflow: hidden; border: 1px solid #747775; border-radius: 10px; background: #111111; cursor: pointer; }
-.auth-google-button img { display: block; width: 225px; height: 50px; margin: 0 auto; clip-path: inset(2px); }
+.auth-google-button { display: block; width: min(100%, 375px); height: 50px; padding: 0; justify-self: center; overflow: hidden; border: 1px solid #747775; border-radius: var(--auth-sign-in-corner-radius); background: #131314; cursor: pointer; }
+.auth-google-button img { display: block; width: 225px; height: 50px; margin: 0 auto; clip-path: inset(3px); }
 .auth-google-button:hover:not(:disabled) { filter: brightness(1.08); }
 .auth-google-button:focus-visible { outline: 2px solid #79b7eb; outline-offset: 3px; }
 .auth-google-button:disabled { opacity: .62; cursor: wait; }
