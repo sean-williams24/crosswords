@@ -2,6 +2,7 @@
 
 import AuthenticationServices
 import Foundation
+import OSLog
 import StoreKit
 import Supabase
 
@@ -35,6 +36,14 @@ enum AccountFunctionRequest {
     /// Supabase session token, rather than the public project key.
     static func authenticatedHeaders(accessToken: String) -> [String: String] {
         ["Authorization": "Bearer \(accessToken)"]
+    }
+}
+
+enum AccountErrorPresentation {
+    /// SwiftUI cancels view-scoped tasks when their view is replaced or
+    /// dismissed. That is expected control flow, not an account failure.
+    static func shouldPresent(_ error: Error, taskIsCancelled: Bool = Task.isCancelled) -> Bool {
+        !taskIsCancelled && !(error is CancellationError)
     }
 }
 
@@ -122,7 +131,12 @@ final class AccountService: ObservableObject {
     @Published private(set) var syncRevision = 0
 
     private let client: Supabase.SupabaseClient
+    private let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "Backword",
+        category: "account"
+    )
     private var authStateTask: Task<Void, Never>?
+    private var accountRefreshTask: (id: UUID, task: Task<Void, Never>)?
 
     init(client: Supabase.SupabaseClient = SupabaseClient.shared.client) {
         self.client = client
@@ -135,6 +149,7 @@ final class AccountService: ObservableObject {
 
     deinit {
         authStateTask?.cancel()
+        accountRefreshTask?.task.cancel()
     }
 
     var userID: UUID? { session?.user.id }
@@ -171,7 +186,7 @@ final class AccountService: ObservableObject {
         do {
             _ = try await client.auth.session(from: url)
         } catch {
-            errorMessage = error.localizedDescription
+            presentError(error, operation: "auth redirect")
         }
     }
 
@@ -185,7 +200,7 @@ final class AccountService: ObservableObject {
             localProLinkedElsewhere = false
             errorMessage = nil
         } catch {
-            errorMessage = error.localizedDescription
+            presentError(error, operation: "sign out")
         }
     }
 
@@ -202,17 +217,39 @@ final class AccountService: ObservableObject {
             localProLinkedElsewhere = false
             return true
         } catch {
-            errorMessage = error.localizedDescription
+            presentError(error, operation: "account deletion")
             return false
         }
     }
 
     func refreshAccountData() async {
+        if let accountRefreshTask {
+            await accountRefreshTask.task.value
+            return
+        }
+
+        let refreshID = UUID()
+        let task = Task<Void, Never> { @MainActor [weak self] in
+            guard let self else { return }
+            await self.performAccountRefresh()
+        }
+        accountRefreshTask = (id: refreshID, task: task)
+        await task.value
+
+        // A caller that was waiting on an earlier task must not clear a
+        // refresh that started after it resumed.
+        if accountRefreshTask?.id == refreshID {
+            accountRefreshTask = nil
+        }
+    }
+
+    private func performAccountRefresh() async {
         guard session != nil else {
             isProUser = false
             proExpirationDate = nil
             return
         }
+        errorMessage = nil
         isSyncing = true
         defer { isSyncing = false }
         if let accountID = userID {
@@ -239,6 +276,8 @@ final class AccountService: ObservableObject {
             // in this protected Function request immediately.
             accessToken = try await client.auth.session.accessToken
         } catch {
+            guard AccountErrorPresentation.shouldPresent(error) else { return }
+            logger.error("Account entitlement claim could not read the current session: \(error.localizedDescription, privacy: .public)")
             errorMessage = "Your account session has expired. Please sign in again."
             return
         }
@@ -278,7 +317,7 @@ final class AccountService: ObservableObject {
                 // to retry or correct Apple API configuration.
                 let message = AccountFunctionError.message(for: error)
                 localProLinkedElsewhere = AccountEntitlementPresentation.isAlreadyLinkedPurchaseError(message)
-                errorMessage = message
+                presentError(error, operation: "Apple entitlement claim", message: message)
             }
         }
     }
@@ -303,7 +342,7 @@ final class AccountService: ObservableObject {
             isProUser = entitlement?.isPro ?? false
             proExpirationDate = entitlement?.expiresAt
         } catch {
-            errorMessage = error.localizedDescription
+            presentError(error, operation: "account Pro entitlement refresh")
         }
     }
 
@@ -329,9 +368,16 @@ final class AccountService: ObservableObject {
         } catch {
             let authError = error as? ASAuthorizationError
             if authError?.code != .canceled {
-                errorMessage = error.localizedDescription
+                presentError(error, operation: "authentication")
             }
         }
+    }
+
+    private func presentError(_ error: Error, operation: String, message: String? = nil) {
+        guard AccountErrorPresentation.shouldPresent(error) else { return }
+        let displayedMessage = message ?? error.localizedDescription
+        logger.error("Account \(operation, privacy: .public) failed: \(displayedMessage, privacy: .public)")
+        errorMessage = displayedMessage
     }
 
     private static let redirectURL = URL(string: "backword://login-callback")!

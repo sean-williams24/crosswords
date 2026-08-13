@@ -45,6 +45,13 @@ transaction, the cache is cleared and cannot keep Pro unlocked. Account
 deletion removes the Backword association and cloud gameplay data but never
 cancels the Apple subscription.
 
+Account-data refreshes can be requested by app startup, auth-state changes, and
+the account sheet. They are coalesced into one in-flight operation so those
+callers cannot race cloud sync and entitlement checks. `CancellationError` (or
+an already-cancelled task) is expected SwiftUI task lifecycle behaviour and is
+never presented as an account error or logged as a failure; real presented
+account errors are recorded through the `account` OSLog category.
+
 ---
 
 ## Website Backword Parity

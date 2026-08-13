@@ -76,6 +76,23 @@ struct AccountSyncTests {
         ])
     }
 
+    @Test("Task cancellation is not shown as an account error")
+    func cancellationIsNotPresentedAsAccountError() {
+        #expect(!AccountErrorPresentation.shouldPresent(CancellationError()))
+        #expect(!AccountErrorPresentation.shouldPresent(
+            NSError(domain: "example", code: 1),
+            taskIsCancelled: true
+        ))
+    }
+
+    @Test("Genuine account errors remain visible")
+    func genuineAccountErrorIsPresented() {
+        #expect(AccountErrorPresentation.shouldPresent(
+            NSError(domain: "example", code: 1),
+            taskIsCancelled: false
+        ))
+    }
+
     @Test("A confirmed cross-account purchase conflict has clear device-only Pro copy")
     func linkedElsewherePurchasePresentation() {
         #expect(AccountEntitlementPresentation.isAlreadyLinkedPurchaseError(
