@@ -80,23 +80,9 @@ struct AccountSheet: View {
             .frame(height: 50)
             .disabled(accountService.isLoading)
 
-            Button {
+            GoogleSignInButton(isLoading: accountService.isLoading) {
                 Task { await accountService.signInWithGoogle() }
-            } label: {
-                HStack {
-                    Image(systemName: "g.circle.fill")
-                    Text(accountService.isLoading ? "Opening sign in…" : "Continue with Google")
-                    Spacer()
-                }
-                .font(AppFont.body(16))
-                .foregroundColor(.appTextPrimary)
-                .padding(.horizontal, 16)
-                .frame(height: 50)
-                .background(Color.appSurface)
-                .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
             }
-            .buttonStyle(.plain)
-            .disabled(accountService.isLoading)
 
             Text("If you use Apple’s Hide My Email, use Apple to sign in on every device.")
                 .font(AppFont.caption())

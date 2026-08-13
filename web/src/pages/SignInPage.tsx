@@ -81,11 +81,17 @@ export function SignInPage() {
           >
             <img
               alt=""
-              src="https://appleid.cdn-apple.com/appleid/button?type=sign-in&color=white&border=true&border_radius=10&locale=en_GB&height=50&width=375&scale=2"
+              src="https://appleid.cdn-apple.com/appleid/button?type=sign-in&color=white&border=true&border_radius=10&locale=en_GB&height=50&width=225&scale=2"
             />
           </button>
-          <button className="auth-provider" disabled={!ready || pending !== null} onClick={() => void continueWith("google")} type="button">
-            {pending === "google" ? "Opening Google…" : "Continue with Google"}
+          <button
+            aria-label={pending === "google" ? "Opening Google" : "Sign in with Google"}
+            className="auth-google-button"
+            disabled={!ready || pending !== null}
+            onClick={() => void continueWith("google")}
+            type="button"
+          >
+            <img alt="" src="/brand/continue-with-google.png" />
           </button>
         </div>
         {error || authError ? <p className="auth-content__error" role="alert">{error ?? authError}</p> : null}

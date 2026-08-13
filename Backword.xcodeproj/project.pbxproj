@@ -53,6 +53,8 @@
 		0838E5D72FE2E5AB00000001 /* ArchiveTabBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */; };
 		0A5F0E3C2FE322C700F00E3C /* LaunchSplashViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */; };
 		0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */; };
+		0F0F00013010000000000001 /* GoogleSignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0F00023010000000000001 /* GoogleSignInButton.swift */; };
+		0F0F00033010000000000001 /* GoogleSignInButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0F00043010000000000001 /* GoogleSignInButtonTests.swift */; };
 		10DA4E78777801F05B5F7B2A /* wotd_bank.json in Resources */ = {isa = PBXBuildFile; fileRef = E7EE22FCCC10583E80948886 /* wotd_bank.json */; };
 		143A79FE56648107686BEF85 /* OverallRatingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */; };
 		149802310440A77534BB615E /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8820C57EC2BCBADADEC4006C /* AppTheme.swift */; };
@@ -211,6 +213,8 @@
 		0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleView.swift; sourceTree = "<group>"; };
 		0C4762545EDB078B5DA1FA49 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGridPattern.swift; sourceTree = "<group>"; };
+		0F0F00023010000000000001 /* GoogleSignInButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInButton.swift; sourceTree = "<group>"; };
+		0F0F00043010000000000001 /* GoogleSignInButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInButtonTests.swift; sourceTree = "<group>"; };
 		15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionInfo.swift; sourceTree = "<group>"; };
 		19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingService.swift; sourceTree = "<group>"; };
 		1A9378292FE2E56600000001 /* ArchiveTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTabBarView.swift; sourceTree = "<group>"; };
@@ -365,6 +369,7 @@
 		00EC67C42E7E2A26C6A44CB3 /* BackwordTests */ = {
 			isa = PBXGroup;
 			children = (
+				0F0F00043010000000000001 /* GoogleSignInButtonTests.swift */,
 				07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */,
 				04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */,
 				049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */,
@@ -642,6 +647,7 @@
 				86FAA1472FB27DFB0022EFF6 /* Crosswords */,
 				8AF93C5B6979DA0324E913C9 /* SettingsView.swift */,
 				A11CC000300A000000000001 /* AccountSheet.swift */,
+				0F0F00023010000000000001 /* GoogleSignInButton.swift */,
 				8254031869B9E1FAC8C5A377 /* StatsView2.swift */,
 				86AFC3D42FC2402F007623C3 /* StatsView.swift */,
 				7CFE3BE7131C4A71B3845485 /* WOTDDetailView.swift */,
@@ -769,6 +775,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F0F00033010000000000001 /* GoogleSignInButtonTests.swift in Sources */,
 				07AB00043008000000000001 /* BackwordRulesUpdateNoticeTests.swift in Sources */,
 				049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */,
 				04ADAE912FFD100000000001 /* AdExplainerPresentationPolicyTests.swift in Sources */,
@@ -886,6 +893,7 @@
 				02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */,
 				58638D080E0090141DE592A2 /* SettingsView.swift in Sources */,
 				A11CC001300A000000000001 /* AccountSheet.swift in Sources */,
+				0F0F00013010000000000001 /* GoogleSignInButton.swift in Sources */,
 				D39F9C4C078DA5925A365ABB /* StatsService.swift in Sources */,
 				05F1E1A72FFCFD9300F1E1A5 /* StoreLogger.swift in Sources */,
 				B87E042C9276130084747CA3 /* StatsView2.swift in Sources */,

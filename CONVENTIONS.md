@@ -52,6 +52,12 @@ an already-cancelled task) is expected SwiftUI task lifecycle behaviour and is
 never presented as an account error or logged as a failure; real presented
 account errors are recorded through the `account` OSLog category.
 
+Google account entry points use Google-provided branded controls: iOS uses
+Google's pre-approved sign-in logo asset in an account button whose geometry
+matches Sign in with Apple, and the web uses Google's pre-approved web button
+asset. They remain presentation-only; both continue to use the existing
+Supabase OAuth redirect flow for session creation and progress sync.
+
 ---
 
 ## Website Backword Parity
