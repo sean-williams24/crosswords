@@ -56,4 +56,19 @@ describe("iOS stats palette", () => {
     expect(crosswordToday?.querySelector(".is-solved")).toHaveTextContent("SOLVED");
   });
 
+  it("clips a partial rating fill from the whole 70-point gradient", () => {
+    const stats = { ...baseBackwordStats, rollingScore: 27 };
+    const view = render(<BackwordStats onClose={() => undefined} stats={stats} />);
+    const fill = view.container.querySelector<HTMLElement>(".bw-rating-fill");
+    expect(fill).toHaveStyle({ clipPath: `inset(0 ${100 - (27 / 70) * 100}% 0 0)` });
+  });
+
+  it("adds the animated iOS rating marker to stats bars only", () => {
+    const stats = { ...baseBackwordStats, rollingScore: 27 };
+    const view = render(<BackwordStats onClose={() => undefined} stats={stats} />);
+    const marker = view.container.querySelector<HTMLElement>(".bw-rating-marker");
+    expect(marker).toBeInTheDocument();
+    expect(marker).toHaveStyle({ left: `${(27 / 70) * 100}%` });
+  });
+
 });

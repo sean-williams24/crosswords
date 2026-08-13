@@ -21,7 +21,10 @@ export function CrosswordStatsContent({ stats }: { stats: CrosswordStatsModel })
   return (
     <>
       <section aria-label="14 day crossword score" className="bw-rating-section">
-        <div className="bw-rating-track"><span style={{ width: `${Math.max(1, (stats.rollingScore / 70) * 100)}%` }} /></div>
+        <div className="bw-rating-track">
+          <span className="bw-rating-fill" style={ratingFillStyle(stats.rollingScore)} />
+          <span aria-hidden="true" className="bw-rating-marker" style={ratingMarkerStyle(stats.rollingScore)} />
+        </div>
         <strong>{stats.rollingScore}/70</strong>
       </section>
       <section className="bw-stat-summary">
@@ -64,4 +67,13 @@ function scoreChipTone(score: number): string {
   if (score === 5) return "is-perfect";
   if (score === 0) return "is-zero";
   return "";
+}
+
+function ratingFillStyle(score: number) {
+  const percentage = Math.max(1, (score / 70) * 100);
+  return { clipPath: `inset(0 ${100 - percentage}% 0 0)` };
+}
+
+function ratingMarkerStyle(score: number) {
+  return { left: `${Math.max(0, Math.min(100, (score / 70) * 100))}%` };
 }

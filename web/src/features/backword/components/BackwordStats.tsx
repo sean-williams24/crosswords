@@ -30,7 +30,8 @@ export function StatsContent({
     <>
       <section aria-label="14 day Backword score" className="bw-rating-section">
         <div className="bw-rating-track">
-          <span style={{ width: `${Math.max(1, (stats.rollingScore / 70) * 100)}%` }} />
+          <span className="bw-rating-fill" style={ratingFillStyle(stats.rollingScore)} />
+          <span aria-hidden="true" className="bw-rating-marker" style={ratingMarkerStyle(stats.rollingScore)} />
         </div>
         <strong>{stats.rollingScore}/70</strong>
       </section>
@@ -112,4 +113,13 @@ function scoreChipTone(score: number): string {
   if (score === 5) return "is-perfect";
   if (score === 0) return "is-zero";
   return "";
+}
+
+function ratingFillStyle(score: number) {
+  const percentage = Math.max(1, (score / 70) * 100);
+  return { clipPath: `inset(0 ${100 - percentage}% 0 0)` };
+}
+
+function ratingMarkerStyle(score: number) {
+  return { left: `${Math.max(0, Math.min(100, (score / 70) * 100))}%` };
 }

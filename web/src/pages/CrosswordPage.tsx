@@ -276,7 +276,7 @@ export function CrosswordPage() {
               <CrosswordGrid activeClue={currentClue} correctHighlight={settings.correctHighlight} onSelect={(row, col) => setSelection((current) => current ? selectCell(puzzle, current, row, col) : current)} progress={progress} puzzle={puzzle} selection={selection} />
             </main>
             <footer className="bw-game-controls cw-game-controls">
-              <div aria-label={`${stats.rollingScore} of 70 crossword points`} className="bw-game-score bw-game-score--keyboard-width"><span style={{ width: `${Math.max(1, (stats.rollingScore / 70) * 100)}%` }} /></div>
+              <div aria-label={`${stats.rollingScore} of 70 crossword points`} className="bw-game-score bw-game-score--keyboard-width"><span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} /></div>
               <p className="cw-score-label">Today: {liveScore}/5</p>
               <CrosswordKeyboard disabled={progress.completedAt !== null} onDelete={handleDelete} onLetter={handleLetter} />
             </footer>

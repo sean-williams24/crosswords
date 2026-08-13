@@ -116,7 +116,12 @@ or points and never alter those performance metrics.
 The web Backword and Daily Crossword stats surfaces use the iOS semantic
 palette: solid Accent score chips, Correct green for perfect scores, muted
 secondary zero-score chips, solved gold, and the same rating-track tier
-gradient. This keeps stat meaning visually consistent across platforms.
+gradient. The web gradient is painted across the complete 70-point track and
+then clipped (never scaled) to the current fill, so its gold tier appears only
+near the end, just as it does in iOS. This keeps stat meaning visually
+consistent across platforms. Stats sheets additionally show the iOS-style
+animated white rating marker with Accent-blue ring and glow; the compact
+in-game progress bars intentionally remain marker-free.
 
 Total solved includes every successful crossword completion, including Archive
 play. Current and best streaks, the Daily Stats average, and per-row times use

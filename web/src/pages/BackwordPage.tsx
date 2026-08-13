@@ -335,7 +335,7 @@ export function BackwordPage() {
                 <p className="bw-clue-help"><span>ⓘ</span> The clue is a word associated with the answer, or something connected to it</p>
               ) : null}
               <div aria-label={`${stats.rollingScore} of 70 Backword points`} className="bw-game-score bw-game-score--keyboard-width">
-                <span style={{ width: `${Math.max(1, (stats.rollingScore / 70) * 100)}%` }} />
+                <span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} />
               </div>
               {canSubmit ? (
                 <button className="bw-submit" onClick={handleSubmit} type="button">Submit</button>
