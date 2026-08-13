@@ -308,6 +308,7 @@ CREATE TABLE user_entitlements (
     expires_at              TIMESTAMPTZ,
     revocation_at           TIMESTAMPTZ,
     app_account_token       UUID,
+    auto_renew_status       BOOLEAN,
     updated_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -318,6 +319,33 @@ CREATE INDEX idx_user_entitlements_user_status
 ALTER TABLE user_entitlements ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can read their own entitlement status"
     ON user_entitlements FOR SELECT USING (auth.uid() = user_id);
+
+-- Append-only diagnostic history for App Store Server Notifications. Clients
+-- have no policy for this table; only the notification Edge Function, using
+-- the service role, writes it. It is not part of Pro access decisions.
+CREATE TABLE apple_subscription_events (
+    notification_uuid       TEXT PRIMARY KEY,
+    notification_type       TEXT NOT NULL,
+    subtype                 TEXT,
+    original_transaction_id TEXT,
+    transaction_id          TEXT,
+    environment             TEXT CHECK (environment IN ('Sandbox', 'Production')),
+    event_at                TIMESTAMPTZ,
+    account_id              UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    resulting_status        TEXT CHECK (resulting_status IN ('active', 'expired', 'revoked', 'billing_retry')),
+    expires_at              TIMESTAMPTZ,
+    revocation_at           TIMESTAMPTZ,
+    auto_renew_status       BOOLEAN,
+    received_at             TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_apple_subscription_events_original_transaction
+    ON apple_subscription_events (original_transaction_id, event_at DESC);
+
+CREATE INDEX idx_apple_subscription_events_account
+    ON apple_subscription_events (account_id, event_at DESC);
+
+ALTER TABLE apple_subscription_events ENABLE ROW LEVEL SECURITY;
 
 CREATE OR REPLACE FUNCTION current_user_pro_entitlement()
 RETURNS TABLE (is_pro BOOLEAN, expires_at TIMESTAMPTZ)

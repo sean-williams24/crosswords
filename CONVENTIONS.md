@@ -45,6 +45,13 @@ transaction, the cache is cleared and cannot keep Pro unlocked. Account
 deletion removes the Backword association and cloud gameplay data but never
 cancels the Apple subscription.
 
+Every App Store Server Notification creates a deduplicated, server-only summary
+in `apple_subscription_events`, keyed by Apple's notification UUID. It records
+event, transaction, account, environment, time, renewal, and resulting
+entitlement information, but never the signed JWS payload. This is diagnostics
+only: `user_entitlements` remains the sole entitlement snapshot, and an audit
+write failure cannot prevent that snapshot from being refreshed.
+
 Account-data refreshes can be requested by app startup, auth-state changes, and
 the account sheet. They are coalesced into one in-flight operation so those
 callers cannot race cloud sync and entitlement checks. `CancellationError` (or

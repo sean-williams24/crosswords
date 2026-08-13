@@ -18,3 +18,7 @@ before changing an entitlement. Configure Google and Apple providers
 and the `backword://login-callback`, production web callback, and localhost
 redirect URLs in Supabase Auth. Apple web OAuth also requires its Services ID
 and regularly rotated client secret.
+
+`apple_subscription_events` is an append-only, service-role-only audit trail.
+It stores a decoded event summary, never the signed JWS payload. Failure to
+write an audit event is logged but never prevents the entitlement update.

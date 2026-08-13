@@ -5,6 +5,7 @@ import unittest
 SCHEMA = Path(__file__).parent / "supabase" / "schema.sql"
 FUNCTIONS = Path(__file__).parent / "supabase" / "functions"
 MIGRATION = Path(__file__).parent / "supabase" / "migrations" / "20260812_preserve_crossword_release_date_scores.sql"
+ENTITLEMENT_AUDIT_MIGRATION = Path(__file__).parent / "supabase" / "migrations" / "20260813_add_apple_subscription_event_audit.sql"
 
 
 class SupabaseAccountSchemaTests(unittest.TestCase):
@@ -70,4 +71,20 @@ class SupabaseAccountSchemaTests(unittest.TestCase):
         self.assertIn("APPLE_NOTIFICATION_WEBHOOK_SECRET", notification_function)
         self.assertIn("getAppleTransaction(transactionID)", notification_function)
         self.assertIn("entitlementStatus(transaction)", notification_function)
+        self.assertIn("notificationUUID", notification_function)
+        self.assertIn("apple_subscription_events", notification_function)
+        self.assertIn("auto_renew_status", notification_function)
+        self.assertIn('console.error("Apple subscription audit event failed"', notification_function)
         self.assertIn('console.error("App Store notification processing failed"', notification_function)
+
+    def test_entitlement_audit_migration_is_additive_and_private(self):
+        schema = SCHEMA.read_text()
+        migration = ENTITLEMENT_AUDIT_MIGRATION.read_text()
+
+        self.assertIn("ADD COLUMN IF NOT EXISTS auto_renew_status BOOLEAN", migration)
+        self.assertIn("CREATE TABLE IF NOT EXISTS apple_subscription_events", migration)
+        self.assertIn("notification_uuid       TEXT PRIMARY KEY", migration)
+        self.assertIn("ALTER TABLE apple_subscription_events ENABLE ROW LEVEL SECURITY", migration)
+        self.assertNotIn("DROP ", migration)
+        self.assertIn("CREATE TABLE apple_subscription_events", schema)
+        self.assertIn("auto_renew_status       BOOLEAN", schema)
