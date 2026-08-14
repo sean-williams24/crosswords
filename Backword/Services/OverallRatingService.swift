@@ -55,26 +55,39 @@ final class OverallRatingService: ObservableObject {
             rating.upsertBackword(score: score, date: bw.date)
         }
 
-        // Crosswords — use the immutable release-window snapshot. Current
-        // grid state may include later archive progress and must not change a
-        // historical rating.
-        for p in progressRecords {
-            guard p.gaveUpAt == nil,
-                  let date = p.puzzleDate, date >= cutoff else { continue }
-            // Pre-account iOS builds kept the only historical score in the
-            // aggregate rating file. Leave that value alone until sign-in
-            // converts it to a per-puzzle snapshot.
-            guard rebuildsFromSnapshots || p.releaseDateScore > 0 else { continue }
-            let score = p.releaseDateScore
-            if p.isWeekly == true {
-                rating.upsertWeeklyCrossword(score: score, date: date)
-            } else {
-                rating.upsertDailyCrossword(score: score, date: date)
-            }
-        }
+        Self.applyCrosswordReleaseDateScores(
+            progressRecords,
+            to: &rating,
+            cutoff: cutoff,
+            rebuildsFromSnapshots: rebuildsFromSnapshots
+        )
 
         removeInvalidBackwordScores()
         rating.save()
+    }
+
+    /// Rebuild crossword rating entries from the release-window snapshots.
+    /// A later Archive give-up changes only the displayed grid: it must not
+    /// remove points earned during the puzzle's original release window.
+    static func applyCrosswordReleaseDateScores(
+        _ progressRecords: [UserProgress],
+        to rating: inout OverallRating,
+        cutoff: String,
+        rebuildsFromSnapshots: Bool
+    ) {
+        for progress in progressRecords {
+            guard let date = progress.puzzleDate, date >= cutoff else { continue }
+            // Pre-account iOS builds kept the only historical score in the
+            // aggregate rating file. Leave that value alone until sign-in
+            // converts it to a per-puzzle snapshot.
+            guard rebuildsFromSnapshots || progress.releaseDateScore > 0 else { continue }
+
+            if progress.isWeekly == true {
+                rating.upsertWeeklyCrossword(score: progress.releaseDateScore, date: date)
+            } else {
+                rating.upsertDailyCrossword(score: progress.releaseDateScore, date: date)
+            }
+        }
     }
 
     private func removeInvalidBackwordScores() {

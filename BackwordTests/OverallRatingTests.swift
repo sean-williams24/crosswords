@@ -508,6 +508,33 @@ struct OverallRatingServiceScoreWindowTests {
         #expect(service.rating.dailyScores[0].dailyCrossword == 2)
     }
 
+    @Test("Archive give-up retains the crossword release-date score during rating rebuild")
+    @MainActor
+    func archiveGiveUpRetainsReleaseDateScoreDuringRatingRebuild() {
+        let date = ContentReleaseCalendar().dailyDateString
+        var progress = UserProgress(
+            puzzleId: "daily-archive-give-up",
+            size: 9,
+            puzzleDate: date,
+            totalClues: 21,
+            isWeekly: false
+        )
+        progress.releaseDateScore = 4
+        progress.completedAt = Date()
+        progress.gaveUpAt = Date()
+        progress.gaveUpScore = 0
+
+        var rating = OverallRating()
+        OverallRatingService.applyCrosswordReleaseDateScores(
+            [progress],
+            to: &rating,
+            cutoff: date,
+            rebuildsFromSnapshots: true
+        )
+
+        #expect(rating.score(for: .dailyCrossword, date: date) == 4)
+    }
+
     @Test("Rollover scoring can use the pre-midnight calendar")
     @MainActor
     func rolloverScoringUsesPreMidnightCalendar() {

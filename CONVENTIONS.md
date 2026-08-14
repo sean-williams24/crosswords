@@ -35,6 +35,10 @@ conflict still selects one whole crossword grid, but preserves the higher
 release-window score snapshot as independent historical metadata; this stops
 later Archive progress on another device from erasing already-earned points.
 
+An Archive give-up is a grid reveal only. Rating rebuilds must continue to use
+that record's `releaseDateScore` even after `gaveUpAt` is set, so revealing an
+old puzzle never clears points earned on its release date.
+
 StoreKit remains a valid Pro source while signed out. Signed-in purchases pass
 the Supabase user UUID as StoreKit's `appAccountToken`; verified Apple
 transactions are then associated with a single Backword account. The server

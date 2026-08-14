@@ -75,7 +75,6 @@
 		51C6F9994EF7199F8EDDF3CA /* PuzzleGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB36B91BB7D50A21760149C /* PuzzleGridView.swift */; };
 		549205098DAD4DCC7F508DD1 /* KeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDCB92E82855EB80981B63B /* KeyboardInputView.swift */; };
 		58638D080E0090141DE592A2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF93C5B6979DA0324E913C9 /* SettingsView.swift */; };
-		A11CC001300A000000000001 /* AccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11CC000300A000000000001 /* AccountSheet.swift */; };
 		6113351E253762AC9BB6A8E0 /* BackwordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */; };
 		6AA64C192BEEF7710023A110 /* WordBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA64C182BEEF7710023A110 /* WordBankTests.swift */; };
 		6B0F8E2B5B724322AE390E5B /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */; };
@@ -103,7 +102,6 @@
 		86AFC3D52FC2402F007623C3 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D42FC2402F007623C3 /* StatsView.swift */; };
 		86AFC3D72FC25567007623C3 /* ScoreChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AFC3D62FC25567007623C3 /* ScoreChipView.swift */; };
 		86BEEF012FDD000100000001 /* StoreServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BEEF002FDD000100000001 /* StoreServiceTests.swift */; };
-		A11C0A110000000000000001 /* AccountSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C0A100000000000000001 /* AccountSyncTests.swift */; };
 		86BF0A012FFF000000000001 /* ZoomableViewScalePolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BF0A002FFF000000000001 /* ZoomableViewScalePolicyTests.swift */; };
 		86E5BFF62FA2BECA00A42156 /* Outfit-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFF02FA2BECA00A42156 /* Outfit-Light.ttf */; };
 		86E5BFF72FA2BECA00A42156 /* Outfit-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFF42FA2BECA00A42156 /* Outfit-Thin.ttf */; };
@@ -132,6 +130,8 @@
 		95726DE84D084852B6D77C8C /* ArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625E52DC74D846679E9A73FE /* ArchiveViewModel.swift */; };
 		9DAB5905105243A7AB4CA249 /* ArchiveViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AAC0EA05C940EEA05D4CE9 /* ArchiveViewModelTests.swift */; };
 		9F66E5C1AA96EC8A2DBEADF1 /* MiniGridPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */; };
+		A11C0A110000000000000001 /* AccountSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C0A100000000000000001 /* AccountSyncTests.swift */; };
+		A11CC001300A000000000001 /* AccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11CC000300A000000000001 /* AccountSheet.swift */; };
 		A220B5F6D4E48FCC57832B9C /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15EB4D0D354246894E51C7E /* CacheService.swift */; };
 		ABCD10000000000000000004 /* FeedbackEmailContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000001 /* FeedbackEmailContentTests.swift */; };
 		ABCD10000000000000000005 /* FeedbackEmailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000002 /* FeedbackEmailContent.swift */; };
@@ -212,9 +212,9 @@
 		0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchSplashViewTests.swift; sourceTree = "<group>"; };
 		0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleView.swift; sourceTree = "<group>"; };
 		0C4762545EDB078B5DA1FA49 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
-		0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGridPattern.swift; sourceTree = "<group>"; };
 		0F0F00023010000000000001 /* GoogleSignInButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInButton.swift; sourceTree = "<group>"; };
 		0F0F00043010000000000001 /* GoogleSignInButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInButtonTests.swift; sourceTree = "<group>"; };
+		0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGridPattern.swift; sourceTree = "<group>"; };
 		15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionInfo.swift; sourceTree = "<group>"; };
 		19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingService.swift; sourceTree = "<group>"; };
 		1A9378292FE2E56600000001 /* ArchiveTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTabBarView.swift; sourceTree = "<group>"; };
@@ -263,7 +263,6 @@
 		86AFC3D42FC2402F007623C3 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		86AFC3D62FC25567007623C3 /* ScoreChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreChipView.swift; sourceTree = "<group>"; };
 		86BEEF002FDD000100000001 /* StoreServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreServiceTests.swift; sourceTree = "<group>"; };
-		A11C0A100000000000000001 /* AccountSyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSyncTests.swift; sourceTree = "<group>"; };
 		86BF0A002FFF000000000001 /* ZoomableViewScalePolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableViewScalePolicyTests.swift; sourceTree = "<group>"; };
 		86E5BFEC2FA2BECA00A42156 /* Outfit-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Black.ttf"; sourceTree = "<group>"; };
 		86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Outfit-Bold.ttf"; sourceTree = "<group>"; };
@@ -284,13 +283,14 @@
 		8820C57EC2BCBADADEC4006C /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		894071960CD50EDF948DA15E /* BackwordApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordApp.swift; sourceTree = "<group>"; };
 		8AF93C5B6979DA0324E913C9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		A11CC000300A000000000001 /* AccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSheet.swift; sourceTree = "<group>"; };
 		9165B37268686C367CEB6523 /* RatingBarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RatingBarView.swift; sourceTree = "<group>"; };
 		91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
 		922354966A899721DF1CF25C /* CrosswordStatsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CrosswordStatsView.swift; sourceTree = "<group>"; };
 		963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RatingDetailSheet.swift; sourceTree = "<group>"; };
 		9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsEngine.swift; sourceTree = "<group>"; };
 		A04496BE6230D031AE10977A /* DebugSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSettingsView.swift; sourceTree = "<group>"; };
+		A11C0A100000000000000001 /* AccountSyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSyncTests.swift; sourceTree = "<group>"; };
+		A11CC000300A000000000001 /* AccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSheet.swift; sourceTree = "<group>"; };
 		A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModelTests.swift; sourceTree = "<group>"; };
 		A38BFC4B60EA86A8DF662F3E /* UserProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProgress.swift; sourceTree = "<group>"; };
 		A476BC6A4DF0107699E2A1FD /* BackwordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordService.swift; sourceTree = "<group>"; };
@@ -932,8 +932,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_ENTITLEMENTS = Backword/Backword.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1124,8 +1124,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_ENTITLEMENTS = Backword/Backword.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
