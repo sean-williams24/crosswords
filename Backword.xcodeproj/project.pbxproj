@@ -55,6 +55,9 @@
 		0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */; };
 		0F0F00013010000000000001 /* GoogleSignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0F00023010000000000001 /* GoogleSignInButton.swift */; };
 		0F0F00033010000000000001 /* GoogleSignInButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0F00043010000000000001 /* GoogleSignInButtonTests.swift */; };
+		0F0F00053010000000000001 /* GoogleNativeSignInService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0F00063010000000000001 /* GoogleNativeSignInService.swift */; };
+		0F0F00073010000000000001 /* GoogleNativeSignInServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0F00083010000000000001 /* GoogleNativeSignInServiceTests.swift */; };
+		0F0F00093010000000000001 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 0F0F000A3010000000000001 /* GoogleSignIn */; };
 		10DA4E78777801F05B5F7B2A /* wotd_bank.json in Resources */ = {isa = PBXBuildFile; fileRef = E7EE22FCCC10583E80948886 /* wotd_bank.json */; };
 		143A79FE56648107686BEF85 /* OverallRatingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */; };
 		149802310440A77534BB615E /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8820C57EC2BCBADADEC4006C /* AppTheme.swift */; };
@@ -214,6 +217,8 @@
 		0C4762545EDB078B5DA1FA49 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		0F0F00023010000000000001 /* GoogleSignInButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInButton.swift; sourceTree = "<group>"; };
 		0F0F00043010000000000001 /* GoogleSignInButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInButtonTests.swift; sourceTree = "<group>"; };
+		0F0F00063010000000000001 /* GoogleNativeSignInService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleNativeSignInService.swift; sourceTree = "<group>"; };
+		0F0F00083010000000000001 /* GoogleNativeSignInServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleNativeSignInServiceTests.swift; sourceTree = "<group>"; };
 		0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGridPattern.swift; sourceTree = "<group>"; };
 		15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionInfo.swift; sourceTree = "<group>"; };
 		19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingService.swift; sourceTree = "<group>"; };
@@ -360,6 +365,7 @@
 				05F1E1A62FFCFD9300F1E1A5 /* FirebaseCore in Frameworks */,
 				FC2E739DC6045316AD55D0F4 /* GoogleMobileAds in Frameworks */,
 				05AD00072FFD000000000001 /* GoogleUserMessagingPlatform in Frameworks */,
+				0F0F00093010000000000001 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,6 +376,7 @@
 			isa = PBXGroup;
 			children = (
 				0F0F00043010000000000001 /* GoogleSignInButtonTests.swift */,
+				0F0F00083010000000000001 /* GoogleNativeSignInServiceTests.swift */,
 				07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */,
 				04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */,
 				049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */,
@@ -453,6 +460,7 @@
 				3C16166B681E34C0C10A14A3 /* BackwordAnalyticsService.swift */,
 				A476BC6A4DF0107699E2A1FD /* BackwordService.swift */,
 				86FAA1582FB9B9150022EFF6 /* SupabaseClient.swift */,
+				0F0F00063010000000000001 /* GoogleNativeSignInService.swift */,
 				869FCBE12F9986FA00A280F2 /* BackwordStatsService.swift */,
 				D15EB4D0D354246894E51C7E /* CacheService.swift */,
 				9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */,
@@ -691,6 +699,7 @@
 				05F1E1A42FFCFD9300F1E1A5 /* FirebaseAnalytics */,
 				05F1E1A32FFCFD9300F1E1A5 /* FirebaseCore */,
 				86F02E452FB9BE220083B752 /* Supabase */,
+				0F0F000A3010000000000001 /* GoogleSignIn */,
 			);
 			productName = Backword;
 			productReference = 038A68C6C4BF20D72379BD11 /* Backword.app */;
@@ -735,6 +744,7 @@
 				05AD00052FFD000000000001 /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */,
 				05F1E1A22FFCFD9300F1E1A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				86FAA15A2FB9BA750022EFF6 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				0F0F000B3010000000000001 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0CBB88961DE1D6BD2C28D2DF /* Products */;
@@ -776,6 +786,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0F0F00033010000000000001 /* GoogleSignInButtonTests.swift in Sources */,
+				0F0F00073010000000000001 /* GoogleNativeSignInServiceTests.swift in Sources */,
 				07AB00043008000000000001 /* BackwordRulesUpdateNoticeTests.swift in Sources */,
 				049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */,
 				04ADAE912FFD100000000001 /* AdExplainerPresentationPolicyTests.swift in Sources */,
@@ -843,6 +854,7 @@
 				E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */,
 				869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */,
 				86FAA1592FB9B9150022EFF6 /* SupabaseClient.swift in Sources */,
+				0F0F00053010000000000001 /* GoogleNativeSignInService.swift in Sources */,
 				86AFC3D72FC25567007623C3 /* ScoreChipView.swift in Sources */,
 				CF96B7A7D6669B73DBA8125E /* BackwordCard.swift in Sources */,
 				05C0A0013005000000000001 /* BackwordCompletionDisplayState.swift in Sources */,
@@ -938,7 +950,7 @@
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BackWord;
+				INFOPLIST_KEY_CFBundleDisplayName = Backword;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1018,7 +1030,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = BackWord;
+				INFOPLIST_KEY_CFBundleDisplayName = Backword;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
@@ -1102,7 +1114,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = BackWord;
+				INFOPLIST_KEY_CFBundleDisplayName = Backword;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
@@ -1204,6 +1216,14 @@
 				minimumVersion = 2.5.1;
 			};
 		};
+		0F0F000B3010000000000001 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 		92AE2339B0D3055DBBC232EC /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
@@ -1234,6 +1254,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 86FAA15A2FB9BA750022EFF6 /* XCRemoteSwiftPackageReference "supabase-swift" */;
 			productName = Supabase;
+		};
+		0F0F000A3010000000000001 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0F0F000B3010000000000001 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
 		};
 		9919F8A6B05C3D85B7C8E63E /* GoogleMobileAds */ = {
 			isa = XCSwiftPackageProductDependency;

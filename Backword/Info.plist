@@ -10,7 +10,17 @@
 					<string>backword</string>
 				</array>
 			</dict>
+			<dict>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>$(GOOGLE_IOS_REVERSED_CLIENT_ID)</string>
+				</array>
+			</dict>
 		</array>
+		<key>GoogleIOSClientID</key>
+		<string>$(GOOGLE_IOS_CLIENT_ID)</string>
+		<key>GoogleWebClientID</key>
+		<string>$(GOOGLE_WEB_CLIENT_ID)</string>
 		<key>GADApplicationIdentifier</key>
 		<string>$(ADMOB_APP_ID)</string>
 		<key>FirebaseAppDelegateProxyEnabled</key>

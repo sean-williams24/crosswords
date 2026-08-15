@@ -43,6 +43,7 @@ struct BackwordApp: App {
                     storeService.setAccountProStatus(isAccountProUser)
                 }
                 .onOpenURL { url in
+                    guard !GoogleNativeSignInService.shared.handle(url) else { return }
                     Task { await accountService.handleAuthRedirect(url) }
                 }
                 .onChange(of: scenePhase) { _, newPhase in

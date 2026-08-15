@@ -172,15 +172,15 @@ final class AccountService: ObservableObject {
 
     func signInWithGoogle() async {
         await performAuthentication {
-            _ = try await self.client.auth.signInWithOAuth(
-                provider: .google,
-                redirectTo: Self.redirectURL
+            let idToken = try await GoogleNativeSignInService.shared.signIn()
+            _ = try await self.client.auth.signInWithIdToken(
+                credentials: .init(provider: .google, idToken: idToken)
             )
         }
     }
 
-    /// Completes the Supabase OAuth exchange after Google returns to the app.
-    /// Native Sign in with Apple does not use this path.
+    /// Completes browser-based Supabase auth redirects. Native Apple and Google
+    /// sign-in exchange their identity tokens directly and do not use this path.
     func handleAuthRedirect(_ url: URL) async {
         guard url.scheme == Self.redirectURL.scheme else { return }
         do {
