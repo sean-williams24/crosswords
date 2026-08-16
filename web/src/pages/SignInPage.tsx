@@ -1,23 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import type { Provider } from "@supabase/supabase-js";
 import { useAuth } from "../features/auth/AuthProvider";
+import { GoogleSignInButton } from "../features/auth/GoogleSignInButton";
 import { GameMenu } from "../features/backword/components/GameMenu";
 
-type ProviderChoice = Extract<Provider, "apple" | "google">;
+type ProviderChoice = "apple" | "google";
 
 export function SignInPage() {
   const location = useLocation();
-  const { user, ready, entitlement, error: authError, signIn, signOut, deleteAccount, refreshEntitlement } = useAuth();
+  const { user, ready, entitlement, error: authError, signIn, signInWithGoogle, signOut, deleteAccount, refreshEntitlement } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState<ProviderChoice | null>(null);
   const returnTo = typeof location.state?.returnTo === "string" ? location.state.returnTo : "/home";
 
-  async function continueWith(provider: ProviderChoice) {
+  useEffect(() => {
+    if (!user) setPending(null);
+  }, [user]);
+
+  async function continueWithApple() {
     setError(null);
-    setPending(provider);
+    setPending("apple");
     try {
-      await signIn(provider, returnTo);
+      await signIn("apple", returnTo);
+    } catch (signInError) {
+      setError(signInError instanceof Error ? signInError.message : "Sign in could not be started.");
+      setPending(null);
+    }
+  }
+
+  async function continueWithGoogle(idToken: string) {
+    setError(null);
+    setPending("google");
+    try {
+      await signInWithGoogle(idToken, returnTo);
     } catch (signInError) {
       setError(signInError instanceof Error ? signInError.message : "Sign in could not be started.");
       setPending(null);
@@ -76,7 +91,7 @@ export function SignInPage() {
             aria-label={pending === "apple" ? "Opening Apple" : "Sign in with Apple"}
             className="auth-apple-button"
             disabled={!ready || pending !== null}
-            onClick={() => void continueWith("apple")}
+            onClick={() => void continueWithApple()}
             type="button"
           >
             <span className="auth-apple-button__content">
@@ -87,15 +102,11 @@ export function SignInPage() {
               <span>Sign in with Apple</span>
             </span>
           </button>
-          <button
-            aria-label={pending === "google" ? "Opening Google" : "Sign in with Google"}
-            className="auth-google-button"
+          <GoogleSignInButton
             disabled={!ready || pending !== null}
-            onClick={() => void continueWith("google")}
-            type="button"
-          >
-            <img alt="" src="/brand/continue-with-google.png" />
-          </button>
+            onCredential={(idToken) => void continueWithGoogle(idToken)}
+            onError={(signInError) => setError(signInError.message)}
+          />
         </div>
         {error || authError ? <p className="auth-content__error" role="alert">{error ?? authError}</p> : null}
         <p className="auth-content__note">If you use Apple’s Hide My Email, use Apple to sign in on every device.</p>

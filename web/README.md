@@ -26,6 +26,7 @@ local `.env` file and configure the same values in Vercel before deployment:
 ```bash
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
+VITE_GOOGLE_WEB_CLIENT_ID=
 ```
 
 Keep browser game integration in `src/lib` and page-level gameplay in `src/pages` or feature-specific folders.
@@ -37,9 +38,11 @@ puzzle caches intentionally remain device-local.
 
 ## Account setup
 
-Enable Google and Apple providers in Supabase Auth and allow these redirect
-URLs: the deployed site's `/auth/callback`, local development's
-`/auth/callback`, and `backword://login-callback` for iOS Google OAuth. Apple
-web login also needs a Services ID and client secret in Supabase. Apply
+Enable Google and Apple providers in Supabase Auth. Google web sign-in uses
+Google Identity Services and exchanges its ID token directly with Supabase, so
+add the deployed site origin (for example `https://backword.vercel.app`) to
+the Google Web OAuth client’s Authorized JavaScript origins. Apple web login
+still needs the deployed site's `/auth/callback`, local development's
+`/auth/callback`, a Services ID, and a client secret in Supabase. Apply
 `Backend/supabase/schema.sql`, then deploy the Edge Functions described in
 `Backend/supabase/functions/README.md` before enabling account-linked Pro.

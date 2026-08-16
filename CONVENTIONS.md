@@ -66,8 +66,9 @@ account errors are recorded through the `account` OSLog category.
 Google account entry points use Google-provided branded controls: iOS uses
 Google's pre-approved sign-in logo asset in an account button whose geometry
 matches Sign in with Apple, and the web uses Google's pre-approved web button
-asset. They remain presentation-only; both continue to use the existing
-Supabase OAuth redirect flow for session creation and progress sync.
+asset. Both use platform-native Google account flows and exchange Google ID
+tokens directly with Supabase for session creation and progress sync. This
+avoids exposing a Supabase project hostname during Google sign-in.
 
 ---
 

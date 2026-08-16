@@ -14,7 +14,8 @@ type AuthContextValue = {
   session: Session | null;
   entitlement: ProEntitlement | null;
   error: string | null;
-  signIn: (provider: Extract<Provider, "google" | "apple">, returnTo: string) => Promise<void>;
+  signIn: (provider: Extract<Provider, "apple">, returnTo: string) => Promise<void>;
+  signInWithGoogle: (idToken: string, returnTo: string) => Promise<void>;
   signOut: () => Promise<void>;
   deleteAccount: () => Promise<void>;
   refreshEntitlement: () => Promise<void>;
@@ -29,6 +30,7 @@ const guestAuth: AuthContextValue = {
   entitlement: null,
   error: null,
   signIn: async () => { throw new Error(supabaseConfigurationError); },
+  signInWithGoogle: async () => { throw new Error(supabaseConfigurationError); },
   signOut: async () => undefined,
   deleteAccount: async () => { throw new Error(supabaseConfigurationError); },
   refreshEntitlement: async () => undefined
@@ -113,6 +115,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         options: { redirectTo: `${window.location.origin}/auth/callback` }
       });
       if (signInError) throw signInError;
+    },
+    async signInWithGoogle(idToken, returnTo) {
+      if (!supabase) throw new Error(supabaseConfigurationError);
+      sessionStorage.setItem(returnToKey, safeReturnTo(returnTo));
+      const { data, error: signInError } = await supabase.auth.signInWithIdToken({
+        provider: "google",
+        token: idToken
+      });
+      if (signInError) throw signInError;
+      setSession(data.session);
     },
     async signOut() {
       if (!supabase) return;

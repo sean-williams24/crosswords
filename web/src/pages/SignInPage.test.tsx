@@ -14,9 +14,9 @@ describe("SignInPage", () => {
       expect.stringContaining("https://appleid.cdn-apple.com/appleid/button/logo?color=white&border=false")
     );
     expect(appleButton).toHaveTextContent("Sign in with Apple");
-    const googleButton = screen.getByRole("button", { name: "Sign in with Google" });
-    expect(googleButton).toHaveClass("auth-google-button");
-    expect(googleButton.querySelector("img")).toHaveAttribute("src", "/brand/continue-with-google.png");
+    const googleButton = container.querySelector(".auth-google-button");
+    expect(googleButton).toHaveAttribute("aria-label", "Sign in with Google");
+    expect(googleButton?.querySelector("img")).toHaveAttribute("src", "/brand/continue-with-google.png");
     expect(screen.getByText(/guest play still works/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Backword home" })).not.toBeInTheDocument();
