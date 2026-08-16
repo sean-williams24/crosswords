@@ -7,7 +7,6 @@ struct RatingDetailSheet: View {
     @ScaledMetric private var spacing: CGFloat = 14
     @State private var animates = false
     @State private var showHowItWorks = false
-    @State private var showDeletionConfirmation = false
     @ScaledMetric private var chevronSize: CGFloat = 12
     @ScaledMetric private var columnWidth: CGFloat = 60
     @ScaledMetric private var scrollingColumnWidth: CGFloat = 70
@@ -58,7 +57,7 @@ struct RatingDetailSheet: View {
                 }
             }
             .ignoresSafeArea(edges: .bottom)
-            .navigationTitle("Overall Rating")
+            .navigationTitle("Player Profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
@@ -69,21 +68,6 @@ struct RatingDetailSheet: View {
                             .foregroundColor(.appTextSecondary)
                     }
                 }
-            }
-            .confirmationDialog(
-                "Delete Backword account?",
-                isPresented: $showDeletionConfirmation,
-                titleVisibility: .visible
-            ) {
-                Button("Delete Account", role: .destructive) {
-                    Task {
-                        if await accountService.deleteAccount() {
-                            close()
-                        }
-                    }
-                }
-            } message: {
-                Text("This permanently deletes your cloud progress and account. It does not cancel your Apple subscription.")
             }
         }
         .onAppear {
@@ -114,11 +98,6 @@ struct RatingDetailSheet: View {
             .font(AppFont.body(16))
             .foregroundColor(.appTextPrimary)
             .frame(maxWidth: .infinity)
-
-            Button("Delete Account", role: .destructive) {
-                showDeletionConfirmation = true
-            }
-            .font(AppFont.body(16))
         }
     }
 

@@ -74,7 +74,9 @@ The signed-in account surface is the Overall Rating sheet. Home and Settings
 send signed-in users there directly; a successful sign-in dismisses its
 sign-in sheet before that sheet is presented. When sign-in starts from
 Settings, Settings also dismisses first so Rating Details is always presented
-from Home rather than stacked over another sheet.
+from Home rather than stacked over another sheet. Account deletion is the
+exception: it is deliberately the final signed-in Settings action, separate
+from the Rating Details sign-out control.
 
 ---
 

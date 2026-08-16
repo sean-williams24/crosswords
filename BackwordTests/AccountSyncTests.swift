@@ -134,6 +134,12 @@ struct AccountSyncTests {
         #expect(AccountPresentationDestination.destination(isSignedIn: true) == .ratingDetails)
     }
 
+    @Test("Settings only offers account deletion to signed-in users")
+    func settingsDeleteAccountVisibility() {
+        #expect(SettingsAccountActionVisibility.showsDeleteAccount(isSignedIn: true))
+        #expect(!SettingsAccountActionVisibility.showsDeleteAccount(isSignedIn: false))
+    }
+
     @Test("First account sync captures legacy guest release-day crossword points")
     func capturesLegacyGuestReleaseDayScore() {
         var rating = OverallRating()

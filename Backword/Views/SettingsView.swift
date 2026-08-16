@@ -15,6 +15,7 @@ struct SettingsView: View {
     @State private var isAdPrivacyChoicesRowPressed = false
     @State private var showAccount = false
     @State private var showRatingDetailsAfterAccountDismiss = false
+    @State private var showDeletionConfirmation = false
     private let onSubscribe: () -> Void
     private let onShowRatingDetails: () -> Void
 
@@ -123,7 +124,11 @@ struct SettingsView: View {
                         .font(AppFont.clueLabel(12))
                         .foregroundColor(.appAccent)
                         .tracking(2)
-                        .textCase(nil)
+                    .textCase(nil)
+                }
+
+                if SettingsAccountActionVisibility.showsDeleteAccount(isSignedIn: accountService.isSignedIn) {
+                    deleteAccountSection
                 }
 
 //                Section {
@@ -165,6 +170,21 @@ struct SettingsView: View {
                     showAccount = false
                 }
                     .environmentObject(accountService)
+            }
+            .confirmationDialog(
+                "Delete Backword account?",
+                isPresented: $showDeletionConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Delete Account", role: .destructive) {
+                    Task {
+                        if await accountService.deleteAccount() {
+                            dismiss()
+                        }
+                    }
+                }
+            } message: {
+                Text("This permanently deletes your cloud progress and account. It does not cancel your Apple subscription.")
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -273,6 +293,23 @@ struct SettingsView: View {
         }
         .buttonStyle(.plain)
         .listRowBackground(Color.appSurface)
+    }
+
+    private var deleteAccountSection: some View {
+        Section {
+            Button("Delete Account", role: .destructive) {
+                showDeletionConfirmation = true
+            }
+            .font(AppFont.body(15))
+            .frame(maxWidth: .infinity)
+            .listRowBackground(Color.appSurface)
+        } footer: {
+            if let errorMessage = accountService.errorMessage {
+                Text(errorMessage)
+                    .font(AppFont.caption())
+                    .foregroundColor(.appGaveUp)
+            }
+        }
     }
 
     private var adExplanationRow: some View {
@@ -484,6 +521,12 @@ enum SettingsSubscribeRowLayout {
     static let iconColumnWidth: CGFloat = 44
     static let proLogoHeight: CGFloat = 22
     static let proLogoScale: CGFloat = 1.75
+}
+
+enum SettingsAccountActionVisibility {
+    static func showsDeleteAccount(isSignedIn: Bool) -> Bool {
+        isSignedIn
+    }
 }
 
 #Preview {
