@@ -104,6 +104,20 @@ struct AccountSyncTests {
         ))
     }
 
+    @Test("Account Pro status uses the shared Pro logo and mutes inactive access")
+    func accountProStatusPresentation() {
+        #expect(RatingAccountProStatusPresentation.logoName == "Pro")
+        #expect(RatingAccountProStatusPresentation.logoWidth > 32)
+        #expect(RatingAccountProStatusPresentation.logoHeight > 18)
+        #expect(RatingAccountProStatusPresentation.inactiveGrayscale == 1)
+        #expect(RatingAccountProStatusPresentation.inactiveOpacity < 1)
+    }
+
+    @Test("The rating footer surface covers the bottom scroll inset")
+    func ratingFooterSurfacePresentation() {
+        #expect(RatingDetailSheetLayout.footerSurfaceExtension > 0)
+    }
+
     @Test("Signed-out account actions have clear copy")
     func signedOutAccountActionPresentation() {
         #expect(AccountSheetGuestAccessPresentation.pageTitle == "Sign in or create an account")

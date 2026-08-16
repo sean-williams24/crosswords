@@ -44,17 +44,19 @@ struct RatingDetailSheet: View {
                         .padding(.horizontal, AppLayout.screenPadding)
                     howItWorksSection
                         .padding(.horizontal, AppLayout.screenPadding)
-                    breakdownSection
-
-                    if accountService.isSignedIn {
-                        accountActions
-                            .padding(.horizontal, AppLayout.screenPadding)
-                    }
+                    ratingFooterSection
                 }
                 .padding(.top, 8)
-                .padding(.bottom, 40)
             }
-            .background(AppBackgroundGradient())
+            .background {
+                ZStack(alignment: .bottom) {
+                    AppBackgroundGradient()
+
+                    Color.appSurface
+                        .frame(height: RatingDetailSheetLayout.footerSurfaceExtension)
+                        .ignoresSafeArea(edges: .bottom)
+                }
+            }
             .navigationTitle("Overall Rating")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
@@ -93,24 +95,46 @@ struct RatingDetailSheet: View {
     }
 
     private var accountActions: some View {
-        VStack(alignment: .leading, spacing: 18) {
+        VStack(alignment: .center, spacing: 18) {
             Divider()
 
-            Button("Sign Out") {
+            Button {
                 Task {
                     await accountService.signOut()
                     if !accountService.isSignedIn {
                         close()
                     }
                 }
+            } label: {
+                Text("Sign Out")
+                    .frame(maxWidth: .infinity)
             }
+            .buttonStyle(.bordered)
             .font(AppFont.body(16))
             .foregroundColor(.appTextPrimary)
+            .frame(maxWidth: .infinity)
 
             Button("Delete Account", role: .destructive) {
                 showDeletionConfirmation = true
             }
             .font(AppFont.body(16))
+        }
+    }
+
+    private var ratingFooterSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            breakdownHeader
+
+            VStack(spacing: 28) {
+                breakdownTable
+
+                if accountService.isSignedIn {
+                    accountActions
+                        .padding(.horizontal, AppLayout.screenPadding)
+                }
+            }
+            .padding(.bottom, 40)
+            .background(Color.appSurface)
         }
     }
 
@@ -260,28 +284,27 @@ struct RatingDetailSheet: View {
             .padding(.horizontal, AppLayout.screenPadding)
     }
 
-    private var breakdownSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            if useHorizontalScroll {
-                ViewThatFits {
-                    horizontalTitle
-                    verticalTitle
-                }
-            } else {
-                breakdownTitle
+    @ViewBuilder
+    private var breakdownHeader: some View {
+        if useHorizontalScroll {
+            ViewThatFits {
+                horizontalTitle
+                verticalTitle
             }
+        } else {
+            breakdownTitle
+        }
+    }
 
-            Group {
-                if useHorizontalScroll {
-                    ScrollView(.horizontal, showsIndicators: true) {
-                        tableViewContent(isScrolling: true)
-                            .frame(minWidth: isPro ? 420 : 380)
-                    }
-                } else {
-                    tableViewContent(isScrolling: false)
-                }
+    @ViewBuilder
+    private var breakdownTable: some View {
+        if useHorizontalScroll {
+            ScrollView(.horizontal, showsIndicators: true) {
+                tableViewContent(isScrolling: true)
+                    .frame(minWidth: isPro ? 420 : 380)
             }
-            .background(Color.appSurface)
+        } else {
+            tableViewContent(isScrolling: false)
         }
     }
 
@@ -502,57 +525,83 @@ struct RatingDetailSheet: View {
 private struct RatingAccountSummaryView: View {
     @EnvironmentObject private var accountService: AccountService
     @EnvironmentObject private var storeService: StoreService
+    @ScaledMetric(relativeTo: .body) private var proLogoWidth = RatingAccountProStatusPresentation.logoWidth
+    @ScaledMetric(relativeTo: .body) private var proLogoHeight = RatingAccountProStatusPresentation.logoHeight
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(accountService.email ?? "Signed in")
-                    .font(AppFont.caption(15))
-                    .foregroundColor(.appTextPrimary)
-                Text(accountService.isSyncing ? "Syncing your games…" : "Progress and stats are synced")
-                    .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
+            Button {
+                Task { await accountService.refreshAccountData() }
+            } label: {
+                VStack(alignment: .leading, spacing: 14) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(accountService.email ?? "Signed in")
+                            .font(AppFont.caption(15))
+                            .foregroundColor(.appTextPrimary)
+                        Text(accountService.isSyncing ? "Syncing your games…" : "Progress and stats are synced - Tap to sync again")
+                            .font(AppFont.caption())
+                            .foregroundColor(.appTextSecondary)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.appSurface)
+                    .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+
+                    if let errorMessage = accountService.errorMessage {
+                        Text(errorMessage)
+                            .font(AppFont.caption())
+                            .foregroundColor(.appGaveUp)
+                    }
+                }
             }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.appSurface)
-            .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+            .buttonStyle(.plain)
+            .contentShape(Rectangle())
 
             proStatus
-
-            Button("Sync Now") {
-                Task { await accountService.refreshAccountData() }
-            }
-            .font(AppFont.body(16))
-            .foregroundColor(.appAccent)
-
-            if let errorMessage = accountService.errorMessage {
-                Text(errorMessage)
-                    .font(AppFont.caption())
-                    .foregroundColor(.appGaveUp)
-            }
         }
     }
 
     @ViewBuilder
     private var proStatus: some View {
         if accountService.isProUser {
-            Label("Pro is active for this account", systemImage: "checkmark.seal.fill")
-                .font(AppFont.body(15))
-                .foregroundColor(.appAccent)
+            proStatusRow("Pro is active for this account", isActive: true)
         } else if storeService.hasStoreKitPro && accountService.localProLinkedElsewhere {
             VStack(alignment: .leading, spacing: 6) {
-                Label("Pro is active on this iPhone", systemImage: "iphone")
-                    .font(AppFont.body(15))
-                    .foregroundColor(.appAccent)
+                proStatusRow("Pro is active on this iPhone", isActive: true)
                 Text(AccountEntitlementPresentation.linkedElsewhereExplanation)
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
             }
         } else {
-            Label("No account-linked Pro subscription", systemImage: "person.crop.circle")
-                .font(AppFont.body(15))
-                .foregroundColor(.appTextSecondary)
+            proStatusRow("No account-linked Pro subscription", isActive: false)
         }
     }
+
+    private func proStatusRow(_ title: String, isActive: Bool) -> some View {
+        HStack(alignment: .center, spacing: 10) {
+            Image(RatingAccountProStatusPresentation.logoName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: proLogoWidth, height: proLogoHeight, alignment: .center)
+                .grayscale(isActive ? 0 : RatingAccountProStatusPresentation.inactiveGrayscale)
+                .opacity(isActive ? 1 : RatingAccountProStatusPresentation.inactiveOpacity)
+                .offset(y: 2)
+
+            Text(title)
+        }
+        .font(AppFont.body(15))
+        .foregroundColor(isActive ? .appAccent : .appTextSecondary)
+    }
+}
+
+enum RatingAccountProStatusPresentation {
+    static let logoName = "Pro"
+    static let logoWidth: CGFloat = 52
+    static let logoHeight: CGFloat = 28
+    static let inactiveGrayscale: Double = 1
+    static let inactiveOpacity: Double = 0.45
+}
+
+enum RatingDetailSheetLayout {
+    static let footerSurfaceExtension: CGFloat = 128
 }
