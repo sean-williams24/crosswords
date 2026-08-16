@@ -12,6 +12,6 @@ struct GoogleSignInButtonTests {
 
     @Test("Uses the Google sign-in call to action")
     func usesSignInCallToAction() {
-        #expect(GoogleSignInButtonAppearance.label == "Sign in with Google")
+        #expect(GoogleSignInButtonAppearance.label == "Continue with Google")
     }
 }

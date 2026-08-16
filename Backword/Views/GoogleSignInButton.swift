@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum GoogleSignInButtonAppearance {
-    static let label = "Sign in with Google"
+    static let label = "Continue with Google"
     static let height: CGFloat = 50
     static let cornerRadius: CGFloat = 6
     static let logoViewportSize: CGFloat = 30
