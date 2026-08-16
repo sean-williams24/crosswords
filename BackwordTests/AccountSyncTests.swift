@@ -104,6 +104,12 @@ struct AccountSyncTests {
         ))
     }
 
+    @Test("Signed-out account actions have clear copy")
+    func signedOutAccountActionPresentation() {
+        #expect(AccountSheetGuestAccessPresentation.pageTitle == "Sign in or create an account")
+        #expect(AccountSheetGuestAccessPresentation.actionTitle == "Play as guest")
+    }
+
     @Test("First account sync captures legacy guest release-day crossword points")
     func capturesLegacyGuestReleaseDayScore() {
         var rating = OverallRating()

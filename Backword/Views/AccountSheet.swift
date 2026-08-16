@@ -9,24 +9,15 @@ struct AccountSheet: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    if accountService.isSignedIn {
-                        signedInContent
-                    } else {
-                        signedOutContent
-                    }
-
-                    if let errorMessage = accountService.errorMessage {
-                        Text(errorMessage)
-                            .font(AppFont.caption())
-                            .foregroundColor(.appGaveUp)
-                    }
+            Group {
+                if accountService.isSignedIn {
+                    signedInScreen
+                } else {
+                    signedOutScreen
                 }
-                .padding(AppLayout.screenPadding)
             }
             .background(Color.appBackground)
-            .navigationTitle(accountService.isSignedIn ? "Your Account" : "Save Your Progress")
+            .navigationTitle(accountService.isSignedIn ? "Your Account" : "")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
@@ -57,14 +48,64 @@ struct AccountSheet: View {
         }
     }
 
-    private var signedOutContent: some View {
+    private var signedOutScreen: some View {
+        VStack(spacing: 0) {
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: AppLayout.screenPadding) {
+                        signedOutHeader
+                        signedOutInformation
+
+                        Spacer()
+                    }
+                    .frame(
+                        maxWidth: .infinity,
+                        minHeight: max(0, geometry.size.height - (AppLayout.screenPadding * 2))
+                    )
+                    .padding(AppLayout.screenPadding)
+                }
+            }
+
+            signInActions
+                .padding(AppLayout.screenPadding)
+        }
+    }
+
+    private var signedOutHeader: some View {
+        VStack(spacing: AppLayout.screenPadding) {
+            Text(AccountSheetGuestAccessPresentation.pageTitle)
+                .font(AppFont.header(20))
+                .foregroundColor(.appTextHeading)
+                .multilineTextAlignment(.center)
+
+            BackwordLogo(frame: 48)
+                .accessibilityHidden(true)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private var signedOutInformation: some View {
         VStack(alignment: .leading, spacing: 18) {
-            Text("Play as a guest whenever you like. An account lets you:")
+            Text("Play as a guest whenever you like, or create an account to:")
                 .font(AppFont.body(16))
                 .foregroundColor(.appTextPrimary)
 
             benefits
 
+            Text("If you use Apple’s Hide My Email, use Apple to sign in on every device.")
+                .font(AppFont.caption())
+                .foregroundColor(.appTextSecondary)
+
+            if let errorMessage = accountService.errorMessage {
+                Text(errorMessage)
+                    .font(AppFont.caption())
+                    .foregroundColor(.appGaveUp)
+            }
+        }
+    }
+
+    private var signInActions: some View {
+        VStack(spacing: 18) {
             SignInWithAppleButton(.signIn) { request in
                 request.requestedScopes = [.fullName, .email]
             } onCompletion: { result in
@@ -84,9 +125,26 @@ struct AccountSheet: View {
                 Task { await accountService.signInWithGoogle() }
             }
 
-            Text("If you use Apple’s Hide My Email, use Apple to sign in on every device.")
-                .font(AppFont.caption())
-                .foregroundColor(.appTextSecondary)
+            Button(AccountSheetGuestAccessPresentation.actionTitle) {
+                dismiss()
+            }
+            .font(AppFont.body(16))
+            .foregroundColor(.appTextPrimary)
+        }
+    }
+
+    private var signedInScreen: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                signedInContent
+
+                if let errorMessage = accountService.errorMessage {
+                    Text(errorMessage)
+                        .font(AppFont.caption())
+                        .foregroundColor(.appGaveUp)
+                }
+            }
+            .padding(AppLayout.screenPadding)
         }
     }
 
@@ -159,6 +217,11 @@ struct AccountSheet: View {
             .font(AppFont.body(15))
             .foregroundColor(.appTextPrimary)
     }
+}
+
+enum AccountSheetGuestAccessPresentation {
+    static let pageTitle = "Sign In Or Create An Account"
+    static let actionTitle = "Play as guest"
 }
 
 enum AccountEntitlementPresentation {
