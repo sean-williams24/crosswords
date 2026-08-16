@@ -70,6 +70,11 @@ background, so slow network work never leaves the provider button in a loading
 state. A repeated auth event for the active account must not restart guest
 migration.
 
+Sign in with Apple uses the native UIKit-branded button with an app-owned
+authorization controller, rather than SwiftUI's wrapper. This prevents a
+cancelled system flow from leaving that wrapper's in-progress indicator on the
+sign-in sheet.
+
 Google account entry points use Google-provided branded controls: iOS uses
 Google's pre-approved sign-in logo asset in an account button whose geometry
 matches Sign in with Apple, and the web uses Google's pre-approved web button

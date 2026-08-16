@@ -82,9 +82,7 @@ struct AccountSheet: View {
 
     private var signInActions: some View {
         VStack(spacing: 18) {
-            SignInWithAppleButton(.continue) { request in
-                request.requestedScopes = [.fullName, .email]
-            } onCompletion: { result in
+            AppleSignInButton(isLoading: accountService.isLoading) { result in
                 guard case .success(let authorization) = result,
                       let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
                       let tokenData = credential.identityToken,
@@ -99,9 +97,8 @@ struct AccountSheet: View {
                     }
                 }
             }
-            .signInWithAppleButtonStyle(.black)
+            .frame(maxWidth: .infinity)
             .frame(height: 44)
-            .disabled(accountService.isLoading)
 
             GoogleSignInButton(isLoading: accountService.isLoading) {
                 Task {

@@ -1087,10 +1087,11 @@ body {
 
 /* Account sign-in and callback */
 .auth-page {
+  --auth-content-gap: 54px;
   display: flex;
   position: relative;
   min-height: 100svh;
-  padding: clamp(104px, 16vh, 168px) 20px 72px;
+  padding: 121px 20px 72px;
   align-items: flex-start;
   justify-content: center;
   color: #eee;
@@ -1101,8 +1102,11 @@ body {
   width: min(100%, 540px);
 }
 
+.auth-page__header { position: absolute; inset: 0 0 auto; }
 .auth-content__eyebrow { margin: 0 0 8px; color: #d6be87; font-size: 11px; font-weight: 700; letter-spacing: .18em; }
 .auth-content h1 { margin: 0; font-size: clamp(31px, 7vw, 44px); letter-spacing: -.045em; }
+.auth-content .auth-content__sign-in-title { margin: 0; color: #d6be87; font-size: clamp(16px, 3.5vw, 24px); font-weight: 700; letter-spacing: .02em; line-height: 1.2; text-align: center; }
+.auth-content__sign-in-title + .auth-content__intro { margin-top: var(--auth-content-gap); }
 .auth-content__intro { margin: 16px 0 0; color: #c5c7cd; font-size: 17px; line-height: 1.55; }
 .auth-content__benefits { display: grid; margin: 25px 0; padding: 0; gap: 10px; color: #e7e7e9; line-height: 1.45; list-style: none; }
 .auth-content__benefits li { display: flex; gap: 10px; }
@@ -1135,6 +1139,7 @@ body {
 .auth-callback { color: #eee; font-size: 18px; }
 
 @media (max-width: 680px) {
+  .auth-page { padding-top: 101px; }
   .home-dashboard__header { min-height: 96px; }
   .home-dashboard__header .bw-logo { height: 58px; }
   .home-dashboard__actions { top: max(12px, env(safe-area-inset-top)); right: 12px; gap: 6px; }

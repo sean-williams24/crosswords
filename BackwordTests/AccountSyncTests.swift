@@ -1,4 +1,5 @@
 import Foundation
+import AuthenticationServices
 import Supabase
 import Testing
 @testable import Backword
@@ -122,6 +123,15 @@ struct AccountSyncTests {
     func signedOutAccountActionPresentation() {
         #expect(AccountSheetGuestAccessPresentation.pageTitle == "Sign in or create an account")
         #expect(AccountSheetGuestAccessPresentation.actionTitle == "Play as guest")
+    }
+
+    @Test("Apple sign-in requests the account details needed for profile setup")
+    func appleSignInRequestConfiguration() {
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+
+        AppleSignInRequestConfiguration.configure(request)
+
+        #expect(Set(request.requestedScopes ?? []) == Set([.fullName, .email]))
     }
 
     @Test("A new authenticated session activates account-scoped persistence once")

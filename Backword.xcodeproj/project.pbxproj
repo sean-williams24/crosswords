@@ -135,6 +135,7 @@
 		9F66E5C1AA96EC8A2DBEADF1 /* MiniGridPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */; };
 		A11C0A110000000000000001 /* AccountSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C0A100000000000000001 /* AccountSyncTests.swift */; };
 		A11CC001300A000000000001 /* AccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11CC000300A000000000001 /* AccountSheet.swift */; };
+		A11DD001300A000000000001 /* AppleSignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11DD000300A000000000001 /* AppleSignInButton.swift */; };
 		A220B5F6D4E48FCC57832B9C /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15EB4D0D354246894E51C7E /* CacheService.swift */; };
 		ABCD10000000000000000004 /* FeedbackEmailContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000001 /* FeedbackEmailContentTests.swift */; };
 		ABCD10000000000000000005 /* FeedbackEmailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000002 /* FeedbackEmailContent.swift */; };
@@ -296,6 +297,7 @@
 		A04496BE6230D031AE10977A /* DebugSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSettingsView.swift; sourceTree = "<group>"; };
 		A11C0A100000000000000001 /* AccountSyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSyncTests.swift; sourceTree = "<group>"; };
 		A11CC000300A000000000001 /* AccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSheet.swift; sourceTree = "<group>"; };
+		A11DD000300A000000000001 /* AppleSignInButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInButton.swift; sourceTree = "<group>"; };
 		A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModelTests.swift; sourceTree = "<group>"; };
 		A38BFC4B60EA86A8DF662F3E /* UserProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProgress.swift; sourceTree = "<group>"; };
 		A476BC6A4DF0107699E2A1FD /* BackwordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordService.swift; sourceTree = "<group>"; };
@@ -655,6 +657,7 @@
 				86FAA1472FB27DFB0022EFF6 /* Crosswords */,
 				8AF93C5B6979DA0324E913C9 /* SettingsView.swift */,
 				A11CC000300A000000000001 /* AccountSheet.swift */,
+				A11DD000300A000000000001 /* AppleSignInButton.swift */,
 				0F0F00023010000000000001 /* GoogleSignInButton.swift */,
 				8254031869B9E1FAC8C5A377 /* StatsView2.swift */,
 				86AFC3D42FC2402F007623C3 /* StatsView.swift */,
@@ -905,6 +908,7 @@
 				02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */,
 				58638D080E0090141DE592A2 /* SettingsView.swift in Sources */,
 				A11CC001300A000000000001 /* AccountSheet.swift in Sources */,
+				A11DD001300A000000000001 /* AppleSignInButton.swift in Sources */,
 				0F0F00013010000000000001 /* GoogleSignInButton.swift in Sources */,
 				D39F9C4C078DA5925A365ABB /* StatsService.swift in Sources */,
 				05F1E1A72FFCFD9300F1E1A5 /* StoreLogger.swift in Sources */,

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
+import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GoogleSignInButton } from "../features/auth/GoogleSignInButton";
 import { GameMenu } from "../features/backword/components/GameMenu";
 
@@ -12,6 +13,14 @@ export function SignInPage() {
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState<ProviderChoice | null>(null);
   const returnTo = typeof location.state?.returnTo === "string" ? location.state.returnTo : "/home";
+  const navigationHeader = (
+    <header className="home-dashboard__header auth-page__header">
+      <GameMenu />
+      <Link aria-label="Backword home" to="/home">
+        <BackwordLogo large />
+      </Link>
+    </header>
+  );
 
   useEffect(() => {
     if (!user) setPending(null);
@@ -52,7 +61,7 @@ export function SignInPage() {
   if (ready && user) {
     return (
       <main className="auth-page">
-        <GameMenu />
+        {navigationHeader}
         <section aria-labelledby="account-title" className="auth-content">
           <p className="auth-content__eyebrow">YOUR BACKWORD ACCOUNT</p>
           <h1 id="account-title">Your games are synced.</h1>
@@ -74,21 +83,20 @@ export function SignInPage() {
 
   return (
     <main className="auth-page">
-      <GameMenu />
+      {navigationHeader}
       <section aria-labelledby="sign-in-title" className="auth-content">
-        <p className="auth-content__eyebrow">YOUR BACKWORD ACCOUNT</p>
-        <h1 id="sign-in-title">Keep your games with you.</h1>
+        <h1 className="auth-content__sign-in-title" id="sign-in-title">Sign in or create an account</h1>
         <p className="auth-content__intro">
-          Sign in to save your progress, carry your stats and streaks between devices, and keep your Pro access connected to Backword.
+          Play as a guest whenever you like, or create an account to:
         </p>
         <ul className="auth-content__benefits">
-          <li>Pick up a game on iPhone or the web.</li>
-          <li>Keep your completed games and score history safe.</li>
-          <li>Use an account only when you want to — guest play still works.</li>
+          <li>Continue a game on another device or the web.</li>
+          <li>Keep your stats, streaks, and score history safe.</li>
+          <li>Keep your verified Pro access connected to Backword.</li>
         </ul>
         <div className="auth-content__providers">
           <button
-            aria-label={pending === "apple" ? "Opening Apple" : "Sign in with Apple"}
+            aria-label={pending === "apple" ? "Opening Apple" : "Continue with Apple"}
             className="auth-apple-button"
             disabled={!ready || pending !== null}
             onClick={() => void continueWithApple()}
@@ -99,7 +107,7 @@ export function SignInPage() {
                 alt=""
                 src="https://appleid.cdn-apple.com/appleid/button/logo?color=white&border=false&border_radius=0&size=30&scale=2"
               />
-              <span>Sign in with Apple</span>
+              <span>Continue with Apple</span>
             </span>
           </button>
           <GoogleSignInButton

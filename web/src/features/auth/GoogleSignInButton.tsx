@@ -18,7 +18,7 @@ export function GoogleSignInButton({ disabled, onCredential, onError }: GoogleSi
   return (
     <div
       aria-busy={disabled}
-      aria-label="Sign in with Google"
+      aria-label="Continue with Google"
       className={`auth-google-button${disabled ? " auth-google-button--disabled" : ""}`}
     >
       <img alt="" src="/brand/continue-with-google.png" />

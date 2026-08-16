@@ -23,7 +23,7 @@ vi.mock("../features/auth/AuthProvider", () => ({
 vi.mock("../features/auth/GoogleSignInButton", () => ({
   GoogleSignInButton: ({ disabled, onCredential }: { disabled: boolean; onCredential: (idToken: string) => void }) => (
     <button disabled={disabled} onClick={() => onCredential("google-id-token")} type="button">
-      Sign in with Google
+      Continue with Google
     </button>
   )
 }));
