@@ -4,6 +4,11 @@ import Testing
 
 @Suite("Home tab bar")
 struct HomeTabBarViewTests {
+    @Test("Debug settings shortcut remains a triple-tap")
+    func debugSettingsShortcutTapCount() {
+        #expect(HomeNavigationDebugGesturePolicy.tapCount == 3)
+    }
+
     @Test("Archive item uses unlocked content for Pro users")
     func archiveItemForProUsers() {
         let content = HomeTabBarItemContent.archive(isProUser: true)

@@ -85,6 +85,12 @@ struct AdConsentServiceTests {
         #expect(!SettingsView.showsAdPrivacyChoicesRow(isPrivacyOptionsRequired: false))
     }
 
+    @Test("Settings offers Subscribe only to non-Pro users")
+    func settingsSubscribeVisibility() {
+        #expect(SettingsSubscribeButtonVisibility.shouldShow(isProUser: false))
+        #expect(!SettingsSubscribeButtonVisibility.shouldShow(isProUser: true))
+    }
+
     @Test("Info plist includes ATT and SKAdNetwork privacy configuration")
     func infoPlistIncludesAdPrivacyConfiguration() {
         let info = Bundle.main.infoDictionary ?? [:]

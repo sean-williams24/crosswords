@@ -12,12 +12,20 @@ struct SettingsView: View {
     @State private var isFeedbackRowPressed = false
     @State private var isAdPrivacyChoicesRowPressed = false
     @State private var showAccount = false
+    private let onSubscribe: () -> Void
+
+    init(onSubscribe: @escaping () -> Void = {}) {
+        self.onSubscribe = onSubscribe
+    }
 
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     accountRow
+                    if SettingsSubscribeButtonVisibility.shouldShow(isProUser: storeService.isProUser) {
+                        subscribeRow
+                    }
                 } header: {
                     Text("ACCOUNT")
                         .font(AppFont.clueLabel(12))
@@ -25,11 +33,11 @@ struct SettingsView: View {
                         .tracking(2)
                         .textCase(nil)
                 } footer: {
-                    Text(accountService.isSignedIn
-                         ? "Your progress and stats sync wherever you use Backword."
-                         : "Sign in to keep your progress, stats, and Pro access with you.")
+                    if !accountService.isProUser {
+                        Text("Subscribe to remove ads, access weekly crossword and all archive games.")
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
+                    }
                 }
 
                 Section(header: Text("Appearance")) {
@@ -196,13 +204,34 @@ struct SettingsView: View {
                     .font(.title3)
                     .foregroundColor(.appAccent)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(accountService.isSignedIn ? "Account" : "Create or Sign In")
+                    Text(accountService.isSignedIn ? "Account" : "Create Account or Sign In")
                         .font(AppFont.body(15))
                         .foregroundColor(.appTextPrimary)
-                    Text(accountService.email ?? "Sync progress and stats across devices")
+                    Text(accountService.email ?? "Sync progress, stats and Pro across devices")
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
                 }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundColor(.appTextSecondary)
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .listRowBackground(Color.appSurface)
+    }
+
+    private var subscribeRow: some View {
+        Button(action: onSubscribe) {
+            HStack(spacing: 12) {
+                Image(systemName: "crown.fill")
+                    .font(.title3)
+                    .foregroundColor(.appAccent)
+                Text("Subscribe")
+                    .font(AppFont.body(15))
+                    .foregroundColor(.appTextPrimary)
                 Spacer()
                 Image(systemName: "chevron.right")
                     .font(.caption.weight(.semibold))
@@ -411,6 +440,12 @@ struct SettingsView: View {
                 RoundedRectangle(cornerRadius: 3)
                     .strokeBorder(Color.appAccent, lineWidth: 1)
             )
+    }
+}
+
+enum SettingsSubscribeButtonVisibility {
+    static func shouldShow(isProUser: Bool) -> Bool {
+        !isProUser
     }
 }
 

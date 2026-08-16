@@ -24,6 +24,7 @@ struct HomeView: View {
     @State private var showPaywall = false
     @State private var showWOTD = false
     @State private var showSettings = false
+    @State private var showPaywallAfterSettingsDismiss = false
     @State private var showAccount = false
     @State private var logoVisible = false
     @State private var proLogoVisible = false
@@ -131,8 +132,11 @@ struct HomeView: View {
                     .environmentObject(wotdService)
             }
             #endif
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
+            .sheet(isPresented: $showSettings, onDismiss: presentPaywallAfterSettingsDismissIfNeeded) {
+                SettingsView {
+                    showPaywallAfterSettingsDismiss = true
+                    showSettings = false
+                }
                     .environmentObject(storeService)
             }
             .sheet(isPresented: $showAccount) {
@@ -340,6 +344,11 @@ struct HomeView: View {
                 BackwordLogo()
                     .offset(x: logoVisible ? 0 : 120)
                     .opacity(logoVisible ? 1 : 0)
+                #if DEBUG
+                    .onTapGesture(count: HomeNavigationDebugGesturePolicy.tapCount) {
+                        showDebugSettings = true
+                    }
+                #endif
                 if storeService.isProUser {
                     Image("Pro")
                         .resizable()
@@ -373,11 +382,6 @@ struct HomeView: View {
                 .padding(.trailing, AppLayout.screenPadding)
             }
         }
-#if DEBUG
-        .onTapGesture(count: 3) {
-            showDebugSettings = true
-        }
-        #endif
         .padding(.horizontal, AppLayout.screenPadding)
         .padding(.top, 4)
         .padding(.bottom, 12)
@@ -539,6 +543,12 @@ struct HomeView: View {
         showAdExplainer = false
     }
 
+    private func presentPaywallAfterSettingsDismissIfNeeded() {
+        guard showPaywallAfterSettingsDismiss else { return }
+        showPaywallAfterSettingsDismiss = false
+        showPaywall = true
+    }
+
     private func handleAdExplainerDismiss() {
         let game = adExplainerGameToOpenOnDismiss
         let shouldShowPaywall = showPaywallAfterAdExplainerDismiss
@@ -691,6 +701,10 @@ struct HomeView: View {
         _ = date
         return "Refreshes Sundays at midnight"
     }
+}
+
+enum HomeNavigationDebugGesturePolicy {
+    static let tapCount = 3
 }
 
 private enum DailyGame {
