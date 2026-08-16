@@ -83,7 +83,7 @@ struct AccountSheet: View {
 
     private var signInActions: some View {
         VStack(spacing: 18) {
-            SignInWithAppleButton(.signIn) { request in
+            SignInWithAppleButton(.continue) { request in
                 request.requestedScopes = [.fullName, .email]
             } onCompletion: { result in
                 guard case .success(let authorization) = result,

@@ -18,7 +18,7 @@ struct GoogleSignInButton: View {
             HStack(spacing: 8) {
                 GoogleSignInLogo()
 
-                Text(isLoading ? "Opening Google…" : GoogleSignInButtonAppearance.label)
+                Text(GoogleSignInButtonAppearance.label)
                     .font(.system(size: 17, weight: .medium))
             }
             .foregroundStyle(.black)
@@ -26,6 +26,9 @@ struct GoogleSignInButton: View {
                 maxWidth: .infinity,
                 minHeight: GoogleSignInButtonAppearance.height,
                 alignment: .center
+            )
+            .contentShape(
+                RoundedRectangle(cornerRadius: GoogleSignInButtonAppearance.cornerRadius)
             )
         }
         .buttonStyle(.plain)
@@ -36,8 +39,7 @@ struct GoogleSignInButton: View {
                 .stroke(.black.opacity(0.65), lineWidth: GoogleSignInButtonAppearance.borderWidth)
         }
         .disabled(isLoading)
-        .opacity(isLoading ? 0.62 : 1)
-        .accessibilityLabel(isLoading ? "Opening Google" : GoogleSignInButtonAppearance.label)
+        .accessibilityLabel(GoogleSignInButtonAppearance.label)
     }
 }
 
