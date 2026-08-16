@@ -2,9 +2,9 @@ import SwiftUI
 
 enum GoogleSignInButtonAppearance {
     static let label = "Continue with Google"
-    static let height: CGFloat = 50
+    static let height: CGFloat = 44
     static let cornerRadius: CGFloat = 6
-    static let logoViewportSize: CGFloat = 30
+    static let logoViewportSize: CGFloat = 25
     static let logoScale: CGFloat = 1.7
     static let borderWidth: CGFloat = 0.5
 }
@@ -19,7 +19,7 @@ struct GoogleSignInButton: View {
                 GoogleSignInLogo()
 
                 Text(GoogleSignInButtonAppearance.label)
-                    .font(.system(size: 17, weight: .medium))
+                    .font(.system(size: 16, weight: .medium))
             }
             .foregroundStyle(.black)
             .frame(

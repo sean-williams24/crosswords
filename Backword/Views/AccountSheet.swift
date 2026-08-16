@@ -50,13 +50,12 @@ struct AccountSheet: View {
 
     private var signedOutHeader: some View {
         VStack(spacing: AppLayout.screenPadding) {
-            Text(AccountSheetGuestAccessPresentation.pageTitle)
-                .font(AppFont.header(20))
-                .foregroundColor(.appTextHeading)
-                .multilineTextAlignment(.center)
-
             BackwordLogo(frame: 48)
                 .accessibilityHidden(true)
+            Text(AccountSheetGuestAccessPresentation.pageTitle)
+                .font(AppFont.header(18))
+                .foregroundColor(.appTextHeading)
+                .multilineTextAlignment(.leading)
         }
         .frame(maxWidth: .infinity)
     }
@@ -101,7 +100,7 @@ struct AccountSheet: View {
                 }
             }
             .signInWithAppleButtonStyle(.black)
-            .frame(height: 50)
+            .frame(height: 44)
             .disabled(accountService.isLoading)
 
             GoogleSignInButton(isLoading: accountService.isLoading) {
