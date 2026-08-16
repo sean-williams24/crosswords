@@ -8,6 +8,8 @@ struct SettingsView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     @AppStorage("appColorScheme") private var appColorScheme: Int = 2
+    @ScaledMetric private var settingsIconColumnWidth: CGFloat = SettingsSubscribeRowLayout.iconColumnWidth
+    @ScaledMetric private var subscribeProLogoHeight: CGFloat = SettingsSubscribeRowLayout.proLogoHeight
     @State private var isShowingMailComposer = false
     @State private var isFeedbackRowPressed = false
     @State private var isAdPrivacyChoicesRowPressed = false
@@ -203,6 +205,7 @@ struct SettingsView: View {
                 Image(systemName: accountService.isSignedIn ? "person.crop.circle.fill" : "person.crop.circle")
                     .font(.title3)
                     .foregroundColor(.appAccent)
+                    .frame(width: settingsIconColumnWidth)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(accountService.isSignedIn ? "Account" : "Create Account or Sign In")
                         .font(AppFont.body(15))
@@ -226,9 +229,13 @@ struct SettingsView: View {
     private var subscribeRow: some View {
         Button(action: onSubscribe) {
             HStack(spacing: 12) {
-                Image(systemName: "crown.fill")
-                    .font(.title3)
-                    .foregroundColor(.appAccent)
+                Image("Pro")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: subscribeProLogoHeight)
+                    .scaleEffect(SettingsSubscribeRowLayout.proLogoScale)
+                    .frame(width: settingsIconColumnWidth, height: subscribeProLogoHeight)
+                    .clipped()
                 Text("Subscribe")
                     .font(AppFont.body(15))
                     .foregroundColor(.appTextPrimary)
@@ -447,6 +454,12 @@ enum SettingsSubscribeButtonVisibility {
     static func shouldShow(isProUser: Bool) -> Bool {
         !isProUser
     }
+}
+
+enum SettingsSubscribeRowLayout {
+    static let iconColumnWidth: CGFloat = 44
+    static let proLogoHeight: CGFloat = 22
+    static let proLogoScale: CGFloat = 1.75
 }
 
 #Preview {

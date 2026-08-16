@@ -91,6 +91,13 @@ struct AdConsentServiceTests {
         #expect(!SettingsSubscribeButtonVisibility.shouldShow(isProUser: true))
     }
 
+    @Test("Settings Account and Subscribe icons share an aligned column")
+    func settingsSubscribeIconLayout() {
+        #expect(SettingsSubscribeRowLayout.iconColumnWidth == 44)
+        #expect(SettingsSubscribeRowLayout.proLogoHeight == 22)
+        #expect(SettingsSubscribeRowLayout.proLogoScale > 1)
+    }
+
     @Test("Info plist includes ATT and SKAdNetwork privacy configuration")
     func infoPlistIncludesAdPrivacyConfiguration() {
         let info = Bundle.main.infoDictionary ?? [:]
