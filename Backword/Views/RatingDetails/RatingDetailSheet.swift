@@ -57,6 +57,7 @@ struct RatingDetailSheet: View {
                         .ignoresSafeArea(edges: .bottom)
                 }
             }
+            .ignoresSafeArea(edges: .bottom)
             .navigationTitle("Overall Rating")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
