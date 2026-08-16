@@ -14,10 +14,16 @@ struct SettingsView: View {
     @State private var isFeedbackRowPressed = false
     @State private var isAdPrivacyChoicesRowPressed = false
     @State private var showAccount = false
+    @State private var showRatingDetailsAfterAccountDismiss = false
     private let onSubscribe: () -> Void
+    private let onShowRatingDetails: () -> Void
 
-    init(onSubscribe: @escaping () -> Void = {}) {
+    init(
+        onSubscribe: @escaping () -> Void = {},
+        onShowRatingDetails: @escaping () -> Void = {}
+    ) {
         self.onSubscribe = onSubscribe
+        self.onShowRatingDetails = onShowRatingDetails
     }
 
     var body: some View {
@@ -153,8 +159,11 @@ struct SettingsView: View {
                     isPresented: $isShowingMailComposer
                 )
             }
-            .sheet(isPresented: $showAccount) {
-                AccountSheet()
+            .sheet(isPresented: $showAccount, onDismiss: presentRatingDetailsAfterAccountDismissIfNeeded) {
+                AccountSheet {
+                    showRatingDetailsAfterAccountDismiss = true
+                    showAccount = false
+                }
                     .environmentObject(accountService)
             }
             .toolbar {
@@ -199,7 +208,7 @@ struct SettingsView: View {
 
     private var accountRow: some View {
         Button {
-            showAccount = true
+            openAccountDestination()
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: accountService.isSignedIn ? "person.crop.circle.fill" : "person.crop.circle")
@@ -224,6 +233,21 @@ struct SettingsView: View {
         }
         .buttonStyle(.plain)
         .listRowBackground(Color.appSurface)
+    }
+
+    private func openAccountDestination() {
+        switch AccountPresentationDestination.destination(isSignedIn: accountService.isSignedIn) {
+        case .signIn:
+            showAccount = true
+        case .ratingDetails:
+            onShowRatingDetails()
+        }
+    }
+
+    private func presentRatingDetailsAfterAccountDismissIfNeeded() {
+        guard showRatingDetailsAfterAccountDismiss else { return }
+        showRatingDetailsAfterAccountDismiss = false
+        onShowRatingDetails()
     }
 
     private var subscribeRow: some View {

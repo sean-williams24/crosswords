@@ -157,7 +157,8 @@ final class AccountService: ObservableObject {
     var isSignedIn: Bool { session != nil }
     var purchaseAccountToken: UUID? { userID }
 
-    func signInWithApple(idToken: String, fullName: PersonNameComponents?) async {
+    @discardableResult
+    func signInWithApple(idToken: String, fullName: PersonNameComponents?) async -> Bool {
         await performAuthentication {
             _ = try await self.client.auth.signInWithIdToken(
                 credentials: .init(provider: .apple, idToken: idToken)
@@ -170,7 +171,8 @@ final class AccountService: ObservableObject {
         }
     }
 
-    func signInWithGoogle() async {
+    @discardableResult
+    func signInWithGoogle() async -> Bool {
         await performAuthentication {
             let idToken = try await GoogleNativeSignInService.shared.signIn()
             _ = try await self.client.auth.signInWithIdToken(
@@ -358,18 +360,20 @@ final class AccountService: ObservableObject {
         }
     }
 
-    private func performAuthentication(_ action: @escaping @Sendable () async throws -> Void) async {
+    private func performAuthentication(_ action: @escaping @Sendable () async throws -> Void) async -> Bool {
         isLoading = true
         errorMessage = nil
         defer { isLoading = false }
         do {
             try await action()
             await refreshAccountData()
+            return true
         } catch {
             let authError = error as? ASAuthorizationError
             if authError?.code != .canceled {
                 presentError(error, operation: "authentication")
             }
+            return false
         }
     }
 

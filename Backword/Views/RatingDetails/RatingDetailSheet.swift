@@ -2,9 +2,12 @@ import SwiftUI
 
 struct RatingDetailSheet: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @EnvironmentObject private var accountService: AccountService
+    @Environment(\.dismiss) private var dismiss
     @ScaledMetric private var spacing: CGFloat = 14
     @State private var animates = false
     @State private var showHowItWorks = false
+    @State private var showDeletionConfirmation = false
     @ScaledMetric private var chevronSize: CGFloat = 12
     @ScaledMetric private var columnWidth: CGFloat = 60
     @ScaledMetric private var scrollingColumnWidth: CGFloat = 70
@@ -32,11 +35,21 @@ struct RatingDetailSheet: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 28) {
+                    if accountService.isSignedIn {
+                        RatingAccountSummaryView()
+                            .padding(.horizontal, AppLayout.screenPadding)
+                    }
+
                     tierHero
                         .padding(.horizontal, AppLayout.screenPadding)
                     howItWorksSection
                         .padding(.horizontal, AppLayout.screenPadding)
                     breakdownSection
+
+                    if accountService.isSignedIn {
+                        accountActions
+                            .padding(.horizontal, AppLayout.screenPadding)
+                    }
                 }
                 .padding(.top, 8)
                 .padding(.bottom, 40)
@@ -48,11 +61,26 @@ struct RatingDetailSheet: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button { onDismiss?() } label: {
+                    Button { close() } label: {
                         Image(systemName: "xmark.circle.fill")
                             .foregroundColor(.appTextSecondary)
                     }
                 }
+            }
+            .confirmationDialog(
+                "Delete Backword account?",
+                isPresented: $showDeletionConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Delete Account", role: .destructive) {
+                    Task {
+                        if await accountService.deleteAccount() {
+                            close()
+                        }
+                    }
+                }
+            } message: {
+                Text("This permanently deletes your cloud progress and account. It does not cancel your Apple subscription.")
             }
         }
         .onAppear {
@@ -61,6 +89,36 @@ struct RatingDetailSheet: View {
                     animates = true
                 }
             }
+        }
+    }
+
+    private var accountActions: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            Divider()
+
+            Button("Sign Out") {
+                Task {
+                    await accountService.signOut()
+                    if !accountService.isSignedIn {
+                        close()
+                    }
+                }
+            }
+            .font(AppFont.body(16))
+            .foregroundColor(.appTextPrimary)
+
+            Button("Delete Account", role: .destructive) {
+                showDeletionConfirmation = true
+            }
+            .font(AppFont.body(16))
+        }
+    }
+
+    private func close() {
+        if let onDismiss {
+            onDismiss()
+        } else {
+            dismiss()
         }
     }
 
@@ -437,4 +495,64 @@ struct RatingDetailSheet: View {
         r.upsertBackword(score: max(0, score - 1), date: ds)
     }
     return RatingDetailSheet(rating: r, isPro: false) {}
+        .environmentObject(AccountService())
+        .environmentObject(StoreService())
+}
+
+private struct RatingAccountSummaryView: View {
+    @EnvironmentObject private var accountService: AccountService
+    @EnvironmentObject private var storeService: StoreService
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(accountService.email ?? "Signed in")
+                    .font(AppFont.caption(15))
+                    .foregroundColor(.appTextPrimary)
+                Text(accountService.isSyncing ? "Syncing your games…" : "Progress and stats are synced")
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+            }
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.appSurface)
+            .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+
+            proStatus
+
+            Button("Sync Now") {
+                Task { await accountService.refreshAccountData() }
+            }
+            .font(AppFont.body(16))
+            .foregroundColor(.appAccent)
+
+            if let errorMessage = accountService.errorMessage {
+                Text(errorMessage)
+                    .font(AppFont.caption())
+                    .foregroundColor(.appGaveUp)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var proStatus: some View {
+        if accountService.isProUser {
+            Label("Pro is active for this account", systemImage: "checkmark.seal.fill")
+                .font(AppFont.body(15))
+                .foregroundColor(.appAccent)
+        } else if storeService.hasStoreKitPro && accountService.localProLinkedElsewhere {
+            VStack(alignment: .leading, spacing: 6) {
+                Label("Pro is active on this iPhone", systemImage: "iphone")
+                    .font(AppFont.body(15))
+                    .foregroundColor(.appAccent)
+                Text(AccountEntitlementPresentation.linkedElsewhereExplanation)
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+            }
+        } else {
+            Label("No account-linked Pro subscription", systemImage: "person.crop.circle")
+                .font(AppFont.body(15))
+                .foregroundColor(.appTextSecondary)
+        }
+    }
 }

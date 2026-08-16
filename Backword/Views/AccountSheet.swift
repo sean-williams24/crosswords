@@ -3,21 +3,14 @@ import SwiftUI
 
 struct AccountSheet: View {
     @EnvironmentObject private var accountService: AccountService
-    @EnvironmentObject private var storeService: StoreService
     @Environment(\.dismiss) private var dismiss
-    @State private var showDeletionConfirmation = false
+    var onSuccessfulSignIn: () -> Void = {}
 
     var body: some View {
         NavigationStack {
-            Group {
-                if accountService.isSignedIn {
-                    signedInScreen
-                } else {
-                    signedOutScreen
-                }
-            }
+            signedOutScreen
             .background(Color.appBackground)
-            .navigationTitle(accountService.isSignedIn ? "Your Account" : "")
+            .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
@@ -29,22 +22,6 @@ struct AccountSheet: View {
                     }
                 }
             }
-            .confirmationDialog(
-                "Delete Backword account?",
-                isPresented: $showDeletionConfirmation,
-                titleVisibility: .visible
-            ) {
-                Button("Delete Account", role: .destructive) {
-                    Task {
-                        if await accountService.deleteAccount() {
-                            dismiss()
-                        }
-                    }
-                }
-            } message: {
-                Text("This permanently deletes your cloud progress and account. It does not cancel your Apple subscription.")
-            }
-            .task { await accountService.refreshAccountData() }
         }
     }
 
@@ -114,7 +91,13 @@ struct AccountSheet: View {
                       let tokenData = credential.identityToken,
                       let token = String(data: tokenData, encoding: .utf8) else { return }
                 Task {
-                    await accountService.signInWithApple(idToken: token, fullName: credential.fullName)
+                    let didSignIn = await accountService.signInWithApple(
+                        idToken: token,
+                        fullName: credential.fullName
+                    )
+                    if didSignIn {
+                        onSuccessfulSignIn()
+                    }
                 }
             }
             .signInWithAppleButtonStyle(.black)
@@ -122,7 +105,11 @@ struct AccountSheet: View {
             .disabled(accountService.isLoading)
 
             GoogleSignInButton(isLoading: accountService.isLoading) {
-                Task { await accountService.signInWithGoogle() }
+                Task {
+                    if await accountService.signInWithGoogle() {
+                        onSuccessfulSignIn()
+                    }
+                }
             }
 
             Button(AccountSheetGuestAccessPresentation.actionTitle) {
@@ -130,77 +117,6 @@ struct AccountSheet: View {
             }
             .font(AppFont.body(16))
             .foregroundColor(.appTextPrimary)
-        }
-    }
-
-    private var signedInScreen: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                signedInContent
-
-                if let errorMessage = accountService.errorMessage {
-                    Text(errorMessage)
-                        .font(AppFont.caption())
-                        .foregroundColor(.appGaveUp)
-                }
-            }
-            .padding(AppLayout.screenPadding)
-        }
-    }
-
-    private var signedInContent: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(accountService.email ?? "Signed in")
-                    .font(AppFont.body(17))
-                    .foregroundColor(.appTextPrimary)
-                Text(accountService.isSyncing ? "Syncing your games…" : "Progress and stats are synced")
-                    .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
-            }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.appSurface)
-            .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
-
-            proStatus
-
-            Button("Sync Now") { Task { await accountService.refreshAccountData() } }
-                .font(AppFont.body(16))
-                .foregroundColor(.appAccent)
-
-            Button("Sign Out") { Task { await accountService.signOut() } }
-                .font(AppFont.body(16))
-                .foregroundColor(.appTextPrimary)
-
-            Divider()
-
-            Button("Delete Account", role: .destructive) {
-                showDeletionConfirmation = true
-            }
-            .font(AppFont.body(16))
-        }
-    }
-
-    @ViewBuilder
-    private var proStatus: some View {
-        if accountService.isProUser {
-            Label("Pro is active for this account", systemImage: "checkmark.seal.fill")
-                .font(AppFont.body(15))
-                .foregroundColor(.appAccent)
-        } else if storeService.hasStoreKitPro && accountService.localProLinkedElsewhere {
-            VStack(alignment: .leading, spacing: 6) {
-                Label("Pro is active on this iPhone", systemImage: "iphone")
-                    .font(AppFont.body(15))
-                    .foregroundColor(.appAccent)
-                Text(AccountEntitlementPresentation.linkedElsewhereExplanation)
-                    .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
-            }
-        } else {
-            Label("No account-linked Pro subscription", systemImage: "person.crop.circle")
-                .font(AppFont.body(15))
-                .foregroundColor(.appTextSecondary)
         }
     }
 
@@ -220,8 +136,17 @@ struct AccountSheet: View {
 }
 
 enum AccountSheetGuestAccessPresentation {
-    static let pageTitle = "Sign In Or Create An Account"
+    static let pageTitle = "Sign in or create an account"
     static let actionTitle = "Play as guest"
+}
+
+enum AccountPresentationDestination: Equatable {
+    case signIn
+    case ratingDetails
+
+    static func destination(isSignedIn: Bool) -> Self {
+        isSignedIn ? .ratingDetails : .signIn
+    }
 }
 
 enum AccountEntitlementPresentation {

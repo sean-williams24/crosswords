@@ -131,4 +131,6 @@ private func makePreviewRating(days: Int, daily: Int, backword: Int) -> OverallR
     }
     .padding(40)
     .background(Color.appBackground)
+    .environmentObject(AccountService())
+    .environmentObject(StoreService())
 }

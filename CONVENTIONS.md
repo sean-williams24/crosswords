@@ -70,6 +70,12 @@ asset. Both use platform-native Google account flows and exchange Google ID
 tokens directly with Supabase for session creation and progress sync. This
 avoids exposing a Supabase project hostname during Google sign-in.
 
+The signed-in account surface is the Overall Rating sheet. Home and Settings
+send signed-in users there directly; a successful sign-in dismisses its
+sign-in sheet before that sheet is presented. When sign-in starts from
+Settings, Settings also dismisses first so Rating Details is always presented
+from Home rather than stacked over another sheet.
+
 ---
 
 ## Website Backword Parity

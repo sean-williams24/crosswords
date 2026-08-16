@@ -110,6 +110,16 @@ struct AccountSyncTests {
         #expect(AccountSheetGuestAccessPresentation.actionTitle == "Play as guest")
     }
 
+    @Test("Guest account entry opens sign in")
+    func guestAccountEntryDestination() {
+        #expect(AccountPresentationDestination.destination(isSignedIn: false) == .signIn)
+    }
+
+    @Test("Signed-in account entry opens rating details")
+    func signedInAccountEntryDestination() {
+        #expect(AccountPresentationDestination.destination(isSignedIn: true) == .ratingDetails)
+    }
+
     @Test("First account sync captures legacy guest release-day crossword points")
     func capturesLegacyGuestReleaseDayScore() {
         var rating = OverallRating()

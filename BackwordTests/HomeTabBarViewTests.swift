@@ -4,6 +4,11 @@ import Testing
 
 @Suite("Home tab bar")
 struct HomeTabBarViewTests {
+    @Test("Home navigation icons use the larger shared glyph size")
+    func homeNavigationIconGlyphSize() {
+        #expect(AppLayout.homeNavigationIconGlyphSize == 24)
+    }
+
     @Test("Debug settings shortcut remains a triple-tap")
     func debugSettingsShortcutTapCount() {
         #expect(HomeNavigationDebugGesturePolicy.tapCount == 3)

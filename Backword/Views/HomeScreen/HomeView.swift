@@ -26,6 +26,8 @@ struct HomeView: View {
     @State private var showSettings = false
     @State private var showPaywallAfterSettingsDismiss = false
     @State private var showAccount = false
+    @State private var showRatingDetailsAfterAccountDismiss = false
+    @State private var showRatingDetailsAfterSettingsDismiss = false
     @State private var logoVisible = false
     @State private var proLogoVisible = false
     @State private var showRatingDetails = false
@@ -132,15 +134,24 @@ struct HomeView: View {
                     .environmentObject(wotdService)
             }
             #endif
-            .sheet(isPresented: $showSettings, onDismiss: presentPaywallAfterSettingsDismissIfNeeded) {
-                SettingsView {
-                    showPaywallAfterSettingsDismiss = true
-                    showSettings = false
-                }
-                    .environmentObject(storeService)
+            .sheet(isPresented: $showSettings, onDismiss: presentDeferredSheetAfterSettingsDismissIfNeeded) {
+                SettingsView(
+                    onSubscribe: {
+                        showPaywallAfterSettingsDismiss = true
+                        showSettings = false
+                    },
+                    onShowRatingDetails: {
+                        showRatingDetailsAfterSettingsDismiss = true
+                        showSettings = false
+                    }
+                )
+                .environmentObject(storeService)
             }
-            .sheet(isPresented: $showAccount) {
-                AccountSheet()
+            .sheet(isPresented: $showAccount, onDismiss: presentRatingDetailsAfterAccountDismissIfNeeded) {
+                AccountSheet {
+                    showRatingDetailsAfterAccountDismiss = true
+                    showAccount = false
+                }
                     .environmentObject(accountService)
             }
             .sheet(isPresented: $showWOTD) {
@@ -362,10 +373,10 @@ struct HomeView: View {
 
             HStack {
                 Button {
-                    showAccount = true
+                    openAccountDestination()
                 } label: {
                     Image(systemName: accountService.isSignedIn ? "person.crop.circle.fill" : "person.crop.circle")
-                        .font(.body)
+                        .font(AppFont.body(AppLayout.homeNavigationIconGlyphSize))
                         .foregroundColor(.appTextSecondary)
                 }
                 .accessibilityLabel(accountService.isSignedIn ? "Account" : "Sign in")
@@ -375,7 +386,7 @@ struct HomeView: View {
                     showSettings = true
                 } label: {
                     Image(systemName: "gearshape")
-                        .font(.body)
+                        .font(AppFont.body(AppLayout.homeNavigationIconGlyphSize))
                         .foregroundColor(.appTextSecondary)
                 }
                 .popoverTip(SettingsTip())
@@ -494,6 +505,7 @@ struct HomeView: View {
             || showWOTD
             || showAdExplainer
             || showSettings
+            || showAccount
             || showRatingDetails
     }
 
@@ -543,10 +555,31 @@ struct HomeView: View {
         showAdExplainer = false
     }
 
-    private func presentPaywallAfterSettingsDismissIfNeeded() {
+    private func presentDeferredSheetAfterSettingsDismissIfNeeded() {
+        if showRatingDetailsAfterSettingsDismiss {
+            showRatingDetailsAfterSettingsDismiss = false
+            showRatingDetails = true
+            return
+        }
+
         guard showPaywallAfterSettingsDismiss else { return }
         showPaywallAfterSettingsDismiss = false
         showPaywall = true
+    }
+
+    private func presentRatingDetailsAfterAccountDismissIfNeeded() {
+        guard showRatingDetailsAfterAccountDismiss else { return }
+        showRatingDetailsAfterAccountDismiss = false
+        showRatingDetails = true
+    }
+
+    private func openAccountDestination() {
+        switch AccountPresentationDestination.destination(isSignedIn: accountService.isSignedIn) {
+        case .signIn:
+            showAccount = true
+        case .ratingDetails:
+            showRatingDetails = true
+        }
     }
 
     private func handleAdExplainerDismiss() {
