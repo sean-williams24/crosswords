@@ -91,6 +91,12 @@ struct AdConsentServiceTests {
         #expect(!SettingsSubscribeButtonVisibility.shouldShow(isProUser: true))
     }
 
+    @Test("Settings hides its Pro benefit message for StoreKit Pro users")
+    func settingsSubscribeFooterVisibility() {
+        #expect(SettingsSubscribeFooterVisibility.shouldShow(isProUser: false))
+        #expect(!SettingsSubscribeFooterVisibility.shouldShow(isProUser: true))
+    }
+
     @Test("Settings Account and Subscribe icons share an aligned column")
     func settingsSubscribeIconLayout() {
         #expect(SettingsSubscribeRowLayout.iconColumnWidth == 44)

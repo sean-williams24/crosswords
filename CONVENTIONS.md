@@ -63,6 +63,13 @@ an already-cancelled task) is expected SwiftUI task lifecycle behaviour and is
 never presented as an account error or logged as a failure; real presented
 account errors are recorded through the `account` OSLog category.
 
+Successful Apple and Google authentication dismisses the sign-in sheet as soon
+as Supabase creates the local session. Guest-progress migration, cloud sync,
+and entitlement checks run through that same coalesced account refresh in the
+background, so slow network work never leaves the provider button in a loading
+state. A repeated auth event for the active account must not restart guest
+migration.
+
 Google account entry points use Google-provided branded controls: iOS uses
 Google's pre-approved sign-in logo asset in an account button whose geometry
 matches Sign in with Apple, and the web uses Google's pre-approved web button

@@ -137,6 +137,8 @@ final class AccountService: ObservableObject {
     )
     private var authStateTask: Task<Void, Never>?
     private var accountRefreshTask: (id: UUID, task: Task<Void, Never>)?
+    private var pendingGuestBackword: [BackwordProgress] = []
+    private var pendingGuestCrosswords: [UserProgress] = []
 
     init(client: Supabase.SupabaseClient = SupabaseClient.shared.client) {
         self.client = client
@@ -230,10 +232,17 @@ final class AccountService: ObservableObject {
             return
         }
 
+        let guestBackword = pendingGuestBackword
+        let guestCrosswords = pendingGuestCrosswords
+        pendingGuestBackword = []
+        pendingGuestCrosswords = []
         let refreshID = UUID()
         let task = Task<Void, Never> { @MainActor [weak self] in
             guard let self else { return }
-            await self.performAccountRefresh()
+            await self.performAccountRefresh(
+                guestBackword: guestBackword,
+                guestCrosswords: guestCrosswords
+            )
         }
         accountRefreshTask = (id: refreshID, task: task)
         await task.value
@@ -245,7 +254,10 @@ final class AccountService: ObservableObject {
         }
     }
 
-    private func performAccountRefresh() async {
+    private func performAccountRefresh(
+        guestBackword: [BackwordProgress],
+        guestCrosswords: [UserProgress]
+    ) async {
         guard session != nil else {
             isProUser = false
             proExpirationDate = nil
@@ -257,8 +269,8 @@ final class AccountService: ObservableObject {
         if let accountID = userID {
             await ProgressCloudSync.shared.sync(
                 accountID: accountID.uuidString,
-                guestBackword: [],
-                guestCrosswords: []
+                guestBackword: guestBackword,
+                guestCrosswords: guestCrosswords
             )
             syncRevision &+= 1
         }
@@ -352,10 +364,8 @@ final class AccountService: ObservableObject {
         authStateTask = Task { [weak self] in
             guard let self else { return }
             for await (_, newSession) in client.auth.authStateChanges {
-                self.session = newSession
-                self.activateProgressPersistence(for: newSession)
-                self.errorMessage = nil
-                await self.refreshAccountData()
+                self.applySession(newSession)
+                self.refreshAccountDataInBackground()
             }
         }
     }
@@ -366,7 +376,11 @@ final class AccountService: ObservableObject {
         defer { isLoading = false }
         do {
             try await action()
-            await refreshAccountData()
+            // The authenticated session is enough to leave the sign-in sheet.
+            // Progress migration, cloud reconciliation, and entitlements are
+            // deliberately non-blocking and update the rating surface when done.
+            applySession(client.auth.currentSession)
+            refreshAccountDataInBackground()
             return true
         } catch {
             let authError = error as? ASAuthorizationError
@@ -386,6 +400,24 @@ final class AccountService: ObservableObject {
 
     private static let redirectURL = URL(string: "backword://login-callback")!
 
+    private func applySession(_ newSession: Session?) {
+        let accountID = newSession?.user.id.uuidString
+        let transition = AccountSessionTransition(
+            activePersistenceAccountID: ProgressStorageNamespace.accountID,
+            newAccountID: accountID
+        )
+        session = newSession
+        errorMessage = nil
+        guard transition.requiresPersistenceActivation else { return }
+        activateProgressPersistence(for: newSession)
+    }
+
+    private func refreshAccountDataInBackground() {
+        Task { [weak self] in
+            await self?.refreshAccountData()
+        }
+    }
+
     private func activateProgressPersistence(for newSession: Session?) {
         let isMigratingGuestProgress = ProgressStorageNamespace.accountID == nil && newSession != nil
         let guestBackword = isMigratingGuestProgress ? BackwordProgress.loadAll() : []
@@ -393,17 +425,19 @@ final class AccountService: ObservableObject {
             ? AccountProgressMigration.captureGuestReleaseDateScores(UserProgress.loadAll(), rating: OverallRating.load())
             : []
         ProgressStorageNamespace.activate(accountID: newSession?.user.id.uuidString)
-
-        guard let accountID = newSession?.user.id.uuidString else { return }
-        Task { @MainActor in
-            await ProgressCloudSync.shared.sync(
-                accountID: accountID,
-                guestBackword: guestBackword,
-                guestCrosswords: guestCrosswords
-            )
-        }
+        pendingGuestBackword = guestBackword
+        pendingGuestCrosswords = guestCrosswords
     }
 
+}
+
+struct AccountSessionTransition: Equatable {
+    let activePersistenceAccountID: String?
+    let newAccountID: String?
+
+    var requiresPersistenceActivation: Bool {
+        activePersistenceAccountID != newAccountID
+    }
 }
 
 enum AccountProgressMigration {

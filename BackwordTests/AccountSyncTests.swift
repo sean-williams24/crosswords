@@ -124,6 +124,26 @@ struct AccountSyncTests {
         #expect(AccountSheetGuestAccessPresentation.actionTitle == "Play as guest")
     }
 
+    @Test("A new authenticated session activates account-scoped persistence once")
+    func newSessionActivatesPersistence() {
+        let transition = AccountSessionTransition(
+            activePersistenceAccountID: nil,
+            newAccountID: "account-a"
+        )
+
+        #expect(transition.requiresPersistenceActivation)
+    }
+
+    @Test("Repeated auth events for the same account do not restart guest migration")
+    func repeatedSessionDoesNotActivatePersistence() {
+        let transition = AccountSessionTransition(
+            activePersistenceAccountID: "account-a",
+            newAccountID: "account-a"
+        )
+
+        #expect(!transition.requiresPersistenceActivation)
+    }
+
     @Test("Guest account entry opens sign in")
     func guestAccountEntryDestination() {
         #expect(AccountPresentationDestination.destination(isSignedIn: false) == .signIn)

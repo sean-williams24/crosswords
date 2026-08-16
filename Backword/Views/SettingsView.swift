@@ -42,7 +42,7 @@ struct SettingsView: View {
                         .tracking(2)
                         .textCase(nil)
                 } footer: {
-                    if !accountService.isProUser {
+                    if SettingsSubscribeFooterVisibility.shouldShow(isProUser: storeService.isProUser) {
                         Text("Subscribe to remove ads, access weekly crossword and all archive games.")
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
@@ -512,6 +512,12 @@ struct SettingsView: View {
 }
 
 enum SettingsSubscribeButtonVisibility {
+    static func shouldShow(isProUser: Bool) -> Bool {
+        !isProUser
+    }
+}
+
+enum SettingsSubscribeFooterVisibility {
     static func shouldShow(isProUser: Bool) -> Bool {
         !isProUser
     }
