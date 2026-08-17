@@ -47,13 +47,15 @@ describe("WordOfTheDayCard", () => {
   });
 
   it("exposes all details immediately on larger viewports", async () => {
+    const matchMedia = vi.fn(() => ({ matches: true, addEventListener: () => {}, removeEventListener: () => {} }));
     Object.defineProperty(window, "matchMedia", {
       configurable: true,
-      value: () => ({ matches: true, addEventListener: () => {}, removeEventListener: () => {} })
+      value: matchMedia
     });
     render(<WordOfTheDayCard date="2026-08-05" repository={repositoryFor(Promise.resolve(word))} />);
 
     await screen.findByText("From Latin verbosus, meaning full of words.");
+    expect(matchMedia).toHaveBeenCalledWith("(min-width: 901px)");
     expect(document.getElementById("wotd-details-verbose")).toHaveAttribute("aria-hidden", "false");
     expect(screen.getByText("Adjective: a describing word that modifies a noun.")).toBeInTheDocument();
   });

@@ -839,7 +839,7 @@ body {
 .auth-button:hover,
 .auth-button:focus-visible { color: #fff; background: #4387c1; outline: 2px solid #fff; outline-offset: 2px; transform: translateY(-1px); }
 .home-dashboard__content {
-  width: min(100% - 40px, 756px);
+  width: min(100% - 40px, 1120px);
   margin: 0 auto;
   padding: 8px 0 72px;
 }
@@ -873,7 +873,8 @@ body {
   letter-spacing: 0.08em;
 }
 
-.home-dashboard__daily-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.home-dashboard__daily-layout { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: stretch; gap: 28px; }
+.home-dashboard__daily-cards { display: grid; grid-template-columns: 1fr; gap: 28px; }
 .home-game-card {
   position: relative;
   display: flex;
@@ -935,7 +936,7 @@ body {
 .home-status--solved { color: #d6be87; }
 .home-status--failed { color: #f17a7a; }
 
-.wotd-widget { margin-top: 28px; }
+.wotd-widget { margin-top: 0; }
 .wotd-card {
   display: grid;
   grid-template-columns: 1fr;
@@ -1153,6 +1154,7 @@ body {
   .home-dashboard__actions .auth-button { width: 92.73966px; min-height: 31px; height: 31px; padding: 7px 0; border-radius: 6.5px; font-size: 12px; }
   .home-dashboard__content { width: min(100% - 24px, 756px); }
   .home-dashboard__content { padding-top: 6px; }
+  .home-dashboard__daily-layout { display: block; }
   .home-dashboard__daily-cards { grid-template-columns: 1fr; gap: 20px; }
   .home-game-card { min-height: 160px; border-radius: 10px; }
   .wotd-widget { margin-top: 20px; }
@@ -1171,6 +1173,22 @@ body {
   .wotd-detail__desktop-heading h2 { margin: 8px 0 10px; color: #eee; font-size: clamp(34px, 4vw, 48px); letter-spacing: -0.045em; }
   .wotd-detail__meta { margin-bottom: 28px !important; }
   .wotd-detail__definition { padding: 24px; }
+}
+
+@media (min-width: 681px) and (max-width: 900px) {
+  .home-dashboard__content { width: min(100% - 40px, 756px); }
+  .home-dashboard__daily-layout { display: block; }
+  .home-dashboard__daily-cards { gap: 20px; }
+  .wotd-widget { margin-top: 20px; }
+  .wotd-card { display: grid; }
+  .wotd-drawer { display: grid; grid-template-rows: 0fr; opacity: 0; transform: translateY(-8px); }
+  .wotd-drawer__inner { overflow: hidden; }
+  .wotd-detail { grid-template-columns: 1fr; margin-top: 12px; padding: 24px; gap: 32px; }
+  .wotd-detail__desktop-heading { display: none; }
+}
+
+@media (max-width: 900px) {
+  .home-dashboard__actions { flex-direction: column; }
 }
 
 @media (prefers-reduced-motion: reduce) {

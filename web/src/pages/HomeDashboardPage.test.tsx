@@ -38,6 +38,9 @@ describe("web home dashboard", () => {
     expect(crosswordStats).not.toBeNull();
     expect(crosswordStats?.parentElement).toBe(crosswordCard);
     expect(crosswordStats?.querySelector(".home-game-card__streak")).toBeNull();
+    const dailyLayout = crosswordCard.closest(".home-dashboard__daily-layout");
+    expect(dailyLayout).not.toBeNull();
+    expect(crosswordCard.closest(".home-dashboard__daily-cards")?.parentElement).toBe(dailyLayout);
     expect(screen.getAllByLabelText("Status: New")).toHaveLength(2);
   });
 

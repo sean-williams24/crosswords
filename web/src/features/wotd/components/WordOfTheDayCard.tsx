@@ -11,7 +11,7 @@ type WordOfTheDayCardProps = {
   repository?: WordOfTheDayRepository;
 };
 
-const largeViewportQuery = "(min-width: 681px)";
+const largeViewportQuery = "(min-width: 901px)";
 
 function useLargeViewport() {
   const [isLargeViewport, setIsLargeViewport] = useState(

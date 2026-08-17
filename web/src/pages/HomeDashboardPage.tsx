@@ -51,26 +51,28 @@ export function HomeDashboardPage() {
           <p>{formattedToday()}</p>
         </div>
 
-        <div className="home-dashboard__daily-cards">
-          <DailyGameCard
-            className="home-game-card--backword"
-            destination="/"
-            status={backwordStatus}
-            title="Backword"
-          >
-            <img alt="Backword" className="home-game-card__logo" src="/brand/backword-logo.png" />
-          </DailyGameCard>
-          <DailyGameCard
-            className="home-game-card--crossword"
-            description="9×9"
-            destination="/crossword"
-            score={crosswordStatus.score}
-            status={crosswordStatus}
-            streak={crosswordStatus.streak}
-            title="Quick Crossword"
-          />
+        <div className="home-dashboard__daily-layout">
+          <div className="home-dashboard__daily-cards">
+            <DailyGameCard
+              className="home-game-card--backword"
+              destination="/"
+              status={backwordStatus}
+              title="Backword"
+            >
+              <img alt="Backword" className="home-game-card__logo" src="/brand/backword-logo.png" />
+            </DailyGameCard>
+            <DailyGameCard
+              className="home-game-card--crossword"
+              description="9×9"
+              destination="/crossword"
+              score={crosswordStatus.score}
+              status={crosswordStatus}
+              streak={crosswordStatus.streak}
+              title="Quick Crossword"
+            />
+          </div>
+          <WordOfTheDayCard />
         </div>
-        <WordOfTheDayCard />
 
         <section className="weekly-card-section" aria-labelledby="weekly-games-title">
           <div>
