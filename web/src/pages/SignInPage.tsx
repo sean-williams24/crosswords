@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
+import { AccountBenefitIcon } from "../features/auth/AccountBenefitIcon";
 import { GoogleSignInButton } from "../features/auth/GoogleSignInButton";
 import { GameMenu } from "../features/backword/components/GameMenu";
 
@@ -89,12 +90,17 @@ export function SignInPage() {
         <p className="auth-content__intro">
           Play as a guest whenever you like, or create an account to:
         </p>
-        <ul className="auth-content__benefits">
-          <li>Continue a game on another device or the web.</li>
-          <li>Keep your stats, streaks, and score history safe.</li>
-          <li>Keep your verified Pro access connected to Backword.</li>
+        <ul className="auth-content__benefits auth-content__benefits--sign-in">
+          <li><AccountBenefitIcon name="sync" /><span>Continue a game on another device or the web.</span></li>
+          <li><AccountBenefitIcon name="stats" /><span>Keep your stats, streaks, and score history safe.</span></li>
+          <li><AccountBenefitIcon name="pro" /><span>Keep your verified Pro access connected to Backword.</span></li>
         </ul>
-        <div className="auth-content__providers">
+        <div className="auth-content__providers auth-content__providers--sign-in">
+          <GoogleSignInButton
+            disabled={!ready || pending !== null}
+            onCredential={(idToken) => void continueWithGoogle(idToken)}
+            onError={(signInError) => setError(signInError.message)}
+          />
           <button
             aria-label={pending === "apple" ? "Opening Apple" : "Continue with Apple"}
             className="auth-apple-button"
@@ -110,11 +116,6 @@ export function SignInPage() {
               <span>Continue with Apple</span>
             </span>
           </button>
-          <GoogleSignInButton
-            disabled={!ready || pending !== null}
-            onCredential={(idToken) => void continueWithGoogle(idToken)}
-            onError={(signInError) => setError(signInError.message)}
-          />
         </div>
         {error || authError ? <p className="auth-content__error" role="alert">{error ?? authError}</p> : null}
         <p className="auth-content__note">If you use Apple’s Hide My Email, use Apple to sign in on every device.</p>

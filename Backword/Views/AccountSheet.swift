@@ -31,9 +31,12 @@ struct AccountSheet: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: AppLayout.screenPadding) {
                         signedOutHeader
+
+                        Spacer(minLength: 0)
+
                         signedOutInformation
 
-                        Spacer()
+                        Spacer(minLength: 0)
                     }
                     .frame(
                         maxWidth: .infinity,

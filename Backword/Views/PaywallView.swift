@@ -10,6 +10,7 @@ struct PaywallView: View {
     @ScaledMetric private var proLogoFrame: CGFloat = 48
     @ScaledMetric private var proLogoOffset: CGFloat = 34
     @ScaledMetric private var proLogoVStackSpacing: CGFloat = -29
+    @ScaledMetric private var purchaseControlsTopPadding: CGFloat = 64
 
     @State private var selectedPlan: Plan = .annual
     @State private var isBreathing = false
@@ -23,13 +24,39 @@ struct PaywallView: View {
     enum Plan { case monthly, annual }
 
     var body: some View {
-        ScrollView {
-            ZStack {
+        paywallScrollView
+        .blackSheetBackground()
+        .interactiveDismissDisabled(storeService.purchaseInProgress)
+        .onAppear {
+            animateLogo()
+            withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
+                isBreathing = true
+            }
+        }
+        .task {
+            if storeService.products.isEmpty {
+                await storeService.loadProducts()
+            }
+            await checkTrialEligibility()
+        }
+        .onChange(of: selectedPlan) { _, _ in
+            Task { await checkTrialEligibility() }
+        }
+        .onChange(of: storeService.isProUser) {_, newValue in
+            if newValue {
+                dismiss()
+            }
+        }
+        .background(Color.appBackground)
+    }
+
+    private var paywallScrollView: some View {
+        ZStack {
+            ScrollView {
                 VStack(spacing: 0) {
-                    // Black hero extends behind the top of the sheet
                     ZStack {
                         VStack(spacing: proLogoVStackSpacing) {
-                            BackwordLogo(frame: 78, forceDark: true)
+                            BackwordLogo(frame: 78, forceDark: false)
                                 .offset(x: logoVisible ? 0 : 120)
                                 .opacity(logoVisible ? 1 : 0)
 
@@ -43,11 +70,10 @@ struct PaywallView: View {
                         }
                         .frame(maxWidth: .infinity)
                     }
-                    .frame(height: 240)
+                    .frame(height: 140)
                     .frame(maxWidth: .infinity)
-                    .background(Color.black.ignoresSafeArea(edges: .top))
+                    .padding(.top, 60)
 
-                    // Lower content on app background
                     VStack(spacing: 0) {
                         Spacer().frame(height: 28)
 
@@ -62,112 +88,98 @@ struct PaywallView: View {
                         // Feature list
                         featureList
                             .padding(.horizontal, 32)
-
-                        Spacer().frame(height: 32)
-
-                        // Plan toggle
-                        planToggle
-                            .background(Color.appSurface)
-                            .cornerRadius(AppLayout.cardCornerRadius)
-                            .padding(.horizontal, 32)
-
-                        Spacer().frame(height: 24)
-
-                        // CTA button
-                        ctaButton
-                            .padding(.horizontal, 32)
-
-                        // Error
-                        if let statusMessage {
-                            Text(statusMessage)
-                                .font(AppFont.caption())
-                                .foregroundColor(.appTextSecondary)
-                                .multilineTextAlignment(.center)
-                                .padding(.top, 8)
-                                .padding(.horizontal, 32)
-                        }
-
-                        if let errorMessage {
-                            Text(errorMessage)
-                                .font(AppFont.caption())
-                                .foregroundColor(.red)
-                                .multilineTextAlignment(.center)
-                                .padding(.top, 8)
-                                .padding(.horizontal, 32)
-                        }
-
-                        Spacer().frame(height: 12)
-
-                        // Restore + legal
-                        Button {
-                            Task { await restorePurchases() }
-                        } label: {
-                            if isRestoring {
-                                ProgressView()
-                            } else {
-                                Text("Restore Purchases")
-                            }
-                        }
-                        .font(AppFont.caption())
-                        .foregroundColor(.appTextSecondary)
-                        .disabled(storeService.purchaseInProgress || isRestoring)
-
-                        Spacer().frame(height: 8)
-
-                        Text("Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period.")
-                            .font(AppFont.clueNumber(10))
-                            .foregroundColor(.appTextSecondary.opacity(0.6))
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 32)
-
-                        legalLinks
-                            .padding(.top, 8)
-                            .padding(.bottom, 20)
                     }
                     .frame(maxWidth: .infinity)
                     .background(Color.appBackground)
-                }
 
-                // Dismiss button floats over the black hero
-                VStack {
-                    HStack {
-                        Spacer()
-                        Button { dismiss() } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 28))
-                                .symbolRenderingMode(.hierarchical)
-                                .foregroundColor(.white.opacity(0.7))
-                        }
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.top, 16)
-                    Spacer()
+                    purchaseControls
+                        .padding(.top, purchaseControlsTopPadding)
                 }
             }
-            .blackSheetBackground()
-            .interactiveDismissDisabled(storeService.purchaseInProgress)
-            .onAppear {
-                animateLogo()
-                withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
-                    isBreathing = true
-                }
-            }
-            .task {
-                if storeService.products.isEmpty {
-                    await storeService.loadProducts()
-                }
-                await checkTrialEligibility()
-            }
-            .onChange(of: selectedPlan) { _, _ in
-                Task { await checkTrialEligibility() }
-            }
-            .onChange(of: storeService.isProUser) {_, newValue in
-                if newValue {
-                    dismiss()
-                }
-            }
+
+            dismissButton
         }
-        .background(Color.appBackground)
+    }
+
+    // Dismiss button floats over the black hero.
+    private var dismissButton: some View {
+        VStack {
+            HStack {
+                Spacer()
+                Button { dismiss() } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 28))
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundColor(.white.opacity(0.7))
+                }
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 16)
+            Spacer()
+        }
+    }
+
+    private var purchaseControls: some View {
+        VStack(spacing: 0) {
+            // Plan toggle
+            planToggle
+                .background(Color.appSurface)
+                .cornerRadius(AppLayout.cardCornerRadius)
+                .padding(.horizontal, 32)
+
+            Spacer().frame(height: 24)
+
+            // CTA button
+            ctaButton
+                .padding(.horizontal, 32)
+
+            // Error
+            if let statusMessage {
+                Text(statusMessage)
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 8)
+                    .padding(.horizontal, 32)
+            }
+
+            if let errorMessage {
+                Text(errorMessage)
+                    .font(AppFont.caption())
+                    .foregroundColor(.red)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 8)
+                    .padding(.horizontal, 32)
+            }
+
+            Spacer().frame(height: 12)
+
+            // Restore + legal
+            Button {
+                Task { await restorePurchases() }
+            } label: {
+                if isRestoring {
+                    ProgressView()
+                } else {
+                    Text("Restore Purchases")
+                }
+            }
+            .font(AppFont.caption())
+            .foregroundColor(.appTextSecondary)
+            .disabled(storeService.purchaseInProgress || isRestoring)
+
+            Spacer().frame(height: 8)
+
+            Text("Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period.")
+                .font(AppFont.clueNumber(10))
+                .foregroundColor(.appTextSecondary.opacity(0.6))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+
+            legalLinks
+                .padding(.top, 8)
+                .padding(.bottom, 20)
+        }
     }
 
     private var legalLinks: some View {

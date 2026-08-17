@@ -1110,20 +1110,26 @@ body {
 .auth-content__intro { margin: 16px 0 0; color: #c5c7cd; font-size: 17px; line-height: 1.55; }
 .auth-content__benefits { display: grid; margin: 25px 0; padding: 0; gap: 10px; color: #e7e7e9; line-height: 1.45; list-style: none; }
 .auth-content__benefits li { display: flex; gap: 10px; }
-.auth-content__benefits li::before { color: #5fa4dc; content: "✓"; }
+.auth-content__benefits--sign-in { padding-inline-start: 14px; }
+.auth-content__benefits:not(.auth-content__benefits--sign-in) li::before { color: #5fa4dc; content: "✓"; }
+.auth-benefit-icon { flex: 0 0 20px; width: 20px; height: 20px; margin-top: 2px; color: #5fa4dc; }
+.auth-benefit-icon--sync { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+.auth-benefit-icon--stats,
+.auth-benefit-icon--pro { fill: currentColor; }
 .auth-content__providers { display: grid; gap: 12px; }
+.auth-content__providers--sign-in { padding-top: 8px; }
 .auth-provider { min-height: 50px; border: 1px solid #5a5e68; border-radius: 10px; color: #fff; background: #2a2d35; font: inherit; font-weight: 700; cursor: pointer; }
 .auth-provider:hover,
 .auth-provider:focus-visible { border-color: #79b7eb; background: #363a44; outline: 2px solid #79b7eb; outline-offset: 2px; }
 .auth-provider:disabled { opacity: .62; cursor: wait; }
 .auth-content__providers { --auth-sign-in-corner-radius: 6px; }
-.auth-apple-button { display: block; width: min(100%, 375px); height: 50px; padding: 0; justify-self: center; border: 1px solid #000; border-radius: var(--auth-sign-in-corner-radius); color: #000; background: #fff; font: 500 18px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; cursor: pointer; }
+.auth-apple-button { display: block; width: 100%; height: 50px; padding: 0; border: 1px solid #000; border-radius: var(--auth-sign-in-corner-radius); color: #000; background: #fff; font: 500 18px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; cursor: pointer; }
 .auth-apple-button__content { display: flex; height: 100%; align-items: center; justify-content: center; gap: 8px; }
 .auth-apple-button__content img { display: block; width: 40px; height: 40px; }
 .auth-apple-button:hover:not(:disabled) { filter: brightness(.96); }
 .auth-apple-button:focus-visible { outline: 2px solid #79b7eb; outline-offset: 3px; }
 .auth-apple-button:disabled { opacity: .62; cursor: wait; }
-.auth-google-button { position: relative; display: block; width: min(100%, 375px); height: 50px; padding: 0; justify-self: center; overflow: hidden; border: 1px solid #747775; border-radius: var(--auth-sign-in-corner-radius); background: #131314; }
+.auth-google-button { position: relative; display: block; width: 100%; height: 50px; padding: 0; overflow: hidden; border: 1px solid #747775; border-radius: var(--auth-sign-in-corner-radius); background: #131314; }
 .auth-google-button > img { display: block; width: 225px; height: 50px; margin: 0 auto; clip-path: inset(3px); }
 .auth-google-button__identity { position: absolute; inset: 0; opacity: 0; }
 .auth-google-button__identity iframe { display: block; width: 100% !important; height: 50px !important; }
