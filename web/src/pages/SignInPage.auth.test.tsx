@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const testAuth = vi.hoisted(() => ({
@@ -45,20 +45,14 @@ describe("SignInPage authentication state", () => {
     };
   });
 
-  it("clears a pending Google sign-in after the user signs out", async () => {
-    const view = render(<MemoryRouter><SignInPage /></MemoryRouter>);
-
-    fireEvent.click(screen.getByRole("button", { name: "Sign in with Google" }));
-    expect(screen.getByRole("button", { name: "Sign in with Apple" })).toBeDisabled();
-
+  it("sends signed-in users to Player Profile instead of rendering account controls", () => {
     testAuth.value.user = { email: "player@example.com" };
-    view.rerender(<MemoryRouter><SignInPage /></MemoryRouter>);
-    testAuth.value.user = null;
-    view.rerender(<MemoryRouter><SignInPage /></MemoryRouter>);
+    render(<MemoryRouter initialEntries={["/sign-in"]}><Routes>
+      <Route path="/sign-in" element={<SignInPage />} />
+      <Route path="/player-profile" element={<p>Player Profile destination</p>} />
+    </Routes></MemoryRouter>);
 
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Sign in with Apple" })).toBeEnabled();
-      expect(screen.getByRole("button", { name: "Sign in with Google" })).toBeEnabled();
-    });
+    expect(screen.getByText("Player Profile destination")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Delete account" })).not.toBeInTheDocument();
   });
 });

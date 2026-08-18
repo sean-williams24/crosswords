@@ -9,6 +9,7 @@ import { PrivacyPage } from "./pages/PrivacyPage";
 import { TermsPage } from "./pages/TermsPage";
 import { SignInPage } from "./pages/SignInPage";
 import { AuthCallbackPage } from "./pages/AuthCallbackPage";
+import { PlayerProfilePage } from "./pages/PlayerProfilePage";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
       <Route path="/privacy" element={<Layout><PrivacyPage /></Layout>} />
       <Route path="/terms" element={<Layout><TermsPage /></Layout>} />
       <Route path="/sign-in" element={<SignInPage />} />
+      <Route path="/player-profile" element={<PlayerProfilePage />} />
       <Route path="/auth/callback" element={<AuthCallbackPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Provider, Session, User } from "@supabase/supabase-js";
 import { supabase, supabaseConfigurationError } from "../../lib/supabase";
 import { flushSyncQueue } from "../sync/progressSync";
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [entitlement, setEntitlement] = useState<ProEntitlement | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const refreshEntitlement = async () => {
+  const refreshEntitlement = useCallback(async () => {
     if (!supabase || !session) {
       setEntitlement(null);
       return;
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isPro: Boolean(result.is_pro),
       expiresAt: result.expires_at ?? null
     } : { isPro: false, expiresAt: null });
-  };
+  }, [session]);
 
   useEffect(() => {
     if (!supabase) {
@@ -140,7 +140,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setEntitlement(null);
     },
     refreshEntitlement
-  }), [ready, session, entitlement, error]);
+  }), [ready, session, entitlement, error, refreshEntitlement]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

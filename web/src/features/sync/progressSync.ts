@@ -4,7 +4,7 @@ import { supabase } from "../../lib/supabase";
 
 export type CloudGameType = "backword" | "daily_crossword" | "weekly_crossword";
 
-type CloudRecord<T> = {
+export type CloudRecord<T> = {
   game_type: CloudGameType;
   content_key: string;
   release_date: string;

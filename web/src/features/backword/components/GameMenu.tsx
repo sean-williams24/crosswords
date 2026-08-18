@@ -83,7 +83,7 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
               <Link className="bw-menu-link bw-menu-link--primary" to="/crossword">Quick Crossword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/info">Info</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/contact">Contact</Link>
-              <AuthButton className="bw-menu-auth" />
+              <AuthButton className="bw-menu-link bw-menu-link--primary bw-menu-auth" />
               <div className="bw-menu-links__legal">
                 <Link className="bw-menu-link bw-menu-link--secondary" to="/privacy">Privacy</Link>
                 <Link className="bw-menu-link bw-menu-link--secondary" to="/terms">Terms</Link>

@@ -32,6 +32,16 @@ function AuthConsumer({ onReady }: { onReady: (auth: ReturnType<typeof useAuth>)
   return <p>{auth.user?.email ?? "signed out"}</p>;
 }
 
+function RefreshIdentityProbe({ onRefresh }: { onRefresh: (refresh: ReturnType<typeof useAuth>["refreshEntitlement"]) => void }) {
+  const { entitlement, ready, user, refreshEntitlement } = useAuth();
+
+  useEffect(() => {
+    if (ready && user) onRefresh(refreshEntitlement);
+  }, [onRefresh, ready, refreshEntitlement, user?.id]);
+
+  return <p>{entitlement?.isPro ? "Pro" : "No Pro"}</p>;
+}
+
 describe("AuthProvider", () => {
   beforeEach(() => {
     supabaseMock.auth.getSession.mockResolvedValue({ data: { session: null }, error: null });
@@ -65,5 +75,20 @@ describe("AuthProvider", () => {
       token: "google-id-token"
     });
     expect(screen.getByText("player@example.com")).toBeInTheDocument();
+  });
+
+  it("keeps entitlement refresh stable after its result updates the provider", async () => {
+    const onRefresh = vi.fn();
+    supabaseMock.auth.getSession.mockResolvedValue({ data: { session: { user: { id: "user-id", email: "player@example.com" } } }, error: null });
+    supabaseMock.client.rpc.mockResolvedValue({ data: { is_pro: true, expires_at: null }, error: null });
+
+    render(
+      <AuthProvider>
+        <RefreshIdentityProbe onRefresh={onRefresh} />
+      </AuthProvider>
+    );
+
+    await screen.findByText("Pro");
+    expect(onRefresh).toHaveBeenCalledTimes(1);
   });
 });

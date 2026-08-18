@@ -125,6 +125,25 @@ keeps the game destinations prominent and places Privacy and Terms in a
 secondary group, so players can navigate without leaving the immersive game
 surface for marketing-page chrome.
 
+### Browser player profile
+
+The signed-in browser account surface is `/player-profile`, matching the iOS
+Overall Rating sheet. Its 14-day overall rating is built from canonical
+`game_progress` release scores after refreshing the account's browser-playable
+Backword and daily-crossword records. Pro weekly crossword history is read
+directly from its `weekly_crossword` cloud rows: it contributes to the shared
+150-point Pro rating and table, but is never persisted to the browser's 9×9
+crossword storage because the weekly game is iOS-only on the web. Guests are
+sent to sign-in with this route as their return destination. The account
+entitlement refresh callback is stable for an unchanged session so profile
+synchronisation is triggered by account changes, not by the entitlement result
+it retrieves. On desktop, the profile summary and 14-day table are equal-height
+panels; detailed scoring rules open in a modal so they do not expand the
+dashboard. The summary places the rating and scoring guide first, then the
+always-visible rolling-window explainer, account details, and signed-in-only
+Sign Out and Delete Account actions. When the layout stacks below 901px, those
+actions move beneath the 14-day table instead.
+
 ### Browser feedback
 
 The browser contact page opens a blank `mailto:` message addressed to

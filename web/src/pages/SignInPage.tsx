@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { AccountBenefitIcon } from "../features/auth/AccountBenefitIcon";
@@ -10,7 +10,7 @@ type ProviderChoice = "apple" | "google";
 
 export function SignInPage() {
   const location = useLocation();
-  const { user, ready, entitlement, error: authError, signIn, signInWithGoogle, signOut, deleteAccount, refreshEntitlement } = useAuth();
+  const { user, ready, error: authError, signIn, signInWithGoogle } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState<ProviderChoice | null>(null);
   const returnTo = typeof location.state?.returnTo === "string" ? location.state.returnTo : "/home";
@@ -22,10 +22,6 @@ export function SignInPage() {
       </Link>
     </header>
   );
-
-  useEffect(() => {
-    if (!user) setPending(null);
-  }, [user]);
 
   async function continueWithApple() {
     setError(null);
@@ -49,37 +45,8 @@ export function SignInPage() {
     }
   }
 
-  async function removeAccount() {
-    if (!window.confirm("Delete your Backword account and synced progress? This does not cancel an Apple subscription.")) return;
-    setError(null);
-    try {
-      await deleteAccount();
-    } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : "Your account could not be deleted.");
-    }
-  }
-
   if (ready && user) {
-    return (
-      <main className="auth-page">
-        {navigationHeader}
-        <section aria-labelledby="account-title" className="auth-content">
-          <p className="auth-content__eyebrow">YOUR BACKWORD ACCOUNT</p>
-          <h1 id="account-title">Your games are synced.</h1>
-          <p className="auth-content__intro">{user.email ?? "Signed in"}</p>
-          <ul className="auth-content__benefits">
-            <li>{entitlement?.isPro ? "Pro is active for this account." : "No account-linked Pro subscription."}</li>
-            <li>Progress and stats are stored securely for this account.</li>
-          </ul>
-          <div className="auth-content__providers">
-            <button className="auth-provider" onClick={() => void refreshEntitlement()} type="button">Refresh account</button>
-            <button className="auth-provider" onClick={() => void signOut()} type="button">Sign out</button>
-            <button className="auth-provider auth-provider--danger" onClick={() => void removeAccount()} type="button">Delete account</button>
-          </div>
-          {error || authError ? <p className="auth-content__error" role="alert">{error ?? authError}</p> : null}
-        </section>
-      </main>
-    );
+    return <Navigate replace to="/player-profile" />;
   }
 
   return (
