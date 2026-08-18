@@ -57,7 +57,7 @@ describe("PlayerProfilePage", () => {
     const user = userEvent.setup();
     renderPage();
 
-    expect(screen.getByRole("heading", { name: "Player Profile" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "PLAYER PROFILE" })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Backword home" })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Player Profile" })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Download Backword on the App Store" })).not.toBeInTheDocument();

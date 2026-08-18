@@ -36,7 +36,7 @@ describe("GameMenu account actions", () => {
     const menu = screen.getByRole("dialog", { name: "Game navigation" });
     const profile = within(menu).getByRole("link", { name: "Player Profile" });
     expect(profile).toHaveAttribute("href", "/player-profile");
-    expect(profile).toHaveClass("bw-menu-link", "bw-menu-link--primary");
+    expect(profile).toHaveClass("bw-menu-link", "bw-menu-link--primary", "bw-menu-auth");
     expect(within(menu).queryByRole("button", { name: "Sign Out" })).not.toBeInTheDocument();
     expect(within(menu).queryByRole("button", { name: "Delete Account" })).not.toBeInTheDocument();
   });

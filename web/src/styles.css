@@ -186,8 +186,9 @@ a {
   display: block;
   min-height: 0;
   margin: 0;
-  padding-inline: 0;
+  padding: 18px 0;
   border: 0;
+  border-bottom: 1px solid rgb(255 255 255 / 15%);
   border-radius: 0;
   color: var(--bw-primary, #eee);
   background: transparent;
@@ -197,7 +198,7 @@ a {
   transition: color 160ms ease;
 }
 .auth-button.bw-menu-auth:hover,
-.auth-button.bw-menu-auth:focus-visible { color: #5fa4dc; background: transparent; transform: none; }
+.auth-button.bw-menu-auth:focus-visible { color: #5fa4dc; background: transparent; outline: none; transform: none; }
 .bw-menu-store-badge { margin-left: auto; }
 .bw-menu-store-badge img { display: block; height: 48px; width: auto; }
 
@@ -1158,7 +1159,7 @@ body {
 .player-profile { --bw-accent: #3377b1; --bw-rating-scribe: #6699e6; --bw-rating-linguist: #3380f2; --bw-rating-grandmaster: #1a59d9; --bw-rating-virtuoso: #f2cc4d; --bw-rating-virtuoso-deep: #d98c26; display: flex; min-height: 100svh; flex-direction: column; color: #eee; background: #111; }
 .player-profile--loading { display: grid; place-items: center; color: #b8b8b8; }
 .player-profile__header { grid-template-columns: 1fr; justify-items: center; flex: 0 0 auto; }
-.player-profile__header-title { margin: 0; color: #d6be87; font-size: clamp(28px, 4vw, 42px); letter-spacing: -.045em; }
+.player-profile__header-title { margin: 0; color: #d6be87; font-size: clamp(14px, 3.8vw, 18px); font-weight: 700; letter-spacing: .13em; white-space: nowrap; }
 .player-profile__content { width: min(100% - 40px, 1120px); margin: 0 auto; padding: 8px 0 72px; }
 .player-profile__heading { margin-bottom: 30px; }
 .player-profile__heading > p,

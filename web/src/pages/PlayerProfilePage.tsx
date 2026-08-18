@@ -106,7 +106,7 @@ export function PlayerProfilePage() {
     <main className="player-profile">
       <header className="home-dashboard__header player-profile__header">
         <GameMenu />
-        <h1 className="player-profile__header-title" id="player-profile-title">Player Profile</h1>
+        <h1 className="player-profile__header-title" id="player-profile-title">PLAYER PROFILE</h1>
       </header>
 
       <section aria-labelledby="player-profile-title" className="player-profile__content">
