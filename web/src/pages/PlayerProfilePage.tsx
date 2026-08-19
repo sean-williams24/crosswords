@@ -7,6 +7,7 @@ import { createBackwordStorage } from "../features/backword/storage";
 import { crosswordCloudRecord } from "../features/sync/progressSync";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { buildPlayerProfileRating, formatProfileDate } from "../features/profile/profileRating";
+import { Footer } from "../components/Footer";
 
 const ratingLevels = ["Novice", "Scribe", "Linguist", "Grandmaster", "Virtuoso"] as const;
 
@@ -119,7 +120,7 @@ export function PlayerProfilePage() {
             <section className="player-profile__card player-profile__summary" aria-label="Player summary">
               <RatingHero fraction={rating.fraction} maxPoints={rating.maxPoints} tier={rating.tier} totalPoints={rating.totalPoints} />
               <ScoringDetails isOpen={showScoring} onToggle={() => setShowScoring((open) => !open)} />
-              <RollingWindowExplanation />
+              <RollingWindowExplanation isLoading={isSyncing} />
               <div className="player-profile__account-actions">
                 <section className="player-profile__account" aria-label="Account summary">
                   <button disabled={isSyncing} onClick={() => void refreshProfile()} type="button">
@@ -156,6 +157,7 @@ export function PlayerProfilePage() {
           </div>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }
@@ -209,8 +211,12 @@ function ScoringDetails({ isOpen, onToggle }: { isOpen: boolean; onToggle: () =>
   );
 }
 
-function RollingWindowExplanation() {
-  return <div className="player-profile__rolling-window"><strong>Rolling 14-day window</strong><p>Your rating reflects only the last 14 days. Skip a day and it scores 0, so play every day to keep your rating up.</p></div>;
+function RollingWindowExplanation({ isLoading }: { isLoading: boolean }) {
+  return <div className="player-profile__rolling-window">
+    <strong>Rolling 14-day window</strong>
+    <p>Your rating reflects only the last 14 days. Skip a day and it scores 0, so play every day to keep your rating up.</p>
+    {isLoading ? <div className="player-profile__stats-loading" role="status"><span aria-hidden="true" className="player-profile__stats-spinner" />Loading your 14-day stats…</div> : null}
+  </div>;
 }
 
 function ScoringRule({ rows, title }: { rows: [string, string][]; title: string }) {

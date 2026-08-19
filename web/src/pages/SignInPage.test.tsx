@@ -39,5 +39,8 @@ describe("SignInPage", () => {
 
     expect(styles).toMatch(/\.auth-apple-button\s*\{[^}]*\bwidth:\s*100%/);
     expect(styles).toMatch(/\.auth-google-button\s*\{[^}]*\bwidth:\s*100%/);
+    expect(styles).toMatch(/\.auth-content__benefits--sign-in\s*\{[^}]*\bmargin-bottom:\s*40px[^}]*\bgap:\s*16px/);
+    expect(styles).toMatch(/\.auth-content__providers--sign-in\s*\{[^}]*\bgap:\s*16px/);
+    expect(styles).toMatch(/\.auth-content__note\s*\{[^}]*\bmargin:\s*28px 0 0/);
   });
 });

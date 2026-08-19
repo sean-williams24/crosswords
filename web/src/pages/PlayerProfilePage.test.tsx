@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -59,8 +59,9 @@ describe("PlayerProfilePage", () => {
 
     expect(screen.getByRole("heading", { name: "PLAYER PROFILE" })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Backword home" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Player Profile" })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Download Backword on the App Store" })).not.toBeInTheDocument();
+    const footer = screen.getByRole("navigation", { name: "Footer" });
+    expect(within(footer).getByRole("link", { name: "Player Profile" })).toHaveAttribute("href", "/player-profile");
     expect(screen.getByText("player@example.com")).toBeInTheDocument();
     expect(screen.getByText("0 / 150 pts")).toBeInTheDocument();
     await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(3));
@@ -121,5 +122,19 @@ describe("PlayerProfilePage", () => {
     renderPage();
 
     expect(await screen.findByRole("alert")).toHaveTextContent("Cloud unavailable");
+  });
+
+  it("shows a rolling-window loading indicator until profile stats are available", async () => {
+    let resolveFetch: (records: []) => void = () => undefined;
+    const pendingFetch = new Promise<[]>(resolve => {
+      resolveFetch = resolve;
+    });
+    sync.fetchCloudProgress.mockReturnValue(pendingFetch);
+    renderPage();
+
+    expect(await screen.findByRole("status")).toHaveTextContent("Loading your 14-day stats…");
+    resolveFetch([]);
+
+    await waitFor(() => expect(screen.queryByRole("status")).not.toBeInTheDocument());
   });
 });

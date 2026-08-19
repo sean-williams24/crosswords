@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
@@ -42,6 +44,16 @@ describe("web home dashboard", () => {
     expect(dailyLayout).not.toBeNull();
     expect(crosswordCard.closest(".home-dashboard__daily-cards")?.parentElement).toBe(dailyLayout);
     expect(screen.getAllByLabelText("Status: New")).toHaveLength(2);
+  });
+
+  it("uses a menu-style outlined account link", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/\.home-dashboard__actions \.auth-button\s*\{[^}]*\bborder:\s*1px solid #eee[^}]*\bbackground:\s*transparent[^}]*\bfont-size:\s*14px[^}]*\bfont-weight:\s*400/);
+    expect(styles).toContain(".home-dashboard__actions .auth-button { width: 120px; min-height: 40px; height: 40px;");
+    expect(styles).toContain(".home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px;");
+    expect(styles).toContain(".home-dashboard__actions .auth-button__wide-label { display: none; }");
+    expect(styles).toContain(".home-dashboard__actions .auth-button__compact-label { display: inline; }");
   });
 
   it.each([
