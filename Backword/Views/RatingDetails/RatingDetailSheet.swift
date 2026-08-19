@@ -514,13 +514,26 @@ private struct RatingAccountSummaryView: View {
                 Task { await accountService.refreshAccountData() }
             } label: {
                 VStack(alignment: .leading, spacing: 14) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(accountService.email ?? "Signed in")
-                            .font(AppFont.caption(15))
-                            .foregroundColor(.appTextPrimary)
-                        Text(accountService.isSyncing ? "Syncing your games…" : "Progress and stats are synced - Tap to sync again")
-                            .font(AppFont.caption())
-                            .foregroundColor(.appTextSecondary)
+                    HStack(spacing: 12) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(accountService.email ?? "Signed in")
+                                .font(AppFont.caption(15))
+                                .foregroundColor(.appTextPrimary)
+                            Text(AccountSyncPresentation.statusText(isSyncing: accountService.isSyncing))
+                                .font(AppFont.caption())
+                                .foregroundColor(.appTextSecondary)
+                        }
+
+                        Spacer(minLength: 10)
+
+                        if accountService.isSyncing {
+                            ProgressView()
+                                .controlSize(.regular)
+                                .tint(.appAccent)
+                                .accessibilityLabel(AccountSyncPresentation.spinnerAccessibilityLabel)
+                        }
+
+                        Spacer(minLength: 0)
                     }
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -600,4 +613,14 @@ enum RatingAccountProStatusPresentation {
 
 enum RatingDetailSheetLayout {
     static let footerSurfaceExtension: CGFloat = 128
+}
+
+enum AccountSyncPresentation {
+    static let syncingStatusText = "Syncing your games…"
+    static let syncedStatusText = "Progress and stats are synced - Tap to sync again"
+    static let spinnerAccessibilityLabel = "Syncing your games"
+
+    static func statusText(isSyncing: Bool) -> String {
+        isSyncing ? syncingStatusText : syncedStatusText
+    }
 }

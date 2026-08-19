@@ -125,6 +125,13 @@ struct AccountSyncTests {
         #expect(AccountSheetGuestAccessPresentation.actionTitle == "Play as guest")
     }
 
+    @Test("Account sync presentation distinguishes active and completed sync states")
+    func accountSyncPresentation() {
+        #expect(AccountSyncPresentation.statusText(isSyncing: true) == "Syncing your games…")
+        #expect(AccountSyncPresentation.statusText(isSyncing: false) == "Progress and stats are synced - Tap to sync again")
+        #expect(AccountSyncPresentation.spinnerAccessibilityLabel == "Syncing your games")
+    }
+
     @Test("Apple sign-in requests the account details needed for profile setup")
     func appleSignInRequestConfiguration() {
         let request = ASAuthorizationAppleIDProvider().createRequest()
