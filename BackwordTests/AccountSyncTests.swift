@@ -94,6 +94,58 @@ struct AccountSyncTests {
         ))
     }
 
+    @Test("Sign-in failures use safe provider-specific retry copy")
+    func signInFailureUsesSafeRetryCopy() {
+        let error = AccountSignInErrorPresentation.error(
+            for: GoogleNativeSignInError.missingIDToken,
+            provider: .google
+        )
+
+        #expect(error == AccountSignInError(
+            title: "Couldn't sign in",
+            message: "We couldn't complete Google sign-in. Please try again or use the other option."
+        ))
+    }
+
+    @Test("Offline sign-in failures explain how to recover")
+    func offlineSignInFailureUsesConnectionCopy() {
+        let error = AccountSignInErrorPresentation.error(
+            for: URLError(.notConnectedToInternet),
+            provider: .apple
+        )
+
+        #expect(error == AccountSignInError(
+            title: "Couldn't sign in",
+            message: "Check your internet connection and try again."
+        ))
+    }
+
+    @Test("Cancelled sign-in is not shown as an error")
+    func cancelledSignInIsNotPresented() {
+        #expect(AccountSignInErrorPresentation.error(
+            for: CancellationError(),
+            provider: .google
+        ) == nil)
+    }
+
+    #if DEBUG
+    @Test("Debug previews use the same safe sign-in copy as production errors")
+    func signInErrorPreviewsUseSafeCopy() {
+        #expect(AccountSignInErrorPreview.apple.error == AccountSignInError(
+            title: "Couldn't sign in",
+            message: "We couldn't complete Apple sign-in. Please try again or use the other option."
+        ))
+        #expect(AccountSignInErrorPreview.google.error == AccountSignInError(
+            title: "Couldn't sign in",
+            message: "We couldn't complete Google sign-in. Please try again or use the other option."
+        ))
+        #expect(AccountSignInErrorPreview.offline.error == AccountSignInError(
+            title: "Couldn't sign in",
+            message: "Check your internet connection and try again."
+        ))
+    }
+    #endif
+
     @Test("A confirmed cross-account purchase conflict has clear device-only Pro copy")
     func linkedElsewherePurchasePresentation() {
         #expect(AccountEntitlementPresentation.isAlreadyLinkedPurchaseError(

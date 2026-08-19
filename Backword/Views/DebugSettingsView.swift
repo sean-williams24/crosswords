@@ -7,6 +7,7 @@ struct DebugSettingsView: View {
     @EnvironmentObject var backwordService: BackwordService
     @EnvironmentObject var wotdService: WOTDService
     @EnvironmentObject var adService: AdService
+    @EnvironmentObject var accountService: AccountService
     @Environment(\.dismiss) private var dismiss
 
     var homeViewModel: HomeViewModel? = nil
@@ -21,6 +22,7 @@ struct DebugSettingsView: View {
     @State private var showPurgeBackwordConfirmation = false
     @State private var showPurgeWOTDConfirmation = false
     @State private var showOnboardingResetConfirmation = false
+    @State private var showSignInErrorPreview = false
 
     var body: some View {
         NavigationStack {
@@ -112,6 +114,29 @@ struct DebugSettingsView: View {
                     Button("Cancel", role: .cancel) {}
                 } message: {
                     Text("All 3 user defaults values will be reset.")
+                }
+
+                Section {
+                    Button("Preview Apple Retry") {
+                        presentSignInErrorPreview(.apple)
+                    }
+
+                    Button("Preview Google Retry") {
+                        presentSignInErrorPreview(.google)
+                    }
+
+                    Button("Preview Offline Retry") {
+                        presentSignInErrorPreview(.offline)
+                    }
+
+                    Button("Preview Without Error") {
+                        accountService.setDebugSignInErrorPreview(nil)
+                        showSignInErrorPreview = true
+                    }
+                } header: {
+                    Text("Sign-In Error Preview")
+                } footer: {
+                    Text("Opens the sign-in sheet with a local preview only. It does not contact Apple, Google, or Supabase.")
                 }
 
                 /// Daily Crossword
@@ -327,6 +352,10 @@ struct DebugSettingsView: View {
             }
             .navigationTitle("Debug Settings")
             .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $showSignInErrorPreview) {
+                AccountSheet()
+                    .environmentObject(accountService)
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") { dismiss() }
@@ -342,6 +371,11 @@ struct DebugSettingsView: View {
 
         return value ? "Forcing Pro" : "Forcing Free"
     }
+
+    private func presentSignInErrorPreview(_ preview: AccountSignInErrorPreview) {
+        accountService.setDebugSignInErrorPreview(preview)
+        showSignInErrorPreview = true
+    }
 }
 
 #Preview {
@@ -350,5 +384,6 @@ struct DebugSettingsView: View {
         .environmentObject(BackwordService())
         .environmentObject(WOTDService())
         .environmentObject(AdService())
+        .environmentObject(AccountService())
 }
 #endif

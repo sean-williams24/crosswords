@@ -47,6 +47,97 @@ enum AccountErrorPresentation {
     }
 }
 
+enum AccountSignInProvider: Equatable {
+    case apple
+    case google
+
+    var name: String {
+        switch self {
+        case .apple: "Apple"
+        case .google: "Google"
+        }
+    }
+}
+
+struct AccountSignInError: Equatable {
+    let title: String
+    let message: String
+}
+
+/// Maps provider and network failures to safe, actionable sign-in copy. The
+/// underlying error is still logged by AccountService for diagnosis.
+enum AccountSignInErrorPresentation {
+    static let title = "Couldn't sign in"
+    static let offlineMessage = "Check your internet connection and try again."
+
+    static func error(for error: Error, provider: AccountSignInProvider) -> AccountSignInError? {
+        guard shouldPresent(error) else { return nil }
+
+        if isOffline(error) {
+            return AccountSignInError(title: title, message: offlineMessage)
+        }
+
+        return AccountSignInError(
+            title: title,
+            message: "We couldn't complete \(provider.name) sign-in. Please try again or use the other option."
+        )
+    }
+
+    private static func shouldPresent(_ error: Error) -> Bool {
+        guard AccountErrorPresentation.shouldPresent(error) else { return false }
+        let nsError = error as NSError
+        return !isAppleCancellation(nsError) && !isGoogleCancellation(nsError)
+    }
+
+    private static func isOffline(_ error: Error) -> Bool {
+        let nsError = error as NSError
+        return nsError.domain == NSURLErrorDomain
+    }
+
+    private static func isAppleCancellation(_ error: NSError) -> Bool {
+        error.domain == ASAuthorizationError.errorDomain
+            && error.code == ASAuthorizationError.canceled.rawValue
+    }
+
+    private static func isGoogleCancellation(_ error: NSError) -> Bool {
+        // Google Sign-In reports a user-dismissed account picker with this
+        // documented domain/code pair. It is expected interaction, not an error.
+        error.domain == "com.google.GIDSignIn" && error.code == -5
+    }
+}
+
+private enum AccountSignInInputError: Error {
+    case missingAppleCredential
+}
+
+#if DEBUG
+enum AccountSignInErrorPreview: CaseIterable {
+    case apple
+    case google
+    case offline
+
+    var error: AccountSignInError {
+        switch self {
+        case .apple:
+            AccountSignInError(
+                title: AccountSignInErrorPresentation.title,
+                message: "We couldn't complete Apple sign-in. Please try again or use the other option."
+            )
+        case .google:
+            AccountSignInError(
+                title: AccountSignInErrorPresentation.title,
+                message: "We couldn't complete Google sign-in. Please try again or use the other option."
+            )
+        case .offline:
+            AccountSignInError(
+                title: AccountSignInErrorPresentation.title,
+                message: AccountSignInErrorPresentation.offlineMessage
+            )
+        }
+    }
+}
+#endif
+
 final class SupabaseClient: SupabaseClientProtocol {
     static let shared = SupabaseClient()
     private let dateFormatting = DateFormatting()
@@ -127,6 +218,7 @@ final class AccountService: ObservableObject {
     @Published private(set) var isProUser = false
     @Published private(set) var proExpirationDate: Date?
     @Published private(set) var errorMessage: String?
+    @Published private(set) var signInError: AccountSignInError?
     @Published private(set) var localProLinkedElsewhere = false
     @Published private(set) var syncRevision = 0
 
@@ -161,7 +253,7 @@ final class AccountService: ObservableObject {
 
     @discardableResult
     func signInWithApple(idToken: String, fullName: PersonNameComponents?) async -> Bool {
-        await performAuthentication {
+        await performAuthentication(provider: .apple) {
             _ = try await self.client.auth.signInWithIdToken(
                 credentials: .init(provider: .apple, idToken: idToken)
             )
@@ -175,13 +267,24 @@ final class AccountService: ObservableObject {
 
     @discardableResult
     func signInWithGoogle() async -> Bool {
-        await performAuthentication {
+        await performAuthentication(provider: .google) {
             let idToken = try await GoogleNativeSignInService.shared.signIn()
             _ = try await self.client.auth.signInWithIdToken(
                 credentials: .init(provider: .google, idToken: idToken)
             )
         }
     }
+
+    func recordAppleSignInFailure(_ error: Error? = nil) {
+        let failure = error ?? AccountSignInInputError.missingAppleCredential
+        presentSignInError(failure, provider: .apple)
+    }
+
+    #if DEBUG
+    func setDebugSignInErrorPreview(_ preview: AccountSignInErrorPreview?) {
+        signInError = preview?.error
+    }
+    #endif
 
     /// Completes browser-based Supabase auth redirects. Native Apple and Google
     /// sign-in exchange their identity tokens directly and do not use this path.
@@ -370,9 +473,12 @@ final class AccountService: ObservableObject {
         }
     }
 
-    private func performAuthentication(_ action: @escaping @Sendable () async throws -> Void) async -> Bool {
+    private func performAuthentication(
+        provider: AccountSignInProvider,
+        _ action: @escaping @Sendable () async throws -> Void
+    ) async -> Bool {
         isLoading = true
-        errorMessage = nil
+        signInError = nil
         defer { isLoading = false }
         do {
             try await action()
@@ -383,12 +489,17 @@ final class AccountService: ObservableObject {
             refreshAccountDataInBackground()
             return true
         } catch {
-            let authError = error as? ASAuthorizationError
-            if authError?.code != .canceled {
-                presentError(error, operation: "authentication")
-            }
+            presentSignInError(error, provider: provider)
             return false
         }
+    }
+
+    private func presentSignInError(_ error: Error, provider: AccountSignInProvider) {
+        guard let presentation = AccountSignInErrorPresentation.error(for: error, provider: provider) else {
+            return
+        }
+        logger.error("Account \(provider.name, privacy: .public) sign-in failed: \(error.localizedDescription, privacy: .public)")
+        signInError = presentation
     }
 
     private func presentError(_ error: Error, operation: String, message: String? = nil) {
@@ -408,6 +519,7 @@ final class AccountService: ObservableObject {
         )
         session = newSession
         errorMessage = nil
+        signInError = nil
         guard transition.requiresPersistenceActivation else { return }
         activateProgressPersistence(for: newSession)
     }

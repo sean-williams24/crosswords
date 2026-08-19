@@ -132,6 +132,7 @@ struct HomeView: View {
                     .environmentObject(backwordService)
                     .environmentObject(adService)
                     .environmentObject(wotdService)
+                    .environmentObject(accountService)
             }
             #endif
             .sheet(isPresented: $showSettings, onDismiss: presentDeferredSheetAfterSettingsDismissIfNeeded) {

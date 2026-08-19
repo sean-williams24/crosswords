@@ -75,21 +75,28 @@ struct AccountSheet: View {
                 .font(AppFont.caption())
                 .foregroundColor(.appTextSecondary)
 
-            if let errorMessage = accountService.errorMessage {
-                Text(errorMessage)
-                    .font(AppFont.caption())
-                    .foregroundColor(.appGaveUp)
-            }
         }
     }
 
     private var signInActions: some View {
         VStack(spacing: 18) {
+            if let error = accountService.signInError {
+                signInErrorAlert(error)
+            }
+
             AppleSignInButton(isLoading: accountService.isLoading) { result in
-                guard case .success(let authorization) = result,
-                      let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+                guard case .success(let authorization) = result else {
+                    if case .failure(let error) = result {
+                        accountService.recordAppleSignInFailure(error)
+                    }
+                    return
+                }
+                guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
                       let tokenData = credential.identityToken,
-                      let token = String(data: tokenData, encoding: .utf8) else { return }
+                      let token = String(data: tokenData, encoding: .utf8) else {
+                    accountService.recordAppleSignInFailure()
+                    return
+                }
                 Task {
                     let didSignIn = await accountService.signInWithApple(
                         idToken: token,
@@ -117,6 +124,29 @@ struct AccountSheet: View {
             .font(AppFont.body(16))
             .foregroundColor(.appTextPrimary)
         }
+    }
+
+    private func signInErrorAlert(_ error: AccountSignInError) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.circle.fill")
+                .font(.title3)
+                .foregroundColor(.appGaveUp)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(error.title)
+                    .font(AppFont.body(15))
+                    .foregroundColor(.appTextPrimary)
+                Text(error.message)
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(Color.appGaveUp.opacity(0.12))
+        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        .accessibilityElement(children: .combine)
     }
 
     private var benefits: some View {

@@ -75,6 +75,13 @@ authorization controller, rather than SwiftUI's wrapper. This prevents a
 cancelled system flow from leaving that wrapper's in-progress indicator on the
 sign-in sheet.
 
+Sign-in failures have their own presentation state, separate from signed-in
+account, entitlement, and sync errors. The signed-out account sheet shows only
+safe, actionable Apple/Google or network retry copy; provider cancellations are
+expected and remain silent. Low-level provider and Supabase details are logged,
+while post-sign-in entitlement work is presented only from the signed-in
+account surface when it is relevant.
+
 Google account entry points use Google-provided branded controls: iOS uses
 Google's pre-approved sign-in logo asset in an account button whose geometry
 matches Sign in with Apple, and the web uses Google's pre-approved web button
