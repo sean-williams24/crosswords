@@ -1154,9 +1154,14 @@ body {
 .auth-provider--danger { border-color: #9e5454; color: #ffb9b9; background: #3a2528; }
 .auth-provider--danger:hover,
 .auth-provider--danger:focus-visible { border-color: #ff9e9e; background: #4a292d; outline-color: #ff9e9e; }
-.auth-content__error { margin: 16px 0 0; color: #ffa3a3; line-height: 1.4; }
+.auth-sign-in-alert { display: flex; margin: 0 0 16px; padding: 12px; border: 1px solid rgb(255 163 163 / 42%); border-radius: 12px; align-items: flex-start; gap: 10px; color: #eee; background: rgb(158 84 84 / 18%); font-size: 13px; line-height: 1.4; }
+.auth-sign-in-alert__icon { display: grid; width: 20px; height: 20px; flex: 0 0 auto; border-radius: 50%; place-items: center; color: #3a2528; background: #ffa3a3; font-weight: 800; }
+.auth-sign-in-alert > div > strong,
+.auth-sign-in-alert > div > span { display: block; }
+.auth-sign-in-alert > div > strong { margin-bottom: 2px; }
 .auth-content__note { margin: 28px 0 0; color: #999da8; font-size: 13px; line-height: 1.45; }
-.auth-callback { color: #eee; font-size: 18px; }
+.auth-callback { display: grid; gap: 4px; color: #eee; font-size: 18px; }
+.auth-callback span { color: #b8b8b8; font-size: 14px; }
 
 /* Player Profile */
 .player-profile { --bw-accent: #3377b1; --bw-rating-scribe: #6699e6; --bw-rating-linguist: #3380f2; --bw-rating-grandmaster: #1a59d9; --bw-rating-virtuoso: #f2cc4d; --bw-rating-virtuoso-deep: #d98c26; display: flex; min-height: 100svh; flex-direction: column; color: #eee; background: #111; }

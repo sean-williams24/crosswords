@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import type { Provider, Session, User } from "@supabase/supabase-js";
 import { supabase, supabaseConfigurationError } from "../../lib/supabase";
 import { flushSyncQueue } from "../sync/progressSync";
+import { entitlementWarning as entitlementWarningMessage } from "./authErrorPresentation";
 
 type ProEntitlement = {
   isPro: boolean;
@@ -13,7 +14,7 @@ type AuthContextValue = {
   user: User | null;
   session: Session | null;
   entitlement: ProEntitlement | null;
-  error: string | null;
+  entitlementWarning: string | null;
   signIn: (provider: Extract<Provider, "apple">, returnTo: string) => Promise<void>;
   signInWithGoogle: (idToken: string, returnTo: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -28,7 +29,7 @@ const guestAuth: AuthContextValue = {
   user: null,
   session: null,
   entitlement: null,
-  error: null,
+  entitlementWarning: null,
   signIn: async () => { throw new Error(supabaseConfigurationError); },
   signInWithGoogle: async () => { throw new Error(supabaseConfigurationError); },
   signOut: async () => undefined,
@@ -44,16 +45,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [entitlement, setEntitlement] = useState<ProEntitlement | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [entitlementWarning, setEntitlementWarning] = useState<string | null>(null);
 
   const refreshEntitlement = useCallback(async () => {
     if (!supabase || !session) {
       setEntitlement(null);
+      setEntitlementWarning(null);
       return;
     }
     const { data, error: entitlementError } = await supabase.rpc("current_user_pro_entitlement");
     if (entitlementError) {
-      setError(entitlementError.message);
+      console.error("Account entitlement refresh failed", entitlementError);
+      setEntitlementWarning(entitlementWarningMessage);
       return;
     }
     const result = Array.isArray(data) ? data[0] : data;
@@ -61,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isPro: Boolean(result.is_pro),
       expiresAt: result.expires_at ?? null
     } : { isPro: false, expiresAt: null });
+    setEntitlementWarning(null);
   }, [session]);
 
   useEffect(() => {
@@ -73,13 +77,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void supabase.auth.getSession().then(({ data, error: sessionError }) => {
       if (!active) return;
       setSession(data.session);
-      setError(sessionError?.message ?? null);
+      if (sessionError) console.error("Account session lookup failed", sessionError);
       setReady(true);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
-      setError(null);
+      setEntitlementWarning(null);
     });
 
     return () => {
@@ -106,7 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user: session?.user ?? null,
     session,
     entitlement,
-    error: supabase ? error : null,
+    entitlementWarning: supabase ? entitlementWarning : null,
     async signIn(provider, returnTo) {
       if (!supabase) throw new Error(supabaseConfigurationError);
       sessionStorage.setItem(returnToKey, safeReturnTo(returnTo));
@@ -140,7 +144,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setEntitlement(null);
     },
     refreshEntitlement
-  }), [ready, session, entitlement, error, refreshEntitlement]);
+  }), [ready, session, entitlement, entitlementWarning, refreshEntitlement]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -5,13 +5,14 @@ import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { AccountBenefitIcon } from "../features/auth/AccountBenefitIcon";
 import { GoogleSignInButton } from "../features/auth/GoogleSignInButton";
 import { GameMenu } from "../features/backword/components/GameMenu";
+import { signInErrorAlert, type AuthAlert } from "../features/auth/authErrorPresentation";
 
 type ProviderChoice = "apple" | "google";
 
 export function SignInPage() {
   const location = useLocation();
-  const { user, ready, error: authError, signIn, signInWithGoogle } = useAuth();
-  const [error, setError] = useState<string | null>(null);
+  const { user, ready, signIn, signInWithGoogle } = useAuth();
+  const [signInError, setSignInError] = useState<AuthAlert | null>(null);
   const [pending, setPending] = useState<ProviderChoice | null>(null);
   const returnTo = typeof location.state?.returnTo === "string" ? location.state.returnTo : "/home";
   const navigationHeader = (
@@ -24,23 +25,25 @@ export function SignInPage() {
   );
 
   async function continueWithApple() {
-    setError(null);
+    setSignInError(null);
     setPending("apple");
     try {
       await signIn("apple", returnTo);
     } catch (signInError) {
-      setError(signInError instanceof Error ? signInError.message : "Sign in could not be started.");
+      console.error("Apple sign-in failed", signInError);
+      setSignInError(signInErrorAlert(signInError, "apple"));
       setPending(null);
     }
   }
 
   async function continueWithGoogle(idToken: string) {
-    setError(null);
+    setSignInError(null);
     setPending("google");
     try {
       await signInWithGoogle(idToken, returnTo);
     } catch (signInError) {
-      setError(signInError instanceof Error ? signInError.message : "Sign in could not be started.");
+      console.error("Google sign-in failed", signInError);
+      setSignInError(signInErrorAlert(signInError, "google"));
       setPending(null);
     }
   }
@@ -62,11 +65,19 @@ export function SignInPage() {
           <li><AccountBenefitIcon name="stats" /><span>Keep your stats, streaks, and score history safe.</span></li>
           <li><AccountBenefitIcon name="pro" /><span>Keep your verified Pro access connected to Backword.</span></li>
         </ul>
+        {signInError ? <div className="auth-sign-in-alert" role="alert">
+          <span aria-hidden="true" className="auth-sign-in-alert__icon">!</span>
+          <div><strong>{signInError.title}</strong><span>{signInError.message}</span></div>
+        </div> : null}
         <div className="auth-content__providers auth-content__providers--sign-in">
           <GoogleSignInButton
             disabled={!ready || pending !== null}
             onCredential={(idToken) => void continueWithGoogle(idToken)}
-            onError={(signInError) => setError(signInError.message)}
+            onError={(error) => {
+              console.error("Google sign-in could not start", error);
+              setPending(null);
+              setSignInError(signInErrorAlert(error, "google"));
+            }}
           />
           <button
             aria-label={pending === "apple" ? "Opening Apple" : "Continue with Apple"}
@@ -84,7 +95,6 @@ export function SignInPage() {
             </span>
           </button>
         </div>
-        {error || authError ? <p className="auth-content__error" role="alert">{error ?? authError}</p> : null}
         <p className="auth-content__note">If you use Apple’s Hide My Email, use Apple to sign in on every device.</p>
       </section>
     </main>

@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const testAuth = vi.hoisted(() => ({
@@ -21,10 +22,13 @@ vi.mock("../features/auth/AuthProvider", () => ({
 }));
 
 vi.mock("../features/auth/GoogleSignInButton", () => ({
-  GoogleSignInButton: ({ disabled, onCredential }: { disabled: boolean; onCredential: (idToken: string) => void }) => (
-    <button disabled={disabled} onClick={() => onCredential("google-id-token")} type="button">
-      Continue with Google
-    </button>
+  GoogleSignInButton: ({ disabled, onCredential, onError }: { disabled: boolean; onCredential: (idToken: string) => void; onError: (error: Error) => void }) => (
+    <>
+      <button disabled={disabled} onClick={() => onCredential("google-id-token")} type="button">
+        Continue with Google
+      </button>
+      <button onClick={() => onError(new Error("invalid JWT audience"))} type="button">Trigger Google Error</button>
+    </>
   )
 }));
 
@@ -54,5 +58,18 @@ describe("SignInPage authentication state", () => {
 
     expect(screen.getByText("Player Profile destination")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Delete account" })).not.toBeInTheDocument();
+  });
+
+  it("shows a safe inline alert for a Google failure", async () => {
+    const user = userEvent.setup();
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    render(<MemoryRouter initialEntries={["/sign-in"]}><Routes>
+      <Route path="/sign-in" element={<SignInPage />} />
+    </Routes></MemoryRouter>);
+
+    await user.click(screen.getByRole("button", { name: "Trigger Google Error" }));
+
+    expect(screen.getByRole("alert")).toHaveTextContent("We couldn't complete Google sign-in.");
+    expect(screen.getByRole("alert")).not.toHaveTextContent("invalid JWT audience");
   });
 });

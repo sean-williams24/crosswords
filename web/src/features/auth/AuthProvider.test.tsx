@@ -42,6 +42,12 @@ function RefreshIdentityProbe({ onRefresh }: { onRefresh: (refresh: ReturnType<t
   return <p>{entitlement?.isPro ? "Pro" : "No Pro"}</p>;
 }
 
+function EntitlementWarningProbe() {
+  const { entitlementWarning, ready } = useAuth();
+
+  return <p>{ready ? entitlementWarning ?? "No entitlement warning" : "Loading"}</p>;
+}
+
 describe("AuthProvider", () => {
   beforeEach(() => {
     supabaseMock.auth.getSession.mockResolvedValue({ data: { session: null }, error: null });
@@ -90,5 +96,20 @@ describe("AuthProvider", () => {
 
     await screen.findByText("Pro");
     expect(onRefresh).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps the entitlement failure out of auth state and exposes safe profile copy", async () => {
+    supabaseMock.auth.getSession.mockResolvedValue({ data: { session: { user: { id: "user-id", email: "player@example.com" } } }, error: null });
+    supabaseMock.client.rpc.mockResolvedValue({ data: null, error: new Error("permission denied for current_user_pro_entitlement") });
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+    render(
+      <AuthProvider>
+        <EntitlementWarningProbe />
+      </AuthProvider>
+    );
+
+    expect(await screen.findByText("We couldn't check account-linked Pro access right now. Please try again later.")).toBeInTheDocument();
+    expect(screen.queryByText("permission denied for current_user_pro_entitlement")).not.toBeInTheDocument();
   });
 });

@@ -43,5 +43,7 @@ describe("SignInPage", () => {
     expect(styles).toMatch(/\.auth-content__benefits--sign-in\s*\{[^}]*\bmargin-bottom:\s*40px[^}]*\bgap:\s*16px/);
     expect(styles).toMatch(/\.auth-content__providers--sign-in\s*\{[^}]*\bgap:\s*16px/);
     expect(styles).toMatch(/\.auth-content__note\s*\{[^}]*\bmargin:\s*28px 0 0/);
+    expect(styles).toMatch(/\.auth-sign-in-alert__icon\s*\{[^}]*\bdisplay:\s*grid[^}]*\bplace-items:\s*center/);
+    expect(styles).toMatch(/\.auth-sign-in-alert > div > span\s*\{[^}]*\bdisplay:\s*block/);
   });
 });

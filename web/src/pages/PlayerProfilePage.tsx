@@ -8,12 +8,13 @@ import { crosswordCloudRecord } from "../features/sync/progressSync";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { buildPlayerProfileRating, formatProfileDate } from "../features/profile/profileRating";
 import { Footer } from "../components/Footer";
+import { accountActionErrorMessage } from "../features/auth/authErrorPresentation";
 
 const ratingLevels = ["Novice", "Scribe", "Linguist", "Grandmaster", "Virtuoso"] as const;
 
 export function PlayerProfilePage() {
   const navigate = useNavigate();
-  const { ready, user, entitlement, error: authError, refreshEntitlement, signOut, deleteAccount } = useAuth();
+  const { ready, user, entitlement, entitlementWarning, refreshEntitlement, signOut, deleteAccount } = useAuth();
   const [records, setRecords] = useState({ backword: [], dailyCrossword: [], weeklyCrossword: [] } as {
     backword: Awaited<ReturnType<typeof fetchCloudProgress>>;
     dailyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
@@ -55,7 +56,8 @@ export function PlayerProfilePage() {
       ]);
       setRecords({ backword, dailyCrossword, weeklyCrossword });
     } catch (error) {
-      setSyncError(error instanceof Error ? error.message : "Your account could not be refreshed.");
+      console.error("Account profile refresh failed", error);
+      setSyncError(accountActionErrorMessage("refresh"));
     } finally {
       setIsSyncing(false);
     }
@@ -75,7 +77,8 @@ export function PlayerProfilePage() {
       await signOut();
       navigate("/home", { replace: true });
     } catch (error) {
-      setSyncError(error instanceof Error ? error.message : "You could not be signed out.");
+      console.error("Account sign-out failed", error);
+      setSyncError(accountActionErrorMessage("signOut"));
     } finally {
       setIsSigningOut(false);
     }
@@ -89,7 +92,8 @@ export function PlayerProfilePage() {
       await deleteAccount();
       navigate("/home", { replace: true });
     } catch (error) {
-      setSyncError(error instanceof Error ? error.message : "Your account could not be deleted.");
+      console.error("Account deletion failed", error);
+      setSyncError(accountActionErrorMessage("deleteAccount"));
     } finally {
       setIsDeleting(false);
     }
@@ -128,7 +132,7 @@ export function PlayerProfilePage() {
                     <small>{isSyncing ? "Syncing your games…" : "Progress and stats are synced — select to sync again"}</small>
                   </button>
                   <p className={isPro ? "is-active" : ""}><img alt="" className="player-profile__pro-logo" src="/brand/backword-pro.png" /><span>{isPro ? "is active for this account" : "No account-linked Pro subscription"}</span></p>
-                  {syncError || authError ? <p className="player-profile__error" role="alert">{syncError ?? authError}</p> : null}
+                  {syncError || entitlementWarning ? <p className="player-profile__error" role="alert">{syncError ?? entitlementWarning}</p> : null}
                 </section>
                 <ProfileActions className="player-profile__account-controls--desktop" isDeleting={isDeleting} isSigningOut={isSigningOut} onDelete={removeAccount} onSignOut={handleSignOut} />
               </div>

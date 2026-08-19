@@ -10,7 +10,7 @@ const testAuth = vi.hoisted(() => ({
     ready: true,
     user: { id: "player-1", email: "player@example.com" } as { id: string; email: string } | null,
     entitlement: { isPro: true, expiresAt: null } as { isPro: boolean; expiresAt: string | null } | null,
-    error: null as string | null,
+    entitlementWarning: null as string | null,
     refreshEntitlement: vi.fn().mockResolvedValue(undefined),
     signOut: vi.fn().mockResolvedValue(undefined),
     deleteAccount: vi.fn().mockResolvedValue(undefined)
@@ -46,7 +46,7 @@ describe("PlayerProfilePage", () => {
       ready: true,
       user: { id: "player-1", email: "player@example.com" },
       entitlement: { isPro: true, expiresAt: null },
-      error: null,
+      entitlementWarning: null,
       refreshEntitlement: vi.fn().mockResolvedValue(undefined),
       signOut: vi.fn().mockResolvedValue(undefined),
       deleteAccount: vi.fn().mockResolvedValue(undefined)
@@ -121,11 +121,20 @@ describe("PlayerProfilePage", () => {
     expect(screen.getByText("Sign in")).toBeInTheDocument();
   });
 
-  it("shows an account refresh error", async () => {
+  it("shows safe account refresh copy instead of a server error", async () => {
     sync.fetchCloudProgress.mockRejectedValueOnce(new Error("Cloud unavailable"));
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
     renderPage();
 
-    expect(await screen.findByRole("alert")).toHaveTextContent("Cloud unavailable");
+    expect(await screen.findByRole("alert")).toHaveTextContent("We couldn't refresh your account right now.");
+    expect(screen.getByRole("alert")).not.toHaveTextContent("Cloud unavailable");
+  });
+
+  it("shows an entitlement warning only in the signed-in profile", () => {
+    testAuth.value.entitlementWarning = "We couldn't check account-linked Pro access right now. Please try again later.";
+    renderPage();
+
+    expect(screen.getByRole("alert")).toHaveTextContent("account-linked Pro access");
   });
 
   it("shows a rolling-window loading indicator until profile stats are available", async () => {

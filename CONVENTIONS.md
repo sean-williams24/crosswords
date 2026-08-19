@@ -80,7 +80,10 @@ account, entitlement, and sync errors. The signed-out account sheet shows only
 safe, actionable Apple/Google or network retry copy; provider cancellations are
 expected and remain silent. Low-level provider and Supabase details are logged,
 while post-sign-in entitlement work is presented only from the signed-in
-account surface when it is relevant.
+account surface when it is relevant. The browser follows the same separation:
+provider and callback failures use local safe retry alerts, background sync
+remains queued and silent, and an entitlement warning appears only in Player
+Profile.
 
 Google account entry points use Google-provided branded controls: iOS uses
 Google's pre-approved sign-in logo asset in an account button whose geometry
