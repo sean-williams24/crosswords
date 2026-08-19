@@ -544,10 +544,18 @@ private struct RatingAccountSummaryView: View {
     @ViewBuilder
     private var proStatus: some View {
         if accountService.isProUser {
-            proStatusRow("Pro is active for this account", isActive: true)
+            proStatusRow(
+                RatingAccountProStatusPresentation.activeAccountTitle,
+                accessibilityLabel: RatingAccountProStatusPresentation.activeAccountAccessibilityLabel,
+                isActive: true
+            )
         } else if storeService.hasStoreKitPro && accountService.localProLinkedElsewhere {
             VStack(alignment: .leading, spacing: 6) {
-                proStatusRow("Pro is active on this iPhone", isActive: true)
+                proStatusRow(
+                    RatingAccountProStatusPresentation.activePhoneTitle,
+                    accessibilityLabel: RatingAccountProStatusPresentation.activePhoneAccessibilityLabel,
+                    isActive: true
+                )
                 Text(AccountEntitlementPresentation.linkedElsewhereExplanation)
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
@@ -557,7 +565,7 @@ private struct RatingAccountSummaryView: View {
         }
     }
 
-    private func proStatusRow(_ title: String, isActive: Bool) -> some View {
+    private func proStatusRow(_ title: String, accessibilityLabel: String? = nil, isActive: Bool) -> some View {
         HStack(alignment: .center, spacing: 10) {
             Image(RatingAccountProStatusPresentation.logoName)
                 .resizable()
@@ -566,18 +574,26 @@ private struct RatingAccountSummaryView: View {
                 .grayscale(isActive ? 0 : RatingAccountProStatusPresentation.inactiveGrayscale)
                 .opacity(isActive ? 1 : RatingAccountProStatusPresentation.inactiveOpacity)
                 .offset(y: 2)
+                .padding(.trailing, RatingAccountProStatusPresentation.logoTrailingAdjustment)
 
             Text(title)
         }
         .font(AppFont.body(15))
         .foregroundColor(isActive ? .appAccent : .appTextSecondary)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel ?? title)
     }
 }
 
 enum RatingAccountProStatusPresentation {
+    static let activeAccountTitle = "is active for this account"
+    static let activeAccountAccessibilityLabel = "Pro is active for this account"
+    static let activePhoneTitle = "is active on this iPhone"
+    static let activePhoneAccessibilityLabel = "Pro is active on this iPhone"
     static let logoName = "Pro"
     static let logoWidth: CGFloat = 52
     static let logoHeight: CGFloat = 28
+    static let logoTrailingAdjustment: CGFloat = -14
     static let inactiveGrayscale: Double = 1
     static let inactiveOpacity: Double = 0.45
 }

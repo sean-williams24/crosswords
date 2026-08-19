@@ -105,6 +105,9 @@ export async function renderGoogleSignInButton(
     }
   });
   parent.replaceChildren();
+  const availableWidth = Math.floor(parent.clientWidth) || 375;
+  const buttonWidth = Math.min(400, availableWidth);
+  parent.style.setProperty("--auth-google-button-scale-x", String(availableWidth / buttonWidth));
   google.accounts.id.renderButton(parent, {
     type: "standard",
     theme: "filled_black",
@@ -112,6 +115,6 @@ export async function renderGoogleSignInButton(
     text: "signin_with",
     shape: "rectangular",
     logo_alignment: "left",
-    width: Math.min(375, Math.floor(parent.clientWidth || 375))
+    width: buttonWidth
   });
 }

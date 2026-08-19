@@ -47,6 +47,20 @@ describe("Google Identity", () => {
     }));
   });
 
+  it("expands the native button hit target to match a wider visible control", async () => {
+    const identity = makeGoogleIdentity();
+    const parent = document.createElement("div");
+    Object.defineProperty(parent, "clientWidth", { value: 540 });
+
+    await renderGoogleSignInButton(parent, { onCredential: vi.fn(), onError: vi.fn() }, {
+      clientID: "web-client-id",
+      load: async () => identity.google
+    });
+
+    expect(identity.renderButton).toHaveBeenCalledWith(parent, expect.objectContaining({ width: 400 }));
+    expect(parent.style.getPropertyValue("--auth-google-button-scale-x")).toBe("1.35");
+  });
+
   it("reports a response without an ID token", async () => {
     const identity = makeGoogleIdentity();
     const onError = vi.fn();

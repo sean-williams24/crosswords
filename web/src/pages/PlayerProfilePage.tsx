@@ -127,7 +127,7 @@ export function PlayerProfilePage() {
                     <span>{user.email ?? "Signed in"}</span>
                     <small>{isSyncing ? "Syncing your games…" : "Progress and stats are synced — select to sync again"}</small>
                   </button>
-                  <p className={isPro ? "is-active" : ""}>{isPro ? "Pro is active for this account" : "No account-linked Pro subscription"}</p>
+                  <p className={isPro ? "is-active" : ""}><img alt="" className="player-profile__pro-logo" src="/brand/backword-pro.png" /><span>{isPro ? "is active for this account" : "No account-linked Pro subscription"}</span></p>
                   {syncError || authError ? <p className="player-profile__error" role="alert">{syncError ?? authError}</p> : null}
                 </section>
                 <ProfileActions className="player-profile__account-controls--desktop" isDeleting={isDeleting} isSigningOut={isSigningOut} onDelete={removeAccount} onSignOut={handleSignOut} />

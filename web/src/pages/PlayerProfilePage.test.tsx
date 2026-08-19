@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -63,6 +65,8 @@ describe("PlayerProfilePage", () => {
     const footer = screen.getByRole("navigation", { name: "Footer" });
     expect(within(footer).getByRole("link", { name: "Player Profile" })).toHaveAttribute("href", "/player-profile");
     expect(screen.getByText("player@example.com")).toBeInTheDocument();
+    const proStatus = screen.getByText("is active for this account").closest("p");
+    expect(proStatus?.querySelector(".player-profile__pro-logo")).toHaveAttribute("src", "/brand/backword-pro.png");
     expect(screen.getByText("0 / 150 pts")).toBeInTheDocument();
     await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(3));
     expect(screen.getByText("Weekly")).toBeInTheDocument();
@@ -136,5 +140,11 @@ describe("PlayerProfilePage", () => {
     resolveFetch([]);
 
     await waitFor(() => expect(screen.queryByRole("status")).not.toBeInTheDocument());
+  });
+
+  it("compensates for transparent padding around the Pro logo", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/\.player-profile__pro-logo\s*\{[^}]*\bmargin-right:\s*-14px/);
   });
 });
