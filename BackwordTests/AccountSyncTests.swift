@@ -94,6 +94,38 @@ struct AccountSyncTests {
         ))
     }
 
+    @Test("A server-confirmed missing account clears the cached local session")
+    func unavailableAccountRequiresLocalSignOut() {
+        #expect(AccountSessionValidation.requiresLocalSignOut(for: AuthError.sessionMissing))
+
+        let response = HTTPURLResponse(
+            url: URL(string: "https://example.com/auth/v1/user")!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil
+        )!
+        let missingUser = AuthError.api(
+            message: "User not found",
+            errorCode: .userNotFound,
+            underlyingData: Data(),
+            underlyingResponse: response
+        )
+
+        #expect(AccountSessionValidation.requiresLocalSignOut(for: missingUser))
+    }
+
+    @Test("A connection failure never signs out a cached account")
+    func connectionFailureDoesNotRequireLocalSignOut() {
+        #expect(!AccountSessionValidation.requiresLocalSignOut(for: URLError(.notConnectedToInternet)))
+    }
+
+    @Test("The deletion notice explains cloud and local data separately")
+    func deletionNoticeExplainsWhatChanged() {
+        #expect(AccountDeletionPresentation.message.contains("cloud-synced game progress"))
+        #expect(AccountDeletionPresentation.message.contains("Apple subscription"))
+        #expect(AccountDeletionPresentation.message.contains("stored locally"))
+    }
+
     @Test("Sign-in failures use safe provider-specific retry copy")
     func signInFailureUsesSafeRetryCopy() {
         let error = AccountSignInErrorPresentation.error(

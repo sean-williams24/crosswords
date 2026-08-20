@@ -19,6 +19,7 @@ type AuthContextValue = {
   signInWithGoogle: (idToken: string, returnTo: string) => Promise<void>;
   signOut: () => Promise<void>;
   deleteAccount: () => Promise<void>;
+  finishAccountDeletion: () => Promise<void>;
   refreshEntitlement: () => Promise<void>;
 };
 
@@ -34,6 +35,7 @@ const guestAuth: AuthContextValue = {
   signInWithGoogle: async () => { throw new Error(supabaseConfigurationError); },
   signOut: async () => undefined,
   deleteAccount: async () => { throw new Error(supabaseConfigurationError); },
+  finishAccountDeletion: async () => undefined,
   refreshEntitlement: async () => undefined
 };
 
@@ -140,8 +142,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!supabase) throw new Error(supabaseConfigurationError);
       const { error: deleteError } = await supabase.functions.invoke("delete-account");
       if (deleteError) throw deleteError;
-      await supabase.auth.signOut();
+    },
+    async finishAccountDeletion() {
+      if (!supabase) return;
+      const { error: signOutError } = await supabase.auth.signOut({ scope: "local" });
+      if (signOutError) throw signOutError;
+      setSession(null);
       setEntitlement(null);
+      setEntitlementWarning(null);
     },
     refreshEntitlement
   }), [ready, session, entitlement, entitlementWarning, refreshEntitlement]);

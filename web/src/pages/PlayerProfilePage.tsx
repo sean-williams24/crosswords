@@ -9,12 +9,13 @@ import { createCrosswordStorage } from "../features/crossword/storage";
 import { buildPlayerProfileRating, formatProfileDate } from "../features/profile/profileRating";
 import { Footer } from "../components/Footer";
 import { accountActionErrorMessage } from "../features/auth/authErrorPresentation";
+import { AccountDeletionConfirmationModal } from "../features/auth/AccountDeletionConfirmationModal";
 
 const ratingLevels = ["Novice", "Scribe", "Linguist", "Grandmaster", "Virtuoso"] as const;
 
 export function PlayerProfilePage() {
   const navigate = useNavigate();
-  const { ready, user, entitlement, entitlementWarning, refreshEntitlement, signOut, deleteAccount } = useAuth();
+  const { ready, user, entitlement, entitlementWarning, refreshEntitlement, signOut, deleteAccount, finishAccountDeletion } = useAuth();
   const [records, setRecords] = useState({ backword: [], dailyCrossword: [], weeklyCrossword: [] } as {
     backword: Awaited<ReturnType<typeof fetchCloudProgress>>;
     dailyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
@@ -25,6 +26,9 @@ export function PlayerProfilePage() {
   const [showScoring, setShowScoring] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [accountDeleted, setAccountDeleted] = useState(false);
+  const [isFinishingDeletion, setIsFinishingDeletion] = useState(false);
+  const [deletionFinishError, setDeletionFinishError] = useState<string | null>(null);
   const userId = user?.id;
 
   const refreshProfile = useCallback(async () => {
@@ -90,12 +94,26 @@ export function PlayerProfilePage() {
     setSyncError(null);
     try {
       await deleteAccount();
-      navigate("/home", { replace: true });
+      setAccountDeleted(true);
     } catch (error) {
       console.error("Account deletion failed", error);
       setSyncError(accountActionErrorMessage("deleteAccount"));
     } finally {
       setIsDeleting(false);
+    }
+  }
+
+  async function finishDeletion() {
+    setIsFinishingDeletion(true);
+    setDeletionFinishError(null);
+    try {
+      await finishAccountDeletion();
+      navigate("/sign-in", { replace: true });
+    } catch (error) {
+      console.error("Deleted account sign-out failed", error);
+      setDeletionFinishError("Your account is deleted, but we couldn't sign this browser out. Please try again.");
+    } finally {
+      setIsFinishingDeletion(false);
     }
   }
 
@@ -162,6 +180,7 @@ export function PlayerProfilePage() {
         </div>
       </section>
       <Footer />
+      {accountDeleted ? <AccountDeletionConfirmationModal error={deletionFinishError} isFinishing={isFinishingDeletion} onContinue={() => void finishDeletion()} /> : null}
     </main>
   );
 }

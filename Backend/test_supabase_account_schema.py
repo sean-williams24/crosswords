@@ -4,6 +4,7 @@ import unittest
 
 SCHEMA = Path(__file__).parent / "supabase" / "schema.sql"
 FUNCTIONS = Path(__file__).parent / "supabase" / "functions"
+FUNCTION_CONFIG = Path(__file__).parent / "supabase" / "config.toml"
 MIGRATION = Path(__file__).parent / "supabase" / "migrations" / "20260812_preserve_crossword_release_date_scores.sql"
 ENTITLEMENT_AUDIT_MIGRATION = Path(__file__).parent / "supabase" / "migrations" / "20260813_add_apple_subscription_event_audit.sql"
 
@@ -52,6 +53,19 @@ class SupabaseAccountSchemaTests(unittest.TestCase):
         self.assertIn("REFERENCES auth.users(id) ON DELETE SET NULL", schema)
         self.assertIn('.update({ user_id: null })', deletion_function)
         self.assertIn("deleteUser", deletion_function)
+
+    def test_delete_account_function_accepts_browser_cors_preflight(self):
+        deletion_function = (FUNCTIONS / "delete-account" / "index.ts").read_text()
+        function_config = FUNCTION_CONFIG.read_text()
+
+        self.assertIn('request.method === "OPTIONS"', deletion_function)
+        self.assertIn('"Access-Control-Allow-Origin": "*"', deletion_function)
+        self.assertIn('"Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type"', deletion_function)
+        self.assertIn('"Access-Control-Allow-Methods": "POST, OPTIONS"', deletion_function)
+        self.assertIn('new Response("ok", { headers: corsHeaders })', deletion_function)
+        self.assertIn("[functions.delete-account]", function_config)
+        delete_account_config = function_config.split("[functions.delete-account]", maxsplit=1)[1]
+        self.assertIn("verify_jwt = false", delete_account_config)
 
     def test_entitlement_claim_rejects_duplicate_and_malformed_transactions(self):
         claim_function = (FUNCTIONS / "claim-apple-entitlement" / "index.ts").read_text()

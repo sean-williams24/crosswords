@@ -47,6 +47,29 @@ enum AccountErrorPresentation {
     }
 }
 
+/// A cached session is not proof that its account still exists. The app checks
+/// the Auth user endpoint before syncing, and only clears local state when the
+/// server has explicitly rejected that session or user.
+enum AccountSessionValidation {
+    static func requiresLocalSignOut(for error: Error) -> Bool {
+        guard let authError = error as? AuthError else { return false }
+
+        switch authError {
+        case .sessionMissing:
+            return true
+        case let .api(_, errorCode, _, response):
+            return errorCode == .userNotFound || [401, 404].contains(response.statusCode)
+        default:
+            return false
+        }
+    }
+}
+
+enum AccountDeletionPresentation {
+    static let title = "Your Backword account was deleted"
+    static let message = "Your Backword account, cloud-synced game progress, stats, and rating were deleted. This device has been signed out and is now playing as a guest. Your Apple subscription and game data stored locally on this device were not deleted."
+}
+
 enum AccountSignInProvider: Equatable {
     case apple
     case google
@@ -221,6 +244,7 @@ final class AccountService: ObservableObject {
     @Published private(set) var signInError: AccountSignInError?
     @Published private(set) var localProLinkedElsewhere = false
     @Published private(set) var syncRevision = 0
+    @Published private(set) var accountDeletionNotice: String?
 
     private let client: Supabase.SupabaseClient
     private let logger = Logger(
@@ -329,6 +353,10 @@ final class AccountService: ObservableObject {
         }
     }
 
+    func dismissAccountDeletionNotice() {
+        accountDeletionNotice = nil
+    }
+
     func refreshAccountData() async {
         if let accountRefreshTask {
             await accountRefreshTask.task.value
@@ -366,6 +394,18 @@ final class AccountService: ObservableObject {
             proExpirationDate = nil
             return
         }
+
+        do {
+            _ = try await client.auth.user()
+        } catch {
+            if AccountSessionValidation.requiresLocalSignOut(for: error) {
+                await clearUnavailableAccountSession()
+            } else if AccountErrorPresentation.shouldPresent(error) {
+                logger.error("Account session validation could not reach the server: \(error.localizedDescription, privacy: .public)")
+            }
+            return
+        }
+
         errorMessage = nil
         isSyncing = true
         defer { isSyncing = false }
@@ -520,8 +560,21 @@ final class AccountService: ObservableObject {
         session = newSession
         errorMessage = nil
         signInError = nil
+        if newSession == nil {
+            isProUser = false
+            proExpirationDate = nil
+            localProLinkedElsewhere = false
+        }
         guard transition.requiresPersistenceActivation else { return }
         activateProgressPersistence(for: newSession)
+    }
+
+    private func clearUnavailableAccountSession() async {
+        // The server has already rejected the account, so local sign-out is
+        // sufficient and must not depend on a successful logout response.
+        try? await client.auth.signOut(scope: .local)
+        applySession(nil)
+        accountDeletionNotice = AccountDeletionPresentation.message
     }
 
     private func refreshAccountDataInBackground() {

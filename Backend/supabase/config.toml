@@ -3,3 +3,9 @@
 # independently configured APPLE_NOTIFICATION_WEBHOOK_SECRET and every payload
 # is reconciled with the App Store Server API before an entitlement changes.
 verify_jwt = false
+
+[functions.delete-account]
+# Browser CORS preflight requests cannot contain a bearer token. The handler
+# permits that OPTIONS request, then verifies the bearer token itself before
+# it makes any account changes.
+verify_jwt = false

@@ -63,6 +63,25 @@ an already-cancelled task) is expected SwiftUI task lifecycle behaviour and is
 never presented as an account error or logged as a failure; real presented
 account errors are recorded through the `account` OSLog category.
 
+`delete-account` skips Supabase's platform JWT gate only so the browser's
+unauthenticated CORS `OPTIONS` preflight can reach its handler. It returns the
+same CORS headers on every outcome, while the actual deletion request remains
+authenticated through the handler's bearer-token validation.
+
+After a browser deletion succeeds, the player sees a non-dismissable summary
+of the cloud account data removed and the Apple subscription and device-local
+data retained. Only after acknowledgement does the browser clear its local
+session and take the player to sign-in.
+
+iOS verifies its cached Supabase session with the Auth user endpoint during
+startup and foreground account refreshes, before it uploads or downloads cloud
+progress. A server-confirmed missing or invalid account clears that device's
+local session, returns persistence to the guest namespace, and presents the
+same cloud-versus-device-local deletion explanation. Offline or other transient
+validation failures keep the cached session intact and retry on a later refresh;
+iOS has no push channel that can wake a closed app at the instant a browser
+deletes an account.
+
 Successful Apple and Google authentication dismisses the sign-in sheet as soon
 as Supabase creates the local session. Guest-progress migration, cloud sync,
 and entitlement checks run through that same coalesced account refresh in the

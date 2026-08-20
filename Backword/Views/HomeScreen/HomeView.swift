@@ -49,11 +49,49 @@ struct HomeView: View {
         AppLayout(sizeClass: sizeClass)
     }
 
+    private func refreshHomeContent() async {
+        await viewModel.refreshIfNeeded()
+        await wotdService.refreshIfNeeded()
+        await backwordService.refreshIfNeeded()
+        await viewModel.prefetchCurrentArchiveMonthIfNeeded()
+        backwordStatsService.refresh()
+        ratingService.refresh()
+        ratingService.recordCurrentPuzzles(
+            daily: viewModel.todaysPuzzle,
+            weekly: viewModel.weeklyPuzzle
+        )
+    }
+
+    private func refreshHomeContentAtMidnight() async {
+        // Sleep until local midnight then trigger a full refresh, then repeat each day.
+        while !Task.isCancelled {
+            let rolloverScoringCalendar = ContentReleaseCalendar()
+            guard let delay = secondsUntilMidnight(), delay > 0 else { break }
+            try? await Task.sleep(for: .seconds(delay))
+            guard !Task.isCancelled else { break }
+            ratingService.recordCurrentPuzzles(
+                daily: viewModel.todaysPuzzle,
+                weekly: viewModel.weeklyPuzzle,
+                releaseCalendar: rolloverScoringCalendar
+            )
+            await viewModel.loadTodaysPuzzle()
+            await wotdService.refreshIfNeeded()
+            await backwordService.refreshIfNeeded()
+            await viewModel.prefetchCurrentArchiveMonthIfNeeded()
+            backwordStatsService.refresh()
+            ratingService.refresh()
+        }
+    }
+
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
 
     var body: some View {
+        homeLifecycleView
+    }
+
+    private var homeNavigationView: some View {
         NavigationStack(path: $navigationPath) {
             ZStack {
                 AppBackgroundGradient()
@@ -108,6 +146,11 @@ struct HomeView: View {
                         .environmentObject(ratingService)
                 }
             }
+        }
+    }
+
+    private var homePresentationView: some View {
+        homeNavigationView
             .fullScreenCover(isPresented: $showArchive) {
                 ArchiveView()
                     .environmentObject(puzzleService)
@@ -171,37 +214,15 @@ struct HomeView: View {
                     )
                 }
             }
+    }
+
+    private var homeLifecycleView: some View {
+        homePresentationView
             .task {
-                await viewModel.refreshIfNeeded()
-                await wotdService.refreshIfNeeded()
-                await backwordService.refreshIfNeeded()
-                await viewModel.prefetchCurrentArchiveMonthIfNeeded()
-                backwordStatsService.refresh()
-                ratingService.refresh()
-                ratingService.recordCurrentPuzzles(
-                    daily: viewModel.todaysPuzzle,
-                    weekly: viewModel.weeklyPuzzle
-                )
+                await refreshHomeContent()
             }
             .task {
-                // Sleep until local midnight then trigger a full refresh, then repeat each day.
-                while !Task.isCancelled {
-                    let rolloverScoringCalendar = ContentReleaseCalendar()
-                    guard let delay = secondsUntilMidnight(), delay > 0 else { break }
-                    try? await Task.sleep(for: .seconds(delay))
-                    guard !Task.isCancelled else { break }
-                    ratingService.recordCurrentPuzzles(
-                        daily: viewModel.todaysPuzzle,
-                        weekly: viewModel.weeklyPuzzle,
-                        releaseCalendar: rolloverScoringCalendar
-                    )
-                    await viewModel.loadTodaysPuzzle()
-                    await wotdService.refreshIfNeeded()
-                    await backwordService.refreshIfNeeded()
-                    await viewModel.prefetchCurrentArchiveMonthIfNeeded()
-                    backwordStatsService.refresh()
-                    ratingService.refresh()
-                }
+                await refreshHomeContentAtMidnight()
             }
             .onAppear {
                 logoVisible = false
@@ -278,6 +299,23 @@ struct HomeView: View {
                 backwordStatsService.refresh()
                 ratingService.refresh()
             }
+            .alert(
+                AccountDeletionPresentation.title,
+                isPresented: Binding(
+                    get: { accountService.accountDeletionNotice != nil },
+                    set: { isPresented in
+                        if !isPresented {
+                            accountService.dismissAccountDeletionNotice()
+                        }
+                    }
+                )
+            ) {
+                Button("Continue", role: .cancel) {
+                    accountService.dismissAccountDeletionNotice()
+                }
+            } message: {
+                Text(accountService.accountDeletionNotice ?? "")
+            }
             .alert("There was a problem loading the games, please check your network.", isPresented: $viewModel.crosswordsFetchDidFail) {
                 Button("OK", role: .cancel) { }
                 Button("Try again") {
@@ -286,7 +324,6 @@ struct HomeView: View {
                     }
                 }
             }
-        }
     }
 
     private func dateView(for date: String) -> some View {

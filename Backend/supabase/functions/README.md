@@ -2,8 +2,10 @@
 
 Deploy `claim-apple-entitlement`, `app-store-notifications`, and
 `delete-account` after applying `schema.sql`. Deploy with the included
-`Backend/supabase/config.toml` so only the Apple notification endpoint skips
-Supabase JWT verification; the other functions require the caller's session.
+`Backend/supabase/config.toml`: the Apple notification endpoint verifies its
+own webhook secret, while `delete-account` verifies its caller in code so it
+can allow unauthenticated browser CORS preflight requests. The other account
+functions require the caller's session through Supabase's platform JWT check.
 
 Set these function secrets outside source control:
 

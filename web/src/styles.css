@@ -1252,10 +1252,24 @@ body {
 .player-profile__sign-out:hover,
 .player-profile__sign-out:focus-visible { border-color: #79b7eb; background: #363a44; outline: 2px solid #79b7eb; outline-offset: 2px; }
 .player-profile__sign-out:disabled { opacity: .62; cursor: wait; }
-.player-profile__delete-account { width: calc(100% - 40px); min-height: 38px; margin: 0 20px 18px; padding: 0; border: 0; color: #ffb9b9; background: transparent; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.player-profile__delete-account { width: calc(100% - 40px); min-height: 38px; margin: 0 20px 18px; padding: 0; border: 0; border-radius: 9px; color: #ffb9b9; background: transparent; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
 .player-profile__delete-account:hover,
 .player-profile__delete-account:focus-visible { color: #ff9e9e; outline: 2px solid #ff9e9e; outline-offset: 2px; }
 .player-profile__delete-account:disabled { opacity: .62; cursor: wait; }
+.account-deletion-confirmation { width: min(100%, 540px); max-height: min(92svh, 760px); border-radius: 22px; }
+.account-deletion-confirmation__content { overflow-y: auto; padding: 28px 24px 24px; }
+.account-deletion-confirmation__eyebrow { margin: 0 0 8px; color: #79b7eb; font-size: 11px; font-weight: 800; letter-spacing: .14em; }
+.account-deletion-confirmation h2 { margin: 0; color: #eee; font-size: 22px; line-height: 1.2; }
+.account-deletion-confirmation__content > p:not(.account-deletion-confirmation__eyebrow):not(.account-deletion-confirmation__error) { margin: 12px 0 22px; color: #aaa; font-size: 14px; line-height: 1.45; }
+.account-deletion-confirmation section { margin-top: 16px; padding: 16px; border: 1px solid rgb(255 255 255 / 9%); border-radius: 12px; background: rgb(255 255 255 / 3%); }
+.account-deletion-confirmation section + section { border-color: rgb(214 190 135 / 25%); background: rgb(214 190 135 / 7%); }
+.account-deletion-confirmation h3 { margin: 0; color: #d6be87; font-size: 14px; }
+.account-deletion-confirmation ul { display: grid; margin: 10px 0 0; padding-left: 22px; gap: 8px; color: #bbb; font-size: 13px; line-height: 1.4; list-style: disc; }
+.account-deletion-confirmation__error { margin: 16px 0 0; color: #ffa3a3; font-size: 13px; line-height: 1.4; }
+.account-deletion-confirmation__continue { width: 100%; min-height: 46px; margin-top: 22px; border: 1px solid #3377b1; border-radius: 9px; color: #fff; background: #3377b1; font: inherit; font-weight: 700; cursor: pointer; }
+.account-deletion-confirmation__continue:hover,
+.account-deletion-confirmation__continue:focus-visible { border-color: #79b7eb; background: #4a8fc8; outline: 2px solid #79b7eb; outline-offset: 2px; }
+.account-deletion-confirmation__continue:disabled { opacity: .62; cursor: wait; }
 
 @media (max-width: 680px) {
   .auth-page { padding-top: 101px; }

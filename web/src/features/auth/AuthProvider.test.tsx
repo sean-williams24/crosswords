@@ -6,9 +6,10 @@ const supabaseMock = vi.hoisted(() => {
   const auth = {
     getSession: vi.fn(),
     onAuthStateChange: vi.fn(),
-    signInWithIdToken: vi.fn()
+    signInWithIdToken: vi.fn(),
+    signOut: vi.fn()
   };
-  return { client: { auth, rpc: vi.fn() }, auth };
+  return { client: { auth, functions: { invoke: vi.fn() }, rpc: vi.fn() }, auth };
 });
 
 vi.mock("../../lib/supabase", () => ({
@@ -55,6 +56,10 @@ describe("AuthProvider", () => {
       data: { subscription: { unsubscribe: vi.fn() } }
     });
     supabaseMock.auth.signInWithIdToken.mockReset();
+    supabaseMock.auth.signOut.mockReset();
+    supabaseMock.auth.signOut.mockResolvedValue({ error: null });
+    supabaseMock.client.functions.invoke.mockReset();
+    supabaseMock.client.functions.invoke.mockResolvedValue({ error: null });
     supabaseMock.client.rpc.mockReset();
     supabaseMock.client.rpc.mockResolvedValue({ data: null, error: null });
   });
@@ -96,6 +101,34 @@ describe("AuthProvider", () => {
 
     await screen.findByText("Pro");
     expect(onRefresh).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps the signed-in state until account-deletion confirmation is acknowledged", async () => {
+    const session = { user: { id: "user-id", email: "player@example.com" } };
+    supabaseMock.auth.getSession.mockResolvedValue({ data: { session }, error: null });
+    let auth: ReturnType<typeof useAuth> | undefined;
+
+    render(
+      <AuthProvider>
+        <AuthConsumer onReady={(value) => { auth = value; }} />
+      </AuthProvider>
+    );
+
+    await screen.findByText("player@example.com");
+    await act(async () => {
+      await auth?.deleteAccount();
+    });
+
+    expect(supabaseMock.client.functions.invoke).toHaveBeenCalledWith("delete-account");
+    expect(supabaseMock.auth.signOut).not.toHaveBeenCalled();
+    expect(screen.getByText("player@example.com")).toBeInTheDocument();
+
+    await act(async () => {
+      await auth?.finishAccountDeletion();
+    });
+
+    expect(supabaseMock.auth.signOut).toHaveBeenCalledWith({ scope: "local" });
+    expect(screen.getByText("signed out")).toBeInTheDocument();
   });
 
   it("keeps the entitlement failure out of auth state and exposes safe profile copy", async () => {

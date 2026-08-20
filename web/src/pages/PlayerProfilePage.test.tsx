@@ -13,7 +13,8 @@ const testAuth = vi.hoisted(() => ({
     entitlementWarning: null as string | null,
     refreshEntitlement: vi.fn().mockResolvedValue(undefined),
     signOut: vi.fn().mockResolvedValue(undefined),
-    deleteAccount: vi.fn().mockResolvedValue(undefined)
+    deleteAccount: vi.fn().mockResolvedValue(undefined),
+    finishAccountDeletion: vi.fn().mockResolvedValue(undefined)
   }
 }));
 const sync = vi.hoisted(() => ({
@@ -49,7 +50,8 @@ describe("PlayerProfilePage", () => {
       entitlementWarning: null,
       refreshEntitlement: vi.fn().mockResolvedValue(undefined),
       signOut: vi.fn().mockResolvedValue(undefined),
-      deleteAccount: vi.fn().mockResolvedValue(undefined)
+      deleteAccount: vi.fn().mockResolvedValue(undefined),
+      finishAccountDeletion: vi.fn().mockImplementation(async () => { testAuth.value.user = null; })
     };
     sync.fetchCloudProgress.mockResolvedValue([]);
     sync.refreshAccountProgress.mockResolvedValue(undefined);
@@ -104,14 +106,23 @@ describe("PlayerProfilePage", () => {
     expect(await screen.findByText("Home")).toBeInTheDocument();
   });
 
-  it("confirms account deletion from the profile and returns Home", async () => {
+  it("explains completed account deletion, then returns the player to sign in", async () => {
     const user = userEvent.setup();
     vi.spyOn(window, "confirm").mockReturnValue(true);
     renderPage();
     await user.click(screen.getAllByRole("button", { name: "Delete Account" })[0]);
 
     expect(testAuth.value.deleteAccount).toHaveBeenCalledOnce();
-    expect(await screen.findByText("Home")).toBeInTheDocument();
+    const confirmation = await screen.findByRole("dialog", { name: "Your Backword account has been deleted" });
+    expect(confirmation).toHaveTextContent("Deleted from Backword");
+    expect(confirmation).toHaveTextContent("Not deleted");
+    expect(confirmation).toHaveTextContent("Your Apple subscription");
+    expect(testAuth.value.finishAccountDeletion).not.toHaveBeenCalled();
+
+    await user.click(within(confirmation).getByRole("button", { name: "Continue to sign in" }));
+
+    expect(testAuth.value.finishAccountDeletion).toHaveBeenCalledOnce();
+    expect(await screen.findByText("Sign in")).toBeInTheDocument();
   });
 
   it("redirects guests to sign in with a return destination", () => {
@@ -155,5 +166,18 @@ describe("PlayerProfilePage", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
     expect(styles).toMatch(/\.player-profile__pro-logo\s*\{[^}]*\bmargin-right:\s*-14px/);
+  });
+
+  it("gives the delete-account control the same rounded corners as sign out", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/\.player-profile__sign-out\s*\{[^}]*\bborder-radius:\s*9px/);
+    expect(styles).toMatch(/\.player-profile__delete-account\s*\{[^}]*\bborder-radius:\s*9px/);
+  });
+
+  it("shows bullets in both account-deletion summary lists", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/\.account-deletion-confirmation ul\s*\{[^}]*\blist-style:\s*disc/);
   });
 });
