@@ -33,13 +33,22 @@ enum BackwordCardAppearance {
     }
 
     static func correctCellStyle(for systemColorScheme: ColorScheme) -> BackwordCorrectCellStyle {
-        systemColorScheme == .light ? .outlined : .standard
+        systemColorScheme == .light ? .whiteHomeCard : .game
+    }
+
+    static func badgeBorderStyle(for systemColorScheme: ColorScheme) -> HomeCardBadgeBorderStyle {
+        systemColorScheme == .light ? .white : .none
     }
 }
 
 enum BackwordCorrectCellStyle: Equatable {
-    case standard
-    case outlined
+    case game
+    case whiteHomeCard
+}
+
+enum HomeCardBadgeBorderStyle: Equatable {
+    case none
+    case white
 }
 
 enum HomeCardAppearance {

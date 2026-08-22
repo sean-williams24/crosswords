@@ -1,7 +1,8 @@
 import SwiftUI
 
-enum HomeCardStreakAppearance {
-    static let backgroundOpacity = 0.5
+enum StreakButtonBackgroundStyle: Equatable {
+    case surface
+    case inProgress
 }
 
 struct StreakButton: View {
@@ -9,6 +10,8 @@ struct StreakButton: View {
     @State private var showPopup = false
 
     let streak: Int
+    var backgroundStyle: StreakButtonBackgroundStyle = .surface
+    var borderStyle: HomeCardBadgeBorderStyle = .none
 
     var body: some View {
         if streak > 0 {
@@ -33,8 +36,9 @@ struct StreakButton: View {
                 }
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
-                .background(Color.appSurface.opacity(HomeCardStreakAppearance.backgroundOpacity))
+                .background(backgroundColor)
                 .cornerRadius(AppLayout.cardCornerRadius)
+                .overlay(border)
             }
             .buttonStyle(.plain)
             .overlay(alignment: .topTrailing) {
@@ -53,6 +57,27 @@ struct StreakButton: View {
                 }
             }
             .animation(.easeInOut(duration: 0.2), value: showPopup)
+        }
+    }
+
+    private var backgroundColor: Color {
+        switch backgroundStyle {
+        case .surface:
+            return .appSurface.opacity(0.5)
+        case .inProgress:
+            return PuzzleStatus.inProgress.backgroundColor
+        }
+    }
+
+    @ViewBuilder
+    private var border: some View {
+        switch borderStyle {
+        case .none:
+            EmptyView()
+        case .white:
+            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
+                .strokeBorder(Color.appSurface, lineWidth: 1)
+                .environment(\.colorScheme, .light)
         }
     }
 }

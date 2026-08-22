@@ -70,7 +70,8 @@ struct DailyCrosswordCard: View {
                 } else {
                     StatusLabelView(
                         status: viewModel.puzzleStatus,
-                        textStyle: DailyCrosswordCardStatusStyle.textStyle(for: viewModel.puzzleStatus)
+                        textStyle: DailyCrosswordCardStatusStyle.textStyle(for: viewModel.puzzleStatus),
+                        borderStyle: badgeBorderStyle
                     )
                 }
             }
@@ -106,7 +107,10 @@ struct DailyCrosswordCard: View {
         HStack {
             scoreView
             Spacer(minLength: 2)
-            StreakButton(streak: statsService.stats.liveCurrentStreak)
+            StreakButton(
+                streak: statsService.stats.liveCurrentStreak,
+                borderStyle: badgeBorderStyle
+            )
         }
     }
 
@@ -122,6 +126,10 @@ struct DailyCrosswordCard: View {
                     .foregroundColor(.appTextSecondary)
             }
         }
+    }
+
+    private var badgeBorderStyle: HomeCardBadgeBorderStyle {
+        BackwordCardAppearance.badgeBorderStyle(for: systemColorScheme)
     }
 }
 

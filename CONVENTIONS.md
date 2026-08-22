@@ -149,14 +149,17 @@ content in either appearance. Its background follows the system colour scheme:
 Light Mode uses a flat, opaque pastel lavender, while Dark Mode keeps the
 existing darker purple. The card has no outline in either appearance.
 
-The Light Mode Backword `New` status label uses the same semi-opaque surface
-background as the streak badge for contrast against the pastel card. Other
-Backword statuses, including `In Progress`, retain the shared status-label
-background.
+The Light Mode Backword `New` status label and streak badge use the same
+background as the `In Progress` label for contrast against the pastel card.
+They have a one-point white outline in Light Mode; other Backword statuses
+retain the shared status-label background.
 
-Won Backword cells on the Light Mode home card use a Correct-green outline
-with dark primary text and no fill. This preserves legibility against the
-pastel card while keeping the Dark Mode and in-game cells unchanged.
+The same Light Mode white outline applies to the Backword success badge and
+the status and streak badges on both crossword home cards.
+
+Won Backword cells on the Light Mode home card use a white surface fill with
+the Backword game's Correct-green outline and dark primary text. Dark Mode
+continues to use the in-game correct-cell appearance.
 
 ---
 

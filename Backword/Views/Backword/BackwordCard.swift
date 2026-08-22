@@ -84,7 +84,11 @@ struct BackwordCard: View {
         HStack {
             scoreView
             Spacer(minLength: 2)
-            StreakButton(streak: statsService.stats.liveCurrentStreak)
+            StreakButton(
+                streak: statsService.stats.liveCurrentStreak,
+                backgroundStyle: .inProgress,
+                borderStyle: badgeBorderStyle
+            )
         }
     }
 
@@ -111,7 +115,8 @@ struct BackwordCard: View {
                 backgroundStyle: BackwordCardStatusStyle.backgroundStyle(
                     for: status,
                     systemColorScheme: systemColorScheme
-                )
+                ),
+                borderStyle: badgeBorderStyle
             )
                 .padding(.bottom, 16)
         }
@@ -213,7 +218,8 @@ struct BackwordCard: View {
             VStack(spacing: 8) {
                 StatusLabelView(
                     status: .status(for: progress),
-                    textStyle: BackwordCardStatusStyle.textStyle
+                    textStyle: BackwordCardStatusStyle.textStyle,
+                    borderStyle: badgeBorderStyle
                 )
                     .fixedSize(horizontal: true, vertical: false)
                 bottomStatsView
@@ -230,17 +236,28 @@ struct BackwordCard: View {
             HStack(alignment: .center) {
                 scoreView
                 Spacer(minLength: 2)
-                StreakButton(streak: statsService.stats.liveCurrentStreak)
+                StreakButton(
+                    streak: statsService.stats.liveCurrentStreak,
+                    backgroundStyle: .inProgress,
+                    borderStyle: badgeBorderStyle
+                )
             }
 
             StatusLabelView(
                 status: .status(for: progress),
-                textStyle: BackwordCardStatusStyle.textStyle
+                textStyle: BackwordCardStatusStyle.textStyle,
+                borderStyle: badgeBorderStyle
             )
                 .fixedSize(horizontal: true, vertical: false)
         }
         .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
         .frame(maxWidth: .infinity)
+    }
+}
+
+private extension BackwordCard {
+    var badgeBorderStyle: HomeCardBadgeBorderStyle {
+        BackwordCardAppearance.badgeBorderStyle(for: systemColorScheme)
     }
 }
 
@@ -254,7 +271,7 @@ enum BackwordCardStatusStyle {
         guard systemColorScheme == .light else { return .status }
         guard case .notStarted = status else { return .status }
 
-        return .homeCardStreak
+        return .inProgress
     }
 }
 

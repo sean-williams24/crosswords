@@ -6,6 +6,7 @@ struct StatusLabelView: View {
     let status: PuzzleStatus
     var textStyle: StatusLabelTextStyle = .statusColor
     var backgroundStyle: StatusLabelBackgroundStyle = .status
+    var borderStyle: HomeCardBadgeBorderStyle = .none
 
     var body: some View {
         HStack(spacing: 4) {
@@ -20,6 +21,7 @@ struct StatusLabelView: View {
         .padding(.vertical, 5)
         .background(background)
         .cornerRadius(12)
+        .overlay(border)
     }
 
     @ViewBuilder
@@ -27,15 +29,27 @@ struct StatusLabelView: View {
         switch backgroundStyle {
         case .status:
             status.backgroundColor
-        case .homeCardStreak:
-            Color.appSurface.opacity(HomeCardStreakAppearance.backgroundOpacity)
+        case .inProgress:
+            PuzzleStatus.inProgress.backgroundColor
+        }
+    }
+
+    @ViewBuilder
+    private var border: some View {
+        switch borderStyle {
+        case .none:
+            EmptyView()
+        case .white:
+            RoundedRectangle(cornerRadius: 12)
+                .strokeBorder(Color.appSurface, lineWidth: 1)
+                .environment(\.colorScheme, .light)
         }
     }
 }
 
 enum StatusLabelBackgroundStyle: Equatable {
     case status
-    case homeCardStreak
+    case inProgress
 }
 
 enum StatusLabelTextStyle: Equatable {

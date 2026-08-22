@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct BackwordLetterCell: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     let letter: Character?
     var inputLetter: Character?  = nil
     var isCursor: Bool = false
@@ -9,7 +11,7 @@ struct BackwordLetterCell: View {
     var isFailed: Bool = false
     var isCelebrating: Bool = false
     var size: CGFloat = 44
-    var correctCellStyle: BackwordCorrectCellStyle = .standard
+    var correctCellStyle: BackwordCorrectCellStyle = .game
 
     @State private var flashed = false
 
@@ -19,6 +21,7 @@ struct BackwordLetterCell: View {
         ZStack {
             RoundedRectangle(cornerRadius: 6)
                 .fill(cellBackground)
+                .environment(\.colorScheme, resolvedCellColorScheme)
 
             // Border — pulsing sub-view when cursor, static otherwise
             if isCursor {
@@ -53,7 +56,7 @@ struct BackwordLetterCell: View {
     private var cellBackground: Color {
         if isFailed { return .appGaveUp.opacity(0.15) }
         if isCorrect {
-            return usesOutlinedCorrectCell ? .clear : .appCorrect.opacity(0.15)
+            return correctCellStyle == .whiteHomeCard ? .appSurface : .appCorrect.opacity(0.15)
         }
         if flashed { return .appAccent.opacity(0.25) }
         if letter != nil || inputLetter != nil { return .appSurface }
@@ -63,31 +66,23 @@ struct BackwordLetterCell: View {
     private var staticBorderColor: Color {
         if isFailed { return .appGaveUp.opacity(0.75) }
         if isCelebrating { return .appAccent }
-        if isCorrect { return usesOutlinedCorrectCell ? .appCorrect : .appCorrect.opacity(0.6) }
+        if isCorrect { return .appCorrect.opacity(0.6) }
         if flashed { return .appAccent }
         if letter != nil { return .appAccent.opacity(0.5) }
         if inputLetter != nil { return .appTextPrimary.opacity(0.5) }
         return .appGridLine
     }
 
-    private var usesOutlinedCorrectCell: Bool {
-        isCorrect && correctCellStyle == .outlined
+    private func letterText(_ character: Character) -> some View {
+        Text(String(character))
+            .font(AppFont.gridLetter(size * 0.45))
+            .foregroundColor(.appTextPrimary)
+            .environment(\.colorScheme, resolvedCellColorScheme)
+            .transition(.scale(scale: 0.4).combined(with: .opacity))
     }
 
-    @ViewBuilder
-    private func letterText(_ character: Character) -> some View {
-        if usesOutlinedCorrectCell {
-            Text(String(character))
-                .font(AppFont.gridLetter(size * 0.45))
-                .foregroundColor(.appTextPrimary)
-                .environment(\.colorScheme, .light)
-                .transition(.scale(scale: 0.4).combined(with: .opacity))
-        } else {
-            Text(String(character))
-                .font(AppFont.gridLetter(size * 0.45))
-                .foregroundColor(.appTextPrimary)
-                .transition(.scale(scale: 0.4).combined(with: .opacity))
-        }
+    private var resolvedCellColorScheme: ColorScheme {
+        isCorrect && correctCellStyle == .whiteHomeCard ? .light : colorScheme
     }
 }
 

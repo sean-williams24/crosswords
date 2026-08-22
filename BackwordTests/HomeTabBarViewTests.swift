@@ -53,10 +53,16 @@ struct HomeCardStreakLayoutTests {
         #expect(BackwordCardAppearance.backgroundColorScheme(for: .dark) == .dark)
     }
 
-    @Test("Won Backword card cells use an outline only in Light Mode")
+    @Test("Won Backword card cells use a white background only in Light Mode")
     func backwordCardWonCellStyle() {
-        #expect(BackwordCardAppearance.correctCellStyle(for: .light) == .outlined)
-        #expect(BackwordCardAppearance.correctCellStyle(for: .dark) == .standard)
+        #expect(BackwordCardAppearance.correctCellStyle(for: .light) == .whiteHomeCard)
+        #expect(BackwordCardAppearance.correctCellStyle(for: .dark) == .game)
+    }
+
+    @Test("Light Mode home card badges use a thin white border")
+    func homeCardBadgeBorderStyle() {
+        #expect(BackwordCardAppearance.badgeBorderStyle(for: .light) == .white)
+        #expect(BackwordCardAppearance.badgeBorderStyle(for: .dark) == .none)
     }
 
     @Test("Home card backgrounds are brighter only in Light Mode")
@@ -71,13 +77,13 @@ struct HomeCardStreakLayoutTests {
         #expect(BackwordCardStatusStyle.textStyle == .primary)
     }
 
-    @Test("Light Mode Backword New label uses the streak badge background")
+    @Test("Light Mode Backword New label uses the In Progress background")
     func backwordNewStatusBackgroundStyle() {
         #expect(
             BackwordCardStatusStyle.backgroundStyle(
                 for: .notStarted,
                 systemColorScheme: .light
-            ) == .homeCardStreak
+            ) == .inProgress
         )
         #expect(
             BackwordCardStatusStyle.backgroundStyle(
@@ -91,7 +97,6 @@ struct HomeCardStreakLayoutTests {
                 systemColorScheme: .dark
             ) == .status
         )
-        #expect(HomeCardStreakAppearance.backgroundOpacity == 0.5)
     }
 
     @Test("Daily in-progress status labels use the card's primary text colour")

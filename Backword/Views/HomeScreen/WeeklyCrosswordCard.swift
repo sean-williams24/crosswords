@@ -5,6 +5,7 @@ import SwiftUI
 
 struct WeeklyCrosswordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.colorScheme) private var systemColorScheme
     @EnvironmentObject private var statsService: StatsService
     @EnvironmentObject var storeService: StoreService
     @ScaledMetric private var iconSize: CGFloat = 10
@@ -75,7 +76,10 @@ struct WeeklyCrosswordCard: View {
                                 .font(AppFont.caption())
                                 .foregroundColor(.appTextSecondary)
                         } else {
-                            StatusLabelView(status: viewModel.weeklyPuzzleStatus)
+                            StatusLabelView(
+                                status: viewModel.weeklyPuzzleStatus,
+                                borderStyle: badgeBorderStyle
+                            )
                         }
                     } else {
                         HStack(spacing: 6) {
@@ -122,7 +126,10 @@ struct WeeklyCrosswordCard: View {
         HStack {
             scoreView
             Spacer(minLength: 2)
-            StreakButton(streak: statsService.stats.currentStreak(isWeekly: true))
+            StreakButton(
+                streak: statsService.stats.currentStreak(isWeekly: true),
+                borderStyle: badgeBorderStyle
+            )
         }
     }
 
@@ -138,6 +145,10 @@ struct WeeklyCrosswordCard: View {
                     .foregroundColor(.appTextSecondary)
             }
         }
+    }
+
+    private var badgeBorderStyle: HomeCardBadgeBorderStyle {
+        BackwordCardAppearance.badgeBorderStyle(for: systemColorScheme)
     }
 
     private var horizontalTitleContent: some View {
