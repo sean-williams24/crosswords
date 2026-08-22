@@ -1,5 +1,9 @@
 import SwiftUI
 
+enum HomeCardStreakAppearance {
+    static let backgroundOpacity = 0.5
+}
+
 struct StreakButton: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var showPopup = false
@@ -29,7 +33,7 @@ struct StreakButton: View {
                 }
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
-                .background(Color.appSurface.opacity(0.5))
+                .background(Color.appSurface.opacity(HomeCardStreakAppearance.backgroundOpacity))
                 .cornerRadius(AppLayout.cardCornerRadius)
             }
             .buttonStyle(.plain)

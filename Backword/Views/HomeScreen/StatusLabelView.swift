@@ -5,6 +5,7 @@ import SwiftUI
 struct StatusLabelView: View {
     let status: PuzzleStatus
     var textStyle: StatusLabelTextStyle = .statusColor
+    var backgroundStyle: StatusLabelBackgroundStyle = .status
 
     var body: some View {
         HStack(spacing: 4) {
@@ -17,9 +18,24 @@ struct StatusLabelView: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 5)
-        .background(status.backgroundColor)
+        .background(background)
         .cornerRadius(12)
     }
+
+    @ViewBuilder
+    private var background: some View {
+        switch backgroundStyle {
+        case .status:
+            status.backgroundColor
+        case .homeCardStreak:
+            Color.appSurface.opacity(HomeCardStreakAppearance.backgroundOpacity)
+        }
+    }
+}
+
+enum StatusLabelBackgroundStyle: Equatable {
+    case status
+    case homeCardStreak
 }
 
 enum StatusLabelTextStyle: Equatable {

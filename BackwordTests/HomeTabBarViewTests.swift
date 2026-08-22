@@ -53,10 +53,10 @@ struct HomeCardStreakLayoutTests {
         #expect(BackwordCardAppearance.backgroundColorScheme(for: .dark) == .dark)
     }
 
-    @Test("Backword card border is thinner in Light Mode")
-    func backwordCardBorderWidth() {
-        #expect(BackwordCardAppearance.borderWidth(for: .light) == 1)
-        #expect(BackwordCardAppearance.borderWidth(for: .dark) == 2)
+    @Test("Won Backword card cells use an outline only in Light Mode")
+    func backwordCardWonCellStyle() {
+        #expect(BackwordCardAppearance.correctCellStyle(for: .light) == .outlined)
+        #expect(BackwordCardAppearance.correctCellStyle(for: .dark) == .standard)
     }
 
     @Test("Home card backgrounds are brighter only in Light Mode")
@@ -69,6 +69,29 @@ struct HomeCardStreakLayoutTests {
     @Test("Backword status labels use the card's primary text colour")
     func backwordStatusUsesPrimaryText() {
         #expect(BackwordCardStatusStyle.textStyle == .primary)
+    }
+
+    @Test("Light Mode Backword New label uses the streak badge background")
+    func backwordNewStatusBackgroundStyle() {
+        #expect(
+            BackwordCardStatusStyle.backgroundStyle(
+                for: .notStarted,
+                systemColorScheme: .light
+            ) == .homeCardStreak
+        )
+        #expect(
+            BackwordCardStatusStyle.backgroundStyle(
+                for: .inProgress,
+                systemColorScheme: .light
+            ) == .status
+        )
+        #expect(
+            BackwordCardStatusStyle.backgroundStyle(
+                for: .notStarted,
+                systemColorScheme: .dark
+            ) == .status
+        )
+        #expect(HomeCardStreakAppearance.backgroundOpacity == 0.5)
     }
 
     @Test("Daily in-progress status labels use the card's primary text colour")

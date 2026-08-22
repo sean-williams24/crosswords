@@ -145,10 +145,18 @@ from the Rating Details sign-out control.
 ## Home Card Appearance
 
 The Backword card keeps its dark content palette for readable logo and status
-content in either appearance. Its background and border follow the system
-colour scheme: Light Mode uses a flat, opaque pastel lavender with a one-point
-outline, while Dark Mode keeps the existing darker purple and two-point
-outline.
+content in either appearance. Its background follows the system colour scheme:
+Light Mode uses a flat, opaque pastel lavender, while Dark Mode keeps the
+existing darker purple. The card has no outline in either appearance.
+
+The Light Mode Backword `New` status label uses the same semi-opaque surface
+background as the streak badge for contrast against the pastel card. Other
+Backword statuses, including `In Progress`, retain the shared status-label
+background.
+
+Won Backword cells on the Light Mode home card use a Correct-green outline
+with dark primary text and no fill. This preserves legibility against the
+pastel card while keeping the Dark Mode and in-game cells unchanged.
 
 ---
 

@@ -73,13 +73,6 @@ struct BackwordCard: View {
         )
         .background(Color.appCrosswordBackground)
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
-        .overlay(
-            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .strokeBorder(
-                    Color.appAccent,
-                    lineWidth: BackwordCardAppearance.borderWidth(for: systemColorScheme)
-                )
-        )
         .environment(\.colorScheme, BackwordAppearance.colorScheme)
     }
 
@@ -112,7 +105,14 @@ struct BackwordCard: View {
     @ViewBuilder
     private var playView: some View {
         if let status {
-            StatusLabelView(status: status, textStyle: BackwordCardStatusStyle.textStyle)
+            StatusLabelView(
+                status: status,
+                textStyle: BackwordCardStatusStyle.textStyle,
+                backgroundStyle: BackwordCardStatusStyle.backgroundStyle(
+                    for: status,
+                    systemColorScheme: systemColorScheme
+                )
+            )
                 .padding(.bottom, 16)
         }
     }
@@ -173,7 +173,11 @@ struct BackwordCard: View {
                         BackwordLetterCell(
                             letter: letters[i],
                             isCorrect: true,
-                            size: 40                        )
+                            size: 40,
+                            correctCellStyle: BackwordCardAppearance.correctCellStyle(
+                                for: systemColorScheme
+                            )
+                        )
                     }
                 } else {
                     let revealed = BackwordViewModel.revealedIndices(
@@ -242,6 +246,16 @@ struct BackwordCard: View {
 
 enum BackwordCardStatusStyle {
     static let textStyle: StatusLabelTextStyle = .primary
+
+    static func backgroundStyle(
+        for status: PuzzleStatus,
+        systemColorScheme: ColorScheme
+    ) -> StatusLabelBackgroundStyle {
+        guard systemColorScheme == .light else { return .status }
+        guard case .notStarted = status else { return .status }
+
+        return .homeCardStreak
+    }
 }
 
 private var guessCounter: some View {
