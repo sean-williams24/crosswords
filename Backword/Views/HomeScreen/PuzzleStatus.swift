@@ -24,6 +24,15 @@ enum PuzzleStatus {
         }
     }
 
+    var usesWhiteCheckmark: Bool {
+        switch self {
+        case .completedOnTime, .completedLate, .wonBackwordOnTime, .wonBackword:
+            true
+        case .failedBackword, .inProgress, .notStarted:
+            false
+        }
+    }
+
     var label: String {
         switch self {
         case .completedOnTime:         return "Solved"

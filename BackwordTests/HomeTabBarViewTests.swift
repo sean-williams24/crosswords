@@ -116,6 +116,17 @@ struct HomeCardStreakLayoutTests {
         #expect(PuzzleStatus.completedLate.label == "Finished")
     }
 
+    @Test("Successful statuses use a white checkmark")
+    func successfulStatusesUseWhiteCheckmark() {
+        #expect(PuzzleStatus.completedOnTime.usesWhiteCheckmark)
+        #expect(PuzzleStatus.completedLate.usesWhiteCheckmark)
+        #expect(PuzzleStatus.wonBackwordOnTime(3).usesWhiteCheckmark)
+        #expect(PuzzleStatus.wonBackword(3).usesWhiteCheckmark)
+        #expect(!PuzzleStatus.failedBackword.usesWhiteCheckmark)
+        #expect(!PuzzleStatus.inProgress.usesWhiteCheckmark)
+        #expect(!PuzzleStatus.notStarted.usesWhiteCheckmark)
+    }
+
     @Test("Archive weekly status uses weekly release date")
     func archiveWeeklyStatusUsesWeeklyReleaseDate() throws {
         let puzzleId = "archive-weekly-status-\(UUID().uuidString)"

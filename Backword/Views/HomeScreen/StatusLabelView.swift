@@ -10,9 +10,7 @@ struct StatusLabelView: View {
 
     var body: some View {
         HStack(spacing: 4) {
-            Image(systemName: status.icon)
-                .font(.caption2)
-                .foregroundColor(status.color)
+            statusIcon
             Text(status.label)
                 .font(AppFont.clueLabel(11))
                 .foregroundColor(textStyle.color(for: status))
@@ -22,6 +20,24 @@ struct StatusLabelView: View {
         .background(background)
         .cornerRadius(12)
         .overlay(border)
+    }
+
+    @ViewBuilder
+    private var statusIcon: some View {
+        if status.usesWhiteCheckmark {
+            ZStack {
+                Image(systemName: "circle.fill")
+                    .foregroundColor(status.color)
+                Image(systemName: "checkmark")
+                    .font(.system(size: 7, weight: .bold))
+                    .foregroundColor(.white)
+            }
+            .font(.caption2)
+        } else {
+            Image(systemName: status.icon)
+                .font(.caption2)
+                .foregroundColor(status.color)
+        }
     }
 
     @ViewBuilder
