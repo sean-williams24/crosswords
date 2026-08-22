@@ -65,24 +65,26 @@ struct BackwordCard: View {
             }
         }
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
-        .background(cardBackground)
+        .background(
+            cardBackground.environment(
+                \.colorScheme,
+                BackwordCardAppearance.backgroundColorScheme(for: systemColorScheme)
+            )
+        )
         .background(Color.appCrosswordBackground)
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .strokeBorder(Color.appAccent, lineWidth: 2)
+                .strokeBorder(
+                    Color.appAccent,
+                    lineWidth: BackwordCardAppearance.borderWidth(for: systemColorScheme)
+                )
         )
         .environment(\.colorScheme, BackwordAppearance.colorScheme)
     }
 
     private var cardBackground: some View {
-        ZStack {
-            Color.backwordBackground
-
-            if HomeCardAppearance.shouldBrightenBackground(for: systemColorScheme) {
-                Color.appTextPrimary.opacity(HomeCardAppearance.lightModeBrightnessOverlayOpacity)
-            }
-        }
+        Color.backwordBackground
     }
 
     private var bottomStatsView: some View {

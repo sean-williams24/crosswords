@@ -142,6 +142,16 @@ from the Rating Details sign-out control.
 
 ---
 
+## Home Card Appearance
+
+The Backword card keeps its dark content palette for readable logo and status
+content in either appearance. Its background and border follow the system
+colour scheme: Light Mode uses a flat, opaque pastel lavender with a one-point
+outline, while Dark Mode keeps the existing darker purple and two-point
+outline.
+
+---
+
 ## Website Backword Parity
 
 The browser Backword game lives at `/` as an immersive route outside the

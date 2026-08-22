@@ -47,6 +47,18 @@ struct HomeCardStreakLayoutTests {
         #expect(BackwordAppearance.colorScheme == .dark)
     }
 
+    @Test("Backword card background follows the system appearance")
+    func backwordCardBackgroundAppearance() {
+        #expect(BackwordCardAppearance.backgroundColorScheme(for: .light) == .light)
+        #expect(BackwordCardAppearance.backgroundColorScheme(for: .dark) == .dark)
+    }
+
+    @Test("Backword card border is thinner in Light Mode")
+    func backwordCardBorderWidth() {
+        #expect(BackwordCardAppearance.borderWidth(for: .light) == 1)
+        #expect(BackwordCardAppearance.borderWidth(for: .dark) == 2)
+    }
+
     @Test("Home card backgrounds are brighter only in Light Mode")
     func homeCardBackgroundBrightness() {
         #expect(HomeCardAppearance.shouldBrightenBackground(for: .light))

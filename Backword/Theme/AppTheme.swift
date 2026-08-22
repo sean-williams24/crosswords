@@ -25,6 +25,21 @@ enum BackwordAppearance {
     static let colorScheme: ColorScheme = .dark
 }
 
+enum BackwordCardAppearance {
+    static let lightModeBorderWidth: CGFloat = 0
+    static let darkModeBorderWidth: CGFloat = 0
+
+    /// The card keeps dark, high-contrast content, while its background follows
+    /// the system appearance so Light Mode can use the pastel lavender asset.
+    static func backgroundColorScheme(for systemColorScheme: ColorScheme) -> ColorScheme {
+        systemColorScheme
+    }
+
+    static func borderWidth(for systemColorScheme: ColorScheme) -> CGFloat {
+        systemColorScheme == .light ? lightModeBorderWidth : darkModeBorderWidth
+    }
+}
+
 enum HomeCardAppearance {
     static let lightModeBrightnessOverlayOpacity = 0.1
 
