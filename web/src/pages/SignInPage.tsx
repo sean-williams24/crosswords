@@ -11,7 +11,7 @@ type ProviderChoice = "apple" | "google";
 
 export function SignInPage() {
   const location = useLocation();
-  const { user, ready, signIn, signInWithGoogle } = useAuth();
+  const { entitlement, user, ready, signIn, signInWithGoogle } = useAuth();
   const [signInError, setSignInError] = useState<AuthAlert | null>(null);
   const [pending, setPending] = useState<ProviderChoice | null>(null);
   const returnTo = typeof location.state?.returnTo === "string" ? location.state.returnTo : "/home";
@@ -19,7 +19,7 @@ export function SignInPage() {
     <header className="home-dashboard__header auth-page__header">
       <GameMenu />
       <Link aria-label="Backword home" to="/home">
-        <BackwordLogo large />
+        <BackwordLogo isPro={entitlement?.isPro === true} large />
       </Link>
     </header>
   );

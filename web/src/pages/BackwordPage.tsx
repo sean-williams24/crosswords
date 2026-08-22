@@ -34,7 +34,7 @@ import { backwordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountP
 type Sheet = "instructions" | "stats" | "completion" | null;
 
 export function BackwordPage() {
-  const { user } = useAuth();
+  const { entitlement, user } = useAuth();
   const storage = useMemo(() => createBackwordStorage(window.localStorage, {
     userId: user?.id,
     onProgressSaved: (progress) => {
@@ -249,7 +249,7 @@ export function BackwordPage() {
             onClose={() => setIsMenuOpen(false)}
             onOpen={() => setIsMenuOpen(true)}
           />
-          <BackwordLogo large />
+          <BackwordLogo isPro={entitlement?.isPro === true} large />
           <nav aria-label="Backword actions" className="bw-game-actions--top bw-game-actions--logo-header">
             <button
               aria-label="Backword stats"

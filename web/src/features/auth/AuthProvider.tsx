@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Provider, Session, User } from "@supabase/supabase-js";
 import { supabase, supabaseConfigurationError } from "../../lib/supabase";
 import { flushSyncQueue } from "../sync/progressSync";
@@ -7,6 +7,11 @@ import { entitlementWarning as entitlementWarningMessage } from "./authErrorPres
 type ProEntitlement = {
   isPro: boolean;
   expiresAt: string | null;
+};
+
+type InFlightEntitlementRefresh = {
+  sessionKey: string;
+  promise: Promise<void>;
 };
 
 type AuthContextValue = {
@@ -64,25 +69,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [entitlementWarning, setEntitlementWarning] = useState<string | null>(null);
   const [accountDeletionNotice, setAccountDeletionNotice] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const entitlementRefresh = useRef<InFlightEntitlementRefresh | null>(null);
+  const activeSessionKey = useRef<string | null>(null);
+  activeSessionKey.current = session ? `${session.user.id}:${session.access_token ?? ""}` : null;
 
   const refreshEntitlement = useCallback(async () => {
     if (!supabase || !session) {
+      entitlementRefresh.current = null;
       setEntitlement(null);
       setEntitlementWarning(null);
       return;
     }
-    const { data, error: entitlementError } = await supabase.rpc("current_user_pro_entitlement");
-    if (entitlementError) {
-      console.error("Account entitlement refresh failed", entitlementError);
-      setEntitlementWarning(entitlementWarningMessage);
-      return;
+    const sessionKey = `${session.user.id}:${session.access_token ?? ""}`;
+    const inFlight = entitlementRefresh.current;
+    if (inFlight && inFlight.sessionKey === sessionKey) {
+      return inFlight.promise;
     }
-    const result = Array.isArray(data) ? data[0] : data;
-    setEntitlement(result ? {
-      isPro: Boolean(result.is_pro),
-      expiresAt: result.expires_at ?? null
-    } : { isPro: false, expiresAt: null });
-    setEntitlementWarning(null);
+
+    const request = (async () => {
+      const { data, error: entitlementError } = await supabase.rpc("current_user_pro_entitlement");
+      if (activeSessionKey.current !== sessionKey) return;
+      if (entitlementError) {
+        console.error("Account entitlement refresh failed", entitlementError);
+        setEntitlementWarning(entitlementWarningMessage);
+        return;
+      }
+      const result = Array.isArray(data) ? data[0] : data;
+      setEntitlement(result ? {
+        isPro: Boolean(result.is_pro),
+        expiresAt: result.expires_at ?? null
+      } : { isPro: false, expiresAt: null });
+      setEntitlementWarning(null);
+    })();
+    entitlementRefresh.current = { sessionKey, promise: request };
+    try {
+      await request;
+    } finally {
+      if (entitlementRefresh.current?.promise === request) {
+        entitlementRefresh.current = null;
+      }
+    }
   }, [session]);
 
   useEffect(() => {

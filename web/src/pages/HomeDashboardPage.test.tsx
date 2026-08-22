@@ -6,6 +6,16 @@ import { MemoryRouter } from "react-router-dom";
 import { localDateString } from "../features/backword/date";
 import { HomeDashboardPage } from "./HomeDashboardPage";
 
+const testAuth = vi.hoisted(() => ({
+  value: {
+    entitlement: null as { isPro: boolean; expiresAt: string | null } | null,
+    ready: true,
+    user: null as { id: string } | null
+  }
+}));
+
+vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => testAuth.value }));
+
 function renderDashboard() {
   return render(
     <MemoryRouter>
@@ -21,6 +31,7 @@ function saveProgress(progress: Record<string, unknown>) {
 describe("web home dashboard", () => {
   beforeEach(() => {
     localStorage.clear();
+    testAuth.value = { entitlement: null, ready: true, user: null };
   });
 
   it("renders the daily cards and playable Backword link", () => {
@@ -54,6 +65,18 @@ describe("web home dashboard", () => {
     expect(styles).toContain(".home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px;");
     expect(styles).toContain(".home-dashboard__actions .auth-button__wide-label { display: none; }");
     expect(styles).toContain(".home-dashboard__actions .auth-button__compact-label { display: inline; }");
+  });
+
+  it("adds the Pro mark to the header logo for an active Pro account", () => {
+    testAuth.value = {
+      entitlement: { isPro: true, expiresAt: null },
+      ready: true,
+      user: { id: "pro-player" }
+    };
+    renderDashboard();
+
+    expect(within(screen.getByRole("link", { name: "Backword home" })).getByRole("img", { name: "Pro" }))
+      .toHaveAttribute("src", "/brand/backword-pro.png");
   });
 
   it.each([

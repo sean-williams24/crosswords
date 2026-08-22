@@ -108,6 +108,38 @@ describe("AuthProvider", () => {
     expect(onRefresh).toHaveBeenCalledTimes(1);
   });
 
+  it("coalesces concurrent entitlement refreshes for the active session", async () => {
+    const session = { access_token: "session-token", user: { id: "user-id", email: "player@example.com" } };
+    let resolveEntitlement: ((value: { data: { is_pro: boolean; expires_at: null }; error: null }) => void) | undefined;
+    const entitlementResponse = new Promise<{ data: { is_pro: boolean; expires_at: null }; error: null }>((resolve) => {
+      resolveEntitlement = resolve;
+    });
+    let auth: ReturnType<typeof useAuth> | undefined;
+    supabaseMock.auth.getSession.mockResolvedValue({ data: { session }, error: null });
+    supabaseMock.client.rpc.mockReturnValue(entitlementResponse);
+
+    render(
+      <AuthProvider>
+        <AuthConsumer onReady={(value) => { auth = value; }} />
+      </AuthProvider>
+    );
+
+    await screen.findByText("player@example.com");
+    await waitFor(() => expect(auth).toBeDefined());
+    await waitFor(() => expect(supabaseMock.client.rpc).toHaveBeenCalledTimes(1));
+    const activeAuth = auth!;
+    const firstRefresh = activeAuth.refreshEntitlement();
+    const secondRefresh = activeAuth.refreshEntitlement();
+    expect(supabaseMock.client.rpc).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      resolveEntitlement!({ data: { is_pro: true, expires_at: null }, error: null });
+      await Promise.all([firstRefresh, secondRefresh]);
+    });
+
+    await waitFor(() => expect(auth?.entitlement?.isPro).toBe(true));
+  });
+
   it("keeps the signed-in state until account-deletion confirmation is acknowledged", async () => {
     const session = { user: { id: "user-id", email: "player@example.com" } };
     supabaseMock.auth.getSession.mockResolvedValue({ data: { session }, error: null });

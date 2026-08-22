@@ -228,15 +228,33 @@ a {
   to { transform: translateX(0); }
 }
 
-.bw-logo {
+.bw-logo-lockup {
   grid-column: 2;
   justify-self: center;
-  width: auto;
+  position: relative;
+  display: block;
+  aspect-ratio: 1024 / 524;
   height: 38px;
+}
+
+.bw-logo-lockup--large { height: 76px; }
+
+.bw-logo {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
-.bw-logo--large { height: 76px; }
+.bw-logo__pro {
+  position: absolute;
+  top: 38%;
+  left: 26%;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  transform: scale(.64);
+}
 
 .bw-icon-button {
   display: inline-grid;
@@ -819,7 +837,7 @@ body {
 }
 
 .home-dashboard__header > a[aria-label="Backword home"] { grid-column: 2; }
-.home-dashboard__header .bw-logo { display: block; height: 72px; }
+.home-dashboard__header .bw-logo-lockup { height: 72px; }
 .home-dashboard__actions {
   position: absolute;
   top: max(20px, env(safe-area-inset-top));
@@ -1274,7 +1292,7 @@ body {
 @media (max-width: 680px) {
   .auth-page { padding-top: 101px; }
   .home-dashboard__header { min-height: 96px; }
-  .home-dashboard__header .bw-logo { height: 58px; }
+  .home-dashboard__header .bw-logo-lockup { height: 58px; }
   .home-dashboard__actions { top: max(12px, env(safe-area-inset-top)); right: 12px; gap: 6px; }
   .home-dashboard__actions img { height: 31px; }
   .home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px; padding: 7px 0; border-radius: 6.5px; font-size: 14px; }

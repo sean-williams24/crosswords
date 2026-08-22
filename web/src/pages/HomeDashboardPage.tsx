@@ -23,7 +23,7 @@ function formattedToday() {
 }
 
 export function HomeDashboardPage() {
-  const { user } = useAuth();
+  const { entitlement, user } = useAuth();
   const [showWeeklyModal, setShowWeeklyModal] = useState(false);
   const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, localDateString(), user?.id), [user?.id]);
   const crosswordStatus = useMemo(() => {
@@ -37,7 +37,7 @@ export function HomeDashboardPage() {
       <header className="home-dashboard__header">
         <GameMenu />
         <Link aria-label="Backword home" to="/home">
-          <BackwordLogo large />
+          <BackwordLogo isPro={entitlement?.isPro === true} large />
         </Link>
         <div className="home-dashboard__actions">
           <AuthButton />
