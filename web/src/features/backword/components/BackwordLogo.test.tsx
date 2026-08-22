@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen } from "@testing-library/react";
 import { BackwordLogo } from "./BackwordLogo";
 
@@ -20,5 +22,11 @@ describe("BackwordLogo", () => {
     render(<BackwordLogo />);
 
     expect(screen.queryByRole("img", { name: "Pro" })).not.toBeInTheDocument();
+  });
+
+  it("keeps space between the Backword and Pro artwork", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/\.bw-logo__pro\s*\{[^}]*\btop:\s*41%/);
   });
 });
