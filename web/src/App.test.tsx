@@ -106,6 +106,7 @@ describe("Backword website routes", () => {
       name: "Guess forwards. Reveal backwards."
     });
     const backwordImage = screen.getByAltText("Backword gameplay screen");
+    const dailyCrosswordImage = screen.getByAltText("Backword daily crossword screen");
     const weeklyHeading = screen.getByRole("heading", {
       level: 2,
       name: "A larger 13 x 13 puzzle for a slower challenge."
@@ -120,6 +121,7 @@ describe("Backword website routes", () => {
       weeklyHeading.compareDocumentPosition(weeklyImage) &
         Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
+    expect(dailyCrosswordImage).toHaveAttribute("src", "/screenshots/crossword.png");
   });
 
   it("renders the privacy route", () => {
