@@ -256,6 +256,12 @@ final class AccountService: ObservableObject {
     private var pendingGuestBackword: [BackwordProgress] = []
     private var pendingGuestCrosswords: [UserProgress] = []
 
+    private struct AppleEntitlementClaimRequest: Encodable {
+        let transactionID: String
+        let originalTransactionID: String
+        let signedTransactionInfo: String
+    }
+
     init(client: Supabase.SupabaseClient = SupabaseClient.shared.client) {
         self.client = client
         session = client.auth.currentSession
@@ -346,6 +352,7 @@ final class AccountService: ObservableObject {
             isProUser = false
             proExpirationDate = nil
             localProLinkedElsewhere = false
+            accountDeletionNotice = AccountDeletionPresentation.message
             return true
         } catch {
             presentError(error, operation: "account deletion")
@@ -447,35 +454,62 @@ final class AccountService: ObservableObject {
                     expirationDate: transaction.expirationDate
                   ) else { continue }
 
-            struct ClaimRequest: Encodable {
-                let transactionID: String
-                let originalTransactionID: String
-                let signedTransactionInfo: String
-            }
-            let request = ClaimRequest(
+            let request = AppleEntitlementReconciliation(
                 transactionID: String(transaction.id),
                 originalTransactionID: String(transaction.originalID),
                 // The signed JWS belongs to StoreKit's verification result,
                 // rather than the unwrapped Transaction payload.
                 signedTransactionInfo: result.jwsRepresentation
             )
-            do {
-                try await client.functions.invoke(
-                    "claim-apple-entitlement",
-                    options: FunctionInvokeOptions(
-                        headers: AccountFunctionRequest.authenticatedHeaders(accessToken: accessToken),
-                        body: request
-                    )
+            await claimAppleEntitlement(request, accessToken: accessToken)
+        }
+    }
+
+    /// Reconciles a verified StoreKit revocation immediately instead of waiting
+    /// for a later profile refresh or an App Store Server Notification delivery.
+    func reconcileAppleEntitlement(_ reconciliation: AppleEntitlementReconciliation) async {
+        guard isSignedIn else { return }
+
+        let accessToken: String
+        do {
+            accessToken = try await client.auth.session.accessToken
+        } catch {
+            guard AccountErrorPresentation.shouldPresent(error) else { return }
+            logger.error("Account entitlement reconciliation could not read the current session: \(error.localizedDescription, privacy: .public)")
+            errorMessage = "Your account session has expired. Please sign in again."
+            return
+        }
+
+        await claimAppleEntitlement(reconciliation, accessToken: accessToken)
+        await refreshProEntitlement()
+    }
+
+    private func claimAppleEntitlement(
+        _ reconciliation: AppleEntitlementReconciliation,
+        accessToken: String
+    ) async {
+        let request = AppleEntitlementClaimRequest(
+            transactionID: reconciliation.transactionID,
+            originalTransactionID: reconciliation.originalTransactionID,
+            signedTransactionInfo: reconciliation.signedTransactionInfo
+        )
+
+        do {
+            try await client.functions.invoke(
+                "claim-apple-entitlement",
+                options: FunctionInvokeOptions(
+                    headers: AccountFunctionRequest.authenticatedHeaders(accessToken: accessToken),
+                    body: request
                 )
-                localProLinkedElsewhere = false
-            } catch {
-                // A failed claim must not prevent local StoreKit access. The
-                // account sheet keeps the server's safe diagnostic available
-                // to retry or correct Apple API configuration.
-                let message = AccountFunctionError.message(for: error)
-                localProLinkedElsewhere = AccountEntitlementPresentation.isAlreadyLinkedPurchaseError(message)
-                presentError(error, operation: "Apple entitlement claim", message: message)
-            }
+            )
+            localProLinkedElsewhere = false
+        } catch {
+            // A failed reconciliation must not prevent local StoreKit access.
+            // The account sheet keeps the server's safe diagnostic available
+            // to retry or correct Apple API configuration.
+            let message = AccountFunctionError.message(for: error)
+            localProLinkedElsewhere = AccountEntitlementPresentation.isAlreadyLinkedPurchaseError(message)
+            presentError(error, operation: "Apple entitlement claim", message: message)
         }
     }
 

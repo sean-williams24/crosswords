@@ -49,6 +49,19 @@ transaction, the cache is cleared and cannot keep Pro unlocked. Account
 deletion removes the Backword association and cloud gameplay data but never
 cancels the Apple subscription.
 
+Debug builds include a StoreKit refund-request action solely for testing an
+external App Store refund and the resulting entitlement revocation. It requires
+an active, verified Pro transaction with no Debug Pro Override, and must be
+used with a genuine Sandbox purchase rather than the Xcode StoreKit
+configuration. It is excluded from production builds and is not a customer
+refund feature.
+
+A verified StoreKit Pro revocation is reconciled with the authenticated account
+immediately through the entitlement claim endpoint, then the account
+entitlement is reloaded. This avoids leaving an iOS device or the next web
+refresh unlocked solely because the cached account status has not yet observed
+Apple's server notification.
+
 Every App Store Server Notification creates a deduplicated, server-only summary
 in `apple_subscription_events`, keyed by Apple's notification UUID. It records
 event, transaction, account, environment, time, renewal, and resulting
@@ -75,12 +88,20 @@ session and take the player to sign-in.
 
 iOS verifies its cached Supabase session with the Auth user endpoint during
 startup and foreground account refreshes, before it uploads or downloads cloud
-progress. A server-confirmed missing or invalid account clears that device's
-local session, returns persistence to the guest namespace, and presents the
-same cloud-versus-device-local deletion explanation. Offline or other transient
+progress. A successful deletion initiated on that device, or a
+server-confirmed missing or invalid account, clears that device's local session,
+returns persistence to the guest namespace, and presents the same
+cloud-versus-device-local deletion explanation. Offline or other transient
 validation failures keep the cached session intact and retry on a later refresh;
 iOS has no push channel that can wake a closed app at the instant a browser
 deletes an account.
+
+The web performs the same Auth user validation when a signed-in browser starts,
+regains focus or visibility, reconnects, or moves to a different client-side
+route. A server-confirmed unavailable account clears only that browser's
+session, presents the deletion summary above the current route, and goes to
+sign-in after acknowledgement. Transient network failures leave the cached
+session intact.
 
 Successful Apple and Google authentication dismisses the sign-in sheet as soon
 as Supabase creates the local session. Guest-progress migration, cloud sync,

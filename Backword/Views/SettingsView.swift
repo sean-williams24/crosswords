@@ -171,21 +171,6 @@ struct SettingsView: View {
                 }
                     .environmentObject(accountService)
             }
-            .confirmationDialog(
-                "Delete Backword account?",
-                isPresented: $showDeletionConfirmation,
-                titleVisibility: .visible
-            ) {
-                Button("Delete Account", role: .destructive) {
-                    Task {
-                        if await accountService.deleteAccount() {
-                            dismiss()
-                        }
-                    }
-                }
-            } message: {
-                Text("This permanently deletes your cloud progress and account. It does not cancel your Apple subscription.")
-            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -303,6 +288,21 @@ struct SettingsView: View {
             .font(AppFont.body(15))
             .frame(maxWidth: .infinity)
             .listRowBackground(Color.appSurface)
+            .confirmationDialog(
+                SettingsDeletionConfirmationPresentation.title,
+                isPresented: $showDeletionConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Delete Account", role: .destructive) {
+                    Task {
+                        if await accountService.deleteAccount() {
+                            dismiss()
+                        }
+                    }
+                }
+            } message: {
+                Text(SettingsDeletionConfirmationPresentation.message)
+            }
         } footer: {
             if let errorMessage = accountService.errorMessage {
                 Text(errorMessage)
@@ -533,6 +533,11 @@ enum SettingsAccountActionVisibility {
     static func showsDeleteAccount(isSignedIn: Bool) -> Bool {
         isSignedIn
     }
+}
+
+enum SettingsDeletionConfirmationPresentation {
+    static let title = "Delete Backword account?"
+    static let message = "This permanently deletes your cloud progress and account. It does not cancel your Apple subscription."
 }
 
 #Preview {

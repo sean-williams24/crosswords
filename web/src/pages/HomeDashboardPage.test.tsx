@@ -87,7 +87,7 @@ describe("web home dashboard", () => {
       "weekly-modal__title"
     );
     const featureList = modal.querySelector(".weekly-modal__features");
-    const intro = screen.getByText("Available on the Backword iOS app...");
+    const intro = screen.getByText("Available on the Backword iOS app, coming soon to web.");
     expect(featureList).not.toBeNull();
     expect(
       screen.getByRole("heading", { name: "The full game experience" }).compareDocumentPosition(

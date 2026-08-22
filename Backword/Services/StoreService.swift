@@ -1,4 +1,7 @@
 import StoreKit
+#if DEBUG
+import UIKit
+#endif
 
 @MainActor
 final class StoreService: ObservableObject {
@@ -17,6 +20,7 @@ final class StoreService: ObservableObject {
     @Published private(set) var subscriptionStatusLoaded = false
     @Published private(set) var purchaseInProgress = false
     @Published private(set) var accountHasPro = false
+    @Published private(set) var pendingAccountEntitlementReconciliation: AppleEntitlementReconciliation?
 
     private var storeKitHasPro = false
 
@@ -35,6 +39,8 @@ final class StoreService: ObservableObject {
     @Published private(set) var simulateNextRestoreOutcome: StoreRestoreOutcome?
     @Published private(set) var isDumpingStoreKitEntitlements = false
     @Published private(set) var storeKitEntitlementDiagnosticSummary: String?
+    @Published private(set) var refundRequestInProgress = false
+    @Published private(set) var refundRequestStatusMessage: String?
     #endif
 
     private var transactionListener: Task<Void, Never>?
@@ -342,6 +348,13 @@ final class StoreService: ObservableObject {
         return true
     }
 
+    static func requiresAccountEntitlementReconciliation(
+        productID: String,
+        revocationDate: Date?
+    ) -> Bool {
+        (productID == monthlyID || productID == annualID) && revocationDate != nil
+    }
+
     static func resolvedProStatus(
         hasActiveSubscription: Bool
     ) -> Bool {
@@ -399,6 +412,13 @@ final class StoreService: ObservableObject {
         updateEffectiveProStatus()
     }
 
+    func completeAccountEntitlementReconciliation(
+        _ reconciliation: AppleEntitlementReconciliation
+    ) {
+        guard pendingAccountEntitlementReconciliation == reconciliation else { return }
+        pendingAccountEntitlementReconciliation = nil
+    }
+
     private func setStoreKitProStatus(_ value: Bool) {
         storeKitHasPro = value
         updateEffectiveProStatus()
@@ -442,6 +462,20 @@ final class StoreService: ObservableObject {
         let unverifiedText = unverifiedCount == 1 ? "unverified" : "unverified"
         return "\(totalCount) current \(entitlementText); \(proGrantingCount) \(proText) Pro; \(unverifiedCount) \(unverifiedText)."
     }
+
+    static func debugRefundRequestIsEligible(
+        productID: String,
+        revocationDate: Date?,
+        expirationDate: Date?,
+        now: Date = Date()
+    ) -> Bool {
+        grantsProAccess(
+            productID: productID,
+            revocationDate: revocationDate,
+            expirationDate: expirationDate,
+            now: now
+        )
+    }
     #endif
 
     // MARK: - Debug
@@ -474,6 +508,45 @@ final class StoreService: ObservableObject {
 
     func setDebugSimulateNextRestoreOutcome(_ outcome: StoreRestoreOutcome?) {
         simulateNextRestoreOutcome = outcome
+    }
+
+    /// Opens Apple's refund sheet for a verified, active Pro transaction.
+    /// This remains debug-only because it exercises entitlement revocation,
+    /// rather than providing a customer-facing refund flow.
+    func requestDebugProRefund(in windowScene: UIWindowScene) async {
+        guard debugProOverride == nil else {
+            refundRequestStatusMessage = "Reset Debug Pro Override before requesting a Sandbox refund."
+            return
+        }
+
+        refundRequestInProgress = true
+        refundRequestStatusMessage = nil
+        defer { refundRequestInProgress = false }
+
+        for await result in Transaction.currentEntitlements {
+            guard case .verified(let transaction) = result,
+                  Self.debugRefundRequestIsEligible(
+                    productID: transaction.productID,
+                    revocationDate: transaction.revocationDate,
+                    expirationDate: transaction.expirationDate
+                  ) else { continue }
+
+            do {
+                switch try await transaction.beginRefundRequest(in: windowScene) {
+                case .success:
+                    refundRequestStatusMessage = "Refund request sent. In Sandbox, Apple approves a normal request automatically."
+                case .userCancelled:
+                    refundRequestStatusMessage = "Refund request cancelled."
+                @unknown default:
+                    refundRequestStatusMessage = "Refund request did not complete."
+                }
+            } catch {
+                refundRequestStatusMessage = "Refund request failed: \(error.localizedDescription)"
+            }
+            return
+        }
+
+        refundRequestStatusMessage = "No active Pro transaction is available to refund. Use a Sandbox purchase, not the local StoreKit configuration."
     }
 
     func dumpStoreKitEntitlements() async {
@@ -550,6 +623,16 @@ final class StoreService: ObservableObject {
                 switch result {
                 case .verified(let transaction):
                     self.logger.transactionUpdateReceived(productID: transaction.productID)
+                    if Self.requiresAccountEntitlementReconciliation(
+                        productID: transaction.productID,
+                        revocationDate: transaction.revocationDate
+                    ) {
+                        self.pendingAccountEntitlementReconciliation = AppleEntitlementReconciliation(
+                            transactionID: String(transaction.id),
+                            originalTransactionID: String(transaction.originalID),
+                            signedTransactionInfo: result.jwsRepresentation
+                        )
+                    }
                     await self.updateSubscriptionStatus(source: "transaction_update")
                     await transaction.finish()
                     self.logger.transactionUpdateCompleted(productID: transaction.productID)
@@ -591,4 +674,14 @@ struct ProEntitlementSnapshot: Equatable {
     let productID: String
     let revocationDate: Date?
     let expirationDate: Date?
+}
+
+/// A verified StoreKit revocation that must be reconciled against the
+/// account-linked entitlement on the server.
+struct AppleEntitlementReconciliation: Equatable, Identifiable {
+    let transactionID: String
+    let originalTransactionID: String
+    let signedTransactionInfo: String
+
+    var id: String { transactionID }
 }

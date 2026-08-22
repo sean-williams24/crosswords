@@ -20,6 +20,9 @@ type AuthContextValue = {
   signOut: () => Promise<void>;
   deleteAccount: () => Promise<void>;
   finishAccountDeletion: () => Promise<void>;
+  accountDeletionNotice: boolean;
+  acknowledgeAccountDeletion: () => void;
+  validateAccountSession: () => Promise<void>;
   refreshEntitlement: () => Promise<void>;
 };
 
@@ -36,6 +39,9 @@ const guestAuth: AuthContextValue = {
   signOut: async () => undefined,
   deleteAccount: async () => { throw new Error(supabaseConfigurationError); },
   finishAccountDeletion: async () => undefined,
+  accountDeletionNotice: false,
+  acknowledgeAccountDeletion: () => undefined,
+  validateAccountSession: async () => undefined,
   refreshEntitlement: async () => undefined
 };
 
@@ -43,11 +49,21 @@ function safeReturnTo(value: string) {
   return value.startsWith("/") && !value.startsWith("//") ? value : "/home";
 }
 
+export function requiresLocalSignOut(error: unknown) {
+  if (!error || typeof error !== "object") return false;
+  const accountError = error as { code?: unknown; status?: unknown };
+  return accountError.code === "user_not_found"
+    || accountError.status === 401
+    || accountError.status === 404;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [entitlement, setEntitlement] = useState<ProEntitlement | null>(null);
   const [entitlementWarning, setEntitlementWarning] = useState<string | null>(null);
+  const [accountDeletionNotice, setAccountDeletionNotice] = useState(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
   const refreshEntitlement = useCallback(async () => {
     if (!supabase || !session) {
@@ -94,6 +110,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const validateAccountSession = useCallback(async () => {
+    const client = supabase;
+    if (!client || !session || isDeletingAccount) return;
+
+    const clearUnavailableSession = () => {
+      // Local sign-out clears this browser even when the deleted account can
+      // no longer acknowledge Supabase's logout request.
+      void client.auth.signOut({ scope: "local" }).then(({ error }) => {
+        if (error) console.error("Unavailable account local sign-out failed", error);
+      });
+      setSession(null);
+      setEntitlement(null);
+      setEntitlementWarning(null);
+      setAccountDeletionNotice(true);
+    };
+    const { data, error } = await client.auth.getUser();
+    if (!error && data.user?.id === session.user.id) return;
+    if (requiresLocalSignOut(error) || (!error && !data.user)) {
+      clearUnavailableSession();
+      return;
+    }
+    console.error("Account session validation failed", error);
+  }, [isDeletingAccount, session?.access_token, session?.user.id]);
+
+  useEffect(() => {
+    if (!session || isDeletingAccount) return;
+    const validateWhenVisible = () => {
+      if (document.visibilityState === "visible") void validateAccountSession();
+    };
+
+    void validateAccountSession();
+    window.addEventListener("focus", validateAccountSession);
+    window.addEventListener("online", validateAccountSession);
+    document.addEventListener("visibilitychange", validateWhenVisible);
+    return () => {
+      window.removeEventListener("focus", validateAccountSession);
+      window.removeEventListener("online", validateAccountSession);
+      document.removeEventListener("visibilitychange", validateWhenVisible);
+    };
+  }, [isDeletingAccount, session?.access_token, session?.user.id, validateAccountSession]);
+
   useEffect(() => {
     void refreshEntitlement();
   }, [session?.user.id]);
@@ -136,12 +193,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!supabase) return;
       const { error: signOutError } = await supabase.auth.signOut();
       if (signOutError) throw signOutError;
+      setIsDeletingAccount(false);
       setEntitlement(null);
     },
     async deleteAccount() {
       if (!supabase) throw new Error(supabaseConfigurationError);
+      setIsDeletingAccount(true);
       const { error: deleteError } = await supabase.functions.invoke("delete-account");
-      if (deleteError) throw deleteError;
+      if (deleteError) {
+        setIsDeletingAccount(false);
+        throw deleteError;
+      }
     },
     async finishAccountDeletion() {
       if (!supabase) return;
@@ -150,9 +212,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(null);
       setEntitlement(null);
       setEntitlementWarning(null);
+      setIsDeletingAccount(false);
     },
+    accountDeletionNotice,
+    acknowledgeAccountDeletion() {
+      setAccountDeletionNotice(false);
+    },
+    validateAccountSession,
     refreshEntitlement
-  }), [ready, session, entitlement, entitlementWarning, refreshEntitlement]);
+  }), [ready, session, entitlement, entitlementWarning, accountDeletionNotice, validateAccountSession, refreshEntitlement]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

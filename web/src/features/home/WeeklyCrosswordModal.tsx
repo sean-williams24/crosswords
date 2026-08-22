@@ -60,7 +60,7 @@ export function WeeklyCrosswordModal({ onClose }: WeeklyCrosswordModalProps) {
             ))}
           </ul>
                  <p className="weekly-modal__intro">
-            Available on the Backword iOS app...
+            Available on the Backword iOS app, coming soon to web.
           </p>
           <div className="weekly-modal__store-badge">
             <AppStoreBadge />

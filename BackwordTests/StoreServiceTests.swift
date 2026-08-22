@@ -141,6 +141,22 @@ struct StoreServiceTests {
         ))
     }
 
+    @Test("Revoked Pro transactions are reconciled with the account entitlement")
+    func revokedProTransactionRequiresAccountReconciliation() {
+        #expect(StoreService.requiresAccountEntitlementReconciliation(
+            productID: StoreService.monthlyID,
+            revocationDate: Date()
+        ))
+        #expect(!StoreService.requiresAccountEntitlementReconciliation(
+            productID: StoreService.annualID,
+            revocationDate: nil
+        ))
+        #expect(!StoreService.requiresAccountEntitlementReconciliation(
+            productID: "com.backword.not-pro",
+            revocationDate: Date()
+        ))
+    }
+
     #if DEBUG
     @Test("Debug override true forces Pro")
     func debugOverrideTrueForcesPro() {
@@ -187,6 +203,30 @@ struct StoreServiceTests {
             proGrantingCount: 1,
             unverifiedCount: 1
         ) == "2 current entitlements; 1 grants Pro; 1 unverified.")
+    }
+
+    @Test("Debug refund requests require an active Pro entitlement")
+    func debugRefundRequestRequiresActiveProEntitlement() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+
+        #expect(StoreService.debugRefundRequestIsEligible(
+            productID: StoreService.monthlyID,
+            revocationDate: nil,
+            expirationDate: now.addingTimeInterval(60),
+            now: now
+        ))
+        #expect(!StoreService.debugRefundRequestIsEligible(
+            productID: StoreService.annualID,
+            revocationDate: now,
+            expirationDate: now.addingTimeInterval(60),
+            now: now
+        ))
+        #expect(!StoreService.debugRefundRequestIsEligible(
+            productID: "com.backword.not-pro",
+            revocationDate: nil,
+            expirationDate: now.addingTimeInterval(60),
+            now: now
+        ))
     }
     #endif
 }

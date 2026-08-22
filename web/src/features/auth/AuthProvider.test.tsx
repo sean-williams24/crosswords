@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const supabaseMock = vi.hoisted(() => {
   const auth = {
     getSession: vi.fn(),
+    getUser: vi.fn(),
     onAuthStateChange: vi.fn(),
     signInWithIdToken: vi.fn(),
     signOut: vi.fn()
@@ -52,6 +53,10 @@ function EntitlementWarningProbe() {
 describe("AuthProvider", () => {
   beforeEach(() => {
     supabaseMock.auth.getSession.mockResolvedValue({ data: { session: null }, error: null });
+    supabaseMock.auth.getUser.mockResolvedValue({
+      data: { user: { id: "user-id", email: "player@example.com" } },
+      error: null
+    });
     supabaseMock.auth.onAuthStateChange.mockReturnValue({
       data: { subscription: { unsubscribe: vi.fn() } }
     });
@@ -144,5 +149,63 @@ describe("AuthProvider", () => {
 
     expect(await screen.findByText("We couldn't check account-linked Pro access right now. Please try again later.")).toBeInTheDocument();
     expect(screen.queryByText("permission denied for current_user_pro_entitlement")).not.toBeInTheDocument();
+  });
+
+  it("clears an account deleted on another device when the browser regains focus", async () => {
+    const session = { access_token: "session-token", user: { id: "user-id", email: "player@example.com" } };
+    supabaseMock.auth.getSession.mockResolvedValue({ data: { session }, error: null });
+    supabaseMock.auth.getUser.mockResolvedValue({ data: { user: session.user }, error: null });
+    let auth: ReturnType<typeof useAuth> | undefined;
+
+    render(
+      <AuthProvider>
+        <AuthConsumer onReady={(value) => { auth = value; }} />
+      </AuthProvider>
+    );
+
+    await screen.findByText("player@example.com");
+    await waitFor(() => expect(supabaseMock.auth.getUser).toHaveBeenCalled());
+    supabaseMock.auth.getUser.mockResolvedValue({
+      data: { user: null },
+      error: { code: "user_not_found", status: 404 }
+    });
+
+    await act(async () => {
+      window.dispatchEvent(new Event("focus"));
+    });
+
+    await waitFor(() => expect(screen.getByText("signed out")).toBeInTheDocument());
+    expect(supabaseMock.auth.signOut).toHaveBeenCalledWith({ scope: "local" });
+    expect(auth?.accountDeletionNotice).toBe(true);
+  });
+
+  it("keeps a cached session when account validation is temporarily offline", async () => {
+    const session = { access_token: "session-token", user: { id: "user-id", email: "player@example.com" } };
+    supabaseMock.auth.getSession.mockResolvedValue({ data: { session }, error: null });
+    supabaseMock.auth.getUser.mockResolvedValue({ data: { user: session.user }, error: null });
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+    render(
+      <AuthProvider>
+        <AuthConsumer onReady={() => undefined} />
+      </AuthProvider>
+    );
+
+    await screen.findByText("player@example.com");
+    supabaseMock.auth.getUser.mockResolvedValue({
+      data: { user: null },
+      error: new TypeError("Failed to fetch")
+    });
+
+    await act(async () => {
+      window.dispatchEvent(new Event("focus"));
+    });
+
+    await waitFor(() => expect(console.error).toHaveBeenCalledWith(
+      "Account session validation failed",
+      expect.any(TypeError)
+    ));
+    expect(screen.getByText("player@example.com")).toBeInTheDocument();
+    expect(supabaseMock.auth.signOut).not.toHaveBeenCalled();
   });
 });

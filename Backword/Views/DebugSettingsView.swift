@@ -1,6 +1,7 @@
 #if DEBUG
 import SwiftUI
 import TipKit
+import UIKit
 
 struct DebugSettingsView: View {
     @EnvironmentObject var storeService: StoreService
@@ -70,6 +71,20 @@ struct DebugSettingsView: View {
 
                     if let summary = storeService.storeKitEntitlementDiagnosticSummary {
                         Text(summary)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+
+                    Button(role: .destructive) {
+                        guard let windowScene = foregroundWindowScene else { return }
+                        Task { await storeService.requestDebugProRefund(in: windowScene) }
+                    } label: {
+                        Label("Request Sandbox Pro Refund", systemImage: "arrow.uturn.backward.circle")
+                    }
+                    .disabled(storeService.hasDebugProOverride || storeService.refundRequestInProgress || foregroundWindowScene == nil)
+
+                    if let message = storeService.refundRequestStatusMessage {
+                        Text(message)
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -370,6 +385,12 @@ struct DebugSettingsView: View {
         }
 
         return value ? "Forcing Pro" : "Forcing Free"
+    }
+
+    private var foregroundWindowScene: UIWindowScene? {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive }
     }
 
     private func presentSignInErrorPreview(_ preview: AccountSignInErrorPreview) {

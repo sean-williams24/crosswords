@@ -77,6 +77,17 @@ struct AccountSyncTests {
         ])
     }
 
+    @Test("A StoreKit reconciliation is uniquely identified by its transaction")
+    func storeKitReconciliationUsesTransactionID() {
+        let reconciliation = AppleEntitlementReconciliation(
+            transactionID: "transaction-123",
+            originalTransactionID: "original-123",
+            signedTransactionInfo: "signed-transaction"
+        )
+
+        #expect(reconciliation.id == "transaction-123")
+    }
+
     @Test("Task cancellation is not shown as an account error")
     func cancellationIsNotPresentedAsAccountError() {
         #expect(!AccountErrorPresentation.shouldPresent(CancellationError()))
@@ -124,6 +135,7 @@ struct AccountSyncTests {
         #expect(AccountDeletionPresentation.message.contains("cloud-synced game progress"))
         #expect(AccountDeletionPresentation.message.contains("Apple subscription"))
         #expect(AccountDeletionPresentation.message.contains("stored locally"))
+        #expect(AccountDeletionPresentation.message.contains("signed out"))
     }
 
     @Test("Sign-in failures use safe provider-specific retry copy")
@@ -259,6 +271,13 @@ struct AccountSyncTests {
     func settingsDeleteAccountVisibility() {
         #expect(SettingsAccountActionVisibility.showsDeleteAccount(isSignedIn: true))
         #expect(!SettingsAccountActionVisibility.showsDeleteAccount(isSignedIn: false))
+    }
+
+    @Test("Settings deletion confirmation explains the destructive action")
+    func settingsDeletionConfirmationPresentation() {
+        #expect(SettingsDeletionConfirmationPresentation.title == "Delete Backword account?")
+        #expect(SettingsDeletionConfirmationPresentation.message.contains("cloud progress"))
+        #expect(SettingsDeletionConfirmationPresentation.message.contains("does not cancel your Apple subscription"))
     }
 
     @Test("First account sync captures legacy guest release-day crossword points")

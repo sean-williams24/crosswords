@@ -42,6 +42,13 @@ struct BackwordApp: App {
                 .onChange(of: accountService.isProUser) { _, isAccountProUser in
                     storeService.setAccountProStatus(isAccountProUser)
                 }
+                .onChange(of: storeService.pendingAccountEntitlementReconciliation) { _, reconciliation in
+                    guard let reconciliation else { return }
+                    Task {
+                        await accountService.reconcileAppleEntitlement(reconciliation)
+                        storeService.completeAccountEntitlementReconciliation(reconciliation)
+                    }
+                }
                 .onOpenURL { url in
                     guard !GoogleNativeSignInService.shared.handle(url) else { return }
                     Task { await accountService.handleAuthRedirect(url) }
