@@ -36,7 +36,7 @@ export function HomeDashboardPage() {
     <main className="home-dashboard">
       <header className="home-dashboard__header">
         <GameMenu />
-        <Link aria-label="Backword home" to="/home">
+        <Link aria-label="Backword home" to="/">
           <BackwordLogo isPro={entitlement?.isPro === true} large />
         </Link>
         <div className="home-dashboard__actions">
@@ -55,7 +55,7 @@ export function HomeDashboardPage() {
           <div className="home-dashboard__daily-cards">
             <DailyGameCard
               className="home-game-card--backword"
-              destination="/"
+              destination="/backword"
               status={backwordStatus}
               title="Backword"
             >

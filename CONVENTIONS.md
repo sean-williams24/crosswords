@@ -172,8 +172,8 @@ continues to use the in-game correct-cell appearance.
 
 ## Website Backword Parity
 
-The browser Backword game lives at `/` as an immersive route outside the
-marketing site's header and footer. Its game dashboard lives at `/home`, while
+The browser Backword game lives at `/backword` as an immersive route outside the
+marketing site's header and footer. Its game dashboard lives at `/`, while
 the marketing page lives at `/info`. The game uses the same daily Supabase row,
 five-guess scoring, connected-suffix reveal rules, Normal/Easy modes, and local
 release-date rules as the iOS game.

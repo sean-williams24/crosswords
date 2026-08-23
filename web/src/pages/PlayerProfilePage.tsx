@@ -79,7 +79,7 @@ export function PlayerProfilePage() {
     setSyncError(null);
     try {
       await signOut();
-      navigate("/home", { replace: true });
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Account sign-out failed", error);
       setSyncError(accountActionErrorMessage("signOut"));

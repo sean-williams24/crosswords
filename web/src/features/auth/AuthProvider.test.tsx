@@ -83,7 +83,7 @@ describe("AuthProvider", () => {
     await screen.findByText("signed out");
     await waitFor(() => expect(auth).toBeDefined());
     await act(async () => {
-      await auth?.signInWithGoogle("google-id-token", "/home");
+      await auth?.signInWithGoogle("google-id-token", "/");
     });
 
     expect(supabaseMock.auth.signInWithIdToken).toHaveBeenCalledWith({

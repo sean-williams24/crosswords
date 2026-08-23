@@ -23,14 +23,14 @@ export function Layout({ children }: LayoutProps) {
             {!isMinimalNavigationPage ? (
               <Link
                 className="text-lg font-semibold text-textPrimary transition hover:text-heading"
-                to="/home"
+                to="/"
               >
                 Home
               </Link>
             ) : null}
             {!isMinimalNavigationPage ? (
               <nav aria-label="Main" className="ml-auto flex gap-5 text-sm text-textSecondary">
-                <Link className="font-medium text-accent transition hover:text-textPrimary" to="/">
+                <Link className="font-medium text-accent transition hover:text-textPrimary" to="/backword">
                   Play Backword
                 </Link>
                 <Link className="transition hover:text-textPrimary" to="/info">

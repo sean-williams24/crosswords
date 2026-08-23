@@ -46,7 +46,7 @@ export function CrosswordCompletion({ onClose, progress, puzzle, stats }: Crossw
         </section>
         <CrosswordStatsContent stats={stats} />
       </div>
-      <div className="bw-completion-actions"><button onClick={() => navigate("/home")} type="button">HOME</button><button onClick={onClose} type="button">BACK TO GAME</button></div>
+      <div className="bw-completion-actions"><button onClick={() => navigate("/")} type="button">HOME</button><button onClick={onClose} type="button">BACK TO GAME</button></div>
     </BackwordModal>
   );
 }

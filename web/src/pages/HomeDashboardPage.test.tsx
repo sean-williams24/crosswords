@@ -43,7 +43,7 @@ describe("web home dashboard", () => {
     expect(appStoreBadge.parentElement).toHaveClass("home-dashboard__actions");
     expect(loginButton.parentElement).toBe(appStoreBadge.parentElement);
     expect(loginButton).toHaveAttribute("href", "/sign-in");
-    const backwordLink = screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/");
+    const backwordLink = screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/backword");
     expect(backwordLink).toBeDefined();
     const crosswordCard = screen.getByRole("link", { name: /Quick Crossword/i });
     expect(crosswordCard).toHaveAttribute("href", "/crossword");

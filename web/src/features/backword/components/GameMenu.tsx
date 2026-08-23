@@ -78,8 +78,8 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
               </button>
             </div>
             <nav aria-label="Game navigation links" className="bw-menu-links">
-              <Link className="bw-menu-link bw-menu-link--primary" to="/home">Home</Link>
-              <Link className="bw-menu-link bw-menu-link--primary" to="/">Play Backword</Link>
+              <Link className="bw-menu-link bw-menu-link--primary" to="/">Home</Link>
+              <Link className="bw-menu-link bw-menu-link--primary" to="/backword">Play Backword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/crossword">Quick Crossword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/info">Info</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/contact">Contact</Link>

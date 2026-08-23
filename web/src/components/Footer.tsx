@@ -6,10 +6,10 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p>© 2026 Backword</p>
         <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2">
-          <Link className="transition hover:text-textPrimary" to="/home">
+          <Link className="transition hover:text-textPrimary" to="/">
             Home
           </Link>
-          <Link className="transition hover:text-textPrimary" to="/">
+          <Link className="transition hover:text-textPrimary" to="/backword">
             Backword
           </Link>
           <Link className="transition hover:text-textPrimary" to="/crossword">

@@ -30,6 +30,7 @@ describe("SignInPage", () => {
     expect(screen.getByRole("link", { name: "Backword home" }).querySelector("img")).toHaveClass(
       "bw-logo--large"
     );
+    expect(screen.getByRole("link", { name: "Backword home" })).toHaveAttribute("href", "/");
     expect(container.querySelector(".auth-card")).not.toBeInTheDocument();
     expect(container.querySelector(".auth-content")).toBeInTheDocument();
   });

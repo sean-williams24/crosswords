@@ -14,11 +14,11 @@ export function SignInPage() {
   const { entitlement, user, ready, signIn, signInWithGoogle } = useAuth();
   const [signInError, setSignInError] = useState<AuthAlert | null>(null);
   const [pending, setPending] = useState<ProviderChoice | null>(null);
-  const returnTo = typeof location.state?.returnTo === "string" ? location.state.returnTo : "/home";
+  const returnTo = typeof location.state?.returnTo === "string" ? location.state.returnTo : "/";
   const navigationHeader = (
     <header className="home-dashboard__header auth-page__header">
       <GameMenu />
-      <Link aria-label="Backword home" to="/home">
+      <Link aria-label="Backword home" to="/">
         <BackwordLogo isPro={entitlement?.isPro === true} large />
       </Link>
     </header>

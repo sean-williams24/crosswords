@@ -17,8 +17,9 @@ export default function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<BackwordPage />} />
-        <Route path="/home" element={<HomeDashboardPage />} />
+        <Route path="/" element={<HomeDashboardPage />} />
+        <Route path="/backword" element={<BackwordPage />} />
+        <Route path="/home" element={<Navigate to="/" replace />} />
         <Route path="/crossword" element={<CrosswordPage />} />
         <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
         <Route path="/info" element={<Layout><InfoPage /></Layout>} />

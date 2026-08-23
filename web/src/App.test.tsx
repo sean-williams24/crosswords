@@ -11,8 +11,8 @@ function renderRoute(route: string) {
 }
 
 describe("Backword website routes", () => {
-  it("renders the game dashboard at /home", () => {
-    renderRoute("/home");
+  it("renders the game dashboard at /", () => {
+    renderRoute("/");
 
     expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Quick Crossword/i })).toHaveAttribute(
@@ -54,8 +54,8 @@ describe("Backword website routes", () => {
       "Terms"
     ]);
     expect(footerLinks.map((link) => link.getAttribute("href"))).toEqual([
-      "/home",
       "/",
+      "/backword",
       "/crossword",
       "/player-profile",
       "/info",
@@ -68,7 +68,7 @@ describe("Backword website routes", () => {
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Play today’s Backword" })).toHaveAttribute(
       "href",
-      "/"
+      "/backword"
     );
     expect(
       screen.getByText(
@@ -77,7 +77,7 @@ describe("Backword website routes", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders Backword at the main URL with a footer but without marketing navigation", () => {
+  it("renders Backword at /backword with a footer but without marketing navigation", () => {
     localStorage.setItem(
       "backword:web:settings:v1",
       JSON.stringify({
@@ -87,7 +87,7 @@ describe("Backword website routes", () => {
         lastSeenRulesVersion: 2
       })
     );
-    renderRoute("/");
+    renderRoute("/backword");
 
     expect(screen.queryByRole("link", { name: "Back to home" })).not.toBeInTheDocument();
     expect(screen.getAllByRole("img", { name: "Backword" })[0]).toHaveAttribute(
@@ -96,6 +96,12 @@ describe("Backword website routes", () => {
     );
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
+  });
+
+  it("redirects the previous dashboard URL to the home page", () => {
+    renderRoute("/home");
+
+    expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
   });
 
   it("keeps marketing section text before screenshots in mobile source order", () => {

@@ -17,9 +17,9 @@ vi.mock("../../auth/AuthProvider", () => ({ useAuth: () => testAuth.value }));
 import { GameMenu } from "./GameMenu";
 
 function renderMenu() {
-  return render(<MemoryRouter><Routes>
+  return render(<MemoryRouter initialEntries={["/menu-test"]}><Routes>
     <Route path="*" element={<GameMenu />} />
-    <Route path="/home" element={<p>Home</p>} />
+    <Route path="/" element={<p>Home</p>} />
   </Routes></MemoryRouter>);
 }
 

@@ -51,7 +51,7 @@ const guestAuth: AuthContextValue = {
 };
 
 function safeReturnTo(value: string) {
-  return value.startsWith("/") && !value.startsWith("//") ? value : "/home";
+  return value.startsWith("/") && !value.startsWith("//") ? value : "/";
 }
 
 export function requiresLocalSignOut(error: unknown) {
@@ -257,7 +257,7 @@ export function useAuth() {
 }
 
 export function consumeAuthReturnTo() {
-  const returnTo = safeReturnTo(sessionStorage.getItem(returnToKey) ?? "/home");
+  const returnTo = safeReturnTo(sessionStorage.getItem(returnToKey) ?? "/");
   sessionStorage.removeItem(returnToKey);
   return returnTo;
 }

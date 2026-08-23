@@ -36,7 +36,7 @@ function renderPage() {
   return render(<MemoryRouter initialEntries={["/player-profile"]}><Routes>
     <Route path="/player-profile" element={<PlayerProfilePage />} />
     <Route path="/sign-in" element={<p>Sign in</p>} />
-    <Route path="/home" element={<p>Home</p>} />
+    <Route path="/" element={<p>Home</p>} />
   </Routes></MemoryRouter>);
 }
 

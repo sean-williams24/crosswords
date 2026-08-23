@@ -28,7 +28,7 @@ describe("AccountDeletionRecovery", () => {
   it("explains an external deletion before returning the browser to sign-in", async () => {
     const user = userEvent.setup();
     render(
-      <MemoryRouter initialEntries={["/home"]}>
+      <MemoryRouter initialEntries={["/"]}>
         <Routes>
           <Route path="*" element={<><LocationProbe /><AccountDeletionRecovery /></>} />
         </Routes>
@@ -46,7 +46,7 @@ describe("AccountDeletionRecovery", () => {
     const user = userEvent.setup();
     auth.accountDeletionNotice = false;
     render(
-      <MemoryRouter initialEntries={["/home"]}>
+      <MemoryRouter initialEntries={["/"]}>
         <Link to="/crossword">Open crossword</Link>
         <LocationProbe />
         <AccountDeletionRecovery />
