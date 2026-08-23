@@ -16,8 +16,14 @@ struct LegalLink: Equatable, Identifiable {
         url: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
     )
 
+    static let privacyChoices = LegalLink(
+        title: "Privacy Choices",
+        url: URL(string: "https://backword.vercel.app/privacy-choices")!
+    )
+
     static let all: [LegalLink] = [
         .privacyPolicy,
+        .privacyChoices,
         .termsOfUse
     ]
 }

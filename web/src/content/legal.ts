@@ -42,15 +42,16 @@ export const privacySections = [
     title: "Data Retention and Deletion",
     body: [
       "Local gameplay and settings data remains on your device until you delete the app, clear the website’s browser storage, clear the data through app features where available, or overwrite it through normal use.",
-      "Account data and cloud gameplay progress are retained while your account remains active or as needed to provide the service, comply with legal obligations, resolve disputes, prevent abuse, and maintain backups.",
-      `You can delete your Backword account and its cloud progress in the app or website account screen. Purchase history and subscription records handled by Apple must be managed through your Apple ID and App Store settings. You may also contact ${siteConfig.supportEmail}.`
+      "Account data and cloud gameplay progress are retained while your account is active. When you delete your account, we delete your Backword sign-in account, cloud-synced gameplay progress, and the ratings, statistics, and score history derived from that progress.",
+      "We remove the link between your Backword account and any Apple purchase entitlement when your account is deleted. We retain limited, unlinked transaction and server-notification audit records — such as Apple transaction and product identifiers, entitlement status, and event dates — only to operate entitlement recovery, prevent fraud, resolve disputes, and meet legal recordkeeping obligations. Those records do not retain your Backword account identifier after deletion.",
+      `Deleting a Backword account does not cancel an Apple subscription or remove Apple’s purchase history. Manage subscriptions through your Apple ID and App Store settings. You may also contact ${siteConfig.supportEmail}.`
     ]
   },
   {
     title: "Your Choices",
     body: [
-      "You can delete local app data by deleting the app from your device. You can manage subscriptions through your Apple ID and App Store settings. You can manage tracking permission in iOS Settings and may be able to manage ad personalization through your device settings or Google’s ad settings.",
-      "You may use the account screen to sign out or delete your account. You may also contact us to request access to, correction of, or deletion of personal information associated with your account, subject to applicable law and reasonable verification."
+      "You can delete local app data by deleting the app from your device or clearing browser storage. You can manage subscriptions through your Apple ID and App Store settings. You can manage tracking permission in iOS Settings and may be able to manage ad personalization through your device settings or Google’s ad settings.",
+      "You may use the account screen to sign out or delete your account. You may also contact us to request access to, correction of, or deletion of personal information associated with your account, subject to applicable law and reasonable verification. See our Privacy Choices page for step-by-step instructions."
     ]
   },
   {
@@ -81,6 +82,35 @@ export const privacySections = [
     title: "Contact",
     body: [
       `Questions about privacy can be sent to ${siteConfig.supportEmail}.`
+    ]
+  }
+] as const;
+
+export const privacyChoicesSections = [
+  {
+    title: "Account and Cloud Progress",
+    body: [
+      "Creating a Backword account is optional. You can continue to play as a guest without signing in.",
+      "To sign out or delete your account in the iOS app, open Settings and select Account. On this website, sign in and open Player Profile. Deleting an account removes the Backword account and cloud-synced progress; it does not remove data stored locally on your other devices or browsers."
+    ]
+  },
+  {
+    title: "Subscriptions and Purchases",
+    body: [
+      "Apple processes Backword purchases and subscriptions. To cancel or manage a subscription, use your Apple ID subscription settings. Deleting a Backword account does not cancel an Apple subscription.",
+      "If an eligible purchase is not available after you sign in, use Restore Purchases in the app or contact support."
+    ]
+  },
+  {
+    title: "Advertising and Tracking",
+    body: [
+      "Where available, use Ad Privacy Choices in Backword Settings to review or change advertising-consent choices. You can also change app tracking permission in iOS Settings and manage ad personalisation through your device settings or Google’s ad settings."
+    ]
+  },
+  {
+    title: "Privacy Requests",
+    body: [
+      `For a request to access, correct, or delete personal information associated with your Backword account, contact ${siteConfig.supportEmail}. We may need to verify your request before acting on it.`
     ]
   }
 ] as const;

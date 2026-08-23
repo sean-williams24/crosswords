@@ -51,7 +51,7 @@ class SupabaseAccountSchemaTests(unittest.TestCase):
 
         self.assertIn("REFERENCES auth.users(id) ON DELETE CASCADE", schema)
         self.assertIn("REFERENCES auth.users(id) ON DELETE SET NULL", schema)
-        self.assertIn('.update({ user_id: null })', deletion_function)
+        self.assertIn('.update({ user_id: null, app_account_token: null })', deletion_function)
         self.assertIn("deleteUser", deletion_function)
 
     def test_delete_account_function_accepts_browser_cors_preflight(self):

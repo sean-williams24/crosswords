@@ -86,7 +86,8 @@ describe("PlayerProfilePage", () => {
     expect(scoring.compareDocumentPosition(account) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(account.compareDocumentPosition(desktopSignOut) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(desktopSignOut.compareDocumentPosition(desktopDeleteAccount) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(breakdown?.compareDocumentPosition(mobileSignOut) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(breakdown).not.toBeNull();
+    expect(breakdown!.compareDocumentPosition(mobileSignOut) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(mobileSignOut.compareDocumentPosition(mobileDeleteAccount) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(scoring).not.toHaveTextContent("⌃");
     expect(scoring).toHaveAttribute("aria-haspopup", "dialog");

@@ -46,3 +46,15 @@ still needs the deployed site's `/auth/callback`, local development's
 `/auth/callback`, a Services ID, and a client secret in Supabase. Apply
 `Backend/supabase/schema.sql`, then deploy the Edge Functions described in
 `Backend/supabase/functions/README.md` before enabling account-linked Pro.
+
+## App Store Connect privacy links
+
+Before submitting an app version with accounts or cloud sync, set these public
+URLs in App Store Connect:
+
+- **Privacy Policy URL:** `https://backword.vercel.app/privacy`
+- **Privacy Choices URL:** `https://backword.vercel.app/privacy-choices`
+
+The iOS app exposes both links in Settings and on the paywall. Update the App
+Privacy data types in App Store Connect whenever Backword’s data practices or
+third-party SDK configuration changes.

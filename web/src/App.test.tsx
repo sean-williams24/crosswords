@@ -154,6 +154,26 @@ describe("Backword website routes", () => {
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
   });
 
+  it("renders the public privacy choices route", () => {
+    renderRoute("/privacy-choices");
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Privacy Choices" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Account and Cloud Progress" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
+  });
+
+  it("redirects the singular privacy-choice URL to the privacy choices page", () => {
+    renderRoute("/privacy-choice");
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Privacy Choices" })
+    ).toBeInTheDocument();
+  });
+
   it("renders the contact route with an email hand-off", () => {
     renderRoute("/contact");
 

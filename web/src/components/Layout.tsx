@@ -9,7 +9,7 @@ type LayoutProps = {
 
 export function Layout({ children }: LayoutProps) {
   const { pathname } = useLocation();
-  const isMinimalNavigationPage = pathname === "/info" || pathname === "/privacy" || pathname === "/terms";
+  const isMinimalNavigationPage = pathname === "/info" || pathname === "/privacy" || pathname === "/privacy-choices" || pathname === "/terms";
   const isContactPage = pathname === "/contact";
 
   return (

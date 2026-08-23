@@ -86,6 +86,13 @@ of the cloud account data removed and the Apple subscription and device-local
 data retained. Only after acknowledgement does the browser clear its local
 session and take the player to sign-in.
 
+Account deletion also clears both the `user_id` and `app_account_token` from
+the entitlement record before deleting the Supabase Auth user. Apple
+transaction and notification audit records are retained only without a
+Backword-account association, allowing a verified purchaser to reclaim an
+eligible purchase while preventing the retained record from identifying the
+deleted Backword account.
+
 iOS verifies its cached Supabase session with the Auth user endpoint during
 startup and foreground account refreshes, before it uploads or downloads cloud
 progress. A successful deletion initiated on that device, or a

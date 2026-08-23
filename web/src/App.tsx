@@ -6,6 +6,7 @@ import { CrosswordPage } from "./pages/CrosswordPage";
 import { HomeDashboardPage } from "./pages/HomeDashboardPage";
 import { InfoPage } from "./pages/InfoPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
+import { PrivacyChoicesPage } from "./pages/PrivacyChoicesPage";
 import { TermsPage } from "./pages/TermsPage";
 import { SignInPage } from "./pages/SignInPage";
 import { AuthCallbackPage } from "./pages/AuthCallbackPage";
@@ -22,6 +23,8 @@ export default function App() {
         <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
         <Route path="/info" element={<Layout><InfoPage /></Layout>} />
         <Route path="/privacy" element={<Layout><PrivacyPage /></Layout>} />
+        <Route path="/privacy-choices" element={<Layout><PrivacyChoicesPage /></Layout>} />
+        <Route path="/privacy-choice" element={<Navigate to="/privacy-choices" replace />} />
         <Route path="/terms" element={<Layout><TermsPage /></Layout>} />
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/player-profile" element={<PlayerProfilePage />} />

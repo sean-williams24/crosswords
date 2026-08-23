@@ -4,7 +4,7 @@ export const siteConfig = {
   appStoreUrl: "https://apps.apple.com/app/backword/id6773428497",
   developerName: "Sean Williams",
   supportEmail: "backword.support@gmail.com",
-  lastUpdated: "June 16, 2026",
+  lastUpdated: "August 22, 2026",
   environment: {
     supabaseUrl: "VITE_SUPABASE_URL",
     supabaseAnonKey: "VITE_SUPABASE_ANON_KEY"
