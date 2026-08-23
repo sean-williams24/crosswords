@@ -134,6 +134,10 @@ describe("Backword website routes", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: "Advertising and AdMob" })
     ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Manage your privacy choices" })).toHaveAttribute(
+      "href",
+      "/privacy-choices"
+    );
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
   });

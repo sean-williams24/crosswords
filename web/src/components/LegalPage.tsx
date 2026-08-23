@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { siteConfig } from "../lib/siteConfig";
 
 type LegalSection = {
@@ -9,12 +10,14 @@ type LegalPageProps = {
   title: string;
   intro: string;
   sections: readonly LegalSection[];
+  topLink?: ReactNode;
 };
 
-export function LegalPage({ title, intro, sections }: LegalPageProps) {
+export function LegalPage({ title, intro, sections, topLink }: LegalPageProps) {
   return (
     <section className="px-6 py-16 sm:py-24">
-      <div className="mx-auto max-w-3xl">
+      <div className="relative mx-auto max-w-3xl">
+        {topLink ? <div className="absolute right-0 top-0">{topLink}</div> : null}
         <p className="text-sm font-medium uppercase tracking-[0.16em] text-heading">
           Last updated {siteConfig.lastUpdated}
         </p>
