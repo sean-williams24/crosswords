@@ -11,7 +11,7 @@ export function AuthButton({ className = "" }: { className?: string }) {
   return (
     <Link aria-label={user ? "Player Profile" : undefined} className={`auth-button ${className}`.trim()} state={user ? undefined : { returnTo: destination }} to={to}>
       <span className="auth-button__wide-label">{label}</span>
-      {user ? <span aria-hidden="true" className="auth-button__compact-label">Profile</span> : null}
+      <span aria-hidden="true" className="auth-button__compact-label">{user ? "Profile" : "Login"}</span>
     </Link>
   );
 }

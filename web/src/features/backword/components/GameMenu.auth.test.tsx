@@ -51,6 +51,8 @@ describe("GameMenu account actions", () => {
 
     expect(screen.queryByRole("button", { name: "Sign Out" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Delete Account" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Login" })).toHaveClass("bw-menu-link--primary");
+    const login = screen.getByRole("link", { name: "Login" });
+    expect(login).toHaveClass("bw-menu-link--primary");
+    expect(login.querySelector(".auth-button__compact-label")).toHaveTextContent("Login");
   });
 });

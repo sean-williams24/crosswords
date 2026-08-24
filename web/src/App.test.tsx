@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "./App";
@@ -11,6 +13,12 @@ function renderRoute(route: string) {
 }
 
 describe("Backword website routes", () => {
+  it("hides game footers only in the mobile layout", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/@media \(max-width: 680px\) \{[\s\S]*?\.bw-page > \.site-footer \{ display: none; \}/);
+  });
+
   it("renders the game dashboard at /", () => {
     renderRoute("/");
 
@@ -140,10 +148,17 @@ describe("Backword website routes", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: "Advertising and AdMob" })
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Manage your privacy choices" })).toHaveAttribute(
+    const privacyChoices = screen.getByRole("link", { name: "Manage your privacy choices" });
+    expect(privacyChoices).toHaveAttribute(
       "href",
       "/privacy-choices"
     );
+    expect(privacyChoices.closest("section")).toHaveClass("pt-8", "pb-16", "sm:py-24");
+    expect(privacyChoices.parentElement).toHaveClass("legal-page__top-link");
+    expect(
+      privacyChoices.parentElement?.compareDocumentPosition(screen.getByText(/Last updated/i))
+        & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
   });

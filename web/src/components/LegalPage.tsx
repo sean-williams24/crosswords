@@ -15,9 +15,9 @@ type LegalPageProps = {
 
 export function LegalPage({ title, intro, sections, topLink }: LegalPageProps) {
   return (
-    <section className="px-6 py-16 sm:py-24">
+    <section className="px-6 pb-16 pt-8 sm:py-24">
       <div className="relative mx-auto max-w-3xl">
-        {topLink ? <div className="absolute right-0 top-0">{topLink}</div> : null}
+        {topLink ? <div className="legal-page__top-link">{topLink}</div> : null}
         <p className="text-sm font-medium uppercase tracking-[0.16em] text-heading">
           Last updated {siteConfig.lastUpdated}
         </p>

@@ -812,6 +812,12 @@ body {
   line-height: 1.8;
 }
 
+.legal-page__top-link {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .site-footer { background: #0a0a0a; }
 
 /* Web home dashboard */
@@ -1290,6 +1296,13 @@ body {
 .account-deletion-confirmation__continue:disabled { opacity: .62; cursor: wait; }
 
 @media (max-width: 680px) {
+  .bw-page > .site-footer { display: none; }
+  .legal-page__top-link {
+    position: static;
+    display: flex;
+    margin-bottom: 24px;
+    justify-content: flex-end;
+  }
   .auth-page { padding-top: 101px; }
   .home-dashboard__header { min-height: 96px; }
   .home-dashboard__header .bw-logo-lockup { height: 58px; }
