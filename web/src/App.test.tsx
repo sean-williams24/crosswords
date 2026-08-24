@@ -154,9 +154,11 @@ describe("Backword website routes", () => {
       "/privacy-choices"
     );
     expect(privacyChoices.closest("section")).toHaveClass("pt-8", "pb-16", "sm:py-24");
-    expect(privacyChoices.parentElement).toHaveClass("legal-page__top-link");
+    const topLink = privacyChoices.parentElement;
+    expect(topLink).toHaveClass("legal-page__top-link");
+    if (!topLink) throw new Error("Privacy choices link is missing its layout wrapper.");
     expect(
-      privacyChoices.parentElement?.compareDocumentPosition(screen.getByText(/Last updated/i))
+      topLink.compareDocumentPosition(screen.getByText(/Last updated/i))
         & Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
