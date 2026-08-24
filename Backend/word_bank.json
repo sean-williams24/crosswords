@@ -62659,17 +62659,6 @@
         "hard_text": "Place for cattle, not a salad dressing"
     },
     {
-        "word": "randy",
-        "text": "Eager for romantic or sexual activity",
-        "hint": "Feeling playful or amorous, loosely",
-        "clues": [
-            "Feeling playful or amorous",
-            "Sexually excited",
-            "Desiring more than just a dance"
-        ],
-        "hard_text": "Sexually aroused"
-    },
-    {
         "word": "ravel",
         "text": "To tangle or entangle threads",
         "hint": "Could be knot up a situation",
@@ -73228,17 +73217,6 @@
         "hard_text": "Wrapped up tightly, not quite ready?"
     },
     {
-        "word": "coital",
-        "text": "Relating to sexual intercourse",
-        "hint": "Involving physical connection?",
-        "clues": [
-            "Involving sexual intercourse",
-            "Pertaining to sexual intercourse",
-            "Of sexual intercourse"
-        ],
-        "hard_text": "Pertaining to the act of intimacy?"
-    },
-    {
         "word": "colada",
         "text": "Fruity cocktail often served blended",
         "hint": "Associated with coconut-based tropical beverage",
@@ -81477,17 +81455,6 @@
         "hard_text": "One who holds a legislative seat"
     },
     {
-        "word": "sensual",
-        "text": "Relating to physical or sexual enjoyment",
-        "hint": "Could be related to hedonistic experiences",
-        "clues": [
-            "Related to hedonistic experiences",
-            "Appealing to the five senses",
-            "Descriptive of a touch that tantalizes"
-        ],
-        "hard_text": "Evoking physical pleasures"
-    },
-    {
         "word": "session",
         "text": "A period of activity or meeting",
         "hint": "Meeting or gathering time, perhaps",
@@ -82475,17 +82442,6 @@
             "Something sinister lurking in chemistry class"
         ],
         "hard_text": "A poison that's not on the dinner menu"
-    },
-    {
-        "word": "asexual",
-        "text": "Without sexual reproduction",
-        "hint": "Experiencing little or no erotic attraction",
-        "clues": [
-            "Experiencing little or no erotic attraction",
-            "Life form that skips the romance entirely",
-            "Reproduction requiring no mate"
-        ],
-        "hard_text": "Experiencing little or no erotic attraction"
     },
     {
         "word": "ashamed",
@@ -85616,17 +85572,6 @@
             "Part of anatomy that supports uprightness"
         ],
         "hard_text": "Builder that might lift spirits?"
-    },
-    {
-        "word": "erotica",
-        "text": "Fiction focused on sexual themes",
-        "hint": "Sensual literature genre, perhaps",
-        "clues": [
-            "Sensual literature genre",
-            "Genre that fans the flames of desire",
-            "Not just love stories, but steamy tales"
-        ],
-        "hard_text": "Literature that sparks passion"
     },
     {
         "word": "erratic",
@@ -91677,17 +91622,6 @@
             "Single-reed band instrument"
         ],
         "hard_text": "Woodwind that can belt out a tune"
-    },
-    {
-        "word": "clitoris",
-        "text": "Small but significant part of female anatomy",
-        "hint": "Key to female sexual pleasure, loosely",
-        "clues": [
-            "Key to female sexual pleasure",
-            "Overlooked, yet vital for enjoyment",
-            "Sensitive spot in a hidden location"
-        ],
-        "hard_text": "Part that plays a key role in pleasure"
     },
     {
         "word": "coauthor",
@@ -106673,17 +106607,6 @@
         ]
     },
     {
-        "word": "TANTRA",
-        "text": "Spiritual practice in Hindu and Buddhist traditions",
-        "hint": "spiritual discipline",
-        "hard_text": "A path to enlightenment through rituals",
-        "clues": [
-            "System of esoteric philosophies",
-            "Practice involving energy and consciousness",
-            "Ancient teachings on meditation and sexuality"
-        ]
-    },
-    {
         "word": "TAOIST",
         "text": "Follower of the Way",
         "hint": "philosopher",
@@ -111365,8 +111288,7 @@
         "hard_text": "Straight identity in a tangled web of love",
         "clues": [
             "Opposite attraction",
-            "Preference for opposite-gender partners",
-            "Common sexual orientation"
+            "Preference for opposite-gender partners"
         ]
     },
     {
@@ -151634,17 +151556,6 @@
         ]
     },
     {
-        "word": "SEXUALLY",
-        "text": "In a manner related to sex",
-        "hint": "Erotically",
-        "hard_text": "In a sexual manner",
-        "clues": [
-            "In terms of sex",
-            "With regard to sex",
-            "In a sex-related way"
-        ]
-    },
-    {
         "word": "SKILLED",
         "text": "Trained enough to perform specialised work",
         "hint": "Expert",
@@ -157912,17 +157823,6 @@
             "Examined closely for details",
             "Scoured for hidden items",
             "Looked into meticulously"
-        ]
-    },
-    {
-        "word": "SEXUALITY",
-        "text": "Orientation of attraction",
-        "hint": "Concept involving attraction and desire",
-        "hard_text": "Aspect of intimate identity",
-        "clues": [
-            "Refers to attraction preference",
-            "Identity related to attraction",
-            "Encompasses romantic orientation"
         ]
     },
     {
@@ -170219,17 +170119,6 @@
             "Comes out the same as",
             "Denotes sameness",
             "Mathematical relationship indicator"
-        ]
-    },
-    {
-        "word": "EROTIC",
-        "text": "Relating to sexual desire",
-        "hint": "Sensual",
-        "hard_text": "Provocatively appealing to the senses",
-        "clues": [
-            "Intimately stimulating",
-            "Sexually charged",
-            "Suggestive in nature"
         ]
     },
     {
@@ -189267,17 +189156,6 @@
             "Evoking an emotional response",
             "Stirring the pot with intent",
             "Triggering a spirited debate"
-        ]
-    },
-    {
-        "word": "PUBERTY",
-        "text": "Developmental stage of sexual maturation",
-        "hint": "Period of sexual maturation",
-        "hard_text": "Transition from child to adult",
-        "clues": [
-            "Time of significant hormonal changes",
-            "Physical growth spurts occur here",
-            "Stage often marked by awkwardness"
         ]
     },
     {
@@ -218455,17 +218333,6 @@
         ]
     },
     {
-        "word": "CHASTITY",
-        "text": "Abstinence from sexual activity",
-        "hint": "Purity",
-        "hard_text": "Virtue of refraining from sexual relations",
-        "clues": [
-            "State of being morally pure",
-            "Abstaining from intimate relations",
-            "Quality of sexual restraint"
-        ]
-    },
-    {
         "word": "CLAIMANT",
         "text": "One making a claim",
         "hint": "Individual pursuing a legal right",
@@ -223136,17 +223003,6 @@
             "Comfortable clothing for workouts",
             "Apparel that absorbs moisture",
             "Loungewear for active lifestyles"
-        ]
-    },
-    {
-        "word": "SYPHILIS",
-        "text": "Sexually transmitted infection",
-        "hint": "STD",
-        "hard_text": "Condition often misdiagnosed due to its many faces",
-        "clues": [
-            "Historical plague of the French",
-            "Infection that may lead to rashes and sores",
-            "Bacterial disease named after a poet's character"
         ]
     },
     {
