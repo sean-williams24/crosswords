@@ -49600,8 +49600,7 @@
         "hint": "Gender often linked to masculinity, perhaps",
         "clues": [
             "Gender often linked to masculinity",
-            "Not the feminine category",
-            "Person of the sex that produces sperm"
+            "Not the feminine category"
         ],
         "hard_text": "One of two biological types"
     },
@@ -54724,17 +54723,6 @@
             "Pay, with \"up\""
         ],
         "hard_text": "Small horse often for children"
-    },
-    {
-        "word": "pork",
-        "text": "Government spending added to benefit a particular district",
-        "hint": "Savory dish often found in BBQ?",
-        "clues": [
-            "Savory dish often found in BBQ",
-            "Popular meat in many cuisines",
-            "Have sex, vulgarly"
-        ],
-        "hard_text": "Meat from a pig, often savory"
     },
     {
         "word": "posy",
@@ -60172,7 +60160,7 @@
             "Low noise, but not quite a cheer",
             "A worker's sound, or a pig's call"
         ],
-        "hard_text": "Sound from labor, not from pleasure"
+        "hard_text": "Seen as noise associated with hard work"
     },
     {
         "word": "guest",
@@ -61414,17 +61402,6 @@
             "Unexpected stumble in motion"
         ],
         "hard_text": "Sudden awkward movement"
-    },
-    {
-        "word": "lusty",
-        "text": "Characterized by strength and vitality",
-        "hint": "Vigorous and lively quality?",
-        "clues": [
-            "Vigorous and lively quality",
-            "Strong and hearty sensual",
-            "Energetically passionate or robust"
-        ],
-        "hard_text": "Full of vigor and enthusiasm"
     },
     {
         "word": "lydia",
@@ -76884,17 +76861,6 @@
             "Bound by obligation"
         ],
         "hard_text": "At risk of being held accountable"
-    },
-    {
-        "word": "libido",
-        "text": "Basic instinct or desire",
-        "hint": "Psychological drive related to pleasure, for one",
-        "clues": [
-            "Psychological drive related to pleasure",
-            "Desire that fuels passion",
-            "The energy of attraction"
-        ],
-        "hard_text": "Drive behind romantic pursuits"
     },
     {
         "word": "lichen",
@@ -99970,7 +99936,6 @@
         "text": "Agreed upon by all parties",
         "hint": "Agreed to by all parties",
         "clues": [
-            "Agreed to by all parties",
             "Mutually accepted actions",
             "Based on mutual agreement"
         ],
@@ -106035,17 +106000,6 @@
         ]
     },
     {
-        "word": "NEUTER",
-        "text": "To remove reproductive organs",
-        "hint": "genderless",
-        "hard_text": "Neither masculine nor feminine",
-        "clues": [
-            "Spayed or castrated animal",
-            "Gender-neutral state",
-            "Lacking distinction in sex"
-        ]
-    },
-    {
         "word": "ODDISH",
         "text": "Somewhat strange or unusual",
         "hint": "unconventional or eccentric",
@@ -106681,17 +106635,6 @@
             "Covered as if by a camping structure",
             "Draped like an outdoor sleeping arrangement",
             "Enclosed within a temporary shelter"
-        ]
-    },
-    {
-        "word": "TESTIS",
-        "text": "Male reproductive gland",
-        "hint": "Male anatomy component",
-        "hard_text": "Essential organ for sperm production",
-        "clues": [
-            "Male gonad",
-            "Reproductive structure found in males",
-            "Gland responsible for testosterone secretion"
         ]
     },
     {
@@ -111410,17 +111353,6 @@
             "Slow and secretive penetration",
             "Undetected movement into a space",
             "Gaining access through covert means"
-        ]
-    },
-    {
-        "word": "INSEMINATION",
-        "text": "Process of introducing sperm to an egg",
-        "hint": "introduction of sperm",
-        "hard_text": "A step towards new life begins here",
-        "clues": [
-            "Initiation phase in reproduction",
-            "The start of potential new beginnings",
-            "Introduction of sperm for reproduction"
         ]
     },
     {
@@ -117909,17 +117841,6 @@
             "Happening every six months",
             "A biannual event, but not quarterly",
             "Scheduled two times within a year"
-        ]
-    },
-    {
-        "word": "SENSUALITY",
-        "text": "Bodily pleasure awareness",
-        "hint": "Physical pleasure",
-        "hard_text": "The state of indulging in the senses",
-        "clues": [
-            "Sensory delight in physical form",
-            "Attraction to bodily pleasures",
-            "State of heightened physical awareness"
         ]
     },
     {
@@ -124872,17 +124793,6 @@
             "Quick to respond emotionally",
             "Requiring careful handling",
             "Responding to emotional stimuli"
-        ]
-    },
-    {
-        "word": "SENSUALLY",
-        "text": "In a manner appealing to the senses",
-        "hint": "In a way that gratifies the senses",
-        "hard_text": "In a way that evokes physical pleasure",
-        "clues": [
-            "With feeling, but not too intellectually",
-            "Desire expressed beyond mere words",
-            "Relating to touch and taste in harmony"
         ]
     },
     {
@@ -202150,7 +202060,7 @@
         "word": "SPAWNING",
         "text": "Producing offspring, especially in fish",
         "hint": "breeding",
-        "hard_text": "Releasing eggs or sperm in water",
+        "hard_text": "Releasing eggs in water",
         "clues": [
             "Act of laying eggs in water",
             "Reproduction, especially among aquatic species",
@@ -222082,17 +221992,6 @@
         ]
     },
     {
-        "word": "VIBRATOR",
-        "text": "Device for producing vibrations",
-        "hint": "stimulator",
-        "hard_text": "A buzzing tool for personal pleasure",
-        "clues": [
-            "Device that shakes things up",
-            "Object for intimate moments",
-            "Electromechanical oscillator in action"
-        ]
-    },
-    {
         "word": "WAILING",
         "text": "Loud, mournful crying",
         "hint": "sobbing",
@@ -231419,17 +231318,6 @@
         ]
     },
     {
-        "word": "FOREPLAY",
-        "text": "Intimate activity before sex",
-        "hint": "Preliminary actions",
-        "hard_text": "Warm-up before the main event",
-        "clues": [
-            "Preparation for physical intimacy",
-            "Preceding the main act",
-            "Intimate moments leading up"
-        ]
-    },
-    {
         "word": "GATORADE",
         "text": "Sports drink brand",
         "hint": "thirst quencher",
@@ -235023,17 +234911,6 @@
             "Bringer of slumber and dreams",
             "Mythical character in lullabies",
             "Folklore figure said to bring sleep"
-        ]
-    },
-    {
-        "word": "SEXTING",
-        "text": "Sending explicit messages",
-        "hint": "texting intimately",
-        "hard_text": "Digital communication of a risqué nature",
-        "clues": [
-            "Texting with suggestive content",
-            "Risqué messages exchanged electronically",
-            "Intimate digital exchanges"
         ]
     },
     {
