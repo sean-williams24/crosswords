@@ -40,7 +40,7 @@ puzzle caches intentionally remain device-local.
 
 Enable Google and Apple providers in Supabase Auth. Google web sign-in uses
 Google Identity Services and exchanges its ID token directly with Supabase, so
-add the deployed site origin (for example `https://backword.vercel.app`) to
+add the deployed site origin (for example `https://www.playbackword.com`) to
 the Google Web OAuth client’s Authorized JavaScript origins. Apple web login
 still needs the deployed site's `/auth/callback`, local development's
 `/auth/callback`, a Services ID, and a client secret in Supabase. Apply
@@ -52,8 +52,8 @@ still needs the deployed site's `/auth/callback`, local development's
 Before submitting an app version with accounts or cloud sync, set these public
 URLs in App Store Connect:
 
-- **Privacy Policy URL:** `https://backword.vercel.app/privacy`
-- **Privacy Choices URL:** `https://backword.vercel.app/privacy-choices`
+- **Privacy Policy URL:** `https://www.playbackword.com/privacy`
+- **Privacy Choices URL:** `https://www.playbackword.com/privacy-choices`
 
 The iOS app exposes both links in Settings and on the paywall. Update the App
 Privacy data types in App Store Connect whenever Backword’s data practices or
