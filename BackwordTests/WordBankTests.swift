@@ -141,6 +141,22 @@ struct WordBankTests {
         }
     }
 
+    @Test("No clue repeats a terminal parenthetical marker")
+    func noClueRepeatsTerminalParentheticalMarker() throws {
+        let pattern = #"\s+\(([^).]+)\.?\)\s+\(\1\.?\)\s*$"#
+        let regex = try #require(try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]))
+
+        for obj in try loadWordBank() {
+            for field in fieldValues(for: obj) {
+                let range = NSRange(field.value.startIndex..<field.value.endIndex, in: field.value)
+                #expect(
+                    regex.firstMatch(in: field.value, range: range) == nil,
+                    "\(field.name) repeats a terminal marker for word: \(obj.word) field: \(field.value)"
+                )
+            }
+        }
+    }
+
     private func loadWordBank() throws -> [WordObject] {
         let url = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()

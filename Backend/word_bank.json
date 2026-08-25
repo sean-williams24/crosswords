@@ -27225,7 +27225,7 @@
         "clues": [
             "Points from the boot. (4,7)",
             "Footwork for points. (4,7)",
-            "Skill of sending the ball between posts. (4,7) (4,7)"
+            "Skill of sending the ball between posts. (4,7)"
         ],
         "hard_text": "Attempting points by kicking at goal (4,7)"
     },
@@ -30623,7 +30623,7 @@
         "hint": "Leader in formal meetings",
         "clues": [
             "Leader of a board (5,6)",
-            "Presiding officer of a committee (5,6) (5,6)",
+            "Presiding officer of a committee (5,6)",
             "Presiding officer (5,6)"
         ],
         "hard_text": "Officer who leads a committee (5,6)"
@@ -31601,11 +31601,11 @@
         "text": "Dentifrices used to clean teeth (5,6)",
         "hint": "Varieties include whitening and herbal",
         "clues": [
-            "Dentifrices squeezed onto brushes. (5,6) (5,6)",
-            "Dentifrices with a thick consistency. (5,6) (5,6)",
+            "Dentifrices squeezed onto brushes. (5,6)",
+            "Dentifrices with a thick consistency. (5,6)",
             "Oral-cleaning compounds sold in tubes (5,6)"
         ],
-        "hard_text": "Thick dentifrices for brushing. (5,6) (5,6)"
+        "hard_text": "Thick dentifrices for brushing. (5,6)"
     },
     {
         "word": "TRAILBLAZER",
@@ -243567,7 +243567,7 @@
     },
     {
         "word": "OCD",
-        "text": "Mental health condition marked by intrusive thoughts and rituals (abbr.) (abbr)",
+        "text": "Mental health condition marked by intrusive thoughts and rituals (abbr)",
         "hint": "Condition involving repetitive behaviors (abbr)",
         "hard_text": "Struggles with unwanted thoughts and actions (abbr)",
         "clues": [
@@ -243638,7 +243638,7 @@
         "hard_text": "A device that dispenses money (abbr)",
         "clues": [
             "Get cash here (abbr)",
-            "Cash machine (abbr.) (abbr)",
+            "Cash machine (abbr)",
             "Withdraw funds easily (abbr)"
         ]
     },
@@ -243912,7 +243912,7 @@
         "hard_text": "Home of classic sitcoms (abbr)",
         "clues": [
             "Comedy broadcasting station (abbr)",
-            "Cable channel once called SuperStation (abbr.) (abbr)",
+            "Cable channel once called SuperStation (abbr)",
             "Where humor lives (abbr)"
         ]
     },
@@ -243933,7 +243933,7 @@
         "hint": "More of the same (abbr)",
         "hard_text": "Indicates additional items (abbr)",
         "clues": [
-            "And so forth (abbr.) (abbr)",
+            "And so forth (abbr)",
             "Continues the list (abbr)",
             "More things included (abbr)"
         ]
@@ -244197,8 +244197,8 @@
         "hint": "Special effects in movies (abbr)",
         "hard_text": "Digital visuals in films (abbr)",
         "clues": [
-            "Computer-generated imagery (abbr.) (abbr)",
-            "Digitally created movie imagery (abbr.) (abbr)",
+            "Computer-generated imagery (abbr)",
+            "Digitally created movie imagery (abbr)",
             "Pixel-made movie magic (abbr)"
         ]
     },
@@ -244495,7 +244495,7 @@
         "clues": [
             "April filing agency (abbr)",
             "Government revenue service (abbr)",
-            "Federal tax collector (abbr.) (abbr)"
+            "Federal tax collector (abbr)"
         ]
     },
     {
