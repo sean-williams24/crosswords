@@ -836,17 +836,6 @@
         ]
     },
     {
-        "word": "BARE",
-        "text": "Word before minimum or necessities",
-        "hint": "Lacking covering or ornamentation",
-        "hard_text": "Stripped down to essentials",
-        "clues": [
-            "Naked or minimal",
-            "Unveiled and exposed",
-            "Nothing left to hide"
-        ]
-    },
-    {
         "word": "BARGE",
         "text": "Flat cargo boat",
         "hint": "Hefty craft on rivers",
@@ -41682,17 +41671,6 @@
         ]
     },
     {
-        "word": "AREOLA",
-        "text": "Pigmented area around the nipple",
-        "hint": "Nipple ring",
-        "hard_text": "Surrounding skin of a mammary gland",
-        "clues": [
-            "Circular skin zone",
-            "Seen in mammals' reproductive anatomy",
-            "Part of the anatomy"
-        ]
-    },
-    {
         "word": "ARMADA",
         "text": "Fleet of warships",
         "hint": "Naval fleet",
@@ -41745,17 +41723,6 @@
             "In a circle",
             "Going about something",
             "Encircling an object"
-        ]
-    },
-    {
-        "word": "AROUSE",
-        "text": "To awaken or stir up",
-        "hint": "Stimulate",
-        "hard_text": "To bring to attention or activity",
-        "clues": [
-            "To incite interest",
-            "Awaken from slumber",
-            "Stir from inactivity"
         ]
     },
     {
@@ -43944,17 +43911,6 @@
             "Out of the ordinary",
             "Strange or irregular",
             "Unusual in nature"
-        ]
-    },
-    {
-        "word": "ABORTION",
-        "text": "Premature ending of a process before it is complete",
-        "hint": "Ethical debate in healthcare",
-        "hard_text": "Ending a gestation early",
-        "clues": [
-            "Medical procedure to end pregnancy",
-            "Controversial reproductive choice",
-            "Termination of a pregnancy"
         ]
     },
     {
@@ -46817,17 +46773,6 @@
         "hard_text": "Goddess of the moon"
     },
     {
-        "word": "lust",
-        "text": "Strong craving or desire",
-        "hint": "Passion in romance novels",
-        "clues": [
-            "Desire that can lead to sin",
-            "Yearning that goes beyond mere want",
-            "Intense attraction or craving"
-        ],
-        "hard_text": "Yearning considered immoral in literature"
-    },
-    {
         "word": "lute",
         "text": "Plucked string instrument from the Renaissance",
         "hint": "Popular in Elizabethan music",
@@ -47002,17 +46947,6 @@
             "Word for a person, place, thing, or idea"
         ],
         "hard_text": "Name that holds its ground"
-    },
-    {
-        "word": "nude",
-        "text": "Colorless or unadorned appearance",
-        "hint": "Art style focusing on the human form",
-        "clues": [
-            "Skin-revealing art style",
-            "Without a stitch on",
-            "Artistic depiction of an unclothed person"
-        ],
-        "hard_text": "Bare as a jaybird"
     },
     {
         "word": "null",
@@ -51857,17 +51791,6 @@
             "Not in a hurry, but still moving forward"
         ],
         "hard_text": "What some tortoises do best, it seems?"
-    },
-    {
-        "word": "smut",
-        "text": "Obscene material or indecent content",
-        "hint": "Adult-themed literature?",
-        "clues": [
-            "Adult-themed literature",
-            "A stain on reputation, or a cheeky read",
-            "Not always clean, but can be quite funny"
-        ],
-        "hard_text": "What literature might contain, if not careful?"
     },
     {
         "word": "snap",
@@ -70274,17 +70197,6 @@
         "hard_text": "Seat for a brave rider"
     },
     {
-        "word": "sadist",
-        "text": "One who derives pleasure from inflicting pain",
-        "hint": "Enjoys causing distress to others, perhaps",
-        "clues": [
-            "Enjoys causing distress to others",
-            "Takes pleasure in pain inflicted",
-            "Person who enjoys inflicting pain on others"
-        ],
-        "hard_text": "Takes joy in others' suffering"
-    },
-    {
         "word": "sahara",
         "text": "World's largest hot desert",
         "hint": "North African desert, sometimes",
@@ -71897,17 +71809,6 @@
             "Quick relief spot, but not a lounge"
         ],
         "hard_text": "Restroom fixture, but not a throne"
-    },
-    {
-        "word": "uterus",
-        "text": "Organ involved in reproduction",
-        "hint": "Seen as reproductive organ in females",
-        "clues": [
-            "Reproductive organ in females",
-            "Womb of life, but not a cradle",
-            "Where beginnings start, but not always welcomed"
-        ],
-        "hard_text": "Home for a future, but not a house"
     },
     {
         "word": "alaska",
@@ -78092,17 +77993,6 @@
         "hard_text": "Practice of going au naturel"
     },
     {
-        "word": "nudity",
-        "text": "State of being unclothed",
-        "hint": "Could be exposure without clothing",
-        "clues": [
-            "Exposure without clothing",
-            "What the emperor had on?",
-            "State of undress scandalous"
-        ],
-        "hard_text": "Barely acceptable in polite company"
-    },
-    {
         "word": "oberon",
         "text": "Shakespearean fairy king",
         "hint": "Name of a character in 'A Midsummer Night's Dream', perhaps",
@@ -79563,17 +79453,6 @@
             "Character known for a flying carpet"
         ],
         "hard_text": "Fictional hero with a magic lamp"
-    },
-    {
-        "word": "arousal",
-        "text": "State of heightened awareness or excitement",
-        "hint": "Physical or emotional excitement, perhaps",
-        "clues": [
-            "Physical or emotional excitement",
-            "Awakening of senses",
-            "State after a thrilling moment"
-        ],
-        "hard_text": "The spark before a flame"
     },
     {
         "word": "arsenal",
@@ -89049,17 +88928,6 @@
         "hard_text": "Voice guiding the story's journey"
     },
     {
-        "word": "naturist",
-        "text": "Advocate for nude recreation",
-        "hint": "Bare lifestyle supporter, for one",
-        "clues": [
-            "Bare lifestyle supporter",
-            "Person who practices social nudity",
-            "Follower of nature's unadorned path"
-        ],
-        "hard_text": "One embracing the natural state"
-    },
-    {
         "word": "nauseate",
         "text": "To cause a feeling of sickness",
         "hint": "A sign of make someone feel ill",
@@ -93268,17 +93136,6 @@
             "The solution's not far if both sides agree"
         ],
         "hard_text": "A balance between what's known and unknown"
-    },
-    {
-        "word": "erectile",
-        "text": "Relating to something that can become rigid",
-        "hint": "Pertaining to physical arousal?",
-        "clues": [
-            "Pertaining to physical arousal",
-            "Capable of becoming rigid",
-            "About what rises in the right conditions"
-        ],
-        "hard_text": "Something that stands up for itself"
     },
     {
         "word": "escalade",
@@ -99778,17 +99635,6 @@
         "hard_text": "Artist who brings laughter with lines?"
     },
     {
-        "word": "castration",
-        "text": "Surgical removal of reproductive organs",
-        "hint": "Could be surgical procedure for fertility control",
-        "clues": [
-            "Surgical procedure for fertility control",
-            "Surgical act with historical significance?",
-            "Method to ensure no offspring arise?"
-        ],
-        "hard_text": "Procedure that alters potential parenthood?"
-    },
-    {
         "word": "casualness",
         "text": "State of being relaxed or informal",
         "hint": "Laid-back attitude or behavior, perhaps",
@@ -102483,17 +102329,6 @@
         "hard_text": "Feeling stuck and annoyed"
     },
     {
-        "word": "gestational",
-        "text": "Relating to a specific developmental phase",
-        "hint": "Seen as related to pregnancy's duration",
-        "clues": [
-            "Related to pregnancy's duration",
-            "Relating to pregnancy",
-            "Pertaining to fetal development"
-        ],
-        "hard_text": "Relating to a period of development"
-    },
-    {
         "word": "goodhearted",
         "text": "Having a kind and generous nature",
         "hint": "Kind and compassionate",
@@ -105183,17 +105018,6 @@
             "Projection fitted into a mortise",
             "Woodworking term for a protruding end",
             "Part of a joint, but not a fastener"
-        ]
-    },
-    {
-        "word": "TETON",
-        "text": "Mountain range in Wyoming",
-        "hint": "Iconic mountain region in the West",
-        "hard_text": "French for 'nipple' points to this",
-        "clues": [
-            "Range known for its rugged peaks",
-            "Notable destination for climbers and skiers",
-            "Part of the Rocky Mountain chain"
         ]
     },
     {
@@ -107925,17 +107749,6 @@
         ]
     },
     {
-        "word": "UNLINED",
-        "text": "Not having a lining",
-        "hint": "bare",
-        "hard_text": "Without an inner layer, it feels raw",
-        "clues": [
-            "A fabric without a hidden layer",
-            "Naked surface, no added cover",
-            "Exposed material, lacking interior adornment"
-        ]
-    },
-    {
         "word": "UNRATED",
         "text": "Not given a rating",
         "hint": "unclassified",
@@ -109506,17 +109319,6 @@
             "Untouched by scholarly exploration",
             "Not subjected to academic scrutiny",
             "Remaining in a state of ignorance"
-        ]
-    },
-    {
-        "word": "ADULTERESS",
-        "text": "Woman who commits infidelity",
-        "hint": "unfaithful",
-        "hard_text": "She strays from marital vows",
-        "clues": [
-            "One who breaks the bond of matrimony",
-            "A female partner in betrayal",
-            "She may be seen as a homewrecker"
         ]
     },
     {
@@ -111225,16 +111027,6 @@
         ]
     },
     {
-        "word": "HETEROSEXUAL",
-        "text": "Attracted to the opposite sex",
-        "hint": "Type of romantic preference",
-        "hard_text": "Straight identity in a tangled web of love",
-        "clues": [
-            "Opposite attraction",
-            "Preference for opposite-gender partners"
-        ]
-    },
-    {
         "word": "HOMELESSNESS",
         "text": "Lack of a permanent residence",
         "hint": "living without shelter",
@@ -111639,17 +111431,6 @@
             "Health issues due to poor eating",
             "Imbalance in dietary intake",
             "Condition of insufficient nutrients"
-        ]
-    },
-    {
-        "word": "MENSTRUATION",
-        "text": "Monthly cycle in females",
-        "hint": "period",
-        "hard_text": "Biological event linked to fertility",
-        "clues": [
-            "Monthly discharge of blood from the uterus",
-            "Regular monthly occurrence for many women",
-            "Biological rhythm marked by shedding"
         ]
     },
     {
@@ -116591,17 +116372,6 @@
         ]
     },
     {
-        "word": "MENSTRUATE",
-        "text": "To undergo a monthly cycle",
-        "hint": "monthly cycle",
-        "hard_text": "Flow of time marked by bodily changes",
-        "clues": [
-            "Regular shedding of the uterine lining",
-            "Have a monthly flow",
-            "Undergo a monthly cycle"
-        ]
-    },
-    {
         "word": "MILLENNIAL",
         "text": "Person born in the late 20th century",
         "hint": "generation Y",
@@ -120660,17 +120430,6 @@
         ]
     },
     {
-        "word": "GESTATION",
-        "text": "Development period before birth",
-        "hint": "pregnancy phase",
-        "hard_text": "Time before the big reveal in nature",
-        "clues": [
-            "Waiting period for new life",
-            "Lengthy process of growth",
-            "Nine months, give or take?"
-        ]
-    },
-    {
         "word": "GIDDINESS",
         "text": "State of light-headedness or joy",
         "hint": "ecstatic feeling",
@@ -122563,17 +122322,6 @@
         ]
     },
     {
-        "word": "MENSTRUAL",
-        "text": "Relating to monthly female cycle",
-        "hint": "periodic",
-        "hard_text": "Biological cycle occurring every 28 days, typically",
-        "clues": [
-            "Relating to a monthly cycle",
-            "Relating to a phase of reproduction",
-            "Connected to a woman's biological rhythm"
-        ]
-    },
-    {
         "word": "METEORITE",
         "text": "Space rock that reaches Earth's surface",
         "hint": "space debris",
@@ -123297,17 +123045,6 @@
             "Make something sound larger than life",
             "Embellish details for effect",
             "Claim more than is true"
-        ]
-    },
-    {
-        "word": "OVULATION",
-        "text": "Release of an egg",
-        "hint": "egg release",
-        "hard_text": "Process marking fertility in females",
-        "clues": [
-            "Monthly release in reproductive cycle",
-            "Key event in female reproduction",
-            "When an egg is liberated"
         ]
     },
     {
@@ -124749,17 +124486,6 @@
             "Little movement, lots of sitting",
             "Lifestyle lacking physical activity",
             "Staying put, not on the move"
-        ]
-    },
-    {
-        "word": "SEDUCTION",
-        "text": "The act of enticing someone",
-        "hint": "temptation",
-        "hard_text": "Winning over with charm",
-        "clues": [
-            "Allure that draws one in",
-            "Persuasion through attraction",
-            "Charm that captivates the heart"
         ]
     },
     {
@@ -127631,17 +127357,6 @@
             "General who inspired a facial-hair term",
             "Scottish surname with a fiery implication",
             "Portland street named for a general"
-        ]
-    },
-    {
-        "word": "CANOODLE",
-        "text": "Engage in affectionate behavior",
-        "hint": "cuddle",
-        "hard_text": "Flirt while in a canoe?",
-        "clues": [
-            "Smooch in a romantic setting",
-            "Whisper sweet nothings",
-            "Engage in playful intimacy"
         ]
     },
     {
@@ -132364,17 +132079,6 @@
         ]
     },
     {
-        "word": "PRENATAL",
-        "text": "Before birth",
-        "hint": "before delivery",
-        "hard_text": "Relating to baby's early days inside",
-        "clues": [
-            "Related to pregnancy stages",
-            "Medical term for unborn care",
-            "Antecedent to labor and delivery"
-        ]
-    },
-    {
         "word": "PREORDER",
         "text": "Order in advance",
         "hint": "advance request",
@@ -132768,17 +132472,6 @@
             "The person suggesting a new connection",
             "One who directs inquiries to another",
             "The originator of a recommendation"
-        ]
-    },
-    {
-        "word": "PEOPLE",
-        "text": "Magazine known for its annual Sexiest Man Alive issue",
-        "hint": "humans",
-        "hard_text": "Crowd control involves many individuals",
-        "clues": [
-            "Population in a given area",
-            "Collective human beings",
-            "Group often seen in gatherings"
         ]
     },
     {
@@ -140052,17 +139745,6 @@
         ]
     },
     {
-        "word": "PREGNANT",
-        "text": "Full of meaning or significance",
-        "hint": "expectant",
-        "hard_text": "Full of potential but not yet visible",
-        "clues": [
-            "With child, but not quite ready",
-            "State before delivery",
-            "Impending arrival of a new life"
-        ]
-    },
-    {
         "word": "SEVERE",
         "text": "Plain and without decoration, as an architectural style",
         "hint": "harsh",
@@ -144538,17 +144220,6 @@
         ]
     },
     {
-        "word": "VIRGIN",
-        "text": "Describing a cocktail made without alcohol",
-        "hint": "Pure",
-        "hard_text": "Untainted by experience or relationship",
-        "clues": [
-            "Untouched, often in a literal sense",
-            "A term for innocence or novelty",
-            "Unused or fresh in context"
-        ]
-    },
-    {
         "word": "VOICES",
         "text": "Expresses an opinion or concern",
         "hint": "Sounds produced in speech",
@@ -144942,17 +144613,6 @@
             "Dearly valued",
             "Not to be wasted",
             "Cherished and rare"
-        ]
-    },
-    {
-        "word": "PREGNANCY",
-        "text": "Condition of carrying a fetus",
-        "hint": "Awaiting a new addition",
-        "hard_text": "The state of gestation",
-        "clues": [
-            "Time before childbirth",
-            "Expecting a new arrival",
-            "Carrying a developing baby"
         ]
     },
     {
@@ -167174,17 +166834,6 @@
         ]
     },
     {
-        "word": "FERTILITY",
-        "text": "Ability to produce offspring",
-        "hint": "Ability to reproduce",
-        "hard_text": "Capacity for growth and reproduction",
-        "clues": [
-            "Measure of reproductive capability",
-            "Richness of soil or life",
-            "Capacity for producing offspring"
-        ]
-    },
-    {
         "word": "FLOODS",
         "text": "Overwhelms an inbox with incoming messages",
         "hint": "Inundations",
@@ -175223,17 +174872,6 @@
         ]
     },
     {
-        "word": "MATERNITY",
-        "text": "Related to motherhood",
-        "hint": "Stage of maternal care",
-        "hard_text": "Condition of being a mother",
-        "clues": [
-            "Related to pregnancy care",
-            "State of being a mother",
-            "Expecting mothers' period"
-        ]
-    },
-    {
         "word": "MEANINGS",
         "text": "Purposes or significance inferred from actions",
         "hint": "significances",
@@ -176540,17 +176178,6 @@
             "Commonness of events",
             "Statistical occurrence",
             "Rate of happening"
-        ]
-    },
-    {
-        "word": "INTIMACY",
-        "text": "Close familiarity or friendship",
-        "hint": "Connection on a profound level",
-        "hard_text": "Deep emotional connection, not just physical",
-        "clues": [
-            "Bonding at a personal level",
-            "Familiarity in relationships",
-            "Closeness beyond the surface"
         ]
     },
     {
@@ -184021,17 +183648,6 @@
         ]
     },
     {
-        "word": "ABORTIONS",
-        "text": "Terminations of pregnancy",
-        "hint": "Pregnancy terminations",
-        "hard_text": "Ending potential life before full term",
-        "clues": [
-            "Medical procedures to end pregnancies",
-            "Controversial topic in healthcare",
-            "Ending gestation before its completion"
-        ]
-    },
-    {
         "word": "AMENITIES",
         "text": "Conveniences and features",
         "hint": "Comforts",
@@ -189836,17 +189452,6 @@
             "Designed for high-speed travel, often with few exits",
             "A road where speed limits are higher than usual",
             "A type of highway aimed at efficient transport"
-        ]
-    },
-    {
-        "word": "OBSCENE",
-        "text": "Offensive or indecent in nature",
-        "hint": "Unacceptable for polite society",
-        "hard_text": "Something that crosses the line of propriety",
-        "clues": [
-            "Considered vulgar, it can shock or offend",
-            "Behavior or language that is morally unacceptable",
-            "Beyond the bounds of decency; quite shocking"
         ]
     },
     {
@@ -198473,17 +198078,6 @@
         ]
     },
     {
-        "word": "TOPLESS",
-        "text": "Without a cover on top",
-        "hint": "bare",
-        "hard_text": "Describes a style of swimwear for some",
-        "clues": [
-            "Having no upper garment",
-            "Unclad at the top; often controversial",
-            "Refers to a style of fashion choice"
-        ]
-    },
-    {
         "word": "TORMENT",
         "text": "Cause physical or mental suffering",
         "hint": "anguish",
@@ -198646,17 +198240,6 @@
             "In a state of unrest or anxiety",
             "Physically or emotionally unsettled",
             "Disturbed, often visibly or audibly"
-        ]
-    },
-    {
-        "word": "AROUSED",
-        "text": "Awakened from sleep",
-        "hint": "Stimulated",
-        "hard_text": "Roused from slumber by a loud noise",
-        "clues": [
-            "Excited feelings stirred awake",
-            "Awakened or stirred",
-            "Awakened interest in a subject"
         ]
     },
     {
@@ -209545,17 +209128,6 @@
         ]
     },
     {
-        "word": "VIAGRA",
-        "text": "Medication for erectile dysfunction",
-        "hint": "blue pill",
-        "hard_text": "Facilitates male performance enhancement",
-        "clues": [
-            "Popular drug for intimacy issues",
-            "Known for its blue hue",
-            "Helps with romantic encounters"
-        ]
-    },
-    {
         "word": "VOICING",
         "text": "Expressing something verbally",
         "hint": "articulation",
@@ -211279,17 +210851,6 @@
             "Underground waste management systems",
             "Concealed channels for waste",
             "Infrastructure for drainage"
-        ]
-    },
-    {
-        "word": "SEXIEST",
-        "text": "Most attractive or alluring",
-        "hint": "hottest",
-        "hard_text": "Ultimate in allure and charm",
-        "clues": [
-            "Attractiveness at its peak",
-            "Most appealing of all",
-            "The charm factor maximized"
         ]
     },
     {
@@ -213050,17 +212611,6 @@
             "Bill footers",
             "Individuals who settle debts",
             "Financial contributors"
-        ]
-    },
-    {
-        "word": "PLATONIC",
-        "text": "Non-romantic relationship",
-        "hint": "Nonsexual",
-        "hard_text": "A bond without physical desires",
-        "clues": [
-            "Friendship without romance",
-            "Purely emotional connection",
-            "Love without physical attraction"
         ]
     },
     {
@@ -214956,17 +214506,6 @@
         ]
     },
     {
-        "word": "SADISTIC",
-        "text": "Deriving pleasure from others' pain",
-        "hint": "Cruel",
-        "hard_text": "Taking joy in causing distress to others",
-        "clues": [
-            "Finding delight in another's suffering",
-            "Pleasure from inflicting discomfort",
-            "Taking pleasure in others' pain"
-        ]
-    },
-    {
         "word": "SCORERS",
         "text": "People who achieve points in games",
         "hint": "Point makers",
@@ -216612,17 +216151,6 @@
             "Ultimate sacrifice in the name of faith",
             "State of suffering for one's principles",
             "A noble end for a devoted believer"
-        ]
-    },
-    {
-        "word": "MENOPAUSE",
-        "text": "End of menstrual cycles",
-        "hint": "Life stage",
-        "hard_text": "Natural transition marks a new phase",
-        "clues": [
-            "Hormonal change in middle age",
-            "Time when periods cease",
-            "A chapter in women's health"
         ]
     },
     {
@@ -223617,17 +223145,6 @@
             "Short trips for pleasure",
             "Activities done away from home",
             "Social excursions with company"
-        ]
-    },
-    {
-        "word": "PLACENTA",
-        "text": "Organ supporting fetal development",
-        "hint": "birth organ",
-        "hard_text": "Temporary organ vital for pregnancy",
-        "clues": [
-            "Life-support system for the unborn",
-            "Organ that nourishes a fetus",
-            "Discarded after childbirth"
         ]
     },
     {
@@ -232008,17 +231525,6 @@
             "Beach attire",
             "Gear for the pool",
             "What to wear in water"
-        ]
-    },
-    {
-        "word": "TAMPONS",
-        "text": "Period products for absorption",
-        "hint": "feminine hygiene",
-        "hard_text": "Inserted for monthly maintenance",
-        "clues": [
-            "Absorbent hygiene items",
-            "Discreet monthly necessity",
-            "Products for menstrual flow"
         ]
     },
     {
@@ -245166,17 +244672,6 @@
             "Sibling nickname",
             "Close family relation",
             "Family nickname for a girl"
-        ]
-    },
-    {
-        "word": "IUD",
-        "text": "Device for birth control (abbr)",
-        "hint": "Intrauterine contraceptive, briefly (abbr)",
-        "hard_text": "Small device placed by a clinician (abbr)",
-        "clues": [
-            "Clinic-placed pregnancy prevention (abbr)",
-            "Inserted for family planning (abbr)",
-            "Long-term contraceptive device (abbr)"
         ]
     },
     {

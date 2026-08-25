@@ -27,6 +27,16 @@ final class WordBankTests: XCTestCase {
         wordBank = try decoder.decode([WordObject].self, from: data)
     }
 
+    func testRemovedSensitiveEntriesAreAbsent() {
+        let presentWords = Set(wordBank.map { $0.word.uppercased() })
+        let unexpectedWords = presentWords.intersection(Self.removedSensitiveWords)
+
+        XCTAssertTrue(
+            unexpectedWords.isEmpty,
+            "Sensitive entries must not be reintroduced: \(unexpectedWords.sorted())"
+        )
+    }
+
     func testNoDuplicateOrWrapperEquivalentFields() throws {
         for obj in wordBank {
             let fields = fieldValues(for: obj)
@@ -239,6 +249,16 @@ final class WordBankTests: XCTestCase {
             .replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }
+
+    private static let removedSensitiveWords: Set<String> = [
+        "ABORTION", "ABORTIONS", "ADULTERESS", "AREOLA", "AROUSAL", "AROUSE", "AROUSED",
+        "BARE", "CANOODLE", "CASTRATION", "ERECTILE", "FERTILITY", "GESTATION", "GESTATIONAL",
+        "HETEROSEXUAL", "INTIMACY", "IUD", "LUST", "MATERNITY", "MENOPAUSE", "MENSTRUATE",
+        "MENSTRUATION", "MENSTRUAL", "NATURIST", "NUDE", "NUDITY", "OBSCENE", "OVULATION",
+        "PEOPLE", "PLACENTA", "PLATONIC", "PREGNANCY", "PREGNANT", "PRENATAL", "SADIST", "SADISTIC",
+        "SEDUCTION", "SEXIEST", "SMUT", "TAMPONS", "TETON", "TOPLESS", "UNLINED", "UTERUS",
+        "VIAGRA", "VIRGIN"
+    ]
 
     func singularize(_ word: String) -> String {
         if word.count > 4 && word.hasSuffix("ies") {

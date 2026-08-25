@@ -17,6 +17,17 @@ struct WordBankTests {
         let value: String
     }
 
+    @Test("Reviewed sensitive entries are absent")
+    func removedSensitiveEntriesAreAbsent() throws {
+        let presentWords = Set(try loadWordBank().map { $0.word.uppercased() })
+        let unexpectedWords = presentWords.intersection(Self.removedSensitiveWords)
+
+        #expect(
+            unexpectedWords.isEmpty,
+            "Sensitive entries must not be reintroduced: \(unexpectedWords.sorted())"
+        )
+    }
+
     @Test("No duplicate or wrapper-equivalent fields")
     func noDuplicateOrWrapperEquivalentFields() throws {
         for obj in try loadWordBank() {
@@ -346,6 +357,16 @@ struct WordBankTests {
     }
 
     private static let safeShortRoots: Set<String> = ["art", "bag", "run", "ten"]
+
+    private static let removedSensitiveWords: Set<String> = [
+        "ABORTION", "ABORTIONS", "ADULTERESS", "AREOLA", "AROUSAL", "AROUSE", "AROUSED",
+        "BARE", "CANOODLE", "CASTRATION", "ERECTILE", "FERTILITY", "GESTATION", "GESTATIONAL",
+        "HETEROSEXUAL", "INTIMACY", "IUD", "LUST", "MATERNITY", "MENOPAUSE", "MENSTRUATE",
+        "MENSTRUATION", "MENSTRUAL", "NATURIST", "NUDE", "NUDITY", "OBSCENE", "OVULATION",
+        "PEOPLE", "PLACENTA", "PLATONIC", "PREGNANCY", "PREGNANT", "PRENATAL", "SADIST", "SADISTIC",
+        "SEDUCTION", "SEXIEST", "SMUT", "TAMPONS", "TETON", "TOPLESS", "UNLINED", "UTERUS",
+        "VIAGRA", "VIRGIN",
+    ]
 
     private static let stopwords: Set<String> = [
         "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "in", "into",

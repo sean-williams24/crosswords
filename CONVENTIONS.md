@@ -760,6 +760,16 @@ python3 Backend/build_remaining_clue_repair_queue.py
 
 ## Backend Python Scripts
 
+## Word Bank Content Curation
+
+The crossword word bank is family-friendly. Sexual, sexually suggestive, and
+reproductive-health entries identified during content review are removed as
+whole entries, including entries whose clue text alone introduced the concern.
+`WordBankTests.testRemovedSensitiveEntriesAreAbsent` guards the reviewed
+removal set against accidental reintroduction.
+
+---
+
 The `Backend/` folder is organised into two tiers:
 
 ### Active scripts (tracked in git)
