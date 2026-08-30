@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Audit and safely patch unreleased crossword clue payloads.
+"""Audit and safely patch crossword clue payloads.
 
 The tool reads future local artifacts and Supabase rows, comparing every shown
-answer/clue pair to the active word-bank certification.  Remote writes require
-an explicitly approved package and ``--yes``.
+answer/clue pair to the active word-bank certification. Remote writes require
+an explicitly approved package and ``--yes``. The normal workflow deliberately
+considers only future rows. The separate historical workflow can replace only
+an exact old word-bank clue with its certified repaired successor.
 """
 
 from __future__ import annotations
@@ -12,6 +14,9 @@ import argparse
 import hashlib
 import json
 import os
+import subprocess
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 from copy import deepcopy
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -31,6 +36,21 @@ TABLES = {"daily": "puzzles", "weekly": "weekly_puzzles"}
 def load_json(path: Path) -> Any:
     with path.open() as handle:
         return json.load(handle)
+
+
+def load_bank_revision(revision: str) -> list[dict[str, Any]]:
+    """Load the checked-in bank at a Git revision without touching the worktree."""
+    try:
+        content = subprocess.check_output(
+            ["git", "-C", str(BACKEND_DIR.parent), "show", f"{revision}:Backend/word_bank.json"],
+            text=True,
+        )
+    except subprocess.CalledProcessError as error:
+        raise ValueError(f"Unable to load word bank at Git revision {revision!r}") from error
+    value = json.loads(content)
+    if not isinstance(value, list):
+        raise ValueError(f"Word bank at Git revision {revision!r} is not a list")
+    return value
 
 
 def write_json(path: Path, value: Any) -> None:
@@ -85,29 +105,40 @@ def load_artifacts(directory: Path, after: date) -> dict[str, list[dict[str, Any
     return result
 
 
-def client():
-    from supabase import create_client
-
+def supabase_request(method: str, table: str, query: dict[str, str], payload: dict[str, Any] | None = None) -> Any:
+    """Perform the small, dependency-free REST subset this audit requires."""
     url = os.environ.get("SUPABASE_URL")
     key = os.environ.get("SUPABASE_KEY")
     if not url or not key:
         raise ValueError("SUPABASE_URL and SUPABASE_KEY are required for remote puzzle audit")
-    return create_client(url, key)
+    request_url = f"{url.rstrip('/')}/rest/v1/{table}?{urlencode(query)}"
+    data = json.dumps(payload).encode() if payload is not None else None
+    headers = {"apikey": key, "Authorization": f"Bearer {key}"}
+    if data is not None:
+        headers.update({"Content-Type": "application/json", "Prefer": "return=representation"})
+    request = Request(request_url, data=data, headers=headers, method=method)
+    with urlopen(request) as response:  # noqa: S310 - URL comes only from SUPABASE_URL
+        body = response.read().decode()
+    return json.loads(body) if body else None
+
+
+def fetch_remote_rows(comparison: str, pivot: date) -> dict[str, list[dict[str, Any]]]:
+    result = {}
+    for kind, table in TABLES.items():
+        result[kind] = supabase_request(
+            "GET", table,
+            {"select": "id,date,puzzle_number,clues", "date": f"{comparison}.{pivot.isoformat()}", "order": "date.asc"},
+        ) or []
+    return result
 
 
 def fetch_unreleased(after: date) -> dict[str, list[dict[str, Any]]]:
-    result = {}
-    for kind, table in TABLES.items():
-        response = (
-            client()
-            .table(table)
-            .select("id,date,puzzle_number,clues")
-            .gt("date", after.isoformat())
-            .order("date")
-            .execute()
-        )
-        result[kind] = response.data or []
-    return result
+    return fetch_remote_rows("gt", after)
+
+
+def fetch_released(before: date) -> dict[str, list[dict[str, Any]]]:
+    """Fetch rows released before ``before`` (never the current date)."""
+    return fetch_remote_rows("lt", before)
 
 
 def audit_rows(rows_by_kind: dict[str, list[dict[str, Any]]], certification: dict[str, Any]) -> list[dict[str, Any]]:
@@ -192,6 +223,98 @@ def build_updates(
     }
 
 
+def changed_active_values(
+    previous_entries: list[dict[str, Any]],
+    current_entries: list[dict[str, Any]],
+    certification: dict[str, Any],
+) -> dict[tuple[str, str, int | None], tuple[str, str]]:
+    """Return exact old-to-certified-new mappings for active bank fields."""
+    certified = certified_values(certification)
+    current_by_answer = bank_index(current_entries)
+    mappings: dict[tuple[str, str, int | None], tuple[str, str]] = {}
+    for previous in previous_entries:
+        answer = str(previous.get("word", "")).upper()
+        current = current_by_answer.get(answer)
+        if not answer or not current:
+            continue
+        for field in ("text", "hard_text", "hardText"):
+            old = previous.get(field)
+            new = current.get(field)
+            if isinstance(old, str) and isinstance(new, str) and old.strip() and old != new:
+                if (answer, new.strip()) in certified:
+                    mappings[(answer, field, None)] = (old.strip(), new.strip())
+        old_clues = previous.get("clues") or []
+        new_clues = current.get("clues") or []
+        for index, old in enumerate(old_clues):
+            new = new_clues[index] if index < len(new_clues) else None
+            if isinstance(old, str) and isinstance(new, str) and old.strip() and old != new:
+                if (answer, new.strip()) in certified:
+                    mappings[(answer, "clues", index)] = (old.strip(), new.strip())
+    return mappings
+
+
+def historical_repair_for_clue(
+    clue: dict[str, Any],
+    channel: str,
+    mappings: dict[tuple[str, str, int | None], tuple[str, str]],
+) -> tuple[str, str] | None:
+    """Find a single exact certified repair for one stored puzzle clue."""
+    answer = str(clue.get("answer", "")).upper().strip()
+    value = str(clue.get(channel, "")).strip()
+    source_field = clue.get(f"{channel}SourceField")
+    source_index = clue.get(f"{channel}SourceIndex")
+    if source_field:
+        match = mappings.get((answer, str(source_field), source_index if isinstance(source_index, int) else None))
+        return match if match and match[0] == value else None
+
+    # Older payloads lacked source metadata. An exact old value is safe to
+    # repair only when it identifies one source field uniquely.
+    matches = [mapping for (mapped_answer, _field, _index), mapping in mappings.items()
+               if mapped_answer == answer and mapping[0] == value]
+    return matches[0] if len(matches) == 1 else None
+
+
+def build_historical_updates(
+    rows_by_kind: dict[str, list[dict[str, Any]]],
+    previous_entries: list[dict[str, Any]],
+    current_entries: list[dict[str, Any]],
+    certification: dict[str, Any],
+) -> dict[str, Any]:
+    """Build exact source-mapped repairs for released puzzle rows."""
+    mappings = changed_active_values(previous_entries, current_entries, certification)
+    updates = []
+    for kind, rows in rows_by_kind.items():
+        for row in rows:
+            row_hash = clues_sha256(row.get("clues") or [])
+            for clue in row.get("clues") or []:
+                for channel in ("text", "hint"):
+                    repair = historical_repair_for_clue(clue, channel, mappings)
+                    if not repair:
+                        continue
+                    old, replacement = repair
+                    updates.append({
+                        "kind": kind,
+                        "rowId": row.get("id"),
+                        "date": row.get("date"),
+                        "puzzleNumber": row.get("puzzle_number"),
+                        "clueId": clue.get("id"),
+                        "answer": str(clue.get("answer", "")).upper().strip(),
+                        "channel": channel,
+                        "current": old,
+                        "replacement": replacement,
+                        "sourceField": clue.get(f"{channel}SourceField"),
+                        "sourceIndex": clue.get(f"{channel}SourceIndex"),
+                        "cluesSha256": row_hash,
+                        "status": "approved",
+                        "approval": "exact_certified_historical_repair",
+                    })
+    return {
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "scope": "released rows strictly before local execution-day date; exact certified repairs only",
+        "updates": updates,
+    }
+
+
 def apply_updates_to_rows(rows_by_kind: dict[str, list[dict[str, Any]]], package: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
     updated = deepcopy(rows_by_kind)
     by_row = {
@@ -199,12 +322,13 @@ def apply_updates_to_rows(rows_by_kind: dict[str, list[dict[str, Any]]], package
         for kind, rows in updated.items()
         for row in rows
     }
+    original_hashes = {key: clues_sha256(row.get("clues") or []) for key, row in by_row.items()}
     for item in package.get("updates", []):
         if item.get("status") != "approved":
             continue
         key = (item.get("kind"), item.get("rowId"), item.get("date"), item.get("puzzleNumber"))
         row = by_row.get(key)
-        if not row or clues_sha256(row.get("clues") or []) != item.get("cluesSha256"):
+        if not row or original_hashes[key] != item.get("cluesSha256"):
             raise ValueError(f"Puzzle row changed since update export: {key}")
         matches = [clue for clue in row.get("clues") or [] if clue.get("id") == item.get("clueId") and str(clue.get("answer", "")).upper() == item.get("answer")]
         if len(matches) != 1 or matches[0].get(item.get("channel")) != item.get("current"):
@@ -215,27 +339,33 @@ def apply_updates_to_rows(rows_by_kind: dict[str, list[dict[str, Any]]], package
 
 def apply_remote(package: dict[str, Any]) -> int:
     changed = 0
+    grouped: dict[tuple[str, Any], list[dict[str, Any]]] = {}
     for item in package.get("updates", []):
-        if item.get("status") != "approved" or item.get("rowId") is None:
-            continue
-        table = TABLES[item["kind"]]
-        response = client().table(table).select("id,date,puzzle_number,clues").eq("id", item["rowId"]).single().execute()
-        row = response.data
-        if not row or clues_sha256(row.get("clues") or []) != item.get("cluesSha256"):
-            raise ValueError(f"Supabase row changed since update export: {item['rowId']}")
-        rows = apply_updates_to_rows({item["kind"]: [row]}, {"updates": [item]})
-        client().table(table).update({"clues": rows[item["kind"]][0]["clues"]}).eq("id", item["rowId"]).execute()
+        if item.get("status") == "approved" and item.get("rowId") is not None:
+            grouped.setdefault((item["kind"], item["rowId"]), []).append(item)
+    for (kind, row_id), items in grouped.items():
+        table = TABLES[kind]
+        fetched = supabase_request("GET", table, {"select": "id,date,puzzle_number,clues", "id": f"eq.{row_id}"})
+        row = fetched[0] if isinstance(fetched, list) and len(fetched) == 1 else None
+        if not row:
+            raise ValueError(f"Supabase row missing: {row_id}")
+        rows = apply_updates_to_rows({kind: [row]}, {"updates": items})
+        supabase_request("PATCH", table, {"id": f"eq.{row_id}"}, {"clues": rows[kind][0]["clues"]})
         changed += 1
     return changed
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Audit only unreleased crossword payloads against word-bank certification")
-    parser.add_argument("command", choices=["audit-local", "audit-remote", "build-updates", "apply-remote"])
+    parser = argparse.ArgumentParser(description="Audit and safely patch crossword payloads against word-bank certification")
+    parser.add_argument("command", choices=["audit-local", "audit-remote", "build-updates", "audit-history-remote", "build-history-updates", "apply-remote"])
     parser.add_argument("--artifact-dir", type=Path, default=BACKEND_DIR)
     parser.add_argument("--as-of", type=date.fromisoformat, default=date.today())
     parser.add_argument("--report", type=Path, default=REPORT_PATH)
     parser.add_argument("--package", type=Path, default=UPDATE_PATH)
+    parser.add_argument("--previous-bank", type=Path, help="Pre-repair bank snapshot for build-history-updates")
+    parser.add_argument("--previous-bank-revision", help="Pre-repair Git revision for build-history-updates")
+    parser.add_argument("--bank", type=Path, default=BANK_PATH, help="Certified repaired bank for build-history-updates")
+    parser.add_argument("--bank-revision", help="Certified repaired Git revision for build-history-updates")
     parser.add_argument("--yes", action="store_true")
     return parser.parse_args()
 
@@ -243,9 +373,14 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     certification = load_certification(CERTIFICATION_PATH)
-    entries = load_json(BANK_PATH)
-    if args.command in {"audit-local", "audit-remote"}:
-        rows = load_artifacts(args.artifact_dir, args.as_of) if args.command == "audit-local" else fetch_unreleased(args.as_of)
+    entries = load_bank_revision(args.bank_revision) if args.bank_revision else load_json(args.bank)
+    if args.command in {"audit-local", "audit-remote", "audit-history-remote"}:
+        if args.command == "audit-local":
+            rows = load_artifacts(args.artifact_dir, args.as_of)
+        elif args.command == "audit-remote":
+            rows = fetch_unreleased(args.as_of)
+        else:
+            rows = fetch_released(args.as_of)
         report = {
             "generatedAt": datetime.now(timezone.utc).isoformat(),
             "asOf": args.as_of.isoformat(),
@@ -254,13 +389,23 @@ def main() -> int:
             "findings": audit_rows(rows, certification),
         }
         write_json(args.report, report)
-        print(f"Audited {sum(len(value) for value in rows.values())} unreleased puzzle rows; {len(report['findings'])} findings.")
+        scope = "released" if args.command == "audit-history-remote" else "unreleased"
+        print(f"Audited {sum(len(value) for value in rows.values())} {scope} puzzle rows; {len(report['findings'])} findings.")
         return 0
-    report = load_json(args.report)
     if args.command == "build-updates":
+        report = load_json(args.report)
         package = build_updates(report["rows"], report["findings"], entries, certification)
         write_json(args.package, package)
         print(f"Wrote {len(package['updates'])} pending unreleased-puzzle updates.")
+        return 0
+    if args.command == "build-history-updates":
+        if bool(args.previous_bank) == bool(args.previous_bank_revision):
+            raise ValueError("build-history-updates requires exactly one of --previous-bank or --previous-bank-revision")
+        report = load_json(args.report)
+        previous_entries = load_bank_revision(args.previous_bank_revision) if args.previous_bank_revision else load_json(args.previous_bank)
+        package = build_historical_updates(report["rows"], previous_entries, entries, certification)
+        write_json(args.package, package)
+        print(f"Wrote {len(package['updates'])} exact certified historical repairs.")
         return 0
     if not args.yes:
         raise ValueError("apply-remote requires --yes")

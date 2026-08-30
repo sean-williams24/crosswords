@@ -708,6 +708,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Audit mechanical crossword answer giveaways without an API")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("init", help="Create a new checksum-bound audit")
+    commands.add_parser("refresh-audit", help="Refresh a stale audit while retaining unchanged review decisions")
     for command in ("export-primary", "export-verification"):
         item = commands.add_parser(command, help="Export a Terra review batch for Codex")
         item.add_argument("--limit", type=int, default=50)
@@ -765,6 +766,12 @@ def main() -> int:
     if args.command == "init":
         write_json(AUDIT_PATH, new_audit(entries))
         print(f"Created {AUDIT_PATH.name} for {len(entries)} entries.")
+        return 0
+    if args.command == "refresh-audit":
+        if not AUDIT_PATH.exists():
+            raise ValueError(f"{AUDIT_PATH.name} does not exist; run init first")
+        write_json(AUDIT_PATH, refresh_audit_after_repairs(entries, load_json(AUDIT_PATH)))
+        print(f"Refreshed {AUDIT_PATH.name} for the current word bank.")
         return 0
     if args.command == "validate-certification":
         if not CERTIFICATION_PATH.exists():

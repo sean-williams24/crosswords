@@ -77,6 +77,44 @@ class UnreleasedPuzzleAuditTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "changed since update export"):
             unreleased.apply_updates_to_rows(rows, package)
 
+    def test_historical_updates_use_exact_source_mapped_certified_repairs(self) -> None:
+        previous = [{
+            "word": "AFIRE", "text": "On fire", "hint": "Dormant fallback",
+            "hard_text": "Lit up", "clues": ["In flames"],
+        }]
+        current = [entry()]
+        rows = {"daily": [{
+            **row("On fire"),
+            "clues": [{
+                **row("On fire")["clues"][0],
+                "hint": "In flames",
+                "hintSourceField": "clues",
+                "hintSourceIndex": 0,
+            }],
+        }], "weekly": []}
+
+        package = unreleased.build_historical_updates(rows, previous, current, self.certificate)
+
+        self.assertEqual([(item["channel"], item["replacement"]) for item in package["updates"]], [
+            ("text", "Blazing"), ("hint", "Set ablaze"),
+        ])
+        self.assertEqual(
+            unreleased.apply_updates_to_rows(rows, package)["daily"][0]["clues"][0]["text"],
+            "Blazing",
+        )
+
+    def test_historical_updates_allow_unique_exact_fallback_without_metadata(self) -> None:
+        previous = [{**entry(), "text": "On fire"}]
+        rows = {"daily": [{
+            **row("On fire"),
+            "clues": [{"id": 1, "answer": "AFIRE", "text": "On fire", "hint": "Unchanged"}],
+        }], "weekly": []}
+
+        package = unreleased.build_historical_updates(rows, previous, self.entries, self.certificate)
+
+        self.assertEqual(len(package["updates"]), 1)
+        self.assertEqual(package["updates"][0]["replacement"], "Blazing")
+
     def test_released_rows_are_not_selected_by_artifact_loader(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "puzzle_9.json"

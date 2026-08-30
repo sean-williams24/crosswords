@@ -637,6 +637,14 @@ packages preserve grids and answers, bind every replacement to the original
 row and clues payload, and require explicit review plus `--yes` before a remote
 write. Released and current puzzles are never changed by this workflow.
 
+If an approved repair must also be propagated to released history, use the
+script's separate `audit-history-remote` and `build-history-updates` commands.
+They require both the pre-repair snapshot and the certified repaired bank, and
+may change a historical clue only when its stored source field (or one unique
+exact legacy value) is the precise old value from that repair. They never
+rewrite a merely uncertified historical clue, grid, or answer; the current date
+remains excluded.
+
 ### Clue redundancy rule
 
 Active clue fields inside the same word-bank object must use genuinely different clue ideas. `hint` is ignored for this cleanup rule. Do not repair one active field by reusing another field with wrapper text such as "Maybe", "Could be", "Often", "Seen as", "Associated with", "A sign of", or suffixes such as "perhaps", "sometimes", "for one", or a trailing question mark. Active clue fields should also avoid filler qualifiers such as "perhaps", "maybe", "possibly", "sometimes", and "loosely" anywhere in the clue; remove the qualifier or write a fresh clue instead.
