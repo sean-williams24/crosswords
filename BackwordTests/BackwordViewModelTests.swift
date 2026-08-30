@@ -107,14 +107,14 @@ struct BackwordViewModelTests {
         }
     }
 
-    @Test("Backword mode defaults to Normal and persists both values")
+    @Test("Backword mode defaults to Easy and persists both values")
     func backwordModePersists() {
         let suiteName = "BackwordModeTests-\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName)!
         defer { defaults.removePersistentDomain(forName: suiteName) }
 
         let settings = AppSettings(userDefaults: defaults)
-        #expect(settings.backwordMode == .normal)
+        #expect(settings.backwordMode == .easy)
 
         settings.backwordMode = .easy
         #expect(AppSettings(userDefaults: defaults).backwordMode == .easy)

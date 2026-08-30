@@ -4,11 +4,11 @@ import { createBackwordStorage } from "./storage";
 describe("Backword browser storage", () => {
   beforeEach(() => localStorage.clear());
 
-  it("uses Normal mode and unseen onboarding defaults", () => {
+  it("uses Easy mode and unseen onboarding defaults", () => {
     const storage = createBackwordStorage(localStorage);
     expect(storage.loadSettings()).toEqual({
       schemaVersion: 1,
-      mode: "normal",
+      mode: "easy",
       hasSeenOnboarding: false,
       lastSeenRulesVersion: 0
     });
@@ -35,7 +35,7 @@ describe("Backword browser storage", () => {
     localStorage.setItem("backword:web:puzzles:v1", JSON.stringify({ bad: { word: "TOO-LONG" } }));
     const storage = createBackwordStorage(localStorage);
 
-    expect(storage.loadSettings().mode).toBe("normal");
+    expect(storage.loadSettings().mode).toBe("easy");
     expect(storage.loadAllProgress()).toEqual([]);
     expect(storage.loadCachedWord("bad")).toBeNull();
   });

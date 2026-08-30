@@ -7,7 +7,7 @@ const PUZZLE_CACHE_KEY = "backword:web:puzzles:v1";
 
 const defaultSettings: BackwordSettings = {
   schemaVersion: 1,
-  mode: "normal",
+  mode: "easy",
   hasSeenOnboarding: false,
   lastSeenRulesVersion: 0
 };

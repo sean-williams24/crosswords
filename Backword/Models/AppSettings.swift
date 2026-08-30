@@ -100,7 +100,7 @@ final class AppSettings: ObservableObject {
         backwordLetterFeedback = userDefaults.bool(forKey: Keys.backwordLetterFeedback)
         backwordMode = BackwordMode(
             rawValue: userDefaults.string(forKey: Keys.backwordMode) ?? ""
-        ) ?? .normal
+        ) ?? .easy
         let stored = userDefaults.object(forKey: Keys.crosswordCorrectHighlight)
         crosswordCorrectHighlight = stored != nil ? userDefaults.bool(forKey: Keys.crosswordCorrectHighlight) : true
         hasDismissedAdExplainer = userDefaults.bool(forKey: Keys.hasDismissedAdExplainer)
