@@ -365,7 +365,7 @@ def source_field_for_artifact_clue(
             return field, get_field(entry, field), None
         return None, None, "Artifact source metadata points outside word_bank.clues[]"
 
-    if source_field in {"text", "hard_text"}:
+    if source_field in {"text", "hard_text", "hardText"}:
         return str(source_field), get_field(entry, str(source_field)), None
 
     if source_field == "hint":

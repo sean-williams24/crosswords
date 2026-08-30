@@ -54,7 +54,6 @@ LEAK_PROPOSALS_PATH = Path(__file__).parent / "leaking_clue_replacements.json"
 SIMILAR_PROPOSALS_PATH = Path(__file__).parent / "similar_clue_replacements.json"
 QUALITY_CANDIDATES_PATH = Path(__file__).parent / "audit_quality_candidates.json"
 QUALITY_REPORT_PATH = Path(__file__).parent / "clue_quality_replacements.json"
-MIN_CONSTITUENT_LEN = 3
 REWRITE_PRIORITY = {
     "hard_text": 1,
     "hardText": 1,
@@ -363,47 +362,12 @@ def scan_leaks(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return findings
 
 
-def check_terms(answer: str) -> list[str]:
-    normalized = re.sub(r"[^A-Za-z0-9]+", " ", answer).strip()
-    parts = normalized.split()
-    if not parts:
-        return []
-    terms = [normalized]
-    if len(parts) > 1:
-        terms.extend(part for part in parts if len(part) >= MIN_CONSTITUENT_LEN)
-    return terms
-
-
-def contains_whole_word(text: str, word: str) -> bool:
-    return bool(re.search(r"\b" + re.escape(word) + r"\b", text, re.IGNORECASE))
-
-
-def leaks_exact_answer(answer: str, text: str) -> bool:
-    return any(contains_whole_word(text, term) for term in check_terms(answer))
-
-
-def leaks_answer_fragment(answer: str, text: str) -> bool:
-    compact_text = re.sub(r"[^a-z0-9]+", "", text.lower())
-    for term in check_terms(answer):
-        compact_term = re.sub(r"[^a-z0-9]+", "", term.lower())
-        if compact_term and compact_term in compact_text:
-            return True
-    return False
-
-
-def derivability_issue(answer: str, text: str) -> dict[str, Any] | None:
-    if leaks_exact_answer(answer, text):
-        return {"reasons": ["EXACT_ANSWER"]}
+def replacement_issue(answer: str, text: str) -> dict[str, Any] | None:
+    """Use the canonical answer-leakage implementation for all quality tools."""
     issues = scan_text(answer, text)
     if not issues:
         return None
     return {"reasons": sorted({issue.reason for issue in issues})}
-
-
-def replacement_issue(answer: str, text: str) -> dict[str, Any] | None:
-    if leaks_answer_fragment(answer, text):
-        return {"reasons": ["ANSWER_FRAGMENT"]}
-    return derivability_issue(answer, text)
 
 
 def existing_values(entry: dict[str, Any], replacing: str | None = None) -> set[str]:

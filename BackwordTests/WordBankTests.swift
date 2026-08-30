@@ -72,6 +72,10 @@ struct WordBankTests {
         #expect(isAnswerDerivable(answer: "ARTY", clue: "Pretentiously artistic"))
         #expect(isAnswerDerivable(answer: "RUNNER", clue: "One who runs"))
         #expect(isAnswerDerivable(answer: "RESULTING", clue: "Resultant of previous events"))
+        #expect(isAnswerDerivable(answer: "AFIRE", clue: "On fire"))
+        #expect(isAnswerDerivable(answer: "CIRCULAR", clue: "In the shape of a circle"))
+        #expect(!isAnswerDerivable(answer: "AFIRE", clue: "Burning brightly"))
+        #expect(!isAnswerDerivable(answer: "CIRCULAR", clue: "Round"))
     }
 
     @Test("Known wrapper-equivalent clue examples are rejected")
@@ -341,6 +345,17 @@ struct WordBankTests {
                 candidates = candidates.filter { Self.safeShortRoots.contains($0) }
             }
             roots.formUnion(candidates.filter(rootIsSafe))
+        }
+        if word.count > 7 && word.hasSuffix("ular") {
+            roots.insert(String(word.dropLast(4)) + "le")
+        }
+        let prefixes = ["anti", "auto", "counter", "inter", "over", "post", "pre", "trans", "under", "a"]
+        for prefix in prefixes.sorted(by: { $0.count > $1.count }) where word.hasPrefix(prefix) {
+            let root = String(word.dropFirst(prefix.count))
+            if rootIsSafe(root) {
+                roots.insert(root)
+                break
+            }
         }
         return roots
     }

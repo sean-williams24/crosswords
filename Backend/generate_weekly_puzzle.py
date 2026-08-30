@@ -26,6 +26,7 @@ from pathlib import Path
 from typing import Iterable, Mapping
 
 from crossword_answer_similarity import AnswerSimilarityIndex
+from word_bank_safety import CERTIFICATION_PATH, validate_certification
 
 GRID_SIZE = 13
 TARGET_CLUES = 35
@@ -282,11 +283,16 @@ TEMPLATES = [
 
 # ── Word Bank ───────────────────────────────────────────────────────────────
 
-def load_word_bank(exclude: set[str] | None = None) -> dict[int, list[dict]]:
+def load_word_bank(
+    exclude: set[str] | None = None,
+    certification_path: Path | None = None,
+) -> dict[int, list[dict]]:
     """Load word bank and organize by length, optionally excluding recently-used words."""
     bank_path = Path(__file__).parent / "word_bank.json"
     with open(bank_path) as f:
         words = json.load(f)
+
+    validate_certification(words, certification_path or CERTIFICATION_PATH)
 
     excluded = {w.upper() for w in exclude} if exclude else set()
 
@@ -578,9 +584,10 @@ def assemble_raw(
         else:
             text = entry["text"]
 
-        if entry.get("hard_text"):
-            hint = entry["hard_text"]
-            hint_source_field = "hard_text"
+        hard_text = entry.get("hard_text") or entry.get("hardText")
+        if hard_text:
+            hint = hard_text
+            hint_source_field = "hard_text" if entry.get("hard_text") else "hardText"
         else:
             hint = entry.get("hint", "")
             hint_source_field = "hint"
@@ -864,9 +871,13 @@ def generate_scheduled_puzzles(
         )
         print(f"\nGenerating weekly puzzle #{puzzle_number} for {puzzle_date_str} (seed={attempt_seed})...")
 
+        # Production retries reload through the certified bank loader so a
+        # completed puzzle cannot reuse fill.  An injected generator is a
+        # unit-test seam and owns its supplied bank instead of unexpectedly
+        # touching the production word-bank certification.
         current_bank = (
             bank_loader(exclude=exclude | batch_used)
-            if batch_used
+            if batch_used and generator is generate_puzzle
             else word_bank
         )
         raw = generator(current_bank, seed=attempt_seed)

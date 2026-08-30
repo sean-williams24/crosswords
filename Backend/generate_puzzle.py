@@ -25,6 +25,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from crossword_answer_similarity import AnswerSimilarityIndex
+from word_bank_safety import CERTIFICATION_PATH, validate_certification
 
 GRID_SIZE = 9
 TARGET_CLUES = 20
@@ -343,11 +344,18 @@ TEMPLATES = [
 
 # ── Word Bank ───────────────────────────────────────────────────────────────
 
-def load_word_bank(exclude: set[str] | None = None) -> dict[int, list[dict]]:
+def load_word_bank(
+    exclude: set[str] | None = None,
+    certification_path: Path | None = None,
+) -> dict[int, list[dict]]:
     """Load word bank and organize by length, optionally excluding recently-used words."""
     bank_path = Path(__file__).parent / "word_bank.json"
     with open(bank_path) as f:
         words = json.load(f)
+
+    # Do this before exclusions so every playable clue is certified, not only
+    # the subset selected for one particular grid.
+    validate_certification(words, certification_path or CERTIFICATION_PATH)
 
     excluded = {w.upper() for w in exclude} if exclude else set()
 

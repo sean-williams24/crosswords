@@ -91,6 +91,10 @@ final class WordBankTests: XCTestCase {
         XCTAssertTrue(isAnswerDerivable(answer: "ARTY", clue: "Pretentiously artistic"))
         XCTAssertTrue(isAnswerDerivable(answer: "RUNNER", clue: "One who runs"))
         XCTAssertTrue(isAnswerDerivable(answer: "RESULTING", clue: "Resultant of previous events"))
+        XCTAssertTrue(isAnswerDerivable(answer: "AFIRE", clue: "On fire"))
+        XCTAssertTrue(isAnswerDerivable(answer: "CIRCULAR", clue: "In the shape of a circle"))
+        XCTAssertFalse(isAnswerDerivable(answer: "AFIRE", clue: "Burning brightly"))
+        XCTAssertFalse(isAnswerDerivable(answer: "CIRCULAR", clue: "Round"))
     }
 
     func testKnownWrapperEquivalentClueExamplesAreRejected() throws {
@@ -325,6 +329,17 @@ final class WordBankTests: XCTestCase {
                 candidates = candidates.filter { Self.safeShortRoots.contains($0) }
             }
             roots.formUnion(candidates.filter(rootIsSafe))
+        }
+        if word.count > 7 && word.hasSuffix("ular") {
+            roots.insert(String(word.dropLast(4)) + "le")
+        }
+        let prefixes = ["anti", "auto", "counter", "inter", "over", "post", "pre", "trans", "under", "a"]
+        for prefix in prefixes.sorted(by: { $0.count > $1.count }) where word.hasPrefix(prefix) {
+            let root = String(word.dropFirst(prefix.count))
+            if rootIsSafe(root) {
+                roots.insert(root)
+                break
+            }
         }
         return roots
     }

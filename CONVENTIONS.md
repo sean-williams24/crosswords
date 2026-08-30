@@ -592,6 +592,51 @@ Derived forms are blocked when they are clear inflections or common ordinal/card
 
 Run `Backend/fix_answer_leakage.py` or `python3 Backend/fix_duplicate_clues.py scan-quality` to scan for violations. Backend clue-generation scripts should enforce the same rule through `Backend/answer_leakage.py`.
 
+### Mechanical giveaway certification
+
+In addition to exact answer leakage, active crossword clues must not expose an
+answer through a mechanically recognisable construction: a prefix or suffix,
+contained constituent, inflection, derivational family, or ordinary spelling
+shift within that family. For example, `AFIRE` cannot use `fire`, and
+`CIRCULAR` cannot use `circle`; unrelated synonyms such as `burning` and
+`round` remain valid.
+
+`Backend/audit_answer_giveaways.py` is the canonical review-first workflow. It
+uses a local high-recall scan, then exports only candidates for Terra review in
+Codex; it never calls an OpenAI API. A second blind Terra decision confirms
+flagged fields and separately verifies replacement clues. All review artifacts
+are checksum-bound to the source bank, and only explicitly approved,
+Terra-verified replacements can be applied.
+
+Replacement authors mark a field `proposed`, export it through
+`export-replacement-verification`, and record the blind decision before it can
+be marked `approved`. The generated repair report shows only proposed
+before/after pairs, making the human review surface compact without implying
+that a pending field is safe.
+
+Within one word-bank entry, `clues[]` are hint alternatives for `text`, and
+`hard_text`/`hardText` is a hint alternative for the crossword clue fields.
+New or repaired active clues therefore must not duplicate any sibling active
+clue. The replacement exporter rejects an exact normalized collision before
+blind Terra verification; authors also review the batch for non-identical
+near-duplicates that would make a hint give away another clue.
+
+`word_bank_answer_giveaway_certification.json` records every active
+answer/clue-pair fingerprint under the current policy and scanner version.
+Deterministically clean non-candidates are certified locally; ambiguous
+spelling-family candidates require Terra provenance, while deterministic
+giveaways cannot be certified. Daily and weekly generators validate that certification before
+selecting any words and fail closed if a field changes, a review is unresolved,
+or a dormant `hint` could become a fallback. `hint` itself is intentionally
+outside the certificate while every entry retains non-empty `clues[]` and
+`hard_text`/`hardText`.
+
+After bank repairs are certified, use `Backend/audit_unreleased_puzzles.py` to
+audit only future local artifacts and Supabase daily/weekly rows. Its update
+packages preserve grids and answers, bind every replacement to the original
+row and clues payload, and require explicit review plus `--yes` before a remote
+write. Released and current puzzles are never changed by this workflow.
+
 ### Clue redundancy rule
 
 Active clue fields inside the same word-bank object must use genuinely different clue ideas. `hint` is ignored for this cleanup rule. Do not repair one active field by reusing another field with wrapper text such as "Maybe", "Could be", "Often", "Seen as", "Associated with", "A sign of", or suffixes such as "perhaps", "sometimes", "for one", or a trailing question mark. Active clue fields should also avoid filler qualifiers such as "perhaps", "maybe", "possibly", "sometimes", and "loosely" anywhere in the clue; remove the qualifier or write a fresh clue instead.

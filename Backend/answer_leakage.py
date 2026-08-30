@@ -10,6 +10,11 @@ from collections import defaultdict
 
 MIN_CONSTITUENT_LEN = 3
 SAFE_SHORT_ROOTS = {"art", "bag", "run", "ten"}
+MECHANICAL_PREFIXES = (
+    "anti", "auto", "co", "counter", "de", "dis", "en", "em", "fore",
+    "im", "in", "inter", "mis", "non", "out", "over", "post", "pre",
+    "re", "sub", "trans", "un", "under", "up", "a",
+)
 STOPWORDS = {
     "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "in", "into",
     "is", "it", "of", "on", "one", "or", "that", "the", "thing", "to", "who", "with",
@@ -328,6 +333,23 @@ def answer_roots(answer_token: str) -> list[tuple[str, str]]:
             if root_is_safe(candidate):
                 roots.append((candidate, rule))
 
+    # Some common adjective families change the spelling of a final "le".
+    # This specifically makes CIRCULAR / "circle" a mechanical giveaway
+    # rather than a semantic judgement call.
+    if word.endswith("ular") and len(word) > len("ular") + 3:
+        roots.append((word[:-4] + "le", "adjective_ular_to_le"))
+
+    # A prefixed answer may be given away by the complete unprefixed word:
+    # AFIRE / "on fire", AWAKE / "wake", and so on.  Longest prefixes win
+    # so an answer such as "replay" is considered against "play", not "eplay".
+    for prefix in sorted(MECHANICAL_PREFIXES, key=len, reverse=True):
+        if not word.startswith(prefix):
+            continue
+        root = word[len(prefix):]
+        if root_is_safe(root):
+            roots.append((root, f"prefix_{prefix}_to_root"))
+            break
+
     if word != answer_token and root_is_safe(word):
         roots.append((word, "singularized_answer"))
 
@@ -343,6 +365,10 @@ def answer_roots(answer_token: str) -> list[tuple[str, str]]:
 def clue_roots(clue_token: str) -> set[str]:
     word = verb_base(clue_token)
     roots = {word}
+    # Agent nouns preserve the stem of a corresponding gerund, including
+    # spelling-changing pairs such as TYPEWRITING / "typewriter".
+    if len(word) > 4 and word.endswith(("er", "or")):
+        roots.add(_undouble(word[:-2]))
     if len(word) > 5 and word.endswith("istic"):
         roots.add(word[:-5])
     if len(word) > 4 and word.endswith("ical"):
@@ -384,11 +410,84 @@ def scan_text(answer: str, text: str) -> list[LeakageIssue]:
                 if root in roots:
                     issues.append(LeakageIssue("DERIVED_ANSWER", answer_token, clue_token, root, rule))
 
+        # Reverse containment catches an intact answer constituent embedded in
+        # the answer itself (AFIRE / fire).  Four characters avoids incidental
+        # short overlaps while still making transparent constructions fail.
+        for clue_token in clue_tokens:
+            if len(clue_token) >= 4 and clue_token != answer_token and clue_token in answer_token:
+                issues.append(LeakageIssue(
+                    "ANSWER_CONSTITUENT",
+                    answer_token,
+                    clue_token,
+                    clue_token,
+                    "clue_token_within_answer",
+                ))
+
     return _deduplicate(issues)
 
 
 def leaks_answer(answer: str, text: str) -> bool:
     return bool(scan_text(answer, text))
+
+
+def giveaway_candidates(answer: str, text: str) -> list[LeakageIssue]:
+    """Return high-recall review candidates for mechanical answer giveaways.
+
+    ``scan_text`` contains deterministic failures.  This broader function also
+    emits intentionally review-only spelling-family candidates; callers must
+    never reject a clue solely because one of those candidates is present.
+    """
+    issues = list(scan_text(answer, text))
+    answer_tokens = [token for token in tokens(answer) if token not in STOPWORDS]
+    clue_tokens = [token for token in tokens(text) if token not in STOPWORDS]
+
+    for answer_token in answer_tokens:
+        for clue_token in clue_tokens:
+            if answer_token == clue_token or min(len(answer_token), len(clue_token)) < 5:
+                continue
+            shared_prefix = _shared_prefix_length(answer_token, clue_token)
+            if shared_prefix < 4:
+                continue
+            if _edit_distance_at_most(answer_token, clue_token, 2):
+                issues.append(LeakageIssue(
+                    "SPELLING_FAMILY_CANDIDATE",
+                    answer_token,
+                    clue_token,
+                    answer_token[:shared_prefix],
+                    "edit_distance_with_shared_prefix",
+                ))
+    return _deduplicate(issues)
+
+
+def _shared_prefix_length(left: str, right: str) -> int:
+    length = 0
+    for left_char, right_char in zip(left, right):
+        if left_char != right_char:
+            break
+        length += 1
+    return length
+
+
+def _edit_distance_at_most(left: str, right: str, maximum: int) -> bool:
+    """Small bounded Levenshtein check used only for review candidates."""
+    if abs(len(left) - len(right)) > maximum:
+        return False
+    previous = list(range(len(right) + 1))
+    for row, left_char in enumerate(left, start=1):
+        current = [row]
+        smallest = row
+        for column, right_char in enumerate(right, start=1):
+            value = min(
+                previous[column] + 1,
+                current[column - 1] + 1,
+                previous[column - 1] + (left_char != right_char),
+            )
+            current.append(value)
+            smallest = min(smallest, value)
+        if smallest > maximum:
+            return False
+        previous = current
+    return previous[-1] <= maximum
 
 
 def _deduplicate(issues: list[LeakageIssue]) -> list[LeakageIssue]:
