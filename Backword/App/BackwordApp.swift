@@ -24,7 +24,7 @@ struct BackwordApp: App {
     @StateObject private var appReviewPromptService: AppReviewPromptService
     @StateObject private var accountService: AccountService
     @StateObject private var homeViewModel: HomeViewModel
-    @AppStorage("appColorScheme") private var appColorScheme: Int = 2
+    @AppStorage("appColorScheme") private var appColorScheme: Int = AppColorSchemePreference.defaultValue
 
     var body: some Scene {
         WindowGroup {
@@ -87,10 +87,6 @@ struct BackwordApp: App {
     }
 
     private var selectedScheme: ColorScheme? {
-            switch appColorScheme {
-            case 1: return .light
-            case 2: return .dark
-            default: return nil
-            }
-        }
+        AppColorSchemePreference.colorScheme(for: appColorScheme)
+    }
 }

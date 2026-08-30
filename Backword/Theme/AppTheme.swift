@@ -1,5 +1,20 @@
 import SwiftUI
 
+enum AppColorSchemePreference {
+    static let lightValue = 1
+    static let darkValue = 2
+    static let systemValue = 3
+    static let defaultValue = systemValue
+
+    static func colorScheme(for value: Int) -> ColorScheme? {
+        switch value {
+        case lightValue: return .light
+        case darkValue: return .dark
+        default: return nil
+        }
+    }
+}
+
 // MARK: - Semantic Colors
 
 extension Color {

@@ -7,7 +7,7 @@ struct SettingsView: View {
     @EnvironmentObject var accountService: AccountService
     @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
-    @AppStorage("appColorScheme") private var appColorScheme: Int = 2
+    @AppStorage("appColorScheme") private var appColorScheme: Int = AppColorSchemePreference.defaultValue
     @ScaledMetric private var settingsIconColumnWidth: CGFloat = SettingsSubscribeRowLayout.iconColumnWidth
     @ScaledMetric private var subscribeProLogoHeight: CGFloat = SettingsSubscribeRowLayout.proLogoHeight
     @State private var isShowingMailComposer = false
@@ -51,9 +51,9 @@ struct SettingsView: View {
 
                 Section(header: Text("Appearance")) {
                     Picker("Theme", selection: $appColorScheme) {
-                        Text("Light").tag(1)
-                        Text("Dark").tag(2)
-                        Text("System").tag(3)
+                        Text("Light").tag(AppColorSchemePreference.lightValue)
+                        Text("Dark").tag(AppColorSchemePreference.darkValue)
+                        Text("System").tag(AppColorSchemePreference.systemValue)
                     }
                     .pickerStyle(.segmented)
                 }
@@ -189,11 +189,7 @@ struct SettingsView: View {
     }
 
     private var selectedScheme: ColorScheme? {
-        switch appColorScheme {
-        case 1: return .light
-        case 2: return .dark
-        default: return nil
-        }
+        AppColorSchemePreference.colorScheme(for: appColorScheme)
     }
 
     private var correctHighlightRow: some View {

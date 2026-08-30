@@ -4,6 +4,18 @@ import Testing
 
 @Suite("Home tab bar")
 struct HomeTabBarViewTests {
+    @Test("App appearance defaults to System")
+    func appAppearanceDefaultsToSystem() {
+        #expect(AppColorSchemePreference.defaultValue == AppColorSchemePreference.systemValue)
+        #expect(AppColorSchemePreference.colorScheme(for: AppColorSchemePreference.defaultValue) == nil)
+    }
+
+    @Test("App appearance maps explicit light and dark preferences")
+    func appAppearanceMapsExplicitPreferences() {
+        #expect(AppColorSchemePreference.colorScheme(for: AppColorSchemePreference.lightValue) == .light)
+        #expect(AppColorSchemePreference.colorScheme(for: AppColorSchemePreference.darkValue) == .dark)
+    }
+
     @Test("Home navigation icons use the larger shared glyph size")
     func homeNavigationIconGlyphSize() {
         #expect(AppLayout.homeNavigationIconGlyphSize == 24)

@@ -168,6 +168,12 @@ Won Backword cells on the Light Mode home card use a white surface fill with
 the Backword game's Correct-green outline and dark primary text. Dark Mode
 continues to use the in-game correct-cell appearance.
 
+## App Appearance
+
+The app's first-launch theme preference is System. Light and Dark remain
+explicit user choices; System applies no preferred colour scheme so iOS follows
+the device setting.
+
 ---
 
 ## Website Backword Parity
