@@ -6,8 +6,12 @@ import {
 } from "../repository";
 import type { WordOfTheDay } from "../types";
 
+export type WordOfTheDayLoadState = "loading" | "loaded" | "unavailable";
+
 type WordOfTheDayCardProps = {
+  className?: string;
   date?: string;
+  onLoadStateChange?: (state: WordOfTheDayLoadState) => void;
   repository?: WordOfTheDayRepository;
 };
 
@@ -97,7 +101,12 @@ function WordDetails({ word }: { word: WordOfTheDay }) {
   );
 }
 
-export function WordOfTheDayCard({ date = localDateString(), repository }: WordOfTheDayCardProps) {
+export function WordOfTheDayCard({
+  className = "",
+  date = localDateString(),
+  onLoadStateChange,
+  repository
+}: WordOfTheDayCardProps) {
   const [word, setWord] = useState<WordOfTheDay | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const isLargeViewport = useLargeViewport();
@@ -106,11 +115,13 @@ export function WordOfTheDayCard({ date = localDateString(), repository }: WordO
     let isCurrent = true;
     setWord(null);
     setIsExpanded(false);
+    onLoadStateChange?.("loading");
     let source: WordOfTheDayRepository;
     try {
       source = repository ?? createWordOfTheDayRepository();
     } catch {
       setWord(null);
+      onLoadStateChange?.("unavailable");
       return () => {
         isCurrent = false;
       };
@@ -120,18 +131,20 @@ export function WordOfTheDayCard({ date = localDateString(), repository }: WordO
       .then((loadedWord) => {
         if (isCurrent) {
           setWord(loadedWord);
+          onLoadStateChange?.("loaded");
         }
       })
       .catch(() => {
         if (isCurrent) {
           setWord(null);
+          onLoadStateChange?.("unavailable");
         }
       });
 
     return () => {
       isCurrent = false;
     };
-  }, [date, repository]);
+  }, [date, onLoadStateChange, repository]);
 
   if (!word) {
     return null;
@@ -140,7 +153,7 @@ export function WordOfTheDayCard({ date = localDateString(), repository }: WordO
   const drawerId = `wotd-details-${word.id}`;
   const detailsVisible = isExpanded || isLargeViewport;
   return (
-    <section className={`wotd-widget${detailsVisible ? " wotd-widget--expanded" : ""}`} aria-label="Word of the Day">
+    <section className={`wotd-widget${detailsVisible ? " wotd-widget--expanded" : ""} ${className}`.trim()} aria-label="Word of the Day">
       <button
         aria-controls={drawerId}
         aria-expanded={detailsVisible}

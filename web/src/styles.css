@@ -912,6 +912,47 @@ body {
 
 .home-dashboard__daily-layout { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: stretch; gap: 28px; }
 .home-dashboard__daily-cards { display: grid; grid-template-columns: 1fr; gap: 28px; }
+.home-dashboard__loading-label { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.home-dashboard-loading-card {
+  --home-skeleton-width: 56%;
+  position: relative;
+  display: flex;
+  min-height: 150px;
+  padding: 24px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  overflow: hidden;
+  border: 1px solid #3c4e68;
+  border-radius: 10px;
+  background: #171c23;
+  pointer-events: none;
+}
+.home-dashboard-loading-card::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 28%, rgb(123 164 199 / 12%) 48%, transparent 68%);
+  content: "";
+  transform: translateX(-100%);
+  animation: home-dashboard-skeleton-shimmer 1.7s ease-in-out infinite;
+}
+.home-dashboard-loading-card__line {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: 11px;
+  border-radius: 999px;
+  background: rgb(144 174 201 / 18%);
+}
+.home-dashboard-loading-card__line--eyebrow { width: 28%; }
+.home-dashboard-loading-card__line--title { width: var(--home-skeleton-width); height: 18px; }
+.home-dashboard-loading-card__line--detail { width: 40%; }
+.home-dashboard-loading-card--backword { --home-skeleton-width: 46%; border-color: #42659a; background: #202b49; }
+.home-dashboard-loading-card--crossword { --home-skeleton-width: 62%; background: #1c2a38; }
+.home-dashboard-loading-card--word-of-the-day { min-height: 95px; padding: 16px 34px; background: #171717; }
+.home-dashboard-loading-card--weekly { min-height: 130px; height: 130px; margin-top: 24px; border-color: #7e683b; background: #1c1a16; }
+@keyframes home-dashboard-skeleton-shimmer { to { transform: translateX(100%); } }
 .home-game-card {
   position: relative;
   display: flex;
@@ -974,6 +1015,24 @@ body {
 .home-status--failed { color: #f17a7a; }
 
 .wotd-widget { margin-top: 0; }
+.wotd-widget--preloading { display: none; }
+.wotd-unavailable-card {
+  display: flex;
+  min-height: 95px;
+  padding: 16px 34px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid #4b4b4b;
+  border-radius: 10px;
+  color: #eee;
+  background: #1a1a1a;
+  text-align: center;
+}
+.wotd-unavailable-card p { margin: 0; color: #d6be87; font-size: 10px; font-weight: 700; letter-spacing: 0.3em; }
+.wotd-unavailable-card strong { font-size: clamp(18px, 2.2vw, 24px); letter-spacing: -0.03em; }
+.wotd-unavailable-card span { color: #8d8d92; font-size: 13px; }
 .wotd-card {
   display: grid;
   grid-template-columns: 1fr;
@@ -1078,7 +1137,7 @@ body {
 .weekly-modal__close { position: absolute; z-index: 1; top: 16px; right: 16px; display: grid; width: 34px; height: 34px; place-items: center; border: 0; border-radius: 50%; color: #eee; background: rgb(255 255 255 / 12%); font-size: 25px; line-height: 1; cursor: pointer; }
 .weekly-modal__close:hover,
 .weekly-modal__close:focus-visible { background: rgb(255 255 255 / 22%); outline: 2px solid #3377b1; outline-offset: 2px; }
-.weekly-modal__hero { display: grid; height: 210px; place-items: center; background: #050505; }
+.weekly-modal__hero { display: grid; height: 210px; place-items: center; }
 .weekly-modal__logo { position: relative; width: 220px; height: 150px; }
 .weekly-modal__logo img { position: absolute; width: 100%; height: auto; object-fit: contain; }
 .weekly-modal__logo img:first-child { top: 11px; left: 0; }
@@ -1318,6 +1377,8 @@ body {
   .home-dashboard__daily-cards { grid-template-columns: 1fr; gap: 20px; }
   .home-game-card { min-height: 160px; border-radius: 10px; }
   .wotd-widget { margin-top: 20px; }
+  .home-dashboard-loading-card--word-of-the-day,
+  .wotd-unavailable-card { margin-top: 20px; }
   .wotd-card { height: 95px; min-height: 0; border-radius: 10px; }
   .weekly-card-section { margin-top: 50px; }
   .weekly-modal__body { padding-inline: 26px; }
@@ -1333,6 +1394,8 @@ body {
   .wotd-detail__desktop-heading h2 { margin: 8px 0 10px; color: #eee; font-size: clamp(34px, 4vw, 48px); letter-spacing: -0.045em; }
   .wotd-detail__meta { margin-bottom: 28px !important; }
   .wotd-detail__definition { padding: 24px; }
+  .home-dashboard-loading-card--word-of-the-day,
+  .wotd-unavailable-card { min-height: 380px; }
 }
 
 @media (min-width: 681px) and (max-width: 900px) {
@@ -1340,6 +1403,8 @@ body {
   .home-dashboard__daily-layout { display: block; }
   .home-dashboard__daily-cards { gap: 20px; }
   .wotd-widget { margin-top: 20px; }
+  .home-dashboard-loading-card--word-of-the-day,
+  .wotd-unavailable-card { margin-top: 20px; }
   .wotd-card { display: grid; }
   .wotd-drawer { display: grid; grid-template-rows: 0fr; opacity: 0; transform: translateY(-8px); }
   .wotd-drawer__inner { overflow: hidden; }
@@ -1359,4 +1424,5 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .home-dashboard *, .weekly-modal-backdrop *, .crossword-coming-soon * { transition-duration: 0.01ms !important; }
+  .home-dashboard-loading-card::before { animation: none; }
 }

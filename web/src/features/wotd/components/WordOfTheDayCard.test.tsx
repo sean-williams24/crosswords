@@ -61,10 +61,35 @@ describe("WordOfTheDayCard", () => {
   });
 
   it("does not render when today's row is unavailable", async () => {
-    render(<WordOfTheDayCard date="2026-08-05" repository={{ getByDate: () => Promise.reject(new Error("missing")) }} />);
+    const onLoadStateChange = vi.fn();
+    render(
+      <WordOfTheDayCard
+        date="2026-08-05"
+        onLoadStateChange={onLoadStateChange}
+        repository={{ getByDate: () => Promise.reject(new Error("missing")) }}
+      />
+    );
+
+    expect(onLoadStateChange).toHaveBeenCalledWith("loading");
 
     await waitFor(() => {
       expect(screen.queryByLabelText("Word of the Day")).not.toBeInTheDocument();
+      expect(onLoadStateChange).toHaveBeenLastCalledWith("unavailable");
     });
+  });
+
+  it("reports completion after loading a valid row", async () => {
+    const onLoadStateChange = vi.fn();
+    render(
+      <WordOfTheDayCard
+        date="2026-08-05"
+        onLoadStateChange={onLoadStateChange}
+        repository={repositoryFor(Promise.resolve(word))}
+      />
+    );
+
+    await screen.findByRole("button", { name: /Word of the Day Verbose/i });
+    expect(onLoadStateChange).toHaveBeenNthCalledWith(1, "loading");
+    expect(onLoadStateChange).toHaveBeenLastCalledWith("loaded");
   });
 });

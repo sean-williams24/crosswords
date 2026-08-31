@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
+import { useLayoutEffect } from "react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { localDateString } from "../features/backword/date";
@@ -14,7 +15,30 @@ const testAuth = vi.hoisted(() => ({
   }
 }));
 
+const testWordOfTheDay = vi.hoisted(() => ({
+  notify: null as ((state: "loading" | "loaded" | "unavailable") => void) | null,
+  state: "loaded" as "loading" | "loaded" | "unavailable"
+}));
+
 vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => testAuth.value }));
+vi.mock("../features/wotd/components/WordOfTheDayCard", () => ({
+  WordOfTheDayCard: ({
+    className = "",
+    onLoadStateChange
+  }: {
+    className?: string;
+    onLoadStateChange?: (state: "loading" | "loaded" | "unavailable") => void;
+  }) => {
+    useLayoutEffect(() => {
+      testWordOfTheDay.notify = onLoadStateChange ?? null;
+      onLoadStateChange?.(testWordOfTheDay.state);
+    }, [onLoadStateChange]);
+
+    return testWordOfTheDay.state === "loaded"
+      ? <section aria-label="Word of the Day" className={`wotd-widget ${className}`.trim()} />
+      : null;
+  }
+}));
 
 function renderDashboard() {
   return render(
@@ -32,6 +56,51 @@ describe("web home dashboard", () => {
   beforeEach(() => {
     localStorage.clear();
     testAuth.value = { entitlement: null, ready: true, user: null };
+    testWordOfTheDay.notify = null;
+    testWordOfTheDay.state = "loaded";
+  });
+
+  it("keeps four non-interactive skeleton cards visible until Word of the Day loads", () => {
+    testWordOfTheDay.state = "loading";
+    const { container } = renderDashboard();
+
+    expect(screen.getByRole("status")).toHaveTextContent("Loading daily games");
+    expect(container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(4);
+    expect(screen.queryByRole("link", { name: /Quick Crossword/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Pro Crossword/i })).not.toBeInTheDocument();
+
+    testWordOfTheDay.state = "loaded";
+    act(() => testWordOfTheDay.notify?.("loaded"));
+
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    expect(container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(0);
+    expect(screen.getByRole("link", { name: /Quick Crossword/i })).toBeInTheDocument();
+  });
+
+  it("keeps the skeleton visible until account startup has completed", () => {
+    testAuth.value.ready = false;
+    const view = renderDashboard();
+
+    expect(view.container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(4);
+
+    testAuth.value.ready = true;
+    view.rerender(
+      <MemoryRouter>
+        <HomeDashboardPage />
+      </MemoryRouter>
+    );
+
+    expect(view.container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(0);
+    expect(screen.getByRole("link", { name: /Quick Crossword/i })).toBeInTheDocument();
+  });
+
+  it("shows an informational Word of the Day error card when the row is unavailable", () => {
+    testWordOfTheDay.state = "unavailable";
+    renderDashboard();
+
+    expect(screen.getByLabelText("Word of the Day unavailable")).toHaveTextContent("Unavailable today");
+    expect(screen.getByRole("link", { name: /Quick Crossword/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Pro Crossword/i })).toBeInTheDocument();
   });
 
   it("renders the daily cards and playable Backword link", () => {
@@ -65,6 +134,14 @@ describe("web home dashboard", () => {
     expect(styles).toContain(".home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px;");
     expect(styles).toContain(".home-dashboard__actions .auth-button__wide-label { display: none; }");
     expect(styles).toContain(".home-dashboard__actions .auth-button__compact-label { display: inline; }");
+  });
+
+  it("uses one grey surface for the weekly crossword dialog", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toContain(".weekly-modal { position: relative; width: min(100%, 520px); max-height: calc(100svh - 40px); overflow-y: auto; border: 1px solid #303030; border-radius: 26px; background: #1a1a1a;");
+    expect(styles).toMatch(/\.weekly-modal__hero\s*\{[^}]*display:\s*grid[^}]*height:\s*210px[^}]*place-items:\s*center[^}]*\}/);
+    expect(styles).not.toMatch(/\.weekly-modal__hero\s*\{[^}]*\bbackground\s*:/);
   });
 
   it("adds the Pro mark to the header logo for an active Pro account", () => {

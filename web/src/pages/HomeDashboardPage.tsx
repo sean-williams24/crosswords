@@ -8,11 +8,12 @@ import { crosswordDashboardStatus } from "../features/crossword/engine";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { DailyGameCard } from "../features/home/DailyGameCard";
 import { WeeklyCrosswordModal } from "../features/home/WeeklyCrosswordModal";
-import { WordOfTheDayCard } from "../features/wotd/components/WordOfTheDayCard";
+import { WordOfTheDayCard, type WordOfTheDayLoadState } from "../features/wotd/components/WordOfTheDayCard";
 import { Footer } from "../components/Footer";
 import { AppStoreBadge } from "../components/AppStoreBadge";
 import { AuthButton } from "../features/auth/AuthButton";
 import { useAuth } from "../features/auth/AuthProvider";
+import { HomeDashboardLoadingCard } from "../features/home/HomeDashboardLoadingCard";
 
 function formattedToday() {
   return new Intl.DateTimeFormat("en-US", {
@@ -23,14 +24,16 @@ function formattedToday() {
 }
 
 export function HomeDashboardPage() {
-  const { entitlement, user } = useAuth();
+  const { entitlement, ready, user } = useAuth();
   const [showWeeklyModal, setShowWeeklyModal] = useState(false);
+  const [wordOfTheDayState, setWordOfTheDayState] = useState<WordOfTheDayLoadState>("loading");
   const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, localDateString(), user?.id), [user?.id]);
   const crosswordStatus = useMemo(() => {
     const storage = createCrosswordStorage(window.localStorage, { userId: user?.id });
     const now = new Date();
     return crosswordDashboardStatus(storage.loadProgressForDate(localDateString(now)), now, storage.loadAllProgress());
   }, [user?.id]);
+  const isLoading = !ready || wordOfTheDayState === "loading";
 
   return (
     <main className="home-dashboard">
@@ -51,27 +54,48 @@ export function HomeDashboardPage() {
           <p>{formattedToday()}</p>
         </div>
 
-        <div className="home-dashboard__daily-layout">
+        <div aria-busy={isLoading} className="home-dashboard__daily-layout">
+          {isLoading ? <span className="home-dashboard__loading-label" role="status">Loading daily games</span> : null}
           <div className="home-dashboard__daily-cards">
-            <DailyGameCard
-              className="home-game-card--backword"
-              destination="/backword"
-              status={backwordStatus}
-              title="Backword"
-            >
-              <img alt="Backword" className="home-game-card__logo" src="/brand/backword-logo.png" />
-            </DailyGameCard>
-            <DailyGameCard
-              className="home-game-card--crossword"
-              description="9×9"
-              destination="/crossword"
-              score={crosswordStatus.score}
-              status={crosswordStatus}
-              streak={crosswordStatus.streak}
-              title="Quick Crossword"
-            />
+            {isLoading ? (
+              <>
+                <HomeDashboardLoadingCard variant="backword" />
+                <HomeDashboardLoadingCard variant="crossword" />
+              </>
+            ) : (
+              <>
+                <DailyGameCard
+                  className="home-game-card--backword"
+                  destination="/backword"
+                  status={backwordStatus}
+                  title="Backword"
+                >
+                  <img alt="Backword" className="home-game-card__logo" src="/brand/backword-logo.png" />
+                </DailyGameCard>
+                <DailyGameCard
+                  className="home-game-card--crossword"
+                  description="9×9"
+                  destination="/crossword"
+                  score={crosswordStatus.score}
+                  status={crosswordStatus}
+                  streak={crosswordStatus.streak}
+                  title="Quick Crossword"
+                />
+              </>
+            )}
           </div>
-          <WordOfTheDayCard />
+          {isLoading ? <HomeDashboardLoadingCard variant="word-of-the-day" /> : null}
+          {wordOfTheDayState === "unavailable" && !isLoading ? (
+            <section aria-label="Word of the Day unavailable" className="wotd-unavailable-card">
+              <p>WORD OF THE DAY</p>
+              <strong>Unavailable today</strong>
+              <span>Please check back later.</span>
+            </section>
+          ) : null}
+          <WordOfTheDayCard
+            className={isLoading ? "wotd-widget--preloading" : ""}
+            onLoadStateChange={setWordOfTheDayState}
+          />
         </div>
 
         <section className="weekly-card-section" aria-labelledby="weekly-games-title">
@@ -79,11 +103,13 @@ export function HomeDashboardPage() {
             <h2 id="weekly-games-title">Weekly Games</h2>
             <p>Refreshes every Sunday</p>
           </div>
-          <button className="weekly-card" onClick={() => setShowWeeklyModal(true)} type="button">
-            <span className="weekly-card__crown" aria-hidden="true">♛</span>
-            <span>PRO CROSSWORD</span>
-            <small>13×13</small>
-          </button>
+          {isLoading ? <HomeDashboardLoadingCard variant="weekly" /> : (
+            <button className="weekly-card" onClick={() => setShowWeeklyModal(true)} type="button">
+              <span className="weekly-card__crown" aria-hidden="true">♛</span>
+              <span>PRO CROSSWORD</span>
+              <small>13×13</small>
+            </button>
+          )}
         </section>
       </section>
 

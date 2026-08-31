@@ -199,8 +199,10 @@ Backword parity surface yet. The web dashboard reads today's Backword and
 Quick Crossword progress to present card status; the weekly card still directs
 players to the iOS App Store rather than implying browser Pro access. The web
 dashboard reads the released Word of the Day row for the browser's local
-calendar date. It has no browser fallback:
-during loading and when the row is unavailable, the WOTD section is not shown.
+calendar date. During initial loading, all four game cards remain non-interactive
+outlined skeletons until account startup and the WOTD request settle. When the
+row is unavailable, its place becomes an informational unavailable card while
+the three playable game cards remain available.
 On viewports up to 680px, the compact WOTD card toggles an animated detail
 drawer; larger viewports show the same content immediately in two columns.
 
