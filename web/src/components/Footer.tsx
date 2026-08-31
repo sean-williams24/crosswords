@@ -15,6 +15,9 @@ export function Footer() {
           <Link className="transition hover:text-textPrimary" to="/crossword">
             Crossword
           </Link>
+          <Link className="transition hover:text-textPrimary" to="/weekly-crossword">
+            Pro Crossword
+          </Link>
           <Link className="transition hover:text-textPrimary" to="/player-profile">
             Player Profile
           </Link>

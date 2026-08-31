@@ -13,6 +13,7 @@ export function CrosswordInstructions({ onClose, onCorrectHighlightChange, setti
       <div className="bw-modal-scroll cw-instructions">
         <p>Complete the grid and lock in your score before the next crossword refreshes at midnight.</p>
         <p>Tap a cell to select it. Tap it again to switch direction, or use the clue list to browse every clue.</p>
+        <p>Use Hint to see an alternative clue for the selected answer. Every three hints deduct one point from your score.</p>
         <label className="bw-mode-row">
           <span><strong>Answer Feedback</strong><small>Highlight and lock correctly completed answers. Turn it off for a harder game.</small></span>
           <input aria-label="Answer feedback" checked={settings.correctHighlight} onChange={(event) => onCorrectHighlightChange(event.target.checked)} type="checkbox" />

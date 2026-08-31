@@ -35,12 +35,15 @@ vi.mock("../features/crossword/repository", async () => {
 describe("WeeklyCrosswordPage", () => {
   beforeEach(() => localStorage.clear());
 
-  it("loads the Pro 13×13 grid, offers hints, and uses weekly completion copy", async () => {
+  it("loads the Pro 13×13 grid, opens the same instructions modal, offers hints, and uses weekly completion copy", async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><WeeklyCrosswordPage /></MemoryRouter>);
 
     expect(screen.getByRole("heading", { name: "PRO CROSSWORD" })).toBeInTheDocument();
     expect(await screen.findByRole("grid", { name: "Crossword grid" })).toHaveClass("cw-grid--weekly");
+    await user.click(screen.getByRole("button", { name: "How to play" }));
+    expect(screen.getByRole("dialog", { name: "How to Play" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Close How to Play" }));
     await user.click(screen.getByRole("button", { name: "Show hint" }));
     expect(screen.getByText("Test hint")).toBeInTheDocument();
     await user.keyboard("AB");

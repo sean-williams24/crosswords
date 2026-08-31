@@ -22,13 +22,14 @@ import type { CrosswordClue, CrosswordProgress, CrosswordPuzzle, CrosswordSelect
 import { CrosswordClueList } from "../features/crossword/components/CrosswordClueList";
 import { CrosswordCompletion } from "../features/crossword/components/CrosswordCompletion";
 import { CrosswordGrid } from "../features/crossword/components/CrosswordGrid";
+import { CrosswordInstructions } from "../features/crossword/components/CrosswordInstructions";
 import { CrosswordKeyboard } from "../features/crossword/components/CrosswordKeyboard";
 import { CrosswordStats } from "../features/crossword/components/CrosswordStats";
 import { useAuth } from "../features/auth/AuthProvider";
 import { WeeklyCrosswordModal } from "../features/home/WeeklyCrosswordModal";
 import { crosswordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountProgress } from "../features/sync/progressSync";
 
-type Sheet = "clues" | "completion" | "stats" | null;
+type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
 export function WeeklyCrosswordPage() {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ export function WeeklyCrosswordPage() {
   const [puzzle, setPuzzle] = useState<CrosswordPuzzle | null>(null);
   const [progress, setProgress] = useState<CrosswordProgress | null>(null);
   const [selection, setSelection] = useState<CrosswordSelection | null>(null);
-  const [settings] = useState(() => storage.loadSettings());
+  const [settings, setSettings] = useState(() => storage.loadSettings());
   const [sheet, setSheet] = useState<Sheet>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -170,6 +171,12 @@ export function WeeklyCrosswordPage() {
     }
   }, [progress, puzzle, selection]);
 
+  const changeCorrectHighlight = useCallback((correctHighlight: boolean) => {
+    const updated = { ...settings, correctHighlight };
+    storage.saveSettings(updated);
+    setSettings(updated);
+  }, [settings, storage]);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (sheet || isMenuOpen || event.metaKey || event.ctrlKey || event.altKey) return;
@@ -202,6 +209,7 @@ export function WeeklyCrosswordPage() {
             }} type="button">{showHint ? "Clue" : "Hint"} 💡</button>
             <button aria-label="Show clue list" className="bw-icon-button cw-clues-action" onClick={() => setSheet("clues")} type="button"><svg aria-hidden="true" className="cw-clues-action__icon" viewBox="0 0 20 20"><path d="M2 2h4v4H2zM8 2h4v4H8zM14 2h4v4h-4zM2 8h4v4H2zM8 8h4v4H8zM14 8h4v4h-4zM2 14h4v4H2zM8 14h4v4H8zM14 14h4v4h-4z" /></svg><span className="cw-clues-action__label">Clues</span></button>
             <button aria-label="Crossword stats" className="bw-icon-button" onClick={() => setSheet("stats")} type="button">🧠</button>
+            <button aria-label="How to play" className="bw-icon-button bw-info-icon" onClick={() => setSheet("instructions")} type="button">ⓘ</button>
           </nav>
         </header>
         {loading ? <StatusPanel title="Loading this week’s Pro Crossword…" /> : null}
@@ -218,6 +226,7 @@ export function WeeklyCrosswordPage() {
         </> : null}
       </div>
       <Footer />
+      {sheet === "instructions" ? <CrosswordInstructions onClose={() => setSheet(null)} onCorrectHighlightChange={changeCorrectHighlight} settings={settings} /> : null}
       {sheet === "clues" && puzzle && progress ? <CrosswordClueList activeClueId={currentClue?.id ?? null} onClose={() => setSheet(null)} onSelect={(clue: CrosswordClue) => { setSelection(navigateToClue(progress, clue)); setShowHint(false); setSheet(null); }} progress={progress} puzzle={puzzle} /> : null}
       {sheet === "stats" ? <CrosswordStats kind="weekly" onClose={() => setSheet(null)} stats={stats} /> : null}
       {sheet === "completion" && puzzle && progress ? <CrosswordCompletion kind="weekly" onClose={() => setSheet(null)} progress={progress} puzzle={puzzle} stats={stats} /> : null}

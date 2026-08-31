@@ -421,7 +421,7 @@ struct PuzzleView: View {
                 .foregroundColor(.appTextPrimary)
         }
 
-        if viewModel.isDailyCrossword {
+        if viewModel.puzzle.supportsInstructions {
             Button {
                 showInstructions = true
             } label: {

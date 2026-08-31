@@ -378,6 +378,12 @@ struct GameViewModelTests {
         #expect(!vm.shouldShowDailyCrosswordOnboarding)
     }
 
+    @Test("Daily and weekly crossword grids both support the shared instructions sheet")
+    func dailyAndWeeklyCrosswordsSupportInstructions() {
+        #expect(makePuzzle(size: 9).supportsInstructions)
+        #expect(makePuzzle(size: 13).supportsInstructions)
+    }
+
     @Test("Archive daily crossword does not auto-show onboarding")
     func archiveDailyCrosswordDoesNotAutoShowOnboarding() async throws {
         let originalOnboardingSetting = AppSettings.shared.hasSeenDailyCrosswordOnboarding

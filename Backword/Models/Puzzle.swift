@@ -79,6 +79,11 @@ struct Puzzle: Codable, Identifiable, Hashable {
         clues.first { $0.id == id }
     }
 
+    /// Both supported gameplay grids use the shared crossword instructions sheet.
+    var supportsInstructions: Bool {
+        size == 9 || size == 13
+    }
+
     func cluesAt(row: Int, col: Int) -> (across: Clue?, down: Clue?) {
         let cell = cells[row][col]
         return (

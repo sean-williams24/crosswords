@@ -248,8 +248,11 @@ synced to iOS and other browsers; settings and puzzle caches remain local.
 The grid follows the iOS interaction model: tapping a selected cell switches
 direction, the clue bar navigates/toggles direction, correctly completed
 answers are green and input-locked by default, and turning Answer Feedback off
-keeps the harder editable mode. Hints, ads, archive access, and paywalls are
-intentionally absent from the browser crossword; account progress sync is not.
+keeps the harder editable mode. The header Hint action reveals the selected
+clue's alternate hint, records it in shared progress, and deducts one point
+for every three hints, just as the Pro weekly crossword does. Ads, archive
+access, and paywalls are intentionally absent from the browser daily crossword;
+account progress sync is not.
 
 Crossword points are captured only while the puzzle is the browser's local
 calendar-day release. The score remains in its historical progress record at
@@ -280,6 +283,10 @@ while the completed puzzle belongs to the browser's current local Sunday
 release window; the weekly stats surface mirrors iOS with two current-window
 weeks and five prior games. Weekly archives and answer reveal remain iOS-only
 on the web.
+
+Quick and Pro Crossword expose the same info action and shared How to Play
+sheet/modal on both platforms. Daily onboarding still opens it automatically
+only for the daily game; the Pro Crossword presents it on demand.
 
 The web Backword and Daily Crossword stats surfaces use the iOS semantic
 palette: solid Accent score chips, Correct green for perfect scores, muted

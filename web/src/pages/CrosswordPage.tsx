@@ -12,7 +12,8 @@ import {
   firstWhiteSelection,
   navigateToClue,
   selectCell,
-  toggleDirection
+  toggleDirection,
+  toggleHint
 } from "../features/crossword/engine";
 import { CrosswordConfigurationError, createCrosswordRepository } from "../features/crossword/repository";
 import { createCrosswordStorage } from "../features/crossword/storage";
@@ -48,6 +49,7 @@ export function CrosswordPage() {
   const [syncError, setSyncError] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [clueDragStart, setClueDragStart] = useState<number | null>(null);
+  const [showHint, setShowHint] = useState(false);
   const skipClueToggle = useRef(false);
 
   const loadPuzzle = useCallback(async (requestedDate: string) => {
@@ -137,6 +139,7 @@ export function CrosswordPage() {
       if (currentDate !== date) {
         setDate(currentDate);
         setSheet(null);
+        setShowHint(false);
       }
     }, 30_000);
     return () => window.clearInterval(timer);
@@ -175,7 +178,10 @@ export function CrosswordPage() {
   const moveClue = useCallback((step: 1 | -1) => {
     if (!puzzle || !progress || !selection) return;
     const clue = adjacentClue(puzzle, selection, step);
-    if (clue) setSelection(navigateToClue(progress, clue));
+    if (clue) {
+      setSelection(navigateToClue(progress, clue));
+      setShowHint(false);
+    }
   }, [progress, puzzle, selection]);
 
   useEffect(() => {
@@ -212,6 +218,7 @@ export function CrosswordPage() {
   function selectClue(clue: CrosswordClue) {
     if (!progress) return;
     setSelection(navigateToClue(progress, clue));
+    setShowHint(false);
     setSheet(null);
   }
 
@@ -229,7 +236,8 @@ export function CrosswordPage() {
     setClueDragStart(null);
   }
 
-  const liveScore = puzzle && progress ? crosswordScore(progress.completedClueIds.length, puzzle.clues.length) : 0;
+  const liveScore = puzzle && progress ? crosswordScore(progress.completedClueIds.length, puzzle.clues.length, progress.hintsUsed) : 0;
+  const clueText = showHint && currentClue ? currentClue.hint : currentClue?.text;
 
   return (
     <div className="bw-page cw-page">
@@ -238,6 +246,14 @@ export function CrosswordPage() {
           <GameMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} onOpen={() => setIsMenuOpen(true)} />
           <h1 className="cw-header-title">QUICK CROSSWORD</h1>
           <nav aria-label="Crossword actions" className="bw-game-actions--top">
+            <button aria-label={currentClue && showHint ? "Show clue" : "Show hint"} className="cw-hint-action" disabled={!currentClue || progress?.completedAt !== null} onClick={() => {
+              if (!puzzle || !progress || !currentClue || !selection) return;
+              if (progress.hintedClueIds.includes(currentClue.id)) setShowHint((visible) => !visible);
+              else {
+                persist(toggleHint(progress, puzzle, currentClue, new Date(), "daily"), selection);
+                setShowHint(true);
+              }
+            }} type="button">{showHint ? "Clue" : "Hint"} 💡</button>
             <button aria-label="Show clue list" className="bw-icon-button cw-clues-action" onClick={() => setSheet("clues")} type="button">
               <svg aria-hidden="true" className="cw-clues-action__icon" viewBox="0 0 20 20">
                 <path d="M2 2h4v4H2zM8 2h4v4H8zM14 2h4v4h-4zM2 8h4v4H2zM8 8h4v4H8zM14 8h4v4h-4zM2 14h4v4H2zM8 14h4v4H8zM14 14h4v4h-4z" />
@@ -257,7 +273,7 @@ export function CrosswordPage() {
               {syncError ? <p className="bw-offline-note">{syncError}</p> : null}
               <p className="cw-puzzle-date">{puzzle.date}</p>
               <button
-                aria-label={`Current clue ${currentClue?.number ?? ""} ${currentClue?.direction ?? ""}: ${currentClue?.text ?? ""}`}
+                aria-label={`Current clue ${currentClue?.number ?? ""} ${currentClue?.direction ?? ""}: ${clueText ?? ""}`}
                 className="cw-clue-bar"
                 onClick={() => {
                   if (skipClueToggle.current) {
@@ -265,15 +281,16 @@ export function CrosswordPage() {
                     return;
                   }
                   setSelection((current) => current ? toggleDirection(puzzle, current) : current);
+                  setShowHint(false);
                 }}
                 onPointerDown={(event) => setClueDragStart(event.clientX)}
                 onPointerUp={(event) => handleClueSwipe(event.clientX)}
                 type="button"
               >
                 <span>{currentClue ? `${currentClue.number}${currentClue.direction === "across" ? "A" : "D"}` : ""}</span>
-                <strong>{currentClue?.text}</strong>
+                <strong>{clueText}</strong>
               </button>
-              <CrosswordGrid activeClue={currentClue} correctHighlight={settings.correctHighlight} onSelect={(row, col) => setSelection((current) => current ? selectCell(puzzle, current, row, col) : current)} progress={progress} puzzle={puzzle} selection={selection} />
+              <CrosswordGrid activeClue={currentClue} correctHighlight={settings.correctHighlight} onSelect={(row, col) => { setSelection((current) => current ? selectCell(puzzle, current, row, col) : current); setShowHint(false); }} progress={progress} puzzle={puzzle} selection={selection} />
             </main>
             <footer className="bw-game-controls cw-game-controls">
               <div aria-label={`${stats.rollingScore} of 70 crossword points`} className="bw-game-score bw-game-score--keyboard-width"><span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} /></div>

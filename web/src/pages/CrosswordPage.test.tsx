@@ -28,7 +28,10 @@ describe("CrosswordPage", () => {
 
     expect(screen.getByRole("heading", { name: "QUICK CROSSWORD" })).toBeInTheDocument();
     const actions = screen.getByRole("navigation", { name: "Crossword actions" });
-    const [cluesAction, statsAction] = Array.from(actions.querySelectorAll("button"));
+    const hintAction = screen.getByRole("button", { name: "Show hint" });
+    const cluesAction = screen.getByRole("button", { name: "Show clue list" });
+    const statsAction = screen.getByRole("button", { name: "Crossword stats" });
+    expect(actions).toContainElement(hintAction);
     expect(cluesAction).toHaveAccessibleName("Show clue list");
     expect(cluesAction).toHaveClass("cw-clues-action");
     expect(cluesAction).toHaveTextContent("Clues");
@@ -37,6 +40,8 @@ describe("CrosswordPage", () => {
     await user.click(screen.getByRole("button", { name: "Close How to Play" }));
     expect(await screen.findByRole("grid", { name: "Crossword grid" })).toBeInTheDocument();
     expect(screen.getByRole("group", { name: "Crossword keyboard" })).toBeInTheDocument();
+    await user.click(hintAction);
+    expect(screen.getByText("Test hint")).toBeInTheDocument();
 
     await user.keyboard("AB");
     expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
