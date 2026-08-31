@@ -249,6 +249,9 @@ final class BackwordViewModel: ObservableObject {
 
         let prevRevealed = revealedIndices
         progress.guesses.append(guess)
+        if progress.guesses.count == 1 {
+            BackwordAnalyticsService.shared.log(.gameStarted(game: .backword))
+        }
         stopExplainerCountdown()
         currentInput = ""
 
@@ -264,6 +267,7 @@ final class BackwordViewModel: ObservableObject {
             progress.completedAt = Date()
             progress.save()
             recordCompletion(guessCount: progress.guesses.count)
+            logGameCompletion(outcome: .won)
             haptics.play(.backwordGameWon)
         } else if progress.guesses.count >= maxGuesses {
             progress.wonFlag = false
@@ -271,6 +275,7 @@ final class BackwordViewModel: ObservableObject {
             progress.completedAt = Date()
             progress.save()
             recordCompletion(guessCount: nil)
+            logGameCompletion(outcome: .failed)
             haptics.play(.backwordGameLost)
         } else {
             let justRevealed = revealedIndices.subtracting(prevRevealed)
@@ -298,6 +303,19 @@ final class BackwordViewModel: ObservableObject {
             guessCount: guessCount,
             date: word.date,
             releaseCalendar: ContentReleaseCalendar(now: completedAt)
+        )
+    }
+
+    private func logGameCompletion(outcome: BackwordAnalyticsEvent.GameOutcome) {
+        BackwordAnalyticsService.shared.log(
+            .gameCompleted(
+                game: .backword,
+                outcome: outcome,
+                mode: mode,
+                releaseDay: progress.wasCompletedOnReleaseDate,
+                score: progress.completedScore ?? 0,
+                durationSeconds: nil
+            )
         )
     }
 

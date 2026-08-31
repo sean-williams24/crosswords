@@ -15,9 +15,13 @@ const auth = vi.hoisted(() => ({
 const billing = vi.hoisted(() => ({
   startStripeCheckout: vi.fn().mockResolvedValue(undefined)
 }));
+const analytics = vi.hoisted(() => ({
+  track: vi.fn()
+}));
 
 vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => auth.value }));
 vi.mock("../features/pro/billing", () => billing);
+vi.mock("../features/analytics/AnalyticsProvider", () => ({ useAnalytics: () => analytics }));
 vi.mock("../features/backword/components/GameMenu", () => ({ GameMenu: () => <span /> }));
 vi.mock("../components/Footer", () => ({ Footer: () => <footer /> }));
 
@@ -45,6 +49,7 @@ describe("ProPage", () => {
       refreshEntitlement: vi.fn().mockResolvedValue(undefined)
     };
     billing.startStripeCheckout.mockClear();
+    analytics.track.mockClear();
   });
 
   it("shows plans to guests and sends the trial action through account sign-in", async () => {
@@ -63,6 +68,7 @@ describe("ProPage", () => {
     await user.click(screen.getByRole("button", { name: "Start 7-day free trial" }));
 
     expect(screen.getByText("Sign in: /pro?return_to=%2Fweekly-crossword")).toBeInTheDocument();
+    expect(analytics.track).toHaveBeenCalledWith({ name: "pro_sign_in_required", parameters: { entry_point: "weekly_crossword" } });
   });
 
   it("starts the selected secure Stripe Checkout plan", async () => {
@@ -74,6 +80,8 @@ describe("ProPage", () => {
     await user.click(screen.getByRole("button", { name: "Start 7-day free trial" }));
 
     expect(billing.startStripeCheckout).toHaveBeenCalledWith("monthly", "/weekly-crossword");
+    expect(analytics.track).toHaveBeenCalledWith({ name: "pro_plan_selected", parameters: { plan: "monthly" } });
+    expect(analytics.track).toHaveBeenCalledWith({ name: "stripe_checkout_started", parameters: { plan: "monthly", trial_eligible: "yes" } });
   });
 
   it("shows active Stripe subscribers where Link manages their subscription", () => {
@@ -93,5 +101,16 @@ describe("ProPage", () => {
     expect(screen.getByRole("button", { name: "Subscribe now" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Start 7-day free trial" })).not.toBeInTheDocument();
     expect(screen.getByText(/Your selected plan renews automatically/i)).toBeInTheDocument();
+  });
+
+  it("records only a grouped failure reason when checkout cannot start", async () => {
+    const user = userEvent.setup();
+    billing.startStripeCheckout.mockRejectedValueOnce(new Error("Failed to fetch Stripe session cs_secret_value"));
+    renderPage();
+
+    await user.click(screen.getByRole("button", { name: "Start 7-day free trial" }));
+
+    expect(analytics.track).toHaveBeenCalledWith({ name: "stripe_checkout_start_failed", parameters: { plan: "annual", reason: "network" } });
+    expect(JSON.stringify(analytics.track.mock.calls)).not.toContain("cs_secret_value");
   });
 });

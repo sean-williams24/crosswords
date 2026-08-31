@@ -379,6 +379,27 @@ shows an en dash rather than falling back to an all-time average.
 
 ---
 
+## Website Analytics and Acquisition Attribution
+
+Website analytics are optional globally: Firebase Analytics initialises only
+after an explicit browser opt-in, and withdrawing consent removes the saved
+first-touch campaign context. The browser tracks only aggregate milestones
+(page views, game start/completion, account-flow milestones, App Store clicks,
+and grouped content failures); it never sends puzzle content, entered letters,
+or account identifiers. The website uses standard UTM parameters for its
+first-touch source and chooses a configured Apple campaign token only after
+consent. GA4 reports web activity; App Store Connect remains the source of
+truth for post-install attribution and retention, so the two report aggregate
+funnels rather than a person-level joined journey.
+
+The web Pro funnel follows the same opt-in rule. It records only bounded entry
+points, plans, grouped checkout failure categories, return status, Stripe-backed
+entitlement activation, Link-management clicks, and protected-feature redirects.
+A `checkout=success` browser return is never a payment conversion; the
+conversion event is emitted only after the refreshed entitlement is active with
+the Stripe provider. Stripe customer IDs, Checkout Session IDs, raw errors,
+payment details, and return URLs never enter Firebase Analytics.
+
 ## Crossword Configuration & Word Repeat Prevention
 
 ### Daily crossword (9×9)

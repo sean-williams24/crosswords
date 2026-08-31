@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, Navigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
@@ -12,6 +12,7 @@ import { useAuth } from "../features/auth/AuthProvider";
 import { createCrosswordRepository } from "../features/crossword/repository";
 import type { CrosswordRepository } from "../features/crossword/repository";
 import type { CrosswordPuzzle } from "../features/crossword/types";
+import { ProAccessRedirect } from "../features/pro/ProAccessRedirect";
 
 type ArchiveItem = BackwordWord | CrosswordPuzzle;
 type MonthsByType = Record<ArchiveGameType, string[]>;
@@ -56,7 +57,7 @@ export function ArchivePage() {
   const returnTo = `/archive${searchParams.size ? `?${searchParams.toString()}` : ""}`;
 
   if (!ready || (user && !entitlementReady)) return <main className="archive-page">Checking Pro access…</main>;
-  if (!entitlement?.isPro) return <Navigate replace to={`/pro?return_to=${encodeURIComponent(returnTo)}`} />;
+  if (!entitlement?.isPro) return <ProAccessRedirect feature="archive" returnTo={returnTo} />;
 
   return <ArchiveContent entitlement={entitlement} user={user} />;
 }

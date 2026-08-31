@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { GameMenu } from "../features/backword/components/GameMenu";
-import { isLocalDateString, localDateString } from "../features/backword/date";
+import { isCompletedOnReleaseDate, isLocalDateString, localDateString } from "../features/backword/date";
 import {
   activeClue,
   adjacentClue,
@@ -28,6 +28,8 @@ import { CrosswordStats } from "../features/crossword/components/CrosswordStats"
 import { useAuth } from "../features/auth/AuthProvider";
 import { crosswordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountProgress } from "../features/sync/progressSync";
 import { canMigrateGuestProgress, clearGuestMigrationOwnerIfEmpty } from "../features/sync/guestMigration";
+import { useAnalytics } from "../features/analytics/AnalyticsProvider";
+import { contentLoadFailed, gameCompleted, gameStarted } from "../features/analytics/events";
 
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
@@ -35,6 +37,7 @@ export function CrosswordPage() {
   const { date: routeDate } = useParams<{ date?: string }>();
   const archiveDate = isLocalDateString(routeDate) ? routeDate : null;
   const { user } = useAuth();
+  const { track } = useAnalytics();
   const storage = useMemo(() => createCrosswordStorage(window.localStorage, {
     userId: user?.id,
     onProgressSaved: (progress) => {
@@ -80,11 +83,12 @@ export function CrosswordPage() {
         setError(loadError instanceof CrosswordConfigurationError
           ? loadError.message
           : "Today's crossword could not be loaded. Check your connection and try again.");
+        track(contentLoadFailed("daily_crossword", loadError instanceof CrosswordConfigurationError ? "configuration" : "network"));
       }
     } finally {
       setLoading(false);
     }
-  }, [storage]);
+  }, [storage, track]);
 
   useEffect(() => { void loadPuzzle(date); }, [date, loadPuzzle]);
 
@@ -175,10 +179,24 @@ export function CrosswordPage() {
     if (!puzzle || !progress || !selection) return;
     const result = enterLetter(progress, puzzle, selection, letter, settings.correctHighlight);
     persist(result.progress, result.selection);
+    const startedBefore = progress.entries.flat().some((entry) => entry !== null);
+    const startedAfter = result.progress.entries.flat().some((entry) => entry !== null);
+    if (!startedBefore && startedAfter) {
+      track(gameStarted("daily_crossword"));
+    }
     if (progress.completedAt === null && result.progress.completedAt !== null) {
+      const startedAt = new Date(result.progress.startedAt).getTime();
+      const completedAt = new Date(result.progress.completedAt).getTime();
+      track(gameCompleted("daily_crossword", "solved", {
+        releaseDay: isCompletedOnReleaseDate(result.progress.date, result.progress.completedAt),
+        score: result.progress.releaseDateScore,
+        durationSeconds: Number.isFinite(startedAt) && Number.isFinite(completedAt)
+          ? Math.max(0, Math.floor((completedAt - startedAt) / 1_000))
+          : null
+      }));
       window.setTimeout(() => setSheet("completion"), 180);
     }
-  }, [persist, progress, puzzle, selection, settings.correctHighlight]);
+  }, [persist, progress, puzzle, selection, settings.correctHighlight, track]);
 
   const handleDelete = useCallback(() => {
     if (!puzzle || !progress || !selection) return;

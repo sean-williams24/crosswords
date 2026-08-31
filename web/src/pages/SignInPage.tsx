@@ -6,12 +6,15 @@ import { AccountBenefitIcon } from "../features/auth/AccountBenefitIcon";
 import { GoogleSignInButton } from "../features/auth/GoogleSignInButton";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { signInErrorAlert, type AuthAlert } from "../features/auth/authErrorPresentation";
+import { useAnalytics } from "../features/analytics/AnalyticsProvider";
+import { signInFailed, signInStarted, signInSucceeded } from "../features/analytics/events";
 
 type ProviderChoice = "apple" | "google";
 
 export function SignInPage() {
   const location = useLocation();
   const { entitlement, user, ready, signIn, signInWithGoogle } = useAuth();
+  const { track } = useAnalytics();
   const [signInError, setSignInError] = useState<AuthAlert | null>(null);
   const [pending, setPending] = useState<ProviderChoice | null>(null);
   const hasReturnTo = typeof location.state?.returnTo === "string";
@@ -28,10 +31,12 @@ export function SignInPage() {
   async function continueWithApple() {
     setSignInError(null);
     setPending("apple");
+    track(signInStarted());
     try {
       await signIn("apple", returnTo);
     } catch (signInError) {
       console.error("Apple sign-in failed", signInError);
+      track(signInFailed());
       setSignInError(signInErrorAlert(signInError, "apple"));
       setPending(null);
     }
@@ -40,10 +45,13 @@ export function SignInPage() {
   async function continueWithGoogle(idToken: string) {
     setSignInError(null);
     setPending("google");
+    track(signInStarted());
     try {
       await signInWithGoogle(idToken, returnTo);
+      track(signInSucceeded());
     } catch (signInError) {
       console.error("Google sign-in failed", signInError);
+      track(signInFailed());
       setSignInError(signInErrorAlert(signInError, "google"));
       setPending(null);
     }
@@ -76,6 +84,7 @@ export function SignInPage() {
             onCredential={(idToken) => void continueWithGoogle(idToken)}
             onError={(error) => {
               console.error("Google sign-in could not start", error);
+              track(signInFailed());
               setPending(null);
               setSignInError(signInErrorAlert(error, "google"));
             }}

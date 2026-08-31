@@ -27,6 +27,14 @@ local `.env` file and configure the same values in Vercel before deployment:
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
 VITE_GOOGLE_WEB_CLIENT_ID=
+VITE_ANALYTICS_ENABLED=false
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=backword-537c1
+VITE_FIREBASE_APP_ID=
+VITE_FIREBASE_MEASUREMENT_ID=
+VITE_APP_STORE_PROVIDER_TOKEN=
+VITE_APP_STORE_CAMPAIGN_TOKENS={"default":"web_default","tiktok:launch":"tiktok_launch","instagram:launch":"instagram_launch"}
 ```
 
 Keep browser game integration in `src/lib` and page-level gameplay in `src/pages` or feature-specific folders.
@@ -39,6 +47,29 @@ tax code, then configure Stripe webhooks as documented in
 `Backend/supabase/functions/README.md`. Stripe Link manages web subscription
 changes, cancellations, and payment methods; do not enable the ordinary Stripe
 Billing Customer Portal.
+
+## Analytics and campaign attribution
+
+Register the production website as a Web app in the existing Firebase project,
+then add its public Firebase configuration above in Vercel's **Production**
+environment. Set `VITE_ANALYTICS_ENABLED=true` only in Production; preview and
+local environments remain off. Analytics initialises only after a visitor
+explicitly accepts the website analytics prompt.
+
+Create the corresponding App Store Connect campaign links before publishing a
+campaign. `VITE_APP_STORE_PROVIDER_TOKEN` is the provider token from App Store
+Connect and `VITE_APP_STORE_CAMPAIGN_TOKENS` maps accepted website campaigns to
+their Apple `ct` tokens. Use lower-case UTM links such as:
+
+```text
+https://www.playbackword.com/?utm_source=tiktok&utm_medium=organic_social&utm_campaign=launch&utm_content=video_a
+```
+
+GA4 custom event dimensions to create: `game`, `outcome`, `mode`, `release_day`,
+`score_band`, `duration_band`, `placement`, `reason`, `entry_point`, `plan`,
+`trial_eligible`, `provider`, and `feature`. Mark `game_completed`,
+`app_store_click`, `sign_in_succeeded`, and `pro_entitlement_activated` as key
+events.
 
 Guest progress, settings, cached content, and statistics remain in versioned
 browser-local storage. Signing in with Apple or Google moves game progress into

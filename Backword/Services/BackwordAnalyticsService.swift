@@ -6,6 +6,8 @@ import OSLog
 struct BackwordAnalyticsEvent: Equatable {
     static let adLifecycleName = "bw_ad_lifecycle"
     static let storeLifecycleName = "bw_store_lifecycle"
+    static let gameStartedName = "game_started"
+    static let gameCompletedName = "game_completed"
 
     let name: String
     let parameters: [String: String]
@@ -110,6 +112,64 @@ struct BackwordAnalyticsEvent: Equatable {
         return BackwordAnalyticsEvent(name: storeLifecycleName, parameters: parameters)
     }
 
+    static func gameStarted(
+        game: Game,
+        environment: String = AppEnvironment.current
+    ) -> BackwordAnalyticsEvent {
+        BackwordAnalyticsEvent(
+            name: gameStartedName,
+            parameters: [
+                "game": game.rawValue,
+                "platform": "ios",
+                "environment": environment
+            ]
+        )
+    }
+
+    static func gameCompleted(
+        game: Game,
+        outcome: GameOutcome,
+        mode: BackwordMode? = nil,
+        releaseDay: Bool,
+        score: Int,
+        durationSeconds: TimeInterval?,
+        environment: String = AppEnvironment.current
+    ) -> BackwordAnalyticsEvent {
+        var parameters = [
+            "game": game.rawValue,
+            "platform": "ios",
+            "environment": environment,
+            "outcome": outcome.rawValue,
+            "release_day": releaseDay ? "yes" : "no",
+            "score_band": scoreBand(score),
+            "duration_band": durationBand(durationSeconds)
+        ]
+        if let mode {
+            parameters["mode"] = mode.rawValue
+        }
+        return BackwordAnalyticsEvent(name: gameCompletedName, parameters: parameters)
+    }
+
+    private static func scoreBand(_ score: Int) -> String {
+        switch score {
+        case ...0: return "0"
+        case 1...2: return "1_2"
+        case 3...4: return "3_4"
+        default: return "5_plus"
+        }
+    }
+
+    private static func durationBand(_ duration: TimeInterval?) -> String {
+        guard let duration, duration >= 0 else { return "unknown" }
+        switch duration {
+        case ..<60: return "under_1m"
+        case ..<(5 * 60): return "1_5m"
+        case ..<(15 * 60): return "5_15m"
+        case ..<(30 * 60): return "15_30m"
+        default: return "30m_plus"
+        }
+    }
+
     enum AdAction: String {
         case loaded
         case loadFailed = "load_failed"
@@ -150,6 +210,19 @@ struct BackwordAnalyticsEvent: Equatable {
         case transactionUpdateFailed = "transaction_update_failed"
         case debugOverrideChanged = "debug_override_changed"
         case debugEntitlementsDumped = "debug_entitlements_dumped"
+    }
+
+    enum Game: String {
+        case backword
+        case dailyCrossword = "daily_crossword"
+        case weeklyCrossword = "weekly_crossword"
+    }
+
+    enum GameOutcome: String {
+        case won
+        case failed
+        case solved
+        case gaveUp = "gave_up"
     }
 }
 

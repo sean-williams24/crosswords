@@ -15,7 +15,8 @@ export const privacySections = [
       "Puzzle content requests: Backword connects to backend services to fetch daily Backword words, daily and weekly crosswords, archive content, and Word of the Day. These requests may involve standard technical information such as IP address, device or browser information, request timestamps, and network metadata.",
       "Purchase information: Apple processes iOS subscriptions and Stripe processes web subscriptions. Backword receives subscription entitlement information so Pro features can be unlocked across supported devices. We do not receive or store payment card details.",
       "Advertising information: Backword uses Google AdMob to show ads. Google and its partners may collect information such as device identifiers, advertising identifiers where permitted, ad interactions, approximate location, diagnostics, and usage information to deliver ads, limit ad frequency, prevent fraud, and report ad performance.",
-      "Website information: When you visit this website, hosting providers may process standard technical information such as IP address, browser type, device information, pages visited, and timestamps for security, diagnostics, and reliability."
+      "Website information: When you visit this website, hosting providers may process standard technical information such as IP address, browser type, device information, pages visited, and timestamps for security, diagnostics, and reliability.",
+      "Optional website analytics: If you allow analytics, Backword uses Google Firebase Analytics to measure page views, broad campaign source, game and Pro-subscription milestones, sign-in milestones, App Store link clicks, and grouped content-load failures. We do not send guesses, answers, clue text, entered letters, account identifiers, names, email addresses, Stripe customer details, checkout identifiers, or payment information to website analytics."
     ]
   },
   {
@@ -34,7 +35,7 @@ export const privacySections = [
   {
     title: "Third-Party Services",
     body: [
-      "Backword uses third-party services that may process information according to their own privacy policies, including Apple for Sign in with Apple and App Store purchases and subscriptions, Stripe for web subscription payments and billing, Google for optional sign-in and Google AdMob advertising, Supabase for authentication, cloud sync, and backend content delivery, and website hosting providers for serving this website.",
+      "Backword uses third-party services that may process information according to their own privacy policies, including Apple for Sign in with Apple and App Store purchases and subscriptions, Stripe for web subscription payments and billing, Google for optional sign-in, Google AdMob advertising, and optional Firebase Analytics, Supabase for authentication, cloud sync, and backend content delivery, and website hosting providers for serving this website.",
       "We expect service providers to protect information appropriately and use it only for the services they provide to Backword, subject to their own terms and policies."
     ]
   },

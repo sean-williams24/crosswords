@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { isLocalDateString, localWeekStartString } from "../features/backword/date";
 import {
   activeClue,
   adjacentClue,
+  completedInReleaseWindow,
   crosswordScore,
   deleteLetter,
   deriveWeeklyCrosswordStats,
@@ -27,6 +28,9 @@ import { CrosswordKeyboard } from "../features/crossword/components/CrosswordKey
 import { CrosswordStats } from "../features/crossword/components/CrosswordStats";
 import { useAuth } from "../features/auth/AuthProvider";
 import { crosswordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountProgress } from "../features/sync/progressSync";
+import { ProAccessRedirect } from "../features/pro/ProAccessRedirect";
+import { useAnalytics } from "../features/analytics/AnalyticsProvider";
+import { contentLoadFailed, gameCompleted, gameStarted } from "../features/analytics/events";
 
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
@@ -34,6 +38,7 @@ export function WeeklyCrosswordPage() {
   const { date: routeDate } = useParams<{ date?: string }>();
   const archiveDate = isLocalDateString(routeDate) ? routeDate : null;
   const { entitlement, entitlementReady, ready, user } = useAuth();
+  const { track } = useAnalytics();
   const storage = useMemo(() => createCrosswordStorage(window.localStorage, {
     kind: "weekly",
     userId: user?.id,
@@ -80,11 +85,12 @@ export function WeeklyCrosswordPage() {
         setError(loadError instanceof CrosswordConfigurationError
           ? loadError.message
           : "This week’s Pro Crossword could not be loaded. Check your connection and try again.");
+        track(contentLoadFailed("weekly_crossword", loadError instanceof CrosswordConfigurationError ? "configuration" : "network"));
       }
     } finally {
       setLoading(false);
     }
-  }, [storage]);
+  }, [storage, track]);
 
   useEffect(() => {
     if (ready && entitlementReady && user && entitlement?.isPro) void loadPuzzle(weekDate);
@@ -154,8 +160,24 @@ export function WeeklyCrosswordPage() {
     if (!puzzle || !progress || !selection) return;
     const result = enterLetter(progress, puzzle, selection, letter, settings.correctHighlight, new Date(), "weekly");
     persist(result.progress, result.selection);
-    if (progress.completedAt === null && result.progress.completedAt !== null) window.setTimeout(() => setSheet("completion"), 180);
-  }, [persist, progress, puzzle, selection, settings.correctHighlight]);
+    const startedBefore = progress.entries.flat().some((entry) => entry !== null);
+    const startedAfter = result.progress.entries.flat().some((entry) => entry !== null);
+    if (!startedBefore && startedAfter) {
+      track(gameStarted("weekly_crossword"));
+    }
+    if (progress.completedAt === null && result.progress.completedAt !== null) {
+      const startedAt = new Date(result.progress.startedAt).getTime();
+      const completedAt = new Date(result.progress.completedAt).getTime();
+      track(gameCompleted("weekly_crossword", "solved", {
+        releaseDay: completedInReleaseWindow("weekly", result.progress.date, result.progress.completedAt),
+        score: result.progress.releaseDateScore,
+        durationSeconds: Number.isFinite(startedAt) && Number.isFinite(completedAt)
+          ? Math.max(0, Math.floor((completedAt - startedAt) / 1_000))
+          : null
+      }));
+      window.setTimeout(() => setSheet("completion"), 180);
+    }
+  }, [persist, progress, puzzle, selection, settings.correctHighlight, track]);
 
   const handleDelete = useCallback(() => {
     if (!puzzle || !progress || !selection) return;
@@ -190,7 +212,7 @@ export function WeeklyCrosswordPage() {
   }, [handleDelete, handleLetter, isMenuOpen, moveClue, sheet]);
 
   if (!ready || (user && !entitlementReady)) return <StatusPanel title="Checking Pro access…" />;
-  if (!entitlement?.isPro) return <Navigate replace to={`/pro?return_to=${encodeURIComponent(archiveDate ? `/weekly-crossword/${archiveDate}` : "/weekly-crossword")}`} />;
+  if (!entitlement?.isPro) return <ProAccessRedirect feature="weekly_crossword" returnTo={archiveDate ? `/weekly-crossword/${archiveDate}` : "/weekly-crossword"} />;
 
   const liveScore = puzzle && progress ? crosswordScore(progress.completedClueIds.length, puzzle.clues.length, progress.hintsUsed) : 0;
   const clueText = showHint && currentClue ? currentClue.hint : currentClue?.text;

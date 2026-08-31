@@ -207,7 +207,11 @@ final class GameViewModel: ObservableObject {
             return
         }
 
+        let wasUnstarted = !progress.entries.flatMap { $0 }.contains { $0 != nil }
         progress.entries[selectedRow][selectedCol] = entered
+        if wasUnstarted {
+            BackwordAnalyticsService.shared.log(.gameStarted(game: analyticsGame))
+        }
         haptics.play(.letterEntered)
 
         checkWordCompletion()
@@ -277,6 +281,7 @@ final class GameViewModel: ObservableObject {
         progress.gaveUpAt = gaveUpAt
         progress.gaveUpScore = displayScore
         progress.gaveUpRevealedCells = revealedCells
+        logGameCompletion(outcome: .gaveUp, score: displayScore)
         haptics.play(.puzzleCompleted)
         saveProgress()
         isComplete = true
@@ -414,8 +419,29 @@ final class GameViewModel: ObservableObject {
                 isComplete = true
                 haptics.play(.puzzleCompleted)
                 recordRating()
+                logGameCompletion(outcome: .solved, score: currentScore)
             }
         }
+    }
+
+    private var analyticsGame: BackwordAnalyticsEvent.Game {
+        puzzle.size > 12 ? .weeklyCrossword : .dailyCrossword
+    }
+
+    private func logGameCompletion(outcome: BackwordAnalyticsEvent.GameOutcome, score: Int) {
+        let releaseCalendar = ContentReleaseCalendar(now: progress.completedAt ?? Date())
+        let completedOnReleaseDate = puzzle.size > 12
+            ? releaseCalendar.weeklyDateString == puzzle.date
+            : releaseCalendar.dailyDateString == puzzle.date
+        BackwordAnalyticsService.shared.log(
+            .gameCompleted(
+                game: analyticsGame,
+                outcome: outcome,
+                releaseDay: completedOnReleaseDate,
+                score: completedOnReleaseDate ? score : 0,
+                durationSeconds: progress.elapsedTime
+            )
+        )
     }
 
     private func recordRating() {

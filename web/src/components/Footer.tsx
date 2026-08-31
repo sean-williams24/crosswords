@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
+import { AppStoreBadge } from "./AppStoreBadge";
 
 export function Footer() {
   const { entitlement } = useAuth();
@@ -43,10 +44,14 @@ export function Footer() {
           <Link className="transition hover:text-textPrimary" to="/privacy">
             Privacy
           </Link>
+          <Link className="transition hover:text-textPrimary" to="/privacy-choices">
+            Privacy Choices
+          </Link>
           <Link className="transition hover:text-textPrimary" to="/terms">
             Terms
           </Link>
         </nav>
+        <AppStoreBadge placement="footer" />
       </div>
     </footer>
   );

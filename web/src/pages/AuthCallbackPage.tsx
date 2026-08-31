@@ -3,15 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { consumeAuthReturnTo, useAuth } from "../features/auth/AuthProvider";
 import { supabase } from "../lib/supabase";
 import { isExpectedSignInCancellation, signInErrorAlert, type AuthAlert } from "../features/auth/authErrorPresentation";
+import { useAnalytics } from "../features/analytics/AnalyticsProvider";
+import { signInFailed, signInSucceeded } from "../features/analytics/events";
 
 export function AuthCallbackPage() {
   const navigate = useNavigate();
   const { ready, user } = useAuth();
+  const { track } = useAnalytics();
   const [error, setError] = useState<AuthAlert | null>(null);
 
   useEffect(() => {
     if (!ready) return;
     if (user) {
+      track(signInSucceeded());
       navigate(consumeAuthReturnTo(), { replace: true });
       return;
     }
@@ -28,8 +32,9 @@ export function AuthCallbackPage() {
           return;
         }
         setError(signInErrorAlert(exchangeError, "apple"));
+        track(signInFailed());
       });
-  }, [navigate, ready, user]);
+  }, [navigate, ready, track, user]);
 
   return <main className="auth-page"><div className="auth-callback">{error ? <><strong>{error.title}</strong><span>{error.message}</span></> : "Signing you in…"}</div></main>;
 }

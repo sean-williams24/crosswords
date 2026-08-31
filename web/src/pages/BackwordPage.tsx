@@ -7,10 +7,11 @@ import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { BackwordStats } from "../features/backword/components/BackwordStats";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { Footer } from "../components/Footer";
-import { isLocalDateString, localDateString } from "../features/backword/date";
+import { isCompletedOnReleaseDate, isLocalDateString, localDateString } from "../features/backword/date";
 import {
   BACKWORD_RULES_VERSION,
   MAX_GUESSES,
+  backwordScore,
   connectedSuffixIndices,
   deriveStats,
   revealedIndices,
@@ -32,6 +33,8 @@ import type {
 import { useAuth } from "../features/auth/AuthProvider";
 import { backwordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountProgress } from "../features/sync/progressSync";
 import { canMigrateGuestProgress, clearGuestMigrationOwnerIfEmpty } from "../features/sync/guestMigration";
+import { useAnalytics } from "../features/analytics/AnalyticsProvider";
+import { contentLoadFailed, gameCompleted, gameStarted } from "../features/analytics/events";
 
 type Sheet = "instructions" | "stats" | "completion" | null;
 
@@ -39,6 +42,7 @@ export function BackwordPage() {
   const { date: routeDate } = useParams<{ date?: string }>();
   const archiveDate = isLocalDateString(routeDate) ? routeDate : null;
   const { entitlement, user } = useAuth();
+  const { track } = useAnalytics();
   const storage = useMemo(() => createBackwordStorage(window.localStorage, {
     userId: user?.id,
     onProgressSaved: (progress) => {
@@ -80,11 +84,12 @@ export function BackwordPage() {
             ? loadError.message
             : "Today's Backword could not be loaded. Check your connection and try again."
         );
+        track(contentLoadFailed("backword", loadError instanceof BackwordConfigurationError ? "configuration" : "network"));
       }
     } finally {
       setLoading(false);
     }
-  }, [storage]);
+  }, [storage, track]);
 
   useEffect(() => {
     void loadWord(date);
@@ -211,10 +216,19 @@ export function BackwordPage() {
     storage.saveProgress(updated);
     setProgress(updated);
     setInput("");
+    if (progress.guesses.length === 0) {
+      track(gameStarted("backword"));
+    }
     if (updated.outcome !== "inProgress") {
+      track(gameCompleted("backword", updated.outcome, {
+        mode: settings.mode,
+        releaseDay: isCompletedOnReleaseDate(updated.date, updated.completedAt),
+        score: backwordScore(updated),
+        durationSeconds: null
+      }));
       window.setTimeout(() => setSheet("completion"), 180);
     }
-  }, [input, progress, settings.mode, storage, word]);
+  }, [input, progress, settings.mode, storage, track, word]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

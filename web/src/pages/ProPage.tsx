@@ -1,10 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { startStripeCheckout, type ProPlan } from "../features/pro/billing";
 import { useAuth } from "../features/auth/AuthProvider";
 import { Footer } from "../components/Footer";
+import { useAnalytics } from "../features/analytics/AnalyticsProvider";
+import {
+  proEntitlementActivated,
+  proPageViewed,
+  proPlanSelected,
+  proSignInRequired,
+  stripeCheckoutReturned,
+  stripeCheckoutStarted,
+  stripeCheckoutStartFailed,
+  subscriptionManagementClicked,
+  type CheckoutFailureReason,
+  type ProEntryPoint
+} from "../features/analytics/events";
 
 const plans: Array<{ id: ProPlan; name: string; price: string; detail: string; badge?: string }> = [
   { id: "monthly", name: "Monthly", price: "£1.49", detail: "per month" },
@@ -34,6 +47,19 @@ function safeReturnPath(value: string | null) {
   return value?.startsWith("/") && !value.startsWith("//") ? value : "/";
 }
 
+function entryPointFor(returnPath: string): ProEntryPoint {
+  if (returnPath.startsWith("/weekly-crossword")) return "weekly_crossword";
+  if (returnPath.startsWith("/archive")) return "archive";
+  return "direct";
+}
+
+function checkoutFailureReason(error: unknown): CheckoutFailureReason {
+  const message = error instanceof Error ? error.message.toLowerCase() : "";
+  if (message.includes("configured")) return "configuration";
+  if (message.includes("network") || message.includes("fetch")) return "network";
+  return "provider";
+}
+
 export function ProPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -41,7 +67,11 @@ export function ProPage() {
   const [selectedPlan, setSelectedPlan] = useState<ProPlan>("annual");
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [isCheckoutStarting, setIsCheckoutStarting] = useState(false);
+  const pageViewTracked = useRef(false);
+  const checkoutReturnTracked = useRef(false);
+  const activationTracked = useRef(false);
   const returnPath = safeReturnPath(searchParams.get("return_to"));
+  const entryPoint = entryPointFor(returnPath);
   const signInReturnPath = `/pro?return_to=${encodeURIComponent(returnPath)}`;
   const completedCheckout = searchParams.get("checkout") === "success";
   const cancelledCheckout = searchParams.get("checkout") === "cancelled";
@@ -49,10 +79,29 @@ export function ProPage() {
   const checkoutLabel = hasUsedTrial ? "Subscribe now" : "Start 7-day free trial";
 
   useEffect(() => {
+    if (pageViewTracked.current) return;
+    pageViewTracked.current = true;
+    track(proPageViewed(entryPoint));
+  }, [entryPoint, track]);
+
+  useEffect(() => {
+    if (checkoutReturnTracked.current) return;
+    if (!completedCheckout && !cancelledCheckout) return;
+    checkoutReturnTracked.current = true;
+    track(stripeCheckoutReturned(completedCheckout ? "success" : "cancelled"));
+  }, [cancelledCheckout, completedCheckout, track]);
+
+  useEffect(() => {
     if (!completedCheckout || entitlement?.isPro) return;
     const timers = [0, 1_500, 4_000, 8_000].map((delay) => window.setTimeout(() => void refreshEntitlement(), delay));
     return () => timers.forEach(window.clearTimeout);
   }, [completedCheckout, entitlement?.isPro, refreshEntitlement]);
+
+  useEffect(() => {
+    if (!completedCheckout || entitlement?.provider !== "stripe" || !entitlement.isPro || activationTracked.current) return;
+    activationTracked.current = true;
+    track(proEntitlementActivated("stripe"));
+  }, [completedCheckout, entitlement?.isPro, entitlement?.provider, track]);
 
   if (!ready) return <main className="pro-page pro-page--loading">Loading Pro…</main>;
   if (user && !entitlementReady) return <main className="pro-page pro-page--loading">Checking Pro access…</main>;
@@ -60,13 +109,16 @@ export function ProPage() {
   async function selectCheckout() {
     setCheckoutError(null);
     if (!user) {
+      track(proSignInRequired(entryPoint));
       navigate("/sign-in", { state: { returnTo: signInReturnPath } });
       return;
     }
     setIsCheckoutStarting(true);
     try {
+      track(stripeCheckoutStarted(selectedPlan, !hasUsedTrial));
       await startStripeCheckout(selectedPlan, returnPath);
     } catch (error) {
+      track(stripeCheckoutStartFailed(selectedPlan, checkoutFailureReason(error)));
       setCheckoutError(error instanceof Error ? error.message : "We couldn't start secure checkout. Please try again.");
       setIsCheckoutStarting(false);
     }
@@ -84,7 +136,7 @@ export function ProPage() {
             <h1 id="pro-page-title">You’re all set</h1>
             <p>{entitlement.cancelAtPeriodEnd ? "Your Pro access stays active until the end of the current billing period" : "Thanks for subscribing - Pro is active for this Backword account on the web and iOS"}</p>
             <Link className="pro-page__secondary" to={returnPath}>Lets play</Link>
-            {entitlement.provider === "stripe" ? <p className="pro-page__provider-note">Your web subscription is managed through <a href="https://link.com" rel="noreferrer" target="_blank">Link</a></p> : <p className="pro-page__provider-note">This subscription is managed through your Apple ID.</p>}
+            {entitlement.provider === "stripe" ? <p className="pro-page__provider-note">Your web subscription is managed through <a href="https://link.com" onClick={() => track(subscriptionManagementClicked("stripe"))} rel="noreferrer" target="_blank">Link</a></p> : <p className="pro-page__provider-note">This subscription is managed through your Apple ID.</p>}
           </div>
         ) : (
           <>
@@ -101,13 +153,13 @@ export function ProPage() {
               </li>)}
             </ul>
             <div aria-label="Choose a Pro plan" className="pro-page__plans">
-              {plans.map((plan) => <button aria-pressed={selectedPlan === plan.id} className={selectedPlan === plan.id ? "is-selected" : ""} key={plan.id} onClick={() => setSelectedPlan(plan.id)} type="button">
+              {plans.map((plan) => <button aria-pressed={selectedPlan === plan.id} className={selectedPlan === plan.id ? "is-selected" : ""} key={plan.id} onClick={() => { setSelectedPlan(plan.id); track(proPlanSelected(plan.id)); }} type="button">
                 {plan.badge ? <span>{plan.badge}</span> : null}
                 <strong>{plan.name}</strong><b>{plan.price}</b><small>{plan.detail}</small>
               </button>)}
             </div>
             <button className="pro-page__primary" disabled={isCheckoutStarting} onClick={() => void selectCheckout()} type="button">{isCheckoutStarting ? "Opening secure checkout…" : checkoutLabel}</button>
-            {!user ? <div className="pro-page__login-option"><span>Or</span><Link className="pro-page__login" state={{ returnTo: signInReturnPath }} to="/sign-in">Login</Link></div> : null}
+            {!user ? <div className="pro-page__login-option"><span>Or</span><Link className="pro-page__login" onClick={() => track(proSignInRequired(entryPoint))} state={{ returnTo: signInReturnPath }} to="/sign-in">Login</Link></div> : null}
             {completedCheckout ? <p className="pro-page__notice" role="status">We’re confirming your payment and unlocking Pro. This can take a few seconds.</p> : null}
             {cancelledCheckout ? <p className="pro-page__notice" role="status">Checkout was cancelled. No payment was taken.</p> : null}
           </>

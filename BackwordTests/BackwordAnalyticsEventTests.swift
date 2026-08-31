@@ -88,4 +88,30 @@ struct BackwordAnalyticsEventTests {
         #expect(event.parameters["error_code"] == "7")
         #expect(event.parameters["error_description"] == nil)
     }
+
+    @Test("Game events use shared, content-free dimensions")
+    func gameEventsUseSharedDimensions() {
+        let started = BackwordAnalyticsEvent.gameStarted(game: .dailyCrossword, environment: "test")
+        let completed = BackwordAnalyticsEvent.gameCompleted(
+            game: .backword,
+            outcome: .won,
+            mode: .easy,
+            releaseDay: true,
+            score: 4,
+            durationSeconds: 330,
+            environment: "test"
+        )
+
+        #expect(started.name == "game_started")
+        #expect(started.parameters == ["game": "daily_crossword", "platform": "ios", "environment": "test"])
+        #expect(completed.name == "game_completed")
+        #expect(completed.parameters["game"] == "backword")
+        #expect(completed.parameters["outcome"] == "won")
+        #expect(completed.parameters["mode"] == "easy")
+        #expect(completed.parameters["release_day"] == "yes")
+        #expect(completed.parameters["score_band"] == "3_4")
+        #expect(completed.parameters["duration_band"] == "5_15m")
+        #expect(completed.parameters["answer"] == nil)
+        #expect(completed.parameters["guess"] == nil)
+    }
 }
