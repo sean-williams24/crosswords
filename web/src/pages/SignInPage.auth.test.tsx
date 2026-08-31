@@ -60,6 +60,16 @@ describe("SignInPage authentication state", () => {
     expect(screen.queryByRole("button", { name: "Delete account" })).not.toBeInTheDocument();
   });
 
+  it("returns an already Pro player to the requested weekly crossword", () => {
+    testAuth.value.user = { email: "player@example.com" };
+    render(<MemoryRouter initialEntries={[{ pathname: "/sign-in", state: { returnTo: "/weekly-crossword" } }]}><Routes>
+      <Route path="/sign-in" element={<SignInPage />} />
+      <Route path="/weekly-crossword" element={<p>Weekly Crossword destination</p>} />
+    </Routes></MemoryRouter>);
+
+    expect(screen.getByText("Weekly Crossword destination")).toBeInTheDocument();
+  });
+
   it("shows a safe inline alert for a Google failure", async () => {
     const user = userEvent.setup();
     vi.spyOn(console, "error").mockImplementation(() => undefined);

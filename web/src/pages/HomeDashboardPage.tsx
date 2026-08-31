@@ -2,9 +2,9 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
-import { localDateString } from "../features/backword/date";
+import { localDateString, localWeekStartString } from "../features/backword/date";
 import { backwordDashboardStatus } from "../features/home/backwordStatus";
-import { crosswordDashboardStatus } from "../features/crossword/engine";
+import { crosswordDashboardStatus, weeklyCrosswordDashboardStatus } from "../features/crossword/engine";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { DailyGameCard } from "../features/home/DailyGameCard";
 import { WeeklyCrosswordModal } from "../features/home/WeeklyCrosswordModal";
@@ -32,6 +32,11 @@ export function HomeDashboardPage() {
     const storage = createCrosswordStorage(window.localStorage, { userId: user?.id });
     const now = new Date();
     return crosswordDashboardStatus(storage.loadProgressForDate(localDateString(now)), now, storage.loadAllProgress());
+  }, [user?.id]);
+  const weeklyCrosswordStatus = useMemo(() => {
+    const storage = createCrosswordStorage(window.localStorage, { kind: "weekly", userId: user?.id });
+    const now = new Date();
+    return weeklyCrosswordDashboardStatus(storage.loadProgressForDate(localWeekStartString(now)), now, storage.loadAllProgress());
   }, [user?.id]);
   const isLoading = !ready || wordOfTheDayState === "loading";
 
@@ -103,8 +108,15 @@ export function HomeDashboardPage() {
             <h2 id="weekly-games-title">Weekly Games</h2>
             <p>Refreshes every Sunday</p>
           </div>
-          {isLoading ? <HomeDashboardLoadingCard variant="weekly" /> : (
-            <button className="weekly-card" onClick={() => setShowWeeklyModal(true)} type="button">
+          {isLoading ? <HomeDashboardLoadingCard variant="weekly" /> : entitlement?.isPro ? (
+            <Link aria-label="Pro Crossword" className="weekly-card" to="/weekly-crossword">
+              <span className="weekly-card__crown" aria-hidden="true">♛</span>
+              <span>PRO CROSSWORD</span>
+              <small>13×13</small>
+              <span className="weekly-card__status"><span className={`home-status home-status--${weeklyCrosswordStatus.tone}`}>{weeklyCrosswordStatus.label}</span>{weeklyCrosswordStatus.score !== null ? <b>{weeklyCrosswordStatus.score}/5</b> : null}{weeklyCrosswordStatus.streak ? <em>🔥 {weeklyCrosswordStatus.streak}</em> : null}</span>
+            </Link>
+          ) : (
+            <button aria-label="Pro Crossword" className="weekly-card" onClick={() => setShowWeeklyModal(true)} type="button">
               <span className="weekly-card__crown" aria-hidden="true">♛</span>
               <span>PRO CROSSWORD</span>
               <small>13×13</small>
@@ -115,7 +127,7 @@ export function HomeDashboardPage() {
 
       <Footer />
 
-      {showWeeklyModal ? <WeeklyCrosswordModal onClose={() => setShowWeeklyModal(false)} /> : null}
+      {showWeeklyModal ? <WeeklyCrosswordModal onClose={() => setShowWeeklyModal(false)} showSignIn={!user} /> : null}
     </main>
   );
 }

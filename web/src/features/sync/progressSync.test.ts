@@ -44,6 +44,8 @@ describe("cloud progress conflict selection", () => {
       size: 9,
       entries: Array.from({ length: 9 }, () => Array(9).fill(null)),
       completedClueIds: [1, 2, 3],
+      hintedClueIds: [],
+      hintsUsed: 0,
       startedAt: "2026-08-12T09:00:00.000Z",
       completedAt: null,
       releaseDateScore: 3,
@@ -52,5 +54,27 @@ describe("cloud progress conflict selection", () => {
 
     expect(record.content_key).toBe("ios-puzzle-id");
     expect(record.release_score).toBe(3);
+  });
+
+  it("marks browser weekly payloads as the iOS-compatible weekly game type", () => {
+    const record = crosswordCloudRecord({
+      schemaVersion: 1,
+      puzzleId: "weekly-puzzle-id",
+      date: "2026-08-09",
+      size: 13,
+      entries: Array.from({ length: 13 }, () => Array(13).fill(null)),
+      completedClueIds: [1],
+      hintedClueIds: [1],
+      hintsUsed: 1,
+      startedAt: "2026-08-09T09:00:00.000Z",
+      completedAt: null,
+      releaseDateScore: 1,
+      totalClues: 35,
+      isWeekly: true,
+      updatedAt: "2026-08-09T10:00:00.000Z"
+    }, "weekly");
+
+    expect(record.game_type).toBe("weekly_crossword");
+    expect(record.payload).toMatchObject({ isWeekly: true, hintedClueIds: [1], hintsUsed: 1, totalClues: 35 });
   });
 });

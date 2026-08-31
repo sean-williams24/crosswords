@@ -88,8 +88,8 @@ export function CrosswordPage() {
     void migrateProgress(
       user.id,
       "daily_crossword",
-      guestStorage.loadAllProgress().map(crosswordCloudRecord),
-      storage.loadAllProgress().map(crosswordCloudRecord),
+      guestStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
+      storage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
       (record) => storage.replaceProgress(record.payload),
       (record) => guestStorage.deleteProgress(record.content_key)
     ).then(() => {
@@ -107,7 +107,7 @@ export function CrosswordPage() {
       void refreshAccountProgress(
         user.id,
         "daily_crossword",
-        storage.loadAllProgress().map(crosswordCloudRecord),
+        storage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
         (record) => storage.replaceProgress(record.payload)
       ).then(() => {
         setSyncError("");

@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { AppStoreBadge } from "../../components/AppStoreBadge";
 
 type WeeklyCrosswordModalProps = {
   onClose: () => void;
+  showSignIn?: boolean;
 };
 
 const features = [
@@ -11,7 +13,7 @@ const features = [
   ["⚑", "Reveal answers when stuck"]
 ] as const;
 
-export function WeeklyCrosswordModal({ onClose }: WeeklyCrosswordModalProps) {
+export function WeeklyCrosswordModal({ onClose, showSignIn = false }: WeeklyCrosswordModalProps) {
   const closeButton = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -59,9 +61,8 @@ export function WeeklyCrosswordModal({ onClose }: WeeklyCrosswordModalProps) {
               </li>
             ))}
           </ul>
-                 <p className="weekly-modal__intro">
-            Available on the Backword iOS app, coming soon to web.
-          </p>
+          <p className="weekly-modal__intro">Available with a Backword Pro subscription on iOS.</p>
+          {showSignIn ? <Link className="weekly-modal__sign-in" state={{ returnTo: "/weekly-crossword" }} to="/sign-in">Already Pro? Sign in</Link> : null}
           <div className="weekly-modal__store-badge">
             <AppStoreBadge />
           </div>

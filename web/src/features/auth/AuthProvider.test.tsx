@@ -50,6 +50,11 @@ function EntitlementWarningProbe() {
   return <p>{ready ? entitlementWarning ?? "No entitlement warning" : "Loading"}</p>;
 }
 
+function EntitlementReadyProbe() {
+  const { entitlementReady } = useAuth();
+  return <p>{entitlementReady ? "Entitlement ready" : "Checking entitlement"}</p>;
+}
+
 describe("AuthProvider", () => {
   beforeEach(() => {
     supabaseMock.auth.getSession.mockResolvedValue({ data: { session: null }, error: null });
@@ -138,6 +143,19 @@ describe("AuthProvider", () => {
     });
 
     await waitFor(() => expect(auth?.entitlement?.isPro).toBe(true));
+  });
+
+  it("does not mark a signed-in entitlement ready before its lookup finishes", async () => {
+    const session = { access_token: "session-token", user: { id: "user-id", email: "player@example.com" } };
+    let resolveEntitlement: ((value: { data: { is_pro: boolean; expires_at: null }; error: null }) => void) | undefined;
+    supabaseMock.auth.getSession.mockResolvedValue({ data: { session }, error: null });
+    supabaseMock.client.rpc.mockReturnValue(new Promise((resolve) => { resolveEntitlement = resolve; }));
+
+    render(<AuthProvider><EntitlementReadyProbe /></AuthProvider>);
+
+    expect(await screen.findByText("Checking entitlement")).toBeInTheDocument();
+    await act(async () => { resolveEntitlement!({ data: { is_pro: true, expires_at: null }, error: null }); });
+    expect(await screen.findByText("Entitlement ready")).toBeInTheDocument();
   });
 
   it("keeps the signed-in state until account-deletion confirmation is acknowledged", async () => {

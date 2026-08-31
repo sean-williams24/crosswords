@@ -14,7 +14,8 @@ export function SignInPage() {
   const { entitlement, user, ready, signIn, signInWithGoogle } = useAuth();
   const [signInError, setSignInError] = useState<AuthAlert | null>(null);
   const [pending, setPending] = useState<ProviderChoice | null>(null);
-  const returnTo = typeof location.state?.returnTo === "string" ? location.state.returnTo : "/";
+  const hasReturnTo = typeof location.state?.returnTo === "string";
+  const returnTo = hasReturnTo ? location.state.returnTo as string : "/";
   const navigationHeader = (
     <header className="home-dashboard__header auth-page__header">
       <GameMenu />
@@ -49,7 +50,7 @@ export function SignInPage() {
   }
 
   if (ready && user) {
-    return <Navigate replace to="/player-profile" />;
+    return <Navigate replace to={hasReturnTo ? returnTo : "/player-profile"} />;
   }
 
   return (

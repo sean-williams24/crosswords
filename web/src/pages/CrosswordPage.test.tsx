@@ -13,7 +13,7 @@ vi.mock("../features/crossword/repository", async () => {
     createCrosswordRepository: () => ({
       getByDate: async (date: string) => ({
         id: "today-crossword", puzzleNumber: 1, date, size: 9, cells,
-        clues: [{ id: 0, direction: "across", number: 1, text: "Test answer", answer: "AB", startRow: 0, startCol: 0, length: 2 }]
+        clues: [{ id: 0, direction: "across", number: 1, text: "Test answer", hint: "Test hint", answer: "AB", startRow: 0, startCol: 0, length: 2 }]
       })
     })
   };

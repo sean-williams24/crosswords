@@ -16,6 +16,7 @@ type InFlightEntitlementRefresh = {
 
 type AuthContextValue = {
   ready: boolean;
+  entitlementReady: boolean;
   user: User | null;
   session: Session | null;
   entitlement: ProEntitlement | null;
@@ -35,6 +36,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 const returnToKey = "backword:web:auth:return-to";
 const guestAuth: AuthContextValue = {
   ready: true,
+  entitlementReady: true,
   user: null,
   session: null,
   entitlement: null,
@@ -66,6 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [entitlement, setEntitlement] = useState<ProEntitlement | null>(null);
+  const [entitlementReady, setEntitlementReady] = useState(false);
   const [entitlementWarning, setEntitlementWarning] = useState<string | null>(null);
   const [accountDeletionNotice, setAccountDeletionNotice] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
@@ -78,6 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       entitlementRefresh.current = null;
       setEntitlement(null);
       setEntitlementWarning(null);
+      setEntitlementReady(true);
       return;
     }
     const sessionKey = `${session.user.id}:${session.access_token ?? ""}`;
@@ -92,6 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (entitlementError) {
         console.error("Account entitlement refresh failed", entitlementError);
         setEntitlementWarning(entitlementWarningMessage);
+        setEntitlementReady(true);
         return;
       }
       const result = Array.isArray(data) ? data[0] : data;
@@ -100,6 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         expiresAt: result.expires_at ?? null
       } : { isPro: false, expiresAt: null });
       setEntitlementWarning(null);
+      setEntitlementReady(true);
     })();
     entitlementRefresh.current = { sessionKey, promise: request };
     try {
@@ -178,8 +184,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [isDeletingAccount, session?.access_token, session?.user.id, validateAccountSession]);
 
   useEffect(() => {
+    setEntitlementReady(false);
     void refreshEntitlement();
-  }, [session?.user.id]);
+  }, [session?.access_token, session?.user.id]);
 
   useEffect(() => {
     const userId = session?.user.id;
@@ -192,6 +199,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<AuthContextValue>(() => ({
     ready,
+    entitlementReady,
     user: session?.user ?? null,
     session,
     entitlement,
@@ -246,7 +254,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     validateAccountSession,
     refreshEntitlement
-  }), [ready, session, entitlement, entitlementWarning, accountDeletionNotice, validateAccountSession, refreshEntitlement]);
+  }), [ready, entitlementReady, session, entitlement, entitlementWarning, accountDeletionNotice, validateAccountSession, refreshEntitlement]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

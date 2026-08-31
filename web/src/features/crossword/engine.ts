@@ -1,8 +1,16 @@
-import { isCompletedOnReleaseDate, localDateOffset, localDateString } from "../backword/date";
+import {
+  isCompletedInWeeklyReleaseWindow,
+  isCompletedOnReleaseDate,
+  localDateOffset,
+  localDateString,
+  localWeekOffset,
+  localWeekStartString
+} from "../backword/date";
 import type {
   CrosswordClue,
   CrosswordDashboardStatus,
   CrosswordDirection,
+  CrosswordKind,
   CrosswordProgress,
   CrosswordPuzzle,
   CrosswordSelection,
@@ -10,9 +18,10 @@ import type {
 } from "./types";
 
 export function emptyProgress(
-  puzzle: Pick<CrosswordPuzzle, "id" | "date" | "size">,
+  puzzle: Pick<CrosswordPuzzle, "id" | "date" | "size"> & Partial<Pick<CrosswordPuzzle, "clues">>,
   startedAt = new Date()
 ): CrosswordProgress {
+  const totalClues = puzzle.clues?.length;
   return {
     schemaVersion: 1,
     puzzleId: puzzle.id,
@@ -20,9 +29,13 @@ export function emptyProgress(
     size: puzzle.size,
     entries: Array.from({ length: puzzle.size }, () => Array<string | null>(puzzle.size).fill(null)),
     completedClueIds: [],
+    hintedClueIds: [],
+    hintsUsed: 0,
     startedAt: startedAt.toISOString(),
     completedAt: null,
     releaseDateScore: 0,
+    totalClues,
+    isWeekly: puzzle.size === 13,
     updatedAt: startedAt.toISOString()
   };
 }
@@ -180,19 +193,29 @@ function completedClueIds(
   return [...completed];
 }
 
-export function crosswordScore(completedClueCount: number, totalClues: number): number {
+export function crosswordScore(completedClueCount: number, totalClues: number, hintsUsed = 0): number {
   if (totalClues <= 0 || completedClueCount <= 0) return 0;
   const percent = Math.floor((completedClueCount / totalClues) * 100);
-  if (percent === 100) return 5;
-  if (percent >= 75) return 4;
-  if (percent >= 50) return 3;
-  if (percent >= 25) return 2;
-  return 1;
+  const base = percent === 100 ? 5 : percent >= 75 ? 4 : percent >= 50 ? 3 : percent >= 25 ? 2 : 1;
+  return Math.max(0, base - Math.floor(hintsUsed / 3));
 }
 
-function saveReleaseDateScore(progress: CrosswordProgress, puzzle: CrosswordPuzzle, now: Date): CrosswordProgress {
-  if (localDateString(now) !== progress.date) return progress;
-  return { ...progress, releaseDateScore: crosswordScore(progress.completedClueIds.length, puzzle.clues.length) };
+export function isInReleaseWindow(kind: CrosswordKind, date: string, now = new Date()): boolean {
+  return kind === "weekly" ? localWeekStartString(now) === date : localDateString(now) === date;
+}
+
+export function completedInReleaseWindow(kind: CrosswordKind, date: string, completedAt: string | null): boolean {
+  return kind === "weekly"
+    ? isCompletedInWeeklyReleaseWindow(date, completedAt)
+    : isCompletedOnReleaseDate(date, completedAt);
+}
+
+function saveReleaseDateScore(progress: CrosswordProgress, puzzle: CrosswordPuzzle, now: Date, kind: CrosswordKind): CrosswordProgress {
+  if (!isInReleaseWindow(kind, progress.date, now)) return progress;
+  return {
+    ...progress,
+    releaseDateScore: crosswordScore(progress.completedClueIds.length, puzzle.clues.length, progress.hintsUsed)
+  };
 }
 
 export function enterLetter(
@@ -201,7 +224,8 @@ export function enterLetter(
   selection: CrosswordSelection,
   value: string,
   correctHighlight: boolean,
-  now = new Date()
+  now = new Date(),
+  kind: CrosswordKind = "daily"
 ): { progress: CrosswordProgress; selection: CrosswordSelection } {
   const letter = value.toUpperCase();
   const clue = activeClue(puzzle, selection);
@@ -220,7 +244,7 @@ export function enterLetter(
   if (updated.completedClueIds.length === puzzle.clues.length) {
     updated = { ...updated, completedAt: now.toISOString() };
   }
-  updated = { ...saveReleaseDateScore(updated, puzzle, now), updatedAt: now.toISOString() };
+  updated = { ...saveReleaseDateScore(updated, puzzle, now, kind), updatedAt: now.toISOString() };
   return { progress: updated, selection: advanceSelection(updated, clue, selection) };
 }
 
@@ -229,7 +253,8 @@ export function deleteLetter(
   puzzle: CrosswordPuzzle,
   selection: CrosswordSelection,
   correctHighlight: boolean,
-  now = new Date()
+  now = new Date(),
+  kind: CrosswordKind = "daily"
 ): { progress: CrosswordProgress; selection: CrosswordSelection } {
   const clue = activeClue(puzzle, selection);
   if (!clue || progress.completedAt) return { progress, selection };
@@ -244,7 +269,24 @@ export function deleteLetter(
   if (!(correctHighlight && isCompletedCell(progress, puzzle, target.row, target.col))) {
     entries[target.row][target.col] = null;
   }
-  return { progress: { ...saveReleaseDateScore({ ...progress, entries }, puzzle, now), updatedAt: now.toISOString() }, selection: target };
+  return { progress: { ...saveReleaseDateScore({ ...progress, entries }, puzzle, now, kind), updatedAt: now.toISOString() }, selection: target };
+}
+
+export function toggleHint(
+  progress: CrosswordProgress,
+  puzzle: CrosswordPuzzle,
+  clue: CrosswordClue,
+  now = new Date(),
+  kind: CrosswordKind = "weekly"
+): CrosswordProgress {
+  if (progress.completedAt || progress.hintedClueIds.includes(clue.id)) return progress;
+  const updated = {
+    ...progress,
+    hintedClueIds: [...progress.hintedClueIds, clue.id],
+    hintsUsed: progress.hintsUsed + 1,
+    updatedAt: now.toISOString()
+  };
+  return saveReleaseDateScore(updated, puzzle, now, kind);
 }
 
 function solvedProgress(progress: CrosswordProgress): boolean {
@@ -279,6 +321,13 @@ function onTimeSolveTime(progress: CrosswordProgress): number | null {
   if (!solvedProgress(progress) || !isCompletedOnReleaseDate(progress.date, progress.completedAt)) {
     return null;
   }
+  const end = new Date(progress.completedAt ?? "").getTime();
+  const start = new Date(progress.startedAt).getTime();
+  return Number.isFinite(end - start) ? Math.max(0, Math.floor((end - start) / 1000)) : null;
+}
+
+function weeklyOnTimeSolveTime(progress: CrosswordProgress): number | null {
+  if (!solvedProgress(progress) || !isCompletedInWeeklyReleaseWindow(progress.date, progress.completedAt)) return null;
   const end = new Date(progress.completedAt ?? "").getTime();
   const start = new Date(progress.startedAt).getTime();
   return Number.isFinite(end - start) ? Math.max(0, Math.floor((end - start) / 1000)) : null;
@@ -334,6 +383,84 @@ export function crosswordDashboardStatus(
     return { label: "In Progress", tone: "progress", score: progress.releaseDateScore, streak: stats.currentStreak };
   }
   return { label: "New", tone: "new", score: null, streak: stats.currentStreak };
+}
+
+export function weeklyCrosswordDashboardStatus(
+  progress: CrosswordProgress | null,
+  now = new Date(),
+  allProgress: CrosswordProgress[] = []
+): CrosswordDashboardStatus {
+  const stats = deriveWeeklyCrosswordStats(allProgress, now);
+  if (!progress) return { label: "New", tone: "new", score: null, streak: stats.currentStreak };
+  if (progress.completedAt) {
+    return {
+      label: completedInReleaseWindow("weekly", progress.date, progress.completedAt) ? "Solved" : "Finished",
+      tone: "solved",
+      score: progress.releaseDateScore,
+      streak: stats.currentStreak
+    };
+  }
+  if (progress.completedClueIds.length) return { label: "In Progress", tone: "progress", score: progress.releaseDateScore, streak: stats.currentStreak };
+  return { label: "New", tone: "new", score: null, streak: stats.currentStreak };
+}
+
+export type WeeklyCrosswordStats = Omit<CrosswordStats, "history" | "rollingScore"> & {
+  rollingScore: number;
+  recentHistory: CrosswordStats["history"];
+  previousHistory: CrosswordStats["history"];
+};
+
+export function deriveWeeklyCrosswordStats(progressRecords: CrosswordProgress[], now = new Date()): WeeklyCrosswordStats {
+  const currentWeek = localWeekStartString(now);
+  const byDate = new Map(progressRecords.map((progress) => [progress.date, progress]));
+  const solved = progressRecords.filter(solvedProgress);
+  const onTimeSolved = solved.filter((progress) => isCompletedInWeeklyReleaseWindow(progress.date, progress.completedAt));
+  const completionDates = onTimeSolved.map((progress) => progress.date);
+  const rows = Array.from({ length: 7 }, (_, offset) => {
+    const date = localWeekOffset(currentWeek, -offset);
+    const progress = byDate.get(date);
+    const solveTimeSeconds = progress ? weeklyOnTimeSolveTime(progress) : null;
+    return {
+      date,
+      isToday: date === localDateString(now),
+      score: progress?.releaseDateScore ?? 0,
+      solveTimeSeconds,
+      outcome: progress ? solveTimeSeconds !== null ? "solved" : "inProgress" : "unplayed"
+    } as const;
+  });
+  const visibleSolveTimes = rows.map((row) => row.solveTimeSeconds).filter((seconds): seconds is number => seconds !== null);
+  return {
+    totalSolved: solved.length,
+    currentStreak: weeklyCurrentStreak(completionDates, currentWeek),
+    longestStreak: weeklyLongestStreak(completionDates),
+    averageSolveTimeSeconds: visibleSolveTimes.length ? Math.floor(visibleSolveTimes.reduce((total, seconds) => total + seconds, 0) / visibleSolveTimes.length) : null,
+    rollingScore: rows.slice(0, 2).reduce((total, row) => total + row.score, 0),
+    recentHistory: rows.slice(0, 2),
+    previousHistory: rows.slice(2)
+  };
+}
+
+function weeklyLongestStreak(dates: string[]): number {
+  let current = 0;
+  let longest = 0;
+  let previous: string | null = null;
+  for (const date of [...new Set(dates)].sort()) {
+    current = previous && localWeekOffset(previous, 1) === date ? current + 1 : 1;
+    longest = Math.max(longest, current);
+    previous = date;
+  }
+  return longest;
+}
+
+function weeklyCurrentStreak(dates: string[], currentWeek: string): number {
+  const completed = new Set(dates);
+  let cursor = completed.has(currentWeek) ? currentWeek : localWeekOffset(currentWeek, -1);
+  let streak = 0;
+  while (completed.has(cursor)) {
+    streak += 1;
+    cursor = localWeekOffset(cursor, -1);
+  }
+  return streak;
 }
 
 export function formatDuration(seconds: number | null): string {

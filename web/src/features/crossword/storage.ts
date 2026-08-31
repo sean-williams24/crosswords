@@ -1,9 +1,11 @@
 import { emptyProgress } from "./engine";
-import type { CrosswordProgress, CrosswordPuzzle, CrosswordSettings } from "./types";
+import type { CrosswordKind, CrosswordProgress, CrosswordPuzzle, CrosswordSettings } from "./types";
 
 const SETTINGS_KEY = "backword:web:crossword:settings:v1";
-const PROGRESS_KEY = "backword:web:crossword:progress:v1";
-const PUZZLE_CACHE_KEY = "backword:web:crossword:puzzles:v1";
+const DAILY_PROGRESS_KEY = "backword:web:crossword:progress:v1";
+const DAILY_PUZZLE_CACHE_KEY = "backword:web:crossword:puzzles:v1";
+const WEEKLY_PROGRESS_KEY = "backword:web:weekly-crossword:progress:v1";
+const WEEKLY_PUZZLE_CACHE_KEY = "backword:web:weekly-crossword:puzzles:v1";
 
 const defaultSettings: CrosswordSettings = {
   schemaVersion: 1,
@@ -30,7 +32,7 @@ function isEntryGrid(value: unknown, size: number): value is (string | null)[][]
   );
 }
 
-function isProgress(value: unknown): value is CrosswordProgress {
+function isProgress(value: unknown, size: 9 | 13, isWeekly: boolean): value is CrosswordProgress {
   if (!value || typeof value !== "object") {
     return false;
   }
@@ -39,14 +41,17 @@ function isProgress(value: unknown): value is CrosswordProgress {
     progress.schemaVersion === 1 &&
     typeof progress.puzzleId === "string" &&
     /^\d{4}-\d{2}-\d{2}$/.test(progress.date ?? "") &&
-    Number.isInteger(progress.size) && progress.size === 9 &&
+    Number.isInteger(progress.size) && progress.size === size &&
     isEntryGrid(progress.entries, progress.size) &&
     Array.isArray(progress.completedClueIds) && progress.completedClueIds.every(Number.isInteger) &&
+    (progress.hintedClueIds === undefined || (Array.isArray(progress.hintedClueIds) && progress.hintedClueIds.every(Number.isInteger))) &&
+    (progress.hintsUsed === undefined || (Number.isInteger(progress.hintsUsed) && progress.hintsUsed >= 0)) &&
     typeof progress.startedAt === "string" &&
     // Swift's JSONEncoder omits nil optionals, while browser saves use an
     // explicit null. Both represent an unfinished shared crossword.
     (progress.completedAt === undefined || progress.completedAt === null || typeof progress.completedAt === "string") &&
-    typeof progress.releaseDateScore === "number" && progress.releaseDateScore >= 0 && progress.releaseDateScore <= 5
+    typeof progress.releaseDateScore === "number" && progress.releaseDateScore >= 0 && progress.releaseDateScore <= 5 &&
+    (progress.isWeekly === undefined || progress.isWeekly === isWeekly)
   );
 }
 
@@ -54,11 +59,13 @@ function isProgress(value: unknown): value is CrosswordProgress {
 function normalizedProgress(progress: CrosswordProgress): CrosswordProgress {
   return {
     ...progress,
-    completedAt: progress.completedAt ?? null
+    completedAt: progress.completedAt ?? null,
+    hintedClueIds: progress.hintedClueIds ?? [],
+    hintsUsed: progress.hintsUsed ?? 0
   };
 }
 
-function isPuzzle(value: unknown): value is CrosswordPuzzle {
+function isPuzzle(value: unknown, size: 9 | 13): value is CrosswordPuzzle {
   if (!value || typeof value !== "object") {
     return false;
   }
@@ -66,8 +73,8 @@ function isPuzzle(value: unknown): value is CrosswordPuzzle {
   return (
     typeof puzzle.id === "string" &&
     /^\d{4}-\d{2}-\d{2}$/.test(puzzle.date ?? "") &&
-    puzzle.size === 9 &&
-    Array.isArray(puzzle.cells) && puzzle.cells.length === 9 &&
+    puzzle.size === size &&
+    Array.isArray(puzzle.cells) && puzzle.cells.length === size &&
     Array.isArray(puzzle.clues) && puzzle.clues.length > 0
   );
 }
@@ -75,6 +82,7 @@ function isPuzzle(value: unknown): value is CrosswordPuzzle {
 export type CrosswordStorage = ReturnType<typeof createCrosswordStorage>;
 
 type CrosswordStorageOptions = {
+  kind?: CrosswordKind;
   userId?: string | null;
   onProgressSaved?: (progress: CrosswordProgress) => void;
 };
@@ -83,6 +91,11 @@ export function createCrosswordStorage(
   storage: Storage = window.localStorage,
   options: CrosswordStorageOptions = {}
 ) {
+  const kind = options.kind ?? "daily";
+  const size = kind === "weekly" ? 13 : 9;
+  const isWeekly = kind === "weekly";
+  const progressKey = isWeekly ? WEEKLY_PROGRESS_KEY : DAILY_PROGRESS_KEY;
+  const puzzleCacheKey = isWeekly ? WEEKLY_PUZZLE_CACHE_KEY : DAILY_PUZZLE_CACHE_KEY;
   const scopedKey = (key: string) => options.userId ? `${key}:user:${options.userId}` : key;
 
   return {
@@ -108,15 +121,15 @@ export function createCrosswordStorage(
     },
 
     loadProgress(puzzle: Pick<CrosswordPuzzle, "id" | "date" | "size">): CrosswordProgress {
-      const saved = readRecord<unknown>(storage, scopedKey(PROGRESS_KEY))[puzzle.id];
-      return isProgress(saved) && saved.date === puzzle.date && saved.size === puzzle.size
+      const saved = readRecord<unknown>(storage, scopedKey(progressKey))[puzzle.id];
+      return isProgress(saved, size, isWeekly) && saved.date === puzzle.date && saved.size === puzzle.size
         ? normalizedProgress(saved)
         : emptyProgress(puzzle);
     },
 
     loadAllProgress(): CrosswordProgress[] {
-      return Object.values(readRecord<unknown>(storage, scopedKey(PROGRESS_KEY)))
-        .filter(isProgress)
+      return Object.values(readRecord<unknown>(storage, scopedKey(progressKey)))
+        .filter((progress): progress is CrosswordProgress => isProgress(progress, size, isWeekly))
         .map(normalizedProgress);
     },
 
@@ -126,33 +139,33 @@ export function createCrosswordStorage(
 
     saveProgress(progress: CrosswordProgress): void {
       progress.updatedAt = new Date().toISOString();
-      const records = readRecord<CrosswordProgress>(storage, scopedKey(PROGRESS_KEY));
+      const records = readRecord<CrosswordProgress>(storage, scopedKey(progressKey));
       records[progress.puzzleId] = progress;
-      storage.setItem(scopedKey(PROGRESS_KEY), JSON.stringify(records));
+      storage.setItem(scopedKey(progressKey), JSON.stringify(records));
       options.onProgressSaved?.(progress);
     },
 
     replaceProgress(progress: CrosswordProgress): void {
-      const records = readRecord<CrosswordProgress>(storage, scopedKey(PROGRESS_KEY));
+      const records = readRecord<CrosswordProgress>(storage, scopedKey(progressKey));
       records[progress.puzzleId] = normalizedProgress(progress);
-      storage.setItem(scopedKey(PROGRESS_KEY), JSON.stringify(records));
+      storage.setItem(scopedKey(progressKey), JSON.stringify(records));
     },
 
     deleteProgress(puzzleId: string): void {
-      const records = readRecord<CrosswordProgress>(storage, scopedKey(PROGRESS_KEY));
+      const records = readRecord<CrosswordProgress>(storage, scopedKey(progressKey));
       delete records[puzzleId];
-      storage.setItem(scopedKey(PROGRESS_KEY), JSON.stringify(records));
+      storage.setItem(scopedKey(progressKey), JSON.stringify(records));
     },
 
     loadCachedPuzzle(date: string): CrosswordPuzzle | null {
-      const puzzle = readRecord<unknown>(storage, PUZZLE_CACHE_KEY)[date];
-      return isPuzzle(puzzle) ? puzzle : null;
+      const puzzle = readRecord<unknown>(storage, puzzleCacheKey)[date];
+      return isPuzzle(puzzle, size) ? puzzle : null;
     },
 
     cachePuzzle(puzzle: CrosswordPuzzle): void {
-      const records = readRecord<CrosswordPuzzle>(storage, PUZZLE_CACHE_KEY);
+      const records = readRecord<CrosswordPuzzle>(storage, puzzleCacheKey);
       records[puzzle.date] = puzzle;
-      storage.setItem(PUZZLE_CACHE_KEY, JSON.stringify(records));
+      storage.setItem(puzzleCacheKey, JSON.stringify(records));
     }
   };
 }

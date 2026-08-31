@@ -176,7 +176,7 @@ describe("web home dashboard", () => {
     expect(screen.getByLabelText(`Status: ${label}`)).toBeInTheDocument();
   });
 
-  it("opens and closes the iOS weekly crossword dialog", async () => {
+  it("opens and closes the iOS subscription path for the weekly crossword", async () => {
     const user = userEvent.setup();
     renderDashboard();
 
@@ -187,7 +187,7 @@ describe("web home dashboard", () => {
       "weekly-modal__title"
     );
     const featureList = modal.querySelector(".weekly-modal__features");
-    const intro = screen.getByText("Available on the Backword iOS app, coming soon to web.");
+    const intro = screen.getByText("Available with a Backword Pro subscription on iOS.");
     expect(featureList).not.toBeNull();
     expect(
       screen.getByRole("heading", { name: "The full game experience" }).compareDocumentPosition(
@@ -196,6 +196,7 @@ describe("web home dashboard", () => {
     ).toBeTruthy();
     expect(featureList!.compareDocumentPosition(intro) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByText("Weekly challenging puzzles")).toBeInTheDocument();
+    expect(within(modal).getByRole("link", { name: "Already Pro? Sign in" })).toHaveAttribute("href", "/sign-in");
     const appStoreBadge = within(modal).getByLabelText("Download Backword on the App Store");
     expect(appStoreBadge).toHaveAttribute(
       "href",
@@ -205,5 +206,16 @@ describe("web home dashboard", () => {
 
     await user.click(screen.getByRole("button", { name: "Close weekly crossword details" }));
     expect(screen.queryByRole("dialog", { name: "The full game experience" })).not.toBeInTheDocument();
+  });
+
+  it("links an active Pro account to the playable weekly crossword", () => {
+    testAuth.value = {
+      entitlement: { isPro: true, expiresAt: null },
+      ready: true,
+      user: { id: "pro-player" }
+    };
+    renderDashboard();
+
+    expect(screen.getByRole("link", { name: "Pro Crossword" })).toHaveAttribute("href", "/weekly-crossword");
   });
 });

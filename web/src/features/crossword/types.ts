@@ -1,4 +1,5 @@
 export type CrosswordDirection = "across" | "down";
+export type CrosswordKind = "daily" | "weekly";
 
 export type CrosswordCell = {
   letter: string | null;
@@ -12,6 +13,7 @@ export type CrosswordClue = {
   direction: CrosswordDirection;
   number: number;
   text: string;
+  hint: string;
   answer: string;
   startRow: number;
   startCol: number;
@@ -34,11 +36,15 @@ export type CrosswordProgress = {
   size: number;
   entries: (string | null)[][];
   completedClueIds: number[];
+  hintedClueIds: number[];
+  hintsUsed: number;
   startedAt: string;
   completedAt: string | null;
   /** Present on native records that were revealed rather than solved. */
   gaveUpAt?: string | null;
   releaseDateScore: number;
+  totalClues?: number;
+  isWeekly?: boolean;
   /** ISO timestamp used only for deterministic cross-device conflict resolution. */
   updatedAt?: string;
 };

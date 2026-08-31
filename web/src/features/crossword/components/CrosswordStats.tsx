@@ -1,31 +1,37 @@
 import { BackwordModal } from "../../backword/components/BackwordModal";
 import { formatDuration } from "../engine";
-import type { CrosswordStats as CrosswordStatsModel } from "../types";
+import type { WeeklyCrosswordStats } from "../engine";
+import type { CrosswordKind, CrosswordStats as CrosswordStatsModel } from "../types";
 
 type CrosswordStatsProps = {
   onClose: () => void;
-  stats: CrosswordStatsModel;
+  stats: CrosswordStatsModel | WeeklyCrosswordStats;
+  kind?: CrosswordKind;
 };
 
-export function CrosswordStats({ onClose, stats }: CrosswordStatsProps) {
+export function CrosswordStats({ onClose, stats, kind = "daily" }: CrosswordStatsProps) {
   return (
-    <BackwordModal className="bw-stats-modal" onClose={onClose} title="Daily Crossword Stats">
+    <BackwordModal className="bw-stats-modal" onClose={onClose} title={`${kind === "weekly" ? "Weekly" : "Daily"} Crossword Stats`}>
       <div className="bw-modal-scroll bw-stats-scroll">
-        <CrosswordStatsContent stats={stats} />
+        <CrosswordStatsContent stats={stats} kind={kind} />
       </div>
     </BackwordModal>
   );
 }
 
-export function CrosswordStatsContent({ stats }: { stats: CrosswordStatsModel }) {
+export function CrosswordStatsContent({ stats, kind = "daily" }: { stats: CrosswordStatsModel | WeeklyCrosswordStats; kind?: CrosswordKind }) {
+  const weekly = kind === "weekly";
+  const history = weekly ? (stats as WeeklyCrosswordStats).recentHistory : (stats as CrosswordStatsModel).history;
+  const previousHistory = weekly ? (stats as WeeklyCrosswordStats).previousHistory : [];
+  const maxPoints = weekly ? 10 : 70;
   return (
     <>
       <section aria-label="14 day crossword score" className="bw-rating-section">
         <div className="bw-rating-track">
-          <span className="bw-rating-fill" style={ratingFillStyle(stats.rollingScore)} />
-          <span aria-hidden="true" className="bw-rating-marker" style={ratingMarkerStyle(stats.rollingScore)} />
+          <span className="bw-rating-fill" style={ratingFillStyle(stats.rollingScore, maxPoints)} />
+          <span aria-hidden="true" className="bw-rating-marker" style={ratingMarkerStyle(stats.rollingScore, maxPoints)} />
         </div>
-        <strong>{stats.rollingScore}/70</strong>
+        <strong>{stats.rollingScore}/{maxPoints}</strong>
       </section>
       <section className="bw-stat-summary">
         <Stat label="Current Streak" value={stats.currentStreak} />
@@ -33,11 +39,19 @@ export function CrosswordStatsContent({ stats }: { stats: CrosswordStatsModel })
         <Stat label="Best Streak" value={stats.longestStreak} />
         <Stat label="Average Time" value={formatDuration(stats.averageSolveTimeSeconds)} />
       </section>
-      <section className="bw-history">
-        <h3>LAST 14 DAYS</h3>
+      <HistorySection rows={history} title={weekly ? "LAST 14 DAYS" : "LAST 14 DAYS"} />
+      {previousHistory.length ? <HistorySection rows={previousHistory} title="PREVIOUS GAMES" /> : null}
+    </>
+  );
+}
+
+function HistorySection({ rows, title }: { rows: CrosswordStatsModel["history"]; title: string }) {
+  return (
+    <section className="bw-history">
+        <h3>{title}</h3>
         <div className="bw-history-table cw-history-table">
           <div className="bw-history-heading"><span>Date</span><span>Score</span><span>Time</span></div>
-          {stats.history.map((row) => (
+          {rows.map((row) => (
             <div className="bw-history-row" key={row.date}>
               <span>
                 {formatDate(row.date)}
@@ -49,8 +63,7 @@ export function CrosswordStatsContent({ stats }: { stats: CrosswordStatsModel })
             </div>
           ))}
         </div>
-      </section>
-    </>
+    </section>
   );
 }
 
@@ -69,11 +82,11 @@ function scoreChipTone(score: number): string {
   return "";
 }
 
-function ratingFillStyle(score: number) {
-  const percentage = Math.max(1, (score / 70) * 100);
+function ratingFillStyle(score: number, maxPoints: number) {
+  const percentage = Math.max(1, (score / maxPoints) * 100);
   return { clipPath: `inset(0 ${100 - percentage}% 0 0)` };
 }
 
-function ratingMarkerStyle(score: number) {
-  return { left: `${Math.max(0, Math.min(100, (score / 70) * 100))}%` };
+function ratingMarkerStyle(score: number, maxPoints: number) {
+  return { left: `${Math.max(0, Math.min(100, (score / maxPoints) * 100))}%` };
 }

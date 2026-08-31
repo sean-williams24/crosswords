@@ -28,4 +28,20 @@ describe("crossword storage", () => {
       completedAt: null
     });
   });
+
+  it("keeps 13×13 weekly progress isolated while preserving iOS hint metadata", () => {
+    const weeklyPuzzle = { id: "weekly-puzzle", date: "2026-08-02", size: 13 } as const;
+    const weeklyStorage = createCrosswordStorage(undefined, { kind: "weekly" });
+    const weekly = {
+      ...emptyProgress(weeklyPuzzle, new Date("2026-08-02T09:00:00")),
+      hintedClueIds: [4],
+      hintsUsed: 1,
+      isWeekly: true
+    };
+
+    weeklyStorage.saveProgress(weekly);
+
+    expect(weeklyStorage.loadProgress(weeklyPuzzle)).toMatchObject({ size: 13, hintedClueIds: [4], hintsUsed: 1, isWeekly: true });
+    expect(createCrosswordStorage().loadAllProgress()).toHaveLength(0);
+  });
 });

@@ -3,6 +3,7 @@ import { Layout } from "./components/Layout";
 import { BackwordPage } from "./pages/BackwordPage";
 import { ContactPage } from "./pages/ContactPage";
 import { CrosswordPage } from "./pages/CrosswordPage";
+import { WeeklyCrosswordPage } from "./pages/WeeklyCrosswordPage";
 import { HomeDashboardPage } from "./pages/HomeDashboardPage";
 import { InfoPage } from "./pages/InfoPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/backword" element={<BackwordPage />} />
         <Route path="/home" element={<Navigate to="/" replace />} />
         <Route path="/crossword" element={<CrosswordPage />} />
+        <Route path="/weekly-crossword" element={<WeeklyCrosswordPage />} />
         <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
         <Route path="/info" element={<Layout><InfoPage /></Layout>} />
         <Route path="/privacy" element={<Layout><PrivacyPage /></Layout>} />

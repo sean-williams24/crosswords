@@ -1,5 +1,5 @@
 import type { BackwordProgress } from "../backword/types";
-import type { CrosswordProgress } from "../crossword/types";
+import type { CrosswordKind, CrosswordProgress } from "../crossword/types";
 import { supabase } from "../../lib/supabase";
 
 export type CloudGameType = "backword" | "daily_crossword" | "weekly_crossword";
@@ -51,9 +51,12 @@ export function backwordCloudRecord(progress: BackwordProgress): CloudRecord<Bac
   };
 }
 
-export function crosswordCloudRecord(progress: CrosswordProgress): CloudRecord<CrosswordProgress> {
+export function crosswordCloudRecord(
+  progress: CrosswordProgress,
+  kind: CrosswordKind = progress.isWeekly ? "weekly" : "daily"
+): CloudRecord<CrosswordProgress> {
   return {
-    game_type: "daily_crossword",
+    game_type: kind === "weekly" ? "weekly_crossword" : "daily_crossword",
     content_key: progress.puzzleId,
     release_date: progress.date,
     schema_version: progress.schemaVersion,

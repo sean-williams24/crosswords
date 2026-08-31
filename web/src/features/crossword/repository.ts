@@ -56,6 +56,7 @@ function parseClue(value: unknown, size: number): CrosswordClue | null {
   const length = optionalInteger(clue.length);
   const direction = clue.direction;
   const text = clue.text;
+  const hint = clue.hint;
   const answer = clue.answer;
   if (
     id === null || number === null || startRow === null || startCol === null || length === null ||
@@ -68,16 +69,26 @@ function parseClue(value: unknown, size: number): CrosswordClue | null {
   ) {
     return null;
   }
-  return { id, number, startRow, startCol, length, direction, text: text.trim(), answer: answer.toUpperCase() };
+  return {
+    id,
+    number,
+    startRow,
+    startCol,
+    length,
+    direction,
+    text: text.trim(),
+    hint: typeof hint === "string" && hint.trim() ? hint.trim() : text.trim(),
+    answer: answer.toUpperCase()
+  };
 }
 
-export function mapCrosswordRow(row: CrosswordRow): CrosswordPuzzle {
+export function mapCrosswordRow(row: CrosswordRow, expectedSize: 9 | 13 = 9): CrosswordPuzzle {
   const size = optionalInteger(row.grid_data?.size);
   const puzzleNumber = optionalInteger(row.puzzle_number);
   if (
     typeof row.id !== "string" || !row.id ||
     typeof row.date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(row.date) ||
-    size !== 9 || puzzleNumber === null || !Array.isArray(row.grid_data?.cells) ||
+    size !== expectedSize || puzzleNumber === null || !Array.isArray(row.grid_data?.cells) ||
     row.grid_data.cells.length !== size || !Array.isArray(row.clues)
   ) {
     throw new CrosswordUnavailableError("Today's crossword data is invalid.");
@@ -103,6 +114,7 @@ export function mapCrosswordRow(row: CrosswordRow): CrosswordPuzzle {
 
 export type CrosswordRepository = {
   getByDate(date: string): Promise<CrosswordPuzzle>;
+  getCurrentWeekly(weekDate: string): Promise<CrosswordPuzzle>;
 };
 
 export function createCrosswordRepository(
@@ -127,7 +139,20 @@ export function createCrosswordRepository(
       if (error || !data) {
         throw new CrosswordUnavailableError("Today's crossword is not available yet.");
       }
-      return mapCrosswordRow(data as CrosswordRow);
+      return mapCrosswordRow(data as CrosswordRow, 9);
+    },
+    async getCurrentWeekly(weekDate: string) {
+      const { data, error } = await client
+        .from("weekly_puzzles")
+        .select("id,puzzle_number,date,grid_data,clues")
+        .lte("date", weekDate)
+        .order("date", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error || !data) {
+        throw new CrosswordUnavailableError("This week’s Pro Crossword is not available yet.");
+      }
+      return mapCrosswordRow(data as CrosswordRow, 13);
     }
   };
 }

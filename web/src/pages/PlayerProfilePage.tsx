@@ -49,7 +49,7 @@ export function PlayerProfilePage() {
         refreshAccountProgress(
           userId,
           "daily_crossword",
-          crosswordStorage.loadAllProgress().map(crosswordCloudRecord),
+          crosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
           (record) => crosswordStorage.replaceProgress(record.payload)
         )
       ]);

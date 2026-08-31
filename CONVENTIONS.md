@@ -263,6 +263,24 @@ Archive records remain synced so they can be resumed on another device, but are
 shown as unplayed in the stats history: they never display guesses, a status,
 or points and never alter those performance metrics.
 
+### Browser Pro Weekly Crossword
+
+`/weekly-crossword` is the browser counterpart to iOS's current 13×13 Pro
+Crossword. It is available only to a signed-in account with a resolved active
+Pro entitlement; guests are returned through sign-in and non-Pro players are
+directed to the existing iOS App Store subscription path. The released weekly
+row is the latest `weekly_puzzles` entry on or before the browser's local
+Sunday, and valid weekly payloads and account-scoped progress are cached in a
+separate browser namespace.
+
+Weekly progress syncs as `weekly_crossword` and preserves the native payload's
+`isWeekly`, clue-count, hint, and release-score fields. Hints are unlimited
+for Pro and deduct one point for every three used. Scores are captured only
+while the completed puzzle belongs to the browser's current local Sunday
+release window; the weekly stats surface mirrors iOS with two current-window
+weeks and five prior games. Weekly archives and answer reveal remain iOS-only
+on the web.
+
 The web Backword and Daily Crossword stats surfaces use the iOS semantic
 palette: solid Accent score chips, Correct green for perfect scores, muted
 secondary zero-score chips, solved gold, and the same rating-track tier
