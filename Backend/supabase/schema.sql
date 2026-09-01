@@ -300,17 +300,24 @@ END;
 $$;
 
 CREATE TABLE user_entitlements (
-    original_transaction_id TEXT PRIMARY KEY,
+    id                      UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    provider                TEXT NOT NULL CHECK (provider IN ('apple', 'stripe')),
+    provider_subscription_id TEXT NOT NULL,
+    provider_customer_id    TEXT,
+    original_transaction_id TEXT UNIQUE,
     user_id                 UUID REFERENCES auth.users(id) ON DELETE SET NULL,
     product_id              TEXT NOT NULL,
-    environment             TEXT NOT NULL CHECK (environment IN ('Sandbox', 'Production')),
+    environment             TEXT CHECK (environment IN ('Sandbox', 'Production')),
     status                  TEXT NOT NULL CHECK (status IN ('active', 'expired', 'revoked', 'billing_retry')),
     expires_at              TIMESTAMPTZ,
     revocation_at           TIMESTAMPTZ,
     app_account_token       UUID,
     auto_renew_status       BOOLEAN,
+    cancel_at_period_end    BOOLEAN NOT NULL DEFAULT FALSE,
+    source_event_at          TIMESTAMPTZ,
     updated_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (provider, provider_subscription_id)
 );
 
 CREATE INDEX idx_user_entitlements_user_status
@@ -319,6 +326,26 @@ CREATE INDEX idx_user_entitlements_user_status
 ALTER TABLE user_entitlements ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can read their own entitlement status"
     ON user_entitlements FOR SELECT USING (auth.uid() = user_id);
+
+-- A web trial is blocked once this account has used a recorded Apple or
+-- Stripe introductory period. Apple determines its own Apple ID eligibility,
+-- so it remains the only best-effort direction of this shared policy.
+CREATE TABLE pro_trial_redemptions (
+    user_id      UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    provider     TEXT NOT NULL CHECK (provider IN ('apple', 'stripe')),
+    redeemed_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+ALTER TABLE pro_trial_redemptions ENABLE ROW LEVEL SECURITY;
+
+-- Service-role-only idempotency record for Stripe webhook retries. No client
+-- policy is intentionally added.
+CREATE TABLE stripe_webhook_events (
+    event_id        TEXT PRIMARY KEY,
+    event_type      TEXT NOT NULL,
+    subscription_id TEXT,
+    received_at     TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+ALTER TABLE stripe_webhook_events ENABLE ROW LEVEL SECURITY;
 
 -- Append-only diagnostic history for App Store Server Notifications. Clients
 -- have no policy for this table; only the notification Edge Function, using
@@ -348,23 +375,23 @@ CREATE INDEX idx_apple_subscription_events_account
 ALTER TABLE apple_subscription_events ENABLE ROW LEVEL SECURITY;
 
 CREATE OR REPLACE FUNCTION current_user_pro_entitlement()
-RETURNS TABLE (is_pro BOOLEAN, expires_at TIMESTAMPTZ)
+RETURNS TABLE (is_pro BOOLEAN, expires_at TIMESTAMPTZ, provider TEXT, cancel_at_period_end BOOLEAN)
 LANGUAGE sql
 STABLE
 SECURITY INVOKER
 SET search_path = public
 AS $$
+    WITH active_entitlements AS (
+        SELECT *
+        FROM user_entitlements
+        WHERE user_id = auth.uid()
+          AND status IN ('active', 'billing_retry')
+          AND revocation_at IS NULL
+          AND (expires_at IS NULL OR expires_at > NOW())
+    )
     SELECT
-        EXISTS (
-            SELECT 1 FROM user_entitlements
-            WHERE user_id = auth.uid()
-              AND status IN ('active', 'billing_retry')
-              AND revocation_at IS NULL
-              AND (expires_at IS NULL OR expires_at > NOW())
-        ) AS is_pro,
-        MAX(expires_at) FILTER (
-            WHERE status IN ('active', 'billing_retry') AND revocation_at IS NULL
-        ) AS expires_at
-    FROM user_entitlements
-    WHERE user_id = auth.uid();
+        EXISTS (SELECT 1 FROM active_entitlements),
+        (SELECT MAX(expires_at) FROM active_entitlements),
+        (SELECT provider FROM active_entitlements ORDER BY expires_at DESC NULLS LAST, updated_at DESC LIMIT 1),
+        COALESCE((SELECT cancel_at_period_end FROM active_entitlements ORDER BY expires_at DESC NULLS LAST, updated_at DESC LIMIT 1), FALSE);
 $$;

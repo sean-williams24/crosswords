@@ -9,3 +9,16 @@ verify_jwt = false
 # permits that OPTIONS request, then verifies the bearer token itself before
 # it makes any account changes.
 verify_jwt = false
+
+[functions.stripe-webhook]
+# Stripe authenticates each raw-body delivery with STRIPE_WEBHOOK_SECRET.
+verify_jwt = false
+
+[functions.create-stripe-checkout]
+# Browser CORS preflight has no bearer token; the handler verifies the user on
+# every non-OPTIONS request with Supabase Auth before creating Checkout.
+verify_jwt = false
+
+[functions.create-stripe-portal]
+# The portal function performs the same per-request Supabase Auth verification.
+verify_jwt = false

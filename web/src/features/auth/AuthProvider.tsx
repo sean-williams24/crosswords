@@ -7,6 +7,8 @@ import { entitlementWarning as entitlementWarningMessage } from "./authErrorPres
 type ProEntitlement = {
   isPro: boolean;
   expiresAt: string | null;
+  provider: "apple" | "stripe" | null;
+  cancelAtPeriodEnd: boolean;
 };
 
 type InFlightEntitlementRefresh = {
@@ -102,8 +104,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const result = Array.isArray(data) ? data[0] : data;
       setEntitlement(result ? {
         isPro: Boolean(result.is_pro),
-        expiresAt: result.expires_at ?? null
-      } : { isPro: false, expiresAt: null });
+        expiresAt: result.expires_at ?? null,
+        provider: result.provider === "apple" || result.provider === "stripe" ? result.provider : null,
+        cancelAtPeriodEnd: Boolean(result.cancel_at_period_end)
+      } : { isPro: false, expiresAt: null, provider: null, cancelAtPeriodEnd: false });
       setEntitlementWarning(null);
       setEntitlementReady(true);
     })();

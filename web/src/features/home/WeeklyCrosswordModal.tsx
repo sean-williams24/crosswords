@@ -61,8 +61,8 @@ export function WeeklyCrosswordModal({ onClose, showSignIn = false }: WeeklyCros
               </li>
             ))}
           </ul>
-          <p className="weekly-modal__intro">Available with a Backword Pro subscription on iOS.</p>
-          {showSignIn ? <Link className="weekly-modal__sign-in" state={{ returnTo: "/weekly-crossword" }} to="/sign-in">Already Pro? Sign in</Link> : null}
+          <p className="weekly-modal__intro">Play on the web and iOS with one Backword Pro subscription.</p>
+          {showSignIn ? <Link className="weekly-modal__sign-in" state={{ returnTo: "/pro" }} to="/sign-in">Sign in to get Pro <span aria-hidden="true">→</span></Link> : <Link className="weekly-modal__sign-in" to="/pro">Choose a plan <span aria-hidden="true">→</span></Link>}
           <div className="weekly-modal__store-badge">
             <AppStoreBadge />
           </div>

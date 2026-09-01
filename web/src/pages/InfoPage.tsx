@@ -60,7 +60,11 @@ export function InfoPage() {
         screenshotAlt="Backword weekly crossword screen"
         screenshotPosition="left"
         screenshotSrc="/screenshots/crossword-weekly.png"
-      />
+      >
+        <Link className="font-semibold text-accent transition hover:text-textPrimary" to="/pro">
+          Get Backword Pro →
+        </Link>
+      </ScreenshotSection>
     </>
   );
 }

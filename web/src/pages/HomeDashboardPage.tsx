@@ -7,7 +7,6 @@ import { backwordDashboardScore, backwordDashboardStatus } from "../features/hom
 import { crosswordDashboardStatus, weeklyCrosswordDashboardStatus } from "../features/crossword/engine";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { DailyGameCard, HomeGameScore } from "../features/home/DailyGameCard";
-import { WeeklyCrosswordModal } from "../features/home/WeeklyCrosswordModal";
 import { WordOfTheDayCard, type WordOfTheDayLoadState } from "../features/wotd/components/WordOfTheDayCard";
 import { Footer } from "../components/Footer";
 import { AppStoreBadge } from "../components/AppStoreBadge";
@@ -26,7 +25,6 @@ function formattedToday() {
 
 export function HomeDashboardPage() {
   const { entitlement, ready, user } = useAuth();
-  const [showWeeklyModal, setShowWeeklyModal] = useState(false);
   const [wordOfTheDayState, setWordOfTheDayState] = useState<WordOfTheDayLoadState>("loading");
   const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, localDateString(), user?.id), [user?.id]);
   const backwordScore = useMemo(() => backwordDashboardScore(window.localStorage, localDateString(), user?.id), [user?.id]);
@@ -128,11 +126,11 @@ export function HomeDashboardPage() {
                   {weeklyCrosswordStatus.score !== null || weeklyCrosswordStatus.streak ? <span className="home-game-card__stats weekly-card__stats">{weeklyCrosswordStatus.score !== null ? <HomeGameScore score={weeklyCrosswordStatus.score} /> : <span />}{weeklyCrosswordStatus.streak ? <span className="home-game-card__streak">🔥 {weeklyCrosswordStatus.streak}</span> : null}</span> : null}
                 </Link>
               ) : (
-                <button aria-label="Pro Crossword" className="weekly-card" onClick={() => setShowWeeklyModal(true)} type="button">
+                <Link aria-label="Pro Crossword" className="weekly-card" to="/pro?return_to=%2Fweekly-crossword">
                   <span className="weekly-card__crown" aria-hidden="true">♛</span>
                   <span>PRO CROSSWORD</span>
                   <small>13×13</small>
-                </button>
+                </Link>
               )}
               <HomeArchiveLink to="/archive?game=weekly">Pro Crossword Archive</HomeArchiveLink>
             </div>
@@ -141,8 +139,6 @@ export function HomeDashboardPage() {
       </section>
 
       <Footer />
-
-      {showWeeklyModal ? <WeeklyCrosswordModal onClose={() => setShowWeeklyModal(false)} showSignIn={!user} /> : null}
     </main>
   );
 }

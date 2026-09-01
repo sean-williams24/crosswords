@@ -39,6 +39,7 @@ export function AccountDeletionConfirmationModal({
             <h3 id="account-deleted-retained-title">Not deleted</h3>
             <ul>
               <li>Your Apple subscription. It remains active until you cancel it with Apple.</li>
+              <li>Stripe’s legally required billing records. Any Backword web subscription was set not to renew, but it can no longer unlock this deleted account.</li>
               <li>Your Apple purchase record, which can be claimed by a new Backword account.</li>
               <li>Game data stored locally on your devices or browsers. Remove that directly from each device if needed.</li>
             </ul>

@@ -13,6 +13,7 @@ import { SignInPage } from "./pages/SignInPage";
 import { AuthCallbackPage } from "./pages/AuthCallbackPage";
 import { PlayerProfilePage } from "./pages/PlayerProfilePage";
 import { ArchivePage } from "./pages/ArchivePage";
+import { ProPage } from "./pages/ProPage";
 import { AccountDeletionRecovery } from "./features/auth/AccountDeletionRecovery";
 
 export default function App() {
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/terms" element={<Layout><TermsPage /></Layout>} />
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/player-profile" element={<PlayerProfilePage />} />
+        <Route path="/pro" element={<ProPage />} />
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

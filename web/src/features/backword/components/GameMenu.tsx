@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppStoreBadge } from "../../../components/AppStoreBadge";
 import { AuthButton } from "../../auth/AuthButton";
+import { useAuth } from "../../auth/AuthProvider";
 
 type GameMenuProps = {
   isOpen?: boolean;
@@ -10,9 +11,12 @@ type GameMenuProps = {
 };
 
 export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
+  const { entitlement } = useAuth();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(false);
   const menuIsOpen = isOpen ?? uncontrolledIsOpen;
+  const weeklyCrosswordDestination = entitlement?.isPro ? "/weekly-crossword" : "/pro?return_to=%2Fweekly-crossword";
+  const archiveDestination = entitlement?.isPro ? "/archive" : "/pro?return_to=%2Farchive";
 
   function openMenu() {
     if (isOpen === undefined) {
@@ -81,8 +85,9 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
               <Link className="bw-menu-link bw-menu-link--primary" to="/">Home</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/backword">Backword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/crossword">Quick Crossword</Link>
-              <Link className="bw-menu-link bw-menu-link--primary" to="/weekly-crossword">Pro Crossword</Link>
-              <Link className="bw-menu-link bw-menu-link--primary" to="/archive">Archive</Link>
+              <Link className="bw-menu-link bw-menu-link--primary" to="/pro">Get Pro</Link>
+              <Link className="bw-menu-link bw-menu-link--primary" to={weeklyCrosswordDestination}>Pro Crossword</Link>
+              <Link className="bw-menu-link bw-menu-link--primary" to={archiveDestination}>Archive</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/info">Info</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/contact">Contact</Link>
               <AuthButton className="bw-menu-link bw-menu-link--primary bw-menu-auth" />

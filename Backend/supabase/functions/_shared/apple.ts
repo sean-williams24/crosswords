@@ -11,6 +11,7 @@ type AppleTransaction = {
   expiresDate?: number;
   revocationDate?: number;
   appAccountToken?: string;
+  offerType?: number;
 };
 
 export async function getAppleTransaction(transactionID: string): Promise<AppleTransaction> {
@@ -56,4 +57,9 @@ export function entitlementStatus(transaction: AppleTransaction, notificationTyp
 
 export function asISODate(milliseconds?: number) {
   return milliseconds ? new Date(milliseconds).toISOString() : null;
+}
+
+export function usedAppleIntroductoryOffer(transaction: AppleTransaction) {
+  // App Store Server transaction data uses 1 for an introductory offer.
+  return transaction.offerType === 1;
 }

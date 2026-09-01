@@ -75,7 +75,8 @@ describe("Backword browser game", () => {
     expect(within(menu).getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
     expect(within(menu).getByRole("link", { name: "Backword" })).toHaveAttribute("href", "/backword");
     expect(within(menu).getByRole("link", { name: "Quick Crossword" })).toHaveAttribute("href", "/crossword");
-    expect(within(menu).getByRole("link", { name: "Archive" })).toHaveAttribute("href", "/archive");
+    expect(within(menu).getByRole("link", { name: "Pro Crossword" })).toHaveAttribute("href", "/pro?return_to=%2Fweekly-crossword");
+    expect(within(menu).getByRole("link", { name: "Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive");
     expect(within(menu).getByRole("link", { name: "Info" })).toHaveAttribute("href", "/info");
     expect(within(menu).getByRole("link", { name: "Contact" })).toHaveAttribute("href", "/contact");
     expect(within(menu).getByLabelText("Download Backword on the App Store").parentElement).toHaveClass(

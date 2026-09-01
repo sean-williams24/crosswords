@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { Footer } from "../components/Footer";
+import { Navigate, useParams } from "react-router-dom";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { isLocalDateString, localWeekStartString } from "../features/backword/date";
 import {
@@ -26,7 +25,6 @@ import { CrosswordInstructions } from "../features/crossword/components/Crosswor
 import { CrosswordKeyboard } from "../features/crossword/components/CrosswordKeyboard";
 import { CrosswordStats } from "../features/crossword/components/CrosswordStats";
 import { useAuth } from "../features/auth/AuthProvider";
-import { WeeklyCrosswordModal } from "../features/home/WeeklyCrosswordModal";
 import { crosswordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountProgress } from "../features/sync/progressSync";
 
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
@@ -34,7 +32,6 @@ type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 export function WeeklyCrosswordPage() {
   const { date: routeDate } = useParams<{ date?: string }>();
   const archiveDate = isLocalDateString(routeDate) ? routeDate : null;
-  const navigate = useNavigate();
   const { entitlement, entitlementReady, ready, user } = useAuth();
   const storage = useMemo(() => createCrosswordStorage(window.localStorage, {
     kind: "weekly",
@@ -192,8 +189,7 @@ export function WeeklyCrosswordPage() {
   }, [handleDelete, handleLetter, isMenuOpen, moveClue, sheet]);
 
   if (!ready || (user && !entitlementReady)) return <StatusPanel title="Checking Pro access…" />;
-  if (!user) return <Navigate replace state={{ returnTo: archiveDate ? `/weekly-crossword/${archiveDate}` : "/weekly-crossword" }} to="/sign-in" />;
-  if (!entitlement?.isPro) return <div className="bw-page"><WeeklyCrosswordModal onClose={() => navigate("/")} /><Footer /></div>;
+  if (!entitlement?.isPro) return <Navigate replace to={`/pro?return_to=${encodeURIComponent(archiveDate ? `/weekly-crossword/${archiveDate}` : "/weekly-crossword")}`} />;
 
   const liveScore = puzzle && progress ? crosswordScore(progress.completedClueIds.length, puzzle.clues.length, progress.hintsUsed) : 0;
   const clueText = showHint && currentClue ? currentClue.hint : currentClue?.text;

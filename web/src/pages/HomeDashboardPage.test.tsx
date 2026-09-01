@@ -2,7 +2,6 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { act, render, screen, within } from "@testing-library/react";
 import { useLayoutEffect } from "react";
-import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { localDateString, localWeekStartString } from "../features/backword/date";
 import { emptyProgress } from "../features/crossword/engine";
@@ -102,7 +101,8 @@ describe("web home dashboard", () => {
 
     expect(screen.getByLabelText("Word of the Day unavailable")).toHaveTextContent("Unavailable today");
     expect(screen.getByRole("link", { name: "Quick Crossword" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Pro Crossword/i })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /Pro Crossword/i }).find((link) => link.getAttribute("href") === "/pro?return_to=%2Fweekly-crossword"))
+      .toBeDefined();
   });
 
   it("renders the daily cards and playable Backword link", () => {
@@ -126,9 +126,9 @@ describe("web home dashboard", () => {
     expect(dailyLayout).not.toBeNull();
     expect(crosswordCard.closest(".home-dashboard__daily-cards")?.parentElement).toBe(dailyLayout);
     expect(screen.getAllByLabelText("Status: New")).toHaveLength(2);
-    expect(screen.getByRole("link", { name: "Backword Archive" })).toHaveAttribute("href", "/archive?game=backword");
-    expect(screen.getByRole("link", { name: "Quick Crossword Archive" })).toHaveAttribute("href", "/archive?game=daily");
-    expect(screen.getByRole("link", { name: "Pro Crossword Archive" })).toHaveAttribute("href", "/archive?game=weekly");
+    expect(screen.getByRole("link", { name: "Backword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dbackword");
+    expect(screen.getByRole("link", { name: "Quick Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Ddaily");
+    expect(screen.getByRole("link", { name: "Pro Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dweekly");
   });
 
   it("uses the Quick Crossword score treatment for earned Backword and Pro points", () => {
@@ -215,35 +215,14 @@ describe("web home dashboard", () => {
     expect(screen.getByLabelText(`Status: ${label}`)).toBeInTheDocument();
   });
 
-  it("opens and closes the iOS subscription path for the weekly crossword", async () => {
-    const user = userEvent.setup();
+  it("sends non-Pro players directly to the web Pro page from the weekly crossword", () => {
     renderDashboard();
 
-    await user.click(screen.getByRole("button", { name: /Pro Crossword/i }));
-    const modal = screen.getByRole("dialog", { name: "The full game experience" });
-    expect(modal).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "The full game experience" })).toHaveClass(
-      "weekly-modal__title"
-    );
-    const featureList = modal.querySelector(".weekly-modal__features");
-    const intro = screen.getByText("Available with a Backword Pro subscription on iOS.");
-    expect(featureList).not.toBeNull();
-    expect(
-      screen.getByRole("heading", { name: "The full game experience" }).compareDocumentPosition(
-        featureList!
-      ) & Node.DOCUMENT_POSITION_FOLLOWING
-    ).toBeTruthy();
-    expect(featureList!.compareDocumentPosition(intro) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(screen.getByText("Weekly challenging puzzles")).toBeInTheDocument();
-    expect(within(modal).getByRole("link", { name: "Already Pro? Sign in" })).toHaveAttribute("href", "/sign-in");
-    const appStoreBadge = within(modal).getByLabelText("Download Backword on the App Store");
-    expect(appStoreBadge).toHaveAttribute(
+    expect(screen.getAllByRole("link", { name: "Pro Crossword" }).find((link) => link.getAttribute("href") === "/pro?return_to=%2Fweekly-crossword"))
+      .toHaveAttribute(
       "href",
-      "https://apps.apple.com/app/backword/id6773428497"
+      "/pro?return_to=%2Fweekly-crossword"
     );
-    expect(appStoreBadge.parentElement).toHaveClass("weekly-modal__store-badge");
-
-    await user.click(screen.getByRole("button", { name: "Close weekly crossword details" }));
     expect(screen.queryByRole("dialog", { name: "The full game experience" })).not.toBeInTheDocument();
   });
 

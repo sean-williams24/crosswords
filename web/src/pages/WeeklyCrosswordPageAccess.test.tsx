@@ -14,14 +14,16 @@ const auth = vi.hoisted(() => ({
 vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => auth.value }));
 
 describe("WeeklyCrosswordPage access", () => {
-  it("keeps non-Pro accounts at the iOS subscription path", () => {
-    render(<MemoryRouter><WeeklyCrosswordPage /></MemoryRouter>);
+  it("redirects non-Pro accounts to the web Pro subscription path", () => {
+    render(<MemoryRouter><Routes>
+      <Route element={<WeeklyCrosswordPage />} path="/" />
+      <Route element={<ProDestination />} path="/pro" />
+    </Routes></MemoryRouter>);
 
-    expect(screen.getByRole("dialog", { name: "The full game experience" })).toBeInTheDocument();
-    expect(screen.getByText("Available with a Backword Pro subscription on iOS.")).toBeInTheDocument();
+    expect(screen.getByText("/weekly-crossword")).toBeInTheDocument();
   });
 
-  it("keeps a dated archive destination through the sign-in gate", () => {
+  it("keeps a dated archive destination through the Pro gate", () => {
     auth.value = {
       ready: true,
       entitlementReady: true,
@@ -32,7 +34,7 @@ describe("WeeklyCrosswordPage access", () => {
       <MemoryRouter initialEntries={["/weekly-crossword/2026-08-02"]}>
         <Routes>
           <Route element={<WeeklyCrosswordPage />} path="/weekly-crossword/:date" />
-          <Route element={<SignInDestination />} path="/sign-in" />
+          <Route element={<ProDestination />} path="/pro" />
         </Routes>
       </MemoryRouter>
     );
@@ -41,7 +43,7 @@ describe("WeeklyCrosswordPage access", () => {
   });
 });
 
-function SignInDestination() {
-  const { state } = useLocation();
-  return <p>{(state as { returnTo?: string } | null)?.returnTo}</p>;
+function ProDestination() {
+  const { search } = useLocation();
+  return <p>{new URLSearchParams(search).get("return_to")}</p>;
 }

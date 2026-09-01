@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { ArchivePage } from "./ArchivePage";
 
 const repositories = vi.hoisted(() => ({
@@ -20,7 +20,16 @@ const repositories = vi.hoisted(() => ({
   }
 }));
 
-vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => ({ entitlement: null, user: null }) }));
+const auth = vi.hoisted(() => ({
+  value: {
+    entitlement: { isPro: true, expiresAt: null } as { isPro: boolean; expiresAt: string | null } | null,
+    entitlementReady: true,
+    ready: true,
+    user: { id: "pro-player" } as { id: string } | null
+  }
+}));
+
+vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => auth.value }));
 vi.mock("../features/auth/AuthButton", () => ({ AuthButton: () => <a href="/sign-in">Login</a> }));
 vi.mock("../features/backword/components/GameMenu", () => ({ GameMenu: () => <button type="button">Menu</button> }));
 vi.mock("../features/backword/repository", () => ({ createBackwordRepository: () => repositories.backword }));
@@ -29,10 +38,22 @@ vi.mock("../features/crossword/repository", () => ({ createCrosswordRepository: 
 describe("ArchivePage", () => {
   beforeEach(() => {
     localStorage.clear();
+    auth.value = { entitlement: { isPro: true, expiresAt: null }, entitlementReady: true, ready: true, user: { id: "pro-player" } };
     repositories.backword.getArchiveMonths.mockClear();
     repositories.backword.getArchiveMonth.mockClear();
     repositories.crossword.getArchiveMonths.mockClear();
     repositories.crossword.getArchiveMonth.mockClear();
+  });
+
+  it("redirects non-Pro visitors to the subscription page before loading archive data", () => {
+    auth.value = { entitlement: null, entitlementReady: true, ready: true, user: null };
+    render(<MemoryRouter initialEntries={["/archive?game=weekly"]}><Routes>
+      <Route element={<ArchivePage />} path="/archive" />
+      <Route element={<p>Subscription destination</p>} path="/pro" />
+    </Routes></MemoryRouter>);
+
+    expect(screen.getByText("Subscription destination")).toBeInTheDocument();
+    expect(repositories.backword.getArchiveMonths).not.toHaveBeenCalled();
   });
 
   it("loads Backword first and links its selected month with a dated route", async () => {

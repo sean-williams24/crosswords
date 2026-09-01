@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { AppStoreBadge } from "../components/AppStoreBadge";
 import { Footer } from "../components/Footer";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
@@ -52,7 +52,17 @@ function ArchiveTabs({ activeType, onSelect, compact = false }: {
 }
 
 export function ArchivePage() {
-  const { entitlement, user } = useAuth();
+  const { entitlement, entitlementReady, ready, user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const returnTo = `/archive${searchParams.size ? `?${searchParams.toString()}` : ""}`;
+
+  if (!ready || (user && !entitlementReady)) return <main className="archive-page">Checking Pro access…</main>;
+  if (!entitlement?.isPro) return <Navigate replace to={`/pro?return_to=${encodeURIComponent(returnTo)}`} />;
+
+  return <ArchiveContent entitlement={entitlement} user={user} />;
+}
+
+function ArchiveContent({ entitlement, user }: Pick<ReturnType<typeof useAuth>, "entitlement" | "user">) {
   const [searchParams] = useSearchParams();
   const repositories = useMemo((): {
     backword: BackwordRepository | null;

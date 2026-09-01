@@ -15,15 +15,17 @@ describe("Footer", () => {
     auth.entitlement = null;
   });
 
-  it("shows Archive only to Pro subscribers", () => {
+  it("sends non-Pro subscribers to Pro and Pro subscribers to the protected destinations", () => {
     const { rerender } = render(<MemoryRouter><Footer /></MemoryRouter>);
     const footer = screen.getByRole("navigation", { name: "Footer" });
 
-    expect(within(footer).queryByRole("link", { name: "Archive" })).not.toBeInTheDocument();
+    expect(within(footer).getByRole("link", { name: "Pro Crossword" })).toHaveAttribute("href", "/pro?return_to=%2Fweekly-crossword");
+    expect(within(footer).getByRole("link", { name: "Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive");
 
     auth.entitlement = { isPro: true, expiresAt: null };
     rerender(<MemoryRouter><Footer /></MemoryRouter>);
 
+    expect(within(footer).getByRole("link", { name: "Pro Crossword" })).toHaveAttribute("href", "/weekly-crossword");
     expect(within(footer).getByRole("link", { name: "Archive" })).toHaveAttribute("href", "/archive");
   });
 });

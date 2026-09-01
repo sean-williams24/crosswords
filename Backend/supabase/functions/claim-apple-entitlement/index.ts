@@ -1,5 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { asISODate, entitlementStatus, getAppleTransaction } from "../_shared/apple.ts";
+import { asISODate, entitlementStatus, getAppleTransaction, usedAppleIntroductoryOffer } from "../_shared/apple.ts";
 
 type AuthenticatedUser = { id: string };
 
@@ -68,6 +68,8 @@ Deno.serve(async (request) => {
     }
 
     const { error } = await admin.from("user_entitlements").upsert({
+      provider: "apple",
+      provider_subscription_id: transaction.originalTransactionId,
       original_transaction_id: transaction.originalTransactionId,
       user_id: user.id,
       product_id: transaction.productId,
@@ -79,6 +81,13 @@ Deno.serve(async (request) => {
       updated_at: new Date().toISOString()
     }, { onConflict: "original_transaction_id" });
     if (error) throw error;
+    if (usedAppleIntroductoryOffer(transaction)) {
+      const { error: trialError } = await admin.from("pro_trial_redemptions").upsert({
+        user_id: user.id,
+        provider: "apple"
+      }, { onConflict: "user_id", ignoreDuplicates: true });
+      if (trialError) throw trialError;
+    }
     return Response.json({ ok: true });
   } catch (error) {
     // Do not log the StoreKit JWS or transaction identifiers. The message is

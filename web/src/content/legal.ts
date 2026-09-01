@@ -13,7 +13,7 @@ export const privacySections = [
       "Gameplay and settings data: Backword stores game progress, guesses, completed puzzles, scores, rating tier progress, preferences, onboarding state, and ad frequency state so the app and browser game can remember your progress and provide the game experience. Guest data is stored locally on your device or in browser storage.",
       "Account and cloud sync data: If you choose to sign in with Apple or Google, Backword stores your account identifier and, where provided by the provider, your name and email address. We also store versioned gameplay progress, scores, rating history, and subscription entitlement state so your progress can be restored across devices. Account creation is optional.",
       "Puzzle content requests: Backword connects to backend services to fetch daily Backword words, daily and weekly crosswords, archive content, and Word of the Day. These requests may involve standard technical information such as IP address, device or browser information, request timestamps, and network metadata.",
-      "Purchase information: If you buy or restore a subscription or in-app purchase, Apple processes the payment. Backword receives purchase entitlement information from Apple so Pro features can be unlocked. We do not receive or store your payment card details.",
+      "Purchase information: Apple processes iOS subscriptions and Stripe processes web subscriptions. Backword receives subscription entitlement information so Pro features can be unlocked across supported devices. We do not receive or store payment card details.",
       "Advertising information: Backword uses Google AdMob to show ads. Google and its partners may collect information such as device identifiers, advertising identifiers where permitted, ad interactions, approximate location, diagnostics, and usage information to deliver ads, limit ad frequency, prevent fraud, and report ad performance.",
       "Website information: When you visit this website, hosting providers may process standard technical information such as IP address, browser type, device information, pages visited, and timestamps for security, diagnostics, and reliability."
     ]
@@ -34,7 +34,7 @@ export const privacySections = [
   {
     title: "Third-Party Services",
     body: [
-      "Backword uses third-party services that may process information according to their own privacy policies, including Apple for Sign in with Apple and App Store purchases and subscriptions, Google for optional sign-in and Google AdMob advertising, Supabase for authentication, cloud sync, and backend content delivery, and website hosting providers for serving this website.",
+      "Backword uses third-party services that may process information according to their own privacy policies, including Apple for Sign in with Apple and App Store purchases and subscriptions, Stripe for web subscription payments and billing, Google for optional sign-in and Google AdMob advertising, Supabase for authentication, cloud sync, and backend content delivery, and website hosting providers for serving this website.",
       "We expect service providers to protect information appropriately and use it only for the services they provide to Backword, subject to their own terms and policies."
     ]
   },
@@ -44,7 +44,7 @@ export const privacySections = [
       "Local gameplay and settings data remains on your device until you delete the app, clear the website’s browser storage, clear the data through app features where available, or overwrite it through normal use.",
       "Account data and cloud gameplay progress are retained while your account is active. When you delete your account, we delete your Backword sign-in account, cloud-synced gameplay progress, and the ratings, statistics, and score history derived from that progress.",
       "We remove the link between your Backword account and any Apple purchase entitlement when your account is deleted. We retain limited, unlinked transaction and server-notification audit records — such as Apple transaction and product identifiers, entitlement status, and event dates — only to operate entitlement recovery, prevent fraud, resolve disputes, and meet legal recordkeeping obligations. Those records do not retain your Backword account identifier after deletion.",
-      `Deleting a Backword account does not cancel an Apple subscription or remove Apple’s purchase history. Manage subscriptions through your Apple ID and App Store settings. You may also contact ${siteConfig.supportEmail}.`
+      `Deleting a Backword account does not cancel an Apple subscription or remove Apple’s purchase history. A Backword web subscription is set to stop renewing before the account is deleted, but it cannot unlock a deleted account. Manage Apple subscriptions through your Apple ID and web subscriptions through the Backword billing portal. You may also contact ${siteConfig.supportEmail}.`
     ]
   },
   {
@@ -97,7 +97,7 @@ export const privacyChoicesSections = [
   {
     title: "Subscriptions and Purchases",
     body: [
-      "Apple processes Backword purchases and subscriptions. To cancel or manage a subscription, use your Apple ID subscription settings. Deleting a Backword account does not cancel an Apple subscription.",
+      "Apple processes iOS subscriptions, which you manage through Apple ID settings. Stripe processes web subscriptions, which you manage from Player Profile on this website. Deleting a Backword account does not cancel an Apple subscription; it schedules a web subscription to stop renewing.",
       "If an eligible purchase is not available after you sign in, use Restore Purchases in the app or contact support."
     ]
   },
@@ -151,9 +151,9 @@ export const termsSections = [
   {
     title: "Pro Features, Purchases, and Subscriptions",
     body: [
-      "Backword may offer optional paid features, subscriptions, or other in-app purchases. Purchases are processed by Apple through the App Store. Apple’s terms, payment rules, cancellation process, refund process, and subscription management controls apply to those purchases.",
-      "Prices, billing periods, trial availability, renewal terms, and included Pro features are shown in the app or App Store before purchase. Subscriptions renew automatically unless cancelled through your Apple ID settings before the renewal date. We do not receive your payment card details.",
-      "When you sign in, Backword may associate a verified Apple subscription with your Backword account so eligible Pro access can follow you across supported devices and services. Deleting a Backword account does not cancel an Apple subscription. If a purchase does not unlock correctly, use the restore purchases option in the app or contact us."
+      "Backword may offer optional paid features, subscriptions, or other in-app purchases. iOS purchases are processed by Apple through the App Store. Web purchases are processed by Stripe. Apple’s or Stripe’s applicable terms, payment rules, cancellation process, refund process, and subscription management controls apply to purchases made through that provider.",
+      "Prices, billing periods, trial availability, renewal terms, taxes, and included Pro features are shown before purchase. Subscriptions renew automatically unless cancelled through the provider’s management controls before the renewal date. We do not receive payment card details.",
+      "When you sign in, Backword may associate a verified Apple or Stripe subscription with your Backword account so eligible Pro access can follow you across supported devices and services. Deleting a Backword account does not cancel an Apple subscription; it schedules an associated web subscription not to renew and ends access through the deleted account. If a purchase does not unlock correctly, use Restore Purchases for Apple purchases or contact us."
     ]
   },
   {
@@ -179,7 +179,7 @@ export const termsSections = [
   {
     title: "Third-Party Services",
     body: [
-      "Backword relies on third-party services such as Apple, Google AdMob, Supabase, and website hosting providers. These services may be subject to their own terms and privacy policies. We are not responsible for third-party services outside our control."
+      "Backword relies on third-party services such as Apple, Stripe, Google AdMob, Supabase, and website hosting providers. These services may be subject to their own terms and privacy policies. We are not responsible for third-party services outside our control."
     ]
   },
   {

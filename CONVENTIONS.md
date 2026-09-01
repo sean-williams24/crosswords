@@ -93,6 +93,19 @@ Backword-account association, allowing a verified purchaser to reclaim an
 eligible purchase while preventing the retained record from identifying the
 deleted Backword account.
 
+Web Pro subscriptions are sold through Stripe only after Apple or Google sign
+in, and use the same account entitlement snapshot as StoreKit purchases. The
+server, never the browser, selects a Stripe price, creates Checkout, and
+accepts only signature-verified Stripe webhook updates. A signed-in account
+with any active Pro source is never offered a second subscription; Stripe
+customers use Stripe's portal while Apple customers remain Apple-managed.
+Stripe trials are blocked after a recorded Apple or Stripe trial, although
+Apple's separate Apple-ID introductory-offer eligibility means the reverse
+direction is necessarily best-effort. Deleting an account schedules any Stripe
+subscription to stop renewing, removes the Backword UUID from Stripe metadata,
+and immediately removes account-linked Pro access; Apple subscriptions are
+never cancelled by Backword account deletion.
+
 iOS verifies its cached Supabase session with the Auth user endpoint during
 startup and foreground account refreshes, before it uploads or downloads cloud
 progress. A successful deletion initiated on that device, or a
@@ -196,8 +209,9 @@ The browser accepts any alphabetic six-letter guess, matching the current iOS
 implementation. It supports both the in-page keyboard and physical keyboard
 input. Ads, Pro-only letter feedback, and archives are not part of the browser
 Backword parity surface yet. The web dashboard reads today's Backword and
-Quick Crossword progress to present card status; the weekly card still directs
-players to the iOS App Store rather than implying browser Pro access. The web
+Quick Crossword progress to present card status; non-Pro weekly and archive
+entry points direct players to the web Pro page rather than a modal or the iOS
+App Store. The web
 dashboard reads the released Word of the Day row for the browser's local
 calendar date. During initial loading, all four game cards remain non-interactive
 outlined skeletons until account startup and the WOTD request settle. When the
@@ -206,10 +220,12 @@ the three playable game cards remain available.
 On viewports up to 680px, the compact WOTD card toggles an animated detail
 drawer; larger viewports show the same content immediately in two columns.
 
-The browser archive lives at `/archive`. It loads only released Backword,
-daily crossword, and weekly crossword months, keeps fetched months in memory
-while the player switches tabs, and uses the same local progress records as the
-game dashboard for its entry statuses. Archive entries use dated routes
+The browser archive lives at `/archive` and is available only to an active Pro
+account. Non-Pro navigation links and direct archive URLs redirect to `/pro`
+before archive data loads. It loads only released Backword, daily crossword,
+and weekly crossword months, keeps fetched months in memory while the player
+switches tabs, and uses the same local progress records as the game dashboard
+for its entry statuses. Archive entries use dated routes
 (`/backword/:date`, `/crossword/:date`, and `/weekly-crossword/:date`), while
 the undated routes remain the rolling current-game entry points. Pro archive
 entries keep the normal browser sign-in and entitlement gate.
@@ -226,8 +242,8 @@ Overall Rating sheet. Its 14-day overall rating is built from canonical
 `game_progress` release scores after refreshing the account's browser-playable
 Backword and daily-crossword records. Pro weekly crossword history is read
 directly from its `weekly_crossword` cloud rows: it contributes to the shared
-150-point Pro rating and table, but is never persisted to the browser's 9×9
-crossword storage because the weekly game is iOS-only on the web. Guests are
+150-point Pro rating and table, and its browser progress is persisted in the
+separate weekly crossword storage namespace. Guests are
 sent to sign-in with this route as their return destination. The account
 entitlement refresh callback is stable for an unchanged session so profile
 synchronisation is triggered by account changes, not by the entitlement result
@@ -278,8 +294,8 @@ or points and never alter those performance metrics.
 
 `/weekly-crossword` is the browser counterpart to iOS's current 13×13 Pro
 Crossword. It is available only to a signed-in account with a resolved active
-Pro entitlement; guests are returned through sign-in and non-Pro players are
-directed to the existing iOS App Store subscription path. The released weekly
+Pro entitlement; guests and non-Pro players are directed to the web Pro page,
+which then sends a trial purchaser through account sign-in. The released weekly
 row is the latest `weekly_puzzles` entry on or before the browser's local
 Sunday, and valid weekly payloads and account-scoped progress are cached in a
 separate browser namespace.
