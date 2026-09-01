@@ -307,10 +307,12 @@ animated white rating marker with Accent-blue ring and glow; the compact
 in-game progress bars intentionally remain marker-free.
 
 Total solved includes every successful crossword completion, including Archive
-play. Current and best streaks, the Daily Stats average, and per-row times use
-only successful completions made during that puzzle's own release window. An
-archive completion must never extend a streak or inflate the release-day
-average on either platform.
+play. Current and best streaks, the Daily and Weekly Stats averages, and
+per-row times use only successful completions made during that puzzle's own
+release window and shown in the current 14-day history. An archive or previous
+game completion must never extend a streak or inflate the release-window
+average on either platform. When that window has no eligible solves, the UI
+shows an en dash rather than falling back to an all-time average.
 
 ---
 

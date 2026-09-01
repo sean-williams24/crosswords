@@ -428,15 +428,19 @@ export function deriveWeeklyCrosswordStats(progressRecords: CrosswordProgress[],
       outcome: progress ? solveTimeSeconds !== null ? "solved" : "inProgress" : "unplayed"
     } as const;
   });
-  const visibleSolveTimes = rows.map((row) => row.solveTimeSeconds).filter((seconds): seconds is number => seconds !== null);
+  const recentHistory = rows.slice(0, 2);
+  const previousHistory = rows.slice(2);
+  const visibleSolveTimes = recentHistory
+    .map((row) => row.solveTimeSeconds)
+    .filter((seconds): seconds is number => seconds !== null);
   return {
     totalSolved: solved.length,
     currentStreak: weeklyCurrentStreak(completionDates, currentWeek),
     longestStreak: weeklyLongestStreak(completionDates),
     averageSolveTimeSeconds: visibleSolveTimes.length ? Math.floor(visibleSolveTimes.reduce((total, seconds) => total + seconds, 0) / visibleSolveTimes.length) : null,
     rollingScore: rows.slice(0, 2).reduce((total, row) => total + row.score, 0),
-    recentHistory: rows.slice(0, 2),
-    previousHistory: rows.slice(2)
+    recentHistory,
+    previousHistory
   };
 }
 

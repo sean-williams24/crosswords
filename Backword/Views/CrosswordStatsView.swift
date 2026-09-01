@@ -28,7 +28,7 @@ struct CrosswordStatsView: View {
                         StatsView(
                             stats: statsService.stats,
                             isWeekly: isWeekly,
-                            averageTimeSeconds: averageSolveTime
+                            displayedAverageTime: averageSolveTime
                         )
                             .padding(.horizontal, AppLayout.screenPadding)
                         recentHistory
@@ -71,9 +71,9 @@ struct CrosswordStatsView: View {
         }
     }
 
-    private var averageSolveTime: String? {
-        CrosswordSolveTimeSummary.formattedAverageTime(
-            from: (isWeekly ? weeklyHistory.allRows : dailyBreakdownRows).compactMap(\.solveTime)
+    private var averageSolveTime: String {
+        CrosswordSolveTimeSummary.displayedAverageTime(
+            from: isWeekly ? weeklyHistory.last14Days : dailyBreakdownRows
         )
     }
 

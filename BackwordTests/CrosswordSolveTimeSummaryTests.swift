@@ -105,6 +105,29 @@ struct CrosswordSolveTimeSummaryTests {
         #expect(CrosswordSolveTimeSummary.formattedAverageTime(from: records, isWeekly: true) == "1:30:00")
     }
 
+    @Test("Window average is empty when only previous weekly games were solved")
+    func windowAverageExcludesPreviousWeeklyGames() throws {
+        let calendar = releaseCalendar()
+        let now = try date("2026-07-27T12:00:00Z")
+        var previousGame = weeklyProgress(
+            puzzleId: "weekly-previous",
+            puzzleDate: "2026-07-12",
+            startedAt: try date("2026-07-12T10:00:00Z"),
+            completedAt: try date("2026-07-12T10:05:00Z")
+        )
+        previousGame.updatedAt = try date("2026-07-12T10:05:00Z")
+
+        let history = WeeklyCrosswordStatsHistory.make(
+            rating: OverallRating(),
+            progressRecords: [previousGame],
+            releaseCalendar: ContentReleaseCalendar(now: now, calendar: calendar)
+        )
+
+        #expect(CrosswordSolveTimeSummary.formattedAverageTime(from: history.last14Days) == nil)
+        #expect(CrosswordSolveTimeSummary.displayedAverageTime(from: history.last14Days) == "–")
+        #expect(CrosswordSolveTimeSummary.formattedAverageTime(from: history.allRows) == "5:00")
+    }
+
     private func dailyProgress(
         puzzleId: String,
         puzzleDate: String,
@@ -132,6 +155,12 @@ struct CrosswordSolveTimeSummaryTests {
     private func date(_ isoString: String) throws -> Date {
         let formatter = ISO8601DateFormatter()
         return try #require(formatter.date(from: isoString))
+    }
+
+    private func releaseCalendar() -> Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        return calendar
     }
 }
 

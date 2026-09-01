@@ -16,11 +16,21 @@ struct StatsView: View {
         winRate = stats.winRate
     }
 
-    init(stats: UserStats, isWeekly: Bool, averageTimeSeconds: String? = nil) {
+    init(stats: UserStats, isWeekly: Bool) {
         currentStreak = stats.currentStreak(isWeekly: isWeekly)
         longestStreak = stats.longestStreak(isWeekly: isWeekly)
         totalCompleted = stats.totalCompleted(isWeekly: isWeekly)
-        self.averageTimeSeconds = averageTimeSeconds ?? stats.formattedAverageTime(isWeekly: isWeekly)
+        averageTimeSeconds = stats.formattedAverageTime(isWeekly: isWeekly)
+    }
+
+    /// Stats sheets with a release-date history provide their own scoped
+    /// average, including an intentional `nil` when its displayed window has
+    /// no eligible solves.
+    init(stats: UserStats, isWeekly: Bool, displayedAverageTime: String) {
+        currentStreak = stats.currentStreak(isWeekly: isWeekly)
+        longestStreak = stats.longestStreak(isWeekly: isWeekly)
+        totalCompleted = stats.totalCompleted(isWeekly: isWeekly)
+        averageTimeSeconds = displayedAverageTime
     }
 
     var body: some View {
@@ -93,8 +103,8 @@ struct StatsView: View {
     private var winRateCell: some View {
         if let winRate {
             statCell(value: "\(winRate)%", label: "Win Rate")
-        } else if let averageTimeSeconds {
-            statCell(value: averageTimeSeconds, label: "Avg Time")
+        } else {
+            statCell(value: averageTimeSeconds ?? "–", label: "Avg Time")
         }
     }
 

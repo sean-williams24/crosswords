@@ -25,6 +25,14 @@ struct CrosswordSolveTimeSummary {
         return Int(average).formattedTimeHHMMSS
     }
 
+    static func formattedAverageTime(from historyRows: [CrosswordStatsHistoryRow]) -> String? {
+        formattedAverageTime(from: historyRows.compactMap(\.solveTime))
+    }
+
+    static func displayedAverageTime(from historyRows: [CrosswordStatsHistoryRow]) -> String {
+        formattedAverageTime(from: historyRows) ?? "–"
+    }
+
     static func solveTime(from progress: UserProgress, isWeekly: Bool) -> Int? {
         guard progress.gaveUpAt == nil,
               let puzzleDate = progress.puzzleDate,

@@ -64,12 +64,17 @@ struct WeeklyCrosswordStatsHistory {
                 CrosswordSolveTimeSummary.solveTime(from: $0, isWeekly: true)
             }
             let ratingScore = scoreByDate[dateStr]
+            // OverallRating retains only the rolling window, while this view
+            // deliberately shows five older weekly games as well. Read the
+            // durable score snapshot from the matching progress record once
+            // its aggregate-rating entry has rolled out of that window.
+            let progressScore = progress?.releaseDateScore
 
             return CrosswordStatsHistoryRow(
                 dateStr: dateStr,
                 date: date,
                 isToday: dateStr == releaseCalendar.dailyDateString,
-                score: ratingScore ?? (solveTime != nil ? 5 : 0),
+                score: ratingScore ?? progressScore ?? (solveTime != nil ? 5 : 0),
                 solveTime: solveTime,
                 isSolved: solveTime != nil
             )

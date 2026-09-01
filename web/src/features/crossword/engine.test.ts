@@ -81,13 +81,21 @@ describe("crossword engine", () => {
   });
 
   it("builds the iOS weekly two-week rating and seven-game history", () => {
-    const current = { ...emptyProgress({ ...puzzle(), id: "weekly-current", date: "2026-08-09" }, new Date("2026-08-09T09:00:00")), completedClueIds: [0], completedAt: "2026-08-10T10:00:00.000Z", releaseDateScore: 5, isWeekly: true };
-    const previous = { ...current, puzzleId: "weekly-previous", date: "2026-08-02", completedAt: "2026-08-03T10:00:00.000Z", releaseDateScore: 4 };
-    const stats = deriveWeeklyCrosswordStats([current, previous], new Date("2026-08-14T12:00:00"));
+    const current = { ...emptyProgress({ ...puzzle(), id: "weekly-current", date: "2026-08-09" }, new Date("2026-08-10T09:00:00.000Z")), completedClueIds: [0], completedAt: "2026-08-10T10:00:00.000Z", releaseDateScore: 5, isWeekly: true };
+    const previous = { ...current, puzzleId: "weekly-previous", date: "2026-08-02", startedAt: "2026-08-03T09:00:00.000Z", completedAt: "2026-08-03T10:00:00.000Z", releaseDateScore: 4 };
+    const older = {
+      ...current,
+      puzzleId: "weekly-older",
+      date: "2026-07-19",
+      startedAt: "2026-07-19T01:00:00.000Z",
+      completedAt: "2026-07-19T23:00:00.000Z"
+    };
+    const stats = deriveWeeklyCrosswordStats([current, previous, older], new Date("2026-08-14T12:00:00"));
 
     expect(stats.rollingScore).toBe(9);
     expect(stats.recentHistory).toHaveLength(2);
     expect(stats.previousHistory).toHaveLength(5);
     expect(stats.currentStreak).toBe(2);
+    expect(stats.averageSolveTimeSeconds).toBe(3_600);
   });
 });
