@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { GameMenu } from "../features/backword/components/GameMenu";
-import { localDateString } from "../features/backword/date";
+import { isLocalDateString, localDateString } from "../features/backword/date";
 import {
   activeClue,
   adjacentClue,
@@ -30,6 +31,8 @@ import { crosswordCloudRecord, migrateProgress, queueAndDebounce, refreshAccount
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
 export function CrosswordPage() {
+  const { date: routeDate } = useParams<{ date?: string }>();
+  const archiveDate = isLocalDateString(routeDate) ? routeDate : null;
   const { user } = useAuth();
   const storage = useMemo(() => createCrosswordStorage(window.localStorage, {
     userId: user?.id,
@@ -37,7 +40,7 @@ export function CrosswordPage() {
       if (user) queueAndDebounce(user.id, crosswordCloudRecord(progress));
     }
   }), [user?.id]);
-  const [date, setDate] = useState(() => localDateString());
+  const [date, setDate] = useState(() => archiveDate ?? localDateString());
   const [puzzle, setPuzzle] = useState<CrosswordPuzzle | null>(null);
   const [progress, setProgress] = useState<CrosswordProgress | null>(null);
   const [selection, setSelection] = useState<CrosswordSelection | null>(null);
@@ -134,6 +137,7 @@ export function CrosswordPage() {
   }, [puzzle, storage, user?.id]);
 
   useEffect(() => {
+    if (archiveDate) return;
     const timer = window.setInterval(() => {
       const currentDate = localDateString();
       if (currentDate !== date) {
@@ -143,7 +147,7 @@ export function CrosswordPage() {
       }
     }, 30_000);
     return () => window.clearInterval(timer);
-  }, [date]);
+  }, [archiveDate, date]);
 
   useEffect(() => {
     if (!loading && puzzle && !settings.hasSeenOnboarding) {

@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { CrosswordPage } from "./CrosswordPage";
+
+const repositoryDates = vi.hoisted(() => ({ values: [] as string[] }));
 
 vi.mock("../features/crossword/repository", async () => {
   const actual = await vi.importActual<typeof import("../features/crossword/repository")>("../features/crossword/repository");
@@ -11,16 +13,22 @@ vi.mock("../features/crossword/repository", async () => {
   return {
     ...actual,
     createCrosswordRepository: () => ({
-      getByDate: async (date: string) => ({
+      getByDate: async (date: string) => {
+        repositoryDates.values.push(date);
+        return {
         id: "today-crossword", puzzleNumber: 1, date, size: 9, cells,
         clues: [{ id: 0, direction: "across", number: 1, text: "Test answer", hint: "Test hint", answer: "AB", startRow: 0, startCol: 0, length: 2 }]
-      })
+        };
+      }
     })
   };
 });
 
 describe("CrosswordPage", () => {
-  beforeEach(() => localStorage.clear());
+  beforeEach(() => {
+    localStorage.clear();
+    repositoryDates.values = [];
+  });
 
   it("loads the daily grid, supports keyboard play, and opens completion", async () => {
     const user = userEvent.setup();
@@ -46,5 +54,16 @@ describe("CrosswordPage", () => {
     await user.keyboard("AB");
     expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
     expect(screen.getByText("NEXT DAILY CROSSWORD IN")).toBeInTheDocument();
+  });
+
+  it("loads a dated archive route without replacing it with today", async () => {
+    render(
+      <MemoryRouter initialEntries={["/crossword/2026-08-05"]}>
+        <Routes><Route element={<CrosswordPage />} path="/crossword/:date" /></Routes>
+      </MemoryRouter>
+    );
+
+    await screen.findByRole("grid", { name: "Crossword grid" });
+    expect(repositoryDates.values).toContain("2026-08-05");
   });
 });

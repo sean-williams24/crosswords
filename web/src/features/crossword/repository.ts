@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { localDateString } from "../backword/date";
 import type { CrosswordCell, CrosswordClue, CrosswordPuzzle } from "./types";
 
 type CrosswordRow = {
@@ -115,6 +116,8 @@ export function mapCrosswordRow(row: CrosswordRow, expectedSize: 9 | 13 = 9): Cr
 export type CrosswordRepository = {
   getByDate(date: string): Promise<CrosswordPuzzle>;
   getCurrentWeekly(weekDate: string): Promise<CrosswordPuzzle>;
+  getArchiveMonths(kind: "daily" | "weekly"): Promise<string[]>;
+  getArchiveMonth(kind: "daily" | "weekly", month: string): Promise<CrosswordPuzzle[]>;
 };
 
 export function createCrosswordRepository(
@@ -153,6 +156,34 @@ export function createCrosswordRepository(
         throw new CrosswordUnavailableError("This week’s Pro Crossword is not available yet.");
       }
       return mapCrosswordRow(data as CrosswordRow, 13);
+    },
+    async getArchiveMonths(kind) {
+      const { data, error } = await client
+        .from(kind === "weekly" ? "weekly_puzzles" : "puzzles")
+        .select("date")
+        .lte("date", localDateString())
+        .order("date", { ascending: false });
+      if (error || !data) {
+        throw new CrosswordUnavailableError("The crossword archive is not available right now.");
+      }
+      return [...new Set(data
+        .map((row) => typeof row.date === "string" ? row.date.slice(0, 7) : "")
+        .filter((month) => /^\d{4}-\d{2}$/.test(month)))];
+    },
+    async getArchiveMonth(kind, month) {
+      const [year, monthNumber] = month.split("-").map(Number);
+      const end = `${month}-${String(new Date(year, monthNumber, 0).getDate()).padStart(2, "0")}`;
+      const { data, error } = await client
+        .from(kind === "weekly" ? "weekly_puzzles" : "puzzles")
+        .select("id,puzzle_number,date,grid_data,clues")
+        .gte("date", `${month}-01`)
+        .lte("date", end)
+        .lte("date", localDateString())
+        .order("date", { ascending: false });
+      if (error || !data) {
+        throw new CrosswordUnavailableError("This crossword month is not available right now.");
+      }
+      return data.map((row) => mapCrosswordRow(row as CrosswordRow, kind === "weekly" ? 13 : 9));
     }
   };
 }

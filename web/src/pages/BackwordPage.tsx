@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import { BackwordCompletion } from "../features/backword/components/BackwordCompletion";
 import { BackwordInstructions } from "../features/backword/components/BackwordInstructions";
 import { BackwordKeyboard } from "../features/backword/components/BackwordKeyboard";
@@ -6,7 +7,7 @@ import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { BackwordStats } from "../features/backword/components/BackwordStats";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { Footer } from "../components/Footer";
-import { localDateString } from "../features/backword/date";
+import { isLocalDateString, localDateString } from "../features/backword/date";
 import {
   BACKWORD_RULES_VERSION,
   MAX_GUESSES,
@@ -34,6 +35,8 @@ import { backwordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountP
 type Sheet = "instructions" | "stats" | "completion" | null;
 
 export function BackwordPage() {
+  const { date: routeDate } = useParams<{ date?: string }>();
+  const archiveDate = isLocalDateString(routeDate) ? routeDate : null;
   const { entitlement, user } = useAuth();
   const storage = useMemo(() => createBackwordStorage(window.localStorage, {
     userId: user?.id,
@@ -41,7 +44,7 @@ export function BackwordPage() {
       if (user) queueAndDebounce(user.id, backwordCloudRecord(progress));
     }
   }), [user?.id]);
-  const [date, setDate] = useState(() => localDateString());
+  const [date, setDate] = useState(() => archiveDate ?? localDateString());
   const [word, setWord] = useState<BackwordWord | null>(null);
   const [progress, setProgress] = useState<BackwordProgress>(() => storage.loadProgress(date));
   const [settings, setSettings] = useState<BackwordSettings>(() => storage.loadSettings());
@@ -154,6 +157,7 @@ export function BackwordPage() {
   }, [progress.guesses.length]);
 
   useEffect(() => {
+    if (archiveDate) return;
     const timer = window.setInterval(() => {
       const currentDate = localDateString();
       if (currentDate !== date) {
@@ -164,7 +168,7 @@ export function BackwordPage() {
       }
     }, 30_000);
     return () => window.clearInterval(timer);
-  }, [date, storage]);
+  }, [archiveDate, date, storage]);
 
   const revealed = useMemo(
     () => word ? revealedIndices(progress, word.word, settings.mode) : new Set<number>(),

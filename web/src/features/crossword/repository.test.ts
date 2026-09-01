@@ -44,4 +44,24 @@ describe("crossword repository", () => {
     expect(mapCrosswordRow(weekly, 13)).toMatchObject({ id: "weekly-id", size: 13 });
     expect(() => mapCrosswordRow(weekly)).toThrow(CrosswordUnavailableError);
   });
+
+  it("queries the selected released archive month from the matching table", async () => {
+    const query = {
+      select: vi.fn(), gte: vi.fn(), lte: vi.fn(), order: vi.fn()
+    };
+    query.select.mockReturnValue(query);
+    query.gte.mockReturnValue(query);
+    query.lte.mockReturnValue(query);
+    query.order.mockResolvedValue({ data: [row], error: null });
+    const from = vi.fn(() => query);
+    const repository = createCrosswordRepository(
+      { VITE_SUPABASE_URL: "https://example.test", VITE_SUPABASE_ANON_KEY: "key" },
+      { from } as never
+    );
+
+    await expect(repository.getArchiveMonth("daily", "2026-08")).resolves.toMatchObject([{ id: "puzzle-id" }]);
+    expect(from).toHaveBeenCalledWith("puzzles");
+    expect(query.gte).toHaveBeenCalledWith("date", "2026-08-01");
+    expect(query.lte).toHaveBeenCalledWith("date", "2026-08-31");
+  });
 });

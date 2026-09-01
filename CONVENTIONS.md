@@ -206,6 +206,14 @@ the three playable game cards remain available.
 On viewports up to 680px, the compact WOTD card toggles an animated detail
 drawer; larger viewports show the same content immediately in two columns.
 
+The browser archive lives at `/archive`. It loads only released Backword,
+daily crossword, and weekly crossword months, keeps fetched months in memory
+while the player switches tabs, and uses the same local progress records as the
+game dashboard for its entry statuses. Archive entries use dated routes
+(`/backword/:date`, `/crossword/:date`, and `/weekly-crossword/:date`), while
+the undated routes remain the rolling current-game entry points. Pro archive
+entries keep the normal browser sign-in and entitlement gate.
+
 The browser's slide-out navigation drawer is rendered on every web route. It
 keeps the game destinations prominent and places Privacy and Terms in a
 secondary group, so players can navigate without leaving the immersive game

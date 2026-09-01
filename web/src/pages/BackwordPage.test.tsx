@@ -1,8 +1,10 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { localDateString } from "../features/backword/date";
 import { BackwordPage } from "./BackwordPage";
+
+const repositoryDates = vi.hoisted(() => ({ values: [] as string[] }));
 
 vi.mock("../features/backword/repository", async () => {
   const actual = await vi.importActual<typeof import("../features/backword/repository")>(
@@ -11,12 +13,10 @@ vi.mock("../features/backword/repository", async () => {
   return {
     ...actual,
     createBackwordRepository: () => ({
-      getByDate: async (date: string) => ({
-        id: "today",
-        date,
-        word: "CASTLE",
-        clue: "Fortress"
-      })
+      getByDate: async (date: string) => {
+        repositoryDates.values.push(date);
+        return { id: "today", date, word: "CASTLE", clue: "Fortress" };
+      }
     })
   };
 });
@@ -32,6 +32,7 @@ function renderGame() {
 describe("Backword browser game", () => {
   beforeEach(() => {
     localStorage.clear();
+    repositoryDates.values = [];
     Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
   });
 
@@ -50,6 +51,18 @@ describe("Backword browser game", () => {
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
   });
 
+  it("loads a dated archive route without replacing it with today", async () => {
+    render(
+      <MemoryRouter initialEntries={["/backword/2026-08-03"]}>
+        <Routes><Route element={<BackwordPage />} path="/backword/:date" /></Routes>
+      </MemoryRouter>
+    );
+
+    await screen.findByText("FORTRESS");
+    expect(repositoryDates.values).toContain("2026-08-03");
+    expect(repositoryDates.values).not.toContain(localDateString());
+  });
+
   it("opens and closes a menu with game and legal routes", async () => {
     const user = userEvent.setup();
     renderGame();
@@ -60,8 +73,9 @@ describe("Backword browser game", () => {
     expect(menu).toBeInTheDocument();
     expect(within(menu).queryByText("MENU")).not.toBeInTheDocument();
     expect(within(menu).getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
-    expect(within(menu).getByRole("link", { name: "Play Backword" })).toHaveAttribute("href", "/backword");
+    expect(within(menu).getByRole("link", { name: "Backword" })).toHaveAttribute("href", "/backword");
     expect(within(menu).getByRole("link", { name: "Quick Crossword" })).toHaveAttribute("href", "/crossword");
+    expect(within(menu).getByRole("link", { name: "Archive" })).toHaveAttribute("href", "/archive");
     expect(within(menu).getByRole("link", { name: "Info" })).toHaveAttribute("href", "/info");
     expect(within(menu).getByRole("link", { name: "Contact" })).toHaveAttribute("href", "/contact");
     expect(within(menu).getByLabelText("Download Backword on the App Store").parentElement).toHaveClass(
@@ -101,7 +115,7 @@ describe("Backword browser game", () => {
     await user.click(screen.getByRole("button", { name: "Close How to Play" }));
 
     expect(container.querySelector(".bw-letter-row")?.textContent).not.toContain("C");
-    expect(JSON.parse(localStorage.getItem("backword:web:settings:v1") ?? "{}").mode).toBe("easy");
+    expect(JSON.parse(localStorage.getItem("backword:web:settings:v1") ?? "{}").mode).toBe("normal");
   });
 
   it("supports keyboard play, saves a win, and opens the completion stats", async () => {

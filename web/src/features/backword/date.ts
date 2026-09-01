@@ -5,6 +5,13 @@ export function localDateString(date = new Date()): string {
   return `${year}-${month}-${day}`;
 }
 
+export function isLocalDateString(value: string | undefined): value is string {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(year, month - 1, day, 12);
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+}
+
 export function localDateOffset(dateString: string, offset: number): string {
   const [year, month, day] = dateString.split("-").map(Number);
   const date = new Date(year, month - 1, day + offset, 12);

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { WeeklyCrosswordPage } from "./WeeklyCrosswordPage";
 
 const auth = vi.hoisted(() => ({
@@ -20,4 +20,28 @@ describe("WeeklyCrosswordPage access", () => {
     expect(screen.getByRole("dialog", { name: "The full game experience" })).toBeInTheDocument();
     expect(screen.getByText("Available with a Backword Pro subscription on iOS.")).toBeInTheDocument();
   });
+
+  it("keeps a dated archive destination through the sign-in gate", () => {
+    auth.value = {
+      ready: true,
+      entitlementReady: true,
+      entitlement: null,
+      user: null
+    };
+    render(
+      <MemoryRouter initialEntries={["/weekly-crossword/2026-08-02"]}>
+        <Routes>
+          <Route element={<WeeklyCrosswordPage />} path="/weekly-crossword/:date" />
+          <Route element={<SignInDestination />} path="/sign-in" />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText("/weekly-crossword/2026-08-02")).toBeInTheDocument();
+  });
 });
+
+function SignInDestination() {
+  const { state } = useLocation();
+  return <p>{(state as { returnTo?: string } | null)?.returnTo}</p>;
+}

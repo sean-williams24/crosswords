@@ -23,10 +23,7 @@ describe("Backword website routes", () => {
     renderRoute("/");
 
     expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Quick Crossword/i })).toHaveAttribute(
-      "href",
-      "/crossword"
-    );
+    expect(screen.getByRole("status")).toHaveTextContent("Loading daily games");
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
   });

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { GameMenu } from "../features/backword/components/GameMenu";
-import { localWeekStartString } from "../features/backword/date";
+import { isLocalDateString, localWeekStartString } from "../features/backword/date";
 import {
   activeClue,
   adjacentClue,
@@ -32,6 +32,8 @@ import { crosswordCloudRecord, migrateProgress, queueAndDebounce, refreshAccount
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
 export function WeeklyCrosswordPage() {
+  const { date: routeDate } = useParams<{ date?: string }>();
+  const archiveDate = isLocalDateString(routeDate) ? routeDate : null;
   const navigate = useNavigate();
   const { entitlement, entitlementReady, ready, user } = useAuth();
   const storage = useMemo(() => createCrosswordStorage(window.localStorage, {
@@ -41,7 +43,7 @@ export function WeeklyCrosswordPage() {
       if (user) queueAndDebounce(user.id, crosswordCloudRecord(progress, "weekly"));
     }
   }), [user?.id]);
-  const [weekDate, setWeekDate] = useState(() => localWeekStartString());
+  const [weekDate, setWeekDate] = useState(() => archiveDate ?? localWeekStartString());
   const [puzzle, setPuzzle] = useState<CrosswordPuzzle | null>(null);
   const [progress, setProgress] = useState<CrosswordProgress | null>(null);
   const [selection, setSelection] = useState<CrosswordSelection | null>(null);
@@ -130,6 +132,7 @@ export function WeeklyCrosswordPage() {
   }, [puzzle, storage, user?.id]);
 
   useEffect(() => {
+    if (archiveDate) return;
     const timer = window.setInterval(() => {
       const currentWeek = localWeekStartString();
       if (currentWeek !== weekDate) {
@@ -139,7 +142,7 @@ export function WeeklyCrosswordPage() {
       }
     }, 30_000);
     return () => window.clearInterval(timer);
-  }, [weekDate]);
+  }, [archiveDate, weekDate]);
 
   const currentClue = puzzle && selection ? activeClue(puzzle, selection) : null;
   const stats = useMemo(() => deriveWeeklyCrosswordStats(storage.loadAllProgress()), [progress, storage]);
@@ -189,7 +192,7 @@ export function WeeklyCrosswordPage() {
   }, [handleDelete, handleLetter, isMenuOpen, moveClue, sheet]);
 
   if (!ready || (user && !entitlementReady)) return <StatusPanel title="Checking Pro access…" />;
-  if (!user) return <Navigate replace state={{ returnTo: "/weekly-crossword" }} to="/sign-in" />;
+  if (!user) return <Navigate replace state={{ returnTo: archiveDate ? `/weekly-crossword/${archiveDate}` : "/weekly-crossword" }} to="/sign-in" />;
   if (!entitlement?.isPro) return <div className="bw-page"><WeeklyCrosswordModal onClose={() => navigate("/")} /><Footer /></div>;
 
   const liveScore = puzzle && progress ? crosswordScore(progress.completedClueIds.length, puzzle.clues.length, progress.hintsUsed) : 0;

@@ -12,6 +12,7 @@ import { TermsPage } from "./pages/TermsPage";
 import { SignInPage } from "./pages/SignInPage";
 import { AuthCallbackPage } from "./pages/AuthCallbackPage";
 import { PlayerProfilePage } from "./pages/PlayerProfilePage";
+import { ArchivePage } from "./pages/ArchivePage";
 import { AccountDeletionRecovery } from "./features/auth/AccountDeletionRecovery";
 
 export default function App() {
@@ -20,9 +21,13 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomeDashboardPage />} />
         <Route path="/backword" element={<BackwordPage />} />
+        <Route path="/backword/:date" element={<BackwordPage />} />
         <Route path="/home" element={<Navigate to="/" replace />} />
         <Route path="/crossword" element={<CrosswordPage />} />
+        <Route path="/crossword/:date" element={<CrosswordPage />} />
         <Route path="/weekly-crossword" element={<WeeklyCrosswordPage />} />
+        <Route path="/weekly-crossword/:date" element={<WeeklyCrosswordPage />} />
+        <Route path="/archive" element={<ArchivePage />} />
         <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
         <Route path="/info" element={<Layout><InfoPage /></Layout>} />
         <Route path="/privacy" element={<Layout><PrivacyPage /></Layout>} />
