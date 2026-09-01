@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { localDateString, localWeekStartString } from "../features/backword/date";
-import { backwordDashboardStatus } from "../features/home/backwordStatus";
+import { backwordDashboardScore, backwordDashboardStatus } from "../features/home/backwordStatus";
 import { crosswordDashboardStatus, weeklyCrosswordDashboardStatus } from "../features/crossword/engine";
 import { createCrosswordStorage } from "../features/crossword/storage";
-import { DailyGameCard } from "../features/home/DailyGameCard";
+import { DailyGameCard, HomeGameScore } from "../features/home/DailyGameCard";
 import { WeeklyCrosswordModal } from "../features/home/WeeklyCrosswordModal";
 import { WordOfTheDayCard, type WordOfTheDayLoadState } from "../features/wotd/components/WordOfTheDayCard";
 import { Footer } from "../components/Footer";
@@ -29,6 +29,7 @@ export function HomeDashboardPage() {
   const [showWeeklyModal, setShowWeeklyModal] = useState(false);
   const [wordOfTheDayState, setWordOfTheDayState] = useState<WordOfTheDayLoadState>("loading");
   const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, localDateString(), user?.id), [user?.id]);
+  const backwordScore = useMemo(() => backwordDashboardScore(window.localStorage, localDateString(), user?.id), [user?.id]);
   const crosswordStatus = useMemo(() => {
     const storage = createCrosswordStorage(window.localStorage, { userId: user?.id });
     const now = new Date();
@@ -74,6 +75,7 @@ export function HomeDashboardPage() {
                   <DailyGameCard
                     className="home-game-card--backword"
                     destination="/backword"
+                    score={backwordScore}
                     status={backwordStatus}
                     title="Backword"
                   >
@@ -122,7 +124,8 @@ export function HomeDashboardPage() {
                   <span className="weekly-card__crown" aria-hidden="true">♛</span>
                   <span>PRO CROSSWORD</span>
                   <small>13×13</small>
-                  <span className="weekly-card__status"><span className={`home-status home-status--${weeklyCrosswordStatus.tone}`}>{weeklyCrosswordStatus.label}</span>{weeklyCrosswordStatus.score !== null ? <b>{weeklyCrosswordStatus.score}/5</b> : null}{weeklyCrosswordStatus.streak ? <em>🔥 {weeklyCrosswordStatus.streak}</em> : null}</span>
+                  <span className="weekly-card__status"><span className={`home-status home-status--${weeklyCrosswordStatus.tone}`}>{weeklyCrosswordStatus.label}</span></span>
+                  {weeklyCrosswordStatus.score !== null || weeklyCrosswordStatus.streak ? <span className="home-game-card__stats weekly-card__stats">{weeklyCrosswordStatus.score !== null ? <HomeGameScore score={weeklyCrosswordStatus.score} /> : <span />}{weeklyCrosswordStatus.streak ? <span className="home-game-card__streak">🔥 {weeklyCrosswordStatus.streak}</span> : null}</span> : null}
                 </Link>
               ) : (
                 <button aria-label="Pro Crossword" className="weekly-card" onClick={() => setShowWeeklyModal(true)} type="button">

@@ -14,6 +14,15 @@ type DailyGameCardProps = {
   title: string;
 };
 
+export function HomeGameScore({ score }: { score: number }) {
+  return (
+    <span className={`home-game-card__score ${score === 5 ? "is-perfect" : ""}`}>
+      <strong>{score}</strong>
+      <small>/ 5</small>
+    </span>
+  );
+}
+
 export function DailyGameCard({
   children,
   className,
@@ -34,7 +43,7 @@ export function DailyGameCard({
       </div>
       {score !== undefined || streak !== undefined ? (
         <div className="home-game-card__stats">
-          {score !== null && score !== undefined ? <span className={`home-game-card__score ${score === 5 ? "is-perfect" : ""}`}><strong>{score}</strong><small>/ 5</small></span> : <span />}
+          {score !== null && score !== undefined ? <HomeGameScore score={score} /> : <span />}
           {streak && streak > 0 ? <span className="home-game-card__streak">🔥 {streak}</span> : null}
         </div>
       ) : null}

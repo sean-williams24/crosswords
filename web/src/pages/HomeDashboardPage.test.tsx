@@ -4,7 +4,9 @@ import { act, render, screen, within } from "@testing-library/react";
 import { useLayoutEffect } from "react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
-import { localDateString } from "../features/backword/date";
+import { localDateString, localWeekStartString } from "../features/backword/date";
+import { emptyProgress } from "../features/crossword/engine";
+import { createCrosswordStorage } from "../features/crossword/storage";
 import { HomeDashboardPage } from "./HomeDashboardPage";
 
 const testAuth = vi.hoisted(() => ({
@@ -127,6 +129,40 @@ describe("web home dashboard", () => {
     expect(screen.getByRole("link", { name: "Backword Archive" })).toHaveAttribute("href", "/archive?game=backword");
     expect(screen.getByRole("link", { name: "Quick Crossword Archive" })).toHaveAttribute("href", "/archive?game=daily");
     expect(screen.getByRole("link", { name: "Pro Crossword Archive" })).toHaveAttribute("href", "/archive?game=weekly");
+  });
+
+  it("uses the Quick Crossword score treatment for earned Backword and Pro points", () => {
+    testAuth.value = {
+      entitlement: { isPro: true, expiresAt: null },
+      ready: true,
+      user: null
+    };
+    saveProgress({
+      schemaVersion: 1,
+      date: localDateString(),
+      guesses: ["CASTLE", "CASTLE", "CASTLE"],
+      completedAt: new Date().toISOString(),
+      outcome: "won"
+    });
+    const weeklyPuzzle = { id: "current-weekly", date: localWeekStartString(), size: 13 } as const;
+    const weeklyProgress = {
+      ...emptyProgress(weeklyPuzzle),
+      completedAt: new Date().toISOString(),
+      completedClueIds: [1],
+      isWeekly: true,
+      releaseDateScore: 3
+    };
+    createCrosswordStorage(undefined, { kind: "weekly" }).saveProgress(weeklyProgress);
+
+    renderDashboard();
+
+    const backwordCard = screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/backword");
+    expect(backwordCard?.querySelector(".home-game-card__score")).toHaveTextContent("3/ 5");
+    const proCard = screen.getAllByRole("link", { name: "Pro Crossword" })
+      .find((link) => link.getAttribute("href") === "/weekly-crossword")!;
+    const proScore = proCard.querySelector(".weekly-card__stats .home-game-card__score");
+    expect(proScore).toHaveTextContent("3/ 5");
+    expect(proScore).toHaveClass("home-game-card__score");
   });
 
   it("uses a menu-style outlined account link", () => {

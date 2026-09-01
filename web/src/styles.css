@@ -1250,6 +1250,7 @@ body {
 .weekly-card-section { margin-top: 54px; }
 .weekly-card-stack { margin-top: 24px; }
 .weekly-card {
+  position: relative;
   display: flex;
   width: 100%;
   height: auto;
@@ -1276,8 +1277,7 @@ body {
 .weekly-card small { color: #97918a; font-size: 14px; }
 .weekly-card { text-decoration: none; }
 .weekly-card__status { display: flex; min-height: 20px; flex-direction: column; align-items: center; gap: 5px; color: #eee; font-size: 12px; text-align: center; }
-.weekly-card__status b { color: #5fa4dc; }
-.weekly-card__status em { color: #eee; font-style: normal; }
+.weekly-card__stats { bottom: 8px; }
 
 .weekly-modal-backdrop {
   position: fixed;

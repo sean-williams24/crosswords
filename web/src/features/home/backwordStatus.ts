@@ -1,4 +1,5 @@
 import { localDateString } from "../backword/date";
+import { backwordScore } from "../backword/engine";
 import { createBackwordStorage } from "../backword/storage";
 
 export type DashboardStatusTone = "new" | "progress" | "solved" | "failed";
@@ -32,4 +33,13 @@ export function backwordDashboardStatus(
   }
 
   return { label: "New", tone: "new" };
+}
+
+export function backwordDashboardScore(
+  storage: Storage = window.localStorage,
+  date = localDateString(),
+  userId?: string | null
+): number | null {
+  const progress = createBackwordStorage(storage, { userId }).loadProgress(date);
+  return progress.completedAt ? backwordScore(progress) : null;
 }
