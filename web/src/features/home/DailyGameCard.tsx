@@ -25,7 +25,7 @@ export function DailyGameCard({
   title
 }: DailyGameCardProps) {
   return (
-    <Link className={`home-game-card ${className}`} to={destination}>
+    <Link aria-label={title} className={`home-game-card ${className}`} to={destination}>
       <div className="home-game-card__content">
         {children}
         <p className="home-game-card__title">{title}</p>

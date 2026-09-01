@@ -66,7 +66,7 @@ describe("web home dashboard", () => {
 
     expect(screen.getByRole("status")).toHaveTextContent("Loading daily games");
     expect(container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(4);
-    expect(screen.queryByRole("link", { name: /Quick Crossword/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Quick Crossword" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Pro Crossword/i })).not.toBeInTheDocument();
 
     testWordOfTheDay.state = "loaded";
@@ -74,7 +74,7 @@ describe("web home dashboard", () => {
 
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
     expect(container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(0);
-    expect(screen.getByRole("link", { name: /Quick Crossword/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Quick Crossword" })).toBeInTheDocument();
   });
 
   it("keeps the skeleton visible until account startup has completed", () => {
@@ -91,7 +91,7 @@ describe("web home dashboard", () => {
     );
 
     expect(view.container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(0);
-    expect(screen.getByRole("link", { name: /Quick Crossword/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Quick Crossword" })).toBeInTheDocument();
   });
 
   it("shows an informational Word of the Day error card when the row is unavailable", () => {
@@ -99,7 +99,7 @@ describe("web home dashboard", () => {
     renderDashboard();
 
     expect(screen.getByLabelText("Word of the Day unavailable")).toHaveTextContent("Unavailable today");
-    expect(screen.getByRole("link", { name: /Quick Crossword/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Quick Crossword" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Pro Crossword/i })).toBeInTheDocument();
   });
 
@@ -114,7 +114,7 @@ describe("web home dashboard", () => {
     expect(loginButton).toHaveAttribute("href", "/sign-in");
     const backwordLink = screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/backword");
     expect(backwordLink).toBeDefined();
-    const crosswordCard = screen.getByRole("link", { name: /Quick Crossword/i });
+    const crosswordCard = screen.getByRole("link", { name: "Quick Crossword" });
     expect(crosswordCard).toHaveAttribute("href", "/crossword");
     const crosswordStats = crosswordCard.querySelector(".home-game-card__stats");
     expect(crosswordStats).not.toBeNull();
@@ -124,6 +124,9 @@ describe("web home dashboard", () => {
     expect(dailyLayout).not.toBeNull();
     expect(crosswordCard.closest(".home-dashboard__daily-cards")?.parentElement).toBe(dailyLayout);
     expect(screen.getAllByLabelText("Status: New")).toHaveLength(2);
+    expect(screen.getByRole("link", { name: "Backword Archive" })).toHaveAttribute("href", "/archive?game=backword");
+    expect(screen.getByRole("link", { name: "Quick Crossword Archive" })).toHaveAttribute("href", "/archive?game=daily");
+    expect(screen.getByRole("link", { name: "Pro Crossword Archive" })).toHaveAttribute("href", "/archive?game=weekly");
   });
 
   it("uses a menu-style outlined account link", () => {
@@ -216,6 +219,7 @@ describe("web home dashboard", () => {
     };
     renderDashboard();
 
-    expect(screen.getByRole("link", { name: "Pro Crossword" })).toHaveAttribute("href", "/weekly-crossword");
+    expect(screen.getAllByRole("link", { name: "Pro Crossword" }).find((link) => link.getAttribute("href") === "/weekly-crossword"))
+      .toBeDefined();
   });
 });

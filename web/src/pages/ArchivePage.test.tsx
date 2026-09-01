@@ -54,4 +54,11 @@ describe("ArchivePage", () => {
     await waitFor(() => expect(repositories.crossword.getArchiveMonth).toHaveBeenCalledWith("daily", "2026-08"));
     expect(await screen.findByRole("link", { name: /New/i })).toHaveAttribute("href", "/crossword/2026-08-05");
   });
+
+  it("opens the game type selected by a home archive link", async () => {
+    render(<MemoryRouter initialEntries={["/archive?game=weekly"]}><ArchivePage /></MemoryRouter>);
+
+    await waitFor(() => expect(repositories.crossword.getArchiveMonth).toHaveBeenCalledWith("weekly", "2026-08"));
+    expect(screen.getAllByRole("button", { name: "Pro Crossword" })[0]).toHaveAttribute("aria-pressed", "true");
+  });
 });

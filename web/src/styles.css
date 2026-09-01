@@ -1040,6 +1040,27 @@ body {
 
 .home-dashboard__daily-layout { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: stretch; gap: 28px; }
 .home-dashboard__daily-cards { display: grid; grid-template-columns: 1fr; gap: 28px; }
+.home-dashboard__game,
+.weekly-card-stack { display: grid; gap: 8px; }
+.home-archive-link {
+  display: grid;
+  position: relative;
+  height: 34px;
+  padding: 7px 10px 7px 13px;
+  align-items: center;
+  justify-items: center;
+  border: 1px solid rgb(255 255 255 / 15%);
+  border-radius: 8px;
+  color: #b8b8b8;
+  background: rgb(255 255 255 / 4%);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+.home-archive-link:hover,
+.home-archive-link:focus-visible { border-color: #5fa4dc; color: #eee; background: rgb(95 164 220 / 12%); outline: none; }
+.home-archive-link svg { position: absolute; right: 10px; color: #5fa4dc; }
 .home-dashboard__loading-label { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .home-dashboard-loading-card {
   --home-skeleton-width: 56%;
@@ -1079,7 +1100,7 @@ body {
 .home-dashboard-loading-card--backword { --home-skeleton-width: 46%; border-color: #42659a; background: #202b49; }
 .home-dashboard-loading-card--crossword { --home-skeleton-width: 62%; background: #1c2a38; }
 .home-dashboard-loading-card--word-of-the-day { min-height: 95px; padding: 16px 34px; background: #171717; }
-.home-dashboard-loading-card--weekly { min-height: 130px; height: 130px; margin-top: 24px; border-color: #7e683b; background: #1c1a16; }
+.home-dashboard-loading-card--weekly { min-height: 150px; height: 150px; margin-top: 24px; border-color: #7e683b; background: #1c1a16; }
 @keyframes home-dashboard-skeleton-shimmer { to { transform: translateX(100%); } }
 .home-game-card {
   position: relative;
@@ -1227,11 +1248,12 @@ body {
 .wotd-detail__explainer > span { flex: none; color: #8d8d92; font-style: normal; }
 
 .weekly-card-section { margin-top: 54px; }
+.weekly-card-stack { margin-top: 24px; }
 .weekly-card {
   display: flex;
   width: 100%;
   height: auto;
-  min-height: 130px;
+  min-height: 150px;
   margin-top: 24px;
   padding: 16px 28px;
   flex-direction: column;
@@ -1246,6 +1268,7 @@ body {
   cursor: pointer;
   transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
+.weekly-card-stack .weekly-card { margin-top: 0; }
 .weekly-card:hover,
 .weekly-card:focus-visible { background: linear-gradient(135deg, #292419, #1a1a1a 55%, #2a2114); outline: none; transform: translateY(-3px); box-shadow: 0 18px 40px rgb(0 0 0 / 24%); }
 .weekly-card__crown { font-size: 24px; }

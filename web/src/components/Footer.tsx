@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../features/auth/AuthProvider";
 
 export function Footer() {
+  const { entitlement } = useAuth();
+
   return (
     <footer className="site-footer border-t border-line/80 px-6 py-8 text-sm text-textSecondary">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -18,6 +21,11 @@ export function Footer() {
           <Link className="transition hover:text-textPrimary" to="/weekly-crossword">
             Pro Crossword
           </Link>
+          {entitlement?.isPro ? (
+            <Link className="transition hover:text-textPrimary" to="/archive">
+              Archive
+            </Link>
+          ) : null}
           <Link className="transition hover:text-textPrimary" to="/player-profile">
             Player Profile
           </Link>

@@ -14,6 +14,7 @@ import { AppStoreBadge } from "../components/AppStoreBadge";
 import { AuthButton } from "../features/auth/AuthButton";
 import { useAuth } from "../features/auth/AuthProvider";
 import { HomeDashboardLoadingCard } from "../features/home/HomeDashboardLoadingCard";
+import { HomeArchiveLink } from "../features/home/HomeArchiveLink";
 
 function formattedToday() {
   return new Intl.DateTimeFormat("en-US", {
@@ -69,23 +70,29 @@ export function HomeDashboardPage() {
               </>
             ) : (
               <>
-                <DailyGameCard
-                  className="home-game-card--backword"
-                  destination="/backword"
-                  status={backwordStatus}
-                  title="Backword"
-                >
-                  <img alt="Backword" className="home-game-card__logo" src="/brand/backword-logo.png" />
-                </DailyGameCard>
-                <DailyGameCard
-                  className="home-game-card--crossword"
-                  description="9×9"
-                  destination="/crossword"
-                  score={crosswordStatus.score}
-                  status={crosswordStatus}
-                  streak={crosswordStatus.streak}
-                  title="Quick Crossword"
-                />
+                <div className="home-dashboard__game">
+                  <DailyGameCard
+                    className="home-game-card--backword"
+                    destination="/backword"
+                    status={backwordStatus}
+                    title="Backword"
+                  >
+                    <img alt="Backword" className="home-game-card__logo" src="/brand/backword-logo.png" />
+                  </DailyGameCard>
+                  <HomeArchiveLink to="/archive?game=backword">Backword Archive</HomeArchiveLink>
+                </div>
+                <div className="home-dashboard__game">
+                  <DailyGameCard
+                    className="home-game-card--crossword"
+                    description="9×9"
+                    destination="/crossword"
+                    score={crosswordStatus.score}
+                    status={crosswordStatus}
+                    streak={crosswordStatus.streak}
+                    title="Quick Crossword"
+                  />
+                  <HomeArchiveLink to="/archive?game=daily">Quick Crossword Archive</HomeArchiveLink>
+                </div>
               </>
             )}
           </div>
@@ -108,19 +115,24 @@ export function HomeDashboardPage() {
             <h2 id="weekly-games-title">Weekly Games</h2>
             <p>Refreshes every Sunday</p>
           </div>
-          {isLoading ? <HomeDashboardLoadingCard variant="weekly" /> : entitlement?.isPro ? (
-            <Link aria-label="Pro Crossword" className="weekly-card" to="/weekly-crossword">
-              <span className="weekly-card__crown" aria-hidden="true">♛</span>
-              <span>PRO CROSSWORD</span>
-              <small>13×13</small>
-              <span className="weekly-card__status"><span className={`home-status home-status--${weeklyCrosswordStatus.tone}`}>{weeklyCrosswordStatus.label}</span>{weeklyCrosswordStatus.score !== null ? <b>{weeklyCrosswordStatus.score}/5</b> : null}{weeklyCrosswordStatus.streak ? <em>🔥 {weeklyCrosswordStatus.streak}</em> : null}</span>
-            </Link>
-          ) : (
-            <button aria-label="Pro Crossword" className="weekly-card" onClick={() => setShowWeeklyModal(true)} type="button">
-              <span className="weekly-card__crown" aria-hidden="true">♛</span>
-              <span>PRO CROSSWORD</span>
-              <small>13×13</small>
-            </button>
+          {isLoading ? <HomeDashboardLoadingCard variant="weekly" /> : (
+            <div className="weekly-card-stack">
+              {entitlement?.isPro ? (
+                <Link aria-label="Pro Crossword" className="weekly-card" to="/weekly-crossword">
+                  <span className="weekly-card__crown" aria-hidden="true">♛</span>
+                  <span>PRO CROSSWORD</span>
+                  <small>13×13</small>
+                  <span className="weekly-card__status"><span className={`home-status home-status--${weeklyCrosswordStatus.tone}`}>{weeklyCrosswordStatus.label}</span>{weeklyCrosswordStatus.score !== null ? <b>{weeklyCrosswordStatus.score}/5</b> : null}{weeklyCrosswordStatus.streak ? <em>🔥 {weeklyCrosswordStatus.streak}</em> : null}</span>
+                </Link>
+              ) : (
+                <button aria-label="Pro Crossword" className="weekly-card" onClick={() => setShowWeeklyModal(true)} type="button">
+                  <span className="weekly-card__crown" aria-hidden="true">♛</span>
+                  <span>PRO CROSSWORD</span>
+                  <small>13×13</small>
+                </button>
+              )}
+              <HomeArchiveLink to="/archive?game=weekly">Pro Crossword Archive</HomeArchiveLink>
+            </div>
           )}
         </section>
       </section>

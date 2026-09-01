@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { AppStoreBadge } from "../components/AppStoreBadge";
 import { Footer } from "../components/Footer";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
@@ -26,6 +26,10 @@ const archiveTypes: { id: ArchiveGameType; label: string; shortLabel: string }[]
 
 const emptyMonths: MonthsByType = { backword: [], daily: [], weekly: [] };
 
+function archiveTypeFromSearch(value: string | null): ArchiveGameType {
+  return value === "daily" || value === "weekly" || value === "backword" ? value : "backword";
+}
+
 function displayMonth(month: string) {
   return new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" })
     .format(new Date(`${month}-01T12:00:00Z`));
@@ -49,6 +53,7 @@ function ArchiveTabs({ activeType, onSelect, compact = false }: {
 
 export function ArchivePage() {
   const { entitlement, user } = useAuth();
+  const [searchParams] = useSearchParams();
   const repositories = useMemo((): {
     backword: BackwordRepository | null;
     crossword: CrosswordRepository | null;
@@ -60,7 +65,7 @@ export function ArchivePage() {
       return { backword: null, crossword: null, error: "The archive needs its Supabase configuration before it can load." };
     }
   }, []);
-  const [activeType, setActiveType] = useState<ArchiveGameType>("backword");
+  const [activeType, setActiveType] = useState<ArchiveGameType>(() => archiveTypeFromSearch(searchParams.get("game")));
   const [months, setMonths] = useState<MonthsByType>(emptyMonths);
   const [selectedMonths, setSelectedMonths] = useState<SelectedMonths>({});
   const [content, setContent] = useState<Record<string, ArchiveItem[]>>({});
