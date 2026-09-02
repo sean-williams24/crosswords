@@ -183,7 +183,7 @@ describe("web home dashboard", () => {
 
     expect(styles).toContain(".home-dashboard__actions {\n  position: absolute;");
     expect(styles).toContain("  flex-direction: column;\n  align-items: flex-end;");
-    expect(styles).toContain(".home-profile-rating-link {\n  display: grid;\n  width: min(340px, calc(100vw - 40px));\n  margin: 0;");
+    expect(styles).toContain(".home-profile-rating-link {\n  display: grid;\n  width: min(340px, calc(100vw - 40px));\n  margin: 6px 0 0;");
     expect(styles).toContain(".home-profile-rating-link__track { position: relative; display: block; height: 18px; }");
   });
 

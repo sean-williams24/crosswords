@@ -1085,7 +1085,7 @@ body {
 .home-profile-rating-link {
   display: grid;
   width: min(340px, calc(100vw - 40px));
-  margin: 0;
+  margin: 6px 0 0;
   color: #8e8e93;
   gap: 7px;
   text-decoration: none;
