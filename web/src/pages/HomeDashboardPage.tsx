@@ -62,8 +62,8 @@ export function HomeDashboardPage() {
         </Link>
         <div className="home-dashboard__actions">
           <AuthButton className="auth-button--menu-upgrade" />
-          <HomeProfileRatingLink fraction={profileRating.fraction} tier={profileRating.tier} />
         </div>
+        <HomeProfileRatingLink fraction={profileRating.fraction} tier={profileRating.tier} />
       </header>
 
       <section className="home-dashboard__content" aria-labelledby="daily-games-title">

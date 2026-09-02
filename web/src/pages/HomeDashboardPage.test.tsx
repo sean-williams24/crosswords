@@ -178,12 +178,13 @@ describe("web home dashboard", () => {
     expect(styles).toContain(".home-dashboard__actions .auth-button__compact-label { display: inline; }");
   });
 
-  it("stacks the profile rating bar directly below the profile button", () => {
+  it("places the profile rating bar below Profile on wide screens and below the logo on smaller screens", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
-    expect(styles).toContain(".home-dashboard__actions {\n  position: absolute;");
-    expect(styles).toContain("  flex-direction: column;\n  align-items: flex-end;");
-    expect(styles).toContain(".home-profile-rating-link {\n  display: grid;\n  width: min(340px, calc(100vw - 40px));\n  margin: 6px 0 0;");
+    expect(styles).toContain(".home-profile-rating-link {\n  display: grid;\n  width: min(340px, calc(100vw - 40px));\n  margin: 0;");
+    expect(styles).toContain(".home-dashboard__header > .home-profile-rating-link { position: absolute; top: calc(max(20px, env(safe-area-inset-top)) + 54px); right: clamp(20px, 4vw, 60px); }");
+    expect(styles).toContain("@media (min-width: 681px) and (max-width: 1100px) {");
+    expect(styles).toContain(".home-dashboard__header > .home-profile-rating-link { top: 138px; right: auto; left: 50%; transform: translateX(-50%); }");
     expect(styles).toContain(".home-profile-rating-link__track { position: relative; display: block; height: 18px; }");
   });
 

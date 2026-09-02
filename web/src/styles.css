@@ -1053,9 +1053,8 @@ body {
   top: max(20px, env(safe-area-inset-top));
   right: clamp(20px, 4vw, 60px);
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
 }
 .home-dashboard__actions .auth-button { width: 120px; min-height: 40px; height: 40px; padding-inline: 0; font-size: 14px; line-height: normal; }
 .auth-button {
@@ -1085,7 +1084,7 @@ body {
 .home-profile-rating-link {
   display: grid;
   width: min(340px, calc(100vw - 40px));
-  margin: 6px 0 0;
+  margin: 0;
   color: #8e8e93;
   gap: 7px;
   text-decoration: none;
@@ -1107,6 +1106,7 @@ body {
 .home-profile-rating-link.is-linguist .home-profile-rating-link__marker,
 .home-profile-rating-link.is-grandmaster .home-profile-rating-link__marker,
 .home-profile-rating-link.is-virtuoso .home-profile-rating-link__marker { border-color: currentColor; }
+.home-dashboard__header > .home-profile-rating-link { position: absolute; top: calc(max(20px, env(safe-area-inset-top)) + 54px); right: clamp(20px, 4vw, 60px); }
 
 .home-dashboard__heading { margin-bottom: 30px; }
 .home-dashboard__eyebrow,
@@ -1621,11 +1621,12 @@ body {
     justify-content: flex-end;
   }
   .auth-page { padding-top: 101px; }
-  .home-dashboard__header { min-height: 96px; }
+  .home-dashboard__header { min-height: 154px; }
   .home-dashboard__header .bw-logo-lockup { height: 58px; }
   .home-dashboard__actions { top: max(12px, env(safe-area-inset-top)); right: 12px; gap: 6px; }
   .home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px; padding: 7px 0; font-size: 14px; }
   .home-profile-rating-link { width: min(340px, calc(100vw - 24px)); }
+  .home-dashboard__header > .home-profile-rating-link { top: 118px; right: auto; left: 50%; transform: translateX(-50%); }
   .home-dashboard__actions .auth-button__wide-label { display: none; }
   .home-dashboard__actions .auth-button__compact-label { display: inline; }
   .home-dashboard__content { width: min(100% - 24px, 756px); }
@@ -1677,6 +1678,11 @@ body {
 @media (max-width: 900px) {
   .player-profile__account-controls--desktop { display: none; }
   .player-profile__account-controls--mobile { display: block; padding-top: 14px; border-top: 1px solid rgb(42 42 42 / 70%); }
+}
+
+@media (min-width: 681px) and (max-width: 1100px) {
+  .home-dashboard__header { min-height: 180px; }
+  .home-dashboard__header > .home-profile-rating-link { top: 138px; right: auto; left: 50%; transform: translateX(-50%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
