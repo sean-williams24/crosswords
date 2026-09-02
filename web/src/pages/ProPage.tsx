@@ -83,8 +83,8 @@ export function ProPage() {
           <div className="pro-page__active">
             <h1 id="pro-page-title">You’re all set</h1>
             <p>{entitlement.cancelAtPeriodEnd ? "Your Pro access stays active until the end of the current billing period" : "Thanks for subscribing - Pro is active for this Backword account on the web and iOS"}</p>
+            <Link className="pro-page__secondary" to={returnPath}>Lets play</Link>
             {entitlement.provider === "stripe" ? <p className="pro-page__provider-note">Your web subscription is managed through <a href="https://link.com" rel="noreferrer" target="_blank">Link</a></p> : <p className="pro-page__provider-note">This subscription is managed through your Apple ID.</p>}
-            <Link className="pro-page__secondary" to={returnPath}>Continue playing</Link>
           </div>
         ) : (
           <>

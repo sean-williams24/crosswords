@@ -80,6 +80,8 @@ describe("ProPage", () => {
 
     expect(screen.queryByRole("button", { name: "Start 7-day free trial" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Link" })).toHaveAttribute("href", "https://link.com");
+    expect(screen.getByRole("link", { name: "Lets play" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: "Lets play" }).compareDocumentPosition(screen.getByText(/Your web subscription is managed through/i))).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 
   it("changes a previous trial-holder's CTA to a paid subscription", () => {

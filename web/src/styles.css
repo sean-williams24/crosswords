@@ -77,7 +77,9 @@ a {
 .pro-page__login { display: inline-flex; min-height: 42px; margin: 0 auto; padding: 0 22px; align-items: center; justify-content: center; border: 1px solid #5a5a5a; border-radius: 6px; color: #eee; background: #303030; font-weight: 700; transition: background 160ms ease; }
 .pro-page__login:hover { background: #414141; }
 .pro-page__login:focus-visible { outline: 2px solid #aaa; outline-offset: 3px; }
-.pro-page__secondary { display: block; margin-top: 18px; color: #b9d7f0; font-size: 14px; }
+.pro-page__secondary { display: inline-flex; min-height: 50px; margin-top: 22px; padding: 0 32px; align-items: center; justify-content: center; border: 1px solid #d6be87; border-radius: 6px; color: #eee; background: #303030; font-size: 16px; font-weight: 700; text-decoration: none; transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease; }
+.pro-page__secondary:hover,
+.pro-page__secondary:focus-visible { border-color: #b89c61; color: #171717; background: #b89c61; outline: 2px solid #d6be87; outline-offset: 3px; transform: translateY(-1px); }
 .pro-page__provider-note, .pro-page__legal, .pro-page__notice { color: #999; font-size: 13px; line-height: 1.5; }
 .pro-page__provider-note { margin-top: 20px; }
 .pro-page__legal { max-width: 470px; margin: var(--pro-flow-gap) auto 0; }
