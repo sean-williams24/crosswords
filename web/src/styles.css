@@ -1685,6 +1685,10 @@ body {
   .home-dashboard__header > .home-profile-rating-link { top: 138px; right: auto; left: 50%; transform: translateX(-50%); }
 }
 
+@media (max-width: 1100px) {
+  .home-dashboard__header > a[aria-label="Backword home"] { align-self: start; margin-top: 25px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-dashboard *, .weekly-modal-backdrop *, .crossword-coming-soon * { transition-duration: 0.01ms !important; }
   .home-dashboard-loading-card::before { animation: none; }
