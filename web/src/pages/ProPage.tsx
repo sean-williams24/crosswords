@@ -45,6 +45,8 @@ export function ProPage() {
   const signInReturnPath = `/pro?return_to=${encodeURIComponent(returnPath)}`;
   const completedCheckout = searchParams.get("checkout") === "success";
   const cancelledCheckout = searchParams.get("checkout") === "cancelled";
+  const hasUsedTrial = Boolean(user && entitlement?.hasUsedTrial);
+  const checkoutLabel = hasUsedTrial ? "Subscribe now" : "Start 7-day free trial";
 
   useEffect(() => {
     if (!completedCheckout || entitlement?.isPro) return;
@@ -79,9 +81,9 @@ export function ProPage() {
       <section aria-labelledby="pro-page-title" className="pro-page__content">
         {entitlement?.isPro ? (
           <div className="pro-page__active">
-            <h1 id="pro-page-title">You’re all set.</h1>
-            <p>{entitlement.cancelAtPeriodEnd ? "Your Pro access stays active until the end of the current billing period." : "Pro is active for this Backword account on the web and iOS."}</p>
-            {entitlement.provider === "stripe" ? <p className="pro-page__provider-note">Your web subscription is managed through <a href="https://link.com" rel="noreferrer" target="_blank">Link</a>.</p> : <p className="pro-page__provider-note">This subscription is managed through your Apple ID.</p>}
+            <h1 id="pro-page-title">You’re all set</h1>
+            <p>{entitlement.cancelAtPeriodEnd ? "Your Pro access stays active until the end of the current billing period" : "Thanks for subscribing - Pro is active for this Backword account on the web and iOS"}</p>
+            {entitlement.provider === "stripe" ? <p className="pro-page__provider-note">Your web subscription is managed through <a href="https://link.com" rel="noreferrer" target="_blank">Link</a></p> : <p className="pro-page__provider-note">This subscription is managed through your Apple ID.</p>}
             <Link className="pro-page__secondary" to={returnPath}>Continue playing</Link>
           </div>
         ) : (
@@ -104,14 +106,14 @@ export function ProPage() {
                 <strong>{plan.name}</strong><b>{plan.price}</b><small>{plan.detail}</small>
               </button>)}
             </div>
-            <button className="pro-page__primary" disabled={isCheckoutStarting} onClick={() => void selectCheckout()} type="button">{isCheckoutStarting ? "Opening secure checkout…" : "Start 7-day free trial"}</button>
+            <button className="pro-page__primary" disabled={isCheckoutStarting} onClick={() => void selectCheckout()} type="button">{isCheckoutStarting ? "Opening secure checkout…" : checkoutLabel}</button>
             {!user ? <div className="pro-page__login-option"><span>Or</span><Link className="pro-page__login" state={{ returnTo: signInReturnPath }} to="/sign-in">Login</Link></div> : null}
             {completedCheckout ? <p className="pro-page__notice" role="status">We’re confirming your payment and unlocking Pro. This can take a few seconds.</p> : null}
             {cancelledCheckout ? <p className="pro-page__notice" role="status">Checkout was cancelled. No payment was taken.</p> : null}
           </>
         )}
         {checkoutError ? <p className="pro-page__error" role="alert">{checkoutError}</p> : null}
-        <p className="pro-page__legal">After your trial, your selected plan renews automatically until cancelled. Taxes are calculated at secure checkout.<br /><Link to="/terms">Terms</Link> · <Link to="/privacy">Privacy</Link></p>
+        <p className="pro-page__legal">{hasUsedTrial ? "Your selected plan renews automatically until cancelled." : "After your trial, your selected plan renews automatically until cancelled."} Taxes are calculated at secure checkout.<br /><Link to="/terms">Terms</Link> · <Link to="/privacy">Privacy</Link></p>
       </section>
       <Footer />
     </main>

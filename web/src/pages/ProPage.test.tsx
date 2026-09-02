@@ -8,7 +8,7 @@ const auth = vi.hoisted(() => ({
     ready: true,
     entitlementReady: true,
     user: { id: "player-1", email: "player@example.com" } as { id: string; email: string } | null,
-    entitlement: { isPro: false, expiresAt: null, provider: null, cancelAtPeriodEnd: false } as { isPro: boolean; expiresAt: string | null; provider: "apple" | "stripe" | null; cancelAtPeriodEnd: boolean } | null,
+    entitlement: { isPro: false, expiresAt: null, provider: null, cancelAtPeriodEnd: false, hasUsedTrial: false } as { isPro: boolean; expiresAt: string | null; provider: "apple" | "stripe" | null; cancelAtPeriodEnd: boolean; hasUsedTrial: boolean } | null,
     refreshEntitlement: vi.fn().mockResolvedValue(undefined)
   }
 }));
@@ -41,7 +41,7 @@ describe("ProPage", () => {
       ready: true,
       entitlementReady: true,
       user: { id: "player-1", email: "player@example.com" },
-      entitlement: { isPro: false, expiresAt: null, provider: null, cancelAtPeriodEnd: false },
+      entitlement: { isPro: false, expiresAt: null, provider: null, cancelAtPeriodEnd: false, hasUsedTrial: false },
       refreshEntitlement: vi.fn().mockResolvedValue(undefined)
     };
     billing.startStripeCheckout.mockClear();
@@ -75,10 +75,19 @@ describe("ProPage", () => {
   });
 
   it("shows active Stripe subscribers where Link manages their subscription", () => {
-    auth.value.entitlement = { isPro: true, expiresAt: "2026-10-01T00:00:00.000Z", provider: "stripe", cancelAtPeriodEnd: false };
+    auth.value.entitlement = { isPro: true, expiresAt: "2026-10-01T00:00:00.000Z", provider: "stripe", cancelAtPeriodEnd: false, hasUsedTrial: true };
     renderPage();
 
     expect(screen.queryByRole("button", { name: "Start 7-day free trial" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Link" })).toHaveAttribute("href", "https://link.com");
+  });
+
+  it("changes a previous trial-holder's CTA to a paid subscription", () => {
+    auth.value.entitlement = { isPro: false, expiresAt: null, provider: "stripe", cancelAtPeriodEnd: false, hasUsedTrial: true };
+    renderPage();
+
+    expect(screen.getByRole("button", { name: "Subscribe now" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Start 7-day free trial" })).not.toBeInTheDocument();
+    expect(screen.getByText(/Your selected plan renews automatically/i)).toBeInTheDocument();
   });
 });

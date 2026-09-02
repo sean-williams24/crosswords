@@ -9,6 +9,7 @@ type ProEntitlement = {
   expiresAt: string | null;
   provider: "apple" | "stripe" | null;
   cancelAtPeriodEnd: boolean;
+  hasUsedTrial: boolean;
 };
 
 type InFlightEntitlementRefresh = {
@@ -106,8 +107,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isPro: Boolean(result.is_pro),
         expiresAt: result.expires_at ?? null,
         provider: result.provider === "apple" || result.provider === "stripe" ? result.provider : null,
-        cancelAtPeriodEnd: Boolean(result.cancel_at_period_end)
-      } : { isPro: false, expiresAt: null, provider: null, cancelAtPeriodEnd: false });
+        cancelAtPeriodEnd: Boolean(result.cancel_at_period_end),
+        hasUsedTrial: Boolean(result.has_used_trial)
+      } : { isPro: false, expiresAt: null, provider: null, cancelAtPeriodEnd: false, hasUsedTrial: false });
       setEntitlementWarning(null);
       setEntitlementReady(true);
     })();

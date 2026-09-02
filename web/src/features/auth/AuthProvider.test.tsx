@@ -101,7 +101,7 @@ describe("AuthProvider", () => {
   it("keeps entitlement refresh stable after its result updates the provider", async () => {
     const onRefresh = vi.fn();
     supabaseMock.auth.getSession.mockResolvedValue({ data: { session: { user: { id: "user-id", email: "player@example.com" } } }, error: null });
-    supabaseMock.client.rpc.mockResolvedValue({ data: { is_pro: true, expires_at: null, provider: "stripe", cancel_at_period_end: true }, error: null });
+    supabaseMock.client.rpc.mockResolvedValue({ data: { is_pro: true, expires_at: null, provider: "stripe", cancel_at_period_end: true, has_used_trial: true }, error: null });
 
     render(
       <AuthProvider>

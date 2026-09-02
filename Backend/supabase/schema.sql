@@ -375,10 +375,10 @@ CREATE INDEX idx_apple_subscription_events_account
 ALTER TABLE apple_subscription_events ENABLE ROW LEVEL SECURITY;
 
 CREATE OR REPLACE FUNCTION current_user_pro_entitlement()
-RETURNS TABLE (is_pro BOOLEAN, expires_at TIMESTAMPTZ, provider TEXT, cancel_at_period_end BOOLEAN)
+RETURNS TABLE (is_pro BOOLEAN, expires_at TIMESTAMPTZ, provider TEXT, cancel_at_period_end BOOLEAN, has_used_trial BOOLEAN)
 LANGUAGE sql
 STABLE
-SECURITY INVOKER
+SECURITY DEFINER
 SET search_path = public
 AS $$
     WITH active_entitlements AS (
@@ -393,5 +393,6 @@ AS $$
         EXISTS (SELECT 1 FROM active_entitlements),
         (SELECT MAX(expires_at) FROM active_entitlements),
         (SELECT provider FROM active_entitlements ORDER BY expires_at DESC NULLS LAST, updated_at DESC LIMIT 1),
-        COALESCE((SELECT cancel_at_period_end FROM active_entitlements ORDER BY expires_at DESC NULLS LAST, updated_at DESC LIMIT 1), FALSE);
+        COALESCE((SELECT cancel_at_period_end FROM active_entitlements ORDER BY expires_at DESC NULLS LAST, updated_at DESC LIMIT 1), FALSE),
+        EXISTS (SELECT 1 FROM pro_trial_redemptions WHERE user_id = auth.uid());
 $$;
