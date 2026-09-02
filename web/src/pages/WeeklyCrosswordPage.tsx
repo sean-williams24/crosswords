@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
+import { Footer } from "../components/Footer";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { isLocalDateString, localWeekStartString } from "../features/backword/date";
 import {
