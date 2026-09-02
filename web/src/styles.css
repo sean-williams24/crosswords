@@ -248,22 +248,28 @@ a {
 }
 .auth-button.bw-menu-auth:hover,
 .auth-button.bw-menu-auth:focus-visible { color: #5fa4dc; background: transparent; outline: none; transform: none; }
+.bw-menu-upgrade,
+.auth-button.auth-button--menu-upgrade {
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-radius: 7px;
+  color: var(--bw-primary, #eee);
+  font-weight: 400;
+  background: transparent;
+  transition: border-color 160ms ease, background 160ms ease;
+}
 .bw-menu-upgrade {
   display: flex;
   min-height: 48px;
   margin-top: 18px;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgb(255 255 255 / 35%);
-  border-radius: 7px;
-  color: var(--bw-primary, #eee);
   font-size: 14px;
-  font-weight: 400;
   text-decoration: none;
-  transition: border-color 160ms ease, background 160ms ease;
 }
 .bw-menu-upgrade:hover,
-.bw-menu-upgrade:focus-visible { border-color: rgb(255 255 255 / 55%); background: #1d1d1d; outline: none; }
+.bw-menu-upgrade:focus-visible,
+.auth-button.auth-button--menu-upgrade:hover,
+.auth-button.auth-button--menu-upgrade:focus-visible { border-color: rgb(255 255 255 / 55%); color: var(--bw-primary, #eee); background: #1d1d1d; outline: none; transform: none; }
 .bw-menu-store-badge { margin-left: auto; }
 .bw-menu-store-badge img { display: block; height: 48px; width: auto; }
 
@@ -1015,6 +1021,11 @@ body {
 
 /* Web home dashboard */
 .home-dashboard {
+  --bw-rating-scribe: #6699e6;
+  --bw-rating-linguist: #3380f2;
+  --bw-rating-grandmaster: #1a59d9;
+  --bw-rating-virtuoso: #f2cc4d;
+  --bw-rating-virtuoso-deep: #d98c26;
   display: flex;
   position: relative;
   min-height: 100svh;
@@ -1042,11 +1053,11 @@ body {
   top: max(20px, env(safe-area-inset-top));
   right: clamp(20px, 4vw, 60px);
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
 }
-.home-dashboard__actions img { display: block; height: 40px; width: auto; }
-.home-dashboard__actions .auth-button { width: 120px; min-height: 40px; height: 40px; padding-inline: 0; border: 1px solid #eee; border-radius: 6px; color: var(--bw-primary, #eee); background: transparent; font-size: 14px; font-weight: 400; line-height: normal; transition: border-color 160ms ease, color 160ms ease; }
+.home-dashboard__actions .auth-button { width: 120px; min-height: 40px; height: 40px; padding-inline: 0; font-size: 14px; line-height: normal; }
 .auth-button {
   display: inline-flex;
   min-height: 36px;
@@ -1066,13 +1077,36 @@ body {
 .auth-button:hover,
 .auth-button:focus-visible { color: #fff; background: #4387c1; outline: 2px solid #fff; outline-offset: 2px; transform: translateY(-1px); }
 .auth-button__compact-label { display: none; }
-.home-dashboard__actions .auth-button:hover,
-.home-dashboard__actions .auth-button:focus-visible { color: #5fa4dc; background: transparent; outline: none; transform: none; }
 .home-dashboard__content {
   width: min(100% - 40px, 1120px);
   margin: 0 auto;
   padding: 8px 0 72px;
 }
+.home-profile-rating-link {
+  display: grid;
+  width: min(340px, calc(100vw - 40px));
+  margin: 0;
+  color: #8e8e93;
+  gap: 7px;
+  text-decoration: none;
+}
+.home-profile-rating-link__track { position: relative; display: block; height: 18px; }
+.home-profile-rating-link__track::before { position: absolute; top: 5px; right: 0; left: 0; height: 8px; border-radius: 20px; background: #1a1a1a; content: ""; }
+.home-profile-rating-link__fill { position: absolute; top: 5px; right: 0; left: 0; display: block; height: 8px; border-radius: 20px; background: linear-gradient(90deg, #fff 0%, #b8b8b8 14.2857%, #8e8e93 28.5714%, var(--bw-rating-scribe) 42.8571%, var(--bw-rating-linguist) 57.1429%, var(--bw-rating-grandmaster) 71.4286%, var(--bw-rating-virtuoso) 85.7143%, var(--bw-rating-virtuoso-deep) 100%); transition: clip-path 500ms ease; }
+.home-profile-rating-link__marker { position: absolute; top: 50%; width: 14px; height: 14px; border: 2px solid #8e8e93; border-radius: 50%; background: #fff; box-shadow: 0 0 0 4px rgb(142 142 147 / 30%), 0 0 8px rgb(142 142 147 / 55%); transform: translate(-50%, -50%); }
+.home-profile-rating-link__label { position: relative; display: block; width: max-content; max-width: 100%; left: clamp(0px, calc(var(--home-profile-rating-position) - 32px), calc(100% - 78px)); color: inherit; font-size: 10px; font-weight: 700; letter-spacing: .15em; line-height: 1; }
+.home-profile-rating-link:hover,
+.home-profile-rating-link:focus-visible { color: #eee; outline: none; }
+.home-profile-rating-link:hover .home-profile-rating-link__track::before { background: #222; }
+.home-profile-rating-link:focus-visible .home-profile-rating-link__track { outline: 2px solid #fff; outline-offset: 3px; border-radius: 20px; }
+.home-profile-rating-link.is-scribe { color: var(--bw-rating-scribe); }
+.home-profile-rating-link.is-linguist { color: var(--bw-rating-linguist); }
+.home-profile-rating-link.is-grandmaster { color: var(--bw-rating-grandmaster); }
+.home-profile-rating-link.is-virtuoso { color: var(--bw-rating-virtuoso); }
+.home-profile-rating-link.is-scribe .home-profile-rating-link__marker,
+.home-profile-rating-link.is-linguist .home-profile-rating-link__marker,
+.home-profile-rating-link.is-grandmaster .home-profile-rating-link__marker,
+.home-profile-rating-link.is-virtuoso .home-profile-rating-link__marker { border-color: currentColor; }
 
 .home-dashboard__heading { margin-bottom: 30px; }
 .home-dashboard__eyebrow,
@@ -1590,8 +1624,8 @@ body {
   .home-dashboard__header { min-height: 96px; }
   .home-dashboard__header .bw-logo-lockup { height: 58px; }
   .home-dashboard__actions { top: max(12px, env(safe-area-inset-top)); right: 12px; gap: 6px; }
-  .home-dashboard__actions img { height: 31px; }
-  .home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px; padding: 7px 0; border-radius: 6.5px; font-size: 14px; }
+  .home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px; padding: 7px 0; font-size: 14px; }
+  .home-profile-rating-link { width: min(340px, calc(100vw - 24px)); }
   .home-dashboard__actions .auth-button__wide-label { display: none; }
   .home-dashboard__actions .auth-button__compact-label { display: inline; }
   .home-dashboard__content { width: min(100% - 24px, 756px); }
@@ -1641,7 +1675,6 @@ body {
 }
 
 @media (max-width: 900px) {
-  .home-dashboard__actions { flex-direction: column; }
   .player-profile__account-controls--desktop { display: none; }
   .player-profile__account-controls--mobile { display: block; padding-top: 14px; border-top: 1px solid rgb(42 42 42 / 70%); }
 }

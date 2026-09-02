@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
-import { AppStoreBadge } from "../components/AppStoreBadge";
 import { Footer } from "../components/Footer";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
@@ -148,7 +147,7 @@ function ArchiveContent({ entitlement, user }: Pick<ReturnType<typeof useAuth>, 
       <header className="home-dashboard__header archive-page__header">
         <GameMenu />
         <Link aria-label="Backword home" to="/"><BackwordLogo isPro={entitlement?.isPro === true} large /></Link>
-        <div className="home-dashboard__actions"><AuthButton /><AppStoreBadge /></div>
+        <div className="home-dashboard__actions"><AuthButton className="auth-button--menu-upgrade" /></div>
       </header>
       <main className="archive-page__content">
         <div className="archive-page__heading"><p>PLAY PAST GAMES</p><h1>Archive</h1></div>

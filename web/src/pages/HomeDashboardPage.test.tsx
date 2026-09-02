@@ -109,11 +109,14 @@ describe("web home dashboard", () => {
     renderDashboard();
 
     expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
-    const appStoreBadge = screen.getByLabelText("Download Backword on the App Store");
     const loginButton = screen.getByRole("link", { name: "Login" });
-    expect(appStoreBadge.parentElement).toHaveClass("home-dashboard__actions");
-    expect(loginButton.parentElement).toBe(appStoreBadge.parentElement);
+    const profileRating = screen.getByRole("link", { name: "Overall rating: Novice. View player profile" });
+    expect(loginButton.parentElement).toHaveClass("home-dashboard__actions");
+    expect(screen.queryByLabelText("Download Backword on the App Store")).not.toBeInTheDocument();
     expect(loginButton).toHaveAttribute("href", "/sign-in");
+    expect(profileRating).toHaveAttribute("href", "/player-profile");
+    expect(profileRating.querySelector(".home-profile-rating-link__marker")).toBeInTheDocument();
+    expect(profileRating.querySelector(".home-profile-rating-link__label")).toHaveTextContent("NOVICE");
     const backwordLink = screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/backword");
     expect(backwordLink).toBeDefined();
     const crosswordCard = screen.getByRole("link", { name: "Quick Crossword" });
@@ -165,14 +168,23 @@ describe("web home dashboard", () => {
     expect(proScore).toHaveClass("home-game-card__score");
   });
 
-  it("uses a menu-style outlined account link", () => {
+  it("uses the menu upgrade treatment for the account link", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
-    expect(styles).toMatch(/\.home-dashboard__actions \.auth-button\s*\{[^}]*\bborder:\s*1px solid #eee[^}]*\bbackground:\s*transparent[^}]*\bfont-size:\s*14px[^}]*\bfont-weight:\s*400/);
+    expect(styles).toMatch(/\.bw-menu-upgrade,\s*\.auth-button\.auth-button--menu-upgrade\s*\{[^}]*\bborder:\s*1px solid rgb\(255 255 255 \/ 35%\)[^}]*\bborder-radius:\s*7px[^}]*\bfont-weight:\s*400[^}]*\bbackground:\s*transparent/);
     expect(styles).toContain(".home-dashboard__actions .auth-button { width: 120px; min-height: 40px; height: 40px;");
     expect(styles).toContain(".home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px;");
     expect(styles).toContain(".home-dashboard__actions .auth-button__wide-label { display: none; }");
     expect(styles).toContain(".home-dashboard__actions .auth-button__compact-label { display: inline; }");
+  });
+
+  it("stacks the profile rating bar directly below the profile button", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toContain(".home-dashboard__actions {\n  position: absolute;");
+    expect(styles).toContain("  flex-direction: column;\n  align-items: flex-end;");
+    expect(styles).toContain(".home-profile-rating-link {\n  display: grid;\n  width: min(340px, calc(100vw - 40px));\n  margin: 0;");
+    expect(styles).toContain(".home-profile-rating-link__track { position: relative; display: block; height: 18px; }");
   });
 
   it("uses one grey surface for the weekly crossword dialog", () => {

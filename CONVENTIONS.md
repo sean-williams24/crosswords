@@ -254,6 +254,11 @@ always-visible rolling-window explainer, account details, and signed-in-only
 Sign Out and Delete Account actions. When the layout stacks below 901px, those
 actions move beneath the 14-day table instead.
 
+The dashboard’s compact rating bar derives the same rolling 14-day rating from
+the active local progress namespace, then links to Player Profile. The profile
+refreshes cloud progress after navigation, so the home surface remains instant
+without duplicating its account-sync flow.
+
 ### Browser feedback
 
 The browser contact page opens a blank `mailto:` message addressed to

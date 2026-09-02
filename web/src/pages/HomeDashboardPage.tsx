@@ -3,17 +3,20 @@ import { Link } from "react-router-dom";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { localDateString, localWeekStartString } from "../features/backword/date";
+import { createBackwordStorage } from "../features/backword/storage";
 import { backwordDashboardScore, backwordDashboardStatus } from "../features/home/backwordStatus";
+import { HomeProfileRatingLink } from "../features/home/HomeProfileRatingLink";
 import { crosswordDashboardStatus, weeklyCrosswordDashboardStatus } from "../features/crossword/engine";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { DailyGameCard, HomeGameScore } from "../features/home/DailyGameCard";
 import { WordOfTheDayCard, type WordOfTheDayLoadState } from "../features/wotd/components/WordOfTheDayCard";
 import { Footer } from "../components/Footer";
-import { AppStoreBadge } from "../components/AppStoreBadge";
 import { AuthButton } from "../features/auth/AuthButton";
 import { useAuth } from "../features/auth/AuthProvider";
 import { HomeDashboardLoadingCard } from "../features/home/HomeDashboardLoadingCard";
 import { HomeArchiveLink } from "../features/home/HomeArchiveLink";
+import { buildPlayerProfileRating } from "../features/profile/profileRating";
+import { backwordCloudRecord, crosswordCloudRecord } from "../features/sync/progressSync";
 
 function formattedToday() {
   return new Intl.DateTimeFormat("en-US", {
@@ -38,6 +41,16 @@ export function HomeDashboardPage() {
     const now = new Date();
     return weeklyCrosswordDashboardStatus(storage.loadProgressForDate(localWeekStartString(now)), now, storage.loadAllProgress());
   }, [user?.id]);
+  const profileRating = useMemo(() => {
+    const backwordStorage = createBackwordStorage(window.localStorage, { userId: user?.id });
+    const dailyCrosswordStorage = createCrosswordStorage(window.localStorage, { userId: user?.id });
+    const weeklyCrosswordStorage = createCrosswordStorage(window.localStorage, { kind: "weekly", userId: user?.id });
+    return buildPlayerProfileRating({
+      backword: backwordStorage.loadAllProgress().map(backwordCloudRecord),
+      dailyCrossword: dailyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
+      weeklyCrossword: weeklyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress))
+    }, entitlement?.isPro === true);
+  }, [entitlement?.isPro, user?.id]);
   const isLoading = !ready || wordOfTheDayState === "loading";
 
   return (
@@ -48,8 +61,8 @@ export function HomeDashboardPage() {
           <BackwordLogo isPro={entitlement?.isPro === true} large />
         </Link>
         <div className="home-dashboard__actions">
-          <AuthButton />
-          <AppStoreBadge />
+          <AuthButton className="auth-button--menu-upgrade" />
+          <HomeProfileRatingLink fraction={profileRating.fraction} tier={profileRating.tier} />
         </div>
       </header>
 
