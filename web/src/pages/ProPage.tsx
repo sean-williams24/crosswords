@@ -8,7 +8,7 @@ import { Footer } from "../components/Footer";
 
 const plans: Array<{ id: ProPlan; name: string; price: string; detail: string; badge?: string }> = [
   { id: "monthly", name: "Monthly", price: "£1.49", detail: "per month" },
-  { id: "annual", name: "Annual", price: "£11.99", detail: "per year · Save 33%", badge: "Best value" }
+  { id: "annual", name: "Annual", price: "£8.99", detail: "per year · Save 50%", badge: "Best value" }
 ];
 
 const features = [

@@ -57,6 +57,8 @@ describe("ProPage", () => {
     expect(screen.getByRole("link", { name: "Login" })).toHaveAttribute("href", "/sign-in");
     expect(screen.getByRole("heading", { name: "The 13 x 13 crossword" })).toBeInTheDocument();
     expect(screen.getByText(/complete Backword and crossword archive/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Annual/i })).toHaveTextContent("£8.99");
+    expect(screen.getByRole("button", { name: /Annual/i })).toHaveTextContent("Save 50%");
 
     await user.click(screen.getByRole("button", { name: "Start 7-day free trial" }));
 

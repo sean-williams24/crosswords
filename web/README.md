@@ -34,7 +34,7 @@ Keep browser game integration in `src/lib` and page-level gameplay in `src/pages
 Web Pro purchases use Stripe Managed Payments through Supabase Edge Functions.
 Set Stripe's server secrets and the deployed `WEB_ORIGIN` through the Supabase
 dashboard, not in Vercel or a browser `.env` file. Create tax-inclusive GBP
-Stripe prices for £1.49/month and £11.99/year using an eligible digital-product
+Stripe prices for £1.49/month and £8.99/year using an eligible digital-product
 tax code, then configure Stripe webhooks as documented in
 `Backend/supabase/functions/README.md`. Stripe Link manages web subscription
 changes, cancellations, and payment methods; do not enable the ordinary Stripe

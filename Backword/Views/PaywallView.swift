@@ -303,7 +303,7 @@ struct PaywallView: View {
     private var annualPlanOption: some View {
         planOption(
             title: "Annual",
-            price: storeService.annualProduct?.displayPrice ?? "£11.99",
+            price: storeService.annualProduct?.displayPrice ?? "£8.99",
             subtitle: annualSubtitle,
             plan: .annual
         )

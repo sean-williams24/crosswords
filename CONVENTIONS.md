@@ -110,6 +110,11 @@ subscription to stop renewing, removes the Backword UUID from Stripe metadata,
 and immediately removes account-linked Pro access; Apple subscriptions are
 never cancelled by Backword account deletion.
 
+The annual Pro price is £8.99 (tax inclusive) alongside £1.49 monthly. The
+same product prices must be configured in App Store Connect, Stripe, the local
+StoreKit test catalog, and the web plan presentation; price IDs rather than
+hard-coded amounts remain the server checkout source of truth.
+
 Apple entitlement rows retain their unique `original_transaction_id`, while
 that field is nullable so Stripe subscription rows can share the same table;
 provider and provider subscription ID are the universal entitlement key.
