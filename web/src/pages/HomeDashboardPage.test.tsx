@@ -184,7 +184,7 @@ describe("web home dashboard", () => {
     expect(styles).toContain(".home-profile-rating-link {\n  display: grid;\n  width: min(340px, calc(100vw - 40px));\n  margin: 0;");
     expect(styles).toContain(".home-dashboard__header > .home-profile-rating-link { position: absolute; top: calc(max(20px, env(safe-area-inset-top)) + 54px); right: clamp(20px, 4vw, 60px); }");
     expect(styles).toContain("@media (min-width: 681px) and (max-width: 1100px) {");
-    expect(styles).toContain(".home-dashboard__header > .home-profile-rating-link { top: 138px; right: auto; left: 50%; transform: translateX(-50%); }");
+    expect(styles).toContain(".home-dashboard__header > .home-profile-rating-link { top: 128px; right: auto; left: 50%; transform: translateX(-50%); }");
     expect(styles).toContain("@media (max-width: 1100px) {\n  .home-dashboard__header > a[aria-label=\"Backword home\"] { align-self: start; margin-top: 25px; }");
     expect(styles).toContain(".home-profile-rating-link__track { position: relative; display: block; height: 18px; }");
   });
