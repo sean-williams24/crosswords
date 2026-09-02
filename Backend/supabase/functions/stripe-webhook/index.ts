@@ -25,6 +25,20 @@ function entitlementStatus(status: string) {
   return "expired";
 }
 
+function errorContext(error: unknown) {
+  if (error instanceof Error) return { message: error.message };
+  if (typeof error === "object" && error !== null) {
+    const value = error as Record<string, unknown>;
+    return {
+      code: typeof value.code === "string" ? value.code : undefined,
+      details: typeof value.details === "string" ? value.details : undefined,
+      hint: typeof value.hint === "string" ? value.hint : undefined,
+      message: typeof value.message === "string" ? value.message : "Could not process Stripe notification"
+    };
+  }
+  return { message: "Could not process Stripe notification" };
+}
+
 async function subscriptionFor(event: StripeEvent) {
   const object = event.data.object as StripeSubscription;
   if (object.object === "subscription") return object;
@@ -110,8 +124,7 @@ Deno.serve(async (request) => {
     if (auditError && auditError.code !== "23505") throw auditError;
     return Response.json({ ok: true });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Could not process Stripe notification";
-    console.error("Stripe webhook processing failed", { message });
-    return new Response(message, { status: 400 });
+    console.error("Stripe webhook processing failed", errorContext(error));
+    return new Response("Could not process Stripe notification", { status: 400 });
   }
 });

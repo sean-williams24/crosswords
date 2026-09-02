@@ -1,6 +1,9 @@
 -- Preserve all existing App Store records while allowing Stripe to grant the
 -- same account-level Pro entitlement. Provider IDs, rather than client input,
 -- are the immutable source references for every entitlement.
+-- Keep the primary-key and function replacement atomic for the live database.
+BEGIN;
+
 ALTER TABLE user_entitlements ADD COLUMN IF NOT EXISTS id UUID DEFAULT uuid_generate_v4();
 UPDATE user_entitlements SET id = uuid_generate_v4() WHERE id IS NULL;
 ALTER TABLE user_entitlements ALTER COLUMN id SET NOT NULL;
@@ -60,3 +63,5 @@ AS $$
         (SELECT provider FROM active_entitlements ORDER BY expires_at DESC NULLS LAST, updated_at DESC LIMIT 1),
         COALESCE((SELECT cancel_at_period_end FROM active_entitlements ORDER BY expires_at DESC NULLS LAST, updated_at DESC LIMIT 1), FALSE);
 $$;
+
+COMMIT;

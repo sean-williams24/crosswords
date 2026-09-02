@@ -110,6 +110,10 @@ subscription to stop renewing, removes the Backword UUID from Stripe metadata,
 and immediately removes account-linked Pro access; Apple subscriptions are
 never cancelled by Backword account deletion.
 
+Apple entitlement rows retain their unique `original_transaction_id`, while
+that field is nullable so Stripe subscription rows can share the same table;
+provider and provider subscription ID are the universal entitlement key.
+
 iOS verifies its cached Supabase session with the Auth user endpoint during
 startup and foreground account refreshes, before it uploads or downloads cloud
 progress. A successful deletion initiated on that device, or a
