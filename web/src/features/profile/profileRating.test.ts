@@ -30,6 +30,26 @@ describe("buildPlayerProfileRating", () => {
     expect(rating.days[0]).toMatchObject({ weeklyCrossword: 5, total: 15 });
   });
 
+  it("does not count an archive Backword win from a stale cloud release score", () => {
+    const rating = buildPlayerProfileRating({
+      backword: [{
+        release_date: "2026-08-16",
+        release_score: 4,
+        payload: {
+          schemaVersion: 1,
+          date: "2026-08-16",
+          guesses: ["TWIRLL", "SPIRAL"],
+          outcome: "won",
+          completedAt: "2026-08-17T08:27:07.234Z"
+        }
+      }],
+      dailyCrossword: [],
+      weeklyCrossword: []
+    }, false, now);
+
+    expect(rating.days[1]).toMatchObject({ date: "2026-08-16", backword: 0, total: 0 });
+  });
+
   it("excludes weekly scores for non-Pro accounts and applies the shared tier thresholds", () => {
     const records = {
       backword: Array.from({ length: 14 }, (_, index) => ({ release_date: `2026-08-${String(17 - index).padStart(2, "0")}`, release_score: 5 })),

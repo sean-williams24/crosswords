@@ -1,3 +1,4 @@
+import { backwordScore } from "../backword/engine";
 import type { BackwordProgress } from "../backword/types";
 import type { CrosswordKind, CrosswordProgress } from "../crossword/types";
 import { supabase } from "../../lib/supabase";
@@ -34,7 +35,7 @@ function writeQueue(userId: string, queue: CloudRecord<unknown>[]) {
 }
 
 function completionScore(progress: BackwordProgress) {
-  return progress.outcome === "won" ? Math.max(0, 6 - progress.guesses.length) : 0;
+  return backwordScore(progress);
 }
 
 export function backwordCloudRecord(progress: BackwordProgress): CloudRecord<BackwordProgress> {

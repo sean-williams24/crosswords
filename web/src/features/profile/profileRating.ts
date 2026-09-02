@@ -1,4 +1,6 @@
 import { localDateOffset, localDateString } from "../backword/date";
+import { backwordScore } from "../backword/engine";
+import type { BackwordProgress } from "../backword/types";
 import type { CloudRecord } from "../sync/progressSync";
 
 const windowDays = 14;
@@ -29,6 +31,7 @@ export type PlayerProfileRating = {
 };
 
 type ProfileProgress = Pick<CloudRecord<unknown>, "release_date" | "release_score">;
+type BackwordProfileProgress = ProfileProgress & { payload?: unknown };
 
 function validScore(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 5;
@@ -38,6 +41,36 @@ function scoreMap(records: ProfileProgress[], dates: Set<string>) {
   return records.reduce((scores, record) => {
     if (!dates.has(record.release_date) || !validScore(record.release_score)) return scores;
     scores.set(record.release_date, Math.max(scores.get(record.release_date) ?? 0, record.release_score));
+    return scores;
+  }, new Map<string, number>());
+}
+
+function isBackwordProgress(value: unknown): value is BackwordProgress {
+  if (!value || typeof value !== "object") return false;
+  const progress = value as Partial<BackwordProgress>;
+  return (
+    progress.schemaVersion === 1 &&
+    typeof progress.date === "string" &&
+    Array.isArray(progress.guesses) &&
+    progress.guesses.every((guess) => typeof guess === "string") &&
+    (progress.outcome === "inProgress" || progress.outcome === "won" || progress.outcome === "failed") &&
+    (progress.completedAt === null || typeof progress.completedAt === "string")
+  );
+}
+
+/**
+ * Backword payloads retain the completion time needed to distinguish a daily
+ * result from Archive play. Treat that canonical game state as authoritative
+ * over older rows whose stored release_score was calculated incorrectly.
+ */
+function backwordScoreMap(records: BackwordProfileProgress[], dates: Set<string>) {
+  return records.reduce((scores, record) => {
+    if (!dates.has(record.release_date)) return scores;
+    const score = isBackwordProgress(record.payload)
+      ? backwordScore(record.payload)
+      : record.release_score;
+    if (!validScore(score)) return scores;
+    scores.set(record.release_date, Math.max(scores.get(record.release_date) ?? 0, score));
     return scores;
   }, new Map<string, number>());
 }
@@ -55,7 +88,7 @@ export function buildPlayerProfileRating(
   const dates = Array.from({ length: windowDays }, (_, offset) => localDateOffset(today, -offset));
   const visibleDates = new Set(dates);
   const dailyScores = scoreMap(records.dailyCrossword, visibleDates);
-  const backwordScores = scoreMap(records.backword, visibleDates);
+  const backwordScores = backwordScoreMap(records.backword, visibleDates);
   const weeklyScores = scoreMap(records.weeklyCrossword, visibleDates);
   const days = dates.map((date) => {
     const dailyCrossword = dailyScores.get(date) ?? 0;

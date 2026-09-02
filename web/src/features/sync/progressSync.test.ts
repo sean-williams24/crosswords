@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { chooseBestProgress, crosswordCloudRecord } from "./progressSync";
+import { backwordCloudRecord, chooseBestProgress, crosswordCloudRecord } from "./progressSync";
 
 describe("cloud progress conflict selection", () => {
   it("keeps a solved result over an in-progress result", () => {
@@ -54,6 +54,20 @@ describe("cloud progress conflict selection", () => {
 
     expect(record.content_key).toBe("ios-puzzle-id");
     expect(record.release_score).toBe(3);
+  });
+
+  it("does not award Backword points for an archive completion", () => {
+    const record = backwordCloudRecord({
+      schemaVersion: 1,
+      date: "2026-08-28",
+      guesses: ["TWIRLL", "SPIRAL"],
+      outcome: "won",
+      completedAt: "2026-08-31T08:27:07.234Z",
+      updatedAt: "2026-08-31T08:27:07.235Z"
+    });
+
+    expect(record.status).toBe("solved");
+    expect(record.release_score).toBe(0);
   });
 
   it("marks browser weekly payloads as the iOS-compatible weekly game type", () => {

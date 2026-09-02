@@ -787,7 +787,7 @@ final class ProgressCloudSync {
             status: payload.status,
             progressRank: progress.guesses.count,
             releaseScore: progress.completedScore ?? 0,
-            clientUpdatedAt: payload.updatedAt,
+            clientUpdatedAt: payload.updatedAt ?? "",
             payload: payload
         )
         do {
