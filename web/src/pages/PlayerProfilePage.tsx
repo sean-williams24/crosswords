@@ -10,7 +10,6 @@ import { buildPlayerProfileRating, formatProfileDate } from "../features/profile
 import { Footer } from "../components/Footer";
 import { accountActionErrorMessage } from "../features/auth/authErrorPresentation";
 import { AccountDeletionConfirmationModal } from "../features/auth/AccountDeletionConfirmationModal";
-import { openStripeBillingPortal } from "../features/pro/billing";
 
 const ratingLevels = ["Novice", "Scribe", "Linguist", "Grandmaster", "Virtuoso"] as const;
 
@@ -30,7 +29,6 @@ export function PlayerProfilePage() {
   const [accountDeleted, setAccountDeleted] = useState(false);
   const [isFinishingDeletion, setIsFinishingDeletion] = useState(false);
   const [deletionFinishError, setDeletionFinishError] = useState<string | null>(null);
-  const [isManagingSubscription, setIsManagingSubscription] = useState(false);
   const userId = user?.id;
 
   const refreshProfile = useCallback(async () => {
@@ -119,18 +117,6 @@ export function PlayerProfilePage() {
     }
   }
 
-  async function manageSubscription() {
-    setSyncError(null);
-    setIsManagingSubscription(true);
-    try {
-      await openStripeBillingPortal();
-    } catch (error) {
-      console.error("Stripe subscription management failed", error);
-      setSyncError("We couldn't open subscription management. Please try again.");
-      setIsManagingSubscription(false);
-    }
-  }
-
   if (!ready) {
     return <main className="player-profile player-profile--loading">Loading your profile…</main>;
   }
@@ -164,7 +150,6 @@ export function PlayerProfilePage() {
                     <small>{isSyncing ? "Syncing your games…" : "Progress and stats are synced — select to sync again"}</small>
                   </button>
                   <p className={isPro ? "is-active" : ""}><img alt="" className="player-profile__pro-logo" src="/brand/backword-pro.png" /><span>{isPro ? entitlement?.cancelAtPeriodEnd ? "is active until the end of this billing period" : "is active for this account" : "No account-linked Pro subscription"}</span></p>
-                  {entitlement?.provider === "stripe" && isPro ? <button className="player-profile__manage-pro" disabled={isManagingSubscription} onClick={() => void manageSubscription()} type="button">{isManagingSubscription ? "Opening billing…" : "Manage web subscription"}</button> : null}
                   {syncError || entitlementWarning ? <p className="player-profile__error" role="alert">{syncError ?? entitlementWarning}</p> : null}
                 </section>
                 <ProfileActions className="player-profile__account-controls--desktop" isDeleting={isDeleting} isSigningOut={isSigningOut} onDelete={removeAccount} onSignOut={handleSignOut} />

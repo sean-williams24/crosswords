@@ -1,11 +1,11 @@
 # Supabase account functions
 
 Deploy `claim-apple-entitlement`, `app-store-notifications`, `delete-account`,
-`create-stripe-checkout`, `create-stripe-portal`, and `stripe-webhook` after
+`create-stripe-checkout`, and `stripe-webhook` after
 applying `schema.sql`. Deploy with the included
 `Backend/supabase/config.toml`: the Apple notification endpoint verifies its
-own webhook secret, while `delete-account`, `create-stripe-checkout`, and
-`create-stripe-portal` verify their callers in code so browser CORS preflight
+own webhook secret, while `delete-account` and `create-stripe-checkout` verify
+their callers in code so browser CORS preflight
 requests can reach the handler. The remaining account function requires the
 caller's session through Supabase's platform JWT check.
 
@@ -33,3 +33,9 @@ Configure Stripe to deliver subscription and invoice events to
 `/functions/v1/stripe-webhook`. The webhook verifies Stripe's raw-body
 signature and only trusts Stripe subscription metadata written by
 `create-stripe-checkout`; browser callers can never grant Pro directly.
+
+Web subscriptions use Stripe Managed Payments. Create tax-inclusive, eligible
+digital-product prices in Stripe, and keep the `STRIPE_SECRET_KEY` and price
+IDs in Supabase Edge Function secrets. Checkout uses Stripe's Managed Payments
+preview API version and Stripe Link manages customer billing and subscriptions;
+do not configure or deploy Stripe's ordinary Billing Customer Portal.

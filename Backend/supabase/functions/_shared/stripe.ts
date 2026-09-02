@@ -1,6 +1,7 @@
 const stripeAPIBaseURL = "https://api.stripe.com/v1";
 
 type StripeRequestOptions = {
+  apiVersion?: string;
   idempotencyKey?: string;
   method?: "GET" | "POST";
   params?: Record<string, string | number | boolean | null | undefined>;
@@ -23,6 +24,7 @@ export async function stripeRequest<T>(path: string, options: StripeRequestOptio
     headers: {
       Authorization: `Basic ${btoa(`${secret}:`)}`,
       ...(body ? { "Content-Type": "application/x-www-form-urlencoded" } : {}),
+      ...(options.apiVersion ? { "Stripe-Version": options.apiVersion } : {}),
       ...(options.idempotencyKey ? { "Idempotency-Key": options.idempotencyKey } : {})
     },
     body

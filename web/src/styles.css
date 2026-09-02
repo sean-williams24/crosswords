@@ -84,7 +84,6 @@ a {
 .pro-page__legal a { color: #b9d7f0; text-decoration: underline; }
 .pro-page__notice { margin: 14px 0 0; color: #b9d7f0; }
 .pro-page__error { margin: 16px 0 0; color: #ff8a8a; font-size: 14px; }
-.player-profile__manage-pro { margin-top: 10px; color: #b9d7f0; font-size: 13px; text-decoration: underline; }
 
 @media (max-width: 900px) {
   .pro-page__features { grid-template-columns: repeat(2, minmax(0, 1fr)); }

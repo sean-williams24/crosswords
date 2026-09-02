@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
-import { openStripeBillingPortal, startStripeCheckout, type ProPlan } from "../features/pro/billing";
+import { startStripeCheckout, type ProPlan } from "../features/pro/billing";
 import { useAuth } from "../features/auth/AuthProvider";
 import { Footer } from "../components/Footer";
 
@@ -41,7 +41,6 @@ export function ProPage() {
   const [selectedPlan, setSelectedPlan] = useState<ProPlan>("annual");
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [isCheckoutStarting, setIsCheckoutStarting] = useState(false);
-  const [isManaging, setIsManaging] = useState(false);
   const returnPath = safeReturnPath(searchParams.get("return_to"));
   const signInReturnPath = `/pro?return_to=${encodeURIComponent(returnPath)}`;
   const completedCheckout = searchParams.get("checkout") === "success";
@@ -71,17 +70,6 @@ export function ProPage() {
     }
   }
 
-  async function manageStripeSubscription() {
-    setCheckoutError(null);
-    setIsManaging(true);
-    try {
-      await openStripeBillingPortal();
-    } catch (error) {
-      setCheckoutError(error instanceof Error ? error.message : "We couldn't open subscription management. Please try again.");
-      setIsManaging(false);
-    }
-  }
-
   return (
     <main className="pro-page">
       <header className="home-dashboard__header pro-page__header">
@@ -93,7 +81,7 @@ export function ProPage() {
           <div className="pro-page__active">
             <h1 id="pro-page-title">You’re all set.</h1>
             <p>{entitlement.cancelAtPeriodEnd ? "Your Pro access stays active until the end of the current billing period." : "Pro is active for this Backword account on the web and iOS."}</p>
-            {entitlement.provider === "stripe" ? <button className="pro-page__primary" disabled={isManaging} onClick={() => void manageStripeSubscription()} type="button">{isManaging ? "Opening billing…" : "Manage web subscription"}</button> : <p className="pro-page__provider-note">This subscription is managed through your Apple ID.</p>}
+            {entitlement.provider === "stripe" ? <p className="pro-page__provider-note">Your web subscription is managed through <a href="https://link.com" rel="noreferrer" target="_blank">Link</a>.</p> : <p className="pro-page__provider-note">This subscription is managed through your Apple ID.</p>}
             <Link className="pro-page__secondary" to={returnPath}>Continue playing</Link>
           </div>
         ) : (

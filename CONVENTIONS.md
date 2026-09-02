@@ -93,13 +93,17 @@ Backword-account association, allowing a verified purchaser to reclaim an
 eligible purchase while preventing the retained record from identifying the
 deleted Backword account.
 
-Web Pro subscriptions are sold through Stripe only after Apple or Google sign
-in, and use the same account entitlement snapshot as StoreKit purchases. The
-server, never the browser, selects a Stripe price, creates Checkout, and
-accepts only signature-verified Stripe webhook updates. A signed-in account
-with any active Pro source is never offered a second subscription; Stripe
-customers use Stripe's portal while Apple customers remain Apple-managed.
-Stripe trials are blocked after a recorded Apple or Stripe trial, although
+Web Pro subscriptions are sold through Stripe Managed Payments only after Apple
+or Google sign-in, and use the same account entitlement snapshot as StoreKit
+purchases. The server, never the browser, selects a Stripe price, creates a
+Managed Payments Checkout Session, and accepts only signature-verified Stripe
+webhook updates. A signed-in account with any active Pro source is never offered
+a second subscription; Stripe customers manage payment methods, cancellations,
+and plan changes through Stripe Link while Apple customers remain Apple-managed.
+Stripe is merchant of record for eligible web purchases and handles indirect-tax
+calculation, collection, filing, and remittance; the ordinary Stripe Billing
+Customer Portal is not deployed. Stripe trials are blocked after a recorded
+Apple or Stripe trial, although
 Apple's separate Apple-ID introductory-offer eligibility means the reverse
 direction is necessarily best-effort. Deleting an account schedules any Stripe
 subscription to stop renewing, removes the Backword UUID from Stripe metadata,

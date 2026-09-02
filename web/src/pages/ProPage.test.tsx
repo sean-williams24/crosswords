@@ -13,8 +13,7 @@ const auth = vi.hoisted(() => ({
   }
 }));
 const billing = vi.hoisted(() => ({
-  startStripeCheckout: vi.fn().mockResolvedValue(undefined),
-  openStripeBillingPortal: vi.fn().mockResolvedValue(undefined)
+  startStripeCheckout: vi.fn().mockResolvedValue(undefined)
 }));
 
 vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => auth.value }));
@@ -46,7 +45,6 @@ describe("ProPage", () => {
       refreshEntitlement: vi.fn().mockResolvedValue(undefined)
     };
     billing.startStripeCheckout.mockClear();
-    billing.openStripeBillingPortal.mockClear();
   });
 
   it("shows plans to guests and sends the trial action through account sign-in", async () => {
@@ -76,13 +74,11 @@ describe("ProPage", () => {
     expect(billing.startStripeCheckout).toHaveBeenCalledWith("monthly", "/weekly-crossword");
   });
 
-  it("routes active Stripe subscribers to billing management instead of checkout", async () => {
-    const user = userEvent.setup();
+  it("shows active Stripe subscribers where Link manages their subscription", () => {
     auth.value.entitlement = { isPro: true, expiresAt: "2026-10-01T00:00:00.000Z", provider: "stripe", cancelAtPeriodEnd: false };
     renderPage();
 
     expect(screen.queryByRole("button", { name: "Start 7-day free trial" })).not.toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Manage web subscription" }));
-    expect(billing.openStripeBillingPortal).toHaveBeenCalledOnce();
+    expect(screen.getByRole("link", { name: "Link" })).toHaveAttribute("href", "https://link.com");
   });
 });

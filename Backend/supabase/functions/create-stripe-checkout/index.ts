@@ -7,6 +7,11 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS"
 };
 
+// Managed Payments is currently exposed by Stripe through this preview API
+// version. Keep it scoped to Checkout so normal subscription reads and account
+// deletion remain on the account's default stable API version.
+const managedPaymentsAPIVersion = "2026-03-04.preview";
+
 type CheckoutRequest = { plan?: "monthly" | "annual"; returnPath?: string };
 type StripeCustomer = { id: string };
 type StripeCheckoutSession = { url: string | null };
@@ -72,9 +77,8 @@ Deno.serve(async (request) => {
       customer: customerID,
       "line_items[0][price]": priceID,
       "line_items[0][quantity]": 1,
-      "automatic_tax[enabled]": true,
       billing_address_collection: "required",
-      "customer_update[address]": "auto",
+      "managed_payments[enabled]": true,
       allow_promotion_codes: false,
       client_reference_id: user.id,
       "metadata[backword_user_id]": user.id,
@@ -84,6 +88,7 @@ Deno.serve(async (request) => {
       cancel_url: `${webOrigin}/pro?checkout=cancelled&return_to=${encodeURIComponent(returnPath)}`
     },
     // One signed-in account may only have one outstanding Checkout Session.
+    apiVersion: managedPaymentsAPIVersion,
     idempotencyKey: `backword-checkout:${user.id}`
   });
   if (!session.url) return response("Could not start checkout", 502);

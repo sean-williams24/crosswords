@@ -18,7 +18,3 @@ verify_jwt = false
 # Browser CORS preflight has no bearer token; the handler verifies the user on
 # every non-OPTIONS request with Supabase Auth before creating Checkout.
 verify_jwt = false
-
-[functions.create-stripe-portal]
-# The portal function performs the same per-request Supabase Auth verification.
-verify_jwt = false
