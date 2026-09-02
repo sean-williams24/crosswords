@@ -54,5 +54,9 @@ describe("GameMenu account actions", () => {
     const login = screen.getByRole("link", { name: "Login" });
     expect(login).toHaveClass("bw-menu-link--primary");
     expect(login.querySelector(".auth-button__compact-label")).toHaveTextContent("Login");
+    const upgrade = screen.getByRole("link", { name: "Get full access" });
+    expect(upgrade).toHaveAttribute("href", "/pro");
+    expect(upgrade).toHaveClass("bw-menu-upgrade");
+    expect(login.compareDocumentPosition(upgrade) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });

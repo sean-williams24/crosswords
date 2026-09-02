@@ -20,11 +20,6 @@ export function Footer() {
           <Link className="transition hover:text-textPrimary" to="/crossword">
             Crossword
           </Link>
-          {!entitlement?.isPro ? (
-            <Link className="transition hover:text-textPrimary" to="/pro">
-              Get Pro
-            </Link>
-          ) : null}
           <Link className="transition hover:text-textPrimary" to={weeklyCrosswordDestination}>
             Pro Crossword
           </Link>
@@ -34,6 +29,11 @@ export function Footer() {
           <Link className="transition hover:text-textPrimary" to="/player-profile">
             Player Profile
           </Link>
+          {!entitlement?.isPro ? (
+            <Link className="transition hover:text-textPrimary" to="/pro">
+              Subscribe
+            </Link>
+          ) : null}
           <Link className="transition hover:text-textPrimary" to="/info">
             Info
           </Link>

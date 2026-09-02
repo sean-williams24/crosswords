@@ -85,12 +85,12 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
               <Link className="bw-menu-link bw-menu-link--primary" to="/">Home</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/backword">Backword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/crossword">Quick Crossword</Link>
-              <Link className="bw-menu-link bw-menu-link--primary" to="/pro">Get Pro</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to={weeklyCrosswordDestination}>Pro Crossword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to={archiveDestination}>Archive</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/info">Info</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/contact">Contact</Link>
               <AuthButton className="bw-menu-link bw-menu-link--primary bw-menu-auth" />
+              {!entitlement?.isPro ? <Link className="bw-menu-upgrade" to="/pro">Get full access</Link> : null}
               <div className="bw-menu-links__legal">
                 <Link className="bw-menu-link bw-menu-link--secondary" to="/privacy">Privacy</Link>
                 <Link className="bw-menu-link bw-menu-link--secondary" to="/terms">Terms</Link>

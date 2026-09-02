@@ -238,7 +238,6 @@ a {
   margin: 0;
   padding: 18px 0;
   border: 0;
-  border-bottom: 1px solid rgb(255 255 255 / 15%);
   border-radius: 0;
   color: var(--bw-primary, #eee);
   background: transparent;
@@ -249,6 +248,22 @@ a {
 }
 .auth-button.bw-menu-auth:hover,
 .auth-button.bw-menu-auth:focus-visible { color: #5fa4dc; background: transparent; outline: none; transform: none; }
+.bw-menu-upgrade {
+  display: flex;
+  min-height: 48px;
+  margin-top: 18px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-radius: 7px;
+  color: var(--bw-primary, #eee);
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+.bw-menu-upgrade:hover,
+.bw-menu-upgrade:focus-visible { border-color: rgb(255 255 255 / 55%); background: #1d1d1d; outline: none; }
 .bw-menu-store-badge { margin-left: auto; }
 .bw-menu-store-badge img { display: block; height: 48px; width: auto; }
 

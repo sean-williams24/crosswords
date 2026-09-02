@@ -52,7 +52,7 @@ describe("Backword website routes", () => {
       "Home",
       "Backword",
       "Crossword",
-      "Get Pro",
+      "Subscribe",
       "Pro Crossword",
       "Player Profile",
       "Info",
