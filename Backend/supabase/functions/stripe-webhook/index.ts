@@ -1,22 +1,14 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { stripeISODate, stripeRequest, verifyStripeWebhook } from "../_shared/stripe.ts";
+import { subscriptionExpiryUnixSeconds, type StripeSubscription } from "../_shared/stripeSubscription.ts";
 
-type StripeSubscription = {
-  object?: string;
-  id: string;
-  customer: string;
-  status: string;
-  current_period_end?: number;
-  cancel_at_period_end?: boolean;
-  metadata?: Record<string, string | undefined>;
-  items?: { data?: Array<{ price?: { id?: string } }> };
-};
+type StripeSubscriptionEventObject = StripeSubscription & { object?: string };
 
 type StripeEvent = {
   id: string;
   type: string;
   created: number;
-  data: { object: StripeSubscription | { subscription?: string } };
+  data: { object: StripeSubscriptionEventObject | { subscription?: string } };
 };
 
 function entitlementStatus(status: string) {
@@ -40,7 +32,7 @@ function errorContext(error: unknown) {
 }
 
 async function subscriptionFor(event: StripeEvent) {
-  const object = event.data.object as StripeSubscription;
+  const object = event.data.object as StripeSubscriptionEventObject;
   if (object.object === "subscription") return object;
   const subscriptionID = (object as { subscription?: string }).subscription;
   if (!subscriptionID) return null;
@@ -99,7 +91,7 @@ Deno.serve(async (request) => {
         user_id: userID,
         product_id: subscription.items?.data?.[0]?.price?.id ?? "stripe_pro",
         status: entitlementStatus(subscription.status),
-        expires_at: stripeISODate(subscription.current_period_end),
+        expires_at: stripeISODate(subscriptionExpiryUnixSeconds(subscription)),
         cancel_at_period_end: subscription.cancel_at_period_end ?? false,
         source_event_at: eventAt,
         updated_at: new Date().toISOString()

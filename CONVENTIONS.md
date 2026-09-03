@@ -110,6 +110,13 @@ subscription to stop renewing, removes the Backword UUID from Stripe metadata,
 and immediately removes account-linked Pro access; Apple subscriptions are
 never cancelled by Backword account deletion.
 
+Stripe API versions from Basil onward expose a subscription's billing end on
+`items.data[].current_period_end`, not the top-level subscription object. The
+webhook derives the entitlement expiry from Stripe's explicit `cancel_at` when
+present, otherwise the earliest item billing end (with a legacy top-level
+fallback). This means a cancellation scheduled for period end retains Pro only
+until that actual Stripe timestamp, rather than indefinitely.
+
 The annual Pro price is £8.99 (tax inclusive) alongside £1.49 monthly. The
 same product prices must be configured in App Store Connect, Stripe, the local
 StoreKit test catalog, and the web plan presentation; price IDs rather than
