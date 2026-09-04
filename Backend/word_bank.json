@@ -67214,7 +67214,7 @@
             "Hellenic tongue",
             "Hellenic"
         ],
-        "hard_text": "Citizen of Athens, perhaps"
+        "hard_text": "Athenian by nationality"
     },
     {
         "word": "grief",
@@ -90274,7 +90274,7 @@
         "hint": "North African nationality, perhaps",
         "clues": [
             "Of Algiers' nation",
-            "North African, perhaps",
+            "Saharan nation citizen",
             "Like a resident of Oran"
         ],
         "hard_text": "From a country rich in desert history?"
@@ -91179,7 +91179,7 @@
             "Enhanced with creamy goodness",
             "Made richer with a yellow touch"
         ],
-        "hard_text": "Coated for toast, perhaps"
+        "hard_text": "Like toast before jam"
     },
     {
         "word": "buttoned",
@@ -108865,7 +108865,7 @@
         "hard_text": "One who hails from the rising sun",
         "clues": [
             "Resident of a certain cardinal direction",
-            "New Englander, perhaps",
+            "Atlantic-coast resident",
             "Person from the sunrise side"
         ]
     },
@@ -126805,7 +126805,7 @@
         "clues": [
             "American frontier resident",
             "Person from cowboy country",
-            "Oregonian, perhaps"
+            "Resident beyond the Rockies"
         ]
     },
     {
@@ -127377,7 +127377,7 @@
         "clues": [
             "Full capacity of a vehicle",
             "Bulk delivery on wheels",
-            "A wagonful, perhaps"
+            "Vehicle's full freight"
         ]
     },
     {
@@ -140024,7 +140024,7 @@
         "hint": "restroom",
         "hard_text": "Where privacy meets hygiene",
         "clues": [
-            "Lavatory, perhaps",
+            "Home of a shower",
             "Necessary for daily rituals",
             "A space for personal care"
         ]
@@ -147997,7 +147997,7 @@
         "clues": [
             "Pyramid builder's nationality",
             "Cairo's cultural identity",
-            "Native of Cairo, perhaps"
+            "One from the Nile's realm"
         ]
     },
     {
@@ -174459,7 +174459,7 @@
         "hard_text": "Picturesque",
         "clues": [
             "Offering lovely views",
-            "Like a postcard, perhaps",
+            "Worth the detour for its vistas",
             "Pleasant to behold"
         ]
     },
@@ -188326,7 +188326,7 @@
         "hint": "Wooden or metal seating option",
         "hard_text": "Where one might rest outdoors",
         "clues": [
-            "Park seats, perhaps",
+            "Long outdoor perches",
             "Furniture for more than one",
             "Long seats often in parks"
         ]
@@ -188602,7 +188602,7 @@
         "hard_text": "Couscous and tagine origins",
         "clues": [
             "Of Casablanca, for example",
-            "North African native, perhaps",
+            "Marrakesh native",
             "Cuisine rich in spices and flavors"
         ]
     },
@@ -199072,7 +199072,7 @@
         "hint": "Flowers",
         "hard_text": "Floral displays in spring?",
         "clues": [
-            "Flowers on a tree, perhaps",
+            "Cherry-tree adornments",
             "Blooming flora in gardens",
             "Floral growth in nature"
         ]
@@ -200973,7 +200973,7 @@
         "hint": "Accuses",
         "hard_text": "Asserts without definitive evidence",
         "clues": [
-            "Claims without proof, perhaps",
+            "Says it happened, without evidence",
             "Presents accusations in a formal way",
             "States an accusation without evidence"
         ]
@@ -209584,7 +209584,7 @@
         "clues": [
             "Individuals wielding weapons",
             "Men ready to pull the trigger",
-            "Armed robbers, perhaps"
+            "Weapon-bearing outlaws"
         ]
     },
     {
@@ -219533,7 +219533,7 @@
         "hint": "Least quick",
         "hard_text": "Lags behind in speed",
         "clues": [
-            "Last in a race, perhaps",
+            "At the back of the pack",
             "Least rapid of the group",
             "Most sluggish in a comparison"
         ]
@@ -225792,7 +225792,7 @@
         "hint": "Celtic heritage bearer",
         "hard_text": "One from a land of green hills and whiskey",
         "clues": [
-            "Man from Dublin, perhaps",
+            "Dublin-born fellow",
             "Native of the Emerald Isle",
             "Citizen of Ireland"
         ]
@@ -228355,7 +228355,7 @@
         "clues": [
             "Native of Kinshasa, say",
             "Citizens of two nations",
-            "Kinshasa native, perhaps"
+            "Resident of a central African republic"
         ]
     },
     {
@@ -235544,7 +235544,7 @@
         "word": "VANDALS",
         "text": "Those who deliberately destroy property",
         "hint": "Destroyers",
-        "hard_text": "Graffiti artists, perhaps",
+        "hard_text": "Property wreckers",
         "clues": [
             "Defacing public property",
             "Engaging in wanton destruction",
