@@ -3493,7 +3493,7 @@
         "clues": [
             "Sure of oneself",
             "Feeling bold after a pep talk",
-            "Sure of oneself"
+            "Secure in one's abilities"
         ]
     },
     {
@@ -3811,7 +3811,7 @@
         "hard_text": "Dressed up for a board meeting?",
         "clues": [
             "Relating to a business entity?",
-            "Relating to a company",
+            "Boardroom-related",
             "Of a business organization"
         ]
     },
@@ -4601,7 +4601,7 @@
         "hint": "Cards in a poker game",
         "hard_text": "Handled or distributed in the past",
         "clues": [
-            "Distributed cards",
+            "Gave each player a hand",
             "Gave out in a previous scenario",
             "Distributed cards in a card game"
         ]
@@ -4865,7 +4865,7 @@
         "hint": "Leaving for a new adventure",
         "hard_text": "The moment you say goodbye",
         "clues": [
-            "Act of leaving",
+            "Time to go",
             "A flight's scheduled takeoff",
             "Leaving behind the familiar"
         ]
@@ -5382,7 +5382,7 @@
         "hint": "Finished with a task",
         "hard_text": "Finalized and complete?",
         "clues": [
-            "Completed",
+            "Finished at last",
             "Completed",
             "Checked off the list?"
         ]
@@ -7162,7 +7162,7 @@
         "hard_text": "To rattle someone's composure",
         "clues": [
             "Throw off balance",
-            "Disturb or unsettle",
+            "Make someone uneasy",
             "To unsettle with unexpected news"
         ]
     },
@@ -7680,7 +7680,7 @@
         "clues": [
             "Navy's collection of warships",
             "A naval contingent at sea",
-            "Group of ships or vehicles"
+            "Convoy under one command"
         ]
     },
     {
@@ -10634,7 +10634,7 @@
         "word": "HURRICANE",
         "text": "Powerful tropical storm",
         "hint": "Severe weather phenomenon with winds",
-        "hard_text": "Powerful tropical storm",
+        "hard_text": "Cyclone born over warm water",
         "clues": [
             "Named rotating storm",
             "Weather pattern with fierce winds?",
@@ -11243,7 +11243,7 @@
         "clues": [
             "Denim material",
             "Comfortable fabric for the everyday hero",
-            "Denim fabric"
+            "Sturdy cotton twill"
         ]
     },
     {
@@ -14045,7 +14045,7 @@
         "hint": "Neck area for a stylish cut",
         "hard_text": "Hidden spot for tattoos?",
         "clues": [
-            "Back of the neck",
+            "Neck's rear side",
             "Where hairstyles meet skin",
             "Area often left unshaved"
         ]
@@ -14839,7 +14839,7 @@
         "clues": [
             "Rust is iron ___",
             "Chemical compound type in batteries",
-            "Compound of oxygen with another element"
+            "Rust's chemical family"
         ]
     },
     {
@@ -18864,7 +18864,7 @@
         "hint": "Strength provider in anatomy",
         "hard_text": "Connective tissue, but not a muscle?",
         "clues": [
-            "Tendon",
+            "Tough tissue that moves a joint",
             "What gives strength to movement?",
             "Tough connective tissue"
         ]
@@ -22166,7 +22166,7 @@
         "clues": [
             "Been through it",
             "Passed through a change",
-            "Experienced or endured"
+            "Lived through a change"
         ]
     },
     {
@@ -22219,7 +22219,7 @@
         "hint": "One of a kind",
         "hard_text": "Standing out from the crowd",
         "clues": [
-            "Unlike anything else",
+            "One of a kind",
             "One among many, yet special",
             "Unlike anything else"
         ]
@@ -22286,7 +22286,7 @@
         "hard_text": "Time's final countdown?",
         "clues": [
             "Before a certain point",
-            "Up to the time that",
+            "Up to a deadline",
             "Up to the time that"
         ]
     },
@@ -25023,7 +25023,7 @@
         "text": "In addition to what was said",
         "hint": "Used to add more information",
         "clues": [
-            "Moreover",
+            "And another thing",
             "In addition",
             "Moreover"
         ],
@@ -26555,7 +26555,7 @@
             "Thrifty individual with tight pockets. (5,5)",
             "Frugal friend at the store. (5,5)"
         ],
-        "hard_text": "Miserly person. (5,5)"
+        "hard_text": "Penny-pinching sort (5,5)"
     },
     {
         "word": "CHEESECAKE",
@@ -27039,7 +27039,7 @@
             "It's excellent, yet off the chart. (3,8)",
             "Remarkable, yet not in attendance. (3,8)"
         ],
-        "hard_text": "Exceptionally good (3,8)"
+        "hard_text": "Notable, but not present?"
     },
     {
         "word": "QUICKSILVER",
@@ -27178,7 +27178,7 @@
         "text": "Tall structure with a timepiece. (5,5)",
         "hint": "Famous example in London. (5,5)",
         "clues": [
-            "Tall structure with a timepiece (5,5)",
+            "Big Ben, for example",
             "Where time stands tall. (5,5)",
             "Landmark marking the passing minutes. (5,5)"
         ],
@@ -28434,7 +28434,7 @@
         "clues": [
             "Charming and lovely",
             "What a charming surprise feels like?",
-            "Highly pleasing"
+            "A real treat"
         ],
         "hard_text": "A taste that brings joy?"
     },
@@ -30325,7 +30325,7 @@
         "hint": "Not recognized by an authority",
         "clues": [
             "Off the record",
-            "Not formally authorized",
+            "Without formal backing",
             "Casual, but still carrying weight?"
         ],
         "hard_text": "Not yet stamped with approval?"
@@ -31579,7 +31579,7 @@
         "hint": "Often used in job contracts",
         "clues": [
             "Not permanently",
-            "For a limited time",
+            "Just for now",
             "In a state of flux, briefly"
         ],
         "hard_text": "For now, or until further notice"
@@ -31975,7 +31975,7 @@
         "hint": "Met unexpectedly",
         "clues": [
             "Met by chance",
-            "Came across unexpectedly",
+            "Ran into by chance",
             "Stumbled upon during a casual stroll"
         ],
         "hard_text": "Met with an unexpected surprise"
@@ -32371,8 +32371,8 @@
         "hint": "Delayed by a constriction (6,6)",
         "clues": [
             "Delayed by a constriction (6,6)",
-            "Delayed by a constriction (6,6)",
-            "Delayed by a constriction (6,6)"
+            "Traffic jam at a crucial point",
+            "Constricted flow causing delays"
         ],
         "hard_text": "Trapped in a narrow squeeze. (6,6)"
     },
@@ -32382,8 +32382,8 @@
         "hint": "Generated ideas collaboratively (5,7)",
         "clues": [
             "Generated ideas collaboratively (5,7)",
-            "Generated ideas collaboratively (5,7)",
-            "Generated ideas collaboratively (5,7)"
+            "Collective thinking in full swing",
+            "Creative eruptions in a meeting"
         ],
         "hard_text": "Ideas sparked in a group setting. (5,7)"
     },
@@ -32404,8 +32404,8 @@
         "hint": "Causing great damage or suffering (5,7)",
         "clues": [
             "Disastrous",
-            "Causing great damage or suffering (5,7)",
-            "Causing great damage or suffering (5,7)"
+            "Disaster waiting to happen",
+            "Turning the tables to calamity"
         ],
         "hard_text": "Causing great damage or suffering (5,7)"
     },
@@ -32572,7 +32572,7 @@
             "Causing an uneasy shift in mood",
             "Not quite right, could leave you unsettled"
         ],
-        "hard_text": "Causing unease"
+        "hard_text": "Likely to make one squirm"
     },
     {
         "word": "DISCOVERABLE",
@@ -32836,7 +32836,7 @@
             "One after another, not all at once",
             "Addressing each separately"
         ],
-        "hard_text": "One at a time"
+        "hard_text": "Separately, rather than together"
     },
     {
         "word": "INSUFFICIENT",
@@ -33008,11 +33008,11 @@
         "text": "Surface abrasion with a grit-coated sheet (4,8)",
         "hint": "Preparation for smooth finishes",
         "clues": [
-            "Surface abrasion with a grit-coated sheet (4,8)",
-            "Surface abrasion with a grit-coated sheet (4,8)",
-            "Surface abrasion with a grit-coated sheet (4,8)"
+            "Rubbing down wood",
+            "Grating rough edges on wood",
+            "A finish that needs a little rub"
         ],
-        "hard_text": "Surface abrasion with a grit-coated sheet (4,8)"
+        "hard_text": "Smoothing surfaces, one grit at a time"
     },
     {
         "word": "SATISFACTORY",
@@ -33030,7 +33030,7 @@
         "text": "Importance or meaning",
         "hint": "What makes something important",
         "clues": [
-            "Importance or meaning",
+            "Why something matters",
             "Importance that can't be ignored",
             "Value that resonates beyond the surface"
         ],
@@ -33041,11 +33041,11 @@
         "text": "Somnambulism (5,7)",
         "hint": "Unconscious night-time activity",
         "clues": [
-            "Somnambulism (5,7)",
-            "Somnambulism (5,7)",
-            "Somnambulism (5,7)"
+            "Nocturnal wandering",
+            "Nighttime wandering with closed eyes",
+            "Dream-state stroll"
         ],
-        "hard_text": "Somnambulism (5,7)"
+        "hard_text": "Roaming while dreaming, unaware"
     },
     {
         "word": "SOPHISTICATED",
@@ -33075,17 +33075,17 @@
         "hint": "Professionals in financial markets",
         "clues": [
             "Advisors for investments and trades",
-            "Professionals who trade shares for clients (5,7)",
-            "Professionals who trade shares for clients (5,7)"
+            "Buyers and sellers of financial stakes",
+            "Navigators of Wall Street's wild seas"
         ],
-        "hard_text": "Professionals who trade shares for clients (5,7)"
+        "hard_text": "Market players with sharp eyes"
     },
     {
         "word": "STORYTELLING",
         "text": "Narrative craft (5,7)",
         "hint": "Entrancing audiences with narratives",
         "clues": [
-            "Narrative craft. (5,7)",
+            "Narrative craft",
             "Weaving tales that captivate audiences. (5,7)",
             "Art of spinning yarns, old and new. (5,7)"
         ],
@@ -33448,7 +33448,7 @@
         "text": "Mainly or mostly",
         "hint": "Mostly observed in statistics",
         "clues": [
-            "For the most part",
+            "By and large",
             "For the most part",
             "Where one element takes the spotlight"
         ],
@@ -33614,7 +33614,7 @@
         "hint": "Common behavior in students",
         "clues": [
             "Put it off",
-            "Delayed doing something",
+            "Waited until later",
             "Put off action"
         ],
         "hard_text": "Delayed until the last minute"
@@ -33803,7 +33803,7 @@
         "clues": [
             "With competence",
             "Like a pro",
-            "Competently"
+            "With skill"
         ]
     },
     {
@@ -34098,7 +34098,7 @@
         "hard_text": "Old-fashioned 'later'",
         "clues": [
             "Shortly, in verse",
-            "Soon",
+            "Before long",
             "Swiftly, in Shakespeare"
         ]
     },
@@ -35130,7 +35130,7 @@
         "clues": [
             "Member of the UK",
             "Commonwealth citizen",
-            "UK citizen, informally"
+            "Subject of the Crown, informally"
         ]
     },
     {
@@ -35568,7 +35568,7 @@
         "hard_text": "Dog breed or meal",
         "clues": [
             "Eat heartily",
-            "Food",
+            "Something to eat",
             "Munchies"
         ]
     },
@@ -35695,7 +35695,7 @@
         "word": "COIF",
         "text": "Hairstyle",
         "hint": "Arrange",
-        "hard_text": "Hairstyle",
+        "hard_text": "Styled head of hair",
         "clues": [
             "Legal headwear",
             "Hairdo",
@@ -36007,7 +36007,7 @@
         "clues": [
             "Enclosed sac in the body",
             "Medical sac",
-            "Fluid-filled sac"
+            "Pocket of fluid beneath the skin"
         ]
     },
     {
@@ -36585,7 +36585,7 @@
         "hard_text": "Inside information",
         "clues": [
             "Slang for drugs",
-            "Inside information",
+            "The scoop, informally",
             "Foolish person"
         ]
     },
@@ -36640,7 +36640,7 @@
         "hard_text": "Fawn over",
         "clues": [
             "Be overly affectionate",
-            "Be excessively fond",
+            "Be smitten with",
             "Be excessively fond"
         ]
     },
@@ -37024,7 +37024,7 @@
         "hint": "Spot",
         "hard_text": "Detect from afar",
         "clues": [
-            "Catch sight of",
+            "Notice from a distance",
             "Catch a glimpse",
             "Spot"
         ]
@@ -37090,7 +37090,7 @@
         "hint": "Old flames",
         "hard_text": "Past significant others",
         "clues": [
-            "Former partners",
+            "People you once dated",
             "Previous partners",
             "Past lovers"
         ]
@@ -38378,8 +38378,8 @@
         "hard_text": "Perfectly suited to the situation?",
         "clues": [
             "In a fitting manner",
-            "In a fitting manner",
-            "In a fitting manner"
+            "Just right for context",
+            "Exactly fitting description"
         ]
     },
     {
@@ -38817,7 +38817,7 @@
         "hard_text": "Rotational reference point?",
         "clues": [
             "Aligning with axis",
-            "Relating to an axis",
+            "Centered on a line of rotation",
             "Relating to rotation"
         ]
     },
@@ -39388,8 +39388,8 @@
         "hint": "Hobbit protagonist of a Tolkien novel",
         "hard_text": "Hobbit protagonist of a Tolkien novel",
         "clues": [
-            "Hobbit protagonist of a Tolkien novel",
-            "Hobbit protagonist of a Tolkien novel",
+            "Famous sword in 'The Hobbit'?",
+            "A renowned blade of Middle-earth",
             "Broad-bladed cutlass"
         ]
     },
@@ -39445,7 +39445,7 @@
         "clues": [
             "Two-legged animal?",
             "Not a quadruped",
-            "Two-legged animal"
+            "Creature with two feet"
         ]
     },
     {
@@ -39630,7 +39630,7 @@
         "hint": "Wink",
         "hard_text": "A rapid eye movement",
         "clues": [
-            "Close and reopen the eyes quickly",
+            "An eye's quick shut-and-open",
             "Close and reopen the eyes quickly",
             "Eye's momentary closure"
         ]
@@ -41259,7 +41259,7 @@
         "clues": [
             "No pigment present",
             "Snowy creature?",
-            "Person or animal lacking pigment"
+            "White-coated creature"
         ]
     },
     {
@@ -42941,7 +42941,7 @@
         "clues": [
             "Swiftness and dexterity",
             "Mental and physical quickness",
-            "Ability to move quickly and easily"
+            "Nimbleness in motion"
         ]
     },
     {
@@ -44127,7 +44127,7 @@
         "hint": "introduce",
         "hard_text": "To bring someone into knowledge",
         "clues": [
-            "Make familiar with",
+            "Introduce to an unfamiliar subject",
             "Familiarize with another",
             "Make known to"
         ]
@@ -44899,7 +44899,7 @@
         "clues": [
             "Birthstone for February",
             "Symbol of peace and serenity",
-            "Purple variety of quartz"
+            "Purple gemstone in a royal ring"
         ]
     },
     {
@@ -45786,7 +45786,7 @@
         "word": "ACCIDENTAL",
         "text": "Happening by chance",
         "hint": "unintentional",
-        "hard_text": "Happening by chance",
+        "hard_text": "Unintentional",
         "clues": [
             "Not planned?",
             "A serendipitous event",
@@ -45821,7 +45821,7 @@
         "hint": "Certified",
         "hard_text": "Given a seal of approval",
         "clues": [
-            "Officially recognized as meeting standards",
+            "Approved by an outside body",
             "Recognized by an institution",
             "Officially recognized as meeting standards"
         ]
@@ -46184,7 +46184,7 @@
         "hint": "Native or citizen of Denmark",
         "clues": [
             "Scandinavian identity",
-            "Native or citizen of Denmark",
+            "Viking-age Scandinavian",
             "Native or citizen of Denmark"
         ],
         "hard_text": "From a land of Vikings"
@@ -48696,7 +48696,7 @@
         "text": "To deprive of reproductive capability",
         "hint": "Castrate",
         "clues": [
-            "Castrate",
+            "Remove a stallion from breeding",
             "Remove a certain ability, metaphorically",
             "To take away, but not possessions"
         ],
@@ -49455,9 +49455,9 @@
         "text": "Skywalker trained by Yoda",
         "hint": "Third Gospel of the New Testament",
         "clues": [
-            "Third Gospel of the New Testament",
+            "A name that means 'light'",
             "Famous biblical author with a cool name",
-            "Third Gospel of the New Testament"
+            "Mildness personified, perhaps?"
         ],
         "hard_text": "Third Gospel of the New Testament"
     },
@@ -49819,7 +49819,7 @@
         "clues": [
             "Gangster's romantic partner",
             "Gangster's girlfriend",
-            "Gangster's female companion"
+            "Criminal's romantic partner"
         ],
         "hard_text": "Gangster's female companion"
     },
@@ -49828,9 +49828,9 @@
         "text": "Female given name",
         "hint": "Famous artwork's subject, perhaps",
         "clues": [
-            "Female given name",
-            "A woman's given name",
-            "Female given name"
+            "Famous artwork's subject",
+            "Female personal name",
+            "Mystery behind a smile"
         ],
         "hard_text": "A woman's given name"
     },
@@ -50697,11 +50697,11 @@
         "text": "Appealed earnestly",
         "hint": "Appealed earnestly",
         "clues": [
-            "Appealed earnestly",
-            "Appealed earnestly",
-            "Appealed earnestly"
+            "Formal promise made",
+            "Sworn commitment, perhaps",
+            "Past tense of a serious vow"
         ],
-        "hard_text": "Appealed earnestly"
+        "hard_text": "Bound by a promise"
     },
     {
         "word": "plot",
@@ -51413,7 +51413,7 @@
         "clues": [
             "Past action of a ship going under",
             "Went down, often unexpectedly",
-            "Went below the surface"
+            "Dropped beneath the waves"
         ],
         "hard_text": "Dropped suddenly into the water"
     },
@@ -52379,7 +52379,7 @@
         "hint": "Maybe reference to a group of people",
         "clues": [
             "Reference to a group of people",
-            "Those people or things",
+            "Object pronoun for a group",
             "Those people or things"
         ],
         "hard_text": "Referring to others, not just a group"
@@ -52411,9 +52411,9 @@
         "text": "Well-organized and neat appearance",
         "hint": "Neat and orderly",
         "clues": [
-            "Neat and orderly",
-            "Neat and orderly",
-            "Neat and orderly"
+            "Clean and orderly arrangement",
+            "Orderliness often associated with cleanliness",
+            "A state beyond chaos, but not perfection"
         ],
         "hard_text": "Neat and orderly"
     },
@@ -52795,9 +52795,9 @@
         "text": "Farmiga, actress in Up in the Air",
         "hint": "Latin for “true”",
         "clues": [
-            "Latin for “true”",
-            "Latin for “true”",
-            "Latin for “true”"
+            "Common ingredient in cosmetics",
+            "Plant known for its healing power",
+            "Nature's remedy in a pot"
         ],
         "hard_text": "Latin for “true”"
     },
@@ -52862,7 +52862,7 @@
         "hint": "Electrical measurement unit, loosely",
         "clues": [
             "Unit representing electrical pressure",
-            "Unit of electric potential difference",
+            "Battery rating",
             "What you might need for a battery boost"
         ],
         "hard_text": "Unit of electric potential difference"
@@ -54337,7 +54337,7 @@
             "Egg cell with potential",
             "Tiny beginning of life"
         ],
-        "hard_text": "Female reproductive cell"
+        "hard_text": "Cell that can become an embryo"
     },
     {
         "word": "paca",
@@ -54948,7 +54948,7 @@
         "text": "Flat-bottomed boat",
         "hint": "Furrowed brow expression, loosely",
         "clues": [
-            "Flat-bottomed cargo boat",
+            "Cargo craft with a shallow hull",
             "Frown or a vessel of the seas?",
             "Flat-bottomed cargo boat"
         ],
@@ -55722,7 +55722,7 @@
             "A name synonymous with value",
             "A classic name with a twist"
         ],
-        "hard_text": "Chekhov's given name"
+        "hard_text": "First name of playwright Chekhov"
     },
     {
         "word": "aries",
@@ -58190,7 +58190,7 @@
         "clues": [
             "Nile-adjacent metropolis",
             "Capital with a famous river",
-            "Egyptian capital on the Nile"
+            "Metropolis beside the pyramids"
         ],
         "hard_text": "Egyptian capital on the Nile"
     },
@@ -59069,7 +59069,7 @@
         "clues": [
             "Language or nationality from the Netherlands",
             "Style of painting coming from the canals",
-            "Of the Netherlands"
+            "Of the Low Countries"
         ],
         "hard_text": "Of the Netherlands"
     },
@@ -59134,8 +59134,8 @@
         "hint": "Seen as may describe a sharp knife or a tense situation",
         "clues": [
             "Having a border",
-            "Having a border",
-            "Having a border"
+            "Having a point, both literally and figuratively",
+            "Cutting remarks can leave you this way"
         ],
         "hard_text": "Not flat, but sharp around the corners"
     },
@@ -59661,7 +59661,7 @@
         "text": "Less confined or constrained",
         "hint": "More unrestricted than before",
         "clues": [
-            "Less restricted",
+            "With fewer limits",
             "More liberated than others",
             "Having greater autonomy"
         ],
@@ -61287,7 +61287,7 @@
         "hint": "Often measurement of visible light",
         "clues": [
             "Measurement of visible light",
-            "Unit of luminous flux",
+            "A measure of bulb brightness",
             "Brightness defined in a quantifiable way"
         ],
         "hard_text": "Unit measuring light output"
@@ -61408,8 +61408,8 @@
         "hint": "Common summer picnic fruit, perhaps",
         "clues": [
             "Common summer picnic fruit",
-            "Cantaloupe or honeydew",
-            "Cantaloupe or honeydew"
+            "Summertime treat that's not quite a berry",
+            "Large fruit, often mistaken for a gourd"
         ],
         "hard_text": "Cantaloupe or honeydew"
     },
@@ -61715,7 +61715,7 @@
         "text": "Dangerous or threatening, as an injury or storm",
         "hint": "Mean or unpleasant",
         "clues": [
-            "Mean or unpleasant",
+            "Cruel or disagreeable",
             "Mean or unpleasant",
             "Not nice, but you saw it coming"
         ],
@@ -61959,7 +61959,7 @@
         "clues": [
             "Shape of certain leaves or fruits",
             "Egg-like form finds favor?",
-            "Egg-shaped"
+            "Oval in outline"
         ],
         "hard_text": "Egg-shaped"
     },
@@ -61990,7 +61990,7 @@
         "text": "Triatomic molecule in the atmosphere",
         "hint": "Three-atom form of oxygen",
         "clues": [
-            "Three-atom form of oxygen",
+            "Protective atmospheric layer",
             "Fresh scent after a storm?",
             "Air quality's guardian against UV"
         ],
@@ -62839,7 +62839,7 @@
         "clues": [
             "Common term in radio communication",
             "Radio acknowledgment",
-            "Radio acknowledgment"
+            "What a spy says after decoding?"
         ],
         "hard_text": "Acknowledgment in the air?"
     },
@@ -62938,7 +62938,7 @@
         "clues": [
             "Propelled a boat with oars",
             "Past tense of a lake activity?",
-            "Propelled a boat with oars"
+            "Paddled to shore after a journey?"
         ],
         "hard_text": "Propelled through water manually?"
     },
@@ -63123,7 +63123,7 @@
         "text": "Member of a Germanic people that settled in England",
         "hint": "Germanic settler in early England",
         "clues": [
-            "Member of a Germanic people that settled in England",
+            "Germanic tribes that settled in England",
             "Early English person of Germanic ancestry",
             "Member of an early medieval Germanic people"
         ],
@@ -63840,7 +63840,7 @@
         "clues": [
             "Fish known for its elusive nature",
             "A marine fish of the centropomid family",
-            "A marine fish of the centropomid family"
+            "A clever trickster in aquatic disguise"
         ],
         "hard_text": "A fish that often eludes capture"
     },
@@ -63906,7 +63906,7 @@
         "clues": [
             "Agricultural practitioner",
             "A figure in agricultural beginnings",
-            "Person who plants seeds"
+            "To spread hope in the form of seeds"
         ],
         "hard_text": "Cultivator of future crops"
     },
@@ -66717,7 +66717,7 @@
         "clues": [
             "Man-made aquatic pathway",
             "Waterway for adventurous rides?",
-            "Artificial water channel"
+            "Conduit for streams of ideas?"
         ],
         "hard_text": "Waterway for a fun ride?"
     },
@@ -67421,7 +67421,7 @@
         "clues": [
             "Desirable physique",
             "Charming and well-built?",
-            "Attractively muscular"
+            "Someone fit and appealing?"
         ],
         "hard_text": "Attractive in a rugged way?"
     },
@@ -67476,7 +67476,7 @@
         "clues": [
             "Causing a desire to scratch",
             "Needing to be scratched",
-            "Causing a desire to scratch"
+            "A discomfort you want to remedy?"
         ],
         "hard_text": "Feeling like a scratch is needed?"
     },
@@ -67540,7 +67540,7 @@
         "text": "Aggressive nationalist",
         "hint": "Nationalist favoring an aggressive foreign policy",
         "clues": [
-            "Aggressive nationalist",
+            "War-themed enthusiasm",
             "Person with bellicose patriotic views",
             "Warlike nationalist"
         ],
@@ -68026,7 +68026,7 @@
         "clues": [
             "Most lacking in moisture",
             "Least moisture in a series",
-            "Most lacking in moisture"
+            "Absence of water, at its worst"
         ],
         "hard_text": "Most parched in a desert"
     },
@@ -68103,7 +68103,7 @@
         "clues": [
             "One of two selections",
             "One or the other of two",
-            "Used before each of two alternatives"
+            "Ambiguity in decision-making."
         ],
         "hard_text": "One of two choices"
     },
@@ -69353,9 +69353,9 @@
         "text": "A term for an effeminate man",
         "hint": "Female given name",
         "clues": [
-            "Female given name",
-            "Female given name",
-            "Female given name"
+            "Often associated with a famous song",
+            "A name that rings with nostalgia",
+            "Classic character in childhood tales"
         ],
         "hard_text": "Female given name"
     },
@@ -69366,7 +69366,7 @@
         "clues": [
             "British admiral at Trafalgar",
             "Name associated with naval victory",
-            "British admiral at Trafalgar"
+            "Last name with a royal touch"
         ],
         "hard_text": "A famous admiral with a legendary legacy"
     },
@@ -69454,7 +69454,7 @@
         "clues": [
             "Pasta often served in soup",
             "To think creatively, like a daydream",
-            "Long, thin strip of pasta"
+            "A culinary twist on a classic dish"
         ],
         "hard_text": "Long, thin strip of pasta"
     },
@@ -69916,7 +69916,7 @@
         "clues": [
             "Sale of goods directly to consumers",
             "Shopkeeper's domain?",
-            "Sale of goods directly to consumers"
+            "Where goods change hands?"
         ],
         "hard_text": "Selling to the public directly?"
     },
@@ -70881,7 +70881,7 @@
         "clues": [
             "Cannabis enthusiast",
             "Person who uses cannabis",
-            "Cannabis enthusiast"
+            "Often found with snacks and a movie"
         ],
         "hard_text": "Regular cannabis user"
     },
@@ -71011,7 +71011,7 @@
         "text": "Illuminated by daylight",
         "hint": "Illuminated by the sun",
         "clues": [
-            "Illuminated by the sun",
+            "Brightly illuminated space",
             "Brightened by daylight's touch?",
             "Glowing under the star's gaze?"
         ],
@@ -71794,7 +71794,7 @@
         "clues": [
             "Blue planet named after a deity",
             "Ice giant, but not a winter coat",
-            "Seventh planet from the Sun"
+            "Often misunderstood, but not without charm"
         ],
         "hard_text": "Planet with a tilt, but not leaning"
     },
@@ -72067,7 +72067,7 @@
         "text": "To criticize someone severely",
         "hint": "Scold harshly",
         "clues": [
-            "Scold harshly",
+            "Severe reprimand or admonishment",
             "Sounds like a rebuke, yet might be constructive",
             "Could imply a lecture, not just a complaint"
         ],
@@ -72091,7 +72091,7 @@
         "clues": [
             "Historical women's fashion term",
             "Large collar from the past?",
-            "Female given name"
+            "Name synonymous with size and comfort?"
         ],
         "hard_text": "Female given name"
     },
@@ -72220,7 +72220,7 @@
         "text": "Cooked in water at 100°C",
         "hint": "Common cooking method for pasta, for one",
         "clues": [
-            "Cooked in water at 100°C",
+            "Common cooking method for pasta",
             "Overheated and softened",
             "Tenderized by a bubbling pot?"
         ],
@@ -73945,7 +73945,7 @@
         "clues": [
             "Entirely lacking",
             "Without a trace",
-            "Lacking something essential"
+            "Empty container, perhaps"
         ],
         "hard_text": "Completely lacking one"
     },
@@ -74679,7 +74679,7 @@
         "hint": "Regarded with jealousy",
         "clues": [
             "Regarded with jealousy",
-            "Regarded with jealousy",
+            "Feeling of desire mixed with jealousy",
             "Longed for someone else's success"
         ],
         "hard_text": "Wished for what others have"
@@ -74735,7 +74735,7 @@
         "clues": [
             "Popular card game often played socially",
             "Card game with a unique deck",
-            "Trick-taking card game"
+            "Popular pastime among friends"
         ],
         "hard_text": "Card game requiring strategy"
     },
@@ -74755,9 +74755,9 @@
         "text": "Historically, a castrated male",
         "hint": "Castrated man",
         "clues": [
-            "Castrated man",
-            "Castrated man",
-            "Castrated man"
+            "Serves in royal households",
+            "Not quite a knight, but can serve?",
+            "A person with a unique role in history?"
         ],
         "hard_text": "Castrated man"
     },
@@ -74866,7 +74866,7 @@
         "clues": [
             "Collapse due to weakness",
             "Passes out",
-            "Loses consciousness"
+            "A sudden swoon might lead to this?"
         ],
         "hard_text": "Loses consciousness"
     },
@@ -74954,7 +74954,7 @@
         "clues": [
             "Regarded with dread",
             "Past tense of something that sends chills?",
-            "Dreaded"
+            "Feelings associated with danger or dread?"
         ],
         "hard_text": "Dreaded"
     },
@@ -75011,7 +75011,7 @@
             "Chopper of timber, colloquially",
             "Colloquial term for someone who chops?"
         ],
-        "hard_text": "One who cuts down trees"
+        "hard_text": "A certain profession might require this tool?"
     },
     {
         "word": "fender",
@@ -75261,7 +75261,7 @@
         "hint": "Could be feed for livestock",
         "clues": [
             "Feed for livestock",
-            "Feed for livestock",
+            "Substance for a hungry audience",
             "Material for thought or consumption"
         ],
         "hard_text": "Food for livestock"
@@ -75788,8 +75788,8 @@
         "text": "Military personnel operating artillery",
         "hint": "Person who operates a gun",
         "clues": [
-            "Person who operates a gun",
-            "Person who operates a gun",
+            "Military term for a marksman",
+            "One who delivers a powerful show?",
             "Term for a soldier skilled in firepower?"
         ],
         "hard_text": "Person who operates a gun"
@@ -76450,7 +76450,7 @@
         "clues": [
             "Old Testament warrior and leader",
             "Biblical figure known for a trumpet",
-            "Biblical leader who succeeded Moses"
+            "Nickname for a popular name"
         ],
         "hard_text": "Leader who claimed the Promised Land"
     },
@@ -76650,7 +76650,7 @@
             "At the end of your list",
             "At the end of a sequence"
         ],
-        "hard_text": "In conclusion"
+        "hard_text": "In conclusion, perhaps"
     },
     {
         "word": "lately",
@@ -77062,7 +77062,7 @@
         "text": "Wearing protective armour made of linked rings",
         "hint": "Maybe delivered item or message",
         "clues": [
-            "Sent through the postal system",
+            "Delivered item or message",
             "Dispatched by post",
             "Sent off like a letter, but not always safely"
         ],
@@ -77746,7 +77746,7 @@
         "clues": [
             "Change genetically",
             "Transform, like a superhero",
-            "Undergo genetic change"
+            "Adapt, but not in the wild"
         ],
         "hard_text": "Undergo a change in DNA"
     },
@@ -80930,8 +80930,8 @@
         "hint": "Person with red hair",
         "clues": [
             "Person with red hair",
-            "Person with red hair",
-            "Person with red hair"
+            "Rare hair color, but common in spirit",
+            "Unique hue signalling boldness"
         ],
         "hard_text": "Person with fiery locks, not just a hue"
     },
@@ -82381,7 +82381,7 @@
         "hint": "Hearable sound?",
         "clues": [
             "Hearable sound",
-            "Capable of being heard",
+            "Sound that makes you stop and listen",
             "Within earshot, but not always felt"
         ],
         "hard_text": "Perceptible sound in a quiet room"
@@ -83369,7 +83369,7 @@
         "text": "A word or phrase acted out",
         "hint": "Deceptive pretense",
         "clues": [
-            "Deceptive pretense",
+            "Game often played at parties",
             "Acting without words, guessing is key",
             "What's being acted out, but not spoken?"
         ],
@@ -83690,7 +83690,7 @@
         "clues": [
             "Digestive tract condition",
             "Distress that can make you lose your lunch",
-            "Inflammation of the colon"
+            "What an upset stomach might lead to?"
         ],
         "hard_text": "Inflammation causing a gut feeling"
     },
@@ -84324,7 +84324,7 @@
         "text": "Be entitled to a reward or consequence",
         "hint": "Be worthy of",
         "clues": [
-            "Be worthy of",
+            "What you earn through merit",
             "Be entitled to",
             "Qualifies for something due"
         ],
@@ -84687,7 +84687,7 @@
         "text": "Including people or things from varied backgrounds",
         "hint": "Varied in kind",
         "clues": [
-            "Varied in kind",
+            "Wide-ranging variety",
             "Of many different kinds",
             "Showing great variety"
         ],
@@ -84733,7 +84733,7 @@
         "clues": [
             "Term in arithmetic",
             "Number by which another is divided",
-            "Number by which another is divided"
+            "Number used to split another"
         ],
         "hard_text": "A number that splits evenly"
     },
@@ -84765,7 +84765,7 @@
         "hint": "Could be twice the original amount",
         "clues": [
             "Twice the original amount",
-            "Made twice as large or numerous",
+            "Two for the price of one",
             "Multiplied by two"
         ],
         "hard_text": "Made twice as much"
@@ -84775,9 +84775,9 @@
         "text": "One that makes something twice as large",
         "hint": "One that makes something twice as large",
         "clues": [
-            "One that makes something twice as large",
-            "One that makes something twice as large",
-            "One that makes something twice as large"
+            "Two-for-one offer, e.g.",
+            "A magician's favorite trick",
+            "Person who amplifies an argument"
         ],
         "hard_text": "One who multiplies efforts"
     },
@@ -85814,17 +85814,6 @@
         "hard_text": "Showing a lack of wisdom?"
     },
     {
-        "word": "forties",
-        "text": "Period between the thirties and fifties",
-        "hint": "Decade from 1940 through 1949",
-        "clues": [
-            "Decade from 1940 through 1949",
-            "Age range of maturity and struggle?",
-            "A time of transition post-Great Depression?"
-        ],
-        "hard_text": "Decade from 1940 through 1949"
-    },
-    {
         "word": "founder",
         "text": "Sink after filling with water, as a ship",
         "hint": "Person who establishes an organization",
@@ -85873,9 +85862,9 @@
         "text": "Fried food, often sweet",
         "hint": "Small fried cake",
         "clues": [
-            "Small fried cake",
+            "Type of food that can be wasted",
             "Spend wastefully",
-            "Spend wastefully"
+            "To mix and cook in a hot pan?"
         ],
         "hard_text": "Small fried cake"
     },
@@ -86258,9 +86247,9 @@
         "text": "Comparative indicating larger importance or extent",
         "hint": "Larger in amount or degree",
         "clues": [
-            "Larger in amount or degree",
+            "Superlative form of an adjective",
             "More significant than average",
-            "Larger in amount or degree"
+            "Someone who stands tall among peers"
         ],
         "hard_text": "Larger in amount or degree"
     },
@@ -86270,7 +86259,7 @@
         "hint": "More environmentally friendly",
         "clues": [
             "More environmentally friendly",
-            "More environmentally friendly",
+            "Newcomer enjoying nature's freshness",
             "Less seasoned than seasoned friends"
         ],
         "hard_text": "More inexperienced than the rest"
@@ -86292,7 +86281,7 @@
         "hint": "Associated with explosive military projectile",
         "clues": [
             "Explosive military projectile",
-            "Hand-thrown explosive weapon",
+            "Ball of surprise in a military setting",
             "A throwback to a classic conflict tool"
         ],
         "hard_text": "Hand-thrown explosive weapon"
@@ -86941,7 +86930,7 @@
         "hint": "Causing emotional or physical pain",
         "clues": [
             "Likely to cause offense or distress",
-            "Causing emotional or physical pain",
+            "An action that wounds emotionally or physically",
             "Describes actions that leave lasting scars"
         ],
         "hard_text": "Causing pain, often through words"
@@ -87085,7 +87074,7 @@
         "clues": [
             "Stimulated or prompted action",
             "Caused in a scientific experiment",
-            "Caused or brought about"
+            "Suggested with a little push."
         ],
         "hard_text": "Triggered by external circumstances?"
     },
@@ -87370,7 +87359,7 @@
         "text": "Set in gelatin",
         "hint": "Set in gelatin",
         "clues": [
-            "Set in gelatin",
+            "Gelatin-based treat",
             "Transformed into a quivering state",
             "Set in gelatin, as meat or fruit"
         ],
@@ -87744,7 +87733,7 @@
         "text": "Person with progressive political views",
         "hint": "Person with progressive political views",
         "clues": [
-            "Person with progressive political views",
+            "Progressive politics",
             "Progressive views",
             "Advocate for change and reform"
         ],
@@ -87755,7 +87744,7 @@
         "text": "Lacking lower limbs",
         "hint": "Having no legs",
         "clues": [
-            "Having no legs",
+            "Without support or appendages",
             "A word that applies to some chairs",
             "Describing a creature or object missing appendages"
         ],
@@ -88361,7 +88350,7 @@
         "clues": [
             "Characteristic of minerals",
             "Quality of a diamond, for example?",
-            "Resistance to scratching"
+            "Toughness of materials tested?"
         ],
         "hard_text": "Resistance to scratching?"
     },
@@ -88755,7 +88744,7 @@
         "text": "Well educated or scholarly",
         "hint": "Well educated or scholarly",
         "clues": [
-            "Well educated or scholarly",
+            "Cultured or well-educated person",
             "Educated in the alphabet's art",
             "Having the marks of the educated"
         ],
@@ -88964,7 +88953,7 @@
         "text": "Relating to newborns",
         "hint": "Relating to newborns",
         "clues": [
-            "Relating to newborns",
+            "Care for the very young",
             "Tiny care in the first days",
             "New life in the nursery"
         ],
@@ -89031,7 +89020,7 @@
         "hint": "Related to theoretical ideas, for one",
         "clues": [
             "Related to theoretical ideas",
-            "Existing only in theory",
+            "Hypothetical scenario",
             "Conceptual without being concrete"
         ],
         "hard_text": "Based on ideas, not facts"
@@ -89450,7 +89439,7 @@
         "clues": [
             "Receiving fixed regular compensation",
             "Compensated weekly or monthly",
-            "Receiving fixed regular compensation"
+            "Regular paycheck for duties rendered"
         ],
         "hard_text": "Paid for consistent work, not by hour"
     },
@@ -90099,7 +90088,7 @@
         "clues": [
             "Agent of anguish in the shadows?",
             "Master of discomfort in a dark role?",
-            "One who inflicts severe pain"
+            "Executor of harsh lessons, perhaps?"
         ],
         "hard_text": "One who promotes suffering as a skill?"
     },
@@ -90251,7 +90240,7 @@
         "text": "Sea located east of Italy",
         "hint": "Sea between Italy and the Balkans",
         "clues": [
-            "Sea between Italy and the Balkans",
+            "Eastern Mediterranean Sea",
             "Body of water with Venetian ties?",
             "Mediterranean gem often overlooked?"
         ],
@@ -91175,7 +91164,7 @@
         "text": "Coated with a dairy spread",
         "hint": "Culinary term for a savory layer, perhaps",
         "clues": [
-            "Coated with a dairy spread",
+            "Culinary term for a savory layer",
             "Enhanced with creamy goodness",
             "Made richer with a yellow touch"
         ],
@@ -91516,7 +91505,7 @@
         "text": "Wearing a neckband",
         "hint": "Having a neckband",
         "clues": [
-            "Wearing a neckband",
+            "Neckline feature in fashion",
             "Held in check or restrained",
             "Adorned with a fabric band"
         ],
@@ -95550,7 +95539,7 @@
         "clues": [
             "Unusual or irregular",
             "Strange but not too foreign",
-            "Deviating from the norm"
+            "Unexpected twist in the expected"
         ],
         "hard_text": "Deviating from the norm"
     },
@@ -96428,7 +96417,7 @@
         "text": "Follower of Jesus",
         "hint": "Follower of Jesus",
         "clues": [
-            "Follower of Jesus",
+            "Religious group associated with faith",
             "Faithful follower or holiday name",
             "One with a cross to bear"
         ],
@@ -96990,7 +96979,7 @@
         "clues": [
             "Ten-year anniversary event",
             "Marking a significant passage of a decade",
-            "Occurring every ten years"
+            "Celebration for a milestone ten years in"
         ],
         "hard_text": "Related to a decade's cycle"
     },
@@ -97856,7 +97845,7 @@
         "text": "Relating to internal secretion",
         "hint": "Maybe hormonal system of the body",
         "clues": [
-            "Relating to hormone-secreting glands",
+            "Hormonal system of the body",
             "Connected to the body's chemical messengers?",
             "Of glands that release hormones"
         ],
@@ -98289,7 +98278,7 @@
             "Unable to decipher printed words",
             "Without reading or writing skills"
         ],
-        "hard_text": "Unable to read or write"
+        "hard_text": "Unable to read, yet full of stories"
     },
     {
         "word": "indonesian",
@@ -101353,7 +101342,7 @@
         "text": "Inflammation of the throat glands",
         "hint": "Often inflammation affecting the throat",
         "clues": [
-            "Inflammation of the tonsils",
+            "Inflammation affecting the throat",
             "Cause of swollen tonsils",
             "Throat ailment involving tonsils"
         ],
@@ -101936,7 +101925,7 @@
         "text": "Acting in bad faith",
         "hint": "Associated with deceptive conduct",
         "clues": [
-            "In a deceitful manner",
+            "Deceptive conduct",
             "Not telling the truth?",
             "Fraudulent behavior exhibited?"
         ],
@@ -102270,7 +102259,7 @@
             "Relating to existence or being",
             "Relating to existence, not fashion"
         ],
-        "hard_text": "Relating to the nature of being"
+        "hard_text": "Philosophy about being, perhaps?"
     },
     {
         "word": "exoneration",
@@ -103115,7 +103104,7 @@
             "Supports fashion without a wardrobe",
             "What you might use for drying laundry"
         ],
-        "hard_text": "Laundry-drying rack"
+        "hard_text": "Model for garments, but not alive"
     },
     {
         "word": "condensation",
@@ -103463,7 +103452,7 @@
         "hint": "Linguistic opposite, perhaps",
         "clues": [
             "Linguistic opposite",
-            "Word with an opposite meaning",
+            "Its twin is the opposite?",
             "A term for a contrasting pair?"
         ],
         "hard_text": "Word that stands in opposition?"
@@ -103750,7 +103739,7 @@
         "hard_text": "Currency or philosopher's name",
         "clues": [
             "Philosopher of objectivism",
-            "South African currency",
+            "Greenback in a foreign land",
             "Name associated with capitalism"
         ]
     },
@@ -104277,7 +104266,7 @@
         "hint": "Electrode where oxidation occurs",
         "hard_text": "The positive end in an electrolytic cell",
         "clues": [
-            "Electrode where oxidation occurs",
+            "Opposite of cathode in electrochemistry.",
             "Where electrons leave a device",
             "Found in batteries or electrolysis"
         ]
@@ -104378,7 +104367,7 @@
         "clues": [
             "A state of food preservation by evaporation",
             "dehydrated",
-            "Dehydrated"
+            "What happens to flowers before they are arranged"
         ]
     },
     {
@@ -104499,7 +104488,7 @@
         "clues": [
             "Tiny piece of land surrounded by water",
             "Landmass smaller than a typical island",
-            "Small island"
+            "Not a full island, just a little one"
         ]
     },
     {
@@ -104982,7 +104971,7 @@
         "hard_text": "Not found in a novel, but still a chapter",
         "clues": [
             "Islamic text segment",
-            "Chapter of the Quran",
+            "Quran's divisions",
             "A section in holy writings"
         ]
     },
@@ -105804,7 +105793,7 @@
         "word": "NASSAU",
         "text": "Capital of the Bahamas",
         "hint": "Bahamas capital",
-        "hard_text": "Capital of the Bahamas",
+        "hard_text": "Island known for its pink sand beaches",
         "clues": [
             "Home of the famous Atlantis resort",
             "Location of a famous oceanic paradise",
@@ -106048,7 +106037,7 @@
         "hint": "like a beach ball",
         "hard_text": "Round and plump",
         "clues": [
-            "Round and plump",
+            "Describes a plump and cheerful figure",
             "Circular, but not a wheel",
             "Full-bodied shape, often associated with cheer"
         ]
@@ -106323,7 +106312,7 @@
         "hint": "Moved with determination",
         "hard_text": "Past tense of a long march",
         "clues": [
-            "Walked with long steps",
+            "Covered ground swiftly",
             "Walked purposefully",
             "Advanced with purpose"
         ]
@@ -107205,7 +107194,7 @@
         "clues": [
             "Creates noise when agitated",
             "Disturbs the peace with sound",
-            "Makes a clattering sound"
+            "Sound made by a child's toy"
         ]
     },
     {
@@ -108281,7 +108270,7 @@
         "hint": "nerve-related",
         "hard_text": "Of nerve cells",
         "clues": [
-            "Relating to nerve cells",
+            "Brain's cellular structure, crucial for signaling",
             "Concerning signal-transmitting cells",
             "Relating to the basic units of the nervous system"
         ]
@@ -108503,7 +108492,7 @@
         "clues": [
             "Evoking gratification through tactile experiences",
             "Richly appealing, often in a physical way",
-            "Appealing to the senses"
+            "A quality that stirs the senses delightfully"
         ]
     },
     {
@@ -110053,7 +110042,7 @@
         "hard_text": "Pertaining to the art of growing plants",
         "clues": [
             "Green-thumbed practices",
-            "Relating to garden cultivation",
+            "Floral and vegetable cultivation",
             "Of fruit, vegetable, or flower growing"
         ]
     },
@@ -110349,7 +110338,7 @@
         "hint": "Four angles",
         "hard_text": "Shape with four edges and corners",
         "clues": [
-            "Four-sided polygon",
+            "Polygon with four vertices",
             "Shape often used in geometry",
             "A rectangle or parallelogram, for example"
         ]
@@ -111031,7 +111020,7 @@
         "hint": "living without shelter",
         "hard_text": "A state of being without a roof",
         "clues": [
-            "Lack of a permanent residence",
+            "Condition of the displaced",
             "Not having a fixed abode",
             "Condition of having no fixed abode"
         ]
@@ -111109,7 +111098,7 @@
         "hard_text": "Condition of being bound by financial ties",
         "clues": [
             "Financial obligation or dependency",
-            "State of owing money or gratitude",
+            "Acknowledgment of a favor received",
             "State of being beholden to someone"
         ]
     },
@@ -111548,7 +111537,7 @@
         "hint": "strangely",
         "hard_text": "In a manner far from the ordinary",
         "clues": [
-            "In a bizarre manner",
+            "Exceedingly eccentric behavior",
             "Dramatically unusual way",
             "Uncommonly extravagant style"
         ]
@@ -112306,7 +112295,7 @@
         "hint": "violent craving",
         "hard_text": "A craving that runs deeper than mere hunger",
         "clues": [
-            "Desire for violence or killing",
+            "Craving carnage",
             "Yearning for carnage or brutality",
             "Fervor associated with a vampire's appetite"
         ]
@@ -112693,7 +112682,7 @@
         "clues": [
             "In a way that provokes laughter",
             "As if telling a joke gone right",
-            "In a very funny manner"
+            "Laughter-inducing, perhaps excessively so"
         ]
     },
     {
@@ -113791,7 +113780,7 @@
         "hint": "respectful",
         "hard_text": "Worshipful demeanor in a crowd?",
         "clues": [
-            "Showing deep respect",
+            "Attitude of awe and respect",
             "Honoring with utmost regard",
             "Marked by awe and respect"
         ]
@@ -114277,7 +114266,7 @@
         "clues": [
             "Rash decision without reflection",
             "Neglectful of others' feelings",
-            "Lacking consideration for others"
+            "Absence of mindful awareness"
         ]
     },
     {
@@ -115630,7 +115619,7 @@
         "clues": [
             "Unable to leave home",
             "Confined indoors",
-            "Unable to leave home"
+            "Confined due to circumstances"
         ]
     },
     {
@@ -115817,7 +115806,7 @@
         "clues": [
             "Taking one's time, without a care",
             "In a sluggish and relaxed way",
-            "In a lazy manner"
+            "Procrastinating with leisurely intent"
         ]
     },
     {
@@ -118080,7 +118069,7 @@
         "hint": "simplify process",
         "hard_text": "To reduce drag in design or operation",
         "clues": [
-            "Make more efficient",
+            "Sleek design for better flow",
             "Optimize for efficiency and speed",
             "Simplify for efficiency"
         ]
@@ -120040,7 +120029,7 @@
         "clues": [
             "Forever and ever",
             "For all time",
-            "Without end"
+            "Endlessly enduring"
         ]
     },
     {
@@ -120898,7 +120887,7 @@
         "clues": [
             "Dissenting views may be considered this",
             "Challenging the establishment's beliefs",
-            "Contrary to accepted religious doctrine"
+            "A rebel in the realm of faith."
         ]
     },
     {
@@ -122558,7 +122547,7 @@
         "hard_text": "She who ends a life, often slyly",
         "clues": [
             "Woman who unlawfully kills with malice aforethought",
-            "Woman who unlawfully kills with malice aforethought",
+            "A femme fatale in the shadows",
             "She who takes life unlawfully"
         ]
     },
@@ -122592,7 +122581,7 @@
         "clues": [
             "Lack of covering",
             "Exposure without any attire",
-            "State of being unclothed"
+            "Essence of vulnerability"
         ]
     },
     {
@@ -122613,7 +122602,7 @@
         "hard_text": "Notorious for wrongdoing",
         "clues": [
             "Villain's conduct, often criminal",
-            "Wicked or villainous",
+            "Famous for bad deeds",
             "Utterly evil"
         ]
     },
@@ -123020,7 +123009,7 @@
         "hard_text": "Indulged beyond a healthy limit",
         "clues": [
             "Satiated to a fault",
-            "Consumed too much food",
+            "Ate more than one should",
             "Overindulged at the buffet"
         ]
     },
@@ -123173,7 +123162,7 @@
         "hint": "Final destination of the damned",
         "hard_text": "A fate worse than death, some say",
         "clues": [
-            "State of eternal damnation",
+            "A journey to eternal suffering",
             "Ultimate ruin or loss",
             "Descent into utter despair"
         ]
@@ -123898,7 +123887,7 @@
         "word": "RELIGIOUS",
         "text": "Pertaining to faith",
         "hint": "devout",
-        "hard_text": "Pertaining to faith",
+        "hard_text": "Devotion that might lead to a crusade.",
         "clues": [
             "Connected to spirituality",
             "Zealous follower's trait",
@@ -124678,7 +124667,7 @@
         "word": "SHIFTLESS",
         "text": "Lacking ambition or initiative",
         "hint": "lazy",
-        "hard_text": "Lacking ambition or initiative",
+        "hard_text": "Unmotivated to change positions",
         "clues": [
             "Aimless and without purpose or drive",
             "Lacking energy, reluctant to act",
@@ -124880,7 +124869,7 @@
         "clues": [
             "A visitor who lingers for a while",
             "Traveler with a short stay",
-            "Temporary resident"
+            "Wanderer, but not for long"
         ]
     },
     {
@@ -127277,7 +127266,7 @@
         "hard_text": "A place for healing in the Old Testament",
         "clues": [
             "Hospital town near Washington, D.C",
-            "Maryland community near Washington, D.C.",
+            "Site of the 19th-century tuberculosis sanatorium",
             "Home to the National Institutes of Health"
         ]
     },
@@ -128674,7 +128663,7 @@
         "hard_text": "Adorned with a cap for safety",
         "clues": [
             "Capped for battle",
-            "Wearing protective headgear",
+            "Guarded headwear for warriors",
             "Encased in armor above the neck"
         ]
     },
@@ -128850,8 +128839,8 @@
         "hard_text": "Noteworthy event from the past",
         "clues": [
             "Momentous",
-            "Momentous",
-            "Momentous"
+            "Memorable moments in time",
+            "Pivotal occurrences of yesteryears"
         ]
     },
     {
@@ -129496,7 +129485,7 @@
         "word": "INTENTLY",
         "text": "With focused attention",
         "hint": "attentively",
-        "hard_text": "With focused attention",
+        "hard_text": "Concentrated on a specific task",
         "clues": [
             "With undivided attention",
             "In a deeply absorbed manner",
@@ -130455,7 +130444,7 @@
         "hint": "taskmaster",
         "hard_text": "One who enforces rules with an iron fist",
         "clues": [
-            "Strict disciplinarian",
+            "Drill sergeant's strict approach",
             "Upholder of rigid discipline",
             "Enforcer of the rules, no exceptions"
         ]
@@ -130961,7 +130950,7 @@
         "hint": "tissue death",
         "hard_text": "Destruction of living cells in an area",
         "clues": [
-            "Death of body tissue",
+            "Decline in health leading to tissue decay",
             "Cellular death causes concerning conditions",
             "Process of dying cells in the body"
         ]
@@ -131842,7 +131831,7 @@
         "hard_text": "Building style with vertical supports",
         "clues": [
             "Structure adorned with vertical supports",
-            "Supported by columns",
+            "Ancient architecture's hallmark feature",
             "Column-laden design in classical style"
         ]
     },
@@ -132228,7 +132217,7 @@
         "clues": [
             "The answer when one number is divided",
             "A mathematician's favorite result",
-            "Result of division"
+            "Division's product, but not quite."
         ]
     },
     {
@@ -134412,11 +134401,11 @@
         "word": "QUICKLY",
         "text": "At a fast pace",
         "hint": "rapidly",
-        "hard_text": "At a fast pace",
+        "hard_text": "With great speed",
         "clues": [
             "In a hurry",
             "Swiftly done",
-            "With great speed"
+            "At a rapid clip"
         ]
     },
     {
@@ -138540,7 +138529,7 @@
         "hard_text": "Caught sight of something significant",
         "clues": [
             "Became aware of",
-            "Became aware of",
+            "Marked for attention",
             "Spotted in plain view"
         ]
     },
@@ -138761,7 +138750,7 @@
         "clues": [
             "Taking one's own life",
             "Self-inflicted death",
-            "Taking one's own life"
+            "Extreme act of despair"
         ]
     },
     {
@@ -144336,7 +144325,7 @@
         "clues": [
             "Capital contributors",
             "Risk-takers in finance",
-            "People who put money into ventures"
+            "Buyers of future profits"
         ]
     },
     {
@@ -151769,7 +151758,7 @@
         "hard_text": "Suggesting future success ahead",
         "clues": [
             "Indicative of good things to come",
-            "Showing potential",
+            "A sign of brighter days.",
             "Full of hopeful prospects"
         ]
     },
@@ -153552,7 +153541,7 @@
         "clues": [
             "Confirms a hypothesis",
             "Establishes as true",
-            "Establishes as true"
+            "Demonstrates conclusively"
         ]
     },
     {
@@ -153969,7 +153958,7 @@
         "hard_text": "Rates of motion",
         "clues": [
             "Rates of travel",
-            "Rates of travel",
+            "Rates of travel.",
             "Paces of movement"
         ]
     },
@@ -157170,7 +157159,7 @@
         "hard_text": "A term for great size or scope",
         "clues": [
             "Starbucks medium size",
-            "Coffee shop size between tall and venti",
+            "Greatly significant or important",
             "Starbucks cup size"
         ]
     },
@@ -157412,7 +157401,7 @@
         "hard_text": "A sense of uncertainty about motives",
         "clues": [
             "Feeling of doubt or mistrust",
-            "Feeling of doubt or mistrust",
+            "Skeptical about intent",
             "Belief that something is off"
         ]
     },
@@ -158610,9 +158599,9 @@
         "hint": "Actor Ben of \"Shadow and Bone\"",
         "hard_text": "Actor Ben of \"Shadow and Bone\"",
         "clues": [
-            "Actor Ben of \"Shadow and Bone\"",
-            "Actor Ben of \"Shadow and Bone\"",
-            "Actor Ben of \"Shadow and Bone\""
+            "Name seen on many a bookstore sign.",
+            "Retailer with a focus on literature.",
+            "Famous for its literary offerings."
         ]
     },
     {
@@ -159096,7 +159085,7 @@
         "clues": [
             "More shadowy than before",
             "Less illuminated",
-            "Less illuminated"
+            "More shadowed"
         ]
     },
     {
@@ -159865,7 +159854,7 @@
         "hard_text": "A methodical crime against humanity",
         "clues": [
             "Deliberate destruction of a people",
-            "Deliberate destruction of a people",
+            "Ethnic cleansing, in brutal terms",
             "Intentional destruction of a people"
         ]
     },
@@ -160482,7 +160471,7 @@
         "clues": [
             "Guitar maker",
             "Les Paul manufacturer",
-            "Guitar maker"
+            "Maker of Les Paul guitars"
         ]
     },
     {
@@ -160515,7 +160504,7 @@
         "clues": [
             "Record high temperature",
             "Most sweltering",
-            "Most sweltering"
+            "Uncomfortably warm"
         ]
     },
     {
@@ -160558,7 +160547,7 @@
         "hard_text": "Foundation for learning and understanding",
         "clues": [
             "Reading and writing competence",
-            "Ability to read and write",
+            "Education measurement",
             "Essential communication skill"
         ]
     },
@@ -160877,7 +160866,7 @@
         "hard_text": "Twofold increase",
         "clues": [
             "Multiplies by two",
-            "Multiplies by two",
+            "Pairs up",
             "Two of a kind"
         ]
     },
@@ -168851,7 +168840,7 @@
         "clues": [
             "Emitting light",
             "Bright and cheerful",
-            "Emitting light"
+            "Illuminated appearance"
         ]
     },
     {
@@ -169718,7 +169707,7 @@
         "hint": "Family name",
         "hard_text": "Designer Marc",
         "clues": [
-            "Fashion designer Marc",
+            "Biblical patriarch",
             "Last name of many",
             "Surname with historical roots"
         ]
@@ -169892,7 +169881,7 @@
         "word": "PSYCHO",
         "text": "Hitchcock thriller starring Anthony Perkins",
         "hint": "Hitchcock thriller starring Anthony Perkins",
-        "hard_text": "Hitchcock thriller starring Anthony Perkins",
+        "hard_text": "Often used informally for unstable behavior",
         "clues": [
             "Informal term for unstable",
             "Unstable thriller figure"
@@ -170797,7 +170786,7 @@
         "clues": [
             "Extinct reptiles of the Mesozoic era",
             "Ancient creatures with diverse forms",
-            "Prehistoric reptiles"
+            "Fossilized giants of a bygone age."
         ]
     },
     {
@@ -174383,7 +174372,7 @@
         "clues": [
             "Applying physical force with a hand",
             "Hitting someone in a boxing ring",
-            "Striking with a fist"
+            "A quick strike often in a fight"
         ]
     },
     {
@@ -174480,7 +174469,7 @@
         "hint": "horn of Africa",
         "hard_text": "Horn of Africa nation",
         "clues": [
-            "Horn of Africa nation",
+            "Region known for its coastline",
             "Home to Mogadishu",
             "Country with a rich culture"
         ]
@@ -175174,7 +175163,7 @@
         "hard_text": "Arcs in a rhythmic motion",
         "clues": [
             "Playground seats suspended by chains",
-            "Moves back and forth",
+            "Changes direction with ease.",
             "Moves like a pendulum"
         ]
     },
@@ -176275,7 +176264,7 @@
         "clues": [
             "Sales presentations",
             "Sport-related throws",
-            "Sales presentations"
+            "Angles in conversation"
         ]
     },
     {
@@ -177428,7 +177417,7 @@
         "hard_text": "Rights allowing for personal autonomy",
         "clues": [
             "Rights to act without restraint",
-            "Rights to act without restraint",
+            "State of unrestricted choice",
             "Civil liberties guaranteed by law"
         ]
     },
@@ -179222,7 +179211,7 @@
         "clues": [
             "Creating invoices",
             "Charging customers",
-            "Charging customers"
+            "Documenting expenses"
         ]
     },
     {
@@ -180474,7 +180463,7 @@
         "hint": "Without sound",
         "hard_text": "Not a peep heard from the subject",
         "clues": [
-            "Without making a sound",
+            "Without a whisper",
             "Without making a sound",
             "Not uttering a word"
         ]
@@ -181113,7 +181102,7 @@
         "hard_text": "Answers a cue",
         "clues": [
             "Changes behavior in response",
-            "Responds to a stimulus",
+            "Engages with external forces",
             "Responds to a trigger"
         ]
     },
@@ -181367,7 +181356,7 @@
         "clues": [
             "Happening without a cue",
             "In a sudden manner",
-            "In a sudden manner"
+            "Without warning"
         ]
     },
     {
@@ -181708,7 +181697,7 @@
         "clues": [
             "Executed by being suspended",
             "Executed by noose",
-            "Put to death by suspension"
+            "Subjected to a fatal drop"
         ]
     },
     {
@@ -183224,7 +183213,7 @@
         "hard_text": "Citizens of a vibrant North American country",
         "clues": [
             "Inhabitants of the land of tacos",
-            "People from Mexico",
+            "Diverse culture from south of the border.",
             "Citizens with rich traditions and heritage"
         ]
     },
@@ -184046,7 +184035,7 @@
         "word": "ORIGINALS",
         "text": "First versions",
         "hint": "Authentics",
-        "hard_text": "First versions",
+        "hard_text": "The initial or first of its kind",
         "clues": [
             "Not copies or imitations",
             "First editions of works",
@@ -184060,7 +184049,7 @@
         "hard_text": "Miss something right in front of you",
         "clues": [
             "To ignore or disregard",
-            "Fail to notice",
+            "Failing to see the obvious",
             "To pass by without noticing"
         ]
     },
@@ -186929,7 +186918,7 @@
         "hint": "nibbled",
         "hard_text": "Affected by a sharp bite",
         "clues": [
-            "Nipped by teeth",
+            "Toothy encounter",
             "Struck with a jaw",
             "Seized with the teeth"
         ]
@@ -187568,7 +187557,7 @@
         "hard_text": "Relating to projectile motion",
         "clues": [
             "Missile-related",
-            "Relating to projectile motion",
+            "Trajectory science",
             "Like certain missile trajectories"
         ]
     },
@@ -187875,7 +187864,7 @@
         "hint": "nocturnal",
         "hard_text": "Every evening",
         "clues": [
-            "Every evening",
+            "After each sunset",
             "Occurring each evening",
             "On a daily after-dark basis"
         ]
@@ -188227,7 +188216,7 @@
         "hint": "immediately",
         "hard_text": "With immediate necessity",
         "clues": [
-            "With immediate necessity",
+            "With no time to spare",
             "In a time-sensitive way",
             "Acting with great haste"
         ]
@@ -188293,7 +188282,7 @@
         "hint": "asserting",
         "hard_text": "Declaring without backing evidence",
         "clues": [
-            "Claiming without proof",
+            "Stating something as fact, perhaps falsely",
             "Putting forward an unverified accusation",
             "Making a statement of guilt"
         ]
@@ -191417,7 +191406,7 @@
         "hint": "Provided with flight appendages",
         "hard_text": "Equipped for flight",
         "clues": [
-            "Provided with flight appendages",
+            "Possessing feathers for soaring",
             "Equipped with flight appendages",
             "Featured with appendages for flying"
         ]
@@ -191777,7 +191766,7 @@
         "word": "JUNIORS",
         "text": "Younger members of a group",
         "hint": "Underclassmen",
-        "hard_text": "Younger members of a group",
+        "hard_text": "The less experienced on the team",
         "clues": [
             "Students in their penultimate year",
             "Younger players in a sports league",
@@ -192132,7 +192121,7 @@
         "hard_text": "To punish or endorse, context matters",
         "clues": [
             "Approval that can also mean punishment",
-            "Official approval or penalty",
+            "A dual-edged term for compliance or penalty",
             "To permit or impose consequences"
         ]
     },
@@ -192428,7 +192417,7 @@
         "hint": "Not brave under pressure",
         "hard_text": "Fearful to confront challenges",
         "clues": [
-            "Lacking courage",
+            "Avoids danger at all costs.",
             "Timid or fearful",
             "Lacking bravery in moments of threat"
         ]
@@ -193341,7 +193330,7 @@
         "hint": "Overlooks past details",
         "hard_text": "Puts aside memories unceremoniously",
         "clues": [
-            "Fails to remember",
+            "Letting go of past knowledge.",
             "Loses track of information",
             "Neglects to recall"
         ]
@@ -193913,7 +193902,7 @@
         "hint": "Crying",
         "hard_text": "Flowing like a river of sorrow",
         "clues": [
-            "Shedding tears",
+            "Sorrowful expression found in rain",
             "Tears falling like precipitation",
             "Expressing grief in liquid form"
         ]
@@ -194212,7 +194201,7 @@
         "clues": [
             "Unshackling from bonds",
             "Making someone independent again",
-            "Releasing from captivity"
+            "Set loose, like a bird"
         ]
     },
     {
@@ -194508,7 +194497,7 @@
         "hard_text": "In a dependable way",
         "clues": [
             "With consistent success",
-            "In a trustworthy manner",
+            "Trustworthy in every situation",
             "Dependably, time after time"
         ]
     },
@@ -194552,7 +194541,7 @@
         "hard_text": "Pertaining to the interpretation of words",
         "clues": [
             "Concerned with language's significance",
-            "Relating to meaning",
+            "Ambiguity in meaning",
             "Of language's meaning"
         ]
     },
@@ -194816,7 +194805,7 @@
         "hard_text": "Those admired for their looks",
         "clues": [
             "Objects or individuals of great charm",
-            "Attractive people or things",
+            "Often associated with physical appeal",
             "Stunning sights or people"
         ]
     },
@@ -195081,7 +195070,7 @@
         "clues": [
             "End-of-life care facility",
             "Supportive environment for the dying",
-            "End-of-life care facility"
+            "Compassionate care for patients in need."
         ]
     },
     {
@@ -195607,7 +195596,7 @@
         "hint": "Geometric term for a number's product with itself",
         "hard_text": "Formed into a geometric shape",
         "clues": [
-            "Multiplied by itself",
+            "Two-dimensional shape with equal sides.",
             "Raised to the power of two",
             "Made into a four-sided figure"
         ]
@@ -196496,7 +196485,7 @@
         "word": "WOODED",
         "text": "Covered with trees",
         "hint": "forested",
-        "hard_text": "Covered with trees",
+        "hard_text": "Not barren land",
         "clues": [
             "Dense with trees",
             "Full of timber",
@@ -196606,7 +196595,7 @@
         "word": "CARPETS",
         "text": "Floor coverings",
         "hint": "Rugs",
-        "hard_text": "Floor coverings",
+        "hard_text": "What a painter might roll out?",
         "clues": [
             "Woven floor layers",
             "Where feet tread indoors",
@@ -197214,7 +197203,7 @@
         "hard_text": "Causing someone to feel ashamed publicly",
         "clues": [
             "Bringing disgrace to someone",
-            "Public humiliation",
+            "Making someone feel inferior.",
             "Publicly criticizing behavior"
         ]
     },
@@ -197299,7 +197288,7 @@
         "word": "SUBDUED",
         "text": "Quiet and restrained",
         "hint": "controlled",
-        "hard_text": "Quiet and restrained",
+        "hard_text": "Calmness that follows a storm of emotions",
         "clues": [
             "Temperamentally muted",
             "Brought under control, like a rebellious child",
@@ -201084,7 +201073,7 @@
         "hard_text": "Agreement to stop hostilities, temporarily",
         "clues": [
             "Pause in hostilities, often in war",
-            "Temporary halt in fighting",
+            "Peaceful resolution to conflicts",
             "A moment of quiet in battle"
         ]
     },
@@ -201259,7 +201248,7 @@
         "hint": "segments",
         "hard_text": "Divisions that make up a whole",
         "clues": [
-            "Parts of a whole",
+            "Proportions that are less than one",
             "Parts defined by division",
             "Smaller components of a total"
         ]
@@ -203285,7 +203274,7 @@
         "clues": [
             "Enjoying a warm drink gradually",
             "Nursing a cup slowly",
-            "Taking small drinks"
+            "Small mouthful of liquid"
         ]
     },
     {
@@ -203417,7 +203406,7 @@
         "clues": [
             "Cleans a car, say",
             "Launders",
-            "Cleans with water"
+            "Soaking to refresh"
         ]
     },
     {
@@ -203692,7 +203681,7 @@
         "clues": [
             "Suspended without support",
             "Hanging by a thread",
-            "Hanging loosely"
+            "Unfinished, like an open invitation."
         ]
     },
     {
@@ -204822,7 +204811,7 @@
         "hint": "forgiven",
         "hard_text": "Let off the hook",
         "clues": [
-            "Let off the hook",
+            "Given a reprieve.",
             "Released from responsibility",
             "Granted a pardon"
         ]
@@ -204834,7 +204823,7 @@
         "hard_text": "Visual acuity",
         "clues": [
             "Capacity to perceive visually",
-            "Ability to see",
+            "Range of vision.",
             "Ability to detect light"
         ]
     },
@@ -204856,7 +204845,7 @@
         "hard_text": "Not the upper limb",
         "clues": [
             "Section of the arm",
-            "Part of the arm between elbow and wrist",
+            "Area between elbow and wrist.",
             "Part of the arm used for lifting"
         ]
     },
@@ -207097,7 +207086,7 @@
         "hint": "Cetacean hunting",
         "hard_text": "Hunting of cetaceans",
         "clues": [
-            "Hunting of cetaceans",
+            "Oceanic pursuit.",
             "Chasing giants of the sea",
             "Commercial cetacean hunt"
         ]
@@ -207207,7 +207196,7 @@
         "hint": "Clumsily",
         "hard_text": "Uncomfortably out of place",
         "clues": [
-            "In a clumsy manner",
+            "Gracefully challenged.",
             "In an uneasy way",
             "With social discomfort"
         ]
@@ -208903,7 +208892,7 @@
         "clues": [
             "Emotionally affected by tragedy",
             "Having one's spirits dampened",
-            "Made unhappy or sorrowful"
+            "Experiencing a deep sense of loss."
         ]
     },
     {
@@ -211793,7 +211782,7 @@
         "hint": "heists",
         "hard_text": "Criminal acts of stealing under duress",
         "clues": [
-            "Thefts involving force or threat",
+            "Theft that involves intimidation",
             "Crimes of taking property by intimidation",
             "Thefts committed through force or threats"
         ]
@@ -212077,7 +212066,7 @@
         "word": "ACIDITY",
         "text": "Sourness level",
         "hint": "Taste often associated with vinegar",
-        "hard_text": "Sourness level",
+        "hard_text": "Measure of a solution's pH level",
         "clues": [
             "Characteristic of a sour taste",
             "Chemical property of sour substances",
@@ -213356,7 +213345,7 @@
         "hard_text": "Quanta of electromagnetic radiation",
         "clues": [
             "Light's smallest constituents",
-            "Quanta of electromagnetic radiation",
+            "Tiny packets of electromagnetic waves",
             "Fundamental units of light"
         ]
     },
@@ -213577,7 +213566,7 @@
         "clues": [
             "Common cold symptom",
             "Unexpected nasal explosion",
-            "Sudden expulsion of air through the nose"
+            "Air release from sinuses"
         ]
     },
     {
@@ -215311,7 +215300,7 @@
         "hint": "Parentless",
         "hard_text": "Left alone in the world",
         "clues": [
-            "Left without parents",
+            "Deprived of one's guardians",
             "In need of a family",
             "Without maternal or paternal care"
         ]
@@ -215386,7 +215375,7 @@
         "word": "PICKLED",
         "text": "Preserved in brine or vinegar",
         "hint": "Brined",
-        "hard_text": "Preserved in brine or vinegar",
+        "hard_text": "Transformed through fermentation process",
         "clues": [
             "Cured in a tangy solution",
             "Found in jars on shelves",
@@ -215621,7 +215610,7 @@
         "clues": [
             "Motion resembling a dance of chaos",
             "Circular movement that captivates the eye",
-            "Moving in circles"
+            "Like a tornado but less destructive."
         ]
     },
     {
@@ -215863,7 +215852,7 @@
         "clues": [
             "Commonplace saying that lacks freshness",
             "A tired expression often repeated",
-            "Overused expression"
+            "Often used in stories to evoke familiarity."
         ]
     },
     {
@@ -216134,7 +216123,7 @@
         "word": "MANHOOD",
         "text": "State of being an adult male",
         "hint": "Maturity",
-        "hard_text": "State of being an adult male",
+        "hard_text": "Transition from boyhood to adulthood",
         "clues": [
             "Adult male status",
             "Status often associated with responsibility",
@@ -218698,7 +218687,7 @@
         "hard_text": "Free from disturbance or turmoil",
         "clues": [
             "Quiet and undisturbed",
-            "Calm and peaceful",
+            "Serenity in one's surroundings",
             "Free of agitation"
         ]
     },
@@ -219931,7 +219920,7 @@
         "clues": [
             "Opposing views collided",
             "Disagreement caused a stir",
-            "Came into conflict"
+            "Put two sides in opposition."
         ]
     },
     {
@@ -219984,7 +219973,7 @@
         "hint": "Preparation of dishes",
         "hard_text": "Skill in the kitchen",
         "clues": [
-            "Art of preparing food",
+            "Where culinary skills shine.",
             "Craft of preparing meals",
             "Culinary mastery in practice"
         ]
@@ -220392,7 +220381,7 @@
         "hard_text": "Announced with conviction",
         "clues": [
             "Admitted openly in a formal manner",
-            "Declared openly",
+            "Public declaration of belief",
             "Stated in a way that cannot be ignored"
         ]
     },
@@ -221227,7 +221216,7 @@
         "hint": "Sealing",
         "hard_text": "Filling a void in a structure",
         "clues": [
-            "Stopping a leak",
+            "Often needed for water damage.",
             "Can refer to promoting a product",
             "Filling gaps, both literally and figuratively"
         ]
@@ -221954,7 +221943,7 @@
         "hard_text": "“Island” in Arabic",
         "clues": [
             "Arabic term meaning “island”",
-            "Island, in Arabic",
+            "Media channel based in Qatar",
             "Arabic word on a Qatari news logo"
         ]
     },
@@ -222976,7 +222965,7 @@
         "hint": "lower back",
         "hard_text": "Region often associated with discomfort in chairs",
         "clues": [
-            "Relating to the lower back",
+            "Supportive area for the spine",
             "Lower-back, anatomically",
             "Describing the lower spine"
         ]
@@ -223273,7 +223262,7 @@
         "hint": "Contracts",
         "hard_text": "Reduces in size, like a garment",
         "clues": [
-            "Becomes smaller",
+            "Fades away, in a sense",
             "Diminishes under pressure",
             "Lessens, often unexpectedly"
         ]
@@ -223417,7 +223406,7 @@
         "hard_text": "Increased to threefold dimensions",
         "clues": [
             "Three times the original amount",
-            "Multiplied by three",
+            "Doubled and then added one more",
             "Increased threefold"
         ]
     },
@@ -224506,7 +224495,7 @@
         "hard_text": "Replicated organism or object from original",
         "clues": [
             "Created an exact replica, like in a lab",
-            "Copied genetically",
+            "Genetically identical, but not naturally born",
             "Reproduced through artificial means, often for study"
         ]
     },
@@ -225089,7 +225078,7 @@
         "hard_text": "Most seldom encountered",
         "clues": [
             "Least frequently seen",
-            "Most uncommon",
+            "One in a million",
             "Scarcest of all"
         ]
     },
@@ -225276,7 +225265,7 @@
         "hard_text": "Cutting with force",
         "clues": [
             "Making deep cuts",
-            "Making deep cuts",
+            "Severe reductions",
             "Wounding with a blade"
         ]
     },
@@ -226608,7 +226597,7 @@
         "clues": [
             "In open resistance",
             "Challenging authority openly",
-            "In a rebellious manner"
+            "Acting against the norm"
         ]
     },
     {
@@ -228420,7 +228409,7 @@
         "hard_text": "First light of comprehension",
         "clues": [
             "Became clear, as an idea",
-            "Began to be understood",
+            "Awakening to new awareness.",
             "Came to be realized"
         ]
     },
@@ -229266,7 +229255,7 @@
         "hint": "richer",
         "hard_text": "Having greater financial means than others",
         "clues": [
-            "More affluent",
+            "Abundant in resources",
             "Better off financially",
             "Increased prosperity"
         ]
@@ -230562,7 +230551,7 @@
         "word": "BOVINE",
         "text": "Relating to cattle",
         "hint": "cow",
-        "hard_text": "Relating to cattle",
+        "hard_text": "Animal family that includes cows and bison",
         "clues": [
             "Pertaining to domesticated livestock",
             "Related to the cattle family",
@@ -231115,7 +231104,7 @@
         "hard_text": "Hustling with merchandise in tow",
         "clues": [
             "Vending wares from place to place",
-            "Selling goods, often door to door",
+            "Transporting items for sale, perhaps illegally",
             "Engaging in low-key sales efforts"
         ]
     },
@@ -231335,7 +231324,7 @@
         "hard_text": "Facilitator of cargo transport",
         "clues": [
             "Entity responsible for moving products",
-            "One who sends goods",
+            "Logistics expert in freight",
             "Company that consigns cargo"
         ]
     },
@@ -232138,7 +232127,7 @@
         "hard_text": "An alluring quality that intrigues others?",
         "clues": [
             "Charm shrouded in secrecy",
-            "Aura of mystery",
+            "Fascination with the unknown",
             "A captivating allure of secrecy"
         ]
     },
@@ -232478,7 +232467,7 @@
         "hint": "Excellently",
         "hard_text": "Done in a way that impresses greatly",
         "clues": [
-            "In an excellent manner",
+            "Executed with utmost skill",
             "With great skill",
             "Exceptionally well"
         ]
@@ -233107,7 +233096,7 @@
         "clues": [
             "Made to appear larger through a lens",
             "Amplified beyond normal size",
-            "Enlarged in appearance"
+            "Increased in visual detail"
         ]
     },
     {
@@ -233820,7 +233809,7 @@
         "hint": "shared secrets privately",
         "hard_text": "Whispered secrets in a trusted ear",
         "clues": [
-            "Shared a secret with someone",
+            "Entrusted with private information.",
             "Spoke freely about personal matters"
         ]
     },
@@ -234246,7 +234235,7 @@
         "word": "ONSCREEN",
         "text": "Displayed on a monitor",
         "hint": "visible display",
-        "hard_text": "Displayed on a monitor",
+        "hard_text": "Visible activity in a digital realm.",
         "clues": [
             "Visible on a display",
             "In view while streaming",
@@ -235250,7 +235239,7 @@
         "hard_text": "Those who will inherit the earth",
         "clues": [
             "All future humans, collectively",
-            "Future generations",
+            "Legacy left for the next generations",
             "Heirs to our actions and decisions"
         ]
     },
@@ -235646,7 +235635,7 @@
         "hard_text": "Advocates for a historic land",
         "clues": [
             "Proponents of Jewish statehood",
-            "Supporters of a Jewish homeland",
+            "Political movement for a homeland.",
             "Focused on Israel's establishment"
         ]
     },
@@ -236096,7 +236085,7 @@
         "hint": "Like a honeycomb cell",
         "hard_text": "Six-sided in shape",
         "clues": [
-            "Having six sides",
+            "Six-sided figure",
             "Like a six-sided polygon",
             "Six-sided, geometrically"
         ]
@@ -236118,7 +236107,7 @@
         "hint": "influential",
         "hard_text": "Leaves a mark, not just a dent",
         "clues": [
-            "Having a strong effect",
+            "Significant influence",
             "Powerful presence",
             "Strongly affecting"
         ]
@@ -236768,7 +236757,7 @@
         "hard_text": "Formless and free, yet not quite lost",
         "clues": [
             "Without clear form or structure",
-            "Lacking a definite shape",
+            "Fluid in nature, not solid",
             "Shapeless in form"
         ]
     },
@@ -237153,7 +237142,7 @@
         "hard_text": "Harvested insights from scattered sources",
         "clues": [
             "Obtained knowledge through careful scrutiny",
-            "Gathered bit by bit",
+            "Sifted through information",
             "Accumulated details over time"
         ]
     },
@@ -237714,7 +237703,7 @@
         "hard_text": "A person who ensnares game",
         "clues": [
             "Fur gatherer in the wilderness",
-            "One who catches animals",
+            "Ensnare in a tricky situation",
             "One who sets a cunning snare"
         ]
     },
@@ -239524,7 +239513,7 @@
         "clues": [
             "Concealed oneself",
             "Concealed something from view",
-            "Concealed something from view"
+            "To keep away from view?"
         ]
     },
     {
@@ -240293,7 +240282,7 @@
         "clues": [
             "Choose",
             "Select wisely, as decisions can be tricky",
-            "Choose"
+            "It's best when you find the right fit"
         ]
     },
     {
@@ -242570,7 +242559,7 @@
         "hint": "Unit named after a German physicist, perhaps",
         "clues": [
             "Unit named after a German physicist",
-            "Unit of electrical resistance",
+            "Could be a calming sound?",
             "Common term in physics?"
         ],
         "hard_text": "A measure of resistance?"
@@ -242582,7 +242571,7 @@
         "clues": [
             "Tolkien's fantasy antagonist",
             "Fantasy brute",
-            "Fantasy brute"
+            "Brute force, but what's the IQ?"
         ],
         "hard_text": "Fantasy creature with a bad reputation"
     },
@@ -244196,7 +244185,7 @@
         "hint": "Special effects in movies (abbr)",
         "hard_text": "Digital visuals in films (abbr)",
         "clues": [
-            "Computer-generated imagery (abbr)",
+            "Film animation",
             "Digitally created movie imagery (abbr)",
             "Pixel-made movie magic (abbr)"
         ]
