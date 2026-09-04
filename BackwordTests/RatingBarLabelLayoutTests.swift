@@ -40,9 +40,9 @@ struct RatingBarLabelLayoutTests {
 
 @Suite("Rating progress track style")
 struct RatingProgressTrackStyleTests {
-    @Test("Simple track reserves only its visible height")
+    @Test("Simple track reserves its compact layout height")
     func simpleTrackHeight() {
-        #expect(RatingProgressTrack.Style.simple.height == 8)
+        #expect(RatingProgressTrack.Style.simple.height == 4)
         #expect(RatingProgressTrack.Style.simple.cornerRadius == 0)
     }
 

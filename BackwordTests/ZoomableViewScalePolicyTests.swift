@@ -33,7 +33,7 @@ struct ZoomableViewScalePolicyTests {
             maxZoom: 2.5
         )
 
-        #expect(scale == 700.0 / 1500.0)
+        #expect(abs(scale - (CGFloat(700) / CGFloat(1_500))) < 0.000_001)
     }
 
     @Test("Keeps configured minimum when content already fits")
@@ -63,8 +63,8 @@ struct ZoomableViewScalePolicyTests {
             maxZoom: 2.5
         )
 
-        #expect(landscapeScale == 650.0 / 1366.0)
-        #expect(portraitScale == 720.0 / 900.0)
+        #expect(abs(landscapeScale - (CGFloat(650) / CGFloat(1_366))) < 0.000_001)
+        #expect(abs(portraitScale - (CGFloat(720) / CGFloat(900))) < 0.000_001)
     }
 
     @Test("Resets to fit when viewport changes")
