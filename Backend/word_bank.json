@@ -28421,8 +28421,8 @@
         "text": "Done on purpose, or discuss carefully",
         "hint": "Carefully considered actions",
         "clues": [
-            "Done intentionally.",
-            "Consider carefully.",
+            "Done intentionally",
+            "Consider carefully",
             "To discuss with careful intent?"
         ],
         "hard_text": "Intentional or thoughtfully slow?"
@@ -28434,7 +28434,7 @@
         "clues": [
             "Charming and lovely",
             "What a charming surprise feels like?",
-            "Highly pleasing."
+            "Highly pleasing"
         ],
         "hard_text": "A taste that brings joy?"
     },
@@ -28509,7 +28509,7 @@
         "text": "Found something new",
         "hint": "Uncovering hidden knowledge",
         "clues": [
-            "Found something previously unknown.",
+            "Found something previously unknown",
             "The thrill of a new find?",
             "What explorers do best?"
         ],
@@ -30262,7 +30262,7 @@
             "In the grand scheme of things",
             "When all is said and done, finally"
         ],
-        "hard_text": "After everything else."
+        "hard_text": "After everything else"
     },
     {
         "word": "UNDERSTOOD",
@@ -30273,16 +30273,16 @@
             "Figured out the hidden message?",
             "Got the hint about the ground?"
         ],
-        "hard_text": "Grasped mentally."
+        "hard_text": "Grasped mentally"
     },
     {
         "word": "UNEMPLOYED",
         "text": "Without a job",
         "hint": "Without paid work.",
         "clues": [
-            "Not holding a job.",
-            "Without employment.",
-            "Lacking paid work."
+            "Not holding a job",
+            "Without employment",
+            "Lacking paid work"
         ],
         "hard_text": "Not working, but still active?"
     },
@@ -30292,7 +30292,7 @@
         "hint": "Not completed.",
         "clues": [
             "Still in progress",
-            "Incomplete.",
+            "Incomplete",
             "Half-baked, but still rising?"
         ],
         "hard_text": "A project left in limbo?"

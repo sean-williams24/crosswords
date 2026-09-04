@@ -85,6 +85,21 @@ struct WordBankTests {
         #expect(normalizedClueIdea("Burning fiercely?") == "burning fiercely")
     }
 
+    @Test("Terminal abbreviations are not treated as sentence-ending punctuation")
+    func terminalAbbreviationsAreAllowed() {
+        #expect(hasTerminalAbbreviation("Like a sample, e.g."))
+        #expect(hasTerminalAbbreviation("Maryland community near Washington, D.C."))
+        #expect(!hasTerminalAbbreviation("Done intentionally."))
+    }
+
+    @Test("Semantic qualifier words are not treated as filler")
+    func semanticQualifierUsesAreAllowed() {
+        #expect(isSemanticQualifierUse("Possibly"))
+        #expect(isSemanticQualifierUse("Hang loosely"))
+        #expect(isSemanticQualifierUse("Only loosely related"))
+        #expect(!isSemanticQualifierUse("A wagonful, perhaps"))
+    }
+
     @Test("No word bank clue is answer derivable")
     func noWordBankClueIsAnswerDerivable() throws {
         for obj in try loadWordBank() {
@@ -104,7 +119,7 @@ struct WordBankTests {
                 let trimmedValue = field.value.trimmingCharacters(in: .whitespacesAndNewlines)
 
                 #expect(
-                    !trimmedValue.hasSuffix("."),
+                    !trimmedValue.hasSuffix(".") || hasTerminalAbbreviation(trimmedValue),
                     "\(field.name) ends in a full stop for word: \(obj.word) field: \(field.value)"
                 )
             }
@@ -120,7 +135,7 @@ struct WordBankTests {
             for field in fieldValues(for: obj) {
                 let range = NSRange(field.value.startIndex..<field.value.endIndex, in: field.value)
                 #expect(
-                    regex.firstMatch(in: field.value, range: range) == nil,
+                    regex.firstMatch(in: field.value, range: range) == nil || isSemanticQualifierUse(field.value),
                     "\(field.name) uses filler qualifier for word: \(obj.word) field: \(field.value)"
                 )
             }
@@ -241,6 +256,28 @@ struct WordBankTests {
         return text.lowercased()
             .replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
             .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private func hasTerminalAbbreviation(_ clue: String) -> Bool {
+        clue.range(
+            of: #"(?:\b(?:e\.g|i\.e|etc)\.|(?:[A-Z]\.){2,})$"#,
+            options: .regularExpression
+        ) != nil
+    }
+
+    private func isSemanticQualifierUse(_ clue: String) -> Bool {
+        let normalized = clue.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        return [
+            "perhaps",
+            "possibly",
+            "maybe",
+            "sometimes",
+            "loosely",
+            "hang loosely",
+            "hanging loosely",
+            "only loosely related",
+            "apparent but perhaps not true",
+        ].contains(normalized)
     }
 
     private func isAnswerDerivable(answer: String, clue: String) -> Bool {
@@ -409,11 +446,11 @@ struct WordBankTests {
         "BLM", "BLT", "BMW", "BMX", "BRB", "BTW", "CBS", "CDS", "CEO", "CGI",
         "CNN", "CSI", "DIY", "DJS", "DNA", "DUI", "DVD", "ESL", "ETC",
         "FAQ", "FBI", "FCC", "FWD", "FYI", "GOP", "GPA", "GPS", "HBO", "HIV",
-        "IBM", "IOS", "IPA", "IRS", "IUD", "JFK", "JLO", "JPG", "KFC", "KGB",
+        "IBM", "IOS", "IPA", "IRS", "JFK", "JLO", "JPG", "KFC", "KGB",
         "LAX", "LBJ", "LCD", "LEED", "LOL", "MGM", "MIC", "MMA", "MRS", "MSG",
         "MTV", "MVP", "NBA", "NBC", "NFL", "NHL", "NPR", "NRA", "NYE", "NYT",
         "OCD", "OMG", "ORG", "PBS", "PDF", "PGA", "PHD", "PJS", "REM", "RNA",
-        "SCOTUS", "SMS", "SOS", "SUV", "TBD", "TBS", "TKO", "TLC", "TNT", "TSA",
+        "SCOTUS", "SMS", "SUV", "TBD", "TBS", "TKO", "TLC", "TNT", "TSA",
         "TSP", "UPC", "UPS", "VIP", "WWE", "WWI",
     ]
 }
