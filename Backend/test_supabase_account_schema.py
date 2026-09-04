@@ -67,6 +67,25 @@ class SupabaseAccountSchemaTests(unittest.TestCase):
         delete_account_config = function_config.split("[functions.delete-account]", maxsplit=1)[1]
         self.assertIn("verify_jwt = false", delete_account_config)
 
+    def test_account_deletion_cancels_stripe_subscriptions_not_yet_recorded_by_webhooks(self):
+        deletion_function = (FUNCTIONS / "delete-account" / "index.ts").read_text()
+        checkout_function = (FUNCTIONS / "create-stripe-checkout" / "index.ts").read_text()
+        stripe_helper = (FUNCTIONS / "_shared" / "stripe.ts").read_text()
+        schema = SCHEMA.read_text()
+
+        self.assertIn('"stripe_customer_accounts"', checkout_function)
+        self.assertIn('"subscriptions",', deletion_function)
+        self.assertIn('params: { customer: customerID, status: "all", limit: 100 }', deletion_function)
+        self.assertIn('"subscriptions/search"', deletion_function)
+        self.assertIn("metadata['backword_user_id']", deletion_function)
+        self.assertIn('cancel_at_period_end: true', deletion_function)
+        self.assertIn('"metadata[backword_user_id]": ""', deletion_function)
+        self.assertIn('method: "GET"', deletion_function)
+        self.assertIn('const query = method === "GET"', stripe_helper)
+        self.assertIn('`${stripeAPIBaseURL}/${path}${query}`', stripe_helper)
+        self.assertIn("CREATE TABLE stripe_customer_accounts", schema)
+        self.assertIn("REFERENCES auth.users(id) ON DELETE CASCADE", schema)
+
     def test_entitlement_claim_rejects_duplicate_and_malformed_transactions(self):
         claim_function = (FUNCTIONS / "claim-apple-entitlement" / "index.ts").read_text()
 

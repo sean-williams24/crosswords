@@ -31,6 +31,7 @@ import type {
 } from "../features/backword/types";
 import { useAuth } from "../features/auth/AuthProvider";
 import { backwordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountProgress } from "../features/sync/progressSync";
+import { canMigrateGuestProgress, clearGuestMigrationOwnerIfEmpty } from "../features/sync/guestMigration";
 
 type Sheet = "instructions" | "stats" | "completion" | null;
 
@@ -95,13 +96,19 @@ export function BackwordPage() {
       return;
     }
     const guestStorage = createBackwordStorage();
+    const guestRecords = canMigrateGuestProgress(window.localStorage, user.id)
+      ? guestStorage.loadAllProgress().map(backwordCloudRecord)
+      : [];
     void migrateProgress(
       user.id,
       "backword",
-      guestStorage.loadAllProgress().map(backwordCloudRecord),
+      guestRecords,
       storage.loadAllProgress().map(backwordCloudRecord),
       (record) => storage.replaceProgress(record.payload),
-      (record) => guestStorage.deleteProgress(record.content_key)
+      (record) => {
+        guestStorage.deleteProgress(record.content_key);
+        clearGuestMigrationOwnerIfEmpty(window.localStorage);
+      }
     ).then(() => {
       setSyncError("");
       setProgress(storage.loadProgress(date));

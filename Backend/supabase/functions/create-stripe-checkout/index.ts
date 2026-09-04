@@ -69,6 +69,10 @@ Deno.serve(async (request) => {
         },
         idempotencyKey: `backword-customer:${user.id}`
       })).id;
+    const { error: customerLinkError } = await admin
+      .from("stripe_customer_accounts")
+      .upsert({ user_id: user.id, customer_id: customerID }, { onConflict: "user_id" });
+    if (customerLinkError) return response("Could not prepare your subscription. Please try again.", 503);
 
     const { data: trial } = await admin
       .from("pro_trial_redemptions")

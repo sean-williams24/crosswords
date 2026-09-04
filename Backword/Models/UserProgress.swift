@@ -4,6 +4,7 @@ import Foundation
 /// under a user UUID so signing out never exposes another account's cache.
 enum ProgressStorageNamespace {
     private static let accountIDKey = "backword_progress_account_id"
+    private static let guestMigrationAccountIDKey = "backword_guest_migration_account_id"
 
     static var accountID: String? {
         UserDefaults.standard.string(forKey: accountIDKey)
@@ -15,6 +16,23 @@ enum ProgressStorageNamespace {
         } else {
             UserDefaults.standard.removeObject(forKey: accountIDKey)
         }
+    }
+
+    /// Claims the current guest namespace before it is copied to cloud data.
+    /// A failed upload intentionally retains this owner, so switching accounts
+    /// cannot copy the same on-device guest records into a second account.
+    static func claimGuestMigration(for accountID: String) -> Bool {
+        if let owner = UserDefaults.standard.string(forKey: guestMigrationAccountIDKey) {
+            return owner == accountID
+        }
+        UserDefaults.standard.set(accountID, forKey: guestMigrationAccountIDKey)
+        return true
+    }
+
+    /// Once every guest record has been removed after a successful migration,
+    /// a later, genuinely new guest session may be claimed by another account.
+    static func clearGuestMigrationClaim() {
+        UserDefaults.standard.removeObject(forKey: guestMigrationAccountIDKey)
     }
 
     static func directory(base: URL) -> URL {

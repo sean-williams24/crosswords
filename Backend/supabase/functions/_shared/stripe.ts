@@ -16,10 +16,12 @@ export async function stripeRequest<T>(path: string, options: StripeRequestOptio
   if (!secret) throw new Error("Stripe is not configured.");
 
   const method = options.method ?? "POST";
-  const body = options.params
+  const encodedParams = options.params
     ? new URLSearchParams(Object.entries(options.params).flatMap(([key, value]) => value === null || value === undefined ? [] : [[key, String(value)]])).toString()
     : undefined;
-  const response = await fetch(`${stripeAPIBaseURL}/${path}`, {
+  const body = method === "POST" ? encodedParams : undefined;
+  const query = method === "GET" && encodedParams ? `?${encodedParams}` : "";
+  const response = await fetch(`${stripeAPIBaseURL}/${path}${query}`, {
     method,
     headers: {
       Authorization: `Basic ${btoa(`${secret}:`)}`,

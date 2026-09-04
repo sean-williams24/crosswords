@@ -27,6 +27,7 @@ import { CrosswordKeyboard } from "../features/crossword/components/CrosswordKey
 import { CrosswordStats } from "../features/crossword/components/CrosswordStats";
 import { useAuth } from "../features/auth/AuthProvider";
 import { crosswordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountProgress } from "../features/sync/progressSync";
+import { canMigrateGuestProgress, clearGuestMigrationOwnerIfEmpty } from "../features/sync/guestMigration";
 
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
@@ -90,13 +91,19 @@ export function CrosswordPage() {
   useEffect(() => {
     if (!user) return;
     const guestStorage = createCrosswordStorage();
+    const guestRecords = canMigrateGuestProgress(window.localStorage, user.id)
+      ? guestStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress))
+      : [];
     void migrateProgress(
       user.id,
       "daily_crossword",
-      guestStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
+      guestRecords,
       storage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
       (record) => storage.replaceProgress(record.payload),
-      (record) => guestStorage.deleteProgress(record.content_key)
+      (record) => {
+        guestStorage.deleteProgress(record.content_key);
+        clearGuestMigrationOwnerIfEmpty(window.localStorage);
+      }
     ).then(() => {
       setSyncError("");
       if (puzzle) setProgress(storage.loadProgress(puzzle));

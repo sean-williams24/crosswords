@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import type { Provider, Session, User } from "@supabase/supabase-js";
 import { supabase, supabaseConfigurationError } from "../../lib/supabase";
 import { flushSyncQueue } from "../sync/progressSync";
+import { canMigrateGuestProgress } from "../sync/guestMigration";
 import { entitlementWarning as entitlementWarningMessage } from "./authErrorPresentation";
 
 type ProEntitlement = {
@@ -197,6 +198,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const userId = session?.user.id;
     if (!userId) return;
+    canMigrateGuestProgress(window.localStorage, userId);
     void flushSyncQueue(userId);
     const retry = () => void flushSyncQueue(userId);
     window.addEventListener("online", retry);

@@ -327,6 +327,17 @@ ALTER TABLE user_entitlements ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can read their own entitlement status"
     ON user_entitlements FOR SELECT USING (auth.uid() = user_id);
 
+-- Checkout stores this link before the customer is redirected to Stripe. It
+-- lets account deletion cancel a new web subscription even before its webhook
+-- has populated the entitlement snapshot.
+CREATE TABLE stripe_customer_accounts (
+    user_id     UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    customer_id TEXT NOT NULL UNIQUE,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+ALTER TABLE stripe_customer_accounts ENABLE ROW LEVEL SECURITY;
+
 -- A web trial is blocked once this account has used a recorded Apple or
 -- Stripe introductory period. Apple determines its own Apple ID eligibility,
 -- so it remains the only best-effort direction of this shared policy.

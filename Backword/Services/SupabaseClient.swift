@@ -619,9 +619,16 @@ final class AccountService: ObservableObject {
 
     private func activateProgressPersistence(for newSession: Session?) {
         let isMigratingGuestProgress = ProgressStorageNamespace.accountID == nil && newSession != nil
-        let guestBackword = isMigratingGuestProgress ? BackwordProgress.loadAll() : []
-        let guestCrosswords = isMigratingGuestProgress
-            ? AccountProgressMigration.captureGuestReleaseDateScores(UserProgress.loadAll(), rating: OverallRating.load())
+        let candidateGuestBackword = isMigratingGuestProgress ? BackwordProgress.loadAll() : []
+        let candidateGuestCrosswords = isMigratingGuestProgress ? UserProgress.loadAll() : []
+        let accountID = newSession?.user.id.uuidString
+        let mayMigrateGuestProgress = accountID.map { accountID in
+            (!candidateGuestBackword.isEmpty || !candidateGuestCrosswords.isEmpty)
+                && ProgressStorageNamespace.claimGuestMigration(for: accountID)
+        } ?? false
+        let guestBackword = mayMigrateGuestProgress ? candidateGuestBackword : []
+        let guestCrosswords = mayMigrateGuestProgress
+            ? AccountProgressMigration.captureGuestReleaseDateScores(candidateGuestCrosswords, rating: OverallRating.load())
             : []
         ProgressStorageNamespace.activate(accountID: newSession?.user.id.uuidString)
         pendingGuestBackword = guestBackword
@@ -686,6 +693,16 @@ enum AccountProgressMigration {
 final class ProgressCloudSync {
     static let shared = ProgressCloudSync()
 
+    private struct PendingBackwordUpload {
+        let accountID: String
+        let progress: BackwordProgress
+    }
+
+    private struct PendingCrosswordUpload {
+        let accountID: String
+        let progress: UserProgress
+    }
+
     private let client = SupabaseClient.shared.client
     private let iso8601: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
@@ -695,20 +712,26 @@ final class ProgressCloudSync {
         return formatter
     }()
     private var scheduledUploadTask: Task<Void, Never>?
-    private var pendingBackword: [String: BackwordProgress] = [:]
-    private var pendingCrosswords: [String: UserProgress] = [:]
+    private var pendingBackword: [String: PendingBackwordUpload] = [:]
+    private var pendingCrosswords: [String: PendingCrosswordUpload] = [:]
 
     private init() {}
 
     func scheduleUpload(_ progress: BackwordProgress) {
-        guard ProgressStorageNamespace.accountID != nil else { return }
-        pendingBackword[progress.date] = progress
+        guard let accountID = ProgressStorageNamespace.accountID else { return }
+        pendingBackword["\(accountID):\(progress.date)"] = PendingBackwordUpload(
+            accountID: accountID,
+            progress: progress
+        )
         scheduleFlush(immediately: progress.isComplete)
     }
 
     func scheduleUpload(_ progress: UserProgress) {
-        guard ProgressStorageNamespace.accountID != nil else { return }
-        pendingCrosswords[progress.puzzleId] = progress
+        guard let accountID = ProgressStorageNamespace.accountID else { return }
+        pendingCrosswords["\(accountID):\(progress.puzzleId)"] = PendingCrosswordUpload(
+            accountID: accountID,
+            progress: progress
+        )
         scheduleFlush(immediately: progress.isComplete || progress.gaveUpAt != nil)
     }
 
@@ -718,16 +741,20 @@ final class ProgressCloudSync {
     func flushPendingUploads() async {
         scheduledUploadTask = nil
 
+        guard let activeAccountID = ProgressStorageNamespace.accountID else { return }
+
         let backword = pendingBackword
         let crosswords = pendingCrosswords
-        for progress in backword.values {
-            if await upload(progress) {
-                pendingBackword.removeValue(forKey: progress.date)
+        for (key, pending) in backword where pending.accountID == activeAccountID {
+            guard ProgressStorageNamespace.accountID == pending.accountID else { return }
+            if await upload(pending.progress), ProgressStorageNamespace.accountID == pending.accountID {
+                pendingBackword.removeValue(forKey: key)
             }
         }
-        for progress in crosswords.values {
-            if await upload(progress) {
-                pendingCrosswords.removeValue(forKey: progress.puzzleId)
+        for (key, pending) in crosswords where pending.accountID == activeAccountID {
+            guard ProgressStorageNamespace.accountID == pending.accountID else { return }
+            if await upload(pending.progress), ProgressStorageNamespace.accountID == pending.accountID {
+                pendingCrosswords.removeValue(forKey: key)
             }
         }
     }
@@ -735,14 +762,21 @@ final class ProgressCloudSync {
     func sync(accountID: String, guestBackword: [BackwordProgress], guestCrosswords: [UserProgress]) async {
         guard ProgressStorageNamespace.accountID == accountID else { return }
         await flushPendingUploads()
+        guard ProgressStorageNamespace.accountID == accountID else { return }
         // Flush any account-scoped local records that were saved while offline
         // before pulling the server's winning records.
         _ = await mergeBackword(BackwordProgress.loadAll())
+        guard ProgressStorageNamespace.accountID == accountID else { return }
         _ = await mergeCrosswords(UserProgress.loadAll())
+        guard ProgressStorageNamespace.accountID == accountID else { return }
         let uploadedBackword = await mergeBackword(guestBackword)
+        guard ProgressStorageNamespace.accountID == accountID else { return }
         let uploadedCrosswords = await mergeCrosswords(guestCrosswords)
+        guard ProgressStorageNamespace.accountID == accountID else { return }
         await pullBackword()
+        guard ProgressStorageNamespace.accountID == accountID else { return }
         await pullCrosswords()
+        guard ProgressStorageNamespace.accountID == accountID else { return }
         removeSuccessfullyMigratedGuestProgress(
             backwordDates: uploadedBackword,
             crosswordIDs: uploadedCrosswords,
@@ -889,9 +923,13 @@ final class ProgressCloudSync {
         activeAccountID: String
     ) {
         guard !backwordDates.isEmpty || !crosswordIDs.isEmpty else { return }
+        guard ProgressStorageNamespace.accountID == activeAccountID else { return }
         ProgressStorageNamespace.activate(accountID: nil)
         for date in backwordDates { BackwordProgress.delete(date: date) }
         for puzzleID in crosswordIDs { UserProgress.delete(puzzleId: puzzleID) }
+        if BackwordProgress.loadAll().isEmpty && UserProgress.loadAll().isEmpty {
+            ProgressStorageNamespace.clearGuestMigrationClaim()
+        }
         ProgressStorageNamespace.activate(accountID: activeAccountID)
     }
 }

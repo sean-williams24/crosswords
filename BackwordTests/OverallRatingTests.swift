@@ -642,6 +642,7 @@ struct OverallRatingServiceScoreWindowTests {
         var formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let date = formatter.date(from: "\(dateString) 12:00:00")!
         return ContentReleaseCalendar(now: date, timeZone: TimeZone(secondsFromGMT: 0)!)

@@ -14,6 +14,14 @@ record, then the furthest valid progress; two solved records use their release
 score and finally their latest update as tie-breakers. Grids and guesses are
 never merged cell-by-cell.
 
+Before guest records are first uploaded, the device or browser permanently
+claims that current guest batch for the signing-in account. An interrupted
+migration remains retryable only by that same account; another account on the
+same client must never receive a copy. The claim is cleared only after every
+migratable guest record has been removed, so a later genuinely new guest batch
+can be claimed normally. Pending iOS uploads are likewise tagged with their
+account and are never sent after an account switch.
+
 Supabase `game_progress` is the cloud source of truth for cross-device progress;
 statistics, streaks, and ratings are derived from active progress rather than
 merged as aggregate counters. Local saves always complete first and cloud writes
@@ -100,6 +108,9 @@ Managed Payments Checkout Session, and accepts only signature-verified Stripe
 webhook updates. A signed-in account with any active Pro source is never offered
 a second subscription; Stripe customers manage payment methods, cancellations,
 and plan changes through Stripe Link while Apple customers remain Apple-managed.
+The server persists the Stripe customer-to-account link before redirecting to
+Checkout, so account deletion can list and stop a new subscription even if its
+webhook has not yet reached the entitlement table.
 Stripe is merchant of record for eligible web purchases and handles indirect-tax
 calculation, collection, filing, and remittance; the ordinary Stripe Billing
 Customer Portal is not deployed. Stripe trials are blocked after a recorded
@@ -130,6 +141,12 @@ The account entitlement RPC returns only the current account's `has_used_trial`
 flag, via a no-argument `SECURITY DEFINER` function keyed to `auth.uid()`. This
 allows the web checkout CTA to say “Subscribe now” after a trial without
 exposing the otherwise server-only trial-redemption records.
+
+Apple entitlement-claim failures retain a customer-safe response in the iOS
+app. The Edge Function's server log records only the failed processing stage
+and safe error message/code—never Apple transaction identifiers, signed data,
+or Postgres error details—so Supabase failures remain diagnosable without
+exposing purchase data.
 
 iOS verifies its cached Supabase session with the Auth user endpoint during
 startup and foreground account refreshes, before it uploads or downloads cloud

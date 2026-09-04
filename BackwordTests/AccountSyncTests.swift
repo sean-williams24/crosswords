@@ -21,6 +21,19 @@ struct AccountSyncTests {
         #expect(ProgressStorageNamespace.directory(base: base).path == "/tmp/backword-progress/users/account-b")
     }
 
+    @Test("Interrupted guest migration remains owned by the first account")
+    func guestMigrationCannotBeClaimedByAnotherAccount() {
+        defer { ProgressStorageNamespace.clearGuestMigrationClaim() }
+        ProgressStorageNamespace.clearGuestMigrationClaim()
+
+        #expect(ProgressStorageNamespace.claimGuestMigration(for: "account-a"))
+        #expect(!ProgressStorageNamespace.claimGuestMigration(for: "account-b"))
+        #expect(ProgressStorageNamespace.claimGuestMigration(for: "account-a"))
+
+        ProgressStorageNamespace.clearGuestMigrationClaim()
+        #expect(ProgressStorageNamespace.claimGuestMigration(for: "account-b"))
+    }
+
     @Test("A solved Backword record wins over in-progress local guesses")
     func solvedBackwordWinsMerge() {
         var local = BackwordProgress(date: "2026-08-06")
