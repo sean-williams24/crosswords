@@ -89,7 +89,15 @@ struct WordBankTests {
     func terminalAbbreviationsAreAllowed() {
         #expect(hasTerminalAbbreviation("Like a sample, e.g."))
         #expect(hasTerminalAbbreviation("Maryland community near Washington, D.C."))
+        #expect(hasTerminalAbbreviation("Relating to a Ph.D."))
         #expect(!hasTerminalAbbreviation("Done intentionally."))
+    }
+
+    @Test("Full stops before a final enumeration are rejected")
+    func fullStopsBeforeFinalEnumerationsAreRejected() {
+        #expect(hasDisallowedTerminalFullStop("Frozen polar mass. (3,3)"))
+        #expect(!hasDisallowedTerminalFullStop("Frozen polar mass (3,3)"))
+        #expect(!hasDisallowedTerminalFullStop("Community near Washington, D.C. (4,4)"))
     }
 
     @Test("Semantic qualifier words are not treated as filler")
@@ -115,11 +123,9 @@ struct WordBankTests {
     @Test("No word bank clues end in full stops")
     func noWordBankCluesEndInFullStops() throws {
         for obj in try loadWordBank() {
-            for field in fieldValues(for: obj) {
-                let trimmedValue = field.value.trimmingCharacters(in: .whitespacesAndNewlines)
-
+            for field in formattingFieldValues(for: obj) {
                 #expect(
-                    !trimmedValue.hasSuffix(".") || hasTerminalAbbreviation(trimmedValue),
+                    !hasDisallowedTerminalFullStop(field.value),
                     "\(field.name) ends in a full stop for word: \(obj.word) field: \(field.value)"
                 )
             }
@@ -202,6 +208,14 @@ struct WordBankTests {
         return fields
     }
 
+    private func formattingFieldValues(for obj: WordObject) -> [FieldValue] {
+        var fields = fieldValues(for: obj)
+        if let hint = obj.hint, !hint.isEmpty {
+            fields.append(FieldValue(name: "hint", value: hint))
+        }
+        return fields
+    }
+
     private func answerTerms(for answer: String) -> [String] {
         let parts = tokens(answer)
         guard !parts.isEmpty else { return [] }
@@ -260,9 +274,19 @@ struct WordBankTests {
 
     private func hasTerminalAbbreviation(_ clue: String) -> Bool {
         clue.range(
-            of: #"(?:\b(?:e\.g|i\.e|etc)\.|(?:[A-Z]\.){2,})$"#,
+            of: #"(?:\b(?:e\.g|i\.e|etc)\.|(?:[A-Z][a-z]?\.){2,})$"#,
             options: .regularExpression
         ) != nil
+    }
+
+    private func hasDisallowedTerminalFullStop(_ clue: String) -> Bool {
+        let withoutEnumeration = clue.replacingOccurrences(
+            of: #"\s+\(\d+(?:\s*,\s*\d+)*\)\s*$"#,
+            with: "",
+            options: .regularExpression
+        )
+        let trimmedValue = withoutEnumeration.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmedValue.hasSuffix(".") && !hasTerminalAbbreviation(trimmedValue)
     }
 
     private func isSemanticQualifierUse(_ clue: String) -> Bool {

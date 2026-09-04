@@ -25955,882 +25955,882 @@
     },
     {
         "word": "ICECAP",
-        "text": "Frozen polar mass. (3,3)",
-        "hint": "Polar region's icy surface. (3,3)",
+        "text": "Frozen polar mass (3,3)",
+        "hint": "Polar region's icy surface (3,3)",
         "clues": [
-            "Arctic covering. (3,3)",
-            "A chilly hat for the Earth. (3,3)",
-            "Cap atop the world's coldest regions. (3,3)"
+            "Arctic covering (3,3)",
+            "A chilly hat for the Earth (3,3)",
+            "Cap atop the world's coldest regions (3,3)"
         ],
-        "hard_text": "Frozen expanse at the poles. (3,3)"
+        "hard_text": "Frozen expanse at the poles (3,3)"
     },
     {
         "word": "TEABAG",
-        "text": "Brew pouch. (3,3)",
-        "hint": "Common item in tea preparation. (3,3)",
+        "text": "Brew pouch (3,3)",
+        "hint": "Common item in tea preparation (3,3)",
         "clues": [
-            "Used for brewing a warm drink. (3,3)",
-            "Pocket-sized brew maker. (3,3)",
-            "What steeps in hot water. (3,3)"
+            "Used for brewing a warm drink (3,3)",
+            "Pocket-sized brew maker (3,3)",
+            "What steeps in hot water (3,3)"
         ],
-        "hard_text": "Sachet for a warm infusion. (3,3)"
+        "hard_text": "Sachet for a warm infusion (3,3)"
     },
     {
         "word": "NOTNOW",
-        "text": "Later. (3,3)",
+        "text": "Later (3,3)",
         "hint": "A polite way to postpone",
         "clues": [
-            "Busy person's reply. (3,3)",
-            "Response indicating a future time. (3,3)",
-            "Not the right moment for discussion. (3,3)"
+            "Busy person's reply (3,3)",
+            "Response indicating a future time (3,3)",
+            "Not the right moment for discussion (3,3)"
         ],
-        "hard_text": "A polite delay for attention. (3,3)"
+        "hard_text": "A polite delay for attention (3,3)"
     },
     {
         "word": "HOTSPOT",
-        "text": "Popular place or Wi-Fi zone. (3,4)",
+        "text": "Popular place or Wi-Fi zone (3,4)",
         "hint": "Trend location or gathering place",
         "clues": [
-            "Where the action is. (3,4)",
-            "A term for popular Wi-Fi areas. (3,4)",
-            "A lively location drawing crowds. (3,4)"
+            "Where the action is (3,4)",
+            "A term for popular Wi-Fi areas (3,4)",
+            "A lively location drawing crowds (3,4)"
         ],
-        "hard_text": "Where activity is concentrated. (3,4)"
+        "hard_text": "Where activity is concentrated (3,4)"
     },
     {
         "word": "TOPKNOT",
-        "text": "Hair bun on the crown. (3,4)",
+        "text": "Hair bun on the crown (3,4)",
         "hint": "Style often seen on buns",
         "clues": [
-            "High hairstyle. (3,4)",
-            "A bun that tops off the head. (3,4)",
-            "Crowning glory in a hairdo. (3,4)"
+            "High hairstyle (3,4)",
+            "A bun that tops off the head (3,4)",
+            "Crowning glory in a hairdo (3,4)"
         ],
-        "hard_text": "High hair arrangement. (3,4)"
+        "hard_text": "High hair arrangement (3,4)"
     },
     {
         "word": "TEAPARTY",
-        "text": "Alice's mad event. (3,5)",
-        "hint": "Social event with tea and fancy hats. (3,5)",
+        "text": "Alice's mad event (3,5)",
+        "hint": "Social event with tea and fancy hats (3,5)",
         "clues": [
-            "Wonderland gathering. (3,5)",
-            "Political gathering over beverages. (3,5)",
-            "Event where guests sip and spill secrets. (3,5)"
+            "Wonderland gathering (3,5)",
+            "Political gathering over beverages (3,5)",
+            "Event where guests sip and spill secrets (3,5)"
         ],
-        "hard_text": "Gathering for a whimsical discussion. (3,5)"
+        "hard_text": "Gathering for a whimsical discussion (3,5)"
     },
     {
         "word": "ICECREAM",
-        "text": "Frozen dessert. (3,5)",
-        "hint": "Popular treat at summer fairs. (3,5)",
+        "text": "Frozen dessert (3,5)",
+        "hint": "Popular treat at summer fairs (3,5)",
         "clues": [
-            "Comes in cones and tubs. (3,5)",
-            "Sweet scoop on a summer cone. (3,5)",
-            "Scooped delight, often found in flavors. (3,5)"
+            "Comes in cones and tubs (3,5)",
+            "Sweet scoop on a summer cone (3,5)",
+            "Scooped delight, often found in flavors (3,5)"
         ],
-        "hard_text": "Chill out treat on a hot day. (3,5)"
+        "hard_text": "Chill out treat on a hot day (3,5)"
     },
     {
         "word": "DEADHEAT",
-        "text": "Exact tie in a race. (4,4)",
+        "text": "Exact tie in a race (4,4)",
         "hint": "Common term in horse racing",
         "clues": [
             "Tie in a race or contest (4,4)",
-            "Photo finish with no clear winner. (4,4)",
-            "Tied competitors in a race to the end. (4,4)"
+            "Photo finish with no clear winner (4,4)",
+            "Tied competitors in a race to the end (4,4)"
         ],
-        "hard_text": "It's a draw, but not a heartbeat. (4,4)"
+        "hard_text": "It's a draw, but not a heartbeat (4,4)"
     },
     {
         "word": "DARKROOM",
-        "text": "Film developing space. (4,4)",
-        "hint": "Essential for analog photography process. (4,4)",
+        "text": "Film developing space (4,4)",
+        "hint": "Essential for analog photography process (4,4)",
         "clues": [
-            "Photographer's red-lit chamber. (4,4)",
-            "Where photos emerge from obscurity. (4,4)",
+            "Photographer's red-lit chamber (4,4)",
+            "Where photos emerge from obscurity (4,4)",
             "Low-lit space for developing film (4,4)"
         ],
-        "hard_text": "Hidden space for photo magic. (4,4)"
+        "hard_text": "Hidden space for photo magic (4,4)"
     },
     {
         "word": "HALFPIPE",
-        "text": "U-shaped ramp for skaters. (4,4)",
-        "hint": "Freestyle sport venue element. (4,4)",
+        "text": "U-shaped ramp for skaters (4,4)",
+        "hint": "Freestyle sport venue element (4,4)",
         "clues": [
-            "Skateboard or snowboard feature. (4,4)",
-            "U-shaped challenge for boarders. (4,4)",
-            "Ramp that turns tricks upside down. (4,4)"
+            "Skateboard or snowboard feature (4,4)",
+            "U-shaped challenge for boarders (4,4)",
+            "Ramp that turns tricks upside down (4,4)"
         ],
-        "hard_text": "Skater's curved obstacle course. (4,4)"
+        "hard_text": "Skater's curved obstacle course (4,4)"
     },
     {
         "word": "HARDBALL",
-        "text": "Tough approach, or baseball. (4,4)",
+        "text": "Tough approach, or baseball (4,4)",
         "hint": "Business negotiation tactic, no softness allowed",
         "clues": [
-            "Play ___ (get serious). (4,4)",
-            "Serious sport with no room for softness. (4,4)",
-            "Intense approach, either in sport or business. (4,4)"
+            "Play ___ (get serious) (4,4)",
+            "Serious sport with no room for softness (4,4)",
+            "Intense approach, either in sport or business (4,4)"
         ],
-        "hard_text": "Tough game for the strategic mind. (4,4)"
+        "hard_text": "Tough game for the strategic mind (4,4)"
     },
     {
         "word": "HOMEPAGE",
-        "text": "Website's main screen. (4,4)",
-        "hint": "Digital hub for first impressions. (4,4)",
+        "text": "Website's main screen (4,4)",
+        "hint": "Digital hub for first impressions (4,4)",
         "clues": [
             "Website's main entry (4,4)",
-            "Digital front door for virtual visitors. (4,4)",
-            "Starting point in the online journey. (4,4)"
+            "Digital front door for virtual visitors (4,4)",
+            "Starting point in the online journey (4,4)"
         ],
-        "hard_text": "Web's welcome mat, but less inviting. (4,4)"
+        "hard_text": "Web's welcome mat, but less inviting (4,4)"
     },
     {
         "word": "FLATLINE",
-        "text": "Show no vital signs. (4,4)",
-        "hint": "A grim outcome in medical dramas. (4,4)",
+        "text": "Show no vital signs (4,4)",
+        "hint": "A grim outcome in medical dramas (4,4)",
         "clues": [
-            "Hospital monitor's dreaded signal. (4,4)",
-            "Final breath indicated on a chart. (4,4)",
-            "Electrocardiogram showing no cardiac activity. (4,4)"
+            "Hospital monitor's dreaded signal (4,4)",
+            "Final breath indicated on a chart (4,4)",
+            "Electrocardiogram showing no cardiac activity (4,4)"
         ],
-        "hard_text": "Signal fades to nothingness. (4,4)"
+        "hard_text": "Signal fades to nothingness (4,4)"
     },
     {
         "word": "FULLMOON",
-        "text": "Completely illuminated lunar disc. (4,4)",
-        "hint": "Popular night for spooky gatherings. (4,4)",
+        "text": "Completely illuminated lunar disc (4,4)",
+        "hint": "Popular night for spooky gatherings (4,4)",
         "clues": [
-            "Werewolf trigger. (4,4)",
-            "Lunar phase that captures attention. (4,4)",
-            "Illuminated sphere watched by night owls. (4,4)"
+            "Werewolf trigger (4,4)",
+            "Lunar phase that captures attention (4,4)",
+            "Illuminated sphere watched by night owls (4,4)"
         ],
-        "hard_text": "Night's brightest orb, revealing all. (4,4)"
+        "hard_text": "Night's brightest orb, revealing all (4,4)"
     },
     {
         "word": "GOODWILL",
-        "text": "Friendly disposition. (4,4)",
-        "hint": "Spirit of community support. (4,4)",
+        "text": "Friendly disposition (4,4)",
+        "hint": "Spirit of community support (4,4)",
         "clues": [
-            "Kindness and benevolence. (4,4)",
-            "Friendly intent behind charitable acts. (4,4)",
-            "Positive spirit in personal exchanges. (4,4)"
+            "Kindness and benevolence (4,4)",
+            "Friendly intent behind charitable acts (4,4)",
+            "Positive spirit in personal exchanges (4,4)"
         ],
-        "hard_text": "Kindness that benefits everyone. (4,4)"
+        "hard_text": "Kindness that benefits everyone (4,4)"
     },
     {
         "word": "HEADBAND",
-        "text": "Strip worn across the forehead. (4,4)",
-        "hint": "Utilized in various sports. (4,4)",
+        "text": "Strip worn across the forehead (4,4)",
+        "hint": "Utilized in various sports (4,4)",
         "clues": [
-            "Keeps hair back during exercise. (4,4)",
-            "Accessory worn to keep sweat at bay. (4,4)",
+            "Keeps hair back during exercise (4,4)",
+            "Accessory worn to keep sweat at bay (4,4)",
             "Athletic brow accessory (4,4)"
         ],
-        "hard_text": "Fashion statement that keeps hair in place. (4,4)"
+        "hard_text": "Fashion statement that keeps hair in place (4,4)"
     },
     {
         "word": "HIGHRISE",
-        "text": "Tall building. (4,4)",
-        "hint": "Common in urban skylines. (4,4)",
+        "text": "Tall building (4,4)",
+        "hint": "Common in urban skylines (4,4)",
         "clues": [
-            "Skyscraper type. (4,4)",
-            "Building that reaches for the sky. (4,4)",
-            "Tall structure where views come at a premium. (4,4)"
+            "Skyscraper type (4,4)",
+            "Building that reaches for the sky (4,4)",
+            "Tall structure where views come at a premium (4,4)"
         ],
-        "hard_text": "Vertical living, touching the clouds. (4,4)"
+        "hard_text": "Vertical living, touching the clouds (4,4)"
     },
     {
         "word": "JUNKFOOD",
-        "text": "Unhealthy snacks. (4,4)",
-        "hint": "Popular at movie theaters. (4,4)",
+        "text": "Unhealthy snacks (4,4)",
+        "hint": "Popular at movie theaters (4,4)",
         "clues": [
-            "Crisps and sweets. (4,4)",
-            "Quick bites that lack substance. (4,4)",
-            "Snack attack's unhealthy choice. (4,4)"
+            "Crisps and sweets (4,4)",
+            "Quick bites that lack substance (4,4)",
+            "Snack attack's unhealthy choice (4,4)"
         ],
-        "hard_text": "Guilty pleasure that's hard to resist. (4,4)"
+        "hard_text": "Guilty pleasure that's hard to resist (4,4)"
     },
     {
         "word": "LIFEBOAT",
-        "text": "Emergency vessel at sea. (4,4)",
-        "hint": "Often associated with maritime safety. (4,4)",
+        "text": "Emergency vessel at sea (4,4)",
+        "hint": "Often associated with maritime safety (4,4)",
         "clues": [
-            "Ship's safety craft. (4,4)",
-            "Escape craft for ocean emergencies. (4,4)",
+            "Ship's safety craft (4,4)",
+            "Escape craft for ocean emergencies (4,4)",
             "Emergency vessel for survivors (4,4)"
         ],
-        "hard_text": "Safety vessel in dire waters. (4,4)"
+        "hard_text": "Safety vessel in dire waters (4,4)"
     },
     {
         "word": "LONGSHOT",
-        "text": "Unlikely chance of success. (4,4)",
-        "hint": "Common term in betting contexts. (4,4)",
+        "text": "Unlikely chance of success (4,4)",
+        "hint": "Common term in betting contexts (4,4)",
         "clues": [
-            "Outside bet. (4,4)",
-            "Chance taken on a distant dream. (4,4)",
-            "Betting on a slim possibility. (4,4)"
+            "Outside bet (4,4)",
+            "Chance taken on a distant dream (4,4)",
+            "Betting on a slim possibility (4,4)"
         ],
-        "hard_text": "Unlikely hope in a risky gamble. (4,4)"
+        "hard_text": "Unlikely hope in a risky gamble (4,4)"
     },
     {
         "word": "OPENPLAN",
-        "text": "Without dividing walls. (4,4)",
-        "hint": "Popular in contemporary office designs. (4,4)",
+        "text": "Without dividing walls (4,4)",
+        "hint": "Popular in contemporary office designs (4,4)",
         "clues": [
-            "Modern office or kitchen layout. (4,4)",
-            "Design choice with no walls in sight. (4,4)",
-            "Concept promoting collaboration without barriers. (4,4)"
+            "Modern office or kitchen layout (4,4)",
+            "Design choice with no walls in sight (4,4)",
+            "Concept promoting collaboration without barriers (4,4)"
         ],
-        "hard_text": "Layout that embraces spaciousness. (4,4)"
+        "hard_text": "Layout that embraces spaciousness (4,4)"
     },
     {
         "word": "ROADSIDE",
-        "text": "Edge of the highway. (4,4)",
-        "hint": "Often features signage and attractions. (4,4)",
+        "text": "Edge of the highway (4,4)",
+        "hint": "Often features signage and attractions (4,4)",
         "clues": [
-            "Where breakdowns happen. (4,4)",
-            "Edge of the journey, often littered. (4,4)",
-            "Place to stop before continuing on. (4,4)"
+            "Where breakdowns happen (4,4)",
+            "Edge of the journey, often littered (4,4)",
+            "Place to stop before continuing on (4,4)"
         ],
-        "hard_text": "Where travelers pause for a break. (4,4)"
+        "hard_text": "Where travelers pause for a break (4,4)"
     },
     {
         "word": "WILDCARD",
-        "text": "Unpredictable element. (4,4)",
-        "hint": "Used in card games for flexibility. (4,4)",
+        "text": "Unpredictable element (4,4)",
+        "hint": "Used in card games for flexibility (4,4)",
         "clues": [
-            "Tournament entry for non-qualifiers. (4,4)",
-            "Surprise factor in games of chance. (4,4)",
-            "Unexpected twist in a planned scenario. (4,4)"
+            "Tournament entry for non-qualifiers (4,4)",
+            "Surprise factor in games of chance (4,4)",
+            "Unexpected twist in a planned scenario (4,4)"
         ],
-        "hard_text": "Surprise player in strategy games. (4,4)"
+        "hard_text": "Surprise player in strategy games (4,4)"
     },
     {
         "word": "WINDMILL",
-        "text": "Sail-powered grinding structure. (4,4)",
-        "hint": "Used historically for energy conversion. (4,4)",
+        "text": "Sail-powered grinding structure (4,4)",
+        "hint": "Used historically for energy conversion (4,4)",
         "clues": [
-            "Don Quixote's enemy. (4,4)",
-            "Turning blades that reach for the breeze. (4,4)",
-            "Old-world device for grinding grain. (4,4)"
+            "Don Quixote's enemy (4,4)",
+            "Turning blades that reach for the breeze (4,4)",
+            "Old-world device for grinding grain (4,4)"
         ],
-        "hard_text": "Structure that harnesses nature's power. (4,4)"
+        "hard_text": "Structure that harnesses nature's power (4,4)"
     },
     {
         "word": "BLACKHOLE",
-        "text": "Cosmic point of no return. (5,4)",
-        "hint": "Often depicted in science fiction. (5,4)",
+        "text": "Cosmic point of no return (5,4)",
+        "hint": "Often depicted in science fiction (5,4)",
         "clues": [
-            "Space phenomenon with immense gravity. (5,4)",
-            "A gravitational trap in space's fabric. (5,4)",
-            "Region where nothing escapes its grasp. (5,4)"
+            "Space phenomenon with immense gravity (5,4)",
+            "A gravitational trap in space's fabric (5,4)",
+            "Region where nothing escapes its grasp (5,4)"
         ],
-        "hard_text": "Cosmic enigma that swallows light. (5,4)"
+        "hard_text": "Cosmic enigma that swallows light (5,4)"
     },
     {
         "word": "BLINDSPOT",
-        "text": "Area you cannot see. (5,4)",
-        "hint": "Oversight in decision-making. (5,4)",
+        "text": "Area you cannot see (5,4)",
+        "hint": "Oversight in decision-making (5,4)",
         "clues": [
-            "Driver's unseen zone. (5,4)",
-            "Missing piece in one's awareness. (5,4)",
-            "Zone where your vision fails you. (5,4)"
+            "Driver's unseen zone (5,4)",
+            "Missing piece in one's awareness (5,4)",
+            "Zone where your vision fails you (5,4)"
         ],
-        "hard_text": "Area obscured from view, literally. (5,4)"
+        "hard_text": "Area obscured from view, literally (5,4)"
     },
     {
         "word": "BRAINDEAD",
-        "text": "Showing no mental activity. (5,4)",
-        "hint": "Condition after intense mental fatigue. (5,4)",
+        "text": "Showing no mental activity (5,4)",
+        "hint": "Condition after intense mental fatigue (5,4)",
         "clues": [
-            "Completely switched off. (5,4)",
-            "In a stupor or daze. (5,4)",
-            "Concept of unresponsiveness in thought. (5,4)"
+            "Completely switched off (5,4)",
+            "In a stupor or daze (5,4)",
+            "Concept of unresponsiveness in thought (5,4)"
         ],
-        "hard_text": "Mindless state, often from exhaustion. (5,4)"
+        "hard_text": "Mindless state, often from exhaustion (5,4)"
     },
     {
         "word": "BREAKEVEN",
-        "text": "Neither profit nor loss. (5,4)",
-        "hint": "Critical balance in business deals. (5,4)",
+        "text": "Neither profit nor loss (5,4)",
+        "hint": "Critical balance in business deals (5,4)",
         "clues": [
-            "Financial neutral point. (5,4)",
-            "No profit, no loss, just balance. (5,4)",
-            "Financial neutrality in a transaction. (5,4)"
+            "Financial neutral point (5,4)",
+            "No profit, no loss, just balance (5,4)",
+            "Financial neutrality in a transaction (5,4)"
         ],
-        "hard_text": "When costs equal gains, how boring. (5,4)"
+        "hard_text": "When costs equal gains, how boring (5,4)"
     },
     {
         "word": "CROSSFIRE",
-        "text": "Gunfire from multiple directions. (5,4)",
+        "text": "Gunfire from multiple directions (5,4)",
         "hint": "Caught between rival interests",
         "clues": [
-            "Caught in the ___. (5,4)",
+            "Caught in the ___ (5,4)",
             "Hostile exchange from opposing sides (5,4)",
-            "Dueling perspectives in heated debate. (5,4)"
+            "Dueling perspectives in heated debate (5,4)"
         ],
-        "hard_text": "Caught in a hail of opposing views. (5,4)"
+        "hard_text": "Caught in a hail of opposing views (5,4)"
     },
     {
         "word": "DEEPWATER",
-        "text": "Far from shore. (4,5)",
-        "hint": "Oceanic region for deep-sea exploration. (4,5)",
+        "text": "Far from shore (4,5)",
+        "hint": "Oceanic region for deep-sea exploration (4,5)",
         "clues": [
-            "In ___ (in serious trouble). (4,5)",
-            "Place where swimmers fear to tread. (4,5)",
-            "Depths that conceal many mysteries. (4,5)"
+            "In ___ (in serious trouble) (4,5)",
+            "Place where swimmers fear to tread (4,5)",
+            "Depths that conceal many mysteries (4,5)"
         ],
-        "hard_text": "Where submarines navigate. (4,5)"
+        "hard_text": "Where submarines navigate (4,5)"
     },
     {
         "word": "DREAMBOAT",
-        "text": "Attractive person. (5,4)",
-        "hint": "Often idolized in popular media. (5,4)",
+        "text": "Attractive person (5,4)",
+        "hint": "Often idolized in popular media (5,4)",
         "clues": [
-            "Charismatic figure in a romance. (5,4)",
-            "Someone who seems too good to be true. (5,4)",
-            "Heartthrob that captures your imagination. (5,4)"
+            "Charismatic figure in a romance (5,4)",
+            "Someone who seems too good to be true (5,4)",
+            "Heartthrob that captures your imagination (5,4)"
         ],
-        "hard_text": "Ideal partner in a romantic fantasy. (5,4)"
+        "hard_text": "Ideal partner in a romantic fantasy (5,4)"
     },
     {
         "word": "FIRSTHAND",
-        "text": "Direct experience. (5,4)",
+        "text": "Direct experience (5,4)",
         "hint": "Personal account of events? (5,4)",
         "clues": [
-            "Not secondhand. (5,4)",
-            "Source of knowledge from personal encounter. (5,4)",
-            "Witness to events before your eyes. (5,4)"
+            "Not secondhand (5,4)",
+            "Source of knowledge from personal encounter (5,4)",
+            "Witness to events before your eyes (5,4)"
         ],
-        "hard_text": "Obtained through direct observation. (5,4)"
+        "hard_text": "Obtained through direct observation (5,4)"
     },
     {
         "word": "GOLDFIELD",
-        "text": "Mining area for precious metal. (4,5)",
-        "hint": "Historic site of the 1849 rush. (4,5)",
+        "text": "Mining area for precious metal (4,5)",
+        "hint": "Historic site of the 1849 rush (4,5)",
         "clues": [
-            "Where prospectors dig. (4,5)",
-            "Place where dreams of wealth are mined. (4,5)",
-            "Land where fortunes were once buried. (4,5)"
+            "Where prospectors dig (4,5)",
+            "Place where dreams of wealth are mined (4,5)",
+            "Land where fortunes were once buried (4,5)"
         ],
-        "hard_text": "Prospectors' paradise for shiny finds. (4,5)"
+        "hard_text": "Prospectors' paradise for shiny finds (4,5)"
     },
     {
         "word": "GREENTEA",
-        "text": "Healthy Asian beverage. (5,3)",
-        "hint": "Common in Japanese tea ceremonies. (5,3)",
+        "text": "Healthy Asian beverage (5,3)",
+        "hint": "Common in Japanese tea ceremonies (5,3)",
         "clues": [
-            "Unfermented brew. (5,3)",
-            "Sipping on a calming, leafy infusion. (5,3)",
-            "Refreshing drink for wellness enthusiasts. (5,3)"
+            "Unfermented brew (5,3)",
+            "Sipping on a calming, leafy infusion (5,3)",
+            "Refreshing drink for wellness enthusiasts (5,3)"
         ],
-        "hard_text": "Sip favored by Zen practitioners. (5,3)"
+        "hard_text": "Sip favored by Zen practitioners (5,3)"
     },
     {
         "word": "HALFPRICE",
-        "text": "50% off. (4,5)",
-        "hint": "Discount during clearance events. (4,5)",
+        "text": "50% off (4,5)",
+        "hint": "Discount during clearance events (4,5)",
         "clues": [
-            "Sale bargain. (4,5)",
-            "Sale that cuts the cost in two. (4,5)",
-            "Your wallet's favorite kind of deal. (4,5)"
+            "Sale bargain (4,5)",
+            "Sale that cuts the cost in two (4,5)",
+            "Your wallet's favorite kind of deal (4,5)"
         ],
         "hard_text": "Costing fifty percent less (4,5)"
     },
     {
         "word": "HIGHTOWER",
-        "text": "Tall fortification. (4,5)",
-        "hint": "Castle's tallest feature. (4,5)",
+        "text": "Tall fortification (4,5)",
+        "hint": "Castle's tallest feature (4,5)",
         "clues": [
-            "Elevated lookout. (4,5)",
-            "Erect structure for a lofty view. (4,5)",
-            "Where one might reach new heights. (4,5)"
+            "Elevated lookout (4,5)",
+            "Erect structure for a lofty view (4,5)",
+            "Where one might reach new heights (4,5)"
         ],
         "hard_text": "Tall lookout structure (4,5)"
     },
     {
         "word": "JACKKNIFE",
-        "text": "Folding pocket blade. (4,5)",
-        "hint": "Folding tool for emergencies. (4,5)",
+        "text": "Folding pocket blade (4,5)",
+        "hint": "Folding tool for emergencies (4,5)",
         "clues": [
-            "Diving position or pocket tool. (4,5)",
-            "A folding friend in tight spots. (4,5)",
-            "Sharp choice for camping adventures. (4,5)"
+            "Diving position or pocket tool (4,5)",
+            "A folding friend in tight spots (4,5)",
+            "Sharp choice for camping adventures (4,5)"
         ],
-        "hard_text": "Tool with a split personality. (4,5)"
+        "hard_text": "Tool with a split personality (4,5)"
     },
     {
         "word": "NIGHTFALL",
-        "text": "Coming of darkness. (5,4)",
-        "hint": "Transition to evening hours. (5,4)",
+        "text": "Coming of darkness (5,4)",
+        "hint": "Transition to evening hours (5,4)",
         "clues": [
-            "Onset of darkness after sunset. (5,4)",
-            "Twilight's gentle descent. (5,4)",
-            "Time to say goodnight. (5,4)"
+            "Onset of darkness after sunset (5,4)",
+            "Twilight's gentle descent (5,4)",
+            "Time to say goodnight (5,4)"
         ],
-        "hard_text": "When day gives up its light. (5,4)"
+        "hard_text": "When day gives up its light (5,4)"
     },
     {
         "word": "PAPERBACK",
-        "text": "Soft-covered book. (5,4)",
-        "hint": "Often found in discount racks. (5,4)",
+        "text": "Soft-covered book (5,4)",
+        "hint": "Often found in discount racks (5,4)",
         "clues": [
-            "Cheaper than hardback. (5,4)",
-            "Portable volume with soft skin. (5,4)",
-            "Easily bendable book format. (5,4)"
+            "Cheaper than hardback (5,4)",
+            "Portable volume with soft skin (5,4)",
+            "Easily bendable book format (5,4)"
         ],
-        "hard_text": "Lightweight literary companion. (5,4)"
+        "hard_text": "Lightweight literary companion (5,4)"
     },
     {
         "word": "PATCHWORK",
-        "text": "Sewn together from pieces. (5,4)",
-        "hint": "Sewn fabric art form. (5,4)",
+        "text": "Sewn together from pieces (5,4)",
+        "hint": "Sewn fabric art form (5,4)",
         "clues": [
-            "Quilt style. (5,4)",
-            "Crafted from various pieces. (5,4)",
-            "Tapestry made from remnants. (5,4)"
+            "Quilt style (5,4)",
+            "Crafted from various pieces (5,4)",
+            "Tapestry made from remnants (5,4)"
         ],
-        "hard_text": "Tapestry of memory and fabric. (5,4)"
+        "hard_text": "Tapestry of memory and fabric (5,4)"
     },
     {
         "word": "PITCHFORK",
-        "text": "Pronged farm tool. (5,4)",
-        "hint": "Farm tool with a long handle and pointed tines. (5,4)",
+        "text": "Pronged farm tool (5,4)",
+        "hint": "Farm tool with a long handle and pointed tines (5,4)",
         "clues": [
-            "Used for tossing hay. (5,4)",
-            "Instrument of rural persuasion. (5,4)",
-            "Three-pronged implement for hay. (5,4)"
+            "Used for tossing hay (5,4)",
+            "Instrument of rural persuasion (5,4)",
+            "Three-pronged implement for hay (5,4)"
         ],
-        "hard_text": "Agricultural tool for hay. (5,4)"
+        "hard_text": "Agricultural tool for hay (5,4)"
     },
     {
         "word": "SHORTHAND",
-        "text": "Rapid writing system. (5,4)",
-        "hint": "Quick form of written communication. (5,4)",
+        "text": "Rapid writing system (5,4)",
+        "hint": "Quick form of written communication (5,4)",
         "clues": [
-            "Secretary's quick notation. (5,4)",
-            "Brevity's written art. (5,4)",
-            "Abbreviated system of rapid writing. (5,4)"
+            "Secretary's quick notation (5,4)",
+            "Brevity's written art (5,4)",
+            "Abbreviated system of rapid writing (5,4)"
         ],
-        "hard_text": "Quick notes in a hurry. (5,4)"
+        "hard_text": "Quick notes in a hurry (5,4)"
     },
     {
         "word": "SIDETRACK",
-        "text": "Divert from the main subject. (4,5)",
-        "hint": "To divert from original plan. (4,5)",
+        "text": "Divert from the main subject (4,5)",
+        "hint": "To divert from original plan (4,5)",
         "clues": [
-            "Divert from an intended course or activity. (4,5)",
-            "Getting off the beaten path. (4,5)",
-            "A diversion from the topic. (4,5)"
+            "Divert from an intended course or activity (4,5)",
+            "Getting off the beaten path (4,5)",
+            "A diversion from the topic (4,5)"
         ],
-        "hard_text": "Detour from the main line. (4,5)"
+        "hard_text": "Detour from the main line (4,5)"
     },
     {
         "word": "SNOWSTORM",
-        "text": "Heavy winter weather. (4,5)",
-        "hint": "Nature’s cold chaos. (4,5)",
+        "text": "Heavy winter weather (4,5)",
+        "hint": "Nature’s cold chaos (4,5)",
         "clues": [
-            "Blizzard. (4,5)",
-            "Nature's frosty ruckus. (4,5)",
-            "When flakes take center stage. (4,5)"
+            "Blizzard (4,5)",
+            "Nature's frosty ruckus (4,5)",
+            "When flakes take center stage (4,5)"
         ],
-        "hard_text": "Winter's wild whiteout event. (4,5)"
+        "hard_text": "Winter's wild whiteout event (4,5)"
     },
     {
         "word": "SPOTCHECK",
-        "text": "Random inspection. (4,5)",
-        "hint": "Unexpected verification. (4,5)",
+        "text": "Random inspection (4,5)",
+        "hint": "Unexpected verification (4,5)",
         "clues": [
-            "Surprise examination. (4,5)",
-            "Unscheduled inspection surprise. (4,5)",
-            "Evaluating the situation on the fly. (4,5)"
+            "Surprise examination (4,5)",
+            "Unscheduled inspection surprise (4,5)",
+            "Evaluating the situation on the fly (4,5)"
         ],
-        "hard_text": "Random event during a watch. (4,5)"
+        "hard_text": "Random event during a watch (4,5)"
     },
     {
         "word": "TIMESTAMP",
         "text": "Digital record of when something occurred (4,5)",
-        "hint": "Date and time reference in tech. (4,5)",
+        "hint": "Date and time reference in tech (4,5)",
         "clues": [
             "Log entry showing date and hour (4,5)",
-            "Chronological signature of events. (4,5)"
+            "Chronological signature of events (4,5)"
         ],
         "hard_text": "Chronological metadata marker (4,5)"
     },
     {
         "word": "TOOTHPICK",
-        "text": "Tiny pointed stick for teeth. (5,4)",
-        "hint": "Common item after a meal. (5,4)",
+        "text": "Tiny pointed stick for teeth (5,4)",
+        "hint": "Common item after a meal (5,4)",
         "clues": [
-            "After-dinner dental aid. (5,4)",
+            "After-dinner dental aid (5,4)",
             "Slender utensil for cleaning teeth (5,4)",
-            "Delicate instrument for dental finesse. (5,4)"
+            "Delicate instrument for dental finesse (5,4)"
         ],
-        "hard_text": "Tiny tool for post-meal cleanup. (5,4)"
+        "hard_text": "Tiny tool for post-meal cleanup (5,4)"
     },
     {
         "word": "TRAINWRECK",
-        "text": "Complete disaster. (5,5)",
+        "text": "Complete disaster (5,5)",
         "hint": "A social media fiasco? (5,5)",
         "clues": [
-            "Total mess. (5,5)",
-            "Disaster on tracks of failure. (5,5)",
-            "An unfortunate series of events. (5,5)"
+            "Total mess (5,5)",
+            "Disaster on tracks of failure (5,5)",
+            "An unfortunate series of events (5,5)"
         ],
-        "hard_text": "A catastrophic collision of plans. (5,5)"
+        "hard_text": "A catastrophic collision of plans (5,5)"
     },
     {
         "word": "WHITEBOARD",
-        "text": "Surface for dry-erase markers. (5,5)",
-        "hint": "Collaborative tool in classrooms. (5,5)",
+        "text": "Surface for dry-erase markers (5,5)",
+        "hint": "Collaborative tool in classrooms (5,5)",
         "clues": [
-            "Meeting room writing surface. (5,5)",
-            "Surface for erasing thoughts. (5,5)",
-            "Writable canvas for creativity. (5,5)"
+            "Meeting room writing surface (5,5)",
+            "Surface for erasing thoughts (5,5)",
+            "Writable canvas for creativity (5,5)"
         ],
-        "hard_text": "Clean slate for ideas. (5,5)"
+        "hard_text": "Clean slate for ideas (5,5)"
     },
     {
         "word": "BELLPEPPER",
-        "text": "Mild, hollow vegetable. (4,6)",
-        "hint": "Versatile vegetable in many cuisines. (4,6)",
+        "text": "Mild, hollow vegetable (4,6)",
+        "hint": "Versatile vegetable in many cuisines (4,6)",
         "clues": [
-            "Comes in red, green and yellow. (4,6)",
-            "Vegetable with a ringing endorsement. (4,6)",
-            "Crunchy addition to stir-fries. (4,6)"
+            "Comes in red, green and yellow (4,6)",
+            "Vegetable with a ringing endorsement (4,6)",
+            "Crunchy addition to stir-fries (4,6)"
         ],
-        "hard_text": "Colorful crunch in salads. (4,6)"
+        "hard_text": "Colorful crunch in salads (4,6)"
     },
     {
         "word": "BLACKSMITH",
-        "text": "Person who forges metal. (5,5)",
-        "hint": "Craftsman shaping metal objects. (5,5)",
+        "text": "Person who forges metal (5,5)",
+        "hint": "Craftsman shaping metal objects (5,5)",
         "clues": [
-            "Works at an anvil. (5,5)",
-            "Creator of iron and fire. (5,5)",
-            "Forging strength from heat. (5,5)"
+            "Works at an anvil (5,5)",
+            "Creator of iron and fire (5,5)",
+            "Forging strength from heat (5,5)"
         ],
-        "hard_text": "Metal artist at work. (5,5)"
+        "hard_text": "Metal artist at work (5,5)"
     },
     {
         "word": "BOOKKEEPER",
-        "text": "Financial record manager. (4,6)",
-        "hint": "Essential role in financial firms. (4,6)",
+        "text": "Financial record manager (4,6)",
+        "hint": "Essential role in financial firms (4,6)",
         "clues": [
-            "Accounts handler. (4,6)",
-            "Accountant with an eye for detail. (4,6)",
+            "Accounts handler (4,6)",
+            "Accountant with an eye for detail (4,6)",
             "Financial records manager (4,6)"
         ],
-        "hard_text": "Guardian of financial tales. (4,6)"
+        "hard_text": "Guardian of financial tales (4,6)"
     },
     {
         "word": "BOTTOMLINE",
-        "text": "Final figure or essential point. (6,4)",
-        "hint": "Summary point in discussions. (6,4)",
+        "text": "Final figure or essential point (6,4)",
+        "hint": "Summary point in discussions (6,4)",
         "clues": [
-            "What it all comes down to. (6,4)",
-            "Essential figure after all deductions. (6,4)",
-            "Core takeaway from any analysis. (6,4)"
+            "What it all comes down to (6,4)",
+            "Essential figure after all deductions (6,4)",
+            "Core takeaway from any analysis (6,4)"
         ],
-        "hard_text": "The final say in a discussion. (6,4)"
+        "hard_text": "The final say in a discussion (6,4)"
     },
     {
         "word": "BREADKNIFE",
-        "text": "Serrated cutting tool. (5,5)",
-        "hint": "Tool for slicing baked goods. (5,5)",
+        "text": "Serrated cutting tool (5,5)",
+        "hint": "Tool for slicing baked goods (5,5)",
         "clues": [
-            "For slicing loaves. (5,5)",
-            "Tool for crumbly confections. (5,5)",
-            "Sharp edge for soft interiors. (5,5)"
+            "For slicing loaves (5,5)",
+            "Tool for crumbly confections (5,5)",
+            "Sharp edge for soft interiors (5,5)"
         ],
         "hard_text": "Serrated utensil for slicing loaves (5,5)"
     },
     {
         "word": "CHEAPSKATE",
-        "text": "Miserly person. (5,5)",
-        "hint": "Known for avoiding unnecessary expenses. (5,5)",
+        "text": "Miserly person (5,5)",
+        "hint": "Known for avoiding unnecessary expenses (5,5)",
         "clues": [
-            "One who hates spending. (5,5)",
-            "Thrifty individual with tight pockets. (5,5)",
-            "Frugal friend at the store. (5,5)"
+            "One who hates spending (5,5)",
+            "Thrifty individual with tight pockets (5,5)",
+            "Frugal friend at the store (5,5)"
         ],
         "hard_text": "Penny-pinching sort (5,5)"
     },
     {
         "word": "CHEESECAKE",
-        "text": "Rich creamy dessert. (6,4)",
+        "text": "Rich creamy dessert (6,4)",
         "hint": "Popular treat in coffee shops? (6,4)",
         "clues": [
-            "New York style sweet. (6,4)",
-            "Dessert for sweet tooth cravings. (6,4)",
-            "Rich slice of indulgence. (6,4)"
+            "New York style sweet (6,4)",
+            "Dessert for sweet tooth cravings (6,4)",
+            "Rich slice of indulgence (6,4)"
         ],
-        "hard_text": "Creamy delight with a crust. (6,4)"
+        "hard_text": "Creamy delight with a crust (6,4)"
     },
     {
         "word": "CLOTHESPIN",
-        "text": "Laundry fastener. (7,3)",
+        "text": "Laundry fastener (7,3)",
         "hint": "Used in outdoor drying methods",
         "clues": [
-            "Holds washing on the line. (7,3)",
-            "Pinch of practicality for drying. (7,3)",
-            "Hold tight to freshly washed items. (7,3)"
+            "Holds washing on the line (7,3)",
+            "Pinch of practicality for drying (7,3)",
+            "Hold tight to freshly washed items (7,3)"
         ],
-        "hard_text": "Laundry's trusty grip. (7,3)"
+        "hard_text": "Laundry's trusty grip (7,3)"
     },
     {
         "word": "COTTONWOOL",
-        "text": "Soft absorbent padding. (6,4)",
-        "hint": "Essential for crafting and soft toys. (6,4)",
+        "text": "Soft absorbent padding (6,4)",
+        "hint": "Essential for crafting and soft toys (6,4)",
         "clues": [
-            "First aid fluffy material. (6,4)",
-            "Light padding for delicate touches. (6,4)",
-            "Comforting fiber in first aid. (6,4)"
+            "First aid fluffy material (6,4)",
+            "Light padding for delicate touches (6,4)",
+            "Comforting fiber in first aid (6,4)"
         ],
-        "hard_text": "Soft fluff for gentle care. (6,4)"
+        "hard_text": "Soft fluff for gentle care (6,4)"
     },
     {
         "word": "CROSSHATCH",
-        "text": "Pattern of intersecting lines. (5,5)",
-        "hint": "Visual texture in graphic design. (5,5)",
+        "text": "Pattern of intersecting lines (5,5)",
+        "hint": "Visual texture in graphic design (5,5)",
         "clues": [
-            "Artistic shading technique. (5,5)",
-            "Pattern of overlapping strokes. (5,5)",
-            "Grid of creativity in design. (5,5)"
+            "Artistic shading technique (5,5)",
+            "Pattern of overlapping strokes (5,5)",
+            "Grid of creativity in design (5,5)"
         ],
-        "hard_text": "Lines that intersect in art. (5,5)"
+        "hard_text": "Lines that intersect in art (5,5)"
     },
     {
         "word": "DRAGONBOAT",
-        "text": "Long decorated racing vessel. (6,4)",
-        "hint": "Cultural water race tradition. (6,4)",
+        "text": "Long decorated racing vessel (6,4)",
+        "hint": "Cultural water race tradition (6,4)",
         "clues": [
-            "Festival paddling craft. (6,4)",
-            "Colorful craft for a race. (6,4)",
-            "Long paddled racing craft. (6,4)"
+            "Festival paddling craft (6,4)",
+            "Colorful craft for a race (6,4)",
+            "Long paddled racing craft (6,4)"
         ],
-        "hard_text": "Paddling vessel with flair. (6,4)"
+        "hard_text": "Paddling vessel with flair (6,4)"
     },
     {
         "word": "FIDDLEHEAD",
-        "text": "Coiled young fern frond. (6,4)",
+        "text": "Coiled young fern frond (6,4)",
         "hint": "Delicacy from the forest floor",
         "clues": [
-            "Spiral spring vegetable. (6,4)",
-            "Young plant with a twist. (6,4)",
-            "Nature's coiled green treat. (6,4)"
+            "Spiral spring vegetable (6,4)",
+            "Young plant with a twist (6,4)",
+            "Nature's coiled green treat (6,4)"
         ],
-        "hard_text": "Spring's curled fern delight. (6,4)"
+        "hard_text": "Spring's curled fern delight (6,4)"
     },
     {
         "word": "FIGUREHEAD",
-        "text": "Leader in name only. (6,4)",
-        "hint": "Royalty without real influence. (6,4)",
+        "text": "Leader in name only (6,4)",
+        "hint": "Royalty without real influence (6,4)",
         "clues": [
-            "Ceremonial ship's prow carving. (6,4)",
-            "Symbolic presence on board. (6,4)",
-            "A puppet in a leadership role. (6,4)"
+            "Ceremonial ship's prow carving (6,4)",
+            "Symbolic presence on board (6,4)",
+            "A puppet in a leadership role (6,4)"
         ],
-        "hard_text": "Leader with little power. (6,4)"
+        "hard_text": "Leader with little power (6,4)"
     },
     {
         "word": "FISHANDCHIPS",
-        "text": "British takeaway classic. (4,3,5)",
-        "hint": "Popular pub menu item. (4,3,5)",
+        "text": "British takeaway classic (4,3,5)",
+        "hint": "Popular pub menu item (4,3,5)",
         "clues": [
-            "Friday night staple. (4,3,5)",
-            "British staple by the sea. (4,3,5)",
-            "Fried duo for a casual meal. (4,3,5)"
+            "Friday night staple (4,3,5)",
+            "British staple by the sea (4,3,5)",
+            "Fried duo for a casual meal (4,3,5)"
         ],
-        "hard_text": "Battered classic with a side. (4,3,5)"
+        "hard_text": "Battered classic with a side (4,3,5)"
     },
     {
         "word": "FREETHROW",
-        "text": "Basketball penalty shot. (4,5)",
-        "hint": "Essential tactic in basketball games. (4,5)",
+        "text": "Basketball penalty shot (4,5)",
+        "hint": "Essential tactic in basketball games (4,5)",
         "clues": [
-            "Uncontested basket attempt. (4,5)",
-            "Basketball opportunity without defenders. (4,5)",
-            "Shot following a foul call. (4,5)"
+            "Uncontested basket attempt (4,5)",
+            "Basketball opportunity without defenders (4,5)",
+            "Shot following a foul call (4,5)"
         ],
-        "hard_text": "Uncontested chance at points. (4,5)"
+        "hard_text": "Uncontested chance at points (4,5)"
     },
     {
         "word": "GREENHOUSE",
-        "text": "Glass plant-growing structure. (5,5)",
-        "hint": "Common in botany and agriculture. (5,5)",
+        "text": "Glass plant-growing structure (5,5)",
+        "hint": "Common in botany and agriculture (5,5)",
         "clues": [
-            "Where seedlings thrive. (5,5)",
-            "Botanical sanctuary of warmth. (5,5)",
-            "Where flora thrives under glass. (5,5)"
+            "Where seedlings thrive (5,5)",
+            "Botanical sanctuary of warmth (5,5)",
+            "Where flora thrives under glass (5,5)"
         ],
-        "hard_text": "Structure to extend growing seasons. (5,5)"
+        "hard_text": "Structure to extend growing seasons (5,5)"
     },
     {
         "word": "HEADHUNTER",
-        "text": "Executive recruiter. (4,6)",
-        "hint": "Talent seeker for high positions. (4,6)",
+        "text": "Executive recruiter (4,6)",
+        "hint": "Talent seeker for high positions (4,6)",
         "clues": [
-            "Talent scout for top jobs. (4,6)",
-            "Recruiter for senior positions. (4,6)",
-            "Talent scout with a decidedly fierce edge. (4,6)"
+            "Talent scout for top jobs (4,6)",
+            "Recruiter for senior positions (4,6)",
+            "Talent scout with a decidedly fierce edge (4,6)"
         ],
         "hard_text": "Talent scout for senior roles (4,6)"
     },
     {
         "word": "HEARTBREAK",
-        "text": "Emotional devastation. (5,5)",
-        "hint": "Loss often found in romance. (5,5)",
+        "text": "Emotional devastation (5,5)",
+        "hint": "Loss often found in romance (5,5)",
         "clues": [
-            "Crushing emotional pain. (5,5)",
-            "Deep emotional distress. (5,5)",
-            "A painful love story's climax. (5,5)"
+            "Crushing emotional pain (5,5)",
+            "Deep emotional distress (5,5)",
+            "A painful love story's climax (5,5)"
         ],
-        "hard_text": "What love can hit hard. (5,5)"
+        "hard_text": "What love can hit hard (5,5)"
     },
     {
         "word": "HIGHGROUND",
-        "text": "Elevated terrain advantage. (4,6)",
-        "hint": "Strategic advantage in battle. (4,6)",
+        "text": "Elevated terrain advantage (4,6)",
+        "hint": "Strategic advantage in battle (4,6)",
         "clues": [
-            "Moral or tactical superiority. (4,6)",
-            "Advantageous elevation in conflict. (4,6)",
-            "Where one might stand tall against foes. (4,6)"
+            "Moral or tactical superiority (4,6)",
+            "Advantageous elevation in conflict (4,6)",
+            "Where one might stand tall against foes (4,6)"
         ],
-        "hard_text": "Preferred position in a debate. (4,6)"
+        "hard_text": "Preferred position in a debate (4,6)"
     },
     {
         "word": "KNEEDEEP",
-        "text": "Immersed to the leg joint. (4,4)",
-        "hint": "Enveloped up to the joint. (4,4)",
+        "text": "Immersed to the leg joint (4,4)",
+        "hint": "Enveloped up to the joint (4,4)",
         "clues": [
-            "Wading depth. (4,4)",
-            "Submerged up to the joint. (4,4)",
-            "At a depth reaching the knees. (4,4)"
+            "Wading depth (4,4)",
+            "Submerged up to the joint (4,4)",
+            "At a depth reaching the knees (4,4)"
         ],
-        "hard_text": "Submerged to the knees. (4,4)"
+        "hard_text": "Submerged to the knees (4,4)"
     },
     {
         "word": "NIGHTWATCH",
-        "text": "Overnight guard duty. (5,5)",
-        "hint": "Security duty during darkness. (5,5)",
+        "text": "Overnight guard duty (5,5)",
+        "hint": "Security duty during darkness (5,5)",
         "clues": [
-            "Rembrandt painting. (5,5)",
-            "Guardian of the moonlit hours. (5,5)",
-            "Alertness when most are asleep. (5,5)"
+            "Rembrandt painting (5,5)",
+            "Guardian of the moonlit hours (5,5)",
+            "Alertness when most are asleep (5,5)"
         ],
-        "hard_text": "Vigil during the darkest hours. (5,5)"
+        "hard_text": "Vigil during the darkest hours (5,5)"
     },
     {
         "word": "OPENWATER",
-        "text": "Unobstructed expanse of sea. (4,5)",
-        "hint": "Expanse unconfined by land. (4,5)",
+        "text": "Unobstructed expanse of sea (4,5)",
+        "hint": "Expanse unconfined by land (4,5)",
         "clues": [
-            "Swimming without walls. (4,5)",
-            "Vast sea without a boundary. (4,5)",
-            "Navigable stretch beyond the coast. (4,5)"
+            "Swimming without walls (4,5)",
+            "Vast sea without a boundary (4,5)",
+            "Navigable stretch beyond the coast (4,5)"
         ],
-        "hard_text": "Where the horizon meets the liquid expanse. (4,5)"
+        "hard_text": "Where the horizon meets the liquid expanse (4,5)"
     },
     {
         "word": "PIPEDREAM",
-        "text": "Unrealistic fantasy. (4,5)",
-        "hint": "Unattainable fantasy notion. (4,5)",
+        "text": "Unrealistic fantasy (4,5)",
+        "hint": "Unattainable fantasy notion (4,5)",
         "clues": [
-            "Impossible wish. (4,5)",
-            "Ambition that may never take off. (4,5)",
-            "Illusion born from fanciful thoughts. (4,5)"
+            "Impossible wish (4,5)",
+            "Ambition that may never take off (4,5)",
+            "Illusion born from fanciful thoughts (4,5)"
         ],
-        "hard_text": "Fantasy floating on a breeze. (4,5)"
+        "hard_text": "Fantasy floating on a breeze (4,5)"
     },
     {
         "word": "POWERPLANT",
-        "text": "Electricity generation facility. (5,5)",
-        "hint": "Facility generating electrical energy. (5,5)",
+        "text": "Electricity generation facility (5,5)",
+        "hint": "Facility generating electrical energy (5,5)",
         "clues": [
-            "Where energy is made. (5,5)",
-            "Where energy takes root. (5,5)",
-            "Facility that fuels the grid. (5,5)"
+            "Where energy is made (5,5)",
+            "Where energy takes root (5,5)",
+            "Facility that fuels the grid (5,5)"
         ],
-        "hard_text": "Source of electrical force. (5,5)"
+        "hard_text": "Source of electrical force (5,5)"
     },
     {
         "word": "ROUNDTABLE",
-        "text": "King Arthur's famous furniture. (5,5)",
-        "hint": "Setting for equal discussions. (5,5)",
+        "text": "King Arthur's famous furniture (5,5)",
+        "hint": "Setting for equal discussions (5,5)",
         "clues": [
-            "Egalitarian meeting format. (5,5)",
-            "Furniture for egalitarian talks. (5,5)",
-            "Seating arrangement for Arthur's knights. (5,5)"
+            "Egalitarian meeting format (5,5)",
+            "Furniture for egalitarian talks (5,5)",
+            "Seating arrangement for Arthur's knights (5,5)"
         ],
-        "hard_text": "Gathering spot for noble discussions. (5,5)"
+        "hard_text": "Gathering spot for noble discussions (5,5)"
     },
     {
         "word": "SCOREBOARD",
-        "text": "Display showing game results. (5,5)",
-        "hint": "Monitor for game standings. (5,5)",
+        "text": "Display showing game results (5,5)",
+        "hint": "Monitor for game standings (5,5)",
         "clues": [
-            "Stadium tally screen. (5,5)",
-            "Indicator of who's winning. (5,5)",
-            "Display of points accrued in play. (5,5)"
+            "Stadium tally screen (5,5)",
+            "Indicator of who's winning (5,5)",
+            "Display of points accrued in play (5,5)"
         ],
-        "hard_text": "Tally of triumphs and defeats. (5,5)"
+        "hard_text": "Tally of triumphs and defeats (5,5)"
     },
     {
         "word": "SKATEPARK",
-        "text": "Area for board tricks. (5,4)",
-        "hint": "Popular spot for extreme sports. (5,4)",
+        "text": "Area for board tricks (5,4)",
+        "hint": "Popular spot for extreme sports (5,4)",
         "clues": [
-            "Ramps and rails venue. (5,4)",
-            "Place to show off board skills. (5,4)",
-            "Concrete playground for gravity-defying tricks. (5,4)"
+            "Ramps and rails venue (5,4)",
+            "Place to show off board skills (5,4)",
+            "Concrete playground for gravity-defying tricks (5,4)"
         ],
-        "hard_text": "Venue for wheeled acrobatics. (5,4)"
+        "hard_text": "Venue for wheeled acrobatics (5,4)"
     },
     {
         "word": "SMOKESTACK",
-        "text": "Factory chimney. (5,5)",
-        "hint": "Common sight near factories. (5,5)",
+        "text": "Factory chimney (5,5)",
+        "hint": "Common sight near factories (5,5)",
         "clues": [
-            "Used in power generation. (5,5)",
-            "Chimney's taller sibling. (5,5)",
-            "Industrial tower for exhaust. (5,5)"
+            "Used in power generation (5,5)",
+            "Chimney's taller sibling (5,5)",
+            "Industrial tower for exhaust (5,5)"
         ],
-        "hard_text": "Tall structure belching fumes. (5,5)"
+        "hard_text": "Tall structure belching fumes (5,5)"
     },
     {
         "word": "SOUNDTRACK",
-        "text": "Film's musical accompaniment. (5,5)",
-        "hint": "Tunes enhancing a film's emotion. (5,5)",
+        "text": "Film's musical accompaniment (5,5)",
+        "hint": "Tunes enhancing a film's emotion (5,5)",
         "clues": [
-            "Movie album. (5,5)",
-            "Score that sets the scene. (5,5)",
-            "Accompaniment for cinematic moments. (5,5)"
+            "Movie album (5,5)",
+            "Score that sets the scene (5,5)",
+            "Accompaniment for cinematic moments (5,5)"
         ],
-        "hard_text": "Musical backdrop to a visual tale. (5,5)"
+        "hard_text": "Musical backdrop to a visual tale (5,5)"
     },
     {
         "word": "SQUAREDEAL",
-        "text": "Fair and honest arrangement. (6,4)",
+        "text": "Fair and honest arrangement (6,4)",
         "hint": "Equitable arrangement in business",
         "clues": [
-            "Just transaction. (6,4)",
+            "Just transaction (6,4)",
             "Fair bargain (6,4)",
-            "Arrangement with equal sides. (6,4)"
+            "Arrangement with equal sides (6,4)"
         ],
-        "hard_text": "Transaction that's above board. (6,4)"
+        "hard_text": "Transaction that's above board (6,4)"
     },
     {
         "word": "STOMACHACHE",
-        "text": "Pain in the belly. (7,4)",
+        "text": "Pain in the belly (7,4)",
         "hint": "Nausea after a big meal? (7,4)",
         "clues": [
-            "Tummy trouble. (7,4)",
-            "Gastric distress in your middle. (7,4)",
-            "Belly's way of complaining. (7,4)"
+            "Tummy trouble (7,4)",
+            "Gastric distress in your middle (7,4)",
+            "Belly's way of complaining (7,4)"
         ],
-        "hard_text": "Discomfort in the core. (7,4)"
+        "hard_text": "Discomfort in the core (7,4)"
     },
     {
         "word": "SUNFLOWER",
@@ -26845,685 +26845,685 @@
     },
     {
         "word": "THUMBSCREW",
-        "text": "Torture device or wing bolt. (5,5)",
-        "hint": "Medieval method of coercion. (5,5)",
+        "text": "Torture device or wing bolt (5,5)",
+        "hint": "Medieval method of coercion (5,5)",
         "clues": [
-            "Turned by hand. (5,5)",
-            "Torturous twist of fate. (5,5)",
-            "Fastener that applies pressure. (5,5)"
+            "Turned by hand (5,5)",
+            "Torturous twist of fate (5,5)",
+            "Fastener that applies pressure (5,5)"
         ],
-        "hard_text": "Device for tightening control. (5,5)"
+        "hard_text": "Device for tightening control (5,5)"
     },
     {
         "word": "WICKETKEEPER",
-        "text": "Cricket player behind stumps. (6,6)",
-        "hint": "Position crucial for dismissals. (6,6)",
+        "text": "Cricket player behind stumps (6,6)",
+        "hint": "Position crucial for dismissals (6,6)",
         "clues": [
-            "Catches behind the batsman. (6,6)",
-            "Player in charge of the crease. (6,6)",
-            "Protector at the back of the pitch. (6,6)"
+            "Catches behind the batsman (6,6)",
+            "Player in charge of the crease (6,6)",
+            "Protector at the back of the pitch (6,6)"
         ],
-        "hard_text": "Last line of defense in cricket. (6,6)"
+        "hard_text": "Last line of defense in cricket (6,6)"
     },
     {
         "word": "BREADWINNER",
-        "text": "Main household earner. (5,6)",
-        "hint": "Salary source in a household. (5,6)",
+        "text": "Main household earner (5,6)",
+        "hint": "Salary source in a household (5,6)",
         "clues": [
-            "Family's financial provider. (5,6)",
-            "One who brings home the dough. (5,6)",
-            "Key contributor to the family's table. (5,6)"
+            "Family's financial provider (5,6)",
+            "One who brings home the dough (5,6)",
+            "Key contributor to the family's table (5,6)"
         ],
-        "hard_text": "Household's primary provider. (5,6)"
+        "hard_text": "Household's primary provider (5,6)"
     },
     {
         "word": "DOUBLEEDGED",
-        "text": "Cutting both ways. (6,5)",
-        "hint": "Phrase in strategic contexts. (6,5)",
+        "text": "Cutting both ways (6,5)",
+        "hint": "Phrase in strategic contexts (6,5)",
         "clues": [
-            "Having advantages and drawbacks. (6,5)",
-            "Ambiguous advantage with a risk. (6,5)",
-            "Sharp tool with a dual nature. (6,5)"
+            "Having advantages and drawbacks (6,5)",
+            "Ambiguous advantage with a risk (6,5)",
+            "Sharp tool with a dual nature (6,5)"
         ],
-        "hard_text": "Slicing tool with a twist. (6,5)"
+        "hard_text": "Slicing tool with a twist (6,5)"
     },
     {
         "word": "EARTHMOVING",
-        "text": "Excavation work. (5,6)",
+        "text": "Excavation work (5,6)",
         "hint": "Tremors from construction projects? (5,6)",
         "clues": [
-            "Heavy digger's job. (5,6)",
-            "Shifting soil and rock. (5,6)",
-            "Construction's ground-shaking work. (5,6)"
+            "Heavy digger's job (5,6)",
+            "Shifting soil and rock (5,6)",
+            "Construction's ground-shaking work (5,6)"
         ],
-        "hard_text": "Heavy-duty excavation activity. (5,6)"
+        "hard_text": "Heavy-duty excavation activity (5,6)"
     },
     {
         "word": "FACETOFFACE",
-        "text": "In person, directly. (4,2,4)",
-        "hint": "Dialogue without technology. (4,2,4)",
+        "text": "In person, directly (4,2,4)",
+        "hint": "Dialogue without technology (4,2,4)",
         "clues": [
-            "Not over the phone. (4,2,4)",
-            "Meeting without barriers. (4,2,4)",
-            "Encounter that's up close and personal. (4,2,4)"
+            "Not over the phone (4,2,4)",
+            "Meeting without barriers (4,2,4)",
+            "Encounter that's up close and personal (4,2,4)"
         ],
-        "hard_text": "In direct confrontation. (4,2,4)"
+        "hard_text": "In direct confrontation (4,2,4)"
     },
     {
         "word": "FINGERFOOD",
-        "text": "Bite-sized party snacks. (6,4)",
-        "hint": "Perfect for social gatherings. (6,4)",
+        "text": "Bite-sized party snacks (6,4)",
+        "hint": "Perfect for social gatherings (6,4)",
         "clues": [
-            "Eaten without cutlery. (6,4)",
-            "Bite-sized morsels for easy handling. (6,4)",
-            "Cuisine designed for casual munching. (6,4)"
+            "Eaten without cutlery (6,4)",
+            "Bite-sized morsels for easy handling (6,4)",
+            "Cuisine designed for casual munching (6,4)"
         ],
-        "hard_text": "Ideal for mingling at events. (6,4)"
+        "hard_text": "Ideal for mingling at events (6,4)"
     },
     {
         "word": "FIRSTCLASS",
-        "text": "Highest quality or cabin. (5,5)",
-        "hint": "Luxury option for travelers. (5,5)",
+        "text": "Highest quality or cabin (5,5)",
+        "hint": "Luxury option for travelers (5,5)",
         "clues": [
-            "Premium airline seating. (5,5)",
-            "Premium experience in travel. (5,5)",
-            "Best tier of accommodations. (5,5)"
+            "Premium airline seating (5,5)",
+            "Premium experience in travel (5,5)",
+            "Best tier of accommodations (5,5)"
         ],
-        "hard_text": "Top-notch service in transit. (5,5)"
+        "hard_text": "Top-notch service in transit (5,5)"
     },
     {
         "word": "GRASSROOTS",
-        "text": "Ordinary people as a political base. (5,5)",
-        "hint": "Local support for a cause. (5,5)",
+        "text": "Ordinary people as a political base (5,5)",
+        "hint": "Local support for a cause (5,5)",
         "clues": [
-            "Civic activism by everyday individuals. (5,5)",
-            "Base level of community activism. (5,5)",
-            "Support from the common folk. (5,5)"
+            "Civic activism by everyday individuals (5,5)",
+            "Base level of community activism (5,5)",
+            "Support from the common folk (5,5)"
         ],
-        "hard_text": "Foundation of political movements. (5,5)"
+        "hard_text": "Foundation of political movements (5,5)"
     },
     {
         "word": "GROUNDLEVEL",
-        "text": "At the base floor. (6,5)",
-        "hint": "Common term in architecture. (6,5)",
+        "text": "At the base floor (6,5)",
+        "hint": "Common term in architecture (6,5)",
         "clues": [
-            "Street height. (6,5)",
-            "First floor in urban planning. (6,5)",
-            "Where the earth meets the building. (6,5)"
+            "Street height (6,5)",
+            "First floor in urban planning (6,5)",
+            "Where the earth meets the building (6,5)"
         ],
-        "hard_text": "Starting point for construction. (6,5)"
+        "hard_text": "Starting point for construction (6,5)"
     },
     {
         "word": "HEARTSTRING",
-        "text": "Deep emotional feeling. (5,6)",
+        "text": "Deep emotional feeling (5,6)",
         "hint": "Emotional ties in storytelling? (5,6)",
         "clues": [
-            "Tugged by touching moments. (5,6)",
-            "What pulls at our inner feelings. (5,6)",
-            "Connection to deep sentiments. (5,6)"
+            "Tugged by touching moments (5,6)",
+            "What pulls at our inner feelings (5,6)",
+            "Connection to deep sentiments (5,6)"
         ],
-        "hard_text": "Cord tied to your emotions. (5,6)"
+        "hard_text": "Cord tied to your emotions (5,6)"
     },
     {
         "word": "HEAVYWEIGHT",
-        "text": "Top boxing division. (5,6)",
-        "hint": "Wrestlers often compete in this class. (5,6)",
+        "text": "Top boxing division (5,6)",
+        "hint": "Wrestlers often compete in this class (5,6)",
         "clues": [
-            "Ali and Tyson's class. (5,6)",
-            "Division for the most formidable fighters. (5,6)",
-            "Top-tier competitor in combat sports. (5,6)"
+            "Ali and Tyson's class (5,6)",
+            "Division for the most formidable fighters (5,6)",
+            "Top-tier competitor in combat sports (5,6)"
         ],
         "hard_text": "Top division in boxing (5,6)"
     },
     {
         "word": "HORSERADISH",
-        "text": "Pungent root condiment. (5,6)",
-        "hint": "Key ingredient in some cocktail sauces. (5,6)",
+        "text": "Pungent root condiment (5,6)",
+        "hint": "Key ingredient in some cocktail sauces (5,6)",
         "clues": [
-            "Spicy accompaniment to beef. (5,6)",
-            "Condiment that packs a punch. (5,6)",
-            "Zesty addition to a meal. (5,6)"
+            "Spicy accompaniment to beef (5,6)",
+            "Condiment that packs a punch (5,6)",
+            "Zesty addition to a meal (5,6)"
         ],
-        "hard_text": "Fiery garnish for sandwiches. (5,6)"
+        "hard_text": "Fiery garnish for sandwiches (5,6)"
     },
     {
         "word": "LIGHTHEADED",
-        "text": "Feeling faint or dizzy. (5,6)",
-        "hint": "Common reaction to rapid spinning. (5,6)",
+        "text": "Feeling faint or dizzy (5,6)",
+        "hint": "Common reaction to rapid spinning (5,6)",
         "clues": [
-            "Woozy sensation. (5,6)",
-            "Dizzy with a side of whimsy. (5,6)",
-            "Caught in a cloud of faintness. (5,6)"
+            "Woozy sensation (5,6)",
+            "Dizzy with a side of whimsy (5,6)",
+            "Caught in a cloud of faintness (5,6)"
         ],
-        "hard_text": "Feeling a bit airy upstairs. (5,6)"
+        "hard_text": "Feeling a bit airy upstairs (5,6)"
     },
     {
         "word": "MASTERCLASS",
-        "text": "Expert teaching session. (6,5)",
-        "hint": "Exclusive session for advanced learners. (6,5)",
+        "text": "Expert teaching session (6,5)",
+        "hint": "Exclusive session for advanced learners (6,5)",
         "clues": [
-            "Tutorial from a pro. (6,5)",
-            "An expert's ultimate tutorial. (6,5)",
-            "Session for the elite learner. (6,5)"
+            "Tutorial from a pro (6,5)",
+            "An expert's ultimate tutorial (6,5)",
+            "Session for the elite learner (6,5)"
         ],
-        "hard_text": "The best kind of lesson. (6,5)"
+        "hard_text": "The best kind of lesson (6,5)"
     },
     {
         "word": "MOUTHGUARD",
-        "text": "Dental sports protector. (5,5)",
-        "hint": "Essential for contact sports safety. (5,5)",
+        "text": "Dental sports protector (5,5)",
+        "hint": "Essential for contact sports safety (5,5)",
         "clues": [
-            "Boxer's tooth shield. (5,5)",
-            "What keeps your smile safe in a game. (5,5)",
-            "Defense mechanism in sports. (5,5)"
+            "Boxer's tooth shield (5,5)",
+            "What keeps your smile safe in a game (5,5)",
+            "Defense mechanism in sports (5,5)"
         ],
-        "hard_text": "Protector for a talkative athlete. (5,5)"
+        "hard_text": "Protector for a talkative athlete (5,5)"
     },
     {
         "word": "NIGHTSHIFT",
-        "text": "Overnight work period. (5,5)",
-        "hint": "Time for nocturnal duties. (5,5)",
+        "text": "Overnight work period (5,5)",
+        "hint": "Time for nocturnal duties (5,5)",
         "clues": [
-            "Working after dark. (5,5)",
-            "Sleepless work cycle. (5,5)",
-            "Schedule for the moonlit tasker. (5,5)"
+            "Working after dark (5,5)",
+            "Sleepless work cycle (5,5)",
+            "Schedule for the moonlit tasker (5,5)"
         ],
-        "hard_text": "The hours when most are tucked in. (5,5)"
+        "hard_text": "The hours when most are tucked in (5,5)"
     },
     {
         "word": "OUTSTANDING",
-        "text": "Exceptionally good. (3,8)",
-        "hint": "Seen in award-winning performances. (3,8)",
+        "text": "Exceptionally good (3,8)",
+        "hint": "Seen in award-winning performances (3,8)",
         "clues": [
-            "Remarkably excellent. (3,8)",
-            "It's excellent, yet off the chart. (3,8)",
-            "Remarkable, yet not in attendance. (3,8)"
+            "Remarkably excellent (3,8)",
+            "It's excellent, yet off the chart (3,8)",
+            "Remarkable, yet not in attendance (3,8)"
         ],
         "hard_text": "Notable, but not present?"
     },
     {
         "word": "QUICKSILVER",
-        "text": "Mercury or something swift. (5,6)",
-        "hint": "Element in alchemy or speedster. (5,6)",
+        "text": "Mercury or something swift (5,6)",
+        "hint": "Element in alchemy or speedster (5,6)",
         "clues": [
-            "Liquid metal or rapid movement. (5,6)",
-            "Speedy element or a Marvel hero. (5,6)",
-            "Fluid yet fleeting. (5,6)"
+            "Liquid metal or rapid movement (5,6)",
+            "Speedy element or a Marvel hero (5,6)",
+            "Fluid yet fleeting (5,6)"
         ],
-        "hard_text": "Fast-moving liquid metal. (5,6)"
+        "hard_text": "Fast-moving liquid metal (5,6)"
     },
     {
         "word": "SECONDGUESS",
-        "text": "Doubt a previous decision. (6,5)",
-        "hint": "In decision-making scenarios. (6,5)",
+        "text": "Doubt a previous decision (6,5)",
+        "hint": "In decision-making scenarios (6,5)",
         "clues": [
-            "Reflect on a past option. (6,5)",
-            "Hesitate after the fact. (6,5)",
-            "Think twice about a choice. (6,5)"
+            "Reflect on a past option (6,5)",
+            "Hesitate after the fact (6,5)",
+            "Think twice about a choice (6,5)"
         ],
-        "hard_text": "Reconsidering a prior choice. (6,5)"
+        "hard_text": "Reconsidering a prior choice (6,5)"
     },
     {
         "word": "SHORTCHANGE",
-        "text": "Give less than owed. (5,6)",
-        "hint": "Common in retail disputes. (5,6)",
+        "text": "Give less than owed (5,6)",
+        "hint": "Common in retail disputes (5,6)",
         "clues": [
-            "Cheat on payment. (5,6)",
-            "Skimp on a transaction. (5,6)",
-            "Underpay someone deliberately. (5,6)"
+            "Cheat on payment (5,6)",
+            "Skimp on a transaction (5,6)",
+            "Underpay someone deliberately (5,6)"
         ],
-        "hard_text": "To cheat at the cash register. (5,6)"
+        "hard_text": "To cheat at the cash register (5,6)"
     },
     {
         "word": "SILVERLINING",
-        "text": "Optimistic aspect of bad situation. (6,6)",
-        "hint": "Hopeful thought in dark times. (6,6)",
+        "text": "Optimistic aspect of bad situation (6,6)",
+        "hint": "Hopeful thought in dark times (6,6)",
         "clues": [
-            "Every cloud has one. (6,6)",
-            "Optimism wrapped in gloom. (6,6)",
-            "A hope amid the storm. (6,6)"
+            "Every cloud has one (6,6)",
+            "Optimism wrapped in gloom (6,6)",
+            "A hope amid the storm (6,6)"
         ],
-        "hard_text": "Bright side of a cloud. (6,6)"
+        "hard_text": "Bright side of a cloud (6,6)"
     },
     {
         "word": "SLEEPWALKER",
-        "text": "Person who moves while asleep. (5,6)",
+        "text": "Person who moves while asleep (5,6)",
         "hint": "Drowsy escapade at night? (5,6)",
         "clues": [
-            "Nocturnal unconscious wanderer. (5,6)",
-            "A nocturnal rambler. (5,6)",
-            "Dreaming with eyes wide open. (5,6)"
+            "Nocturnal unconscious wanderer (5,6)",
+            "A nocturnal rambler (5,6)",
+            "Dreaming with eyes wide open (5,6)"
         ],
-        "hard_text": "Resting traveler. (5,6)"
+        "hard_text": "Resting traveler (5,6)"
     },
     {
         "word": "SPRINGBOARD",
-        "text": "Diving platform or launchpad. (6,5)",
-        "hint": "Used in gymnastics for upward leaps. (6,5)",
+        "text": "Diving platform or launchpad (6,5)",
+        "hint": "Used in gymnastics for upward leaps (6,5)",
         "clues": [
-            "Starting point for something bigger. (6,5)",
-            "Jump starter for new ideas. (6,5)",
-            "Platform that bounces back. (6,5)"
+            "Starting point for something bigger (6,5)",
+            "Jump starter for new ideas (6,5)",
+            "Platform that bounces back (6,5)"
         ],
-        "hard_text": "Launchpad for divers. (6,5)"
+        "hard_text": "Launchpad for divers (6,5)"
     },
     {
         "word": "SWITCHBLADE",
         "text": "Folding knife activated by a mechanism (6,5)",
-        "hint": "Blade activated with a flick. (6,5)",
+        "hint": "Blade activated with a flick (6,5)",
         "clues": [
-            "Spring-loaded pocket knife. (6,5)",
-            "Flick knife with a twist. (6,5)",
+            "Spring-loaded pocket knife (6,5)",
+            "Flick knife with a twist (6,5)",
             "Retractable knife (6,5)"
         ],
-        "hard_text": "Easily concealed cutting tool. (6,5)"
+        "hard_text": "Easily concealed cutting tool (6,5)"
     },
     {
         "word": "THUNDERBOLT",
         "text": "Bright flash during a storm (7,4)",
-        "hint": "Nature’s loud electrical discharge. (7,4)",
+        "hint": "Nature’s loud electrical discharge (7,4)",
         "clues": [
-            "Zeus's weapon. (7,4)",
-            "Sudden strike of nature. (7,4)",
-            "A flash that roars. (7,4)"
+            "Zeus's weapon (7,4)",
+            "Sudden strike of nature (7,4)",
+            "A flash that roars (7,4)"
         ],
-        "hard_text": "Nature's electric shock. (7,4)"
+        "hard_text": "Nature's electric shock (7,4)"
     },
     {
         "word": "TIGHTFISTED",
-        "text": "Unwilling to spend money. (5,6)",
-        "hint": "Not inclined to share wealth. (5,6)",
+        "text": "Unwilling to spend money (5,6)",
+        "hint": "Not inclined to share wealth (5,6)",
         "clues": [
-            "Stingy with cash. (5,6)",
-            "Keeps cash close to the chest. (5,6)",
-            "Frugal to a fault. (5,6)"
+            "Stingy with cash (5,6)",
+            "Keeps cash close to the chest (5,6)",
+            "Frugal to a fault (5,6)"
         ],
-        "hard_text": "Not one to loosen the purse strings. (5,6)"
+        "hard_text": "Not one to loosen the purse strings (5,6)"
     },
     {
         "word": "BLOODPRESSURE",
         "text": "Force within arteries (5,8)",
-        "hint": "Indicator of cardiovascular health. (5,8)",
+        "hint": "Indicator of cardiovascular health (5,8)",
         "clues": [
-            "Measured with a cuff. (5,8)",
-            "Measurement of circulatory force. (5,8)",
+            "Measured with a cuff (5,8)",
+            "Measurement of circulatory force (5,8)",
             "Vital arterial reading (5,8)"
         ],
-        "hard_text": "Vital force in your veins. (5,8)"
+        "hard_text": "Vital force in your veins (5,8)"
     },
     {
         "word": "BUTTERFINGERS",
-        "text": "Clumsy person who drops things. (6,7)",
-        "hint": "Frequent dropper of items. (6,7)",
+        "text": "Clumsy person who drops things (6,7)",
+        "hint": "Frequent dropper of items (6,7)",
         "clues": [
-            "Can't hold on to anything. (6,7)",
-            "Hands that slip easily. (6,7)",
-            "Always dropping the ball. (6,7)"
+            "Can't hold on to anything (6,7)",
+            "Hands that slip easily (6,7)",
+            "Always dropping the ball (6,7)"
         ],
-        "hard_text": "Clumsy with a snack. (6,7)"
+        "hard_text": "Clumsy with a snack (6,7)"
     },
     {
         "word": "CHEESEBURGER",
-        "text": "Topped beef patty in a bun. (6,6)",
-        "hint": "Popular grill item with toppings. (6,6)",
+        "text": "Topped beef patty in a bun (6,6)",
+        "hint": "Popular grill item with toppings (6,6)",
         "clues": [
-            "Classic fast food order. (6,6)",
-            "Melted dairy atop a patty. (6,6)",
-            "All-American grill delight. (6,6)"
+            "Classic fast food order (6,6)",
+            "Melted dairy atop a patty (6,6)",
+            "All-American grill delight (6,6)"
         ],
-        "hard_text": "Fast food with a side of beef. (6,6)"
+        "hard_text": "Fast food with a side of beef (6,6)"
     },
     {
         "word": "CLOCKTOWER",
-        "text": "Tall structure with a timepiece. (5,5)",
-        "hint": "Famous example in London. (5,5)",
+        "text": "Tall structure with a timepiece (5,5)",
+        "hint": "Famous example in London (5,5)",
         "clues": [
             "Big Ben, for example",
-            "Where time stands tall. (5,5)",
-            "Landmark marking the passing minutes. (5,5)"
+            "Where time stands tall (5,5)",
+            "Landmark marking the passing minutes (5,5)"
         ],
-        "hard_text": "Structure that marks time audibly. (5,5)"
+        "hard_text": "Structure that marks time audibly (5,5)"
     },
     {
         "word": "COFFEETABLE",
-        "text": "Low living room surface. (6,5)",
-        "hint": "Gathering place for drinks and snacks. (6,5)",
+        "text": "Low living room surface (6,5)",
+        "hint": "Gathering place for drinks and snacks (6,5)",
         "clues": [
-            "Where magazines sit. (6,5)",
-            "Centerpiece for casual chats. (6,5)",
-            "Where drinks and magazines collide. (6,5)"
+            "Where magazines sit (6,5)",
+            "Centerpiece for casual chats (6,5)",
+            "Where drinks and magazines collide (6,5)"
         ],
-        "hard_text": "Surface for beverages in a lounge. (6,5)"
+        "hard_text": "Surface for beverages in a lounge (6,5)"
     },
     {
         "word": "DOUBLECHECK",
-        "text": "Verify a second time. (6,5)",
-        "hint": "Reassess for potential errors. (6,5)",
+        "text": "Verify a second time (6,5)",
+        "hint": "Reassess for potential errors (6,5)",
         "clues": [
-            "Make sure again. (6,5)",
-            "To confirm your first thought. (6,5)",
-            "Ensure nothing is missed. (6,5)"
+            "Make sure again (6,5)",
+            "To confirm your first thought (6,5)",
+            "Ensure nothing is missed (6,5)"
         ],
-        "hard_text": "Verify twice for accuracy. (6,5)"
+        "hard_text": "Verify twice for accuracy (6,5)"
     },
     {
         "word": "FRONTRUNNER",
-        "text": "Leading candidate. (5,6)",
-        "hint": "Leading position in a competition. (5,6)",
+        "text": "Leading candidate (5,6)",
+        "hint": "Leading position in a competition (5,6)",
         "clues": [
-            "Favourite to win. (5,6)",
-            "Candidate ahead of the pack. (5,6)",
+            "Favourite to win (5,6)",
+            "Candidate ahead of the pack (5,6)",
             "Leading competitor (5,6)"
         ],
-        "hard_text": "Leading contender in a race. (5,6)"
+        "hard_text": "Leading contender in a race (5,6)"
     },
     {
         "word": "GOALKICKING",
-        "text": "Rugby conversion skill. (4,7)",
+        "text": "Rugby conversion skill (4,7)",
         "hint": "Strategy for scoring in rugby? (4,7)",
         "clues": [
-            "Points from the boot. (4,7)",
-            "Footwork for points. (4,7)",
-            "Skill of sending the ball between posts. (4,7)"
+            "Points from the boot (4,7)",
+            "Footwork for points (4,7)",
+            "Skill of sending the ball between posts (4,7)"
         ],
         "hard_text": "Scoring attempt in football (4,7)"
     },
     {
         "word": "GOLDSTANDARD",
-        "text": "Benchmark of excellence. (4,8)",
-        "hint": "Ultimate measure in finance. (4,8)",
+        "text": "Benchmark of excellence (4,8)",
+        "hint": "Ultimate measure in finance (4,8)",
         "clues": [
-            "The best there is. (4,8)",
-            "Measure of excellence in value. (4,8)",
-            "The best of the best. (4,8)"
+            "The best there is (4,8)",
+            "Measure of excellence in value (4,8)",
+            "The best of the best (4,8)"
         ],
-        "hard_text": "Benchmark for quality. (4,8)"
+        "hard_text": "Benchmark for quality (4,8)"
     },
     {
         "word": "HANDDELIVERED",
-        "text": "Brought in person. (4,9)",
-        "hint": "Dropped off instead of mailed. (4,9)",
+        "text": "Brought in person (4,9)",
+        "hint": "Dropped off instead of mailed (4,9)",
         "clues": [
-            "Not posted. (4,9)",
-            "Not just sent, but brought. (4,9)",
-            "In-person delivery with care. (4,9)"
+            "Not posted (4,9)",
+            "Not just sent, but brought (4,9)",
+            "In-person delivery with care (4,9)"
         ],
-        "hard_text": "Brought personally to your door. (4,9)"
+        "hard_text": "Brought personally to your door (4,9)"
     },
     {
         "word": "JIGSAWPUZZLE",
-        "text": "Interlocking piece game. (6,6)",
-        "hint": "Popular rainy day activity. (6,6)",
+        "text": "Interlocking piece game (6,6)",
+        "hint": "Popular rainy day activity (6,6)",
         "clues": [
-            "Assemble the picture. (6,6)",
-            "Assembly of fragmented images. (6,6)",
-            "Challenge of interlocking shapes. (6,6)"
+            "Assemble the picture (6,6)",
+            "Assembly of fragmented images (6,6)",
+            "Challenge of interlocking shapes (6,6)"
         ],
-        "hard_text": "Pieces that fit together. (6,6)"
+        "hard_text": "Pieces that fit together (6,6)"
     },
     {
         "word": "LONGDISTANCE",
-        "text": "Spanning a great interval. (4,8)",
-        "hint": "Telecommunications range, informally. (4,8)",
+        "text": "Spanning a great interval (4,8)",
+        "hint": "Telecommunications range, informally (4,8)",
         "clues": [
-            "Marathon runner's domain. (4,8)",
-            "Far away but still connected. (4,8)",
-            "Extensive journey across space. (4,8)"
+            "Marathon runner's domain (4,8)",
+            "Far away but still connected (4,8)",
+            "Extensive journey across space (4,8)"
         ],
-        "hard_text": "Spanning miles apart. (4,8)"
+        "hard_text": "Spanning miles apart (4,8)"
     },
     {
         "word": "MATCHMAKING",
-        "text": "Arranging romantic pairings. (5,6)",
-        "hint": "A task for romantic planners. (5,6)",
+        "text": "Arranging romantic pairings (5,6)",
+        "hint": "A task for romantic planners (5,6)",
         "clues": [
-            "Cupid's job. (5,6)",
-            "Creating romantic connections. (5,6)",
-            "Bringing lovers together. (5,6)"
+            "Cupid's job (5,6)",
+            "Creating romantic connections (5,6)",
+            "Bringing lovers together (5,6)"
         ],
-        "hard_text": "Pairing hearts together. (5,6)"
+        "hard_text": "Pairing hearts together (5,6)"
     },
     {
         "word": "MIDDLEGROUND",
-        "text": "Compromise position. (6,6)",
-        "hint": "Diplomatic resolution in politics. (6,6)",
+        "text": "Position between two sides (6,6)",
+        "hint": "Diplomatic resolution in politics (6,6)",
         "clues": [
-            "Between two extremes. (6,6)",
-            "Compromise zone. (6,6)",
+            "Between two extremes (6,6)",
+            "Compromise zone (6,6)",
             "Compromise position (6,6)"
         ],
-        "hard_text": "Neutral territory in a debate. (6,6)"
+        "hard_text": "Neutral territory in a debate (6,6)"
     },
     {
         "word": "ROLLERCOASTER",
-        "text": "Thrilling fairground ride. (6,7)",
-        "hint": "Theme park attraction with loops. (6,7)",
+        "text": "Thrilling fairground ride (6,7)",
+        "hint": "Theme park attraction with loops (6,7)",
         "clues": [
-            "Ups and downs at the funfair. (6,7)",
-            "Adrenaline-pumping ride type. (6,7)",
-            "Emotional highs and lows. (6,7)"
+            "Ups and downs at the funfair (6,7)",
+            "Adrenaline-pumping ride type (6,7)",
+            "Emotional highs and lows (6,7)"
         ],
-        "hard_text": "Experience of emotional extremes. (6,7)"
+        "hard_text": "Experience of emotional extremes (6,7)"
     },
     {
         "word": "SKATEBOARDING",
         "text": "Riding a rolling deck (5,8)",
         "hint": "Extreme sport on urban streets",
         "clues": [
-            "Kickflip sport. (5,8)",
-            "Gliding on four wheels. (5,8)",
+            "Kickflip sport (5,8)",
+            "Gliding on four wheels (5,8)",
             "Performing tricks on a deck (5,8)"
         ],
-        "hard_text": "Wheeled sport on a plank. (5,8)"
+        "hard_text": "Wheeled sport on a plank (5,8)"
     },
     {
         "word": "SLEEPINGBAG",
-        "text": "Portable camping bedding. (8,3)",
-        "hint": "Essential for outdoor slumber parties. (8,3)",
+        "text": "Portable camping bedding (8,3)",
+        "hint": "Essential for outdoor slumber parties (8,3)",
         "clues": [
-            "Zipped into for warmth outdoors. (8,3)",
-            "Cocoon for camping nights. (8,3)",
-            "Warmth wrapped in fabric. (8,3)"
+            "Zipped into for warmth outdoors (8,3)",
+            "Cocoon for camping nights (8,3)",
+            "Warmth wrapped in fabric (8,3)"
         ],
-        "hard_text": "Portable nest for adventurers. (8,3)"
+        "hard_text": "Portable nest for adventurers (8,3)"
     },
     {
         "word": "TRIGGERPOINT",
-        "text": "Source of pain or action. (7,5)",
+        "text": "Source of pain or action (7,5)",
         "hint": "Start of a tense situation? (7,5)",
         "clues": [
-            "What sets something off. (7,5)",
-            "Critical spot for starting a chain reaction. (7,5)",
-            "Painful site of a sudden response. (7,5)"
+            "What sets something off (7,5)",
+            "Critical spot for starting a chain reaction (7,5)",
+            "Painful site of a sudden response (7,5)"
         ],
-        "hard_text": "Location for pain's explosive reaction. (7,5)"
+        "hard_text": "Location for pain's explosive reaction (7,5)"
     },
     {
         "word": "WEATHERVANE",
-        "text": "Wind direction indicator. (7,4)",
+        "text": "Rooftop gauge for gusts (7,4)",
         "hint": "Outdoor weather feature on homes",
         "clues": [
-            "Rooftop spinner. (7,4)",
-            "Guiding arrow in gusty conditions. (7,4)",
+            "Rooftop spinner (7,4)",
+            "Guiding arrow in gusty conditions (7,4)",
             "Wind-direction indicator (7,4)"
         ],
-        "hard_text": "Wind's fickle friend. (7,4)"
+        "hard_text": "Wind's fickle friend (7,4)"
     },
     {
         "word": "WELLBALANCED",
-        "text": "Having good proportions. (4,8)",
+        "text": "Having good proportions (4,8)",
         "hint": "Symmetry in physical fitness? (4,8)",
         "clues": [
-            "Evenly distributed. (4,8)",
-            "Equilibrium in life or design. (4,8)",
-            "Stable state of mind or structure. (4,8)"
+            "Evenly distributed (4,8)",
+            "Equilibrium in life or design (4,8)",
+            "Stable state of mind or structure (4,8)"
         ],
-        "hard_text": "In harmony, not tipping over. (4,8)"
+        "hard_text": "In harmony, not tipping over (4,8)"
     },
     {
         "word": "CANDLELIGHT",
-        "text": "Illumination from wax flames. (6,5)",
-        "hint": "Setting for a cozy winter evening. (6,5)",
+        "text": "Illumination from wax flames (6,5)",
+        "hint": "Setting for a cozy winter evening (6,5)",
         "clues": [
-            "Romantic dinner ambiance. (6,5)",
-            "Romantic illumination source. (6,5)",
+            "Romantic dinner ambiance (6,5)",
+            "Romantic illumination source (6,5)",
             "Glow from a wax flame (6,5)"
         ],
-        "hard_text": "Soft glow from waxy flames. (6,5)"
+        "hard_text": "Soft glow from waxy flames (6,5)"
     },
     {
         "word": "DOUBLEHEADER",
-        "text": "Two games played consecutively. (6,6)",
-        "hint": "Two contests in succession. (6,6)",
+        "text": "Two games played consecutively (6,6)",
+        "hint": "Two contests in succession (6,6)",
         "clues": [
             "Pair of games played consecutively (6,6)",
-            "A pair of back-to-back events. (6,6)",
-            "Two-for-one sports special. (6,6)"
+            "A pair of back-to-back events (6,6)",
+            "Two-for-one sports special (6,6)"
         ],
-        "hard_text": "Two matches in one day. (6,6)"
+        "hard_text": "Two matches in one day (6,6)"
     },
     {
         "word": "FOREIGNPOLICY",
-        "text": "Government's international strategy. (7,6)",
-        "hint": "Guidelines for global interactions. (7,6)",
+        "text": "Government's international strategy (7,6)",
+        "hint": "Guidelines for global interactions (7,6)",
         "clues": [
-            "Diplomatic approach to other nations. (7,6)",
-            "Nation's plan for outsiders. (7,6)",
-            "Strategy for global engagement. (7,6)"
+            "Diplomatic approach to other nations (7,6)",
+            "Nation's plan for outsiders (7,6)",
+            "Strategy for global engagement (7,6)"
         ],
-        "hard_text": "International relations playbook. (7,6)"
+        "hard_text": "International relations playbook (7,6)"
     },
     {
         "word": "GLOBETROTTER",
-        "text": "Frequent world traveller. (5,7)",
+        "text": "Frequent world traveller (5,7)",
         "hint": "Adventurer with a suitcase in hand",
         "clues": [
-            "Someone who visits many countries. (5,7)",
-            "Frequent flyer across continents. (5,7)",
-            "Traveler chasing horizons. (5,7)"
+            "Someone who visits many countries (5,7)",
+            "Frequent flyer across continents (5,7)",
+            "Traveler chasing horizons (5,7)"
         ],
-        "hard_text": "Worldly wanderer with a passport. (5,7)"
+        "hard_text": "Worldly wanderer with a passport (5,7)"
     },
     {
         "word": "HORSEMANSHIP",
-        "text": "Skill in riding horses. (5,7)",
-        "hint": "Artistry of controlling a steed. (5,7)",
+        "text": "Skill in riding horses (5,7)",
+        "hint": "Artistry of controlling a steed (5,7)",
         "clues": [
-            "Equestrian expertise. (5,7)",
-            "Rider's finesse in the saddle. (5,7)",
+            "Equestrian expertise (5,7)",
+            "Rider's finesse in the saddle (5,7)",
             "Skill in riding and managing horses (5,7)"
         ],
-        "hard_text": "Graceful handling of an equine partner. (5,7)"
+        "hard_text": "Graceful handling of an equine partner (5,7)"
     },
     {
         "word": "KEYPUNCHING",
-        "text": "Data entry by typing. (3,8)",
-        "hint": "Classic office task from the past. (3,8)",
+        "text": "Data entry by typing (3,8)",
+        "hint": "Classic office task from the past (3,8)",
         "clues": [
-            "Entering numbers at a keyboard. (3,8)",
-            "Typing away with purpose. (3,8)",
-            "Inputting information quickly. (3,8)"
+            "Entering numbers at a keyboard (3,8)",
+            "Typing away with purpose (3,8)",
+            "Inputting information quickly (3,8)"
         ],
-        "hard_text": "Tapping keys for data. (3,8)"
+        "hard_text": "Tapping keys for data (3,8)"
     },
     {
         "word": "QUARTERBACKS",
-        "text": "NFL team leaders. (7,5)",
-        "hint": "Gridiron's central figures. (7,5)",
+        "text": "NFL team leaders (7,5)",
+        "hint": "Gridiron's central figures (7,5)",
         "clues": [
-            "Pass-throwing players. (7,5)",
-            "Signal callers in a rush. (7,5)",
-            "Strategy makers in a huddle. (7,5)"
+            "Pass-throwing players (7,5)",
+            "Signal callers in a rush (7,5)",
+            "Strategy makers in a huddle (7,5)"
         ],
-        "hard_text": "Leaders on the field. (7,5)"
+        "hard_text": "Leaders on the field (7,5)"
     },
     {
         "word": "RIGHTOFWAY",
-        "text": "Priority to proceed. (5,2,3)",
+        "text": "Priority to proceed (5,2,3)",
         "hint": "Who gets to go first in traffic?",
         "clues": [
-            "Traffic precedence. (5,2,3)",
-            "Priority on the path ahead. (5,2,3)",
-            "Clear passage in traffic rules. (5,2,3)"
+            "Traffic precedence (5,2,3)",
+            "Priority on the path ahead (5,2,3)",
+            "Clear passage in traffic rules (5,2,3)"
         ],
-        "hard_text": "Permission to proceed first. (5,2,3)"
+        "hard_text": "Permission to proceed first (5,2,3)"
     },
     {
         "word": "ROLEPLAYING",
-        "text": "Acting out characters. (4,7)",
-        "hint": "Common in tabletop gaming circles. (4,7)",
+        "text": "Acting out characters (4,7)",
+        "hint": "Common in tabletop gaming circles (4,7)",
         "clues": [
-            "Dungeons & Dragons activity. (4,7)",
-            "Characters brought to life. (4,7)",
-            "Imitating others in a game. (4,7)"
+            "Dungeons & Dragons activity (4,7)",
+            "Characters brought to life (4,7)",
+            "Imitating others in a game (4,7)"
         ],
-        "hard_text": "Immersive gaming experience. (4,7)"
+        "hard_text": "Immersive gaming experience (4,7)"
     },
     {
         "word": "SCHOOLTEACHER",
-        "text": "Classroom educator. (6,7)",
+        "text": "Classroom educator (6,7)",
         "hint": "A key figure in education",
         "clues": [
-            "One who teaches children. (6,7)",
-            "Instructor of future generations. (6,7)",
-            "Scholar's mentor in the classroom. (6,7)"
+            "One who teaches children (6,7)",
+            "Instructor of future generations (6,7)",
+            "Scholar's mentor in the classroom (6,7)"
         ],
-        "hard_text": "Guide for young minds. (6,7)"
+        "hard_text": "Guide for young minds (6,7)"
     },
     {
         "word": "SITTINGDUCK",
-        "text": "Easy target. (7,4)",
+        "text": "Easy target (7,4)",
         "hint": "In a risky situation",
         "clues": [
-            "Vulnerable and exposed. (7,4)",
-            "Vulnerable prey in plain sight. (7,4)",
-            "Easy mark waiting for trouble. (7,4)"
+            "Vulnerable and exposed (7,4)",
+            "Vulnerable prey in plain sight (7,4)",
+            "Easy mark waiting for trouble (7,4)"
         ],
-        "hard_text": "Target without escape. (7,4)"
+        "hard_text": "Target without escape (7,4)"
     },
     {
         "word": "TABLESPOON",
-        "text": "Large measuring utensil. (5,5)",
+        "text": "Large measuring utensil (5,5)",
         "hint": "Common kitchen measuring tool",
         "clues": [
-            "Bigger than a teaspoon. (5,5)",
+            "Bigger than a teaspoon (5,5)",
             "Large dining utensil (5,5)",
-            "Measuring tool with a long handle. (5,5)"
+            "Measuring tool with a long handle (5,5)"
         ],
-        "hard_text": "Utensil for a hearty scoop. (5,5)"
+        "hard_text": "Utensil for a hearty scoop (5,5)"
     },
     {
         "word": "TRUMPCARD",
-        "text": "Decisive winning advantage. (5,4)",
+        "text": "Decisive winning advantage (5,4)",
         "hint": "Game-changer in a competition",
         "clues": [
-            "Secret weapon in competition. (5,4)",
-            "Surprise advantage to claim victory. (5,4)",
-            "Deciding factor in a competition. (5,4)"
+            "Secret weapon in competition (5,4)",
+            "Surprise advantage to claim victory (5,4)",
+            "Deciding factor in a competition (5,4)"
         ],
-        "hard_text": "Winning play in a tight game. (5,4)"
+        "hard_text": "Winning play in a tight game (5,4)"
     },
     {
         "word": "UNDERTHEWEATHER",
-        "text": "Feeling slightly ill. (5,3,7)",
+        "text": "Feeling slightly ill (5,3,7)",
         "hint": "Impaired by illness or fatigue",
         "clues": [
-            "Not quite right health-wise. (5,3,7)",
+            "Not quite right health-wise (5,3,7)",
             "Slightly ill (5,3,7)",
-            "Feeling sluggish and out. (5,3,7)"
+            "Feeling sluggish and out (5,3,7)"
         ],
-        "hard_text": "Feeling less than stellar. (5,3,7)"
+        "hard_text": "Feeling less than stellar (5,3,7)"
     },
     {
         "word": "ABOVEBOARD",
-        "text": "Honest and open. (5,5)",
+        "text": "Honest and open (5,5)",
         "hint": "Integrity in transactions",
         "clues": [
-            "Nothing to hide. (5,5)",
-            "Open dealings without deception. (5,5)",
-            "Honest conduct without tricks. (5,5)"
+            "Nothing to hide (5,5)",
+            "Open dealings without deception (5,5)",
+            "Honest conduct without tricks (5,5)"
         ],
-        "hard_text": "Transparent and straightforward. (5,5)"
+        "hard_text": "Transparent and straightforward (5,5)"
     },
     {
         "word": "ABSORPTION",
@@ -27769,14 +27769,14 @@
     },
     {
         "word": "BAREFOOTED",
-        "text": "Without shoes. (4,6)",
+        "text": "Without shoes (4,6)",
         "hint": "Often preferred on a beach",
         "clues": [
-            "Walking on sand like this. (4,6)",
-            "Shoeless, yet how do you tread. (4,6)",
-            "Walking unshod, but at what cost. (4,6)"
+            "Walking on sand like this (4,6)",
+            "Shoeless, yet how do you tread (4,6)",
+            "Walking unshod, but at what cost (4,6)"
         ],
-        "hard_text": "Without footwear, but what's the reason. (4,6)"
+        "hard_text": "Without footwear, but what's the reason (4,6)"
     },
     {
         "word": "BEDRAGGLED",
@@ -27791,14 +27791,14 @@
     },
     {
         "word": "BELLRINGER",
-        "text": "One who sounds church bells. (4,6)",
-        "hint": "Campanologist, loosely. (4,6)",
+        "text": "One who sounds church bells (4,6)",
+        "hint": "Campanologist, loosely (4,6)",
         "clues": [
-            "Campanologist. (4,6)",
-            "One who chimes, but is it a celebration. (4,6)",
-            "Sounds the alarm, but for what reason. (4,6)"
+            "Campanologist (4,6)",
+            "One who chimes, but is it a celebration (4,6)",
+            "Sounds the alarm, but for what reason (4,6)"
         ],
-        "hard_text": "Makes a sound, but what's the occasion. (4,6)"
+        "hard_text": "Makes a sound, but what's the occasion (4,6)"
     },
     {
         "word": "BENEFICIAL",
@@ -28022,14 +28022,14 @@
     },
     {
         "word": "CHESSBOARD",
-        "text": "64-square playing surface. (5,5)",
+        "text": "64-square playing surface (5,5)",
         "hint": "Game played with rooks and knights",
         "clues": [
-            "Black and white grid. (5,5)",
-            "64 squares of strategic thinking. (5,5)",
-            "Where pawns dream of promotion. (5,5)"
+            "Black and white grid (5,5)",
+            "64 squares of strategic thinking (5,5)",
+            "Where pawns dream of promotion (5,5)"
         ],
-        "hard_text": "A battleground for kings and queens. (5,5)"
+        "hard_text": "A battleground for kings and queens (5,5)"
     },
     {
         "word": "CHIMPANZEE",
@@ -28066,14 +28066,14 @@
     },
     {
         "word": "CLOCKWORKS",
-        "text": "Internal mechanism of a timepiece. (5,5)",
+        "text": "Internal mechanism of a timepiece (5,5)",
         "hint": "Mechanics of vintage timepieces",
         "clues": [
             "Spring-and-gear mechanisms in clocks (5,5)",
-            "Precision mechanics behind every tick. (5,5)",
-            "What makes your watch go round. (5,5)"
+            "Precision mechanics behind every tick (5,5)",
+            "What makes your watch go round (5,5)"
         ],
-        "hard_text": "Intricate gears keeping time. (5,5)"
+        "hard_text": "Intricate gears keeping time (5,5)"
     },
     {
         "word": "COLLECTIVE",
@@ -28396,14 +28396,14 @@
     },
     {
         "word": "DEALERSHIP",
-        "text": "Business authorized to sell a manufacturer's vehicles. (6,4)",
+        "text": "Business authorized to sell a manufacturer's vehicles (6,4)",
         "hint": "Auto sales establishment",
         "clues": [
-            "Business that sells new cars for a manufacturer. (6,4)",
-            "Authorized retailer of a vehicle brand. (6,4)",
-            "Company licensed to sell a particular automaker's cars. (6,4)"
+            "Business that sells new cars for a manufacturer (6,4)",
+            "Authorized retailer of a vehicle brand (6,4)",
+            "Company licensed to sell a particular automaker's cars (6,4)"
         ],
-        "hard_text": "Retail business representing an automobile maker. (6,4)"
+        "hard_text": "Retail business representing an automobile maker (6,4)"
     },
     {
         "word": "DEFICIENCY",
@@ -28430,7 +28430,7 @@
     {
         "word": "DELIGHTFUL",
         "text": "Highly pleasing",
-        "hint": "Giving great pleasure.",
+        "hint": "Giving great pleasure",
         "clues": [
             "Charming and lovely",
             "What a charming surprise feels like?",
@@ -28748,14 +28748,14 @@
     },
     {
         "word": "FLASHBACKS",
-        "text": "Sudden vivid returns of past memories. (5,5)",
-        "hint": "Intrusive recollections of earlier events. (5,5)",
+        "text": "Sudden vivid returns of past memories (5,5)",
+        "hint": "Intrusive recollections of earlier events (5,5)",
         "clues": [
-            "Film sequences showing earlier events. (5,5)",
-            "Unexpected returns of vivid memories. (5,5)",
-            "Recollections that abruptly revive the past. (5,5)"
+            "Film sequences showing earlier events (5,5)",
+            "Unexpected returns of vivid memories (5,5)",
+            "Recollections that abruptly revive the past (5,5)"
         ],
-        "hard_text": "Narrative scenes that revisit an earlier time. (5,5)"
+        "hard_text": "Narrative scenes that revisit an earlier time (5,5)"
     },
     {
         "word": "FLATTERING",
@@ -28880,14 +28880,14 @@
     },
     {
         "word": "GOLDENEAGLE",
-        "text": "Large bird of prey. (6,5)",
+        "text": "Large bird of prey (6,5)",
         "hint": "Bird featured in national emblems",
         "clues": [
-            "Majestic mountain raptor. (6,5)",
-            "Not just any bird, but a regal one. (6,5)",
+            "Majestic mountain raptor (6,5)",
+            "Not just any bird, but a regal one (6,5)",
             "Large raptor with gilded plumage (6,5)"
         ],
-        "hard_text": "Master of the skies with sharp talons. (6,5)"
+        "hard_text": "Master of the skies with sharp talons (6,5)"
     },
     {
         "word": "GRADUATION",
@@ -28905,33 +28905,33 @@
         "text": "Descendant two generations down (5,5)",
         "hint": "Beloved offspring of your child",
         "clues": [
-            "Two generations down. (5,5)",
-            "Next generation, but a step further. (5,5)",
-            "Family tree's new branch. (5,5)"
+            "Two generations down (5,5)",
+            "Next generation, but a step further (5,5)",
+            "Family tree's new branch (5,5)"
         ],
-        "hard_text": "Descendant of a descendant. (5,5)"
+        "hard_text": "Descendant of a descendant (5,5)"
     },
     {
         "word": "GRANDSTAND",
-        "text": "Main seating area at sports ground. (5,5)",
+        "text": "Main seating area at sports ground (5,5)",
         "hint": "Showy seating for spectators",
         "clues": [
-            "Show off, or stadium seating. (5,5)",
+            "Show off, or stadium seating (5,5)",
             "Tiered seating for spectators (5,5)",
-            "Seating that draws attention to the performance. (5,5)"
+            "Seating that draws attention to the performance (5,5)"
         ],
-        "hard_text": "Spectator area, but with flair. (5,5)"
+        "hard_text": "Spectator area, but with flair (5,5)"
     },
     {
         "word": "GRASSLANDS",
-        "text": "Wide open grassy plains. (5,5)",
+        "text": "Wide open grassy plains (5,5)",
         "hint": "Ecosystem home to grazing animals",
         "clues": [
-            "Savanna terrain. (5,5)",
-            "Open spaces, but not deserts. (5,5)",
-            "Flats where nature's carpet grows wild. (5,5)"
+            "Savanna terrain (5,5)",
+            "Open spaces, but not deserts (5,5)",
+            "Flats where nature's carpet grows wild (5,5)"
         ],
-        "hard_text": "Vast areas where greenery reigns. (5,5)"
+        "hard_text": "Vast areas where greenery reigns (5,5)"
     },
     {
         "word": "GRATEFULLY",
@@ -28946,14 +28946,14 @@
     },
     {
         "word": "GREYHOUNDS",
-        "text": "Fast racing dog breed. (4,6)",
+        "text": "Fast racing dog breed (4,6)",
         "hint": "Canine stars of the racetrack",
         "clues": [
-            "Track racers. (4,6)",
-            "Racing dogs that don't lag behind. (4,6)",
-            "Sleek breeds with speed, not a pet turtle. (4,6)"
+            "Track racers (4,6)",
+            "Racing dogs that don't lag behind (4,6)",
+            "Sleek breeds with speed, not a pet turtle (4,6)"
         ],
-        "hard_text": "Swift athletes of the canine world. (4,6)"
+        "hard_text": "Swift athletes of the canine world (4,6)"
     },
     {
         "word": "GYMNASTICS",
@@ -28968,91 +28968,91 @@
     },
     {
         "word": "HAIRBRUSH",
-        "text": "Grooming tool for the head. (4,5)",
-        "hint": "Must-have for a polished look. (4,5)",
+        "text": "Grooming tool for the head (4,5)",
+        "hint": "Must-have for a polished look (4,5)",
         "clues": [
-            "Essential for a sleek style. (4,5)",
-            "Tool that smooths out rough edges. (4,5)",
-            "Detangler's best friend in a hurry. (4,5)"
+            "Essential for a sleek style (4,5)",
+            "Tool that smooths out rough edges (4,5)",
+            "Detangler's best friend in a hurry (4,5)"
         ],
-        "hard_text": "Handle with care for tangled situations. (4,5)"
+        "hard_text": "Handle with care for tangled situations (4,5)"
     },
     {
         "word": "HAMBURGERS",
-        "text": "Beef patty sandwiches. (3,7)",
-        "hint": "Iconic dish of summer barbecues. (3,7)",
+        "text": "Beef patty sandwiches (3,7)",
+        "hint": "Iconic dish of summer barbecues (3,7)",
         "clues": [
-            "BBQ classics. (3,7)",
-            "Fast food staple between two buns. (3,7)",
-            "Classic backyard fare at summer cookouts. (3,7)"
+            "BBQ classics (3,7)",
+            "Fast food staple between two buns (3,7)",
+            "Classic backyard fare at summer cookouts (3,7)"
         ],
-        "hard_text": "Grilled delights that sizzle with flavor. (3,7)"
+        "hard_text": "Grilled delights that sizzle with flavor (3,7)"
     },
     {
         "word": "HANDSHAKES",
-        "text": "Greeting grips. (4,6)",
-        "hint": "Common greeting among friends. (4,6)",
+        "text": "Greeting grips (4,6)",
+        "hint": "Common greeting among friends (4,6)",
         "clues": [
-            "Business meeting custom. (4,6)",
-            "Sign of agreement in a brief touch. (4,6)",
-            "Meeting point between fingers and trust. (4,6)"
+            "Business meeting custom (4,6)",
+            "Sign of agreement in a brief touch (4,6)",
+            "Meeting point between fingers and trust (4,6)"
         ],
-        "hard_text": "Welcome gesture with a firm grip. (4,6)"
+        "hard_text": "Welcome gesture with a firm grip (4,6)"
     },
     {
         "word": "HEARTACHES",
-        "text": "Deep emotional pain. (5,5)",
-        "hint": "Feelings of unrequited love. (5,5)",
+        "text": "Deep emotional pain (5,5)",
+        "hint": "Feelings of unrequited love (5,5)",
         "clues": [
-            "Love's sorrows. (5,5)",
-            "Love's price often paid in pain. (5,5)",
-            "Silent screams of unfulfilled desires. (5,5)"
+            "Love's sorrows (5,5)",
+            "Love's price often paid in pain (5,5)",
+            "Silent screams of unfulfilled desires (5,5)"
         ],
-        "hard_text": "Emotional wounds that linger long after. (5,5)"
+        "hard_text": "Emotional wounds that linger long after (5,5)"
     },
     {
         "word": "HEATSTROKE",
-        "text": "Dangerous overheating. (4,6)",
-        "hint": "Potential risk during heat waves. (4,6)",
+        "text": "Dangerous overheating (4,6)",
+        "hint": "Potential risk during heat waves (4,6)",
         "clues": [
             "Dangerous illness caused by overheating (4,6)",
-            "Overheated body from sun's relentless rays. (4,6)",
+            "Overheated body from sun's relentless rays (4,6)",
             "Dangerous overheating illness (4,6)"
         ],
-        "hard_text": "Extreme condition requiring urgent care. (4,6)"
+        "hard_text": "Extreme condition requiring urgent care (4,6)"
     },
     {
         "word": "HONEYCOMB",
-        "text": "Waxy bee structure. (5,4)",
-        "hint": "Nature's sweet structure. (5,4)",
+        "text": "Waxy bee structure (5,4)",
+        "hint": "Nature's sweet structure (5,4)",
         "clues": [
-            "Bees' intricate creation for storage. (5,4)",
-            "Hexagonal cells filled with nature's nectar. (5,4)",
-            "Structure created from hard work and buzz. (5,4)"
+            "Bees' intricate creation for storage (5,4)",
+            "Hexagonal cells filled with nature's nectar (5,4)",
+            "Structure created from hard work and buzz (5,4)"
         ],
-        "hard_text": "Bee's architectural masterpiece of sweetness. (5,4)"
+        "hard_text": "Bee's architectural masterpiece of sweetness (5,4)"
     },
     {
         "word": "HORSEBACK",
-        "text": "Seated on an equine. (5,4)",
-        "hint": "Common mode of equine travel. (5,4)",
+        "text": "Seated on an equine (5,4)",
+        "hint": "Common mode of equine travel (5,4)",
         "clues": [
-            "Riding position. (5,4)",
+            "Riding position (5,4)",
             "Mounted rather than on foot (5,4)",
-            "Seated atop a four-legged athlete. (5,4)"
+            "Seated atop a four-legged athlete (5,4)"
         ],
-        "hard_text": "Riding high with a hoofed companion. (5,4)"
+        "hard_text": "Riding high with a hoofed companion (5,4)"
     },
     {
         "word": "HOUSEPLANT",
-        "text": "Indoor greenery. (5,5)",
-        "hint": "Popular choice for interior decor. (5,5)",
+        "text": "Indoor greenery (5,5)",
+        "hint": "Popular choice for interior decor (5,5)",
         "clues": [
-            "Potted fern. (5,5)",
-            "Green companion that purifies the air. (5,5)",
-            "Growth that lives within your four walls. (5,5)"
+            "Potted fern (5,5)",
+            "Green companion that purifies the air (5,5)",
+            "Growth that lives within your four walls (5,5)"
         ],
-        "hard_text": "Thriving green life indoors. (5,5)"
+        "hard_text": "Thriving green life indoors (5,5)"
     },
     {
         "word": "HURRICANES",
@@ -29067,14 +29067,14 @@
     },
     {
         "word": "ICEBREAKER",
-        "text": "Ship for frozen seas, or social game. (3,7)",
-        "hint": "Commonly used in social settings. (3,7)",
+        "text": "Ship for frozen seas, or social game (3,7)",
+        "hint": "Commonly used in social settings (3,7)",
         "clues": [
-            "Getting-to-know-you activity. (3,7)",
-            "Ship that cuts through frozen barriers. (3,7)",
-            "Social tool to thaw an awkward silence. (3,7)"
+            "Getting-to-know-you activity (3,7)",
+            "Ship that cuts through frozen barriers (3,7)",
+            "Social tool to thaw an awkward silence (3,7)"
         ],
-        "hard_text": "Convo starter for chilly gatherings. (3,7)"
+        "hard_text": "Convo starter for chilly gatherings (3,7)"
     },
     {
         "word": "ILLUMINATE",
@@ -29265,14 +29265,14 @@
     },
     {
         "word": "KITCHENWARE",
-        "text": "Cooking equipment. (7,4)",
+        "text": "Cooking equipment (7,4)",
         "hint": "Necessary tools for culinary endeavors",
         "clues": [
-            "Pots, pans and utensils. (7,4)",
-            "Utensils that make cooking a breeze. (7,4)",
-            "Cooking gear found in every home. (7,4)"
+            "Pots, pans and utensils (7,4)",
+            "Utensils that make cooking a breeze (7,4)",
+            "Cooking gear found in every home (7,4)"
         ],
-        "hard_text": "Essential tools for culinary artistry. (7,4)"
+        "hard_text": "Essential tools for culinary artistry (7,4)"
     },
     {
         "word": "LABORATORY",
@@ -29287,14 +29287,14 @@
     },
     {
         "word": "LAMPSHADES",
-        "text": "Light fixture covers. (4,6)",
-        "hint": "Accessories for lighting fixtures. (4,6)",
+        "text": "Light fixture covers (4,6)",
+        "hint": "Accessories for lighting fixtures (4,6)",
         "clues": [
-            "Soften the glow. (4,6)",
-            "Light's fashion accessory. (4,6)",
-            "What helps cast a warm glow. (4,6)"
+            "Soften the glow (4,6)",
+            "Light's fashion accessory (4,6)",
+            "What helps cast a warm glow (4,6)"
         ],
-        "hard_text": "Decor that diffuses light. (4,6)"
+        "hard_text": "Decor that diffuses light (4,6)"
     },
     {
         "word": "LANDSCAPES",
@@ -29309,25 +29309,25 @@
     },
     {
         "word": "LINEBACKER",
-        "text": "Defensive football position. (4,6)",
+        "text": "Defensive football position (4,6)",
         "hint": "Defensive football player behind the line (4,6)",
         "clues": [
-            "NFL tackler. (4,6)",
-            "Protector of the gridiron's backfield. (4,6)",
-            "Football's answer to a wall. (4,6)"
+            "NFL tackler (4,6)",
+            "Protector of the gridiron's backfield (4,6)",
+            "Football's answer to a wall (4,6)"
         ],
-        "hard_text": "Defensive player who lines up behind. (4,6)"
+        "hard_text": "Defensive player who lines up behind (4,6)"
     },
     {
         "word": "LOCKSMITH",
         "text": "Specialist in keys and security (4,5)",
         "hint": "Expert in security solutions",
         "clues": [
-            "Opens doors for a living. (4,5)",
-            "One who unlocks secrets. (4,5)",
-            "Key figure in security. (4,5)"
+            "Opens doors for a living (4,5)",
+            "One who unlocks secrets (4,5)",
+            "Key figure in security (4,5)"
         ],
-        "hard_text": "Master of hidden entrances. (4,5)"
+        "hard_text": "Master of hidden entrances (4,5)"
     },
     {
         "word": "LONGITUDES",
@@ -29584,14 +29584,14 @@
     },
     {
         "word": "PAPERCLIPS",
-        "text": "Small wire fasteners. (5,5)",
+        "text": "Small wire fasteners (5,5)",
         "hint": "Used for organizing documents",
         "clues": [
-            "Desk drawer essentials. (5,5)",
-            "Office supply that keeps papers aligned. (5,5)",
-            "Lightweight fasteners for paperwork. (5,5)"
+            "Desk drawer essentials (5,5)",
+            "Office supply that keeps papers aligned (5,5)",
+            "Lightweight fasteners for paperwork (5,5)"
         ],
-        "hard_text": "Small wires binding together. (5,5)"
+        "hard_text": "Small wires binding together (5,5)"
     },
     {
         "word": "PARTICULAR",
@@ -29892,25 +29892,25 @@
     },
     {
         "word": "ROADRUNNER",
-        "text": "Fast desert bird. (4,6)",
+        "text": "Fast desert bird (4,6)",
         "hint": "Fast character in cartoons",
         "clues": [
-            "Beep beep! cartoon bird. (4,6)",
-            "Fast enough to outpace a coyote. (4,6)",
-            "A speedy bird with a unique call. (4,6)"
+            "Beep beep! cartoon bird (4,6)",
+            "Fast enough to outpace a coyote (4,6)",
+            "A speedy bird with a unique call (4,6)"
         ],
-        "hard_text": "Zooming past on desert highways. (4,6)"
+        "hard_text": "Zooming past on desert highways (4,6)"
     },
     {
         "word": "ROUNDABOUT",
-        "text": "Circular road junction. (5,5)",
+        "text": "Circular road junction (5,5)",
         "hint": "Route without a straight path",
         "clues": [
-            "Traffic circle. (5,5)",
-            "A detour that goes in circles. (5,5)",
-            "Getting there without a straight line. (5,5)"
+            "Traffic circle (5,5)",
+            "A detour that goes in circles (5,5)",
+            "Getting there without a straight line (5,5)"
         ],
-        "hard_text": "Circular path for decision-making. (5,5)"
+        "hard_text": "Circular path for decision-making (5,5)"
     },
     {
         "word": "SACRIFICED",
@@ -29925,36 +29925,36 @@
     },
     {
         "word": "SANDCASTLE",
-        "text": "Beach structure. (4,6)",
+        "text": "Beach structure (4,6)",
         "hint": "Temporary artwork on the beach",
         "clues": [
-            "Built at the seaside. (4,6)",
-            "Temporary kingdom on the shore. (4,6)",
-            "Structure washed away by the tide. (4,6)"
+            "Built at the seaside (4,6)",
+            "Temporary kingdom on the shore (4,6)",
+            "Structure washed away by the tide (4,6)"
         ],
-        "hard_text": "Fortress built from grains of time. (4,6)"
+        "hard_text": "Fortress built from grains of time (4,6)"
     },
     {
         "word": "SANDWICHES",
-        "text": "Filled bread slices. (4,6)",
+        "text": "Filled bread slices (4,6)",
         "hint": "Stacked food often eaten during lunch",
         "clues": [
-            "Lunch staple. (4,6)",
-            "Lunch's layered delight. (4,6)",
-            "Meals that stack flavors together. (4,6)"
+            "Lunch staple (4,6)",
+            "Lunch's layered delight (4,6)",
+            "Meals that stack flavors together (4,6)"
         ],
-        "hard_text": "Two slices with a filling in between. (4,6)"
+        "hard_text": "Two slices with a filling in between (4,6)"
     },
     {
         "word": "SCREENSHOT",
         "text": "Saved display image (6,4)",
         "hint": "Image of your device display",
         "clues": [
-            "Phone capture. (6,4)",
-            "Digital memory of a visual moment. (6,4)",
-            "Picture taken when you press 'print'. (6,4)"
+            "Phone capture (6,4)",
+            "Digital memory of a visual moment (6,4)",
+            "Picture taken when you press 'print' (6,4)"
         ],
-        "hard_text": "Capture that reveals what was on display. (6,4)"
+        "hard_text": "Capture that reveals what was on display (6,4)"
     },
     {
         "word": "SEPARATION",
@@ -29969,14 +29969,14 @@
     },
     {
         "word": "SHOWGROUND",
-        "text": "Exhibition venue. (4,6)",
+        "text": "Exhibition venue (4,6)",
         "hint": "Venue for outdoor exhibitions",
         "clues": [
-            "Where fairs are held. (4,6)",
-            "Field that hosts a fair or display. (4,6)",
-            "Location for an exhibition of talents. (4,6)"
+            "Where fairs are held (4,6)",
+            "Field that hosts a fair or display (4,6)",
+            "Location for an exhibition of talents (4,6)"
         ],
-        "hard_text": "Where the spectacle takes place outdoors. (4,6)"
+        "hard_text": "Where the spectacle takes place outdoors (4,6)"
     },
     {
         "word": "SIMPLIFIED",
@@ -29991,14 +29991,14 @@
     },
     {
         "word": "SNOWFLAKES",
-        "text": "Frozen water crystals. (4,6)",
-        "hint": "Falling during winter storms. (4,6)",
+        "text": "Frozen water crystals (4,6)",
+        "hint": "Falling during winter storms (4,6)",
         "clues": [
-            "Each one unique. (4,6)",
-            "Winter's delicate artwork from the sky. (4,6)",
-            "Chilly shapes that don't stick around long. (4,6)"
+            "Each one unique (4,6)",
+            "Winter's delicate artwork from the sky (4,6)",
+            "Chilly shapes that don't stick around long (4,6)"
         ],
-        "hard_text": "Formed in clouds, vanishing swiftly. (4,6)"
+        "hard_text": "Formed in clouds, vanishing swiftly (4,6)"
     },
     {
         "word": "SPACECRAFT",
@@ -30134,14 +30134,14 @@
     },
     {
         "word": "SWEEPSTAKE",
-        "text": "Prize draw competition. (5,5)",
+        "text": "Prize draw competition (5,5)",
         "hint": "Chance for a grand prize",
         "clues": [
-            "Lucky winner raffle. (5,5)",
-            "Gambling on a prize with many entries. (5,5)",
-            "Draw that promises a fortune, if lucky. (5,5)"
+            "Lucky winner raffle (5,5)",
+            "Gambling on a prize with many entries (5,5)",
+            "Draw that promises a fortune, if lucky (5,5)"
         ],
-        "hard_text": "Chance to win, but luck plays a part. (5,5)"
+        "hard_text": "Chance to win, but luck plays a part (5,5)"
     },
     {
         "word": "TECHNIQUES",
@@ -30200,25 +30200,25 @@
     },
     {
         "word": "THUMBPRINT",
-        "text": "Unique finger mark. (5,5)",
-        "hint": "Often used for security purposes. (5,5)",
+        "text": "Unique finger mark (5,5)",
+        "hint": "Often used for security purposes (5,5)",
         "clues": [
-            "Biometric identifier. (5,5)",
-            "Fingerprint that tells your identity. (5,5)",
-            "Biometric ID left by a finger's touch. (5,5)"
+            "Biometric identifier (5,5)",
+            "Fingerprint that tells your identity (5,5)",
+            "Biometric ID left by a finger's touch (5,5)"
         ],
-        "hard_text": "Distinctive identifier unique to each person. (5,5)"
+        "hard_text": "Distinctive identifier unique to each person (5,5)"
     },
     {
         "word": "TIMBERLAND",
-        "text": "Wooded area. (6,4)",
-        "hint": "Known for hiking and camping. (6,4)",
+        "text": "Wooded area (6,4)",
+        "hint": "Known for hiking and camping (6,4)",
         "clues": [
-            "Forest territory. (6,4)",
-            "Lands where trees reign supreme. (6,4)",
-            "Wooded areas thriving in nature's embrace. (6,4)"
+            "Forest territory (6,4)",
+            "Lands where trees reign supreme (6,4)",
+            "Wooded areas thriving in nature's embrace (6,4)"
         ],
-        "hard_text": "A forest of wood, but not a city. (6,4)"
+        "hard_text": "A forest of wood, but not a city (6,4)"
     },
     {
         "word": "TOURNAMENT",
@@ -30256,7 +30256,7 @@
     {
         "word": "ULTIMATELY",
         "text": "In the final analysis",
-        "hint": "In the end.",
+        "hint": "In the end",
         "clues": [
             "At the end of the day",
             "In the grand scheme of things",
@@ -30267,7 +30267,7 @@
     {
         "word": "UNDERSTOOD",
         "text": "Grasped the meaning",
-        "hint": "Comprehended.",
+        "hint": "Comprehended",
         "clues": [
             "Got it",
             "Figured out the hidden message?",
@@ -30278,7 +30278,7 @@
     {
         "word": "UNEMPLOYED",
         "text": "Without a job",
-        "hint": "Without paid work.",
+        "hint": "Without paid work",
         "clues": [
             "Not holding a job",
             "Without employment",
@@ -30289,7 +30289,7 @@
     {
         "word": "UNFINISHED",
         "text": "Not yet complete",
-        "hint": "Not completed.",
+        "hint": "Not completed",
         "clues": [
             "Still in progress",
             "Incomplete",
@@ -30300,7 +30300,7 @@
     {
         "word": "UNIVERSITY",
         "text": "Higher education institution",
-        "hint": "Institution of higher education.",
+        "hint": "Institution of higher education",
         "clues": [
             "Where degrees are earned",
             "Campus that includes many disciplines?",
@@ -30343,80 +30343,80 @@
     },
     {
         "word": "WASTEBASKET",
-        "text": "Rubbish bin. (5,6)",
-        "hint": "Where ideas go to die. (5,6)",
+        "text": "Rubbish bin (5,6)",
+        "hint": "Where ideas go to die (5,6)",
         "clues": [
-            "Office bin. (5,6)",
-            "Final destination for forgotten papers. (5,6)",
-            "Container for unwanted thoughts. (5,6)"
+            "Office bin (5,6)",
+            "Final destination for forgotten papers (5,6)",
+            "Container for unwanted thoughts (5,6)"
         ],
-        "hard_text": "Where discarded ideas often land. (5,6)"
+        "hard_text": "Where discarded ideas often land (5,6)"
     },
     {
         "word": "WATCHMAKER",
-        "text": "Person who makes timepieces. (5,5)",
-        "hint": "Creator of finely tuned mechanisms. (5,5)",
+        "text": "Person who makes timepieces (5,5)",
+        "hint": "Creator of finely tuned mechanisms (5,5)",
         "clues": [
             "Person who makes or repairs watches (5,5)",
-            "Builder of intricate timekeeping devices. (5,5)",
-            "Artisan with a steady hand for seconds. (5,5)"
+            "Builder of intricate timekeeping devices (5,5)",
+            "Artisan with a steady hand for seconds (5,5)"
         ],
-        "hard_text": "Craftsman of timepieces and patience. (5,5)"
+        "hard_text": "Craftsman of timepieces and patience (5,5)"
     },
     {
         "word": "WATCHTOWER",
-        "text": "Elevated lookout post. (5,5)",
+        "text": "Elevated lookout post (5,5)",
         "hint": "Structure for surveillance and signaling",
         "clues": [
-            "Guard's high vantage point. (5,5)",
-            "Where eyes are raised to the sky. (5,5)",
-            "Lookout for signals from above. (5,5)"
+            "Guard's high vantage point (5,5)",
+            "Where eyes are raised to the sky (5,5)",
+            "Lookout for signals from above (5,5)"
         ],
         "hard_text": "Elevated surveillance post (5,5)"
     },
     {
         "word": "WAVELENGTH",
         "text": "Distance from crest to crest (4,6)",
-        "hint": "Signal term in broadcasting. (4,6)",
+        "hint": "Signal term in broadcasting (4,6)",
         "clues": [
-            "On the same ___ (in agreement). (4,6)",
-            "Frequency's best companion. (4,6)",
-            "Tuning in to the right frequency. (4,6)"
+            "On the same ___ (in agreement) (4,6)",
+            "Frequency's best companion (4,6)",
+            "Tuning in to the right frequency (4,6)"
         ],
-        "hard_text": "Measure of distance in harmony. (4,6)"
+        "hard_text": "Measure of distance in harmony (4,6)"
     },
     {
         "word": "WINDSHIELD",
-        "text": "Car's front glass. (4,6)",
+        "text": "Car's front glass (4,6)",
         "hint": "You might clean it before a road trip",
         "clues": [
-            "Windscreen in American. (4,6)",
-            "Screen protecting passengers from debris. (4,6)",
-            "Clear view through stormy weather. (4,6)"
+            "Windscreen in American (4,6)",
+            "Screen protecting passengers from debris (4,6)",
+            "Clear view through stormy weather (4,6)"
         ],
-        "hard_text": "Barrier against the elements up front. (4,6)"
+        "hard_text": "Barrier against the elements up front (4,6)"
     },
     {
         "word": "WOODPECKER",
-        "text": "Tree-tapping bird. (4,6)",
-        "hint": "Symbol of industrious wildlife. (4,6)",
+        "text": "Tree-tapping bird (4,6)",
+        "hint": "Symbol of industrious wildlife (4,6)",
         "clues": [
-            "Hammers on bark. (4,6)",
-            "Nature's percussionist at work. (4,6)",
-            "Tree-tapper with a specialized beak. (4,6)"
+            "Hammers on bark (4,6)",
+            "Nature's percussionist at work (4,6)",
+            "Tree-tapper with a specialized beak (4,6)"
         ],
-        "hard_text": "Drilling for dinner in the trees. (4,6)"
+        "hard_text": "Drilling for dinner in the trees (4,6)"
     },
     {
         "word": "WORTHWHILE",
-        "text": "Valuable and rewarding. (5,5)",
+        "text": "Valuable and rewarding (5,5)",
         "hint": "Effort that yields positive outcomes",
         "clues": [
-            "Time well spent. (5,5)",
-            "Investment of time that yields returns. (5,5)",
-            "Something deserving of attention. (5,5)"
+            "Time well spent (5,5)",
+            "Investment of time that yields returns (5,5)",
+            "Something deserving of attention (5,5)"
         ],
-        "hard_text": "Effort that pays off in the end. (5,5)"
+        "hard_text": "Effort that pays off in the end (5,5)"
     },
     {
         "word": "ABANDONMENT",
@@ -31509,25 +31509,25 @@
     },
     {
         "word": "STEAMROLLER",
-        "text": "Heavy road-flattening vehicle. (5,6)",
-        "hint": "Common sight on construction sites. (5,6)",
+        "text": "Heavy road-flattening vehicle (5,6)",
+        "hint": "Common sight on construction sites (5,6)",
         "clues": [
-            "Crushes everything in its path. (5,6)",
-            "Forceful presence on the road. (5,6)",
-            "Flattening obstacles with ease. (5,6)"
+            "Crushes everything in its path (5,6)",
+            "Forceful presence on the road (5,6)",
+            "Flattening obstacles with ease (5,6)"
         ],
-        "hard_text": "Heavy machine with a flattened agenda. (5,6)"
+        "hard_text": "Heavy machine with a flattened agenda (5,6)"
     },
     {
         "word": "STOCKMARKET",
-        "text": "Share trading exchange. (5,6)",
-        "hint": "Investment arena with daily fluctuations. (5,6)",
+        "text": "Share trading exchange (5,6)",
+        "hint": "Investment arena with daily fluctuations (5,6)",
         "clues": [
-            "Wall Street venue. (5,6)",
-            "Where fortunes rise and fall. (5,6)",
-            "A marketplace of investments. (5,6)"
+            "Wall Street venue (5,6)",
+            "Where fortunes rise and fall (5,6)",
+            "A marketplace of investments (5,6)"
         ],
-        "hard_text": "The exchange of shares and dreams. (5,6)"
+        "hard_text": "The exchange of shares and dreams (5,6)"
     },
     {
         "word": "STRAIGHTEN",
@@ -31600,11 +31600,11 @@
         "text": "Dentifrices used to clean teeth (5,6)",
         "hint": "Varieties include whitening and herbal",
         "clues": [
-            "Dentifrices squeezed onto brushes. (5,6)",
-            "Dentifrices with a thick consistency. (5,6)",
+            "Dentifrices squeezed onto brushes (5,6)",
+            "Dentifrices with a thick consistency (5,6)",
             "Oral-cleaning compounds sold in tubes (5,6)"
         ],
-        "hard_text": "Thick dentifrices for brushing. (5,6)"
+        "hard_text": "Thick dentifrices for brushing (5,6)"
     },
     {
         "word": "TRAILBLAZER",
@@ -31762,25 +31762,25 @@
     },
     {
         "word": "CLOTHESLINE",
-        "text": "Washing drying cord. (7,4)",
+        "text": "Washing drying cord (7,4)",
         "hint": "Utilized for outdoor drying",
         "clues": [
-            "Garden rope for laundry. (7,4)",
+            "Garden rope for laundry (7,4)",
             "Rope strung up for laundry (7,4)",
-            "A service for sunny days and fresh air. (7,4)"
+            "A service for sunny days and fresh air (7,4)"
         ],
-        "hard_text": "Where laundry hangs out to dry. (7,4)"
+        "hard_text": "Where laundry hangs out to dry (7,4)"
     },
     {
         "word": "CLOUDBERRY",
-        "text": "Arctic golden fruit. (5,5)",
+        "text": "Arctic golden fruit (5,5)",
         "hint": "Delicacy found in cold climates",
         "clues": [
             "Nordic amber fruit (5,5)",
             "A rare treat in Nordic regions",
             "Tart fruit of northern bogs (5,5)"
         ],
-        "hard_text": "A fruit that thrives in the chill. (5,5)"
+        "hard_text": "A fruit that thrives in the chill (5,5)"
     },
     {
         "word": "COCKROACHES",
@@ -31788,7 +31788,7 @@
         "hint": "Famed for survival skills",
         "clues": [
             "Hardy insects that infest homes (4,7)",
-            "Unwelcome guests that refuse to leave. (4,7)",
+            "Unwelcome guests that refuse to leave (4,7)",
             "Nocturnal insects often found in kitchens (4,7)"
         ],
         "hard_text": "Insects known for surviving harsh conditions (4,7)"
@@ -31798,22 +31798,22 @@
         "text": "Upper-chest skeletal link (6,4)",
         "hint": "Part of the skeletal frame",
         "clues": [
-            "Clavicle. (6,4)",
-            "An anatomical bridge of the upper body. (6,4)",
+            "Clavicle (6,4)",
+            "An anatomical bridge of the upper body (6,4)",
             "Shoulder-girdle support (6,4)"
         ],
-        "hard_text": "Linking shoulder and sternum gracefully. (6,4)"
+        "hard_text": "Linking shoulder and sternum gracefully (6,4)"
     },
     {
         "word": "COMMONPLACE",
-        "text": "Ordinary and unremarkable. (6,5)",
+        "text": "Ordinary and unremarkable (6,5)",
         "hint": "Routine occurrences in life",
         "clues": [
-            "Nothing special. (6,5)",
-            "Everyday occurrences we often overlook. (6,5)",
-            "Familiarity breeds indifference, they say. (6,5)"
+            "Nothing special (6,5)",
+            "Everyday occurrences we often overlook (6,5)",
+            "Familiarity breeds indifference, they say (6,5)"
         ],
-        "hard_text": "A dull routine, nothing remarkable. (6,5)"
+        "hard_text": "A dull routine, nothing remarkable (6,5)"
     },
     {
         "word": "COMMUNICATE",
@@ -31861,14 +31861,14 @@
     },
     {
         "word": "COUNTRYWIDE",
-        "text": "Across the whole nation. (7,4)",
-        "hint": "Nationwide, perhaps. (7,4)",
+        "text": "Across the whole nation (7,4)",
+        "hint": "Nationwide, perhaps (7,4)",
         "clues": [
-            "Nationwide. (7,4)",
-            "Spanning the land from sea to sea. (7,4)",
-            "A reach that covers every region. (7,4)"
+            "Nationwide (7,4)",
+            "Spanning the land from sea to sea (7,4)",
+            "A reach that covers every region (7,4)"
         ],
-        "hard_text": "No corner left unexplored in this scope. (7,4)"
+        "hard_text": "No corner left unexplored in this scope (7,4)"
     },
     {
         "word": "DANGEROUSLY",
@@ -32026,47 +32026,47 @@
     },
     {
         "word": "FIREFIGHTER",
-        "text": "Person who puts out blazes. (4,7)",
-        "hint": "Responds to alarm signals. (4,7)",
+        "text": "Person who puts out blazes (4,7)",
+        "hint": "Responds to alarm signals (4,7)",
         "clues": [
-            "Emergency rescue hero. (4,7)",
-            "Braving the heat to save the day. (4,7)",
-            "Protector from the blaze's wrath. (4,7)"
+            "Emergency rescue hero (4,7)",
+            "Braving the heat to save the day (4,7)",
+            "Protector from the blaze's wrath (4,7)"
         ],
-        "hard_text": "Hero battling flames in the line of duty. (4,7)"
+        "hard_text": "Hero battling flames in the line of duty (4,7)"
     },
     {
         "word": "GALLBLADDER",
-        "text": "Bile-storing organ. (4,7)",
-        "hint": "Organ linked to liver function. (4,7)",
+        "text": "Bile-storing organ (4,7)",
+        "hint": "Organ linked to liver function (4,7)",
         "clues": [
-            "Small digestive organ. (4,7)",
-            "Digestive sac in the abdomen. (4,7)",
+            "Small digestive organ (4,7)",
+            "Digestive sac in the abdomen (4,7)",
             "Organ that stores bile (4,7)"
         ],
-        "hard_text": "Storage for digestive juices. (4,7)"
+        "hard_text": "Storage for digestive juices (4,7)"
     },
     {
         "word": "GINGERBREAD",
-        "text": "Spiced biscuit. (6,5)",
+        "text": "Spiced biscuit (6,5)",
         "hint": "Holiday treat, often decorated",
         "clues": [
             "Spiced sweet baked good (6,5)",
             "Spiced dough used for festive houses (6,5)",
-            "Delightfully spiced for holiday cheer. (6,5)"
+            "Delightfully spiced for holiday cheer (6,5)"
         ],
-        "hard_text": "Sweet treat from a fairy tale kitchen. (6,5)"
+        "hard_text": "Sweet treat from a fairy tale kitchen (6,5)"
     },
     {
         "word": "HAIRDRESSER",
         "text": "Salon stylist (4,7)",
-        "hint": "Common title in beauty industry. (4,7)",
+        "hint": "Common title in beauty industry (4,7)",
         "clues": [
-            "Salon worker. (4,7)",
-            "Expert in transforming hairdos and looks. (4,7)",
-            "Designer of tresses for special occasions. (4,7)"
+            "Salon worker (4,7)",
+            "Expert in transforming hairdos and looks (4,7)",
+            "Designer of tresses for special occasions (4,7)"
         ],
-        "hard_text": "Crafts styles with scissors and flair. (4,7)"
+        "hard_text": "Crafts styles with scissors and flair (4,7)"
     },
     {
         "word": "HALLUCINATE",
@@ -32081,14 +32081,14 @@
     },
     {
         "word": "HANDKERCHIEF",
-        "text": "Pocket cloth for nose. (4,8)",
-        "hint": "Used in formal attire. (4,8)",
+        "text": "Pocket cloth for nose (4,8)",
+        "hint": "Used in formal attire (4,8)",
         "clues": [
-            "Gentleman's pocket square. (4,8)",
-            "A little fabric with many uses. (4,8)",
-            "Traditionally held in pockets for emergencies. (4,8)"
+            "Gentleman's pocket square (4,8)",
+            "A little fabric with many uses (4,8)",
+            "Traditionally held in pockets for emergencies (4,8)"
         ],
-        "hard_text": "Wipe away tears with this soft cloth. (4,8)"
+        "hard_text": "Wipe away tears with this soft cloth (4,8)"
     },
     {
         "word": "HARMLESSLY",
@@ -32103,10 +32103,10 @@
     },
     {
         "word": "HEADQUARTERED",
-        "text": "Based in a location. (4,9)",
+        "text": "Based in a location (4,9)",
         "hint": "Based at a central office (4,9)",
         "clues": [
-            "Main office located at. (4,9)",
+            "Main office located at (4,9)",
             "Operating from a central office (4,9)",
             "Based in a main administrative location (4,9)"
         ],
@@ -32114,36 +32114,36 @@
     },
     {
         "word": "HEARTBROKEN",
-        "text": "Devastated by loss. (5,6)",
-        "hint": "Emotionally wrecked after a split. (5,6)",
+        "text": "Devastated by loss (5,6)",
+        "hint": "Emotionally wrecked after a split (5,6)",
         "clues": [
-            "Deeply grieving. (5,6)",
-            "Carrying a weight of emotional loss. (5,6)",
-            "Deeply affected by a romantic setback. (5,6)"
+            "Deeply grieving (5,6)",
+            "Carrying a weight of emotional loss (5,6)",
+            "Deeply affected by a romantic setback (5,6)"
         ],
-        "hard_text": "Feeling shattered after love's departure. (5,6)"
+        "hard_text": "Feeling shattered after love's departure (5,6)"
     },
     {
         "word": "HOMESTRETCH",
-        "text": "Final part of a race. (4,7)",
-        "hint": "Near the finish line. (4,7)",
+        "text": "Final part of a race (4,7)",
+        "hint": "Near the finish line (4,7)",
         "clues": [
-            "Almost there. (4,7)",
-            "Where victory feels just within reach. (4,7)",
-            "Last push before crossing the line. (4,7)"
+            "Almost there (4,7)",
+            "Where victory feels just within reach (4,7)",
+            "Last push before crossing the line (4,7)"
         ],
-        "hard_text": "The final phase of a competition. (4,7)"
+        "hard_text": "The final phase of a competition (4,7)"
     },
     {
         "word": "HOUSEKEEPER",
-        "text": "Domestic cleaner. (5,6)",
-        "hint": "Often seen in luxury hotels. (5,6)",
+        "text": "Domestic cleaner (5,6)",
+        "hint": "Often seen in luxury hotels (5,6)",
         "clues": [
-            "Hotel room attendant. (5,6)",
-            "Manager of domestic order and tidiness. (5,6)",
-            "Ensuring everything is in its right place. (5,6)"
+            "Hotel room attendant (5,6)",
+            "Manager of domestic order and tidiness (5,6)",
+            "Ensuring everything is in its right place (5,6)"
         ],
-        "hard_text": "Guardian of cleanliness in a home. (5,6)"
+        "hard_text": "Guardian of cleanliness in a home (5,6)"
     },
     {
         "word": "ILLUSTRATED",
@@ -32312,36 +32312,36 @@
     },
     {
         "word": "BACKBREAKING",
-        "text": "Extremely hard physical work. (4,8)",
+        "text": "Extremely hard physical work (4,8)",
         "hint": "Labor-intensive tasks",
         "clues": [
-            "Exhausting labour. (4,8)",
-            "Work so tough it bends you. (4,8)",
-            "Like lifting heavy weights all day. (4,8)"
+            "Exhausting labour (4,8)",
+            "Work so tough it bends you (4,8)",
+            "Like lifting heavy weights all day (4,8)"
         ],
-        "hard_text": "Labor that leaves you sore. (4,8)"
+        "hard_text": "Labor that leaves you sore (4,8)"
     },
     {
         "word": "BACKGROUNDER",
-        "text": "Briefing document. (4,8)",
+        "text": "Briefing document (4,8)",
         "hint": "Contextual summary for clarity",
         "clues": [
-            "Information primer. (4,8)",
-            "Info that frames the conversation. (4,8)",
-            "Context in a nutshell for clarity. (4,8)"
+            "Information primer (4,8)",
+            "Info that frames the conversation (4,8)",
+            "Context in a nutshell for clarity (4,8)"
         ],
-        "hard_text": "Setting the scene for newcomers. (4,8)"
+        "hard_text": "Setting the scene for newcomers (4,8)"
     },
     {
         "word": "BARNSTORMING",
-        "text": "Brilliantly exciting. (4,8)",
+        "text": "Brilliantly exciting (4,8)",
         "hint": "High-energy entertainment style",
         "clues": [
-            "Dazzling performance. (4,8)",
-            "Spectacular showing that captivates. (4,8)",
-            "Energetic performance that stirs crowds. (4,8)"
+            "Dazzling performance (4,8)",
+            "Spectacular showing that captivates (4,8)",
+            "Energetic performance that stirs crowds (4,8)"
         ],
-        "hard_text": "Flying high with excitement. (4,8)"
+        "hard_text": "Flying high with excitement (4,8)"
     },
     {
         "word": "BIODIVERSITY",
@@ -32356,7 +32356,7 @@
     },
     {
         "word": "BLOODSTAINED",
-        "text": "Marked with red fluid. (5,7)",
+        "text": "Marked with red fluid (5,7)",
         "hint": "Marked with blood (5,7)",
         "clues": [
             "Bearing signs of injury (5,7)",
@@ -32367,30 +32367,30 @@
     },
     {
         "word": "BOTTLENECKED",
-        "text": "Slowed by a narrow point. (6,6)",
+        "text": "Slowed by a narrow point (6,6)",
         "hint": "Delayed by a constriction (6,6)",
         "clues": [
             "Delayed by a constriction (6,6)",
             "Traffic jam at a crucial point",
             "Constricted flow causing delays"
         ],
-        "hard_text": "Trapped in a narrow squeeze. (6,6)"
+        "hard_text": "Trapped in a narrow squeeze (6,6)"
     },
     {
         "word": "BRAINSTORMED",
-        "text": "Generated ideas collectively. (5,7)",
+        "text": "Generated ideas collectively (5,7)",
         "hint": "Generated ideas collaboratively (5,7)",
         "clues": [
             "Generated ideas collaboratively (5,7)",
             "Collective thinking in full swing",
             "Creative eruptions in a meeting"
         ],
-        "hard_text": "Ideas sparked in a group setting. (5,7)"
+        "hard_text": "Ideas sparked in a group setting (5,7)"
     },
     {
         "word": "BROADCASTING",
         "text": "Transmitting by radio or TV",
-        "hint": "Sending signals to many. (5,7)",
+        "hint": "Sending signals to many (5,7)",
         "clues": [
             "Transmitting programmes, as the BBC does",
             "Sharing signals across the airwaves",
@@ -32422,14 +32422,14 @@
     },
     {
         "word": "CLIFFHANGING",
-        "text": "Full of suspense. (5,7)",
-        "hint": "Suspenseful moment in storytelling. (5,7)",
+        "text": "Full of suspense (5,7)",
+        "hint": "Suspenseful moment in storytelling (5,7)",
         "clues": [
-            "Edge of your seat. (5,7)",
-            "Suspense that grips you tightly. (5,7)",
-            "Tension that makes you hold your breath. (5,7)"
+            "Edge of your seat (5,7)",
+            "Suspense that grips you tightly (5,7)",
+            "Tension that makes you hold your breath (5,7)"
         ],
-        "hard_text": "Leaving you on the edge. (5,7)"
+        "hard_text": "Leaving you on the edge (5,7)"
     },
     {
         "word": "COMMISSIONER",
@@ -32609,14 +32609,14 @@
     },
     {
         "word": "EARTHSHAKING",
-        "text": "Extremely important. (5,7)",
-        "hint": "Seismic shifts in public opinion. (5,7)",
+        "text": "Extremely important (5,7)",
+        "hint": "Seismic shifts in public opinion (5,7)",
         "clues": [
-            "Ground-breaking news. (5,7)",
+            "Ground-breaking news (5,7)",
             "Momentously important (5,7)",
-            "A game changer that stirs the world. (5,7)"
+            "A game changer that stirs the world (5,7)"
         ],
-        "hard_text": "What a major revelation might do. (5,7)"
+        "hard_text": "What a major revelation might do (5,7)"
     },
     {
         "word": "ELECTRICIANS",
@@ -32675,14 +32675,14 @@
     },
     {
         "word": "FINGERPRINTS",
-        "text": "Unique skin ridge marks. (6,6)",
+        "text": "Unique skin ridge marks (6,6)",
         "hint": "Personal markers in forensics? (6,6)",
         "clues": [
-            "Crime scene identifiers. (6,6)",
-            "Biometric identifiers at your fingertips. (6,6)",
-            "The trace of an individual in detail. (6,6)"
+            "Crime scene identifiers (6,6)",
+            "Biometric identifiers at your fingertips (6,6)",
+            "The trace of an individual in detail (6,6)"
         ],
-        "hard_text": "Distinct patterns used for identification. (6,6)"
+        "hard_text": "Distinct patterns used for identification (6,6)"
     },
     {
         "word": "FLABBERGASTED",
@@ -32697,14 +32697,14 @@
     },
     {
         "word": "FRONTRUNNERS",
-        "text": "Leading candidates. (5,7)",
-        "hint": "Main players in a contest. (5,7)",
+        "text": "Leading candidates (5,7)",
+        "hint": "Main players in a contest (5,7)",
         "clues": [
-            "Favourites to win. (5,7)",
-            "Top contenders in a high-stakes game. (5,7)",
-            "Those leading the pack to victory. (5,7)"
+            "Favourites to win (5,7)",
+            "Top contenders in a high-stakes game (5,7)",
+            "Those leading the pack to victory (5,7)"
         ],
-        "hard_text": "Leaders in a competitive race. (5,7)"
+        "hard_text": "Leaders in a competitive race (5,7)"
     },
     {
         "word": "GEOGRAPHICAL",
@@ -32720,79 +32720,79 @@
     {
         "word": "GHOSTWRITING",
         "text": "Authorship under another's name (5,7)",
-        "hint": "Common in publishing circles. (5,7)",
+        "hint": "Common in publishing circles (5,7)",
         "clues": [
-            "Uncredited authorship. (5,7)",
+            "Uncredited authorship (5,7)",
             "Uncredited literary work (5,7)",
-            "An invisible author of another's tale. (5,7)"
+            "An invisible author of another's tale (5,7)"
         ],
         "hard_text": "Uncredited authorship service (5,7)"
     },
     {
         "word": "GOALTENDING",
-        "text": "Guarding the net. (4,7)",
-        "hint": "NHL position responsibilities. (4,7)",
+        "text": "Guarding the net (4,7)",
+        "hint": "NHL position responsibilities (4,7)",
         "clues": [
-            "Goalkeeper's job. (4,7)",
+            "Goalkeeper's job (4,7)",
             "Net defense in hockey (4,7)",
-            "Last line of defense in net sports. (4,7)"
+            "Last line of defense in net sports (4,7)"
         ],
-        "hard_text": "Protecting the net from opposition. (4,7)"
+        "hard_text": "Protecting the net from opposition (4,7)"
     },
     {
         "word": "GRANDPARENTS",
         "text": "Older family generation (5,7)",
-        "hint": "Family elders with cherished stories. (5,7)",
+        "hint": "Family elders with cherished stories (5,7)",
         "clues": [
             "Elders in a family (5,7)",
-            "Family members with a long history. (5,7)",
-            "The ones who spoil without a care. (5,7)"
+            "Family members with a long history (5,7)",
+            "The ones who spoil without a care (5,7)"
         ],
-        "hard_text": "Generational matriarchs and patriarchs. (5,7)"
+        "hard_text": "Generational matriarchs and patriarchs (5,7)"
     },
     {
         "word": "GRAPEVINE",
-        "text": "Informal information network. (5,4)",
-        "hint": "Gossip mill for sharing secrets. (5,4)",
+        "text": "Informal information network (5,4)",
+        "hint": "Gossip mill for sharing secrets (5,4)",
         "clues": [
-            "Heard it through the ___. (5,4)",
-            "Informal channels for whispers. (5,4)",
-            "A network for spreading news quietly. (5,4)"
+            "Heard it through the ___ (5,4)",
+            "Informal channels for whispers (5,4)",
+            "A network for spreading news quietly (5,4)"
         ],
-        "hard_text": "The source of juicy rumors. (5,4)"
+        "hard_text": "The source of juicy rumors (5,4)"
     },
     {
         "word": "HAIRSPLITTING",
-        "text": "Arguing over tiny details. (4,9)",
-        "hint": "Common in legal disputes. (4,9)",
+        "text": "Arguing over tiny details (4,9)",
+        "hint": "Common in legal disputes (4,9)",
         "clues": [
-            "Pedantic nitpicking. (4,9)",
-            "Nitpicking to an extreme level. (4,9)",
-            "Getting caught up in the minutiae. (4,9)"
+            "Pedantic nitpicking (4,9)",
+            "Nitpicking to an extreme level (4,9)",
+            "Getting caught up in the minutiae (4,9)"
         ],
-        "hard_text": "Debating trivial distinctions. (4,9)"
+        "hard_text": "Debating trivial distinctions (4,9)"
     },
     {
         "word": "HEARTWARMING",
-        "text": "Emotionally touching. (5,7)",
-        "hint": "Sweet moment in a movie. (5,7)",
+        "text": "Emotionally touching (5,7)",
+        "hint": "Sweet moment in a movie (5,7)",
         "clues": [
-            "Feel-good story. (5,7)",
-            "A tale that brings a smile inside. (5,7)",
-            "Emotions that brighten a gloomy day. (5,7)"
+            "Feel-good story (5,7)",
+            "A tale that brings a smile inside (5,7)",
+            "Emotions that brighten a gloomy day (5,7)"
         ],
-        "hard_text": "Something that stirs fond feelings. (5,7)"
+        "hard_text": "Something that stirs fond feelings (5,7)"
     },
     {
         "word": "HOUSEWARMING",
-        "text": "New home party. (5,7)",
-        "hint": "A gathering to celebrate moving in. (5,7)",
+        "text": "New home party (5,7)",
+        "hint": "A gathering to celebrate moving in (5,7)",
         "clues": [
-            "Moving in celebration. (5,7)",
+            "Moving in celebration (5,7)",
             "Celebration for a new residence (5,7)",
-            "Celebration for new residents. (5,7)"
+            "Celebration for new residents (5,7)"
         ],
-        "hard_text": "Celebrating a new dwelling with friends. (5,7)"
+        "hard_text": "Celebrating a new dwelling with friends (5,7)"
     },
     {
         "word": "HUMANITARIAN",
@@ -32884,12 +32884,12 @@
     },
     {
         "word": "NIGHTCLUBBING",
-        "text": "Going out dancing. (5,8)",
-        "hint": "Social scene after sunset. (5,8)",
+        "text": "Going out dancing (5,8)",
+        "hint": "Social scene after sunset (5,8)",
         "clues": [
             "Dancing at an after-hours venue (5,8)",
-            "Dancing under neon lights. (5,8)",
-            "After-dark revelry on the dance floor. (5,8)"
+            "Dancing under neon lights (5,8)",
+            "After-dark revelry on the dance floor (5,8)"
         ],
         "hard_text": "After-hours social scene (5,8)"
     },
@@ -32917,45 +32917,45 @@
     },
     {
         "word": "PEACEKEEPING",
-        "text": "Maintaining order. (5,7)",
+        "text": "Maintaining order (5,7)",
         "hint": "Diplomatic role in conflict zones",
         "clues": [
-            "UN soldiers' role. (5,7)",
-            "Maintaining calm in turbulent waters. (5,7)",
-            "Guarding tranquility in chaos. (5,7)"
+            "UN soldiers' role (5,7)",
+            "Maintaining calm in turbulent waters (5,7)",
+            "Guarding tranquility in chaos (5,7)"
         ],
-        "hard_text": "Stabilizing conflict with a gentle hand. (5,7)"
+        "hard_text": "Stabilizing conflict with a gentle hand (5,7)"
     },
     {
         "word": "PLASTERBOARD",
-        "text": "Wall building material. (7,5)",
+        "text": "Wall building material (7,5)",
         "hint": "Material for quick interior walls",
         "clues": [
-            "Drywall. (7,5)",
-            "Walls made from a sandwich. (7,5)",
-            "Sheet that covers a structure's skin. (7,5)"
+            "Drywall (7,5)",
+            "Walls made from a sandwich (7,5)",
+            "Sheet that covers a structure's skin (7,5)"
         ],
         "hard_text": "Lightweight panel for wall construction"
     },
     {
         "word": "POCKETKNIVES",
-        "text": "Folding blade tools. (6,6)",
+        "text": "Folding blade tools (6,6)",
         "hint": "Folding knives carried in pockets (6,6)",
         "clues": [
-            "Swiss Army products. (6,6)",
-            "Foldable friend for outdoor mishaps. (6,6)",
-            "Folding blades that fit in your hand. (6,6)"
+            "Swiss Army products (6,6)",
+            "Foldable friend for outdoor mishaps (6,6)",
+            "Folding blades that fit in your hand (6,6)"
         ],
-        "hard_text": "Compact tools for many little tasks. (6,6)"
+        "hard_text": "Compact tools for many little tasks (6,6)"
     },
     {
         "word": "PRESCHOOLERS",
-        "text": "Children before formal education. (3,9)",
+        "text": "Children before formal education (3,9)",
         "hint": "Tiny tots in early education",
         "clues": [
-            "Nursery age kids. (3,9)",
-            "Youngsters not quite ready for scholars. (3,9)",
-            "Little learners in a playful stage. (3,9)"
+            "Nursery age kids (3,9)",
+            "Youngsters not quite ready for scholars (3,9)",
+            "Little learners in a playful stage (3,9)"
         ],
         "hard_text": "Children in early education (3,9)"
     },
@@ -33086,10 +33086,10 @@
         "hint": "Entrancing audiences with narratives",
         "clues": [
             "Narrative craft",
-            "Weaving tales that captivate audiences. (5,7)",
-            "Art of spinning yarns, old and new. (5,7)"
+            "Weaving tales that captivate audiences (5,7)",
+            "Art of spinning yarns, old and new (5,7)"
         ],
-        "hard_text": "Crafting narratives from imagination. (5,7)"
+        "hard_text": "Crafting narratives from imagination (5,7)"
     },
     {
         "word": "STRENGTHENED",
@@ -33324,23 +33324,23 @@
     },
     {
         "word": "HEARTBREAKING",
-        "text": "Causing overwhelming grief. (5,8)",
+        "text": "Causing overwhelming grief (5,8)",
         "hint": "Often depicted in tragic stories",
         "clues": [
-            "Devastatingly sad. (5,8)",
-            "So sad, it literally tears at you. (5,8)",
-            "A tale that leaves you in shambles. (5,8)"
+            "Devastatingly sad (5,8)",
+            "So sad, it literally tears at you (5,8)",
+            "A tale that leaves you in shambles (5,8)"
         ],
-        "hard_text": "Causing profound emotional pain. (5,8)"
+        "hard_text": "Causing profound emotional pain (5,8)"
     },
     {
         "word": "HORSEWHIPPING",
-        "text": "Beating with a riding crop. (5,8)",
+        "text": "Beating with a riding crop (5,8)",
         "hint": "Seen in historical penal methods",
-        "hard_text": "A discipline method, not for the faint. (5,8)",
+        "hard_text": "A discipline method, not for the faint (5,8)",
         "clues": [
-            "Old-fashioned punishment. (5,8)",
-            "An act that leaves a mark, literally. (5,8)",
+            "Old-fashioned punishment (5,8)",
+            "An act that leaves a mark, literally (5,8)",
             "Striking with an equestrian lash (5,8)"
         ]
     },
@@ -33676,14 +33676,14 @@
     },
     {
         "word": "WHOLEHEARTEDLY",
-        "text": "With complete sincerity. (5,9)",
-        "hint": "With full commitment. (5,9)",
+        "text": "With complete sincerity (5,9)",
+        "hint": "With full commitment (5,9)",
         "clues": [
-            "Without reservation. (5,9)",
-            "With sincere enthusiasm. (5,9)",
-            "In a fully committed way. (5,9)"
+            "Without reservation (5,9)",
+            "With sincere enthusiasm (5,9)",
+            "In a fully committed way (5,9)"
         ],
-        "hard_text": "With utter devotion. (5,9)"
+        "hard_text": "With utter devotion (5,9)"
     },
     {
         "word": "INCONSISTENCIES",
@@ -49457,7 +49457,7 @@
         "clues": [
             "A name that means 'light'",
             "Famous biblical author with a cool name",
-            "Mildness personified, perhaps?"
+            "Third Gospel's traditional author"
         ],
         "hard_text": "Third Gospel of the New Testament"
     },
@@ -50698,7 +50698,7 @@
         "hint": "Appealed earnestly",
         "clues": [
             "Formal promise made",
-            "Sworn commitment, perhaps",
+            "A sworn commitment",
             "Past tense of a serious vow"
         ],
         "hard_text": "Bound by a promise"
@@ -60082,7 +60082,7 @@
             "Low noise, but not quite a cheer",
             "A worker's sound, or a pig's call"
         ],
-        "hard_text": "Seen as noise associated with hard work"
+        "hard_text": "Laborer's low sound"
     },
     {
         "word": "guest",
@@ -68103,7 +68103,7 @@
         "clues": [
             "One of two selections",
             "One or the other of two",
-            "Ambiguity in decision-making."
+            "Ambiguity in decision-making"
         ],
         "hard_text": "One of two choices"
     },
@@ -73945,7 +73945,7 @@
         "clues": [
             "Entirely lacking",
             "Without a trace",
-            "Empty container, perhaps"
+            "Completely empty"
         ],
         "hard_text": "Completely lacking one"
     },
@@ -76650,7 +76650,7 @@
             "At the end of your list",
             "At the end of a sequence"
         ],
-        "hard_text": "In conclusion, perhaps"
+        "hard_text": "To close a list"
     },
     {
         "word": "lately",
@@ -87074,7 +87074,7 @@
         "clues": [
             "Stimulated or prompted action",
             "Caused in a scientific experiment",
-            "Suggested with a little push."
+            "Suggested with a little push"
         ],
         "hard_text": "Triggered by external circumstances?"
     },
@@ -90088,7 +90088,7 @@
         "clues": [
             "Agent of anguish in the shadows?",
             "Master of discomfort in a dark role?",
-            "Executor of harsh lessons, perhaps?"
+            "Agent of cruel punishment"
         ],
         "hard_text": "One who promotes suffering as a skill?"
     },
@@ -102259,7 +102259,7 @@
             "Relating to existence or being",
             "Relating to existence, not fashion"
         ],
-        "hard_text": "Philosophy about being, perhaps?"
+        "hard_text": "Concerned with life's fundamental questions"
     },
     {
         "word": "exoneration",
@@ -104266,7 +104266,7 @@
         "hint": "Electrode where oxidation occurs",
         "hard_text": "The positive end in an electrolytic cell",
         "clues": [
-            "Opposite of cathode in electrochemistry.",
+            "Opposite of cathode in electrochemistry",
             "Where electrons leave a device",
             "Found in batteries or electrolysis"
         ]
@@ -112682,7 +112682,7 @@
         "clues": [
             "In a way that provokes laughter",
             "As if telling a joke gone right",
-            "Laughter-inducing, perhaps excessively so"
+            "In a manner that sparks laughter"
         ]
     },
     {
@@ -120887,7 +120887,7 @@
         "clues": [
             "Dissenting views may be considered this",
             "Challenging the establishment's beliefs",
-            "A rebel in the realm of faith."
+            "A rebel in the realm of faith"
         ]
     },
     {
@@ -123887,7 +123887,7 @@
         "word": "RELIGIOUS",
         "text": "Pertaining to faith",
         "hint": "devout",
-        "hard_text": "Devotion that might lead to a crusade.",
+        "hard_text": "Devotion that might lead to a crusade",
         "clues": [
             "Connected to spirituality",
             "Zealous follower's trait",
@@ -132217,7 +132217,7 @@
         "clues": [
             "The answer when one number is divided",
             "A mathematician's favorite result",
-            "Division's product, but not quite."
+            "Division's product, but not quite"
         ]
     },
     {
@@ -151758,7 +151758,7 @@
         "hard_text": "Suggesting future success ahead",
         "clues": [
             "Indicative of good things to come",
-            "A sign of brighter days.",
+            "A sign of brighter days",
             "Full of hopeful prospects"
         ]
     },
@@ -153958,7 +153958,7 @@
         "hard_text": "Rates of motion",
         "clues": [
             "Rates of travel",
-            "Rates of travel.",
+            "Measures of motion",
             "Paces of movement"
         ]
     },
@@ -158599,9 +158599,9 @@
         "hint": "Actor Ben of \"Shadow and Bone\"",
         "hard_text": "Actor Ben of \"Shadow and Bone\"",
         "clues": [
-            "Name seen on many a bookstore sign.",
-            "Retailer with a focus on literature.",
-            "Famous for its literary offerings."
+            "Name seen on many a bookstore sign",
+            "Retailer with a focus on literature",
+            "Famous for its literary offerings"
         ]
     },
     {
@@ -170786,7 +170786,7 @@
         "clues": [
             "Extinct reptiles of the Mesozoic era",
             "Ancient creatures with diverse forms",
-            "Fossilized giants of a bygone age."
+            "Fossilized giants of a bygone age"
         ]
     },
     {
@@ -175163,7 +175163,7 @@
         "hard_text": "Arcs in a rhythmic motion",
         "clues": [
             "Playground seats suspended by chains",
-            "Changes direction with ease.",
+            "Changes direction with ease",
             "Moves like a pendulum"
         ]
     },
@@ -183213,7 +183213,7 @@
         "hard_text": "Citizens of a vibrant North American country",
         "clues": [
             "Inhabitants of the land of tacos",
-            "Diverse culture from south of the border.",
+            "Diverse culture from south of the border",
             "Citizens with rich traditions and heritage"
         ]
     },
@@ -188282,7 +188282,7 @@
         "hint": "asserting",
         "hard_text": "Declaring without backing evidence",
         "clues": [
-            "Stating something as fact, perhaps falsely",
+            "Making an unproven accusation",
             "Putting forward an unverified accusation",
             "Making a statement of guilt"
         ]
@@ -192417,7 +192417,7 @@
         "hint": "Not brave under pressure",
         "hard_text": "Fearful to confront challenges",
         "clues": [
-            "Avoids danger at all costs.",
+            "Avoids danger at all costs",
             "Timid or fearful",
             "Lacking bravery in moments of threat"
         ]
@@ -193330,7 +193330,7 @@
         "hint": "Overlooks past details",
         "hard_text": "Puts aside memories unceremoniously",
         "clues": [
-            "Letting go of past knowledge.",
+            "Letting go of past knowledge",
             "Loses track of information",
             "Neglects to recall"
         ]
@@ -195070,7 +195070,7 @@
         "clues": [
             "End-of-life care facility",
             "Supportive environment for the dying",
-            "Compassionate care for patients in need."
+            "Compassionate care for patients in need"
         ]
     },
     {
@@ -195596,7 +195596,7 @@
         "hint": "Geometric term for a number's product with itself",
         "hard_text": "Formed into a geometric shape",
         "clues": [
-            "Two-dimensional shape with equal sides.",
+            "Two-dimensional shape with equal sides",
             "Raised to the power of two",
             "Made into a four-sided figure"
         ]
@@ -197203,7 +197203,7 @@
         "hard_text": "Causing someone to feel ashamed publicly",
         "clues": [
             "Bringing disgrace to someone",
-            "Making someone feel inferior.",
+            "Making someone feel inferior",
             "Publicly criticizing behavior"
         ]
     },
@@ -203681,7 +203681,7 @@
         "clues": [
             "Suspended without support",
             "Hanging by a thread",
-            "Unfinished, like an open invitation."
+            "Unfinished, like an open invitation"
         ]
     },
     {
@@ -204811,7 +204811,7 @@
         "hint": "forgiven",
         "hard_text": "Let off the hook",
         "clues": [
-            "Given a reprieve.",
+            "Given a reprieve",
             "Released from responsibility",
             "Granted a pardon"
         ]
@@ -204823,7 +204823,7 @@
         "hard_text": "Visual acuity",
         "clues": [
             "Capacity to perceive visually",
-            "Range of vision.",
+            "Range of vision",
             "Ability to detect light"
         ]
     },
@@ -204845,7 +204845,7 @@
         "hard_text": "Not the upper limb",
         "clues": [
             "Section of the arm",
-            "Area between elbow and wrist.",
+            "Area between elbow and wrist",
             "Part of the arm used for lifting"
         ]
     },
@@ -207086,7 +207086,7 @@
         "hint": "Cetacean hunting",
         "hard_text": "Hunting of cetaceans",
         "clues": [
-            "Oceanic pursuit.",
+            "Oceanic pursuit",
             "Chasing giants of the sea",
             "Commercial cetacean hunt"
         ]
@@ -207196,7 +207196,7 @@
         "hint": "Clumsily",
         "hard_text": "Uncomfortably out of place",
         "clues": [
-            "Gracefully challenged.",
+            "Gracefully challenged",
             "In an uneasy way",
             "With social discomfort"
         ]
@@ -208892,7 +208892,7 @@
         "clues": [
             "Emotionally affected by tragedy",
             "Having one's spirits dampened",
-            "Experiencing a deep sense of loss."
+            "Experiencing a deep sense of loss"
         ]
     },
     {
@@ -215610,7 +215610,7 @@
         "clues": [
             "Motion resembling a dance of chaos",
             "Circular movement that captivates the eye",
-            "Like a tornado but less destructive."
+            "Like a tornado but less destructive"
         ]
     },
     {
@@ -215852,7 +215852,7 @@
         "clues": [
             "Commonplace saying that lacks freshness",
             "A tired expression often repeated",
-            "Often used in stories to evoke familiarity."
+            "Often used in stories to evoke familiarity"
         ]
     },
     {
@@ -219920,7 +219920,7 @@
         "clues": [
             "Opposing views collided",
             "Disagreement caused a stir",
-            "Put two sides in opposition."
+            "Put two sides in opposition"
         ]
     },
     {
@@ -219973,7 +219973,7 @@
         "hint": "Preparation of dishes",
         "hard_text": "Skill in the kitchen",
         "clues": [
-            "Where culinary skills shine.",
+            "Where culinary skills shine",
             "Craft of preparing meals",
             "Culinary mastery in practice"
         ]
@@ -221216,7 +221216,7 @@
         "hint": "Sealing",
         "hard_text": "Filling a void in a structure",
         "clues": [
-            "Often needed for water damage.",
+            "Often needed for water damage",
             "Can refer to promoting a product",
             "Filling gaps, both literally and figuratively"
         ]
@@ -228409,7 +228409,7 @@
         "hard_text": "First light of comprehension",
         "clues": [
             "Became clear, as an idea",
-            "Awakening to new awareness.",
+            "Awakening to new awareness",
             "Came to be realized"
         ]
     },
@@ -231104,7 +231104,7 @@
         "hard_text": "Hustling with merchandise in tow",
         "clues": [
             "Vending wares from place to place",
-            "Transporting items for sale, perhaps illegally",
+            "Selling goods unlawfully",
             "Engaging in low-key sales efforts"
         ]
     },
@@ -233809,7 +233809,7 @@
         "hint": "shared secrets privately",
         "hard_text": "Whispered secrets in a trusted ear",
         "clues": [
-            "Entrusted with private information.",
+            "Entrusted with private information",
             "Spoke freely about personal matters"
         ]
     },
@@ -234235,7 +234235,7 @@
         "word": "ONSCREEN",
         "text": "Displayed on a monitor",
         "hint": "visible display",
-        "hard_text": "Visible activity in a digital realm.",
+        "hard_text": "Visible activity in a digital realm",
         "clues": [
             "Visible on a display",
             "In view while streaming",
@@ -235635,7 +235635,7 @@
         "hard_text": "Advocates for a historic land",
         "clues": [
             "Proponents of Jewish statehood",
-            "Political movement for a homeland.",
+            "Political movement for a homeland",
             "Focused on Israel's establishment"
         ]
     },
@@ -244185,7 +244185,7 @@
         "hint": "Special effects in movies (abbr)",
         "hard_text": "Digital visuals in films (abbr)",
         "clues": [
-            "Film animation",
+            "Film animation (abbr)",
             "Digitally created movie imagery (abbr)",
             "Pixel-made movie magic (abbr)"
         ]
