@@ -29,7 +29,7 @@ struct LaunchSplashViewTests {
         let iPadFrame = LaunchSplashLogoSizing.frame(userInterfaceIdiom: .pad)
 
         #expect(phoneFrame == 96)
-        #expect(iPadFrame == phoneFrame * 2)
+        #expect(abs(iPadFrame - (phoneFrame * 2)) < 0.001)
     }
 
     @Test("Settings tip waits for splash completion and home navigation bar")

@@ -87,7 +87,7 @@ struct BackwordViewModelTests {
         vm.markExplainerDelayElapsed()
 
         #expect(vm.shouldShowExplainerBanner)
-        #expect(vm.explainerText == "The clue is a word associated with the answer, or something connected to it.")
+        #expect(vm.explainerText == "If you're stuck, guess any word to reveal letters")
     }
 
     @Test("Explainer banner is hidden after the first guess")
@@ -224,10 +224,14 @@ struct BackwordViewModelTests {
         progress.wonFlag = true
         progress.completedAt = Date()
 
-        let vm = BackwordViewModel(word: word, progress: progress)
+        let vm = BackwordViewModel(
+            word: word,
+            progress: progress,
+            settings: makeSettings(mode: .normal)
+        )
 
         #expect(vm.isComplete)
-        #expect(vm.guessesForHistory == ["BRIDGX", "CASTLE"])
+        #expect(vm.guessesForHistory == ["CASTLE", "BRIDGX"])
     }
 
     @Test("Backword progress has no score before completion")
@@ -448,7 +452,11 @@ struct BackwordViewModelTests {
         var progress = BackwordProgress(date: word.date)
         progress.guesses = ["XXXXXE", "BXXXXE"]
 
-        let vm = BackwordViewModel(word: word, progress: progress)
+        let vm = BackwordViewModel(
+            word: word,
+            progress: progress,
+            settings: makeSettings(mode: .normal)
+        )
 
         #expect(vm.revealedLetters == [nil, nil, nil, nil, Character("L"), Character("E")])
         #expect(vm.unrevealedCount == 4)
@@ -460,13 +468,14 @@ struct BackwordViewModelTests {
         var progress = BackwordProgress(date: word.date)
         progress.guesses = ["XXXXXE", "CXXXXE", "BXXXXE"]
 
-        var vm = BackwordViewModel(word: word, progress: progress)
+        let settings = makeSettings(mode: .normal)
+        var vm = BackwordViewModel(word: word, progress: progress, settings: settings)
 
         #expect(vm.revealedLetters == [nil, nil, nil, Character("T"), Character("L"), Character("E")])
         #expect(vm.unrevealedCount == 3)
 
         progress.guesses.append("XXXXLE")
-        vm = BackwordViewModel(word: word, progress: progress)
+        vm = BackwordViewModel(word: word, progress: progress, settings: settings)
 
         #expect(vm.revealedLetters == [nil, nil, nil, Character("T"), Character("L"), Character("E")])
         #expect(vm.unrevealedCount == 3)

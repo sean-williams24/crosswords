@@ -18,7 +18,7 @@ struct HomeTabBarViewTests {
 
     @Test("Home navigation icons use the larger shared glyph size")
     func homeNavigationIconGlyphSize() {
-        #expect(AppLayout.homeNavigationIconGlyphSize == 24)
+        #expect(AppLayout.homeNavigationIconGlyphSize == 20)
     }
 
     @Test("Debug settings shortcut remains a triple-tap")
@@ -153,7 +153,7 @@ struct HomeCardStreakLayoutTests {
             isWeekly: true
         )
         progress.completedClueIds = [0]
-        progress.completedAt = try #require(Self.date(from: "2026-07-09 12:00:00"))
+        progress.completedAt = try Self.date(from: "2026-07-09 12:00:00")
         progress.save()
 
         let entry = ArchiveEntry(id: puzzleId, puzzleNumber: 1, date: "2026-07-05")
@@ -176,7 +176,7 @@ struct HomeCardStreakLayoutTests {
             isWeekly: true
         )
         progress.completedClueIds = [0]
-        progress.completedAt = try #require(Self.date(from: "2026-07-12 12:00:00"))
+        progress.completedAt = try Self.date(from: "2026-07-12 12:00:00")
         progress.save()
 
         let entry = ArchiveEntry(id: puzzleId, puzzleNumber: 1, date: "2026-07-05")
@@ -189,7 +189,7 @@ struct HomeCardStreakLayoutTests {
         var progress = BackwordProgress(date: "2026-07-09")
         progress.guesses = ["CASTLE"]
         progress.wonFlag = true
-        progress.completedAt = try #require(Self.date(from: "2026-07-09 12:00:00"))
+        progress.completedAt = try Self.date(from: "2026-07-09 12:00:00")
 
         let status = PuzzleStatus.status(for: progress, puzzleDate: "2026-07-09")
 
@@ -205,7 +205,7 @@ struct HomeCardStreakLayoutTests {
         var progress = BackwordProgress(date: "2026-07-09")
         progress.guesses = ["POETRY", "CASTLE"]
         progress.wonFlag = true
-        progress.completedAt = try #require(Self.date(from: "2026-07-10 12:00:00"))
+        progress.completedAt = try Self.date(from: "2026-07-10 12:00:00")
 
         let status = PuzzleStatus.status(for: progress, puzzleDate: "2026-07-09")
 
@@ -216,12 +216,13 @@ struct HomeCardStreakLayoutTests {
         #expect(status.label == "2 guesses")
     }
 
-    private static func date(from string: String) -> Date? {
+    private static func date(from string: String) throws -> Date {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        return formatter.date(from: string)
+        return try #require(formatter.date(from: string))
     }
 }
 

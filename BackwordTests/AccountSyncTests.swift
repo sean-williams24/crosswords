@@ -9,16 +9,12 @@ struct AccountSyncTests {
     @Test("Signed-in progress paths are isolated from the guest path")
     func progressNamespacesAreIsolated() {
         let base = URL(fileURLWithPath: "/tmp/backword-progress")
-        defer { ProgressStorageNamespace.activate(accountID: nil) }
 
-        ProgressStorageNamespace.activate(accountID: nil)
-        #expect(ProgressStorageNamespace.directory(base: base) == base)
+        #expect(ProgressStorageNamespace.directory(base: base, accountID: nil) == base)
 
-        ProgressStorageNamespace.activate(accountID: "account-a")
-        #expect(ProgressStorageNamespace.directory(base: base).path == "/tmp/backword-progress/users/account-a")
+        #expect(ProgressStorageNamespace.directory(base: base, accountID: "account-a").path == "/tmp/backword-progress/users/account-a")
 
-        ProgressStorageNamespace.activate(accountID: "account-b")
-        #expect(ProgressStorageNamespace.directory(base: base).path == "/tmp/backword-progress/users/account-b")
+        #expect(ProgressStorageNamespace.directory(base: base, accountID: "account-b").path == "/tmp/backword-progress/users/account-b")
     }
 
     @Test("Interrupted guest migration remains owned by the first account")
@@ -295,12 +291,13 @@ struct AccountSyncTests {
 
     @Test("First account sync captures legacy guest release-day crossword points")
     func capturesLegacyGuestReleaseDayScore() {
+        let date = ContentReleaseCalendar().dailyDateString
         var rating = OverallRating()
-        rating.upsertDailyCrossword(score: 3, date: "2026-08-09")
+        rating.upsertDailyCrossword(score: 3, date: date)
         var progress = UserProgress(
             puzzleId: "daily-9",
             size: 9,
-            puzzleDate: "2026-08-09",
+            puzzleDate: date,
             totalClues: 21,
             isWeekly: false
         )
@@ -329,19 +326,20 @@ struct AccountSyncTests {
 
     @Test("Existing account progress converts its saved aggregate score only once")
     func capturesExistingAccountLegacyScoreOnlyWhenSnapshotIsEmpty() {
+        let date = ContentReleaseCalendar().dailyDateString
         var rating = OverallRating()
-        rating.upsertDailyCrossword(score: 2, date: "2026-08-12")
+        rating.upsertDailyCrossword(score: 2, date: date)
         var progress = UserProgress(
             puzzleId: "daily-12",
             size: 9,
-            puzzleDate: "2026-08-12",
+            puzzleDate: date,
             totalClues: 22,
             isWeekly: false
         )
 
         let captured = AccountProgressMigration.captureGuestReleaseDateScores([progress], rating: rating)
         progress.releaseDateScore = captured[0].releaseDateScore
-        rating.upsertDailyCrossword(score: 5, date: "2026-08-12")
+        rating.upsertDailyCrossword(score: 5, date: date)
         let preserved = AccountProgressMigration.captureGuestReleaseDateScores([progress], rating: rating)
 
         #expect(preserved[0].releaseDateScore == 2)
@@ -349,12 +347,13 @@ struct AccountSyncTests {
 
     @Test("Legacy weekly points migrate without changing the saved grid")
     func capturesLegacyWeeklyScoreWithoutChangingProgress() {
+        let date = ContentReleaseCalendar().weeklyDateString
         var rating = OverallRating()
-        rating.upsertWeeklyCrossword(score: 4, date: "2026-08-09")
+        rating.upsertWeeklyCrossword(score: 4, date: date)
         var progress = UserProgress(
             puzzleId: "weekly-9",
             size: 13,
-            puzzleDate: "2026-08-09",
+            puzzleDate: date,
             totalClues: 35,
             isWeekly: true
         )

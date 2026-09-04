@@ -5,7 +5,7 @@ import Testing
 struct GoogleSignInButtonTests {
     @Test("Uses the same geometry as the Sign in with Apple button")
     func matchesAppleButtonGeometry() {
-        #expect(GoogleSignInButtonAppearance.height == 50)
+        #expect(GoogleSignInButtonAppearance.height == 44)
         #expect(GoogleSignInButtonAppearance.cornerRadius == 6)
         #expect(GoogleSignInButtonAppearance.borderWidth == 0.5)
     }

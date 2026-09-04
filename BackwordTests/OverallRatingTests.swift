@@ -465,47 +465,53 @@ struct OverallRatingServiceScoreWindowTests {
 
     @Test("Daily crossword can score only on its puzzle date")
     @MainActor
-    func dailyCrosswordScoresOnlyOnPuzzleDate() {
+    func dailyCrosswordScoresOnlyOnPuzzleDate() throws {
         let service = OverallRatingService(rating: OverallRating())
-        let releaseCalendar = makeReleaseCalendar("2026-07-04")
+        let releaseCalendar = ContentReleaseCalendar()
+        let date = releaseCalendar.dailyDateString
+        let previousDate = try #require(releaseCalendar.dailyDateString(offsetByDays: -1))
 
         service.recordDailyCrossword(
             completedClues: 10,
             totalClues: 10,
-            date: "2026-07-04",
+            date: date,
             releaseCalendar: releaseCalendar,
             shouldSave: false
         )
         service.recordDailyCrossword(
             completedClues: 10,
             totalClues: 10,
-            date: "2026-07-03",
+            date: previousDate,
             releaseCalendar: releaseCalendar,
             shouldSave: false
         )
 
         #expect(service.rating.dailyScores.count == 1)
-        #expect(service.rating.dailyScores[0].date == "2026-07-04")
-        #expect(service.rating.dailyScores[0].dailyCrossword == 5)
+        let score = try #require(service.rating.dailyScores.first)
+        #expect(score.date == date)
+        #expect(score.dailyCrossword == 5)
     }
 
     @Test("Late archive daily crossword completion does not improve an existing score")
     @MainActor
-    func lateArchiveDailyCompletionDoesNotImproveExistingScore() {
+    func lateArchiveDailyCompletionDoesNotImproveExistingScore() throws {
+        let releaseCalendar = ContentReleaseCalendar()
+        let archiveDate = try #require(releaseCalendar.dailyDateString(offsetByDays: -1))
         var rating = OverallRating()
-        rating.upsertDailyCrossword(score: 2, date: "2026-07-04")
+        rating.upsertDailyCrossword(score: 2, date: archiveDate)
         let service = OverallRatingService(rating: rating)
 
         service.recordDailyCrossword(
             completedClues: 10,
             totalClues: 10,
-            date: "2026-07-04",
-            releaseCalendar: makeReleaseCalendar("2026-07-05"),
+            date: archiveDate,
+            releaseCalendar: releaseCalendar,
             shouldSave: false
         )
 
         #expect(service.rating.dailyScores.count == 1)
-        #expect(service.rating.dailyScores[0].dailyCrossword == 2)
+        let score = try #require(service.rating.dailyScores.first)
+        #expect(score.dailyCrossword == 2)
     }
 
     @Test("Archive give-up retains the crossword release-date score during rating rebuild")
@@ -537,69 +543,87 @@ struct OverallRatingServiceScoreWindowTests {
 
     @Test("Rollover scoring can use the pre-midnight calendar")
     @MainActor
-    func rolloverScoringUsesPreMidnightCalendar() {
+    func rolloverScoringUsesPreMidnightCalendar() throws {
         let service = OverallRatingService(rating: OverallRating())
+        let releaseCalendar = ContentReleaseCalendar()
+        let date = releaseCalendar.dailyDateString
 
         service.recordDailyCrossword(
             completedClues: 5,
             totalClues: 10,
-            date: "2026-07-04",
-            releaseCalendar: makeReleaseCalendar("2026-07-04"),
+            date: date,
+            releaseCalendar: releaseCalendar,
             shouldSave: false
         )
 
         #expect(service.rating.dailyScores.count == 1)
-        #expect(service.rating.dailyScores[0].date == "2026-07-04")
-        #expect(service.rating.dailyScores[0].dailyCrossword == 3)
+        let score = try #require(service.rating.dailyScores.first)
+        #expect(score.date == date)
+        #expect(score.dailyCrossword == 3)
     }
 
     @Test("Weekly crossword uses the active weekly release date")
     @MainActor
-    func weeklyCrosswordUsesActiveWeeklyReleaseDate() {
+    func weeklyCrosswordUsesActiveWeeklyReleaseDate() throws {
         let service = OverallRatingService(rating: OverallRating())
-        let releaseCalendar = makeReleaseCalendar("2026-07-09")
+        let releaseCalendar = ContentReleaseCalendar()
+        let date = releaseCalendar.weeklyDateString
+        let previousWeek = try #require(releaseCalendar.calendar.date(
+            byAdding: .weekOfYear,
+            value: -1,
+            to: releaseCalendar.now
+        ))
+        let previousDate = ContentReleaseCalendar(
+            now: previousWeek,
+            calendar: releaseCalendar.calendar
+        ).weeklyDateString
 
         service.recordWeeklyCrossword(
             completedClues: 20,
             totalClues: 20,
-            date: "2026-07-05",
+            date: date,
             releaseCalendar: releaseCalendar,
             shouldSave: false
         )
         service.recordWeeklyCrossword(
             completedClues: 20,
             totalClues: 20,
-            date: "2026-06-28",
+            date: previousDate,
             releaseCalendar: releaseCalendar,
             shouldSave: false
         )
 
         #expect(service.rating.dailyScores.count == 1)
-        #expect(service.rating.dailyScores[0].date == "2026-07-05")
-        #expect(service.rating.dailyScores[0].weeklyCrossword == 5)
+        let score = try #require(service.rating.dailyScores.first)
+        #expect(score.date == date)
+        #expect(score.weeklyCrossword == 5)
     }
 
     @Test("Backword can score only on its release date")
     @MainActor
-    func backwordScoresOnlyOnReleaseDate() {
+    func backwordScoresOnlyOnReleaseDate() throws {
         let service = OverallRatingService(rating: OverallRating())
+        let releaseCalendar = ContentReleaseCalendar()
+        let date = releaseCalendar.dailyDateString
+        let previousDate = try #require(releaseCalendar.dailyDateString(offsetByDays: -1))
 
         service.recordBackword(
             guessCount: 1,
-            date: "2026-07-04",
-            releaseCalendar: makeReleaseCalendar("2026-07-04"),
+            date: date,
+            releaseCalendar: releaseCalendar,
             shouldSave: false
         )
         service.recordBackword(
             guessCount: 1,
-            date: "2026-07-03",
-            releaseCalendar: makeReleaseCalendar("2026-07-04"),
+            date: previousDate,
+            releaseCalendar: releaseCalendar,
             shouldSave: false
         )
 
         #expect(service.rating.dailyScores.count == 1)
-        #expect(service.rating.dailyScores[0].date == "2026-07-04")
-        #expect(service.rating.dailyScores[0].backword == 5)
+        let score = try #require(service.rating.dailyScores.first)
+        #expect(score.date == date)
+        #expect(score.backword == 5)
     }
 
     @Test("Failed Backword publishes zero rolling points")
@@ -622,29 +646,22 @@ struct OverallRatingServiceScoreWindowTests {
 
     @Test("Late archive Backword completion does not improve an existing score")
     @MainActor
-    func lateArchiveBackwordCompletionDoesNotImproveExistingScore() {
+    func lateArchiveBackwordCompletionDoesNotImproveExistingScore() throws {
+        let releaseCalendar = ContentReleaseCalendar()
+        let archiveDate = try #require(releaseCalendar.dailyDateString(offsetByDays: -1))
         var rating = OverallRating()
-        rating.upsertBackword(score: 2, date: "2026-07-04")
+        rating.upsertBackword(score: 2, date: archiveDate)
         let service = OverallRatingService(rating: rating)
 
         service.recordBackword(
             guessCount: 1,
-            date: "2026-07-04",
-            releaseCalendar: makeReleaseCalendar("2026-07-05"),
+            date: archiveDate,
+            releaseCalendar: releaseCalendar,
             shouldSave: false
         )
 
         #expect(service.rating.dailyScores.count == 1)
-        #expect(service.rating.dailyScores[0].backword == 2)
-    }
-
-    private func makeReleaseCalendar(_ dateString: String) -> ContentReleaseCalendar {
-        var formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let date = formatter.date(from: "\(dateString) 12:00:00")!
-        return ContentReleaseCalendar(now: date, timeZone: TimeZone(secondsFromGMT: 0)!)
+        let score = try #require(service.rating.dailyScores.first)
+        #expect(score.backword == 2)
     }
 }

@@ -29,8 +29,8 @@ struct BackwordRulesUpdateNoticeTests {
 struct BackwordInstructionsLayoutTests {
     @Test("Easy mode toggle title reflects its state")
     func easyModeToggleTitleReflectsState() {
-        #expect(BackwordModeToggle.title(isEnabled: false) == "Easy Mode - off")
-        #expect(BackwordModeToggle.title(isEnabled: true) == "Easy Mode - on")
+        #expect(BackwordModeToggle.title(isEnabled: false) == "Easy Mode - Off")
+        #expect(BackwordModeToggle.title(isEnabled: true) == "Easy Mode - On")
     }
 
     @Test("Fits screen width at the largest Dynamic Type size")

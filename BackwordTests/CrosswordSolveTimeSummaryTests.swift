@@ -189,6 +189,9 @@ struct WeeklyCrosswordStatsHistoryTests {
         )
         solved.startedAt = try date("2026-07-12T10:00:00Z")
         solved.completedAt = try date("2026-07-12T10:05:00Z")
+        // Scores outside the rolling Overall Rating window come from the
+        // durable release-date snapshot saved with progress.
+        solved.releaseDateScore = 5
 
         let rating = OverallRating(dailyScores: [
             DailyScore(

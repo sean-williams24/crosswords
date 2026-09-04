@@ -36,6 +36,10 @@ enum ProgressStorageNamespace {
     }
 
     static func directory(base: URL) -> URL {
+        directory(base: base, accountID: accountID)
+    }
+
+    static func directory(base: URL, accountID: String?) -> URL {
         guard let accountID else { return base }
         return base
             .appendingPathComponent("users", isDirectory: true)
