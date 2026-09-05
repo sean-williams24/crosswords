@@ -9,7 +9,7 @@ const testAuth = vi.hoisted(() => ({
   value: {
     ready: true,
     user: { id: "player-1", email: "player@example.com" } as { id: string; email: string } | null,
-    entitlement: { isPro: true, expiresAt: null } as { isPro: boolean; expiresAt: string | null } | null,
+    entitlement: { isPro: true, expiresAt: null, provider: "apple" } as { isPro: boolean; expiresAt: string | null; provider?: "apple" | "stripe" } | null,
     entitlementWarning: null as string | null,
     refreshEntitlement: vi.fn().mockResolvedValue(undefined),
     signOut: vi.fn().mockResolvedValue(undefined),
@@ -46,7 +46,7 @@ describe("PlayerProfilePage", () => {
     testAuth.value = {
       ready: true,
       user: { id: "player-1", email: "player@example.com" },
-      entitlement: { isPro: true, expiresAt: null },
+      entitlement: { isPro: true, expiresAt: null, provider: "apple" },
       entitlementWarning: null,
       refreshEntitlement: vi.fn().mockResolvedValue(undefined),
       signOut: vi.fn().mockResolvedValue(undefined),
@@ -69,6 +69,7 @@ describe("PlayerProfilePage", () => {
     expect(screen.getByText("player@example.com")).toBeInTheDocument();
     const proStatus = screen.getByText("is active for this account").closest("p");
     expect(proStatus?.querySelector(".player-profile__pro-logo")).toHaveAttribute("src", "/brand/backword-pro.png");
+    expect(screen.queryByRole("link", { name: /Manage web subscription through Link/ })).not.toBeInTheDocument();
     expect(screen.getByText("0 / 150 pts")).toBeInTheDocument();
     await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(3));
     expect(screen.getByText("Weekly")).toBeInTheDocument();
@@ -96,6 +97,14 @@ describe("PlayerProfilePage", () => {
     expect(screen.getByRole("dialog", { name: "How scoring works" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Close scoring details" }));
     expect(screen.queryByRole("dialog", { name: "How scoring works" })).not.toBeInTheDocument();
+  });
+
+  it("links active Stripe subscribers to Link to manage their web subscription", () => {
+    testAuth.value.entitlement = { isPro: true, expiresAt: null, provider: "stripe" };
+    renderPage();
+
+    expect(screen.getByRole("link", { name: /Manage web subscription through Link/ })).toHaveAttribute("href", "https://link.com");
+    expect(screen.getByRole("link", { name: /Manage web subscription through Link/ })).toHaveAttribute("target", "_blank");
   });
 
   it("signs out from the profile and returns Home", async () => {
@@ -183,6 +192,7 @@ describe("PlayerProfilePage", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
     expect(styles).toMatch(/\.player-profile__pro-logo\s*\{[^}]*\bmargin-right:\s*-14px/);
+    expect(styles).toMatch(/\.player-profile__pro-logo\s*\{[^}]*\bmargin-left:\s*-14px/);
   });
 
   it("gives the delete-account control the same rounded corners as sign out", () => {

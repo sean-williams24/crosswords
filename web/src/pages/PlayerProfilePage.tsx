@@ -152,6 +152,7 @@ export function PlayerProfilePage() {
                     <small>{isSyncing ? "Syncing your games…" : "Progress and stats are synced — select to sync again"}</small>
                   </button>
                   <p className={isPro ? "is-active" : ""}><img alt="" className="player-profile__pro-logo" src="/brand/backword-pro.png" /><span>{isPro ? entitlement?.cancelAtPeriodEnd ? "is active until the end of this billing period" : "is active for this account" : "No account-linked Pro subscription"}</span></p>
+                  {isPro && entitlement?.provider === "stripe" ? <a className="player-profile__subscription-management" href="https://link.com" rel="noreferrer" target="_blank">Manage web subscription through Link <span aria-hidden="true">↗</span></a> : null}
                   {syncError || entitlementWarning ? <p className="player-profile__error" role="alert">{syncError ?? entitlementWarning}</p> : null}
                 </section>
                 <ProfileActions className="player-profile__account-controls--desktop" isDeleting={isDeleting} isSigningOut={isSigningOut} onDelete={removeAccount} onSignOut={handleSignOut} />
