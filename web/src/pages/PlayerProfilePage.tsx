@@ -10,6 +10,7 @@ import { buildPlayerProfileRating, formatProfileDate } from "../features/profile
 import { Footer } from "../components/Footer";
 import { accountActionErrorMessage } from "../features/auth/authErrorPresentation";
 import { AccountDeletionConfirmationModal } from "../features/auth/AccountDeletionConfirmationModal";
+import type { AccountDeletionSummary } from "../features/auth/accountDeletionSummary";
 
 const ratingLevels = ["Novice", "Scribe", "Linguist", "Grandmaster", "Virtuoso"] as const;
 
@@ -27,6 +28,7 @@ export function PlayerProfilePage() {
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [accountDeleted, setAccountDeleted] = useState(false);
+  const [deletionSummary, setDeletionSummary] = useState<AccountDeletionSummary | null>(null);
   const [isFinishingDeletion, setIsFinishingDeletion] = useState(false);
   const [deletionFinishError, setDeletionFinishError] = useState<string | null>(null);
   const userId = user?.id;
@@ -89,11 +91,11 @@ export function PlayerProfilePage() {
   }
 
   async function removeAccount() {
-    if (!window.confirm("Delete your Backword account and synced progress? Apple subscriptions are not cancelled. A web subscription will stop renewing, and Pro access ends when this account is deleted.")) return;
+    if (!window.confirm("Delete your Backword account and synced progress? If you subscribed through Apple, that subscription is not cancelled. If you subscribed on the web, it will stop renewing. Pro access ends when this account is deleted.")) return;
     setIsDeleting(true);
     setSyncError(null);
     try {
-      await deleteAccount();
+      setDeletionSummary(await deleteAccount());
       setAccountDeleted(true);
     } catch (error) {
       console.error("Account deletion failed", error);
@@ -180,7 +182,7 @@ export function PlayerProfilePage() {
         </div>
       </section>
       <Footer />
-      {accountDeleted ? <AccountDeletionConfirmationModal error={deletionFinishError} isFinishing={isFinishingDeletion} onContinue={() => void finishDeletion()} /> : null}
+      {accountDeleted && deletionSummary ? <AccountDeletionConfirmationModal error={deletionFinishError} isFinishing={isFinishingDeletion} onContinue={() => void finishDeletion()} summary={deletionSummary} /> : null}
     </main>
   );
 }

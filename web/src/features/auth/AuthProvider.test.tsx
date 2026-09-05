@@ -170,11 +170,17 @@ describe("AuthProvider", () => {
     );
 
     await screen.findByText("player@example.com");
+    supabaseMock.client.functions.invoke.mockResolvedValue({
+      data: { deletion_summary: { has_apple_purchase: false, has_stripe_subscription: true } },
+      error: null
+    });
+    let deletionSummary: Awaited<ReturnType<ReturnType<typeof useAuth>["deleteAccount"]>> | undefined;
     await act(async () => {
-      await auth?.deleteAccount();
+      deletionSummary = await auth?.deleteAccount();
     });
 
     expect(supabaseMock.client.functions.invoke).toHaveBeenCalledWith("delete-account");
+    expect(deletionSummary).toEqual({ hasApplePurchase: false, hasStripeSubscription: true });
     expect(supabaseMock.auth.signOut).not.toHaveBeenCalled();
     expect(screen.getByText("player@example.com")).toBeInTheDocument();
 

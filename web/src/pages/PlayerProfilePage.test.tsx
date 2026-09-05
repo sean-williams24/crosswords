@@ -13,7 +13,7 @@ const testAuth = vi.hoisted(() => ({
     entitlementWarning: null as string | null,
     refreshEntitlement: vi.fn().mockResolvedValue(undefined),
     signOut: vi.fn().mockResolvedValue(undefined),
-    deleteAccount: vi.fn().mockResolvedValue(undefined),
+    deleteAccount: vi.fn().mockResolvedValue({ hasApplePurchase: true, hasStripeSubscription: false }),
     finishAccountDeletion: vi.fn().mockResolvedValue(undefined)
   }
 }));
@@ -50,7 +50,7 @@ describe("PlayerProfilePage", () => {
       entitlementWarning: null,
       refreshEntitlement: vi.fn().mockResolvedValue(undefined),
       signOut: vi.fn().mockResolvedValue(undefined),
-      deleteAccount: vi.fn().mockResolvedValue(undefined),
+      deleteAccount: vi.fn().mockResolvedValue({ hasApplePurchase: true, hasStripeSubscription: false }),
       finishAccountDeletion: vi.fn().mockImplementation(async () => { testAuth.value.user = null; })
     };
     sync.fetchCloudProgress.mockResolvedValue([]);
@@ -107,7 +107,7 @@ describe("PlayerProfilePage", () => {
     expect(await screen.findByText("Home")).toBeInTheDocument();
   });
 
-  it("explains completed account deletion, then returns the player to sign in", async () => {
+  it("shows Apple-specific deletion information only for an Apple purchase, then returns the player to sign in", async () => {
     const user = userEvent.setup();
     vi.spyOn(window, "confirm").mockReturnValue(true);
     renderPage();
@@ -117,13 +117,29 @@ describe("PlayerProfilePage", () => {
     const confirmation = await screen.findByRole("dialog", { name: "Your Backword account has been deleted" });
     expect(confirmation).toHaveTextContent("Deleted from Backword");
     expect(confirmation).toHaveTextContent("Not deleted");
-    expect(confirmation).toHaveTextContent("Your Apple subscription");
+    expect(confirmation).toHaveTextContent("An Apple subscription was not cancelled");
+    expect(confirmation).toHaveTextContent("Your Apple purchase record");
+    expect(confirmation).not.toHaveTextContent("Stripe retains legally required billing records");
     expect(testAuth.value.finishAccountDeletion).not.toHaveBeenCalled();
 
     await user.click(within(confirmation).getByRole("button", { name: "Continue to sign in" }));
 
     expect(testAuth.value.finishAccountDeletion).toHaveBeenCalledOnce();
     expect(await screen.findByText("Sign in")).toBeInTheDocument();
+  });
+
+  it("shows Stripe-specific deletion information without implying an Apple purchase", async () => {
+    const user = userEvent.setup();
+    vi.spyOn(window, "confirm").mockReturnValue(true);
+    testAuth.value.deleteAccount.mockResolvedValue({ hasApplePurchase: false, hasStripeSubscription: true });
+    renderPage();
+
+    await user.click(screen.getAllByRole("button", { name: "Delete Account" })[0]);
+
+    const confirmation = await screen.findByRole("dialog", { name: "Your Backword account has been deleted" });
+    expect(confirmation).toHaveTextContent("Stripe retains legally required billing records");
+    expect(confirmation).not.toHaveTextContent("Apple subscription");
+    expect(confirmation).not.toHaveTextContent("Apple purchase record");
   });
 
   it("redirects guests to sign in with a return destination", () => {

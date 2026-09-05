@@ -4,6 +4,7 @@ import { supabase, supabaseConfigurationError } from "../../lib/supabase";
 import { flushSyncQueue } from "../sync/progressSync";
 import { canMigrateGuestProgress } from "../sync/guestMigration";
 import { entitlementWarning as entitlementWarningMessage } from "./authErrorPresentation";
+import { accountDeletionSummaryFromResponse, type AccountDeletionSummary } from "./accountDeletionSummary";
 
 type ProEntitlement = {
   isPro: boolean;
@@ -28,7 +29,7 @@ type AuthContextValue = {
   signIn: (provider: Extract<Provider, "apple">, returnTo: string) => Promise<void>;
   signInWithGoogle: (idToken: string, returnTo: string) => Promise<void>;
   signOut: () => Promise<void>;
-  deleteAccount: () => Promise<void>;
+  deleteAccount: () => Promise<AccountDeletionSummary>;
   finishAccountDeletion: () => Promise<void>;
   accountDeletionNotice: boolean;
   acknowledgeAccountDeletion: () => void;
@@ -241,11 +242,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async deleteAccount() {
       if (!supabase) throw new Error(supabaseConfigurationError);
       setIsDeletingAccount(true);
-      const { error: deleteError } = await supabase.functions.invoke("delete-account");
+      const { data, error: deleteError } = await supabase.functions.invoke("delete-account");
       if (deleteError) {
         setIsDeletingAccount(false);
         throw deleteError;
       }
+      return accountDeletionSummaryFromResponse(data);
     },
     async finishAccountDeletion() {
       if (!supabase) return;
