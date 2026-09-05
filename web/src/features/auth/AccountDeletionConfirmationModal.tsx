@@ -5,7 +5,9 @@ type AccountDeletionConfirmationModalProps = {
   isFinishing: boolean;
   onContinue: () => void;
   error: string | null;
-  summary: AccountDeletionSummary;
+  /// `null` is used when another device deleted the account, so this browser
+  /// cannot safely determine which billing providers were involved.
+  summary: AccountDeletionSummary | null;
 };
 
 export function AccountDeletionConfirmationModal({
@@ -34,16 +36,17 @@ export function AccountDeletionConfirmationModal({
               <li>Your Backword account and its Backword sign-in connection.</li>
               <li>Your cloud-synced Backword and crossword progress.</li>
               <li>Your rating, stats, and score history derived from that progress.</li>
-              {summary.hasApplePurchase || summary.hasStripeSubscription ? <li>Links between this account and eligible purchase entitlements.</li> : null}
+              {summary?.hasApplePurchase || summary?.hasStripeSubscription ? <li>Links between this account and eligible purchase entitlements.</li> : null}
             </ul>
           </section>
 
           <section aria-labelledby="account-deleted-retained-title">
             <h3 id="account-deleted-retained-title">Not deleted</h3>
             <ul>
-              {summary.hasApplePurchase ? <li>An Apple subscription was not cancelled. If it is still active, it remains active until you cancel it with Apple.</li> : null}
-              {summary.hasStripeSubscription ? <li>Stripe retains legally required billing records. Your Backword web subscription is set not to renew and can no longer unlock this deleted account.</li> : null}
-              {summary.hasApplePurchase ? <li>Your Apple purchase record, which can be claimed by a new Backword account.</li> : null}
+              {summary?.hasApplePurchase ? <li>An Apple subscription was not cancelled. If it is still active, it remains active until you cancel it with Apple.</li> : null}
+              {summary?.hasStripeSubscription ? <li>Stripe retains legally required billing records. Your Backword web subscription is set not to renew and can no longer unlock this deleted account.</li> : null}
+              {summary?.hasApplePurchase ? <li>Your Apple purchase record, which can be claimed by a new Backword account.</li> : null}
+              {summary === null ? <li>If you subscribed through Apple, that subscription was not cancelled. If you subscribed on the web, it was set not to renew.</li> : null}
               <li>Game data stored locally on your devices or browsers. Remove that directly from each device if needed.</li>
             </ul>
           </section>

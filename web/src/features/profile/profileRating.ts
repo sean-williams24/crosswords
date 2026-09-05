@@ -77,7 +77,7 @@ function backwordScoreMap(records: BackwordProfileProgress[], dates: Set<string>
 
 export function buildPlayerProfileRating(
   records: {
-    backword: ProfileProgress[];
+    backword: BackwordProfileProgress[];
     dailyCrossword: ProfileProgress[];
     weeklyCrossword: ProfileProgress[];
   },

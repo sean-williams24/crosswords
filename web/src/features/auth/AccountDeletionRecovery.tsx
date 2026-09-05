@@ -26,5 +26,6 @@ export function AccountDeletionRecovery() {
       acknowledgeAccountDeletion();
       navigate("/sign-in", { replace: true });
     }}
+    summary={null}
   />;
 }

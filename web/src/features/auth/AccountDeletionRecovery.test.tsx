@@ -36,6 +36,7 @@ describe("AccountDeletionRecovery", () => {
     );
 
     expect(screen.getByRole("dialog", { name: "Your Backword account has been deleted" })).toBeInTheDocument();
+    expect(screen.getByText(/If you subscribed through Apple/)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Continue to sign in" }));
 
     expect(auth.acknowledgeAccountDeletion).toHaveBeenCalledOnce();

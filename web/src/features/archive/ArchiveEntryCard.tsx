@@ -3,7 +3,9 @@ import { backwordDashboardStatus } from "../home/backwordStatus";
 import { crosswordDashboardStatus, weeklyCrosswordDashboardStatus } from "../crossword/engine";
 import { createCrosswordStorage } from "../crossword/storage";
 import type { CrosswordPuzzle } from "../crossword/types";
+import type { DashboardStatus } from "../home/backwordStatus";
 import type { BackwordWord } from "../backword/types";
+import type { CrosswordDashboardStatus } from "../crossword/types";
 
 export type ArchiveGameType = "backword" | "daily" | "weekly";
 
@@ -27,6 +29,12 @@ function destination(gameType: ArchiveGameType, date: string) {
     case "daily": return `/crossword/${date}`;
     case "weekly": return `/weekly-crossword/${date}`;
   }
+}
+
+function isCrosswordStatus(
+  status: DashboardStatus | CrosswordDashboardStatus
+): status is CrosswordDashboardStatus {
+  return "score" in status;
 }
 
 export function ArchiveEntryCard({ gameType, item, userId }: ArchiveEntryCardProps) {
@@ -54,7 +62,7 @@ export function ArchiveEntryCard({ gameType, item, userId }: ArchiveEntryCardPro
       </div>
       <div className="archive-entry-card__status">
         <span className={`home-status home-status--${status.tone}`}>{status.label}</span>
-        {"score" in status && status.score !== null ? <strong>{status.score}/5</strong> : null}
+        {isCrosswordStatus(status) && status.score !== null ? <strong>{status.score}/5</strong> : null}
       </div>
       {progressFraction > 0 && progressFraction < 1 ? (
         <span aria-label={`${Math.round(progressFraction * 100)}% complete`} className="archive-entry-card__progress"><i style={{ width: `${progressFraction * 100}%` }} /></span>
