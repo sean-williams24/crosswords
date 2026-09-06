@@ -64,6 +64,7 @@ export function ProPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { entitlement, entitlementReady, ready, refreshEntitlement, user } = useAuth();
+  const { track } = useAnalytics();
   const [selectedPlan, setSelectedPlan] = useState<ProPlan>("annual");
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [isCheckoutStarting, setIsCheckoutStarting] = useState(false);
