@@ -11,7 +11,6 @@ import { createCrosswordStorage } from "../features/crossword/storage";
 import { DailyGameCard, HomeGameScore } from "../features/home/DailyGameCard";
 import { WordOfTheDayCard, type WordOfTheDayLoadState } from "../features/wotd/components/WordOfTheDayCard";
 import { Footer } from "../components/Footer";
-import { AppStoreBadge } from "../components/AppStoreBadge";
 import { AuthButton } from "../features/auth/AuthButton";
 import { useAuth } from "../features/auth/AuthProvider";
 import { HomeDashboardLoadingCard } from "../features/home/HomeDashboardLoadingCard";
@@ -63,7 +62,6 @@ export function HomeDashboardPage() {
         </Link>
         <div className="home-dashboard__actions">
           <AuthButton className="auth-button--menu-upgrade" />
-          <AppStoreBadge placement="header" />
         </div>
         <HomeProfileRatingLink fraction={profileRating.fraction} tier={profileRating.tier} />
       </header>
