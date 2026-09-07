@@ -108,6 +108,12 @@ class GiveawayAuditTests(unittest.TestCase):
         entries[0]["text"] = "Speedy"
         self.assertTrue(any("does not exactly cover" in error for error in certification_errors(entries, certificate)))
 
+    def test_checked_in_certification_matches_current_word_bank(self) -> None:
+        entries = audit.load_entries()
+        certification = audit.load_json(audit.CERTIFICATION_PATH)
+
+        self.assertEqual(certification_errors(entries, certification), [])
+
     def test_missing_certification_fails_closed_without_a_traceback(self) -> None:
         entries = [entry("RAPID", "Fast", hard_text="Moving swiftly", clues=["Quick"])]
         with tempfile.TemporaryDirectory() as directory:
