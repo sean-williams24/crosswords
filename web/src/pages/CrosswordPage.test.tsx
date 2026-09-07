@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { CrosswordPage } from "./CrosswordPage";
 
 const repositoryDates = vi.hoisted(() => ({ values: [] as string[] }));
@@ -35,6 +37,7 @@ describe("CrosswordPage", () => {
     render(<MemoryRouter><CrosswordPage /></MemoryRouter>);
 
     expect(screen.getByRole("heading", { name: "QUICK CROSSWORD" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "QUICK CROSSWORD" })).toHaveClass("cw-header-title");
     const actions = screen.getByRole("navigation", { name: "Crossword actions" });
     const hintAction = screen.getByRole("button", { name: "Show hint" });
     const cluesAction = screen.getByRole("button", { name: "Show clue list" });
@@ -65,5 +68,14 @@ describe("CrosswordPage", () => {
 
     await screen.findByRole("grid", { name: "Crossword grid" });
     expect(repositoryDates.values).toContain("2026-08-05");
+  });
+
+  it("uses iOS-aligned compact spacing for the mobile puzzle", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/\.cw-clue-bar\s*\{[^}]*grid-template-columns:\s*30px 1fr;[^}]*gap:\s*12px;[^}]*padding:\s*10px 16px;/);
+    expect(styles).toMatch(/\.cw-page:not\(\.cw-page--weekly\) \.cw-header-title\s*\{\s*display:\s*none;/);
+    expect(styles).toMatch(/\.cw-page:not\(\.cw-page--weekly\) \.cw-game-main\s*\{\s*padding-top:\s*4px;\s*padding-inline:\s*8px;/);
+    expect(styles).toMatch(/\.cw-page:not\(\.cw-page--weekly\) \.cw-grid\s*\{\s*width:\s*min\(100%, clamp\(245px, calc\(100svh - 320px\), 430px\)\);/);
   });
 });

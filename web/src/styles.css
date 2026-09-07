@@ -610,7 +610,7 @@ a {
 .cw-clues-action__icon { display: block; width: 20px; height: 20px; fill: currentColor; }
 .cw-clues-action__label { display: none; }
 .cw-puzzle-date { width: min(100%, 430px); margin: 0; color: #8d8d92; font-size: 12px; font-weight: 700; letter-spacing: .13em; text-align: center; }
-.cw-clue-bar { display: grid; width: min(100%, 430px); min-height: 58px; grid-template-columns: 46px 1fr; align-items: center; gap: 8px; padding: 9px 14px; border: 0; border-radius: 12px; color: #eee; background: #1a1a1a; font: inherit; text-align: left; cursor: pointer; touch-action: pan-y; }
+.cw-clue-bar { display: grid; width: min(100%, 430px); grid-template-columns: 30px 1fr; align-items: center; gap: 12px; padding: 10px 16px; border: 0; border-radius: 12px; color: #eee; background: #1a1a1a; font: inherit; text-align: left; cursor: pointer; touch-action: pan-y; }
 .cw-clue-bar:hover, .cw-clue-bar:focus-visible { background: #222; outline: 1px solid rgb(51 119 177 / 65%); }
 .cw-clue-bar > span { color: #5fa4dc; font-family: "Outfit", sans-serif; font-size: 12px; font-weight: 700; }
 .cw-clue-bar > strong { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; font-weight: 300; line-height: 1.25; }
@@ -833,6 +833,23 @@ a {
 
 @media (max-width: 699px) {
   .bw-clue { margin-bottom: 8px; }
+
+  /* The daily puzzle is already identified by its date, so its mobile header
+     keeps the actions but drops the duplicate title. The reclaimed height lets
+     the grid use the same near-edge treatment as the iOS game. */
+  .cw-page:not(.cw-page--weekly) .bw-game-header--offset {
+    min-height: 56px;
+    padding-top: max(8px, env(safe-area-inset-top));
+  }
+  .cw-page:not(.cw-page--weekly) .cw-header-title { display: none; }
+  .cw-page:not(.cw-page--weekly) .bw-game-actions--top { transform: none; }
+  .cw-page:not(.cw-page--weekly) .cw-game-main {
+    padding-top: 4px;
+    padding-inline: 8px;
+  }
+  .cw-page:not(.cw-page--weekly) .cw-grid {
+    width: min(100%, clamp(245px, calc(100svh - 320px), 430px));
+  }
 }
 
 @media (max-width: 410px) {
