@@ -38,6 +38,7 @@ export function SignInPage() {
       console.error("Apple sign-in failed", signInError);
       track(signInFailed());
       setSignInError(signInErrorAlert(signInError, "apple"));
+    } finally {
       setPending(null);
     }
   }

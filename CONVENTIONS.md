@@ -172,6 +172,12 @@ background, so slow network work never leaves the provider button in a loading
 state. A repeated auth event for the active account must not restart guest
 migration.
 
+On the web, initiating Apple OAuth and completing authentication are distinct:
+the launch call can settle without the browser navigating away (for example,
+when the customer cancels the provider flow). The Apple button's pending state
+therefore always clears when that launch call settles; callback navigation and
+authentication state remain responsible for a successful sign-in.
+
 Sign in with Apple uses the native UIKit-branded button with an app-owned
 authorization controller, rather than SwiftUI's wrapper. This prevents a
 cancelled system flow from leaving that wrapper's in-progress indicator on the

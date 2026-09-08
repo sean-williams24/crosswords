@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -81,5 +81,17 @@ describe("SignInPage authentication state", () => {
 
     expect(screen.getByRole("alert")).toHaveTextContent("We couldn't complete Google sign-in.");
     expect(screen.getByRole("alert")).not.toHaveTextContent("invalid JWT audience");
+  });
+
+  it("re-enables Apple sign-in when its authorization handoff finishes without navigating", async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter initialEntries={["/sign-in"]}><Routes>
+      <Route path="/sign-in" element={<SignInPage />} />
+    </Routes></MemoryRouter>);
+
+    await user.click(screen.getByRole("button", { name: "Continue with Apple" }));
+
+    expect(testAuth.value.signIn).toHaveBeenCalledWith("apple", "/");
+    await waitFor(() => expect(screen.getByRole("button", { name: "Continue with Apple" })).toBeEnabled());
   });
 });
