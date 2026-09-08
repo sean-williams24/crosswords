@@ -202,6 +202,19 @@ describe("PlayerProfilePage", () => {
     expect(styles).toMatch(/\.player-profile__delete-account\s*\{[^}]*\bborder-radius:\s*9px/);
   });
 
+  it("tightens the mobile profile header beneath its title", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/@media \(max-width: 680px\)\s*\{[\s\S]*?\.home-dashboard__header\.player-profile__header\s*\{[^}]*\bmin-height:\s*92px/);
+  });
+
+  it("uses Archive typography for the profile title and account eyebrow", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/\.player-profile__header-title\s*\{[^}]*\bfont-size:\s*clamp\(28px, 4vw, 42px\)[^}]*\bletter-spacing:\s*-.045em/);
+    expect(styles).toMatch(/\.player-profile__heading > p\s*\{[^}]*\bcolor:\s*#d6be87[^}]*\bfont-size:\s*11px[^}]*\bletter-spacing:\s*\.22em/);
+  });
+
   it("shows bullets in both account-deletion summary lists", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 

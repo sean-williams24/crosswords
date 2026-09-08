@@ -1561,10 +1561,10 @@ body {
 .player-profile { --bw-accent: #3377b1; --bw-rating-scribe: #6699e6; --bw-rating-linguist: #3380f2; --bw-rating-grandmaster: #1a59d9; --bw-rating-virtuoso: #f2cc4d; --bw-rating-virtuoso-deep: #d98c26; display: flex; min-height: 100svh; flex-direction: column; color: #eee; background: #111; }
 .player-profile--loading { display: grid; place-items: center; color: #b8b8b8; }
 .player-profile__header { grid-template-columns: 1fr; justify-items: center; flex: 0 0 auto; }
-.player-profile__header-title { margin: 0; color: #d6be87; font-size: clamp(14px, 3.8vw, 18px); font-weight: 700; letter-spacing: .13em; white-space: nowrap; }
+.player-profile__header-title { margin: 0 0 8px; color: #d6be87; font-size: clamp(28px, 4vw, 42px); letter-spacing: -.045em; white-space: nowrap; }
 .player-profile__content { width: min(100% - 40px, 1120px); margin: 0 auto; padding: 8px 0 72px; }
 .player-profile__heading { margin-bottom: 30px; }
-.player-profile__heading > p,
+.player-profile__heading > p { margin: 0; color: #d6be87; font-size: 11px; font-weight: 700; letter-spacing: .22em; }
 .player-profile__breakdown h2 { margin: 0; color: #3377b1; font-size: 12px; font-weight: 700; letter-spacing: .18em; }
 .player-profile__layout { display: grid; gap: 28px; }
 .player-profile__column { display: flex; min-width: 0; flex-direction: column; gap: 20px; }
@@ -1679,6 +1679,7 @@ body {
   .auth-page { padding-top: 101px; }
   .home-dashboard__header { min-height: 154px; }
   .home-dashboard__header.archive-page__header { min-height: 112px; }
+  .home-dashboard__header.player-profile__header { min-height: 92px; }
   .home-dashboard__header .bw-logo-lockup { height: 58px; }
   .home-dashboard__actions { top: max(12px, env(safe-area-inset-top)); right: 12px; gap: 6px; }
   .home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px; padding: 7px 0; font-size: 14px; }
