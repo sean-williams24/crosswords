@@ -277,6 +277,12 @@ keeps the game destinations prominent and places Privacy and Terms in a
 secondary group, so players can navigate without leaving the immersive game
 surface for marketing-page chrome.
 
+### Browser navigation
+
+Client-side navigation resets the window to the top when the pathname changes.
+Query-only changes keep the current viewport because they update the state of
+the current page rather than load a different one.
+
 ### Browser player profile
 
 The signed-in browser account surface is `/player-profile`, matching the iOS
