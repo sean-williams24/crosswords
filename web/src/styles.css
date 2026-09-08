@@ -834,21 +834,24 @@ a {
 @media (max-width: 699px) {
   .bw-clue { margin-bottom: 8px; }
 
-  /* The daily puzzle is already identified by its date, so its mobile header
+  /* Crosswords are already identified by their dates, so the mobile header
      keeps the actions but drops the duplicate title. The reclaimed height lets
      the grid use the same near-edge treatment as the iOS game. */
-  .cw-page:not(.cw-page--weekly) .bw-game-header--offset {
+  .cw-page .bw-game-header--offset {
     min-height: 56px;
     padding-top: max(8px, env(safe-area-inset-top));
   }
-  .cw-page:not(.cw-page--weekly) .cw-header-title { display: none; }
-  .cw-page:not(.cw-page--weekly) .bw-game-actions--top { transform: none; }
-  .cw-page:not(.cw-page--weekly) .cw-game-main {
+  .cw-page .cw-header-title { display: none; }
+  .cw-page .bw-game-actions--top { transform: none; }
+  .cw-page .cw-game-main {
     padding-top: 4px;
     padding-inline: 8px;
   }
   .cw-page:not(.cw-page--weekly) .cw-grid {
     width: min(100%, clamp(245px, calc(100svh - 320px), 430px));
+  }
+  .cw-page--weekly .cw-grid--weekly {
+    width: min(100%, clamp(260px, calc(100svh - 320px), 500px));
   }
 }
 

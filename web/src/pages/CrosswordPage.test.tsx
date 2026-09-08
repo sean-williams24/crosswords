@@ -74,8 +74,9 @@ describe("CrosswordPage", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
     expect(styles).toMatch(/\.cw-clue-bar\s*\{[^}]*grid-template-columns:\s*30px 1fr;[^}]*gap:\s*12px;[^}]*padding:\s*10px 16px;/);
-    expect(styles).toMatch(/\.cw-page:not\(\.cw-page--weekly\) \.cw-header-title\s*\{\s*display:\s*none;/);
-    expect(styles).toMatch(/\.cw-page:not\(\.cw-page--weekly\) \.cw-game-main\s*\{\s*padding-top:\s*4px;\s*padding-inline:\s*8px;/);
+    expect(styles).toMatch(/\.cw-page \.cw-header-title\s*\{\s*display:\s*none;/);
+    expect(styles).toMatch(/\.cw-page \.cw-game-main\s*\{\s*padding-top:\s*4px;\s*padding-inline:\s*8px;/);
     expect(styles).toMatch(/\.cw-page:not\(\.cw-page--weekly\) \.cw-grid\s*\{\s*width:\s*min\(100%, clamp\(245px, calc\(100svh - 320px\), 430px\)\);/);
+    expect(styles).toMatch(/\.cw-page--weekly \.cw-grid--weekly\s*\{\s*width:\s*min\(100%, clamp\(260px, calc\(100svh - 320px\), 500px\)\);/);
   });
 });
