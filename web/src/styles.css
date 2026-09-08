@@ -958,6 +958,7 @@ body {
   background: #111;
 }
 .archive-page > footer { margin-top: auto; }
+.home-dashboard__header.archive-page__header { min-height: 106px; }
 .archive-page__content { width: min(100% - 40px, 1120px); margin: 0 auto; padding: 8px 0 72px; }
 .archive-page__heading { margin-bottom: 30px; }
 .archive-page__heading > p,
@@ -969,7 +970,7 @@ body {
   font-weight: 700;
   letter-spacing: .22em;
 }
-.archive-page__heading h1 { margin: 8px 0 0; color: #d6be87; font-size: clamp(28px, 4vw, 42px); letter-spacing: -.045em; }
+.archive-page__heading h1 { margin: 0 0 8px; color: #d6be87; font-size: clamp(28px, 4vw, 42px); letter-spacing: -.045em; }
 .archive-layout { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 28px; align-items: start; }
 .archive-sidebar,
 .archive-results {
@@ -1677,6 +1678,7 @@ body {
   }
   .auth-page { padding-top: 101px; }
   .home-dashboard__header { min-height: 154px; }
+  .home-dashboard__header.archive-page__header { min-height: 112px; }
   .home-dashboard__header .bw-logo-lockup { height: 58px; }
   .home-dashboard__actions { top: max(12px, env(safe-area-inset-top)); right: 12px; gap: 6px; }
   .home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px; padding: 7px 0; font-size: 14px; }

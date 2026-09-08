@@ -151,7 +151,7 @@ function ArchiveContent({ entitlement, user }: Pick<ReturnType<typeof useAuth>, 
         <div className="home-dashboard__actions"><AuthButton className="auth-button--menu-upgrade" /></div>
       </header>
       <main className="archive-page__content">
-        <div className="archive-page__heading"><p>PLAY PAST GAMES</p><h1>Archive</h1></div>
+        <div className="archive-page__heading"><h1>Archive</h1><p>PLAY PAST GAMES</p></div>
         <div className="archive-layout">
           <aside className="archive-sidebar">
             <ArchiveTabs activeType={activeType} onSelect={selectType} />

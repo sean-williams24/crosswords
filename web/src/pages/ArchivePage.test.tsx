@@ -65,6 +65,15 @@ describe("ArchivePage", () => {
     expect(screen.getAllByRole("button", { name: "Backword" })[0]).toHaveAttribute("aria-pressed", "true");
   });
 
+  it("places the archive label after the page title at every viewport size", async () => {
+    render(<MemoryRouter><ArchivePage /></MemoryRouter>);
+
+    await screen.findByRole("link", { name: /New/i });
+
+    const heading = screen.getByRole("heading", { name: "Archive", level: 1 });
+    expect(heading.nextElementSibling).toHaveTextContent("PLAY PAST GAMES");
+  });
+
   it("switches games and loads the selected crossword archive", async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><ArchivePage /></MemoryRouter>);
