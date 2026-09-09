@@ -1679,6 +1679,7 @@ body {
   .auth-page { padding-top: 101px; }
   .home-dashboard__header { min-height: 154px; }
   .home-dashboard__header.archive-page__header { min-height: 112px; }
+  .home-dashboard__header.pro-page__header { min-height: 100px; }
   .home-dashboard__header.player-profile__header { min-height: 92px; }
   .home-dashboard__header .bw-logo-lockup { height: 58px; }
   .home-dashboard__actions { top: max(12px, env(safe-area-inset-top)); right: 12px; gap: 6px; }
@@ -1740,6 +1741,7 @@ body {
 
 @media (min-width: 681px) and (max-width: 1100px) {
   .home-dashboard__header { min-height: 180px; }
+  .home-dashboard__header.pro-page__header { min-height: 100px; }
   .home-dashboard__header > .home-profile-rating-link { top: 118px; right: auto; left: 50%; transform: translateX(-50%); }
 }
 
