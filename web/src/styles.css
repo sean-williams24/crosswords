@@ -1539,7 +1539,6 @@ body {
 .auth-apple-button:disabled { opacity: .62; cursor: wait; }
 .auth-google-button { display: flex; width: 100%; min-height: 50px; align-items: center; justify-content: center; }
 .auth-google-button__identity { width: min(100%, 400px); }
-.auth-google-button__identity iframe { display: block; max-width: 100%; }
 .auth-google-button--disabled { opacity: .62; cursor: wait; }
 .auth-google-button--disabled .auth-google-button__identity { pointer-events: none; }
 .auth-google-button--unavailable { padding: 0 16px; border: 1px solid #747775; border-radius: var(--auth-sign-in-corner-radius); color: #b8b8b8; font: 500 14px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-align: center; }
