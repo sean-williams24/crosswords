@@ -39,7 +39,8 @@ describe("Google Identity", () => {
     expect(onCredential).toHaveBeenCalledWith("google-id-token");
     expect(identity.initialize).toHaveBeenCalledWith(expect.objectContaining({
       client_id: "web-client-id",
-      auto_select: false
+      auto_select: false,
+      use_fedcm_for_button: true
     }));
     expect(identity.renderButton).toHaveBeenCalledWith(parent, expect.objectContaining({
       theme: "filled_black",

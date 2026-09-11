@@ -1539,12 +1539,13 @@ body {
 .auth-apple-button:disabled { opacity: .62; cursor: wait; }
 .auth-google-button { position: relative; display: block; width: 100%; height: 50px; padding: 0; overflow: hidden; border: 1px solid #747775; border-radius: var(--auth-sign-in-corner-radius); background: #131314; }
 .auth-google-button > img { display: block; width: 225px; height: 50px; margin: 0 auto; clip-path: inset(3px); }
-.auth-google-button__identity { position: absolute; inset: 0; opacity: 0; transform: scaleX(var(--auth-google-button-scale-x, 1)); transform-origin: left center; }
+.auth-google-button__identity { position: absolute; z-index: 1; inset: 0; opacity: 0; cursor: pointer; transform: scaleX(var(--auth-google-button-scale-x, 1)); transform-origin: left center; }
 .auth-google-button__identity iframe { display: block; height: 50px !important; }
 .auth-google-button:hover:not(.auth-google-button--disabled) { filter: brightness(1.08); }
 .auth-google-button:focus-within { outline: 2px solid #79b7eb; outline-offset: 3px; }
 .auth-google-button--disabled { opacity: .62; cursor: wait; }
 .auth-google-button--disabled .auth-google-button__identity { pointer-events: none; }
+.auth-google-button--unavailable { display: flex; padding: 0 16px; align-items: center; justify-content: center; color: #b8b8b8; font: 500 14px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; text-align: center; }
 .auth-provider--danger { border-color: #9e5454; color: #ffb9b9; background: #3a2528; }
 .auth-provider--danger:hover,
 .auth-provider--danger:focus-visible { border-color: #ff9e9e; background: #4a292d; outline-color: #ff9e9e; }

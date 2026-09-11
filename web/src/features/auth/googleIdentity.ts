@@ -11,6 +11,7 @@ export type GoogleIdentity = {
         client_id: string;
         callback: (response: GoogleCredentialResponse) => void;
         auto_select: false;
+        use_fedcm_for_button: true;
       }) => void;
       renderButton: (parent: HTMLElement, options: {
         type: "standard";
@@ -96,6 +97,7 @@ export async function renderGoogleSignInButton(
   google.accounts.id.initialize({
     client_id: clientID,
     auto_select: false,
+    use_fedcm_for_button: true,
     callback: ({ credential }) => {
       if (credential) {
         handlers.onCredential(credential);

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { renderGoogleSignInButton } from "./googleIdentity";
 
 type GoogleSignInButtonProps = {
@@ -9,11 +9,37 @@ type GoogleSignInButtonProps = {
 
 export function GoogleSignInButton({ disabled, onCredential, onError }: GoogleSignInButtonProps) {
   const container = useRef<HTMLDivElement>(null);
+  const handlers = useRef({ onCredential, onError });
+  const [unavailable, setUnavailable] = useState(false);
+  handlers.current = { onCredential, onError };
 
   useEffect(() => {
-    if (!container.current) return;
-    void renderGoogleSignInButton(container.current, { onCredential, onError }).catch(onError);
-  }, [onCredential, onError]);
+    const parent = container.current;
+    if (!parent) return;
+    let active = true;
+
+    void renderGoogleSignInButton(parent, {
+      onCredential: (idToken) => handlers.current.onCredential(idToken),
+      onError: (error) => handlers.current.onError(error)
+    }).catch((error) => {
+      if (!active) return;
+      setUnavailable(true);
+      handlers.current.onError(error);
+    });
+
+    return () => {
+      active = false;
+      parent.replaceChildren();
+    };
+  }, []);
+
+  if (unavailable) {
+    return (
+      <div className="auth-google-button auth-google-button--unavailable" role="status">
+        Google sign-in is unavailable. Reload to try again.
+      </div>
+    );
+  }
 
   return (
     <div
@@ -23,7 +49,6 @@ export function GoogleSignInButton({ disabled, onCredential, onError }: GoogleSi
     >
       <img alt="" src="/brand/continue-with-google.png" />
       <div
-        aria-hidden="true"
         className="auth-google-button__identity"
         ref={container}
       />

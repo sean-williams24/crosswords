@@ -200,6 +200,13 @@ asset. Both use platform-native Google account flows and exchange Google ID
 tokens directly with Supabase for session creation and progress sync. This
 avoids exposing a Supabase project hostname during Google sign-in.
 
+The web initialises Google Identity once for each mounted sign-in control and
+keeps its current React handlers in refs, rather than reinitialising Google on
+every render. Its browser-managed FedCM button flow is explicitly enabled, and
+the focusable Google iframe is never hidden from assistive technology. If Google
+Identity cannot load, the branded control is replaced with visible retry copy
+and the existing safe sign-in error alert.
+
 The signed-in account surface is the Overall Rating sheet. Home and Settings
 send signed-in users there directly; a successful sign-in dismisses its
 sign-in sheet before that sheet is presented. When sign-in starts from
