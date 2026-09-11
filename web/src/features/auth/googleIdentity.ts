@@ -28,6 +28,7 @@ export type GoogleIdentity = {
 
 type GoogleIdentityOptions = {
   clientID?: string;
+  isActive?: () => boolean;
   load?: () => Promise<GoogleIdentity>;
 };
 
@@ -37,6 +38,10 @@ type GoogleIdentityHandlers = {
 };
 
 let loadingGoogleIdentity: Promise<GoogleIdentity> | null = null;
+const initialisedGoogleIdentities = new WeakMap<GoogleIdentity, {
+  clientID: string;
+  handlers: GoogleIdentityHandlers;
+}>();
 
 export class GoogleIdentityConfigurationError extends Error {
   constructor(message = "Google Sign-In needs VITE_GOOGLE_WEB_CLIENT_ID before it can be used.") {
@@ -83,6 +88,29 @@ function loadGoogleIdentity() {
   return loader;
 }
 
+function initialiseGoogleIdentity(google: GoogleIdentity, clientID: string, handlers: GoogleIdentityHandlers) {
+  const existing = initialisedGoogleIdentities.get(google);
+  if (existing) {
+    existing.handlers = handlers;
+    return;
+  }
+
+  const initialised = { clientID, handlers };
+  google.accounts.id.initialize({
+    client_id: clientID,
+    auto_select: false,
+    use_fedcm_for_button: true,
+    callback: ({ credential }) => {
+      if (credential) {
+        initialised.handlers.onCredential(credential);
+      } else {
+        initialised.handlers.onError(new Error("Google Sign-In did not return an identity token. Please try again."));
+      }
+    }
+  });
+  initialisedGoogleIdentities.set(google, initialised);
+}
+
 /// Renders Google's own sign-in button. Its browser-native account chooser
 /// returns an ID token which Supabase can exchange without an OAuth redirect.
 export async function renderGoogleSignInButton(
@@ -94,22 +122,11 @@ export async function renderGoogleSignInButton(
   if (!clientID) throw new GoogleIdentityConfigurationError();
 
   const google = await (options.load ?? loadGoogleIdentity)();
-  google.accounts.id.initialize({
-    client_id: clientID,
-    auto_select: false,
-    use_fedcm_for_button: true,
-    callback: ({ credential }) => {
-      if (credential) {
-        handlers.onCredential(credential);
-      } else {
-        handlers.onError(new Error("Google Sign-In did not return an identity token. Please try again."));
-      }
-    }
-  });
+  if (options.isActive && !options.isActive()) return;
+  initialiseGoogleIdentity(google, clientID, handlers);
   parent.replaceChildren();
   const availableWidth = Math.floor(parent.clientWidth) || 375;
   const buttonWidth = Math.min(400, availableWidth);
-  parent.style.setProperty("--auth-google-button-scale-x", String(availableWidth / buttonWidth));
   google.accounts.id.renderButton(parent, {
     type: "standard",
     theme: "filled_black",

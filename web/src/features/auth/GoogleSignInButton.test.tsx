@@ -35,6 +35,7 @@ describe("GoogleSignInButton", () => {
     expect(firstCredentialHandler).not.toHaveBeenCalled();
     expect(latestCredentialHandler).toHaveBeenCalledWith("google-id-token");
     expect(container.querySelector(".auth-google-button__identity")).not.toHaveAttribute("aria-hidden");
+    expect(container.querySelector(".auth-google-button > img")).toBeNull();
   });
 
   it("shows a clear unavailable state when Google Identity cannot load", async () => {

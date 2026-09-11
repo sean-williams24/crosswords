@@ -21,7 +21,7 @@ export function GoogleSignInButton({ disabled, onCredential, onError }: GoogleSi
     void renderGoogleSignInButton(parent, {
       onCredential: (idToken) => handlers.current.onCredential(idToken),
       onError: (error) => handlers.current.onError(error)
-    }).catch((error) => {
+    }, { isActive: () => active }).catch((error) => {
       if (!active) return;
       setUnavailable(true);
       handlers.current.onError(error);
@@ -47,11 +47,7 @@ export function GoogleSignInButton({ disabled, onCredential, onError }: GoogleSi
       aria-label="Continue with Google"
       className={`auth-google-button${disabled ? " auth-google-button--disabled" : ""}`}
     >
-      <img alt="" src="/brand/continue-with-google.png" />
-      <div
-        className="auth-google-button__identity"
-        ref={container}
-      />
+      <div className="auth-google-button__identity" ref={container} />
     </div>
   );
 }

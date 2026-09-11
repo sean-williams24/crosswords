@@ -48,7 +48,7 @@ describe("Google Identity", () => {
     }));
   });
 
-  it("expands the native button hit target to match a wider visible control", async () => {
+  it("uses Google's supported maximum native button width", async () => {
     const identity = makeGoogleIdentity();
     const parent = document.createElement("div");
     Object.defineProperty(parent, "clientWidth", { value: 540 });
@@ -59,7 +59,7 @@ describe("Google Identity", () => {
     });
 
     expect(identity.renderButton).toHaveBeenCalledWith(parent, expect.objectContaining({ width: 400 }));
-    expect(parent.style.getPropertyValue("--auth-google-button-scale-x")).toBe("1.35");
+    expect(parent.style.getPropertyValue("--auth-google-button-scale-x")).toBe("");
   });
 
   it("reports a response without an ID token", async () => {
@@ -78,5 +78,48 @@ describe("Google Identity", () => {
     expect(onError).toHaveBeenCalledWith(expect.objectContaining({
       message: "Google Sign-In did not return an identity token. Please try again."
     }));
+  });
+
+  it("initialises each loaded Google Identity only once and uses its latest handlers", async () => {
+    const identity = makeGoogleIdentity();
+    const firstCredentialHandler = vi.fn();
+    const latestCredentialHandler = vi.fn();
+
+    await renderGoogleSignInButton(document.createElement("div"), {
+      onCredential: firstCredentialHandler,
+      onError: vi.fn()
+    }, {
+      clientID: "web-client-id",
+      load: async () => identity.google
+    });
+    await renderGoogleSignInButton(document.createElement("div"), {
+      onCredential: latestCredentialHandler,
+      onError: vi.fn()
+    }, {
+      clientID: "web-client-id",
+      load: async () => identity.google
+    });
+
+    identity.callback()?.({ credential: "google-id-token" });
+
+    expect(identity.initialize).toHaveBeenCalledTimes(1);
+    expect(firstCredentialHandler).not.toHaveBeenCalled();
+    expect(latestCredentialHandler).toHaveBeenCalledWith("google-id-token");
+  });
+
+  it("does not initialise Google Identity after its control has unmounted", async () => {
+    const identity = makeGoogleIdentity();
+
+    await renderGoogleSignInButton(document.createElement("div"), {
+      onCredential: vi.fn(),
+      onError: vi.fn()
+    }, {
+      clientID: "web-client-id",
+      isActive: () => false,
+      load: async () => identity.google
+    });
+
+    expect(identity.initialize).not.toHaveBeenCalled();
+    expect(identity.renderButton).not.toHaveBeenCalled();
   });
 });

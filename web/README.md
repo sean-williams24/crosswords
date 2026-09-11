@@ -80,9 +80,12 @@ puzzle caches intentionally remain device-local.
 
 Enable Google and Apple providers in Supabase Auth. Google web sign-in uses
 Google Identity Services and exchanges its ID token directly with Supabase, so
-add the deployed site origin (for example `https://www.playbackword.com`) to
-the Google Web OAuth client’s Authorized JavaScript origins. Apple web login
-still needs the deployed site's `/auth/callback`, local development's
+add every exact site origin that can show the Google button to the Google Web
+OAuth client’s Authorized JavaScript origins. For Backword this includes
+`https://www.playbackword.com` and `https://playbackword.com`; add
+`https://backword.vercel.app` when using Vercel's production URL for testing,
+and your local origin (normally `http://localhost:5173`) for local development.
+Origins must not include a path. Apple web login still needs the deployed site's `/auth/callback`, local development's
 `/auth/callback`, a Services ID, and a client secret in Supabase. Apply
 `Backend/supabase/schema.sql`, then deploy the Edge Functions described in
 `Backend/supabase/functions/README.md` before enabling account-linked Pro.
