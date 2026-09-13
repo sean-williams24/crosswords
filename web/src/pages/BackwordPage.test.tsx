@@ -112,6 +112,7 @@ describe("Backword browser game", () => {
     const { container } = renderGame();
 
     expect(await screen.findByRole("dialog", { name: "How to Play" })).toBeInTheDocument();
+    expect(screen.getByRole("switch", { name: "Hard Mode" })).not.toBeChecked();
     await user.click(screen.getByRole("button", { name: "Close How to Play" }));
     expect(await screen.findByText("FORTRESS")).toBeInTheDocument();
 
@@ -119,7 +120,8 @@ describe("Backword browser game", () => {
     expect(container.querySelector(".bw-letter-row")?.textContent).toContain("C");
 
     await user.click(screen.getByRole("button", { name: "How to Play" }));
-    await user.click(screen.getByRole("switch", { name: "Easy Mode" }));
+    await user.click(screen.getByRole("switch", { name: "Hard Mode" }));
+    expect(screen.getByRole("switch", { name: "Hard Mode" })).toBeChecked();
     await user.click(screen.getByRole("button", { name: "Close How to Play" }));
 
     expect(container.querySelector(".bw-letter-row")?.textContent).not.toContain("C");

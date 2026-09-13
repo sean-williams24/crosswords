@@ -220,12 +220,15 @@ from the Rating Details sign-out control.
 ## Backword Clue and Letter Progression
 
 The Backword clue is always readable. No answer letters are supplied at the
-start: the first accepted wrong guess reveals the final letter. Normal mode then
-reveals one more final letter after the second and third wrong guesses; Easy
-mode reveals one more final letter after every wrong guess, up to five letters.
-In either mode, a correctly positioned unbroken suffix reveals immediately.
-Reveal state is derived from saved accepted guesses so an unfinished game uses
-the current rules when resumed on another device.
+start: the first accepted wrong guess reveals the final letter. Hard Mode is
+off by default and uses the existing easier schedule, revealing one additional
+final letter after every wrong guess, up to five letters. With Hard Mode on,
+the second and third wrong guesses reveal one additional final letter; no later
+automatic reveals occur. The persisted `easy` and `normal` values retain their
+existing meanings so saved settings remain compatible: `easy` is Hard Mode off
+and `normal` is Hard Mode on. In either mode, a correctly positioned unbroken
+suffix reveals immediately. Reveal state is derived from saved accepted guesses
+so an unfinished game uses the current rules when resumed on another device.
 
 Guesses must be recognised English words. The target answer remains valid even
 when the system dictionary does not recognise it; rejected guesses leave the

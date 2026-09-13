@@ -4,13 +4,13 @@ struct BackwordModeToggle: View {
     @Binding var mode: BackwordMode
 
     var body: some View {
-        Toggle(isOn: isEasyMode) {
+        Toggle(isOn: isHardMode) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(Self.title(isEnabled: mode == .easy))
+                Text(Self.title(isEnabled: Self.isHardMode(mode)))
                     .font(AppFont.body(15))
                     .foregroundColor(.appTextPrimary)
 
-                Text("Reveal another letter after every wrong guess")
+                Text("Reveal fewer letters after wrong guesses when enabled")
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -22,13 +22,21 @@ struct BackwordModeToggle: View {
     }
 
     static func title(isEnabled: Bool) -> String {
-        "Easy Mode - \(isEnabled ? "On" : "Off")"
+        "Hard Mode - \(isEnabled ? "On" : "Off")"
     }
 
-    private var isEasyMode: Binding<Bool> {
+    static func isHardMode(_ mode: BackwordMode) -> Bool {
+        mode == .normal
+    }
+
+    static func mode(isHardMode: Bool) -> BackwordMode {
+        isHardMode ? .normal : .easy
+    }
+
+    private var isHardMode: Binding<Bool> {
         Binding(
-            get: { mode == .easy },
-            set: { mode = $0 ? .easy : .normal }
+            get: { Self.isHardMode(mode) },
+            set: { mode = Self.mode(isHardMode: $0) }
         )
     }
 }

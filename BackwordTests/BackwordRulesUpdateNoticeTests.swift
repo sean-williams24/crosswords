@@ -27,10 +27,18 @@ struct BackwordRulesUpdateNoticeTests {
 @MainActor
 @Suite("Backword instructions layout")
 struct BackwordInstructionsLayoutTests {
-    @Test("Easy mode toggle title reflects its state")
-    func easyModeToggleTitleReflectsState() {
-        #expect(BackwordModeToggle.title(isEnabled: false) == "Easy Mode - Off")
-        #expect(BackwordModeToggle.title(isEnabled: true) == "Easy Mode - On")
+    @Test("Hard mode toggle title reflects its state")
+    func hardModeToggleTitleReflectsState() {
+        #expect(BackwordModeToggle.title(isEnabled: false) == "Hard Mode - Off")
+        #expect(BackwordModeToggle.title(isEnabled: true) == "Hard Mode - On")
+    }
+
+    @Test("Hard Mode preserves the saved easy and normal behaviours")
+    func hardModeMapsToExistingModes() {
+        #expect(BackwordModeToggle.isHardMode(.easy) == false)
+        #expect(BackwordModeToggle.isHardMode(.normal) == true)
+        #expect(BackwordModeToggle.mode(isHardMode: false) == .easy)
+        #expect(BackwordModeToggle.mode(isHardMode: true) == .normal)
     }
 
     @Test("Fits screen width at the largest Dynamic Type size")

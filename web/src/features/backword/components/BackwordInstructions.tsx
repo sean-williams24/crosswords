@@ -23,21 +23,21 @@ export function BackwordInstructions({
   onModeChange,
   showsRulesUpdate
 }: BackwordInstructionsProps) {
-  const easy = mode === "easy";
-  const examples = easy ? ["E", "LE", "DLE", "NDLE"] : ["E", "LE", "DLE", "DLE"];
+  const hard = mode === "normal";
+  const examples = hard ? ["E", "LE", "DLE", "DLE"] : ["E", "LE", "DLE", "NDLE"];
 
   return (
     <BackwordModal className="bw-instructions" onClose={onClose} title="How to Play">
       <div className="bw-modal-scroll">
         <label className="bw-mode-row">
           <span>
-            <strong>Easy Mode - {easy ? "On" : "Off"}</strong>
-            <small>Reveal another letter after every wrong guess</small>
+            <strong>Hard Mode - {hard ? "On" : "Off"}</strong>
+            <small>Reveal fewer letters after wrong guesses when enabled</small>
           </span>
           <input
-            aria-label="Easy Mode"
-            checked={easy}
-            onChange={(event) => onModeChange(event.target.checked ? "easy" : "normal")}
+            aria-label="Hard Mode"
+            checked={hard}
+            onChange={(event) => onModeChange(event.target.checked ? "normal" : "easy")}
             role="switch"
             type="checkbox"
           />
@@ -56,9 +56,9 @@ export function BackwordInstructions({
             Correctly placed letters reveal when they form an unbroken chain from the back of the word.
           </Instruction>
           <Instruction number="2">
-            {easy
-              ? "If your guesses do not extend that chain, each wrong guess reveals one more letter from the back of the word."
-              : "If your guesses do not extend that chain, the second and third wrong guesses each reveal one more letter from the end."}
+            {hard
+              ? "If your guesses do not extend that chain, the second and third wrong guesses each reveal one more letter from the end."
+              : "If your guesses do not extend that chain, each wrong guess reveals one more letter from the back of the word."}
           </Instruction>
           <Instruction number="3">
             The fewer guesses you need, the more points you score.

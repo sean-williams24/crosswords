@@ -68,7 +68,7 @@ struct SettingsView: View {
                         .tracking(2)
                         .textCase(nil)
                 } footer: {
-                    Text("Easy Mode reveals another letter from the end after every wrong guess. Normal Mode uses correctly placed letter chains and fewer automatic reveals.")
+                    Text("Hard Mode reveals fewer letters after wrong guesses. Turn it off to reveal another letter from the end after every wrong guess.")
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
                 }
