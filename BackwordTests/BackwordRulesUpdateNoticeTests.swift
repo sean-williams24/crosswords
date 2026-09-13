@@ -62,6 +62,24 @@ struct BackwordInstructionsLayoutTests {
 
         #expect(fittedSize.width <= availableWidth + 0.5)
     }
+
+    @Test("Rules update fits Easy Mode at the largest Dynamic Type size")
+    func rulesUpdateFitsEasyModeAtLargestDynamicTypeSize() {
+        let availableWidth: CGFloat = 320
+        let host = UIHostingController(
+            rootView: BackwordInstructionsContentView(
+                mode: .constant(.easy),
+                showsRulesUpdateNotice: true
+            )
+            .environment(\.dynamicTypeSize, .accessibility5)
+        )
+
+        let fittedSize = host.sizeThatFits(
+            in: CGSize(width: availableWidth, height: 10_000)
+        )
+
+        #expect(fittedSize.width <= availableWidth + 0.5)
+    }
 }
 
 @MainActor

@@ -16,7 +16,7 @@ struct BackwordRulesUpdateNotice: View {
                     .foregroundColor(.appAccent)
             }
 
-            updateRow("Only the second and third wrong guesses each reveal one letter from the end.")
+            updateRow("The final letter is no longer shown at the start. Your first wrong guess reveals it.")
         }
         .padding(Self.contentPadding)
         .frame(maxWidth: .infinity, alignment: .leading)

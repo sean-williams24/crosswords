@@ -81,21 +81,15 @@ final class BackwordViewModel: ObservableObject {
         word: String,
         mode: BackwordMode
     ) -> Set<Int> {
-        guard let progress else { return [5] }
+        guard let progress else { return [] }
         if progress.isFailed { return Set(0..<6) }
         let wrongGuesses = progress.isWon ? Array(progress.guesses.dropLast()) : progress.guesses
         var revealedSuffixLength: Int
         switch mode {
         case .normal:
-            revealedSuffixLength = 1
-            if wrongGuesses.count >= 2 {
-                revealedSuffixLength = 2
-            }
-            if wrongGuesses.count >= 3 {
-                revealedSuffixLength = 3
-            }
+            revealedSuffixLength = min(wrongGuesses.count, 3)
         case .easy:
-            revealedSuffixLength = min(wrongGuesses.count + 1, 5)
+            revealedSuffixLength = min(wrongGuesses.count, 5)
         }
         for guess in wrongGuesses {
             revealedSuffixLength = max(
@@ -147,7 +141,7 @@ final class BackwordViewModel: ObservableObject {
 
     var explainerText: String {
         if isDetailedExplainerVisible {
-            return "If you're stuck, guess any word to reveal letters"
+            return "If you're stuck, guess any word to reveal the final letter"
         }
         return "Guess the 6 letter word..."
     }

@@ -51,18 +51,17 @@ struct BackwordViewModelTests {
 
     // MARK: - Initial State
 
-    @Test("Initial state reveals only the last letter")
+    @Test("Initial state reveals no letters")
     func initialRevealedLetters() async throws {
         let vm = makeViewModel()
         let revealed = vm.revealedLetters
 
-        // Only the last letter (E) is shown at the start
         #expect(revealed[0] == nil)
         #expect(revealed[1] == nil)
         #expect(revealed[2] == nil)
         #expect(revealed[3] == nil)
         #expect(revealed[4] == nil)
-        #expect(revealed[5] == Character("E"))
+        #expect(revealed[5] == nil)
     }
 
     @Test("Initial guess count is 0")
@@ -87,13 +86,13 @@ struct BackwordViewModelTests {
         vm.markExplainerDelayElapsed()
 
         #expect(vm.shouldShowExplainerBanner)
-        #expect(vm.explainerText == "If you're stuck, guess any word to reveal letters")
+        #expect(vm.explainerText == "If you're stuck, guess any word to reveal the final letter")
     }
 
     @Test("Explainer banner is hidden after the first guess")
     func explainerBannerIsHiddenAfterFirstGuess() {
         let vm = makeViewModel()
-        vm.currentInput = "XXXXX"
+        vm.currentInput = "XXXXXX"
 
         vm.submitGuess()
 
@@ -138,9 +137,9 @@ struct BackwordViewModelTests {
     func returningPlayerReceivesRulesUpdate() {
         withIsolatedSettings { settings in
             settings.hasSeenBackwordOnboarding = true
-            settings.lastSeenBackwordRulesVersion = 1
+            settings.lastSeenBackwordRulesVersion = 3
 
-            #expect(AppSettings.currentBackwordRulesVersion == 2)
+            #expect(AppSettings.currentBackwordRulesVersion == 4)
             #expect(settings.automaticBackwordInstructionsPresentation == .rulesUpdate)
         }
     }
@@ -279,7 +278,7 @@ struct BackwordViewModelTests {
         let gamesPlayedBeforeCompletion = vm.stats.gamesPlayed
         defer { BackwordProgress.delete(date: word.date) }
 
-        vm.currentInput = "CASTL"
+        vm.currentInput = "CASTLE"
         vm.submitGuess()
 
         #expect(vm.isWon == true)
@@ -328,22 +327,22 @@ struct BackwordViewModelTests {
 
     // MARK: - Reveal Logic
 
-    @Test("First wrong guess reveals no new letters")
-    func firstWrongGuessRevealsNothing() {
+    @Test("First wrong guess reveals the final letter")
+    func firstWrongGuessRevealsFinalLetter() {
         let vm = makeViewModel("CASTLE")
-        vm.currentInput = "XXXXX"
+        vm.currentInput = "XXXXXX"
 
         vm.submitGuess()
 
         #expect(vm.revealedLetters == [nil, nil, nil, nil, nil, Character("E")])
         #expect(vm.unrevealedCount == 5)
-        #expect(vm.newlyRevealedIndex == nil)
+        #expect(vm.newlyRevealedIndex == 5)
     }
 
     @Test("Correctly positioned suffix reveals immediately in the main letter row")
     func correctlyPositionedSuffixRevealsImmediately() {
         let vm = makeViewModel("CHEESY")
-        vm.currentInput = "DREES"
+        vm.currentInput = "DREESY"
 
         vm.submitGuess()
 
@@ -357,7 +356,7 @@ struct BackwordViewModelTests {
     func wrongGuessPlaysIncorrectFeedback() {
         let haptics = BackwordHapticsSpy()
         let vm = makeViewModel(haptics: haptics)
-        vm.currentInput = "XXXXX"
+        vm.currentInput = "XXXXXX"
 
         vm.submitGuess()
 
@@ -368,7 +367,7 @@ struct BackwordViewModelTests {
     func correctSuffixProgressPlaysSuccessFeedback() {
         let haptics = BackwordHapticsSpy()
         let vm = makeViewModel("CHEESY", haptics: haptics)
-        vm.currentInput = "DREES"
+        vm.currentInput = "DREESY"
 
         vm.submitGuess()
 
@@ -396,7 +395,7 @@ struct BackwordViewModelTests {
     func secondWrongGuessRevealsPenultimateLetter() {
         let vm = makeViewModel("CASTLE")
         for _ in 0..<2 {
-            vm.currentInput = "XXXXX"
+            vm.currentInput = String(repeating: "X", count: vm.unrevealedCount)
             vm.submitGuess()
         }
 
@@ -438,11 +437,11 @@ struct BackwordViewModelTests {
     @Test("Correct letters disconnected from the ending remain hidden")
     func disconnectedCorrectLettersRemainHidden() {
         let vm = makeViewModel("CASTLE")
-        vm.currentInput = "CXXXX"
+        vm.currentInput = "CXXXXX"
 
         vm.submitGuess()
 
-        #expect(vm.progress.guesses == ["CXXXXE"])
+        #expect(vm.progress.guesses == ["CXXXXX"])
         #expect(vm.revealedLetters == [nil, nil, nil, nil, nil, Character("E")])
     }
 
@@ -450,7 +449,7 @@ struct BackwordViewModelTests {
     func savedProgressWithTwoWrongGuessesRevealsFinalTwoLetters() {
         let word = makeWord("CASTLE")
         var progress = BackwordProgress(date: word.date)
-        progress.guesses = ["XXXXXE", "BXXXXE"]
+        progress.guesses = ["XXXXXX", "BXXXXX"]
 
         let vm = BackwordViewModel(
             word: word,
@@ -466,7 +465,7 @@ struct BackwordViewModelTests {
     func savedProgressAppliesScheduledReveals() {
         let word = makeWord("CASTLE")
         var progress = BackwordProgress(date: word.date)
-        progress.guesses = ["XXXXXE", "CXXXXE", "BXXXXE"]
+        progress.guesses = ["XXXXXX", "CXXXXX", "BXXXXX"]
 
         let settings = makeSettings(mode: .normal)
         var vm = BackwordViewModel(word: word, progress: progress, settings: settings)
@@ -474,7 +473,7 @@ struct BackwordViewModelTests {
         #expect(vm.revealedLetters == [nil, nil, nil, Character("T"), Character("L"), Character("E")])
         #expect(vm.unrevealedCount == 3)
 
-        progress.guesses.append("XXXXLE")
+        progress.guesses.append("XXXXXX")
         vm = BackwordViewModel(word: word, progress: progress, settings: settings)
 
         #expect(vm.revealedLetters == [nil, nil, nil, Character("T"), Character("L"), Character("E")])
@@ -485,10 +484,10 @@ struct BackwordViewModelTests {
     func easyModeRevealsAfterEveryWrongGuess() {
         let vm = makeViewModel("CASTLE", mode: .easy)
         let expectedReveals: [[Character?]] = [
+            [nil, nil, nil, nil, nil, Character("E")],
             [nil, nil, nil, nil, Character("L"), Character("E")],
             [nil, nil, nil, Character("T"), Character("L"), Character("E")],
-            [nil, nil, Character("S"), Character("T"), Character("L"), Character("E")],
-            [nil, Character("A"), Character("S"), Character("T"), Character("L"), Character("E")]
+            [nil, nil, Character("S"), Character("T"), Character("L"), Character("E")]
         ]
 
         for expected in expectedReveals {
@@ -497,13 +496,13 @@ struct BackwordViewModelTests {
             #expect(vm.revealedLetters == expected)
         }
 
-        #expect(vm.unrevealedCount == 1)
+        #expect(vm.unrevealedCount == 2)
     }
 
     @Test("Easy mode reveals a longer correctly positioned suffix immediately")
     func easyModeRevealsLongerCorrectSuffix() {
         let vm = makeViewModel("CHEESY", mode: .easy)
-        vm.currentInput = "DREES"
+        vm.currentInput = "DREESY"
 
         vm.submitGuess()
 
@@ -521,14 +520,14 @@ struct BackwordViewModelTests {
     func easyModeDerivesRevealsFromSavedProgress() {
         let word = makeWord("CASTLE")
         var progress = BackwordProgress(date: word.date)
-        progress.guesses = ["XXXXXE", "XXXXLE", "XXXTLE", "XXSTLE"]
+        progress.guesses = ["XXXXXX", "XXXXXE", "XXXXLE", "XXXTLE"]
         let settings = makeSettings(mode: .easy)
 
         let vm = BackwordViewModel(word: word, progress: progress, settings: settings)
 
         #expect(vm.revealedLetters == [
             nil,
-            Character("A"),
+            nil,
             Character("S"),
             Character("T"),
             Character("L"),
@@ -540,7 +539,7 @@ struct BackwordViewModelTests {
     func changingModeUpdatesActiveGame() {
         let word = makeWord("CASTLE")
         var progress = BackwordProgress(date: word.date)
-        progress.guesses = ["XXXXXE", "BXXXXE"]
+        progress.guesses = ["XXXXXX", "BXXXXX", "CXXXXX", "DXXXXX"]
         let settings = makeSettings()
         let vm = BackwordViewModel(word: word, progress: progress, settings: settings)
         vm.currentInput = "CA"
@@ -553,7 +552,7 @@ struct BackwordViewModelTests {
         #expect(vm.revealedLetters == [
             nil,
             nil,
-            nil,
+            Character("S"),
             Character("T"),
             Character("L"),
             Character("E")
@@ -568,7 +567,7 @@ struct BackwordViewModelTests {
             nil,
             nil,
             nil,
-            nil,
+            Character("T"),
             Character("L"),
             Character("E")
         ])
@@ -580,8 +579,8 @@ struct BackwordViewModelTests {
     func correctGuessTriggerWin() async throws {
         let haptics = BackwordHapticsSpy()
         let vm = makeViewModel("CASTLE", haptics: haptics)
-        // Unrevealed [0,1,2,3,4]. Type C,A,S,T,L to form CASTLE.
-        vm.currentInput = "CASTL"
+        // All six letters must be typed for a first-guess win.
+        vm.currentInput = "CASTLE"
         vm.submitGuess()
 
         #expect(vm.isComplete == true)
@@ -670,7 +669,7 @@ struct BackwordViewModelTests {
     func shortInputRejected() async throws {
         let haptics = BackwordHapticsSpy()
         let vm = makeViewModel(haptics: haptics)
-        // unrevealedCount == 5; "CA" (2 chars) is too short
+        // unrevealedCount == 6; "CA" (2 chars) is too short
         vm.currentInput = "CA"
         vm.submitGuess()
         #expect(vm.guessCount == 0)
@@ -680,17 +679,17 @@ struct BackwordViewModelTests {
     @Test("onInputChange filters to uppercase alpha and caps at unrevealedCount")
     func inputChangeFilters() async throws {
         let vm = makeViewModel()
-        // Initial unrevealedCount == 5; "castle123!!" filtered+capped = "CASTL"
+        // Initial unrevealedCount == 6; "castle123!!" filtered+capped = "CASTLE"
         vm.onInputChange("castle123!!")
-        #expect(vm.currentInput == "CASTL")
+        #expect(vm.currentInput == "CASTLE")
     }
 
     @Test("onInputChange truncates to unrevealedCount characters")
     func inputChangeTruncates() async throws {
         let vm = makeViewModel()
-        // Initial unrevealedCount == 5
+        // Initial unrevealedCount == 6
         vm.onInputChange("ABCDEFGH")
-        #expect(vm.currentInput == "ABCDE")
+        #expect(vm.currentInput == "ABCDEF")
     }
 
     @Test("Keyboard letter entry uppercases and caps at unrevealed count")
@@ -702,7 +701,7 @@ struct BackwordViewModelTests {
             vm.enterLetter(letter)
         }
 
-        #expect(vm.currentInput == "CASTL")
+        #expect(vm.currentInput == "CASTLE")
         #expect(haptics.playedTypes == Array(repeating: .letterEntered, count: 6))
     }
 
@@ -756,13 +755,11 @@ struct BackwordViewModelTests {
         #expect(matching.isEmpty)
     }
 
-    // MARK: - Word Validation
-
     @Test("Any guess is accepted while word validation is disabled")
     func arbitraryGuessAccepted() async throws {
         let vm = makeViewModel("CASTLE")
         vm.wordValidator = { _ in false }
-        vm.currentInput = "XYZQB"  // 5 chars for unrevealed [0,1,2,3,4]
+        vm.currentInput = "XYZQBE"
         vm.submitGuess()
 
         #expect(vm.guessCount == 1)

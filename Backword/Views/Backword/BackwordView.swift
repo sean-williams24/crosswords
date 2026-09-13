@@ -401,6 +401,8 @@ struct BackwordView: View {
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 16)
         .padding(.vertical, 7)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Clue: \(viewModel.word.clue)")
     }
 
     @ViewBuilder
@@ -498,7 +500,7 @@ struct BackwordClueExplainerView: View {
                 .font(AppFont.body(14))
                 .foregroundColor(.appCorrect)
 
-            Text("The clue is a word associated with the answer, or something connected to it")
+            Text("The clue is always visible and is associated with the answer, or something connected to it")
                 .font(AppFont.body(14))
                 .foregroundColor(.appTextSecondary)
         }
