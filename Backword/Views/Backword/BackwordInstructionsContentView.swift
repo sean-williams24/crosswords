@@ -33,9 +33,7 @@ struct BackwordInstructionsContentView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     instructionRow(number: "1", text: firstRule)
                     instructionRow(number: "2", text: secondRule)
-                    instructionRow(number: "3", text: thirdRule)
-                    instructionRow(number: "4", text: fourthRule)
-                    instructionRow(number: "5", text: "The fewer guesses you need, the more points you score.")
+                    instructionRow(number: "3", text: "The fewer guesses you need, the more points you score.")
                 }
 
                 Divider()
@@ -81,18 +79,14 @@ struct BackwordInstructionsContentView: View {
     ]
 
     private var firstRule: String {
-        "Each guess must be a real English word."
-    }
-
-    private var secondRule: String {
-        "The clue is always visible. Your first wrong guess reveals the final letter."
-    }
-
-    private var thirdRule: String {
         "Correctly placed letters reveal when they form an unbroken chain from the back of the word."
     }
 
-    private var fourthRule: String {
+//    private var secondRule: String {
+//        "With each wrong guess, a letter reveals from the end."
+//    }
+
+    private var secondRule: String {
         switch mode {
         case .normal:
             return "If your guesses do not extend that chain, the second and third wrong guesses each reveal one more letter from the end."
