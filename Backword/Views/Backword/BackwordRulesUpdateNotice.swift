@@ -17,6 +17,7 @@ struct BackwordRulesUpdateNotice: View {
             }
 
             updateRow("The final letter is no longer shown at the start. Your first wrong guess reveals it.")
+            updateRow("Guesses must be real English words.")
         }
         .padding(Self.contentPadding)
         .frame(maxWidth: .infinity, alignment: .leading)

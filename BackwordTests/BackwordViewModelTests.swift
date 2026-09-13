@@ -25,12 +25,14 @@ struct BackwordViewModelTests {
     ) -> BackwordViewModel {
         let word = makeWord(word)
         let settings = makeSettings(mode: mode)
-        return BackwordViewModel(
+        let viewModel = BackwordViewModel(
             word: word,
             progress: BackwordProgress(date: word.date),
             settings: settings,
             haptics: haptics
         )
+        viewModel.wordValidator = { _ in true }
+        return viewModel
     }
 
     private func makeSettings(mode: BackwordMode = .normal) -> AppSettings {
@@ -755,15 +757,30 @@ struct BackwordViewModelTests {
         #expect(matching.isEmpty)
     }
 
-    @Test("Any guess is accepted while word validation is disabled")
-    func arbitraryGuessAccepted() async throws {
-        let vm = makeViewModel("CASTLE")
+    @Test("Invalid guess preserves input and does not advance progress")
+    func invalidGuessIsRejected() async throws {
+        let haptics = BackwordHapticsSpy()
+        let vm = makeViewModel("CASTLE", haptics: haptics)
         vm.wordValidator = { _ in false }
         vm.currentInput = "XYZQBE"
         vm.submitGuess()
 
+        #expect(vm.guessCount == 0)
+        #expect(vm.progress.guesses.isEmpty)
+        #expect(vm.currentInput == "XYZQBE")
+        #expect(vm.revealedLetters == [nil, nil, nil, nil, nil, nil])
+        #expect(vm.invalidWordMessage != nil)
+        #expect(haptics.playedTypes == [.backwordGuessIncorrect])
+    }
+
+    @Test("Target answer is accepted when the validator rejects it")
+    func targetAnswerBypassesWordValidation() async throws {
+        let vm = makeViewModel("CASTLE")
+        vm.wordValidator = { _ in false }
+        vm.currentInput = "CASTLE"
+        vm.submitGuess()
+
+        #expect(vm.isWon)
         #expect(vm.guessCount == 1)
-        #expect(vm.progress.guesses == ["XYZQBE"])
-        #expect(vm.invalidWordMessage == nil)
     }
 }

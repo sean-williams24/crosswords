@@ -227,6 +227,10 @@ In either mode, a correctly positioned unbroken suffix reveals immediately.
 Reveal state is derived from saved accepted guesses so an unfinished game uses
 the current rules when resumed on another device.
 
+Guesses must be recognised English words. The target answer remains valid even
+when the system dictionary does not recognise it; rejected guesses leave the
+input and all game progress unchanged.
+
 ## Home Card Appearance
 
 The Backword card keeps its dark content palette for readable logo and status

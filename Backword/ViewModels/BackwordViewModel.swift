@@ -233,13 +233,11 @@ final class BackwordViewModel: ObservableObject {
             return
         }
 
-        // Temporarily allow any six-letter guess. Keep the validation logic here so
-        // it can be restored when legitimate-word enforcement is re-enabled.
-//        let isTarget = guess == word.word.uppercased()
-//        if !isTarget && !wordValidator(guess) {
-//            triggerInvalidWord()
-//            return
-//        }
+        let isTarget = guess == word.word.uppercased()
+        if !isTarget && !wordValidator(guess) {
+            triggerInvalidWord()
+            return
+        }
 
         let prevRevealed = revealedIndices
         progress.guesses.append(guess)
@@ -249,7 +247,7 @@ final class BackwordViewModel: ObservableObject {
         stopExplainerCountdown()
         currentInput = ""
 
-        let isCorrect = guess == word.word.uppercased()
+        let isCorrect = isTarget
         let madeCorrectLetterProgress = Self.matchingSuffixLength(
             guess: guess,
             word: word.word
@@ -378,6 +376,7 @@ final class BackwordViewModel: ObservableObject {
 
     private func triggerInvalidWord() {
         invalidWordMessage = invalidWords.randomElement()
+        haptics.play(.backwordGuessIncorrect)
         triggerInputError()
         Task {
             try? await Task.sleep(nanoseconds: 2_000_000_000)
