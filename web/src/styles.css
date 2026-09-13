@@ -388,6 +388,14 @@ a {
   color: var(--bw-accent);
 }
 
+.bw-invalid-word {
+  color: var(--bw-error, #ff6b6b);
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin: 10px 0 -2px;
+  text-align: center;
+}
+
 .bw-guess-counter {
   display: flex;
   gap: 6px;

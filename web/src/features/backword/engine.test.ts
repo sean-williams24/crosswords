@@ -23,20 +23,22 @@ function progressWithGuesses(
 }
 
 describe("Backword engine", () => {
-  it("starts with only the last letter revealed", () => {
-    expect([...revealedIndices(emptyProgress("2026-08-03"), "CASTLE", "normal")]).toEqual([5]);
+  const acceptsAllWords = () => true;
+
+  it("starts with no letters revealed", () => {
+    expect([...revealedIndices(emptyProgress("2026-08-03"), "CASTLE", "normal")]).toEqual([]);
   });
 
   it("uses the Normal automatic reveal schedule", () => {
-    expect([...revealedIndices(progressWithGuesses(["XXXXXE"]), "CASTLE", "normal")]).toEqual([5]);
-    expect([...revealedIndices(progressWithGuesses(["XXXXXE", "BXXXXE"]), "CASTLE", "normal")]).toEqual([4, 5]);
-    expect([...revealedIndices(progressWithGuesses(["XXXXXE", "BXXXXE", "DXXXLE"]), "CASTLE", "normal")]).toEqual([3, 4, 5]);
-    expect([...revealedIndices(progressWithGuesses(["XXXXXE", "BXXXXE", "DXXXLE", "PXXTLE"]), "CASTLE", "normal")]).toEqual([3, 4, 5]);
+    expect([...revealedIndices(progressWithGuesses(["XXXXXX"]), "CASTLE", "normal")]).toEqual([5]);
+    expect([...revealedIndices(progressWithGuesses(["XXXXXX", "BXXXXE"]), "CASTLE", "normal")]).toEqual([4, 5]);
+    expect([...revealedIndices(progressWithGuesses(["XXXXXX", "BXXXXE", "DXXXLE"]), "CASTLE", "normal")]).toEqual([3, 4, 5]);
+    expect([...revealedIndices(progressWithGuesses(["XXXXXX", "BXXXXE", "DXXXLE", "PXXTLE"]), "CASTLE", "normal")]).toEqual([3, 4, 5]);
   });
 
   it("reveals another letter after every Easy mode miss", () => {
-    expect([...revealedIndices(progressWithGuesses(["XXXXXE"]), "CASTLE", "easy")]).toEqual([4, 5]);
-    expect([...revealedIndices(progressWithGuesses(["XXXXXE", "BXXXXE", "DXXXLE", "PXXTLE"]), "CASTLE", "easy")]).toEqual([1, 2, 3, 4, 5]);
+    expect([...revealedIndices(progressWithGuesses(["XXXXXX"]), "CASTLE", "easy")]).toEqual([5]);
+    expect([...revealedIndices(progressWithGuesses(["XXXXXX", "BXXXXE", "DXXXLE", "PXXTLE"]), "CASTLE", "easy")]).toEqual([2, 3, 4, 5]);
   });
 
   it("reveals a longer connected suffix immediately and ignores disconnected letters", () => {
@@ -46,19 +48,20 @@ describe("Backword engine", () => {
   });
 
   it("assembles a full guess from only the hidden input cells", () => {
+    expect(buildGuess("CASTLE", "CASTLE", new Set())).toBe("CASTLE");
     expect(buildGuess("CASTL", "CASTLE", new Set([5]))).toBe("CASTLE");
     expect(buildGuess("CAS", "CASTLE", new Set([3, 4, 5]))).toBe("CASTLE");
     expect(buildGuess("CA", "CASTLE", new Set([3, 4, 5]))).toBeNull();
   });
 
   it("wins, fails after five guesses, and scores only on the release date", () => {
-    const win = submitGuess(emptyProgress("2026-08-03"), "CASTLE", "CASTL", "normal", new Date(2026, 7, 3, 12));
+    const win = submitGuess(emptyProgress("2026-08-03"), "CASTLE", "CASTLE", "normal", acceptsAllWords, new Date(2026, 7, 3, 12));
     expect(win?.outcome).toBe("won");
     expect(win && backwordScore(win)).toBe(5);
 
     let failure = emptyProgress("2026-08-03");
     for (let guess = 0; guess < 5; guess += 1) {
-      failure = submitGuess(failure, "CASTLE", "XXXXX".slice(0, 6 - revealedIndices(failure, "CASTLE", "normal").size), "normal", new Date(2026, 7, 3, 12))!;
+      failure = submitGuess(failure, "CASTLE", "XXXXXX".slice(0, 6 - revealedIndices(failure, "CASTLE", "normal").size), "normal", acceptsAllWords, new Date(2026, 7, 3, 12))!;
     }
     expect(failure.outcome).toBe("failed");
     expect(backwordScore(failure)).toBe(0);
@@ -67,8 +70,20 @@ describe("Backword engine", () => {
     expect(backwordScore(lateWin)).toBe(0);
   });
 
+  it("rejects invalid guesses without changing progress but accepts the target answer", () => {
+    const progress = emptyProgress("2026-08-03");
+    const rejectsAllWords = () => false;
+
+    expect(submitGuess(progress, "CASTLE", "XXXXXX", "normal", rejectsAllWords)).toBeNull();
+    expect(progress.guesses).toEqual([]);
+
+    expect(
+      submitGuess(progress, "CASTLE", "CASTLE", "normal", rejectsAllWords)
+    ).toMatchObject({ outcome: "won", guesses: ["CASTLE"] });
+  });
+
   it("derives aggregate stats and every release in the rolling 14-day history", () => {
-    const todayWin = progressWithGuesses(["XXXXXE", "CASTLE"], "won");
+    const todayWin = progressWithGuesses(["XXXXXX", "CASTLE"], "won");
     const yesterdayWin = {
       ...progressWithGuesses(["CASTLE"], "won"),
       date: "2026-08-02",

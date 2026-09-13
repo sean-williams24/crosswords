@@ -24,7 +24,7 @@ export function BackwordInstructions({
   showsRulesUpdate
 }: BackwordInstructionsProps) {
   const easy = mode === "easy";
-  const examples = easy ? ["LE", "DLE", "NDLE", "UNDLE"] : ["E", "LE", "DLE", "DLE"];
+  const examples = easy ? ["E", "LE", "DLE", "NDLE"] : ["E", "LE", "DLE", "DLE"];
 
   return (
     <BackwordModal className="bw-instructions" onClose={onClose} title="How to Play">
@@ -43,10 +43,11 @@ export function BackwordInstructions({
           />
         </label>
 
-        {showsRulesUpdate && !easy ? (
+        {showsRulesUpdate ? (
           <aside className="bw-rules-update">
             <strong>Rules Updated</strong>
-            <p>Normal mode now gives free reveals after the second and third wrong guesses.</p>
+            <p>The final letter is no longer shown at the start. Your first wrong guess reveals it.</p>
+            <p>Guesses must be real English words.</p>
           </aside>
         ) : null}
 
@@ -61,9 +62,6 @@ export function BackwordInstructions({
           </Instruction>
           <Instruction number="3">
             The fewer guesses you need, the more points you score.
-          </Instruction>
-          <Instruction>
-            The clue is a word associated with the answer, or something connected to it.
           </Instruction>
         </div>
 

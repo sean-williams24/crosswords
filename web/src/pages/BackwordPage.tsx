@@ -12,6 +12,7 @@ import {
   BACKWORD_RULES_VERSION,
   MAX_GUESSES,
   backwordScore,
+  buildGuess,
   connectedSuffixIndices,
   deriveStats,
   revealedIndices,
@@ -19,6 +20,7 @@ import {
   submitGuess,
   unrevealedIndices
 } from "../features/backword/engine";
+import { isValidEnglishWord } from "../features/backword/wordValidator";
 import {
   BackwordConfigurationError,
   createBackwordRepository
@@ -60,6 +62,7 @@ export function BackwordPage() {
   const [usingCache, setUsingCache] = useState(false);
   const [syncError, setSyncError] = useState("");
   const [inputError, setInputError] = useState(false);
+  const [invalidWordMessage, setInvalidWordMessage] = useState("");
   const [showDetailedExplainer, setShowDetailedExplainer] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -207,12 +210,24 @@ export function BackwordPage() {
     if (!word) {
       return;
     }
-    const updated = submitGuess(progress, word.word, input, settings.mode);
-    if (!updated) {
+    const guess = buildGuess(input, word.word, revealed);
+    if (!guess) {
       setInputError(true);
       window.setTimeout(() => setInputError(false), 500);
       return;
     }
+
+    if (guess !== word.word.toUpperCase() && !isValidEnglishWord(guess)) {
+      navigator.vibrate?.([30, 50, 80]);
+      setInvalidWordMessage("Not a valid word");
+      setInputError(true);
+      window.setTimeout(() => setInputError(false), 500);
+      window.setTimeout(() => setInvalidWordMessage(""), 2_000);
+      return;
+    }
+
+    const updated = submitGuess(progress, word.word, input, settings.mode, isValidEnglishWord);
+    if (!updated) return;
     storage.saveProgress(updated);
     setProgress(updated);
     setInput("");
@@ -228,7 +243,7 @@ export function BackwordPage() {
       }));
       window.setTimeout(() => setSheet("completion"), 180);
     }
-  }, [input, progress, settings.mode, storage, track, word]);
+  }, [input, progress, revealed, settings.mode, storage, track, word]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -335,6 +350,12 @@ export function BackwordPage() {
                 outcome={progress.outcome}
                 revealed={revealed}
               />
+
+              {invalidWordMessage ? (
+                <p aria-live="assertive" className="bw-invalid-word" role="alert">
+                  {invalidWordMessage}
+                </p>
+              ) : null}
 
               {progress.guesses.length ? (
                 <section className="bw-guess-history">

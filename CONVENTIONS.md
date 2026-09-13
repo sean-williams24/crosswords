@@ -274,10 +274,17 @@ cross-device sync never reconciles a separate set of aggregate counters. Only
 results completed on their browser-local release date contribute to points and
 aggregate statistics.
 
-The browser accepts any alphabetic six-letter guess, matching the current iOS
-implementation. It supports both the in-page keyboard and physical keyboard
-input. Ads, Pro-only letter feedback, and archives are not part of the browser
-Backword parity surface yet. The web dashboard reads today's Backword and
+The browser validates completed guesses against a bundled six-letter English
+word list before accepting them, while always accepting the supplied target
+answer. It is derived from the 50,000 most frequent English `wordfreq` entries,
+with ASCII-only, known-proper-name, and family-friendly filters, yielding a
+6,926-word set. This covers normal guesses without accepting a broad spelling
+dictionary's obscure long tail, and retains immediate offline validation. The
+checked-in asset includes its CC BY-SA 4.0 attribution. Rejected guesses
+preserve the typed letters and use browser vibration feedback when the device
+supports it. It supports both the in-page keyboard and physical keyboard input.
+Ads and Pro-only letter feedback are not part of the browser Backword parity
+surface yet. The web dashboard reads today's Backword and
 Quick Crossword progress to present card status; non-Pro weekly and archive
 entry points direct players to the web Pro page rather than a modal or the iOS
 App Store. The web
@@ -537,9 +544,9 @@ The Daily Crossword card uses the same fixed Dark Mode palette. Its in-progress 
 
 ## Backword Letter Reveals
 
-Backword starts with only the final letter visible. After every wrong guess, reveal the longest correctly positioned suffix connected to the end of the answer. The guess-count schedule supplies a minimum suffix length: the first wrong guess adds no automatic letter, the second guarantees the final two letters, the third guarantees the final three letters, and the fourth adds no automatic letter. A correctly guessed suffix can advance beyond that minimum at any point, and revealed letters never disappear on later guesses. Reveal state is derived from saved guesses, so unfinished games always use the current rule without a persistence migration.
+Backword starts with no letters revealed. After every accepted wrong guess, reveal the longest correctly positioned suffix connected to the end of the answer. The guess-count schedule supplies a minimum suffix length: the first wrong guess reveals the final letter, the second guarantees the final two letters, and the third guarantees the final three letters. A correctly guessed suffix can advance beyond that minimum at any point, and revealed letters never disappear on later guesses. Reveal state is derived from saved guesses, so unfinished games always use the current rule without a persistence migration.
 
-Players can choose a persistent Backword mode in How to Play or Settings. Easy is the default and restores the original minimum schedule: every wrong guess grows the revealed suffix by one letter, so the final two, three, four, and five letters are visible after the first through fourth wrong guesses. Normal uses the schedule above. In either mode, a longer correctly positioned suffix can reveal earlier.
+Players can choose a persistent Backword mode in How to Play or Settings. Easy is the default: every wrong guess grows the revealed suffix by one letter, so the final one, two, three, and four letters are visible after the first through fourth wrong guesses. Normal uses the schedule above. In either mode, a longer correctly positioned suffix can reveal earlier.
 
 Changing mode during an unfinished game applies immediately by deriving the new reveal state from its saved guesses. Switching back to Normal may therefore hide letters revealed only by Easy. Any partially typed guess is cleared when the mode changes so its characters are not remapped to different cells. Mode remains a global preference rather than part of saved puzzle progress, and scoring and statistics are identical in both modes.
 

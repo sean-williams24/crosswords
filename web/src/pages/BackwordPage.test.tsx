@@ -5,6 +5,7 @@ import { localDateString } from "../features/backword/date";
 import { BackwordPage } from "./BackwordPage";
 
 const repositoryDates = vi.hoisted(() => ({ values: [] as string[] }));
+const wordValidator = vi.hoisted(() => vi.fn());
 
 vi.mock("../features/backword/repository", async () => {
   const actual = await vi.importActual<typeof import("../features/backword/repository")>(
@@ -21,6 +22,10 @@ vi.mock("../features/backword/repository", async () => {
   };
 });
 
+vi.mock("../features/backword/wordValidator", () => ({
+  isValidEnglishWord: wordValidator
+}));
+
 function renderGame() {
   return render(
     <MemoryRouter initialEntries={["/backword"]}>
@@ -33,7 +38,9 @@ describe("Backword browser game", () => {
   beforeEach(() => {
     localStorage.clear();
     repositoryDates.values = [];
+    wordValidator.mockReturnValue(true);
     Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
+    Object.defineProperty(navigator, "vibrate", { configurable: true, value: vi.fn() });
   });
 
   it("uses the iOS logo asset and provides the game navigation menu", async () => {
@@ -129,7 +136,8 @@ describe("Backword browser game", () => {
     renderGame();
     await user.click(await screen.findByRole("button", { name: "Close How to Play" }));
 
-    await user.keyboard("CASTL{Enter}");
+    wordValidator.mockReturnValue(false);
+    await user.keyboard("CASTLE{Enter}");
 
     expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
     expect(screen.getByText("... in 1 guess")).toBeInTheDocument();
@@ -147,12 +155,45 @@ describe("Backword browser game", () => {
     const user = userEvent.setup();
     const first = renderGame();
     await user.click(await screen.findByRole("button", { name: "Close How to Play" }));
-    await user.keyboard("XXXXX{Enter}");
+    await user.keyboard("XXXXXX{Enter}");
     expect(await screen.findByText("Previous Guesses")).toBeInTheDocument();
     first.unmount();
 
     renderGame();
-    await waitFor(() => expect(screen.getByLabelText("XXXXXE")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByLabelText("XXXXXX")).toBeInTheDocument());
     expect(screen.queryByRole("dialog", { name: "How to Play" })).not.toBeInTheDocument();
+  });
+
+  it("rejects a non-word without using a guess and gives negative haptic feedback", async () => {
+    const user = userEvent.setup();
+    wordValidator.mockReturnValue(false);
+    renderGame();
+    await user.click(await screen.findByRole("button", { name: "Close How to Play" }));
+
+    await user.keyboard("XXXXXX{Enter}");
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("Not a valid word");
+    expect(screen.queryByText("Previous Guesses")).not.toBeInTheDocument();
+    expect(screen.getByLabelText("0 of 5 guesses used")).toBeInTheDocument();
+    expect(navigator.vibrate).toHaveBeenCalledWith([30, 50, 80]);
+  });
+
+  it("shows returning players the version 4 rules update and records its dismissal", async () => {
+    const user = userEvent.setup();
+    localStorage.setItem("backword:web:settings:v1", JSON.stringify({
+      schemaVersion: 1,
+      mode: "easy",
+      hasSeenOnboarding: true,
+      lastSeenRulesVersion: 3
+    }));
+    renderGame();
+
+    expect(await screen.findByText("The final letter is no longer shown at the start. Your first wrong guess reveals it.")).toBeInTheDocument();
+    expect(screen.getByText("Guesses must be real English words.")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Close How to Play" }));
+
+    expect(JSON.parse(localStorage.getItem("backword:web:settings:v1") ?? "{}")).toMatchObject({
+      lastSeenRulesVersion: 4
+    });
   });
 });

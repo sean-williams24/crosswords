@@ -12,7 +12,7 @@ import type {
 
 export const BACKWORD_LENGTH = 6;
 export const MAX_GUESSES = 5;
-export const BACKWORD_RULES_VERSION = 2;
+export const BACKWORD_RULES_VERSION = 4;
 
 export function emptyProgress(date: string): BackwordProgress {
   return {
@@ -60,14 +60,12 @@ export function revealedIndices(
 
   const wrongGuesses =
     progress.outcome === "won" ? progress.guesses.slice(0, -1) : progress.guesses;
-  let suffixLength = 1;
+  let suffixLength = 0;
 
   if (mode === "easy") {
-    suffixLength = Math.min(wrongGuesses.length + 1, BACKWORD_LENGTH - 1);
-  } else if (wrongGuesses.length >= 3) {
-    suffixLength = 3;
-  } else if (wrongGuesses.length >= 2) {
-    suffixLength = 2;
+    suffixLength = Math.min(wrongGuesses.length, BACKWORD_LENGTH - 1);
+  } else {
+    suffixLength = Math.min(wrongGuesses.length, 3);
   }
 
   for (const guess of wrongGuesses) {
@@ -118,6 +116,7 @@ export function submitGuess(
   answer: string,
   typedInput: string,
   mode: BackwordMode,
+  wordValidator: (guess: string) => boolean,
   completedAt = new Date()
 ): BackwordProgress | null {
   if (progress.outcome !== "inProgress") {
@@ -129,8 +128,13 @@ export function submitGuess(
     return null;
   }
 
+  const isTarget = guess === answer.toUpperCase();
+  if (!isTarget && !wordValidator(guess)) {
+    return null;
+  }
+
   const guesses = [...progress.guesses, guess];
-  if (guess === answer.toUpperCase()) {
+  if (isTarget) {
     return {
       ...progress,
       guesses,
