@@ -141,7 +141,7 @@ final class BackwordViewModel: ObservableObject {
 
     var explainerText: String {
         if isDetailedExplainerVisible {
-            return "If you're stuck, guess any word to reveal the final letter"
+            return "If you're stuck, guess any word to reveal a letter"
         }
         return "Guess the 6 letter word..."
     }

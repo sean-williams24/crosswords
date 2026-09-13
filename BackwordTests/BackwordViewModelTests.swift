@@ -88,7 +88,7 @@ struct BackwordViewModelTests {
         vm.markExplainerDelayElapsed()
 
         #expect(vm.shouldShowExplainerBanner)
-        #expect(vm.explainerText == "If you're stuck, guess any word to reveal the final letter")
+        #expect(vm.explainerText == "If you're stuck, guess any word to reveal a letter")
     }
 
     @Test("Explainer banner is hidden after the first guess")
