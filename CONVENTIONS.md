@@ -234,6 +234,16 @@ Guesses must be recognised English words. The target answer remains valid even
 when the system dictionary does not recognise it; rejected guesses leave the
 input and all game progress unchanged.
 
+## Historical Backword Clue Repairs
+
+Backword records dated before the 21 May 2026 clue-format cutover retain their
+legacy `category` and `definition` metadata when a current-style `clue` is
+added. The app prefers `clue`, leaving those fields as a rollback snapshot.
+Historical remediation is review-first: the generated artifact contains full
+source `word_data` hashes, unresolved rows block publishing, and only human
+approved, unchanged rows may be patched. Apply and rollback are idempotent, so
+they recognise an already-updated payload and never overwrite a divergent row.
+
 ## Home Card Appearance
 
 The Backword card keeps its dark content palette for readable logo and status

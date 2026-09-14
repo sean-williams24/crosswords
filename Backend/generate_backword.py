@@ -40,8 +40,9 @@ except ImportError:
 try:
     from openai import OpenAI
 except ImportError:
-    print("ERROR: openai package not installed. Run: pip install openai", file=sys.stderr)
-    sys.exit(1)
+    # Keep pure helpers importable by read-only maintenance tools. The CLI still
+    # fails clearly before an API-backed generation run begins.
+    OpenAI = None
 
 try:
     from supabase import create_client
@@ -538,6 +539,10 @@ def parse_args():
 
 def main():
     args = parse_args()
+
+    if OpenAI is None:
+        print("ERROR: openai package not installed. Run: pip install openai", file=sys.stderr)
+        sys.exit(1)
 
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
