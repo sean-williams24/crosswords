@@ -76,10 +76,10 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
-          echo "Generating 7 puzzles starting from ${{ steps.dates.outputs.start }} (puzzle #${{ steps.dates.outputs.start_number }})"
+          echo "Generating 10 puzzles starting from ${{ steps.dates.outputs.start }} (puzzle #${{ steps.dates.outputs.start_number }})"
           python3 Backend/generate_puzzle.py \
             --date "${{ steps.dates.outputs.start }}" \
-            --count 7 \
+            --count 10 \
             --start-number "${{ steps.dates.outputs.start_number }}" \
             --output generated_puzzles \
             --exclude-words /tmp/used_words.json
