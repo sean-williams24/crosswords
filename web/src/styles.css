@@ -290,20 +290,23 @@ a {
 .bw-menu-link--secondary:hover,
 .bw-menu-link--secondary:focus-visible { color: var(--bw-primary, #eee); outline: none; }
 
-@media (max-width: 680px) {
+@media (max-width: 680px), (max-height: 500px) and (hover: none) and (pointer: coarse) and (orientation: landscape) {
   .bw-menu-backdrop { background: #151515; }
   .bw-menu-panel {
+    --bw-menu-mobile-inline-end: max(24px, env(safe-area-inset-right));
     width: 100vw;
     height: 100svh;
     height: 100dvh;
     min-height: 100svh;
-    padding-right: max(24px, env(safe-area-inset-right));
+    padding-right: var(--bw-menu-mobile-inline-end);
     padding-left: max(24px, env(safe-area-inset-left));
     border: 0;
     border-radius: 0;
     box-shadow: none;
   }
   .bw-menu-links {
+    margin-right: calc(0px - var(--bw-menu-mobile-inline-end));
+    padding-right: var(--bw-menu-mobile-inline-end);
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;

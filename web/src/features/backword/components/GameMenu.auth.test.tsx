@@ -111,8 +111,9 @@ describe("GameMenu account actions", () => {
   it("defines the phone menu as a full viewport overlay with a larger close control", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
-    expect(styles).toMatch(/@media \(max-width: 680px\) \{[\s\S]*?\.bw-menu-panel \{[^}]*width: 100vw[^}]*height: 100svh[^}]*height: 100dvh[^}]*border-radius: 0[^}]*box-shadow: none/);
-    expect(styles).toMatch(/@media \(max-width: 680px\) \{[\s\S]*?\.bw-menu-links \{[^}]*overflow-y: auto[^}]*overscroll-behavior: contain/);
-    expect(styles).toMatch(/@media \(max-width: 680px\) \{[\s\S]*?\.bw-menu-close \{ width: 48px; height: 48px; font-size: 28px; \}/);
+    expect(styles).toMatch(/@media \(max-width: 680px\), \(max-height: 500px\) and \(hover: none\) and \(pointer: coarse\) and \(orientation: landscape\) \{/);
+    expect(styles).toMatch(/\.bw-menu-panel \{[^}]*width: 100vw[^}]*height: 100svh[^}]*height: 100dvh[^}]*border-radius: 0[^}]*box-shadow: none/);
+    expect(styles).toMatch(/\.bw-menu-links \{[^}]*margin-right: calc\(0px - var\(--bw-menu-mobile-inline-end\)\)[^}]*padding-right: var\(--bw-menu-mobile-inline-end\)[^}]*overflow-y: auto[^}]*overscroll-behavior: contain/);
+    expect(styles).toMatch(/\.bw-menu-close \{ width: 48px; height: 48px; font-size: 28px; \}/);
   });
 });
