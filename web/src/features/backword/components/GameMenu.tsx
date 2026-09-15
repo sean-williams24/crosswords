@@ -47,6 +47,40 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [menuIsOpen]);
 
+  useEffect(() => {
+    if (!menuIsOpen) {
+      return;
+    }
+
+    const { body } = document;
+    const scrollY = window.scrollY;
+    const previousStyles = {
+      left: body.style.left,
+      overflow: body.style.overflow,
+      position: body.style.position,
+      right: body.style.right,
+      top: body.style.top,
+      width: body.style.width
+    };
+
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.right = "0";
+    body.style.left = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+
+    return () => {
+      body.style.left = previousStyles.left;
+      body.style.overflow = previousStyles.overflow;
+      body.style.position = previousStyles.position;
+      body.style.right = previousStyles.right;
+      body.style.top = previousStyles.top;
+      body.style.width = previousStyles.width;
+      window.scrollTo(0, scrollY);
+    };
+  }, [menuIsOpen]);
+
   return (
     <div className="bw-game-menu">
       <button
@@ -73,7 +107,7 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
             <div className="bw-menu-panel__heading">
               <button
                 aria-label="Close game menu"
-                className="bw-icon-button"
+                className="bw-icon-button bw-menu-close"
                 onClick={closeMenu}
                 ref={closeButtonRef}
                 type="button"

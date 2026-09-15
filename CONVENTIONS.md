@@ -324,6 +324,12 @@ keeps the game destinations prominent and places Privacy and Terms in a
 secondary group, so players can navigate without leaving the immersive game
 surface for marketing-page chrome.
 
+At viewport widths of 680px and below, that navigation becomes an opaque,
+edge-to-edge menu sized to the dynamic viewport and safe areas. Opening it
+locks the document at its current scroll offset while the menu itself can
+scroll when required, preventing mobile browser swipes from moving the page
+behind the menu. Wider viewports retain the rounded drawer.
+
 ### Browser navigation
 
 Client-side navigation resets the window to the top when the pathname changes.

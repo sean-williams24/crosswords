@@ -290,6 +290,27 @@ a {
 .bw-menu-link--secondary:hover,
 .bw-menu-link--secondary:focus-visible { color: var(--bw-primary, #eee); outline: none; }
 
+@media (max-width: 680px) {
+  .bw-menu-backdrop { background: #151515; }
+  .bw-menu-panel {
+    width: 100vw;
+    height: 100svh;
+    height: 100dvh;
+    min-height: 100svh;
+    padding-right: max(24px, env(safe-area-inset-right));
+    padding-left: max(24px, env(safe-area-inset-left));
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .bw-menu-links {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .bw-menu-close { width: 48px; height: 48px; font-size: 28px; }
+}
+
 @keyframes bw-menu-fade-in {
   from { background: rgb(0 0 0 / 0%); }
   to { background: rgb(0 0 0 / 58%); }

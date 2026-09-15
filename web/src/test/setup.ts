@@ -14,3 +14,4 @@ class TestStorage implements Storage {
 const testStorage = new TestStorage();
 Object.defineProperty(window, "localStorage", { configurable: true, value: testStorage });
 Object.defineProperty(globalThis, "localStorage", { configurable: true, value: testStorage });
+Object.defineProperty(window, "scrollTo", { configurable: true, value: () => undefined, writable: true });
