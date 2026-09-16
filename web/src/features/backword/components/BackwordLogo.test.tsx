@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { render, screen } from "@testing-library/react";
 import { BackwordLogo } from "./BackwordLogo";
+import { ThemeProvider } from "../../theme/ThemeProvider";
 
 describe("BackwordLogo", () => {
   it("adds the Pro mark to the logo lockup for active Pro users", () => {
@@ -22,6 +23,16 @@ describe("BackwordLogo", () => {
     render(<BackwordLogo />);
 
     expect(screen.queryByRole("img", { name: "Pro" })).not.toBeInTheDocument();
+  });
+
+  it("uses the iOS light logo artwork in Light mode", () => {
+    window.localStorage.setItem("backword:web:theme:v1", "light");
+    render(<ThemeProvider><BackwordLogo /></ThemeProvider>);
+
+    expect(screen.getByRole("img", { name: "Backword" })).toHaveAttribute(
+      "src",
+      "/brand/backword-logo-light.png"
+    );
   });
 
   it("keeps space between the Backword and Pro artwork", () => {

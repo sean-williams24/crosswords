@@ -286,6 +286,17 @@ The app's first-launch theme preference is System. Light and Dark remain
 explicit user choices; System applies no preferred colour scheme so iOS follows
 the device setting.
 
+## Website Appearance
+
+The website mirrors the iOS Light, Dark, and System choices with a
+browser-local `backword:web:theme:v1` preference. It is never account-synced.
+System is the default and listens for live `prefers-color-scheme` changes; the
+resolved theme is written to the document before React mounts to avoid a flash
+of the wrong palette. The appearance picker lives at the top of the shared game
+menu, and every web route—including playable game surfaces—uses the same
+semantic palette. The light Backword lockup is the corresponding iOS artwork,
+while Google Identity uses its outline button in Light mode.
+
 ---
 
 ## Website Backword Parity

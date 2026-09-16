@@ -8,6 +8,7 @@ const googleIdentity = vi.hoisted(() => ({
 vi.mock("./googleIdentity", () => googleIdentity);
 
 import { GoogleSignInButton } from "./GoogleSignInButton";
+import { ThemeProvider } from "../theme/ThemeProvider";
 
 describe("GoogleSignInButton", () => {
   beforeEach(() => {
@@ -46,5 +47,16 @@ describe("GoogleSignInButton", () => {
 
     expect(await screen.findByRole("status")).toHaveTextContent("Google sign-in is unavailable. Reload to try again.");
     expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: "blocked" }));
+  });
+
+  it("renders Google's outline control in Light mode", async () => {
+    window.localStorage.setItem("backword:web:theme:v1", "light");
+    render(<ThemeProvider><GoogleSignInButton disabled={false} onCredential={vi.fn()} onError={vi.fn()} /></ThemeProvider>);
+
+    await waitFor(() => expect(googleIdentity.renderGoogleSignInButton).toHaveBeenCalledWith(
+      expect.any(HTMLDivElement),
+      expect.any(Object),
+      expect.objectContaining({ theme: "outline" })
+    ));
   });
 });

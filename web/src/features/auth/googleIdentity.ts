@@ -15,7 +15,7 @@ export type GoogleIdentity = {
       }) => void;
       renderButton: (parent: HTMLElement, options: {
         type: "standard";
-        theme: "filled_black";
+        theme: "filled_black" | "outline";
         size: "large";
         text: "signin_with";
         shape: "rectangular";
@@ -30,6 +30,7 @@ type GoogleIdentityOptions = {
   clientID?: string;
   isActive?: () => boolean;
   load?: () => Promise<GoogleIdentity>;
+  theme?: "filled_black" | "outline";
 };
 
 type GoogleIdentityHandlers = {
@@ -145,7 +146,7 @@ export async function renderGoogleSignInButton(
     const buttonWidth = Math.min(400, availableWidth);
     google.accounts.id.renderButton(parent, {
       type: "standard",
-      theme: "filled_black",
+      theme: options.theme ?? "filled_black",
       size: "large",
       text: "signin_with",
       shape: "rectangular",

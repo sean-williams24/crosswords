@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { Link } from "react-router-dom";
 import { AppStoreBadge } from "../../../components/AppStoreBadge";
 import { AuthButton } from "../../auth/AuthButton";
 import { useAuth } from "../../auth/AuthProvider";
+import { useTheme, type ThemePreference } from "../../theme/ThemeProvider";
 
 type GameMenuProps = {
   isOpen?: boolean;
@@ -10,8 +11,11 @@ type GameMenuProps = {
   onOpen?: () => void;
 };
 
+const themeOptions = ["light", "dark", "system"] as const;
+
 export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
   const { entitlement, user } = useAuth();
+  const { preference, setPreference } = useTheme();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(false);
   const menuIsOpen = isOpen ?? uncontrolledIsOpen;
@@ -30,6 +34,17 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
       setUncontrolledIsOpen(false);
     }
     onClose?.();
+  }
+
+  function moveThemeSelection(event: ReactKeyboardEvent<HTMLButtonElement>, currentTheme: ThemePreference) {
+    const currentIndex = themeOptions.indexOf(currentTheme);
+    const direction = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 0;
+    const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? themeOptions.length - 1 : (currentIndex + direction + themeOptions.length) % themeOptions.length;
+    if (!direction && event.key !== "Home" && event.key !== "End") return;
+
+    event.preventDefault();
+    setPreference(themeOptions[nextIndex]);
+    event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="radio"]')[nextIndex]?.focus();
   }
 
   useEffect(() => {
@@ -116,6 +131,24 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
               </button>
             </div>
             <nav aria-label="Game navigation links" className="bw-menu-links">
+              <section aria-labelledby="menu-appearance-title" className="bw-menu-appearance">
+                <h2 id="menu-appearance-title">Appearance</h2>
+                <div aria-label="Theme" className="bw-theme-picker" role="radiogroup">
+                  {themeOptions.map((theme) => (
+                    <button
+                      aria-checked={preference === theme}
+                      className={preference === theme ? "is-selected" : ""}
+                      key={theme}
+                      onClick={() => setPreference(theme)}
+                      onKeyDown={(event) => moveThemeSelection(event, theme)}
+                      role="radio"
+                      type="button"
+                    >
+                      {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </section>
               <Link className="bw-menu-link bw-menu-link--primary" to="/">Home</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/backword">Backword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/crossword">Quick Crossword</Link>

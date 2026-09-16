@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "./App";
+import { ThemeProvider } from "./features/theme/ThemeProvider";
 
 function renderRoute(route: string) {
   return render(
@@ -59,6 +60,7 @@ describe("Backword website routes", () => {
       "Info",
       "Contact",
       "Privacy",
+      "Privacy Choices",
       "Terms"
     ]);
     expect(footerLinks.map((link) => link.getAttribute("href"))).toEqual([
@@ -72,6 +74,7 @@ describe("Backword website routes", () => {
       "/info",
       "/contact",
       "/privacy",
+      "/privacy-choices",
       "/terms"
     ]);
     expect(screen.getAllByRole("link", { name: /Play.*Backword/i }).length).toBeGreaterThan(1);
@@ -215,5 +218,24 @@ describe("Backword website routes", () => {
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
+  });
+
+  it("applies Light mode to game and non-game routes", () => {
+    localStorage.setItem("backword:web:theme:v1", "light");
+    const game = render(
+      <ThemeProvider><MemoryRouter initialEntries={["/backword"]}><App /></MemoryRouter></ThemeProvider>
+    );
+
+    expect(document.documentElement).toHaveAttribute("data-theme", "light");
+    expect(game.container.querySelector(".bw-page")).toBeInTheDocument();
+    game.unmount();
+
+    render(
+      <ThemeProvider><MemoryRouter initialEntries={["/info"]}><App /></MemoryRouter></ThemeProvider>
+    );
+
+    expect(document.documentElement).toHaveAttribute("data-theme", "light");
+    expect(screen.getByRole("heading", { level: 1, name: "Backword" })).toBeInTheDocument();
+    localStorage.removeItem("backword:web:theme:v1");
   });
 });

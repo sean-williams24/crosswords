@@ -17,18 +17,20 @@ const testAuth = vi.hoisted(() => ({
 vi.mock("../../auth/AuthProvider", () => ({ useAuth: () => testAuth.value }));
 
 import { GameMenu } from "./GameMenu";
+import { ThemeProvider } from "../../theme/ThemeProvider";
 
 function renderMenu() {
-  return render(<MemoryRouter initialEntries={["/menu-test"]}><Routes>
+  return render(<ThemeProvider><MemoryRouter initialEntries={["/menu-test"]}><Routes>
     <Route path="*" element={<GameMenu />} />
     <Route path="/" element={<p>Home</p>} />
-  </Routes></MemoryRouter>);
+  </Routes></MemoryRouter></ThemeProvider>);
 }
 
 describe("GameMenu account actions", () => {
   beforeEach(() => {
     testAuth.value = { ready: true, user: { id: "player-1" }, signOut: vi.fn().mockResolvedValue(undefined), deleteAccount: vi.fn().mockResolvedValue(undefined) };
     document.body.removeAttribute("style");
+    window.localStorage.removeItem("backword:web:theme:v1");
     Object.defineProperty(window, "scrollY", { configurable: true, value: 0 });
   });
 
@@ -45,6 +47,32 @@ describe("GameMenu account actions", () => {
     expect(within(menu).queryByRole("link", { name: "Login" })).not.toBeInTheDocument();
     expect(within(menu).queryByRole("button", { name: "Sign Out" })).not.toBeInTheDocument();
     expect(within(menu).queryByRole("button", { name: "Delete Account" })).not.toBeInTheDocument();
+  });
+
+  it("places the iOS-style Appearance picker above Home and keeps the menu open when it changes", async () => {
+    const user = userEvent.setup();
+    renderMenu();
+    await user.click(screen.getByRole("button", { name: "Open game menu" }));
+
+    const menu = screen.getByRole("dialog", { name: "Game navigation" });
+    const picker = within(menu).getByRole("radiogroup", { name: "Theme" });
+    const light = within(picker).getByRole("radio", { name: "Light" });
+    const dark = within(picker).getByRole("radio", { name: "Dark" });
+    const system = within(picker).getByRole("radio", { name: "System" });
+    const home = within(menu).getByRole("link", { name: "Home" });
+
+    expect(system).toHaveAttribute("aria-checked", "true");
+    expect(light.compareDocumentPosition(home) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+    await user.click(dark);
+
+    expect(dark).toHaveAttribute("aria-checked", "true");
+    expect(document.documentElement).toHaveAttribute("data-theme", "dark");
+    expect(screen.getByRole("dialog", { name: "Game navigation" })).toBeInTheDocument();
+
+    await user.keyboard("{ArrowRight}");
+
+    expect(system).toHaveAttribute("aria-checked", "true");
   });
 
   it("shows separate Player Profile and Login links to guests without account actions", async () => {

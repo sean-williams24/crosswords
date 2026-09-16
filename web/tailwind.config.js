@@ -4,14 +4,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: "#111111",
-        surface: "#1A1A1A",
-        line: "#2A2A2A",
-        accent: "#3377B1",
-        correct: "#66BB6A",
+        ink: "rgb(var(--app-background-rgb) / <alpha-value>)",
+        surface: "rgb(var(--app-surface-rgb) / <alpha-value>)",
+        line: "rgb(var(--app-grid-rgb) / <alpha-value>)",
+        accent: "rgb(var(--app-accent-rgb) / <alpha-value>)",
+        correct: "rgb(var(--app-correct-rgb) / <alpha-value>)",
         heading: "#D6BE87",
-        textPrimary: "#EEEEEE",
-        textSecondary: "#777777"
+        textPrimary: "rgb(var(--app-primary-rgb) / <alpha-value>)",
+        textSecondary: "rgb(var(--app-text-secondary-rgb) / <alpha-value>)"
       },
       fontFamily: {
         sans: ["Outfit", "ui-sans-serif", "system-ui", "sans-serif"]

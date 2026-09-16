@@ -62,6 +62,21 @@ describe("Google Identity", () => {
     expect(parent.style.getPropertyValue("--auth-google-button-scale-x")).toBe("");
   });
 
+  it("uses Google's light control when the website is in Light mode", async () => {
+    const identity = makeGoogleIdentity();
+    const parent = document.createElement("div");
+    await renderGoogleSignInButton(parent, {
+      onCredential: vi.fn(),
+      onError: vi.fn()
+    }, {
+      clientID: "web-client-id",
+      load: async () => identity.google,
+      theme: "outline"
+    });
+
+    expect(identity.renderButton).toHaveBeenCalledWith(parent, expect.objectContaining({ theme: "outline" }));
+  });
+
   it("reports a response without an ID token", async () => {
     const identity = makeGoogleIdentity();
     const onError = vi.fn();
