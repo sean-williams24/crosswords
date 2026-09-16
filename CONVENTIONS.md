@@ -367,8 +367,10 @@ actions move beneath the 14-day table instead.
 
 The dashboard’s compact rating bar derives the same rolling 14-day rating from
 the active local progress namespace, then links to Player Profile. The profile
-refreshes cloud progress after navigation, so the home surface remains instant
-without duplicating its account-sync flow.
+uses that same account-scoped local projection immediately, then refreshes
+cloud progress in the background and replaces the display with the canonical
+cloud result. This keeps navigation instant without duplicating its
+account-sync flow.
 
 ### Browser feedback
 

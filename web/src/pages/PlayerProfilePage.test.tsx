@@ -190,18 +190,29 @@ describe("PlayerProfilePage", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("account-linked Pro access");
   });
 
-  it("shows a rolling-window loading indicator until profile stats are available", async () => {
+  it("shows account-scoped cached stats while the profile refresh is pending", async () => {
     let resolveFetch: (records: []) => void = () => undefined;
     const pendingFetch = new Promise<[]>(resolve => {
       resolveFetch = resolve;
     });
     sync.fetchCloudProgress.mockReturnValue(pendingFetch);
+    const fetchCallsBeforeRender = sync.fetchCloudProgress.mock.calls.length;
+    localStorage.setItem("backword:web:progress:v1:user:player-1", JSON.stringify({
+      [localDateString()]: {
+        schemaVersion: 1,
+        date: localDateString(),
+        guesses: ["CASTLE", "CASTLE", "CASTLE"],
+        completedAt: new Date().toISOString(),
+        outcome: "won"
+      }
+    }));
     renderPage();
 
-    expect(await screen.findByRole("status")).toHaveTextContent("Loading your 14-day stats…");
+    expect(screen.getByText("3 / 150 pts")).toBeInTheDocument();
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
     resolveFetch([]);
 
-    await waitFor(() => expect(screen.queryByRole("status")).not.toBeInTheDocument());
+    await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(fetchCallsBeforeRender + 3));
   });
 
   it("compensates for transparent padding around the Pro logo", () => {

@@ -20,10 +20,15 @@ type ProfileRecords = {
   weeklyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
 };
 
-function localProfileRecords(): ProfileRecords {
-  const backwordStorage = createBackwordStorage(window.localStorage);
-  const dailyCrosswordStorage = createCrosswordStorage(window.localStorage);
-  const weeklyCrosswordStorage = createCrosswordStorage(window.localStorage, { kind: "weekly" });
+type AccountProfileRecords = {
+  userId: string;
+  value: ProfileRecords;
+};
+
+function localProfileRecords(userId?: string): ProfileRecords {
+  const backwordStorage = createBackwordStorage(window.localStorage, { userId });
+  const dailyCrosswordStorage = createCrosswordStorage(window.localStorage, { userId });
+  const weeklyCrosswordStorage = createCrosswordStorage(window.localStorage, { kind: "weekly", userId });
 
   return {
     backword: backwordStorage.loadAllProgress().map(backwordCloudRecord),
@@ -35,7 +40,7 @@ function localProfileRecords(): ProfileRecords {
 export function PlayerProfilePage() {
   const navigate = useNavigate();
   const { ready, user, entitlement, entitlementWarning, refreshEntitlement, signOut, deleteAccount, finishAccountDeletion } = useAuth();
-  const [records, setRecords] = useState<ProfileRecords>({ backword: [], dailyCrossword: [], weeklyCrossword: [] });
+  const [records, setRecords] = useState<AccountProfileRecords | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncError, setSyncError] = useState<string | null>(null);
   const [isSigningOut, setIsSigningOut] = useState(false);
@@ -46,6 +51,7 @@ export function PlayerProfilePage() {
   const [deletionFinishError, setDeletionFinishError] = useState<string | null>(null);
   const userId = user?.id;
   const guestRecords = useMemo(() => userId ? null : localProfileRecords(), [userId]);
+  const cachedAccountRecords = useMemo(() => userId ? localProfileRecords(userId) : null, [userId]);
 
   const refreshProfile = useCallback(async () => {
     if (!userId) return;
@@ -74,7 +80,7 @@ export function PlayerProfilePage() {
         fetchCloudProgress("daily_crossword"),
         fetchCloudProgress("weekly_crossword")
       ]);
-      setRecords({ backword, dailyCrossword, weeklyCrossword });
+      setRecords({ userId, value: { backword, dailyCrossword, weeklyCrossword } });
     } catch (error) {
       console.error("Account profile refresh failed", error);
       setSyncError(accountActionErrorMessage("refresh"));
@@ -88,7 +94,10 @@ export function PlayerProfilePage() {
   }, [refreshProfile]);
 
   const isPro = user ? (entitlement?.isPro ?? false) : false;
-  const rating = useMemo(() => buildPlayerProfileRating(userId ? records : guestRecords!, isPro), [guestRecords, isPro, records, userId]);
+  const profileRecords = userId
+    ? records?.userId === userId ? records.value : cachedAccountRecords!
+    : guestRecords!;
+  const rating = useMemo(() => buildPlayerProfileRating(profileRecords, isPro), [isPro, profileRecords]);
 
   async function handleSignOut() {
     setIsSigningOut(true);
@@ -153,7 +162,7 @@ export function PlayerProfilePage() {
           <div className="player-profile__column player-profile__column--summary">
             <section className="player-profile__card player-profile__summary" aria-label="Player summary">
               <RatingHero fraction={rating.fraction} maxPoints={rating.maxPoints} tier={rating.tier} totalPoints={rating.totalPoints} />
-              <RollingWindowExplanation isLoading={isSyncing} />
+              <RollingWindowExplanation />
               <ScoringDetailsContent />
               {user ? <div className="player-profile__account-actions">
                 <section className="player-profile__account" aria-label="Account summary">
@@ -227,11 +236,10 @@ function ScoringDetailsContent() {
   </div>;
 }
 
-function RollingWindowExplanation({ isLoading }: { isLoading: boolean }) {
+function RollingWindowExplanation() {
   return <div className="player-profile__rolling-window">
     <strong>Rolling 14-day window</strong>
     <p>Your rating reflects only the last 14 days. Skip a day and it scores 0, so play every day to keep your rating up.</p>
-    {isLoading ? <div className="player-profile__stats-loading" role="status"><span aria-hidden="true" className="player-profile__stats-spinner" />Loading your 14-day stats…</div> : null}
   </div>;
 }
 

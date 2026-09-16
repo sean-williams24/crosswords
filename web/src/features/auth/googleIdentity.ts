@@ -135,10 +135,10 @@ export async function renderGoogleSignInButton(
     return pendingRender.task;
   }
 
-  let render: GoogleButtonRender;
   const task = (async () => {
     const google = await (options.load ?? loadGoogleIdentity)();
-    if (render.isActive && !render.isActive()) return;
+    const render = pendingGoogleButtonRenders.get(parent);
+    if (!render || (render.isActive && !render.isActive())) return;
     initialiseGoogleIdentity(google, clientID, render.handlers);
     parent.replaceChildren();
     const availableWidth = Math.floor(parent.clientWidth) || 375;
@@ -153,7 +153,7 @@ export async function renderGoogleSignInButton(
       width: buttonWidth
     });
   })();
-  render = { handlers, isActive: options.isActive, task };
+  const render = { handlers, isActive: options.isActive, task };
   pendingGoogleButtonRenders.set(parent, render);
   void task.then(
     () => {
