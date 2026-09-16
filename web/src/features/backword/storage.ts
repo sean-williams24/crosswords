@@ -54,7 +54,7 @@ function isWord(value: unknown): value is BackwordWord {
   const word = value as Partial<BackwordWord>;
   return (
     typeof word.id === "string" &&
-    Number.isInteger(word.puzzleNumber) && word.puzzleNumber > 0 &&
+    typeof word.puzzleNumber === "number" && Number.isInteger(word.puzzleNumber) && word.puzzleNumber > 0 &&
     /^\d{4}-\d{2}-\d{2}$/.test(word.date ?? "") &&
     /^[A-Z]{6}$/.test(word.word ?? "") &&
     typeof word.clue === "string" &&

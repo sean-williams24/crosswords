@@ -21,10 +21,13 @@ export function mapBackwordRow(row: BackwordRow): BackwordWord {
     typeof row.word_data?.word === "string" ? row.word_data.word.toUpperCase() : "";
   const clueValue = row.word_data?.clue ?? row.word_data?.category;
   const clue = typeof clueValue === "string" ? clueValue.trim() : "";
+  const puzzleNumber = typeof row.puzzle_number === "number" && Number.isInteger(row.puzzle_number)
+    ? row.puzzle_number
+    : null;
 
   if (
     typeof row.id !== "string" ||
-    !Number.isInteger(row.puzzle_number) || row.puzzle_number < 1 ||
+    puzzleNumber === null || puzzleNumber < 1 ||
     typeof row.date !== "string" ||
     !/^\d{4}-\d{2}-\d{2}$/.test(row.date) ||
     !/^[A-Z]{6}$/.test(word) ||
@@ -33,7 +36,7 @@ export function mapBackwordRow(row: BackwordRow): BackwordWord {
     throw new BackwordUnavailableError("Today's Backword data is invalid.");
   }
 
-  return { id: row.id, puzzleNumber: row.puzzle_number, date: row.date, word, clue };
+  return { id: row.id, puzzleNumber, date: row.date, word, clue };
 }
 
 export type BackwordRepository = {
