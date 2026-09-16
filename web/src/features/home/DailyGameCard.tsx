@@ -2,12 +2,14 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { DashboardStatus } from "./backwordStatus";
 import { DashboardStatusLabel } from "./DashboardStatusLabel";
+import { HomeGameIssueNumber } from "./HomeGameIssueNumber";
 
 type DailyGameCardProps = {
   children?: ReactNode;
   className: "home-game-card--backword" | "home-game-card--crossword";
   description?: string;
   destination: string;
+  issueNumber?: number | null;
   score?: number | null;
   streak?: number;
   status: DashboardStatus;
@@ -28,13 +30,15 @@ export function DailyGameCard({
   className,
   description,
   destination,
+  issueNumber = null,
   score,
   streak,
   status,
   title
 }: DailyGameCardProps) {
   return (
-    <Link aria-label={title} className={`home-game-card ${className}`} to={destination}>
+    <Link aria-label={issueNumber === null ? title : `${title}, issue #${issueNumber}`} className={`home-game-card ${className}`} to={destination}>
+      <HomeGameIssueNumber issueNumber={issueNumber} />
       <div className="home-game-card__content">
         {children}
         <p className="home-game-card__title">{title}</p>

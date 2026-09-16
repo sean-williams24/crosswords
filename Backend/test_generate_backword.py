@@ -33,6 +33,20 @@ def review(word: str, clue: str, accept: bool, reason: str) -> dict:
 
 
 class GenerateBackwordTests(unittest.TestCase):
+    def test_allocate_puzzle_numbers_preserves_replaced_dates_and_appends_new_issues(self) -> None:
+        client = MagicMock()
+        client.table().select().execute.return_value = SimpleNamespace(data=[
+            {"date": "2026-08-03", "puzzle_number": 7},
+            {"date": "2026-08-04", "puzzle_number": 8},
+        ])
+
+        allocated = generate_backword.allocate_puzzle_numbers(client, [
+            generate_backword.date(2026, 8, 4),
+            generate_backword.date(2026, 8, 5),
+        ])
+
+        self.assertEqual([8, 9], allocated)
+
     def test_rejects_known_wrong_word_form_but_allows_intended_form(self) -> None:
         self.assertEqual(
             "WRONG_WORD_FORM",

@@ -226,6 +226,14 @@ destinations.
 
 ---
 
+## Game Issue Numbers
+
+Every daily game and crossword has an immutable issue number displayed as
+`#<number>` on its Home card. Crossword issue numbers are supplied by their
+existing `puzzle_number` fields. Backword issue numbers are assigned once in
+chronological release order, persisted as `backword_words.puzzle_number`, and
+must be retained when an existing Backword entry is replaced.
+
 ## Backword Clue and Letter Progression
 
 The Backword clue is always readable. No answer letters are supplied at the

@@ -4,6 +4,7 @@ import type { BackwordWord } from "./types";
 
 type BackwordRow = {
   id?: unknown;
+  puzzle_number?: unknown;
   date?: unknown;
   word_data?: {
     word?: unknown;
@@ -23,6 +24,7 @@ export function mapBackwordRow(row: BackwordRow): BackwordWord {
 
   if (
     typeof row.id !== "string" ||
+    !Number.isInteger(row.puzzle_number) || row.puzzle_number < 1 ||
     typeof row.date !== "string" ||
     !/^\d{4}-\d{2}-\d{2}$/.test(row.date) ||
     !/^[A-Z]{6}$/.test(word) ||
@@ -31,7 +33,7 @@ export function mapBackwordRow(row: BackwordRow): BackwordWord {
     throw new BackwordUnavailableError("Today's Backword data is invalid.");
   }
 
-  return { id: row.id, date: row.date, word, clue };
+  return { id: row.id, puzzleNumber: row.puzzle_number, date: row.date, word, clue };
 }
 
 export type BackwordRepository = {
@@ -57,7 +59,7 @@ export function createBackwordRepository(
     async getByDate(date: string) {
       const { data, error } = await client
         .from("backword_words")
-        .select("id,date,word_data")
+        .select("id,puzzle_number,date,word_data")
         .eq("date", date)
         .single();
 
@@ -84,7 +86,7 @@ export function createBackwordRepository(
       const end = `${month}-${String(new Date(year, monthNumber, 0).getDate()).padStart(2, "0")}`;
       const { data, error } = await client
         .from("backword_words")
-        .select("id,date,word_data")
+        .select("id,puzzle_number,date,word_data")
         .gte("date", `${month}-01`)
         .lte("date", end)
         .lte("date", localDateString())

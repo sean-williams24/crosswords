@@ -110,6 +110,7 @@ CREATE POLICY "Public can read released weekly puzzles"
 
 CREATE TABLE backword_words (
     id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    puzzle_number INT NOT NULL UNIQUE,
     date          DATE NOT NULL UNIQUE,
     word_data     JSONB NOT NULL,
     created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()

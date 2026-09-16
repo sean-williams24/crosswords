@@ -4,6 +4,7 @@ export type BackwordOutcome = "inProgress" | "won" | "failed";
 
 export type BackwordWord = {
   id: string;
+  puzzleNumber: number;
   date: string;
   word: string;
   clue: string;

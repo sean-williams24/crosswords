@@ -24,7 +24,7 @@ describe("Backword browser storage", () => {
     expect(storage.loadProgress("2026-08-03")).toEqual(progress);
     expect(storage.loadAllProgress()).toEqual([progress]);
 
-    const word = { id: "word-id", date: "2026-08-03", word: "CASTLE", clue: "Fortress" };
+    const word = { id: "word-id", puzzleNumber: 7, date: "2026-08-03", word: "CASTLE", clue: "Fortress" };
     storage.cacheWord(word);
     expect(storage.loadCachedWord(word.date)).toEqual(word);
   });

@@ -9,14 +9,16 @@ describe("Backword repository", () => {
   it("maps a current clue and uppercases the answer", () => {
     expect(mapBackwordRow({
       id: "id",
+      puzzle_number: 7,
       date: "2026-08-03",
       word_data: { word: "castle", clue: " Fortress " }
-    })).toEqual({ id: "id", date: "2026-08-03", word: "CASTLE", clue: "Fortress" });
+    })).toEqual({ id: "id", puzzleNumber: 7, date: "2026-08-03", word: "CASTLE", clue: "Fortress" });
   });
 
   it("falls back to the legacy category", () => {
     expect(mapBackwordRow({
       id: "id",
+      puzzle_number: 7,
       date: "2026-08-03",
       word_data: { word: "castle", category: "Building" }
     }).clue).toBe("Building");
@@ -25,6 +27,7 @@ describe("Backword repository", () => {
   it("rejects malformed daily content", () => {
     expect(() => mapBackwordRow({
       id: "id",
+      puzzle_number: 7,
       date: "2026-08-03",
       word_data: { word: "seven", clue: "Number" }
     })).toThrow(BackwordUnavailableError);
@@ -42,7 +45,7 @@ describe("Backword repository", () => {
     query.gte.mockReturnValue(query);
     query.lte.mockReturnValue(query);
     query.order.mockResolvedValue({ data: [{
-      id: "id", date: "2026-08-03", word_data: { word: "castle", clue: "Fortress" }
+      id: "id", puzzle_number: 7, date: "2026-08-03", word_data: { word: "castle", clue: "Fortress" }
     }], error: null });
     const from = vi.fn(() => query);
     const repository = createBackwordRepository(

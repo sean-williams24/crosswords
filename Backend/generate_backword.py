@@ -481,7 +481,34 @@ def generate_suitable_words(
 
 # ── Upload ─────────────────────────────────────────────────────────────────
 
-def upload_words(words: list[dict], start_date: date, supabase_url: str, supabase_key: str) -> int:
+def allocate_puzzle_numbers(client, dates: list[date]) -> list[int]:
+    """Keep replacement dates on their original issue and allocate new issues after the latest."""
+    rows = client.table("backword_words").select("date,puzzle_number").execute()
+    existing = {
+        row["date"]: row["puzzle_number"]
+        for row in rows.data
+        if isinstance(row.get("date"), str)
+        and isinstance(row.get("puzzle_number"), int)
+        and row["puzzle_number"] > 0
+    }
+    next_number = max(existing.values(), default=0) + 1
+    allocated: list[int] = []
+    for entry_date in dates:
+        number = existing.get(entry_date.isoformat())
+        if number is None:
+            number = next_number
+            next_number += 1
+        allocated.append(number)
+    return allocated
+
+
+def upload_words(
+    words: list[dict],
+    start_date: date,
+    supabase_url: str,
+    supabase_key: str,
+    puzzle_numbers: list[int] | None = None,
+) -> int:
     """Upload enriched words to Supabase, one per day starting from start_date."""
     if create_client is None:
         print("ERROR: supabase package not installed. Run: pip install supabase", file=sys.stderr)
@@ -489,16 +516,20 @@ def upload_words(words: list[dict], start_date: date, supabase_url: str, supabas
 
     client = create_client(supabase_url, supabase_key)
     uploaded = 0
+    dates = [start_date + timedelta(days=index) for index in range(len(words))]
+    puzzle_numbers = puzzle_numbers or allocate_puzzle_numbers(client, dates)
+    if len(puzzle_numbers) != len(words):
+        raise ValueError("Each Backword upload requires exactly one puzzle number.")
 
-    for i, word_data in enumerate(words):
-        entry_date = (start_date + timedelta(days=i)).isoformat()
+    for word_data, entry_date, puzzle_number in zip(words, dates, puzzle_numbers, strict=True):
         payload = {
-            "date": entry_date,
+            "puzzle_number": puzzle_number,
+            "date": entry_date.isoformat(),
             "word_data": word_data,
         }
         try:
             client.table("backword_words").insert(payload).execute()
-            print(f"  ✓ {entry_date}: {word_data['word']} [{word_data.get('clue', '')}]")
+            print(f"  ✓ #{puzzle_number} {entry_date}: {word_data['word']} [{word_data.get('clue', '')}]")
             uploaded += 1
         except Exception as e:
             print(f"  ✗ Failed to upload {entry_date}: {e}", file=sys.stderr)
@@ -589,6 +620,8 @@ def main():
     pool = build_word_pool()
 
     # Remove already-used words if uploading
+    client = None
+    puzzle_numbers: list[int] | None = None
     if not args.dry_run and supabase_url and supabase_key and create_client:
         client = create_client(supabase_url, supabase_key)
         used = get_used_words(client)
@@ -630,6 +663,10 @@ def main():
         )
         sys.exit(1)
 
+    if not args.dry_run and client:
+        issue_dates = [start_date + timedelta(days=index) for index in range(len(enriched))]
+        puzzle_numbers = allocate_puzzle_numbers(client, issue_dates)
+
     if args.dry_run:
         print("✅  Dry run complete — nothing uploaded.")
         # Output JSON for inspection
@@ -653,7 +690,7 @@ def main():
             print(f"⚠  Could not delete existing records: {e}", file=sys.stderr)
 
     print(f"⬆️   Uploading to Supabase...")
-    uploaded = upload_words(enriched, start_date, supabase_url, supabase_key)
+    uploaded = upload_words(enriched, start_date, supabase_url, supabase_key, puzzle_numbers)
     print(f"\n✅  Done — {uploaded}/{len(enriched)} words uploaded.")
 
     if uploaded != args.count:

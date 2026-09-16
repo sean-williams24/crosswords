@@ -1322,6 +1322,7 @@ body {
 .home-game-card--backword .home-game-card__title { display: none; }
 .home-game-card__description { margin: 8px 0 12px; color: #b4b4b8; font-size: 14px; font-weight: 500; }
 .home-game-card--backword .home-status { margin-top: 2px; }
+.home-game-card__issue { position: absolute; z-index: 1; top: 12px; right: 18px; color: rgb(255 255 255 / 58%); font-family: "Outfit", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
 .home-game-card__stats { position: absolute; z-index: 1; right: 12px; bottom: 12px; left: 18px; display: flex; align-items: center; justify-content: space-between; color: #b8b8b8; font-family: "Outfit", sans-serif; }
 .home-game-card__score { display: inline-flex; gap: 4px; align-items: baseline; }
 .home-game-card__score strong { color: #3377b1; font-size: 24px; font-weight: 700; }
@@ -1457,7 +1458,8 @@ body {
 .weekly-card:hover,
 .weekly-card:focus-visible { background: linear-gradient(135deg, #292419, #1a1a1a 55%, #2a2114); outline: none; transform: translateY(-3px); box-shadow: 0 18px 40px rgb(0 0 0 / 24%); }
 .weekly-card__crown { font-size: 24px; }
-.weekly-card > span:nth-child(2) { font-size: clamp(11px, 1.15vw, 13px); font-weight: 700; letter-spacing: 0.18em; }
+.weekly-card__title { font-size: clamp(11px, 1.15vw, 13px); font-weight: 700; letter-spacing: 0.18em; }
+.weekly-card__issue { color: rgb(214 190 135 / 70%); }
 .weekly-card small { color: #97918a; font-size: 14px; }
 .weekly-card { text-decoration: none; }
 .weekly-card__status { display: flex; min-height: 20px; flex-direction: column; align-items: center; gap: 5px; color: #eee; font-size: 12px; text-align: center; }

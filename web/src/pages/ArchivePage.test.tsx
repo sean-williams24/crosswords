@@ -7,8 +7,8 @@ const repositories = vi.hoisted(() => ({
   backword: {
     getArchiveMonths: vi.fn(async () => ["2026-08", "2026-07"]),
     getArchiveMonth: vi.fn(async (month: string) => month === "2026-08" ? [{
-      id: "word-1", date: "2026-08-06", word: "CASTLE", clue: "Fortress"
-    }] : [{ id: "word-2", date: "2026-07-30", word: "PLANET", clue: "World" }])
+      id: "word-1", puzzleNumber: 7, date: "2026-08-06", word: "CASTLE", clue: "Fortress"
+    }] : [{ id: "word-2", puzzleNumber: 6, date: "2026-07-30", word: "PLANET", clue: "World" }])
   },
   crossword: {
     getArchiveMonths: vi.fn(async () => ["2026-08"]),

@@ -16,7 +16,7 @@ vi.mock("../features/backword/repository", async () => {
     createBackwordRepository: () => ({
       getByDate: async (date: string) => {
         repositoryDates.values.push(date);
-        return { id: "today", date, word: "CASTLE", clue: "Fortress" };
+        return { id: "today", puzzleNumber: 7, date, word: "CASTLE", clue: "Fortress" };
       }
     })
   };
