@@ -107,7 +107,7 @@ function ScreenshotSection({
           {eyebrow}
         </p>
       ) : null}
-      <Heading className="mt-5 max-w-3xl text-4xl font-semibold tracking-normal text-textPrimary sm:text-5xl lg:text-6xl">
+      <Heading className="info-screenshot-section__title mt-5 max-w-3xl text-4xl font-semibold tracking-normal sm:text-5xl lg:text-6xl">
         {title}
       </Heading>
       <p className="mt-7 max-w-xl text-xl leading-9 text-textSecondary">
@@ -133,7 +133,7 @@ function ScreenshotSection({
       : "lg:order-2 lg:justify-self-end";
 
   return (
-    <section className={`border-b border-line/80 px-6 ${sectionPadding}`}>
+    <section className={`info-screenshot-section px-6 ${sectionPadding}`}>
       <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <div className={textClass}>{text}</div>
         <div className={screenshotClass}>{screenshot}</div>

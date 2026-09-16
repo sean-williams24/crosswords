@@ -1,6 +1,8 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { localDateString } from "../features/backword/date";
 import { BackwordPage } from "./BackwordPage";
 
@@ -105,6 +107,21 @@ describe("Backword browser game", () => {
     const controls = container.querySelector(".bw-game-controls");
     expect(controls?.querySelector(".bw-game-score")).toHaveClass("bw-game-score--keyboard-width");
     expect(controls?.querySelector(".bw-keyboard")).toBeInTheDocument();
+  });
+
+  it("uses the iOS semantic treatment for Backword letter cells", async () => {
+    const { container } = renderGame();
+
+    await screen.findByText("FORTRESS");
+    const cells = container.querySelectorAll(".bw-letter-row > span");
+    expect(cells).toHaveLength(6);
+    expect(cells[0]).toHaveClass("is-empty", "is-cursor");
+
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    expect(styles).toContain("--bw-cell-accent: #2979ff;");
+    expect(styles).toContain("background: rgb(var(--app-surface-rgb) / 50%);");
+    expect(styles).toContain("color: rgb(var(--app-text-secondary-rgb) / 40%);");
+    expect(styles).toContain(".bw-letter-row > .is-revealed { border-color: rgb(var(--bw-cell-accent-rgb) / 50%); }");
   });
 
   it("shows onboarding, persists the mode, and clears partial input when mode changes", async () => {

@@ -334,6 +334,12 @@ calendar date. During initial loading, all four game cards remain non-interactiv
 outlined skeletons until account startup and the WOTD request settle. When the
 row is unavailable, its place becomes an informational unavailable card while
 the three playable game cards remain available.
+
+The browser Backword letter cells use the iOS `Surface`, `GridLine`,
+`TextSecondary`, `Accent`, and `Correct` asset values. Empty cells are a 50%
+surface overlay, while selected cells pulse from a 40%-opaque Accent border to
+the full accent and revealed letters use the 50%-opaque Accent border.
+
 On viewports up to 680px, the compact WOTD card toggles an animated detail
 drawer; larger viewports show the same content immediately in two columns.
 

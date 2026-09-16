@@ -180,7 +180,7 @@ describe("web home dashboard", () => {
   it("uses the menu upgrade treatment for the account link", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
-    expect(styles).toMatch(/\.bw-menu-upgrade,\s*\.auth-button\.auth-button--menu-upgrade\s*\{[^}]*\bborder:\s*1px solid rgb\(255 255 255 \/ 35%\)[^}]*\bborder-radius:\s*7px[^}]*\bfont-weight:\s*400[^}]*\bbackground:\s*transparent/);
+    expect(styles).toMatch(/\.bw-menu-upgrade,\s*\.auth-button\.auth-button--menu-upgrade\s*\{[^}]*\bborder:\s*1px solid rgb\(var\(--app-primary-rgb\) \/ 35%\)[^}]*\bborder-radius:\s*7px[^}]*\bfont-weight:\s*400[^}]*\bbackground:\s*transparent/);
     expect(styles).toContain(".home-dashboard__actions .auth-button { width: 120px; min-height: 40px; height: 40px;");
     expect(styles).toContain(".home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px;");
     expect(styles).toContain(".home-dashboard__actions .auth-button__wide-label { display: none; }");
@@ -201,7 +201,7 @@ describe("web home dashboard", () => {
   it("uses one grey surface for the weekly crossword dialog", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
-    expect(styles).toContain(".weekly-modal { position: relative; width: min(100%, 520px); max-height: calc(100svh - 40px); overflow-y: auto; border: 1px solid #303030; border-radius: 26px; background: #1a1a1a;");
+    expect(styles).toContain(".weekly-modal { position: relative; width: min(100%, 520px); max-height: calc(100svh - 40px); overflow-y: auto; border: 1px solid var(--app-control); border-radius: 26px; background: var(--app-surface);");
     expect(styles).toMatch(/\.weekly-modal__hero\s*\{[^}]*display:\s*grid[^}]*height:\s*210px[^}]*place-items:\s*center[^}]*\}/);
     expect(styles).not.toMatch(/\.weekly-modal__hero\s*\{[^}]*\bbackground\s*:/);
   });
@@ -211,6 +211,16 @@ describe("web home dashboard", () => {
 
     expect(styles).toContain(".home-game-card__issue { position: absolute; z-index: 1; top: 12px; right: 18px;");
     expect(styles).toContain(".weekly-card__issue { color: rgb(214 190 135 / 70%); }");
+  });
+
+  it("matches the iOS light home-card surfaces", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toContain('html[data-theme="light"] .home-game-card--backword {\n  background: color(display-p3 0.670 0.655 0.845);');
+    expect(styles).toContain('html[data-theme="light"] .home-game-card--backword::after { border: 0; }');
+    expect(styles).toContain('background: linear-gradient(rgb(255 255 255 / 10%), rgb(255 255 255 / 10%)), color(display-p3 0.289 0.397 0.544);');
+    expect(styles).toContain('html[data-theme="light"] .home-game-card--backword .home-game-card__score small,\nhtml[data-theme="light"] .home-game-card--crossword .home-game-card__score small { color: rgb(255 255 255 / 58%); }');
+    expect(styles).toContain('html[data-theme="light"] .weekly-card {\n  border-color: #d9a640;\n  color: #d9a640;\n  background: var(--app-surface);');
   });
 
   it("adds the Pro mark to the header logo for an active Pro account", () => {

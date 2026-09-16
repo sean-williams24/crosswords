@@ -441,7 +441,7 @@ function LetterRow({
         const display = outcome === "won" ? answerLetter : revealed.has(index) ? answerLetter : typed;
         return (
           <span
-            className={`${display ? "has-letter" : ""} ${revealed.has(index) ? "is-revealed" : ""} ${isCursor ? "is-cursor" : ""} ${outcome === "won" ? "is-won" : ""}`}
+            className={`${display ? "has-letter" : "is-empty"} ${revealed.has(index) ? "is-revealed" : ""} ${isCursor ? "is-cursor" : ""} ${outcome === "won" ? "is-won" : ""}`}
             key={index}
           >
             {display ?? "_"}

@@ -13,7 +13,7 @@ export function Layout({ children }: LayoutProps) {
   const isContactPage = pathname === "/contact";
 
   return (
-    <div className="flex min-h-screen flex-col bg-ink text-textPrimary">
+    <div className="site-layout">
       {isContactPage ? (
         <GameMenu />
       ) : (
