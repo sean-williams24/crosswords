@@ -4,6 +4,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { localDateString } from "../features/backword/date";
 
 const testAuth = vi.hoisted(() => ({
   value: {
@@ -24,7 +25,7 @@ const sync = vi.hoisted(() => ({
 
 vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => testAuth.value }));
 vi.mock("../features/sync/progressSync", () => ({
-  backwordCloudRecord: (progress: unknown) => progress,
+  backwordCloudRecord: (progress: { date: string }) => ({ release_date: progress.date, release_score: 0, payload: progress }),
   crosswordCloudRecord: (progress: unknown) => progress,
   fetchCloudProgress: sync.fetchCloudProgress,
   refreshAccountProgress: sync.refreshAccountProgress
@@ -57,11 +58,10 @@ describe("PlayerProfilePage", () => {
     sync.refreshAccountProgress.mockResolvedValue(undefined);
   });
 
-  it("shows the signed-in account and keeps scoring details out of the dashboard", async () => {
-    const user = userEvent.setup();
+  it("shows signed-in account controls beneath the inline scoring and 14-day breakdown", async () => {
     renderPage();
 
-    expect(screen.getByRole("heading", { name: "PLAYER PROFILE" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Player Profile" })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Backword home" })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Download Backword on the App Store" })).not.toBeInTheDocument();
     const footer = screen.getByRole("navigation", { name: "Footer" });
@@ -76,26 +76,18 @@ describe("PlayerProfilePage", () => {
 
     const rating = screen.getByLabelText("Overall rating");
     const account = screen.getByLabelText("Account summary");
-    const scoring = screen.getByRole("button", { name: "HOW SCORING WORKS" });
     const rollingWindow = screen.getByText("Rolling 14-day window");
-    const [desktopSignOut, mobileSignOut] = screen.getAllByRole("button", { name: "Sign Out" });
-    const [desktopDeleteAccount, mobileDeleteAccount] = screen.getAllByRole("button", { name: "Delete Account" });
+    const dailyScoring = screen.getByText("Daily & Weekly Crossword");
+    const signOut = screen.getByRole("button", { name: "Sign Out" });
+    const deleteAccount = screen.getByRole("button", { name: "Delete Account" });
     const breakdown = screen.getByRole("heading", { name: "LAST 14 DAYS" }).closest("section");
-    expect(rating.compareDocumentPosition(scoring) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(scoring.compareDocumentPosition(rollingWindow) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(rollingWindow.compareDocumentPosition(account) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(scoring.compareDocumentPosition(account) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(account.compareDocumentPosition(desktopSignOut) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(desktopSignOut.compareDocumentPosition(desktopDeleteAccount) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(rating.compareDocumentPosition(rollingWindow) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(rollingWindow.compareDocumentPosition(dailyScoring) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(dailyScoring.compareDocumentPosition(account) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(breakdown).not.toBeNull();
-    expect(breakdown!.compareDocumentPosition(mobileSignOut) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(mobileSignOut.compareDocumentPosition(mobileDeleteAccount) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(scoring).not.toHaveTextContent("⌃");
-    expect(scoring).toHaveAttribute("aria-haspopup", "dialog");
-
-    await user.click(scoring);
-    expect(screen.getByRole("dialog", { name: "How scoring works" })).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Close scoring details" }));
+    expect(breakdown!.compareDocumentPosition(signOut) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(signOut.compareDocumentPosition(deleteAccount) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "HOW SCORING WORKS" })).not.toBeInTheDocument();
     expect(screen.queryByRole("dialog", { name: "How scoring works" })).not.toBeInTheDocument();
   });
 
@@ -151,11 +143,35 @@ describe("PlayerProfilePage", () => {
     expect(confirmation).not.toHaveTextContent("Apple purchase record");
   });
 
-  it("redirects guests to sign in with a return destination", () => {
+  it("shows guests this browser's local stats and permanent scoring details without account controls", () => {
     testAuth.value.user = null;
+    sync.fetchCloudProgress.mockClear();
+    localStorage.setItem("backword:web:progress:v1", JSON.stringify({
+      [localDateString()]: {
+        schemaVersion: 1,
+        date: localDateString(),
+        guesses: ["CASTLE", "CASTLE", "CASTLE"],
+        completedAt: new Date().toISOString(),
+        outcome: "won"
+      }
+    }));
     renderPage();
 
-    expect(screen.getByText("Sign in")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Player Profile" })).toBeInTheDocument();
+    expect(screen.getByText("3 / 140 pts")).toBeInTheDocument();
+    expect(screen.queryByText("YOUR BACKWORD ACCOUNT")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Account summary")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "HOW SCORING WORKS" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog", { name: "How scoring works" })).not.toBeInTheDocument();
+    const rollingWindow = screen.getByText("Rolling 14-day window");
+    const dailyScoring = screen.getByText("Daily & Weekly Crossword");
+    expect(rollingWindow.compareDocumentPosition(dailyScoring) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(dailyScoring).toBeInTheDocument();
+    expect(screen.getByText("− 1 point deducted for every 3 hints used")).toBeInTheDocument();
+    expect(within(screen.getByLabelText("Player summary")).getByText("Backword")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Sign Out" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Delete Account" })).not.toBeInTheDocument();
+    expect(sync.fetchCloudProgress).not.toHaveBeenCalled();
   });
 
   it("shows safe account refresh copy instead of a server error", async () => {
@@ -193,6 +209,12 @@ describe("PlayerProfilePage", () => {
 
     expect(styles).toMatch(/\.player-profile__pro-logo\s*\{[^}]*\bmargin-right:\s*-14px/);
     expect(styles).toMatch(/\.player-profile__pro-logo\s*\{[^}]*\bmargin-left:\s*-14px/);
+  });
+
+  it("pins the profile footer to the viewport bottom when content is short", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/\.player-profile > footer\s*\{[^}]*\bmargin-top:\s*auto/);
   });
 
   it("gives the delete-account control the same rounded corners as sign out", () => {

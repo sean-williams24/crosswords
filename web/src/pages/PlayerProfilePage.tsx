@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { backwordCloudRecord, fetchCloudProgress, refreshAccountProgress } from "../features/sync/progressSync";
@@ -14,17 +14,30 @@ import type { AccountDeletionSummary } from "../features/auth/accountDeletionSum
 
 const ratingLevels = ["Novice", "Scribe", "Linguist", "Grandmaster", "Virtuoso"] as const;
 
+type ProfileRecords = {
+  backword: Awaited<ReturnType<typeof fetchCloudProgress>>;
+  dailyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
+  weeklyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
+};
+
+function localProfileRecords(): ProfileRecords {
+  const backwordStorage = createBackwordStorage(window.localStorage);
+  const dailyCrosswordStorage = createCrosswordStorage(window.localStorage);
+  const weeklyCrosswordStorage = createCrosswordStorage(window.localStorage, { kind: "weekly" });
+
+  return {
+    backword: backwordStorage.loadAllProgress().map(backwordCloudRecord),
+    dailyCrossword: dailyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
+    weeklyCrossword: weeklyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress))
+  };
+}
+
 export function PlayerProfilePage() {
   const navigate = useNavigate();
   const { ready, user, entitlement, entitlementWarning, refreshEntitlement, signOut, deleteAccount, finishAccountDeletion } = useAuth();
-  const [records, setRecords] = useState({ backword: [], dailyCrossword: [], weeklyCrossword: [] } as {
-    backword: Awaited<ReturnType<typeof fetchCloudProgress>>;
-    dailyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
-    weeklyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
-  });
+  const [records, setRecords] = useState<ProfileRecords>({ backword: [], dailyCrossword: [], weeklyCrossword: [] });
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncError, setSyncError] = useState<string | null>(null);
-  const [showScoring, setShowScoring] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [accountDeleted, setAccountDeleted] = useState(false);
@@ -32,6 +45,7 @@ export function PlayerProfilePage() {
   const [isFinishingDeletion, setIsFinishingDeletion] = useState(false);
   const [deletionFinishError, setDeletionFinishError] = useState<string | null>(null);
   const userId = user?.id;
+  const guestRecords = useMemo(() => userId ? null : localProfileRecords(), [userId]);
 
   const refreshProfile = useCallback(async () => {
     if (!userId) return;
@@ -73,8 +87,8 @@ export function PlayerProfilePage() {
     void refreshProfile();
   }, [refreshProfile]);
 
-  const isPro = entitlement?.isPro ?? false;
-  const rating = useMemo(() => buildPlayerProfileRating(records, isPro), [isPro, records]);
+  const isPro = user ? (entitlement?.isPro ?? false) : false;
+  const rating = useMemo(() => buildPlayerProfileRating(userId ? records : guestRecords!, isPro), [guestRecords, isPro, records, userId]);
 
   async function handleSignOut() {
     setIsSigningOut(true);
@@ -123,10 +137,6 @@ export function PlayerProfilePage() {
     return <main className="player-profile player-profile--loading">Loading your profile…</main>;
   }
 
-  if (!user) {
-    return <Navigate replace state={{ returnTo: "/player-profile" }} to="/sign-in" />;
-  }
-
   return (
     <main className="player-profile">
       <header className="home-dashboard__header player-profile__header">
@@ -135,17 +145,17 @@ export function PlayerProfilePage() {
       </header>
 
       <section aria-labelledby="player-profile-title" className="player-profile__content">
-        <div className="player-profile__heading">
+        {user ? <div className="player-profile__heading">
           <p>YOUR BACKWORD ACCOUNT</p>
-        </div>
+        </div> : null}
 
         <div className="player-profile__layout">
           <div className="player-profile__column player-profile__column--summary">
             <section className="player-profile__card player-profile__summary" aria-label="Player summary">
               <RatingHero fraction={rating.fraction} maxPoints={rating.maxPoints} tier={rating.tier} totalPoints={rating.totalPoints} />
-              <ScoringDetails isOpen={showScoring} onToggle={() => setShowScoring((open) => !open)} />
               <RollingWindowExplanation isLoading={isSyncing} />
-              <div className="player-profile__account-actions">
+              <ScoringDetailsContent />
+              {user ? <div className="player-profile__account-actions">
                 <section className="player-profile__account" aria-label="Account summary">
                   <button disabled={isSyncing} onClick={() => void refreshProfile()} type="button">
                     <span>{user.email ?? "Signed in"}</span>
@@ -155,8 +165,7 @@ export function PlayerProfilePage() {
                   {isPro && entitlement?.provider === "stripe" ? <a className="player-profile__subscription-management" href="https://link.com" rel="noreferrer" target="_blank">Manage web subscription through Link <span aria-hidden="true">↗</span></a> : null}
                   {syncError || entitlementWarning ? <p className="player-profile__error" role="alert">{syncError ?? entitlementWarning}</p> : null}
                 </section>
-                <ProfileActions className="player-profile__account-controls--desktop" isDeleting={isDeleting} isSigningOut={isSigningOut} onDelete={removeAccount} onSignOut={handleSignOut} />
-              </div>
+              </div> : null}
             </section>
           </div>
 
@@ -178,7 +187,7 @@ export function PlayerProfilePage() {
                 </div>
               </div>
             </section>
-            <ProfileActions className="player-profile__account-controls--mobile" isDeleting={isDeleting} isSigningOut={isSigningOut} onDelete={removeAccount} onSignOut={handleSignOut} />
+            {user ? <ProfileActions isDeleting={isDeleting} isSigningOut={isSigningOut} onDelete={removeAccount} onSignOut={handleSignOut} /> : null}
           </div>
         </div>
       </section>
@@ -188,8 +197,8 @@ export function PlayerProfilePage() {
   );
 }
 
-function ProfileActions({ className, isDeleting, isSigningOut, onDelete, onSignOut }: { className: string; isDeleting: boolean; isSigningOut: boolean; onDelete: () => Promise<void>; onSignOut: () => Promise<void> }) {
-  return <div className={`player-profile__account-controls ${className}`}>
+function ProfileActions({ isDeleting, isSigningOut, onDelete, onSignOut }: { isDeleting: boolean; isSigningOut: boolean; onDelete: () => Promise<void>; onSignOut: () => Promise<void> }) {
+  return <div className="player-profile__account-controls">
     <button className="player-profile__sign-out" disabled={isSigningOut} onClick={() => void onSignOut()} type="button">{isSigningOut ? "Signing Out…" : "Sign Out"}</button>
     <button className="player-profile__delete-account" disabled={isDeleting} onClick={() => void onDelete()} type="button">{isDeleting ? "Deleting Account…" : "Delete Account"}</button>
   </div>;
@@ -210,31 +219,12 @@ function RatingHero({ fraction, maxPoints, tier, totalPoints }: { fraction: numb
   );
 }
 
-function ScoringDetails({ isOpen, onToggle }: { isOpen: boolean; onToggle: () => void }) {
-  useEffect(() => {
-    if (!isOpen) return;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onToggle();
-    };
-    window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [isOpen, onToggle]);
-
-  return (
-    <>
-      <button aria-controls="player-profile-scoring" aria-expanded={isOpen} aria-haspopup="dialog" className="player-profile__scoring" onClick={onToggle} type="button">HOW SCORING WORKS</button>
-      {isOpen ? <div className="player-profile__scoring-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onToggle(); }}>
-        <section aria-labelledby="player-profile-scoring-title" aria-modal="true" className="player-profile__scoring-dialog" id="player-profile-scoring" role="dialog">
-          <header><h2 id="player-profile-scoring-title">How scoring works</h2><button aria-label="Close scoring details" onClick={onToggle} type="button">×</button></header>
-          <div className="player-profile__scoring-details">
-        <ScoringRule rows={[["100% complete", "5 pts"], ["75–99% complete", "4 pts"], ["50–74% complete", "3 pts"], ["25–49% complete", "2 pts"], ["1–24% complete", "1 pt"], ["Missed", "0 pts"]]} title="Daily & Weekly Crossword" />
-        <p>− 1 point deducted for every 3 hints used</p>
-        <ScoringRule rows={[["Win in 1 guess", "5 pts"], ["Win in 2 guesses", "4 pts"], ["Win in 3 guesses", "3 pts"], ["Win in 4 guesses", "2 pts"], ["Win in 5 guesses", "1 pt"], ["Loss or missed", "0 pts"]]} title="Backword" />
-          </div>
-        </section>
-      </div> : null}
-    </>
-  );
+function ScoringDetailsContent() {
+  return <div className="player-profile__scoring-details">
+    <ScoringRule rows={[["100% complete", "5 pts"], ["75–99% complete", "4 pts"], ["50–74% complete", "3 pts"], ["25–49% complete", "2 pts"], ["1–24% complete", "1 pt"], ["Missed", "0 pts"]]} title="Daily & Weekly Crossword" />
+    <p>− 1 point deducted for every 3 hints used</p>
+    <ScoringRule rows={[["Win in 1 guess", "5 pts"], ["Win in 2 guesses", "4 pts"], ["Win in 3 guesses", "3 pts"], ["Win in 4 guesses", "2 pts"], ["Win in 5 guesses", "1 pt"], ["Loss or missed", "0 pts"]]} title="Backword" />
+  </div>;
 }
 
 function RollingWindowExplanation({ isLoading }: { isLoading: boolean }) {

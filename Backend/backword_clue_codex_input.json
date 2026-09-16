@@ -1,0 +1,2406 @@
+{
+  "schemaVersion": 1,
+  "kind": "backword_clue_repair_codex_input",
+  "generatedAt": "2026-09-14T10:35:49.113461+00:00",
+  "table": "backword_words",
+  "cutoffDate": "2026-05-21",
+  "throughDate": "2026-09-14",
+  "source": {
+    "rowCount": 167,
+    "rowsSha256": "fc342296c0a6276e3cc07354a2bbb223b334416312da78b03d44943657fc7fe3"
+  },
+  "summary": {
+    "legacyCategoryRows": 50,
+    "existingClueRows": 117
+  },
+  "entries": [
+    {
+      "id": "52f2ad1f-00dd-4f3f-a245-5920cf8923cf",
+      "date": "2026-04-01",
+      "word": "NURSED",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "NURSED",
+        "reject": false,
+        "category": "Body",
+        "definition": "Cared for someone or something back to health."
+      },
+      "sourceWordDataSha256": "14fb4832d889e9f76825af638a23e7df2d819bdb84c8c278ad7c67326f0f5202",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "4b0e5eaf-78fe-4317-a627-3161a0c75036",
+      "date": "2026-04-02",
+      "word": "FINGER",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "FINGER",
+        "reject": false,
+        "category": "Body",
+        "definition": "A digit on the hand used for touching and holding."
+      },
+      "sourceWordDataSha256": "0de3b94f8fb6a369a7db533463c9e708cf2ad67de926900c415f79bd1d1984ab",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "4d35609e-137d-44f4-9e95-c239559960ea",
+      "date": "2026-04-03",
+      "word": "MORTAR",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "MORTAR",
+        "reject": false,
+        "category": "Technology",
+        "definition": "A mixture used for bonding bricks or stones."
+      },
+      "sourceWordDataSha256": "7b3000411624e04dbfe9184b4146e051f76822b245ae50c69c573bbe6c255a0a",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "00b1ba10-cc93-4737-86e6-8b46167adc84",
+      "date": "2026-04-04",
+      "word": "FIESTA",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "FIESTA",
+        "reject": false,
+        "category": "Culture",
+        "definition": "A festive celebration or party, often with music and dancing."
+      },
+      "sourceWordDataSha256": "099b2fa130f091d64a07a52b34e2a7e764f098ba3d209f4fbb4ac50a28c24b1e",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "ee355ea7-d71e-4c84-8456-6accd39b8284",
+      "date": "2026-04-05",
+      "word": "LEARNS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "LEARNS",
+        "reject": false,
+        "category": "Language",
+        "definition": "Acquires knowledge or skill through study or experience."
+      },
+      "sourceWordDataSha256": "549124ce8cc9340ae9c006647e96b8d123fd637cee9dddf162615450f8f13193",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "2ca39753-de92-4bd5-9cff-f1a54a93998d",
+      "date": "2026-04-06",
+      "word": "AFIELD",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "AFIELD",
+        "reject": false,
+        "category": "Travel",
+        "definition": "In or to the field; outdoors."
+      },
+      "sourceWordDataSha256": "94ec1f78acbe24f6bf5eae59dfe548790d5b2a5b042f15b3572a8b24db3ce4e1",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "897367be-b55b-4450-a091-f88a9c4528d0",
+      "date": "2026-04-07",
+      "word": "SNEAKY",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "SNEAKY",
+        "reject": false,
+        "category": "Culture",
+        "definition": "Characterized by stealth or cunning."
+      },
+      "sourceWordDataSha256": "9921b5f5fb3850ba4d75d983024b89be13efc0fc42c03927b8cedc275d1d8a58",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "6e415e38-21c2-4f38-984d-f6ded3ed903e",
+      "date": "2026-04-08",
+      "word": "BREECH",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "BREECH",
+        "reject": false,
+        "category": "Fashion",
+        "definition": "Short trousers fastened just below the knee."
+      },
+      "sourceWordDataSha256": "1efbe29bbac09a14b4f9e6d4f055dc7b83792bb24e6de8c973ad8f46fa819513",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "9eda12e6-1e8b-45af-967d-e12df215be69",
+      "date": "2026-04-09",
+      "word": "LUSTRE",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "LUSTRE",
+        "reject": false,
+        "category": "Art",
+        "definition": "A gentle sheen or soft glow."
+      },
+      "sourceWordDataSha256": "cfed727daa8c746e354628327f0eb81d155a1f69b008b29ed7d3dff4a847d510",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "df768159-5e01-4198-b407-df85eaee4cc6",
+      "date": "2026-04-10",
+      "word": "THEMED",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "THEMED",
+        "reject": false,
+        "category": "Culture",
+        "definition": "Designed or organized around a particular theme."
+      },
+      "sourceWordDataSha256": "20a190430eb3d279d936c6143fbee79506cd398dc34dd60be2e85062b56202f8",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "dc86a88c-346d-4b5c-8139-37dd6bf99f94",
+      "date": "2026-04-11",
+      "word": "LAUGHS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "LAUGHS",
+        "reject": false,
+        "category": "Culture",
+        "definition": "Expresses amusement or joy through vocal sounds."
+      },
+      "sourceWordDataSha256": "ace2f49a60bf3c764b63375919b4a102ae8f27282ddbccf1b48af5778cd7e11c",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "b521bf4f-6dee-4192-83d8-e85b6e5b15b0",
+      "date": "2026-04-12",
+      "word": "SENDER",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "SENDER",
+        "reject": false,
+        "category": "Technology",
+        "definition": "A person or device that transmits information."
+      },
+      "sourceWordDataSha256": "07969f6cb486188546c6327e002147322813e81a1ed1210567df04389fe40321",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "a5a43706-f730-465b-a505-0582bcbb28af",
+      "date": "2026-04-13",
+      "word": "QUEUES",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "QUEUES",
+        "reject": false,
+        "category": "Culture",
+        "definition": "Lines of people waiting for something."
+      },
+      "sourceWordDataSha256": "3d71280b14a26df7b8725d3b9830c7ce00adccd04041ace3b76bb5325cbbf608",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "837f6029-2e8c-4439-83cc-ba14bc42f7e1",
+      "date": "2026-04-14",
+      "word": "SEWING",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "SEWING",
+        "reject": false,
+        "category": "Fashion",
+        "definition": "The act of joining fabrics using a needle and thread."
+      },
+      "sourceWordDataSha256": "c70b1af4fbfa649a0d55dc803e466ceb635eeb5d384deabc3e1f16d3fb3c2418",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "092f0a80-bb9b-4709-a8df-a8f750ac90bc",
+      "date": "2026-04-15",
+      "word": "ELEVEN",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "ELEVEN",
+        "reject": false,
+        "category": "Language",
+        "definition": "The number following ten and preceding twelve."
+      },
+      "sourceWordDataSha256": "d611fcc7c55c3420f142b53da1618b5ad81c1f0e3fcb3aa5570e682adabb85e5",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "f13a730c-a96c-45c9-932e-e32432f8c258",
+      "date": "2026-04-16",
+      "word": "SPICES",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "SPICES",
+        "reject": false,
+        "category": "Food",
+        "definition": "A substance used to flavor food, often derived from plants."
+      },
+      "sourceWordDataSha256": "8bce64216c68d3c47bd90500a10164e35541430478579edfb52273ea40e6d1fa",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "18e59db2-5592-409d-84c0-49fe42fe0ac2",
+      "date": "2026-04-17",
+      "word": "LOUDER",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "LOUDER",
+        "reject": false,
+        "category": "Music",
+        "definition": "Having a greater volume or intensity of sound."
+      },
+      "sourceWordDataSha256": "766b6427e628fe1c5718d5a1b4c5bd47d40b2240b4610617cde77414c9660b7b",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "824fcea3-42e8-4bac-bca7-e73e3fe8c563",
+      "date": "2026-04-18",
+      "word": "LIMITS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "LIMITS",
+        "reject": false,
+        "category": "Science",
+        "definition": "Boundaries or restrictions on size, amount, or extent."
+      },
+      "sourceWordDataSha256": "65f21c73ba4a2a7d9a091ee9a5225d6a5b850475c1354f9f940d97701801fcbf",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "cd811505-1408-4432-8b53-fc8c80a3d40d",
+      "date": "2026-04-19",
+      "word": "RAISIN",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "RAISIN",
+        "reject": false,
+        "category": "Food",
+        "definition": "A dried grape, often used in baking or as a snack."
+      },
+      "sourceWordDataSha256": "388603c9ac32ea1464ff321771f0f7a04aa504f63a27c2553df9dda6116d6ad9",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "198aa358-6787-4760-8c78-00f77092bfff",
+      "date": "2026-04-20",
+      "word": "STARCH",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "STARCH",
+        "reject": false,
+        "category": "Food",
+        "definition": "A carbohydrate found in many plants, used as a source of energy."
+      },
+      "sourceWordDataSha256": "331eadfcd6cbbc5b0ec7127e472da6985e9092918b55496b67c865dac45b61b5",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "0cc9ac31-6203-4628-a782-95d6ecf95ebb",
+      "date": "2026-04-21",
+      "word": "VARIED",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "VARIED",
+        "reject": false,
+        "category": "Culture",
+        "definition": "Showing diversity or differences in character or form."
+      },
+      "sourceWordDataSha256": "7a13076907e3e8d1dedc2b5ad69f8e43ee24c01135041bf9fd004abc3bc9b51b",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "354064d1-1d57-46e6-919d-37b469b5c6c1",
+      "date": "2026-04-22",
+      "word": "INTAKE",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "INTAKE",
+        "reject": false,
+        "category": "Science",
+        "definition": "The process of taking in something, especially food or air."
+      },
+      "sourceWordDataSha256": "265d7013eacee0c8f07e93187a0d00962cc2c30ea794390e6f7294d8965ddfec",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "617079b5-0540-44a6-91fd-3e9fbfcf7637",
+      "date": "2026-04-23",
+      "word": "WORSEN",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "WORSEN",
+        "reject": false,
+        "category": "Language",
+        "definition": "To make or become worse."
+      },
+      "sourceWordDataSha256": "ca882360504bb42c9d328100640bcce582677cbe5251edbd61e3aea7295ca959",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "658432ce-4f1d-4c86-87eb-9813fac1a77c",
+      "date": "2026-04-24",
+      "word": "NODDED",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "NODDED",
+        "reject": false,
+        "category": "Body",
+        "definition": "To move the head up and down, often as a sign of agreement."
+      },
+      "sourceWordDataSha256": "6ea2e7d5cdc4ad9b79f769b00db020fc35b04f32a5e5415d4e5d7f9f559507fa",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "a2271f0f-324e-4dea-b7c1-b8c752c9324e",
+      "date": "2026-04-25",
+      "word": "ANGLER",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "ANGLER",
+        "reject": false,
+        "category": "Sport",
+        "definition": "A person who catches fish for sport or food."
+      },
+      "sourceWordDataSha256": "c835e931806e69a1ae5bbb42a98bf2be2439ea276758973c5648740377eff293",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "b67f8154-6373-433a-8949-de155a1cb929",
+      "date": "2026-04-26",
+      "word": "EXILES",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "EXILES",
+        "reject": false,
+        "category": "Culture",
+        "definition": "People who are forced to leave their home country."
+      },
+      "sourceWordDataSha256": "fdba950e969ce971fde79591c1309e0559bf1346420df3feb6c5facd7a753317",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "fa6228d0-4aba-424c-b45f-edd393f21ec1",
+      "date": "2026-04-27",
+      "word": "STEADY",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "STEADY",
+        "reject": false,
+        "category": "Language",
+        "definition": "Firmly fixed, constant, or stable."
+      },
+      "sourceWordDataSha256": "e0336eee5fc4b1280d0c493607bc92be02f3856abed6da8df5e166ad73059562",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "c6520579-5570-4204-b448-7b12d7349d86",
+      "date": "2026-04-28",
+      "word": "LOSSES",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "LOSSES",
+        "reject": false,
+        "category": "Business",
+        "definition": "The amount of money lost in a business transaction."
+      },
+      "sourceWordDataSha256": "946aad26ac2e49cfe01a5ac35455c8ccd91ba5bf62a4e3379831f8afa020e075",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "87772452-3f63-4b01-b833-09760b33f979",
+      "date": "2026-04-29",
+      "word": "GUESTS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "GUESTS",
+        "reject": false,
+        "category": "Culture",
+        "definition": "People who are invited to visit or stay in someone's home."
+      },
+      "sourceWordDataSha256": "56b6ac3eaf86ec82b88035412424e98b6d5e0bfc93dcdcc050a91ba1f1e8e5cc",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "eadd1c76-bb9f-498f-8948-fa210425d806",
+      "date": "2026-04-30",
+      "word": "DUGOUT",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "DUGOUT",
+        "reject": false,
+        "category": "Sport",
+        "definition": "A shelter for players in baseball, located near the field."
+      },
+      "sourceWordDataSha256": "a435433464f9e56d462dbe11337c63e3bfac731e77b65d52db1079301b4256b8",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "2831b931-a183-4fbe-a51f-56ac1982c0db",
+      "date": "2026-05-01",
+      "word": "DOCILE",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "DOCILE",
+        "reject": false,
+        "category": "Animal",
+        "definition": "Easily managed or handled; tame."
+      },
+      "sourceWordDataSha256": "54fd370dfedf13a8191da136977a9bae2187c22714fe007c8b4e7fe6b03094d9",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "743595e1-413a-405d-9b34-35894cac6562",
+      "date": "2026-05-02",
+      "word": "DYNAMO",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "DYNAMO",
+        "reject": false,
+        "category": "Technology",
+        "definition": "A machine that generates electricity, often used in early power generation."
+      },
+      "sourceWordDataSha256": "caa3a433194b371dab1696fcb3ba4324de67ea8448cd3fe3b6be3ec00efe122a",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "ce6a88dc-2b33-42c6-8939-a0eb96391cf0",
+      "date": "2026-05-03",
+      "word": "CREAMS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "CREAMS",
+        "reject": false,
+        "category": "Food",
+        "definition": "Thick, smooth dairy products often used in cooking or as toppings."
+      },
+      "sourceWordDataSha256": "3a3ccaa5043438feb7188ab926b30755ea5317a501d5f6bd08fd231b6509bc23",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "f5b4ccfa-4e18-4894-a8e4-f79d32f7314b",
+      "date": "2026-05-04",
+      "word": "SNOWED",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "SNOWED",
+        "reject": false,
+        "category": "Weather",
+        "definition": "To have fallen as snow; to cover with snow."
+      },
+      "sourceWordDataSha256": "835b5e979376eef5b97c06cfb1c3f5becea1265936cb3990ccdea6a94019c0b4",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "f86152c5-9806-4312-8cb1-4f4e25f1e118",
+      "date": "2026-05-05",
+      "word": "ROUTED",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "ROUTED",
+        "reject": false,
+        "category": "Travel",
+        "definition": "To direct or send along a specific path or route."
+      },
+      "sourceWordDataSha256": "bea82ee76b3721106a6173fce5b4bd57845f2a2e5169a2ef131632fc96637060",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "8f52f575-cd69-4105-9cc3-b0dce37167c9",
+      "date": "2026-05-06",
+      "word": "SMACKS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "SMACKS",
+        "reject": false,
+        "category": "Food",
+        "definition": "A type of snack or light meal, often crunchy or savory."
+      },
+      "sourceWordDataSha256": "60803a4a9f06c7f79cf614777aef97b32bfac071d5ce018b0bfccea7328c08ab",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "2958c82b-bdf8-41ba-8d71-70f2e919dc13",
+      "date": "2026-05-07",
+      "word": "GENERA",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "GENERA",
+        "reject": false,
+        "category": "Science",
+        "definition": "A rank in biological classification that groups together species with common characteristics."
+      },
+      "sourceWordDataSha256": "b4fa321d126575e8c111901f0a1589269650586a3a1710788b9fec923cc44068",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "d05545dd-d587-481b-9e80-13353da75c98",
+      "date": "2026-05-08",
+      "word": "FATHOM",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "FATHOM",
+        "reject": false,
+        "category": "Science",
+        "definition": "To understand or comprehend something deeply, often used in the context of measuring water depth."
+      },
+      "sourceWordDataSha256": "dda073e5ad22dfab4319039aeac885133de5f06bbaf76305f55ed0a6bc79d80d",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "e2f71fd1-6d67-4d32-9139-cb617b5fe611",
+      "date": "2026-05-09",
+      "word": "DONUTS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "DONUTS",
+        "reject": false,
+        "category": "Food",
+        "definition": "Sweet, fried pastries that are often ring-shaped and can be glazed or filled."
+      },
+      "sourceWordDataSha256": "f808e87b1e41f6fed8451c87fa52cfdf5b185c1ea10b88be4b9449ef9bf0e52d",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "18e6de94-f6f1-47a9-8bf4-896a68e0b932",
+      "date": "2026-05-10",
+      "word": "DEMONS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "DEMONS",
+        "reject": false,
+        "category": "Culture",
+        "definition": "Supernatural beings often depicted as malevolent spirits in folklore and mythology."
+      },
+      "sourceWordDataSha256": "dcfc219ee787c76f6d1cf5431b34af6a41dc3e06f29afb7ce177c33c77cfc7fd",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "5bb2603b-21fb-42f0-9487-22d86960a07d",
+      "date": "2026-05-11",
+      "word": "FORMAL",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "FORMAL",
+        "reject": false,
+        "category": "Fashion",
+        "definition": "Relating to clothing or events that are characterized by a high degree of elegance and adherence to established conventions."
+      },
+      "sourceWordDataSha256": "d897a278cd8258edf893be204c10327f56db688ce17ae2172a3e831c211bfef2",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "5a0985c0-ae86-4328-87ad-4972b4f03a15",
+      "date": "2026-05-12",
+      "word": "JOKERS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "JOKERS",
+        "reject": false,
+        "category": "Culture",
+        "definition": "Characters or individuals known for their humor and ability to entertain, often associated with playing cards."
+      },
+      "sourceWordDataSha256": "97934481c01dd9ddb2e780c3a1c44567940a00b49c910935a7f57f8552a24ba1",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "c69fa0a2-709b-47a5-8c07-ea5a387a74a1",
+      "date": "2026-05-13",
+      "word": "TORQUE",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "TORQUE",
+        "reject": false,
+        "category": "Science",
+        "definition": "A measure of the rotational force applied to an object."
+      },
+      "sourceWordDataSha256": "184035a1d026270e08e85283c8d7b76399af4149c1b8a990500e46053d377c39",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "28b05bbe-e990-444e-bf4e-d508d59f364b",
+      "date": "2026-05-14",
+      "word": "DREADS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "DREADS",
+        "reject": false,
+        "category": "Fashion",
+        "definition": "A hairstyle formed by matting or braiding hair into long strands."
+      },
+      "sourceWordDataSha256": "593b7c3eb5127a3b3b53c3b36059bc3938aea8f3b7cc035c7a1f204f4ca481d0",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "53b9fbe7-5b1f-431e-b60d-acf6e8a75a14",
+      "date": "2026-05-15",
+      "word": "BEWARE",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "BEWARE",
+        "reject": false,
+        "category": "Language",
+        "definition": "A warning to be cautious or careful about something."
+      },
+      "sourceWordDataSha256": "37c7be648e0604e0b7edc7deac2fd63949ab61323b86080ec66200f3e6794c15",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "7aabfbc7-8a4f-46b9-93eb-fe5556f21a7a",
+      "date": "2026-05-16",
+      "word": "CARATS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "CARATS",
+        "reject": false,
+        "category": "Business",
+        "definition": "A unit of weight used for measuring gemstones and pearls."
+      },
+      "sourceWordDataSha256": "5646acd6c591eed91d7574d65624897cd8d9ef41cf787cfb263a686cf1c7470a",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "8f523238-e9f0-4ea6-9cb4-e9f6289ad55e",
+      "date": "2026-05-17",
+      "word": "TILING",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "TILING",
+        "reject": false,
+        "category": "Art",
+        "definition": "The process of covering a surface with tiles."
+      },
+      "sourceWordDataSha256": "0db4d848df0088966cab51d58d278daf284be2e79ae14e5253d9ff9a70fc899a",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "86526015-567d-4c11-9911-1ac764bbc888",
+      "date": "2026-05-18",
+      "word": "HEDGES",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "HEDGES",
+        "reject": false,
+        "category": "Nature",
+        "definition": "A fence or boundary formed by a dense row of shrubs or low trees."
+      },
+      "sourceWordDataSha256": "8c096c32c19cdc8ccb55ecc3e18b6f2a1e92aac00497d8c71c5e99fd98269ec4",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "1af16617-adad-4424-829e-a390c63e0da4",
+      "date": "2026-05-19",
+      "word": "SELVES",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "SELVES",
+        "reject": false,
+        "category": "Body",
+        "definition": "The plural form of self, referring to individual identities."
+      },
+      "sourceWordDataSha256": "a2ce8b389f73d05f0b9404ade3a315b2d8c4993ec2ebdb06004000353a0fb442",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "4a28c623-71cd-4c70-bc85-6bf162eb7157",
+      "date": "2026-05-20",
+      "word": "ETHICS",
+      "era": "legacy_category",
+      "sourceWordData": {
+        "word": "ETHICS",
+        "reject": false,
+        "category": "Culture",
+        "definition": "A set of moral principles that govern a person's behavior or the conducting of an activity."
+      },
+      "sourceWordDataSha256": "dd815f8dda4a6aab9268f03da5b60a029c5e2712bbe0abdedd35b074afa8e677",
+      "currentClue": null,
+      "reviewTask": "generate_current_style_clue"
+    },
+    {
+      "id": "0bf24f6b-2864-41fb-a8ee-9d8ce25fce9c",
+      "date": "2026-05-21",
+      "word": "TEAPOT",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "BREW",
+        "word": "TEAPOT",
+        "reject": false
+      },
+      "sourceWordDataSha256": "70676dcbf9b4e1112874697044e6e0ed7060f08f6297566236f2c499147428ef",
+      "currentClue": "BREW",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "a0171b8c-026e-4718-ae7e-39a8d02467de",
+      "date": "2026-05-22",
+      "word": "UNKIND",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CRUELTY",
+        "word": "UNKIND",
+        "reject": false
+      },
+      "sourceWordDataSha256": "cdebcea639a397b33eb9726b71a217852302fa7f6b5e0eac6446fe19d7f2916f",
+      "currentClue": "CRUELTY",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "8f2f58a3-0b4a-418a-bb0f-452efba998d8",
+      "date": "2026-05-23",
+      "word": "ACTORS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "PERFORMANCE",
+        "word": "ACTORS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "a0886c00aa45205868ce995c87913ba0aae20de06665013ced3d60b5a2bbd903",
+      "currentClue": "PERFORMANCE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "76c3ea43-e856-4e6a-9675-4f548980f430",
+      "date": "2026-05-24",
+      "word": "ENTITY",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "EXISTENCE",
+        "word": "ENTITY",
+        "reject": false
+      },
+      "sourceWordDataSha256": "825d459e99ab8b6ff939faba6d7e1c37e3815a3f1169427e5bc438914bc7a7fc",
+      "currentClue": "EXISTENCE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "af3fde90-49b9-4612-a43b-56c18f66e68f",
+      "date": "2026-05-25",
+      "word": "SOFTEN",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "GENTLE",
+        "word": "SOFTEN",
+        "reject": false
+      },
+      "sourceWordDataSha256": "10453f95cb82c57f101d03e7091398fc09b40ddf0b0dc34f508ea144e7033070",
+      "currentClue": "GENTLE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "16ef9ca4-d45c-44be-aa38-a3a34bbb94a5",
+      "date": "2026-05-26",
+      "word": "STRIFE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CONFLICT",
+        "word": "STRIFE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "92c65faae9e5e91648a3eef8d5c378081d3a0348d2f3d1a785403663e9d430bc",
+      "currentClue": "CONFLICT",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "a14a1ddf-076d-4209-9ba5-f53cc0dd21ce",
+      "date": "2026-05-27",
+      "word": "CLONES",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "DUPLICATE",
+        "word": "CLONES",
+        "reject": false
+      },
+      "sourceWordDataSha256": "4adf859519b12b3a6f88079743723afa38f7aa1047d0d10fee6965c545e4a2fd",
+      "currentClue": "DUPLICATE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "e79246f6-4e87-49c7-81f0-6ccfd0112864",
+      "date": "2026-05-28",
+      "word": "RAFFLE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "LOTTERY",
+        "word": "RAFFLE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "a0dd224fecfa2bde66fe9ca6ea59a8f9ad4f27fe163083e142131695302ec780",
+      "currentClue": "LOTTERY",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "e52bc7a2-2b69-4c24-97de-aa53f14e7324",
+      "date": "2026-05-29",
+      "word": "EMERGE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "APPEAR",
+        "word": "EMERGE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "c4b2bae9d637b0f92a59834c4e75b9f042ea8450db09a0440f3dfb91290766cd",
+      "currentClue": "APPEAR",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "be67e7e1-8c4f-4516-a208-51890f1e3c34",
+      "date": "2026-05-30",
+      "word": "MAMMAL",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "ANIMAL",
+        "word": "MAMMAL",
+        "reject": false
+      },
+      "sourceWordDataSha256": "a1c9ea5cdcff912b41f67815132443def195db0685df2852d1066a1705651f94",
+      "currentClue": "ANIMAL",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "bca5a961-a9c0-4886-8699-c63c8f24b29a",
+      "date": "2026-05-31",
+      "word": "SPEEDY",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "RAPID",
+        "word": "SPEEDY",
+        "reject": false
+      },
+      "sourceWordDataSha256": "7efb58e12c1755d1f0976a5b5f02ec08a4207a313a74be75cfbe091624a43e72",
+      "currentClue": "RAPID",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "38407e17-159e-4fc9-ab5f-9aebd99ba6a3",
+      "date": "2026-06-01",
+      "word": "PLUGIN",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "EXTENSION",
+        "word": "PLUGIN",
+        "reject": false
+      },
+      "sourceWordDataSha256": "2075d2864e7e7b6b1ef7484230085160665bfff47acea363bc9b8081024ce087",
+      "currentClue": "EXTENSION",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "c91d14d0-ae55-450f-881a-022bef2dbce1",
+      "date": "2026-06-02",
+      "word": "FRANCS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CURRENCY",
+        "word": "FRANCS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "a0f28644f2d55f285260c7c9540bf60da75336ceacb05f788df4a1cbb2752e8f",
+      "currentClue": "CURRENCY",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "d93ab24e-205d-433c-b51f-3649cca2a154",
+      "date": "2026-06-03",
+      "word": "GINGER",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "SPICE",
+        "word": "GINGER",
+        "reject": false
+      },
+      "sourceWordDataSha256": "13ccd89e673e2157eff2fe89cba6bfc873ff1d83ac130fdf403464ed45ea00ad",
+      "currentClue": "SPICE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "a5a8975d-d4ed-44b0-9d8b-43cb1799ff38",
+      "date": "2026-06-04",
+      "word": "HARDEN",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "FIRM",
+        "word": "HARDEN",
+        "reject": false
+      },
+      "sourceWordDataSha256": "89687f9f512730bd3c678510a3309f136f212aa28f54e10c572038a1ad84bf78",
+      "currentClue": "FIRM",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "8980d6d0-868c-4aa0-9d9c-0e5351ba68b9",
+      "date": "2026-06-05",
+      "word": "IMPART",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "SHARE",
+        "word": "IMPART",
+        "reject": false
+      },
+      "sourceWordDataSha256": "682b4627799a25fc311bbc01ab967283f45e579b1dc89e4accfb9db9034cad1e",
+      "currentClue": "SHARE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "f336f65b-fb52-4429-b8c4-707961c79591",
+      "date": "2026-06-06",
+      "word": "SPRINT",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "RACE",
+        "word": "SPRINT",
+        "reject": false
+      },
+      "sourceWordDataSha256": "faf459914f66631b7a4760a015c0cde994a3076705340d1a3eb2ba10c7a0852a",
+      "currentClue": "RACE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "0a100f61-ddb4-40e3-bda7-77a0db80639e",
+      "date": "2026-06-07",
+      "word": "SPIDER",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "WEB",
+        "word": "SPIDER",
+        "reject": false
+      },
+      "sourceWordDataSha256": "6e5dca3ed260b3b043f3fa8b819c4de56e3ee81447daca6f9fb6c3e9b72f74bd",
+      "currentClue": "WEB",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "c8dd6bf9-01d3-4e58-b757-2573272e52b6",
+      "date": "2026-06-08",
+      "word": "WISHED",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "DESIRE",
+        "word": "WISHED",
+        "reject": false
+      },
+      "sourceWordDataSha256": "4d310f75a049665aaa2ac718367b9d91ec9aa1a49fc3b4e8f03bda236c2eeec1",
+      "currentClue": "DESIRE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "881c6c43-9953-4dfd-9d5c-88ae0b4e893d",
+      "date": "2026-06-09",
+      "word": "EXCELS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "ACHIEVE",
+        "word": "EXCELS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "3cf3e716fe23637f1dfeb90cae983c31f9028a721f4448abd3ae078912fb70a4",
+      "currentClue": "ACHIEVE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "66753d29-78a3-4be1-91b0-1807f04f982e",
+      "date": "2026-06-10",
+      "word": "RACKED",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "STRESS",
+        "word": "RACKED",
+        "reject": false
+      },
+      "sourceWordDataSha256": "7703cfde5e2c20c892f85582fa4d3dc32f1950af7f109a8e21198d0b57457e46",
+      "currentClue": "STRESS",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "392cddb5-1ced-464d-b4b0-da896f3a2454",
+      "date": "2026-06-11",
+      "word": "PRICEY",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "VALUE",
+        "word": "PRICEY",
+        "reject": false
+      },
+      "sourceWordDataSha256": "70052878a6bd14b67b45c01ab265fad0236a522a1800b38cc884e08ac3edb718",
+      "currentClue": "VALUE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "1b4d90ee-ffe5-4dd4-82c3-37b20f564e4c",
+      "date": "2026-06-12",
+      "word": "SCHEMA",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "STRUCTURE",
+        "word": "SCHEMA",
+        "reject": false
+      },
+      "sourceWordDataSha256": "b9cd6cae4b8d9e69a399ac36698ebcc9587d79c0a170a7f6b728fc8311624052",
+      "currentClue": "STRUCTURE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "a82e63eb-8887-413f-9213-222ff64d7429",
+      "date": "2026-06-13",
+      "word": "BIASES",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "PREJUDICE",
+        "word": "BIASES",
+        "reject": false
+      },
+      "sourceWordDataSha256": "201d7d9f328d8e76e439cbb095e41068f5bdd58c6630f69062b8b4310dcdfd2f",
+      "currentClue": "PREJUDICE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "a0852dc0-6359-4641-b05a-2e3a5af0bc90",
+      "date": "2026-06-14",
+      "word": "CHIMES",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "TIME",
+        "word": "CHIMES",
+        "reject": false
+      },
+      "sourceWordDataSha256": "015d0a191bbb8b22a86c0b7465b637fbea8716de078d54ebb50df0068b14da43",
+      "currentClue": "TIME",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "2251fd38-618a-4535-83d2-988feab95c60",
+      "date": "2026-06-15",
+      "word": "BLURRY",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "VISION",
+        "word": "BLURRY",
+        "reject": false
+      },
+      "sourceWordDataSha256": "0723e3344d4074908504fd83673a8858d2ab0e82c75b70fdd26974d6d8c046b3",
+      "currentClue": "VISION",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "602202c6-22a1-49d2-a9b1-4c0ae5df3c6e",
+      "date": "2026-06-16",
+      "word": "ARDENT",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "PASSION",
+        "word": "ARDENT",
+        "reject": false
+      },
+      "sourceWordDataSha256": "138663413b2b98b13383fc221e989dd0b3bac8433758480ee3c6d64078f9752a",
+      "currentClue": "PASSION",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "84a356d3-46f3-4c6c-8c12-625b5b0fa18a",
+      "date": "2026-06-17",
+      "word": "FERRET",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "HUNT",
+        "word": "FERRET",
+        "reject": false
+      },
+      "sourceWordDataSha256": "b0189cff312facdb2f1d631d75a6dedcb9cd5124cc2049d235c288fed9ddee30",
+      "currentClue": "HUNT",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "fe02e9d0-ad09-4981-a191-d5a92767d268",
+      "date": "2026-06-18",
+      "word": "LARVAE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "TRANSFORMATION",
+        "word": "LARVAE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "df9f48c8ab98fa6bc9e92220b53f5e578fbc9c3ed4e3e4d04d8fc66eda52c3f1",
+      "currentClue": "TRANSFORMATION",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "d5d87b06-f0fe-4470-af6f-b7681a26a380",
+      "date": "2026-06-19",
+      "word": "TICKLE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "LAUGHTER",
+        "word": "TICKLE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "27a232e7b5fd27319d7ed3b5af26bb879a43fb8cb3356091dced4824bedb5463",
+      "currentClue": "LAUGHTER",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "c22cf736-d4f4-4cd6-94b1-f44e65725712",
+      "date": "2026-06-20",
+      "word": "CUDDLE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "AFFECTION",
+        "word": "CUDDLE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "b8d4cc6475e5e7d791c5d17a2e4494f8330cf49ae5cf0abee760148bfe6c07fa",
+      "currentClue": "AFFECTION",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "a1d207b6-468f-452d-861d-89324b696c16",
+      "date": "2026-06-21",
+      "word": "NOVICE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "BEGINNER",
+        "word": "NOVICE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "6d8283418044fb21f7015f8b8c32986bfe9d708b2087de60aab88895f1f9d879",
+      "currentClue": "BEGINNER",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "56530af3-8ac1-4cb4-88cb-1e33bf3781f6",
+      "date": "2026-06-22",
+      "word": "FAVOUR",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "PREFER",
+        "word": "FAVOUR",
+        "reject": false
+      },
+      "sourceWordDataSha256": "8064bd6d634a70a8ddf0a67a76184739d039a5e1775723e4272c1823df36ba00",
+      "currentClue": "PREFER",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "2af3bdc8-e843-42a7-8b7d-9a8dd91930e5",
+      "date": "2026-06-23",
+      "word": "AVENUE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "PATH",
+        "word": "AVENUE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "985690e9ca98af8d4fb52e6a6d6e816fa35cf0596c53f235d620beffeb91f8da",
+      "currentClue": "PATH",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "e525a1ae-82b7-495d-8923-40d2c7352e34",
+      "date": "2026-06-24",
+      "word": "LAYERS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "STRATA",
+        "word": "LAYERS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "81379c44e0a84abf67a622fcc76a83b4104a9bc53dd810f97f4b8a1c475cf72d",
+      "currentClue": "STRATA",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "40f3a02a-3054-4143-982b-85a784a4b819",
+      "date": "2026-06-25",
+      "word": "WICKET",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CRICKET",
+        "word": "WICKET",
+        "reject": false
+      },
+      "sourceWordDataSha256": "ac9000d001f40e1e1e12375d5335662460a4f2336869f9b80b330076a3426c57",
+      "currentClue": "CRICKET",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "0f215024-c2d9-40ca-89d3-7864e42b0f70",
+      "date": "2026-06-26",
+      "word": "FALCON",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "RAPTOR",
+        "word": "FALCON",
+        "reject": false
+      },
+      "sourceWordDataSha256": "2ee27a80df5e094b8704ee1e9db1e946b2edd6108952b3fe974477a90ecfeaae",
+      "currentClue": "RAPTOR",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "96b48957-0386-4fb6-bdeb-89280c8a2bc7",
+      "date": "2026-06-27",
+      "word": "SPEAKS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "COMMUNICATES",
+        "word": "SPEAKS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "364055ad1fbd0c1f15bc08dfbca287fd0f15ff80b1b21d60a79f52b395b133e7",
+      "currentClue": "COMMUNICATES",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "a84443a9-5317-41fe-82cb-d7f6457280e2",
+      "date": "2026-06-28",
+      "word": "FEISTY",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "SPIRITED",
+        "word": "FEISTY",
+        "reject": false
+      },
+      "sourceWordDataSha256": "88d4f24143ee9c32fb2660d7d9bdacb80e04970c298dd7f40e6104a3110de733",
+      "currentClue": "SPIRITED",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "156c741c-052e-4f03-8dbb-ea850e81879a",
+      "date": "2026-06-29",
+      "word": "MYRIAD",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "MULTITUDE",
+        "word": "MYRIAD",
+        "reject": false
+      },
+      "sourceWordDataSha256": "2d4ce7170765b89e0525d63d68993af6a2fc0f13ac1bc5b77d540b034b5bb767",
+      "currentClue": "MULTITUDE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "d25f6f9f-2e8b-4000-88d0-faab9fd4d4f8",
+      "date": "2026-06-30",
+      "word": "SAUCER",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "DISK",
+        "word": "SAUCER",
+        "reject": false
+      },
+      "sourceWordDataSha256": "4da5e1991b7f23b710980ac9f7f26c91e957160a59b41e33383b8cc819a5956a",
+      "currentClue": "DISK",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "7e43f7a8-c0a1-47d7-a618-20623c34890d",
+      "date": "2026-07-01",
+      "word": "FANDOM",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "COMMUNITY",
+        "word": "FANDOM",
+        "reject": false
+      },
+      "sourceWordDataSha256": "20d8249dd0d403db9915493f87c405c0d6f00bd6c0a27b40e44d7e5b9552b3c6",
+      "currentClue": "COMMUNITY",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "465a1cd0-6e92-42bb-ad5e-198054c80ee4",
+      "date": "2026-07-02",
+      "word": "EMBERS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "GLOW",
+        "word": "EMBERS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "f0c00641018514cb75e266858eaba8d1e2d625c109e1aff9a8ddf0b1ef0a23ea",
+      "currentClue": "GLOW",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "7b657894-a347-47d2-9f65-05a3c8cd441c",
+      "date": "2026-07-03",
+      "word": "OUTSET",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "BEGINNING",
+        "word": "OUTSET",
+        "reject": false
+      },
+      "sourceWordDataSha256": "7d8c9d4a2509e3b27d4534c20c406e3c9dee2453aabdfca95dde89f3a58962d1",
+      "currentClue": "BEGINNING",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "6d7317da-7841-403d-b235-1a585dff66e2",
+      "date": "2026-07-04",
+      "word": "BURNED",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CHARRED",
+        "word": "BURNED",
+        "reject": false
+      },
+      "sourceWordDataSha256": "35f9b68866af5ead71b58d638a0e7a89909a3cab079828e083d380e00231bb31",
+      "currentClue": "CHARRED",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "6d8c4bcf-2162-44b9-bad3-a43a91b79985",
+      "date": "2026-07-05",
+      "word": "ROOKIE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "NOVICE",
+        "word": "ROOKIE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "f8dfe6faeebc9666a6942c2792b979104dbed0a8dd72488cb1d73d1ee303261a",
+      "currentClue": "NOVICE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "39741329-3184-4296-a58e-8a88c700413c",
+      "date": "2026-07-06",
+      "word": "ACUMEN",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "INSIGHT",
+        "word": "ACUMEN",
+        "reject": false
+      },
+      "sourceWordDataSha256": "451626838340575dab512f4dd08c316d0285f66ff6d61d7de1e8d263cf64e11e",
+      "currentClue": "INSIGHT",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "68b6d08a-32f7-4433-acbe-3a6cac3380fb",
+      "date": "2026-07-07",
+      "word": "GUARDS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "PROTECTORS",
+        "word": "GUARDS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "89b40543795a2bacaca0d03c2b037caf40b92ed71e1e648e06e9a3687aa5add3",
+      "currentClue": "PROTECTORS",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "56acd14e-0730-437c-ba8f-9a5627510370",
+      "date": "2026-07-08",
+      "word": "FREEZE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "COLD",
+        "word": "FREEZE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "f54c60c313b692e9d7e7eca31b981adf97f115ad58b5a3ab95e1cb3c82326b34",
+      "currentClue": "COLD",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "eb8f3274-645b-43c5-aaa3-cce33432c8ce",
+      "date": "2026-07-09",
+      "word": "BOXING",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "RING",
+        "word": "BOXING",
+        "reject": false
+      },
+      "sourceWordDataSha256": "8b035d92600827ecc31a60c1c762cb673a901670c38e8e7c25b1ab2d32da341e",
+      "currentClue": "RING",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "9f43fac5-5dab-4b3b-bc28-049eb8737fc5",
+      "date": "2026-07-10",
+      "word": "SCOUTS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "EXPLORERS",
+        "word": "SCOUTS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "e596ab1e73714d216d4f5fa4f333a28db94bf8b90865d60c897c635af4b092d3",
+      "currentClue": "EXPLORERS",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "c11c484b-e3f5-4ce2-90b2-7704382dcba8",
+      "date": "2026-07-11",
+      "word": "BEASTS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CREATURES",
+        "word": "BEASTS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "97d210aaea6b9ef8fe2b01a0ca2a2f99905cce46a89022266332d041279181aa",
+      "currentClue": "CREATURES",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "1e009073-297c-4ae3-9e05-8165c0ab8407",
+      "date": "2026-07-12",
+      "word": "QUIRKS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "ECCENTRICITIES",
+        "word": "QUIRKS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "72f662f1b661f6c0061aeead48626f75ef96fe0143a764f9a9c223a931813c7d",
+      "currentClue": "ECCENTRICITIES",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "2fe0b6d2-f1fd-462e-861a-5acbb3161053",
+      "date": "2026-07-13",
+      "word": "EXTRAS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "ADDITIONS",
+        "word": "EXTRAS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "b0b4deb3ccbb3b74372d2438c152334a15a1cbe303b9699692b104f02d399a47",
+      "currentClue": "ADDITIONS",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "af300aa2-88c7-4ac2-b8b3-378b0fdcef2c",
+      "date": "2026-07-14",
+      "word": "SCOTCH",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "WHISKEY",
+        "word": "SCOTCH",
+        "reject": false
+      },
+      "sourceWordDataSha256": "a4acc62fd2cc309f8982b9e94b927820e1da1ba286d0729c158946d1fbb4752c",
+      "currentClue": "WHISKEY",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "041e9452-50b6-4561-bb5c-d2b7ec0ca2c8",
+      "date": "2026-07-15",
+      "word": "GALORE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "ABUNDANCE",
+        "word": "GALORE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "c7c6798231d1cbdc88b095ab305112f0c07380aa414c69a7965d2be7bde34b9e",
+      "currentClue": "ABUNDANCE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "c1e1e9a3-d342-4ba8-bc58-8f283d0266c2",
+      "date": "2026-07-16",
+      "word": "COPPER",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "METAL",
+        "word": "COPPER",
+        "reject": false
+      },
+      "sourceWordDataSha256": "6603756caee7d09d97593183e4af693f581d5e908e1ff057d7345f8acbe5f998",
+      "currentClue": "METAL",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "a0e96207-cbd8-4391-aca2-f82b7c9ac141",
+      "date": "2026-07-17",
+      "word": "POUNCE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "LEAP",
+        "word": "POUNCE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "6854dc95045f505fbd064ff38baf19742194c86b8e8ccbba7e07e59f7e6cc21d",
+      "currentClue": "LEAP",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "cf8f73bf-6cf7-4b52-8cd6-03d4e3a0263b",
+      "date": "2026-07-18",
+      "word": "HORNET",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "STING",
+        "word": "HORNET",
+        "reject": false
+      },
+      "sourceWordDataSha256": "243599f8e76eb8766d72c7c13622f697368be48a5aa16bfcd540f2affdbcd5d0",
+      "currentClue": "STING",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "fa463fca-b180-4c43-83ef-29f62a1193f2",
+      "date": "2026-07-19",
+      "word": "ORCHID",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "BLOOM",
+        "word": "ORCHID",
+        "reject": false
+      },
+      "sourceWordDataSha256": "8f2b2b862c87047cf67943a74c6a9b6c91529b7a06bd9c06ecf5de65038b8550",
+      "currentClue": "BLOOM",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "9623d794-3f26-4cf8-92c8-6f8291ee412e",
+      "date": "2026-07-20",
+      "word": "DOODLE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "SKETCH",
+        "word": "DOODLE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "0606bbbf33ddc1531fd35f00b868af5c890cac49a223e5294ea27b0240ed9a51",
+      "currentClue": "SKETCH",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "da6403d8-8020-4300-bc03-2cbbc32f74af",
+      "date": "2026-07-21",
+      "word": "SENSOR",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "DETECTOR",
+        "word": "SENSOR",
+        "reject": false
+      },
+      "sourceWordDataSha256": "06f5abe6e8907e2bfcddaa5e8262bbfc69a8a5c4e11e47da8cb0bcacb943a437",
+      "currentClue": "DETECTOR",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "7b5e13ee-6ea9-47c5-bede-4a280978966a",
+      "date": "2026-07-22",
+      "word": "DENIED",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "REFUSED",
+        "word": "DENIED",
+        "reject": false
+      },
+      "sourceWordDataSha256": "2ec9bfc74cbef66cb17736a6d86476dfd9f71b4e598233b1a293f5519cec99fb",
+      "currentClue": "REFUSED",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "d5e20a4e-d43e-4ede-adf8-ada68840c095",
+      "date": "2026-07-23",
+      "word": "BOLTED",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "SECURED",
+        "word": "BOLTED",
+        "reject": false
+      },
+      "sourceWordDataSha256": "d14a007d9badce549e8be3650e8d27257bca6e8aa1304b0eb1f47fa09a037640",
+      "currentClue": "SECURED",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "36680263-1a91-4f52-8409-0ecfcbc87a9e",
+      "date": "2026-07-24",
+      "word": "BUNDLE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "COLLECTION",
+        "word": "BUNDLE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "dee55d84e32c9f90cbf3973d6d97667ea03b1ef7d46669e075cbd6d24537d2e2",
+      "currentClue": "COLLECTION",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "c6e983fb-fafd-4f19-9ba5-d94666ffbd6a",
+      "date": "2026-07-25",
+      "word": "FRINGE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "BORDER",
+        "word": "FRINGE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "8282c7d12b01efc12282dca78c89bf476c40c12853e8cc9a994cf5751b4b1048",
+      "currentClue": "BORDER",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "0b41809b-42b2-453b-94d5-59337fea2038",
+      "date": "2026-07-26",
+      "word": "CHEESY",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CORNY",
+        "word": "CHEESY",
+        "reject": false
+      },
+      "sourceWordDataSha256": "b4fb78abaab06d7bedc0a1c3cb6b1a5d8f3bbb0cb8d29ef2bcf1f4fc61d6564b",
+      "currentClue": "CORNY",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "1bd70369-876a-4014-a45b-e562600c94e3",
+      "date": "2026-07-27",
+      "word": "PLIERS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "GRIP",
+        "word": "PLIERS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "96e09ffd8bb0e864ba91f4747ba257b31dae667b8cef9e22a34844c0b8e94950",
+      "currentClue": "GRIP",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "430a9dfe-6201-4272-ab61-94b15e366649",
+      "date": "2026-07-28",
+      "word": "KEEPER",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "GUARDIAN",
+        "word": "KEEPER",
+        "reject": false
+      },
+      "sourceWordDataSha256": "7f5c67b2a45f5e6b0484785e804f59abe9531a288d9bb61ee1df061366df8742",
+      "currentClue": "GUARDIAN",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "bafb93d6-afe2-486c-8ce6-de607fbd52a1",
+      "date": "2026-07-29",
+      "word": "LEVIES",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "TAXES",
+        "word": "LEVIES",
+        "reject": false
+      },
+      "sourceWordDataSha256": "8e1ac087e2687a228b8ebf986214df47d2b35e1264ebb488772c58985dbff6e3",
+      "currentClue": "TAXES",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "c44bace7-fb4c-481c-9646-f1b70f686872",
+      "date": "2026-07-30",
+      "word": "GOSPEL",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "FAITH",
+        "word": "GOSPEL",
+        "reject": false
+      },
+      "sourceWordDataSha256": "62eaed133ef95ca381379c9cbc100b7dfae453a7c20e1bbeb499ee5ff2436e9d",
+      "currentClue": "FAITH",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "fd3ae2e5-e66c-4f80-b255-e71eafaa56ca",
+      "date": "2026-07-31",
+      "word": "MANUAL",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "GUIDE",
+        "word": "MANUAL",
+        "reject": false
+      },
+      "sourceWordDataSha256": "10c91c1df3e25ca1fdc3f47ce5547da6964482cef372d43e98c9e4765fda288e",
+      "currentClue": "GUIDE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "4adde51f-244c-40bf-bdee-653d6dcd446c",
+      "date": "2026-08-01",
+      "word": "PRINTS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "IMAGES",
+        "word": "PRINTS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "9fc32fef712534d53e55aeb97b41ec6a49e37f70f1f0b80589a3e5a2222781eb",
+      "currentClue": "IMAGES",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "3137b21c-1856-4cad-b35f-0593790c01f6",
+      "date": "2026-08-02",
+      "word": "TRENCH",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "BATTLE",
+        "word": "TRENCH",
+        "reject": false
+      },
+      "sourceWordDataSha256": "ffbb4a0f22c2cbcec653075b305ef0b5e5f95523613ad39c160f2b19017906ae",
+      "currentClue": "BATTLE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "e075aa50-e9aa-4168-8e91-45a7fdbad944",
+      "date": "2026-08-03",
+      "word": "HORROR",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "FEAR",
+        "word": "HORROR",
+        "reject": false
+      },
+      "sourceWordDataSha256": "3cf62d268b47499bc47b0b002f7f35dbc63619d1d5deee4bde8d593b3a4cdf73",
+      "currentClue": "FEAR",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "0e69bcc3-de2e-40a3-a27e-b85f0617f7d3",
+      "date": "2026-08-04",
+      "word": "PILOTS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "FLIGHT",
+        "word": "PILOTS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "b9037f49117c9f770fbb351af0dc8339aa1edd5365fe80ec3c613b0802af7d2d",
+      "currentClue": "FLIGHT",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "fd2b1d13-f6d3-4578-ab9f-bf8046d6fc7d",
+      "date": "2026-08-05",
+      "word": "GAMING",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "LEISURE",
+        "word": "GAMING",
+        "reject": false
+      },
+      "sourceWordDataSha256": "ccfbee629150ff1e27d2582ecfa3b7caf026c512719604ed83f21db62dc61077",
+      "currentClue": "LEISURE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "5eb7ad12-17ce-4733-bad1-dbe47a371004",
+      "date": "2026-08-06",
+      "word": "SUITOR",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "ROMANCE",
+        "word": "SUITOR",
+        "reject": false
+      },
+      "sourceWordDataSha256": "2e07721c5b3564f06bd851fd96a83429332262db68d2a3c7145f6202a5c45bdd",
+      "currentClue": "ROMANCE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "51c5b1fc-351b-4e62-9789-4250b4680bb9",
+      "date": "2026-08-07",
+      "word": "REBOOT",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "RESET",
+        "word": "REBOOT",
+        "reject": false
+      },
+      "sourceWordDataSha256": "e8e351a599bd8bba1cb7dc6436e8fb83ac202ab274b4f58951813cfec7dd2f73",
+      "currentClue": "RESET",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "13b1e4c7-7831-4c9d-8388-37557314c5ca",
+      "date": "2026-08-08",
+      "word": "ATTIRE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CLOTHING",
+        "word": "ATTIRE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "17193af67c38af080a75bd657092675aebda6248d0e936b8c1fd2097816e01be",
+      "currentClue": "CLOTHING",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "317cd903-c1bf-4c71-8e7e-35bf95bdae48",
+      "date": "2026-08-09",
+      "word": "FIRING",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "DISMISSAL",
+        "word": "FIRING",
+        "reject": false
+      },
+      "sourceWordDataSha256": "b584ec2b4f1c2e22fb288520a7143309e6681fb3e3a1d81e07a5069bc32e03a7",
+      "currentClue": "DISMISSAL",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "3b1181a0-155a-44fb-8b6e-a29cc033504d",
+      "date": "2026-08-10",
+      "word": "YORKER",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CRICKET",
+        "word": "YORKER",
+        "reject": false
+      },
+      "sourceWordDataSha256": "6dcc664d549d55a11084f00585748d3933c3dbb855e5afba82a4ef45cc4fa07d",
+      "currentClue": "CRICKET",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "bd9bc859-924a-4896-8182-732ce24d60ea",
+      "date": "2026-08-11",
+      "word": "CLICKS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "MOUSE",
+        "word": "CLICKS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "d3f469a179774cd65a06373328824ac8a1998d3d835fe41e7fc5a7ea710b3da7",
+      "currentClue": "MOUSE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "0c22e3ed-06e4-421b-aff8-c60824933a9f",
+      "date": "2026-08-12",
+      "word": "COHORT",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "GROUP",
+        "word": "COHORT",
+        "reject": false
+      },
+      "sourceWordDataSha256": "321b4b8347c82273fb31c86c55efa4c436c6cdccfa682ac89e12caa6526874d1",
+      "currentClue": "GROUP",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "a86299c3-ee70-4b20-8d52-290dbd2eaec2",
+      "date": "2026-08-13",
+      "word": "ESTEEM",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "REGARD",
+        "word": "ESTEEM",
+        "reject": false
+      },
+      "sourceWordDataSha256": "0ad9f7acd2353c56f53f3f5aff22c6f363ff02adfcd57b5385b221ccae3f25de",
+      "currentClue": "REGARD",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "47c36441-8620-4c04-a2f5-6f44e7bf26cc",
+      "date": "2026-08-14",
+      "word": "DELETE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "REMOVE",
+        "word": "DELETE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "aa0ed068bdfb0e46bbf4516da7944956dff69481b0c336902f93e5bf6f2d95e7",
+      "currentClue": "REMOVE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "ab35bed9-1867-4dd6-bb3b-3f1eda6cb4c3",
+      "date": "2026-08-15",
+      "word": "STIFLE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "SUPPRESS",
+        "word": "STIFLE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "3fb75bc1c699a36162fa03bb5265ff8b1f37f1d7685a2568e92fbadd434d6fdc",
+      "currentClue": "SUPPRESS",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "1c289f34-2d01-4494-9906-37b1e1a5026a",
+      "date": "2026-08-16",
+      "word": "HAMMER",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "TOOL",
+        "word": "HAMMER",
+        "reject": false
+      },
+      "sourceWordDataSha256": "b6ab3c7c3ebf154353ccca0b1241e3bfac50f9fc31eed6edeed3dc00e7f4b362",
+      "currentClue": "TOOL",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "14bff87a-a67b-4443-aaed-14f6d62ed965",
+      "date": "2026-08-17",
+      "word": "BISHOP",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CHESS",
+        "word": "BISHOP",
+        "reject": false
+      },
+      "sourceWordDataSha256": "cab87c60bc9c0133c13ce80d9e80fb90ccbfb3a91087dffb478bfd68f5c91a25",
+      "currentClue": "CHESS",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "6fea60b2-6946-4827-9c85-c628cbcaa28d",
+      "date": "2026-08-18",
+      "word": "JACKET",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "COVER",
+        "word": "JACKET",
+        "reject": false
+      },
+      "sourceWordDataSha256": "ea1d5e56f042382666304a8d061a5534984b1c6f7a9c83470168a1bbf6b0904f",
+      "currentClue": "COVER",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "b07d13d7-2452-4b67-9503-3aa53a5ee4d4",
+      "date": "2026-08-19",
+      "word": "MALICE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "ILLWILL",
+        "word": "MALICE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "4db140fb402d4a9e203ab20d8048c6a679b45ba274ba7cd88593d661a29343b7",
+      "currentClue": "ILLWILL",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "bb8ec814-fb92-4c8b-82f6-3082956d1dde",
+      "date": "2026-08-20",
+      "word": "OUTPUT",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "RESULT",
+        "word": "OUTPUT",
+        "reject": false
+      },
+      "sourceWordDataSha256": "80bbf6b0122bca8c56f468c18dc289e25baee15762e6babfd670479e23615e69",
+      "currentClue": "RESULT",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "2db08b14-db5f-4b5d-b6b4-d9f5ccfed2c8",
+      "date": "2026-08-21",
+      "word": "CAMELS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "DESERT",
+        "word": "CAMELS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "abafc9daeb7d2e4b27da716c1a27a59856c9d80be025c748c6dd3f9ac719d70f",
+      "currentClue": "DESERT",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "f4839523-3ba9-489e-a946-907f35da5fa1",
+      "date": "2026-08-22",
+      "word": "SKATER",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "HOCKEY",
+        "word": "SKATER",
+        "reject": false
+      },
+      "sourceWordDataSha256": "28196b608314e160a46a04c2766c0e55086f8018e8fab4eb623c57ca38786378",
+      "currentClue": "HOCKEY",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "680bdd6f-e2b1-4a66-b9d2-3e4fa76d8a7f",
+      "date": "2026-08-23",
+      "word": "TUNDRA",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "FROST",
+        "word": "TUNDRA",
+        "reject": false
+      },
+      "sourceWordDataSha256": "d25f76b95262cf2fb8ca1d9beaf59a807ee48ed35fee78751eb0474da43e8a67",
+      "currentClue": "FROST",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "1640edf9-a73b-4e54-90ab-3fad910332c5",
+      "date": "2026-08-24",
+      "word": "ASTRAL",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "COSMOS",
+        "word": "ASTRAL",
+        "reject": false
+      },
+      "sourceWordDataSha256": "c3b834d23e460c07f71322ba793cbb666b8f87d646eda4b03041d7674be7116b",
+      "currentClue": "COSMOS",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "376f64b6-7ca2-4450-bf7b-77fe9b581e85",
+      "date": "2026-08-25",
+      "word": "CHASTE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "PURITY",
+        "word": "CHASTE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "a32501f73a78e5688a1300237ab16220812b151ff59dce287617f01799b07122",
+      "currentClue": "PURITY",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "a6fec3b3-4b20-4368-bd7f-2d72d222d8dd",
+      "date": "2026-08-26",
+      "word": "JACKED",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "LIFTED",
+        "word": "JACKED",
+        "reject": false
+      },
+      "sourceWordDataSha256": "83fde057a27591e6f6704856a42a42013dedeb7aff5724f3da1d726fdb0bab0f",
+      "currentClue": "LIFTED",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "e08783ea-aab0-49ab-8aca-dd1063e217b0",
+      "date": "2026-08-27",
+      "word": "UNISON",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "HARMONY",
+        "word": "UNISON",
+        "reject": false
+      },
+      "sourceWordDataSha256": "5f7b5566b96058a98a42df27fc2e62573adbb43687015fd0e6226fca43794daa",
+      "currentClue": "HARMONY",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "136229d3-38bc-49cd-8dea-1f61d7c6ee1c",
+      "date": "2026-08-28",
+      "word": "SPIRAL",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "TWIST",
+        "word": "SPIRAL",
+        "reject": false
+      },
+      "sourceWordDataSha256": "1a4753921a11b66af63513e5f7d6166277c9cebf632f89b99230022e472744dc",
+      "currentClue": "TWIST",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "a7cb596c-67b6-48f1-a1f9-baf42a233030",
+      "date": "2026-08-29",
+      "word": "TOPPER",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "HAT",
+        "word": "TOPPER",
+        "reject": false
+      },
+      "sourceWordDataSha256": "b4a24b89cc72610f5a66903ef14f5a70a194a92f2b47d4c05c70d2f8faa01cff",
+      "currentClue": "HAT",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "1a57ab68-5f18-4f6d-84e5-c671c69d2bfb",
+      "date": "2026-08-30",
+      "word": "MONKEY",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "PRIMATE",
+        "word": "MONKEY",
+        "reject": false
+      },
+      "sourceWordDataSha256": "bb8d3f790dbc684cb3d8e6448b76706961dfb4df71f950cdfe48933d698319e6",
+      "currentClue": "PRIMATE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "58c24bd1-99e4-41be-97b6-dd00fee41734",
+      "date": "2026-08-31",
+      "word": "FROSTY",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CHILL",
+        "word": "FROSTY",
+        "reject": false
+      },
+      "sourceWordDataSha256": "e40da7bf694c4574de386a5d40468829b0f6f67c99397be0a2463eba11504755",
+      "currentClue": "CHILL",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "e81659c1-ca29-48f9-94e1-272e424ffe63",
+      "date": "2026-09-01",
+      "word": "SUPPLE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "FLEXIBLE",
+        "word": "SUPPLE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "c3383e058b7934eb140e0824e18da546bae811381060efcc41ade541a20ac7af",
+      "currentClue": "FLEXIBLE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "6f18d272-2bae-4b7e-b75c-2dd1d4d8229b",
+      "date": "2026-09-02",
+      "word": "IMPEDE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "OBSTRUCT",
+        "word": "IMPEDE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "eebe94304a40c7e3f756258997369e897afebfbbefd1d4fe93c0362eeb79c6ef",
+      "currentClue": "OBSTRUCT",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "7b759600-f21c-48cb-90d1-90bb8b3d8554",
+      "date": "2026-09-03",
+      "word": "CAVERN",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "DARKNESS",
+        "word": "CAVERN",
+        "reject": false
+      },
+      "sourceWordDataSha256": "70d839d23e1fe91a594508ccadf86d40296bd0b31510e4f23a047cab163e24c1",
+      "currentClue": "DARKNESS",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "ef89718c-8515-45df-87fa-0aa21e9920b4",
+      "date": "2026-09-04",
+      "word": "ZOMBIE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "UNDEAD",
+        "word": "ZOMBIE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "a995293093210921a485e8973bcf1917d117deeb34f86c8e6eae169fb924b133",
+      "currentClue": "UNDEAD",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "b8373a24-5bbd-42e2-bbcf-6906ad45ea89",
+      "date": "2026-09-05",
+      "word": "BUILDS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CREATES",
+        "word": "BUILDS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "5e05ad8f666a66a3694792485c424a30444bbbd2536540e7045a10254744aaed",
+      "currentClue": "CREATES",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "00ef822a-9f97-4eff-8ee6-8c9f1ab5c127",
+      "date": "2026-09-06",
+      "word": "LEASED",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "RENTED",
+        "word": "LEASED",
+        "reject": false
+      },
+      "sourceWordDataSha256": "b16b517aa7e4ff66cae40c93551b7a77386251e5b3ad61a743c3e5359f68f95f",
+      "currentClue": "RENTED",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "cc04a177-2e64-487d-8399-7a8dcef18baf",
+      "date": "2026-09-07",
+      "word": "VOYAGE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "JOURNEY",
+        "word": "VOYAGE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "43e6ce1db8af76d967b69b44df30eac855d842ba46081ea6ad43b8892045214b",
+      "currentClue": "JOURNEY",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "19f74716-d28b-44a7-9b61-60f857795367",
+      "date": "2026-09-08",
+      "word": "NOMADS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "TRAVELERS",
+        "word": "NOMADS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "6cbd8de5e0fce026bb552faac202b1b6aa60053c4624001846d07e2e7e5ceaab",
+      "currentClue": "TRAVELERS",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "ecf94015-ed59-4863-ae98-8b7aeda90e53",
+      "date": "2026-09-09",
+      "word": "ERRORS",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "MISTAKES",
+        "word": "ERRORS",
+        "reject": false
+      },
+      "sourceWordDataSha256": "8fb2e7895545ab0e0e5da2e56c27005355aed76375263275c90b610f075b501f",
+      "currentClue": "MISTAKES",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "2ec8c00c-ab9e-45c0-9e5e-7b8f13ed683f",
+      "date": "2026-09-10",
+      "word": "RITUAL",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "CEREMONY",
+        "word": "RITUAL",
+        "reject": false
+      },
+      "sourceWordDataSha256": "340c23feca3e511b2cdb3a44b11ffde99cbec8702face6d50b31856c5bcf0140",
+      "currentClue": "CEREMONY",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "baf4472f-508d-4fd5-bbe4-e4e73418d807",
+      "date": "2026-09-11",
+      "word": "RUBBLE",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "DEBRIS",
+        "word": "RUBBLE",
+        "reject": false
+      },
+      "sourceWordDataSha256": "a126c60c7f4c759234f0aa6d1a22ed1cce7e312d93d3b7e7c6acba97c392c1ea",
+      "currentClue": "DEBRIS",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "35d55cde-4e70-4a8d-aacf-4d9b68b21f03",
+      "date": "2026-09-12",
+      "word": "SORROW",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "GRIEF",
+        "word": "SORROW",
+        "reject": false
+      },
+      "sourceWordDataSha256": "e898a3dd8d56007ad77baa11a20ce431d2b75033b1ae448f0b90a220df8ef643",
+      "currentClue": "GRIEF",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "e37587db-2344-4af0-8fc5-02fb009b271b",
+      "date": "2026-09-13",
+      "word": "RUNNER",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "ATHLETE",
+        "word": "RUNNER",
+        "reject": false
+      },
+      "sourceWordDataSha256": "eef2959e8a21badadde890a0204865ccb2c947430f7cf4d54b9a352f7e8f6784",
+      "currentClue": "ATHLETE",
+      "reviewTask": "review_existing_clue_morphology"
+    },
+    {
+      "id": "46c2fad0-1f77-438c-8007-e41098cc775c",
+      "date": "2026-09-14",
+      "word": "SULFUR",
+      "era": "existing_clue",
+      "sourceWordData": {
+        "clue": "ELEMENT",
+        "word": "SULFUR",
+        "reject": false
+      },
+      "sourceWordDataSha256": "b45089a388cac082f9048b877319e85a9c7744b71f196268d6eec5d0c14b633a",
+      "currentClue": "ELEMENT",
+      "reviewTask": "review_existing_clue_morphology"
+    }
+  ]
+}

@@ -215,6 +215,12 @@ from Home rather than stacked over another sheet. Account deletion is the
 exception: it is deliberately the final signed-in Settings action, separate
 from the Rating Details sign-out control.
 
+On the web, Player Profile is also available while signed out. It derives its
+rating and 14-day breakdown only from this browser's unscoped local game
+records, and omits all account, sync, subscription, sign-out, and deletion
+controls. The game menu keeps Player Profile and Login as separate guest
+destinations.
+
 ---
 
 ## Backword Clue and Letter Progression

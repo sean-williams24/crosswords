@@ -1588,6 +1588,7 @@ body {
 
 /* Player Profile */
 .player-profile { --bw-accent: #3377b1; --bw-rating-scribe: #6699e6; --bw-rating-linguist: #3380f2; --bw-rating-grandmaster: #1a59d9; --bw-rating-virtuoso: #f2cc4d; --bw-rating-virtuoso-deep: #d98c26; display: flex; min-height: 100svh; flex-direction: column; color: #eee; background: #111; }
+.player-profile > footer { margin-top: auto; }
 .player-profile--loading { display: grid; place-items: center; color: #b8b8b8; }
 .player-profile__header { grid-template-columns: 1fr; justify-items: center; flex: 0 0 auto; }
 .player-profile__header-title { margin: 0 0 8px; color: #d6be87; font-size: clamp(28px, 4vw, 42px); letter-spacing: -.045em; white-space: nowrap; }
@@ -1600,7 +1601,7 @@ body {
 .player-profile__card,
 .player-profile__breakdown { border-radius: 12px; background: #1a1a1a; }
 .player-profile__summary { display: flex; flex: 1; min-height: 0; flex-direction: column; overflow: hidden; }
-.player-profile__account-actions { margin-top: auto; border-top: 1px solid rgb(42 42 42 / 70%); }
+.player-profile__account-actions { border-top: 1px solid rgb(42 42 42 / 70%); }
 .player-profile__account { padding: 20px 20px 14px; }
 .player-profile__account > button { display: flex; width: 100%; padding: 0 0 16px; border: 0; align-items: flex-start; flex-direction: column; color: inherit; background: transparent; font: inherit; text-align: left; cursor: pointer; }
 .player-profile__account > button:focus-visible { outline: 2px solid #79b7eb; outline-offset: 3px; }
@@ -1630,23 +1631,13 @@ body {
 .player-profile__tier-scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; }
 .player-profile__tier-scale span { color: rgb(119 119 119 / 70%); font-size: 9px; font-weight: 600; text-align: center; }
 .player-profile__tier-scale .is-current { color: #eee; }
-.player-profile__scoring { display: flex; width: calc(100% - 40px); min-height: 44px; margin: 16px 20px; padding: 10px 16px; border: 1px solid #3377b1; align-items: center; justify-content: center; border-radius: 9px; color: #79b7eb; background: rgb(51 119 177 / 14%); font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-align: center; cursor: pointer; transition: border-color 160ms ease, background 160ms ease, color 160ms ease; }
-.player-profile__scoring:hover,
-.player-profile__scoring:focus-visible { border-color: #79b7eb; color: #fff; background: rgb(51 119 177 / 30%); outline: 2px solid #79b7eb; outline-offset: 2px; }
 .player-profile__rolling-window { padding: 0 20px 20px; }
 .player-profile__rolling-window strong { color: #eee; font-size: 14px; }
 .player-profile__rolling-window p { margin: 5px 0 0; color: #777; font-size: 13px; line-height: 1.4; }
 .player-profile__stats-loading { display: flex; margin-top: 14px; align-items: center; gap: 8px; color: #79b7eb; font-size: 13px; font-weight: 600; }
 .player-profile__stats-spinner { width: 14px; height: 14px; border: 2px solid rgb(121 183 235 / 30%); border-top-color: #79b7eb; border-radius: 50%; animation: player-profile-stats-spin 800ms linear infinite; }
 @keyframes player-profile-stats-spin { to { transform: rotate(360deg); } }
-.player-profile__scoring-backdrop { position: fixed; z-index: 30; inset: 0; display: grid; padding: 24px; place-items: center; background: rgb(0 0 0 / 65%); }
-.player-profile__scoring-dialog { width: min(100%, 560px); max-height: min(760px, calc(100svh - 48px)); overflow: auto; border: 1px solid rgb(255 255 255 / 12%); border-radius: 16px; color: #eee; background: #1a1a1a; box-shadow: 0 24px 70px rgb(0 0 0 / 50%); }
-.player-profile__scoring-dialog > header { display: flex; padding: 20px; align-items: center; justify-content: space-between; border-bottom: 1px solid rgb(42 42 42 / 70%); }
-.player-profile__scoring-dialog h2 { margin: 0; color: #d6be87; font-size: 21px; }
-.player-profile__scoring-dialog > header button { width: 34px; height: 34px; border: 0; border-radius: 50%; color: #eee; background: #2a2a2a; font-size: 24px; line-height: 1; cursor: pointer; }
-.player-profile__scoring-dialog > header button:hover,
-.player-profile__scoring-dialog > header button:focus-visible { background: #3a3a3a; outline: 2px solid #79b7eb; outline-offset: 2px; }
-.player-profile__scoring-details { display: grid; padding: 0 20px 24px; gap: 17px; }
+.player-profile__scoring-details { display: grid; padding: 0 20px 20px; border-top: 1px solid rgb(42 42 42 / 70%); gap: 17px; }
 .player-profile__scoring-details > p,
 .player-profile__scoring-details > div > p { margin: -7px 0 0 34px; color: #777; font-size: 13px; line-height: 1.4; }
 .player-profile__rule { display: grid; padding-top: 16px; gap: 6px; }
@@ -1673,7 +1664,6 @@ body {
 .player-profile .bw-score-chip.is-perfect { background: #66bb6a; }
 .player-profile__empty-score { color: rgb(119 119 119 / 45%); font-size: 15px; }
 .player-profile__account-controls { padding-top: 14px; border-top: 1px solid rgb(42 42 42 / 70%); }
-.player-profile__account-controls--mobile { display: none; }
 .player-profile__sign-out { width: calc(100% - 40px); min-height: 44px; margin: 0 20px 10px; border: 1px solid #5a5e68; border-radius: 9px; color: #eee; background: #2a2d35; font: inherit; font-weight: 700; cursor: pointer; }
 .player-profile__sign-out:hover,
 .player-profile__sign-out:focus-visible { border-color: #79b7eb; background: #363a44; outline: 2px solid #79b7eb; outline-offset: 2px; }
@@ -1761,11 +1751,6 @@ body {
 
 @media (min-width: 901px) {
   .player-profile__layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; }
-}
-
-@media (max-width: 900px) {
-  .player-profile__account-controls--desktop { display: none; }
-  .player-profile__account-controls--mobile { display: block; padding-top: 14px; border-top: 1px solid rgb(42 42 42 / 70%); }
 }
 
 @media (min-width: 681px) and (max-width: 1100px) {

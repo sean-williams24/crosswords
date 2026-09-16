@@ -32,7 +32,7 @@ describe("GameMenu account actions", () => {
     Object.defineProperty(window, "scrollY", { configurable: true, value: 0 });
   });
 
-  it("uses the primary menu-link treatment for Player Profile without account actions", async () => {
+  it("shows one Player Profile link for signed-in players without account actions", async () => {
     const user = userEvent.setup();
     renderMenu();
     await user.click(screen.getByRole("button", { name: "Open game menu" }));
@@ -41,13 +41,13 @@ describe("GameMenu account actions", () => {
     const profile = within(menu).getByRole("link", { name: "Player Profile" });
     expect(profile).toHaveAttribute("href", "/player-profile");
     expect(profile).toHaveClass("bw-menu-link", "bw-menu-link--primary", "bw-menu-auth");
-    expect(profile.querySelector(".auth-button__wide-label")).toHaveTextContent("Player Profile");
-    expect(profile.querySelector(".auth-button__compact-label")).toHaveTextContent("Profile");
+    expect(within(menu).getAllByRole("link", { name: "Player Profile" })).toHaveLength(1);
+    expect(within(menu).queryByRole("link", { name: "Login" })).not.toBeInTheDocument();
     expect(within(menu).queryByRole("button", { name: "Sign Out" })).not.toBeInTheDocument();
     expect(within(menu).queryByRole("button", { name: "Delete Account" })).not.toBeInTheDocument();
   });
 
-  it("does not expose account deletion to guests", async () => {
+  it("shows separate Player Profile and Login links to guests without account actions", async () => {
     const user = userEvent.setup();
     testAuth.value.user = null;
     renderMenu();
@@ -55,12 +55,16 @@ describe("GameMenu account actions", () => {
 
     expect(screen.queryByRole("button", { name: "Sign Out" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Delete Account" })).not.toBeInTheDocument();
+    const profile = screen.getByRole("link", { name: "Player Profile" });
     const login = screen.getByRole("link", { name: "Login" });
+    expect(profile).toHaveAttribute("href", "/player-profile");
+    expect(profile).toHaveClass("bw-menu-link", "bw-menu-link--primary", "bw-menu-auth");
     expect(login).toHaveClass("bw-menu-link--primary");
     expect(login.querySelector(".auth-button__compact-label")).toHaveTextContent("Login");
     const upgrade = screen.getByRole("link", { name: "Get full access" });
     expect(upgrade).toHaveAttribute("href", "/pro");
     expect(upgrade).toHaveClass("bw-menu-upgrade");
+    expect(profile.compareDocumentPosition(login) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(login.compareDocumentPosition(upgrade) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
