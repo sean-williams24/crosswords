@@ -107,6 +107,35 @@ describe("Google Identity", () => {
     expect(latestCredentialHandler).toHaveBeenCalledWith("google-id-token");
   });
 
+  it("coalesces overlapping renders for the same control", async () => {
+    const identity = makeGoogleIdentity();
+    const firstCredentialHandler = vi.fn();
+    const latestCredentialHandler = vi.fn();
+    const parent = document.createElement("div");
+    let resolveLoad: (identity: GoogleIdentity) => void;
+    const load = vi.fn(() => new Promise<GoogleIdentity>((resolve) => {
+      resolveLoad = resolve;
+    }));
+
+    const firstRender = renderGoogleSignInButton(parent, {
+      onCredential: firstCredentialHandler,
+      onError: vi.fn()
+    }, { clientID: "web-client-id", load });
+    const secondRender = renderGoogleSignInButton(parent, {
+      onCredential: latestCredentialHandler,
+      onError: vi.fn()
+    }, { clientID: "web-client-id", load });
+
+    expect(load).toHaveBeenCalledTimes(1);
+    resolveLoad!(identity.google);
+    await Promise.all([firstRender, secondRender]);
+    identity.callback()?.({ credential: "google-id-token" });
+
+    expect(identity.renderButton).toHaveBeenCalledTimes(1);
+    expect(firstCredentialHandler).not.toHaveBeenCalled();
+    expect(latestCredentialHandler).toHaveBeenCalledWith("google-id-token");
+  });
+
   it("does not initialise Google Identity after its control has unmounted", async () => {
     const identity = makeGoogleIdentity();
 

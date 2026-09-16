@@ -206,6 +206,9 @@ every render. Its browser-managed FedCM button flow is explicitly enabled, and
 the focusable Google iframe is never hidden from assistive technology. If Google
 Identity cannot load, the branded control is replaced with visible retry copy
 and the existing safe sign-in error alert.
+Overlapping render requests for the same control are coalesced while Google
+Identity is loading, with the newest handlers retained, so development-mode
+effect replays cannot briefly create duplicate native controls.
 
 The signed-in account surface is the Overall Rating sheet. Home and Settings
 send signed-in users there directly; a successful sign-in dismisses its

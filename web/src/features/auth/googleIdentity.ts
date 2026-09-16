@@ -37,11 +37,18 @@ type GoogleIdentityHandlers = {
   onError: (error: Error) => void;
 };
 
+type GoogleButtonRender = {
+  handlers: GoogleIdentityHandlers;
+  isActive?: () => boolean;
+  task: Promise<void>;
+};
+
 let loadingGoogleIdentity: Promise<GoogleIdentity> | null = null;
 const initialisedGoogleIdentities = new WeakMap<GoogleIdentity, {
   clientID: string;
   handlers: GoogleIdentityHandlers;
 }>();
+const pendingGoogleButtonRenders = new WeakMap<HTMLElement, GoogleButtonRender>();
 
 export class GoogleIdentityConfigurationError extends Error {
   constructor(message = "Google Sign-In needs VITE_GOOGLE_WEB_CLIENT_ID before it can be used.") {
@@ -121,19 +128,41 @@ export async function renderGoogleSignInButton(
   const clientID = options.clientID ?? configuredClientID();
   if (!clientID) throw new GoogleIdentityConfigurationError();
 
-  const google = await (options.load ?? loadGoogleIdentity)();
-  if (options.isActive && !options.isActive()) return;
-  initialiseGoogleIdentity(google, clientID, handlers);
-  parent.replaceChildren();
-  const availableWidth = Math.floor(parent.clientWidth) || 375;
-  const buttonWidth = Math.min(400, availableWidth);
-  google.accounts.id.renderButton(parent, {
-    type: "standard",
-    theme: "filled_black",
-    size: "large",
-    text: "signin_with",
-    shape: "rectangular",
-    logo_alignment: "left",
-    width: buttonWidth
-  });
+  const pendingRender = pendingGoogleButtonRenders.get(parent);
+  if (pendingRender) {
+    pendingRender.handlers = handlers;
+    pendingRender.isActive = options.isActive;
+    return pendingRender.task;
+  }
+
+  let render: GoogleButtonRender;
+  const task = (async () => {
+    const google = await (options.load ?? loadGoogleIdentity)();
+    if (render.isActive && !render.isActive()) return;
+    initialiseGoogleIdentity(google, clientID, render.handlers);
+    parent.replaceChildren();
+    const availableWidth = Math.floor(parent.clientWidth) || 375;
+    const buttonWidth = Math.min(400, availableWidth);
+    google.accounts.id.renderButton(parent, {
+      type: "standard",
+      theme: "filled_black",
+      size: "large",
+      text: "signin_with",
+      shape: "rectangular",
+      logo_alignment: "left",
+      width: buttonWidth
+    });
+  })();
+  render = { handlers, isActive: options.isActive, task };
+  pendingGoogleButtonRenders.set(parent, render);
+  void task.then(
+    () => {
+      if (pendingGoogleButtonRenders.get(parent) === render) pendingGoogleButtonRenders.delete(parent);
+    },
+    () => {
+      if (pendingGoogleButtonRenders.get(parent) === render) pendingGoogleButtonRenders.delete(parent);
+    }
+  );
+
+  return task;
 }
