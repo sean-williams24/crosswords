@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { AppStoreBadge } from "../components/AppStoreBadge";
 import { PhoneMockup } from "../components/PhoneMockup";
 
 export function InfoPage() {
@@ -17,15 +16,6 @@ export function InfoPage() {
         screenshotSize="compact"
         spacing="compact"
       >
-        <div className="flex flex-wrap items-center gap-4">
-          <Link
-            className="rounded-xl bg-accent px-6 py-3 font-semibold text-white transition hover:bg-[#4387c1]"
-            to="/backword"
-          >
-            Play today’s Backword
-          </Link>
-          <AppStoreBadge />
-        </div>
       </ScreenshotSection>
 
       <ScreenshotSection
@@ -38,7 +28,7 @@ export function InfoPage() {
         screenshotSrc="/screenshots/backword-game.png"
       >
         <Link className="font-semibold text-accent transition hover:text-textPrimary" to="/backword">
-          Play Backword online →
+          Play
         </Link>
       </ScreenshotSection>
 
@@ -50,7 +40,11 @@ export function InfoPage() {
         screenshotAlt="Backword daily crossword screen"
         screenshotPosition="right"
         screenshotSrc="/screenshots/crossword.png"
-      />
+      >
+        <Link className="font-semibold text-accent transition hover:text-textPrimary" to="/crossword">
+          Play
+        </Link>
+      </ScreenshotSection>
 
       <ScreenshotSection
         eyebrow="Weekly Crossword"
@@ -61,8 +55,8 @@ export function InfoPage() {
         screenshotPosition="left"
         screenshotSrc="/screenshots/crossword-weekly.png"
       >
-        <Link className="font-semibold text-accent transition hover:text-textPrimary" to="/pro">
-          Get Backword Pro →
+        <Link className="font-semibold text-accent transition hover:text-textPrimary" to="/weekly-crossword">
+          Play
         </Link>
       </ScreenshotSection>
     </>
