@@ -2,11 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
 import { GameMenu } from "../features/backword/components/GameMenu";
-import { backwordCloudRecord, fetchCloudProgress, refreshAccountProgress } from "../features/sync/progressSync";
+import { backwordCloudRecord, crosswordCloudRecord, fetchCloudProgress, refreshAccountProgress } from "../features/sync/progressSync";
 import { createBackwordStorage } from "../features/backword/storage";
-import { crosswordCloudRecord } from "../features/sync/progressSync";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { buildPlayerProfileRating, formatProfileDate } from "../features/profile/profileRating";
+import { loadLocalProfileRecords } from "../features/profile/profileRecords";
 import { Footer } from "../components/Footer";
 import { accountActionErrorMessage } from "../features/auth/authErrorPresentation";
 import { AccountDeletionConfirmationModal } from "../features/auth/AccountDeletionConfirmationModal";
@@ -25,18 +25,6 @@ type AccountProfileRecords = {
   value: ProfileRecords;
 };
 
-function localProfileRecords(userId?: string): ProfileRecords {
-  const backwordStorage = createBackwordStorage(window.localStorage, { userId });
-  const dailyCrosswordStorage = createCrosswordStorage(window.localStorage, { userId });
-  const weeklyCrosswordStorage = createCrosswordStorage(window.localStorage, { kind: "weekly", userId });
-
-  return {
-    backword: backwordStorage.loadAllProgress().map(backwordCloudRecord),
-    dailyCrossword: dailyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
-    weeklyCrossword: weeklyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress))
-  };
-}
-
 export function PlayerProfilePage() {
   const navigate = useNavigate();
   const { ready, user, entitlement, entitlementWarning, refreshEntitlement, signOut, deleteAccount, finishAccountDeletion } = useAuth();
@@ -50,8 +38,8 @@ export function PlayerProfilePage() {
   const [isFinishingDeletion, setIsFinishingDeletion] = useState(false);
   const [deletionFinishError, setDeletionFinishError] = useState<string | null>(null);
   const userId = user?.id;
-  const guestRecords = useMemo(() => userId ? null : localProfileRecords(), [userId]);
-  const cachedAccountRecords = useMemo(() => userId ? localProfileRecords(userId) : null, [userId]);
+  const guestRecords = useMemo(() => userId ? null : loadLocalProfileRecords(), [userId]);
+  const cachedAccountRecords = useMemo(() => userId ? loadLocalProfileRecords(userId) : null, [userId]);
 
   const refreshProfile = useCallback(async () => {
     if (!userId) return;

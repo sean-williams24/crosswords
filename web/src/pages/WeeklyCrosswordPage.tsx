@@ -31,6 +31,8 @@ import { crosswordCloudRecord, migrateProgress, queueAndDebounce, refreshAccount
 import { ProAccessRedirect } from "../features/pro/ProAccessRedirect";
 import { useAnalytics } from "../features/analytics/AnalyticsProvider";
 import { contentLoadFailed, gameCompleted, gameStarted } from "../features/analytics/events";
+import { loadLocalProfileRecords } from "../features/profile/profileRecords";
+import { buildPlayerProfileRating } from "../features/profile/profileRating";
 
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
@@ -150,6 +152,10 @@ export function WeeklyCrosswordPage() {
 
   const currentClue = puzzle && selection ? activeClue(puzzle, selection) : null;
   const stats = useMemo(() => deriveWeeklyCrosswordStats(storage.loadAllProgress()), [progress, storage]);
+  const rating = useMemo(
+    () => buildPlayerProfileRating(loadLocalProfileRecords(user?.id), entitlement?.isPro === true),
+    [entitlement?.isPro, progress, user?.id]
+  );
   const persist = useCallback((updated: CrosswordProgress, updatedSelection?: CrosswordSelection) => {
     storage.saveProgress(updated);
     setProgress(updated);
@@ -251,7 +257,7 @@ export function WeeklyCrosswordPage() {
       {sheet === "instructions" ? <CrosswordInstructions onClose={() => setSheet(null)} onCorrectHighlightChange={changeCorrectHighlight} settings={settings} /> : null}
       {sheet === "clues" && puzzle && progress ? <CrosswordClueList activeClueId={currentClue?.id ?? null} onClose={() => setSheet(null)} onSelect={(clue: CrosswordClue) => { setSelection(navigateToClue(progress, clue)); setShowHint(false); setSheet(null); }} progress={progress} puzzle={puzzle} /> : null}
       {sheet === "stats" ? <CrosswordStats kind="weekly" onClose={() => setSheet(null)} stats={stats} /> : null}
-      {sheet === "completion" && puzzle && progress ? <CrosswordCompletion kind="weekly" onClose={() => setSheet(null)} progress={progress} puzzle={puzzle} stats={stats} /> : null}
+      {sheet === "completion" && puzzle && progress ? <CrosswordCompletion kind="weekly" onClose={() => setSheet(null)} progress={progress} puzzle={puzzle} rating={rating} stats={stats} /> : null}
     </div>
   );
 }

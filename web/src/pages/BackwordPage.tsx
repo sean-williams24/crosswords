@@ -37,6 +37,8 @@ import { backwordCloudRecord, migrateProgress, queueAndDebounce, refreshAccountP
 import { canMigrateGuestProgress, clearGuestMigrationOwnerIfEmpty } from "../features/sync/guestMigration";
 import { useAnalytics } from "../features/analytics/AnalyticsProvider";
 import { contentLoadFailed, gameCompleted, gameStarted } from "../features/analytics/events";
+import { loadLocalProfileRecords } from "../features/profile/profileRecords";
+import { buildPlayerProfileRating } from "../features/profile/profileRating";
 
 type Sheet = "instructions" | "stats" | "completion" | null;
 
@@ -191,6 +193,10 @@ export function BackwordPage() {
   );
   const hidden = useMemo(() => unrevealedIndices(revealed), [revealed]);
   const stats = useMemo(() => deriveStats(storage.loadAllProgress()), [progress, storage]);
+  const rating = useMemo(
+    () => buildPlayerProfileRating(loadLocalProfileRecords(user?.id), entitlement?.isPro === true),
+    [entitlement?.isPro, progress, user?.id]
+  );
   const canSubmit = progress.outcome === "inProgress" && input.length === hidden.length;
 
   const enterLetter = useCallback((letter: string) => {
@@ -410,6 +416,7 @@ export function BackwordPage() {
         <BackwordCompletion
           onClose={() => setSheet(null)}
           progress={progress}
+          rating={rating}
           stats={stats}
           word={word}
         />

@@ -30,13 +30,15 @@ import { crosswordCloudRecord, migrateProgress, queueAndDebounce, refreshAccount
 import { canMigrateGuestProgress, clearGuestMigrationOwnerIfEmpty } from "../features/sync/guestMigration";
 import { useAnalytics } from "../features/analytics/AnalyticsProvider";
 import { contentLoadFailed, gameCompleted, gameStarted } from "../features/analytics/events";
+import { loadLocalProfileRecords } from "../features/profile/profileRecords";
+import { buildPlayerProfileRating } from "../features/profile/profileRating";
 
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
 export function CrosswordPage() {
   const { date: routeDate } = useParams<{ date?: string }>();
   const archiveDate = isLocalDateString(routeDate) ? routeDate : null;
-  const { user } = useAuth();
+  const { entitlement, user } = useAuth();
   const { track } = useAnalytics();
   const storage = useMemo(() => createCrosswordStorage(window.localStorage, {
     userId: user?.id,
@@ -168,6 +170,10 @@ export function CrosswordPage() {
 
   const currentClue = puzzle && selection ? activeClue(puzzle, selection) : null;
   const stats = useMemo(() => deriveCrosswordStats(storage.loadAllProgress()), [progress, storage]);
+  const rating = useMemo(
+    () => buildPlayerProfileRating(loadLocalProfileRecords(user?.id), entitlement?.isPro === true),
+    [entitlement?.isPro, progress, user?.id]
+  );
 
   const persist = useCallback((updated: CrosswordProgress, updatedSelection: CrosswordSelection) => {
     storage.saveProgress(updated);
@@ -333,7 +339,7 @@ export function CrosswordPage() {
       {sheet === "instructions" ? <CrosswordInstructions onClose={closeInstructions} onCorrectHighlightChange={changeCorrectHighlight} settings={settings} /> : null}
       {sheet === "clues" && puzzle && progress ? <CrosswordClueList activeClueId={currentClue?.id ?? null} onClose={() => setSheet(null)} onSelect={selectClue} progress={progress} puzzle={puzzle} /> : null}
       {sheet === "stats" ? <CrosswordStats onClose={() => setSheet(null)} stats={stats} /> : null}
-      {sheet === "completion" && puzzle && progress ? <CrosswordCompletion onClose={() => setSheet(null)} progress={progress} puzzle={puzzle} stats={stats} /> : null}
+      {sheet === "completion" && puzzle && progress ? <CrosswordCompletion onClose={() => setSheet(null)} progress={progress} puzzle={puzzle} rating={rating} stats={stats} /> : null}
     </div>
   );
 }

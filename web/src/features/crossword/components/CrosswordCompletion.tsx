@@ -12,6 +12,9 @@ import { completedInReleaseWindow, formatDuration } from "../engine";
 import type { WeeklyCrosswordStats } from "../engine";
 import type { CrosswordKind, CrosswordProgress, CrosswordPuzzle, CrosswordStats } from "../types";
 import { CrosswordStatsContent } from "./CrosswordStats";
+import type { PlayerProfileRating } from "../../profile/profileRating";
+import { PuzzleResultShare } from "../../share/PuzzleResultShare";
+import { buildCrosswordShareResult } from "../../share/puzzleResult";
 
 type CrosswordCompletionProps = {
   onClose: () => void;
@@ -19,15 +22,17 @@ type CrosswordCompletionProps = {
   puzzle: CrosswordPuzzle;
   stats: CrosswordStats | WeeklyCrosswordStats;
   kind?: CrosswordKind;
+  rating: PlayerProfileRating;
 };
 
-export function CrosswordCompletion({ onClose, progress, puzzle, stats, kind = "daily" }: CrosswordCompletionProps) {
+export function CrosswordCompletion({ onClose, progress, puzzle, stats, kind = "daily", rating }: CrosswordCompletionProps) {
   const navigate = useNavigate();
   const [seconds, setSeconds] = useState(() => kind === "weekly" ? secondsUntilNextLocalSunday() : secondsUntilNextLocalMidnight());
   const onTime = completedInReleaseWindow(kind, progress.date, progress.completedAt);
   const completedAt = new Date(progress.completedAt ?? "").getTime();
   const startedAt = new Date(progress.startedAt).getTime();
   const solveTime = Number.isFinite(completedAt - startedAt) ? Math.max(0, Math.floor((completedAt - startedAt) / 1000)) : null;
+  const shareResult = buildCrosswordShareResult({ progress, puzzle, stats, kind, rating });
 
   useEffect(() => {
     const timer = window.setInterval(() => setSeconds(kind === "weekly" ? secondsUntilNextLocalSunday() : secondsUntilNextLocalMidnight()), 1000);
@@ -52,6 +57,7 @@ export function CrosswordCompletion({ onClose, progress, puzzle, stats, kind = "
           <div><strong>{stats.currentStreak}</strong><span>STREAK</span></div>
           <div><strong>{formatDuration(solveTime)}</strong><span>TIME</span></div>
         </section>
+        <PuzzleResultShare result={shareResult} showPreview={false} />
         <CrosswordStatsContent stats={stats} kind={kind} />
       </div>
       <div className="bw-completion-actions"><button onClick={() => navigate("/")} type="button">HOME</button><button onClick={onClose} type="button">BACK TO GAME</button></div>

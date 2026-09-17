@@ -161,10 +161,14 @@ describe("Backword browser game", () => {
     expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
     expect(screen.getByText("... in 1 guess")).toBeInTheDocument();
     expect(screen.getByText("5/70")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Share result" })).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Share result" }));
-    expect(writeText).toHaveBeenCalledWith(expect.stringContaining("Got it in 1/5!"));
-    expect(screen.getByText("Copied to clipboard")).toBeInTheDocument();
+    const shareButton = screen.getByRole("button", { name: "Share result" });
+    expect(shareButton).toBeInTheDocument();
+    expect(document.querySelector(".puzzle-result-share__preview")).not.toBeInTheDocument();
+    expect(shareButton.compareDocumentPosition(document.querySelector(".bw-distribution") as Node) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    await user.click(shareButton);
+    expect(writeText).toHaveBeenCalledWith(expect.stringContaining("I solved Backword #7"));
+    expect(writeText).toHaveBeenCalledWith(expect.not.stringContaining("CASTLE"));
+    expect(screen.getByText("Result copied to clipboard")).toBeInTheDocument();
 
     const stored = JSON.parse(localStorage.getItem("backword:web:progress:v1") ?? "{}");
     expect(stored[localDateString()]).toMatchObject({ outcome: "won", guesses: ["CASTLE"] });

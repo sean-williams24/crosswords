@@ -11,6 +11,7 @@ import {
   proPlanSelected,
   proSignInRequired,
   scoreBand,
+  resultShared,
   stripeCheckoutReturned,
   stripeCheckoutStarted,
   stripeCheckoutStartFailed,
@@ -48,6 +49,7 @@ describe("analytics event schema", () => {
     expect(durationBand(1_800)).toBe("30m_plus");
     expect(appStoreClick("footer", null).parameters).toEqual({ placement: "footer", campaign_token: "unattributed" });
     expect(contentLoadFailed("backword", "network").parameters).toEqual({ game: "backword", reason: "network" });
+    expect(resultShared("backword", "native_file")).toEqual({ name: "result_shared", parameters: { game: "backword", method: "native_file" } });
   });
 
   it("uses a small, identifier-free schema for the Pro subscription funnel", () => {

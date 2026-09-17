@@ -5,6 +5,7 @@ export type AnalyticsEvent = {
   name:
     | "game_started"
     | "game_completed"
+    | "result_shared"
     | "app_store_click"
     | "sign_in_started"
     | "sign_in_succeeded"
@@ -61,6 +62,14 @@ export function gameCompleted(
   };
   if (options.mode) parameters.mode = options.mode;
   return { name: "game_completed", parameters };
+}
+
+/** Share events deliberately identify only the game and delivery capability. */
+export function resultShared(
+  game: AnalyticsGame,
+  method: "native_file" | "native_text" | "clipboard"
+): AnalyticsEvent {
+  return { name: "result_shared", parameters: { game, method } };
 }
 
 export function appStoreClick(placement: "header" | "weekly_modal" | "footer", campaignToken: string | null): AnalyticsEvent {

@@ -1138,3 +1138,14 @@ Slots are independent — each resets at the next calendar midnight (device loca
 Full-screen ads are SDK-owned view controllers. `AdService` must not automatically dismiss interstitial or rewarded ads with app-owned timers; some real-world ads can take over a minute to fully show. Ad state should be cleared only from Google Mobile Ads delegate callbacks such as failure or dismissal.
 
 Avoid starting home-screen refresh work while `adService.isPresentingFullScreenAd` is true. Unrelated SwiftUI/TipKit presentation churn while full-screen ads are active can make lifecycle and touch handling harder to reason about.
+
+---
+
+## Spoiler-Safe Result Sharing
+
+Web completion sharing is a local, derived presentation only. Its card, caption,
+and deep link must never contain an answer, guess, clue, entered crossword cell,
+or account identifier. A failed Backword game uses neutral “completed” wording
+and may expose only aggregate metadata such as attempts, score, streak, and
+rolling-rating tier. Result links target the immutable dated game route and add
+the standard share campaign parameters; they do not identify the player.

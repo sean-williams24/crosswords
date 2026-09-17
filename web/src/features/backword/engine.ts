@@ -271,18 +271,3 @@ export function deriveStats(
     history
   };
 }
-
-export function shareText(progress: BackwordProgress, answer: string): string {
-  const result =
-    progress.outcome === "won"
-      ? `Got it in ${progress.guesses.length}/${MAX_GUESSES}!`
-      : `Failed (${answer.toUpperCase()})`;
-  const blocks = progress.guesses
-    .map((_, index) =>
-      progress.outcome === "won" && index === progress.guesses.length - 1
-        ? "🟩".repeat(BACKWORD_LENGTH)
-        : "⬛".repeat(BACKWORD_LENGTH)
-    )
-    .join("\n");
-  return `Backword ${progress.date}\n${result}\n${blocks}`;
-}
