@@ -1,0 +1,105 @@
+import Foundation
+import Testing
+@testable import Backword
+
+@Suite("Puzzle result sharing")
+struct PuzzleResultShareTests {
+    @Test("Backword result is spoiler-safe and links to its exact issue")
+    func backwordResultIsSpoilerSafe() {
+        var progress = BackwordProgress(date: "2026-09-16")
+        progress.guesses = ["CASTLE"]
+        progress.wonFlag = true
+        progress.completedAt = Date(timeIntervalSince1970: 1_789_593_840)
+
+        var rating = OverallRating()
+        rating.upsertBackword(score: 5, date: "2026-09-16")
+        var stats = BackwordStats()
+        stats.currentStreak = 3
+        stats.lastCompletedDate = "2026-09-16"
+
+        let word = BackwordWord(
+            id: "word-id",
+            date: progress.date,
+            puzzleNumber: 170,
+            word: "CASTLE",
+            clue: "A fortress"
+        )
+        let result = PuzzleShareResult.backword(
+            progress: progress,
+            word: word,
+            stats: stats,
+            rating: rating,
+            isPro: false
+        )
+
+        #expect(result.issueLabel == "Backword #170")
+        #expect(result.score == 5)
+        #expect(result.streak == 3)
+        #expect(result.primaryStat == .init(label: "ATTEMPTS", value: "1 / 5"))
+        #expect(result.shareURL.absoluteString == "https://www.playbackword.com/backword/2026-09-16?utm_source=share&utm_medium=social&utm_campaign=completed_puzzle")
+        #expect(result.caption.contains("CASTLE") == false)
+        #expect(result.caption.contains("fortress") == false)
+        #expect(result.caption.contains("word-id") == false)
+    }
+
+    @Test("Failed Backword result is neutral and earns no points")
+    func failedBackwordResultIsNeutral() {
+        var progress = BackwordProgress(date: "2026-09-16")
+        progress.guesses = ["PLANET", "GARDEN", "ORANGE", "STREAM", "CASTLE"]
+        progress.completedAt = Date(timeIntervalSince1970: 1_789_593_840)
+
+        let result = PuzzleShareResult.backword(
+            progress: progress,
+            word: BackwordWord(id: "word-id", date: progress.date, puzzleNumber: 170, word: "CASTLE", clue: "A fortress"),
+            stats: BackwordStats(),
+            rating: OverallRating(),
+            isPro: false
+        )
+
+        #expect(result.outcome == "COMPLETED")
+        #expect(result.score == 0)
+        #expect(result.caption.contains("CASTLE") == false)
+        #expect(result.caption.contains("PLANET") == false)
+    }
+
+    @Test("Crossword result reports duration, matching streak, and weekly route")
+    func crosswordResultReportsStats() {
+        let puzzle = Puzzle(
+            id: "weekly-id",
+            puzzleNumber: 42,
+            date: "2026-09-14",
+            size: 13,
+            cells: [],
+            clues: []
+        )
+        var progress = UserProgress(puzzleId: puzzle.id, size: puzzle.size)
+        progress.startedAt = Date(timeIntervalSince1970: 1_800)
+        progress.completedAt = Date(timeIntervalSince1970: 1_883)
+
+        var rating = OverallRating()
+        rating.upsertWeeklyCrossword(score: 4, date: puzzle.date)
+        var stats = UserStats()
+        stats.history = [
+            PuzzleResult(
+                puzzleId: puzzle.id,
+                date: Date(),
+                timeSeconds: 83,
+                hintsUsed: 0,
+                isWeekly: true
+            )
+        ]
+
+        let result = PuzzleShareResult.crossword(
+            puzzle: puzzle,
+            progress: progress,
+            stats: stats,
+            rating: rating,
+            isPro: true
+        )
+
+        #expect(result.game == PuzzleShareResult.Game.weeklyCrossword)
+        #expect(result.score == 4)
+        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "SOLVE TIME", value: "01:23"))
+        #expect(result.shareURL.path == "/weekly-crossword/2026-09-14")
+    }
+}

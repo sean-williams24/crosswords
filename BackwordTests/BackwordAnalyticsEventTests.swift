@@ -114,4 +114,24 @@ struct BackwordAnalyticsEventTests {
         #expect(completed.parameters["answer"] == nil)
         #expect(completed.parameters["guess"] == nil)
     }
+
+    @Test("Result sharing records only game and delivery metadata")
+    func resultSharedEventIsContentFree() {
+        let shared = BackwordAnalyticsEvent.resultShared(
+            game: .backword,
+            delivery: .clipboard,
+            environment: "test"
+        )
+
+        #expect(shared.name == "result_shared")
+        #expect(shared.parameters == [
+            "game": "backword",
+            "delivery": "clipboard",
+            "platform": "ios",
+            "environment": "test"
+        ])
+        #expect(shared.parameters["answer"] == nil)
+        #expect(shared.parameters["guess"] == nil)
+        #expect(shared.parameters["email"] == nil)
+    }
 }

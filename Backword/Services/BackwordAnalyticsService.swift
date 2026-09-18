@@ -8,6 +8,7 @@ struct BackwordAnalyticsEvent: Equatable {
     static let storeLifecycleName = "bw_store_lifecycle"
     static let gameStartedName = "game_started"
     static let gameCompletedName = "game_completed"
+    static let resultSharedName = "result_shared"
 
     let name: String
     let parameters: [String: String]
@@ -150,6 +151,22 @@ struct BackwordAnalyticsEvent: Equatable {
         return BackwordAnalyticsEvent(name: gameCompletedName, parameters: parameters)
     }
 
+    static func resultShared(
+        game: Game,
+        delivery: ShareDelivery,
+        environment: String = AppEnvironment.current
+    ) -> BackwordAnalyticsEvent {
+        BackwordAnalyticsEvent(
+            name: resultSharedName,
+            parameters: [
+                "game": game.rawValue,
+                "delivery": delivery.rawValue,
+                "platform": "ios",
+                "environment": environment
+            ]
+        )
+    }
+
     private static func scoreBand(_ score: Int) -> String {
         switch score {
         case ...0: return "0"
@@ -223,6 +240,17 @@ struct BackwordAnalyticsEvent: Equatable {
         case failed
         case solved
         case gaveUp = "gave_up"
+    }
+
+    /// The system does not disclose the destination application. These values
+    /// intentionally describe only how the result left Backword.
+    enum ShareDelivery: String {
+        case nativeShareSheet = "native_share_sheet"
+        case clipboard
+
+        static func forActivity(_ activity: UIActivity.ActivityType?) -> ShareDelivery {
+            activity == .copyToPasteboard ? .clipboard : .nativeShareSheet
+        }
     }
 }
 

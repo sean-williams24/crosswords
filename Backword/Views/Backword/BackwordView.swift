@@ -131,7 +131,8 @@ struct BackwordView: View {
                 shouldPop: $shouldPopAfterCompletionSheet,
                 isCompleted: viewModel.didComplete,
                 completionProgress: viewModel.progress,
-                completionWord: viewModel.word.word
+                completionWord: viewModel.word.word,
+                completionWordIssueNumber: viewModel.word.puzzleNumber
             )
         }
         .sheet(
@@ -467,30 +468,6 @@ struct BackwordView: View {
             }
     }
 
-    private var shareButton: some View {
-        HStack {
-            Spacer()
-            Button {
-                let text = viewModel.shareText
-                let av = UIActivityViewController(activityItems: [text], applicationActivities: nil)
-                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                   let window = windowScene.windows.first,
-                   let root = window.rootViewController {
-                    root.present(av, animated: true)
-                }
-            } label: {
-                HStack(spacing: 8) {
-                    Image(systemName: "square.and.arrow.up")
-                    Text("Share")
-                }
-                .font(AppFont.body(15))
-                .foregroundColor(.appAccent)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 10)
-                .cornerRadius(20)
-            }
-        }
-    }
 }
 
 struct BackwordClueExplainerView: View {

@@ -42,10 +42,22 @@ describe("puzzle share results", () => {
 
     expect(card).toContain('<image href="https://www.playbackword.com/brand/backword-logo.png"');
     expect(card).not.toContain('letter-spacing="5">BACKWORD</text>');
-    expect(card).toContain('width="1200" height="230"');
+    expect(card).toContain('width="1080" height="1080"');
     expect(card).toContain("1 DAY STREAK");
+    expect(card).toContain("SOLVED");
     expect(card).not.toContain("<circle");
-    expect(card).not.toContain('x="580"');
+  });
+
+  it("uses the matching dark Home-card palette for every game", () => {
+    const base = {
+      issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1,
+      ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
+      primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
+    };
+
+    expect(puzzleResultCardSvg({ ...base, game: "backword", gameName: "Backword" })).toContain('stop-color="#34417c"');
+    expect(puzzleResultCardSvg({ ...base, game: "daily_crossword", gameName: "Quick Crossword" })).toContain('stop-color="#30445e"');
+    expect(puzzleResultCardSvg({ ...base, game: "weekly_crossword", gameName: "Pro Crossword" })).toContain('stop-color="#211e19"');
   });
 
   it("makes a failed Backword result neutral and spoiler-safe", () => {

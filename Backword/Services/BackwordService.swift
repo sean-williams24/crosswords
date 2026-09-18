@@ -54,7 +54,9 @@ final class BackwordService: ObservableObject {
         isLoading = true
         defer { isLoading = false }
 
-        if let word = cache.loadBackword(for: requestedDate) {
+        // Older cached payloads predate immutable puzzle numbers. Refresh them
+        // so a shared result always identifies its exact Backword issue.
+        if let word = cache.loadBackword(for: requestedDate), word.puzzleNumber != nil {
             todaysWord = word
             lastFetchedDate = requestedDate
             return

@@ -13,6 +13,7 @@ struct BackwordStatsView: View {
     var isCompleted = false
     var completionProgress: BackwordProgress?
     var completionWord: String?
+    var completionWordIssueNumber: Int?
 
     @State private var animatesBars = false
 
@@ -119,6 +120,11 @@ struct BackwordStatsView: View {
                         Group {
                             ratingBarView
 
+                            if let shareResult {
+                                PuzzleResultShareButton(result: shareResult)
+                                    .padding(.horizontal, AppLayout.screenPadding)
+                            }
+
                             completionMessage
                             if displayState.showsStats {
                                 completedStatsContent
@@ -156,6 +162,24 @@ struct BackwordStatsView: View {
     private var isFailedCompletion: Bool {
         if case .failed = displayState.titleStyle { return true }
         return false
+    }
+
+    private var shareResult: PuzzleShareResult? {
+        guard let completionProgress, completionProgress.isComplete else { return nil }
+        let word = BackwordWord(
+            id: "share-result",
+            date: completionProgress.date,
+            puzzleNumber: completionWordIssueNumber,
+            word: "",
+            clue: ""
+        )
+        return PuzzleShareResult.backword(
+            progress: completionProgress,
+            word: word,
+            stats: stats,
+            rating: ratingService.rating,
+            isPro: storeService.isProUser
+        )
     }
 
     private var nextBackwordCountdown: some View {

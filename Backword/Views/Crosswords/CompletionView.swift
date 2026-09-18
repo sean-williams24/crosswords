@@ -60,6 +60,9 @@ struct CompletionView: View {
                                 )
                                 .padding(.horizontal, AppLayout.screenPadding)
 
+                                PuzzleResultShareButton(result: shareResult)
+                                    .padding(.horizontal, AppLayout.screenPadding)
+
                                 if displayState.showsStats {
                                     statsCard
                                 }
@@ -300,20 +303,14 @@ struct CompletionView: View {
         }
     }
 
-    // MARK: - Share
-
-    private var shareText: String {
-        let streak = statsService.stats.currentStreak
-        let hints = viewModel.progress.hintsUsed
-        let time = viewModel.progress.formattedTime
-        let number = viewModel.puzzle.puzzleNumber
-
-        var text = "Crosswords #\(number) 🟩\n"
-        text += "⏱ \(time)"
-        if streak > 1 { text += " | 🔥 \(streak)-day streak" }
-        if hints == 0 { text += " | 💡 No hints" }
-        else { text += " | 💡 \(hints) hint\(hints == 1 ? "" : "s")" }
-        return text
+    private var shareResult: PuzzleShareResult {
+        PuzzleShareResult.crossword(
+            puzzle: viewModel.puzzle,
+            progress: viewModel.progress,
+            stats: statsService.stats,
+            rating: ratingService.rating,
+            isPro: storeService.isProUser
+        )
     }
 }
 

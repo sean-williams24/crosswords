@@ -5,6 +5,28 @@ import type { PuzzleShareResult } from "./puzzleResult";
 
 type ShareMethod = "native_file" | "native_text" | "clipboard";
 
+type ShareCardPalette = {
+  backgroundStart: string;
+  backgroundMiddle?: string;
+  backgroundEnd: string;
+  border: string;
+  statBackground: string;
+  divider: string;
+  play: string;
+};
+
+/** Keep the exported card in step with the dark Home card for each game. */
+function shareCardPalette(game: PuzzleShareResult["game"]): ShareCardPalette {
+  switch (game) {
+    case "backword":
+      return { backgroundStart: "#34417c", backgroundEnd: "#29356d", border: "#5e78b8", statBackground: "#252f60", divider: "#7284b5", play: "#9ad7a0" };
+    case "daily_crossword":
+      return { backgroundStart: "#30445e", backgroundEnd: "#24364d", border: "#5e7d98", statBackground: "#203147", divider: "#7790a6", play: "#91c8df" };
+    case "weekly_crossword":
+      return { backgroundStart: "#211e19", backgroundMiddle: "#1a1a1a", backgroundEnd: "#221d15", border: "#b8872d", statBackground: "#1b1a19", divider: "#746342", play: "#d6be87" };
+  }
+}
+
 function escapeSvg(value: string) {
   return value.replace(/[&<>"']/g, (character) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&apos;"
@@ -13,13 +35,20 @@ function escapeSvg(value: string) {
 
 /** A deliberately abstract graphic: it renders only result metadata, never game content. */
 export function puzzleResultCardSvg(result: PuzzleShareResult, logoSource = new URL("/brand/backword-logo.png", result.url).href): string {
+  const palette = shareCardPalette(result.game);
   const title = escapeSvg(`${result.gameName} #${result.issueNumber}`);
   const logoUrl = escapeSvg(logoSource);
+  const outcome = escapeSvg(result.outcome);
   const rating = escapeSvg(`${result.ratingTier.toUpperCase()} · ${result.ratingPoints}/${result.ratingMaxPoints} PTS`);
   const score = escapeSvg(`${result.score} PTS`);
   const streak = escapeSvg(`${result.streak} ${result.streak === 1 ? "DAY" : "DAYS"} STREAK`);
   const primary = escapeSvg(result.primaryStat.value);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="230" viewBox="0 0 1200 230" role="img" aria-label="${title} result card"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#171b1e"/><stop offset="1" stop-color="#1d2c37"/></linearGradient></defs><rect x="1" y="1" width="1198" height="228" rx="34" fill="url(#bg)" stroke="#285b81" stroke-width="2"/><image href="${logoUrl}" x="974" y="18" width="170" height="87" preserveAspectRatio="xMidYMid meet"/><text x="44" y="88" fill="#f6f6f6" font-family="Arial, sans-serif" font-size="40" font-weight="700">${title}</text><rect x="44" y="135" width="90" height="52" rx="26" fill="#111416" stroke="#394044" stroke-width="2"/><text x="60" y="168" fill="#c0c2c3" font-family="Arial, sans-serif" font-size="19" font-weight="700">${score}</text><rect x="150" y="135" width="74" height="52" rx="26" fill="#111416" stroke="#394044" stroke-width="2"/><text x="168" y="168" fill="#c0c2c3" font-family="Arial, sans-serif" font-size="19" font-weight="700">${primary}</text><rect x="240" y="135" width="218" height="52" rx="26" fill="#111416" stroke="#394044" stroke-width="2"/><text x="258" y="168" fill="#c0c2c3" font-family="Arial, sans-serif" font-size="19" font-weight="700">${rating}</text><rect x="474" y="135" width="164" height="52" rx="26" fill="#111416" stroke="#394044" stroke-width="2"/><text x="492" y="168" fill="#c0c2c3" font-family="Arial, sans-serif" font-size="17" font-weight="700">${streak}</text></svg>`;
+  const primaryLabel = escapeSvg(result.primaryStat.label);
+  const timeLabel = escapeSvg(result.timeStat?.label ?? "PLAY");
+  const time = escapeSvg(result.timeStat?.value ?? "playbackword.com");
+  const backgroundStops = `<stop stop-color="${palette.backgroundStart}"/>${palette.backgroundMiddle ? `<stop offset="0.55" stop-color="${palette.backgroundMiddle}"/>` : ""}<stop offset="1" stop-color="${palette.backgroundEnd}"/>`;
+  const stat = (x: number, y: number, label: string, value: string, fontSize = 30) => `<rect x="${x}" y="${y}" width="430" height="176" rx="30" fill="${palette.statBackground}"/><text x="${x + 30}" y="${y + 48}" fill="#d0d7df" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">${label}</text><text x="${x + 30}" y="${y + 118}" fill="#f6f6f6" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700">${value}</text>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-label="${title} result card"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">${backgroundStops}</linearGradient></defs><rect x="16" y="16" width="1048" height="1048" rx="64" fill="url(#bg)" stroke="${palette.border}" stroke-width="3"/><image href="${logoUrl}" x="770" y="66" width="220" height="114" preserveAspectRatio="xMidYMid meet"/><text x="70" y="138" fill="#f6f6f6" font-family="Arial, sans-serif" font-size="54" font-weight="700">${title}</text><text x="70" y="195" fill="#dfc37b" font-family="Arial, sans-serif" font-size="23" font-weight="700" letter-spacing="5">${outcome}</text><line x1="70" y1="252" x2="1010" y2="252" stroke="${palette.divider}" stroke-width="2"/>${stat(70, 310, "RELEASE SCORE", score, 42)}${stat(580, 310, primaryLabel, primary, 42)}${stat(70, 536, "CURRENT RATING", rating, 29)}${stat(580, 536, "CURRENT STREAK", streak, 29)}${stat(70, 762, timeLabel, time, 30)}<text x="70" y="1010" fill="${palette.play}" font-family="Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="3">PLAY → playbackword.com</text></svg>`;
 }
 
 function readAsDataUrl(blob: Blob): Promise<string> {

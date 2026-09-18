@@ -30,6 +30,7 @@
 		05C0B0033006000000000001 /* BackwordCompletionWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0B0023006000000000001 /* BackwordCompletionWordView.swift */; };
 		05C0B0053006000000000001 /* BackwordCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0B0043006000000000001 /* BackwordCompletionPresentationTests.swift */; };
 		05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */; };
+		09FF00013011000000000001 /* PuzzleResultShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FF00003011000000000001 /* PuzzleResultShareTests.swift */; };
 		05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */; };
 		05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */; };
 		05D1A0073001000000000001 /* CompletionDisplayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0063001000000000001 /* CompletionDisplayState.swift */; };
@@ -194,6 +195,7 @@
 		05C0B0023006000000000001 /* BackwordCompletionWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordCompletionWordView.swift; sourceTree = "<group>"; };
 		05C0B0043006000000000001 /* BackwordCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordCompletionPresentationTests.swift; sourceTree = "<group>"; };
 		05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReleaseCalendarTests.swift; sourceTree = "<group>"; };
+		09FF00003011000000000001 /* PuzzleResultShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleResultShareTests.swift; sourceTree = "<group>"; };
 		05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAuxiliaryContentServiceTests.swift; sourceTree = "<group>"; };
 		05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayStateTests.swift; sourceTree = "<group>"; };
 		05D1A0063001000000000001 /* CompletionDisplayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayState.swift; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 		00EC67C42E7E2A26C6A44CB3 /* BackwordTests */ = {
 			isa = PBXGroup;
 			children = (
+				09FF00003011000000000001 /* PuzzleResultShareTests.swift */,
 				0F0F00043010000000000001 /* GoogleSignInButtonTests.swift */,
 				0F0F00083010000000000001 /* GoogleNativeSignInServiceTests.swift */,
 				07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */,
@@ -803,6 +806,7 @@
 				05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */,
 				06CC00073007000000000001 /* CrosswordCompletionPresentationTests.swift in Sources */,
 				05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */,
+				09FF00013011000000000001 /* PuzzleResultShareTests.swift in Sources */,
 				05D1A00B3001000000000001 /* CrosswordSolveTimeSummaryTests.swift in Sources */,
 				07AD10033010000000000001 /* BackwordStatsHistoryTests.swift in Sources */,
 				05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */,

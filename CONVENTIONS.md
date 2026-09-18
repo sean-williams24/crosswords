@@ -234,6 +234,23 @@ existing `puzzle_number` fields. Backword issue numbers are assigned once in
 chronological release order, persisted as `backword_words.puzzle_number`, and
 must be retained when an existing Backword entry is replaced.
 
+## Spoiler-Safe Result Sharing
+
+Completion sharing is a derived, local presentation only. The result card,
+caption, analytics event, and deep link must never contain a Backword answer or
+guess, crossword clue or grid cell, or an account identifier. Failed Backword
+results use neutral completion wording and expose only aggregate metadata.
+
+iOS uses one `UIActivityItemSource`: normal destinations receive the rendered
+card, while the system Copy action receives one caption with the exact dated web
+link. This deliberately avoids a copied image and text becoming two pasted
+items. A successful action records only its game and the broad delivery method;
+the destination application is intentionally not tracked.
+
+Each result card uses the dark-mode surface of its matching Home card: Backword,
+Quick Crossword, or Pro Crossword. This keeps shared imagery recognisably tied
+to its game without introducing game content.
+
 ## Backword Clue and Letter Progression
 
 The Backword clue is always readable. No answer letters are supplied at the

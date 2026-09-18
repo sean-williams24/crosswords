@@ -34,6 +34,18 @@ extension Color {
     static let backwordBackground = Color("BackwordBackground")
 }
 
+enum AppGradient {
+    static let pro = LinearGradient(
+        colors: [
+            Color(red: 0.85, green: 0.65, blue: 0.25),
+            Color(red: 0.78, green: 0.52, blue: 0.20),
+            Color(red: 0.85, green: 0.65, blue: 0.25)
+        ],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+}
+
 /// Keeps the home-screen Backword card visually consistent with its dark design
 /// in either system appearance.
 enum BackwordAppearance {

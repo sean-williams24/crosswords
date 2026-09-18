@@ -189,15 +189,7 @@ struct WeeklyCrosswordCard: View {
     }
 
     private var proGradient: LinearGradient {
-        LinearGradient(
-            colors: [
-                Color(red: 0.85, green: 0.65, blue: 0.25),
-                Color(red: 0.78, green: 0.52, blue: 0.20),
-                Color(red: 0.85, green: 0.65, blue: 0.25)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
+        AppGradient.pro
     }
 }
 

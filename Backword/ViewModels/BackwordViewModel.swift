@@ -387,17 +387,4 @@ final class BackwordViewModel: ObservableObject {
     // Indirection for testability — tests can inject a custom validator.
     var wordValidator: (String) -> Bool = { WordValidator.isValidEnglishWord($0) }
 
-    // MARK: - Share
-
-    var shareText: String {
-        let header = "Backword \(word.date)"
-        let result = isWon ? "Got it in \(guessCount)/\(maxGuesses)!" : "Failed (\(word.word))"
-        let guessBlocks = progress.guesses.map { guess -> String in
-            guard isWon, let last = progress.guesses.last, guess == last else {
-                return String(repeating: "⬛", count: 6)
-            }
-            return String(repeating: "🟩", count: 6)
-        }.joined(separator: "\n")
-        return "\(header)\n\(result)\n\(guessBlocks)"
-    }
 }
