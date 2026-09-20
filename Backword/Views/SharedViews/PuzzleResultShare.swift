@@ -42,6 +42,12 @@ struct PuzzleShareResult: Equatable {
         var usesDarkShareCardAppearance: Bool {
             self == .weeklyCrossword
         }
+
+        /// The lavender Backword card needs a darker label treatment than the
+        /// neutral share-card surfaces to meet the same visual contrast.
+        var usesHighContrastShareCardStatLabels: Bool {
+            self == .backword
+        }
     }
 
     struct Stat: Equatable {
@@ -204,7 +210,7 @@ private struct PuzzleResultShareCard: View {
             HStack {
                 Spacer()
                 Text("playbackword.com")
-                    .font(AppFont.clueLabel(20))
+                    .font(AppFont.clueNumber(24))
                     .foregroundColor(.solvedGold)
                     .tracking(1.5)
                     .padding(.trailing, 3)
@@ -213,7 +219,6 @@ private struct PuzzleResultShareCard: View {
         .padding(42)
         .frame(width: 600, height: 600, alignment: .leading)
         .background(cardBackground)
-//        .clipShape(RoundedRectangle(cornerRadius: 22))
         .overlay(cardBorder)
     }
 
@@ -249,7 +254,7 @@ private struct PuzzleResultShareCard: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(label)
                 .font(AppFont.clueLabel(10))
-                .foregroundColor(.appTextSecondary)
+                .foregroundColor(statLabelColor)
                 .tracking(1.5)
             Text(value)
                 .font(AppFont.header(18))
@@ -265,6 +270,12 @@ private struct PuzzleResultShareCard: View {
 
     private var timeStat: PuzzleShareResult.Stat {
         result.timeStat ?? PuzzleShareResult.Stat(label: "TOTAL SOLVED", value: "\(result.totalGamesSolved)")
+    }
+
+    private var statLabelColor: Color {
+        result.game.usesHighContrastShareCardStatLabels
+            ? Color.appTextPrimary.opacity(0.78)
+            : .appTextSecondary
     }
 }
 

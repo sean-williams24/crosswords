@@ -86,7 +86,7 @@ struct PuzzleView: View {
                 .overlay(alignment: .bottomTrailing) {
                     if let completionShareResult {
                         PuzzleResultShareButton(result: completionShareResult, compact: true)
-                            .padding(.trailing, 10)
+                            .padding(10)
                             .transition(.move(edge: .bottom).combined(with: .opacity))
                     }
                 }

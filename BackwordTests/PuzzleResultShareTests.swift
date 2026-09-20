@@ -133,4 +133,11 @@ struct PuzzleResultShareTests {
         #expect(!PuzzleShareResult.Game.dailyCrossword.usesDarkShareCardAppearance)
         #expect(!PuzzleShareResult.Game.backword.usesDarkShareCardAppearance)
     }
+
+    @Test("Backword share cards use high-contrast stat labels")
+    func backwordShareCardStatLabels() {
+        #expect(PuzzleShareResult.Game.backword.usesHighContrastShareCardStatLabels)
+        #expect(!PuzzleShareResult.Game.dailyCrossword.usesHighContrastShareCardStatLabels)
+        #expect(!PuzzleShareResult.Game.weeklyCrossword.usesHighContrastShareCardStatLabels)
+    }
 }

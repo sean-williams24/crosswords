@@ -61,20 +61,17 @@ struct BackwordView: View {
                     }
                     .padding([.top, .bottom], 16)
                 }
+                .overlay(alignment: .bottomTrailing) {
+                    if let completionShareResult {
+                        PuzzleResultShareButton(result: completionShareResult, compact: true)
+                            .padding(10)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                }
                 VStack(spacing: 0) {
                     clueExplainerView
                     Spacer()
                         .frame(height: 10)
-
-                    if let completionShareResult {
-                        HStack {
-                            Spacer()
-                            PuzzleResultShareButton(result: completionShareResult, compact: true)
-                        }
-                        .padding(.horizontal, AppLayout.screenPadding)
-                        .padding(.top, 8)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                    }
 
                     GameScoreProgressBarView(
                         rating: ratingService.rating,
