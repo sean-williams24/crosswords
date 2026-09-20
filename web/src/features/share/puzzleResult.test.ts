@@ -42,7 +42,8 @@ describe("puzzle share results", () => {
 
     expect(card).toContain('<image href="https://www.playbackword.com/brand/backword-logo.png"');
     expect(card).not.toContain('letter-spacing="5">BACKWORD</text>');
-    expect(card).toContain('width="1080" height="1080"');
+    expect(card).toContain('width="500" height="500"');
+    expect(card).toContain('<rect width="1080" height="1080" rx="48" fill="#aba7dc"/>');
     expect(card).toContain(">5 PTS</text>");
     expect(card).toContain(">1 DAY</text>");
     expect(card).not.toContain("DAY STREAK");
@@ -87,7 +88,7 @@ describe("puzzle share results", () => {
     expect(puzzleResultCardSvg({ ...base, game: "daily_crossword", gameName: "Quick Crossword" })).toContain('fill="#43668f"');
     const proCard = puzzleResultCardSvg({ ...base, game: "weekly_crossword", gameName: "Pro Crossword" });
     expect(proCard).toContain('fill="#1e1d1b"');
-    expect(proCard).toContain('stroke="url(#pro-border)"');
+    expect(proCard).toContain('rx="48" fill="none" stroke="url(#pro-border)"');
   });
 
   it("makes a failed Backword result neutral and spoiler-safe", () => {
