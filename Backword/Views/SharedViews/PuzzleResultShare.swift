@@ -173,20 +173,24 @@ private struct PuzzleResultShareCard: View {
             ) {
                 statTile(label: "TODAY'S SCORE", value: "\(result.score) PTS")
                 statTile(label: result.primaryStat.label, value: result.primaryStat.value)
-                statTile(label: "CURRENT RATING", value: "\(result.ratingTier.uppercased())/n \(result.ratingPoints)/\(result.ratingMaxPoints) PTS")
+                statTile(label: "CURRENT RATING", value: "\(result.ratingTier.uppercased())\n \(result.ratingPoints)/\(result.ratingMaxPoints) PTS")
                 statTile(label: "CURRENT STREAK", value: "\(result.streak) \(result.streak == 1 ? "DAY" : "DAYS")")
                 statTile(label: timeStat.label, value: timeStat.value)
             }
 
-            Text("PLAY → playbackword.com")
-                .font(AppFont.clueLabel(10))
-                .foregroundColor(.appAccent)
-                .tracking(1.5)
+            HStack {
+                Spacer()
+                Text("playbackword.com")
+                    .font(AppFont.clueLabel(20))
+                    .foregroundColor(.solvedGold)
+                    .tracking(1.5)
+                    .padding(.trailing, 3)
+            }
         }
         .padding(42)
         .frame(width: 600, height: 600, alignment: .leading)
         .background(cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 22))
+//        .clipShape(RoundedRectangle(cornerRadius: 22))
         .overlay(cardBorder)
         .preferredColorScheme(.dark)
     }
@@ -203,14 +207,14 @@ private struct PuzzleResultShareCard: View {
         case .dailyCrossword:
             Color.dailyCardBackground
         case .weeklyCrossword:
-            Color.appSurface.overlay(proGradient.opacity(0.02))
+            Color.appSurface.overlay(AnyView(proGradient).opacity(0.02))
         }
     }
 
     @ViewBuilder
     private var cardBorder: some View {
         if result.game == .weeklyCrossword {
-            RoundedRectangle(cornerRadius: 22)
+            RoundedRectangle(cornerRadius: 0)
                 .stroke(proGradient, lineWidth: 1.5)
         }
     }
@@ -238,7 +242,7 @@ private struct PuzzleResultShareCard: View {
     }
 
     private var timeStat: PuzzleShareResult.Stat {
-        result.timeStat ?? PuzzleShareResult.Stat(label: "PLAY", value: "playbackword.com")
+        result.timeStat ?? PuzzleShareResult.Stat(label: "TOTAL SOLVED", value: "playbackword.com")
     }
 }
 
@@ -339,4 +343,94 @@ private final class PuzzleResultActivityItem: NSObject, UIActivityItemSource {
         metadata.imageProvider = NSItemProvider(object: cardImage)
         return metadata
     }
+}
+
+// MARK: - Previews
+
+private extension PuzzleShareResult {
+    static let previewBackwordSolved = PuzzleShareResult(
+        game: .backword,
+        issueNumber: 173,
+        date: "2026-09-20",
+        outcome: "SOLVED",
+        score: 5,
+        streak: 12,
+        ratingTier: "Linguist",
+        ratingPoints: 68,
+        ratingMaxPoints: 140,
+        primaryStat: .init(label: "ATTEMPTS", value: "1 / 5"),
+        timeStat: .init(label: "COMPLETED", value: "2:30 PM")
+    )
+
+    static let previewBackwordCompleted = PuzzleShareResult(
+        game: .backword,
+        issueNumber: 173,
+        date: "2026-09-20",
+        outcome: "COMPLETED",
+        score: 0,
+        streak: 0,
+        ratingTier: "Wordsmith",
+        ratingPoints: 42,
+        ratingMaxPoints: 140,
+        primaryStat: .init(label: "ATTEMPTS", value: "5 / 5"),
+        timeStat: .init(label: "COMPLETED", value: "4:10 PM")
+    )
+
+    static let previewDailyCrosswordSolved = PuzzleShareResult(
+        game: .dailyCrossword,
+        issueNumber: 84,
+        date: "2026-09-20",
+        outcome: "SOLVED",
+        score: 4,
+        streak: 6,
+        ratingTier: "Linguist",
+        ratingPoints: 68,
+        ratingMaxPoints: 140,
+        primaryStat: .init(label: "SOLVE TIME", value: "04:38"),
+        timeStat: nil
+    )
+
+    static let previewWeeklyCrosswordSolved = PuzzleShareResult(
+        game: .weeklyCrossword,
+        issueNumber: 12,
+        date: "2026-09-14",
+        outcome: "SOLVED",
+        score: 5,
+        streak: 3,
+        ratingTier: "Cruciverbalist",
+        ratingPoints: 122,
+        ratingMaxPoints: 210,
+        primaryStat: .init(label: "SOLVE TIME", value: "12:47"),
+        timeStat: nil
+    )
+}
+
+/// Shows the 600-point export card at a phone-friendly scale in Xcode without
+/// changing the dimensions used by `ImageRenderer` for the shared image.
+private struct PuzzleResultShareCardPreview: View {
+    let result: PuzzleShareResult
+
+    var body: some View {
+        PuzzleResultShareCard(result: result)
+            .scaleEffect(0.55)
+            .frame(width: 330, height: 330)
+            .padding(12)
+            .background(Color.appBackground)
+    }
+}
+
+#Preview("Backword — solved") {
+    PuzzleResultShareCardPreview(result: .previewBackwordSolved)
+}
+
+#Preview("Backword — completed") {
+    PuzzleResultShareCardPreview(result: .previewBackwordCompleted)
+}
+
+#Preview("Quick Crossword — solved") {
+    PuzzleResultShareCardPreview(result: .previewDailyCrosswordSolved)
+}
+
+#Preview("Pro Crossword — solved") {
+    PuzzleResultShareCardPreview(result: .previewWeeklyCrosswordSolved)
 }

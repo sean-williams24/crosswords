@@ -1865,6 +1865,7 @@ html[data-theme="light"] .home-game-card--crossword .home-game-card__stats { col
    cards, so their secondary metadata has one consistent contrast level. */
 html[data-theme="light"] .home-game-card--backword .home-game-card__score small,
 html[data-theme="light"] .home-game-card--crossword .home-game-card__score small { color: rgb(255 255 255 / 58%); }
+html[data-theme="light"] .home-game-card--backword .home-game-card__score.is-perfect strong { color: #c6f6b5; }
 html[data-theme="light"] .home-game-card__streak { border: 1px solid #fff; color: #eeeeee; background: rgb(26 26 26 / 52%); }
 
 html[data-theme="light"] .weekly-card {

@@ -220,6 +220,7 @@ describe("web home dashboard", () => {
     expect(styles).toContain('html[data-theme="light"] .home-game-card--backword::after { border: 0; }');
     expect(styles).toContain('background: linear-gradient(rgb(255 255 255 / 10%), rgb(255 255 255 / 10%)), color(display-p3 0.289 0.397 0.544);');
     expect(styles).toContain('html[data-theme="light"] .home-game-card--backword .home-game-card__score small,\nhtml[data-theme="light"] .home-game-card--crossword .home-game-card__score small { color: rgb(255 255 255 / 58%); }');
+    expect(styles).toContain('html[data-theme="light"] .home-game-card--backword .home-game-card__score.is-perfect strong { color: #c6f6b5; }');
     expect(styles).toContain('html[data-theme="light"] .weekly-card {\n  border-color: #d9a640;\n  color: #d9a640;\n  background: var(--app-surface);');
   });
 
