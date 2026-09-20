@@ -43,9 +43,37 @@ describe("puzzle share results", () => {
     expect(card).toContain('<image href="https://www.playbackword.com/brand/backword-logo.png"');
     expect(card).not.toContain('letter-spacing="5">BACKWORD</text>');
     expect(card).toContain('width="1080" height="1080"');
-    expect(card).toContain("1 DAY STREAK");
+    expect(card).toContain(">5 PTS</text>");
+    expect(card).toContain(">1 DAY</text>");
+    expect(card).not.toContain("DAY STREAK");
+    expect(card).toContain(">LINGUIST</text><text x=\"100\" y=\"681\" fill=\"#f6f6f6\" font-family=\"Outfit, sans-serif\" font-size=\"24\" font-weight=\"700\">68/140 PTS</text>");
     expect(card).toContain("SOLVED");
+    expect(card).toContain('font-family="Outfit, sans-serif"');
+    expect(card).not.toContain('font-family="Arial, sans-serif"');
+    expect(card).toContain('<text x="1010" y="1010" fill="#dfc37b" font-family="Outfit, sans-serif" font-size="26" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text>');
+    expect(card).not.toContain("PLAY →");
     expect(card).not.toContain("<circle");
+  });
+
+  it("uses the singular score unit for one point", () => {
+    const card = puzzleResultCardSvg({
+      game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 1, streak: 1,
+      ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
+      primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
+    });
+
+    expect(card).toContain(">1 PT</text>");
+    expect(card).not.toContain(">1 PTS</text>");
+  });
+
+  it("embeds Outfit Bold when creating a shareable SVG", () => {
+    const card = puzzleResultCardSvg({
+      game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1,
+      ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
+      primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
+    }, undefined, "data:font/ttf;base64,OUTFIT");
+
+    expect(card).toContain('@font-face { font-family: "Outfit"; src: url("data:font/ttf;base64,OUTFIT") format("truetype"); font-weight: 700; }');
   });
 
   it("uses the matching dark Home-card palette for every game", () => {

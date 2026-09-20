@@ -171,9 +171,9 @@ private struct PuzzleResultShareCard: View {
                 columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)],
                 spacing: 16
             ) {
-                statTile(label: "RELEASE SCORE", value: "\(result.score) PTS")
+                statTile(label: "TODAY'S SCORE", value: "\(result.score) PTS")
                 statTile(label: result.primaryStat.label, value: result.primaryStat.value)
-                statTile(label: "CURRENT RATING", value: "\(result.ratingTier.uppercased()) \(result.ratingPoints)/\(result.ratingMaxPoints) PTS")
+                statTile(label: "CURRENT RATING", value: "\(result.ratingTier.uppercased())/n \(result.ratingPoints)/\(result.ratingMaxPoints) PTS")
                 statTile(label: "CURRENT STREAK", value: "\(result.streak) \(result.streak == 1 ? "DAY" : "DAYS")")
                 statTile(label: timeStat.label, value: timeStat.value)
             }

@@ -34,21 +34,28 @@ function escapeSvg(value: string) {
 }
 
 /** A deliberately abstract graphic: it renders only result metadata, never game content. */
-export function puzzleResultCardSvg(result: PuzzleShareResult, logoSource = new URL("/brand/backword-logo.png", result.url).href): string {
+export function puzzleResultCardSvg(
+  result: PuzzleShareResult,
+  logoSource = new URL("/brand/backword-logo.png", result.url).href,
+  fontSource?: string
+): string {
   const palette = shareCardPalette(result.game);
   const title = escapeSvg(`${result.gameName} #${result.issueNumber}`);
   const logoUrl = escapeSvg(logoSource);
   const outcome = escapeSvg(result.outcome);
-  const rating = escapeSvg(`${result.ratingTier.toUpperCase()} · ${result.ratingPoints}/${result.ratingMaxPoints} PTS`);
-  const score = escapeSvg(`${result.score} PTS`);
-  const streak = escapeSvg(`${result.streak} ${result.streak === 1 ? "DAY" : "DAYS"} STREAK`);
+  const ratingLevel = escapeSvg(result.ratingTier.toUpperCase());
+  const ratingPoints = escapeSvg(`${result.ratingPoints}/${result.ratingMaxPoints} PTS`);
+  const score = escapeSvg(`${result.score} ${result.score === 1 ? "PT" : "PTS"}`);
+  const streak = escapeSvg(`${result.streak} ${result.streak === 1 ? "DAY" : "DAYS"}`);
   const primary = escapeSvg(result.primaryStat.value);
   const primaryLabel = escapeSvg(result.primaryStat.label);
   const timeLabel = escapeSvg(result.timeStat?.label ?? "PLAY");
   const time = escapeSvg(result.timeStat?.value ?? "playbackword.com");
   const backgroundStops = `<stop stop-color="${palette.backgroundStart}"/>${palette.backgroundMiddle ? `<stop offset="0.55" stop-color="${palette.backgroundMiddle}"/>` : ""}<stop offset="1" stop-color="${palette.backgroundEnd}"/>`;
-  const stat = (x: number, y: number, label: string, value: string, fontSize = 30) => `<rect x="${x}" y="${y}" width="430" height="176" rx="30" fill="${palette.statBackground}"/><text x="${x + 30}" y="${y + 48}" fill="#d0d7df" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">${label}</text><text x="${x + 30}" y="${y + 118}" fill="#f6f6f6" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700">${value}</text>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-label="${title} result card"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">${backgroundStops}</linearGradient></defs><rect x="16" y="16" width="1048" height="1048" rx="64" fill="url(#bg)" stroke="${palette.border}" stroke-width="3"/><image href="${logoUrl}" x="770" y="66" width="220" height="114" preserveAspectRatio="xMidYMid meet"/><text x="70" y="138" fill="#f6f6f6" font-family="Arial, sans-serif" font-size="54" font-weight="700">${title}</text><text x="70" y="195" fill="#dfc37b" font-family="Arial, sans-serif" font-size="23" font-weight="700" letter-spacing="5">${outcome}</text><line x1="70" y1="252" x2="1010" y2="252" stroke="${palette.divider}" stroke-width="2"/>${stat(70, 310, "RELEASE SCORE", score, 42)}${stat(580, 310, primaryLabel, primary, 42)}${stat(70, 536, "CURRENT RATING", rating, 29)}${stat(580, 536, "CURRENT STREAK", streak, 29)}${stat(70, 762, timeLabel, time, 30)}<text x="70" y="1010" fill="${palette.play}" font-family="Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="3">PLAY → playbackword.com</text></svg>`;
+  const fontFace = fontSource ? `<style>@font-face { font-family: "Outfit"; src: url("${escapeSvg(fontSource)}") format("truetype"); font-weight: 700; }</style>` : "";
+  const stat = (x: number, y: number, label: string, value: string, fontSize = 30) => `<rect x="${x}" y="${y}" width="430" height="176" rx="30" fill="${palette.statBackground}"/><text x="${x + 30}" y="${y + 48}" fill="#d0d7df" font-family="Outfit, sans-serif" font-size="18" font-weight="700" letter-spacing="3">${label}</text><text x="${x + 30}" y="${y + 118}" fill="#f6f6f6" font-family="Outfit, sans-serif" font-size="${fontSize}" font-weight="700">${value}</text>`;
+  const ratingStat = (x: number, y: number) => `<rect x="${x}" y="${y}" width="430" height="176" rx="30" fill="${palette.statBackground}"/><text x="${x + 30}" y="${y + 48}" fill="#d0d7df" font-family="Outfit, sans-serif" font-size="18" font-weight="700" letter-spacing="3">CURRENT RATING</text><text x="${x + 30}" y="${y + 103}" fill="#f6f6f6" font-family="Outfit, sans-serif" font-size="29" font-weight="700">${ratingLevel}</text><text x="${x + 30}" y="${y + 145}" fill="#f6f6f6" font-family="Outfit, sans-serif" font-size="24" font-weight="700">${ratingPoints}</text>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-label="${title} result card"><defs>${fontFace}<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">${backgroundStops}</linearGradient></defs><rect x="16" y="16" width="1048" height="1048" rx="64" fill="url(#bg)" stroke="${palette.border}" stroke-width="3"/><image href="${logoUrl}" x="770" y="66" width="220" height="114" preserveAspectRatio="xMidYMid meet"/><text x="70" y="138" fill="#f6f6f6" font-family="Outfit, sans-serif" font-size="54" font-weight="700">${title}</text><text x="70" y="195" fill="#dfc37b" font-family="Outfit, sans-serif" font-size="23" font-weight="700" letter-spacing="5">${outcome}</text><line x1="70" y1="252" x2="1010" y2="252" stroke="${palette.divider}" stroke-width="2"/>${stat(70, 310, "TODAY'S SCORE", score, 42)}${stat(580, 310, primaryLabel, primary, 42)}${ratingStat(70, 536)}${stat(580, 536, "CURRENT STREAK", streak, 29)}${stat(70, 762, timeLabel, time, 30)}<text x="1010" y="1010" fill="#dfc37b" font-family="Outfit, sans-serif" font-size="26" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text></svg>`;
 }
 
 function readAsDataUrl(blob: Blob): Promise<string> {
@@ -61,19 +68,26 @@ function readAsDataUrl(blob: Blob): Promise<string> {
 }
 
 async function embeddedLogoSource(result: PuzzleShareResult): Promise<string> {
-  const logoUrl = new URL("/brand/backword-logo.png", result.url).href;
+  return embeddedAssetSource(new URL("/brand/backword-logo.png", result.url).href);
+}
+
+async function embeddedFontSource(result: PuzzleShareResult): Promise<string> {
+  return embeddedAssetSource(new URL("/fonts/Outfit-Bold.ttf", result.url).href);
+}
+
+async function embeddedAssetSource(url: string): Promise<string> {
   try {
-    const response = await fetch(logoUrl);
-    return response.ok ? await readAsDataUrl(await response.blob()) : logoUrl;
+    const response = await fetch(url);
+    return response.ok ? await readAsDataUrl(await response.blob()) : url;
   } catch {
-    return logoUrl;
+    return url;
   }
 }
 
 async function createCardFile(result: PuzzleShareResult): Promise<File | null> {
   if (typeof File === "undefined") return null;
-  const logoSource = await embeddedLogoSource(result);
-  return new File([puzzleResultCardSvg(result, logoSource)], `backword-${result.game}-${result.issueNumber}.svg`, {
+  const [logoSource, fontSource] = await Promise.all([embeddedLogoSource(result), embeddedFontSource(result)]);
+  return new File([puzzleResultCardSvg(result, logoSource, fontSource)], `backword-${result.game}-${result.issueNumber}.svg`, {
     type: "image/svg+xml"
   });
 }
