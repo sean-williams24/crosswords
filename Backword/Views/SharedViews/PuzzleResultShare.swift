@@ -255,19 +255,27 @@ private struct PuzzleResultShareCard: View {
 
 struct PuzzleResultShareButton: View {
     let result: PuzzleShareResult
+    var compact = false
     @State private var presentsShareSheet = false
 
     var body: some View {
         Button {
             presentsShareSheet = true
         } label: {
-            Label("Share result", systemImage: "square.and.arrow.up")
+            Label(compact ? "Share" : "Share result", systemImage: "square.and.arrow.up")
                 .font(AppFont.body(16))
                 .foregroundColor(.appTextPrimary)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(Color.appSurface)
+                .frame(maxWidth: compact ? nil : .infinity)
+                .padding(.horizontal, compact ? 14 : 0)
+                .padding(.vertical, compact ? 10 : 14)
+                .background(compact ? Color.appAccent : Color.appSurface)
                 .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+                .shadow(
+                    color: compact ? Color.appTextPrimary.opacity(0.16) : .clear,
+                    radius: compact ? 6 : 0,
+                    x: 0,
+                    y: compact ? 3 : 0
+                )
         }
         .accessibilityHint("Opens the system share sheet")
         .sheet(isPresented: $presentsShareSheet) {

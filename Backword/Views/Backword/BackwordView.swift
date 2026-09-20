@@ -66,6 +66,16 @@ struct BackwordView: View {
                     Spacer()
                         .frame(height: 10)
 
+                    if let completionShareResult {
+                        HStack {
+                            Spacer()
+                            PuzzleResultShareButton(result: completionShareResult, compact: true)
+                        }
+                        .padding(.horizontal, AppLayout.screenPadding)
+                        .padding(.top, 8)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+
                     GameScoreProgressBarView(
                         rating: ratingService.rating,
                         category: .backword
@@ -151,6 +161,17 @@ struct BackwordView: View {
 
     private var appLayout: AppLayout {
         AppLayout(sizeClass: sizeClass)
+    }
+
+    private var completionShareResult: PuzzleShareResult? {
+        guard viewModel.progress.isComplete else { return nil }
+        return PuzzleShareResult.backword(
+            progress: viewModel.progress,
+            word: viewModel.word,
+            stats: statsService.stats,
+            rating: ratingService.rating,
+            isPro: storeService.isProUser
+        )
     }
 
     private func showAutomaticInstructionsIfNeeded() {

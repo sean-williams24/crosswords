@@ -83,6 +83,13 @@ struct PuzzleView: View {
                         .padding(.horizontal, AppLayout.screenPadding)
                         .dynamicTypeSize(.medium)
                 }
+                .overlay(alignment: .bottomTrailing) {
+                    if let completionShareResult {
+                        PuzzleResultShareButton(result: completionShareResult, compact: true)
+                            .padding(.trailing, 10)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                }
                 
                 Spacer(minLength: 8)
 
@@ -197,6 +204,17 @@ struct PuzzleView: View {
 
     private var ratingCategory: RatingGameCategory {
         viewModel.puzzle.size > 12 ? .weeklyCrossword : .dailyCrossword
+    }
+
+    private var completionShareResult: PuzzleShareResult? {
+        guard viewModel.progress.isComplete else { return nil }
+        return PuzzleShareResult.crossword(
+            puzzle: viewModel.puzzle,
+            progress: viewModel.progress,
+            stats: statsService.stats,
+            rating: ratingService.rating,
+            isPro: storeService.isProUser
+        )
     }
 
     private func recordLiveScore() {
