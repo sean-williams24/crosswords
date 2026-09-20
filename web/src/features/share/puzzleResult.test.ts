@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { puzzleResultCardSvg } from "./PuzzleResultShare";
-import { buildBackwordShareResult, buildCrosswordShareResult, shareUrl } from "./puzzleResult";
+import { buildBackwordShareResult, buildCrosswordShareResult, formatCompletionTime, shareUrl } from "./puzzleResult";
 
 const rating = {
   days: [],
@@ -27,7 +27,7 @@ describe("puzzle share results", () => {
       origin: "https://www.playbackword.com"
     });
 
-    expect(result).toMatchObject({ game: "backword", issueNumber: 32, outcome: "SOLVED", score: 4, streak: 4, primaryStat: { value: "2 / 5" }, ratingTier: "Linguist", ratingPoints: 68 });
+    expect(result).toMatchObject({ game: "backword", issueNumber: 32, outcome: "SOLVED", score: 4, streak: 4, totalGamesSolved: 4, primaryStat: { value: "2 / 5" }, timeStat: { label: "COMPLETED AT" }, ratingTier: "Linguist", ratingPoints: 68 });
     expect(result.url).toBe("https://www.playbackword.com/backword/2026-09-16?utm_source=share&utm_medium=social&utm_campaign=completed_puzzle");
     expect(`${result.caption}${puzzleResultCardSvg(result)}`).not.toContain(answer);
     expect(`${result.caption}${puzzleResultCardSvg(result)}`).not.toContain("BOTTLE");
@@ -35,7 +35,7 @@ describe("puzzle share results", () => {
 
   it("uses the Backword logo instead of a text-only wordmark on the share card", () => {
     const card = puzzleResultCardSvg({
-      game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1,
+      game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1, totalGamesSolved: 7,
       ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
       primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
     });
@@ -46,18 +46,18 @@ describe("puzzle share results", () => {
     expect(card).toContain(">5 PTS</text>");
     expect(card).toContain(">1 DAY</text>");
     expect(card).not.toContain("DAY STREAK");
-    expect(card).toContain(">LINGUIST</text><text x=\"100\" y=\"681\" fill=\"#f6f6f6\" font-family=\"Outfit, sans-serif\" font-size=\"24\" font-weight=\"700\">68/140 PTS</text>");
+    expect(card).toContain(">LINGUIST</text><text x=\"101\" y=\"573\" fill=\"#ffffff\" font-family=\"Outfit, sans-serif\" font-size=\"32\" font-weight=\"700\">68/140 PTS</text>");
     expect(card).toContain("SOLVED");
     expect(card).toContain('font-family="Outfit, sans-serif"');
     expect(card).not.toContain('font-family="Arial, sans-serif"');
-    expect(card).toContain('<text x="1010" y="1010" fill="#dfc37b" font-family="Outfit, sans-serif" font-size="26" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text>');
+    expect(card).toContain('<text x="1004" y="880" fill="#ebb838" font-family="Outfit, sans-serif" font-size="43" font-weight="700" letter-spacing="2.7" text-anchor="end">playbackword.com</text>');
     expect(card).not.toContain("PLAY →");
     expect(card).not.toContain("<circle");
   });
 
   it("uses the singular score unit for one point", () => {
     const card = puzzleResultCardSvg({
-      game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 1, streak: 1,
+      game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 1, streak: 1, totalGamesSolved: 7,
       ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
       primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
     });
@@ -68,7 +68,7 @@ describe("puzzle share results", () => {
 
   it("embeds Outfit Bold when creating a shareable SVG", () => {
     const card = puzzleResultCardSvg({
-      game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1,
+      game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1, totalGamesSolved: 7,
       ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
       primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
     }, undefined, "data:font/ttf;base64,OUTFIT");
@@ -76,16 +76,18 @@ describe("puzzle share results", () => {
     expect(card).toContain('@font-face { font-family: "Outfit"; src: url("data:font/ttf;base64,OUTFIT") format("truetype"); font-weight: 700; }');
   });
 
-  it("uses the matching dark Home-card palette for every game", () => {
+  it("uses the matching iOS share-card palette for every game", () => {
     const base = {
-      issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1,
+      issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1, totalGamesSolved: 7,
       ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
       primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
     };
 
-    expect(puzzleResultCardSvg({ ...base, game: "backword", gameName: "Backword" })).toContain('stop-color="#34417c"');
-    expect(puzzleResultCardSvg({ ...base, game: "daily_crossword", gameName: "Quick Crossword" })).toContain('stop-color="#30445e"');
-    expect(puzzleResultCardSvg({ ...base, game: "weekly_crossword", gameName: "Pro Crossword" })).toContain('stop-color="#211e19"');
+    expect(puzzleResultCardSvg({ ...base, game: "backword", gameName: "Backword" })).toContain('fill="#aba7dc"');
+    expect(puzzleResultCardSvg({ ...base, game: "daily_crossword", gameName: "Quick Crossword" })).toContain('fill="#43668f"');
+    const proCard = puzzleResultCardSvg({ ...base, game: "weekly_crossword", gameName: "Pro Crossword" });
+    expect(proCard).toContain('fill="#1e1d1b"');
+    expect(proCard).toContain('stroke="url(#pro-border)"');
   });
 
   it("makes a failed Backword result neutral and spoiler-safe", () => {
@@ -108,8 +110,8 @@ describe("puzzle share results", () => {
     const daily = buildCrosswordShareResult({ progress, puzzle: { puzzleNumber: 8 }, stats: { totalSolved: 1, currentStreak: 2, longestStreak: 2, averageSolveTimeSeconds: null, rollingScore: 5, history: [] }, kind: "daily", rating, origin: "https://www.playbackword.com" });
     const weekly = buildCrosswordShareResult({ progress: { ...progress, size: 13, isWeekly: true }, puzzle: { puzzleNumber: 3 }, stats: { totalSolved: 1, currentStreak: 1, longestStreak: 1, averageSolveTimeSeconds: null, rollingScore: 5, recentHistory: [], previousHistory: [] }, kind: "weekly", rating, origin: "https://www.playbackword.com" });
 
-    expect(daily).toMatchObject({ game: "daily_crossword", gameName: "Quick Crossword", score: 5, timeStat: { value: "00:05:02" } });
-    expect(weekly).toMatchObject({ game: "weekly_crossword", gameName: "Pro Crossword", issueNumber: 3 });
+    expect(daily).toMatchObject({ game: "daily_crossword", gameName: "Quick Crossword", score: 5, totalGamesSolved: 1, primaryStat: { label: "SOLVE TIME", value: "00:05:02" }, timeStat: null });
+    expect(weekly).toMatchObject({ game: "weekly_crossword", gameName: "Pro Crossword", issueNumber: 3, totalGamesSolved: 1, primaryStat: { label: "SOLVE TIME", value: "00:05:02" }, timeStat: null });
     expect(`${daily.caption}${puzzleResultCardSvg(daily)}`).not.toContain("puzzle-id");
     expect(`${daily.caption}${puzzleResultCardSvg(daily)}`).not.toContain("Test clue");
   });
@@ -117,5 +119,9 @@ describe("puzzle share results", () => {
   it("links each game type to its exact issue with attribution", () => {
     expect(shareUrl("daily_crossword", "2026-09-16", "https://playbackword.com")).toContain("/crossword/2026-09-16?");
     expect(shareUrl("weekly_crossword", "2026-09-14", "https://playbackword.com")).toContain("/weekly-crossword/2026-09-14?");
+  });
+
+  it("formats Backword completion times with an AM or PM marker", () => {
+    expect(formatCompletionTime("2026-09-16T14:24:00.000Z")).toMatch(/^\d{1,2}:\d{2} (AM|PM)$/);
   });
 });

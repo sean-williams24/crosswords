@@ -4,9 +4,9 @@ import { PuzzleResultShare, sharePuzzleResult } from "./PuzzleResultShare";
 import type { PuzzleShareResult } from "./puzzleResult";
 
 const result: PuzzleShareResult = {
-  game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 3,
+  game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 3, totalGamesSolved: 7,
   ratingTier: "Linguist", ratingPoints: 70, ratingMaxPoints: 140,
-  primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, timeStat: { label: "COMPLETED", value: "2:30 PM" },
+  primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, timeStat: { label: "COMPLETED AT", value: "2:30 PM" },
   url: "https://www.playbackword.com/backword/2026-09-16?utm_source=share", caption: "I solved Backword #7"
 };
 
@@ -26,7 +26,7 @@ describe("result sharing", () => {
     expect(container.querySelector(".puzzle-result-share__logo")).toHaveAttribute("src", "/brand/backword-logo.png");
     expect(container.querySelector(".puzzle-result-share__tiles")).not.toBeInTheDocument();
     expect(container.querySelector(".puzzle-result-share__eyebrow")).not.toBeInTheDocument();
-    expect(container).toHaveTextContent("3 days streak");
+    expect(container).toHaveTextContent("3 days");
   });
 
   it("can render only the share action for completion sheets", () => {

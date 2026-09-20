@@ -14,6 +14,7 @@ export type PuzzleShareResult = {
   outcome: "SOLVED" | "COMPLETED";
   score: number;
   streak: number;
+  totalGamesSolved: number;
   ratingTier: string;
   ratingPoints: number;
   ratingMaxPoints: number;
@@ -41,7 +42,7 @@ export function shareUrl(game: ShareGame, date: string, origin = window.location
 
 export function formatCompletionTime(completedAt: string | null): string {
   if (!completedAt || Number.isNaN(new Date(completedAt).getTime())) return "—";
-  return new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date(completedAt));
+  return new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", hour12: true }).format(new Date(completedAt));
 }
 
 function resultCaption(result: Omit<PuzzleShareResult, "caption">): string {
@@ -79,11 +80,12 @@ export function buildBackwordShareResult({
     outcome: progress.outcome === "won" ? "SOLVED" : "COMPLETED",
     score: backwordScore(progress),
     streak: stats.currentStreak,
+    totalGamesSolved: stats.gamesWon,
     ratingTier: rating.tier,
     ratingPoints: rating.totalPoints,
     ratingMaxPoints: rating.maxPoints,
     primaryStat: { label: "ATTEMPTS", value: `${progress.guesses.length} / 5` },
-    timeStat: { label: "COMPLETED", value: formatCompletionTime(progress.completedAt) },
+    timeStat: { label: "COMPLETED AT", value: formatCompletionTime(progress.completedAt) },
     url: shareUrl("backword", progress.date, origin)
   });
 }
@@ -118,11 +120,12 @@ export function buildCrosswordShareResult({
     outcome: "SOLVED",
     score: onTime ? progress.releaseDateScore : 0,
     streak: stats.currentStreak,
+    totalGamesSolved: stats.totalSolved,
     ratingTier: rating.tier,
     ratingPoints: rating.totalPoints,
     ratingMaxPoints: rating.maxPoints,
-    primaryStat: { label: "STREAK", value: `${stats.currentStreak} ${stats.currentStreak === 1 ? "day" : "days"}` },
-    timeStat: { label: "SOLVE TIME", value: formatDuration(solveSeconds) },
+    primaryStat: { label: "SOLVE TIME", value: formatDuration(solveSeconds) },
+    timeStat: null,
     url: shareUrl(game, progress.date, origin)
   });
 }
