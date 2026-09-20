@@ -50,5 +50,9 @@ describe("WeeklyCrosswordPage", () => {
 
     expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
     expect(screen.getByText("NEXT WEEKLY CROSSWORD IN")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "BACK TO GAME" }));
+    const gameShareButton = screen.getByRole("button", { name: "Share result" });
+    expect(gameShareButton).toHaveClass("puzzle-result-share__button--compact");
+    expect(gameShareButton.closest(".puzzle-result-share--compact")?.parentElement).toHaveClass("cw-game-main");
   });
 });

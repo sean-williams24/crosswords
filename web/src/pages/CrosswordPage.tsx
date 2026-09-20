@@ -32,6 +32,8 @@ import { useAnalytics } from "../features/analytics/AnalyticsProvider";
 import { contentLoadFailed, gameCompleted, gameStarted } from "../features/analytics/events";
 import { loadLocalProfileRecords } from "../features/profile/profileRecords";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
+import { PuzzleResultShare } from "../features/share/PuzzleResultShare";
+import { buildCrosswordShareResult } from "../features/share/puzzleResult";
 
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
@@ -273,6 +275,9 @@ export function CrosswordPage() {
 
   const liveScore = puzzle && progress ? crosswordScore(progress.completedClueIds.length, puzzle.clues.length, progress.hintsUsed) : 0;
   const clueText = showHint && currentClue ? currentClue.hint : currentClue?.text;
+  const shareResult = puzzle && progress?.completedAt
+    ? buildCrosswordShareResult({ progress, puzzle, stats, kind: "daily", rating })
+    : null;
 
   return (
     <div className="bw-page cw-page">
@@ -326,6 +331,7 @@ export function CrosswordPage() {
                 <strong>{clueText}</strong>
               </button>
               <CrosswordGrid activeClue={currentClue} correctHighlight={settings.correctHighlight} onSelect={(row, col) => { setSelection((current) => current ? selectCell(puzzle, current, row, col) : current); setShowHint(false); }} progress={progress} puzzle={puzzle} selection={selection} />
+              {shareResult && sheet === null ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
             </main>
             <footer className="bw-game-controls cw-game-controls">
               <div aria-label={`${stats.rollingScore} of 70 crossword points`} className="bw-game-score bw-game-score--keyboard-width"><span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} /></div>

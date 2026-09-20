@@ -33,6 +33,8 @@ import { useAnalytics } from "../features/analytics/AnalyticsProvider";
 import { contentLoadFailed, gameCompleted, gameStarted } from "../features/analytics/events";
 import { loadLocalProfileRecords } from "../features/profile/profileRecords";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
+import { PuzzleResultShare } from "../features/share/PuzzleResultShare";
+import { buildCrosswordShareResult } from "../features/share/puzzleResult";
 
 type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
 
@@ -222,6 +224,9 @@ export function WeeklyCrosswordPage() {
 
   const liveScore = puzzle && progress ? crosswordScore(progress.completedClueIds.length, puzzle.clues.length, progress.hintsUsed) : 0;
   const clueText = showHint && currentClue ? currentClue.hint : currentClue?.text;
+  const shareResult = puzzle && progress?.completedAt
+    ? buildCrosswordShareResult({ progress, puzzle, stats, kind: "weekly", rating })
+    : null;
 
   return (
     <div className="bw-page cw-page cw-page--weekly">
@@ -249,6 +254,7 @@ export function WeeklyCrosswordPage() {
             <p className="cw-puzzle-date">{puzzle.date}</p>
             <button aria-label={`Current clue ${currentClue?.number ?? ""} ${currentClue?.direction ?? ""}: ${clueText ?? ""}`} className="cw-clue-bar" onClick={() => { if (skipClueToggle.current) { skipClueToggle.current = false; return; } setSelection((current) => current ? toggleDirection(puzzle, current) : current); setShowHint(false); }} onPointerDown={(event) => setClueDragStart(event.clientX)} onPointerUp={(event) => { if (clueDragStart === null) return; const delta = event.clientX - clueDragStart; if (delta > 50) { skipClueToggle.current = true; moveClue(-1); } if (delta < -50) { skipClueToggle.current = true; moveClue(1); } setClueDragStart(null); }} type="button"><span>{currentClue ? `${currentClue.number}${currentClue.direction === "across" ? "A" : "D"}` : ""}</span><strong>{clueText}</strong></button>
             <CrosswordGrid activeClue={currentClue} correctHighlight={settings.correctHighlight} onSelect={(row, col) => { setSelection((current) => current ? selectCell(puzzle, current, row, col) : current); setShowHint(false); }} progress={progress} puzzle={puzzle} selection={selection} />
+            {shareResult && sheet === null ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
           </main>
           <footer className="bw-game-controls cw-game-controls"><div aria-label={`${stats.rollingScore} of 10 weekly crossword points`} className="bw-game-score bw-game-score--keyboard-width"><span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 10) * 100)}% 0 0)` }} /></div><p className="cw-score-label">This week: {liveScore}/5</p><CrosswordKeyboard disabled={progress.completedAt !== null} onDelete={handleDelete} onLetter={handleLetter} /></footer>
         </> : null}

@@ -39,6 +39,8 @@ import { useAnalytics } from "../features/analytics/AnalyticsProvider";
 import { contentLoadFailed, gameCompleted, gameStarted } from "../features/analytics/events";
 import { loadLocalProfileRecords } from "../features/profile/profileRecords";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
+import { PuzzleResultShare } from "../features/share/PuzzleResultShare";
+import { buildBackwordShareResult } from "../features/share/puzzleResult";
 
 type Sheet = "instructions" | "stats" | "completion" | null;
 
@@ -196,6 +198,10 @@ export function BackwordPage() {
   const rating = useMemo(
     () => buildPlayerProfileRating(loadLocalProfileRecords(user?.id), entitlement?.isPro === true),
     [entitlement?.isPro, progress, user?.id]
+  );
+  const shareResult = useMemo(
+    () => progress.outcome === "inProgress" || !word ? null : buildBackwordShareResult({ progress, stats, word, rating }),
+    [progress, rating, stats, word]
   );
   const canSubmit = progress.outcome === "inProgress" && input.length === hidden.length;
 
@@ -380,6 +386,7 @@ export function BackwordPage() {
                   <p>{showDetailedExplainer ? "If you’re stuck, guess any word to reveal letters" : "Guess the 6 letter word..."}</p>
                 </div>
               )}
+              {shareResult && sheet === null ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
             </main>
 
             <footer className="bw-game-controls">

@@ -107,6 +107,7 @@ describe("Backword browser game", () => {
     const controls = container.querySelector(".bw-game-controls");
     expect(controls?.querySelector(".bw-game-score")).toHaveClass("bw-game-score--keyboard-width");
     expect(controls?.querySelector(".bw-keyboard")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Share result" })).not.toBeInTheDocument();
   });
 
   it("uses the iOS semantic treatment for Backword letter cells", async () => {
@@ -122,6 +123,9 @@ describe("Backword browser game", () => {
     expect(styles).toContain("background: rgb(var(--app-surface-rgb) / 50%);");
     expect(styles).toContain("color: rgb(var(--app-text-secondary-rgb) / 40%);");
     expect(styles).toContain(".bw-letter-row > .is-revealed { border-color: rgb(var(--bw-cell-accent-rgb) / 50%); }");
+    expect(styles).toMatch(/\.puzzle-result-share__button--compact\s*\{[^}]*min-height:\s*44px;[^}]*border-radius:\s*6px;/);
+    expect(styles).toMatch(/\.puzzle-result-share--compact\s*\{[^}]*z-index:\s*4;[^}]*pointer-events:\s*auto;/);
+    expect(styles).toMatch(/@media \(min-width: 700px\)\s*\{[\s\S]*?\.puzzle-result-share--compact\s*\{[^}]*position:\s*fixed;[^}]*top:\s*calc\(max\(8px, env\(safe-area-inset-top\)\) \+ 54px\);[^}]*bottom:\s*auto;/);
   });
 
   it("shows onboarding, persists the mode, and clears partial input when mode changes", async () => {
@@ -161,7 +165,7 @@ describe("Backword browser game", () => {
     expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
     expect(screen.getByText("... in 1 guess")).toBeInTheDocument();
     expect(screen.getByText("5/70")).toBeInTheDocument();
-    const shareButton = screen.getByRole("button", { name: "Share result" });
+    const shareButton = within(screen.getByRole("dialog", { name: "Solved!" })).getByRole("button", { name: "Share result" });
     expect(shareButton).toBeInTheDocument();
     expect(document.querySelector(".puzzle-result-share__preview")).not.toBeInTheDocument();
     expect(shareButton.compareDocumentPosition(document.querySelector(".bw-distribution") as Node) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -169,6 +173,11 @@ describe("Backword browser game", () => {
     expect(writeText).toHaveBeenCalledWith(expect.stringContaining("I solved Backword #7"));
     expect(writeText).toHaveBeenCalledWith(expect.not.stringContaining("CASTLE"));
     expect(screen.getByText("Result copied to clipboard")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "BACK TO GAME" }));
+    const gameShareButton = screen.getByRole("button", { name: "Share result" });
+    expect(gameShareButton).toHaveClass("puzzle-result-share__button--compact");
+    expect(gameShareButton.closest(".puzzle-result-share--compact")?.parentElement).toHaveClass("bw-game-main");
 
     const stored = JSON.parse(localStorage.getItem("backword:web:progress:v1") ?? "{}");
     expect(stored[localDateString()]).toMatchObject({ outcome: "won", guesses: ["CASTLE"] });

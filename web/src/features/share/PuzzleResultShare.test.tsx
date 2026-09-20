@@ -1,6 +1,7 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { PuzzleResultShare, sharePuzzleResult } from "./PuzzleResultShare";
+import { isChromeBrowser, PuzzleResultShare, shareCardFormat, sharePuzzleResult } from "./PuzzleResultShare";
 import type { PuzzleShareResult } from "./puzzleResult";
 
 const result: PuzzleShareResult = {
@@ -36,6 +37,50 @@ describe("result sharing", () => {
     expect(container.querySelector(".puzzle-result-share--button-only")).toBeInTheDocument();
   });
 
+  it("renders a compact, icon-led share action for completed game screens", () => {
+    const { container } = render(<PuzzleResultShare compact result={result} showPreview={false} />);
+
+    const button = container.querySelector(".puzzle-result-share__button--compact");
+    expect(button).toHaveAccessibleName("Share result");
+    expect(button).toHaveTextContent("Share");
+    expect(button?.querySelector(".puzzle-result-share__icon")).toBeInTheDocument();
+    expect(container.querySelector(".puzzle-result-share--compact")).toBeInTheDocument();
+  });
+
+  it("uses a PNG image card for both Chrome and Safari", () => {
+    expect(shareCardFormat("Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36")).toBe("png");
+    expect(shareCardFormat("Mozilla/5.0 Version/18.5 Safari/605.1.15")).toBe("png");
+  });
+
+  it("opens the custom share actions for Chrome only", async () => {
+    const user = userEvent.setup();
+    const originalUserAgent = Object.getOwnPropertyDescriptor(navigator, "userAgent");
+    Object.defineProperty(navigator, "userAgent", { configurable: true, value: "Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36" });
+
+    try {
+      render(<PuzzleResultShare compact result={result} showPreview={false} />);
+      await user.click(screen.getByRole("button", { name: "Share result" }));
+      expect(screen.getByRole("dialog", { name: "Share result options" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Copy result" })).toBeInTheDocument();
+    } finally {
+      if (originalUserAgent) Object.defineProperty(navigator, "userAgent", originalUserAgent);
+      else delete (navigator as { userAgent?: string }).userAgent;
+    }
+  });
+
+  it("identifies Chrome without treating Safari as Chrome", () => {
+    expect(isChromeBrowser("Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36")).toBe(true);
+    expect(isChromeBrowser("Mozilla/5.0 Version/18.5 Safari/605.1.15")).toBe(false);
+  });
+
+  it("waits for the image card before enabling a native share", () => {
+    Object.defineProperty(navigator, "share", { configurable: true, value: vi.fn() });
+    const { container } = render(<PuzzleResultShare compact result={result} showPreview={false} />);
+
+    expect(container.querySelector(".puzzle-result-share__button--compact")).toBeDisabled();
+    expect(container.querySelector(".puzzle-result-share__button--compact")).toHaveAccessibleName("Preparing share card");
+  });
+
   it("shares the generated card file when the browser accepts files", async () => {
     vi.stubGlobal("File", class extends Blob {
       name: string;
@@ -49,6 +94,7 @@ describe("result sharing", () => {
     expect(nativeShare).toHaveBeenCalledWith({ files: [expect.any(Blob)] });
     expect(nativeShare.mock.calls[0][0].text).toBeUndefined();
     expect(nativeShare.mock.calls[0][0].url).toBeUndefined();
+    expect(fetch).not.toHaveBeenCalled();
   });
 
   it("falls back to a native text share when file sharing is unsupported", async () => {
@@ -57,20 +103,45 @@ describe("result sharing", () => {
     Object.defineProperty(navigator, "canShare", { configurable: true, value: vi.fn(() => false) });
 
     await expect(sharePuzzleResult(result)).resolves.toBe("native_text");
-    expect(nativeShare).toHaveBeenCalledWith(expect.not.objectContaining({ files: expect.anything() }));
+    expect(nativeShare).toHaveBeenCalledWith({
+      title: "Backword #7",
+      text: result.caption,
+      url: result.url
+    });
   });
 
-  it("retries as text if a browser accepts files but rejects the card", async () => {
+  it("shares text and the result link first when image cards are disabled for Chrome", async () => {
     vi.stubGlobal("File", class extends Blob {
       name: string;
       constructor(parts: BlobPart[], name: string, options?: FilePropertyBag) { super(parts, options); this.name = name; }
     });
-    const nativeShare = vi.fn().mockRejectedValueOnce(new Error("file unsupported")).mockResolvedValueOnce(undefined);
+    const nativeShare = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, "share", { configurable: true, value: nativeShare });
     Object.defineProperty(navigator, "canShare", { configurable: true, value: vi.fn(() => true) });
 
-    await expect(sharePuzzleResult(result)).resolves.toBe("native_text");
-    expect(nativeShare).toHaveBeenLastCalledWith(expect.not.objectContaining({ files: expect.anything() }));
+    await expect(sharePuzzleResult(result, undefined, false)).resolves.toBe("native_text");
+    expect(nativeShare).toHaveBeenCalledTimes(1);
+    expect(nativeShare).toHaveBeenCalledWith({
+      title: "Backword #7",
+      text: result.caption,
+      url: result.url
+    });
+  });
+
+  it("copies the result if an image-card share is rejected after the tap gesture", async () => {
+    vi.stubGlobal("File", class extends Blob {
+      name: string;
+      constructor(parts: BlobPart[], name: string, options?: FilePropertyBag) { super(parts, options); this.name = name; }
+    });
+    const nativeShare = vi.fn().mockRejectedValueOnce(new Error("file unsupported"));
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "share", { configurable: true, value: nativeShare });
+    Object.defineProperty(navigator, "canShare", { configurable: true, value: vi.fn(() => true) });
+    Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText } });
+
+    await expect(sharePuzzleResult(result)).resolves.toBe("clipboard");
+    expect(nativeShare).toHaveBeenCalledTimes(1);
+    expect(writeText).toHaveBeenCalledWith(result.caption);
   });
 
   it("copies the full spoiler-safe caption when native sharing is unavailable", async () => {
@@ -79,6 +150,20 @@ describe("result sharing", () => {
 
     await expect(sharePuzzleResult(result)).resolves.toBe("clipboard");
     expect(writeText).toHaveBeenCalledWith(result.caption);
+  });
+
+  it("uses the compatibility copy path when Chrome blocks the Clipboard API", async () => {
+    const execCommand = vi.fn(() => true);
+    const originalExecCommand = Object.getOwnPropertyDescriptor(document, "execCommand");
+    Object.defineProperty(document, "execCommand", { configurable: true, value: execCommand });
+
+    try {
+      await expect(sharePuzzleResult(result)).resolves.toBe("clipboard");
+      expect(execCommand).toHaveBeenCalledWith("copy");
+    } finally {
+      if (originalExecCommand) Object.defineProperty(document, "execCommand", originalExecCommand);
+      else delete (document as { execCommand?: Document["execCommand"] }).execCommand;
+    }
   });
 
   it("treats cancellation separately and reports unavailable sharing failures", async () => {

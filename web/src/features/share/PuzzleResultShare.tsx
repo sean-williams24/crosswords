@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAnalytics } from "../analytics/AnalyticsProvider";
 import { resultShared } from "../analytics/events";
 import type { PuzzleShareResult } from "./puzzleResult";
@@ -83,25 +83,102 @@ async function embeddedAssetSource(url: string): Promise<string> {
   }
 }
 
-async function createCardFile(result: PuzzleShareResult): Promise<File | null> {
+function createImmediateCardFile(result: PuzzleShareResult): File | null {
   if (typeof File === "undefined") return null;
-  const [logoSource, fontSource] = await Promise.all([embeddedLogoSource(result), embeddedFontSource(result)]);
-  return new File([puzzleResultCardSvg(result, logoSource, fontSource)], `backword-${result.game}-${result.issueNumber}.svg`, {
+  return new File([puzzleResultCardSvg(result)], `backword-${result.game}-${result.issueNumber}.svg`, {
     type: "image/svg+xml"
   });
 }
 
-async function share(result: PuzzleShareResult): Promise<ShareMethod | "cancelled" | "unavailable"> {
-  const data = { title: `${result.gameName} #${result.issueNumber}`, text: result.caption };
-  const file = await createCardFile(result);
-  if (file && navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+type ShareCardFormat = "png" | "svg";
+
+/** Native share sheets handle a raster image more consistently than an SVG file. */
+export function shareCardFormat(_userAgent: string): ShareCardFormat {
+  return "png";
+}
+
+export function isChromeBrowser(userAgent: string): boolean {
+  return /(?:Chrome|CriOS)\//i.test(userAgent);
+}
+
+async function rasterizeCard(svg: string): Promise<Blob | null> {
+  if (typeof Image === "undefined" || typeof URL.createObjectURL !== "function") return null;
+
+  return new Promise((resolve) => {
+    const source = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+    const image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 1080;
+      canvas.height = 1080;
+      const context = canvas.getContext("2d");
+      if (!context) {
+        URL.revokeObjectURL(source);
+        resolve(null);
+        return;
+      }
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(source);
+      canvas.toBlob((blob) => resolve(blob), "image/png");
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(source);
+      resolve(null);
+    };
+    image.src = source;
+  });
+}
+
+async function createEmbeddedCardFile(result: PuzzleShareResult, format: ShareCardFormat): Promise<File | null> {
+  if (typeof File === "undefined") return null;
+  const [logoSource, fontSource] = await Promise.all([embeddedLogoSource(result), embeddedFontSource(result)]);
+  const svg = puzzleResultCardSvg(result, logoSource, fontSource);
+  if (format === "png") {
+    const png = await rasterizeCard(svg);
+    return png ? new File([png], `backword-${result.game}-${result.issueNumber}.png`, { type: "image/png" }) : null;
+  }
+  return new File([svg], `backword-${result.game}-${result.issueNumber}.svg`, {
+    type: "image/svg+xml"
+  });
+}
+
+async function copyCaption(result: PuzzleShareResult): Promise<boolean> {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(result.caption);
+      return true;
+    }
+  } catch {
+    // Fall through to the legacy copy path, which also works on HTTP localhost.
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = result.caption;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.append(textarea);
+  textarea.select();
+  const copied = document.execCommand?.("copy") ?? false;
+  textarea.remove();
+  return copied;
+}
+
+async function share(
+  result: PuzzleShareResult,
+  cardFile: File | null = createImmediateCardFile(result),
+  shareImageCard = true
+): Promise<ShareMethod | "cancelled" | "unavailable"> {
+  const data = { title: `${result.gameName} #${result.issueNumber}`, text: result.caption, url: result.url };
+  if (shareImageCard && cardFile && navigator.share && (!navigator.canShare || navigator.canShare({ files: [cardFile] }))) {
     try {
       // iOS copies a file and accompanying text as separate rich items. Share the
       // card alone here so the Copy action produces one pasteable result.
-      await navigator.share({ files: [file] });
+      await navigator.share({ files: [cardFile] });
       return "native_file";
     } catch (error) {
       if ((error as DOMException).name === "AbortError") return "cancelled";
+      return await copyCaption(result) ? "clipboard" : "unavailable";
     }
   }
   try {
@@ -109,22 +186,90 @@ async function share(result: PuzzleShareResult): Promise<ShareMethod | "cancelle
       await navigator.share(data);
       return "native_text";
     }
-    if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(result.caption);
-      return "clipboard";
-    }
-    return "unavailable";
+    return await copyCaption(result) ? "clipboard" : "unavailable";
   } catch (error) {
-    return (error as DOMException).name === "AbortError" ? "cancelled" : "unavailable";
+    if ((error as DOMException).name === "AbortError") return "cancelled";
+    return await copyCaption(result) ? "clipboard" : "unavailable";
   }
 }
 
-export function PuzzleResultShare({ result, showPreview = true }: { result: PuzzleShareResult; showPreview?: boolean }) {
+export function PuzzleResultShare({
+  result,
+  showPreview = true,
+  compact = false
+}: {
+  result: PuzzleShareResult;
+  showPreview?: boolean;
+  compact?: boolean;
+}) {
   const { track } = useAnalytics();
   const [status, setStatus] = useState("");
+  const [embeddedCardFile, setEmbeddedCardFile] = useState<File | null>(null);
+  const [showChromeActions, setShowChromeActions] = useState(false);
+  const cardFormat = shareCardFormat(navigator.userAgent);
+  const cardKey = JSON.stringify(result);
+  const isChrome = isChromeBrowser(navigator.userAgent);
+  const isCardReady = isChrome || !navigator.share || embeddedCardFile !== null;
+
+  useEffect(() => {
+    let isCurrent = true;
+    setEmbeddedCardFile(null);
+    void createEmbeddedCardFile(result, cardFormat).then((file) => {
+      if (isCurrent) setEmbeddedCardFile(file);
+    });
+    return () => { isCurrent = false; };
+  }, [cardFormat, cardKey]);
+
+  function currentCardFile() {
+    return embeddedCardFile ?? (cardFormat === "svg" ? createImmediateCardFile(result) : null);
+  }
+
+  async function copyCardImage() {
+    const cardFile = currentCardFile();
+    if (!cardFile || !navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
+      setStatus("Image copying is unavailable here. Download the card instead.");
+      return;
+    }
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ [cardFile.type]: cardFile })]);
+      setStatus("Image copied to clipboard");
+    } catch {
+      setStatus("Image copying is unavailable here. Download the card instead.");
+    }
+  }
+
+  function downloadCard() {
+    const cardFile = currentCardFile();
+    if (!cardFile) {
+      setStatus("Your image card is still preparing");
+      return;
+    }
+    const url = URL.createObjectURL(cardFile);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = cardFile.name;
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+    setStatus("Image card downloaded");
+  }
+
+  async function copyResultText() {
+    setStatus(await copyCaption(result) ? "Result copied to clipboard" : "Copying is unavailable in this browser");
+  }
 
   async function handleShare() {
-    const method = await share(result);
+    if (isChrome) {
+      setShowChromeActions(true);
+      return;
+    }
+    // Browser share APIs require invocation during the tap gesture. The card is
+    // pre-rendered as a PNG so every native share sheet receives an image.
+    const cardFile = currentCardFile();
+    const method = await share(
+      result,
+      cardFile,
+      cardFile !== null
+    );
     if (method === "cancelled") return;
     if (method === "unavailable") {
       setStatus("Sharing is unavailable on this browser");
@@ -134,13 +279,19 @@ export function PuzzleResultShare({ result, showPreview = true }: { result: Puzz
     setStatus(method === "clipboard" ? "Result copied to clipboard" : "Result shared");
   }
 
-  return <section aria-label="Share your result" className={`puzzle-result-share${showPreview ? "" : " puzzle-result-share--button-only"}`}>
+  return <section aria-label="Share your result" className={`puzzle-result-share${showPreview ? "" : " puzzle-result-share--button-only"}${compact ? " puzzle-result-share--compact" : ""}`}>
     {showPreview ? <div aria-hidden="true" className="puzzle-result-share__preview">
       <img alt="" className="puzzle-result-share__logo" src="/brand/backword-logo.png" />
       <strong>{result.gameName} #{result.issueNumber}</strong>
       <div className="puzzle-result-share__stats"><span>{result.score} {result.score === 1 ? "PT" : "PTS"}</span><span>{result.primaryStat.value}</span><span>{result.ratingTier} {result.ratingPoints}/{result.ratingMaxPoints} PTS</span><span>{result.streak} {result.streak === 1 ? "day" : "days"}</span></div>
     </div> : null}
-    <button className="bw-secondary-button puzzle-result-share__button" onClick={() => void handleShare()} type="button">Share result</button>
+    <button aria-label={compact ? isCardReady ? "Share result" : "Preparing share card" : undefined} className={`bw-secondary-button puzzle-result-share__button${compact ? " puzzle-result-share__button--compact" : ""}`} disabled={!isCardReady} onClick={() => void handleShare()} type="button">
+      {compact ? isCardReady ? <><svg aria-hidden="true" className="puzzle-result-share__icon" viewBox="0 0 24 24"><path d="M12 15V3m0 0 4 4m-4-4L8 7M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8" /></svg>Share</> : "Preparing…" : "Share result"}
+    </button>
+    {showChromeActions ? <div aria-label="Share result options" className="puzzle-result-share__fallback" role="dialog">
+      {currentCardFile() ? <><button onClick={() => void copyCardImage()} type="button">Copy image</button><button onClick={downloadCard} type="button">Download card</button></> : <p>Image card is still preparing.</p>}
+      <button onClick={() => void copyResultText()} type="button">Copy result</button>
+    </div> : null}
     <span aria-live="polite" className="bw-share-status">{status}</span>
   </section>;
 }
