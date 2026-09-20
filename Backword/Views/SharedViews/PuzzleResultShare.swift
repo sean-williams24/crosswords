@@ -120,7 +120,7 @@ struct PuzzleShareResult: Equatable {
             ratingPoints: rating.totalPoints(isPro: isPro),
             ratingMaxPoints: rating.maxPoints(isPro: isPro),
             primaryStat: Stat(label: "ATTEMPTS", value: "\(progress.guesses.count) / 5"),
-            timeStat: Stat(label: "COMPLETED", value: completedTime(progress.completedAt))
+            timeStat: Stat(label: "COMPLETED AT", value: completedTime(progress.completedAt))
         )
     }
 
@@ -150,9 +150,13 @@ struct PuzzleShareResult: Equatable {
         )
     }
 
-    private static func completedTime(_ date: Date?) -> String {
+    static func completedTime(_ date: Date?, timeZone: TimeZone = .current) -> String {
         guard let date else { return "—" }
-        return date.formatted(date: .omitted, time: .shortened)
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = timeZone
+        formatter.dateFormat = "h:mm a"
+        return formatter.string(from: date)
     }
 }
 

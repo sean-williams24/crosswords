@@ -127,6 +127,17 @@ struct PuzzleResultShareTests {
         #expect(result.scoreLabel == "1 PT")
     }
 
+    @Test("Backword completion time includes an AM or PM marker")
+    func completionTimeUsesTwelveHourClock() {
+        let utc = TimeZone(secondsFromGMT: 0)!
+        let completionTime = PuzzleShareResult.completedTime(
+            Date(timeIntervalSince1970: 0),
+            timeZone: utc
+        )
+
+        #expect(completionTime == "12:00 AM")
+    }
+
     @Test("Pro Crossword share cards always use a dark appearance")
     func proCrosswordShareCardAppearance() {
         #expect(PuzzleShareResult.Game.weeklyCrossword.usesDarkShareCardAppearance)
