@@ -36,6 +36,12 @@ struct PuzzleShareResult: Equatable {
             case .weeklyCrossword: "/weekly-crossword/"
             }
         }
+
+        /// Pro Crossword cards retain their dark, gold-accented visual identity
+        /// independently of the device appearance used to create the share image.
+        var usesDarkShareCardAppearance: Bool {
+            self == .weeklyCrossword
+        }
     }
 
     struct Stat: Equatable {
@@ -150,7 +156,17 @@ struct PuzzleShareResult: Equatable {
 private struct PuzzleResultShareCard: View {
     let result: PuzzleShareResult
 
+    @ViewBuilder
     var body: some View {
+        if result.game.usesDarkShareCardAppearance {
+            cardContent
+                .environment(\.colorScheme, .dark)
+        } else {
+            cardContent
+        }
+    }
+
+    private var cardContent: some View {
         VStack(alignment: .leading, spacing: 30) {
             HStack(alignment: .top, spacing: 16) {
                 VStack(alignment: .leading, spacing: 3) {
@@ -199,7 +215,6 @@ private struct PuzzleResultShareCard: View {
         .background(cardBackground)
 //        .clipShape(RoundedRectangle(cornerRadius: 22))
         .overlay(cardBorder)
-        .preferredColorScheme(.dark)
     }
 
     /// Use the same dark-mode surface as the corresponding iOS Home card.

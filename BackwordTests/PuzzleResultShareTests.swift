@@ -126,4 +126,11 @@ struct PuzzleResultShareTests {
 
         #expect(result.scoreLabel == "1 PT")
     }
+
+    @Test("Pro Crossword share cards always use a dark appearance")
+    func proCrosswordShareCardAppearance() {
+        #expect(PuzzleShareResult.Game.weeklyCrossword.usesDarkShareCardAppearance)
+        #expect(!PuzzleShareResult.Game.dailyCrossword.usesDarkShareCardAppearance)
+        #expect(!PuzzleShareResult.Game.backword.usesDarkShareCardAppearance)
+    }
 }
