@@ -49,6 +49,7 @@ struct PuzzleShareResult: Equatable {
     let outcome: String
     let score: Int
     let streak: Int
+    let totalGamesSolved: Int
     let ratingTier: String
     let ratingPoints: Int
     let ratingMaxPoints: Int
@@ -58,6 +59,10 @@ struct PuzzleShareResult: Equatable {
     var issueLabel: String {
         guard let issueNumber else { return game.displayName }
         return "\(game.displayName) #\(issueNumber)"
+    }
+
+    var scoreLabel: String {
+        "\(score) \(score == 1 ? "PT" : "PTS")"
     }
 
     var shareURL: URL {
@@ -98,6 +103,7 @@ struct PuzzleShareResult: Equatable {
             outcome: progress.isWon ? "SOLVED" : "COMPLETED",
             score: rating.score(for: .backword, date: progress.date),
             streak: stats.liveCurrentStreak,
+            totalGamesSolved: stats.gamesWon,
             ratingTier: rating.tier(isPro: isPro).displayName,
             ratingPoints: rating.totalPoints(isPro: isPro),
             ratingMaxPoints: rating.maxPoints(isPro: isPro),
@@ -123,6 +129,7 @@ struct PuzzleShareResult: Equatable {
             outcome: "SOLVED",
             score: rating.score(for: category, date: puzzle.date),
             streak: streak,
+            totalGamesSolved: stats.totalCompleted(isWeekly: puzzle.size > 12),
             ratingTier: rating.tier(isPro: isPro).displayName,
             ratingPoints: rating.totalPoints(isPro: isPro),
             ratingMaxPoints: rating.maxPoints(isPro: isPro),
@@ -171,7 +178,7 @@ private struct PuzzleResultShareCard: View {
                 columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)],
                 spacing: 16
             ) {
-                statTile(label: "TODAY'S SCORE", value: "\(result.score) PTS")
+                statTile(label: "TODAY'S SCORE", value: result.scoreLabel)
                 statTile(label: result.primaryStat.label, value: result.primaryStat.value)
                 statTile(label: "CURRENT RATING", value: "\(result.ratingTier.uppercased())\n \(result.ratingPoints)/\(result.ratingMaxPoints) PTS")
                 statTile(label: "CURRENT STREAK", value: "\(result.streak) \(result.streak == 1 ? "DAY" : "DAYS")")
@@ -242,7 +249,7 @@ private struct PuzzleResultShareCard: View {
     }
 
     private var timeStat: PuzzleShareResult.Stat {
-        result.timeStat ?? PuzzleShareResult.Stat(label: "TOTAL SOLVED", value: "playbackword.com")
+        result.timeStat ?? PuzzleShareResult.Stat(label: "TOTAL SOLVED", value: "\(result.totalGamesSolved)")
     }
 }
 
@@ -355,6 +362,7 @@ private extension PuzzleShareResult {
         outcome: "SOLVED",
         score: 5,
         streak: 12,
+        totalGamesSolved: 27,
         ratingTier: "Linguist",
         ratingPoints: 68,
         ratingMaxPoints: 140,
@@ -367,8 +375,9 @@ private extension PuzzleShareResult {
         issueNumber: 173,
         date: "2026-09-20",
         outcome: "COMPLETED",
-        score: 0,
+        score: 1,
         streak: 0,
+        totalGamesSolved: 18,
         ratingTier: "Wordsmith",
         ratingPoints: 42,
         ratingMaxPoints: 140,
@@ -383,6 +392,7 @@ private extension PuzzleShareResult {
         outcome: "SOLVED",
         score: 4,
         streak: 6,
+        totalGamesSolved: 31,
         ratingTier: "Linguist",
         ratingPoints: 68,
         ratingMaxPoints: 140,
@@ -397,6 +407,7 @@ private extension PuzzleShareResult {
         outcome: "SOLVED",
         score: 5,
         streak: 3,
+        totalGamesSolved: 12,
         ratingTier: "Cruciverbalist",
         ratingPoints: 122,
         ratingMaxPoints: 210,

@@ -14,6 +14,7 @@ struct PuzzleResultShareTests {
         var rating = OverallRating()
         rating.upsertBackword(score: 5, date: "2026-09-16")
         var stats = BackwordStats()
+        stats.gamesWon = 3
         stats.currentStreak = 3
         stats.lastCompletedDate = "2026-09-16"
 
@@ -34,7 +35,9 @@ struct PuzzleResultShareTests {
 
         #expect(result.issueLabel == "Backword #170")
         #expect(result.score == 5)
+        #expect(result.scoreLabel == "5 PTS")
         #expect(result.streak == 3)
+        #expect(result.totalGamesSolved == 3)
         #expect(result.primaryStat == .init(label: "ATTEMPTS", value: "1 / 5"))
         #expect(result.shareURL.absoluteString == "https://www.playbackword.com/backword/2026-09-16?utm_source=share&utm_medium=social&utm_campaign=completed_puzzle")
         #expect(result.caption.contains("CASTLE") == false)
@@ -99,7 +102,28 @@ struct PuzzleResultShareTests {
 
         #expect(result.game == PuzzleShareResult.Game.weeklyCrossword)
         #expect(result.score == 4)
+        #expect(result.totalGamesSolved == 1)
         #expect(result.primaryStat == PuzzleShareResult.Stat(label: "SOLVE TIME", value: "01:23"))
         #expect(result.shareURL.path == "/weekly-crossword/2026-09-14")
+    }
+
+    @Test("A one-point result uses the singular score label")
+    func singularScoreLabel() {
+        let result = PuzzleShareResult(
+            game: .backword,
+            issueNumber: 173,
+            date: "2026-09-20",
+            outcome: "SOLVED",
+            score: 1,
+            streak: 1,
+            totalGamesSolved: 1,
+            ratingTier: "Novice",
+            ratingPoints: 1,
+            ratingMaxPoints: 140,
+            primaryStat: .init(label: "ATTEMPTS", value: "5 / 5"),
+            timeStat: nil
+        )
+
+        #expect(result.scoreLabel == "1 PT")
     }
 }
