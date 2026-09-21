@@ -1178,3 +1178,8 @@ or account identifier. A failed Backword game uses neutral “completed” wordi
 and may expose only aggregate metadata such as attempts, score, streak, and
 rolling-rating tier. Result links target the immutable dated game route and add
 the standard share campaign parameters; they do not identify the player.
+
+Chrome and Safari expose an in-page result-share menu so its image copy and
+download paths do not depend on inconsistent native-sheet handling. The menu is
+anchored to the result button within completion modals, and remains openable
+while the PNG is prepared so text copying is never blocked by image rendering.

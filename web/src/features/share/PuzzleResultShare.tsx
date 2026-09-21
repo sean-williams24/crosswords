@@ -231,7 +231,10 @@ export function PuzzleResultShare({
   const cardKey = JSON.stringify(result);
   const isChrome = isChromeBrowser(navigator.userAgent);
   const isSafari = isSafariBrowser(navigator.userAgent);
-  const isCardReady = isChrome || !navigator.share || embeddedCardFile !== null;
+  // Chrome and Safari use our in-page menu. Keep that menu available while the
+  // PNG is prepared so Copy result remains usable; its image actions appear as
+  // soon as the card is ready.
+  const isCardReady = isChrome || isSafari || !navigator.share || embeddedCardFile !== null;
 
   useEffect(() => {
     let isCurrent = true;

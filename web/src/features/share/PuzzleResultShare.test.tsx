@@ -77,13 +77,15 @@ describe("result sharing", () => {
     expect(isChromeBrowser("Mozilla/5.0 Version/18.5 Safari/605.1.15")).toBe(false);
   });
 
-  it("opens custom share actions for Safari so copying does not depend on its native sheet", async () => {
+  it("opens custom share actions for Safari while its image card is preparing", async () => {
     const user = userEvent.setup();
     const originalUserAgent = Object.getOwnPropertyDescriptor(navigator, "userAgent");
     Object.defineProperty(navigator, "userAgent", { configurable: true, value: "Mozilla/5.0 Version/18.5 Safari/605.1.15" });
+    Object.defineProperty(navigator, "share", { configurable: true, value: vi.fn() });
 
     try {
-      render(<PuzzleResultShare compact result={result} showPreview={false} />);
+      const { container } = render(<PuzzleResultShare compact result={result} showPreview={false} />);
+      expect(container.querySelector(".puzzle-result-share__button--compact")).toBeEnabled();
       await user.click(screen.getByRole("button", { name: "Share result" }));
       expect(screen.getByRole("dialog", { name: "Share result options" })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "Copy result" })).toBeInTheDocument();
@@ -98,12 +100,20 @@ describe("result sharing", () => {
     expect(isSafariBrowser("Mozilla/5.0 CriOS/140.0.0.0 Mobile/15E148 Safari/604.1")).toBe(false);
   });
 
-  it("waits for the image card before enabling a native share", () => {
+  it("waits for the image card before enabling a native share outside the custom-browser menu", () => {
+    const originalUserAgent = Object.getOwnPropertyDescriptor(navigator, "userAgent");
+    Object.defineProperty(navigator, "userAgent", { configurable: true, value: "Mozilla/5.0 Firefox/141.0" });
     Object.defineProperty(navigator, "share", { configurable: true, value: vi.fn() });
-    const { container } = render(<PuzzleResultShare compact result={result} showPreview={false} />);
 
-    expect(container.querySelector(".puzzle-result-share__button--compact")).toBeDisabled();
-    expect(container.querySelector(".puzzle-result-share__button--compact")).toHaveAccessibleName("Preparing share card");
+    try {
+      const { container } = render(<PuzzleResultShare compact result={result} showPreview={false} />);
+
+      expect(container.querySelector(".puzzle-result-share__button--compact")).toBeDisabled();
+      expect(container.querySelector(".puzzle-result-share__button--compact")).toHaveAccessibleName("Preparing share card");
+    } finally {
+      if (originalUserAgent) Object.defineProperty(navigator, "userAgent", originalUserAgent);
+      else delete (navigator as { userAgent?: string }).userAgent;
+    }
   });
 
   it("shares the generated card file when the browser accepts files", async () => {
