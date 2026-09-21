@@ -32,6 +32,12 @@ extension Color {
     static let solvedGold = Color("SolvedGold")
     static let appCrosswordBackground = Color("CrosswordBackground")
     static let backwordBackground = Color("BackwordBackground")
+    static let shareCardBackwordBackground = Color("ShareCardBackword")
+    static let shareCardDailyBackground = Color("ShareCardDaily")
+    static let shareCardWeeklyBackground = Color("ShareCardWeekly")
+    static let shareCardBackwordStatLabel = Color("ShareCardBackwordStatLabel")
+    static let shareCardDailyStatLabel = Color("ShareCardDailyStatLabel")
+    static let shareCardWeeklyStatLabel = Color("ShareCardWeeklyStatLabel")
 }
 
 enum AppGradient {
@@ -120,6 +126,16 @@ enum AppFont {
 
     static func statNumber(_ size: CGFloat = 48) -> Font {
         .custom("Outfit-Bold", size: size, relativeTo: .largeTitle)
+    }
+
+    /// The share card is exported at a fixed 1080px canvas, so its typography
+    /// must not change with the device's Dynamic Type setting.
+    static func shareCardTitle(_ size: CGFloat) -> Font {
+        .custom("Outfit-Bold", fixedSize: size)
+    }
+
+    static func shareCardValue(_ size: CGFloat) -> Font {
+        .custom("Outfit-SemiBold", fixedSize: size)
     }
 }
 

@@ -35,10 +35,10 @@ struct PuzzleResultShareTests {
 
         #expect(result.issueLabel == "Backword #170")
         #expect(result.score == 5)
-        #expect(result.scoreLabel == "5 PTS")
+        #expect(result.scoreLabel == "5 pts")
         #expect(result.streak == 3)
         #expect(result.totalGamesSolved == 3)
-        #expect(result.primaryStat == .init(label: "ATTEMPTS", value: "1 / 5"))
+        #expect(result.primaryStat == .init(label: "ATTEMPTS", value: "1/5"))
         #expect(result.shareURL.absoluteString == "https://www.playbackword.com/backword/2026-09-16?utm_source=share&utm_medium=social&utm_campaign=completed_puzzle")
         #expect(result.caption.contains("CASTLE") == false)
         #expect(result.caption.contains("fortress") == false)
@@ -124,7 +124,7 @@ struct PuzzleResultShareTests {
             timeStat: nil
         )
 
-        #expect(result.scoreLabel == "1 PT")
+        #expect(result.scoreLabel == "1 pt")
     }
 
     @Test("Backword completion time includes an AM or PM marker")
@@ -150,5 +150,14 @@ struct PuzzleResultShareTests {
         #expect(PuzzleShareResult.Game.backword.usesHighContrastShareCardStatLabels)
         #expect(!PuzzleShareResult.Game.dailyCrossword.usesHighContrastShareCardStatLabels)
         #expect(!PuzzleShareResult.Game.weeklyCrossword.usesHighContrastShareCardStatLabels)
+    }
+
+    @Test("Share cards use compact geometry with a high-definition export")
+    func shareCardLayout() {
+        #expect(PuzzleResultShareCardLayout.canvasSize == 540)
+        #expect(PuzzleResultShareCardLayout.exportPixelSize == 1080)
+        #expect(PuzzleResultShareCardLayout.renderScale == 2)
+        #expect(PuzzleResultShareCardLayout.cornerRadius == 24)
+        #expect(PuzzleResultShareCardLayout.statWidth == 226)
     }
 }

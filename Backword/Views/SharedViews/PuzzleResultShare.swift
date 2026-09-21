@@ -74,7 +74,7 @@ struct PuzzleShareResult: Equatable {
     }
 
     var scoreLabel: String {
-        "\(score) \(score == 1 ? "PT" : "PTS")"
+        "\(score) \(score == 1 ? "pt" : "pts")"
     }
 
     var shareURL: URL {
@@ -119,7 +119,7 @@ struct PuzzleShareResult: Equatable {
             ratingTier: rating.tier(isPro: isPro).displayName,
             ratingPoints: rating.totalPoints(isPro: isPro),
             ratingMaxPoints: rating.maxPoints(isPro: isPro),
-            primaryStat: Stat(label: "ATTEMPTS", value: "\(progress.guesses.count) / 5"),
+            primaryStat: Stat(label: "ATTEMPTS", value: "\(progress.guesses.count)/5"),
             timeStat: Stat(label: "COMPLETED AT", value: completedTime(progress.completedAt))
         )
     }
@@ -160,6 +160,25 @@ struct PuzzleShareResult: Equatable {
     }
 }
 
+/// Fixed dimensions for the social card shared by iOS and the web app.
+///
+/// iOS lays the card out at a phone-friendly 540 points, then renders it at 2x
+/// to keep the shared PNG at 1080px square. Social apps can safely downsize
+/// that source without introducing the pixelation a 500px source produces.
+enum PuzzleResultShareCardLayout {
+    static let designCanvasSize: CGFloat = 1080
+    static let canvasSize: CGFloat = 540
+    static let exportPixelSize: CGFloat = 1080
+    static let renderScale: CGFloat = exportPixelSize / canvasSize
+
+    static func scaled(_ designValue: CGFloat) -> CGFloat {
+        designValue * canvasSize / designCanvasSize
+    }
+
+    static let cornerRadius = scaled(48)
+    static let statWidth = scaled(452)
+}
+
 /// A square, rendered result card sized for social-media previews. It
 /// deliberately contains only the data in `PuzzleShareResult`, so it cannot
 /// reveal the puzzle's contents.
@@ -177,75 +196,72 @@ private struct PuzzleResultShareCard: View {
     }
 
     private var cardContent: some View {
-        VStack(alignment: .leading, spacing: 30) {
-            HStack(alignment: .top, spacing: 16) {
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(result.issueLabel)
-                        .font(AppFont.header(38))
-                        .foregroundColor(.white)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.7)
+        ZStack(alignment: .topLeading) {
+            cardBackground
 
-                    Text(result.outcome)
-                        .font(AppFont.clueLabel(11))
-                        .foregroundColor(.solvedGold)
-                        .tracking(2)
-                }
+            Text(result.issueLabel)
+                .font(AppFont.shareCardTitle(titleFontSize))
+                .foregroundColor(.white)
+                .lineLimit(1)
+                .minimumScaleFactor(58.0 / 86.0)
+                .frame(width: scaled(640), alignment: .leading)
+                .offset(x: scaled(64), y: scaled(70))
 
-                Spacer(minLength: 12)
+            Text(result.outcome)
+                .font(AppFont.shareCardTitle(scaled(27)))
+                .foregroundColor(.solvedGold)
+                .tracking(scaled(4))
+                .offset(x: scaled(64), y: scaled(178))
 
-                Image("BackWordLogo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 140, height: 70)
-            }
+            Image("BackWordLogoShare")
+                .resizable()
+                .scaledToFit()
+                .frame(width: scaled(252), height: scaled(126))
+                .offset(x: scaled(752), y: scaled(76))
 
-            LazyVGrid(
-                columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)],
-                spacing: 16
-            ) {
-                statTile(label: "TODAY'S SCORE", value: result.scoreLabel)
-                statTile(label: result.primaryStat.label, value: result.primaryStat.value)
-                statTile(label: "CURRENT RATING", value: "\(result.ratingTier.uppercased())\n \(result.ratingPoints)/\(result.ratingMaxPoints) PTS")
-                statTile(label: "CURRENT STREAK", value: "\(result.streak) \(result.streak == 1 ? "DAY" : "DAYS")")
-                statTile(label: timeStat.label, value: timeStat.value)
-            }
+            statTile(label: "TODAY'S SCORE", value: result.scoreLabel, height: scaled(200))
+                .offset(x: scaled(64), y: scaled(250))
+            statTile(label: result.primaryStat.label, value: shareCardValue(result.primaryStat.value), height: scaled(200))
+                .offset(x: scaled(564), y: scaled(250))
+            ratingStatTile
+                .offset(x: scaled(64), y: scaled(480))
+            statTile(label: "CURRENT STREAK", value: streakValue, height: scaled(250))
+                .offset(x: scaled(564), y: scaled(480))
+            statTile(label: timeStat.label, value: shareCardValue(timeStat.value), height: scaled(190))
+                .offset(x: scaled(64), y: scaled(760))
 
-            HStack {
-                Spacer()
-                Text("playbackword.com")
-                    .font(AppFont.clueNumber(24))
-                    .foregroundColor(.solvedGold)
-                    .tracking(1.5)
-                    .padding(.trailing, 3)
-            }
+            Text("playbackword.com")
+                .font(AppFont.shareCardTitle(scaled(55)))
+                .foregroundColor(.appGridLine)
+                .tracking(scaled(3))
+                .frame(width: scaled(952), alignment: .trailing)
+                .offset(x: scaled(64), y: scaled(966))
         }
-        .padding(42)
-        .frame(width: 600, height: 600, alignment: .leading)
+        .frame(
+            width: PuzzleResultShareCardLayout.canvasSize,
+            height: PuzzleResultShareCardLayout.canvasSize,
+            alignment: .topLeading
+        )
         .background(cardBackground)
-        .overlay(cardBorder)
     }
 
-    /// Use the same dark-mode surface as the corresponding iOS Home card.
+    /// These fixed colours and dimensions are shared with the web-card renderer.
     @ViewBuilder
     private var cardBackground: some View {
         switch result.game {
         case .backword:
-            ZStack {
-                Color.appCrosswordBackground
-                Color.backwordBackground
-            }
+            Color.shareCardBackwordBackground
         case .dailyCrossword:
-            Color.dailyCardBackground
+            Color.shareCardDailyBackground
         case .weeklyCrossword:
-            Color.appSurface.overlay(AnyView(proGradient).opacity(0.02))
+            Color.shareCardWeeklyBackground
         }
     }
 
     @ViewBuilder
     private var cardBorder: some View {
         if result.game == .weeklyCrossword {
-            RoundedRectangle(cornerRadius: 0)
+            RoundedRectangle(cornerRadius: PuzzleResultShareCardLayout.cornerRadius)
                 .stroke(proGradient, lineWidth: 1.5)
         }
     }
@@ -254,32 +270,86 @@ private struct PuzzleResultShareCard: View {
         AppGradient.pro
     }
 
-    private func statTile(label: String, value: String) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+    private func statTile(label: String, value: String, height: CGFloat) -> some View {
+        ZStack(alignment: .topLeading) {
+            RoundedRectangle(cornerRadius: scaled(42))
+                .fill(Color.black.opacity(0.2))
+
             Text(label)
-                .font(AppFont.clueLabel(10))
+                .font(AppFont.shareCardTitle(scaled(31)))
                 .foregroundColor(statLabelColor)
-                .tracking(1.5)
+                .tracking(scaled(3))
+                .frame(width: scaled(392), alignment: .leading)
+                .offset(x: scaled(30), y: scaled(28))
             Text(value)
-                .font(AppFont.header(18))
+                .font(AppFont.shareCardValue(scaled(62)))
                 .foregroundColor(.white)
-                .lineLimit(2)
-                .minimumScaleFactor(0.65)
+                .lineLimit(1)
+                .minimumScaleFactor(0.55)
+                .frame(width: scaled(392), alignment: .leading)
+                .offset(x: scaled(30), y: scaled(78))
         }
-        .frame(maxWidth: .infinity, minHeight: 62, alignment: .leading)
-        .padding(14)
-        .background(Color.black.opacity(0.2))
-        .clipShape(RoundedRectangle(cornerRadius: 18))
+        .frame(width: PuzzleResultShareCardLayout.statWidth, height: height)
+    }
+
+    private var ratingStatTile: some View {
+        ZStack(alignment: .topLeading) {
+            RoundedRectangle(cornerRadius: scaled(42))
+                .fill(Color.black.opacity(0.2))
+
+            Text("CURRENT RATING")
+                .font(AppFont.shareCardTitle(scaled(31)))
+                .foregroundColor(statLabelColor)
+                .tracking(scaled(3))
+                .frame(width: scaled(392), alignment: .leading)
+                .offset(x: scaled(30), y: scaled(28))
+            Text(result.ratingTier)
+                .font(AppFont.shareCardValue(scaled(62)))
+                .foregroundColor(.white)
+                .lineLimit(1)
+                .minimumScaleFactor(0.55)
+                .frame(width: scaled(392), alignment: .leading)
+                .offset(x: scaled(30), y: scaled(78))
+            Text("\(result.ratingPoints)/\(result.ratingMaxPoints) pts")
+                .font(AppFont.shareCardValue(scaled(56)))
+                .foregroundColor(.white)
+                .lineLimit(1)
+                .minimumScaleFactor(0.55)
+                .frame(width: scaled(392), alignment: .leading)
+                .offset(x: scaled(30), y: scaled(150))
+        }
+        .frame(width: PuzzleResultShareCardLayout.statWidth, height: scaled(250))
     }
 
     private var timeStat: PuzzleShareResult.Stat {
         result.timeStat ?? PuzzleShareResult.Stat(label: "TOTAL SOLVED", value: "\(result.totalGamesSolved)")
     }
 
+    private var titleFontSize: CGFloat {
+        scaled(max(58, min(86, 86 * 13 / CGFloat(result.issueLabel.count))))
+    }
+
+    private var streakValue: String {
+        "\(result.streak) \(result.streak == 1 ? "day" : "days")"
+    }
+
+    private func shareCardValue(_ value: String) -> String {
+        value
+            .replacingOccurrences(of: " AM", with: " am")
+            .replacingOccurrences(of: " PM", with: " pm")
+    }
+
     private var statLabelColor: Color {
-        result.game.usesHighContrastShareCardStatLabels
-            ? Color.appTextPrimary.opacity(0.78)
-            : .appTextSecondary
+        if result.game.usesHighContrastShareCardStatLabels {
+            return .shareCardBackwordStatLabel
+        }
+        return result.game == .dailyCrossword
+            ? .shareCardDailyStatLabel
+            : .shareCardWeeklyStatLabel
+    }
+
+    private func scaled(_ designValue: CGFloat) -> CGFloat {
+        PuzzleResultShareCardLayout.scaled(designValue)
     }
 }
 
@@ -344,7 +414,7 @@ private final class PuzzleResultActivityItem: NSObject, UIActivityItemSource {
     init(result: PuzzleShareResult) {
         self.result = result
         let renderer = ImageRenderer(content: PuzzleResultShareCard(result: result))
-        renderer.scale = UIScreen.main.scale
+        renderer.scale = PuzzleResultShareCardLayout.renderScale
         self.cardImage = renderer.uiImage ?? UIImage()
     }
 
@@ -454,14 +524,14 @@ private extension PuzzleShareResult {
     )
 }
 
-/// Shows the 600-point export card at a phone-friendly scale in Xcode without
-/// changing the dimensions used by `ImageRenderer` for the shared image.
+/// Shows the 540-point card at its phone-friendly size in Xcode without
+/// changing the 1080px dimensions used by `ImageRenderer` for the shared image.
 private struct PuzzleResultShareCardPreview: View {
     let result: PuzzleShareResult
 
     var body: some View {
         PuzzleResultShareCard(result: result)
-            .scaleEffect(0.55)
+            .scaleEffect(330.0 / PuzzleResultShareCardLayout.canvasSize)
             .frame(width: 330, height: 330)
             .padding(12)
             .background(Color.appBackground)
