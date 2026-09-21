@@ -33,14 +33,14 @@ describe("puzzle share results", () => {
     expect(`${result.caption}${puzzleResultCardSvg(result)}`).not.toContain("BOTTLE");
   });
 
-  it("uses the original Backword logo on the share card", () => {
+  it("uses the original vector Backword logo on the share card", () => {
     const card = puzzleResultCardSvg({
       game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1, totalGamesSolved: 7,
       ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
       primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
     });
 
-    expect(card).toContain('<image href="https://www.playbackword.com/brand/backword-logo.png"');
+    expect(card).toContain('<image href="https://www.playbackword.com/brand/backword-logo-share.svg"');
     expect(card).not.toContain('<g aria-label="Backword logo"');
     expect(card).toContain('width="1080" height="1080"');
     expect(card).toContain('<rect width="1080" height="1080" rx="48" fill="#aba7dc"/>');
@@ -75,6 +75,16 @@ describe("puzzle share results", () => {
     }, undefined, { bold: "data:font/ttf;base64,OUTFIT" });
 
     expect(card).toContain('@font-face { font-family: "Outfit"; src: url("data:font/ttf;base64,OUTFIT") format("truetype"); font-weight: 700; }');
+  });
+
+  it("accepts an embedded logo source for rasterized sharing", () => {
+    const card = puzzleResultCardSvg({
+      game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1, totalGamesSolved: 7,
+      ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
+      primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
+    }, "data:image/png;base64,LOGO");
+
+    expect(card).toContain('<image href="data:image/png;base64,LOGO"');
   });
 
   it("uses the matching iOS share-card palette for every game", () => {

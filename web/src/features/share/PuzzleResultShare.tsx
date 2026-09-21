@@ -43,7 +43,7 @@ function escapeSvg(value: string) {
 /** A deliberately abstract graphic: it renders only result metadata, never game content. */
 export function puzzleResultCardSvg(
   result: PuzzleShareResult,
-  logoSource = new URL("/brand/backword-logo.png", result.url).href,
+  logoSource = new URL("/brand/backword-logo-share.svg", result.url).href,
   fontSources?: ShareCardFontSources
 ): string {
   const palette = shareCardPalette(result.game);
@@ -77,6 +77,10 @@ function readAsDataUrl(blob: Blob): Promise<string> {
     reader.onerror = () => reject(reader.error);
     reader.readAsDataURL(blob);
   });
+}
+
+async function embeddedLogoSource(result: PuzzleShareResult): Promise<string> {
+  return embeddedAssetSource(new URL("/brand/backword-logo-share.svg", result.url).href);
 }
 
 async function embeddedFontSources(result: PuzzleShareResult): Promise<ShareCardFontSources> {
@@ -148,8 +152,8 @@ async function rasterizeCard(svg: string): Promise<Blob | null> {
 
 async function createEmbeddedCardFile(result: PuzzleShareResult, format: ShareCardFormat): Promise<File | null> {
   if (typeof File === "undefined") return null;
-  const fontSources = await embeddedFontSources(result);
-  const svg = puzzleResultCardSvg(result, undefined, fontSources);
+  const [logoSource, fontSources] = await Promise.all([embeddedLogoSource(result), embeddedFontSources(result)]);
+  const svg = puzzleResultCardSvg(result, logoSource, fontSources);
   if (format === "png") {
     const png = await rasterizeCard(svg);
     return png ? new File([png], `backword-${result.game}-${result.issueNumber}.png`, { type: "image/png" }) : null;
