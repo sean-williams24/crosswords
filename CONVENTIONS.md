@@ -1183,3 +1183,8 @@ Chrome and Safari expose an in-page result-share menu so its image copy and
 download paths do not depend on inconsistent native-sheet handling. The menu is
 anchored to the result button within completion modals, and remains openable
 while the PNG is prepared so text copying is never blocked by image rendering.
+
+For visual parity with iOS, the card title, outcome, labels, and footer use
+Outfit Bold, while the values in the stat tiles use embedded Outfit Regular:
+52px for standard values and rating tiers, and 44px for rating points on the
+1080px design canvas.

@@ -44,10 +44,10 @@ describe("puzzle share results", () => {
     expect(card).not.toContain('<g aria-label="Backword logo"');
     expect(card).toContain('width="1080" height="1080"');
     expect(card).toContain('<rect width="1080" height="1080" rx="48" fill="#aba7dc"/>');
-    expect(card).toContain('font-size="62" font-weight="600">5 pts</text>');
+    expect(card).toContain('font-size="52" font-weight="400">5 pts</text>');
     expect(card).toContain(">1 day</text>");
     expect(card).not.toContain("DAY STREAK");
-    expect(card).toContain(">Linguist</text><text x=\"94\" y=\"695\" fill=\"#ffffff\" font-family=\"Outfit, sans-serif\" font-size=\"56\" font-weight=\"600\">68/140 pts</text>");
+    expect(card).toContain(">Linguist</text><text x=\"94\" y=\"695\" fill=\"#ffffff\" font-family=\"Outfit, sans-serif\" font-size=\"44\" font-weight=\"400\">68/140 pts</text>");
     expect(card).toContain("SOLVED");
     expect(card).toContain('font-family="Outfit, sans-serif"');
     expect(card).not.toContain('font-family="Arial, sans-serif"');
@@ -75,6 +75,17 @@ describe("puzzle share results", () => {
     }, undefined, { bold: "data:font/ttf;base64,OUTFIT" });
 
     expect(card).toContain('@font-face { font-family: "Outfit"; src: url("data:font/ttf;base64,OUTFIT") format("truetype"); font-weight: 700; }');
+  });
+
+  it("embeds Outfit Regular for the smaller result values", () => {
+    const card = puzzleResultCardSvg({
+      game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1, totalGamesSolved: 7,
+      ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
+      primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
+    }, undefined, { regular: "data:font/ttf;base64,REGULAR" });
+
+    expect(card).toContain('@font-face { font-family: "Outfit"; src: url("data:font/ttf;base64,REGULAR") format("truetype"); font-weight: 400; }');
+    expect(card).toContain('font-size="52" font-weight="400">5 pts</text>');
   });
 
   it("accepts an embedded logo source for rasterized sharing", () => {
