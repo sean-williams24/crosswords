@@ -250,7 +250,7 @@ private struct PuzzleResultShareCard: View {
     private var cardBackground: some View {
         switch result.game {
         case .backword:
-            Color.shareCardBackwordBackground
+            Color.backwordBackground
         case .dailyCrossword:
             Color.shareCardDailyBackground
         case .weeklyCrossword:
@@ -282,7 +282,7 @@ private struct PuzzleResultShareCard: View {
                 .frame(width: scaled(392), alignment: .leading)
                 .offset(x: scaled(30), y: scaled(28))
             Text(value)
-                .font(AppFont.shareCardValue(scaled(62)))
+                .font(AppFont.caption(scaled(62)))
                 .foregroundColor(.white)
                 .lineLimit(1)
                 .minimumScaleFactor(0.55)
@@ -304,14 +304,14 @@ private struct PuzzleResultShareCard: View {
                 .frame(width: scaled(392), alignment: .leading)
                 .offset(x: scaled(30), y: scaled(28))
             Text(result.ratingTier)
-                .font(AppFont.shareCardValue(scaled(62)))
+                .font(AppFont.caption(scaled(62)))
                 .foregroundColor(.white)
                 .lineLimit(1)
                 .minimumScaleFactor(0.55)
                 .frame(width: scaled(392), alignment: .leading)
                 .offset(x: scaled(30), y: scaled(78))
             Text("\(result.ratingPoints)/\(result.ratingMaxPoints) pts")
-                .font(AppFont.shareCardValue(scaled(56)))
+                .font(AppFont.caption(scaled(56)))
                 .foregroundColor(.white)
                 .lineLimit(1)
                 .minimumScaleFactor(0.55)
