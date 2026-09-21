@@ -1193,3 +1193,7 @@ The web card resolves the iOS share palette into its exported image: Backword
 uses its dark blue background with #999999 stat headings and a dark grid-line
 footer; Quick Crossword uses its light grid-line footer; Pro Crossword alone
 uses a gold footer.
+
+The share-only Backword wordmark remains one vector design across both
+platforms. Its `BACK` paths use light blue #B8E0FF for sufficient contrast
+against the dark Backword card background; `WORD` remains white.

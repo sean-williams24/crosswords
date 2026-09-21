@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { puzzleResultCardSvg } from "./PuzzleResultShare";
 import { buildBackwordShareResult, buildCrosswordShareResult, formatCompletionTime, shareUrl } from "./puzzleResult";
 
@@ -55,6 +57,13 @@ describe("puzzle share results", () => {
     expect(card).toContain('<text x="1016" y="1010" fill="#2a2a2a" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text>');
     expect(card).not.toContain("PLAY →");
     expect(card).not.toContain("<circle");
+  });
+
+  it("uses a high-contrast blue for BACK in the shared vector wordmark", () => {
+    const logo = readFileSync(resolve(process.cwd(), "public/brand/backword-logo-share.svg"), "utf8");
+
+    expect(logo).toContain('<g fill="#B8E0FF" fill-rule="evenodd">');
+    expect(logo).not.toContain('#5B8DC9');
   });
 
   it("uses the singular score unit for one point", () => {
