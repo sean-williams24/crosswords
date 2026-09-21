@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { isChromeBrowser, PuzzleResultShare, shareCardFormat, sharePuzzleResult } from "./PuzzleResultShare";
+import { isChromeBrowser, isSafariBrowser, PuzzleResultShare, shareCardFormat, shareCardRasterPixelSize, sharePuzzleResult } from "./PuzzleResultShare";
 import type { PuzzleShareResult } from "./puzzleResult";
 
 const result: PuzzleShareResult = {
@@ -52,7 +52,11 @@ describe("result sharing", () => {
     expect(shareCardFormat("Mozilla/5.0 Version/18.5 Safari/605.1.15")).toBe("png");
   });
 
-  it("opens the custom share actions for Chrome only", async () => {
+  it("uses a high-resolution PNG that social apps can downsize sharply", () => {
+    expect(shareCardRasterPixelSize).toBe(1080);
+  });
+
+  it("opens custom share actions for Chrome", async () => {
     const user = userEvent.setup();
     const originalUserAgent = Object.getOwnPropertyDescriptor(navigator, "userAgent");
     Object.defineProperty(navigator, "userAgent", { configurable: true, value: "Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36" });
@@ -71,6 +75,27 @@ describe("result sharing", () => {
   it("identifies Chrome without treating Safari as Chrome", () => {
     expect(isChromeBrowser("Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36")).toBe(true);
     expect(isChromeBrowser("Mozilla/5.0 Version/18.5 Safari/605.1.15")).toBe(false);
+  });
+
+  it("opens custom share actions for Safari so copying does not depend on its native sheet", async () => {
+    const user = userEvent.setup();
+    const originalUserAgent = Object.getOwnPropertyDescriptor(navigator, "userAgent");
+    Object.defineProperty(navigator, "userAgent", { configurable: true, value: "Mozilla/5.0 Version/18.5 Safari/605.1.15" });
+
+    try {
+      render(<PuzzleResultShare compact result={result} showPreview={false} />);
+      await user.click(screen.getByRole("button", { name: "Share result" }));
+      expect(screen.getByRole("dialog", { name: "Share result options" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Copy result" })).toBeInTheDocument();
+    } finally {
+      if (originalUserAgent) Object.defineProperty(navigator, "userAgent", originalUserAgent);
+      else delete (navigator as { userAgent?: string }).userAgent;
+    }
+  });
+
+  it("identifies Safari without treating other WebKit browsers as Safari", () => {
+    expect(isSafariBrowser("Mozilla/5.0 Version/18.5 Safari/605.1.15")).toBe(true);
+    expect(isSafariBrowser("Mozilla/5.0 CriOS/140.0.0.0 Mobile/15E148 Safari/604.1")).toBe(false);
   });
 
   it("waits for the image card before enabling a native share", () => {

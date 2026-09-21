@@ -12,7 +12,9 @@ type ShareCardPalette = {
   statLabel: string;
 };
 
-const shareCardPixelSize = 500;
+/** A 1080px source stays sharp when social apps downsize it for display. */
+const shareCardPixelSize = 1080;
+export const shareCardRasterPixelSize = shareCardPixelSize;
 const shareCardCornerRadius = 48;
 
 /** Keep the exported card in step with the corresponding iOS share card. */
@@ -36,14 +38,12 @@ function escapeSvg(value: string) {
 /** A deliberately abstract graphic: it renders only result metadata, never game content. */
 export function puzzleResultCardSvg(
   result: PuzzleShareResult,
-  logoSource = new URL("/brand/backword-logo.png", result.url).href,
   fontSource?: string
 ): string {
   const palette = shareCardPalette(result.game);
   const titleText = `${result.gameName} #${result.issueNumber}`;
   const title = escapeSvg(titleText);
-  const titleFontSize = Math.max(48, Math.min(68, 68 * 13 / titleText.length));
-  const logoUrl = escapeSvg(logoSource);
+  const titleFontSize = Math.max(58, Math.min(86, 86 * 13 / titleText.length));
   const outcome = escapeSvg(result.outcome);
   const ratingLevel = escapeSvg(result.ratingTier.toUpperCase());
   const ratingPoints = escapeSvg(`${result.ratingPoints}/${result.ratingMaxPoints} PTS`);
@@ -54,10 +54,11 @@ export function puzzleResultCardSvg(
   const timeLabel = escapeSvg(result.timeStat?.label ?? "TOTAL SOLVED");
   const time = escapeSvg(result.timeStat?.value ?? `${result.totalGamesSolved}`);
   const fontFace = fontSource ? `<style>@font-face { font-family: "Outfit"; src: url("${escapeSvg(fontSource)}") format("truetype"); font-weight: 700; }</style>` : "";
-  const stat = (x: number, y: number, height: number, label: string, value: string) => `<rect x="${x}" y="${y}" width="450" height="${height}" rx="32" fill="${palette.statBackground}" fill-opacity="0.2"/><text x="${x + 25}" y="${y + 45}" fill="${palette.statLabel}" font-family="Outfit, sans-serif" font-size="18" font-weight="700" letter-spacing="2.7">${label}</text><text x="${x + 25}" y="${y + 103}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="32" font-weight="700">${value}</text>`;
-  const ratingStat = (x: number, y: number) => `<rect x="${x}" y="${y}" width="450" height="181" rx="32" fill="${palette.statBackground}" fill-opacity="0.2"/><text x="${x + 25}" y="${y + 45}" fill="${palette.statLabel}" font-family="Outfit, sans-serif" font-size="18" font-weight="700" letter-spacing="2.7">CURRENT RATING</text><text x="${x + 25}" y="${y + 103}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="32" font-weight="700">${ratingLevel}</text><text x="${x + 25}" y="${y + 145}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="32" font-weight="700">${ratingPoints}</text>`;
+  const stat = (x: number, y: number, height: number, label: string, value: string) => `<rect x="${x}" y="${y}" width="452" height="${height}" rx="42" fill="${palette.statBackground}" fill-opacity="0.2"/><text x="${x + 30}" y="${y + 60}" fill="${palette.statLabel}" font-family="Outfit, sans-serif" font-size="31" font-weight="700" letter-spacing="3">${label}</text><text x="${x + 30}" y="${y + 145}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="62" font-weight="700">${value}</text>`;
+  const ratingStat = (x: number, y: number) => `<rect x="${x}" y="${y}" width="452" height="250" rx="42" fill="${palette.statBackground}" fill-opacity="0.2"/><text x="${x + 30}" y="${y + 60}" fill="${palette.statLabel}" font-family="Outfit, sans-serif" font-size="31" font-weight="700" letter-spacing="3">CURRENT RATING</text><text x="${x + 30}" y="${y + 145}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="62" font-weight="700">${ratingLevel}</text><text x="${x + 30}" y="${y + 215}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="56" font-weight="700">${ratingPoints}</text>`;
   const border = palette.border ? `<rect x="1.5" y="1.5" width="1077" height="1077" rx="${shareCardCornerRadius}" fill="none" stroke="${palette.border}" stroke-width="3"/>` : "";
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${shareCardPixelSize}" height="${shareCardPixelSize}" viewBox="0 0 1080 1080" role="img" aria-label="${title} result card"><defs>${fontFace}<linearGradient id="pro-border" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9a640"/><stop offset="0.5" stop-color="#c78533"/><stop offset="1" stop-color="#d9a640"/></linearGradient></defs><rect width="1080" height="1080" rx="${shareCardCornerRadius}" fill="${palette.background}"/>${border}<image href="${logoUrl}" x="752" y="76" width="252" height="126" preserveAspectRatio="xMidYMid meet"/><text x="76" y="139" fill="#ffffff" font-family="Outfit, sans-serif" font-size="${titleFontSize}" font-weight="700">${title}</text><text x="76" y="195" fill="#ebb838" font-family="Outfit, sans-serif" font-size="20" font-weight="700" letter-spacing="3.6">${outcome}</text>${stat(76, 256, 143, "TODAY'S SCORE", score)}${stat(554, 256, 143, primaryLabel, primary)}${ratingStat(76, 428)}${stat(554, 428, 181, "CURRENT STREAK", streak)}${stat(76, 638, 143, timeLabel, time)}<text x="1004" y="880" fill="#ebb838" font-family="Outfit, sans-serif" font-size="43" font-weight="700" letter-spacing="2.7" text-anchor="end">playbackword.com</text></svg>`;
+  const logo = `<g aria-label="Backword logo" transform="translate(740 54) skewX(-10)"><text x="42" y="44" fill="#2e82c2" font-family="Outfit, sans-serif" font-size="46" font-weight="700" letter-spacing="-2">BACK</text><text x="0" y="116" fill="#ffffff" font-family="Outfit, sans-serif" font-size="78" font-weight="700" letter-spacing="-4">WORD</text></g>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${shareCardPixelSize}" height="${shareCardPixelSize}" viewBox="0 0 1080 1080" role="img" aria-label="${title} result card"><defs>${fontFace}<linearGradient id="pro-border" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9a640"/><stop offset="0.5" stop-color="#c78533"/><stop offset="1" stop-color="#d9a640"/></linearGradient></defs><rect width="1080" height="1080" rx="${shareCardCornerRadius}" fill="${palette.background}"/>${border}${logo}<text x="64" y="145" fill="#ffffff" font-family="Outfit, sans-serif" font-size="${titleFontSize}" font-weight="700">${title}</text><text x="64" y="205" fill="#ebb838" font-family="Outfit, sans-serif" font-size="27" font-weight="700" letter-spacing="4">${outcome}</text>${stat(64, 250, 200, "TODAY'S SCORE", score)}${stat(564, 250, 200, primaryLabel, primary)}${ratingStat(64, 480)}${stat(564, 480, 250, "CURRENT STREAK", streak)}${stat(64, 760, 190, timeLabel, time)}<text x="1016" y="1010" fill="#ebb838" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text></svg>`;
 }
 
 function readAsDataUrl(blob: Blob): Promise<string> {
@@ -67,10 +68,6 @@ function readAsDataUrl(blob: Blob): Promise<string> {
     reader.onerror = () => reject(reader.error);
     reader.readAsDataURL(blob);
   });
-}
-
-async function embeddedLogoSource(result: PuzzleShareResult): Promise<string> {
-  return embeddedAssetSource(new URL("/brand/backword-logo.png", result.url).href);
 }
 
 async function embeddedFontSource(result: PuzzleShareResult): Promise<string> {
@@ -104,6 +101,10 @@ export function isChromeBrowser(userAgent: string): boolean {
   return /(?:Chrome|CriOS)\//i.test(userAgent);
 }
 
+export function isSafariBrowser(userAgent: string): boolean {
+  return /Safari\//i.test(userAgent) && !/(?:Chrome|CriOS|Chromium|FxiOS|EdgiOS)\//i.test(userAgent);
+}
+
 async function rasterizeCard(svg: string): Promise<Blob | null> {
   if (typeof Image === "undefined" || typeof URL.createObjectURL !== "function") return null;
 
@@ -112,8 +113,8 @@ async function rasterizeCard(svg: string): Promise<Blob | null> {
     const image = new Image();
     image.onload = () => {
       const canvas = document.createElement("canvas");
-      canvas.width = shareCardPixelSize;
-      canvas.height = shareCardPixelSize;
+      canvas.width = shareCardRasterPixelSize;
+      canvas.height = shareCardRasterPixelSize;
       const context = canvas.getContext("2d");
       if (!context) {
         URL.revokeObjectURL(source);
@@ -134,8 +135,8 @@ async function rasterizeCard(svg: string): Promise<Blob | null> {
 
 async function createEmbeddedCardFile(result: PuzzleShareResult, format: ShareCardFormat): Promise<File | null> {
   if (typeof File === "undefined") return null;
-  const [logoSource, fontSource] = await Promise.all([embeddedLogoSource(result), embeddedFontSource(result)]);
-  const svg = puzzleResultCardSvg(result, logoSource, fontSource);
+  const fontSource = await embeddedFontSource(result);
+  const svg = puzzleResultCardSvg(result, fontSource);
   if (format === "png") {
     const png = await rasterizeCard(svg);
     return png ? new File([png], `backword-${result.game}-${result.issueNumber}.png`, { type: "image/png" }) : null;
@@ -208,10 +209,11 @@ export function PuzzleResultShare({
   const { track } = useAnalytics();
   const [status, setStatus] = useState("");
   const [embeddedCardFile, setEmbeddedCardFile] = useState<File | null>(null);
-  const [showChromeActions, setShowChromeActions] = useState(false);
+  const [showShareActions, setShowShareActions] = useState(false);
   const cardFormat = shareCardFormat(navigator.userAgent);
   const cardKey = JSON.stringify(result);
   const isChrome = isChromeBrowser(navigator.userAgent);
+  const isSafari = isSafariBrowser(navigator.userAgent);
   const isCardReady = isChrome || !navigator.share || embeddedCardFile !== null;
 
   useEffect(() => {
@@ -260,11 +262,7 @@ export function PuzzleResultShare({
     setStatus(await copyCaption(result) ? "Result copied to clipboard" : "Copying is unavailable in this browser");
   }
 
-  async function handleShare() {
-    if (isChrome) {
-      setShowChromeActions(true);
-      return;
-    }
+  async function shareCard() {
     // Browser share APIs require invocation during the tap gesture. The card is
     // pre-rendered as a PNG so every native share sheet receives an image.
     const cardFile = currentCardFile();
@@ -282,6 +280,14 @@ export function PuzzleResultShare({
     setStatus(method === "clipboard" ? "Result copied to clipboard" : "Result shared");
   }
 
+  function handleShare() {
+    if (isChrome || isSafari) {
+      setShowShareActions(true);
+      return;
+    }
+    void shareCard();
+  }
+
   return <section aria-label="Share your result" className={`puzzle-result-share${showPreview ? "" : " puzzle-result-share--button-only"}${compact ? " puzzle-result-share--compact" : ""}`}>
     {showPreview ? <div aria-hidden="true" className="puzzle-result-share__preview">
       <img alt="" className="puzzle-result-share__logo" src="/brand/backword-logo.png" />
@@ -291,8 +297,8 @@ export function PuzzleResultShare({
     <button aria-label={compact ? isCardReady ? "Share result" : "Preparing share card" : undefined} className={`bw-secondary-button puzzle-result-share__button${compact ? " puzzle-result-share__button--compact" : ""}`} disabled={!isCardReady} onClick={() => void handleShare()} type="button">
       {compact ? isCardReady ? <><svg aria-hidden="true" className="puzzle-result-share__icon" viewBox="0 0 24 24"><path d="M12 15V3m0 0 4 4m-4-4L8 7M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8" /></svg>Share</> : "Preparing…" : "Share result"}
     </button>
-    {showChromeActions ? <div aria-label="Share result options" className="puzzle-result-share__fallback" role="dialog">
-      {currentCardFile() ? <><button onClick={() => void copyCardImage()} type="button">Copy image</button><button onClick={downloadCard} type="button">Download card</button></> : <p>Image card is still preparing.</p>}
+    {showShareActions ? <div aria-label="Share result options" className="puzzle-result-share__fallback" role="dialog">
+      {currentCardFile() ? <><button onClick={() => void shareCard()} type="button">Share image</button><button onClick={() => void copyCardImage()} type="button">Copy image</button><button onClick={downloadCard} type="button">Download card</button></> : <p>Image card is still preparing.</p>}
       <button onClick={() => void copyResultText()} type="button">Copy result</button>
     </div> : null}
     <span aria-live="polite" className="bw-share-status">{status}</span>
