@@ -32,7 +32,6 @@ extension Color {
     static let solvedGold = Color("SolvedGold")
     static let appCrosswordBackground = Color("CrosswordBackground")
     static let backwordBackground = Color("BackwordBackground")
-    static let shareCardBackwordBackground = Color("ShareCardBackword")
     static let shareCardDailyBackground = Color("ShareCardDaily")
     static let shareCardWeeklyBackground = Color("ShareCardWeekly")
     static let shareCardBackwordStatLabel = Color("ShareCardBackwordStatLabel")

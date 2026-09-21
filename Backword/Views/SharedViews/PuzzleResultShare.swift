@@ -37,10 +37,10 @@ struct PuzzleShareResult: Equatable {
             }
         }
 
-        /// Pro Crossword cards retain their dark, gold-accented visual identity
+        /// Backword and Pro Crossword cards retain their dark visual identities
         /// independently of the device appearance used to create the share image.
         var usesDarkShareCardAppearance: Bool {
-            self == .weeklyCrossword
+            self == .backword || self == .weeklyCrossword
         }
 
         /// The lavender Backword card needs a darker label treatment than the
@@ -232,7 +232,7 @@ private struct PuzzleResultShareCard: View {
 
             Text("playbackword.com")
                 .font(AppFont.shareCardTitle(scaled(55)))
-                .foregroundColor(.appGridLine)
+                .foregroundColor(result.game == .weeklyCrossword ? .solvedGold : .appGridLine)
                 .tracking(scaled(3))
                 .frame(width: scaled(952), alignment: .trailing)
                 .offset(x: scaled(64), y: scaled(966))

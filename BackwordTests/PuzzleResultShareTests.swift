@@ -138,14 +138,14 @@ struct PuzzleResultShareTests {
         #expect(completionTime == "12:00 AM")
     }
 
-    @Test("Pro Crossword share cards always use a dark appearance")
-    func proCrosswordShareCardAppearance() {
+    @Test("Backword and Pro Crossword share cards always use a dark appearance")
+    func darkShareCardAppearance() {
         #expect(PuzzleShareResult.Game.weeklyCrossword.usesDarkShareCardAppearance)
+        #expect(PuzzleShareResult.Game.backword.usesDarkShareCardAppearance)
         #expect(!PuzzleShareResult.Game.dailyCrossword.usesDarkShareCardAppearance)
-        #expect(!PuzzleShareResult.Game.backword.usesDarkShareCardAppearance)
     }
 
-    @Test("Backword share cards use high-contrast stat labels")
+    @Test("Backword share cards use the fixed light stat-label treatment")
     func backwordShareCardStatLabels() {
         #expect(PuzzleShareResult.Game.backword.usesHighContrastShareCardStatLabels)
         #expect(!PuzzleShareResult.Game.dailyCrossword.usesHighContrastShareCardStatLabels)

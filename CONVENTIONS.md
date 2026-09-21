@@ -247,14 +247,16 @@ link. This deliberately avoids a copied image and text becoming two pasted
 items. A successful action records only its game and the broad delivery method;
 the destination application is intentionally not tracked.
 
-Each result card uses the matching fixed share palette for Backword, Quick
-Crossword, or Pro Crossword. Both platforms share a 1080px-square exported
-source, even when the receiving app displays it at 500px or smaller. iOS lays
-the card out at 540 points and renders it at 2x; web lays it out directly at
-1080px. The 48px exported corner radius therefore appears as 24 points on iOS.
-The share-only Backword wordmark is a vector asset, while the final shared
-payload remains a consistently supported PNG. This keeps shared imagery
-recognisably tied to its game without introducing game content.
+Each result card uses the matching share palette for Backword, Quick Crossword,
+or Pro Crossword. On iOS, Backword always uses the dark `backwordBackground`
+appearance, regardless of the device appearance; its stat headings retain the
+light-mode secondary-text colour for contrast. Both platforms share a
+1080px-square exported source, even when the receiving app displays it at 500px
+or smaller. iOS lays the card out at 540 points and renders it at 2x; web lays
+it out directly at 1080px. The 48px exported corner radius therefore appears as
+24 points on iOS. The share-only Backword wordmark is a vector asset, while the
+final shared payload remains a consistently supported PNG. This keeps shared
+imagery recognisably tied to its game without introducing game content.
 
 ## Backword Clue and Letter Progression
 
