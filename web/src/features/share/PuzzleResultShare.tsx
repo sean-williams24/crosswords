@@ -12,6 +12,11 @@ type ShareCardPalette = {
   statLabel: string;
 };
 
+type ShareCardFontSources = {
+  bold?: string;
+  semiBold?: string;
+};
+
 /** A 1080px source stays sharp when social apps downsize it for display. */
 const shareCardPixelSize = 1080;
 export const shareCardRasterPixelSize = shareCardPixelSize;
@@ -38,27 +43,31 @@ function escapeSvg(value: string) {
 /** A deliberately abstract graphic: it renders only result metadata, never game content. */
 export function puzzleResultCardSvg(
   result: PuzzleShareResult,
-  fontSource?: string
+  logoSource = new URL("/brand/backword-logo.png", result.url).href,
+  fontSources?: ShareCardFontSources
 ): string {
   const palette = shareCardPalette(result.game);
   const titleText = `${result.gameName} #${result.issueNumber}`;
   const title = escapeSvg(titleText);
   const titleFontSize = Math.max(58, Math.min(86, 86 * 13 / titleText.length));
   const outcome = escapeSvg(result.outcome);
-  const ratingLevel = escapeSvg(result.ratingTier.toUpperCase());
-  const ratingPoints = escapeSvg(`${result.ratingPoints}/${result.ratingMaxPoints} PTS`);
-  const score = escapeSvg(`${result.score} ${result.score === 1 ? "PT" : "PTS"}`);
-  const streak = escapeSvg(`${result.streak} ${result.streak === 1 ? "DAY" : "DAYS"}`);
-  const primary = escapeSvg(result.primaryStat.value);
+  const logoUrl = escapeSvg(logoSource);
+  const normalCaseValue = (value: string) => value.replace(/\b(?:AM|PM)\b/g, (match) => match.toLowerCase());
+  const ratingLevel = escapeSvg(result.ratingTier);
+  const ratingPoints = escapeSvg(`${result.ratingPoints}/${result.ratingMaxPoints} pts`);
+  const score = escapeSvg(`${result.score} ${result.score === 1 ? "pt" : "pts"}`);
+  const streak = escapeSvg(`${result.streak} ${result.streak === 1 ? "day" : "days"}`);
+  const primary = escapeSvg(normalCaseValue(result.primaryStat.value));
   const primaryLabel = escapeSvg(result.primaryStat.label);
   const timeLabel = escapeSvg(result.timeStat?.label ?? "TOTAL SOLVED");
-  const time = escapeSvg(result.timeStat?.value ?? `${result.totalGamesSolved}`);
-  const fontFace = fontSource ? `<style>@font-face { font-family: "Outfit"; src: url("${escapeSvg(fontSource)}") format("truetype"); font-weight: 700; }</style>` : "";
-  const stat = (x: number, y: number, height: number, label: string, value: string) => `<rect x="${x}" y="${y}" width="452" height="${height}" rx="42" fill="${palette.statBackground}" fill-opacity="0.2"/><text x="${x + 30}" y="${y + 60}" fill="${palette.statLabel}" font-family="Outfit, sans-serif" font-size="31" font-weight="700" letter-spacing="3">${label}</text><text x="${x + 30}" y="${y + 145}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="62" font-weight="700">${value}</text>`;
-  const ratingStat = (x: number, y: number) => `<rect x="${x}" y="${y}" width="452" height="250" rx="42" fill="${palette.statBackground}" fill-opacity="0.2"/><text x="${x + 30}" y="${y + 60}" fill="${palette.statLabel}" font-family="Outfit, sans-serif" font-size="31" font-weight="700" letter-spacing="3">CURRENT RATING</text><text x="${x + 30}" y="${y + 145}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="62" font-weight="700">${ratingLevel}</text><text x="${x + 30}" y="${y + 215}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="56" font-weight="700">${ratingPoints}</text>`;
+  const time = escapeSvg(normalCaseValue(result.timeStat?.value ?? `${result.totalGamesSolved}`));
+  const fontFace = fontSources?.bold || fontSources?.semiBold
+    ? `<style>${fontSources.bold ? `@font-face { font-family: "Outfit"; src: url("${escapeSvg(fontSources.bold)}") format("truetype"); font-weight: 700; }` : ""}${fontSources.semiBold ? `@font-face { font-family: "Outfit"; src: url("${escapeSvg(fontSources.semiBold)}") format("truetype"); font-weight: 600; }` : ""}</style>`
+    : "";
+  const stat = (x: number, y: number, height: number, label: string, value: string) => `<rect x="${x}" y="${y}" width="452" height="${height}" rx="42" fill="${palette.statBackground}" fill-opacity="0.2"/><text x="${x + 30}" y="${y + 60}" fill="${palette.statLabel}" font-family="Outfit, sans-serif" font-size="31" font-weight="700" letter-spacing="3">${label}</text><text x="${x + 30}" y="${y + 145}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="62" font-weight="600">${value}</text>`;
+  const ratingStat = (x: number, y: number) => `<rect x="${x}" y="${y}" width="452" height="250" rx="42" fill="${palette.statBackground}" fill-opacity="0.2"/><text x="${x + 30}" y="${y + 60}" fill="${palette.statLabel}" font-family="Outfit, sans-serif" font-size="31" font-weight="700" letter-spacing="3">CURRENT RATING</text><text x="${x + 30}" y="${y + 145}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="62" font-weight="600">${ratingLevel}</text><text x="${x + 30}" y="${y + 215}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="56" font-weight="600">${ratingPoints}</text>`;
   const border = palette.border ? `<rect x="1.5" y="1.5" width="1077" height="1077" rx="${shareCardCornerRadius}" fill="none" stroke="${palette.border}" stroke-width="3"/>` : "";
-  const logo = `<g aria-label="Backword logo" transform="translate(740 54) skewX(-10)"><text x="42" y="44" fill="#2e82c2" font-family="Outfit, sans-serif" font-size="46" font-weight="700" letter-spacing="-2">BACK</text><text x="0" y="116" fill="#ffffff" font-family="Outfit, sans-serif" font-size="78" font-weight="700" letter-spacing="-4">WORD</text></g>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${shareCardPixelSize}" height="${shareCardPixelSize}" viewBox="0 0 1080 1080" role="img" aria-label="${title} result card"><defs>${fontFace}<linearGradient id="pro-border" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9a640"/><stop offset="0.5" stop-color="#c78533"/><stop offset="1" stop-color="#d9a640"/></linearGradient></defs><rect width="1080" height="1080" rx="${shareCardCornerRadius}" fill="${palette.background}"/>${border}${logo}<text x="64" y="145" fill="#ffffff" font-family="Outfit, sans-serif" font-size="${titleFontSize}" font-weight="700">${title}</text><text x="64" y="205" fill="#ebb838" font-family="Outfit, sans-serif" font-size="27" font-weight="700" letter-spacing="4">${outcome}</text>${stat(64, 250, 200, "TODAY'S SCORE", score)}${stat(564, 250, 200, primaryLabel, primary)}${ratingStat(64, 480)}${stat(564, 480, 250, "CURRENT STREAK", streak)}${stat(64, 760, 190, timeLabel, time)}<text x="1016" y="1010" fill="#ebb838" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${shareCardPixelSize}" height="${shareCardPixelSize}" viewBox="0 0 1080 1080" role="img" aria-label="${title} result card"><defs>${fontFace}<linearGradient id="pro-border" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9a640"/><stop offset="0.5" stop-color="#c78533"/><stop offset="1" stop-color="#d9a640"/></linearGradient></defs><rect width="1080" height="1080" rx="${shareCardCornerRadius}" fill="${palette.background}"/>${border}<image href="${logoUrl}" x="752" y="76" width="252" height="126" preserveAspectRatio="xMidYMid meet"/><text x="64" y="145" fill="#ffffff" font-family="Outfit, sans-serif" font-size="${titleFontSize}" font-weight="700">${title}</text><text x="64" y="205" fill="#ebb838" font-family="Outfit, sans-serif" font-size="27" font-weight="700" letter-spacing="4">${outcome}</text>${stat(64, 250, 200, "TODAY'S SCORE", score)}${stat(564, 250, 200, primaryLabel, primary)}${ratingStat(64, 480)}${stat(564, 480, 250, "CURRENT STREAK", streak)}${stat(64, 760, 190, timeLabel, time)}<text x="1016" y="1010" fill="#ebb838" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text></svg>`;
 }
 
 function readAsDataUrl(blob: Blob): Promise<string> {
@@ -70,8 +79,12 @@ function readAsDataUrl(blob: Blob): Promise<string> {
   });
 }
 
-async function embeddedFontSource(result: PuzzleShareResult): Promise<string> {
-  return embeddedAssetSource(new URL("/fonts/Outfit-Bold.ttf", result.url).href);
+async function embeddedFontSources(result: PuzzleShareResult): Promise<ShareCardFontSources> {
+  const [bold, semiBold] = await Promise.all([
+    embeddedAssetSource(new URL("/fonts/Outfit-Bold.ttf", result.url).href),
+    embeddedAssetSource(new URL("/fonts/Outfit-SemiBold.ttf", result.url).href)
+  ]);
+  return { bold, semiBold };
 }
 
 async function embeddedAssetSource(url: string): Promise<string> {
@@ -135,8 +148,8 @@ async function rasterizeCard(svg: string): Promise<Blob | null> {
 
 async function createEmbeddedCardFile(result: PuzzleShareResult, format: ShareCardFormat): Promise<File | null> {
   if (typeof File === "undefined") return null;
-  const fontSource = await embeddedFontSource(result);
-  const svg = puzzleResultCardSvg(result, fontSource);
+  const fontSources = await embeddedFontSources(result);
+  const svg = puzzleResultCardSvg(result, undefined, fontSources);
   if (format === "png") {
     const png = await rasterizeCard(svg);
     return png ? new File([png], `backword-${result.game}-${result.issueNumber}.png`, { type: "image/png" }) : null;

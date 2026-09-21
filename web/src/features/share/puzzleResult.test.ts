@@ -33,22 +33,21 @@ describe("puzzle share results", () => {
     expect(`${result.caption}${puzzleResultCardSvg(result)}`).not.toContain("BOTTLE");
   });
 
-  it("uses a vector Backword wordmark on the share card", () => {
+  it("uses the original Backword logo on the share card", () => {
     const card = puzzleResultCardSvg({
       game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1, totalGamesSolved: 7,
       ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
       primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
     });
 
-    expect(card).toContain('<g aria-label="Backword logo"');
-    expect(card).toContain('>BACK</text><text x="0" y="116" fill="#ffffff"');
-    expect(card).not.toContain('<image href=');
+    expect(card).toContain('<image href="https://www.playbackword.com/brand/backword-logo.png"');
+    expect(card).not.toContain('<g aria-label="Backword logo"');
     expect(card).toContain('width="1080" height="1080"');
     expect(card).toContain('<rect width="1080" height="1080" rx="48" fill="#aba7dc"/>');
-    expect(card).toContain('font-size="62" font-weight="700">5 PTS</text>');
-    expect(card).toContain(">1 DAY</text>");
+    expect(card).toContain('font-size="62" font-weight="600">5 pts</text>');
+    expect(card).toContain(">1 day</text>");
     expect(card).not.toContain("DAY STREAK");
-    expect(card).toContain(">LINGUIST</text><text x=\"94\" y=\"695\" fill=\"#ffffff\" font-family=\"Outfit, sans-serif\" font-size=\"56\" font-weight=\"700\">68/140 PTS</text>");
+    expect(card).toContain(">Linguist</text><text x=\"94\" y=\"695\" fill=\"#ffffff\" font-family=\"Outfit, sans-serif\" font-size=\"56\" font-weight=\"600\">68/140 pts</text>");
     expect(card).toContain("SOLVED");
     expect(card).toContain('font-family="Outfit, sans-serif"');
     expect(card).not.toContain('font-family="Arial, sans-serif"');
@@ -64,8 +63,8 @@ describe("puzzle share results", () => {
       primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
     });
 
-    expect(card).toContain(">1 PT</text>");
-    expect(card).not.toContain(">1 PTS</text>");
+    expect(card).toContain(">1 pt</text>");
+    expect(card).not.toContain(">1 pts</text>");
   });
 
   it("embeds Outfit Bold when creating a shareable SVG", () => {
@@ -73,7 +72,7 @@ describe("puzzle share results", () => {
       game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1, totalGamesSolved: 7,
       ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
       primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
-    }, "data:font/ttf;base64,OUTFIT");
+    }, undefined, { bold: "data:font/ttf;base64,OUTFIT" });
 
     expect(card).toContain('@font-face { font-family: "Outfit"; src: url("data:font/ttf;base64,OUTFIT") format("truetype"); font-weight: 700; }');
   });
