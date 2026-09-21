@@ -247,6 +247,11 @@ link. This deliberately avoids a copied image and text becoming two pasted
 items. A successful action records only its game and the broad delivery method;
 the destination application is intentionally not tracked.
 
+The iOS share wrapper clears its SwiftUI presentation state both when the
+activity reports completion and when Backword returns from an external
+destination. This prevents an activity sheet left behind by apps such as
+Instagram from blocking interaction in the completed-puzzle modal.
+
 Each result card uses the matching share palette for Backword, Quick Crossword,
 or Pro Crossword. On iOS, Backword always uses the dark `backwordBackground`
 appearance, regardless of the device appearance; its stat headings retain the

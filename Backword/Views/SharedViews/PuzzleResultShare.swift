@@ -179,6 +179,19 @@ enum PuzzleResultShareCardLayout {
     static let statWidth = scaled(452)
 }
 
+/// Keeps the SwiftUI share-sheet binding in sync when a destination app takes
+/// the user out of Backword. Some activity extensions do not dismiss the
+/// hosting sheet before the app becomes active again.
+enum PuzzleResultShareSheetLifecycle {
+    static func shouldDismissShareSheet(
+        isPresented: Bool,
+        wasBackgrounded: Bool,
+        becameActive: Bool
+    ) -> Bool {
+        isPresented && wasBackgrounded && becameActive
+    }
+}
+
 /// A square, rendered result card sized for social-media previews. It
 /// deliberately contains only the data in `PuzzleShareResult`, so it cannot
 /// reveal the puzzle's contents.
@@ -356,10 +369,13 @@ private struct PuzzleResultShareCard: View {
 struct PuzzleResultShareButton: View {
     let result: PuzzleShareResult
     var compact = false
+    @Environment(\.scenePhase) private var scenePhase
     @State private var presentsShareSheet = false
+    @State private var shareSheetBackgrounded = false
 
     var body: some View {
         Button {
+            shareSheetBackgrounded = false
             presentsShareSheet = true
         } label: {
             Label(compact ? "Share" : "Share result", systemImage: "square.and.arrow.up")
@@ -379,26 +395,52 @@ struct PuzzleResultShareButton: View {
         }
         .accessibilityHint("Opens the system share sheet")
         .sheet(isPresented: $presentsShareSheet) {
-            PuzzleResultActivitySheet(result: result)
+            PuzzleResultActivitySheet(result: result, isPresented: $presentsShareSheet)
                 .ignoresSafeArea()
+        }
+        .onChange(of: scenePhase) { previousPhase, currentPhase in
+            if currentPhase == .background, presentsShareSheet {
+                shareSheetBackgrounded = true
+                return
+            }
+
+            guard PuzzleResultShareSheetLifecycle.shouldDismissShareSheet(
+                isPresented: presentsShareSheet,
+                wasBackgrounded: shareSheetBackgrounded || previousPhase == .background,
+                becameActive: currentPhase == .active
+            ) else {
+                return
+            }
+            presentsShareSheet = false
+            shareSheetBackgrounded = false
         }
     }
 }
 
 private struct PuzzleResultActivitySheet: UIViewControllerRepresentable {
     let result: PuzzleShareResult
+    @Binding var isPresented: Bool
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
         let item = PuzzleResultActivityItem(result: result)
         let controller = UIActivityViewController(activityItems: [item], applicationActivities: nil)
+        let presentation = $isPresented
         controller.completionWithItemsHandler = { activityType, completed, _, _ in
-            guard completed else { return }
-            BackwordAnalyticsService.shared.log(
-                .resultShared(
-                    game: result.game.analyticsGame,
-                    delivery: .forActivity(activityType)
+            if completed {
+                BackwordAnalyticsService.shared.log(
+                    .resultShared(
+                        game: result.game.analyticsGame,
+                        delivery: .forActivity(activityType)
+                    )
                 )
-            )
+            }
+
+            // UIActivityViewController normally dismisses itself, but SwiftUI's
+            // enclosing sheet can remain presented after an external app (such
+            // as Instagram) takes over. Clear the source binding explicitly.
+            DispatchQueue.main.async {
+                presentation.wrappedValue = false
+            }
         }
         return controller
     }

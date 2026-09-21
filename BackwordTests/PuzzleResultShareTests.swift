@@ -160,4 +160,29 @@ struct PuzzleResultShareTests {
         #expect(PuzzleResultShareCardLayout.cornerRadius == 24)
         #expect(PuzzleResultShareCardLayout.statWidth == 226)
     }
+
+    @Test("Returning from an external share destination releases the share sheet")
+    func externalShareReturnDismissesShareSheet() {
+        #expect(
+            PuzzleResultShareSheetLifecycle.shouldDismissShareSheet(
+                isPresented: true,
+                wasBackgrounded: true,
+                becameActive: true
+            )
+        )
+        #expect(
+            !PuzzleResultShareSheetLifecycle.shouldDismissShareSheet(
+                isPresented: true,
+                wasBackgrounded: false,
+                becameActive: true
+            )
+        )
+        #expect(
+            !PuzzleResultShareSheetLifecycle.shouldDismissShareSheet(
+                isPresented: false,
+                wasBackgrounded: true,
+                becameActive: true
+            )
+        )
+    }
 }
