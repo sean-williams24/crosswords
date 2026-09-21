@@ -43,7 +43,8 @@ describe("puzzle share results", () => {
     expect(card).toContain('<image href="https://www.playbackword.com/brand/backword-logo-share.svg"');
     expect(card).not.toContain('<g aria-label="Backword logo"');
     expect(card).toContain('width="1080" height="1080"');
-    expect(card).toContain('<rect width="1080" height="1080" rx="48" fill="#aba7dc"/>');
+    expect(card).toContain('<rect width="1080" height="1080" rx="48" fill="#7888d7"/>');
+    expect(card).toContain('fill="#999999" font-family="Outfit, sans-serif" font-size="31" font-weight="700" letter-spacing="3">TODAY\'S SCORE</text>');
     expect(card).toContain('font-size="52" font-weight="400">5 pts</text>');
     expect(card).toContain(">1 day</text>");
     expect(card).not.toContain("DAY STREAK");
@@ -51,7 +52,7 @@ describe("puzzle share results", () => {
     expect(card).toContain("SOLVED");
     expect(card).toContain('font-family="Outfit, sans-serif"');
     expect(card).not.toContain('font-family="Arial, sans-serif"');
-    expect(card).toContain('<text x="1016" y="1010" fill="#ebb838" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text>');
+    expect(card).toContain('<text x="1016" y="1010" fill="#2a2a2a" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text>');
     expect(card).not.toContain("PLAY →");
     expect(card).not.toContain("<circle");
   });
@@ -105,11 +106,17 @@ describe("puzzle share results", () => {
       primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
     };
 
-    expect(puzzleResultCardSvg({ ...base, game: "backword", gameName: "Backword" })).toContain('fill="#aba7dc"');
-    expect(puzzleResultCardSvg({ ...base, game: "daily_crossword", gameName: "Quick Crossword" })).toContain('fill="#43668f"');
+    const backwordCard = puzzleResultCardSvg({ ...base, game: "backword", gameName: "Backword" });
+    expect(backwordCard).toContain('fill="#7888d7"');
+    expect(backwordCard).toContain('fill="#999999"');
+    expect(backwordCard).toContain('fill="#2a2a2a" font-family="Outfit, sans-serif" font-size="55"');
+    const dailyCard = puzzleResultCardSvg({ ...base, game: "daily_crossword", gameName: "Quick Crossword" });
+    expect(dailyCard).toContain('fill="#43668f"');
+    expect(dailyCard).toContain('fill="#e0ddd6" font-family="Outfit, sans-serif" font-size="55"');
     const proCard = puzzleResultCardSvg({ ...base, game: "weekly_crossword", gameName: "Pro Crossword" });
     expect(proCard).toContain('fill="#1e1d1b"');
     expect(proCard).toContain('rx="48" fill="none" stroke="url(#pro-border)"');
+    expect(proCard).toContain('fill="#ebb838" font-family="Outfit, sans-serif" font-size="55"');
   });
 
   it("makes a failed Backword result neutral and spoiler-safe", () => {

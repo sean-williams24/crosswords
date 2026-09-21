@@ -10,6 +10,7 @@ type ShareCardPalette = {
   border?: string;
   statBackground: string;
   statLabel: string;
+  footer: string;
 };
 
 type ShareCardFontSources = {
@@ -27,11 +28,12 @@ const shareCardCornerRadius = 48;
 function shareCardPalette(game: PuzzleShareResult["game"]): ShareCardPalette {
   switch (game) {
     case "backword":
-      return { background: "#aba7dc", statBackground: "#000000", statLabel: "#393947" };
+      // Matches the resolved dark BackwordBackground colour rendered by iOS.
+      return { background: "#7888d7", statBackground: "#000000", statLabel: "#999999", footer: "#2a2a2a" };
     case "daily_crossword":
-      return { background: "#43668f", statBackground: "#000000", statLabel: "#999999" };
+      return { background: "#43668f", statBackground: "#000000", statLabel: "#999999", footer: "#e0ddd6" };
     case "weekly_crossword":
-      return { background: "#1e1d1b", border: "url(#pro-border)", statBackground: "#000000", statLabel: "#777777" };
+      return { background: "#1e1d1b", border: "url(#pro-border)", statBackground: "#000000", statLabel: "#777777", footer: "#ebb838" };
   }
 }
 
@@ -68,7 +70,7 @@ export function puzzleResultCardSvg(
   const stat = (x: number, y: number, height: number, label: string, value: string) => `<rect x="${x}" y="${y}" width="452" height="${height}" rx="42" fill="${palette.statBackground}" fill-opacity="0.2"/><text x="${x + 30}" y="${y + 60}" fill="${palette.statLabel}" font-family="Outfit, sans-serif" font-size="31" font-weight="700" letter-spacing="3">${label}</text><text x="${x + 30}" y="${y + 145}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="52" font-weight="400">${value}</text>`;
   const ratingStat = (x: number, y: number) => `<rect x="${x}" y="${y}" width="452" height="250" rx="42" fill="${palette.statBackground}" fill-opacity="0.2"/><text x="${x + 30}" y="${y + 60}" fill="${palette.statLabel}" font-family="Outfit, sans-serif" font-size="31" font-weight="700" letter-spacing="3">CURRENT RATING</text><text x="${x + 30}" y="${y + 145}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="52" font-weight="400">${ratingLevel}</text><text x="${x + 30}" y="${y + 215}" fill="#ffffff" font-family="Outfit, sans-serif" font-size="44" font-weight="400">${ratingPoints}</text>`;
   const border = palette.border ? `<rect x="1.5" y="1.5" width="1077" height="1077" rx="${shareCardCornerRadius}" fill="none" stroke="${palette.border}" stroke-width="3"/>` : "";
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${shareCardPixelSize}" height="${shareCardPixelSize}" viewBox="0 0 1080 1080" role="img" aria-label="${title} result card"><defs>${fontFace}<linearGradient id="pro-border" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9a640"/><stop offset="0.5" stop-color="#c78533"/><stop offset="1" stop-color="#d9a640"/></linearGradient></defs><rect width="1080" height="1080" rx="${shareCardCornerRadius}" fill="${palette.background}"/>${border}<image href="${logoUrl}" x="752" y="76" width="252" height="126" preserveAspectRatio="xMidYMid meet"/><text x="64" y="145" fill="#ffffff" font-family="Outfit, sans-serif" font-size="${titleFontSize}" font-weight="700">${title}</text><text x="64" y="205" fill="#ebb838" font-family="Outfit, sans-serif" font-size="27" font-weight="700" letter-spacing="4">${outcome}</text>${stat(64, 250, 200, "TODAY'S SCORE", score)}${stat(564, 250, 200, primaryLabel, primary)}${ratingStat(64, 480)}${stat(564, 480, 250, "CURRENT STREAK", streak)}${stat(64, 760, 190, timeLabel, time)}<text x="1016" y="1010" fill="#ebb838" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${shareCardPixelSize}" height="${shareCardPixelSize}" viewBox="0 0 1080 1080" role="img" aria-label="${title} result card"><defs>${fontFace}<linearGradient id="pro-border" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9a640"/><stop offset="0.5" stop-color="#c78533"/><stop offset="1" stop-color="#d9a640"/></linearGradient></defs><rect width="1080" height="1080" rx="${shareCardCornerRadius}" fill="${palette.background}"/>${border}<image href="${logoUrl}" x="752" y="76" width="252" height="126" preserveAspectRatio="xMidYMid meet"/><text x="64" y="145" fill="#ffffff" font-family="Outfit, sans-serif" font-size="${titleFontSize}" font-weight="700">${title}</text><text x="64" y="205" fill="#ebb838" font-family="Outfit, sans-serif" font-size="27" font-weight="700" letter-spacing="4">${outcome}</text>${stat(64, 250, 200, "TODAY'S SCORE", score)}${stat(564, 250, 200, primaryLabel, primary)}${ratingStat(64, 480)}${stat(564, 480, 250, "CURRENT STREAK", streak)}${stat(64, 760, 190, timeLabel, time)}<text x="1016" y="1010" fill="${palette.footer}" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text></svg>`;
 }
 
 function readAsDataUrl(blob: Blob): Promise<string> {

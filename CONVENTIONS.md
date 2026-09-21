@@ -1188,3 +1188,8 @@ For visual parity with iOS, the card title, outcome, labels, and footer use
 Outfit Bold, while the values in the stat tiles use embedded Outfit Regular:
 52px for standard values and rating tiers, and 44px for rating points on the
 1080px design canvas.
+
+The web card resolves the iOS share palette into its exported image: Backword
+uses its dark blue background with #999999 stat headings and a dark grid-line
+footer; Quick Crossword uses its light grid-line footer; Pro Crossword alone
+uses a gold footer.
