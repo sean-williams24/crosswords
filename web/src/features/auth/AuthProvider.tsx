@@ -5,14 +5,10 @@ import { flushSyncQueue } from "../sync/progressSync";
 import { canMigrateGuestProgress } from "../sync/guestMigration";
 import { entitlementWarning as entitlementWarningMessage } from "./authErrorPresentation";
 import { accountDeletionSummaryFromResponse, type AccountDeletionSummary } from "./accountDeletionSummary";
+import { applyDebugProOverride, isDebugProOverrideAvailable, readDebugProOverride, writeDebugProOverride } from "./debugProOverride";
+import { noProEntitlement, type ProEntitlement } from "./proEntitlement";
 
-type ProEntitlement = {
-  isPro: boolean;
-  expiresAt: string | null;
-  provider: "apple" | "stripe" | null;
-  cancelAtPeriodEnd: boolean;
-  hasUsedTrial: boolean;
-};
+export type { ProEntitlement } from "./proEntitlement";
 
 type InFlightEntitlementRefresh = {
   sessionKey: string;
@@ -26,6 +22,9 @@ type AuthContextValue = {
   session: Session | null;
   entitlement: ProEntitlement | null;
   entitlementWarning: string | null;
+  debugProOverrideAvailable: boolean;
+  debugProOverrideActive: boolean;
+  setDebugProOverride: (enabled: boolean) => void;
   signIn: (provider: Extract<Provider, "apple">, returnTo: string) => Promise<void>;
   signInWithGoogle: (idToken: string, returnTo: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -39,6 +38,7 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 const returnToKey = "backword:web:auth:return-to";
+const debugProOverrideAvailable = isDebugProOverrideAvailable();
 const guestAuth: AuthContextValue = {
   ready: true,
   entitlementReady: true,
@@ -46,6 +46,9 @@ const guestAuth: AuthContextValue = {
   session: null,
   entitlement: null,
   entitlementWarning: null,
+  debugProOverrideAvailable: false,
+  debugProOverrideActive: false,
+  setDebugProOverride: () => undefined,
   signIn: async () => { throw new Error(supabaseConfigurationError); },
   signInWithGoogle: async () => { throw new Error(supabaseConfigurationError); },
   signOut: async () => undefined,
@@ -75,6 +78,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [entitlement, setEntitlement] = useState<ProEntitlement | null>(null);
   const [entitlementReady, setEntitlementReady] = useState(false);
   const [entitlementWarning, setEntitlementWarning] = useState<string | null>(null);
+  const [debugProOverrideEnabled, setDebugProOverrideEnabled] = useState(
+    () => debugProOverrideAvailable && readDebugProOverride(window.localStorage)
+  );
   const [accountDeletionNotice, setAccountDeletionNotice] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   const entitlementRefresh = useRef<InFlightEntitlementRefresh | null>(null);
@@ -111,7 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         provider: result.provider === "apple" || result.provider === "stripe" ? result.provider : null,
         cancelAtPeriodEnd: Boolean(result.cancel_at_period_end),
         hasUsedTrial: Boolean(result.has_used_trial)
-      } : { isPro: false, expiresAt: null, provider: null, cancelAtPeriodEnd: false, hasUsedTrial: false });
+      } : noProEntitlement);
       setEntitlementWarning(null);
       setEntitlementReady(true);
     })();
@@ -206,13 +212,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("online", retry);
   }, [session?.user.id]);
 
+  const setDebugProOverride = useCallback((enabled: boolean) => {
+    if (!debugProOverrideAvailable) return;
+    writeDebugProOverride(window.localStorage, enabled);
+    setDebugProOverrideEnabled(enabled);
+  }, []);
+
+  const debugProOverrideActive = Boolean(session && debugProOverrideAvailable && debugProOverrideEnabled);
+  const effectiveEntitlement = useMemo(
+    () => applyDebugProOverride(entitlement, debugProOverrideActive),
+    [debugProOverrideActive, entitlement]
+  );
+
   const value = useMemo<AuthContextValue>(() => ({
     ready,
     entitlementReady,
     user: session?.user ?? null,
     session,
-    entitlement,
+    entitlement: effectiveEntitlement,
     entitlementWarning: supabase ? entitlementWarning : null,
+    debugProOverrideAvailable,
+    debugProOverrideActive,
+    setDebugProOverride,
     async signIn(provider, returnTo) {
       if (!supabase) throw new Error(supabaseConfigurationError);
       sessionStorage.setItem(returnToKey, safeReturnTo(returnTo));
@@ -264,7 +285,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     validateAccountSession,
     refreshEntitlement
-  }), [ready, entitlementReady, session, entitlement, entitlementWarning, accountDeletionNotice, validateAccountSession, refreshEntitlement]);
+  }), [ready, entitlementReady, session, effectiveEntitlement, entitlementWarning, debugProOverrideActive, setDebugProOverride, accountDeletionNotice, validateAccountSession, refreshEntitlement]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

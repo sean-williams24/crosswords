@@ -39,6 +39,12 @@ VITE_APP_STORE_CAMPAIGN_TOKENS={"default":"web_default","tiktok:launch":"tiktok_
 
 Keep browser game integration in `src/lib` and page-level gameplay in `src/pages` or feature-specific folders.
 
+While running `npm run dev`, the game menu includes a **Debug → Force Pro
+access** switch. It requires a signed-in test account, is saved only in that
+browser, and affects only the client-side entitlement used to exercise protected
+web routes. It does not write to Supabase or change Stripe/Apple subscription
+state. The switch is unavailable in built, preview, and production deployments.
+
 Web Pro purchases use Stripe Managed Payments through Supabase Edge Functions.
 Set Stripe's server secrets and the deployed `WEB_ORIGIN` through the Supabase
 dashboard, not in Vercel or a browser `.env` file. Create tax-inclusive GBP

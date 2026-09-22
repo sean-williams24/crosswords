@@ -14,7 +14,7 @@ type GameMenuProps = {
 const themeOptions = ["light", "dark", "system"] as const;
 
 export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
-  const { entitlement, user } = useAuth();
+  const { entitlement, user, debugProOverrideActive, debugProOverrideAvailable, setDebugProOverride } = useAuth();
   const { preference, setPreference } = useTheme();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(false);
@@ -149,6 +149,20 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
                   ))}
                 </div>
               </section>
+              {debugProOverrideAvailable ? <section aria-labelledby="menu-debug-title" className="bw-menu-debug">
+                <h2 id="menu-debug-title">Debug</h2>
+                <label className="bw-menu-debug__toggle">
+                  <span>Force Pro access</span>
+                  <input
+                    aria-describedby="menu-debug-description"
+                    checked={debugProOverrideActive}
+                    disabled={!user}
+                    onChange={(event) => setDebugProOverride(event.target.checked)}
+                    type="checkbox"
+                  />
+                </label>
+                <p id="menu-debug-description">{user ? "Local browser only. This does not change the account subscription." : "Sign in with a test account to play protected games."}</p>
+              </section> : null}
               <Link className="bw-menu-link bw-menu-link--primary" to="/">Home</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/backword">Backword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/crossword">Quick Crossword</Link>

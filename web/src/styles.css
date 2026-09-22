@@ -299,6 +299,45 @@ a {
   text-transform: uppercase;
 }
 
+.bw-menu-debug {
+  padding: 20px 0;
+  border-bottom: 1px solid rgb(var(--app-primary-rgb) / 15%);
+}
+
+.bw-menu-debug h2 {
+  margin: 0 0 10px;
+  color: var(--app-text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.bw-menu-debug__toggle {
+  display: flex;
+  min-height: 32px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--bw-primary, var(--app-text-primary));
+  font-size: 14px;
+}
+
+.bw-menu-debug__toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--app-accent);
+  cursor: pointer;
+}
+
+.bw-menu-debug__toggle input:disabled { cursor: not-allowed; opacity: .5; }
+
+.bw-menu-debug p {
+  margin: 8px 0 0;
+  color: var(--app-text-secondary);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
 .bw-theme-picker {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

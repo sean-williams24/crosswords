@@ -9,6 +9,9 @@ const testAuth = vi.hoisted(() => ({
   value: {
     ready: true,
     user: { id: "player-1" } as { id: string } | null,
+    debugProOverrideActive: false,
+    debugProOverrideAvailable: true,
+    setDebugProOverride: vi.fn(),
     signOut: vi.fn().mockResolvedValue(undefined),
     deleteAccount: vi.fn().mockResolvedValue(undefined)
   }
@@ -28,7 +31,7 @@ function renderMenu() {
 
 describe("GameMenu account actions", () => {
   beforeEach(() => {
-    testAuth.value = { ready: true, user: { id: "player-1" }, signOut: vi.fn().mockResolvedValue(undefined), deleteAccount: vi.fn().mockResolvedValue(undefined) };
+    testAuth.value = { ready: true, user: { id: "player-1" }, debugProOverrideActive: false, debugProOverrideAvailable: true, setDebugProOverride: vi.fn(), signOut: vi.fn().mockResolvedValue(undefined), deleteAccount: vi.fn().mockResolvedValue(undefined) };
     document.body.removeAttribute("style");
     window.localStorage.removeItem("backword:web:theme:v1");
     Object.defineProperty(window, "scrollY", { configurable: true, value: 0 });
@@ -75,6 +78,20 @@ describe("GameMenu account actions", () => {
     expect(system).toHaveAttribute("aria-checked", "true");
   });
 
+  it("offers a local Force Pro toggle in development", async () => {
+    const user = userEvent.setup();
+    renderMenu();
+    await user.click(screen.getByRole("button", { name: "Open game menu" }));
+
+    const toggle = screen.getByRole("checkbox", { name: "Force Pro access" });
+    expect(toggle).not.toBeChecked();
+    expect(screen.getByText("Local browser only. This does not change the account subscription.")).toBeInTheDocument();
+
+    await user.click(toggle);
+
+    expect(testAuth.value.setDebugProOverride).toHaveBeenCalledWith(true);
+  });
+
   it("shows separate Player Profile and Login links to guests without account actions", async () => {
     const user = userEvent.setup();
     testAuth.value.user = null;
@@ -92,6 +109,8 @@ describe("GameMenu account actions", () => {
     const upgrade = screen.getByRole("link", { name: "Get full access" });
     expect(upgrade).toHaveAttribute("href", "/pro");
     expect(upgrade).toHaveClass("bw-menu-upgrade");
+    expect(screen.getByRole("checkbox", { name: "Force Pro access" })).toBeDisabled();
+    expect(screen.getByText("Sign in with a test account to play protected games.")).toBeInTheDocument();
     expect(profile.compareDocumentPosition(login) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(login.compareDocumentPosition(upgrade) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });

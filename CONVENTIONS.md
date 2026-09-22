@@ -142,6 +142,12 @@ flag, via a no-argument `SECURITY DEFINER` function keyed to `auth.uid()`. This
 allows the web checkout CTA to say “Subscribe now” after a trial without
 exposing the otherwise server-only trial-redemption records.
 
+Vite development builds expose a browser-local **Force Pro access** switch in
+the game menu for signed-in test accounts. It is gated by Vite's compile-time
+`import.meta.env.DEV`, persists only in that browser, and overlays the effective
+client entitlement after the normal entitlement RPC runs. It never changes the
+server entitlement, Apple/Stripe state, or production/preview builds.
+
 Apple entitlement-claim failures retain a customer-safe response in the iOS
 app. The Edge Function's server log records only the failed processing stage
 and safe error message/code—never Apple transaction identifiers, signed data,

@@ -23,6 +23,7 @@ vi.mock("../sync/progressSync", () => ({
 }));
 
 import { AuthProvider, useAuth } from "./AuthProvider";
+import { debugProOverrideStorageKey } from "./debugProOverride";
 
 function AuthConsumer({ onReady }: { onReady: (auth: ReturnType<typeof useAuth>) => void }) {
   const auth = useAuth();
@@ -57,6 +58,7 @@ function EntitlementReadyProbe() {
 
 describe("AuthProvider", () => {
   beforeEach(() => {
+    window.localStorage.removeItem(debugProOverrideStorageKey);
     supabaseMock.auth.getSession.mockResolvedValue({ data: { session: null }, error: null });
     supabaseMock.auth.getUser.mockResolvedValue({
       data: { user: { id: "user-id", email: "player@example.com" } },
@@ -111,6 +113,29 @@ describe("AuthProvider", () => {
 
     await screen.findByText("Pro");
     expect(onRefresh).toHaveBeenCalledTimes(1);
+  });
+
+  it("applies Force Pro only as a local development entitlement", async () => {
+    const session = { access_token: "session-token", user: { id: "user-id", email: "player@example.com" } };
+    let auth: ReturnType<typeof useAuth> | undefined;
+    supabaseMock.auth.getSession.mockResolvedValue({ data: { session }, error: null });
+    supabaseMock.client.rpc.mockResolvedValue({ data: { is_pro: false, expires_at: null, provider: null, cancel_at_period_end: false, has_used_trial: false }, error: null });
+
+    render(
+      <AuthProvider>
+        <AuthConsumer onReady={(value) => { auth = value; }} />
+      </AuthProvider>
+    );
+
+    await screen.findByText("player@example.com");
+    await waitFor(() => expect(auth?.entitlement?.isPro).toBe(false));
+
+    act(() => auth?.setDebugProOverride(true));
+
+    await waitFor(() => expect(auth?.debugProOverrideActive).toBe(true));
+    expect(auth?.entitlement).toMatchObject({ isPro: true, provider: null });
+    expect(window.localStorage.getItem(debugProOverrideStorageKey)).toBe("true");
+    expect(supabaseMock.client.rpc).toHaveBeenCalledWith("current_user_pro_entitlement");
   });
 
   it("coalesces concurrent entitlement refreshes for the active session", async () => {

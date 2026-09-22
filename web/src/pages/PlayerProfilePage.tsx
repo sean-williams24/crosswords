@@ -27,7 +27,7 @@ type AccountProfileRecords = {
 
 export function PlayerProfilePage() {
   const navigate = useNavigate();
-  const { ready, user, entitlement, entitlementWarning, refreshEntitlement, signOut, deleteAccount, finishAccountDeletion } = useAuth();
+  const { ready, user, entitlement, entitlementWarning, refreshEntitlement, signOut, deleteAccount, finishAccountDeletion, debugProOverrideActive } = useAuth();
   const [records, setRecords] = useState<AccountProfileRecords | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncError, setSyncError] = useState<string | null>(null);
@@ -158,8 +158,8 @@ export function PlayerProfilePage() {
                     <span>{user.email ?? "Signed in"}</span>
                     <small>{isSyncing ? "Syncing your games…" : "Progress and stats are synced — select to sync again"}</small>
                   </button>
-                  <p className={isPro ? "is-active" : ""}><img alt="" className="player-profile__pro-logo" src="/brand/backword-pro.png" /><span>{isPro ? entitlement?.cancelAtPeriodEnd ? "is active until the end of this billing period" : "is active for this account" : "No account-linked Pro subscription"}</span></p>
-                  {isPro && entitlement?.provider === "stripe" ? <a className="player-profile__subscription-management" href="https://link.com" rel="noreferrer" target="_blank">Manage web subscription through Link <span aria-hidden="true">↗</span></a> : null}
+                  <p className={isPro ? "is-active" : ""}><img alt="" className="player-profile__pro-logo" src="/brand/backword-pro.png" /><span>{debugProOverrideActive ? "Debug Pro access is enabled locally in this browser" : isPro ? entitlement?.cancelAtPeriodEnd ? "is active until the end of this billing period" : "is active for this account" : "No account-linked Pro subscription"}</span></p>
+                  {isPro && !debugProOverrideActive && entitlement?.provider === "stripe" ? <a className="player-profile__subscription-management" href="https://link.com" rel="noreferrer" target="_blank">Manage web subscription through Link <span aria-hidden="true">↗</span></a> : null}
                   {syncError || entitlementWarning ? <p className="player-profile__error" role="alert">{syncError ?? entitlementWarning}</p> : null}
                 </section>
               </div> : null}
