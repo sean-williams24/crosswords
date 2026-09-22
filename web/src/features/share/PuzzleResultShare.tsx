@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAnalytics } from "../analytics/AnalyticsProvider";
-import { resultShared } from "../analytics/events";
+import { resultShareFinished, resultShareOpened, resultShared } from "../analytics/events";
 import type { PuzzleShareResult } from "./puzzleResult";
 
 type ShareMethod = "native_file" | "native_text" | "clipboard";
@@ -291,22 +291,35 @@ export function PuzzleResultShare({
     // Browser share APIs require invocation during the tap gesture. The card is
     // pre-rendered as a PNG so every native share sheet receives an image.
     const cardFile = currentCardFile();
+    const opensNativeShareSheet = Boolean(navigator.share);
+    if (opensNativeShareSheet) track(resultShareOpened(result.game, "native_share_sheet"));
     const method = await share(
       result,
       cardFile,
       cardFile !== null
     );
-    if (method === "cancelled") return;
+    if (method === "cancelled") {
+      track(resultShareFinished(result.game, "cancelled"));
+      return;
+    }
     if (method === "unavailable") {
+      if (opensNativeShareSheet) track(resultShareFinished(result.game, "unavailable"));
       setStatus("Sharing is unavailable on this browser");
       return;
     }
     track(resultShared(result.game, method));
+    if (opensNativeShareSheet) {
+      track(resultShareFinished(
+        result.game,
+        method === "clipboard" ? "unavailable" : "completed"
+      ));
+    }
     setStatus(method === "clipboard" ? "Result copied to clipboard" : "Result shared");
   }
 
   function handleShare() {
     if (isChrome || isSafari) {
+      track(resultShareOpened(result.game, "share_options"));
       setShowShareActions(true);
       return;
     }

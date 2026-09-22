@@ -4,6 +4,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { isChromeBrowser, isSafariBrowser, PuzzleResultShare, shareCardFormat, shareCardRasterPixelSize, sharePuzzleResult } from "./PuzzleResultShare";
 import type { PuzzleShareResult } from "./puzzleResult";
 
+const analytics = vi.hoisted(() => ({ track: vi.fn() }));
+
+vi.mock("../analytics/AnalyticsProvider", () => ({ useAnalytics: () => analytics }));
+
 const result: PuzzleShareResult = {
   game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 3, totalGamesSolved: 7,
   ratingTier: "Linguist", ratingPoints: 70, ratingMaxPoints: 140,
@@ -13,6 +17,7 @@ const result: PuzzleShareResult = {
 
 describe("result sharing", () => {
   beforeEach(() => {
+    analytics.track.mockClear();
     Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
     Object.defineProperty(navigator, "canShare", { configurable: true, value: undefined });
     Object.defineProperty(navigator, "clipboard", { configurable: true, value: undefined });
@@ -66,6 +71,10 @@ describe("result sharing", () => {
       await user.click(screen.getByRole("button", { name: "Share result" }));
       expect(screen.getByRole("dialog", { name: "Share result options" })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "Copy result" })).toBeInTheDocument();
+      expect(analytics.track).toHaveBeenCalledWith({
+        name: "result_share_opened",
+        parameters: { game: "backword", platform: "web", surface: "share_options" }
+      });
     } finally {
       if (originalUserAgent) Object.defineProperty(navigator, "userAgent", originalUserAgent);
       else delete (navigator as { userAgent?: string }).userAgent;

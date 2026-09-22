@@ -9,6 +9,8 @@ struct BackwordAnalyticsEvent: Equatable {
     static let gameStartedName = "game_started"
     static let gameCompletedName = "game_completed"
     static let resultSharedName = "result_shared"
+    static let resultShareOpenedName = "result_share_opened"
+    static let resultShareFinishedName = "result_share_finished"
 
     let name: String
     let parameters: [String: String]
@@ -167,6 +169,42 @@ struct BackwordAnalyticsEvent: Equatable {
         )
     }
 
+    /// Tracks system-share-sheet presentation separately from a completed share
+    /// so an opened sheet is never counted as a successful delivery.
+    static func resultShareOpened(
+        game: Game,
+        environment: String = AppEnvironment.current
+    ) -> BackwordAnalyticsEvent {
+        BackwordAnalyticsEvent(
+            name: resultShareOpenedName,
+            parameters: [
+                "game": game.rawValue,
+                "platform": "ios",
+                "surface": ShareSurface.nativeShareSheet.rawValue,
+                "environment": environment
+            ]
+        )
+    }
+
+    /// `UIActivityViewController` reports whether its selected activity
+    /// completed. This is an activity-extension outcome, not confirmation that
+    /// a recipient received or published the result.
+    static func resultShareFinished(
+        game: Game,
+        outcome: ShareOutcome,
+        environment: String = AppEnvironment.current
+    ) -> BackwordAnalyticsEvent {
+        BackwordAnalyticsEvent(
+            name: resultShareFinishedName,
+            parameters: [
+                "game": game.rawValue,
+                "platform": "ios",
+                "outcome": outcome.rawValue,
+                "environment": environment
+            ]
+        )
+    }
+
     private static func scoreBand(_ score: Int) -> String {
         switch score {
         case ...0: return "0"
@@ -251,6 +289,16 @@ struct BackwordAnalyticsEvent: Equatable {
         static func forActivity(_ activity: UIActivity.ActivityType?) -> ShareDelivery {
             activity == .copyToPasteboard ? .clipboard : .nativeShareSheet
         }
+    }
+
+    enum ShareSurface: String {
+        case nativeShareSheet = "native_share_sheet"
+    }
+
+    enum ShareOutcome: String {
+        case completed
+        case cancelled
+        case failed
     }
 }
 

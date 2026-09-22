@@ -525,6 +525,12 @@ consent. GA4 reports web activity; App Store Connect remains the source of
 truth for post-install attribution and retention, so the two report aggregate
 funnels rather than a person-level joined journey.
 
+Production web analytics needs `VITE_ANALYTICS_ENABLED=true` in a production
+build. Local and preview DebugView verification instead requires the separate,
+default-off `VITE_ANALYTICS_DEBUG=true` flag and Firebase's public web
+configuration. That flag sets GA4's `debug_mode` during Analytics
+initialisation; it must never be configured for the Production deployment.
+
 The web Pro funnel follows the same opt-in rule. It records only bounded entry
 points, plans, grouped checkout failure categories, return status, Stripe-backed
 entitlement activation, Link-management clicks, and protected-feature redirects.
@@ -1191,6 +1197,13 @@ Chrome and Safari expose an in-page result-share menu so its image copy and
 download paths do not depend on inconsistent native-sheet handling. The menu is
 anchored to the result button within completion modals, and remains openable
 while the PNG is prepared so text copying is never blocked by image rendering.
+
+Result-share analytics use a content-free funnel. `result_share_opened` records
+the share surface, `result_share_finished` records whether the platform reported
+`completed`, `cancelled`, or unavailable, and `result_shared` remains the
+completed export event with its delivery method. A completed status means the
+iOS activity extension or browser Share API reported success; neither platform
+can confirm that the recipient received, viewed, or published the card.
 
 For visual parity with iOS, the card title, outcome, labels, and footer use
 Outfit Bold, while the values in the stat tiles use embedded Outfit Regular:

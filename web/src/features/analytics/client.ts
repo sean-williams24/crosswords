@@ -2,21 +2,56 @@ import { getApp, getApps, initializeApp, type FirebaseOptions } from "firebase/a
 import { initializeAnalytics, isSupported, logEvent, setConsent, type Analytics } from "firebase/analytics";
 import type { AnalyticsEvent } from "./events";
 
-const firebaseConfig: FirebaseOptions | null = import.meta.env.VITE_ANALYTICS_ENABLED === "true" &&
-  import.meta.env.PROD &&
-  import.meta.env.VITE_FIREBASE_API_KEY &&
-  import.meta.env.VITE_FIREBASE_AUTH_DOMAIN &&
-  import.meta.env.VITE_FIREBASE_PROJECT_ID &&
-  import.meta.env.VITE_FIREBASE_APP_ID &&
-  import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
-  ? {
-      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-      appId: import.meta.env.VITE_FIREBASE_APP_ID,
-      measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
-    }
-  : null;
+type AnalyticsEnvironment = {
+  PROD: boolean;
+  VITE_ANALYTICS_ENABLED?: string;
+  VITE_ANALYTICS_DEBUG?: string;
+  VITE_FIREBASE_API_KEY?: string;
+  VITE_FIREBASE_AUTH_DOMAIN?: string;
+  VITE_FIREBASE_PROJECT_ID?: string;
+  VITE_FIREBASE_APP_ID?: string;
+  VITE_FIREBASE_MEASUREMENT_ID?: string;
+};
+
+type AnalyticsConfiguration = {
+  firebaseConfig: FirebaseOptions;
+  debugMode: boolean;
+};
+
+/**
+ * Production analytics require an explicit production flag. Developers can
+ * instead opt into a DebugView-only local or preview session with
+ * `VITE_ANALYTICS_DEBUG=true`; this value must never be set in Production.
+ */
+export function resolveAnalyticsConfiguration(
+  environment: AnalyticsEnvironment
+): AnalyticsConfiguration | null {
+  const debugMode = environment.VITE_ANALYTICS_DEBUG === "true";
+  const productionAnalyticsEnabled = environment.PROD && environment.VITE_ANALYTICS_ENABLED === "true";
+  const hasFirebaseConfiguration = Boolean(
+    environment.VITE_FIREBASE_API_KEY &&
+    environment.VITE_FIREBASE_AUTH_DOMAIN &&
+    environment.VITE_FIREBASE_PROJECT_ID &&
+    environment.VITE_FIREBASE_APP_ID &&
+    environment.VITE_FIREBASE_MEASUREMENT_ID
+  );
+
+  if ((!productionAnalyticsEnabled && !debugMode) || !hasFirebaseConfiguration) return null;
+
+  return {
+    firebaseConfig: {
+      apiKey: environment.VITE_FIREBASE_API_KEY,
+      authDomain: environment.VITE_FIREBASE_AUTH_DOMAIN,
+      projectId: environment.VITE_FIREBASE_PROJECT_ID,
+      appId: environment.VITE_FIREBASE_APP_ID,
+      measurementId: environment.VITE_FIREBASE_MEASUREMENT_ID
+    },
+    debugMode
+  };
+}
+
+const analyticsConfiguration = resolveAnalyticsConfiguration(import.meta.env);
+const firebaseConfig = analyticsConfiguration?.firebaseConfig ?? null;
 
 let analyticsPromise: Promise<Analytics | null> | null = null;
 
@@ -46,7 +81,12 @@ export function analyticsClient(): Promise<Analytics | null> {
     analyticsPromise = isSupported().then((supported) => {
       if (!supported) return null;
       const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-      return initializeAnalytics(app, { config: { send_page_view: false } });
+      return initializeAnalytics(app, {
+        config: {
+          send_page_view: false,
+          ...(analyticsConfiguration?.debugMode ? { debug_mode: true } : {})
+        }
+      });
     }).catch(() => null);
   }
   return analyticsPromise;

@@ -134,4 +134,31 @@ struct BackwordAnalyticsEventTests {
         #expect(shared.parameters["guess"] == nil)
         #expect(shared.parameters["email"] == nil)
     }
+
+    @Test("Result sharing distinguishes an opened sheet from its final outcome")
+    func resultShareFunnelEventsAreContentFree() {
+        let opened = BackwordAnalyticsEvent.resultShareOpened(game: .dailyCrossword, environment: "test")
+        let cancelled = BackwordAnalyticsEvent.resultShareFinished(
+            game: .dailyCrossword,
+            outcome: .cancelled,
+            environment: "test"
+        )
+
+        #expect(opened.name == "result_share_opened")
+        #expect(opened.parameters == [
+            "game": "daily_crossword",
+            "platform": "ios",
+            "surface": "native_share_sheet",
+            "environment": "test"
+        ])
+        #expect(cancelled.name == "result_share_finished")
+        #expect(cancelled.parameters == [
+            "game": "daily_crossword",
+            "platform": "ios",
+            "outcome": "cancelled",
+            "environment": "test"
+        ])
+        #expect(opened.parameters["answer"] == nil)
+        #expect(cancelled.parameters["clue"] == nil)
+    }
 }

@@ -385,6 +385,7 @@ struct PuzzleResultShareButton: View {
     var body: some View {
         Button {
             shareSheetBackgrounded = false
+            BackwordAnalyticsService.shared.log(.resultShareOpened(game: result.game.analyticsGame))
             presentsShareSheet = true
         } label: {
             Label(compact ? "Share" : "Share result", systemImage: "square.and.arrow.up")
@@ -434,12 +435,22 @@ private struct PuzzleResultActivitySheet: UIViewControllerRepresentable {
         let item = PuzzleResultActivityItem(result: result)
         let controller = UIActivityViewController(activityItems: [item], applicationActivities: nil)
         let presentation = $isPresented
-        controller.completionWithItemsHandler = { activityType, completed, _, _ in
+        controller.completionWithItemsHandler = { activityType, completed, _, error in
             if completed {
                 BackwordAnalyticsService.shared.log(
                     .resultShared(
                         game: result.game.analyticsGame,
                         delivery: .forActivity(activityType)
+                    )
+                )
+                BackwordAnalyticsService.shared.log(
+                    .resultShareFinished(game: result.game.analyticsGame, outcome: .completed)
+                )
+            } else {
+                BackwordAnalyticsService.shared.log(
+                    .resultShareFinished(
+                        game: result.game.analyticsGame,
+                        outcome: error == nil ? .cancelled : .failed
                     )
                 )
             }

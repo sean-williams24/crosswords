@@ -28,6 +28,7 @@ VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
 VITE_GOOGLE_WEB_CLIENT_ID=
 VITE_ANALYTICS_ENABLED=false
+VITE_ANALYTICS_DEBUG=false
 VITE_FIREBASE_API_KEY=
 VITE_FIREBASE_AUTH_DOMAIN=
 VITE_FIREBASE_PROJECT_ID=backword-537c1
@@ -61,6 +62,14 @@ then add its public Firebase configuration above in Vercel's **Production**
 environment. Set `VITE_ANALYTICS_ENABLED=true` only in Production; preview and
 local environments remain off. Analytics initialises only after a visitor
 explicitly accepts the website analytics prompt.
+
+To test event instrumentation locally or in a Vercel Preview deployment, copy
+the Firebase configuration into that environment and set
+`VITE_ANALYTICS_DEBUG=true`. It deliberately enables Analytics for that build
+and adds GA4's `debug_mode` parameter, so events appear in DebugView without a
+browser extension. Accept the analytics prompt in the test browser, restart the
+Vite server after changing local environment values, and remove the flag when
+testing is finished. Never set this flag in Vercel's Production environment.
 
 Create the corresponding App Store Connect campaign links before publishing a
 campaign. `VITE_APP_STORE_PROVIDER_TOKEN` is the provider token from App Store

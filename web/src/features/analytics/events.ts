@@ -6,6 +6,8 @@ export type AnalyticsEvent = {
     | "game_started"
     | "game_completed"
     | "result_shared"
+    | "result_share_opened"
+    | "result_share_finished"
     | "app_store_click"
     | "sign_in_started"
     | "sign_in_succeeded"
@@ -70,6 +72,22 @@ export function resultShared(
   method: "native_file" | "native_text" | "clipboard"
 ): AnalyticsEvent {
   return { name: "result_shared", parameters: { game, method } };
+}
+
+export type ResultShareSurface = "native_share_sheet" | "share_options";
+export type ResultShareOutcome = "completed" | "cancelled" | "unavailable";
+
+/**
+ * Tracks share UI separately from delivery. A completed native share means the
+ * browser reported success; it cannot confirm that a recipient received or
+ * published the card.
+ */
+export function resultShareOpened(game: AnalyticsGame, surface: ResultShareSurface): AnalyticsEvent {
+  return { name: "result_share_opened", parameters: { game, platform: "web", surface } };
+}
+
+export function resultShareFinished(game: AnalyticsGame, outcome: ResultShareOutcome): AnalyticsEvent {
+  return { name: "result_share_finished", parameters: { game, platform: "web", outcome } };
 }
 
 export function appStoreClick(placement: "header" | "weekly_modal" | "footer", campaignToken: string | null): AnalyticsEvent {
