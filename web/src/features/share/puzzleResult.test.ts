@@ -54,7 +54,7 @@ describe("puzzle share results", () => {
     expect(card).toContain("SOLVED");
     expect(card).toContain('font-family="Outfit, sans-serif"');
     expect(card).not.toContain('font-family="Arial, sans-serif"');
-    expect(card).toContain('<text x="1016" y="1010" fill="#2a2a2a" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text>');
+    expect(card).toContain('<text x="1016" y="1010" fill="#e0ddd6" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text>');
     expect(card).not.toContain("PLAY →");
     expect(card).not.toContain("<circle");
   });
@@ -118,7 +118,7 @@ describe("puzzle share results", () => {
     const backwordCard = puzzleResultCardSvg({ ...base, game: "backword", gameName: "Backword" });
     expect(backwordCard).toContain('fill="#293364"');
     expect(backwordCard).toContain('fill="#999999"');
-    expect(backwordCard).toContain('fill="#2a2a2a" font-family="Outfit, sans-serif" font-size="55"');
+    expect(backwordCard).toContain('fill="#e0ddd6" font-family="Outfit, sans-serif" font-size="55"');
     const dailyCard = puzzleResultCardSvg({ ...base, game: "daily_crossword", gameName: "Quick Crossword" });
     expect(dailyCard).toContain('fill="#43668f"');
     expect(dailyCard).toContain('fill="#e0ddd6" font-family="Outfit, sans-serif" font-size="55"');

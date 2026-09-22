@@ -30,7 +30,7 @@ function shareCardPalette(game: PuzzleShareResult["game"]): ShareCardPalette {
     case "backword":
       // The opaque sRGB result of Dark Mode BackwordBackground over the
       // dark crossword backing used by the iOS home card.
-      return { background: "#293364", statBackground: "#000000", statLabel: "#999999", footer: "#2a2a2a" };
+      return { background: "#293364", statBackground: "#000000", statLabel: "#999999", footer: "#e0ddd6" };
     case "daily_crossword":
       return { background: "#43668f", statBackground: "#000000", statLabel: "#999999", footer: "#e0ddd6" };
     case "weekly_crossword":
