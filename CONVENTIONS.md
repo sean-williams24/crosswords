@@ -259,15 +259,17 @@ destination. This prevents an activity sheet left behind by apps such as
 Instagram from blocking interaction in the completed-puzzle modal.
 
 Each result card uses the matching share palette for Backword, Quick Crossword,
-or Pro Crossword. On iOS, Backword always uses the dark `backwordBackground`
-appearance, regardless of the device appearance; its stat headings retain the
-light-mode secondary-text colour for contrast. Both platforms share a
-1080px-square exported source, even when the receiving app displays it at 500px
-or smaller. iOS lays the card out at 540 points and renders it at 2x; web lays
-it out directly at 1080px. The 48px exported corner radius therefore appears as
-24 points on iOS. The share-only Backword wordmark is a vector asset, while the
-final shared payload remains a consistently supported PNG. This keeps shared
-imagery recognisably tied to its game without introducing game content.
+or Pro Crossword. Backword recreates the Dark Mode home-card surface by
+compositing translucent `backwordBackground` over `appCrosswordBackground`,
+regardless of device appearance; the web export uses its opaque sRGB equivalent
+`#293364`. Its stat headings retain the light-mode secondary-text colour for
+contrast. Both platforms share a 1080px-square exported source, even when the
+receiving app displays it at 500px or smaller. iOS lays the card out at 540
+points and renders it at 2x; web lays it out directly at 1080px. The 48px
+exported corner radius therefore appears as 24 points on iOS. The share-only
+Backword wordmark is a vector asset, while the final shared payload remains a
+consistently supported PNG. This keeps shared imagery recognisably tied to its
+game without introducing game content.
 
 ## Backword Clue and Letter Progression
 
@@ -1201,5 +1203,5 @@ footer; Quick Crossword uses its light grid-line footer; Pro Crossword alone
 uses a gold footer.
 
 The share-only Backword wordmark remains one vector design across both
-platforms. Its `BACK` paths use light blue #B8E0FF for sufficient contrast
-against the dark Backword card background; `WORD` remains white.
+platforms. Its `BACK` paths use the original Backword home-card blue #5B8DC9;
+`WORD` remains white.

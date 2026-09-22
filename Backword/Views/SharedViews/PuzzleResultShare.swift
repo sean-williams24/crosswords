@@ -48,6 +48,12 @@ struct PuzzleShareResult: Equatable {
         var usesHighContrastShareCardStatLabels: Bool {
             self == .backword
         }
+
+        /// The share card recreates the dark Backword home-card surface by
+        /// compositing its translucent blue over the dark crossword backing.
+        var usesHomeCardBackwordBackground: Bool {
+            self == .backword
+        }
     }
 
     struct Stat: Equatable {
@@ -263,7 +269,10 @@ private struct PuzzleResultShareCard: View {
     private var cardBackground: some View {
         switch result.game {
         case .backword:
-            Color.backwordBackground
+            ZStack {
+                Color.appCrosswordBackground
+                Color.backwordBackground
+            }
         case .dailyCrossword:
             Color.shareCardDailyBackground
         case .weeklyCrossword:

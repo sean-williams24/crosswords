@@ -152,6 +152,13 @@ struct PuzzleResultShareTests {
         #expect(!PuzzleShareResult.Game.weeklyCrossword.usesHighContrastShareCardStatLabels)
     }
 
+    @Test("Backword share card uses the Dark Mode home-card background")
+    func backwordShareCardBackground() {
+        #expect(PuzzleShareResult.Game.backword.usesHomeCardBackwordBackground)
+        #expect(!PuzzleShareResult.Game.dailyCrossword.usesHomeCardBackwordBackground)
+        #expect(!PuzzleShareResult.Game.weeklyCrossword.usesHomeCardBackwordBackground)
+    }
+
     @Test("Share cards use compact geometry with a high-definition export")
     func shareCardLayout() {
         #expect(PuzzleResultShareCardLayout.canvasSize == 540)

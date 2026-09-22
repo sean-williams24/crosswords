@@ -45,7 +45,7 @@ describe("puzzle share results", () => {
     expect(card).toContain('<image href="https://www.playbackword.com/brand/backword-logo-share.svg"');
     expect(card).not.toContain('<g aria-label="Backword logo"');
     expect(card).toContain('width="1080" height="1080"');
-    expect(card).toContain('<rect width="1080" height="1080" rx="48" fill="#7888d7"/>');
+    expect(card).toContain('<rect width="1080" height="1080" rx="48" fill="#293364"/>');
     expect(card).toContain('fill="#999999" font-family="Outfit, sans-serif" font-size="31" font-weight="700" letter-spacing="3">TODAY\'S SCORE</text>');
     expect(card).toContain('font-size="52" font-weight="400">5 pts</text>');
     expect(card).toContain(">1 day</text>");
@@ -59,11 +59,11 @@ describe("puzzle share results", () => {
     expect(card).not.toContain("<circle");
   });
 
-  it("uses a high-contrast blue for BACK in the shared vector wordmark", () => {
+  it("uses the Backword home-card blue for BACK in the shared vector wordmark", () => {
     const logo = readFileSync(resolve(process.cwd(), "public/brand/backword-logo-share.svg"), "utf8");
 
-    expect(logo).toContain('<g fill="#B8E0FF" fill-rule="evenodd">');
-    expect(logo).not.toContain('#5B8DC9');
+    expect(logo).toContain('<g fill="#5B8DC9" fill-rule="evenodd">');
+    expect(logo).not.toContain('#B8E0FF');
   });
 
   it("uses the singular score unit for one point", () => {
@@ -116,7 +116,7 @@ describe("puzzle share results", () => {
     };
 
     const backwordCard = puzzleResultCardSvg({ ...base, game: "backword", gameName: "Backword" });
-    expect(backwordCard).toContain('fill="#7888d7"');
+    expect(backwordCard).toContain('fill="#293364"');
     expect(backwordCard).toContain('fill="#999999"');
     expect(backwordCard).toContain('fill="#2a2a2a" font-family="Outfit, sans-serif" font-size="55"');
     const dailyCard = puzzleResultCardSvg({ ...base, game: "daily_crossword", gameName: "Quick Crossword" });
