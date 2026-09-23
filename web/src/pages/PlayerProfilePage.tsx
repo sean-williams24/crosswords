@@ -171,7 +171,7 @@ export function PlayerProfilePage() {
               <h2 id="rating-breakdown-title">LAST 14 DAYS</h2>
               <div className="player-profile__table-scroll">
                 <div className={`player-profile__table${isPro ? " has-weekly" : ""}`}>
-                  <div className="player-profile__table-heading"><span>Date</span><span>Daily</span>{isPro ? <span>Weekly</span> : null}<span>Backword</span><span>Total</span></div>
+                  <div className="player-profile__table-heading"><span>Date</span><span>Quick</span>{isPro ? <span>Weekly</span> : null}<span>Backword</span><span>Total</span></div>
                   {rating.days.map((day, index) => (
                     <div className="player-profile__table-row" key={day.date}>
                       <span>{formatProfileDate(day.date)}{index === 0 ? <small>TODAY</small> : null}</span>
@@ -218,7 +218,7 @@ function RatingHero({ fraction, maxPoints, tier, totalPoints }: { fraction: numb
 
 function ScoringDetailsContent() {
   return <div className="player-profile__scoring-details">
-    <ScoringRule rows={[["100% complete", "5 pts"], ["75–99% complete", "4 pts"], ["50–74% complete", "3 pts"], ["25–49% complete", "2 pts"], ["1–24% complete", "1 pt"], ["Missed", "0 pts"]]} title="Daily & Weekly Crossword" />
+    <ScoringRule rows={[["100% complete", "5 pts"], ["75–99% complete", "4 pts"], ["50–74% complete", "3 pts"], ["25–49% complete", "2 pts"], ["1–24% complete", "1 pt"], ["Missed", "0 pts"]]} title="Quick & Weekly Crossword" />
     <p>− 1 point deducted for every 3 hints used</p>
     <ScoringRule rows={[["Win in 1 guess", "5 pts"], ["Win in 2 guesses", "4 pts"], ["Win in 3 guesses", "3 pts"], ["Win in 4 guesses", "2 pts"], ["Win in 5 guesses", "1 pt"], ["Loss or missed", "0 pts"]]} title="Backword" />
   </div>;

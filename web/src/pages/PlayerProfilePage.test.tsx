@@ -77,7 +77,7 @@ describe("PlayerProfilePage", () => {
     const rating = screen.getByLabelText("Overall rating");
     const account = screen.getByLabelText("Account summary");
     const rollingWindow = screen.getByText("Rolling 14-day window");
-    const dailyScoring = screen.getByText("Daily & Weekly Crossword");
+    const dailyScoring = screen.getByText("Quick & Weekly Crossword");
     const signOut = screen.getByRole("button", { name: "Sign Out" });
     const deleteAccount = screen.getByRole("button", { name: "Delete Account" });
     const breakdown = screen.getByRole("heading", { name: "LAST 14 DAYS" }).closest("section");
@@ -164,7 +164,7 @@ describe("PlayerProfilePage", () => {
     expect(screen.queryByRole("button", { name: "HOW SCORING WORKS" })).not.toBeInTheDocument();
     expect(screen.queryByRole("dialog", { name: "How scoring works" })).not.toBeInTheDocument();
     const rollingWindow = screen.getByText("Rolling 14-day window");
-    const dailyScoring = screen.getByText("Daily & Weekly Crossword");
+    const dailyScoring = screen.getByText("Quick & Weekly Crossword");
     expect(rollingWindow.compareDocumentPosition(dailyScoring) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(dailyScoring).toBeInTheDocument();
     expect(screen.getByText("− 1 point deducted for every 3 hints used")).toBeInTheDocument();

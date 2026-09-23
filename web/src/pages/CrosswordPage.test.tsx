@@ -56,7 +56,7 @@ describe("CrosswordPage", () => {
 
     await user.keyboard("AB");
     expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
-    expect(screen.getByText("NEXT DAILY CROSSWORD IN")).toBeInTheDocument();
+    expect(screen.getByText("NEXT QUICK CROSSWORD IN")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "BACK TO GAME" }));
     const gameShareButton = screen.getByRole("button", { name: "Share result" });
     expect(gameShareButton).toHaveClass("puzzle-result-share__button--compact");

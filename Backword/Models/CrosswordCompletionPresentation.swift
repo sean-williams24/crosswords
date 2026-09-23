@@ -59,7 +59,7 @@ enum CrosswordReleaseKind: Equatable {
 
     var label: String {
         switch self {
-        case .daily: "NEXT DAILY CROSSWORD IN"
+        case .daily: "NEXT QUICK CROSSWORD IN"
         case .weekly: "NEXT WEEKLY CROSSWORD IN"
         }
     }

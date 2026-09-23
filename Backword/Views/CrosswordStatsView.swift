@@ -39,7 +39,7 @@ struct CrosswordStatsView: View {
                 }
             }
             .background(AppBackgroundGradient())
-            .navigationTitle(isWeekly ? "Weekly Stats" : "Daily Stats")
+            .navigationTitle(isWeekly ? "Weekly Stats" : "Quick Stats")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)

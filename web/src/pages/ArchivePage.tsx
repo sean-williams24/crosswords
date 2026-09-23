@@ -20,7 +20,7 @@ type SelectedMonths = Partial<Record<ArchiveGameType, string>>;
 
 const archiveTypes: { id: ArchiveGameType; label: string; shortLabel: string }[] = [
   { id: "backword", label: "Backword", shortLabel: "Backword" },
-  { id: "daily", label: "Quick Crossword", shortLabel: "Daily" },
+  { id: "daily", label: "Quick Crossword", shortLabel: "Quick" },
   { id: "weekly", label: "Pro Crossword", shortLabel: "Pro" }
 ];
 

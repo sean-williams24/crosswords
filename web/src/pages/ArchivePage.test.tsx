@@ -85,6 +85,14 @@ describe("ArchivePage", () => {
     expect(await screen.findByRole("link", { name: /New/i })).toHaveAttribute("href", "/crossword/2026-08-05");
   });
 
+  it("uses Quick as the compact crossword archive label", async () => {
+    render(<MemoryRouter><ArchivePage /></MemoryRouter>);
+
+    await screen.findByRole("link", { name: /New/i });
+
+    expect(screen.getByRole("button", { name: "Quick" })).toBeInTheDocument();
+  });
+
   it("opens the game type selected by a home archive link", async () => {
     render(<MemoryRouter initialEntries={["/archive?game=weekly"]}><ArchivePage /></MemoryRouter>);
 

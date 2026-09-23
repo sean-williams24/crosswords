@@ -87,7 +87,7 @@ struct ScoringRuleView: View {
     static func crossword() -> some View {
         ScoringRuleView(
             icon: "square.grid.3x3.fill",
-            title: "Daily & Weekly Crossword",
+            title: "Quick & Weekly Crossword",
             rows: [
                 ("100% complete", "5 pts"),
                 ("75–99% complete", "4 pts"),

@@ -11,12 +11,13 @@ struct ArchiveTabBarViewTests {
         #expect(content.accessibilityLabel == "Backword archive")
     }
 
-    @Test("Daily crossword tab content")
-    func dailyTabContent() {
+    @Test("Quick crossword tab content")
+    func quickTabContent() {
         let content = ArchiveTabBarItemContent.content(for: .daily)
 
-        #expect(content.title == "Daily")
-        #expect(content.accessibilityLabel == "Daily crossword archive")
+        #expect(content.title == "Quick")
+        #expect(content.accessibilityLabel == "Quick crossword archive")
+        #expect(ArchiveTab.daily.rawValue == "Quick\n Crossword")
     }
 
     @Test("Pro crossword tab content")

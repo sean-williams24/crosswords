@@ -50,7 +50,7 @@ export function CrosswordCompletion({ onClose, progress, puzzle, stats, kind = "
             : <span key={`${rowIndex}:${colIndex}`} style={{ animationDelay: `${(rowIndex + colIndex) * 40}ms` }}>{cell.letter}</span>
           ))}
         </div>
-        <div className="bw-countdown"><span>NEXT {kind === "weekly" ? "WEEKLY" : "DAILY"} CROSSWORD IN</span><strong>{kind === "weekly" ? weeklyCountdownText(seconds) : countdownText(seconds)}</strong></div>
+        <div className="bw-countdown"><span>NEXT {kind === "weekly" ? "WEEKLY" : "QUICK"} CROSSWORD IN</span><strong>{kind === "weekly" ? weeklyCountdownText(seconds) : countdownText(seconds)}</strong></div>
         {!onTime ? <p className="bw-late-message">Complete the crossword on its release date to earn points.</p> : null}
         <section className="cw-completion-summary-card">
           <div><strong>{progress.releaseDateScore}/5</strong><span>SCORE</span></div>

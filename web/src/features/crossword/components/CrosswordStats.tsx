@@ -11,7 +11,7 @@ type CrosswordStatsProps = {
 
 export function CrosswordStats({ onClose, stats, kind = "daily" }: CrosswordStatsProps) {
   return (
-    <BackwordModal className="bw-stats-modal" onClose={onClose} title={`${kind === "weekly" ? "Weekly" : "Daily"} Crossword Stats`}>
+    <BackwordModal className="bw-stats-modal" onClose={onClose} title={`${kind === "weekly" ? "Weekly" : "Quick"} Crossword Stats`}>
       <div className="bw-modal-scroll bw-stats-scroll">
         <CrosswordStatsContent stats={stats} kind={kind} />
       </div>

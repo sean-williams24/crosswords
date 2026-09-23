@@ -24,7 +24,7 @@ enum RatingGameCategory: String, CaseIterable {
         case .backword:
             return "Backword"
         case .dailyCrossword:
-            return "Daily crossword"
+            return "Quick crossword"
         case .weeklyCrossword:
             return "Weekly crossword"
         }
@@ -141,7 +141,7 @@ struct OverallRating: Codable {
     }
 
     func maxPoints(isPro: Bool) -> Int {
-        // Daily crossword + Backword every day = 10 pts/day
+        // Quick Crossword + Backword every day = 10 pts/day
         // Pro users also get up to 2 weekly puzzles in a 14-day window = 10 pts
         let dailyMax = Self.windowDays * 5 * 2   // 140
         let weeklyMax = isPro ? 2 * 5 : 0        // 10 or 0
