@@ -667,6 +667,38 @@ struct BackwordViewModelTests {
 
     // MARK: - Input Validation
 
+    @Test("Word validation accepts US and British spellings")
+    func wordValidationAcceptsUSAndBritishSpellings() {
+        #expect(WordValidator.isValidEnglishWord("FAVOR"))
+        #expect(WordValidator.isValidEnglishWord("SAVOR"))
+        #expect(WordValidator.isValidEnglishWord("FAVOUR"))
+        #expect(WordValidator.isValidEnglishWord("SAVOUR"))
+    }
+
+    @Test("Word validation rejects nonsense words")
+    func wordValidationRejectsNonsenseWords() {
+        #expect(!WordValidator.isValidEnglishWord("QXZJKT"))
+    }
+
+    @Test("A British spelling advances Backword progress")
+    func britishSpellingGuessAdvancesProgress() {
+        let word = makeWord("CASTLE")
+        let vm = BackwordViewModel(
+            word: word,
+            progress: BackwordProgress(date: word.date),
+            settings: makeSettings(),
+            haptics: BackwordHapticsSpy()
+        )
+        defer { BackwordProgress.delete(date: word.date) }
+
+        vm.currentInput = "SAVOUR"
+        vm.submitGuess()
+
+        #expect(vm.progress.guesses == ["SAVOUR"])
+        #expect(vm.guessCount == 1)
+        #expect(vm.invalidWordMessage == nil)
+    }
+
     @Test("Input shorter than required is rejected")
     func shortInputRejected() async throws {
         let haptics = BackwordHapticsSpy()

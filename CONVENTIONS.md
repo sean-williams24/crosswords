@@ -288,6 +288,11 @@ Guesses must be recognised English words. The target answer remains valid even
 when the system dictionary does not recognise it; rejected guesses leave the
 input and all game progress unchanged.
 
+Backword checks every non-target guess against both the US (`en_US`) and
+British (`en_GB`) system dictionaries, accepting a word recognised by either.
+This policy is fixed rather than following the player's device language, and
+does not extend to other regional English dictionaries.
+
 ## Historical Backword Clue Repairs
 
 Backword records dated before the 21 May 2026 clue-format cutover retain their
