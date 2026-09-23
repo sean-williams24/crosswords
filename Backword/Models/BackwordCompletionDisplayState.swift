@@ -32,7 +32,7 @@ struct BackwordCompletionDisplayState: Equatable {
 
         if progress.isFailed {
             return BackwordCompletionDisplayState(
-                title: "Failed",
+                title: "Not this time",
                 titleStyle: .failed,
                 showsStats: true,
                 message: nil
