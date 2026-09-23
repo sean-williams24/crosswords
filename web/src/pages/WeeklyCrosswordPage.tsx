@@ -251,7 +251,7 @@ export function WeeklyCrosswordPage() {
           <main className="bw-game-main cw-game-main">
             {usingCache ? <p className="bw-offline-note">Playing saved crossword offline</p> : null}
             {syncError ? <p className="bw-offline-note">{syncError}</p> : null}
-            <p className="cw-puzzle-date">{puzzle.date}</p>
+            <p className="cw-puzzle-issue">#{puzzle.puzzleNumber}</p>
             <button aria-label={`Current clue ${currentClue?.number ?? ""} ${currentClue?.direction ?? ""}: ${clueText ?? ""}`} className="cw-clue-bar" onClick={() => { if (skipClueToggle.current) { skipClueToggle.current = false; return; } setSelection((current) => current ? toggleDirection(puzzle, current) : current); setShowHint(false); }} onPointerDown={(event) => setClueDragStart(event.clientX)} onPointerUp={(event) => { if (clueDragStart === null) return; const delta = event.clientX - clueDragStart; if (delta > 50) { skipClueToggle.current = true; moveClue(-1); } if (delta < -50) { skipClueToggle.current = true; moveClue(1); } setClueDragStart(null); }} type="button"><span>{currentClue ? `${currentClue.number}${currentClue.direction === "across" ? "A" : "D"}` : ""}</span><strong>{clueText}</strong></button>
             <CrosswordGrid activeClue={currentClue} correctHighlight={settings.correctHighlight} onSelect={(row, col) => { setSelection((current) => current ? selectCell(puzzle, current, row, col) : current); setShowHint(false); }} progress={progress} puzzle={puzzle} selection={selection} />
             {shareResult && sheet === null ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}

@@ -382,7 +382,7 @@ struct PuzzleView: View {
     private var header: some View {
         VStack(spacing: 2) {
             ZStack {
-                Text(viewModel.puzzle.date)
+                Text("#\(viewModel.puzzle.puzzleNumber)")
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
                     .tracking(1)

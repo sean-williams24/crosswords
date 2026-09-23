@@ -50,6 +50,7 @@ describe("CrosswordPage", () => {
     expect(await screen.findByRole("dialog", { name: "How to Play" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Close How to Play" }));
     expect(await screen.findByRole("grid", { name: "Crossword grid" })).toBeInTheDocument();
+    expect(screen.getByText("#1")).toHaveClass("cw-puzzle-issue");
     expect(screen.getByRole("group", { name: "Crossword keyboard" })).toBeInTheDocument();
     await user.click(hintAction);
     expect(screen.getByText("Test hint")).toBeInTheDocument();

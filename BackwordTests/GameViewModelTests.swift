@@ -6,6 +6,11 @@ import Testing
 @MainActor
 struct GameViewModelTests {
 
+    @Test("Crossword game headers display the issue number")
+    func crosswordGameHeaderIssueLabel() {
+        #expect(PuzzleHeaderContent.issueLabel(for: 123) == "#123")
+    }
+
     @Test("Completed crossword cells cannot be overwritten when correct highlighting is enabled")
     func completedCellsCannotBeOverwrittenWhenHighlightingEnabled() async throws {
         let originalHighlightSetting = AppSettings.shared.crosswordCorrectHighlight

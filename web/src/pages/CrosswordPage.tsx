@@ -311,7 +311,7 @@ export function CrosswordPage() {
             <main className="bw-game-main cw-game-main">
               {usingCache ? <p className="bw-offline-note">Playing saved crossword offline</p> : null}
               {syncError ? <p className="bw-offline-note">{syncError}</p> : null}
-              <p className="cw-puzzle-date">{puzzle.date}</p>
+              <p className="cw-puzzle-issue">#{puzzle.puzzleNumber}</p>
               <button
                 aria-label={`Current clue ${currentClue?.number ?? ""} ${currentClue?.direction ?? ""}: ${clueText ?? ""}`}
                 className="cw-clue-bar"

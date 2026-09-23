@@ -798,7 +798,7 @@ a {
 .cw-clues-action { display: inline-flex; padding: 0; align-items: center; justify-content: center; }
 .cw-clues-action__icon { display: block; width: 20px; height: 20px; fill: currentColor; }
 .cw-clues-action__label { display: none; }
-.cw-puzzle-date { width: min(100%, 430px); margin: 0; color: var(--app-text-secondary); font-size: 12px; font-weight: 700; letter-spacing: .13em; text-align: center; }
+.cw-puzzle-issue { width: min(100%, 430px); margin: 0; color: var(--app-text-secondary); font-size: 12px; font-weight: 700; letter-spacing: .13em; text-align: center; }
 .cw-clue-bar { display: grid; width: min(100%, 430px); grid-template-columns: 30px 1fr; align-items: center; gap: 12px; padding: 10px 16px; border: 0; border-radius: 12px; color: var(--app-text-primary); background: var(--app-surface); font: inherit; text-align: left; cursor: pointer; touch-action: pan-y; }
 .cw-clue-bar:hover, .cw-clue-bar:focus-visible { background: var(--app-surface-hover); outline: 1px solid rgb(var(--app-accent-rgb) / 65%); }
 .cw-clue-bar > span { color: #5fa4dc; font-family: "Outfit", sans-serif; font-size: 12px; font-weight: 700; }
