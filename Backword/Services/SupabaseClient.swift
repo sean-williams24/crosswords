@@ -560,6 +560,9 @@ final class AccountService: ObservableObject {
             // Progress migration, cloud reconciliation, and entitlements are
             // deliberately non-blocking and update the rating surface when done.
             applySession(client.auth.currentSession)
+            if session != nil {
+                BackwordAnalyticsService.shared.log(.signInSucceeded())
+            }
             refreshAccountDataInBackground()
             return true
         } catch {

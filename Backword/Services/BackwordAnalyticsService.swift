@@ -8,6 +8,8 @@ struct BackwordAnalyticsEvent: Equatable {
     static let storeLifecycleName = "bw_store_lifecycle"
     static let gameStartedName = "game_started"
     static let gameCompletedName = "game_completed"
+    static let signInSucceededName = "sign_in_succeeded"
+    static let proEntitlementActivatedName = "pro_entitlement_activated"
     static let resultSharedName = "result_shared"
     static let resultShareOpenedName = "result_share_opened"
     static let resultShareFinishedName = "result_share_finished"
@@ -151,6 +153,22 @@ struct BackwordAnalyticsEvent: Equatable {
             parameters["mode"] = mode.rawValue
         }
         return BackwordAnalyticsEvent(name: gameCompletedName, parameters: parameters)
+    }
+
+    /// A completed, user-initiated provider sign-in. This intentionally omits
+    /// provider and account information so it matches the website schema.
+    static func signInSucceeded() -> BackwordAnalyticsEvent {
+        BackwordAnalyticsEvent(name: signInSucceededName, parameters: [:])
+    }
+
+    /// A direct StoreKit purchase that has verified and granted Pro access.
+    /// Restores, renewals, and account entitlement refreshes do not use this
+    /// event because they are not new purchase conversions.
+    static func proEntitlementActivated() -> BackwordAnalyticsEvent {
+        BackwordAnalyticsEvent(
+            name: proEntitlementActivatedName,
+            parameters: ["provider": "apple"]
+        )
     }
 
     static func resultShared(

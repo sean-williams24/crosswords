@@ -115,6 +115,28 @@ struct BackwordAnalyticsEventTests {
         #expect(completed.parameters["guess"] == nil)
     }
 
+    @Test("Sign-in success matches the content-free website event schema")
+    func signInSucceededEventHasNoParameters() {
+        let event = BackwordAnalyticsEvent.signInSucceeded()
+
+        #expect(event.name == "sign_in_succeeded")
+        #expect(event.parameters.isEmpty)
+        #expect(event.parameters["provider"] == nil)
+        #expect(event.parameters["user_id"] == nil)
+        #expect(event.parameters["email"] == nil)
+    }
+
+    @Test("Apple Pro activation contains no purchase or account identifiers")
+    func proEntitlementActivatedEventIsContentFree() {
+        let event = BackwordAnalyticsEvent.proEntitlementActivated()
+
+        #expect(event.name == "pro_entitlement_activated")
+        #expect(event.parameters == ["provider": "apple"])
+        #expect(event.parameters["product_id"] == nil)
+        #expect(event.parameters["transaction_id"] == nil)
+        #expect(event.parameters["user_id"] == nil)
+    }
+
     @Test("Result sharing records only game and delivery metadata")
     func resultSharedEventIsContentFree() {
         let shared = BackwordAnalyticsEvent.resultShared(

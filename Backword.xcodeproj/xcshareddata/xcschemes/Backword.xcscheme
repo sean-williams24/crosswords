@@ -75,6 +75,10 @@
             argument = "-FIRDebugEnabled"
             isEnabled = "YES">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-FIRAnalyticsVerboseLoggingEnabled"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
          <AdditionalOption

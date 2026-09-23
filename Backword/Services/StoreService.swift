@@ -146,7 +146,8 @@ final class StoreService: ObservableObject {
                 throw error
             }
 
-            if grantsProAccess(transaction) {
+            let transactionGrantsProAccess = grantsProAccess(transaction)
+            if transactionGrantsProAccess {
                 setStoreKitProStatus(true)
                 Self.cacheProExpirationDate(transaction.expirationDate)
                 scheduleSubscriptionExpirationRefresh(
@@ -160,6 +161,9 @@ final class StoreService: ObservableObject {
             guard isProUser else {
                 logger.purchaseDidNotUnlockPro(productID: product.id)
                 throw StoreError.purchaseDidNotUnlockPro
+            }
+            if transactionGrantsProAccess {
+                BackwordAnalyticsService.shared.log(.proEntitlementActivated())
             }
             logger.purchaseCompleted(productID: product.id, result: .purchased)
             return .purchased

@@ -539,6 +539,14 @@ conversion event is emitted only after the refreshed entitlement is active with
 the Stripe provider. Stripe customer IDs, Checkout Session IDs, raw errors,
 payment details, and return URLs never enter Firebase Analytics.
 
+iOS uses the same identifier-free event names for `sign_in_succeeded`,
+`game_completed`, and `pro_entitlement_activated`. A sign-in success is emitted
+only from an explicit Apple or Google sign-in after Supabase has created a local
+session; restored sessions and token refreshes are not conversions. Apple Pro
+activation is emitted only from a direct, verified StoreKit purchase that grants
+Pro access. Restores, renewals, entitlement refreshes, and account-linked access
+never count as a new purchase conversion.
+
 ## Crossword Configuration & Word Repeat Prevention
 
 ### Daily crossword (9×9)
