@@ -158,6 +158,7 @@ struct AppLayout {
     static let weeklyCompletionGridLetterSize: CGFloat = 8
     static let completionSparkleSize: CGFloat = 15
     static let homeNavigationIconGlyphSize: CGFloat = 20
+    static let homeCardIssueNumberFontSize: CGFloat = 12
 
     var isiPad: Bool {
         sizeClass == .regular

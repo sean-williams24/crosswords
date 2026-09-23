@@ -85,9 +85,21 @@ struct DailyCrosswordCard: View {
         }
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(cardBackground)
+        .overlay(alignment: .topTrailing) {
+            issueNumberOverlay
+        }
         .environment(\.colorScheme, BackwordAppearance.colorScheme)
         .onAppear {
             viewModel.refreshProgressFromDisk()
+        }
+    }
+
+    @ViewBuilder
+    private var issueNumberOverlay: some View {
+        if let issueNumber = viewModel.todaysPuzzle?.puzzleNumber {
+            HomeCardIssueNumber(issueNumber: issueNumber)
+            .padding(.trailing, HomeCardIssueNumberLayout.horizontalInset)
+            .padding(.top, HomeCardIssueNumberLayout.topInset)
         }
     }
 

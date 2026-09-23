@@ -109,6 +109,9 @@ struct WeeklyCrosswordCard: View {
             )
         )
         .cornerRadius(AppLayout.cardCornerRadius)
+        .overlay(alignment: .topTrailing) {
+            issueNumberOverlay
+        }
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .stroke(proGradient, lineWidth: 1.5)
@@ -119,6 +122,15 @@ struct WeeklyCrosswordCard: View {
         }
         .onAppear {
             viewModel.refreshProgressFromDisk()
+        }
+    }
+
+    @ViewBuilder
+    private var issueNumberOverlay: some View {
+        if let issueNumber = viewModel.weeklyPuzzle?.puzzleNumber {
+            HomeCardIssueNumber(issueNumber: issueNumber, color: .solvedGold)
+            .padding(.trailing, HomeCardIssueNumberLayout.horizontalInset)
+            .padding(.top, HomeCardIssueNumberLayout.topInset)
         }
     }
 

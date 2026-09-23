@@ -73,7 +73,19 @@ struct BackwordCard: View {
         )
         .background(Color.appCrosswordBackground)
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        .overlay(alignment: .topTrailing) {
+            issueNumberOverlay
+        }
         .environment(\.colorScheme, BackwordAppearance.colorScheme)
+    }
+
+    @ViewBuilder
+    private var issueNumberOverlay: some View {
+        if let issueNumber = service.todaysWord?.puzzleNumber {
+            HomeCardIssueNumber(issueNumber: issueNumber)
+            .padding(.trailing, HomeCardIssueNumberLayout.horizontalInset)
+            .padding(.top, HomeCardIssueNumberLayout.topInset)
+        }
     }
 
     private var cardBackground: some View {

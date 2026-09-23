@@ -54,6 +54,19 @@ struct HomeTabBarViewTests {
 
 @Suite("Home card streak layout")
 struct HomeCardStreakLayoutTests {
+    @Test("Home card issue numbers use the shared label and accessible name")
+    func homeCardIssueNumberContent() {
+        #expect(HomeCardIssueNumberContent.label(for: 123) == "#123")
+        #expect(HomeCardIssueNumberContent.accessibilityLabel(for: 123) == "Issue #123")
+    }
+
+    @Test("Home card issue number overlay fits in the card's top whitespace")
+    func homeCardIssueNumberLayout() {
+        #expect(HomeCardIssueNumberLayout.horizontalInset == 18)
+        #expect(HomeCardIssueNumberLayout.topInset == 8)
+        #expect(AppLayout.homeCardIssueNumberFontSize == 12)
+    }
+
     @Test("Backword card always uses its dark colour palette")
     func backwordCardUsesDarkAppearance() {
         #expect(BackwordAppearance.colorScheme == .dark)
