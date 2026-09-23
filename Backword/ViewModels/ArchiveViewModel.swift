@@ -168,7 +168,7 @@ final class ArchiveViewModel: ObservableObject {
 
 enum ArchiveTab: String, CaseIterable {
     case backword = "Backword"
-    case daily = "Daily\n Crossword"
+    case daily = "Quick\n Crossword"
     case weekly = "Pro\n Crossword"
 
     var gameType: ArchiveGameType {

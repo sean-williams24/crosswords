@@ -154,8 +154,8 @@ struct DebugSettingsView: View {
                     Text("Opens the sign-in sheet with a local preview only. It does not contact Apple, Google, or Supabase.")
                 }
 
-                /// Daily Crossword
-                Section("Daily Crossword") {
+                /// Quick Crossword
+                Section("Quick Crossword") {
                     Button {
                         if let vm = homeViewModel, let puzzle = vm.todaysPuzzle {
                             vm.debugFillAllButOne(puzzle: puzzle, isWeekly: false)
@@ -169,12 +169,12 @@ struct DebugSettingsView: View {
                     Button(role: .destructive) {
                         showResetDailyConfirmation = true
                     } label: {
-                        Label("Reset Daily Puzzle", systemImage: "arrow.counterclockwise")
+                        Label("Reset Quick Puzzle", systemImage: "arrow.counterclockwise")
                     }
                     .disabled(homeViewModel?.todaysPuzzle == nil)
                 }
                 .confirmationDialog(
-                    "Reset Daily Puzzle?",
+                    "Reset Quick Puzzle?",
                     isPresented: $showResetDailyConfirmation,
                     titleVisibility: .visible
                 ) {
@@ -186,7 +186,7 @@ struct DebugSettingsView: View {
                     }
                     Button("Cancel", role: .cancel) {}
                 } message: {
-                    Text("All progress on today's daily crossword will be cleared.")
+                    Text("All progress on today's Quick Crossword will be cleared.")
                 }
 
                 /// Pro Crossword
@@ -290,7 +290,7 @@ struct DebugSettingsView: View {
                     Button(role: .destructive) {
                         showPurgeDailyConfirmation = true
                     } label: {
-                        Label("Purge Daily Crossword", systemImage: "trash")
+                        Label("Purge Quick Crossword", systemImage: "trash")
                     }
                     Button(role: .destructive) {
                         showPurgeWeeklyConfirmation = true
@@ -309,7 +309,7 @@ struct DebugSettingsView: View {
                     }
                 }
                 .confirmationDialog(
-                    "Purge Daily Crossword?",
+                    "Purge Quick Crossword?",
                     isPresented: $showPurgeDailyConfirmation,
                     titleVisibility: .visible
                 ) {
@@ -321,7 +321,7 @@ struct DebugSettingsView: View {
                     }
                     Button("Cancel", role: .cancel) {}
                 } message: {
-                    Text("The cached daily crossword will be deleted. The app will fetch a fresh copy from Supabase.")
+                    Text("The cached Quick Crossword will be deleted. The app will fetch a fresh copy from Supabase.")
                 }
                 .confirmationDialog(
                     "Purge Weekly Crossword?",

@@ -29,6 +29,14 @@ struct BackwordScoreTests {
     @Test("6+ guesses → 0") func sixGuess()  { #expect(Int.backwordScore(guessCount: 6)   == 0) }
 }
 
+@Suite("Rating game category")
+struct RatingGameCategoryTests {
+    @Test("Quick Crossword uses its player-facing name")
+    func quickCrosswordDisplayName() {
+        #expect(RatingGameCategory.dailyCrossword.displayName == "Quick crossword")
+    }
+}
+
 // MARK: - User stats
 
 @Suite("UserStats model")

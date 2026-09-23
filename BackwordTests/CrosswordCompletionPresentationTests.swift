@@ -47,11 +47,11 @@ struct CrosswordCompletionPresentationTests {
         #expect(gaveUp.showsSparkles == false)
     }
 
-    @Test("Daily countdown formats hours minutes and seconds")
-    func dailyCountdownFormatting() {
+    @Test("Quick countdown formats hours minutes and seconds")
+    func quickCountdownFormatting() {
         #expect(CrosswordCountdownText.value(secondsRemaining: 3_661, kind: .daily) == "01:01:01")
         #expect(CrosswordCountdownText.value(secondsRemaining: nil, kind: .daily) == "--:--:--")
-        #expect(CrosswordReleaseKind.daily.label == "NEXT DAILY CROSSWORD IN")
+        #expect(CrosswordReleaseKind.daily.label == "NEXT QUICK CROSSWORD IN")
     }
 
     @Test("Weekly countdown formats days hours minutes and seconds")

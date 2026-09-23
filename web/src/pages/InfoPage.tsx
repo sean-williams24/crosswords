@@ -7,7 +7,7 @@ export function InfoPage() {
     <>
       <ScreenshotSection
         title="Backword"
-        body="Three word games and a Word of the Day, all in one daily ritual to get your brain moving: Backword, a daily crossword, and a deeper weekly crossword."
+        body="Three word games and a Word of the Day, all in one daily ritual to get your brain moving: Backword, a Quick Crossword, and a deeper weekly crossword."
         secondaryBody="Build the highest score you can across all three games over a rolling 14-day period, climb the rating tiers, and see how long you can sustain the top level."
         headingLevel="h1"
         screenshotAlt="Backword home screen"
@@ -33,11 +33,11 @@ export function InfoPage() {
       </ScreenshotSection>
 
       <ScreenshotSection
-        eyebrow="Daily Crossword"
+        eyebrow="Quick Crossword"
         title="A quick 9 x 9 crossword every day."
-        body="Fifteen clues, a compact grid, and a fresh daily challenge for a spare 15 minutes."
+        body="Fifteen clues, a compact grid, and a fresh Quick Crossword for a spare 15 minutes."
         headingLevel="h2"
-        screenshotAlt="Backword daily crossword screen"
+        screenshotAlt="Backword Quick Crossword screen"
         screenshotPosition="right"
         screenshotSrc="/screenshots/crossword.png"
       >

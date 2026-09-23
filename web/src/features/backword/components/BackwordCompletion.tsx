@@ -28,7 +28,7 @@ export function BackwordCompletion({
   const [seconds, setSeconds] = useState(() => secondsUntilNextLocalMidnight());
   const failed = progress.outcome === "failed";
   const onTime = isCompletedOnReleaseDate(progress.date, progress.completedAt);
-  const title = failed ? "Failed" : onTime ? "Solved!" : "Finished";
+  const title = failed ? "Not this time" : onTime ? "Solved!" : "Finished";
   const summary = failed
     ? "The answer was..."
     : `... in ${progress.guesses.length} ${progress.guesses.length === 1 ? "guess" : "guesses"}`;

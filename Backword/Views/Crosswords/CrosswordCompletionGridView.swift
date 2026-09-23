@@ -160,7 +160,7 @@ struct CrosswordCompletionGridView: View {
     }
 }
 
-#Preview("Daily solved grid") {
+#Preview("Quick solved grid") {
     CrosswordCompletionGridView(puzzle: .sample, style: .solved)
         .padding()
         .background(Color.appBackground)

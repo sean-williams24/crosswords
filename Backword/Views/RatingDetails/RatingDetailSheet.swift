@@ -296,7 +296,7 @@ struct RatingDetailSheet: View {
                     .frame(maxWidth: isScrolling ? .none : .infinity, alignment: .leading)
                     .frame(width: isScrolling ? dateColumnWidth : .none, alignment: .leading)
 
-                Text("Daily")
+                Text("Quick")
                     .frame(width: isScrolling ? dailyColumnWidth : columnWidth, alignment: .center)
 
                 if isPro {

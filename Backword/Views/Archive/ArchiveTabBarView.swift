@@ -13,8 +13,8 @@ struct ArchiveTabBarItemContent: Equatable {
             )
         case .daily:
             return ArchiveTabBarItemContent(
-                title: "Daily",
-                accessibilityLabel: "Daily crossword archive"
+                title: "Quick",
+                accessibilityLabel: "Quick crossword archive"
             )
         case .weekly:
             return ArchiveTabBarItemContent(

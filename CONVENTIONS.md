@@ -698,6 +698,13 @@ All crossword completion outcomes show a live release countdown derived from `Co
 
 Giving up from an eligible archive crossword completes and saves the revealed puzzle before setting the same `isComplete` presentation trigger used by a solve. This presents the red `Gave up` completion experience immediately without recording a successful completion.
 
+## Quick Crossword Naming
+
+The 9×9 crossword is player-facing as **Quick Crossword** (or **Quick** where
+space is limited), including Archive, stats, completion, and rating surfaces.
+The existing `daily` identifiers remain implementation details for release
+scheduling, storage, routing, analytics, and API compatibility.
+
 ## Crossword Rating Score Window
 
 Daily and weekly crossword rating points are only awarded during the puzzle's own local release window. Daily crossword scores can be written only when `ContentReleaseCalendar.dailyDateString` equals the puzzle date; weekly crossword scores can be written only when `ContentReleaseCalendar.weeklyDateString` equals the puzzle date.

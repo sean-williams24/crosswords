@@ -12,7 +12,7 @@ export const privacySections = [
     body: [
       "Gameplay and settings data: Backword stores game progress, guesses, completed puzzles, scores, rating tier progress, preferences, onboarding state, and ad frequency state so the app and browser game can remember your progress and provide the game experience. Guest data is stored locally on your device or in browser storage.",
       "Account and cloud sync data: If you choose to sign in with Apple or Google, Backword stores your account identifier and, where provided by the provider, your name and email address. We also store versioned gameplay progress, scores, rating history, and subscription entitlement state so your progress can be restored across devices. Account creation is optional.",
-      "Puzzle content requests: Backword connects to backend services to fetch daily Backword words, daily and weekly crosswords, archive content, and Word of the Day. These requests may involve standard technical information such as IP address, device or browser information, request timestamps, and network metadata.",
+      "Puzzle content requests: Backword connects to backend services to fetch daily Backword words, Quick and weekly crosswords, archive content, and Word of the Day. These requests may involve standard technical information such as IP address, device or browser information, request timestamps, and network metadata.",
       "Purchase information: Apple processes iOS subscriptions and Stripe processes web subscriptions. Backword receives subscription entitlement information so Pro features can be unlocked across supported devices. We do not receive or store payment card details.",
       "Advertising information: Backword uses Google AdMob to show ads. Google and its partners may collect information such as device identifiers, advertising identifiers where permitted, ad interactions, approximate location, diagnostics, and usage information to deliver ads, limit ad frequency, prevent fraud, and report ad performance.",
       "Website information: When you visit this website, hosting providers may process standard technical information such as IP address, browser type, device information, pages visited, and timestamps for security, diagnostics, and reliability.",
@@ -126,7 +126,7 @@ export const termsSections = [
   {
     title: "About Backword",
     body: [
-      "Backword is a word game app that includes Backword, daily crosswords, weekly crosswords, Word of the Day, scores, rating tiers, archives, ads, and optional Pro features. Features may change, be added, or be removed over time."
+      "Backword is a word game app that includes Backword, Quick Crosswords, weekly crosswords, Word of the Day, scores, rating tiers, archives, ads, and optional Pro features. Features may change, be added, or be removed over time."
     ]
   },
   {
