@@ -46,6 +46,7 @@
 		06CC00073007000000000001 /* CrosswordCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */; };
 		07AA10013008000000000001 /* CrosswordStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA10003008000000000001 /* CrosswordStatsHistory.swift */; };
 		07AB00023008000000000001 /* BackwordRulesUpdateNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */; };
+		07AD00023010000000000001 /* BackwordOnboardingCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AD00013010000000000001 /* BackwordOnboardingCardsView.swift */; };
 		07AB00043008000000000001 /* BackwordRulesUpdateNoticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */; };
 		07AC00023009000000000001 /* BackwordModeToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AC00013009000000000001 /* BackwordModeToggle.swift */; };
 		07AD10013010000000000001 /* BackwordStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AD10003010000000000001 /* BackwordStatsHistory.swift */; };
@@ -210,6 +211,7 @@
 		06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionPresentationTests.swift; sourceTree = "<group>"; };
 		07AA10003008000000000001 /* CrosswordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordStatsHistory.swift; sourceTree = "<group>"; };
 		07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNotice.swift; sourceTree = "<group>"; };
+		07AD00013010000000000001 /* BackwordOnboardingCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordOnboardingCardsView.swift; sourceTree = "<group>"; };
 		07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNoticeTests.swift; sourceTree = "<group>"; };
 		07AC00013009000000000001 /* BackwordModeToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordModeToggle.swift; sourceTree = "<group>"; };
 		07AD10003010000000000001 /* BackwordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsHistory.swift; sourceTree = "<group>"; };
@@ -593,6 +595,7 @@
 				86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */,
 				07AC00013009000000000001 /* BackwordModeToggle.swift */,
 				07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */,
+				07AD00013010000000000001 /* BackwordOnboardingCardsView.swift */,
 				86AE8C962F913EAB001D69EE /* BackwordLogo.swift */,
 				86AE8C982FE31F01001D69EE /* LaunchSplashView.swift */,
 				869FCBE32F99871800A280F2 /* BackwordStatsView.swift */,
@@ -858,6 +861,7 @@
 				F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */,
 				86AFC3D32FC20460007623C3 /* BackwordInstructionsContentView.swift in Sources */,
 				07AB00023008000000000001 /* BackwordRulesUpdateNotice.swift in Sources */,
+				07AD00023010000000000001 /* BackwordOnboardingCardsView.swift in Sources */,
 				07AC00023009000000000001 /* BackwordModeToggle.swift in Sources */,
 				86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */,
 				F10000000000000000000002 /* HomeCardIssueNumber.swift in Sources */,

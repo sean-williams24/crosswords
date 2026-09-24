@@ -31,9 +31,9 @@ struct BackwordInstructionsContentView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 10) {
-                    instructionRow(number: "1", text: firstRule)
-                    instructionRow(number: "2", text: secondRule)
-                    instructionRow(number: "3", text: "The fewer guesses you need, the more points you score.")
+                    instructionRow(number: "1", text: BackwordOnboardingStep.connectedLetters.text(for: mode))
+                    instructionRow(number: "2", text: BackwordOnboardingStep.freeReveals.text(for: mode))
+                    instructionRow(number: "3", text: BackwordOnboardingStep.scoring.text(for: mode))
                 }
 
                 Divider()
@@ -77,23 +77,6 @@ struct BackwordInstructionsContentView: View {
         "3rd wrong guess",
         "4th wrong guess"
     ]
-
-    private var firstRule: String {
-        "Correctly placed letters reveal when they form an unbroken chain from the back of the word."
-    }
-
-//    private var secondRule: String {
-//        "With each wrong guess, a letter reveals from the end."
-//    }
-
-    private var secondRule: String {
-        switch mode {
-        case .normal:
-            return "If your guesses do not extend that chain, the second and third wrong guesses each reveal one more letter from the end."
-        case .easy:
-            return "If your guesses do not extend that chain, each wrong guess reveals one more letter from the back of the word."
-        }
-    }
 
     private var revealExamples: [String] {
         switch mode {

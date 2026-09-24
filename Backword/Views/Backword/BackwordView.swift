@@ -58,6 +58,15 @@ struct BackwordView: View {
                             explainerBanner
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
                         }
+
+                        if !viewModel.onboardingSteps.isEmpty {
+                            BackwordOnboardingCardsView(
+                                steps: viewModel.onboardingSteps,
+                                mode: viewModel.mode,
+                                dismissStep: viewModel.dismissOnboardingStep
+                            )
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                        }
                     }
                     .padding([.top, .bottom], 16)
                 }
@@ -113,6 +122,7 @@ struct BackwordView: View {
         .animation(.easeInOut(duration: 0.3), value: viewModel.invalidWordMessage != nil)
         .animation(.easeInOut(duration: 0.3), value: viewModel.shouldShowExplainerBanner)
         .animation(.easeInOut(duration: 0.3), value: viewModel.isDetailedExplainerVisible)
+        .animation(.spring(response: 0.4, dampingFraction: 0.82), value: viewModel.onboardingSteps)
         .onChange(of: viewModel.isComplete) { _, complete in
             if complete {
                 ratingService.refresh()
@@ -426,7 +436,7 @@ struct BackwordView: View {
 
     @ViewBuilder
     private var clueExplainerView: some View {
-        if viewModel.shouldShowExplainerBanner {
+        if viewModel.shouldShowClueExplainer {
             BackwordClueExplainerView()
         }
     }
@@ -455,7 +465,7 @@ struct BackwordView: View {
     // MARK: - Explainer Banner
 
     private var explainerBanner: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8,) {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
             if viewModel.isDetailedExplainerVisible {
                 Image(systemName: "lightbulb")
                     .font(AppFont.body(15))
@@ -495,12 +505,13 @@ struct BackwordClueExplainerView: View {
                 .font(AppFont.body(14))
                 .foregroundColor(.appCorrect)
 
-            Text("The clue is always visible and is associated with the answer, or something connected to it")
+            Text("The clue is associated with the answer, or something connected to it")
                 .font(AppFont.body(14))
                 .foregroundColor(.appTextSecondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, AppLayout.screenPadding)
+        .padding(.top, 10)
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 }

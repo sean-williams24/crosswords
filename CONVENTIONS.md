@@ -240,6 +240,19 @@ existing `puzzle_number` fields. Backword issue numbers are assigned once in
 chronological release order, persisted as `backword_words.puzzle_number`, and
 must be retained when an existing Backword entry is replaced.
 
+## Backword Onboarding
+
+New Backword players receive five instructions inline, beneath the revealed
+letter row. The instructions render as a staggered card deck: only the front
+card is interactive, while the faded cards behind it indicate more guidance
+remains. Each card is dismissed independently and the remaining cards persist
+across launches; onboarding is complete only after all five have been
+acknowledged.
+Once onboarding is complete, the normal timed guess explainer returns on every
+unstarted game until its first guess is submitted. This keeps the game
+immediately playable while ensuring an interrupted first visit resumes at the
+appropriate instruction.
+
 ## Spoiler-Safe Result Sharing
 
 Completion sharing is a derived, local presentation only. The result card,

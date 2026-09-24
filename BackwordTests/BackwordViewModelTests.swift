@@ -73,27 +73,56 @@ struct BackwordViewModelTests {
         #expect(vm.isComplete == false)
     }
 
-    @Test("Explainer banner is visible before the first guess")
-    func explainerBannerIsInitiallyVisible() {
+    @Test("Clue explainer is visible before the first guess")
+    func clueExplainerIsInitiallyVisible() {
         let vm = makeViewModel()
+
+        #expect(vm.shouldShowClueExplainer)
+    }
+
+    @Test("Clue explainer is hidden after the first guess")
+    func clueExplainerIsHiddenAfterFirstGuess() {
+        let vm = makeViewModel()
+        vm.currentInput = "XXXXXX"
+
+        vm.submitGuess()
+
+        #expect(!vm.shouldShowClueExplainer)
+    }
+
+    @Test("Explainer banner returns after onboarding is complete")
+    func explainerBannerReturnsAfterOnboarding() {
+        let word = makeWord()
+        let settings = makeSettings()
+        settings.markBackwordInstructionsSeen(.onboarding)
+        let vm = BackwordViewModel(
+            word: word,
+            progress: BackwordProgress(date: word.date),
+            settings: settings
+        )
 
         #expect(vm.shouldShowExplainerBanner)
         #expect(vm.explainerText == "Guess the 6 letter word...")
     }
 
-    @Test("Explainer gives more context after its delay")
-    func explainerGivesMoreContextAfterDelay() {
+    @Test("Explainer banner stays hidden while onboarding cards remain")
+    func explainerBannerIsHiddenDuringOnboarding() {
         let vm = makeViewModel()
 
-        vm.markExplainerDelayElapsed()
-
-        #expect(vm.shouldShowExplainerBanner)
-        #expect(vm.explainerText == "If you're stuck, guess any word to reveal a letter")
+        #expect(!vm.shouldShowExplainerBanner)
     }
 
-    @Test("Explainer banner is hidden after the first guess")
-    func explainerBannerIsHiddenAfterFirstGuess() {
-        let vm = makeViewModel()
+    @Test("Explainer banner hides after the first guess")
+    func explainerBannerHidesAfterFirstGuess() {
+        let word = makeWord()
+        let settings = makeSettings()
+        settings.markBackwordInstructionsSeen(.onboarding)
+        let vm = BackwordViewModel(
+            word: word,
+            progress: BackwordProgress(date: word.date),
+            settings: settings
+        )
+        vm.wordValidator = { _ in true }
         vm.currentInput = "XXXXXX"
 
         vm.submitGuess()
@@ -101,10 +130,59 @@ struct BackwordViewModelTests {
         #expect(!vm.shouldShowExplainerBanner)
     }
 
-    @Test("New player receives onboarding instead of a rules update")
-    func newPlayerReceivesOnboarding() {
+    @Test("Explainer gives more context after its delay")
+    func explainerGivesMoreContextAfterDelay() {
+        let word = makeWord()
+        let settings = makeSettings()
+        settings.markBackwordInstructionsSeen(.onboarding)
+        let vm = BackwordViewModel(
+            word: word,
+            progress: BackwordProgress(date: word.date),
+            settings: settings
+        )
+
+        vm.markExplainerDelayElapsed()
+
+        #expect(vm.explainerText == "If you're stuck, guess any word to reveal a letter")
+    }
+
+    @Test("New player receives five inline onboarding cards instead of a sheet")
+    func newPlayerReceivesInlineOnboarding() {
         withIsolatedSettings { settings in
-            #expect(settings.automaticBackwordInstructionsPresentation == .onboarding)
+            #expect(settings.pendingBackwordOnboardingSteps == BackwordOnboardingStep.allCases)
+            #expect(settings.pendingBackwordOnboardingSteps.count == 5)
+            #expect(settings.pendingBackwordOnboardingSteps.first == .initialGuess)
+            #expect(settings.pendingBackwordOnboardingSteps.last == .stuckHint)
+            #expect(settings.automaticBackwordInstructionsPresentation == nil)
+        }
+    }
+
+    @Test("Onboarding deck starts with the prompt and ends with the stuck hint")
+    func onboardingDeckUsesPromptAndStuckHint() {
+        #expect(BackwordOnboardingStep.initialGuess.text(for: .easy) == "Guess the 6 letter word...")
+        #expect(BackwordOnboardingStep.stuckHint.text(for: .easy) == "If you're stuck, guess any word to reveal a letter.")
+    }
+
+    @Test("Dismissing an onboarding card preserves the remaining cards")
+    func dismissingOnboardingCardPreservesRemainingCards() {
+        withIsolatedSettings { settings in
+            settings.dismissBackwordOnboardingStep(.initialGuess)
+
+            #expect(settings.pendingBackwordOnboardingSteps == [.connectedLetters, .freeReveals, .scoring, .stuckHint])
+            #expect(!settings.hasSeenBackwordOnboarding)
+        }
+    }
+
+    @Test("Dismissing every onboarding card records onboarding as complete")
+    func dismissingAllOnboardingCardsRecordsCompletion() {
+        withIsolatedSettings { settings in
+            for step in BackwordOnboardingStep.allCases {
+                settings.dismissBackwordOnboardingStep(step)
+            }
+
+            #expect(settings.pendingBackwordOnboardingSteps.isEmpty)
+            #expect(settings.hasSeenBackwordOnboarding)
+            #expect(settings.lastSeenBackwordRulesVersion == AppSettings.currentBackwordRulesVersion)
         }
     }
 
@@ -179,7 +257,8 @@ struct BackwordViewModelTests {
 
             #expect(settings.hasSeenBackwordOnboarding == false)
             #expect(settings.lastSeenBackwordRulesVersion == 0)
-            #expect(settings.automaticBackwordInstructionsPresentation == .onboarding)
+            #expect(settings.pendingBackwordOnboardingSteps == BackwordOnboardingStep.allCases)
+            #expect(settings.automaticBackwordInstructionsPresentation == nil)
         }
     }
 

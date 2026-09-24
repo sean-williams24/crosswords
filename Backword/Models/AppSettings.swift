@@ -11,6 +11,36 @@ enum BackwordInstructionsPresentation: Equatable {
     case manual
 }
 
+enum BackwordOnboardingStep: String, CaseIterable, Identifiable {
+    case initialGuess
+    case connectedLetters
+    case freeReveals
+    case scoring
+    case stuckHint
+
+    var id: String { rawValue }
+
+    func text(for mode: BackwordMode) -> String {
+        switch self {
+        case .initialGuess:
+            return "Guess the 6 letter word..."
+        case .connectedLetters:
+            return "Correctly placed letters reveal when they form an unbroken chain from the back of the word."
+        case .freeReveals:
+            switch mode {
+            case .normal:
+                return "If your guesses do not extend that chain, the second and third wrong guesses each reveal one more letter from the end."
+            case .easy:
+                return "If your guesses do not extend that chain, each wrong guess reveals one more letter from the back of the word."
+            }
+        case .scoring:
+            return "The fewer guesses you need, the more points you score."
+        case .stuckHint:
+            return "If you're stuck, guess any word to reveal a letter."
+        }
+    }
+}
+
 /// App-wide user preferences, persisted in UserDefaults.
 final class AppSettings: ObservableObject {
     static let shared = AppSettings()
@@ -23,6 +53,7 @@ final class AppSettings: ObservableObject {
         static let hasDismissedAdExplainer = "hasDismissedAdExplainer"
         static let hasSeenDailyCrosswordOnboarding = "hasSeenDailyCrosswordOnboarding"
         static let hasSeenBackwordOnboarding = "hasSeenBackwordOnboarding"
+        static let dismissedBackwordOnboardingSteps = "dismissedBackwordOnboardingSteps"
         static let lastSeenBackwordRulesVersion = "lastSeenBackwordRulesVersion"
     }
 
@@ -63,10 +94,17 @@ final class AppSettings: ObservableObject {
         set { userDefaults.set(newValue, forKey: Keys.hasSeenDailyCrosswordOnboarding) }
     }
 
+    /// Inline Backword onboarding stays until every individual instruction is acknowledged.
+    var pendingBackwordOnboardingSteps: [BackwordOnboardingStep] {
+        guard !hasSeenBackwordOnboarding else { return [] }
+        let dismissedSteps = Set(
+            userDefaults.stringArray(forKey: Keys.dismissedBackwordOnboardingSteps) ?? []
+        )
+        return BackwordOnboardingStep.allCases.filter { !dismissedSteps.contains($0.rawValue) }
+    }
+
     var automaticBackwordInstructionsPresentation: BackwordInstructionsPresentation? {
-        if !hasSeenBackwordOnboarding {
-            return .onboarding
-        }
+        guard hasSeenBackwordOnboarding else { return nil }
         if lastSeenBackwordRulesVersion < Self.currentBackwordRulesVersion {
             return .rulesUpdate
         }
@@ -85,9 +123,27 @@ final class AppSettings: ObservableObject {
         }
     }
 
+    func dismissBackwordOnboardingStep(_ step: BackwordOnboardingStep) {
+        guard !hasSeenBackwordOnboarding else { return }
+
+        var dismissedSteps = Set(
+            userDefaults.stringArray(forKey: Keys.dismissedBackwordOnboardingSteps) ?? []
+        )
+        dismissedSteps.insert(step.rawValue)
+        let orderedSteps = BackwordOnboardingStep.allCases
+            .map(\.rawValue)
+            .filter(dismissedSteps.contains)
+        userDefaults.set(orderedSteps, forKey: Keys.dismissedBackwordOnboardingSteps)
+
+        if pendingBackwordOnboardingSteps.isEmpty {
+            markBackwordInstructionsSeen(.onboarding)
+        }
+    }
+
     func resetBackwordOnboarding() {
         hasSeenBackwordOnboarding = false
         lastSeenBackwordRulesVersion = 0
+        userDefaults.removeObject(forKey: Keys.dismissedBackwordOnboardingSteps)
     }
 
     func resetBackwordRulesNotice() {

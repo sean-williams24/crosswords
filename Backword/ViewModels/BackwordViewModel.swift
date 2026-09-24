@@ -137,7 +137,10 @@ final class BackwordViewModel: ObservableObject {
     var guessesForHistory: [String] { progress.guesses.reversed() }
     var maxGuesses: Int { 5 }
     var guessesRemaining: Int { maxGuesses - guessCount }
-    var shouldShowExplainerBanner: Bool { progress.guesses.isEmpty }
+    var shouldShowClueExplainer: Bool { progress.guesses.isEmpty }
+    var shouldShowExplainerBanner: Bool {
+        progress.guesses.isEmpty && onboardingSteps.isEmpty
+    }
 
     var explainerText: String {
         if isDetailedExplainerVisible {
@@ -168,8 +171,18 @@ final class BackwordViewModel: ObservableObject {
         settings.automaticBackwordInstructionsPresentation
     }
 
+    var onboardingSteps: [BackwordOnboardingStep] {
+        settings.pendingBackwordOnboardingSteps
+    }
+
     func markInstructionsSeen(_ presentation: BackwordInstructionsPresentation) {
         settings.markBackwordInstructionsSeen(presentation)
+    }
+
+    func dismissOnboardingStep(_ step: BackwordOnboardingStep) {
+        settings.dismissBackwordOnboardingStep(step)
+        objectWillChange.send()
+        startExplainerCountdown()
     }
 
     func startExplainerCountdown() {
