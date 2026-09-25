@@ -154,6 +154,14 @@ struct BackwordViewModelTests {
             #expect(settings.pendingBackwordOnboardingSteps.first == .initialGuess)
             #expect(settings.pendingBackwordOnboardingSteps.last == .stuckHint)
             #expect(settings.automaticBackwordInstructionsPresentation == nil)
+
+            let word = makeWord()
+            let vm = BackwordViewModel(
+                word: word,
+                progress: BackwordProgress(date: word.date),
+                settings: settings
+            )
+            #expect(vm.shouldShowInstructionsTip)
         }
     }
 
@@ -183,6 +191,14 @@ struct BackwordViewModelTests {
             #expect(settings.pendingBackwordOnboardingSteps.isEmpty)
             #expect(settings.hasSeenBackwordOnboarding)
             #expect(settings.lastSeenBackwordRulesVersion == AppSettings.currentBackwordRulesVersion)
+
+            let word = makeWord()
+            let vm = BackwordViewModel(
+                word: word,
+                progress: BackwordProgress(date: word.date),
+                settings: settings
+            )
+            #expect(!vm.shouldShowInstructionsTip)
         }
     }
 

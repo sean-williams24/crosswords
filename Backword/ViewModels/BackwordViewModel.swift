@@ -175,6 +175,10 @@ final class BackwordViewModel: ObservableObject {
         settings.pendingBackwordOnboardingSteps
     }
 
+    var shouldShowInstructionsTip: Bool {
+        !onboardingSteps.isEmpty
+    }
+
     func markInstructionsSeen(_ presentation: BackwordInstructionsPresentation) {
         settings.markBackwordInstructionsSeen(presentation)
     }

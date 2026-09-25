@@ -248,6 +248,9 @@ card is interactive, while the faded cards behind it indicate more guidance
 remains. Each card is dismissed independently and the remaining cards persist
 across launches; onboarding is complete only after all five have been
 acknowledged.
+The one-time info-button TipKit popover is triggered as soon as that first-launch
+deck appears and ignores TipKit's global display-frequency throttle, so its
+navigation hint cannot be delayed by another tip.
 Once onboarding is complete, the normal timed guess explainer returns on every
 unstarted game until its first guess is submitted. This keeps the game
 immediately playable while ensuring an interrupted first visit resumes at the

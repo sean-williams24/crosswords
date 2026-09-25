@@ -128,7 +128,7 @@ private struct BackwordOnboardingCard: View {
             }
             animateOKButtonIfNeeded()
         }
-        .onChange(of: isTopCard) { _ in
+        .onChange(of: isTopCard) { _, _ in
             animateOKButtonIfNeeded()
         }
     }

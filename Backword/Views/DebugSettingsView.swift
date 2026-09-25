@@ -274,7 +274,8 @@ struct DebugSettingsView: View {
                     Button("Reset", role: .destructive) {
                         try? Tips.resetDatastore()
                         try? Tips.configure([
-                            .datastoreLocation(.applicationDefault)
+                            .datastoreLocation(.applicationDefault),
+                            .displayFrequency(.immediate)
                         ])
                         settings.resetBackwordOnboarding()
                         dismiss()

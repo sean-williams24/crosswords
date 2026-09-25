@@ -113,6 +113,7 @@ struct BackwordView: View {
         .onAppear {
             ratingService.refresh()
             showAutomaticInstructionsIfNeeded()
+            showInstructionsTipIfNeeded()
             viewModel.startExplainerCountdown()
         }
         .onDisappear {
@@ -193,6 +194,11 @@ struct BackwordView: View {
         guard let presentation = instructionsPresentation else { return }
         viewModel.markInstructionsSeen(presentation)
         instructionsPresentation = nil
+    }
+
+    private func showInstructionsTipIfNeeded() {
+        guard viewModel.shouldShowInstructionsTip else { return }
+        BackwordInstructionsTip.actionCompleted = true
     }
 
     @ViewBuilder
@@ -301,9 +307,6 @@ struct BackwordView: View {
         }
         .presentationDetents([.fraction(0.85)])
         .presentationDragIndicator(.visible)
-        .onDisappear {
-            BackwordInstructionsTip.actionCompleted = true
-        }
     }
 
     // MARK: - Letter Row
