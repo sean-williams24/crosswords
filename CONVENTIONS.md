@@ -253,7 +253,11 @@ deck appears and ignores TipKit's global display-frequency throttle, so its
 navigation hint cannot be delayed by another tip.
 The web game uses the same independently persisted deck and a one-time native
 tooltip on its info button; its full instructions sheet remains available only
-on request for new players, while rule updates still open it automatically.
+on request for new players, while rule updates still open it automatically. On
+either platform, that tooltip is dismissed as the game reaches a terminal
+outcome so it cannot overlap the result-sharing control. Dismissing the final
+onboarding card does not dismiss the tooltip; only the info-button action or a
+terminal outcome does.
 Once onboarding is complete, the normal timed guess explainer returns on every
 unstarted game until its first guess is submitted. This keeps the game
 immediately playable while ensuring an interrupted first visit resumes at the

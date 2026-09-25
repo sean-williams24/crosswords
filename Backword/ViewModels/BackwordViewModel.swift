@@ -176,7 +176,10 @@ final class BackwordViewModel: ObservableObject {
     }
 
     var shouldShowInstructionsTip: Bool {
-        !onboardingSteps.isEmpty
+        BackwordInstructionsTipPresentation.isEligible(
+            hasPendingOnboarding: !onboardingSteps.isEmpty,
+            isGameComplete: isComplete
+        )
     }
 
     func markInstructionsSeen(_ presentation: BackwordInstructionsPresentation) {

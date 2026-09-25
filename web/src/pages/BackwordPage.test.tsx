@@ -161,6 +161,17 @@ describe("Backword browser game", () => {
     expect(screen.queryByRole("region", { name: "How to play Backword" })).not.toBeInTheDocument();
   });
 
+  it("keeps the info tooltip visible after the final onboarding card is dismissed", async () => {
+    const user = userEvent.setup();
+    renderGame();
+
+    expect(await screen.findByRole("tooltip")).toBeInTheDocument();
+    await dismissOnboarding(user);
+
+    expect(await screen.findByText("Guess the 6 letter word...")).toBeInTheDocument();
+    expect(screen.getByRole("tooltip")).toBeInTheDocument();
+  });
+
   it("keeps the full instructions sheet manual during inline onboarding and persists mode changes", async () => {
     const user = userEvent.setup();
     const { container } = renderGame();
@@ -201,6 +212,7 @@ describe("Backword browser game", () => {
     expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
     expect(screen.getByText("... in 1 guess")).toBeInTheDocument();
     expect(screen.getByText("5/70")).toBeInTheDocument();
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
     const shareButton = within(screen.getByRole("dialog", { name: "Solved!" })).getByRole("button", { name: "Share result" });
     expect(shareButton).toBeInTheDocument();
     expect(document.querySelector(".puzzle-result-share__preview")).not.toBeInTheDocument();

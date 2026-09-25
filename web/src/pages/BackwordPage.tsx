@@ -182,13 +182,18 @@ export function BackwordPage() {
   }, [onboardingSteps.length, progress.guesses.length]);
 
   useEffect(() => {
-    if (loading || !word || onboardingSteps.length === 0 || settings.hasSeenInstructionsTip) {
-      if (onboardingSteps.length === 0) setShowInstructionsTip(false);
+    if (
+      loading
+      || !word
+      || progress.outcome !== "inProgress"
+    ) {
+      setShowInstructionsTip(false);
       return;
     }
+    if (onboardingSteps.length === 0 || settings.hasSeenInstructionsTip) return;
     setShowInstructionsTip(true);
     setSettings(storage.markInstructionsTipSeen(settings));
-  }, [loading, onboardingSteps.length, settings, storage, word]);
+  }, [loading, onboardingSteps.length, progress.outcome, settings, storage, word]);
 
   useEffect(() => {
     if (archiveDate) return;
@@ -262,6 +267,7 @@ export function BackwordPage() {
       track(gameStarted("backword"));
     }
     if (updated.outcome !== "inProgress") {
+      setShowInstructionsTip(false);
       track(gameCompleted("backword", updated.outcome, {
         mode: settings.mode,
         releaseDay: isCompletedOnReleaseDate(updated.date, updated.completedAt),

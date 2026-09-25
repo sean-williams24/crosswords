@@ -165,6 +165,23 @@ struct BackwordViewModelTests {
         }
     }
 
+    @Test("Instructions tip is not eligible after game completion")
+    func instructionsTipHidesAfterGameCompletion() {
+        let word = makeWord()
+        let settings = makeSettings()
+        var progress = BackwordProgress(date: word.date)
+        progress.wonFlag = true
+        progress.completedAt = Date()
+
+        let vm = BackwordViewModel(
+            word: word,
+            progress: progress,
+            settings: settings
+        )
+
+        #expect(!vm.shouldShowInstructionsTip)
+    }
+
     @Test("Onboarding deck starts with the prompt and ends with the stuck hint")
     func onboardingDeckUsesPromptAndStuckHint() {
         #expect(BackwordOnboardingStep.initialGuess.text(for: .easy) == "Guess the 6 letter word...")

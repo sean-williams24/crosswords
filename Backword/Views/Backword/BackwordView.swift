@@ -113,7 +113,7 @@ struct BackwordView: View {
         .onAppear {
             ratingService.refresh()
             showAutomaticInstructionsIfNeeded()
-            showInstructionsTipIfNeeded()
+            updateInstructionsTipPresentation()
             viewModel.startExplainerCountdown()
         }
         .onDisappear {
@@ -125,6 +125,8 @@ struct BackwordView: View {
         .animation(.easeInOut(duration: 0.3), value: viewModel.isDetailedExplainerVisible)
         .animation(.spring(response: 0.4, dampingFraction: 0.82), value: viewModel.onboardingSteps)
         .onChange(of: viewModel.isComplete) { _, complete in
+            updateInstructionsTipPresentation()
+
             if complete {
                 ratingService.refresh()
                 statsService.refresh()
@@ -196,9 +198,8 @@ struct BackwordView: View {
         instructionsPresentation = nil
     }
 
-    private func showInstructionsTipIfNeeded() {
-        guard viewModel.shouldShowInstructionsTip else { return }
-        BackwordInstructionsTip.actionCompleted = true
+    private func updateInstructionsTipPresentation() {
+        BackwordInstructionsTip.actionCompleted = viewModel.shouldShowInstructionsTip
     }
 
     @ViewBuilder
