@@ -17,7 +17,7 @@ struct AnagramCard: View {
             VStack(spacing: 0) {
                 VStack(spacing: 12) {
                     Text("ANAGRAM")
-                        .font(AppFont.clueLabel(appLayout.isiPad ? 18 : 14))
+                        .font(AppFont.clueLabel(appLayout.isiPad ? 28 : 24))
                         .tracking(3)
 
                     Text(isReview ? "Sample puzzle" : "\(puzzle.length) letters")

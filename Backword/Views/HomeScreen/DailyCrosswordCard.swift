@@ -51,7 +51,7 @@ struct DailyCrosswordCard: View {
         VStack(spacing: 0) {
             VStack(spacing: 12) {
                 Text("QUICK CROSSWORD")
-                    .font(AppFont.clueLabel(isIpad ? 15 : 11))
+                    .font(AppFont.clueLabel(isIpad ? 16 : 12))
                     .foregroundColor(.dailyCardTitle)
                     .tracking(3)
                     .multilineTextAlignment(.center)
