@@ -19,6 +19,13 @@ type ShareCardFontSources = {
   semiBold?: string;
 };
 
+export const resultShareActionLabels = {
+  shareImage: "Share image",
+  copyResultsCard: "Copy results card",
+  downloadResultsCard: "Download results card",
+  copyResultsText: "Copy results text"
+} as const;
+
 /** A 1080px source stays sharp when social apps downsize it for display. */
 const shareCardPixelSize = 1080;
 export const shareCardRasterPixelSize = shareCardPixelSize;
@@ -237,7 +244,7 @@ export function PuzzleResultShare({
   const isChrome = isChromeBrowser(navigator.userAgent);
   const isSafari = isSafariBrowser(navigator.userAgent);
   // Chrome and Safari use our in-page menu. Keep that menu available while the
-  // PNG is prepared so Copy result remains usable; its image actions appear as
+  // PNG is prepared so Copy results text remains usable; its image actions appear as
   // soon as the card is ready.
   const isCardReady = isChrome || isSafari || !navigator.share || embeddedCardFile !== null;
 
@@ -336,8 +343,8 @@ export function PuzzleResultShare({
       {compact ? isCardReady ? <><svg aria-hidden="true" className="puzzle-result-share__icon" viewBox="0 0 24 24"><path d="M12 15V3m0 0 4 4m-4-4L8 7M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8" /></svg>Share</> : "Preparing…" : "Share result"}
     </button>
     {showShareActions ? <div aria-label="Share result options" className="puzzle-result-share__fallback" role="dialog">
-      {currentCardFile() ? <><button onClick={() => void shareCard()} type="button">Share image</button><button onClick={() => void copyCardImage()} type="button">Copy image</button><button onClick={downloadCard} type="button">Download card</button></> : <p>Image card is still preparing.</p>}
-      <button onClick={() => void copyResultText()} type="button">Copy result</button>
+      {currentCardFile() ? <><button onClick={() => void shareCard()} type="button">{resultShareActionLabels.shareImage}</button><button onClick={() => void copyCardImage()} type="button">{resultShareActionLabels.copyResultsCard}</button><button onClick={downloadCard} type="button">{resultShareActionLabels.downloadResultsCard}</button></> : <p>Image card is still preparing.</p>}
+      <button onClick={() => void copyResultText()} type="button">{resultShareActionLabels.copyResultsText}</button>
     </div> : null}
     <span aria-live="polite" className="bw-share-status">{status}</span>
   </section>;

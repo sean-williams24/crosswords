@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { isChromeBrowser, isSafariBrowser, PuzzleResultShare, shareCardFormat, shareCardRasterPixelSize, sharePuzzleResult } from "./PuzzleResultShare";
+import { isChromeBrowser, isSafariBrowser, PuzzleResultShare, resultShareActionLabels, shareCardFormat, shareCardRasterPixelSize, sharePuzzleResult } from "./PuzzleResultShare";
 import type { PuzzleShareResult } from "./puzzleResult";
 
 const analytics = vi.hoisted(() => ({ track: vi.fn() }));
@@ -25,6 +25,15 @@ describe("result sharing", () => {
   });
 
   afterEach(() => vi.unstubAllGlobals());
+
+  it("uses descriptive labels for result-card actions", () => {
+    expect(resultShareActionLabels).toEqual({
+      shareImage: "Share image",
+      copyResultsCard: "Copy results card",
+      downloadResultsCard: "Download results card",
+      copyResultsText: "Copy results text"
+    });
+  });
 
   it("uses the logo rather than decorative tiles in the in-app card preview", () => {
     const { container } = render(<PuzzleResultShare result={result} />);
@@ -70,7 +79,7 @@ describe("result sharing", () => {
       render(<PuzzleResultShare compact result={result} showPreview={false} />);
       await user.click(screen.getByRole("button", { name: "Share result" }));
       expect(screen.getByRole("dialog", { name: "Share result options" })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Copy result" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Copy results text" })).toBeInTheDocument();
       expect(analytics.track).toHaveBeenCalledWith({
         name: "result_share_opened",
         parameters: { game: "backword", platform: "web", surface: "share_options" }
@@ -97,7 +106,7 @@ describe("result sharing", () => {
       expect(container.querySelector(".puzzle-result-share__button--compact")).toBeEnabled();
       await user.click(screen.getByRole("button", { name: "Share result" }));
       expect(screen.getByRole("dialog", { name: "Share result options" })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Copy result" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Copy results text" })).toBeInTheDocument();
     } finally {
       if (originalUserAgent) Object.defineProperty(navigator, "userAgent", originalUserAgent);
       else delete (navigator as { userAgent?: string }).userAgent;
