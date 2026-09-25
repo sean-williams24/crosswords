@@ -773,6 +773,12 @@ after completion. The streak counts consecutive on-time solved releases and
 continues from yesterday until today's attempt is completed; a give-up or late
 solve today ends it. The DEBUG review puzzle shows a review marker and sample
 score, but never contributes to a streak or rating.
+The Anagram Stats sheet follows the other games' rating bar, streak/solved/time
+summary, and 14-day Date/Score/Time table while retaining Anagram colors.
+The summary counts original-release-day solves; its average time uses solves
+within the displayed 14 days. Archive and DEBUG review attempts contribute
+neither scores nor streaks. A give-up appears in its release-day row with zero
+points, and unplayed days remain visible as zero rows.
 The single hint clears placements, locks one correct tile, and allows any
 approved answer compatible with that lock.
 

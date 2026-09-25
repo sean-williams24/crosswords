@@ -160,6 +160,11 @@ struct AppLayout {
     static let anagramBottomDockInset: CGFloat = 40
     static let anagramTrayPreferredTileSize: CGFloat = 52
     static let anagramTraySizingColumns = 5
+    static let statsHistoryRowInset: CGFloat = 14
+    static let statsHistoryScoreColumnWidth: CGFloat = 50
+    static let statsHistoryAccessibleScoreColumnWidth: CGFloat = 60
+    static let statsHistoryTimeColumnWidth: CGFloat = 72
+    static let statsHistoryScoreChipSize: CGFloat = 24
     static let dailyCompletionGridWidth: CGFloat = 238
     static let weeklyCompletionGridWidth: CGFloat = 286
     static let completionGridSpacing: CGFloat = 2

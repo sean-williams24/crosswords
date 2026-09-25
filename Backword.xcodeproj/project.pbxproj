@@ -177,6 +177,9 @@
 		A0A000000000000000000112 /* AnagramClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000012 /* AnagramClientTests.swift */; };
 		A0A000000000000000000113 /* AnagramTrayLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000013 /* AnagramTrayLayout.swift */; };
 		A0A000000000000000000114 /* AnagramTrayLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000014 /* AnagramTrayLayoutTests.swift */; };
+		A0A000000000000000000115 /* AnagramStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000015 /* AnagramStatsHistory.swift */; };
+		A0A000000000000000000116 /* AnagramStatsHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000016 /* AnagramStatsHistoryView.swift */; };
+		A0A000000000000000000117 /* AnagramStatsHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000017 /* AnagramStatsHistoryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -358,6 +361,9 @@
 		A0A000000000000000000012 /* AnagramClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramClientTests.swift; sourceTree = "<group>"; };
 		A0A000000000000000000013 /* AnagramTrayLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramTrayLayout.swift; sourceTree = "<group>"; };
 		A0A000000000000000000014 /* AnagramTrayLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramTrayLayoutTests.swift; sourceTree = "<group>"; };
+		A0A000000000000000000015 /* AnagramStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramStatsHistory.swift; sourceTree = "<group>"; };
+		A0A000000000000000000016 /* AnagramStatsHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramStatsHistoryView.swift; sourceTree = "<group>"; };
+		A0A000000000000000000017 /* AnagramStatsHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramStatsHistoryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -413,6 +419,7 @@
 			children = (
 				A0A000000000000000000012 /* AnagramClientTests.swift */,
 				A0A000000000000000000009 /* AnagramProgressTests.swift */,
+				A0A000000000000000000017 /* AnagramStatsHistoryTests.swift */,
 				A0A000000000000000000014 /* AnagramTrayLayoutTests.swift */,
 				09FF00003011000000000001 /* PuzzleResultShareTests.swift */,
 				0F0F00043010000000000001 /* GoogleSignInButtonTests.swift */,
@@ -455,6 +462,7 @@
 			isa = PBXGroup;
 			children = (
 				A0A000000000000000000002 /* AnagramProgress.swift */,
+				A0A000000000000000000015 /* AnagramStatsHistory.swift */,
 				A0A000000000000000000001 /* AnagramPuzzle.swift */,
 				04ADAE922FFD100000000001 /* AdExplainerPresentationPolicy.swift */,
 				B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */,
@@ -728,6 +736,7 @@
 			children = (
 				A0A000000000000000000011 /* AnagramArchiveView.swift */,
 				A0A000000000000000000010 /* AnagramStatsView.swift */,
+				A0A000000000000000000016 /* AnagramStatsHistoryView.swift */,
 				A0A000000000000000000005 /* AnagramActionButton.swift */,
 				A0A000000000000000000006 /* AnagramLetterGrid.swift */,
 				A0A000000000000000000013 /* AnagramTrayLayout.swift */,
@@ -850,6 +859,7 @@
 				A0A000000000000000000112 /* AnagramClientTests.swift in Sources */,
 				A0A000000000000000000109 /* AnagramProgressTests.swift in Sources */,
 				A0A000000000000000000114 /* AnagramTrayLayoutTests.swift in Sources */,
+				A0A000000000000000000117 /* AnagramStatsHistoryTests.swift in Sources */,
 				0F0F00033010000000000001 /* GoogleSignInButtonTests.swift in Sources */,
 				0F0F00073010000000000001 /* GoogleNativeSignInServiceTests.swift in Sources */,
 				07AB00043008000000000001 /* BackwordRulesUpdateNoticeTests.swift in Sources */,
@@ -892,6 +902,7 @@
 			files = (
 				A0A000000000000000000111 /* AnagramArchiveView.swift in Sources */,
 				A0A000000000000000000110 /* AnagramStatsView.swift in Sources */,
+				A0A000000000000000000116 /* AnagramStatsHistoryView.swift in Sources */,
 				A0A000000000000000000108 /* AnagramCard.swift in Sources */,
 				A0A000000000000000000107 /* AnagramView.swift in Sources */,
 				A0A000000000000000000106 /* AnagramLetterGrid.swift in Sources */,
@@ -900,6 +911,7 @@
 				A0A000000000000000000104 /* AnagramViewModel.swift in Sources */,
 				A0A000000000000000000103 /* AnagramService.swift in Sources */,
 				A0A000000000000000000102 /* AnagramProgress.swift in Sources */,
+				A0A000000000000000000115 /* AnagramStatsHistory.swift in Sources */,
 				A0A000000000000000000101 /* AnagramPuzzle.swift in Sources */,
 				3C16166A681E34C0C10A14A3 /* AdLogger.swift in Sources */,
 				05AD00022FFD000000000001 /* AdConsentService.swift in Sources */,
