@@ -1,5 +1,6 @@
 import { BACKWORD_RULES_VERSION, emptyProgress } from "./engine";
-import type { BackwordProgress, BackwordSettings, BackwordWord } from "./types";
+import { BACKWORD_ONBOARDING_STEPS } from "./onboarding";
+import type { BackwordOnboardingStep, BackwordProgress, BackwordSettings, BackwordWord } from "./types";
 
 const SETTINGS_KEY = "backword:web:settings:v1";
 const PROGRESS_KEY = "backword:web:progress:v1";
@@ -9,7 +10,9 @@ const defaultSettings: BackwordSettings = {
   schemaVersion: 1,
   mode: "easy",
   hasSeenOnboarding: false,
-  lastSeenRulesVersion: 0
+  lastSeenRulesVersion: 0,
+  dismissedOnboardingSteps: [],
+  hasSeenInstructionsTip: false
 };
 
 function readRecord<T>(storage: Storage, key: string): Record<string, T> {
@@ -45,6 +48,10 @@ function normalizeProgress(progress: BackwordProgress): BackwordProgress {
     ...progress,
     completedAt: progress.completedAt ?? null
   };
+}
+
+function isOnboardingStep(value: unknown): value is BackwordOnboardingStep {
+  return typeof value === "string" && BACKWORD_ONBOARDING_STEPS.includes(value as BackwordOnboardingStep);
 }
 
 function isWord(value: unknown): value is BackwordWord {
@@ -87,11 +94,18 @@ export function createBackwordStorage(
           value.schemaVersion !== 1 ||
           (value.mode !== "normal" && value.mode !== "easy") ||
           typeof value.hasSeenOnboarding !== "boolean" ||
-          typeof value.lastSeenRulesVersion !== "number"
+          typeof value.lastSeenRulesVersion !== "number" ||
+          (value.dismissedOnboardingSteps !== undefined &&
+            (!Array.isArray(value.dismissedOnboardingSteps) || !value.dismissedOnboardingSteps.every(isOnboardingStep))) ||
+          (value.hasSeenInstructionsTip !== undefined && typeof value.hasSeenInstructionsTip !== "boolean")
         ) {
           return { ...defaultSettings };
         }
-        return value as BackwordSettings;
+        return {
+          ...value,
+          dismissedOnboardingSteps: value.dismissedOnboardingSteps ?? [],
+          hasSeenInstructionsTip: value.hasSeenInstructionsTip ?? false
+        } as BackwordSettings;
       } catch {
         return { ...defaultSettings };
       }
@@ -105,8 +119,30 @@ export function createBackwordStorage(
       const updated = {
         ...settings,
         hasSeenOnboarding: true,
-        lastSeenRulesVersion: BACKWORD_RULES_VERSION
+        lastSeenRulesVersion: BACKWORD_RULES_VERSION,
+        dismissedOnboardingSteps: [...BACKWORD_ONBOARDING_STEPS]
       };
+      this.saveSettings(updated);
+      return updated;
+    },
+
+    dismissOnboardingStep(settings: BackwordSettings, step: BackwordOnboardingStep): BackwordSettings {
+      const dismissedOnboardingSteps = settings.dismissedOnboardingSteps.includes(step)
+        ? settings.dismissedOnboardingSteps
+        : [...settings.dismissedOnboardingSteps, step];
+      const hasSeenOnboarding = BACKWORD_ONBOARDING_STEPS.every((item) => dismissedOnboardingSteps.includes(item));
+      const updated = {
+        ...settings,
+        dismissedOnboardingSteps,
+        hasSeenOnboarding,
+        lastSeenRulesVersion: hasSeenOnboarding ? BACKWORD_RULES_VERSION : settings.lastSeenRulesVersion
+      };
+      this.saveSettings(updated);
+      return updated;
+    },
+
+    markInstructionsTipSeen(settings: BackwordSettings): BackwordSettings {
+      const updated = { ...settings, hasSeenInstructionsTip: true };
       this.saveSettings(updated);
       return updated;
     },

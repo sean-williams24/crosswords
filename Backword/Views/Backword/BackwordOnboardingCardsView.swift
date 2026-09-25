@@ -26,9 +26,7 @@ struct BackwordOnboardingCardsView: View {
                             insertion: .move(edge: .bottom)
                                 .combined(with: .opacity)
                                 .combined(with: .scale(scale: 0.96)),
-                            removal: .move(edge: .leading)
-                                .combined(with: .opacity)
-                                .combined(with: .scale(scale: 0.96))
+                            removal: .backwordOnboardingDissolve
                         )
                     )
                     .offset(y: CGFloat(index) * cardOffset)
@@ -65,6 +63,28 @@ struct BackwordOnboardingCardsView: View {
 
     private func cardScale(for index: Int) -> CGFloat {
         max(0.92, 1 - CGFloat(index) * 0.02)
+    }
+}
+
+private extension AnyTransition {
+    static var backwordOnboardingDissolve: AnyTransition {
+        .modifier(
+            active: BackwordOnboardingDissolveModifier(progress: 1),
+            identity: BackwordOnboardingDissolveModifier(progress: 0)
+        )
+    }
+}
+
+private struct BackwordOnboardingDissolveModifier: ViewModifier {
+    let progress: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .compositingGroup()
+            .opacity(Double(1 - progress))
+            .scaleEffect(1 - (progress * 0.08))
+            .saturation(Double(1 - (progress * 0.65)))
+            .blur(radius: progress * 6)
     }
 }
 

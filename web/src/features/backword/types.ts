@@ -2,6 +2,13 @@ export type BackwordMode = "normal" | "easy";
 
 export type BackwordOutcome = "inProgress" | "won" | "failed";
 
+export type BackwordOnboardingStep =
+  | "guessWord"
+  | "connectedLetters"
+  | "freeReveals"
+  | "scoring"
+  | "stuckHint";
+
 export type BackwordWord = {
   id: string;
   puzzleNumber: number;
@@ -25,6 +32,8 @@ export type BackwordSettings = {
   mode: BackwordMode;
   hasSeenOnboarding: boolean;
   lastSeenRulesVersion: number;
+  dismissedOnboardingSteps: BackwordOnboardingStep[];
+  hasSeenInstructionsTip: boolean;
 };
 
 export type BackwordHistoryOutcome =

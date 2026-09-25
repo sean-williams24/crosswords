@@ -4,6 +4,7 @@ import { BackwordCompletion } from "../features/backword/components/BackwordComp
 import { BackwordInstructions } from "../features/backword/components/BackwordInstructions";
 import { BackwordKeyboard } from "../features/backword/components/BackwordKeyboard";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
+import { BackwordOnboardingCards } from "../features/backword/components/BackwordOnboardingCards";
 import { BackwordStats } from "../features/backword/components/BackwordStats";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { Footer } from "../components/Footer";
@@ -26,8 +27,10 @@ import {
   createBackwordRepository
 } from "../features/backword/repository";
 import { createBackwordStorage } from "../features/backword/storage";
+import { pendingBackwordOnboardingSteps } from "../features/backword/onboarding";
 import type {
   BackwordMode,
+  BackwordOnboardingStep,
   BackwordProgress,
   BackwordSettings,
   BackwordWord
@@ -69,6 +72,9 @@ export function BackwordPage() {
   const [invalidWordMessage, setInvalidWordMessage] = useState("");
   const [showDetailedExplainer, setShowDetailedExplainer] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showInstructionsTip, setShowInstructionsTip] = useState(false);
+
+  const onboardingSteps = useMemo(() => pendingBackwordOnboardingSteps(settings), [settings]);
 
   const loadWord = useCallback(async (requestedDate: string) => {
     setLoading(true);
@@ -161,19 +167,28 @@ export function BackwordPage() {
   }, [date, storage, user?.id]);
 
   useEffect(() => {
-    if (!settings.hasSeenOnboarding || settings.lastSeenRulesVersion < BACKWORD_RULES_VERSION) {
+    if (settings.hasSeenOnboarding && settings.lastSeenRulesVersion < BACKWORD_RULES_VERSION) {
       setSheet("instructions");
     }
   }, [settings.hasSeenOnboarding, settings.lastSeenRulesVersion]);
 
   useEffect(() => {
-    if (progress.guesses.length > 0) {
+    if (progress.guesses.length > 0 || onboardingSteps.length > 0) {
       setShowDetailedExplainer(false);
       return;
     }
     const timer = window.setTimeout(() => setShowDetailedExplainer(true), 30_000);
     return () => window.clearTimeout(timer);
-  }, [progress.guesses.length]);
+  }, [onboardingSteps.length, progress.guesses.length]);
+
+  useEffect(() => {
+    if (loading || !word || onboardingSteps.length === 0 || settings.hasSeenInstructionsTip) {
+      if (onboardingSteps.length === 0) setShowInstructionsTip(false);
+      return;
+    }
+    setShowInstructionsTip(true);
+    setSettings(storage.markInstructionsTipSeen(settings));
+  }, [loading, onboardingSteps.length, settings, storage, word]);
 
   useEffect(() => {
     if (archiveDate) return;
@@ -278,9 +293,14 @@ export function BackwordPage() {
   }, [deleteLetter, enterLetter, handleSubmit, isMenuOpen, sheet]);
 
   function closeInstructions() {
-    const updated = storage.markInstructionsSeen(settings);
-    setSettings(updated);
+    if (settings.hasSeenOnboarding) {
+      setSettings(storage.markInstructionsSeen(settings));
+    }
     setSheet(null);
+  }
+
+  function dismissOnboardingStep(step: BackwordOnboardingStep) {
+    setSettings(storage.dismissOnboardingStep(settings, step));
   }
 
   function changeMode(mode: BackwordMode) {
@@ -311,14 +331,26 @@ export function BackwordPage() {
             >
               🧠
             </button>
-            <button
-              aria-label="How to Play"
-              className="bw-icon-button bw-info-icon"
-              onClick={() => setSheet("instructions")}
-              type="button"
-            >
-              ⓘ
-            </button>
+            <span className="bw-info-tip-anchor">
+              <button
+                aria-describedby={showInstructionsTip ? "bw-onboarding-info-tip" : undefined}
+                aria-label="How to Play"
+                className="bw-icon-button bw-info-icon"
+                onClick={() => {
+                  setShowInstructionsTip(false);
+                  setSheet("instructions");
+                }}
+                type="button"
+              >
+                ⓘ
+              </button>
+              {showInstructionsTip ? (
+                <span id="bw-onboarding-info-tip" role="tooltip">
+                  <strong>How to play</strong>
+                  <span>Tap the info icon at any time to view game information and toggle difficulty</span>
+                </span>
+              ) : null}
+            </span>
           </nav>
         </header>
 
@@ -380,12 +412,19 @@ export function BackwordPage() {
                     />
                   ))}
                 </section>
-              ) : (
+              ) : onboardingSteps.length === 0 ? (
                 <div className="bw-explainer-card">
                   {showDetailedExplainer ? <span aria-hidden="true">💡</span> : null}
                   <p>{showDetailedExplainer ? "If you’re stuck, guess any word to reveal letters" : "Guess the 6 letter word..."}</p>
                 </div>
-              )}
+              ) : null}
+              {onboardingSteps.length ? (
+                <BackwordOnboardingCards
+                  mode={settings.mode}
+                  onDismiss={dismissOnboardingStep}
+                  steps={onboardingSteps}
+                />
+              ) : null}
               {shareResult && sheet === null ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
             </main>
 

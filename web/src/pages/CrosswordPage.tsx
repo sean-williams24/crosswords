@@ -61,6 +61,7 @@ export function CrosswordPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [clueDragStart, setClueDragStart] = useState<number | null>(null);
   const [showHint, setShowHint] = useState(false);
+  const [showInstructionsTip, setShowInstructionsTip] = useState(false);
   const skipClueToggle = useRef(false);
 
   const loadPuzzle = useCallback(async (requestedDate: string) => {
@@ -165,10 +166,12 @@ export function CrosswordPage() {
   }, [archiveDate, date]);
 
   useEffect(() => {
-    if (!loading && puzzle && !settings.hasSeenOnboarding) {
-      setSheet("instructions");
-    }
-  }, [loading, puzzle, settings.hasSeenOnboarding]);
+    if (loading || !puzzle || archiveDate || settings.hasSeenOnboarding) return;
+    setShowInstructionsTip(true);
+    const updated = { ...settings, hasSeenOnboarding: true };
+    storage.saveSettings(updated);
+    setSettings(updated);
+  }, [archiveDate, loading, puzzle, settings, storage]);
 
   const currentClue = puzzle && selection ? activeClue(puzzle, selection) : null;
   const stats = useMemo(() => deriveCrosswordStats(storage.loadAllProgress()), [progress, storage]);
@@ -301,7 +304,26 @@ export function CrosswordPage() {
               <span className="cw-clues-action__label">Clues</span>
             </button>
             <button aria-label="Crossword stats" className="bw-icon-button" onClick={() => setSheet("stats")} type="button">🧠</button>
-            <button aria-label="How to play" className="bw-icon-button bw-info-icon" onClick={() => setSheet("instructions")} type="button">ⓘ</button>
+            <span className="bw-info-tip-anchor">
+              <button
+                aria-describedby={showInstructionsTip ? "cw-onboarding-info-tip" : undefined}
+                aria-label="How to play"
+                className="bw-icon-button bw-info-icon"
+                onClick={() => {
+                  setShowInstructionsTip(false);
+                  setSheet("instructions");
+                }}
+                type="button"
+              >
+                ⓘ
+              </button>
+              {showInstructionsTip ? (
+                <span id="cw-onboarding-info-tip" role="tooltip">
+                  <strong>How to play</strong>
+                  <span>Tap the info icon at any time to view game instructions</span>
+                </span>
+              ) : null}
+            </span>
           </nav>
         </header>
         {loading ? <StatusPanel title="Loading today’s crossword…" /> : null}

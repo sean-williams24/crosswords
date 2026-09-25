@@ -47,6 +47,9 @@ describe("CrosswordPage", () => {
     expect(cluesAction).toHaveClass("cw-clues-action");
     expect(cluesAction).toHaveTextContent("Clues");
     expect(statsAction).toHaveAccessibleName("Crossword stats");
+    expect(await screen.findByRole("tooltip")).toHaveTextContent("Tap the info icon at any time to view game instructions");
+    expect(screen.queryByRole("dialog", { name: "How to Play" })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "How to play" }));
     expect(await screen.findByRole("dialog", { name: "How to Play" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Close How to Play" }));
     expect(await screen.findByRole("grid", { name: "Crossword grid" })).toBeInTheDocument();

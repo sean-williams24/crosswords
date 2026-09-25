@@ -119,7 +119,7 @@ struct PuzzleView: View {
         .onAppear {
             ratingService.refresh()
             recordLiveScore()
-            showInstructionsOnFirstLaunch()
+            showInstructionsTipOnFirstLaunch()
         }
         .sheet(isPresented: $viewModel.showClueList) {
             ClueListView(viewModel: viewModel)
@@ -152,7 +152,6 @@ struct PuzzleView: View {
         .sheet(
             isPresented: $showInstructions,
             onDismiss: {
-                viewModel.markDailyCrosswordOnboardingSeen()
                 showPaywallAfterInstructionsIfNeeded()
             }
         ) {
@@ -175,6 +174,7 @@ struct PuzzleView: View {
             recordLiveScore()
         }
         .onDisappear {
+            DailyCrosswordInstructionsTip.actionCompleted = false
             // Ensure metadata is saved for rating backfill
             if viewModel.progress.puzzleDate == nil {
                 viewModel.progress.puzzleDate = viewModel.puzzle.date
@@ -197,9 +197,10 @@ struct PuzzleView: View {
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
-    private func showInstructionsOnFirstLaunch() {
+    private func showInstructionsTipOnFirstLaunch() {
         guard viewModel.shouldShowDailyCrosswordOnboarding else { return }
-        showInstructions = true
+        DailyCrosswordInstructionsTip.actionCompleted = true
+        viewModel.markDailyCrosswordOnboardingSeen()
     }
 
     private var ratingCategory: RatingGameCategory {
@@ -449,6 +450,7 @@ struct PuzzleView: View {
                     .foregroundColor(.appTextPrimary)
             }
             .accessibilityLabel("How to play")
+            .popoverTip(DailyCrosswordInstructionsTip())
         }
     }
 

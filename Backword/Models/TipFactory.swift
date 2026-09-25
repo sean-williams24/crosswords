@@ -72,3 +72,31 @@ struct BackwordInstructionsTip: Tip {
         ]
     }
 }
+
+struct DailyCrosswordInstructionsTip: Tip {
+    var title: Text {
+        Text("How to play")
+            .font(AppFont.caption(20))
+    }
+
+    var message: Text? {
+        Text("Tap the info icon at any time to view game instructions")
+            .font(AppFont.caption(13))
+    }
+
+    @Parameter
+    static var actionCompleted: Bool = false
+
+    var rules: [Rule] {
+        [
+            #Rule(Self.$actionCompleted) { $0 == true }
+        ]
+    }
+
+    var options: [TipOption] {
+        [
+            Tips.MaxDisplayCount(1),
+            Tips.IgnoresDisplayFrequency(true)
+        ]
+    }
+}

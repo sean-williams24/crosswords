@@ -251,10 +251,15 @@ acknowledged.
 The one-time info-button TipKit popover is triggered as soon as that first-launch
 deck appears and ignores TipKit's global display-frequency throttle, so its
 navigation hint cannot be delayed by another tip.
+The web game uses the same independently persisted deck and a one-time native
+tooltip on its info button; its full instructions sheet remains available only
+on request for new players, while rule updates still open it automatically.
 Once onboarding is complete, the normal timed guess explainer returns on every
 unstarted game until its first guess is submitted. This keeps the game
 immediately playable while ensuring an interrupted first visit resumes at the
 appropriate instruction.
+On either platform, dismissing the front card uses an in-place dissolve rather
+than directional movement, so the next card can rise cleanly from the deck.
 
 ## Spoiler-Safe Result Sharing
 
@@ -510,8 +515,10 @@ weeks and five prior games. Weekly archives and answer reveal remain iOS-only
 on the web.
 
 Quick and Pro Crossword expose the same info action and shared How to Play
-sheet/modal on both platforms. Daily onboarding still opens it automatically
-only for the daily game; the Pro Crossword presents it on demand.
+sheet/modal on both platforms. On a first home daily-game launch, the sheet
+does not interrupt play: iOS presents a one-time TipKit popover and the web
+shows an equivalent one-time tooltip on the info button. The Pro Crossword
+presents instructions on demand.
 
 The web Backword and Daily Crossword stats surfaces use the iOS semantic
 palette: solid Accent score chips, Correct green for perfect scores, muted

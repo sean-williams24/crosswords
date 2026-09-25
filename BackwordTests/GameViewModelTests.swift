@@ -333,8 +333,8 @@ struct GameViewModelTests {
         #expect(!vm.canGiveUp(isProUser: false, todayString: "2026-06-18"))
     }
 
-    @Test("Home daily crossword shows onboarding before it has been seen")
-    func homeDailyCrosswordShowsOnboardingBeforeSeen() async throws {
+    @Test("Home daily crossword shows the instructions tip before it has been seen")
+    func homeDailyCrosswordShowsInstructionsTipBeforeSeen() async throws {
         let originalOnboardingSetting = AppSettings.shared.hasSeenDailyCrosswordOnboarding
         let puzzle = makePuzzle()
         UserProgress.delete(puzzleId: puzzle.id)
@@ -349,8 +349,8 @@ struct GameViewModelTests {
         #expect(vm.shouldShowDailyCrosswordOnboarding)
     }
 
-    @Test("Home daily crossword does not show onboarding after it has been marked seen")
-    func homeDailyCrosswordDoesNotShowOnboardingAfterSeen() async throws {
+    @Test("Home daily crossword does not show the instructions tip after it has been marked seen")
+    func homeDailyCrosswordDoesNotShowInstructionsTipAfterSeen() async throws {
         let originalOnboardingSetting = AppSettings.shared.hasSeenDailyCrosswordOnboarding
         let puzzle = makePuzzle()
         UserProgress.delete(puzzleId: puzzle.id)

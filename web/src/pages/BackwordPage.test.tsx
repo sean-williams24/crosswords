@@ -36,6 +36,14 @@ function renderGame() {
   );
 }
 
+async function dismissOnboarding(user: ReturnType<typeof userEvent.setup>, remainingSteps = 5) {
+  for (let index = 0; index < remainingSteps; index += 1) {
+    const button = await screen.findByRole("button", { name: /^OK:/ });
+    await user.click(button);
+    await waitFor(() => expect(screen.queryByRole("button", { name: button.getAttribute("aria-label") ?? "" })).not.toBeInTheDocument());
+  }
+}
+
 describe("Backword browser game", () => {
   beforeEach(() => {
     localStorage.clear();
@@ -102,7 +110,8 @@ describe("Backword browser game", () => {
     const { container } = renderGame();
 
     expect(await screen.findByText("FORTRESS")).toHaveClass("bw-clue");
-    expect(container.querySelector(".bw-explainer-card")).toBeInTheDocument();
+    expect(container.querySelector(".bw-onboarding-deck")).toBeInTheDocument();
+    expect(container.querySelector(".bw-explainer-card")).not.toBeInTheDocument();
     await screen.findByRole("group", { name: "Backword keyboard" });
     const controls = container.querySelector(".bw-game-controls");
     expect(controls?.querySelector(".bw-game-score")).toHaveClass("bw-game-score--keyboard-width");
@@ -128,11 +137,39 @@ describe("Backword browser game", () => {
     expect(styles).toMatch(/@media \(min-width: 700px\)\s*\{[\s\S]*?\.puzzle-result-share--compact\s*\{[^}]*position:\s*fixed;[^}]*top:\s*calc\(max\(8px, env\(safe-area-inset-top\)\) \+ 54px\);[^}]*bottom:\s*auto;/);
   });
 
-  it("shows onboarding, persists the mode, and clears partial input when mode changes", async () => {
+  it("shows a persisted staggered onboarding deck, then restores the normal explainer", async () => {
+    const user = userEvent.setup();
+    const first = renderGame();
+
+    expect(await screen.findByRole("region", { name: "How to play Backword" })).toBeInTheDocument();
+    expect(screen.getAllByText("Guess the 6 letter word...")).toHaveLength(1);
+    expect(screen.getByRole("button", { name: /^OK: Guess the 6 letter word/ })).toBeInTheDocument();
+    expect(await screen.findByRole("tooltip")).toHaveTextContent("Tap the info icon at any time to view game information and toggle difficulty");
+    expect(document.querySelectorAll(".bw-onboarding-card")).toHaveLength(5);
+    expect(document.querySelectorAll(".bw-onboarding-card[aria-hidden='true']")).toHaveLength(4);
+
+    const firstButton = screen.getByRole("button", { name: /^OK: Guess the 6 letter word/ });
+    await user.click(firstButton);
+    await waitFor(() => expect(firstButton).not.toBeInTheDocument());
+    expect(screen.getByRole("button", { name: /^OK: Correctly placed letters/ })).toBeInTheDocument();
+    first.unmount();
+
+    renderGame();
+    expect(await screen.findByRole("button", { name: /^OK: Correctly placed letters/ })).toBeInTheDocument();
+    await dismissOnboarding(user, 4);
+    expect(await screen.findByText("Guess the 6 letter word...")).toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "How to play Backword" })).not.toBeInTheDocument();
+  });
+
+  it("keeps the full instructions sheet manual during inline onboarding and persists mode changes", async () => {
     const user = userEvent.setup();
     const { container } = renderGame();
 
+    expect(await screen.findByRole("region", { name: "How to play Backword" })).toBeInTheDocument();
+    expect(screen.queryByRole("dialog", { name: "How to Play" })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "How to Play" }));
     expect(await screen.findByRole("dialog", { name: "How to Play" })).toBeInTheDocument();
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
     expect(screen.getByRole("switch", { name: "Hard Mode" })).not.toBeChecked();
     await user.click(screen.getByRole("button", { name: "Close How to Play" }));
     expect(await screen.findByText("FORTRESS")).toBeInTheDocument();
@@ -157,7 +194,6 @@ describe("Backword browser game", () => {
       value: { writeText }
     });
     renderGame();
-    await user.click(await screen.findByRole("button", { name: "Close How to Play" }));
 
     wordValidator.mockReturnValue(false);
     await user.keyboard("CASTLE{Enter}");
@@ -186,13 +222,16 @@ describe("Backword browser game", () => {
   it("restores an unfinished game after remounting", async () => {
     const user = userEvent.setup();
     const first = renderGame();
-    await user.click(await screen.findByRole("button", { name: "Close How to Play" }));
     await user.keyboard("XXXXXX{Enter}");
-    expect(await screen.findByText("Previous Guesses")).toBeInTheDocument();
+    const previousGuesses = await screen.findByText("Previous Guesses");
+    const onboardingDeck = document.querySelector(".bw-onboarding-deck");
+    expect(onboardingDeck).toBeInTheDocument();
+    expect(previousGuesses.compareDocumentPosition(onboardingDeck as Node) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     first.unmount();
 
     renderGame();
     await waitFor(() => expect(screen.getByLabelText("XXXXXX")).toBeInTheDocument());
+    expect(document.querySelector(".bw-onboarding-deck")).toBeInTheDocument();
     expect(screen.queryByRole("dialog", { name: "How to Play" })).not.toBeInTheDocument();
   });
 
@@ -200,7 +239,6 @@ describe("Backword browser game", () => {
     const user = userEvent.setup();
     wordValidator.mockReturnValue(false);
     renderGame();
-    await user.click(await screen.findByRole("button", { name: "Close How to Play" }));
 
     await user.keyboard("XXXXXX{Enter}");
 

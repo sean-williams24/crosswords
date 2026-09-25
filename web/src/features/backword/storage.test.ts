@@ -10,7 +10,9 @@ describe("Backword browser storage", () => {
       schemaVersion: 1,
       mode: "easy",
       hasSeenOnboarding: false,
-      lastSeenRulesVersion: 0
+      lastSeenRulesVersion: 0,
+      dismissedOnboardingSteps: [],
+      hasSeenInstructionsTip: false
     });
   });
 
@@ -38,6 +40,23 @@ describe("Backword browser storage", () => {
     expect(storage.loadSettings().mode).toBe("easy");
     expect(storage.loadAllProgress()).toEqual([]);
     expect(storage.loadCachedWord("bad")).toBeNull();
+  });
+
+  it("persists each onboarding acknowledgement before completing onboarding", () => {
+    const storage = createBackwordStorage(localStorage);
+    let settings = storage.loadSettings();
+
+    settings = storage.dismissOnboardingStep(settings, "guessWord");
+    expect(settings).toMatchObject({
+      hasSeenOnboarding: false,
+      dismissedOnboardingSteps: ["guessWord"]
+    });
+
+    for (const step of ["connectedLetters", "freeReveals", "scoring", "stuckHint"] as const) {
+      settings = storage.dismissOnboardingStep(settings, step);
+    }
+    expect(settings.hasSeenOnboarding).toBe(true);
+    expect(settings.lastSeenRulesVersion).toBe(BACKWORD_RULES_VERSION);
   });
 
   it("accepts iOS in-progress payloads that omit optional completedAt", () => {
