@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "puzzles": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "date": "2026-10-01",
+      "puzzle_number": 1,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "TRIANGLE",
+        "acceptedAnswers": ["INTEGRAL"],
+        "initialScramble": "RAGTLINE"
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "date": "2026-10-02",
+      "puzzle_number": 2,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "DESIGNER",
+        "acceptedAnswers": ["REDESIGN", "RESIGNED"],
+        "initialScramble": "EGDRSNEI"
+      }
+    }
+  ],
+  "scoreCases": [
+    { "elapsedWithPenaltySeconds": 0, "points": 5 },
+    { "elapsedWithPenaltySeconds": 29.999, "points": 5 },
+    { "elapsedWithPenaltySeconds": 30, "points": 4 },
+    { "elapsedWithPenaltySeconds": 59.999, "points": 4 },
+    { "elapsedWithPenaltySeconds": 60, "points": 3 },
+    { "elapsedWithPenaltySeconds": 119.999, "points": 3 },
+    { "elapsedWithPenaltySeconds": 120, "points": 2 },
+    { "elapsedWithPenaltySeconds": 179.999, "points": 2 },
+    { "elapsedWithPenaltySeconds": 180, "points": 1 }
+  ]
+}

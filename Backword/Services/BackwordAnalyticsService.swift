@@ -287,6 +287,7 @@ struct BackwordAnalyticsEvent: Equatable {
 
     enum Game: String {
         case backword
+        case anagram
         case dailyCrossword = "daily_crossword"
         case weeklyCrossword = "weekly_crossword"
     }

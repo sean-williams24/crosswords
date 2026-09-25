@@ -37,6 +37,10 @@ extension Color {
     static let shareCardBackwordStatLabel = Color("ShareCardBackwordStatLabel")
     static let shareCardDailyStatLabel = Color("ShareCardDailyStatLabel")
     static let shareCardWeeklyStatLabel = Color("ShareCardWeeklyStatLabel")
+    static let anagramOrange = Color("AnagramOrange")
+    static let anagramSurface = Color("AnagramSurface")
+    static let anagramInk = Color("AnagramInk")
+    static let anagramOnOrange = Color("AnagramOnOrange")
 }
 
 enum AppGradient {
@@ -151,6 +155,10 @@ struct AppLayout {
     static let cardHeightLarge: CGFloat = 194
     static let screenPadding: CGFloat = 20
     static let screenPaddingLarge: CGFloat = 45
+    static let anagramAnswerTileSpacing: CGFloat = 6
+    static let anagramTrayTileSpacing: CGFloat = 8
+    static let anagramTrayPreferredTileSize: CGFloat = 52
+    static let anagramTraySizingColumns = 5
     static let dailyCompletionGridWidth: CGFloat = 238
     static let weeklyCompletionGridWidth: CGFloat = 286
     static let completionGridSpacing: CGFloat = 2

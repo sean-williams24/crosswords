@@ -1,0 +1,347 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "requires_editorial_signoff_before_publication",
+  "frequencyReview": "pending_wordfreq_report",
+  "firstReleaseDate": "2026-10-01",
+  "rows": [
+    {
+      "id": "8b7e2d6d-bdf3-58e3-83f0-fc4672bf23fe",
+      "date": "2026-10-01",
+      "puzzle_number": 1,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "TRIANGLE",
+        "acceptedAnswers": [
+          "INTEGRAL",
+          "RELATING",
+          "ALTERING",
+          "ALERTING"
+        ],
+        "initialScramble": "GLNTEAIR"
+      }
+    },
+    {
+      "id": "b198025a-daf0-59bd-8f5e-4def84e86468",
+      "date": "2026-10-02",
+      "puzzle_number": 2,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "BALANCE",
+        "acceptedAnswers": [],
+        "initialScramble": "LABNCEA"
+      }
+    },
+    {
+      "id": "ca0f9cfc-0b92-559f-a954-f4e2979f02fe",
+      "date": "2026-10-03",
+      "puzzle_number": 3,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "PICTURE",
+        "acceptedAnswers": [],
+        "initialScramble": "PEIRTUC"
+      }
+    },
+    {
+      "id": "acb1e312-dd81-560a-b5f3-e72c229b63dc",
+      "date": "2026-10-04",
+      "puzzle_number": 4,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "LIBRARY",
+        "acceptedAnswers": [],
+        "initialScramble": "LARRYIB"
+      }
+    },
+    {
+      "id": "f901ff16-5781-5d0c-8834-4e778c07922e",
+      "date": "2026-10-05",
+      "puzzle_number": 5,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "JOURNEY",
+        "acceptedAnswers": [],
+        "initialScramble": "UYRNJEO"
+      }
+    },
+    {
+      "id": "b786ed7c-3ddb-512b-9697-595d9bb8aa15",
+      "date": "2026-10-06",
+      "puzzle_number": 6,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "KITCHEN",
+        "acceptedAnswers": [],
+        "initialScramble": "HIEKTCN"
+      }
+    },
+    {
+      "id": "92caee9d-435e-5492-99fe-14732ccae6f5",
+      "date": "2026-10-07",
+      "puzzle_number": 7,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "WEATHER",
+        "acceptedAnswers": [],
+        "initialScramble": "EATWEHR"
+      }
+    },
+    {
+      "id": "c5cc5bb8-a316-5ac3-b2ff-cca7d3fb4ba5",
+      "date": "2026-10-08",
+      "puzzle_number": 8,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "GARDENS",
+        "acceptedAnswers": [
+          "DANGERS"
+        ],
+        "initialScramble": "EGADNSR"
+      }
+    },
+    {
+      "id": "421aa727-43fc-5fb2-9779-a148481bfd5b",
+      "date": "2026-10-09",
+      "puzzle_number": 9,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "MONSTER",
+        "acceptedAnswers": [
+          "MENTORS"
+        ],
+        "initialScramble": "NREMSOT"
+      }
+    },
+    {
+      "id": "3a7d9526-e950-5041-b014-6853926ae3d8",
+      "date": "2026-10-10",
+      "puzzle_number": 10,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "LANTERN",
+        "acceptedAnswers": [],
+        "initialScramble": "NANETRL"
+      }
+    },
+    {
+      "id": "cbec4acf-1f4d-5d7d-9668-6290c64a7f86",
+      "date": "2026-10-11",
+      "puzzle_number": 11,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "FLOWERS",
+        "acceptedAnswers": [],
+        "initialScramble": "WLORSFE"
+      }
+    },
+    {
+      "id": "636b8eba-36a7-5aa7-bdc7-85b628216c8c",
+      "date": "2026-10-12",
+      "puzzle_number": 12,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "HISTORY",
+        "acceptedAnswers": [],
+        "initialScramble": "YRISHTO"
+      }
+    },
+    {
+      "id": "0db8434d-6425-5bbe-9112-ed514689b9a2",
+      "date": "2026-10-13",
+      "puzzle_number": 13,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "MORNING",
+        "acceptedAnswers": [],
+        "initialScramble": "NNIRGOM"
+      }
+    },
+    {
+      "id": "cd7659ff-06a4-580b-80db-41a2e05f0527",
+      "date": "2026-10-14",
+      "puzzle_number": 14,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "COUNTRY",
+        "acceptedAnswers": [],
+        "initialScramble": "OTYNUCR"
+      }
+    },
+    {
+      "id": "2c163fca-1818-5659-9ac5-bf7674e2d2c9",
+      "date": "2026-10-15",
+      "puzzle_number": 15,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "PLAYFUL",
+        "acceptedAnswers": [],
+        "initialScramble": "PALYLUF"
+      }
+    },
+    {
+      "id": "9a40da87-0100-5dcc-a2b2-eaf075690aea",
+      "date": "2026-10-16",
+      "puzzle_number": 16,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "DIAMOND",
+        "acceptedAnswers": [],
+        "initialScramble": "MADNDIO"
+      }
+    },
+    {
+      "id": "7094104f-f111-5c05-8314-2babcaece657",
+      "date": "2026-10-17",
+      "puzzle_number": 17,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "CAPTURE",
+        "acceptedAnswers": [],
+        "initialScramble": "ETRAUCP"
+      }
+    },
+    {
+      "id": "56853486-af6e-5567-a2d5-b4978ae88723",
+      "date": "2026-10-18",
+      "puzzle_number": 18,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "CUSHION",
+        "acceptedAnswers": [],
+        "initialScramble": "ISHUOCN"
+      }
+    },
+    {
+      "id": "0c28e1c0-1b84-5727-88fd-c58320b51cd6",
+      "date": "2026-10-19",
+      "puzzle_number": 19,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "FREEDOM",
+        "acceptedAnswers": [],
+        "initialScramble": "FEOMRED"
+      }
+    },
+    {
+      "id": "e747b765-2b8f-56c4-91af-2b7900037f13",
+      "date": "2026-10-20",
+      "puzzle_number": 20,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "SURPRISE",
+        "acceptedAnswers": [],
+        "initialScramble": "PRIRESUS"
+      }
+    },
+    {
+      "id": "55090a92-39a9-5478-8534-707a01d30e1f",
+      "date": "2026-10-21",
+      "puzzle_number": 21,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "WHISPER",
+        "acceptedAnswers": [],
+        "initialScramble": "WSEHPRI"
+      }
+    },
+    {
+      "id": "20717ee4-7c45-5def-bf89-4ced000479a3",
+      "date": "2026-10-22",
+      "puzzle_number": 22,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "SUNSHINE",
+        "acceptedAnswers": [],
+        "initialScramble": "NEIHUNSS"
+      }
+    },
+    {
+      "id": "cefded80-4e5d-5a55-9ada-4d58675e57f6",
+      "date": "2026-10-23",
+      "puzzle_number": 23,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "ELEPHANT",
+        "acceptedAnswers": [],
+        "initialScramble": "ALHEPTNE"
+      }
+    },
+    {
+      "id": "fe690231-ea44-50ea-b87e-f04801aacbd2",
+      "date": "2026-10-24",
+      "puzzle_number": 24,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "MOUNTAIN",
+        "acceptedAnswers": [],
+        "initialScramble": "ONTAIUMN"
+      }
+    },
+    {
+      "id": "426b7cf3-7462-548c-932e-12a8554a3ec3",
+      "date": "2026-10-25",
+      "puzzle_number": 25,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "NOTEBOOK",
+        "acceptedAnswers": [],
+        "initialScramble": "ENBOOTOK"
+      }
+    },
+    {
+      "id": "dbae2840-da8c-5a52-ac97-62848cf3d995",
+      "date": "2026-10-26",
+      "puzzle_number": 26,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "BIRTHDAY",
+        "acceptedAnswers": [],
+        "initialScramble": "ARTDHYBI"
+      }
+    },
+    {
+      "id": "a2929727-072e-5837-b96a-e39b2e3567e4",
+      "date": "2026-10-27",
+      "puzzle_number": 27,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "CALENDAR",
+        "acceptedAnswers": [],
+        "initialScramble": "LADEACNR"
+      }
+    },
+    {
+      "id": "4b8b9aee-34ef-5515-a3cf-2b4c5fd5d83e",
+      "date": "2026-10-28",
+      "puzzle_number": 28,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "CHOCOLATE",
+        "acceptedAnswers": [],
+        "initialScramble": "CEOACTOLH"
+      }
+    },
+    {
+      "id": "8800830c-9362-5654-95e8-102ed1413cc3",
+      "date": "2026-10-29",
+      "puzzle_number": 29,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "ADVENTURE",
+        "acceptedAnswers": [],
+        "initialScramble": "RNVDTEAUE"
+      }
+    },
+    {
+      "id": "8daa5734-c21a-5465-ae28-6c39108f42d8",
+      "date": "2026-10-30",
+      "puzzle_number": 30,
+      "schema_version": 1,
+      "puzzle_data": {
+        "answer": "BUTTERFLY",
+        "acceptedAnswers": [],
+        "initialScramble": "FYTETURLB"
+      }
+    }
+  ]
+}

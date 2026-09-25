@@ -11,6 +11,7 @@ struct ArchiveView: View {
     @StateObject private var viewModel = ArchiveViewModel(
         dataSource: ArchiveDataSource(puzzleService: PuzzleService())
     )
+    @State private var showAnagramArchive = false
 
     var body: some View {
         NavigationStack {
@@ -26,6 +27,14 @@ struct ArchiveView: View {
             .navigationTitle(viewModel.currentTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                if let firstRelease = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate"),
+                   firstRelease <= AnagramProgress.localDay(Date()) {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Anagram") { showAnagramArchive = true }
+                            .font(AppFont.body())
+                            .foregroundStyle(Color.anagramOrange)
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -34,6 +43,12 @@ struct ArchiveView: View {
                             .foregroundColor(.appTextSecondary)
                     }
                 }
+            }
+            .sheet(isPresented: $showAnagramArchive) {
+                AnagramArchiveView()
+                    .environmentObject(storeService)
+                    .environmentObject(adService)
+                    .environmentObject(ratingService)
             }
             .navigationDestination(isPresented: $viewModel.showPuzzle) {
                 if let puzzle = viewModel.selectedPuzzle {

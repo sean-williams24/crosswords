@@ -15,6 +15,10 @@ Backend/*.py
 !Backend/upgrade_clues.py
 !Backend/expand_validated.py
 !Backend/generate_backword.py
+!Backend/generate_anagram.py
+!Backend/publish_anagram.py
+!Backend/review_anagram_frequency.py
+!Backend/test_generate_anagram.py
 !Backend/recategorise_backword.py
 !Backend/fix_answer_leakage.py
 !Backend/fix_duplicate_clues.py

@@ -12,6 +12,7 @@ struct HomeView: View {
     @ObservedObject private var settings = AppSettings.shared
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
+    @StateObject private var anagramService = AnagramService()
     @StateObject private var backwordStatsService = BackwordStatsService()
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.launchSplashDidComplete) private var launchSplashDidComplete
@@ -53,6 +54,7 @@ struct HomeView: View {
         await viewModel.refreshIfNeeded()
         await wotdService.refreshIfNeeded()
         await backwordService.refreshIfNeeded()
+        await anagramService.refreshIfNeeded()
         await viewModel.prefetchCurrentArchiveMonthIfNeeded()
         backwordStatsService.refresh()
         ratingService.refresh()
@@ -77,6 +79,7 @@ struct HomeView: View {
             await viewModel.loadTodaysPuzzle()
             await wotdService.refreshIfNeeded()
             await backwordService.refreshIfNeeded()
+            await anagramService.refreshIfNeeded()
             await viewModel.prefetchCurrentArchiveMonthIfNeeded()
             backwordStatsService.refresh()
             ratingService.refresh()
@@ -137,6 +140,11 @@ struct HomeView: View {
                         .environmentObject(storeService)
                         .environmentObject(adService)
                         .environmentObject(ratingService)
+                } else if destination == "anagram", let puzzle = anagramService.todaysPuzzle {
+                    AnagramView(puzzle: puzzle)
+                        .environmentObject(storeService)
+                        .environmentObject(adService)
+                        .environmentObject(ratingService)
                 } else if destination == "puzzle",
                           let puzzle = viewModel.todaysPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
@@ -145,6 +153,14 @@ struct HomeView: View {
                         .environmentObject(adService)
                         .environmentObject(ratingService)
                 }
+                #if DEBUG
+                if destination == "anagram-review" {
+                    AnagramView(puzzle: .review)
+                        .environmentObject(storeService)
+                        .environmentObject(adService)
+                        .environmentObject(ratingService)
+                }
+                #endif
             }
         }
     }
@@ -284,6 +300,7 @@ struct HomeView: View {
                         await viewModel.refreshIfNeeded()
                         await wotdService.refreshIfNeeded()
                         await backwordService.refreshIfNeeded()
+                        await anagramService.refreshIfNeeded()
                         await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                         await accountService.refreshAccountData()
                     }
@@ -361,6 +378,14 @@ struct HomeView: View {
                     dailyCrosswordCard
                 }
             }
+            if let puzzle = anagramService.todaysPuzzle {
+                AnagramCard(puzzle: puzzle, isReview: false) { navigationPath.append("anagram") }
+                    .padding(.top, 20)
+            }
+            #if DEBUG
+            AnagramCard(puzzle: .review, isReview: true) { navigationPath.append("anagram-review") }
+                .padding(.top, 20)
+            #endif
         }
         .padding(.horizontal, appLayout.homeHorizontalPadding)
 

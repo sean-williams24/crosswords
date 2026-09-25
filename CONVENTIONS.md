@@ -749,6 +749,48 @@ Crossword stats histories are release-date based, so unplayed and in-progress pu
 
 Backword stats use the same release-date-based 14-day history. Every daily release is shown, including unplayed and in-progress games. Rows show the saved guess count when play has started, distinguish solved and failed completions, and use the recorded Backword rating score with completed progress as a fallback.
 
+## Anagram Daily Game
+
+Anagram uses a separate reviewed 7–9-letter pool and dated Supabase rows. A
+published puzzle's answer set, initial scramble, date, and issue number are
+immutable. The pool is finite and ordered: issue N uses pool entry N, leaving
+the crossword bank unchanged. Launch and replenishment artifacts require
+editorial signoff, including the wordfreq rank and Zipf review report, before
+explicit publication. The current source bank contains 11,436 seven-to-nine
+letter ASCII entries; the earlier plan's 9,753 count is stale. Each scramble
+index is a distinct tile identity; placing a tile
+leaves its tray slot empty. The tray keeps two centered, square-tile rows:
+4+3 for seven letters, 4+4 for eight, and 5+4 for nine. Tile size stays
+based on five columns so the shorter rows have balanced side margins. Undo
+follows placement history, while Restart
+clears player placements without changing the start time, hint, or penalty.
+The single hint clears placements, locks one correct tile, and allows any
+approved answer compatible with that lock.
+
+The timer measures wall time from Start, including app backgrounding, adverts,
+and navigation. The UI shows elapsed time as m:ss below one hour and h:mm:ss
+afterward; saved durations and scoring remain in seconds. Scoring adds any hint
+penalty to elapsed time and uses strict
+under-30/60/120/180-second thresholds for 5/4/3/2 points; later solves earn
+1 point. Give up is terminal and earns zero. Only an original-release-day
+completion adds a score to the 14-day rating. Possible Anagram points begin
+on the first published release date, so the overall maximum ramps to 210
+free or 220 Pro after 14 Anagram releases.
+
+Cloud conflicts keep a complete tile arrangement with its Undo history.
+Terminal outcomes take precedence; a consumed hint takes precedence over an
+unhinted in-progress branch; ties use progress rank and update time. The
+earliest start, consumed hint, largest penalty, and highest previously earned
+release score survive the merge, except that a newly discovered earlier start
+recalculates a terminal attempt's elapsed time and score. The production Home
+card appears only when a validated row for the current release date is
+available. That dated row is cached for offline play, and failed fetches can
+retry later. The earliest published date is cached as the rating start. The
+DEBUG review puzzle is excluded from `loadAll`, cloud migration, and rating
+points. Web implementation follows
+the iOS gameplay review. See [the v1 contract](./docs/anagram-contract-v1.md)
+for field names and cross-platform fixtures.
+
 ---
 
 ## App Store Review Prompt

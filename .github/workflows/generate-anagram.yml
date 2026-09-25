@@ -1,0 +1,41 @@
+name: Prepare Anagram Puzzles
+
+on:
+  schedule:
+    - cron: "30 9 * * 1" # Monday 09:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.ANAGRAM_REPLENISHMENT_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install -r Backend/requirements.txt
+
+      - name: Prepare next reviewed batch
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          python3 Backend/generate_anagram.py \
+            --from-supabase \
+            --count 14 \
+            --output /tmp/anagram-replenishment.json
+
+      - name: Upload review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: anagram-replenishment-${{ github.run_id }}
+          path: /tmp/anagram-replenishment.json
+          if-no-files-found: error
