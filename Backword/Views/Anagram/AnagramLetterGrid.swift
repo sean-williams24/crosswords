@@ -1,9 +1,22 @@
 import SwiftUI
 
 struct AnagramLetterGrid: View {
+    enum Section {
+        case answer
+        case tray
+    }
+
     let puzzle: AnagramPuzzle
     let progress: AnagramProgress
+    let section: Section
     let place: (Int) -> Void
+
+    init(puzzle: AnagramPuzzle, progress: AnagramProgress, section: Section, place: @escaping (Int) -> Void = { _ in }) {
+        self.puzzle = puzzle
+        self.progress = progress
+        self.section = section
+        self.place = place
+    }
 
     private var answerColumns: [GridItem] {
         Array(
@@ -13,26 +26,37 @@ struct AnagramLetterGrid: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 22) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("YOUR ANSWER")
-                    .font(AppFont.clueLabel())
-                    .foregroundStyle(Color.anagramOrange)
-                LazyVGrid(columns: answerColumns, spacing: AppLayout.anagramAnswerTileSpacing) {
-                    ForEach(0..<puzzle.length, id: \.self) { cell in
-                        answerCell(cell)
-                    }
+        Group {
+            switch section {
+            case .answer:
+                answer
+            case .tray:
+                tray
+            }
+        }
+    }
+
+    private var answer: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("YOUR ANSWER")
+                .font(AppFont.clueLabel())
+                .foregroundStyle(Color.anagramOrange)
+            LazyVGrid(columns: answerColumns, spacing: AppLayout.anagramAnswerTileSpacing) {
+                ForEach(0..<puzzle.length, id: \.self) { cell in
+                    answerCell(cell)
                 }
             }
-            Spacer()
-            VStack(alignment: .leading, spacing: 8) {
-                Text("TAP LETTERS IN ORDER")
-                    .font(AppFont.clueLabel())
-                    .foregroundStyle(Color.anagramOrange)
-                AnagramTrayLayout(spacing: AppLayout.anagramTrayTileSpacing) {
-                    ForEach(progress.trayOrder, id: \.self) { tile in
-                        trayCell(tile)
-                    }
+        }
+    }
+
+    private var tray: some View {
+        VStack(alignment: .leading, spacing: 8) {
+//            Text("TAP LETTERS IN ORDER")
+//                .font(AppFont.clueLabel())
+//                .foregroundStyle(Color.anagramOrange)
+            AnagramTrayLayout(spacing: AppLayout.anagramTrayTileSpacing) {
+                ForEach(progress.trayOrder, id: \.self) { tile in
+                    trayCell(tile)
                 }
             }
         }

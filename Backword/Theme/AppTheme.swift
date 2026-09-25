@@ -157,6 +157,7 @@ struct AppLayout {
     static let screenPaddingLarge: CGFloat = 45
     static let anagramAnswerTileSpacing: CGFloat = 6
     static let anagramTrayTileSpacing: CGFloat = 8
+    static let anagramBottomDockInset: CGFloat = 40
     static let anagramTrayPreferredTileSize: CGFloat = 52
     static let anagramTraySizingColumns = 5
     static let dailyCompletionGridWidth: CGFloat = 238

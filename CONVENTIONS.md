@@ -764,6 +764,9 @@ leaves its tray slot empty. The tray keeps two centered, square-tile rows:
 based on five columns so the shorter rows have balanced side margins. Undo
 follows placement history, while Restart
 clears player placements without changing the start time, hint, or penalty.
+During play, the tray and controls stay together at the bottom of the view,
+with the controls 40 points above the bottom safe area. The header, timer,
+and answer scroll above them.
 The single hint clears placements, locks one correct tile, and allows any
 approved answer compatible with that lock.
 

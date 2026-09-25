@@ -61,6 +61,14 @@ struct AnagramView: View {
                 .frame(maxWidth: 560)
                 .frame(maxWidth: .infinity)
             }
+            if let progress = viewModel.progress, !progress.isComplete {
+                gameplayDock(progress)
+                    .padding(.horizontal, AppLayout.screenPadding)
+                    .padding(.bottom, AppLayout.anagramBottomDockInset)
+                    .frame(maxWidth: 560)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.appBackground)
+            }
         }
         .background(Color.appBackground)
         .navigationTitle("Anagram")
@@ -169,13 +177,16 @@ struct AnagramView: View {
 
     private var instructions: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("One word. The same letters. A fresh daily challenge.")
-                .font(AppFont.header(24))
-                .foregroundStyle(Color.anagramInk)
+            VStack(alignment: .leading, spacing: 5) {
+                Text("Unscramble the letters.")
+                Text("Find the word.")
+            }
+            .font(AppFont.header(24))
+            .foregroundStyle(Color.anagramInk)
             Text("Tap letters to build an answer. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points.")
                 .font(AppFont.body())
                 .foregroundStyle(Color.anagramInk)
-            Text("\(viewModel.puzzle.length) letters · one optional hint · no time limit")
+            Text("\(viewModel.puzzle.length) letters - one optional hint - no time limit")
                 .font(AppFont.caption())
                 .foregroundStyle(Color.anagramOrange)
             AnagramActionButton(title: "Start", prominent: true) { viewModel.start() }
@@ -195,14 +206,20 @@ struct AnagramView: View {
                 .font(AppFont.header(20))
                 .foregroundStyle(Color.anagramOrange)
             }
-            AnagramLetterGrid(puzzle: viewModel.puzzle, progress: progress) { tile in
-                viewModel.place(tile)
-                if viewModel.progress?.isComplete == true { ratingService.refresh() }
-            }
+            AnagramLetterGrid(puzzle: viewModel.puzzle, progress: progress, section: .answer)
             if progress.displayedAnswer(for: viewModel.puzzle) != nil {
                 Text("Not quite. Undo a letter or restart and try again.")
                     .font(AppFont.caption())
                     .foregroundStyle(Color.anagramInk)
+            }
+        }
+    }
+
+    private func gameplayDock(_ progress: AnagramProgress) -> some View {
+        VStack(alignment: .leading, spacing: 24) {
+            AnagramLetterGrid(puzzle: viewModel.puzzle, progress: progress, section: .tray) { tile in
+                viewModel.place(tile)
+                if viewModel.progress?.isComplete == true { ratingService.refresh() }
             }
             controls
         }
