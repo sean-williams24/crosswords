@@ -14,6 +14,7 @@ struct BackwordOnboardingCardsView: View {
                 ForEach(Array(steps.enumerated().reversed()), id: \.element.id) { index, step in
                     BackwordOnboardingCard(
                         text: step.text(for: mode),
+                        isTopCard: index == 0,
                         dismiss: {
                             withAnimation(.spring(response: 0.4, dampingFraction: 0.82)) {
                                 dismissStep(step)
@@ -25,7 +26,7 @@ struct BackwordOnboardingCardsView: View {
                             insertion: .move(edge: .bottom)
                                 .combined(with: .opacity)
                                 .combined(with: .scale(scale: 0.96)),
-                            removal: .move(edge: .top)
+                            removal: .move(edge: .leading)
                                 .combined(with: .opacity)
                                 .combined(with: .scale(scale: 0.96))
                         )
@@ -47,7 +48,9 @@ struct BackwordOnboardingCardsView: View {
         .padding(.bottom, CGFloat(max(steps.count - 1, 0)) * cardOffset)
         .frame(maxWidth: .infinity)
         .padding(.horizontal, AppLayout.screenPadding)
+        .padding(.top, 20)
         .padding(.vertical, 8)
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .onAppear {
             guard !steps.isEmpty else { return }
             withAnimation(.spring(response: 0.55, dampingFraction: 0.8)) {
@@ -67,11 +70,13 @@ struct BackwordOnboardingCardsView: View {
 
 private struct BackwordOnboardingCard: View {
     let text: String
+    let isTopCard: Bool
     let dismiss: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var isHovering = false
+    @State private var isOKButtonPulsing = false
     @ScaledMetric private var cardHeight: CGFloat = 80
 
     var body: some View {
@@ -91,6 +96,12 @@ private struct BackwordOnboardingCard: View {
                     .background(Color.appAccent)
                     .clipShape(Circle())
             }
+            .buttonStyle(
+                BackwordOnboardingOKButtonStyle(
+                    isPulsing: isOKButtonPulsing,
+                    reduceMotion: reduceMotion
+                )
+            )
             .accessibilityLabel("Dismiss instruction")
             .accessibilityHint("Dismisses this Backword instruction")
         }
@@ -108,14 +119,51 @@ private struct BackwordOnboardingCard: View {
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .strokeBorder(Color.appGridLine, lineWidth: 1)
         }
-        .shadow(color: Color.appTextPrimary.opacity(0.12), radius: 8, y: 4)
+        .shadow(color: Color.appTextPrimary.opacity(0.08), radius: 6, y: 3)
         .offset(y: isHovering ? -2 : 2)
         .onAppear {
             guard !reduceMotion else { return }
             withAnimation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true)) {
                 isHovering = true
             }
+            animateOKButtonIfNeeded()
         }
+        .onChange(of: isTopCard) { _ in
+            animateOKButtonIfNeeded()
+        }
+    }
+
+    private func animateOKButtonIfNeeded() {
+        guard isTopCard, !reduceMotion else {
+            isOKButtonPulsing = false
+            return
+        }
+
+        withAnimation(.easeInOut(duration: 0.85).repeatForever(autoreverses: true)) {
+            isOKButtonPulsing = true
+        }
+    }
+}
+
+private struct BackwordOnboardingOKButtonStyle: ButtonStyle {
+    let isPulsing: Bool
+    let reduceMotion: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.88 : (isPulsing ? 1.07 : 1))
+            .shadow(
+                color: Color.appAccent.opacity(isPulsing ? 0.38 : 0.18),
+                radius: isPulsing ? 6 : 2
+            )
+            .animation(
+                reduceMotion ? nil : .easeOut(duration: 0.15),
+                value: configuration.isPressed
+            )
+            .animation(
+                reduceMotion ? nil : .easeInOut(duration: 0.85).repeatForever(autoreverses: true),
+                value: isPulsing
+            )
     }
 }
 
