@@ -252,6 +252,27 @@ struct GameViewModelTests {
         #expect(vm.progress.gaveUpScore == nil)
     }
 
+    @Test("Restored completed crossword presents completion state")
+    func restoredCompletedCrosswordPresentsCompletionState() throws {
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+
+        var progress = UserProgress(
+            puzzleId: puzzle.id,
+            size: puzzle.size,
+            puzzleDate: puzzle.date,
+            totalClues: puzzle.clues.count,
+            isWeekly: false
+        )
+        progress.completedAt = Date()
+        progress.save()
+
+        let restored = GameViewModel(puzzle: puzzle)
+
+        #expect(restored.isComplete)
+    }
+
     @Test("Home-launched puzzle cannot give up")
     func homeLaunchedPuzzleCannotGiveUp() async throws {
         let puzzle = makePuzzle(date: "2026-06-17")

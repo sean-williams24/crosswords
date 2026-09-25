@@ -32,6 +32,7 @@ final class BackwordViewModel: ObservableObject {
         let prog = BackwordProgress.load(date: word.date) ?? BackwordProgress(date: word.date)
         self.progress = prog
         self.clueRevealed = prog.clueRevealed
+        self.didComplete = prog.isComplete
     }
 
     /// Preview-only initialiser — injects a pre-built progress state.
@@ -48,6 +49,7 @@ final class BackwordViewModel: ObservableObject {
         self.stats = BackwordStats.load()
         self.progress = progress
         self.clueRevealed = progress.clueRevealed
+        self.didComplete = progress.isComplete
     }
 
     // MARK: - Reveal Sequence

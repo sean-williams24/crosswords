@@ -64,6 +64,7 @@ export function WeeklyCrosswordPage() {
   const [clueDragStart, setClueDragStart] = useState<number | null>(null);
   const [showHint, setShowHint] = useState(false);
   const skipClueToggle = useRef(false);
+  const completionPresentedForDate = useRef<string | null>(null);
 
   const loadPuzzle = useCallback(async (requestedWeek: string) => {
     setLoading(true);
@@ -152,6 +153,12 @@ export function WeeklyCrosswordPage() {
     return () => window.clearInterval(timer);
   }, [archiveDate, weekDate]);
 
+  useEffect(() => {
+    if (loading || !progress?.completedAt || completionPresentedForDate.current === progress.date) return;
+    completionPresentedForDate.current = progress.date;
+    setSheet("completion");
+  }, [loading, progress?.completedAt, progress?.date]);
+
   const currentClue = puzzle && selection ? activeClue(puzzle, selection) : null;
   const stats = useMemo(() => deriveWeeklyCrosswordStats(storage.loadAllProgress()), [progress, storage]);
   const rating = useMemo(
@@ -174,6 +181,7 @@ export function WeeklyCrosswordPage() {
       track(gameStarted("weekly_crossword"));
     }
     if (progress.completedAt === null && result.progress.completedAt !== null) {
+      completionPresentedForDate.current = result.progress.date;
       const startedAt = new Date(result.progress.startedAt).getTime();
       const completedAt = new Date(result.progress.completedAt).getTime();
       track(gameCompleted("weekly_crossword", "solved", {

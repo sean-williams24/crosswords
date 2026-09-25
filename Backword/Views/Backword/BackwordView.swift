@@ -112,9 +112,14 @@ struct BackwordView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             ratingService.refresh()
-            showAutomaticInstructionsIfNeeded()
             updateInstructionsTipPresentation()
-            viewModel.startExplainerCountdown()
+            if viewModel.isComplete {
+                statsService.refresh()
+                showStats = true
+            } else {
+                showAutomaticInstructionsIfNeeded()
+                viewModel.startExplainerCountdown()
+            }
         }
         .onDisappear {
             viewModel.stopExplainerCountdown()

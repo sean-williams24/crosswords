@@ -182,6 +182,22 @@ struct BackwordViewModelTests {
         #expect(!vm.shouldShowInstructionsTip)
     }
 
+    @Test("Restored completed game is marked for completion presentation")
+    func restoredCompletedGameMarksCompletionPresentation() {
+        let word = makeWord()
+        var progress = BackwordProgress(date: word.date)
+        progress.wonFlag = true
+        progress.completedAt = Date()
+
+        let vm = BackwordViewModel(
+            word: word,
+            progress: progress,
+            settings: makeSettings()
+        )
+
+        #expect(vm.didComplete)
+    }
+
     @Test("Onboarding deck starts with the prompt and ends with the stuck hint")
     func onboardingDeckUsesPromptAndStuckHint() {
         #expect(BackwordOnboardingStep.initialGuess.text(for: .easy) == "Guess the 6 letter word...")

@@ -80,6 +80,24 @@ describe("Backword browser game", () => {
     expect(repositoryDates.values).not.toContain(localDateString());
   });
 
+  it("reopens a completed game with results and sharing available", async () => {
+    const date = localDateString();
+    localStorage.setItem("backword:web:progress:v1", JSON.stringify({
+      [date]: {
+        schemaVersion: 1,
+        date,
+        guesses: ["CASTLE"],
+        completedAt: new Date().toISOString(),
+        outcome: "won"
+      }
+    }));
+
+    renderGame();
+
+    expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Share result" })).toBeInTheDocument();
+  });
+
   it("opens and closes a menu with game and legal routes", async () => {
     const user = userEvent.setup();
     renderGame();

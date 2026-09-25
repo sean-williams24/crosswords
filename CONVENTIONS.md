@@ -716,6 +716,8 @@ requested batch with pairs that both reviewers accept.
 
 The completion sheet is presented after both wins and failures and receives the answer explicitly. Its title is `Solved!`, `Finished`, or `Failed`. Wins show an `... in N guesses` label directly above the cells; failures show `The answer was...`. A late `Finished` result shows the no-points message above the standard completed stats content. The cells reveal from right to left and perform a single whole-word bounce. Winning cells transition from correct green to accent blue during the glow; failed cells and their glow remain red. Reduce Motion skips the staged animation and shows the completed word immediately.
 
+Returning to a persisted completed Backword reopens that same completion sheet, including result sharing. The web presents it once per game-page visit so dismissing it does not immediately reopen it.
+
 Backword keyboard letter entry and deletion use the same light impact as crossword letter input. Guess haptics reflect the result of each accepted submission. A non-winning guess gets a full-strength (`1.0`) impact only when it extends the correctly positioned suffix; automatic scheduled reveals alone retain the incorrect-guess feedback. Wins and final failures use distinct terminal patterns instead of also playing the intermediate guess pattern. During the completion animation, each right-to-left letter reveal plays one quick impact; Reduce Motion skips both the staged reveals and their per-letter impacts.
 
 The completion sheet also shows a live `NEXT BACKWORD IN` countdown. It must derive the next release from `ContentReleaseCalendar` on every tick so it follows local midnight and remains correct across timezone and daylight-saving transitions.
@@ -725,6 +727,8 @@ In DEBUG builds, the Backword header includes a ladybug button that simulates a 
 ## Crossword Completion Moment
 
 Daily and weekly crossword completion sheets use the solved grid as their visual centerpiece. Playable cells reveal in a diagonal wave; on-time solves finish with an accent bounce, glow, and restrained sparkle burst, late `Finished` solves use the wave and a softer bounce without sparkles, and `Gave up` reveals in red without a celebratory finish. Reduce Motion shows the final state immediately.
+
+Returning to any persisted terminal crossword, including an archive give-up, opens its completion sheet with result sharing available. The web presents it once per game-page visit so a manual dismissal remains respected.
 
 All crossword completion outcomes show a live release countdown derived from `ContentReleaseCalendar` on every tick. Daily puzzles count down to the next local midnight; weekly puzzles count down to the next local Sunday at midnight and include days in the display. A late `Finished` result shows its no-points message above the standard stats card and displays a score of zero.
 

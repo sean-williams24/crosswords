@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BackwordCompletion } from "../features/backword/components/BackwordCompletion";
 import { BackwordInstructions } from "../features/backword/components/BackwordInstructions";
@@ -73,6 +73,7 @@ export function BackwordPage() {
   const [showDetailedExplainer, setShowDetailedExplainer] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showInstructionsTip, setShowInstructionsTip] = useState(false);
+  const completionPresentedForDate = useRef<string | null>(null);
 
   const onboardingSteps = useMemo(() => pendingBackwordOnboardingSteps(settings), [settings]);
 
@@ -167,10 +168,20 @@ export function BackwordPage() {
   }, [date, storage, user?.id]);
 
   useEffect(() => {
-    if (settings.hasSeenOnboarding && settings.lastSeenRulesVersion < BACKWORD_RULES_VERSION) {
+    if (
+      progress.outcome === "inProgress"
+      && settings.hasSeenOnboarding
+      && settings.lastSeenRulesVersion < BACKWORD_RULES_VERSION
+    ) {
       setSheet("instructions");
     }
-  }, [settings.hasSeenOnboarding, settings.lastSeenRulesVersion]);
+  }, [progress.outcome, settings.hasSeenOnboarding, settings.lastSeenRulesVersion]);
+
+  useEffect(() => {
+    if (loading || progress.completedAt === null || completionPresentedForDate.current === progress.date) return;
+    completionPresentedForDate.current = progress.date;
+    setSheet("completion");
+  }, [loading, progress.completedAt, progress.date]);
 
   useEffect(() => {
     if (progress.guesses.length > 0 || onboardingSteps.length > 0) {
@@ -267,6 +278,7 @@ export function BackwordPage() {
       track(gameStarted("backword"));
     }
     if (updated.outcome !== "inProgress") {
+      completionPresentedForDate.current = updated.date;
       setShowInstructionsTip(false);
       track(gameCompleted("backword", updated.outcome, {
         mode: settings.mode,

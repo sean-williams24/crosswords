@@ -63,6 +63,7 @@ export function CrosswordPage() {
   const [showHint, setShowHint] = useState(false);
   const [showInstructionsTip, setShowInstructionsTip] = useState(false);
   const skipClueToggle = useRef(false);
+  const completionPresentedForDate = useRef<string | null>(null);
 
   const loadPuzzle = useCallback(async (requestedDate: string) => {
     setLoading(true);
@@ -166,7 +167,13 @@ export function CrosswordPage() {
   }, [archiveDate, date]);
 
   useEffect(() => {
-    if (loading || !puzzle || archiveDate || settings.hasSeenOnboarding) return;
+    if (loading || !progress?.completedAt || completionPresentedForDate.current === progress.date) return;
+    completionPresentedForDate.current = progress.date;
+    setSheet("completion");
+  }, [loading, progress?.completedAt, progress?.date]);
+
+  useEffect(() => {
+    if (loading || !puzzle || archiveDate || progress?.completedAt || settings.hasSeenOnboarding) return;
     setShowInstructionsTip(true);
     const updated = { ...settings, hasSeenOnboarding: true };
     storage.saveSettings(updated);
@@ -196,6 +203,7 @@ export function CrosswordPage() {
       track(gameStarted("daily_crossword"));
     }
     if (progress.completedAt === null && result.progress.completedAt !== null) {
+      completionPresentedForDate.current = result.progress.date;
       const startedAt = new Date(result.progress.startedAt).getTime();
       const completedAt = new Date(result.progress.completedAt).getTime();
       track(gameCompleted("daily_crossword", "solved", {
