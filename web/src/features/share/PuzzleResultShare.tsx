@@ -20,7 +20,7 @@ type ShareCardFontSources = {
 };
 
 export const resultShareActionLabels = {
-  shareImage: "Share image",
+  shareMenu: "Share menu",
   copyResultsCard: "Copy results card",
   downloadResultsCard: "Download results card",
   copyResultsText: "Copy results text"
@@ -134,6 +134,13 @@ export function isSafariBrowser(userAgent: string): boolean {
   return /Safari\//i.test(userAgent) && !/(?:Chrome|CriOS|Chromium|FxiOS|EdgiOS)\//i.test(userAgent);
 }
 
+// Chrome's in-page share-menu action is unreliable for result-card files.
+// Safari provides the native menu consistently, so only expose it there when
+// the browser has implemented the Web Share API.
+export function canUseResultShareMenu(userAgent: string, hasNativeShare: boolean): boolean {
+  return isSafariBrowser(userAgent) && hasNativeShare;
+}
+
 async function rasterizeCard(svg: string): Promise<Blob | null> {
   if (typeof Image === "undefined" || typeof URL.createObjectURL !== "function") return null;
 
@@ -243,6 +250,7 @@ export function PuzzleResultShare({
   const cardKey = JSON.stringify(result);
   const isChrome = isChromeBrowser(navigator.userAgent);
   const isSafari = isSafariBrowser(navigator.userAgent);
+  const canUseShareMenu = canUseResultShareMenu(navigator.userAgent, typeof navigator.share === "function");
   // Chrome and Safari use our in-page menu. Keep that menu available while the
   // PNG is prepared so Copy results text remains usable; its image actions appear as
   // soon as the card is ready.
@@ -343,7 +351,7 @@ export function PuzzleResultShare({
       {compact ? isCardReady ? <><svg aria-hidden="true" className="puzzle-result-share__icon" viewBox="0 0 24 24"><path d="M12 15V3m0 0 4 4m-4-4L8 7M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8" /></svg>Share</> : "Preparing…" : "Share result"}
     </button>
     {showShareActions ? <div aria-label="Share result options" className="puzzle-result-share__fallback" role="dialog">
-      {currentCardFile() ? <><button onClick={() => void shareCard()} type="button">{resultShareActionLabels.shareImage}</button><button onClick={() => void copyCardImage()} type="button">{resultShareActionLabels.copyResultsCard}</button><button onClick={downloadCard} type="button">{resultShareActionLabels.downloadResultsCard}</button></> : <p>Image card is still preparing.</p>}
+      {currentCardFile() ? <>{canUseShareMenu ? <button onClick={() => void shareCard()} type="button">{resultShareActionLabels.shareMenu}</button> : null}<button onClick={() => void copyCardImage()} type="button">{resultShareActionLabels.copyResultsCard}</button><button onClick={downloadCard} type="button">{resultShareActionLabels.downloadResultsCard}</button></> : <p>Image card is still preparing.</p>}
       <button onClick={() => void copyResultText()} type="button">{resultShareActionLabels.copyResultsText}</button>
     </div> : null}
     <span aria-live="polite" className="bw-share-status">{status}</span>

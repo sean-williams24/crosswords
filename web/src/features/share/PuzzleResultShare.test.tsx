@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { isChromeBrowser, isSafariBrowser, PuzzleResultShare, resultShareActionLabels, shareCardFormat, shareCardRasterPixelSize, sharePuzzleResult } from "./PuzzleResultShare";
+import { canUseResultShareMenu, isChromeBrowser, isSafariBrowser, PuzzleResultShare, resultShareActionLabels, shareCardFormat, shareCardRasterPixelSize, sharePuzzleResult } from "./PuzzleResultShare";
 import type { PuzzleShareResult } from "./puzzleResult";
 
 const analytics = vi.hoisted(() => ({ track: vi.fn() }));
@@ -28,7 +28,7 @@ describe("result sharing", () => {
 
   it("uses descriptive labels for result-card actions", () => {
     expect(resultShareActionLabels).toEqual({
-      shareImage: "Share image",
+      shareMenu: "Share menu",
       copyResultsCard: "Copy results card",
       downloadResultsCard: "Download results card",
       copyResultsText: "Copy results text"
@@ -116,6 +116,15 @@ describe("result sharing", () => {
   it("identifies Safari without treating other WebKit browsers as Safari", () => {
     expect(isSafariBrowser("Mozilla/5.0 Version/18.5 Safari/605.1.15")).toBe(true);
     expect(isSafariBrowser("Mozilla/5.0 CriOS/140.0.0.0 Mobile/15E148 Safari/604.1")).toBe(false);
+  });
+
+  it("only exposes the result-card share menu in Safari with native sharing", () => {
+    const chrome = "Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36";
+    const safari = "Mozilla/5.0 Version/18.5 Safari/605.1.15";
+
+    expect(canUseResultShareMenu(chrome, true)).toBe(false);
+    expect(canUseResultShareMenu(safari, false)).toBe(false);
+    expect(canUseResultShareMenu(safari, true)).toBe(true);
   });
 
   it("waits for the image card before enabling a native share outside the custom-browser menu", () => {
