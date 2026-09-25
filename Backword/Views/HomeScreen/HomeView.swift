@@ -14,6 +14,8 @@ struct HomeView: View {
     @StateObject private var backwordService = BackwordService()
     @StateObject private var anagramService = AnagramService()
     @StateObject private var backwordStatsService = BackwordStatsService()
+    @State private var anagramProgressRecords: [AnagramProgress] = []
+    @State private var reviewAnagramProgress: AnagramProgress?
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.launchSplashDidComplete) private var launchSplashDidComplete
     @Environment(\.horizontalSizeClass) var sizeClass
@@ -57,6 +59,7 @@ struct HomeView: View {
         await anagramService.refreshIfNeeded()
         await viewModel.prefetchCurrentArchiveMonthIfNeeded()
         backwordStatsService.refresh()
+        refreshAnagramCardProgress()
         ratingService.refresh()
         ratingService.recordCurrentPuzzles(
             daily: viewModel.todaysPuzzle,
@@ -82,6 +85,7 @@ struct HomeView: View {
             await anagramService.refreshIfNeeded()
             await viewModel.prefetchCurrentArchiveMonthIfNeeded()
             backwordStatsService.refresh()
+            refreshAnagramCardProgress()
             ratingService.refresh()
         }
     }
@@ -249,6 +253,7 @@ struct HomeView: View {
                     await viewModel.refreshIfNeeded()
                     await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                     backwordStatsService.refresh()
+                    refreshAnagramCardProgress()
                 }
             }
             .onChange(of: launchSplashDidComplete) { _, _ in
@@ -265,6 +270,7 @@ struct HomeView: View {
                     didReturnFromDailyGame = true
                     backwordStatsService.refresh()
                 }
+                refreshAnagramCardProgress()
                 updateSettingsTipReadiness()
             }
             .onChange(of: showArchive) { _, _ in
@@ -303,17 +309,20 @@ struct HomeView: View {
                         await anagramService.refreshIfNeeded()
                         await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                         await accountService.refreshAccountData()
+                        refreshAnagramCardProgress()
                     }
                 }
             }
             .onChange(of: accountService.userID) { _, _ in
                 statsService.refreshForActiveProgress()
                 backwordStatsService.refresh()
+                refreshAnagramCardProgress()
                 ratingService.refresh()
             }
             .onChange(of: accountService.syncRevision) { _, _ in
                 statsService.refreshForActiveProgress()
                 backwordStatsService.refresh()
+                refreshAnagramCardProgress()
                 ratingService.refresh()
             }
             .alert(
@@ -379,11 +388,27 @@ struct HomeView: View {
                 }
             }
             if let puzzle = anagramService.todaysPuzzle {
-                AnagramCard(puzzle: puzzle, isReview: false) { navigationPath.append("anagram") }
+                AnagramCard(
+                    puzzle: puzzle,
+                    isReview: false,
+                    summary: AnagramHomeCardSummary(
+                        progress: anagramProgressRecords.first { $0.date == puzzle.date && $0.puzzleID == puzzle.id },
+                        history: anagramProgressRecords,
+                        isReview: false
+                    )
+                ) { navigationPath.append("anagram") }
                     .padding(.top, 20)
             }
             #if DEBUG
-            AnagramCard(puzzle: .review, isReview: true) { navigationPath.append("anagram-review") }
+            AnagramCard(
+                puzzle: .review,
+                isReview: true,
+                summary: AnagramHomeCardSummary(
+                    progress: reviewAnagramProgress,
+                    history: [],
+                    isReview: true
+                )
+            ) { navigationPath.append("anagram-review") }
                 .padding(.top, 20)
             #endif
         }
@@ -502,6 +527,13 @@ struct HomeView: View {
             openDailyGame(.backword)
         }
         .environmentObject(backwordStatsService)
+    }
+
+    private func refreshAnagramCardProgress() {
+        anagramProgressRecords = AnagramProgress.loadAll()
+        #if DEBUG
+        reviewAnagramProgress = AnagramProgress.load(date: "review")
+        #endif
     }
 
     private var dailyCrosswordCard: some View {

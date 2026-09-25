@@ -767,6 +767,12 @@ clears player placements without changing the start time, hint, or penalty.
 During play, the tray and controls stay together at the bottom of the view,
 with the controls 40 points above the bottom safe area. The header, timer,
 and answer scroll above them.
+The Anagram Home card uses the other daily cards' centered title and status,
+lower score and streak row, and top-right issue number. It shows a score only
+after completion. The streak counts consecutive on-time solved releases and
+continues from yesterday until today's attempt is completed; a give-up or late
+solve today ends it. The DEBUG review puzzle shows a review marker and sample
+score, but never contributes to a streak or rating.
 The single hint clears placements, locks one correct tile, and allows any
 approved answer compatible with that lock.
 

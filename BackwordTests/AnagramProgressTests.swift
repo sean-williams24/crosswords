@@ -15,6 +15,70 @@ struct AnagramProgressTests {
         acceptedAnswers: ["REDESIGN", "RESIGNED"], initialScramble: "EGDRSNEI"
     )
 
+    @Test func homeCardStatusScoreAndStreakFollowReleaseDayResults() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        let today = calendar.startOfDay(for: now)
+        let formatter = DateFormatter()
+        formatter.calendar = calendar
+        formatter.timeZone = calendar.timeZone
+        formatter.dateFormat = "yyyy-MM-dd"
+
+        func record(daysAgo: Int, outcome: AnagramProgress.Outcome?, score: Int) -> AnagramProgress {
+            let day = calendar.date(byAdding: .day, value: -daysAgo, to: today)!
+            let datedPuzzle = AnagramPuzzle(
+                id: "puzzle-\(daysAgo)", date: formatter.string(from: day),
+                puzzleNumber: daysAgo + 1, schemaVersion: 1,
+                answer: "TRIANGLE", acceptedAnswers: [], initialScramble: "RAGTLINE"
+            )
+            var progress = AnagramProgress(puzzle: datedPuzzle, now: day)
+            progress.outcome = outcome
+            progress.releaseDateScore = score
+            if outcome != nil { progress.completedAt = day.addingTimeInterval(60) }
+            return progress
+        }
+
+        let yesterday = record(daysAgo: 1, outcome: .solved, score: 4)
+        let twoDaysAgo = record(daysAgo: 2, outcome: .solved, score: 2)
+        let history = [twoDaysAgo, yesterday]
+        let new = AnagramHomeCardSummary(progress: nil, history: history, isReview: false, now: now, calendar: calendar)
+        #expect(new.status == .new)
+        #expect(new.score == nil)
+        #expect(new.streak == 2)
+
+        let playing = record(daysAgo: 0, outcome: nil, score: 0)
+        let inProgress = AnagramHomeCardSummary(progress: playing, history: history + [playing], isReview: false, now: now, calendar: calendar)
+        #expect(inProgress.status == .inProgress)
+        #expect(inProgress.streak == 2)
+
+        let solved = record(daysAgo: 0, outcome: .solved, score: 5)
+        let completed = AnagramHomeCardSummary(progress: solved, history: history + [solved], isReview: false, now: now, calendar: calendar)
+        #expect(completed.status == .solved)
+        #expect(completed.score == 5)
+        #expect(completed.streak == 3)
+
+        let gaveUp = record(daysAgo: 0, outcome: .gaveUp, score: 0)
+        let failed = AnagramHomeCardSummary(progress: gaveUp, history: history + [gaveUp], isReview: false, now: now, calendar: calendar)
+        #expect(failed.status == .gaveUp)
+        #expect(failed.score == 0)
+        #expect(failed.streak == 0)
+
+        let lateSolve = record(daysAgo: 0, outcome: .solved, score: 0)
+        let finished = AnagramHomeCardSummary(progress: lateSolve, history: history + [lateSolve], isReview: false, now: now, calendar: calendar)
+        #expect(finished.status == .finished)
+        #expect(finished.streak == 0)
+
+        let review = AnagramHomeCardSummary(progress: solved, history: history + [solved], isReview: true, now: now, calendar: calendar)
+        #expect(review.status == .solved)
+        #expect(review.score == 5)
+        #expect(review.streak == 0)
+
+        let oldSolve = record(daysAgo: 4, outcome: .solved, score: 5)
+        let interrupted = AnagramHomeCardSummary(progress: nil, history: [oldSolve], isReview: false, now: now, calendar: calendar)
+        #expect(interrupted.streak == 0)
+    }
+
     @Test func contentAndDistinctRepeatedTiles() {
         #expect(puzzle.isValid)
         #expect(repeated.isValid)

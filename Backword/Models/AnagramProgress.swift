@@ -241,3 +241,61 @@ extension AnagramProgress {
         try? FileManager.default.removeItem(at: directory.appendingPathComponent("\(date).json"))
     }
 }
+
+struct AnagramHomeCardSummary {
+    enum Status: Equatable {
+        case new
+        case inProgress
+        case solved
+        case finished
+        case gaveUp
+    }
+
+    let status: Status
+    let score: Int?
+    let streak: Int
+
+    init(progress: AnagramProgress?, history: [AnagramProgress], isReview: Bool, now: Date = Date(), calendar: Calendar = .current) {
+        switch progress?.outcome {
+        case .none:
+            status = progress == nil ? .new : .inProgress
+        case .some(.solved):
+            status = (isReview || (progress?.releaseDateScore ?? 0) > 0) ? .solved : .finished
+        case .some(.gaveUp):
+            status = .gaveUp
+        }
+        if progress?.isComplete == true, let progress {
+            score = isReview && progress.outcome == .solved
+                ? AnagramProgress.points(for: (progress.elapsedSecondsAtCompletion ?? 0) + progress.penaltySeconds)
+                : progress.releaseDateScore
+        } else {
+            score = nil
+        }
+        streak = isReview ? 0 : Self.currentStreak(in: history, now: now, calendar: calendar)
+    }
+
+    private static func currentStreak(in history: [AnagramProgress], now: Date, calendar: Calendar) -> Int {
+        let formatter = DateFormatter()
+        formatter.calendar = calendar
+        formatter.timeZone = calendar.timeZone
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd"
+
+        let records = Dictionary(history.filter { $0.date != "review" }.map { ($0.date, $0) }, uniquingKeysWith: { first, _ in first })
+        let today = calendar.startOfDay(for: now)
+        let todaysRecord = records[formatter.string(from: today)]
+        if todaysRecord?.isComplete == true, todaysRecord?.releaseDateScore == 0 { return 0 }
+
+        var day = (todaysRecord?.releaseDateScore ?? 0) > 0
+            ? today
+            : calendar.date(byAdding: .day, value: -1, to: today)!
+        var streak = 0
+        while let record = records[formatter.string(from: day)],
+              record.outcome == .solved, record.releaseDateScore > 0 {
+            streak += 1
+            guard let previousDay = calendar.date(byAdding: .day, value: -1, to: day) else { break }
+            day = previousDay
+        }
+        return streak
+    }
+}
