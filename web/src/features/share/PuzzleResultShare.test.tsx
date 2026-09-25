@@ -90,6 +90,24 @@ describe("result sharing", () => {
     }
   });
 
+  it("dismisses share actions when the player taps outside them", async () => {
+    const user = userEvent.setup();
+    const originalUserAgent = Object.getOwnPropertyDescriptor(navigator, "userAgent");
+    Object.defineProperty(navigator, "userAgent", { configurable: true, value: "Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36" });
+
+    try {
+      render(<PuzzleResultShare compact result={result} showPreview={false} />);
+      await user.click(screen.getByRole("button", { name: "Share result" }));
+      expect(screen.getByRole("dialog", { name: "Share result options" })).toBeInTheDocument();
+
+      await user.click(document.body);
+      expect(screen.queryByRole("dialog", { name: "Share result options" })).not.toBeInTheDocument();
+    } finally {
+      if (originalUserAgent) Object.defineProperty(navigator, "userAgent", originalUserAgent);
+      else delete (navigator as { userAgent?: string }).userAgent;
+    }
+  });
+
   it("identifies Chrome without treating Safari as Chrome", () => {
     expect(isChromeBrowser("Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36")).toBe(true);
     expect(isChromeBrowser("Mozilla/5.0 Version/18.5 Safari/605.1.15")).toBe(false);

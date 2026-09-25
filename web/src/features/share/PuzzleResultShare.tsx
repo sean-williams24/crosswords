@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAnalytics } from "../analytics/AnalyticsProvider";
 import { resultShareFinished, resultShareOpened, resultShared } from "../analytics/events";
 import type { PuzzleShareResult } from "./puzzleResult";
@@ -243,6 +243,7 @@ export function PuzzleResultShare({
   compact?: boolean;
 }) {
   const { track } = useAnalytics();
+  const shareControlRef = useRef<HTMLElement>(null);
   const [status, setStatus] = useState("");
   const [embeddedCardFile, setEmbeddedCardFile] = useState<File | null>(null);
   const [showShareActions, setShowShareActions] = useState(false);
@@ -264,6 +265,26 @@ export function PuzzleResultShare({
     });
     return () => { isCurrent = false; };
   }, [cardFormat, cardKey]);
+
+  useEffect(() => {
+    if (!showShareActions) return;
+
+    const dismissWhenTappingOutside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !shareControlRef.current?.contains(event.target)) {
+        setShowShareActions(false);
+      }
+    };
+    const dismissOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setShowShareActions(false);
+    };
+
+    document.addEventListener("pointerdown", dismissWhenTappingOutside);
+    document.addEventListener("keydown", dismissOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", dismissWhenTappingOutside);
+      document.removeEventListener("keydown", dismissOnEscape);
+    };
+  }, [showShareActions]);
 
   function currentCardFile() {
     return embeddedCardFile ?? (cardFormat === "svg" ? createImmediateCardFile(result) : null);
@@ -341,7 +362,7 @@ export function PuzzleResultShare({
     void shareCard();
   }
 
-  return <section aria-label="Share your result" className={`puzzle-result-share${showPreview ? "" : " puzzle-result-share--button-only"}${compact ? " puzzle-result-share--compact" : ""}`}>
+  return <section aria-label="Share your result" className={`puzzle-result-share${showPreview ? "" : " puzzle-result-share--button-only"}${compact ? " puzzle-result-share--compact" : ""}`} ref={shareControlRef}>
     {showPreview ? <div aria-hidden="true" className="puzzle-result-share__preview">
       <img alt="" className="puzzle-result-share__logo" src="/brand/backword-logo.png" />
       <strong>{result.gameName} #{result.issueNumber}</strong>
