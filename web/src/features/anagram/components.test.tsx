@@ -50,4 +50,13 @@ describe("Anagram accessible controls", () => {
     expect(screen.getByText(/Last 14 days:/)).toHaveTextContent("0 / 70");
     expect(screen.getAllByText("Best streak")).toHaveLength(1);
   });
+
+  it("centers the give-up confirmation in the viewport", () => {
+    render(<AnagramDialog history={[]} kind="giveUp" now={now}
+      onClose={vi.fn()} onConfirmGiveUp={vi.fn()} onConfirmHint={vi.fn()} onStart={vi.fn()}
+      progress={startProgress(puzzle, now)} puzzle={puzzle} shareResult={null}
+      stats={{ averageSeconds: null, bestStreak: 0, played: 0, rollingScore: 0, solved: 0, streak: 0 }} />);
+
+    expect(screen.getByRole("dialog", { name: "Give up" }).parentElement).toHaveClass("anagram-dialog-backdrop--centered");
+  });
 });

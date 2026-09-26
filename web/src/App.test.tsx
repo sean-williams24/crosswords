@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "./App";
 import { ThemeProvider } from "./features/theme/ThemeProvider";
@@ -55,6 +55,22 @@ describe("Backword website routes", () => {
     expect(reviewLabel).toBeInTheDocument();
     expect(reviewLabel.closest("main")).toHaveClass("anagram-main--8");
     expect(screen.getByRole("button", { name: "Start" })).toBeInTheDocument();
+  });
+
+  it("dismisses the Anagram information tip from its close button", async () => {
+    renderRoute("/anagram/review");
+
+    expect(await screen.findByRole("tooltip")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Dismiss how to play tip" }));
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
+
+  it("dismisses the Anagram information tip when the page is tapped", async () => {
+    renderRoute("/anagram/review");
+
+    expect(await screen.findByRole("tooltip")).toBeInTheDocument();
+    fireEvent.click(document.body);
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 
   it("keeps the marketing page and footer links at /info", () => {

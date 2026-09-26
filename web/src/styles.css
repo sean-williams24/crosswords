@@ -564,6 +564,35 @@ a {
   line-height: 1.1;
 }
 
+.bw-info-tip-anchor [role="tooltip"].has-close {
+  padding-right: 48px;
+}
+
+.bw-info-tip-close {
+  position: absolute;
+  z-index: 1;
+  top: 9px;
+  right: 10px;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  color: var(--app-text-primary);
+  background: rgb(var(--app-background-rgb) / 55%);
+  font: inherit;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.bw-info-tip-close:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 .bw-info-tip-anchor [role="tooltip"]::before {
   position: absolute;
   top: -7px;
@@ -2514,6 +2543,17 @@ html[data-theme="light"] {
   align-items: flex-end;
   justify-content: center;
   background: rgb(0 0 0 / 72%);
+}
+
+.anagram-dialog-backdrop--centered {
+  padding: 16px;
+  align-items: center;
+}
+
+.anagram-dialog-backdrop--centered .anagram-dialog {
+  border-bottom: 1px solid var(--app-border);
+  border-radius: 28px;
+  box-shadow: 0 12px 50px rgb(0 0 0 / 30%);
 }
 
 .anagram-dialog {

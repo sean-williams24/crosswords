@@ -101,6 +101,12 @@ export function AnagramPage() {
     setShowTip(true);
     if (!isReview) storage.markTipSeen();
   }, [isReview, puzzle, progress, storage]);
+  useEffect(() => {
+    if (!showTip) return;
+    const dismissTip = () => setShowTip(false);
+    document.addEventListener("click", dismissTip);
+    return () => document.removeEventListener("click", dismissTip);
+  }, [showTip]);
 
   const stats = useMemo(() => anagramStats(storage.loadAllProgress(), now), [progress, storage, now]);
   const history = useMemo(() => storage.loadAllProgress(), [progress, storage]);
@@ -141,7 +147,7 @@ export function AnagramPage() {
   if (needsPro) return <ProAccessRedirect feature="archive" returnTo={`/anagram/${date}`} />;
 
   return <div className="anagram-page">
-    <AnagramHeader onInfo={() => { setShowTip(false); setDialog("instructions"); }} onStats={() => setDialog("stats")} showTip={showTip} />
+    <AnagramHeader onDismissTip={() => setShowTip(false)} onInfo={() => { setShowTip(false); setDialog("instructions"); }} onStats={() => setDialog("stats")} showTip={showTip} />
     <main className={`anagram-main${puzzle ? ` anagram-main--${puzzle.answer.length}` : ""}`}>
       <div className="anagram-title-block">
         <h1>ANAGRAM</h1>
