@@ -215,6 +215,9 @@ and the existing safe sign-in error alert.
 Overlapping render requests for the same control are coalesced while Google
 Identity is loading, with the newest handlers retained, so development-mode
 effect replays cannot briefly create duplicate native controls.
+The web clips overflow on the Google button's container because its iframe can
+paint a white gutter outside the visible button in mobile Safari. The iframe
+remains focusable, and the container shows a focus outline when it has focus.
 
 The signed-in account surface is the Overall Rating sheet. Home and Settings
 send signed-in users there directly; a successful sign-in dismisses its

@@ -20,7 +20,8 @@ describe("SignInPage", () => {
     expect(appleButton).toHaveTextContent("Continue with Apple");
     const googleButton = container.querySelector(".auth-google-button");
     expect(googleButton).toHaveAttribute("aria-label", "Continue with Google");
-    expect(googleButton?.querySelector("img")).toHaveAttribute("src", "/brand/continue-with-google.png");
+    expect(googleButton?.querySelector(".auth-google-button__identity")).toBeInTheDocument();
+    expect(googleButton?.querySelector("img")).toBeNull();
     const providers = container.querySelector(".auth-content__providers--sign-in");
     expect(providers?.children[0]).toHaveClass("auth-google-button");
     expect(providers?.children[1]).toHaveClass("auth-apple-button");
@@ -35,12 +36,13 @@ describe("SignInPage", () => {
     expect(container.querySelector(".auth-content")).toBeInTheDocument();
   });
 
-  it("makes both provider buttons fill the sign-in area", () => {
+  it("clips the native Google button gutter and keeps both providers aligned", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
-    expect(styles).toMatch(/\.auth-apple-button\s*\{[^}]*\bwidth:\s*100%/);
+    expect(styles).toMatch(/\.auth-apple-button\s*\{[^}]*\bwidth:\s*min\(100%, 400px\)/);
     expect(styles).toMatch(/\.auth-google-button\s*\{[^}]*\bwidth:\s*100%/);
-    expect(styles).toMatch(/\.auth-google-button__identity\s*\{[^}]*\btransform:\s*scaleX\(var\(--auth-google-button-scale-x, 1\)\)/);
+    expect(styles).toMatch(/\.auth-google-button__identity\s*\{[^}]*\bwidth:\s*min\(100%, 400px\)[^}]*\boverflow:\s*hidden/);
+    expect(styles).toMatch(/\.auth-google-button__identity:focus-within\s*\{[^}]*\boutline:\s*2px solid/);
     expect(styles).toMatch(/\.auth-content__benefits--sign-in\s*\{[^}]*\bmargin-bottom:\s*40px[^}]*\bgap:\s*16px/);
     expect(styles).toMatch(/\.auth-content__providers--sign-in\s*\{[^}]*\bgap:\s*16px/);
     expect(styles).toMatch(/\.auth-content__note\s*\{[^}]*\bmargin:\s*28px 0 0/);
