@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { AppStoreBadge } from "../../../components/AppStoreBadge";
 import { AuthButton } from "../../auth/AuthButton";
@@ -109,7 +110,7 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
         ☰
       </button>
 
-      {menuIsOpen ? (
+      {menuIsOpen ? createPortal(
         <div
           className="bw-menu-backdrop"
           onMouseDown={(event) => {
@@ -182,7 +183,8 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
               </div>
             </nav>
           </section>
-        </div>
+        </div>,
+        document.body
       ) : null}
     </div>
   );

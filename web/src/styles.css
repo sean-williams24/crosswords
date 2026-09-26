@@ -244,7 +244,7 @@ a {
 
 .bw-menu-backdrop {
   position: fixed;
-  z-index: 20;
+  z-index: 1000;
   inset: 0;
   display: flex;
   padding: 0;
@@ -533,13 +533,13 @@ a {
 
 .bw-info-tip-anchor { position: relative; display: inline-flex; }
 
-.bw-info-tip-anchor [role="tooltip"] {
+.bw-info-tooltip {
   position: absolute;
   z-index: 5;
   top: calc(100% + 7px);
   right: -8px;
   width: min(270px, calc(100vw - 32px));
-  padding: 16px 18px;
+  padding: 16px 54px 16px 18px;
   border-radius: 26px;
   color: var(--app-text-primary);
   background: rgb(var(--app-surface-rgb) / 94%);
@@ -550,6 +550,34 @@ a {
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
   animation: bw-onboarding-tip-in 240ms ease-out both;
+}
+
+.bw-info-tooltip__close {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  color: var(--app-text-secondary);
+  background: transparent;
+  font: inherit;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.bw-info-tooltip__close:hover {
+  color: var(--app-text-primary);
+}
+
+.bw-info-tooltip__close:focus-visible {
+  color: var(--app-text-primary);
+  outline: 2px solid var(--app-accent);
 }
 
 .bw-info-tip-anchor [role="tooltip"] strong,
@@ -564,7 +592,7 @@ a {
   line-height: 1.1;
 }
 
-.bw-info-tip-anchor [role="tooltip"]::before {
+.bw-info-tooltip::before {
   position: absolute;
   top: -7px;
   right: 18px;
@@ -1219,7 +1247,8 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bw-page *, .bw-page *::before, .bw-page *::after {
+  .bw-page *, .bw-page *::before, .bw-page *::after,
+  .bw-menu-backdrop, .bw-menu-backdrop *, .bw-menu-backdrop *::before, .bw-menu-backdrop *::after {
     scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

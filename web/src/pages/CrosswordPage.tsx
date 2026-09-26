@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Footer } from "../components/Footer";
+import { InfoTooltip } from "../components/InfoTooltip";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { isCompletedOnReleaseDate, isLocalDateString, localDateString } from "../features/backword/date";
 import {
@@ -326,10 +327,11 @@ export function CrosswordPage() {
                 ⓘ
               </button>
               {showInstructionsTip ? (
-                <span id="cw-onboarding-info-tip" role="tooltip">
-                  <strong>How to play</strong>
-                  <span>Tap the info icon at any time to view game instructions</span>
-                </span>
+                <InfoTooltip
+                  description="Tap the info icon at any time to view game instructions"
+                  id="cw-onboarding-info-tip"
+                  onDismiss={() => setShowInstructionsTip(false)}
+                />
               ) : null}
             </span>
           </nav>

@@ -251,19 +251,23 @@ acknowledged.
 The one-time info-button TipKit popover is triggered as soon as that first-launch
 deck appears and ignores TipKit's global display-frequency throttle, so its
 navigation hint cannot be delayed by another tip.
-The web game uses the same independently persisted deck and a one-time native
-tooltip on its info button; its full instructions sheet remains available only
-on request for new players, while rule updates still open it automatically. On
-either platform, that tooltip is dismissed as the game reaches a terminal
-outcome so it cannot overlap the result-sharing control. Dismissing the final
-onboarding card does not dismiss the tooltip; only the info-button action or a
-terminal outcome does.
+The web game uses the same independently persisted deck, then shows a one-time
+tooltip on its info button only after the final card is dismissed. Its full
+instructions sheet remains available only on request for new players, while
+rule updates still open it automatically. Web info tooltips can be dismissed
+with their close button, a tap outside, or the info-button action. The Backword
+tooltip also closes when the game reaches a terminal outcome so it cannot
+overlap the result-sharing control.
 Once onboarding is complete, the normal timed guess explainer returns on every
 unstarted game until its first guess is submitted. This keeps the game
 immediately playable while ensuring an interrupted first visit resumes at the
 appropriate instruction.
 On either platform, dismissing the front card uses an in-place dissolve rather
 than directional movement, so the next card can rise cleanly from the deck.
+
+The web game menu backdrop renders in a document-level portal above game content.
+It must stay outside the game header and shell so their stacking and overflow
+rules cannot place onboarding cards or info tooltips over the menu.
 
 ## Spoiler-Safe Result Sharing
 

@@ -8,6 +8,7 @@ import { BackwordOnboardingCards } from "../features/backword/components/Backwor
 import { BackwordStats } from "../features/backword/components/BackwordStats";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { Footer } from "../components/Footer";
+import { InfoTooltip } from "../components/InfoTooltip";
 import { isCompletedOnReleaseDate, isLocalDateString, localDateString } from "../features/backword/date";
 import {
   BACKWORD_RULES_VERSION,
@@ -201,7 +202,7 @@ export function BackwordPage() {
       setShowInstructionsTip(false);
       return;
     }
-    if (onboardingSteps.length === 0 || settings.hasSeenInstructionsTip) return;
+    if (onboardingSteps.length > 0 || settings.hasSeenInstructionsTip) return;
     setShowInstructionsTip(true);
     setSettings(storage.markInstructionsTipSeen(settings));
   }, [loading, onboardingSteps.length, progress.outcome, settings, storage, word]);
@@ -363,10 +364,11 @@ export function BackwordPage() {
                 ⓘ
               </button>
               {showInstructionsTip ? (
-                <span id="bw-onboarding-info-tip" role="tooltip">
-                  <strong>How to play</strong>
-                  <span>Tap the info icon at any time to view game information and toggle difficulty</span>
-                </span>
+                <InfoTooltip
+                  description="Tap the info icon at any time to view game information and toggle difficulty"
+                  id="bw-onboarding-info-tip"
+                  onDismiss={() => setShowInstructionsTip(false)}
+                />
               ) : null}
             </span>
           </nav>

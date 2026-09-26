@@ -159,6 +159,25 @@ describe("GameMenu account actions", () => {
     scrollTo.mockRestore();
   });
 
+  it("layers the open menu outside game content and above other overlays", async () => {
+    const user = userEvent.setup();
+    const { container } = renderMenu();
+
+    await user.click(screen.getByRole("button", { name: "Open game menu" }));
+
+    const backdrop = screen.getByRole("dialog", { name: "Game navigation" }).parentElement;
+    expect(backdrop).toHaveClass("bw-menu-backdrop");
+    expect(backdrop?.parentElement).toBe(document.body);
+    expect(container).not.toContainElement(backdrop);
+
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const menuLayer = Number(styles.match(/\.bw-menu-backdrop \{[^}]*z-index:\s*(\d+)/)?.[1]);
+    const otherLayers = [...styles.matchAll(/z-index:\s*(\d+)/g)]
+      .map((match) => Number(match[1]))
+      .filter((layer) => layer !== menuLayer);
+    expect(menuLayer).toBeGreaterThan(Math.max(...otherLayers));
+  });
+
   it("defines the phone menu as a full viewport overlay with a larger close control", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
