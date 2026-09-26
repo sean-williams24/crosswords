@@ -21,6 +21,7 @@ describe("Footer", () => {
 
     expect(within(footer).getByRole("link", { name: "Pro Crossword" })).toHaveAttribute("href", "/pro?return_to=%2Fweekly-crossword");
     expect(within(footer).getByRole("link", { name: "Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive");
+    expect(within(footer).getByRole("link", { name: "Anagram" })).toHaveAttribute("href", "/anagram");
 
     auth.entitlement = { isPro: true, expiresAt: null };
     rerender(<MemoryRouter><Footer /></MemoryRouter>);

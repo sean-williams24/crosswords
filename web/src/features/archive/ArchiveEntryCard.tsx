@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import type { AnagramPuzzle } from "../anagram/engine";
+import { createAnagramStorage } from "../anagram/storage";
 import { backwordDashboardStatus } from "../home/backwordStatus";
 import { crosswordDashboardStatus, weeklyCrosswordDashboardStatus } from "../crossword/engine";
 import { createCrosswordStorage } from "../crossword/storage";
@@ -7,11 +9,11 @@ import type { DashboardStatus } from "../home/backwordStatus";
 import type { BackwordWord } from "../backword/types";
 import type { CrosswordDashboardStatus } from "../crossword/types";
 
-export type ArchiveGameType = "backword" | "daily" | "weekly";
+export type ArchiveGameType = "backword" | "daily" | "weekly" | "anagram";
 
 type ArchiveEntryCardProps = {
   gameType: ArchiveGameType;
-  item: BackwordWord | CrosswordPuzzle;
+  item: BackwordWord | CrosswordPuzzle | AnagramPuzzle;
   userId?: string;
 };
 
@@ -28,6 +30,7 @@ function destination(gameType: ArchiveGameType, date: string) {
     case "backword": return `/backword/${date}`;
     case "daily": return `/crossword/${date}`;
     case "weekly": return `/weekly-crossword/${date}`;
+    case "anagram": return `/anagram/${date}`;
   }
 }
 
@@ -38,6 +41,16 @@ function isCrosswordStatus(
 }
 
 export function ArchiveEntryCard({ gameType, item, userId }: ArchiveEntryCardProps) {
+  if (gameType === "anagram") {
+    const anagram = item as AnagramPuzzle;
+    const progress = createAnagramStorage(window.localStorage, { userId }).loadProgress(anagram);
+    const label = progress?.outcome === "solved" ? "Solved" : progress?.outcome === "gave_up" ? "Gave up" : progress ? "In Progress" : "New";
+    const tone = progress?.outcome === "solved" ? "solved" : progress?.outcome === "gave_up" ? "failed" : progress ? "progress" : "new";
+    return <Link aria-label={`${formattedDate(item.date)}, ${label}`} className="archive-entry-card archive-entry-card--anagram" to={destination(gameType, item.date)}>
+      <div className="archive-entry-card__main"><p>ANAGRAM</p><h3>#{anagram.puzzleNumber}</h3><time dateTime={item.date}>{formattedDate(item.date)}</time></div>
+      <div className="archive-entry-card__status"><span className={`home-status home-status--${tone}`}>{label}</span>{progress?.outcome ? <strong>{progress.releaseDateScore}/5</strong> : null}</div>
+    </Link>;
+  }
   const isBackword = gameType === "backword";
   const word = isBackword ? item as BackwordWord : null;
   const puzzle = isBackword ? null : item as CrosswordPuzzle;

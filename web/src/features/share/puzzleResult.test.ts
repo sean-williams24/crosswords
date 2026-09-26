@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { puzzleResultCardSvg } from "./PuzzleResultShare";
-import { buildBackwordShareResult, buildCrosswordShareResult, formatCompletionTime, shareUrl } from "./puzzleResult";
+import { buildAnagramShareResult, buildBackwordShareResult, buildCrosswordShareResult, formatCompletionTime, shareUrl } from "./puzzleResult";
 
 const rating = {
   days: [],
@@ -126,6 +126,50 @@ describe("puzzle share results", () => {
     expect(proCard).toContain('fill="#1e1d1b"');
     expect(proCard).toContain('rx="48" fill="none" stroke="url(#pro-border)"');
     expect(proCard).toContain('fill="#ebb838" font-family="Outfit, sans-serif" font-size="55"');
+    const anagramCard = puzzleResultCardSvg({ ...base, game: "anagram", gameName: "Anagram" });
+    expect(anagramCard).toContain('fill="#aa4d12"');
+    expect(anagramCard).toContain('fill="#f9d7bc"');
+    expect(anagramCard).toContain('fill="#fff1e5" font-family="Outfit, sans-serif" font-size="55"');
+  });
+
+  it("builds a spoiler-free Anagram result", () => {
+    const answer = "TRIANGLE";
+    const scramble = "RAGTLINE";
+    const result = buildAnagramShareResult({
+      puzzle: { puzzleNumber: 1 },
+      progress: {
+        schemaVersion: 1,
+        puzzleID: "anagram-id",
+        date: "2026-10-01",
+        startedAt: "2026-10-01T10:00:00.000Z",
+        trayOrder: [0, 1, 2, 3, 4, 5, 6, 7],
+        placedTileIDs: [3, 0, 5, 1, 6, 2, 4, 7],
+        placementHistory: [3, 0, 5, 1, 6, 2, 4, 7],
+        hintUsed: false,
+        hintSource: null,
+        penaltySeconds: 0,
+        lockedCellIndex: null,
+        lockedTileID: null,
+        outcome: "solved",
+        completedAt: "2026-10-01T10:00:45.000Z",
+        elapsedSecondsAtCompletion: 45,
+        releaseDateScore: 4,
+        updatedAt: "2026-10-01T10:00:45.000Z"
+      },
+      stats: { solved: 3, streak: 2 },
+      rating,
+      origin: "https://www.playbackword.com"
+    });
+
+    expect(result).toMatchObject({
+      game: "anagram",
+      issueNumber: 1,
+      score: 4,
+      primaryStat: { label: "SOLVE TIME", value: "0:45" },
+      timeStat: { label: "PENALTY", value: "+0s" }
+    });
+    expect(result.url).toContain("/anagram/2026-10-01?");
+    expect(`${result.caption}${puzzleResultCardSvg(result)}`).not.toMatch(new RegExp(`${answer}|${scramble}`, "i"));
   });
 
   it("makes a failed Backword result neutral and spoiler-safe", () => {

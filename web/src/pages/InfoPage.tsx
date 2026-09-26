@@ -7,8 +7,8 @@ export function InfoPage() {
     <>
       <ScreenshotSection
         title="Backword"
-        body="Three word games and a Word of the Day, all in one daily ritual to get your brain moving: Backword, a Quick Crossword, and a deeper weekly crossword."
-        secondaryBody="Build the highest score you can across all three games over a rolling 14-day period, climb the rating tiers, and see how long you can sustain the top level."
+        body="Four word games and a Word of the Day, all in one daily ritual: Backword, Anagram, a Quick Crossword, and a deeper weekly crossword."
+        secondaryBody="Build the highest score you can across all four games over a rolling 14-day period, climb the rating tiers, and see how long you can sustain the top level."
         headingLevel="h1"
         screenshotAlt="Backword home screen"
         screenshotPosition="right"

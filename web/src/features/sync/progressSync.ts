@@ -1,9 +1,11 @@
 import { backwordScore } from "../backword/engine";
+import { localDateString } from "../backword/date";
+import { normalizeAnagramProgress, pointsForSeconds, type AnagramProgress } from "../anagram/engine";
 import type { BackwordProgress } from "../backword/types";
 import type { CrosswordKind, CrosswordProgress } from "../crossword/types";
 import { supabase } from "../../lib/supabase";
 
-export type CloudGameType = "backword" | "daily_crossword" | "weekly_crossword";
+export type CloudGameType = "backword" | "daily_crossword" | "weekly_crossword" | "anagram";
 
 export type CloudRecord<T> = {
   game_type: CloudGameType;
@@ -52,6 +54,16 @@ export function backwordCloudRecord(progress: BackwordProgress): CloudRecord<Bac
   };
 }
 
+export function anagramCloudRecord(progress: AnagramProgress): CloudRecord<AnagramProgress> {
+  return {
+    game_type: "anagram", content_key: progress.date, release_date: progress.date,
+    schema_version: progress.schemaVersion,
+    status: progress.outcome === "solved" ? "solved" : progress.outcome === "gave_up" ? "gave_up" : "in_progress",
+    progress_rank: progress.placementHistory.length + (progress.hintUsed ? 100 : 0),
+    release_score: progress.releaseDateScore, client_updated_at: progress.updatedAt, payload: progress
+  };
+}
+
 export function crosswordCloudRecord(
   progress: CrosswordProgress,
   kind: CrosswordKind = progress.isWeekly ? "weekly" : "daily"
@@ -75,6 +87,30 @@ function statusRank(status: CloudRecord<unknown>["status"]) {
 
 /** Returns a whole-record winner; conflicting grids and guesses are never merged. */
 export function chooseBestProgress<T>(first: CloudRecord<T>, second: CloudRecord<T>): CloudRecord<T> {
+  if (first.game_type === "anagram" && second.game_type === "anagram") {
+    const a = normalizeAnagramProgress(first.payload as AnagramProgress);
+    const b = normalizeAnagramProgress(second.payload as AnagramProgress);
+    const aTerminal = a.outcome !== null;
+    const bTerminal = b.outcome !== null;
+    const winner = aTerminal !== bTerminal ? aTerminal ? first : second
+      : aTerminal && bTerminal ? Date.parse(a.completedAt ?? "") <= Date.parse(b.completedAt ?? "") ? first : second
+      : a.hintUsed !== b.hintUsed ? a.hintUsed ? first : second
+      : a.placementHistory.length !== b.placementHistory.length ? a.placementHistory.length > b.placementHistory.length ? first : second
+      : Date.parse(first.client_updated_at) >= Date.parse(second.client_updated_at) ? first : second;
+    const chosen = winner === first ? a : b;
+    const earliestStart = new Date(Math.min(Date.parse(a.startedAt), Date.parse(b.startedAt))).toISOString();
+    const penaltySeconds = Math.max(a.penaltySeconds, b.penaltySeconds);
+    const payload = { ...chosen, startedAt: earliestStart, hintUsed: a.hintUsed || b.hintUsed,
+      hintSource: chosen.hintSource ?? a.hintSource ?? b.hintSource, penaltySeconds,
+      releaseDateScore: Math.max(a.releaseDateScore, b.releaseDateScore) };
+    if (payload.completedAt) {
+      payload.elapsedSecondsAtCompletion = Math.max(0, Math.floor((Date.parse(payload.completedAt) - Date.parse(earliestStart)) / 1000));
+      payload.releaseDateScore = payload.outcome === "solved"
+        && localDateString(new Date(payload.completedAt)) === payload.date
+        ? pointsForSeconds(payload.elapsedSecondsAtCompletion + penaltySeconds) : 0;
+    }
+    return { ...winner, release_score: payload.releaseDateScore, payload: payload as T };
+  }
   if (first.status === "solved" || second.status === "solved") {
     if (first.status !== "solved") return second;
     if (second.status !== "solved") return first;

@@ -22,7 +22,7 @@ const testWordOfTheDay = vi.hoisted(() => ({
 }));
 
 const testIssueNumbers = vi.hoisted(() => ({
-  value: { backword: 121, crossword: 122, weeklyCrossword: 23 }
+  value: { backword: 121, anagram: 1, crossword: 122, weeklyCrossword: 23 }
 }));
 
 vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => testAuth.value }));
@@ -64,15 +64,15 @@ describe("web home dashboard", () => {
     testAuth.value = { entitlement: null, ready: true, user: null };
     testWordOfTheDay.notify = null;
     testWordOfTheDay.state = "loaded";
-    testIssueNumbers.value = { backword: 121, crossword: 122, weeklyCrossword: 23 };
+    testIssueNumbers.value = { backword: 121, anagram: 1, crossword: 122, weeklyCrossword: 23 };
   });
 
-  it("keeps four non-interactive skeleton cards visible until Word of the Day loads", () => {
+  it("keeps five non-interactive skeleton cards visible until Word of the Day loads", () => {
     testWordOfTheDay.state = "loading";
     const { container } = renderDashboard();
 
     expect(screen.getByRole("status")).toHaveTextContent("Loading daily games");
-    expect(container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(4);
+    expect(container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(5);
     expect(screen.queryByRole("link", { name: "Quick Crossword" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Pro Crossword/i })).not.toBeInTheDocument();
 
@@ -88,7 +88,7 @@ describe("web home dashboard", () => {
     testAuth.value.ready = false;
     const view = renderDashboard();
 
-    expect(view.container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(4);
+    expect(view.container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(5);
 
     testAuth.value.ready = true;
     view.rerender(
@@ -137,8 +137,10 @@ describe("web home dashboard", () => {
     expect(screen.getByLabelText("Issue #121")).toHaveClass("home-game-card__issue");
     expect(screen.getByLabelText("Issue #122")).toHaveClass("home-game-card__issue");
     expect(screen.getByLabelText("Issue #23")).toHaveClass("weekly-card__issue");
-    expect(screen.getAllByLabelText("Status: New")).toHaveLength(2);
+    expect(screen.getAllByLabelText("Status: New")).toHaveLength(3);
+    expect(screen.getByRole("link", { name: "Anagram, issue #1" })).toHaveAttribute("href", "/anagram");
     expect(screen.getByRole("link", { name: "Backword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dbackword");
+    expect(screen.getByRole("link", { name: "Anagram Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Danagram");
     expect(screen.getByRole("link", { name: "Quick Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Ddaily");
     expect(screen.getByRole("link", { name: "Pro Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dweekly");
   });

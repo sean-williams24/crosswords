@@ -25,6 +25,7 @@ const sync = vi.hoisted(() => ({
 
 vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => testAuth.value }));
 vi.mock("../features/sync/progressSync", () => ({
+  anagramCloudRecord: (progress: { date: string }) => ({ release_date: progress.date, release_score: 0, payload: progress }),
   backwordCloudRecord: (progress: { date: string }) => ({ release_date: progress.date, release_score: 0, payload: progress }),
   crosswordCloudRecord: (progress: unknown) => progress,
   fetchCloudProgress: sync.fetchCloudProgress,
@@ -71,7 +72,7 @@ describe("PlayerProfilePage", () => {
     expect(proStatus?.querySelector(".player-profile__pro-logo")).toHaveAttribute("src", "/brand/backword-pro.png");
     expect(screen.queryByRole("link", { name: /Manage web subscription through Link/ })).not.toBeInTheDocument();
     expect(screen.getByText("0 / 150 pts")).toBeInTheDocument();
-    await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(4));
     expect(screen.getByText("Weekly")).toBeInTheDocument();
 
     const rating = screen.getByLabelText("Overall rating");
@@ -212,7 +213,7 @@ describe("PlayerProfilePage", () => {
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
     resolveFetch([]);
 
-    await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(fetchCallsBeforeRender + 3));
+    await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(fetchCallsBeforeRender + 4));
   });
 
   it("compensates for transparent padding around the Pro logo", () => {

@@ -1,9 +1,12 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { localDateString, localWeekStartString } from "../features/backword/date";
 import { createBackwordStorage } from "../features/backword/storage";
+import { createAnagramStorage } from "../features/anagram/storage";
+import { anagramStats } from "../features/anagram/engine";
+import { AnagramHomeCard } from "../features/anagram/AnagramHomeCard";
 import { backwordDashboardScore, backwordDashboardStatus } from "../features/home/backwordStatus";
 import { HomeProfileRatingLink } from "../features/home/HomeProfileRatingLink";
 import { crosswordDashboardStatus, weeklyCrosswordDashboardStatus } from "../features/crossword/engine";
@@ -18,7 +21,7 @@ import { useAuth } from "../features/auth/AuthProvider";
 import { HomeDashboardLoadingCard } from "../features/home/HomeDashboardLoadingCard";
 import { HomeArchiveLink } from "../features/home/HomeArchiveLink";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
-import { backwordCloudRecord, crosswordCloudRecord } from "../features/sync/progressSync";
+import { anagramCloudRecord, backwordCloudRecord, crosswordCloudRecord } from "../features/sync/progressSync";
 
 function formattedToday() {
   return new Intl.DateTimeFormat("en-US", {
@@ -30,31 +33,48 @@ function formattedToday() {
 
 export function HomeDashboardPage() {
   const { entitlement, ready, user } = useAuth();
+  const [today, setToday] = useState(localDateString);
+  useEffect(() => {
+    const timer = window.setInterval(() => setToday(localDateString()), 30_000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const issueNumbers = useHomeGameIssueNumbers(today);
   const [wordOfTheDayState, setWordOfTheDayState] = useState<WordOfTheDayLoadState>("loading");
-  const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, localDateString(), user?.id), [user?.id]);
-  const backwordScore = useMemo(() => backwordDashboardScore(window.localStorage, localDateString(), user?.id), [user?.id]);
+  const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, today, user?.id), [today, user?.id]);
+  const backwordScore = useMemo(() => backwordDashboardScore(window.localStorage, today, user?.id), [today, user?.id]);
+  const anagramProgress = useMemo(() => {
+    const storage = createAnagramStorage(window.localStorage, { userId: user?.id });
+    const puzzle = storage.loadCachedPuzzle(today);
+    return puzzle ? storage.loadProgress(puzzle) : null;
+  }, [today, user?.id, issueNumbers.anagram]);
+  const anagramLength = useMemo(() => createAnagramStorage().loadCachedPuzzle(today)?.answer.length ?? null, [today, issueNumbers.anagram]);
+  const anagramStreak = useMemo(() => anagramStats(createAnagramStorage(window.localStorage, { userId: user?.id }).loadAllProgress()).streak, [today, user?.id]);
+  const anagramStatus = anagramProgress?.outcome === "solved" ? { label: "Solved", tone: "solved" as const }
+    : anagramProgress?.outcome === "gave_up" ? { label: "Gave up", tone: "failed" as const }
+    : anagramProgress ? { label: "In Progress", tone: "progress" as const } : { label: "New", tone: "new" as const };
   const crosswordStatus = useMemo(() => {
     const storage = createCrosswordStorage(window.localStorage, { userId: user?.id });
     const now = new Date();
-    return crosswordDashboardStatus(storage.loadProgressForDate(localDateString(now)), now, storage.loadAllProgress());
-  }, [user?.id]);
+    return crosswordDashboardStatus(storage.loadProgressForDate(today), now, storage.loadAllProgress());
+  }, [today, user?.id]);
   const weeklyCrosswordStatus = useMemo(() => {
     const storage = createCrosswordStorage(window.localStorage, { kind: "weekly", userId: user?.id });
     const now = new Date();
     return weeklyCrosswordDashboardStatus(storage.loadProgressForDate(localWeekStartString(now)), now, storage.loadAllProgress());
-  }, [user?.id]);
+  }, [today, user?.id]);
   const profileRating = useMemo(() => {
     const backwordStorage = createBackwordStorage(window.localStorage, { userId: user?.id });
+    const anagramStorage = createAnagramStorage(window.localStorage, { userId: user?.id });
     const dailyCrosswordStorage = createCrosswordStorage(window.localStorage, { userId: user?.id });
     const weeklyCrosswordStorage = createCrosswordStorage(window.localStorage, { kind: "weekly", userId: user?.id });
     return buildPlayerProfileRating({
       backword: backwordStorage.loadAllProgress().map(backwordCloudRecord),
+      anagram: anagramStorage.loadAllProgress().map(anagramCloudRecord),
       dailyCrossword: dailyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
       weeklyCrossword: weeklyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress))
     }, entitlement?.isPro === true);
-  }, [entitlement?.isPro, user?.id]);
+  }, [entitlement?.isPro, user?.id, today, issueNumbers.firstAnagramRelease]);
   const isLoading = !ready || wordOfTheDayState === "loading";
-  const issueNumbers = useHomeGameIssueNumbers();
 
   return (
     <main className="home-dashboard">
@@ -82,9 +102,16 @@ export function HomeDashboardPage() {
               <>
                 <HomeDashboardLoadingCard variant="backword" />
                 <HomeDashboardLoadingCard variant="crossword" />
+                <HomeDashboardLoadingCard variant="crossword" />
               </>
             ) : (
               <>
+                {issueNumbers.anagram !== null ? <div className="home-dashboard__game">
+                  <AnagramHomeCard issueNumber={issueNumbers.anagram} length={anagramLength}
+                    score={anagramProgress?.outcome ? anagramProgress.releaseDateScore : null}
+                    status={anagramStatus} streak={anagramStreak} />
+                  <HomeArchiveLink to="/archive?game=anagram">Anagram Archive</HomeArchiveLink>
+                </div> : null}
                 <div className="home-dashboard__game">
                   <DailyGameCard
                     className="home-game-card--backword"

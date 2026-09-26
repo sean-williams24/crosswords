@@ -6,7 +6,7 @@ import { HomeGameIssueNumber } from "./HomeGameIssueNumber";
 
 type DailyGameCardProps = {
   children?: ReactNode;
-  className: "home-game-card--backword" | "home-game-card--crossword";
+  className: "home-game-card--backword" | "home-game-card--crossword" | "home-game-card--anagram";
   description?: string;
   destination: string;
   issueNumber?: number | null;

@@ -19,6 +19,7 @@ export type PlayerProfileDay = {
   dailyCrossword: number;
   weeklyCrossword: number | null;
   backword: number;
+  anagram: number;
   total: number;
 };
 
@@ -80,6 +81,7 @@ export function buildPlayerProfileRating(
     backword: BackwordProfileProgress[];
     dailyCrossword: ProfileProgress[];
     weeklyCrossword: ProfileProgress[];
+    anagram?: ProfileProgress[];
   },
   isPro: boolean,
   now = new Date()
@@ -90,19 +92,25 @@ export function buildPlayerProfileRating(
   const dailyScores = scoreMap(records.dailyCrossword, visibleDates);
   const backwordScores = backwordScoreMap(records.backword, visibleDates);
   const weeklyScores = scoreMap(records.weeklyCrossword, visibleDates);
+  const firstRelease = typeof window !== "undefined" ? window.localStorage.getItem("backword:web:anagram:first-release:v1") : null;
+  const releasedAnagramDates = new Set(dates.filter((date) => firstRelease !== null && date >= firstRelease));
+  const anagramScores = scoreMap(records.anagram ?? [], releasedAnagramDates);
   const days = dates.map((date) => {
     const dailyCrossword = dailyScores.get(date) ?? 0;
     const backword = backwordScores.get(date) ?? 0;
+    const anagram = anagramScores.get(date) ?? 0;
     const weeklyCrossword = isPro ? weeklyScores.get(date) ?? null : null;
     return {
       date,
       dailyCrossword,
       weeklyCrossword,
       backword,
-      total: dailyCrossword + backword + (weeklyCrossword ?? 0)
+      anagram,
+      total: dailyCrossword + backword + anagram + (weeklyCrossword ?? 0)
     };
   });
-  const maxPoints = 140 + (isPro ? 10 : 0);
+  const anagramPossiblePoints = firstRelease ? dates.filter((date) => date >= firstRelease).length * 5 : 0;
+  const maxPoints = 140 + (isPro ? 10 : 0) + anagramPossiblePoints;
   const totalPoints = days.reduce((total, day) => total + day.total, 0);
   const fraction = Math.min(totalPoints / maxPoints, 1);
   const tier = [...tierThresholds].reverse().find(([, threshold]) => fraction >= threshold)?.[0] ?? "Novice";

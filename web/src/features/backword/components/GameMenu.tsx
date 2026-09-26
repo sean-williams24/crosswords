@@ -165,6 +165,7 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
               </section> : null}
               <Link className="bw-menu-link bw-menu-link--primary" to="/">Home</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/backword">Backword</Link>
+              <Link className="bw-menu-link bw-menu-link--primary" to="/anagram">Anagram</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/crossword">Quick Crossword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to={weeklyCrosswordDestination}>Pro Crossword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to={archiveDestination}>Archive</Link>

@@ -1,10 +1,11 @@
 import { backwordScore } from "../backword/engine";
+import { elapsedSeconds, type AnagramProgress, type AnagramPuzzle } from "../anagram/engine";
 import type { BackwordProgress, BackwordStats, BackwordWord } from "../backword/types";
 import { completedInReleaseWindow, formatDuration, type WeeklyCrosswordStats } from "../crossword/engine";
 import type { CrosswordKind, CrosswordProgress, CrosswordPuzzle, CrosswordStats } from "../crossword/types";
 import type { PlayerProfileRating } from "../profile/profileRating";
 
-export type ShareGame = "backword" | "daily_crossword" | "weekly_crossword";
+export type ShareGame = "backword" | "daily_crossword" | "weekly_crossword" | "anagram";
 
 export type PuzzleShareResult = {
   game: ShareGame;
@@ -29,7 +30,26 @@ function gamePath(game: ShareGame, date: string) {
     case "backword": return `/backword/${date}`;
     case "daily_crossword": return `/crossword/${date}`;
     case "weekly_crossword": return `/weekly-crossword/${date}`;
+    case "anagram": return `/anagram/${date}`;
   }
+}
+
+export function buildAnagramShareResult({ puzzle, progress, stats, rating, origin }: {
+  puzzle: Pick<AnagramPuzzle, "puzzleNumber">;
+  progress: AnagramProgress;
+  stats: { solved: number; streak: number };
+  rating: PlayerProfileRating;
+  origin?: string;
+}): PuzzleShareResult {
+  return withCaption({
+    game: "anagram", gameName: "Anagram", issueNumber: puzzle.puzzleNumber,
+    date: progress.date, outcome: progress.outcome === "solved" ? "SOLVED" : "COMPLETED",
+    score: progress.releaseDateScore, streak: stats.streak, totalGamesSolved: stats.solved,
+    ratingTier: rating.tier, ratingPoints: rating.totalPoints, ratingMaxPoints: rating.maxPoints,
+    primaryStat: { label: "SOLVE TIME", value: `${Math.floor(elapsedSeconds(progress) / 60)}:${String(elapsedSeconds(progress) % 60).padStart(2, "0")}` },
+    timeStat: { label: "PENALTY", value: `+${progress.penaltySeconds}s` },
+    url: shareUrl("anagram", progress.date, origin)
+  });
 }
 
 export function shareUrl(game: ShareGame, date: string, origin = window.location.origin): string {

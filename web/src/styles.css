@@ -2148,3 +2148,736 @@ html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); 
   .home-dashboard *, .weekly-modal-backdrop *, .crossword-coming-soon * { transition-duration: 0.01ms !important; }
   .home-dashboard-loading-card::before { animation: none; }
 }
+
+/* Anagram mirrors the iOS game shell while widening the board for web viewports. */
+:root {
+  --anagram-accent: #ffa65c;
+  --anagram-surface: #402b21;
+  --anagram-ink: #ffedd9;
+  --anagram-on-accent: #211208;
+  --anagram-secondary: #777777;
+  --anagram-line: #ffa65c;
+}
+
+html[data-theme="light"] {
+  --anagram-accent: #b3330a;
+  --anagram-surface: #ffeddb;
+  --anagram-ink: #5c2614;
+  --anagram-on-accent: #ffffff;
+  --anagram-secondary: #777777;
+  --anagram-line: #b3330a;
+}
+
+.anagram-page {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  color: var(--app-text-primary);
+  background: var(--app-background);
+}
+
+.anagram-header {
+  display: flex;
+  width: 100%;
+  min-height: 56px;
+  margin: 0;
+  padding: max(6px, env(safe-area-inset-top)) clamp(16px, 4vw, 60px) 4px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.anagram-header > nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.anagram-main {
+  --anagram-letter-size: clamp(60px, 8vw, 88px);
+  --anagram-tray-letter-size: clamp(52px, 7vw, 76px);
+  --anagram-answer-gap: clamp(7px, 1.3vw, 14px);
+  display: flex;
+  width: min(calc(100% - 40px), 960px);
+  min-height: calc(100svh - 220px);
+  margin: 4px auto 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.anagram-main--7 { --anagram-content-width: calc((7 * var(--anagram-letter-size)) + (6 * var(--anagram-answer-gap))); }
+.anagram-main--8 { --anagram-content-width: calc((8 * var(--anagram-letter-size)) + (7 * var(--anagram-answer-gap))); }
+.anagram-main--9 { --anagram-content-width: calc((9 * var(--anagram-letter-size)) + (8 * var(--anagram-answer-gap))); }
+
+.anagram-title-block,
+.anagram-gameplay-content {
+  width: min(100%, var(--anagram-content-width));
+  margin-inline: auto;
+}
+
+.anagram-title-block {
+  flex: 0 0 auto;
+  text-align: left;
+}
+
+.anagram-title-block h1 {
+  margin: 0;
+  color: var(--anagram-accent);
+  font-size: clamp(34px, 3.5vw, 44px);
+  font-weight: 700;
+  letter-spacing: .01em;
+  line-height: 1;
+}
+
+.anagram-title-block p {
+  margin: 8px 0 0;
+  color: var(--anagram-secondary);
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.2;
+}
+
+.anagram-start {
+  display: grid;
+  width: min(100%, 620px);
+  margin: auto;
+  padding: clamp(26px, 4vw, 42px);
+  border: 1px solid var(--anagram-line);
+  color: var(--anagram-ink);
+  background: var(--anagram-surface);
+  gap: 22px;
+  text-align: left;
+}
+
+.anagram-start > div {
+  display: flex;
+  flex-direction: column;
+  color: var(--anagram-accent);
+  font-size: clamp(24px, 3.5vw, 34px);
+  line-height: 1.16;
+}
+
+.anagram-start p,
+.anagram-start small {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.anagram-start p {
+  font-size: 17px;
+}
+
+.anagram-start small {
+  color: var(--anagram-accent);
+  font-size: 14px;
+}
+
+.anagram-primary {
+  min-height: 52px;
+  padding: 10px 26px;
+  border: 1px solid var(--anagram-accent);
+  color: var(--anagram-on-accent);
+  background: var(--anagram-accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.anagram-board {
+  display: flex;
+  min-height: max(500px, calc(100svh - 344px));
+  padding: clamp(24px, 3.5vh, 40px) 0 24px;
+  flex: 1;
+  flex-direction: column;
+}
+
+.anagram-gameplay-content {
+  flex: 0 0 auto;
+}
+
+.anagram-timer {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--anagram-accent);
+}
+
+.anagram-timer > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.anagram-timer svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+
+.anagram-timer strong {
+  font-size: clamp(23px, 2.5vw, 29px);
+  line-height: 1;
+}
+
+.anagram-penalty {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.anagram-answer-block {
+  margin-top: clamp(26px, 3.5vh, 42px);
+}
+
+.anagram-answer-block > p {
+  margin: 0 0 18px;
+  color: var(--anagram-accent);
+  font-size: clamp(15px, 2vw, 19px);
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+
+.anagram-answer {
+  display: grid;
+  width: 100%;
+  align-items: center;
+  gap: var(--anagram-answer-gap);
+}
+
+.anagram-answer--7 { grid-template-columns: repeat(7, var(--anagram-letter-size)); }
+.anagram-answer--8 { grid-template-columns: repeat(8, var(--anagram-letter-size)); }
+.anagram-answer--9 { grid-template-columns: repeat(9, var(--anagram-letter-size)); }
+
+.anagram-cell,
+.anagram-tile {
+  display: grid;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 0;
+  font-size: clamp(25px, 4vw, 38px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.anagram-cell {
+  min-width: 0;
+  border: 1px solid var(--anagram-line);
+  color: var(--anagram-ink);
+  background: var(--anagram-surface);
+}
+
+.anagram-cell.is-filled {
+  color: var(--anagram-on-accent);
+  background: var(--anagram-accent);
+}
+
+.anagram-cell.is-locked {
+  border-width: 3px;
+}
+
+.anagram-note {
+  margin: 16px 0 0;
+  color: var(--anagram-accent);
+  line-height: 1.45;
+}
+
+.anagram-review-reset {
+  min-height: 48px;
+  margin-top: 24px;
+  padding: 0;
+  border: 0;
+  color: var(--anagram-accent);
+  background: transparent;
+  font: inherit;
+  font-size: 18px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.anagram-gameplay-dock {
+  width: 100%;
+  margin: clamp(60px, 8vh, 88px) auto 0;
+  padding-top: 0;
+}
+
+.anagram-tray {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(9px, 1.5vw, 14px);
+}
+
+.anagram-tray .anagram-letter-row {
+  display: contents;
+}
+
+.anagram-letter-row {
+  display: flex;
+  justify-content: center;
+  gap: clamp(9px, 1.5vw, 14px);
+}
+
+.anagram-tile {
+  width: var(--anagram-tray-letter-size);
+  padding: 0;
+  border: 0;
+  color: var(--anagram-on-accent);
+  background: var(--anagram-accent);
+  cursor: pointer;
+}
+
+.anagram-tile:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.anagram-tile--empty {
+  color: transparent;
+  background: var(--anagram-surface);
+}
+
+.anagram-controls,
+.anagram-secondary-controls {
+  display: grid;
+  width: min(66.667%, 510px);
+  margin-inline: auto;
+  gap: clamp(7px, 1.2vw, 12px);
+}
+
+.anagram-controls {
+  margin-top: clamp(34px, 5vh, 52px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.anagram-secondary-controls {
+  margin-top: clamp(10px, 1.8vw, 18px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.anagram-controls button,
+.anagram-secondary-controls button {
+  min-height: 42px;
+  padding: 6px 11px;
+  border: 1px solid var(--anagram-line);
+  border-radius: 0;
+  color: var(--anagram-accent);
+  background: var(--anagram-surface);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.anagram-dialog button:not(.anagram-dialog-close) {
+  min-height: 54px;
+  padding: 9px 16px;
+  border: 1px solid var(--anagram-line);
+  border-radius: 0;
+  color: var(--anagram-accent);
+  background: var(--anagram-surface);
+  font: inherit;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.anagram-controls button:hover:not(:disabled),
+.anagram-secondary-controls button:hover:not(:disabled),
+.anagram-dialog button:not(.anagram-dialog-close):hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.anagram-controls button:focus-visible,
+.anagram-secondary-controls button:focus-visible,
+.anagram-dialog button:focus-visible,
+.anagram-review-reset:focus-visible,
+.anagram-primary:focus-visible {
+  outline: 2px solid var(--anagram-accent);
+  outline-offset: 3px;
+}
+
+.anagram-controls button:disabled,
+.anagram-secondary-controls button:disabled,
+.anagram-tile:disabled {
+  cursor: default;
+  opacity: .4;
+}
+
+.anagram-dialog-backdrop {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: flex;
+  padding: 24px 16px 0;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgb(0 0 0 / 72%);
+}
+
+.anagram-dialog {
+  position: relative;
+  width: min(100%, 720px);
+  max-height: 91svh;
+  overflow: auto;
+  padding: 38px clamp(22px, 5vw, 48px) 46px;
+  border: 1px solid var(--app-border);
+  border-bottom: 0;
+  border-radius: 28px 28px 0 0;
+  color: var(--app-text-primary);
+  background: var(--app-surface);
+  box-shadow: 0 -12px 50px rgb(0 0 0 / 30%);
+  text-align: left;
+}
+
+.anagram-dialog h2 {
+  margin: 0 58px 26px 0;
+  color: var(--app-text-primary);
+  font-size: clamp(26px, 4vw, 34px);
+  line-height: 1.15;
+}
+
+.anagram-dialog p {
+  line-height: 1.55;
+}
+
+.anagram-dialog-close {
+  position: absolute;
+  top: 23px;
+  right: 24px;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--app-border);
+  border-radius: 50%;
+  color: var(--app-text-primary);
+  background: var(--app-control);
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.anagram-dialog button:not(.anagram-dialog-close) {
+  margin: 10px 10px 0 0;
+}
+
+.anagram-dialog button.anagram-primary {
+  color: var(--anagram-on-accent);
+  background: var(--anagram-accent);
+}
+
+.anagram-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.anagram-completion-stats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.anagram-stats span {
+  display: flex;
+  min-height: 92px;
+  padding: 14px;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--anagram-line) 45%, transparent);
+  color: var(--app-text-secondary);
+  background: var(--app-elevated);
+  gap: 4px;
+  text-align: center;
+}
+
+.anagram-stats strong {
+  color: var(--app-text-primary);
+  font-size: 24px;
+}
+
+.anagram-result-answer {
+  margin: 8px 0 26px;
+  color: var(--anagram-accent);
+  font-size: clamp(27px, 5vw, 38px);
+  font-weight: 700;
+  letter-spacing: .1em;
+  overflow-wrap: anywhere;
+}
+
+.anagram-stats-total {
+  padding: 10px 0;
+  color: var(--anagram-accent);
+}
+
+.anagram-rating {
+  height: 10px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--anagram-line) 55%, transparent);
+  background: var(--anagram-surface);
+}
+
+.anagram-rating > span {
+  display: block;
+  height: 100%;
+  background: var(--anagram-accent);
+}
+
+.anagram-history {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.anagram-history h3 {
+  margin: 0 0 14px;
+  color: var(--anagram-accent);
+  font-size: 17px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.anagram-history__row {
+  display: grid;
+  padding: 12px 0;
+  grid-template-columns: minmax(0, 1fr) 72px 88px;
+  gap: 8px;
+  border-top: 1px solid var(--app-border);
+  font-size: 14px;
+}
+
+.anagram-history__row > :not(:first-child) {
+  text-align: right;
+}
+
+.anagram-history__heading {
+  color: var(--app-text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.home-game-card--anagram,
+.archive-entry-card--anagram {
+  color: #fff4e8;
+  background: linear-gradient(145deg, #9c4515, #71320e);
+}
+
+.home-game-card--anagram {
+  display: grid;
+  padding: 16px;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  justify-content: stretch;
+  border-radius: 0;
+  gap: 12px;
+  text-align: left;
+}
+
+.home-game-card--anagram .home-status {
+  border-color: #ffd4ad;
+  color: #fff4e8;
+}
+
+.home-game-card--anagram .home-game-card__title,
+.home-game-card--anagram .home-game-card__description {
+  color: #fff4e8;
+}
+
+.anagram-home-card__identity,
+.anagram-home-card__details {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.anagram-home-card__identity {
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.anagram-home-card__identity strong {
+  font-size: clamp(17px, 2vw, 23px);
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.anagram-home-card__identity > span {
+  opacity: .84;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.anagram-home-card__details {
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 5px;
+  font-size: 13px;
+  text-align: right;
+}
+
+.home-game-card--anagram .home-game-card__score strong {
+  color: #fff4e8;
+}
+
+.home-game-card--anagram .home-game-card__score small {
+  color: #ffdfc5;
+}
+
+.home-game-card--anagram .home-game-card__streak {
+  min-height: 24px;
+  border-radius: 0;
+  background: rgb(46 22 7 / 45%);
+}
+
+.player-profile__table {
+  min-width: 490px;
+}
+
+.player-profile__table-heading,
+.player-profile__table-row {
+  grid-template-columns: minmax(120px, 1fr) 58px 74px 74px 52px;
+}
+
+.player-profile__table.has-weekly {
+  min-width: 560px;
+}
+
+.player-profile__table.has-weekly .player-profile__table-heading,
+.player-profile__table.has-weekly .player-profile__table-row {
+  grid-template-columns: minmax(120px, 1fr) 58px 66px 74px 74px 52px;
+}
+
+@media (max-width: 700px) {
+  .anagram-header,
+  .anagram-main {
+    width: min(calc(100% - 32px), 960px);
+  }
+
+  .anagram-header {
+    width: 100%;
+    min-height: 54px;
+    margin-top: 0;
+  }
+
+  .anagram-main {
+    --anagram-letter-size: clamp(60px, 17vw, 78px);
+    --anagram-tray-letter-size: clamp(52px, 15vw, 68px);
+    --anagram-answer-gap: clamp(4px, 1.3vw, 8px);
+    min-height: calc(100svh - 204px);
+    margin-top: 6px;
+  }
+
+  .anagram-title-block h1 {
+    font-size: clamp(34px, 9vw, 42px);
+  }
+
+  .anagram-title-block p {
+    margin-top: 7px;
+    font-size: 16px;
+  }
+
+  .anagram-board {
+    min-height: max(520px, calc(100svh - 294px));
+    padding-top: 28px;
+  }
+
+  .anagram-answer {
+    width: 100%;
+    gap: var(--anagram-answer-gap);
+  }
+
+  .anagram-answer--7 {
+    max-width: calc((7 * var(--anagram-letter-size)) + (6 * var(--anagram-answer-gap)));
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  .anagram-answer--8 {
+    max-width: calc((8 * var(--anagram-letter-size)) + (7 * var(--anagram-answer-gap)));
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  .anagram-answer--9 {
+    max-width: calc((9 * var(--anagram-letter-size)) + (8 * var(--anagram-answer-gap)));
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+  }
+
+  .anagram-answer .anagram-cell {
+    font-size: clamp(18px, 6vw, 32px);
+  }
+
+  .anagram-tray {
+    flex-direction: column;
+  }
+
+  .anagram-tray .anagram-letter-row {
+    display: flex;
+  }
+}
+
+@media (max-width: 430px) {
+  .anagram-header > nav {
+    gap: 4px;
+  }
+
+  .anagram-main {
+    --anagram-letter-size: clamp(56px, 17vw, 70px);
+    --anagram-tray-letter-size: clamp(48px, 15vw, 60px);
+  }
+
+  .anagram-board {
+    padding-bottom: 40px;
+  }
+
+  .anagram-answer-block {
+    margin-top: 28px;
+  }
+
+  .anagram-answer-block > p {
+    margin-bottom: 14px;
+    font-size: 14px;
+  }
+
+  .anagram-letter-row,
+  .anagram-tray {
+    gap: 8px;
+  }
+
+  .anagram-controls {
+    margin-top: 30px;
+  }
+
+  .anagram-controls,
+  .anagram-secondary-controls {
+    gap: 8px;
+  }
+
+  .anagram-controls button,
+  .anagram-secondary-controls button {
+    min-height: 42px;
+    padding-inline: 6px;
+    font-size: 14px;
+  }
+
+  .anagram-completion-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .home-game-card--anagram {
+    grid-template-columns: 1fr;
+  }
+
+  .anagram-home-card__details {
+    align-items: flex-end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anagram-page * {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}

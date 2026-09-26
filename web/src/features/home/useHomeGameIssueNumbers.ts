@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import { localDateString, localWeekStartString } from "../backword/date";
 import { createBackwordRepository } from "../backword/repository";
+import { createAnagramRepository } from "../anagram/repository";
+import { createAnagramStorage } from "../anagram/storage";
 import { createBackwordStorage } from "../backword/storage";
 import { createCrosswordRepository } from "../crossword/repository";
 import { createCrosswordStorage } from "../crossword/storage";
 
 export type HomeGameIssueNumbers = {
   backword: number | null;
+  anagram: number | null;
+  firstAnagramRelease: string | null;
   crossword: number | null;
   weeklyCrossword: number | null;
 };
 
 const emptyIssueNumbers: HomeGameIssueNumbers = {
   backword: null,
+  anagram: null,
+  firstAnagramRelease: null,
   crossword: null,
   weeklyCrossword: null
 };
@@ -27,11 +33,14 @@ export function useHomeGameIssueNumbers(
   useEffect(() => {
     let cancelled = false;
     const backwordStorage = createBackwordStorage(window.localStorage);
+    const anagramStorage = createAnagramStorage(window.localStorage);
     const crosswordStorage = createCrosswordStorage(window.localStorage);
     const weeklyStorage = createCrosswordStorage(window.localStorage, { kind: "weekly" });
 
     setIssueNumbers({
       backword: backwordStorage.loadCachedWord(date)?.puzzleNumber ?? null,
+      anagram: anagramStorage.loadCachedPuzzle(date)?.puzzleNumber ?? null,
+      firstAnagramRelease: anagramStorage.firstReleaseDate(),
       crossword: crosswordStorage.loadCachedPuzzle(date)?.puzzleNumber ?? null,
       weeklyCrossword: weeklyStorage.loadCachedPuzzle(weekDate)?.puzzleNumber ?? null
     });
@@ -40,6 +49,23 @@ export function useHomeGameIssueNumbers(
       if (!cancelled) setIssueNumbers((current) => ({ ...current, [game]: issueNumber }));
     };
 
+    void (async () => {
+      try {
+        const repository = createAnagramRepository();
+        try {
+          const firstRelease = await repository.getFirstReleaseDate();
+          if (firstRelease) {
+            anagramStorage.setFirstReleaseDate(firstRelease);
+            if (!cancelled) setIssueNumbers((current) => ({ ...current, firstAnagramRelease: firstRelease }));
+          }
+        } catch { /* Daily content may still be available. */ }
+        const puzzle = await repository.getByDate(date);
+        anagramStorage.cachePuzzle(puzzle);
+        updateIssueNumber("anagram", puzzle.puzzleNumber);
+      } catch {
+        // The card remains usable while content is offline or unreleased.
+      }
+    })();
     void (async () => {
       try {
         const word = await createBackwordRepository().getByDate(date);

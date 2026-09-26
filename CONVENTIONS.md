@@ -820,6 +820,25 @@ points. Web implementation follows
 the iOS gameplay review. See [the v1 contract](./docs/anagram-contract-v1.md)
 for field names and cross-platform fixtures.
 
+On the web, the dated route is immutable while `/anagram` follows local
+midnight. The initial scramble is never rendered before Start. Local storage
+keeps the complete v1 progress object under a guest or account namespace and
+uses the same tile IDs for tray positions, cells, and Undo history. The web hint
+uses `time_penalty` and locks one letter immediately for every player. Local
+edits are saved before a queued account upload; a failed upload remains queued
+for retry. The home card appears only after today's validated puzzle is cached
+or fetched. Its issue number and the earliest published date come from content;
+the latter controls when Anagram points enter the overall rating maximum. The
+Anagram stats bar always uses the established 70-point scale, and its history
+always shows all 14 calendar days. Dated past routes and the Anagram Archive
+require Pro, while today's route stays free. Vite development builds expose an
+in-memory `/anagram/review` fixture so the unreleased game can be reviewed
+without creating local progress, rating points, or cloud uploads. The web game
+shell mirrors the iOS Anagram hierarchy without showing a logo, and uses the
+same game menu, action icons, and site footer as the other web games. Wider
+viewports keep the answer in one row and widen the bottom game controls; narrow
+viewports use the same balanced letter rows as iOS.
+
 ---
 
 ## App Store Review Prompt
