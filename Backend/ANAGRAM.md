@@ -22,9 +22,9 @@ The frequency report cannot be generated in an environment lacking `wordfreq`.
 The prepared artifact records `frequencyReview: pending_wordfreq_report` until
 an editor checks the report and changes it to `reviewed`.
 
-The reviewed 30-day launch artifact is `anagram_launch_2026-10-01.json`. It is
-approved for publication beginning 1 October 2026. If the release date changes,
-regenerate it and repeat editorial review before publication:
+The reviewed 30-day launch artifact is `anagram_launch_2026-09-26.json`. It is
+approved for publication beginning 26 September 2026. If the release date
+changes, regenerate it and repeat editorial review before publication:
 
 ```bash
 python3 Backend/generate_anagram.py \

@@ -2,11 +2,11 @@
   "schemaVersion": 1,
   "reviewStatus": "approved",
   "frequencyReview": "reviewed",
-  "firstReleaseDate": "2026-10-01",
+  "firstReleaseDate": "2026-09-26",
   "rows": [
     {
-      "id": "8b7e2d6d-bdf3-58e3-83f0-fc4672bf23fe",
-      "date": "2026-10-01",
+      "id": "0edef1a5-5678-556d-b0fb-4831ddfd9204",
+      "date": "2026-09-26",
       "puzzle_number": 1,
       "schema_version": 1,
       "puzzle_data": {
@@ -21,8 +21,8 @@
       }
     },
     {
-      "id": "b198025a-daf0-59bd-8f5e-4def84e86468",
-      "date": "2026-10-02",
+      "id": "b8024071-ac2c-5489-8bb6-d42862fdd033",
+      "date": "2026-09-27",
       "puzzle_number": 2,
       "schema_version": 1,
       "puzzle_data": {
@@ -32,8 +32,8 @@
       }
     },
     {
-      "id": "ca0f9cfc-0b92-559f-a954-f4e2979f02fe",
-      "date": "2026-10-03",
+      "id": "82918409-87b4-597b-96fc-3f0247c52f38",
+      "date": "2026-09-28",
       "puzzle_number": 3,
       "schema_version": 1,
       "puzzle_data": {
@@ -43,8 +43,8 @@
       }
     },
     {
-      "id": "acb1e312-dd81-560a-b5f3-e72c229b63dc",
-      "date": "2026-10-04",
+      "id": "80ff9035-2d73-5687-b460-227dfebfd7af",
+      "date": "2026-09-29",
       "puzzle_number": 4,
       "schema_version": 1,
       "puzzle_data": {
@@ -54,8 +54,8 @@
       }
     },
     {
-      "id": "f901ff16-5781-5d0c-8834-4e778c07922e",
-      "date": "2026-10-05",
+      "id": "9e1f4803-10a8-5a57-9b83-d4a38eaa4657",
+      "date": "2026-09-30",
       "puzzle_number": 5,
       "schema_version": 1,
       "puzzle_data": {
@@ -65,8 +65,8 @@
       }
     },
     {
-      "id": "b786ed7c-3ddb-512b-9697-595d9bb8aa15",
-      "date": "2026-10-06",
+      "id": "f0c7c0ea-4e1d-5ba8-b6e8-a49f0b3be1fb",
+      "date": "2026-10-01",
       "puzzle_number": 6,
       "schema_version": 1,
       "puzzle_data": {
@@ -76,8 +76,8 @@
       }
     },
     {
-      "id": "92caee9d-435e-5492-99fe-14732ccae6f5",
-      "date": "2026-10-07",
+      "id": "ea8e93ef-81e8-55fe-9650-8dcb6786a29d",
+      "date": "2026-10-02",
       "puzzle_number": 7,
       "schema_version": 1,
       "puzzle_data": {
@@ -87,8 +87,8 @@
       }
     },
     {
-      "id": "c5cc5bb8-a316-5ac3-b2ff-cca7d3fb4ba5",
-      "date": "2026-10-08",
+      "id": "421db4d1-365a-5b3e-b7d3-1e1fef924139",
+      "date": "2026-10-03",
       "puzzle_number": 8,
       "schema_version": 1,
       "puzzle_data": {
@@ -100,8 +100,8 @@
       }
     },
     {
-      "id": "421aa727-43fc-5fb2-9779-a148481bfd5b",
-      "date": "2026-10-09",
+      "id": "96f9cb6b-54cb-59e7-85e4-39bcefc21df3",
+      "date": "2026-10-04",
       "puzzle_number": 9,
       "schema_version": 1,
       "puzzle_data": {
@@ -113,8 +113,8 @@
       }
     },
     {
-      "id": "3a7d9526-e950-5041-b014-6853926ae3d8",
-      "date": "2026-10-10",
+      "id": "47ac5cc5-50c8-5a3f-b7d0-843bffc8924d",
+      "date": "2026-10-05",
       "puzzle_number": 10,
       "schema_version": 1,
       "puzzle_data": {
@@ -124,8 +124,8 @@
       }
     },
     {
-      "id": "cbec4acf-1f4d-5d7d-9668-6290c64a7f86",
-      "date": "2026-10-11",
+      "id": "76484e4b-1671-546f-b8e7-60bc287cc948",
+      "date": "2026-10-06",
       "puzzle_number": 11,
       "schema_version": 1,
       "puzzle_data": {
@@ -135,8 +135,8 @@
       }
     },
     {
-      "id": "636b8eba-36a7-5aa7-bdc7-85b628216c8c",
-      "date": "2026-10-12",
+      "id": "9427986d-7f93-5c97-893a-e6957b2cb3eb",
+      "date": "2026-10-07",
       "puzzle_number": 12,
       "schema_version": 1,
       "puzzle_data": {
@@ -146,8 +146,8 @@
       }
     },
     {
-      "id": "0db8434d-6425-5bbe-9112-ed514689b9a2",
-      "date": "2026-10-13",
+      "id": "fc60159e-77fe-5d09-93ee-3ceb8795df2c",
+      "date": "2026-10-08",
       "puzzle_number": 13,
       "schema_version": 1,
       "puzzle_data": {
@@ -157,8 +157,8 @@
       }
     },
     {
-      "id": "cd7659ff-06a4-580b-80db-41a2e05f0527",
-      "date": "2026-10-14",
+      "id": "fdc3a819-c8b8-54a2-b95f-767b1fca66f5",
+      "date": "2026-10-09",
       "puzzle_number": 14,
       "schema_version": 1,
       "puzzle_data": {
@@ -168,8 +168,8 @@
       }
     },
     {
-      "id": "2c163fca-1818-5659-9ac5-bf7674e2d2c9",
-      "date": "2026-10-15",
+      "id": "41c8161f-c5dc-53a0-a037-aa6ae7bf1377",
+      "date": "2026-10-10",
       "puzzle_number": 15,
       "schema_version": 1,
       "puzzle_data": {
@@ -179,8 +179,8 @@
       }
     },
     {
-      "id": "9a40da87-0100-5dcc-a2b2-eaf075690aea",
-      "date": "2026-10-16",
+      "id": "f1209e55-7fd5-5d95-823f-889e6ed071f1",
+      "date": "2026-10-11",
       "puzzle_number": 16,
       "schema_version": 1,
       "puzzle_data": {
@@ -190,8 +190,8 @@
       }
     },
     {
-      "id": "7094104f-f111-5c05-8314-2babcaece657",
-      "date": "2026-10-17",
+      "id": "93c3903a-c995-50e2-a197-81767af4ff4a",
+      "date": "2026-10-12",
       "puzzle_number": 17,
       "schema_version": 1,
       "puzzle_data": {
@@ -201,8 +201,8 @@
       }
     },
     {
-      "id": "56853486-af6e-5567-a2d5-b4978ae88723",
-      "date": "2026-10-18",
+      "id": "e12ffb7a-50ca-50d4-b58d-c02d39b01ce2",
+      "date": "2026-10-13",
       "puzzle_number": 18,
       "schema_version": 1,
       "puzzle_data": {
@@ -212,8 +212,8 @@
       }
     },
     {
-      "id": "0c28e1c0-1b84-5727-88fd-c58320b51cd6",
-      "date": "2026-10-19",
+      "id": "2e46e2d3-012c-51b9-a852-a9d0d7dfebab",
+      "date": "2026-10-14",
       "puzzle_number": 19,
       "schema_version": 1,
       "puzzle_data": {
@@ -223,8 +223,8 @@
       }
     },
     {
-      "id": "e747b765-2b8f-56c4-91af-2b7900037f13",
-      "date": "2026-10-20",
+      "id": "e675926d-ec8e-5a0a-b001-fa2d614c62d9",
+      "date": "2026-10-15",
       "puzzle_number": 20,
       "schema_version": 1,
       "puzzle_data": {
@@ -234,8 +234,8 @@
       }
     },
     {
-      "id": "55090a92-39a9-5478-8534-707a01d30e1f",
-      "date": "2026-10-21",
+      "id": "54e2aee1-ca2b-5d16-9451-413578fb8036",
+      "date": "2026-10-16",
       "puzzle_number": 21,
       "schema_version": 1,
       "puzzle_data": {
@@ -245,8 +245,8 @@
       }
     },
     {
-      "id": "20717ee4-7c45-5def-bf89-4ced000479a3",
-      "date": "2026-10-22",
+      "id": "be2b4aae-68b2-5c20-955d-a5679df4611f",
+      "date": "2026-10-17",
       "puzzle_number": 22,
       "schema_version": 1,
       "puzzle_data": {
@@ -256,8 +256,8 @@
       }
     },
     {
-      "id": "cefded80-4e5d-5a55-9ada-4d58675e57f6",
-      "date": "2026-10-23",
+      "id": "882ad85f-baae-5096-aced-8594be8597de",
+      "date": "2026-10-18",
       "puzzle_number": 23,
       "schema_version": 1,
       "puzzle_data": {
@@ -267,8 +267,8 @@
       }
     },
     {
-      "id": "fe690231-ea44-50ea-b87e-f04801aacbd2",
-      "date": "2026-10-24",
+      "id": "1f3272f8-d135-5ec5-97ff-2b6118951e1b",
+      "date": "2026-10-19",
       "puzzle_number": 24,
       "schema_version": 1,
       "puzzle_data": {
@@ -278,8 +278,8 @@
       }
     },
     {
-      "id": "426b7cf3-7462-548c-932e-12a8554a3ec3",
-      "date": "2026-10-25",
+      "id": "536803db-e14d-5ccf-9b73-c2e5fa7dea38",
+      "date": "2026-10-20",
       "puzzle_number": 25,
       "schema_version": 1,
       "puzzle_data": {
@@ -289,8 +289,8 @@
       }
     },
     {
-      "id": "dbae2840-da8c-5a52-ac97-62848cf3d995",
-      "date": "2026-10-26",
+      "id": "56230784-bf2e-5499-99f0-cadb3af0379f",
+      "date": "2026-10-21",
       "puzzle_number": 26,
       "schema_version": 1,
       "puzzle_data": {
@@ -300,8 +300,8 @@
       }
     },
     {
-      "id": "a2929727-072e-5837-b96a-e39b2e3567e4",
-      "date": "2026-10-27",
+      "id": "6e79703e-d950-5b4d-8531-c1461a6d6012",
+      "date": "2026-10-22",
       "puzzle_number": 27,
       "schema_version": 1,
       "puzzle_data": {
@@ -311,8 +311,8 @@
       }
     },
     {
-      "id": "4b8b9aee-34ef-5515-a3cf-2b4c5fd5d83e",
-      "date": "2026-10-28",
+      "id": "ab1e10bd-7a28-5d1f-a235-a2433dc502f2",
+      "date": "2026-10-23",
       "puzzle_number": 28,
       "schema_version": 1,
       "puzzle_data": {
@@ -322,8 +322,8 @@
       }
     },
     {
-      "id": "8800830c-9362-5654-95e8-102ed1413cc3",
-      "date": "2026-10-29",
+      "id": "2eb8adcc-67bb-5272-8be1-672a0cf0a4a1",
+      "date": "2026-10-24",
       "puzzle_number": 29,
       "schema_version": 1,
       "puzzle_data": {
@@ -333,8 +333,8 @@
       }
     },
     {
-      "id": "8daa5734-c21a-5465-ae28-6c39108f42d8",
-      "date": "2026-10-30",
+      "id": "e77379db-06bd-54a1-8d92-176fa8306061",
+      "date": "2026-10-25",
       "puzzle_number": 30,
       "schema_version": 1,
       "puzzle_data": {

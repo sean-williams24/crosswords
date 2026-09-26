@@ -18,19 +18,19 @@ class AnagramContentTests(unittest.TestCase):
         cls.pool = load_pool()
 
     def test_launch_batch_has_thirty_valid_immutable_rows(self):
-        rows = prepare(date(2026, 10, 1), 1, 30, self.pool)
-        self.assertEqual((rows[0]["puzzle_number"], rows[-1]["date"]), (1, "2026-10-30"))
+        rows = prepare(date(2026, 9, 26), 1, 30, self.pool)
+        self.assertEqual((rows[0]["puzzle_number"], rows[-1]["date"]), (1, "2026-10-25"))
         self.assertEqual(len({row["id"] for row in rows}), 30)
-        self.assertEqual(rows, prepare(date(2026, 10, 1), 1, 30, self.pool))
+        self.assertEqual(rows, prepare(date(2026, 9, 26), 1, 30, self.pool))
         self.assertEqual(rows[0]["puzzle_data"]["answer"], "TRIANGLE")
         self.assertIn("INTEGRAL", rows[0]["puzzle_data"]["acceptedAnswers"])
 
     def test_replenishment_continues_issue_and_date(self):
-        launch = prepare(date(2026, 10, 1), 1, 30, self.pool)
-        next_rows = prepare(date(2026, 10, 31), 31, 14, self.pool)
+        launch = prepare(date(2026, 9, 26), 1, 30, self.pool)
+        next_rows = prepare(date(2026, 10, 26), 31, 14, self.pool)
         validate_rows(next_rows, launch)
         self.assertEqual(next_rows[0]["puzzle_number"], 31)
-        self.assertEqual(next_rows[-1]["date"], "2026-11-13")
+        self.assertEqual(next_rows[-1]["date"], "2026-11-08")
 
     def test_wrong_scramble_or_repeated_combination_is_rejected(self):
         rows = prepare(date(2026, 10, 1), 1, 2, self.pool)
@@ -64,16 +64,16 @@ class AnagramContentTests(unittest.TestCase):
         self.assertNotIn("DECEMBER", {entry["answer"] for entry in self.pool})
 
     def test_checked_in_launch_artifact_is_generated_and_approved(self):
-        artifact = json.loads((Path(__file__).parent / "anagram_launch_2026-10-01.json").read_text())
-        self.assertEqual(artifact["rows"], prepare(date(2026, 10, 1), 1, 30, self.pool))
+        artifact = json.loads((Path(__file__).parent / "anagram_launch_2026-09-26.json").read_text())
+        self.assertEqual(artifact["rows"], prepare(date(2026, 9, 26), 1, 30, self.pool))
         self.assertEqual(artifact["reviewStatus"], "approved")
         self.assertEqual(artifact["frequencyReview"], "reviewed")
         self.assertEqual(validate_publication(artifact, []), artifact["rows"])
 
     def test_publication_rejects_changed_or_noncontiguous_batch(self):
-        launch = prepare(date(2026, 10, 1), 1, 30, self.pool)
-        next_rows = prepare(date(2026, 10, 31), 31, 3, self.pool)
-        artifact = {"reviewStatus": "approved", "frequencyReview": "reviewed", "firstReleaseDate": "2026-10-31", "rows": next_rows}
+        launch = prepare(date(2026, 9, 26), 1, 30, self.pool)
+        next_rows = prepare(date(2026, 10, 26), 31, 3, self.pool)
+        artifact = {"reviewStatus": "approved", "frequencyReview": "reviewed", "firstReleaseDate": "2026-10-26", "rows": next_rows}
         self.assertEqual(validate_publication(artifact, launch), next_rows)
         changed = copy.deepcopy(artifact)
         changed["rows"][0]["puzzle_data"]["acceptedAnswers"] = ["ANOTHER"]
@@ -88,6 +88,14 @@ class AnagramContentTests(unittest.TestCase):
         self.assertIn("incoming_terminal <> current_terminal", function)
         self.assertIn("WHEN use_incoming AND (p_payload->>'hintUsed')::BOOLEAN", function)
         self.assertIn("merged_anagram_payload", function)
+
+    def test_launch_reschedule_migration_is_guarded_and_restores_immutability(self):
+        migration = (Path(__file__).parent / "supabase/migrations/20260926_reschedule_anagram_launch.sql").read_text()
+        self.assertIn("refusing to reschedule launch", migration)
+        self.assertIn("DROP TRIGGER anagram_immutable", migration)
+        self.assertIn("DATE '2026-09-26'", migration)
+        self.assertIn("DATE '2026-10-25'", migration)
+        self.assertIn("CREATE TRIGGER anagram_immutable", migration)
 
     def test_sql_terminal_merge_recomputes_from_earliest_start_and_max_penalty(self):
         schema = (Path(__file__).parent / "supabase/schema.sql").read_text()
