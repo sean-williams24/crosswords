@@ -4,6 +4,15 @@ import Testing
 
 @Suite("Home tab bar")
 struct HomeTabBarViewTests {
+    #if DEBUG
+    @Test("Home preview containers construct for default and completed states")
+    @MainActor
+    func homePreviewContainersConstruct() {
+        _ = HomeViewPreviewContainer()
+        _ = HomeViewPreviewContainer(completedPuzzle: true)
+    }
+    #endif
+
     @Test("App appearance defaults to System")
     func appAppearanceDefaultsToSystem() {
         #expect(AppColorSchemePreference.defaultValue == AppColorSchemePreference.systemValue)
@@ -65,6 +74,12 @@ struct HomeCardStreakLayoutTests {
         #expect(HomeCardIssueNumberLayout.horizontalInset == 18)
         #expect(HomeCardIssueNumberLayout.topInset == 8)
         #expect(AppLayout.homeCardIssueNumberFontSize == 12)
+    }
+
+    @Test("Anagram card stacks only for accessibility text sizes")
+    func anagramCardResponsiveLayout() {
+        #expect(!AnagramHomeCardLayout.usesStackedLayout(for: .large))
+        #expect(AnagramHomeCardLayout.usesStackedLayout(for: .accessibility1))
     }
 
     @Test("Backword card always uses its dark colour palette")

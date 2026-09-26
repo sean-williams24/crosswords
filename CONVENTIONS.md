@@ -767,12 +767,14 @@ clears player placements without changing the start time, hint, or penalty.
 During play, the tray and controls stay together at the bottom of the view,
 with the controls 40 points above the bottom safe area. The header, timer,
 and answer scroll above them.
-The Anagram Home card uses the other daily cards' centered title and status,
-lower score and streak row, and top-right issue number. It shows a score only
-after completion. The streak counts consecutive on-time solved releases and
-continues from yesterday until today's attempt is completed; a give-up or late
-solve today ends it. The DEBUG review puzzle shows a review marker and sample
-score, but never contributes to a streak or rating.
+The Anagram Home card uses a two-column layout: its title sits at the top-left
+with the issue number directly beneath it, while puzzle length, status, score,
+and streak group at the bottom-right. Accessibility Dynamic Type sizes stack
+those regions vertically while preserving their left/right alignment. It shows
+a score only after completion. The streak counts consecutive on-time solved
+releases and continues from yesterday until today's attempt is completed; a
+give-up or late solve today ends it. The DEBUG review puzzle shows a review
+marker and sample score, but never contributes to a streak or rating.
 The Anagram Stats sheet follows the other games' rating bar, streak/solved/time
 summary, and 14-day Date/Score/Time table while retaining Anagram colors.
 The summary counts original-release-day solves; its average time uses solves
