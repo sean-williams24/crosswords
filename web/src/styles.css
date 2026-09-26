@@ -2550,6 +2550,10 @@ html[data-theme="light"] {
   align-items: center;
 }
 
+.anagram-dialog-backdrop--stats {
+  padding-inline: 0;
+}
+
 .anagram-dialog-backdrop--centered .anagram-dialog {
   border-bottom: 1px solid var(--app-border);
   border-radius: 28px;
@@ -2609,17 +2613,116 @@ html[data-theme="light"] {
   background: var(--anagram-accent);
 }
 
-.anagram-stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+.anagram-dialog--stats {
+  --anagram-stats-inline: clamp(20px, 5vw, 46px);
+  display: flex;
+  width: min(100%, 640px);
+  padding: 0;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--anagram-ink);
+  background: var(--app-background);
 }
 
-.anagram-completion-stats {
+.anagram-stats-header {
+  display: grid;
+  min-height: 78px;
+  padding: 0 76px;
+  place-items: center;
+}
+
+.anagram-dialog .anagram-stats-header h2 {
+  margin: 0;
+  color: var(--app-text-primary);
+  font-family: "Outfit", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.anagram-dialog--stats .anagram-dialog-close {
+  top: 14px;
+  right: 18px;
+  width: 50px;
+  height: 50px;
+  border: 8px solid var(--app-background);
+  outline: 1px solid var(--app-border);
+  color: var(--anagram-on-accent);
+  background: var(--anagram-accent);
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.anagram-stats-scroll {
+  display: flex;
+  padding: 28px var(--anagram-stats-inline) 0;
+  flex-direction: column;
+  min-height: 0;
+  gap: 30px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.anagram-stats {
+  padding: 24px 14px 20px;
+  border-radius: 18px;
+  color: var(--anagram-ink);
+  background: var(--anagram-surface);
+}
+
+.anagram-stats__primary {
+  display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.anagram-stats span {
+.anagram-stats__primary > span,
+.anagram-stats__average {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+}
+
+.anagram-stats__primary > span {
+  border-right: 1px solid color-mix(in srgb, var(--anagram-accent) 50%, transparent);
+}
+
+.anagram-stats__primary > span:last-child {
+  border-right: 0;
+}
+
+.anagram-stats__average {
+  margin-top: 20px;
+}
+
+.anagram-stats strong {
+  color: var(--anagram-ink);
+  font-size: clamp(25px, 6vw, 34px);
+  line-height: 1;
+}
+
+.anagram-stats small {
+  color: var(--anagram-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.anagram-completion-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.anagram-completion-stats > span {
   display: flex;
   min-height: 92px;
   padding: 14px;
@@ -2633,7 +2736,7 @@ html[data-theme="light"] {
   text-align: center;
 }
 
-.anagram-stats strong {
+.anagram-completion-stats > span strong {
   color: var(--app-text-primary);
   font-size: 24px;
 }
@@ -2652,21 +2755,48 @@ html[data-theme="light"] {
   color: var(--anagram-accent);
 }
 
+.anagram-rating-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 13px;
+}
+
+.anagram-rating-section > strong {
+  color: var(--anagram-accent);
+  font-size: 18px;
+}
+
 .anagram-rating {
-  height: 10px;
-  overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--anagram-line) 55%, transparent);
+  position: relative;
+  width: 100%;
+  height: 9px;
+  border-radius: 999px;
   background: var(--anagram-surface);
 }
 
-.anagram-rating > span {
+.anagram-rating__fill {
   display: block;
   height: 100%;
+  border-radius: inherit;
   background: var(--anagram-accent);
+  transition: width 500ms ease;
+}
+
+.anagram-rating__marker {
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--anagram-accent);
+  border-radius: 50%;
+  background: var(--anagram-ink);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--anagram-accent) 25%, transparent), 0 0 12px color-mix(in srgb, var(--anagram-accent) 55%, transparent);
+  transform: translate(-50%, -50%);
 }
 
 .anagram-history {
-  margin-top: 30px;
+  --anagram-stats-inline: clamp(20px, 5vw, 46px);
   text-align: left;
 }
 
@@ -2678,25 +2808,81 @@ html[data-theme="light"] {
   text-transform: uppercase;
 }
 
+.anagram-history__table {
+  margin-inline: calc(-1 * var(--anagram-stats-inline));
+  background: var(--anagram-surface);
+}
+
 .anagram-history__row {
   display: grid;
-  padding: 12px 0;
+  min-height: 62px;
+  padding: 10px var(--anagram-stats-inline);
+  align-items: center;
   grid-template-columns: minmax(0, 1fr) 72px 88px;
   gap: 8px;
-  border-top: 1px solid var(--app-border);
+  border-bottom: 1px solid color-mix(in srgb, var(--anagram-accent) 20%, transparent);
+  color: var(--anagram-ink);
   font-size: 14px;
 }
 
 .anagram-history__row > :not(:first-child) {
-  text-align: right;
+  text-align: center;
 }
 
 .anagram-history__heading {
-  color: var(--app-text-secondary);
+  min-height: 42px;
+  color: var(--anagram-accent);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .1em;
-  text-transform: uppercase;
+}
+
+.anagram-history__date {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.anagram-history__date small {
+  color: var(--anagram-accent);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.anagram-score-chip {
+  display: inline-grid;
+  width: 32px;
+  height: 32px;
+  margin: auto;
+  place-items: center;
+  border-radius: 5px;
+  color: color-mix(in srgb, var(--anagram-accent) 60%, transparent);
+  background: color-mix(in srgb, var(--anagram-accent) 15%, transparent);
+}
+
+.anagram-score-chip.is-earned {
+  color: var(--anagram-on-accent);
+  background: var(--anagram-accent);
+}
+
+.anagram-history__row .is-solved {
+  color: var(--anagram-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 700px) {
+  .anagram-dialog-backdrop--stats {
+    padding: 30px;
+    align-items: center;
+  }
+
+  .anagram-dialog-backdrop--stats .anagram-dialog {
+    border-bottom: 1px solid var(--app-border);
+    border-radius: 22px;
+    box-shadow: 0 12px 50px rgb(0 0 0 / 30%);
+  }
 }
 
 .home-game-card--anagram,

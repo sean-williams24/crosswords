@@ -12,6 +12,15 @@ function duration(seconds: number) {
   return `${minutes}:${String(seconds % 60).padStart(2, "0")}`;
 }
 
+function historyDate(dateString: string) {
+  const [year, month, day] = dateString.split("-").map(Number);
+  return new Intl.DateTimeFormat(undefined, {
+    weekday: "short",
+    month: "short",
+    day: "numeric"
+  }).format(new Date(year, month - 1, day, 12));
+}
+
 export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart, onShuffle, onHint, onGiveUp, onResetReview }: {
   puzzle: AnagramPuzzle; progress: AnagramProgress; now: Date;
   onPlace: (tile: number) => void; onUndo: () => void; onRestart: () => void;
@@ -83,33 +92,46 @@ export function AnagramDialog({ kind, onClose, onStart, onConfirmHint, onConfirm
   });
   const nextRelease = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
   const countdown = duration(Math.max(0, Math.ceil((nextRelease.getTime() - now.getTime()) / 1000)));
-  const historyTable = <div className="anagram-history"><h3>Last 14 days</h3><div className="anagram-history__row anagram-history__heading"><span>Date</span><span>Score</span><span>Time</span></div>
+  const historyTable = <section className="anagram-history"><h3>LAST 14 DAYS</h3><div className="anagram-history__table"><div className="anagram-history__row anagram-history__heading"><span>Date</span><span>Score</span><span>Time</span></div>
     {releaseDays.map((date) => {
       const record = historyByDate.get(date);
+      const isToday = date === localDateString(now);
       const completedOnRelease = record?.completedAt
         ? localDateString(new Date(record.completedAt)) === date
         : false;
-      const result = record?.outcome === "solved" && record.releaseDateScore > 0
+      const result = record?.outcome === "solved"
         ? duration(record.elapsedSecondsAtCompletion ?? 0)
+        : "–";
+      const outcome = record?.outcome === "solved"
+        ? "SOLVED"
         : record?.outcome === "gave_up" && completedOnRelease
-          ? "Gave up"
-          : record?.outcome === null && date === localDateString(now)
-            ? "In progress"
-            : "—";
-      return <div className="anagram-history__row" key={date}><time dateTime={date}>{date}</time><strong>{record?.releaseDateScore ?? 0}/5</strong><span>{result}</span></div>;
+          ? "GAVE UP"
+          : null;
+      const score = record?.releaseDateScore ?? 0;
+      return <div className="anagram-history__row" key={date}>
+        <span className="anagram-history__date"><time dateTime={date}>{historyDate(date)}</time>{isToday ? <small>TODAY</small> : null}{outcome ? <small>{outcome}</small> : null}</span>
+        <strong className={`anagram-score-chip${score > 0 ? " is-earned" : ""}`}>{score}</strong>
+        <span className={record?.outcome === "solved" ? "is-solved" : ""}>{result}</span>
+      </div>;
     })}
-  </div>;
-  const ratingBar = <div aria-label={`${stats.rollingScore} of 70 Anagram points`} className="anagram-rating"><span style={{ width: `${(stats.rollingScore / 70) * 100}%` }} /></div>;
-  const statsSummary = <div className="anagram-stats"><span>Current streak <strong>{stats.streak}</strong></span><span>Total solved <strong>{stats.solved}</strong></span><span>Best streak <strong>{stats.bestStreak}</strong></span><span>Average solve <strong>{stats.averageSeconds === null ? "—" : duration(stats.averageSeconds)}</strong></span></div>;
-  return <div className={`anagram-dialog-backdrop${kind === "giveUp" ? " anagram-dialog-backdrop--centered" : ""}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-    <section aria-label={kind === "result" ? "Anagram result" : kind === "stats" ? "Anagram stats" : kind === "instructions" ? "How to play Anagram" : kind === "hint" ? "Reveal a letter" : "Give up"} aria-modal="true" className="anagram-dialog" role="dialog">
-      <button aria-label="Close" className="anagram-dialog-close" onClick={onClose} ref={closeRef} type="button">×</button>
+  </div></section>;
+  const ratingPercentage = Math.max(0, Math.min(100, (stats.rollingScore / 70) * 100));
+  const ratingBar = <section aria-label={`${stats.rollingScore} of 70 Anagram points`} className="anagram-rating-section">
+    <div className="anagram-rating"><span className="anagram-rating__fill" style={{ width: `${ratingPercentage}%` }} /><span aria-hidden="true" className="anagram-rating__marker" style={{ left: `${ratingPercentage}%` }} /></div>
+    <strong>{stats.rollingScore}/70</strong>
+  </section>;
+  const statsSummary = <section aria-label="Anagram statistics summary" className="anagram-stats">
+    <div className="anagram-stats__primary"><span><strong>{stats.streak}</strong><small>Current<br />Streak</small></span><span><strong>{stats.solved}</strong><small>Total<br />Solved</small></span><span><strong>{stats.bestStreak}</strong><small>Best<br />Streak</small></span></div>
+    <span className="anagram-stats__average"><strong>{stats.averageSeconds === null ? "–" : duration(stats.averageSeconds)}</strong><small>Avg Time</small></span>
+  </section>;
+  const backdropModifier = kind === "giveUp" ? " anagram-dialog-backdrop--centered" : kind === "stats" ? " anagram-dialog-backdrop--stats" : "";
+  return <div className={`anagram-dialog-backdrop${backdropModifier}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+    <section aria-label={kind === "result" ? "Anagram result" : kind === "stats" ? "Anagram stats" : kind === "instructions" ? "How to play Anagram" : kind === "hint" ? "Reveal a letter" : "Give up"} aria-modal="true" className={`anagram-dialog${kind === "stats" ? " anagram-dialog--stats" : ""}`} role="dialog">
+      <button aria-label={kind === "stats" ? "Close Anagram stats" : "Close"} className="anagram-dialog-close" onClick={onClose} ref={closeRef} type="button">×</button>
       {kind === "instructions" ? <><h2>How to play Anagram</h2><p>Tap the scrambled letters to make a 7–9 letter word. They fill the first empty answer cell from left to right.</p><p>Undo removes your most recent letter. Restart returns all letters you placed. Shuffle rearranges the tray. Your timer continues throughout.</p><p>You can reveal one letter. It clears your placed letters, locks the revealed letter, and adds 30 seconds to your scoring time.</p><p>Finish with an accepted answer before 30 seconds for 5 points. You can keep playing for as long as you like.</p>{!progress ? <button className="anagram-primary" onClick={onStart} type="button">Start</button> : null}</> : null}
       {kind === "hint" ? <><h2>Reveal a letter?</h2><p>Your placed letters will return to the tray and Undo history will clear. One correct letter will lock in place. A 30 second scoring penalty applies; the timer keeps running.</p><button className="anagram-primary" onClick={onConfirmHint} type="button">Reveal letter (+30s)</button><button onClick={onClose} type="button">Cancel</button></> : null}
       {kind === "giveUp" ? <><h2>Give up?</h2><p>This ends today’s attempt for zero points and reveals the answer. You cannot replay it for a higher score.</p><button className="anagram-primary" onClick={onConfirmGiveUp} type="button">Give up and reveal</button><button onClick={onClose} type="button">Keep playing</button></> : null}
-      {kind === "stats" ? <><h2>Anagram stats</h2>{statsSummary}
-        <p className="anagram-stats-total">Last 14 days: <strong>{stats.rollingScore} / 70</strong> points</p>
-        {ratingBar}{historyTable}</> : null}
+      {kind === "stats" ? <><header className="anagram-stats-header"><h2>Anagram Stats</h2></header><div className="anagram-stats-scroll">{ratingBar}{statsSummary}{historyTable}</div></> : null}
       {kind === "result" && progress && puzzle ? <><h2>{progress.outcome === "solved" ? "Anagram solved" : "Anagram complete"}</h2>
         <p className="anagram-result-answer">{progress.outcome === "solved" ? answerText(progress, puzzle) : puzzle.answer}</p>
         <div className="anagram-stats anagram-completion-stats"><span>Elapsed <strong>{duration(progress.elapsedSecondsAtCompletion ?? 0)}</strong></span><span>Penalty <strong>+{progress.penaltySeconds}s</strong></span><span>Points <strong>{progress.releaseDateScore}/5</strong></span></div>

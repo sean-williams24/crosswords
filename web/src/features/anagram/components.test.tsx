@@ -41,14 +41,21 @@ describe("Anagram accessible controls", () => {
   });
 
   it("uses the fixed 70-point Anagram rating scale", () => {
-    render(<AnagramDialog history={[]} kind="stats" now={now}
+    const { container } = render(<AnagramDialog history={[]} kind="stats" now={now}
       onClose={vi.fn()} onConfirmGiveUp={vi.fn()} onConfirmHint={vi.fn()} onStart={vi.fn()}
       progress={null} puzzle={null} shareResult={null}
       stats={{ averageSeconds: null, bestStreak: 0, played: 0, rollingScore: 0, solved: 0, streak: 0 }} />);
 
     expect(screen.getByLabelText("0 of 70 Anagram points")).toBeInTheDocument();
-    expect(screen.getByText(/Last 14 days:/)).toHaveTextContent("0 / 70");
-    expect(screen.getAllByText("Best streak")).toHaveLength(1);
+    expect(screen.getByText("0/70")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Anagram Stats" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "LAST 14 DAYS" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Anagram statistics summary")).toBeInTheDocument();
+    expect(container.querySelectorAll(".anagram-stats__primary > span")).toHaveLength(3);
+    expect(container.querySelectorAll(".anagram-history__row")).toHaveLength(15);
+    expect(screen.getByText("TODAY")).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Anagram stats" })).toHaveClass("anagram-dialog--stats");
+    expect(screen.getByRole("dialog", { name: "Anagram stats" }).parentElement).toHaveClass("anagram-dialog-backdrop--stats");
   });
 
   it("centers the give-up confirmation in the viewport", () => {
