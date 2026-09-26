@@ -15,6 +15,9 @@ struct AnagramView: View {
     @State private var showingGiveUp = false
     @State private var showInfoTip = false
     @State private var showingStats = false
+    @State private var showingCompletionStats = false
+    @State private var hasPresentedCompletion = false
+    @State private var shouldPopAfterCompletionSheet = false
 
     init(puzzle: AnagramPuzzle) {
         _viewModel = StateObject(wrappedValue: AnagramViewModel(puzzle: puzzle))
@@ -41,8 +44,7 @@ struct AnagramView: View {
                             .accessibilityLabel("Anagram rolling rating")
                     }
                     if let progress = viewModel.progress {
-                        if progress.isComplete { result(progress) }
-                        else { activeGame(progress) }
+                        activeGame(progress)
                     } else {
                         instructions
                     }
@@ -51,6 +53,7 @@ struct AnagramView: View {
                         Button("Reset review puzzle") {
                             AnagramProgress.delete(date: "review")
                             viewModel.reload()
+                            hasPresentedCompletion = false
                         }
                         .font(AppFont.body())
                         .foregroundStyle(Color.anagramOrange)
@@ -61,7 +64,7 @@ struct AnagramView: View {
                 .frame(maxWidth: 560)
                 .frame(maxWidth: .infinity)
             }
-            if let progress = viewModel.progress, !progress.isComplete {
+            if let progress = viewModel.progress {
                 gameplayDock(progress)
                     .padding(.horizontal, AppLayout.screenPadding)
                     .padding(.bottom, AppLayout.anagramBottomDockInset)
@@ -75,7 +78,25 @@ struct AnagramView: View {
         .toolbar(.hidden, for: .navigationBar)
         .navigationBarBackButtonHidden(true)
         .enableSwipeBack()
-        .sheet(isPresented: $showingStats) { AnagramStatsView() }
+        .sheet(
+            isPresented: $showingStats,
+            onDismiss: {
+                if shouldPopAfterCompletionSheet {
+                    dismiss()
+                }
+            }
+        ) {
+            if showingCompletionStats,
+               let progress = viewModel.progress,
+               progress.isComplete {
+                AnagramStatsView(
+                    completion: AnagramCompletion(puzzle: viewModel.puzzle, progress: progress),
+                    shouldPop: $shouldPopAfterCompletionSheet
+                )
+            } else {
+                AnagramStatsView()
+            }
+        }
         .alert("How to play", isPresented: $showingInstructions) {
             Button("Got it", role: .cancel) { }
         } message: {
@@ -100,7 +121,6 @@ struct AnagramView: View {
         .confirmationDialog("Give up?", isPresented: $showingGiveUp) {
             Button("Give up and reveal answer", role: .destructive) {
                 viewModel.giveUp()
-                ratingService.refresh()
             }
             Button("Keep playing", role: .cancel) { }
         } message: {
@@ -110,6 +130,14 @@ struct AnagramView: View {
             if showsFirstUseTip && UserDefaults.standard.bool(forKey: "Anagram.firstUseTipShown") == false {
                 UserDefaults.standard.set(true, forKey: "Anagram.firstUseTipShown")
                 showInfoTip = true
+            }
+            presentCompletionIfNeeded()
+        }
+        .onChange(of: viewModel.progress?.outcome) { _, outcome in
+            if outcome == nil {
+                hasPresentedCompletion = false
+            } else {
+                presentCompletionIfNeeded()
             }
         }
         .onChange(of: accountService.syncRevision) { _, _ in
@@ -133,7 +161,10 @@ struct AnagramView: View {
                 Spacer()
 
                 HStack(spacing: 8) {
-                    Button { showingStats = true } label: {
+                    Button {
+                        showingCompletionStats = false
+                        showingStats = true
+                    } label: {
                         Image(systemName: "brain.head.profile")
                             .font(AppFont.body(appLayout.iconGlyphSize))
                             .frame(width: appLayout.iconSize)
@@ -207,7 +238,8 @@ struct AnagramView: View {
                 .foregroundStyle(Color.anagramOrange)
             }
             AnagramLetterGrid(puzzle: viewModel.puzzle, progress: progress, section: .answer)
-            if progress.displayedAnswer(for: viewModel.puzzle) != nil {
+            if !progress.isComplete,
+               progress.displayedAnswer(for: viewModel.puzzle) != nil {
                 Text("Not quite. Undo a letter or restart and try again.")
                     .font(AppFont.caption())
                     .foregroundStyle(Color.anagramInk)
@@ -219,60 +251,23 @@ struct AnagramView: View {
         VStack(alignment: .leading, spacing: 24) {
             AnagramLetterGrid(puzzle: viewModel.puzzle, progress: progress, section: .tray) { tile in
                 viewModel.place(tile)
-                if viewModel.progress?.isComplete == true { ratingService.refresh() }
             }
-            controls
+            controls(progress)
         }
     }
 
-    private var controls: some View {
+    private func controls(_ progress: AnagramProgress) -> some View {
         VStack(spacing: 10) {
             HStack(spacing: 10) {
                 AnagramActionButton(title: "Undo", enabled: viewModel.canUndo) { viewModel.undo() }
                 AnagramActionButton(title: "Restart", enabled: viewModel.canRestart) { viewModel.restart() }
-                AnagramActionButton(title: "Shuffle") { viewModel.shuffle() }
+                AnagramActionButton(title: "Shuffle", enabled: !progress.isComplete) { viewModel.shuffle() }
             }
             HStack(spacing: 10) {
                 AnagramActionButton(title: "Hint", enabled: viewModel.canHint) { showingHintConfirmation = true }
-                AnagramActionButton(title: "Give up") { showingGiveUp = true }
+                AnagramActionButton(title: "Give up", enabled: !progress.isComplete) { showingGiveUp = true }
             }
         }
-    }
-
-    private func result(_ progress: AnagramProgress) -> some View {
-        VStack(alignment: .leading, spacing: 20) {
-            Text(progress.outcome == .solved ? "Solved!" : "Answer revealed")
-                .font(AppFont.header(28))
-                .foregroundStyle(Color.anagramOrange)
-            Text(progress.outcome == .solved ? (progress.displayedAnswer(for: viewModel.puzzle) ?? viewModel.puzzle.answer) : viewModel.puzzle.answer)
-                .font(AppFont.header(28))
-                .foregroundStyle(Color.anagramInk)
-            HStack {
-                resultStat("Time", value: (progress.elapsedSecondsAtCompletion ?? 0).formattedTimeHHMMSS)
-                resultStat("Penalty", value: "+\(progress.penaltySeconds.formattedTimeHHMMSS)")
-                resultStat("Points", value: "\(progress.outcome == .solved ? AnagramProgress.points(for: (progress.elapsedSecondsAtCompletion ?? 0) + progress.penaltySeconds) : 0)/5")
-            }
-            ShareLink(item: "Anagram #\(viewModel.puzzle.puzzleNumber) · \(progress.outcome == .solved ? "Solved" : "Completed") · \(progress.outcome == .solved ? AnagramProgress.points(for: (progress.elapsedSecondsAtCompletion ?? 0) + progress.penaltySeconds) : 0)/5") {
-                Label("Share result", systemImage: "square.and.arrow.up")
-                    .font(AppFont.body())
-                    .foregroundStyle(Color.anagramOrange)
-            }
-            .simultaneousGesture(TapGesture().onEnded {
-                BackwordAnalyticsService.shared.log(.resultShareOpened(game: .anagram))
-            })
-        }
-        .padding(20)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.anagramSurface)
-    }
-
-    private func resultStat(_ title: String, value: String) -> some View {
-        VStack(alignment: .leading) {
-            Text(title).font(AppFont.caption())
-            Text(value).font(AppFont.header(20))
-        }
-        .foregroundStyle(Color.anagramInk)
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func reveal(_ source: AnagramProgress.HintSource) {
@@ -286,6 +281,20 @@ struct AnagramView: View {
             case .dismissedWithoutReward: break
             case .unavailable, .failedToPresent: showingFallback = true
             }
+        }
+    }
+
+    private func presentCompletionIfNeeded() {
+        guard AnagramCompletionSheetPresentation.shouldPresent(
+            isComplete: viewModel.progress?.isComplete == true,
+            hasPresented: hasPresentedCompletion
+        ) else { return }
+        hasPresentedCompletion = true
+        ratingService.refresh()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            guard viewModel.progress?.isComplete == true else { return }
+            showingCompletionStats = true
+            showingStats = true
         }
     }
 }

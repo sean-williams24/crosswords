@@ -107,6 +107,43 @@ struct PuzzleResultShareTests {
         #expect(result.shareURL.path == "/weekly-crossword/2026-09-14")
     }
 
+    @Test("Anagram result reports its score and stays spoiler-safe")
+    func anagramResultReportsStats() {
+        let date = AnagramProgress.localDay(Date())
+        let puzzle = AnagramPuzzle(
+            id: "anagram-id", date: date, puzzleNumber: 8, schemaVersion: 1,
+            answer: "TRIANGLE", acceptedAnswers: [], initialScramble: "RAGTLINE"
+        )
+        var progress = AnagramProgress(puzzle: puzzle)
+        progress.outcome = .solved
+        progress.completedAt = Date()
+        progress.elapsedSecondsAtCompletion = 45
+        progress.releaseDateScore = 4
+        let history = AnagramStatsHistory(
+            rows: [], currentStreak: 2, bestStreak: 3,
+            totalSolved: 6, averageSolveTime: "0:45"
+        )
+        var rating = OverallRating()
+        rating.upsertAnagram(score: 4, date: date)
+
+        let result = PuzzleShareResult.anagram(
+            completion: AnagramCompletion(puzzle: puzzle, progress: progress),
+            history: history,
+            rating: rating,
+            isPro: false
+        )
+
+        #expect(result.game == .anagram)
+        #expect(result.issueLabel == "Anagram #8")
+        #expect(result.score == 4)
+        #expect(result.streak == 2)
+        #expect(result.totalGamesSolved == 6)
+        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "SOLVE TIME", value: "0:45"))
+        #expect(result.shareURL.path == "/anagram/\(date)")
+        #expect(result.caption.contains("TRIANGLE") == false)
+        #expect(result.caption.contains("RAGTLINE") == false)
+    }
+
     @Test("A one-point result uses the singular score label")
     func singularScoreLabel() {
         let result = PuzzleShareResult(
@@ -138,10 +175,11 @@ struct PuzzleResultShareTests {
         #expect(completionTime == "12:00 AM")
     }
 
-    @Test("Backword and Pro Crossword share cards always use a dark appearance")
+    @Test("Backword, Anagram, and Pro Crossword share cards always use a dark appearance")
     func darkShareCardAppearance() {
         #expect(PuzzleShareResult.Game.weeklyCrossword.usesDarkShareCardAppearance)
         #expect(PuzzleShareResult.Game.backword.usesDarkShareCardAppearance)
+        #expect(PuzzleShareResult.Game.anagram.usesDarkShareCardAppearance)
         #expect(!PuzzleShareResult.Game.dailyCrossword.usesDarkShareCardAppearance)
     }
 

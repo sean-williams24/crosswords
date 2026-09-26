@@ -779,6 +779,15 @@ The summary counts original-release-day solves; its average time uses solves
 within the displayed 14 days. Archive and DEBUG review attempts contribute
 neither scores nor streaks. A give-up appears in its release-day row with zero
 points, and unplayed days remain visible as zero rows.
+Completing an Anagram automatically presents that stats sheet in its finished
+state. The answer reveals one letter at a time before the next-release countdown,
+refreshed Anagram rating bar, share action, completion metrics, summary, and
+14-day history appear. The completed game board remains visible behind the sheet,
+with its timer frozen and gameplay controls disabled. Before the first published
+Anagram, the countdown targets that launch date; afterward it targets the next
+local midnight. The DEBUG review
+puzzle uses this presentation and calculates a display-only score, while remaining
+excluded from the persisted rating, streak, solved total, and history.
 The single hint clears placements, locks one correct tile, and allows any
 approved answer compatible with that lock.
 

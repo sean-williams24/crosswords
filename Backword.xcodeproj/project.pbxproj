@@ -180,6 +180,9 @@
 		A0A000000000000000000115 /* AnagramStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000015 /* AnagramStatsHistory.swift */; };
 		A0A000000000000000000116 /* AnagramStatsHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000016 /* AnagramStatsHistoryView.swift */; };
 		A0A000000000000000000117 /* AnagramStatsHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000017 /* AnagramStatsHistoryTests.swift */; };
+		A0A000000000000000000118 /* AnagramCompletionPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000018 /* AnagramCompletionPresentation.swift */; };
+		A0A000000000000000000119 /* AnagramCompletionWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000019 /* AnagramCompletionWordView.swift */; };
+		A0A000000000000000000120 /* AnagramCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -364,6 +367,9 @@
 		A0A000000000000000000015 /* AnagramStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramStatsHistory.swift; sourceTree = "<group>"; };
 		A0A000000000000000000016 /* AnagramStatsHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramStatsHistoryView.swift; sourceTree = "<group>"; };
 		A0A000000000000000000017 /* AnagramStatsHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramStatsHistoryTests.swift; sourceTree = "<group>"; };
+		A0A000000000000000000018 /* AnagramCompletionPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramCompletionPresentation.swift; sourceTree = "<group>"; };
+		A0A000000000000000000019 /* AnagramCompletionWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramCompletionWordView.swift; sourceTree = "<group>"; };
+		A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramCompletionPresentationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -418,6 +424,7 @@
 			isa = PBXGroup;
 			children = (
 				A0A000000000000000000012 /* AnagramClientTests.swift */,
+				A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */,
 				A0A000000000000000000009 /* AnagramProgressTests.swift */,
 				A0A000000000000000000017 /* AnagramStatsHistoryTests.swift */,
 				A0A000000000000000000014 /* AnagramTrayLayoutTests.swift */,
@@ -461,6 +468,7 @@
 		0574559B935CCFAA014F25D3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A0A000000000000000000018 /* AnagramCompletionPresentation.swift */,
 				A0A000000000000000000002 /* AnagramProgress.swift */,
 				A0A000000000000000000015 /* AnagramStatsHistory.swift */,
 				A0A000000000000000000001 /* AnagramPuzzle.swift */,
@@ -735,6 +743,7 @@
 			isa = PBXGroup;
 			children = (
 				A0A000000000000000000011 /* AnagramArchiveView.swift */,
+				A0A000000000000000000019 /* AnagramCompletionWordView.swift */,
 				A0A000000000000000000010 /* AnagramStatsView.swift */,
 				A0A000000000000000000016 /* AnagramStatsHistoryView.swift */,
 				A0A000000000000000000005 /* AnagramActionButton.swift */,
@@ -857,6 +866,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0A000000000000000000112 /* AnagramClientTests.swift in Sources */,
+				A0A000000000000000000120 /* AnagramCompletionPresentationTests.swift in Sources */,
 				A0A000000000000000000109 /* AnagramProgressTests.swift in Sources */,
 				A0A000000000000000000114 /* AnagramTrayLayoutTests.swift in Sources */,
 				A0A000000000000000000117 /* AnagramStatsHistoryTests.swift in Sources */,
@@ -901,6 +911,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0A000000000000000000111 /* AnagramArchiveView.swift in Sources */,
+				A0A000000000000000000119 /* AnagramCompletionWordView.swift in Sources */,
 				A0A000000000000000000110 /* AnagramStatsView.swift in Sources */,
 				A0A000000000000000000116 /* AnagramStatsHistoryView.swift in Sources */,
 				A0A000000000000000000108 /* AnagramCard.swift in Sources */,
@@ -911,6 +922,7 @@
 				A0A000000000000000000104 /* AnagramViewModel.swift in Sources */,
 				A0A000000000000000000103 /* AnagramService.swift in Sources */,
 				A0A000000000000000000102 /* AnagramProgress.swift in Sources */,
+				A0A000000000000000000118 /* AnagramCompletionPresentation.swift in Sources */,
 				A0A000000000000000000115 /* AnagramStatsHistory.swift in Sources */,
 				A0A000000000000000000101 /* AnagramPuzzle.swift in Sources */,
 				3C16166A681E34C0C10A14A3 /* AdLogger.swift in Sources */,
