@@ -368,6 +368,12 @@ menu, and every web route—including playable game surfaces—uses the same
 semantic palette. The light Backword lockup is the corresponding iOS artwork,
 while Google Identity uses its outline button in Light mode.
 
+Web game and dashboard headers reserve equal flexible space on both sides of
+the Backword mark. The lockup has an explicit width at each size, so the middle
+grid track has a stable width even when the menu is fixed or actions are wider
+than the left side. On narrow game viewports the mark scales down enough to
+leave space for both action buttons.
+
 ---
 
 ## Website Backword Parity

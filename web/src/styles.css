@@ -200,7 +200,7 @@ a {
   position: relative;
   z-index: 3;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   min-height: 66px;
   padding: max(8px, env(safe-area-inset-top)) clamp(16px, 4vw, 60px) 6px;
@@ -484,9 +484,16 @@ a {
   display: block;
   aspect-ratio: 1024 / 524;
   height: 38px;
+  width: 74px;
 }
 
-.bw-logo-lockup--large { height: 76px; }
+.bw-logo-lockup--large { height: 76px; width: 149px; }
+
+/* Keep the game actions beside the centered mark on narrow phones. */
+.bw-game-header .bw-logo-lockup--large {
+  width: clamp(80px, calc(100vw - 208px), 149px);
+  height: auto;
+}
 
 .bw-logo {
   display: block;
@@ -1469,15 +1476,15 @@ body {
 
 .home-dashboard__header {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   width: min(100% - 40px, 1120px);
   min-height: 122px;
   margin-inline: auto;
 }
 
-.home-dashboard__header > a[aria-label="Backword home"] { grid-column: 2; }
-.home-dashboard__header .bw-logo-lockup { height: 72px; }
+.home-dashboard__header > a[aria-label="Backword home"] { grid-column: 2; justify-self: center; }
+.home-dashboard__header .bw-logo-lockup { height: 72px; width: 141px; }
 .home-dashboard__actions {
   position: absolute;
   top: max(20px, env(safe-area-inset-top));
@@ -2110,7 +2117,7 @@ html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); 
   .home-dashboard__header.archive-page__header { min-height: 112px; }
   .home-dashboard__header.pro-page__header { min-height: 100px; }
   .home-dashboard__header.player-profile__header { min-height: 92px; }
-  .home-dashboard__header .bw-logo-lockup { height: 58px; }
+  .home-dashboard__header .bw-logo-lockup { height: 58px; width: 113px; }
   .home-dashboard__actions { top: max(12px, env(safe-area-inset-top)); right: 12px; gap: 6px; }
   .home-dashboard__actions .auth-button { width: 93px; min-height: 31px; height: 31px; padding: 7px 0; font-size: 14px; }
   .home-profile-rating-link { width: min(340px, calc(100vw - 24px)); }
