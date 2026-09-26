@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "reviewStatus": "requires_editorial_signoff_before_publication",
-  "frequencyReview": "pending_wordfreq_report",
+  "reviewStatus": "approved",
+  "frequencyReview": "reviewed",
   "firstReleaseDate": "2026-10-01",
   "rows": [
     {

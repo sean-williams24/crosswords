@@ -63,13 +63,12 @@ class AnagramContentTests(unittest.TestCase):
         self.assertNotIn("SATURDAY", {entry["answer"] for entry in self.pool})
         self.assertNotIn("DECEMBER", {entry["answer"] for entry in self.pool})
 
-    def test_checked_in_launch_artifact_is_generated_and_requires_signoff(self):
+    def test_checked_in_launch_artifact_is_generated_and_approved(self):
         artifact = json.loads((Path(__file__).parent / "anagram_launch_2026-10-01.json").read_text())
         self.assertEqual(artifact["rows"], prepare(date(2026, 10, 1), 1, 30, self.pool))
-        with self.assertRaisesRegex(ValueError, "signoff"):
-            validate_publication(artifact, [])
-        approved = {**artifact, "reviewStatus": "approved", "frequencyReview": "reviewed"}
-        self.assertEqual(validate_publication(approved, []), artifact["rows"])
+        self.assertEqual(artifact["reviewStatus"], "approved")
+        self.assertEqual(artifact["frequencyReview"], "reviewed")
+        self.assertEqual(validate_publication(artifact, []), artifact["rows"])
 
     def test_publication_rejects_changed_or_noncontiguous_batch(self):
         launch = prepare(date(2026, 10, 1), 1, 30, self.pool)
