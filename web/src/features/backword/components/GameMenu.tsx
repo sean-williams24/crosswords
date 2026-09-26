@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent as ReactMouseEvent } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { AppStoreBadge } from "../../../components/AppStoreBadge";
@@ -18,6 +18,7 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
   const { entitlement, user, debugProOverrideActive, debugProOverrideAvailable, setDebugProOverride } = useAuth();
   const { preference, setPreference } = useTheme();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const menuLinksRef = useRef<HTMLElement>(null);
   const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(false);
   const menuIsOpen = isOpen ?? uncontrolledIsOpen;
   const weeklyCrosswordDestination = entitlement?.isPro ? "/weekly-crossword" : "/pro?return_to=%2Fweekly-crossword";
@@ -37,6 +38,13 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
     onClose?.();
   }
 
+  function closeOnNavigation(event: ReactMouseEvent<HTMLElement>) {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+    if (event.target instanceof Element && event.target.closest("a[href]")) {
+      closeMenu();
+    }
+  }
+
   function moveThemeSelection(event: ReactKeyboardEvent<HTMLButtonElement>, currentTheme: ThemePreference) {
     const currentIndex = themeOptions.indexOf(currentTheme);
     const direction = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 0;
@@ -47,6 +55,12 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
     setPreference(themeOptions[nextIndex]);
     event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="radio"]')[nextIndex]?.focus();
   }
+
+  useLayoutEffect(() => {
+    if (menuIsOpen && menuLinksRef.current) {
+      menuLinksRef.current.scrollTop = 0;
+    }
+  }, [menuIsOpen]);
 
   useEffect(() => {
     if (!menuIsOpen) {
@@ -131,7 +145,7 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
                 ×
               </button>
             </div>
-            <nav aria-label="Game navigation links" className="bw-menu-links">
+            <nav aria-label="Game navigation links" className="bw-menu-links" onClick={closeOnNavigation} ref={menuLinksRef}>
               <section aria-labelledby="menu-appearance-title" className="bw-menu-appearance">
                 <h2 id="menu-appearance-title">Appearance</h2>
                 <div aria-label="Theme" className="bw-theme-picker" role="radiogroup">

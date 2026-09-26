@@ -444,6 +444,10 @@ dynamic viewport and safe areas. Opening it locks the document at its current
 scroll offset while the menu itself can scroll when required, preventing mobile
 browser swipes from moving the page behind the menu. Wider viewports retain the
 rounded drawer.
+Each opening resets the menu's own scroll position to the top, even when the
+browser restores a previous position for its scrollable links.
+Activating a menu link also dismisses the drawer when it points to the current
+route, including on game pages where the page owns the menu's open state.
 
 ### Browser navigation
 
