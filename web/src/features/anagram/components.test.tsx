@@ -132,7 +132,7 @@ describe("Anagram accessible controls", () => {
     expect(screen.getByText(`PUZZLE #${puzzle.puzzleNumber}`)).toBeInTheDocument();
     expect(screen.getByText("NEXT ANAGRAM IN")).toBeInTheDocument();
     expect(screen.getByText(/^\d{2}:\d{2}:\d{2}$/)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Share result" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Share result" })).toHaveClass("puzzle-result-share__button");
     const completionStats = screen.getByLabelText("Anagram completion statistics");
     expect(completionStats).toHaveTextContent("0:06");
     expect(completionStats).toHaveTextContent("+0:00");

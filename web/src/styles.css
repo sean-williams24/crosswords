@@ -2992,6 +2992,7 @@ html[data-theme="light"] {
   min-height: 58px;
   margin: 0;
   border: 0;
+  border-radius: 18px;
   color: var(--anagram-accent);
   background: var(--anagram-surface);
   font: 400 18px "Outfit", sans-serif;
