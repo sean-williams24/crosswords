@@ -201,6 +201,7 @@ struct OverallRatingTests {
         for offset in 0..<14 {
             let date = dateString(offsetByDays: -offset)
             rating.upsertBackword(score: 3, date: date)
+            rating.upsertAnagram(score: 3, date: date)
             rating.upsertDailyCrossword(score: 2, date: date)
             if offset == 0 || offset == 7 {
                 rating.upsertWeeklyCrossword(score: 4, date: date)
@@ -209,6 +210,8 @@ struct OverallRatingTests {
 
         #expect(rating.points(for: .backword) == 42)
         #expect(rating.maxPoints(for: .backword) == 70)
+        #expect(rating.points(for: .anagram) == 42)
+        #expect(rating.maxPoints(for: .anagram) == 70)
         #expect(rating.points(for: .dailyCrossword) == 28)
         #expect(rating.maxPoints(for: .dailyCrossword) == 70)
         #expect(rating.points(for: .weeklyCrossword) == 8)

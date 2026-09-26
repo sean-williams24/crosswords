@@ -214,7 +214,7 @@ struct OverallRating: Codable {
     }
 
     func maxPoints(for category: RatingGameCategory) -> Int {
-        category == .anagram ? Self.anagramPossiblePoints() : category.maxPoints
+        category.maxPoints
     }
 
     func fraction(for category: RatingGameCategory) -> Double {
