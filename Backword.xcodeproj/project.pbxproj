@@ -183,6 +183,8 @@
 		A0A000000000000000000118 /* AnagramCompletionPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000018 /* AnagramCompletionPresentation.swift */; };
 		A0A000000000000000000119 /* AnagramCompletionWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000019 /* AnagramCompletionWordView.swift */; };
 		A0A000000000000000000120 /* AnagramCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */; };
+		A0A000000000000000000121 /* AnagramInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000021 /* AnagramInstructionsContentView.swift */; };
+		A0A000000000000000000122 /* AnagramInstructionsContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -370,6 +372,8 @@
 		A0A000000000000000000018 /* AnagramCompletionPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramCompletionPresentation.swift; sourceTree = "<group>"; };
 		A0A000000000000000000019 /* AnagramCompletionWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramCompletionWordView.swift; sourceTree = "<group>"; };
 		A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramCompletionPresentationTests.swift; sourceTree = "<group>"; };
+		A0A000000000000000000021 /* AnagramInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramInstructionsContentView.swift; sourceTree = "<group>"; };
+		A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramInstructionsContentViewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -425,6 +429,7 @@
 			children = (
 				A0A000000000000000000012 /* AnagramClientTests.swift */,
 				A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */,
+				A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */,
 				A0A000000000000000000009 /* AnagramProgressTests.swift */,
 				A0A000000000000000000017 /* AnagramStatsHistoryTests.swift */,
 				A0A000000000000000000014 /* AnagramTrayLayoutTests.swift */,
@@ -744,6 +749,7 @@
 			children = (
 				A0A000000000000000000011 /* AnagramArchiveView.swift */,
 				A0A000000000000000000019 /* AnagramCompletionWordView.swift */,
+				A0A000000000000000000021 /* AnagramInstructionsContentView.swift */,
 				A0A000000000000000000010 /* AnagramStatsView.swift */,
 				A0A000000000000000000016 /* AnagramStatsHistoryView.swift */,
 				A0A000000000000000000005 /* AnagramActionButton.swift */,
@@ -867,6 +873,7 @@
 			files = (
 				A0A000000000000000000112 /* AnagramClientTests.swift in Sources */,
 				A0A000000000000000000120 /* AnagramCompletionPresentationTests.swift in Sources */,
+				A0A000000000000000000122 /* AnagramInstructionsContentViewTests.swift in Sources */,
 				A0A000000000000000000109 /* AnagramProgressTests.swift in Sources */,
 				A0A000000000000000000114 /* AnagramTrayLayoutTests.swift in Sources */,
 				A0A000000000000000000117 /* AnagramStatsHistoryTests.swift in Sources */,
@@ -912,6 +919,7 @@
 			files = (
 				A0A000000000000000000111 /* AnagramArchiveView.swift in Sources */,
 				A0A000000000000000000119 /* AnagramCompletionWordView.swift in Sources */,
+				A0A000000000000000000121 /* AnagramInstructionsContentView.swift in Sources */,
 				A0A000000000000000000110 /* AnagramStatsView.swift in Sources */,
 				A0A000000000000000000116 /* AnagramStatsHistoryView.swift in Sources */,
 				A0A000000000000000000108 /* AnagramCard.swift in Sources */,

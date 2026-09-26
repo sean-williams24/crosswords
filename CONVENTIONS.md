@@ -790,6 +790,9 @@ puzzle uses this presentation and calculates a display-only score, while remaini
 excluded from the persisted rating, streak, solved total, and history.
 The single hint clears placements, locks one correct tile, and allows any
 approved answer compatible with that lock.
+The Anagram How to Play control presents the same 85%-height bottom sheet used
+by the other games. Its gameplay, timer, hint, and scoring sections use the
+Anagram orange palette and must stay aligned with `AnagramProgress` behaviour.
 
 The timer measures wall time from Start, including app backgrounding, adverts,
 and navigation. The UI shows elapsed time as m:ss below one hour and h:mm:ss

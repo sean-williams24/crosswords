@@ -97,10 +97,8 @@ struct AnagramView: View {
                 AnagramStatsView()
             }
         }
-        .alert("How to play", isPresented: $showingInstructions) {
-            Button("Got it", role: .cancel) { }
-        } message: {
-            Text("Tap scrambled letters to fill the answer from left to right. Undo takes back your last tile. Restart returns your tiles but keeps the timer and hint. Solve quickly to earn up to five points.")
+        .sheet(isPresented: $showingInstructions) {
+            instructionsSheet
         }
         .confirmationDialog("Reveal one letter?", isPresented: $showingHintConfirmation) {
             if storeService.isProUser {
@@ -193,6 +191,27 @@ struct AnagramView: View {
         .padding(.horizontal, AppLayout.screenPadding)
         .padding(.top, 4)
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+    }
+
+    private var instructionsSheet: some View {
+        NavigationStack {
+            AnagramInstructionsContentView()
+                .navigationTitle("How to Play")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button { showingInstructions = false } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(Color.anagramOrange)
+                        }
+                        .accessibilityLabel("Close How to Play")
+                    }
+                }
+                .toolbarBackground(Color.appBackground, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+        }
+        .presentationDetents([.fraction(0.85)])
+        .presentationDragIndicator(.visible)
     }
 
     private var header: some View {
