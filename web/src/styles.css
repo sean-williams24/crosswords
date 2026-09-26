@@ -2613,6 +2613,161 @@ html[data-theme="light"] {
   background: var(--anagram-accent);
 }
 
+.anagram-dialog--instructions {
+  display: flex;
+  width: min(100%, 640px);
+  max-height: 91svh;
+  padding: 0;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--anagram-ink);
+  background: var(--app-background);
+}
+
+.anagram-instructions-header {
+  position: relative;
+  display: grid;
+  min-height: 86px;
+  padding: 14px 76px 0;
+  flex: 0 0 auto;
+  place-items: center;
+}
+
+.anagram-instructions-header::before {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 42px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--app-text-secondary);
+  content: "";
+  opacity: .85;
+  transform: translateX(-50%);
+}
+
+.anagram-dialog .anagram-instructions-header h2 {
+  margin: 0;
+  color: var(--app-text-primary);
+  font-family: "Outfit", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.anagram-dialog--instructions .anagram-dialog-close {
+  top: 28px;
+  right: 22px;
+  width: 50px;
+  height: 50px;
+  border: 8px solid var(--app-background);
+  outline: 1px solid var(--app-border);
+  color: var(--anagram-on-accent);
+  background: var(--anagram-accent);
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.anagram-instructions-scroll {
+  min-height: 0;
+  padding: 18px clamp(22px, 5vw, 48px) 38px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.anagram-instructions {
+  color: var(--anagram-ink);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.anagram-instructions__section + .anagram-instructions__section {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--anagram-accent) 25%, transparent);
+}
+
+.anagram-instructions__section h3 {
+  display: flex;
+  margin: 0 0 12px;
+  align-items: center;
+  gap: 12px;
+  color: var(--anagram-ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.anagram-dialog .anagram-instructions p {
+  margin: 0;
+  color: var(--anagram-ink);
+  line-height: 1.45;
+}
+
+.anagram-instructions__section > p + p {
+  margin-top: 16px;
+}
+
+.anagram-instructions__row {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+}
+
+.anagram-instructions__row + .anagram-instructions__row {
+  margin-top: 12px;
+}
+
+.anagram-instructions__icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  color: var(--anagram-accent);
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.anagram-instructions__icon--letters {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: 22px;
+  text-align: center;
+}
+
+.anagram-instructions__scoring {
+  display: grid;
+  margin: 0;
+  gap: 10px;
+}
+
+.anagram-instructions__scoring > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.anagram-instructions__scoring dt,
+.anagram-instructions__scoring dd {
+  margin: 0;
+}
+
+.anagram-instructions__scoring dd {
+  color: var(--anagram-accent);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.anagram-instructions__scoring + p {
+  margin-top: 14px !important;
+}
+
 .anagram-dialog--stats {
   --anagram-stats-inline: clamp(20px, 5vw, 46px);
   display: flex;

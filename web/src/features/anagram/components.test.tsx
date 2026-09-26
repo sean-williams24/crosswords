@@ -42,7 +42,7 @@ describe("Anagram accessible controls", () => {
 
   it("uses the fixed 70-point Anagram rating scale", () => {
     const { container } = render(<AnagramDialog history={[]} kind="stats" now={now}
-      onClose={vi.fn()} onConfirmGiveUp={vi.fn()} onConfirmHint={vi.fn()} onStart={vi.fn()}
+      onClose={vi.fn()} onConfirmGiveUp={vi.fn()} onConfirmHint={vi.fn()}
       progress={null} puzzle={null} shareResult={null}
       stats={{ averageSeconds: null, bestStreak: 0, played: 0, rollingScore: 0, solved: 0, streak: 0 }} />);
 
@@ -58,12 +58,38 @@ describe("Anagram accessible controls", () => {
     expect(screen.getByRole("dialog", { name: "Anagram stats" }).parentElement).toHaveClass("anagram-dialog-backdrop--stats");
   });
 
-  it("centers the give-up confirmation in the viewport", () => {
-    render(<AnagramDialog history={[]} kind="giveUp" now={now}
-      onClose={vi.fn()} onConfirmGiveUp={vi.fn()} onConfirmHint={vi.fn()} onStart={vi.fn()}
+  it("centers the hint and give-up confirmations in the viewport", () => {
+    const props = {
+      history: [], now, onClose: vi.fn(), onConfirmGiveUp: vi.fn(), onConfirmHint: vi.fn(),
+      progress: startProgress(puzzle, now), puzzle, shareResult: null,
+      stats: { averageSeconds: null, bestStreak: 0, played: 0, rollingScore: 0, solved: 0, streak: 0 }
+    };
+    const { rerender } = render(<AnagramDialog {...props} kind="giveUp" />);
+
+    expect(screen.getByRole("dialog", { name: "Give up" }).parentElement).toHaveClass("anagram-dialog-backdrop--centered");
+
+    rerender(<AnagramDialog {...props} kind="hint" />);
+
+    expect(screen.getByRole("dialog", { name: "Reveal a letter" }).parentElement).toHaveClass("anagram-dialog-backdrop--centered");
+  });
+
+  it("matches the iOS How to Play information hierarchy", () => {
+    render(<AnagramDialog history={[]} kind="instructions" now={now}
+      onClose={vi.fn()} onConfirmGiveUp={vi.fn()} onConfirmHint={vi.fn()}
       progress={startProgress(puzzle, now)} puzzle={puzzle} shareResult={null}
       stats={{ averageSeconds: null, bestStreak: 0, played: 0, rollingScore: 0, solved: 0, streak: 0 }} />);
 
-    expect(screen.getByRole("dialog", { name: "Give up" }).parentElement).toHaveClass("anagram-dialog-backdrop--centered");
+    const dialog = screen.getByRole("dialog", { name: "How to Play" });
+    expect(dialog).toHaveClass("anagram-dialog--instructions");
+    expect(dialog.parentElement).toHaveClass("anagram-dialog-backdrop--stats");
+    expect(screen.getByRole("button", { name: "Close How to Play" })).toBeInTheDocument();
+    for (const heading of ["Gameplay", "Timer", "Hint", "Scoring"]) {
+      expect(screen.getByRole("heading", { name: heading })).toBeInTheDocument();
+    }
+    expect(screen.getByText("Under 30 seconds")).toBeInTheDocument();
+    expect(screen.getByText("5 pts")).toBeInTheDocument();
+    expect(screen.getByText("Give up", { selector: "dt" })).toBeInTheDocument();
+    expect(screen.getByText("0 pts")).toBeInTheDocument();
+    expect(screen.getByText(/rolling 14-day rating and streak/)).toBeInTheDocument();
   });
 });

@@ -166,7 +166,7 @@ export function AnagramPage() {
       </> : null}
     </main>
     <Footer />
-    {dialog ? <AnagramDialog kind={dialog} onClose={() => setDialog(null)} onStart={begin}
+    {dialog ? <AnagramDialog kind={dialog} onClose={() => setDialog(null)}
       onConfirmHint={() => { if (progress && puzzle) update(revealHint(progress, puzzle)); setDialog(null); }}
       onConfirmGiveUp={() => { if (progress) update(giveUp(progress)); setDialog("result"); }}
       progress={progress} puzzle={puzzle} shareResult={shareResult} stats={stats}

@@ -3,6 +3,7 @@ import { PuzzleResultShare } from "../share/PuzzleResultShare";
 import { localDateString } from "../backword/date";
 import type { PuzzleShareResult } from "../share/puzzleResult";
 import { answerText, availableTileIDs, elapsedSeconds, type AnagramProgress, type AnagramPuzzle } from "./engine";
+import { AnagramInstructions } from "./AnagramInstructions";
 
 type Stats = { solved: number; played: number; streak: number; bestStreak: number; rollingScore: number };
 
@@ -70,9 +71,9 @@ export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart
   </section>;
 }
 
-export function AnagramDialog({ kind, onClose, onStart, onConfirmHint, onConfirmGiveUp, progress, puzzle, shareResult, stats, history, now }: {
+export function AnagramDialog({ kind, onClose, onConfirmHint, onConfirmGiveUp, progress, puzzle, shareResult, stats, history, now }: {
   kind: "instructions" | "hint" | "giveUp" | "stats" | "result";
-  onClose: () => void; onStart: () => void; onConfirmHint: () => void; onConfirmGiveUp: () => void;
+  onClose: () => void; onConfirmHint: () => void; onConfirmGiveUp: () => void;
   progress: AnagramProgress | null; puzzle: AnagramPuzzle | null;
   shareResult: PuzzleShareResult | null; stats: Stats & { averageSeconds: number | null };
   history: AnagramProgress[]; now: Date;
@@ -124,11 +125,15 @@ export function AnagramDialog({ kind, onClose, onStart, onConfirmHint, onConfirm
     <div className="anagram-stats__primary"><span><strong>{stats.streak}</strong><small>Current<br />Streak</small></span><span><strong>{stats.solved}</strong><small>Total<br />Solved</small></span><span><strong>{stats.bestStreak}</strong><small>Best<br />Streak</small></span></div>
     <span className="anagram-stats__average"><strong>{stats.averageSeconds === null ? "–" : duration(stats.averageSeconds)}</strong><small>Avg Time</small></span>
   </section>;
-  const backdropModifier = kind === "giveUp" ? " anagram-dialog-backdrop--centered" : kind === "stats" ? " anagram-dialog-backdrop--stats" : "";
+  const backdropModifier = kind === "giveUp" || kind === "hint"
+    ? " anagram-dialog-backdrop--centered"
+    : kind === "stats" || kind === "instructions"
+      ? " anagram-dialog-backdrop--stats"
+      : "";
   return <div className={`anagram-dialog-backdrop${backdropModifier}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-    <section aria-label={kind === "result" ? "Anagram result" : kind === "stats" ? "Anagram stats" : kind === "instructions" ? "How to play Anagram" : kind === "hint" ? "Reveal a letter" : "Give up"} aria-modal="true" className={`anagram-dialog${kind === "stats" ? " anagram-dialog--stats" : ""}`} role="dialog">
-      <button aria-label={kind === "stats" ? "Close Anagram stats" : "Close"} className="anagram-dialog-close" onClick={onClose} ref={closeRef} type="button">×</button>
-      {kind === "instructions" ? <><h2>How to play Anagram</h2><p>Tap the scrambled letters to make a 7–9 letter word. They fill the first empty answer cell from left to right.</p><p>Undo removes your most recent letter. Restart returns all letters you placed. Shuffle rearranges the tray. Your timer continues throughout.</p><p>You can reveal one letter. It clears your placed letters, locks the revealed letter, and adds 30 seconds to your scoring time.</p><p>Finish with an accepted answer before 30 seconds for 5 points. You can keep playing for as long as you like.</p>{!progress ? <button className="anagram-primary" onClick={onStart} type="button">Start</button> : null}</> : null}
+    <section aria-label={kind === "result" ? "Anagram result" : kind === "stats" ? "Anagram stats" : kind === "instructions" ? "How to Play" : kind === "hint" ? "Reveal a letter" : "Give up"} aria-modal="true" className={`anagram-dialog${kind === "stats" ? " anagram-dialog--stats" : kind === "instructions" ? " anagram-dialog--instructions" : ""}`} role="dialog">
+      <button aria-label={kind === "stats" ? "Close Anagram stats" : kind === "instructions" ? "Close How to Play" : "Close"} className="anagram-dialog-close" onClick={onClose} ref={closeRef} type="button">×</button>
+      {kind === "instructions" ? <><header className="anagram-instructions-header"><h2>How to Play</h2></header><div className="anagram-instructions-scroll"><AnagramInstructions /></div></> : null}
       {kind === "hint" ? <><h2>Reveal a letter?</h2><p>Your placed letters will return to the tray and Undo history will clear. One correct letter will lock in place. A 30 second scoring penalty applies; the timer keeps running.</p><button className="anagram-primary" onClick={onConfirmHint} type="button">Reveal letter (+30s)</button><button onClick={onClose} type="button">Cancel</button></> : null}
       {kind === "giveUp" ? <><h2>Give up?</h2><p>This ends today’s attempt for zero points and reveals the answer. You cannot replay it for a higher score.</p><button className="anagram-primary" onClick={onConfirmGiveUp} type="button">Give up and reveal</button><button onClick={onClose} type="button">Keep playing</button></> : null}
       {kind === "stats" ? <><header className="anagram-stats-header"><h2>Anagram Stats</h2></header><div className="anagram-stats-scroll">{ratingBar}{statsSummary}{historyTable}</div></> : null}
