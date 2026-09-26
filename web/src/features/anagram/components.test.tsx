@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import fixtures from "../../../../docs/fixtures/anagram-v1.json";
+import type { PuzzleShareResult } from "../share/puzzleResult";
 import { AnagramBoard, AnagramDialog } from "./components";
 import { mapAnagramRow } from "./repository";
 import { placeTile, revealHint, startProgress } from "./engine";
@@ -74,8 +76,9 @@ describe("Anagram accessible controls", () => {
   });
 
   it("matches the iOS How to Play information hierarchy", () => {
+    const onClose = vi.fn();
     render(<AnagramDialog history={[]} kind="instructions" now={now}
-      onClose={vi.fn()} onConfirmGiveUp={vi.fn()} onConfirmHint={vi.fn()}
+      onClose={onClose} onConfirmGiveUp={vi.fn()} onConfirmHint={vi.fn()}
       progress={startProgress(puzzle, now)} puzzle={puzzle} shareResult={null}
       stats={{ averageSeconds: null, bestStreak: 0, played: 0, rollingScore: 0, solved: 0, streak: 0 }} />);
 
@@ -91,5 +94,56 @@ describe("Anagram accessible controls", () => {
     expect(screen.getByText("Give up", { selector: "dt" })).toBeInTheDocument();
     expect(screen.getByText("0 pts")).toBeInTheDocument();
     expect(screen.getByText(/rolling 14-day rating and streak/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Close How to Play" }));
+    expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it("presents the finished game in the iOS completion format with a staggered answer", () => {
+    const usedTiles = new Set<number>();
+    const placedTileIDs = Array.from(puzzle.answer).map((letter) => {
+      const tile = Array.from(puzzle.initialScramble).findIndex((candidate, index) => candidate === letter && !usedTiles.has(index));
+      usedTiles.add(tile);
+      return tile;
+    });
+    const completed = {
+      ...startProgress(puzzle, now),
+      placedTileIDs,
+      placementHistory: placedTileIDs,
+      outcome: "solved" as const,
+      completedAt: now.toISOString(),
+      elapsedSecondsAtCompletion: 6,
+      releaseDateScore: 5
+    };
+    const shareResult: PuzzleShareResult = {
+      game: "anagram", gameName: "Anagram", issueNumber: puzzle.puzzleNumber, date: puzzle.date,
+      outcome: "SOLVED", score: 5, streak: 1, totalGamesSolved: 1, ratingTier: "Starter",
+      ratingPoints: 5, ratingMaxPoints: 70, primaryStat: { label: "SOLVE TIME", value: "0:06" },
+      timeStat: { label: "PENALTY", value: "+0s" }, url: "https://example.com/anagram", caption: "Solved"
+    };
+    const onClose = vi.fn();
+
+    const { container } = render(<MemoryRouter><AnagramDialog history={[completed]} kind="result" now={now}
+      onClose={onClose} onConfirmGiveUp={vi.fn()} onConfirmHint={vi.fn()}
+      progress={completed} puzzle={puzzle} shareResult={shareResult}
+      stats={{ averageSeconds: 6, bestStreak: 1, played: 1, rollingScore: 5, solved: 1, streak: 1 }} /></MemoryRouter>);
+
+    expect(screen.getByRole("dialog", { name: "Solved!" })).toHaveClass("anagram-dialog--completion");
+    expect(screen.getByRole("heading", { name: "Solved!" })).toBeInTheDocument();
+    expect(screen.getByText(`PUZZLE #${puzzle.puzzleNumber}`)).toBeInTheDocument();
+    expect(screen.getByText("NEXT ANAGRAM IN")).toBeInTheDocument();
+    expect(screen.getByText(/^\d{2}:\d{2}:\d{2}$/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Share result" })).toBeInTheDocument();
+    const completionStats = screen.getByLabelText("Anagram completion statistics");
+    expect(completionStats).toHaveTextContent("0:06");
+    expect(completionStats).toHaveTextContent("+0:00");
+    expect(completionStats).toHaveTextContent("5/5");
+    const answer = screen.getByLabelText(puzzle.answer);
+    expect(answer.children).toHaveLength(puzzle.answer.length);
+    expect(answer.children[0]).toHaveStyle({ animationDelay: "340ms" });
+    expect(answer.children[puzzle.answer.length - 1]).toHaveStyle({ animationDelay: `${340 + (puzzle.answer.length - 1) * 120}ms` });
+    expect(container.querySelector(".anagram-history")).not.toBeNull();
+    expect(screen.getByRole("button", { name: "HOME" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "BACK TO GAME" }));
+    expect(onClose).toHaveBeenCalledOnce();
   });
 });

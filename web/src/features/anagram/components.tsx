@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
-import { PuzzleResultShare } from "../share/PuzzleResultShare";
 import { localDateString } from "../backword/date";
 import type { PuzzleShareResult } from "../share/puzzleResult";
 import { answerText, availableTileIDs, elapsedSeconds, type AnagramProgress, type AnagramPuzzle } from "./engine";
+import { AnagramCompletion, anagramCompletionTitle } from "./AnagramCompletion";
 import { AnagramInstructions } from "./AnagramInstructions";
 
 type Stats = { solved: number; played: number; streak: number; bestStreak: number; rollingScore: number };
@@ -11,6 +11,10 @@ function duration(seconds: number) {
   if (seconds >= 3600) return `${Math.floor(seconds / 3600)}:${String(Math.floor((seconds % 3600) / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
   const minutes = Math.floor(seconds / 60);
   return `${minutes}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
+function countdownDuration(seconds: number) {
+  return `${String(Math.floor(seconds / 3600)).padStart(2, "0")}:${String(Math.floor((seconds % 3600) / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
 }
 
 function historyDate(dateString: string) {
@@ -92,7 +96,7 @@ export function AnagramDialog({ kind, onClose, onConfirmHint, onConfirmGiveUp, p
     return localDateString(day);
   });
   const nextRelease = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-  const countdown = duration(Math.max(0, Math.ceil((nextRelease.getTime() - now.getTime()) / 1000)));
+  const countdown = countdownDuration(Math.max(0, Math.ceil((nextRelease.getTime() - now.getTime()) / 1000)));
   const historyTable = <section className="anagram-history"><h3>LAST 14 DAYS</h3><div className="anagram-history__table"><div className="anagram-history__row anagram-history__heading"><span>Date</span><span>Score</span><span>Time</span></div>
     {releaseDays.map((date) => {
       const record = historyByDate.get(date);
@@ -127,21 +131,17 @@ export function AnagramDialog({ kind, onClose, onConfirmHint, onConfirmGiveUp, p
   </section>;
   const backdropModifier = kind === "giveUp" || kind === "hint"
     ? " anagram-dialog-backdrop--centered"
-    : kind === "stats" || kind === "instructions"
+    : kind === "stats" || kind === "instructions" || kind === "result"
       ? " anagram-dialog-backdrop--stats"
       : "";
   return <div className={`anagram-dialog-backdrop${backdropModifier}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-    <section aria-label={kind === "result" ? "Anagram result" : kind === "stats" ? "Anagram stats" : kind === "instructions" ? "How to Play" : kind === "hint" ? "Reveal a letter" : "Give up"} aria-modal="true" className={`anagram-dialog${kind === "stats" ? " anagram-dialog--stats" : kind === "instructions" ? " anagram-dialog--instructions" : ""}`} role="dialog">
-      <button aria-label={kind === "stats" ? "Close Anagram stats" : kind === "instructions" ? "Close How to Play" : "Close"} className="anagram-dialog-close" onClick={onClose} ref={closeRef} type="button">×</button>
+    <section aria-label={kind === "result" && progress && puzzle ? anagramCompletionTitle(progress, puzzle) : kind === "stats" ? "Anagram stats" : kind === "instructions" ? "How to Play" : kind === "hint" ? "Reveal a letter" : "Give up"} aria-modal="true" className={`anagram-dialog${kind === "stats" ? " anagram-dialog--stats" : kind === "instructions" ? " anagram-dialog--instructions" : kind === "result" ? " anagram-dialog--completion" : ""}`} role="dialog">
+      {kind !== "result" ? <button aria-label={kind === "stats" ? "Close Anagram stats" : kind === "instructions" ? "Close How to Play" : "Close"} className="anagram-dialog-close" onClick={onClose} ref={closeRef} type="button">×</button> : null}
       {kind === "instructions" ? <><header className="anagram-instructions-header"><h2>How to Play</h2></header><div className="anagram-instructions-scroll"><AnagramInstructions /></div></> : null}
       {kind === "hint" ? <><h2>Reveal a letter?</h2><p>Your placed letters will return to the tray and Undo history will clear. One correct letter will lock in place. A 30 second scoring penalty applies; the timer keeps running.</p><button className="anagram-primary" onClick={onConfirmHint} type="button">Reveal letter (+30s)</button><button onClick={onClose} type="button">Cancel</button></> : null}
       {kind === "giveUp" ? <><h2>Give up?</h2><p>This ends today’s attempt for zero points and reveals the answer. You cannot replay it for a higher score.</p><button className="anagram-primary" onClick={onConfirmGiveUp} type="button">Give up and reveal</button><button onClick={onClose} type="button">Keep playing</button></> : null}
       {kind === "stats" ? <><header className="anagram-stats-header"><h2>Anagram Stats</h2></header><div className="anagram-stats-scroll">{ratingBar}{statsSummary}{historyTable}</div></> : null}
-      {kind === "result" && progress && puzzle ? <><h2>{progress.outcome === "solved" ? "Anagram solved" : "Anagram complete"}</h2>
-        <p className="anagram-result-answer">{progress.outcome === "solved" ? answerText(progress, puzzle) : puzzle.answer}</p>
-        <div className="anagram-stats anagram-completion-stats"><span>Elapsed <strong>{duration(progress.elapsedSecondsAtCompletion ?? 0)}</strong></span><span>Penalty <strong>+{progress.penaltySeconds}s</strong></span><span>Points <strong>{progress.releaseDateScore}/5</strong></span></div>
-        <p className="anagram-stats-total">Next Anagram in {countdown}</p>{ratingBar}
-        {shareResult ? <PuzzleResultShare result={shareResult} showPreview={false} /> : null}{statsSummary}{historyTable}</> : null}
+      {kind === "result" && progress && puzzle ? <AnagramCompletion countdown={countdown} historyTable={historyTable} onClose={onClose} progress={progress} puzzle={puzzle} ratingBar={ratingBar} shareResult={shareResult} statsSummary={statsSummary} /> : null}
     </section>
   </div>;
 }
