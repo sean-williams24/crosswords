@@ -1,8 +1,27 @@
 import Testing
+import SwiftUI
 @testable import Backword
 
 @Suite("Archive tab bar")
 struct ArchiveTabBarViewTests {
+    @Test("Uses one row through Large Dynamic Type")
+    func regularLayout() {
+        #expect(ArchiveTabBarLayout.layout(for: .medium) == .singleRow)
+        #expect(ArchiveTabBarLayout.layout(for: .large) == .singleRow)
+        #expect(ArchiveTabBarLayout.singleRow.height == 54)
+        #expect(ArchiveTabBarLayout.singleRow.archiveContentBottomPadding == 112)
+        #expect(ArchiveTabBarLayout.singleRow.containerCornerRadius == 27)
+    }
+
+    @Test("Uses a two by two grid above Large Dynamic Type")
+    func accessibleLayout() {
+        #expect(ArchiveTabBarLayout.layout(for: .xLarge) == .twoByTwo)
+        #expect(ArchiveTabBarLayout.layout(for: .accessibility5) == .twoByTwo)
+        #expect(ArchiveTabBarLayout.twoByTwo.height == 108)
+        #expect(ArchiveTabBarLayout.twoByTwo.archiveContentBottomPadding == 166)
+        #expect(ArchiveTabBarLayout.twoByTwo.containerCornerRadius == 27)
+    }
+
     @Test("Backword tab content")
     func backwordTabContent() {
         let content = ArchiveTabBarItemContent.content(for: .backword)

@@ -1370,3 +1370,14 @@ Crossword alone uses a gold footer.
 The share-only Backword wordmark remains one vector design across both
 platforms. Its `BACK` paths use the original Backword home-card blue #5B8DC9;
 `WORD` remains white.
+
+---
+
+## Archive game selector
+
+The iOS archive game selector uses one horizontal row through Large Dynamic
+Type. Above Large, it switches to a two-column, two-row grid so all four game
+names remain visible with full-size tap targets. Archive scroll content adds
+matching bottom clearance for the taller selector. The selector container uses
+a 27-point continuous corner radius, matching the selected capsules' radius
+plus their inset so corner selections are not clipped.

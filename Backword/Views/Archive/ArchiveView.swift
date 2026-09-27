@@ -72,7 +72,10 @@ struct ArchiveView: View {
                     }
                     .padding(.horizontal, AppLayout.screenPadding)
                     .padding(.top, 16)
-                    .padding(.bottom, 112)
+                    .padding(
+                        .bottom,
+                        ArchiveTabBarLayout.layout(for: dynamicTypeSize).archiveContentBottomPadding
+                    )
                 }
                 .onChange(of: viewModel.expandedScrollToken(for: viewModel.activeType)) { _, token in
                     guard token != nil else { return }

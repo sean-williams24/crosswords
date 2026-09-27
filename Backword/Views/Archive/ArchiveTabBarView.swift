@@ -1,5 +1,31 @@
 import SwiftUI
 
+enum ArchiveTabBarLayout: Equatable {
+    case singleRow
+    case twoByTwo
+
+    static func layout(for dynamicTypeSize: DynamicTypeSize) -> ArchiveTabBarLayout {
+        dynamicTypeSize > .large ? .twoByTwo : .singleRow
+    }
+
+    var height: CGFloat {
+        switch self {
+        case .singleRow:
+            return 54
+        case .twoByTwo:
+            return 108
+        }
+    }
+
+    var archiveContentBottomPadding: CGFloat {
+        height + 58
+    }
+
+    var containerCornerRadius: CGFloat {
+        25
+    }
+}
+
 struct ArchiveTabBarItemContent: Equatable {
     let title: String
     let accessibilityLabel: String
@@ -31,58 +57,90 @@ struct ArchiveTabBarItemContent: Equatable {
 }
 
 struct ArchiveTabBarView: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     let tabs: [ArchiveTab]
     let selectedTab: ArchiveTab
     let selectTab: (ArchiveTab) -> Void
 
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(tabs, id: \.self) { tab in
-                let content = ArchiveTabBarItemContent.content(for: tab)
-
-                Button {
-                    selectTab(tab)
-                } label: {
-                    Text(content.title)
-                        .font(AppFont.clueLabel(selectedTab == tab ? 13 : 11))
-                        .foregroundStyle(selectedTab == tab ? Color.appTextPrimary : Color.appTextSecondary)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background {
-                            if selectedTab == tab {
-                                Capsule()
-                                    .fill(Color.appAccent.opacity(0.14))
-                                    .padding(6)
-                            }
-                        }
-                        .contentShape(Rectangle())
+        Group {
+            if layout == .twoByTwo {
+                LazyVGrid(
+                    columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 2),
+                    spacing: 0
+                ) {
+                    tabButtons
                 }
-                .buttonStyle(.plain)
-                .accessibilityLabel(content.accessibilityLabel)
-                .accessibilityAddTraits(selectedTab == tab ? .isSelected : [])
+            } else {
+                HStack(spacing: 0) {
+                    tabButtons
+                }
             }
         }
         .frame(maxWidth: 420)
-        .frame(height: 54)
+        .frame(height: layout.height)
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .background { tabBarBackground }
-        .clipShape(Capsule())
+        .clipShape(containerShape)
         .shadow(color: .black.opacity(0.12), radius: 18, x: 0, y: 8)
         .padding(.horizontal, AppLayout.screenPadding)
         .padding(.top, 8)
         .padding(.bottom, 8)
     }
 
+    private var layout: ArchiveTabBarLayout {
+        ArchiveTabBarLayout.layout(for: dynamicTypeSize)
+    }
+
+    private var containerShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: layout.containerCornerRadius, style: .continuous)
+    }
+
+    @ViewBuilder
+    private var tabButtons: some View {
+        ForEach(tabs, id: \.self) { tab in
+            tabButton(for: tab)
+                .frame(height: 54)
+        }
+    }
+
+    private func tabButton(for tab: ArchiveTab) -> some View {
+        let content = ArchiveTabBarItemContent.content(for: tab)
+
+        return Button {
+            selectTab(tab)
+        } label: {
+            Text(content.title)
+                .font(AppFont.clueLabel(selectedTab == tab ? 13 : 11))
+                .foregroundStyle(selectedTab == tab ? Color.appTextPrimary : Color.appTextSecondary)
+                .lineLimit(1)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background {
+                    if selectedTab == tab {
+                        Capsule()
+                            .fill(Color.appAccent.opacity(0.14))
+                            .padding(6)
+                    }
+                }
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(content.accessibilityLabel)
+        .accessibilityAddTraits(selectedTab == tab ? .isSelected : [])
+    }
+
     @ViewBuilder
     private var tabBarBackground: some View {
         if #available(iOS 26.0, *) {
-            Capsule()
+            containerShape
                 .fill(Color.appBackground.opacity(0.16))
-                .glassEffect(.regular.interactive(), in: .capsule)
+                .glassEffect(.regular.interactive(), in: containerShape)
         } else {
-            Capsule()
+            containerShape
                 .fill(.ultraThinMaterial)
                 .overlay {
-                    Capsule()
+                    containerShape
                         .fill(Color.appBackground.opacity(0.75))
                 }
         }
