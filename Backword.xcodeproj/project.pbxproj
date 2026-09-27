@@ -173,7 +173,7 @@
 		A0A000000000000000000108 /* AnagramCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000008 /* AnagramCard.swift */; };
 		A0A000000000000000000109 /* AnagramProgressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000009 /* AnagramProgressTests.swift */; };
 		A0A000000000000000000110 /* AnagramStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000010 /* AnagramStatsView.swift */; };
-		A0A000000000000000000111 /* AnagramArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000011 /* AnagramArchiveView.swift */; };
+		A0A000000000000000000111 /* AnagramArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000011 /* AnagramArchiveRow.swift */; };
 		A0A000000000000000000112 /* AnagramClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000012 /* AnagramClientTests.swift */; };
 		A0A000000000000000000113 /* AnagramTrayLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000013 /* AnagramTrayLayout.swift */; };
 		A0A000000000000000000114 /* AnagramTrayLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000014 /* AnagramTrayLayoutTests.swift */; };
@@ -362,7 +362,7 @@
 		A0A000000000000000000008 /* AnagramCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramCard.swift; sourceTree = "<group>"; };
 		A0A000000000000000000009 /* AnagramProgressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramProgressTests.swift; sourceTree = "<group>"; };
 		A0A000000000000000000010 /* AnagramStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramStatsView.swift; sourceTree = "<group>"; };
-		A0A000000000000000000011 /* AnagramArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramArchiveView.swift; sourceTree = "<group>"; };
+		A0A000000000000000000011 /* AnagramArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramArchiveRow.swift; sourceTree = "<group>"; };
 		A0A000000000000000000012 /* AnagramClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramClientTests.swift; sourceTree = "<group>"; };
 		A0A000000000000000000013 /* AnagramTrayLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramTrayLayout.swift; sourceTree = "<group>"; };
 		A0A000000000000000000014 /* AnagramTrayLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramTrayLayoutTests.swift; sourceTree = "<group>"; };
@@ -560,6 +560,7 @@
 		86AFC3CC2FBE53AF007623C3 /* Archive */ = {
 			isa = PBXGroup;
 			children = (
+				A0A000000000000000000011 /* AnagramArchiveRow.swift */,
 				EE5A3938FD382B86EEB78063 /* ArchiveView.swift */,
 				1A9378292FE2E56600000001 /* ArchiveTabBarView.swift */,
 				73D1C0AA78734BA68994AEF6 /* ArchiveMonthGrid.swift */,
@@ -747,7 +748,6 @@
 		A0A000000000000000000201 /* Anagram */ = {
 			isa = PBXGroup;
 			children = (
-				A0A000000000000000000011 /* AnagramArchiveView.swift */,
 				A0A000000000000000000019 /* AnagramCompletionWordView.swift */,
 				A0A000000000000000000021 /* AnagramInstructionsContentView.swift */,
 				A0A000000000000000000010 /* AnagramStatsView.swift */,
@@ -917,7 +917,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0A000000000000000000111 /* AnagramArchiveView.swift in Sources */,
+				A0A000000000000000000111 /* AnagramArchiveRow.swift in Sources */,
 				A0A000000000000000000119 /* AnagramCompletionWordView.swift in Sources */,
 				A0A000000000000000000121 /* AnagramInstructionsContentView.swift in Sources */,
 				A0A000000000000000000110 /* AnagramStatsView.swift in Sources */,

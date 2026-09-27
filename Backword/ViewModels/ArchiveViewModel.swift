@@ -8,6 +8,8 @@ final class ArchiveViewModel: ObservableObject {
     @Published var selectedPuzzle: Puzzle?
     @Published var selectedPuzzleLaunchContext: PuzzleLaunchContext = .home
     @Published var showPuzzle = false
+    @Published var selectedAnagramPuzzle: AnagramPuzzle?
+    @Published var showAnagramPuzzle = false
     @Published var loadingMonths: Set<ArchiveMonthKey> = []
     @Published var unavailableMonths: Set<ArchiveMonthKey> = []
 
@@ -48,6 +50,10 @@ final class ArchiveViewModel: ObservableObject {
 
     var currentWeeklyPuzzles: [Puzzle] {
         content(for: currentMonth, type: .weekly).weeklyPuzzles
+    }
+
+    var currentAnagramPuzzles: [AnagramPuzzle] {
+        content(for: currentMonth, type: .anagram).anagramPuzzles
     }
 
     var currentBackwordWords: [BackwordWord] {
@@ -109,10 +115,12 @@ final class ArchiveViewModel: ObservableObject {
 
         async let backwordMonths = dataSource.availableMonths(for: .backword, policy: .cacheFirst)
         async let dailyMonths = dataSource.availableMonths(for: .daily, policy: .cacheFirst)
+        async let anagramMonths = dataSource.availableMonths(for: .anagram, policy: .cacheFirst)
         async let weeklyMonths = dataSource.availableMonths(for: .weekly, policy: .cacheFirst)
 
         monthsByType[.backword] = await backwordMonths
         monthsByType[.daily] = await dailyMonths
+        monthsByType[.anagram] = await anagramMonths
         monthsByType[.weekly] = await weeklyMonths
 
         await loadCurrentMonth()
@@ -151,13 +159,20 @@ final class ArchiveViewModel: ObservableObject {
         showPuzzle = true
     }
 
+    func openAnagram(_ puzzle: AnagramPuzzle) {
+        selectedAnagramPuzzle = puzzle
+        showAnagramPuzzle = true
+    }
+
     private func loadCurrentMonth() async {
         async let backword = dataSource.loadMonth(currentMonth, for: .backword, policy: .cacheFirst)
         async let daily = dataSource.loadMonth(currentMonth, for: .daily, policy: .cacheFirst)
+        async let anagram = dataSource.loadMonth(currentMonth, for: .anagram, policy: .cacheFirst)
         async let weekly = dataSource.loadMonth(currentMonth, for: .weekly, policy: .cacheFirst)
 
         contentByMonth[ArchiveMonthKey(type: .backword, month: currentMonth)] = await backword
         contentByMonth[ArchiveMonthKey(type: .daily, month: currentMonth)] = await daily
+        contentByMonth[ArchiveMonthKey(type: .anagram, month: currentMonth)] = await anagram
         contentByMonth[ArchiveMonthKey(type: .weekly, month: currentMonth)] = await weekly
     }
 
@@ -169,6 +184,7 @@ final class ArchiveViewModel: ObservableObject {
 enum ArchiveTab: String, CaseIterable {
     case backword = "Backword"
     case daily = "Quick\n Crossword"
+    case anagram = "Anagram"
     case weekly = "Pro\n Crossword"
 
     var gameType: ArchiveGameType {
@@ -177,6 +193,8 @@ enum ArchiveTab: String, CaseIterable {
             return .backword
         case .daily:
             return .daily
+        case .anagram:
+            return .anagram
         case .weekly:
             return .weekly
         }
@@ -195,6 +213,8 @@ private extension ArchiveMonthContent {
             return backwordWords.count
         case .daily:
             return dailyPuzzles.count
+        case .anagram:
+            return anagramPuzzles.count
         case .weekly:
             return weeklyPuzzles.count
         }

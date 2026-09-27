@@ -36,9 +36,11 @@ struct ArchiveViewModelTests {
 
         #expect(viewModel.currentBackwordWords.map(\.id) == ["backword-current"])
         #expect(viewModel.currentDailyPuzzles.map(\.id) == ["daily-current"])
+        #expect(viewModel.currentAnagramPuzzles.map(\.id) == ["anagram-current"])
         #expect(viewModel.currentWeeklyPuzzles.map(\.id) == ["weekly-current"])
         #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .backword, month: currentMonth)))
         #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .daily, month: currentMonth)))
+        #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .anagram, month: currentMonth)))
         #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .weekly, month: currentMonth)))
         #expect(dataSource.monthLoadPolicies.allSatisfy { $0 == .cacheFirst })
     }
@@ -63,7 +65,7 @@ struct ArchiveViewModelTests {
 
         await viewModel.loadInitialArchive()
 
-        #expect(dataSource.availableMonthPolicies.count == 3)
+        #expect(dataSource.availableMonthPolicies.count == 4)
         #expect(dataSource.availableMonthPolicies.allSatisfy { $0 == .cacheFirst })
     }
 
@@ -127,6 +129,19 @@ struct ArchiveViewModelTests {
         #expect(viewModel.selectedPuzzleLaunchContext == .archive(type: .daily, currentWeeklyPuzzleId: "weekly-current"))
     }
 
+    @Test("Opening an Anagram stays in the shared archive navigation")
+    func openingAnagramUsesArchiveNavigation() async {
+        let currentMonth = ArchiveMonth(year: 2026, month: 6)
+        let dataSource = MockArchiveDataSource(currentMonth: currentMonth)
+        let viewModel = ArchiveViewModel(dataSource: dataSource, currentMonth: currentMonth)
+        let puzzle = makeAnagram(id: "anagram-archive", date: "2026-06-12")
+
+        viewModel.openAnagram(puzzle)
+
+        #expect(viewModel.selectedAnagramPuzzle == puzzle)
+        #expect(viewModel.showAnagramPuzzle)
+    }
+
     @Test("Switching between already loaded months publishes a view update")
     func switchingLoadedMonthsPublishesUpdate() async {
         let currentMonth = ArchiveMonth(year: 2026, month: 6)
@@ -159,14 +174,17 @@ struct ArchiveViewModelTests {
         let daily = makePuzzle(id: "cached-daily", date: "2026-06-13")
         let weekly = makePuzzle(id: "cached-weekly", date: "2026-06-07")
         let backword = makeBackword(id: "cached-backword", date: "2026-06-13")
+        let anagram = makeAnagram(id: "cached-anagram", date: "2026-06-12")
 
         cache.saveDailyArchive([daily], for: month)
         cache.saveWeeklyArchive([weekly], for: month)
         cache.saveBackwordArchive([backword], for: month)
+        cache.saveAnagramArchive([anagram], for: month)
 
         #expect(cache.loadDailyArchive(for: month)?.map(\.id) == ["cached-daily"])
         #expect(cache.loadWeeklyArchive(for: month)?.map(\.id) == ["cached-weekly"])
         #expect(cache.loadBackwordArchive(for: month)?.map(\.id) == ["cached-backword"])
+        #expect(cache.loadAnagramArchive(for: month)?.map(\.id) == ["cached-anagram"])
     }
 }
 
@@ -198,6 +216,9 @@ private final class MockArchiveDataSource: ArchiveDataProviding {
         content[ArchiveMonthKey(type: .daily, month: currentMonth)] = ArchiveMonthContent(
             dailyPuzzles: [makePuzzle(id: "daily-current", date: "2026-06-13")]
         )
+        content[ArchiveMonthKey(type: .anagram, month: currentMonth)] = ArchiveMonthContent(
+            anagramPuzzles: [makeAnagram(id: "anagram-current", date: "2026-06-12")]
+        )
         content[ArchiveMonthKey(type: .weekly, month: currentMonth)] = ArchiveMonthContent(
             weeklyPuzzles: [makePuzzle(id: "weekly-current", date: "2026-06-07")]
         )
@@ -211,6 +232,9 @@ private final class MockArchiveDataSource: ArchiveDataProviding {
             )
             content[ArchiveMonthKey(type: .backword, month: month)] = ArchiveMonthContent(
                 backwordWords: [makeBackword(id: "backword-\(month.key)", date: month.startDateString)]
+            )
+            content[ArchiveMonthKey(type: .anagram, month: month)] = ArchiveMonthContent(
+                anagramPuzzles: [makeAnagram(id: "anagram-\(month.key)", date: month.startDateString)]
             )
         }
     }
@@ -269,5 +293,17 @@ private func makePuzzle(id: String, date: String) -> Puzzle {
             ],
         ],
         clues: [clue]
+    )
+}
+
+private func makeAnagram(id: String, date: String) -> AnagramPuzzle {
+    AnagramPuzzle(
+        id: id,
+        date: date,
+        puzzleNumber: 1,
+        schemaVersion: 1,
+        answer: "TRIANGLE",
+        acceptedAnswers: ["INTEGRAL"],
+        initialScramble: "RAGTLINE"
     )
 }

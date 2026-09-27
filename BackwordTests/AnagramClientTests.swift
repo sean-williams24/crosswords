@@ -27,6 +27,40 @@ private final class FakeAnagramSource: AnagramDataSource {
 
 @Suite("Anagram clients")
 struct AnagramClientTests {
+    @Test("Archive months run newest first from the first published puzzle")
+    func archiveMonths() {
+        let months = AnagramService.archiveMonths(
+            from: "2025-12-20",
+            through: "2026-02-03"
+        )
+
+        #expect(months.map(\.key) == ["2026-02", "2026-01", "2025-12"])
+    }
+
+    @Test @MainActor func archiveIncludesTodaysReleasedPuzzle() async throws {
+        let source = FakeAnagramSource()
+        let cache = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: cache) }
+        let now = Date(timeIntervalSince1970: 1_790_467_200)
+        let today = AnagramProgress.localDay(now)
+        let puzzle = AnagramPuzzle(
+            id: "todays-archive-anagram",
+            date: today,
+            puzzleNumber: 1,
+            schemaVersion: 1,
+            answer: "TRIANGLE",
+            acceptedAnswers: ["INTEGRAL"],
+            initialScramble: "RAGTLINE"
+        )
+        source.puzzle = puzzle
+        let service = AnagramService(dataSource: source, cacheDirectory: cache)
+
+        let month = try #require(ArchiveMonth.from(dateString: today))
+        let puzzles = await service.fetchArchive(for: month, now: now)
+
+        #expect(puzzles == [puzzle])
+    }
+
     @Test @MainActor func serviceUsesCacheOfflineAndRetries() async {
         let previousRelease = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
         defer {

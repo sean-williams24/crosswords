@@ -93,14 +93,45 @@ final class AnagramService: ObservableObject {
         let cached = (try? Data(contentsOf: url)).flatMap { try? JSONDecoder().decode([AnagramPuzzle].self, from: $0) } ?? []
         do {
             let puzzles = try await dataSource.puzzles(for: month, through: today)
-                .filter { $0.isValid && $0.date < today }
+                .filter { $0.isValid && $0.date <= today }
             try? FileManager.default.createDirectory(at: cacheDirectory, withIntermediateDirectories: true)
             if let data = try? JSONEncoder().encode(puzzles) {
                 try? data.write(to: url, options: .atomic)
             }
             return puzzles
         } catch {
-            return cached.filter { $0.isValid && $0.date < today }
+            return cached.filter { $0.isValid && $0.date <= today }
         }
+    }
+
+    func fetchArchiveMonths(now: Date = Date()) async -> [ArchiveMonth] {
+        let today = AnagramProgress.localDay(now)
+        var firstReleaseDate = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+
+        if let first = try? await dataSource.firstPublishedPuzzle(), first.isValid {
+            firstReleaseDate = first.date
+            UserDefaults.standard.set(first.date, forKey: "Anagram.firstReleaseDate")
+        }
+
+        guard let firstReleaseDate else { return [] }
+        return Self.archiveMonths(from: firstReleaseDate, through: today)
+    }
+
+    static func archiveMonths(from firstDate: String, through currentDate: String) -> [ArchiveMonth] {
+        guard let firstMonth = ArchiveMonth.from(dateString: firstDate),
+              let currentMonth = ArchiveMonth.from(dateString: currentDate),
+              firstMonth <= currentMonth else { return [] }
+
+        var result: [ArchiveMonth] = []
+        var month = currentMonth
+        while month >= firstMonth {
+            result.append(month)
+            if month.month == 1 {
+                month = ArchiveMonth(year: month.year - 1, month: 12)
+            } else {
+                month = ArchiveMonth(year: month.year, month: month.month - 1)
+            }
+        }
+        return result
     }
 }

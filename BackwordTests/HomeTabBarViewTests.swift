@@ -186,8 +186,30 @@ struct HomeCardStreakLayoutTests {
         #expect(PuzzleStatus.wonBackwordOnTime(3).usesWhiteCheckmark)
         #expect(PuzzleStatus.wonBackword(3).usesWhiteCheckmark)
         #expect(!PuzzleStatus.failedBackword.usesWhiteCheckmark)
+        #expect(!PuzzleStatus.gaveUp.usesWhiteCheckmark)
         #expect(!PuzzleStatus.inProgress.usesWhiteCheckmark)
         #expect(!PuzzleStatus.notStarted.usesWhiteCheckmark)
+    }
+
+    @Test("Anagram archive status distinguishes progress and completion outcomes")
+    func anagramArchiveStatuses() {
+        let puzzle = AnagramPuzzle(
+            id: "anagram-status",
+            date: "2026-09-26",
+            puzzleNumber: 1,
+            schemaVersion: 1,
+            answer: "TRIANGLE",
+            acceptedAnswers: ["INTEGRAL"],
+            initialScramble: "RAGTLINE"
+        )
+        let start = Date(timeIntervalSince1970: 1_790_424_000)
+        var progress = AnagramProgress(puzzle: puzzle, now: start)
+
+        #expect(PuzzleStatus.status(for: Optional<AnagramProgress>.none).label == "New")
+        #expect(PuzzleStatus.status(for: progress).label == "In Progress")
+
+        progress.giveUp(now: start.addingTimeInterval(10))
+        #expect(PuzzleStatus.status(for: progress).label == "Gave up")
     }
 
     @Test("Archive weekly status uses weekly release date")

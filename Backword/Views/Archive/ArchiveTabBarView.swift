@@ -16,6 +16,11 @@ struct ArchiveTabBarItemContent: Equatable {
                 title: "Quick",
                 accessibilityLabel: "Quick crossword archive"
             )
+        case .anagram:
+            return ArchiveTabBarItemContent(
+                title: "Anagram",
+                accessibilityLabel: "Anagram archive"
+            )
         case .weekly:
             return ArchiveTabBarItemContent(
                 title: "Pro",
@@ -56,7 +61,8 @@ struct ArchiveTabBarView: View {
                 .accessibilityAddTraits(selectedTab == tab ? .isSelected : [])
             }
         }
-        .frame(width: 330, height: 54)
+        .frame(maxWidth: 420)
+        .frame(height: 54)
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .background { tabBarBackground }
         .clipShape(Capsule())

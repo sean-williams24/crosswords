@@ -783,8 +783,9 @@ and streak group at the bottom-right. Accessibility Dynamic Type sizes stack
 those regions vertically while preserving their left/right alignment. It shows
 a score only after completion. The streak counts consecutive on-time solved
 releases and continues from yesterday until today's attempt is completed; a
-give-up or late solve today ends it. The DEBUG review puzzle shows a review
-marker and sample score, but never contributes to a streak or rating.
+give-up or late solve today ends it. The DEBUG review puzzle remains available
+to previews and isolated tests, but never appears on Home or contributes to a
+streak or rating.
 The Anagram Stats sheet follows the other games' rating bar, streak/solved/time
 summary, and 14-day Date/Score/Time table while retaining Anagram colors.
 The summary counts original-release-day solves; its average time uses solves
@@ -830,6 +831,13 @@ rating points. It remains available for SwiftUI previews and isolated
 development tests. Web implementation follows the iOS gameplay contract. See
 [the v1 contract](./docs/anagram-contract-v1.md)
 for field names and cross-platform fixtures.
+
+On iOS, Anagram is a first-class tab in the shared Pro archive beside Backword,
+Quick Crossword, and Pro Crossword. It uses the shared current-month list,
+lazy earlier-month expansion, status labels, and in-stack game navigation.
+Today's released Anagram is included, matching the other game archives; future
+rows remain excluded. Anagram archive progress persists normally, while the
+release-date scoring rule prevents an older puzzle from earning points.
 
 On the web, the dated route is immutable while `/anagram` follows local
 midnight. The initial scramble is never rendered before Start. Local storage

@@ -8,6 +8,7 @@ enum PuzzleStatus {
     case wonBackwordOnTime(Int)
     case wonBackword(Int)
     case failedBackword
+    case gaveUp
     case inProgress
     case notStarted
 
@@ -18,7 +19,7 @@ enum PuzzleStatus {
         case .wonBackwordOnTime:
             return "checkmark.circle.fill"
         case .wonBackword:     return "checkmark.circle.fill"
-        case .failedBackword:  return "xmark.circle.fill"
+        case .failedBackword, .gaveUp: return "xmark.circle.fill"
         case .inProgress:      return "pencil.circle"
         case .notStarted:      return "circle"
         }
@@ -28,7 +29,7 @@ enum PuzzleStatus {
         switch self {
         case .completedOnTime, .completedLate, .wonBackwordOnTime, .wonBackword:
             true
-        case .failedBackword, .inProgress, .notStarted:
+        case .failedBackword, .gaveUp, .inProgress, .notStarted:
             false
         }
     }
@@ -41,6 +42,7 @@ enum PuzzleStatus {
             return "\(count) guess\(count == 1 ? "" : "es")"
         case .wonBackword(let count):  return "\(count) guess\(count == 1 ? "" : "es")"
         case .failedBackword:          return "Failed"
+        case .gaveUp:                  return "Gave up"
         case .inProgress:              return "In Progress"
         case .notStarted:              return "New"
         }
@@ -53,7 +55,7 @@ enum PuzzleStatus {
         case .wonBackwordOnTime:
             return .solvedGold
         case .wonBackword:     return .appCorrect
-        case .failedBackword:  return .red.opacity(0.7)
+        case .failedBackword, .gaveUp: return .red.opacity(0.7)
         case .inProgress:      return .appAccent
         case .notStarted:      return .appTextPrimary
         }
@@ -61,7 +63,7 @@ enum PuzzleStatus {
 
     var backgroundColor: Color {
         switch self {
-        case .failedBackword: return .red.opacity(0.08)
+        case .failedBackword, .gaveUp: return .red.opacity(0.08)
         case .notStarted:     return color.opacity(0.08)
         default:              return color.opacity(0.12)
         }
@@ -98,5 +100,17 @@ enum PuzzleStatus {
         return completionDate == puzzleDate
             ? .wonBackwordOnTime(progress.guesses.count)
             : .wonBackword(progress.guesses.count)
+    }
+
+    static func status(for progress: AnagramProgress?) -> PuzzleStatus {
+        guard let progress else { return .notStarted }
+        switch progress.outcome {
+        case .none:
+            return .inProgress
+        case .some(.gaveUp):
+            return .gaveUp
+        case .some(.solved):
+            return progress.releaseDateScore > 0 ? .completedOnTime : .completedLate
+        }
     }
 }

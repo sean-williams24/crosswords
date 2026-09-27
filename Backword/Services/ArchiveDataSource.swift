@@ -15,15 +15,18 @@ enum ArchiveLoadPolicy {
 final class ArchiveDataSource: ArchiveDataProviding {
     private let puzzleService: PuzzleService
     private let backwordService: BackwordService
+    private let anagramService: AnagramService
     private let cache: CacheService
 
     init(
         puzzleService: PuzzleService,
         backwordService: BackwordService? = nil,
+        anagramService: AnagramService? = nil,
         cache: CacheService = CacheService()
     ) {
         self.puzzleService = puzzleService
         self.backwordService = backwordService ?? BackwordService(loadOnInit: false)
+        self.anagramService = anagramService ?? AnagramService()
         self.cache = cache
     }
 
@@ -64,17 +67,20 @@ final class ArchiveDataSource: ArchiveDataProviding {
         let releaseCalendar = ContentReleaseCalendar()
         let currentBackwordMonth = releaseCalendar.month(for: .backword)
         let currentDailyMonth = releaseCalendar.month(for: .daily)
+        let currentAnagramMonth = releaseCalendar.month(for: .anagram)
         let currentWeeklyMonth = releaseCalendar.month(for: .weekly)
 
         async let backwordMonths = availableMonths(for: .backword, policy: .networkFirst)
         async let dailyMonths = availableMonths(for: .daily, policy: .networkFirst)
+        async let anagramMonths = availableMonths(for: .anagram, policy: .networkFirst)
         async let weeklyMonths = availableMonths(for: .weekly, policy: .networkFirst)
-        _ = await (backwordMonths, dailyMonths, weeklyMonths)
+        _ = await (backwordMonths, dailyMonths, anagramMonths, weeklyMonths)
 
         async let backwordContent = loadMonth(currentBackwordMonth, for: .backword, policy: .networkFirst)
         async let dailyContent = loadMonth(currentDailyMonth, for: .daily, policy: .networkFirst)
+        async let anagramContent = loadMonth(currentAnagramMonth, for: .anagram, policy: .networkFirst)
         async let weeklyContent = loadMonth(currentWeeklyMonth, for: .weekly, policy: .networkFirst)
-        _ = await (backwordContent, dailyContent, weeklyContent)
+        _ = await (backwordContent, dailyContent, anagramContent, weeklyContent)
     }
 
     private func fetchMonths(for type: ArchiveGameType) async throws -> [ArchiveMonth] {
@@ -83,6 +89,8 @@ final class ArchiveDataSource: ArchiveDataProviding {
             return try await backwordService.fetchArchiveMonths()
         case .daily:
             return try await puzzleService.fetchArchiveMonths()
+        case .anagram:
+            return await anagramService.fetchArchiveMonths()
         case .weekly:
             return try await puzzleService.fetchWeeklyArchiveMonths()
         }
@@ -94,6 +102,14 @@ final class ArchiveDataSource: ArchiveDataProviding {
             return ArchiveMonthContent(backwordWords: try await backwordService.fetchBackwords(for: month))
         case .daily:
             return ArchiveMonthContent(dailyPuzzles: try await puzzleService.fetchPuzzles(for: month))
+        case .anagram:
+            let puzzles = await anagramService.fetchArchive(for: month)
+            if puzzles.isEmpty,
+               let cached = cache.loadAnagramArchive(for: month),
+               !cached.isEmpty {
+                return ArchiveMonthContent(anagramPuzzles: cached)
+            }
+            return ArchiveMonthContent(anagramPuzzles: puzzles)
         case .weekly:
             return ArchiveMonthContent(weeklyPuzzles: try await puzzleService.fetchWeeklyPuzzles(for: month))
         }
@@ -105,6 +121,8 @@ final class ArchiveDataSource: ArchiveDataProviding {
             cache.saveBackwordArchive(content.backwordWords, for: month)
         case .daily:
             cache.saveDailyArchive(content.dailyPuzzles, for: month)
+        case .anagram:
+            cache.saveAnagramArchive(content.anagramPuzzles, for: month)
         case .weekly:
             cache.saveWeeklyArchive(content.weeklyPuzzles, for: month)
         }
@@ -116,6 +134,8 @@ final class ArchiveDataSource: ArchiveDataProviding {
             return ArchiveMonthContent(backwordWords: cache.loadBackwordArchive(for: month) ?? [])
         case .daily:
             return ArchiveMonthContent(dailyPuzzles: cache.loadDailyArchive(for: month) ?? [])
+        case .anagram:
+            return ArchiveMonthContent(anagramPuzzles: cache.loadAnagramArchive(for: month) ?? [])
         case .weekly:
             return ArchiveMonthContent(weeklyPuzzles: cache.loadWeeklyArchive(for: month) ?? [])
         }

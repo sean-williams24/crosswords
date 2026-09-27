@@ -122,7 +122,7 @@ enum PuzzleLaunchContext: Equatable {
             return puzzle.date < todayString
         case .weekly:
             return puzzle.id != currentWeeklyPuzzleId
-        case .backword:
+        case .backword, .anagram:
             return false
         }
     }

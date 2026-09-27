@@ -11,7 +11,6 @@ struct ArchiveView: View {
     @StateObject private var viewModel = ArchiveViewModel(
         dataSource: ArchiveDataSource(puzzleService: PuzzleService())
     )
-    @State private var showAnagramArchive = false
 
     var body: some View {
         NavigationStack {
@@ -27,14 +26,6 @@ struct ArchiveView: View {
             .navigationTitle(viewModel.currentTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                if let firstRelease = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate"),
-                   firstRelease <= AnagramProgress.localDay(Date()) {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button("Anagram") { showAnagramArchive = true }
-                            .font(AppFont.body())
-                            .foregroundStyle(Color.anagramOrange)
-                    }
-                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -44,16 +35,18 @@ struct ArchiveView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showAnagramArchive) {
-                AnagramArchiveView()
-                    .environmentObject(storeService)
-                    .environmentObject(adService)
-                    .environmentObject(ratingService)
-            }
             .navigationDestination(isPresented: $viewModel.showPuzzle) {
                 if let puzzle = viewModel.selectedPuzzle {
                     PuzzleView(viewModel: GameViewModel(puzzle: puzzle, launchContext: viewModel.selectedPuzzleLaunchContext))
                         .environmentObject(statsService)
+                        .environmentObject(storeService)
+                        .environmentObject(adService)
+                        .environmentObject(ratingService)
+                }
+            }
+            .navigationDestination(isPresented: $viewModel.showAnagramPuzzle) {
+                if let puzzle = viewModel.selectedAnagramPuzzle {
+                    AnagramView(puzzle: puzzle)
                         .environmentObject(storeService)
                         .environmentObject(adService)
                         .environmentObject(ratingService)
@@ -171,6 +164,12 @@ struct ArchiveView: View {
                     viewModel.openPuzzle(puzzle, type: .daily)
                 }
             }
+        case .anagram:
+            ForEach(content.anagramPuzzles) { puzzle in
+                AnagramArchiveRow(puzzle: puzzle) {
+                    viewModel.openAnagram(puzzle)
+                }
+            }
         case .weekly:
             ForEach(content.weeklyPuzzles) { puzzle in
                 ArchivePuzzleRow(puzzle: puzzle, isWeekly: true) {
@@ -186,6 +185,8 @@ struct ArchiveView: View {
             return ArchiveMonthContent(backwordWords: viewModel.currentBackwordWords)
         case .daily:
             return ArchiveMonthContent(dailyPuzzles: viewModel.currentDailyPuzzles)
+        case .anagram:
+            return ArchiveMonthContent(anagramPuzzles: viewModel.currentAnagramPuzzles)
         case .weekly:
             return ArchiveMonthContent(weeklyPuzzles: viewModel.currentWeeklyPuzzles)
         }
