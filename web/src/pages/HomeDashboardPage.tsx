@@ -21,25 +21,91 @@ import { useAuth } from "../features/auth/AuthProvider";
 import { HomeDashboardLoadingCard } from "../features/home/HomeDashboardLoadingCard";
 import { HomeArchiveLink } from "../features/home/HomeArchiveLink";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
-import { anagramCloudRecord, backwordCloudRecord, crosswordCloudRecord } from "../features/sync/progressSync";
+import { anagramCloudRecord, backwordCloudRecord, crosswordCloudRecord, refreshAccountProgress } from "../features/sync/progressSync";
+
+type HomeSyncUser = { id: string; last_sign_in_at?: string };
+
+const homeSyncFreshnessMs = 5 * 60 * 1000;
+const homeSyncRequests = new Map<string, Promise<void>>();
+const homeSyncStorageKey = (user: HomeSyncUser) =>
+  `backword:web:home-sync:v1:${user.id}:${user.last_sign_in_at ?? "current"}`;
+
+function homeProgressIsFresh(key: string) {
+  try {
+    const completedAt = Number(window.sessionStorage.getItem(key) ?? 0);
+    return Number.isFinite(completedAt) && Date.now() - completedAt < homeSyncFreshnessMs;
+  } catch {
+    return false;
+  }
+}
+
+function refreshHomeProgress(user: HomeSyncUser, key: string) {
+  const existing = homeSyncRequests.get(key);
+  if (existing) return existing;
+  const backwordStorage = createBackwordStorage(window.localStorage, { userId: user.id });
+  const anagramStorage = createAnagramStorage(window.localStorage, { userId: user.id });
+  const dailyCrosswordStorage = createCrosswordStorage(window.localStorage, { userId: user.id });
+  const weeklyCrosswordStorage = createCrosswordStorage(window.localStorage, { kind: "weekly", userId: user.id });
+
+  const request = Promise.allSettled([
+    refreshAccountProgress(user.id, "backword", backwordStorage.loadAllProgress().map(backwordCloudRecord),
+      (record) => backwordStorage.replaceProgress(record.payload)),
+    refreshAccountProgress(user.id, "anagram", anagramStorage.loadAllProgress().map(anagramCloudRecord),
+      (record) => anagramStorage.replaceProgress(record.payload)),
+    refreshAccountProgress(user.id, "daily_crossword", dailyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
+      (record) => dailyCrosswordStorage.replaceProgress(record.payload)),
+    refreshAccountProgress(user.id, "weekly_crossword", weeklyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress, "weekly")),
+      (record) => weeklyCrosswordStorage.replaceProgress(record.payload))
+  ]).then(() => {
+    try { window.sessionStorage.setItem(key, String(Date.now())); } catch { /* A later Home visit will retry. */ }
+  }).finally(() => {
+    homeSyncRequests.delete(key);
+  });
+  homeSyncRequests.set(key, request);
+  return request;
+}
 
 export function HomeDashboardPage() {
   const { entitlement, ready, user } = useAuth();
+  const homeSyncKey = user ? homeSyncStorageKey(user) : null;
   const [today, setToday] = useState(localDateString);
+  const [syncRevision, setSyncRevision] = useState(0);
+  const [syncedSessionKey, setSyncedSessionKey] = useState<string | null>(() => homeSyncKey && homeProgressIsFresh(homeSyncKey) ? homeSyncKey : null);
   useEffect(() => {
     const timer = window.setInterval(() => setToday(localDateString()), 30_000);
     return () => window.clearInterval(timer);
   }, []);
+  useEffect(() => {
+    if (!user) {
+      setSyncedSessionKey(null);
+      return;
+    }
+    const key = homeSyncStorageKey(user);
+    if (homeProgressIsFresh(key)) {
+      setSyncedSessionKey(key);
+      return;
+    }
+
+    let active = true;
+    void refreshHomeProgress(user, key).then(() => {
+      if (active) {
+        setSyncRevision((revision) => revision + 1);
+        setSyncedSessionKey(key);
+      }
+    });
+
+    return () => { active = false; };
+  }, [homeSyncKey, user]);
   const issueNumbers = useHomeGameIssueNumbers(today);
   const [wordOfTheDayState, setWordOfTheDayState] = useState<WordOfTheDayLoadState>("loading");
-  const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, today, user?.id), [today, user?.id]);
-  const backwordScore = useMemo(() => backwordDashboardScore(window.localStorage, today, user?.id), [today, user?.id]);
+  const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, today, user?.id), [syncRevision, today, user?.id]);
+  const backwordScore = useMemo(() => backwordDashboardScore(window.localStorage, today, user?.id), [syncRevision, today, user?.id]);
   const anagramProgress = useMemo(() => {
     const storage = createAnagramStorage(window.localStorage, { userId: user?.id });
     const puzzle = storage.loadCachedPuzzle(today);
     return puzzle ? storage.loadProgress(puzzle) : null;
-  }, [today, user?.id, issueNumbers.anagram]);
-  const anagramStreak = useMemo(() => anagramStats(createAnagramStorage(window.localStorage, { userId: user?.id }).loadAllProgress()).streak, [today, user?.id]);
+  }, [syncRevision, today, user?.id, issueNumbers.anagram]);
+  const anagramStreak = useMemo(() => anagramStats(createAnagramStorage(window.localStorage, { userId: user?.id }).loadAllProgress()).streak, [syncRevision, today, user?.id]);
   const anagramStatus = anagramProgress?.outcome === "solved" ? { label: "Solved", tone: "solved" as const }
     : anagramProgress?.outcome === "gave_up" ? { label: "Gave up", tone: "failed" as const }
     : anagramProgress ? { label: "In Progress", tone: "progress" as const } : { label: "New", tone: "new" as const };
@@ -47,12 +113,12 @@ export function HomeDashboardPage() {
     const storage = createCrosswordStorage(window.localStorage, { userId: user?.id });
     const now = new Date();
     return crosswordDashboardStatus(storage.loadProgressForDate(today), now, storage.loadAllProgress());
-  }, [today, user?.id]);
+  }, [syncRevision, today, user?.id]);
   const weeklyCrosswordStatus = useMemo(() => {
     const storage = createCrosswordStorage(window.localStorage, { kind: "weekly", userId: user?.id });
     const now = new Date();
     return weeklyCrosswordDashboardStatus(storage.loadProgressForDate(localWeekStartString(now)), now, storage.loadAllProgress());
-  }, [today, user?.id]);
+  }, [syncRevision, today, user?.id]);
   const profileRating = useMemo(() => {
     const backwordStorage = createBackwordStorage(window.localStorage, { userId: user?.id });
     const anagramStorage = createAnagramStorage(window.localStorage, { userId: user?.id });
@@ -64,8 +130,9 @@ export function HomeDashboardPage() {
       dailyCrossword: dailyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
       weeklyCrossword: weeklyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress))
     }, entitlement?.isPro === true);
-  }, [entitlement?.isPro, user?.id, today, issueNumbers.firstAnagramRelease]);
+  }, [entitlement?.isPro, user?.id, today, issueNumbers.firstAnagramRelease, syncRevision]);
   const isLoading = !ready || wordOfTheDayState === "loading";
+  const isSyncing = Boolean(homeSyncKey && syncedSessionKey !== homeSyncKey);
 
   return (
     <main className="home-dashboard">
@@ -77,7 +144,7 @@ export function HomeDashboardPage() {
         <div className="home-dashboard__actions">
           <AuthButton className="auth-button--menu-upgrade" />
         </div>
-        <HomeProfileRatingLink fraction={profileRating.fraction} tier={profileRating.tier} />
+        <HomeProfileRatingLink fraction={profileRating.fraction} isSyncing={isSyncing} tier={profileRating.tier} />
       </header>
 
       <section aria-label="Games" className="home-dashboard__content">

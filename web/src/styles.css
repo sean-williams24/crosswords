@@ -1538,6 +1538,8 @@ body {
 .home-profile-rating-link__fill { position: absolute; top: 5px; right: 0; left: 0; display: block; height: 8px; border-radius: 20px; background: linear-gradient(90deg, #fff 0%, var(--app-text-muted) 14.2857%, #8e8e93 28.5714%, var(--bw-rating-scribe) 42.8571%, var(--bw-rating-linguist) 57.1429%, var(--bw-rating-grandmaster) 71.4286%, var(--bw-rating-virtuoso) 85.7143%, var(--bw-rating-virtuoso-deep) 100%); transition: clip-path 500ms ease; }
 .home-profile-rating-link__marker { position: absolute; top: 50%; width: 14px; height: 14px; border: 2px solid #8e8e93; border-radius: 50%; background: #fff; box-shadow: 0 0 0 4px rgb(142 142 147 / 30%), 0 0 8px rgb(142 142 147 / 55%); transform: translate(-50%, -50%); }
 .home-profile-rating-link__label { position: relative; display: block; width: max-content; max-width: 100%; left: clamp(0px, calc(var(--home-profile-rating-position) - 32px), calc(100% - 78px)); color: inherit; font-size: 10px; font-weight: 700; letter-spacing: .15em; line-height: 1; }
+.home-profile-rating-link.is-syncing .home-profile-rating-link__fill { animation: home-profile-rating-sync 2.5s ease-in-out infinite; }
+.home-profile-rating-link.is-syncing .home-profile-rating-link__label { left: 50%; color: var(--app-text-muted); transform: translateX(-50%); }
 .home-profile-rating-link:hover,
 .home-profile-rating-link:focus-visible { color: var(--app-text-primary); outline: none; }
 .home-profile-rating-link:hover .home-profile-rating-link__track::before { background: var(--app-surface-hover); }
@@ -1550,6 +1552,10 @@ body {
 .home-profile-rating-link.is-linguist .home-profile-rating-link__marker,
 .home-profile-rating-link.is-grandmaster .home-profile-rating-link__marker,
 .home-profile-rating-link.is-virtuoso .home-profile-rating-link__marker { border-color: currentColor; }
+@keyframes home-profile-rating-sync { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@media (prefers-reduced-motion: reduce) {
+  .home-profile-rating-link.is-syncing .home-profile-rating-link__fill { clip-path: inset(0 0 0 0); animation: none; opacity: .65; }
+}
 .home-dashboard__header > .home-profile-rating-link { position: absolute; top: calc(max(20px, env(safe-area-inset-top)) + 54px); right: clamp(20px, 4vw, 60px); }
 
 .home-dashboard__eyebrow,

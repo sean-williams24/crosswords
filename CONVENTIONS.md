@@ -27,6 +27,17 @@ statistics, streaks, and ratings are derived from active progress rather than
 merged as aggregate counters. Local saves always complete first and cloud writes
 are retried on later account syncs.
 
+The web Home screen reconciles all four account-scoped game caches with cloud
+progress whenever a signed-in player arrives there. Each successful game refresh
+is retained even if another game is temporarily unavailable, and the Home cards
+and rating are recalculated after the refresh batch settles. During that refresh,
+the rating bar becomes the visible Home sync indicator and uses a motion-reduced
+static state when requested by the player's system settings. A completed Home
+refresh remains fresh for five minutes within the current authenticated browser
+session, using a tab-scoped timestamp so route changes and page refreshes do not
+repeat the full sync. A new authentication session uses a distinct timestamp key
+and therefore refreshes immediately.
+
 Shared payload decoders must accept an omitted optional timestamp from Swift's
 `Codable` output as equivalent to the web's explicit `null`. In particular, an
 unfinished iOS Backword record may omit `completedAt`; the web normalises it to

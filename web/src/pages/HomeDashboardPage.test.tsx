@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { act, render, screen, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import { useLayoutEffect } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { localDateString, localWeekStartString } from "../features/backword/date";
@@ -25,8 +25,16 @@ const testIssueNumbers = vi.hoisted(() => ({
   value: { backword: 121, anagram: 1, crossword: 122, weeklyCrossword: 23 }
 }));
 
+const sync = vi.hoisted(() => ({
+  refreshAccountProgress: vi.fn().mockResolvedValue(undefined)
+}));
+
 vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => testAuth.value }));
 vi.mock("../features/home/useHomeGameIssueNumbers", () => ({ useHomeGameIssueNumbers: () => testIssueNumbers.value }));
+vi.mock("../features/sync/progressSync", async () => {
+  const actual = await vi.importActual<typeof import("../features/sync/progressSync")>("../features/sync/progressSync");
+  return { ...actual, refreshAccountProgress: sync.refreshAccountProgress };
+});
 vi.mock("../features/wotd/components/WordOfTheDayCard", () => ({
   WordOfTheDayCard: ({
     className = "",
@@ -61,10 +69,90 @@ function saveProgress(progress: Record<string, unknown>) {
 describe("web home dashboard", () => {
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
     testAuth.value = { entitlement: null, ready: true, user: null };
     testWordOfTheDay.notify = null;
     testWordOfTheDay.state = "loaded";
     testIssueNumbers.value = { backword: 121, anagram: 1, crossword: 122, weeklyCrossword: 23 };
+    sync.refreshAccountProgress.mockReset();
+    sync.refreshAccountProgress.mockResolvedValue(undefined);
+  });
+
+  it("syncs every account game after sign-in and refreshes the home cards", async () => {
+    const today = localDateString();
+    sync.refreshAccountProgress.mockImplementation(async (_userId, gameType, _records, applyWinner) => {
+      if (gameType !== "backword") return;
+      applyWinner({
+        game_type: "backword",
+        content_key: today,
+        release_date: today,
+        schema_version: 1,
+        status: "solved",
+        progress_rank: 2,
+        release_score: 4,
+        client_updated_at: new Date().toISOString(),
+        payload: {
+          schemaVersion: 1,
+          date: today,
+          guesses: ["CASTLE", "CASTLE"],
+          completedAt: new Date().toISOString(),
+          outcome: "won"
+        }
+      });
+    });
+    const view = renderDashboard();
+
+    expect(sync.refreshAccountProgress).not.toHaveBeenCalled();
+    testAuth.value.user = { id: "player-1" };
+    view.rerender(<MemoryRouter><HomeDashboardPage /></MemoryRouter>);
+
+    await waitFor(() => expect(sync.refreshAccountProgress).toHaveBeenCalledTimes(4));
+    expect(sync.refreshAccountProgress.mock.calls.map((call) => [call[0], call[1]])).toEqual([
+      ["player-1", "backword"],
+      ["player-1", "anagram"],
+      ["player-1", "daily_crossword"],
+      ["player-1", "weekly_crossword"]
+    ]);
+    expect(await screen.findByLabelText("Status: 2 guesses")).toBeInTheDocument();
+  });
+
+  it("animates the rating bar as a sync indicator until Home progress is refreshed", async () => {
+    let finishSync: (() => void) | undefined;
+    const pendingSync = new Promise<void>((resolve) => { finishSync = resolve; });
+    sync.refreshAccountProgress.mockReturnValue(pendingSync);
+    testAuth.value.user = { id: "player-1" };
+
+    renderDashboard();
+
+    const syncingRating = screen.getByRole("link", { name: "Syncing player progress. View player profile" });
+    expect(syncingRating).toHaveClass("is-syncing");
+    expect(syncingRating.querySelector(".home-profile-rating-link__label")).toHaveTextContent("SYNCING");
+    expect(syncingRating.querySelector(".home-profile-rating-link__marker")).not.toBeInTheDocument();
+
+    await act(async () => finishSync?.());
+
+    const rating = await screen.findByRole("link", { name: "Overall rating: Novice. View player profile" });
+    expect(rating).not.toHaveClass("is-syncing");
+    expect(rating.querySelector(".home-profile-rating-link__label")).toHaveTextContent("NOVICE");
+    expect(rating.querySelector(".home-profile-rating-link__marker")).toBeInTheDocument();
+  });
+
+  it("reuses a recent account sync when the same signed-in session returns Home", async () => {
+    const sessionUser = { id: "player-1", last_sign_in_at: "2026-09-27T20:00:00Z" };
+    testAuth.value.user = sessionUser;
+    const firstVisit = renderDashboard();
+
+    await screen.findByRole("link", { name: "Overall rating: Novice. View player profile" });
+    expect(sync.refreshAccountProgress).toHaveBeenCalledTimes(4);
+    expect(Array.from({ length: sessionStorage.length }, (_, index) => sessionStorage.key(index)))
+      .toContain("backword:web:home-sync:v1:player-1:2026-09-27T20:00:00Z");
+    firstVisit.unmount();
+
+    testAuth.value.user = { ...sessionUser };
+    renderDashboard();
+
+    expect(screen.getByRole("link", { name: "Overall rating: Novice. View player profile" })).not.toHaveClass("is-syncing");
+    expect(sync.refreshAccountProgress).toHaveBeenCalledTimes(4);
   });
 
   it("keeps five non-interactive skeleton cards visible until Word of the Day loads", () => {
@@ -234,6 +322,9 @@ describe("web home dashboard", () => {
     expect(styles).toContain(".home-dashboard__header > .home-profile-rating-link { top: 118px; right: auto; left: 50%; transform: translateX(-50%); }");
     expect(styles).toContain("@media (max-width: 1100px) {\n  .home-dashboard__header > a[aria-label=\"Backword home\"] { align-self: start; margin-top: 25px; }");
     expect(styles).toContain(".home-profile-rating-link__track { position: relative; display: block; height: 18px; }");
+    expect(styles).toContain("animation: home-profile-rating-sync 2.5s ease-in-out infinite;");
+    expect(styles).toContain("@keyframes home-profile-rating-sync { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }");
+    expect(styles).toMatch(/@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.home-profile-rating-link\.is-syncing \.home-profile-rating-link__fill\s*\{[^}]*animation:\s*none;/);
   });
 
   it("uses one grey surface for the weekly crossword dialog", () => {
