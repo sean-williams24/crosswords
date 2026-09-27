@@ -40,6 +40,7 @@ extension Color {
     static let shareCardDailyStatLabel = Color("ShareCardDailyStatLabel")
     static let shareCardWeeklyStatLabel = Color("ShareCardWeeklyStatLabel")
     static let anagramOrange = Color("AnagramOrange")
+    static let anagramHomeCardBackground = Color("AnagramHomeCardBackground")
     static let anagramSurface = Color("AnagramSurface")
     static let anagramInk = Color("AnagramInk")
     static let anagramOnOrange = Color("AnagramOnOrange")

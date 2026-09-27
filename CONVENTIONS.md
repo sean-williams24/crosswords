@@ -805,8 +805,12 @@ and answer scroll above them.
 The Anagram Home card uses a two-column layout: its title sits at the top-left
 with the issue number directly beneath it, while puzzle length, status, score,
 and streak group at the bottom-right. Accessibility Dynamic Type sizes stack
-those regions vertically while preserving their left/right alignment. It shows
-a score only after completion. The streak counts consecutive on-time solved
+those regions vertically while preserving their left/right alignment. The card
+uses a dedicated semantic background colour so Home can match the web card without
+changing the orange used by Anagram gameplay, stats, completion, archive, or
+sharing. Its default appearance matches the existing light card orange; its
+dark appearance matches the web Home card's sRGB `0.967, 0.434, 0.040`.
+It shows a score only after completion. The streak counts consecutive on-time solved
 releases and continues from yesterday until today's attempt is completed; a
 give-up or late solve today ends it. The DEBUG review puzzle remains available
 to previews and isolated tests, but never appears on Home or contributes to a
