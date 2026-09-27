@@ -130,7 +130,7 @@ describe("web home dashboard", () => {
     expect(crosswordCard).toHaveAttribute("href", "/crossword");
     const crosswordStats = crosswordCard.querySelector(".home-game-card__stats");
     expect(crosswordStats).not.toBeNull();
-    expect(crosswordStats?.parentElement).toBe(crosswordCard);
+    expect(crosswordStats?.parentElement).toHaveClass("home-game-card__details");
     expect(crosswordStats?.querySelector(".home-game-card__streak")).toBeNull();
     const gamesGrid = crosswordCard.closest(".home-dashboard__games-grid");
     expect(gamesGrid).not.toBeNull();
@@ -157,7 +157,8 @@ describe("web home dashboard", () => {
     expect(screen.getByRole("link", { name: "Pro Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dweekly");
     expect(screen.getAllByText("Archive", { selector: ".home-archive-link > span" })).toHaveLength(4);
     expect(container.querySelectorAll(".home-archive-link > svg")).toHaveLength(4);
-    expect(screen.getByText("13×13 · Weekly")).toBeInTheDocument();
+    expect(screen.getByText("13×13")).toBeInTheDocument();
+    expect(screen.queryByText("♛")).not.toBeInTheDocument();
   });
 
   it("lays out all four games before the full-width Word of the Day panel", () => {
@@ -243,10 +244,32 @@ describe("web home dashboard", () => {
     expect(styles).not.toMatch(/\.weekly-modal__hero\s*\{[^}]*\bbackground\s*:/);
   });
 
-  it("positions each issue number at the top right of its game card", () => {
+  it("uses the Anagram identity and details layout across all game cards", () => {
+    const { container } = renderDashboard();
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
-    expect(styles).toContain(".home-game-card__issue { position: absolute; z-index: 1; top: 12px; right: 18px;");
+    const backwordCard = container.querySelector(".home-game-card--backword");
+    const crosswordCard = container.querySelector(".home-game-card--crossword");
+    const weeklyCard = container.querySelector(".weekly-card");
+
+    expect(backwordCard?.querySelector(".home-game-card__identity .home-game-card__logo")).toBeInTheDocument();
+    expect(backwordCard?.querySelector(".home-game-card__identity .home-game-card__issue")).toBeInTheDocument();
+    expect(backwordCard?.querySelector(".home-game-card__details .home-status")).toBeInTheDocument();
+    expect(crosswordCard?.querySelector(".home-game-card__identity .home-game-card__title")).toHaveTextContent("Quick Crossword");
+    expect(crosswordCard?.querySelector(".home-game-card__identity .home-game-card__description")).toHaveTextContent("9×9");
+    expect(crosswordCard?.querySelector(".home-game-card__details .home-status")).toBeInTheDocument();
+    expect(weeklyCard?.querySelector(".weekly-card__identity .weekly-card__title")).toHaveTextContent("PRO CROSSWORD");
+    expect(weeklyCard?.querySelector(".weekly-card__identity small")).toHaveTextContent("13×13");
+    expect(weeklyCard?.querySelector(".weekly-card__crown")).not.toBeInTheDocument();
+    expect(Array.from(weeklyCard?.querySelector(".weekly-card__identity")?.children ?? []).map((child) => child.className)).toEqual([
+      "weekly-card__title",
+      "",
+      "home-game-card__issue weekly-card__issue"
+    ]);
+    expect(styles).toMatch(/\.home-game-card\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*1fr 1fr;/);
+    expect(styles).toMatch(/\.home-game-card__identity\s*\{[^}]*align-items:\s*flex-start;[^}]*justify-content:\s*flex-start;/);
+    expect(styles).toMatch(/\.home-game-card__details\s*\{[^}]*align-items:\s*flex-end;[^}]*justify-content:\s*flex-end;/);
+    expect(styles).toContain(".home-game-card--backword .home-game-card__logo { margin-bottom: -16px; transform: translateX(-16.3%); }");
     expect(styles).toContain(".weekly-card__issue { color: rgb(214 190 135 / 70%); }");
   });
 
@@ -277,6 +300,7 @@ describe("web home dashboard", () => {
     expect(styles).toMatch(/\.home-game-card--anagram\s*\{[^}]*padding:\s*12px 18px[^}]*border-radius:\s*12px[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*var\(--anagram-home-card-accent\)/);
     expect(styles).toMatch(/\.home-game-card--anagram \.home-status\s*\{[^}]*border:\s*0[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*color-mix\(in srgb, var\(--anagram-on-accent\) 12%, transparent\)/);
     expect(styles).toMatch(/\.home-game-card--anagram \.home-game-card__streak\s*\{[^}]*border-radius:\s*12px[^}]*color:\s*var\(--anagram-on-accent\)/);
+    expect(styles).toMatch(/\.anagram-home-card__stats\s*\{[^}]*flex-direction:\s*row;[^}]*align-items:\s*center;[^}]*gap:\s*8px;/);
     expect(styles).toMatch(/\.anagram-home-card__identity strong\s*\{[^}]*font-size:\s*clamp\(17px, 2vw, 24px\)[^}]*font-weight:\s*900/);
   });
 

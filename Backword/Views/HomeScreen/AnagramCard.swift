@@ -58,9 +58,6 @@ struct AnagramCard: View {
         VStack(alignment: .trailing, spacing: AnagramHomeCardLayout.contentSpacing) {
             Spacer(minLength: AnagramHomeCardLayout.minimumContentSpacing)
 
-            Text("\(puzzle.length) letters")
-                .font(AppFont.caption())
-
             statusLabel
 
             HStack(spacing: AnagramHomeCardLayout.statsSpacing) {

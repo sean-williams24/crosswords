@@ -1629,15 +1629,17 @@ body {
 @keyframes home-dashboard-skeleton-shimmer { to { transform: translateX(100%); } }
 .home-game-card {
   position: relative;
-  display: flex;
+  display: grid;
   min-height: 150px;
-  padding: 12px;
-  align-items: center;
-  justify-content: center;
+  padding: 12px 18px;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 12px;
   overflow: hidden;
   border-radius: 10px;
   color: var(--app-text-primary);
-  text-align: center;
+  text-align: left;
   text-decoration: none;
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
@@ -1654,16 +1656,18 @@ body {
 .home-game-card:focus-visible { transform: translateY(-4px); outline: none; box-shadow: 0 20px 48px rgb(0 0 0 / 28%); }
 .home-game-card:focus-visible::after { border-color: var(--app-text-primary); }
 .home-game-card--backword { background: linear-gradient(150deg, #34417c, #29356d); }
-.home-game-card--crossword { padding-bottom: 20px; background: linear-gradient(145deg, #30445e, #24364d); }
-.home-game-card--crossword .home-game-card__stats { bottom: 8px; }
-.home-game-card__content { display: flex; position: relative; z-index: 1; flex-direction: column; align-items: center; }
-.home-game-card__logo { width: min(130px, 64%); height: auto; margin-bottom: 12px; object-fit: contain; }
+.home-game-card--crossword { background: linear-gradient(145deg, #30445e, #24364d); }
+.home-game-card__identity,
+.home-game-card__details { position: relative; z-index: 1; display: flex; min-width: 0; flex-direction: column; }
+.home-game-card__identity { align-items: flex-start; justify-content: flex-start; gap: 6px; }
+.home-game-card__details { align-items: flex-end; justify-content: flex-end; gap: 5px; text-align: right; }
+.home-game-card__logo { width: min(130px, 100%); height: auto; object-fit: contain; }
+.home-game-card--backword .home-game-card__logo { margin-bottom: -16px; transform: translateX(-16.3%); }
 .home-game-card__title { margin: 0; color: #f6f6f6; font-size: clamp(11px, 1.15vw, 13px); font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; }
 .home-game-card--backword .home-game-card__title { display: none; }
-.home-game-card__description { margin: 8px 0 12px; color: #b4b4b8; font-size: 14px; font-weight: 500; }
-.home-game-card--backword .home-status { margin-top: 2px; }
-.home-game-card__issue { position: absolute; z-index: 1; top: 12px; right: 18px; color: rgb(var(--app-primary-rgb) / 58%); font-family: "Outfit", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
-.home-game-card__stats { position: absolute; z-index: 1; right: 12px; bottom: 12px; left: 18px; display: flex; align-items: center; justify-content: space-between; color: var(--app-text-muted); font-family: "Outfit", sans-serif; }
+.home-game-card__description { margin: 0; color: #b4b4b8; font-size: 14px; font-weight: 500; }
+.home-game-card__issue { color: rgb(var(--app-primary-rgb) / 58%); font-family: "Outfit", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+.home-game-card__stats { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; color: var(--app-text-muted); font-family: "Outfit", sans-serif; }
 .home-game-card__score { display: inline-flex; gap: 4px; align-items: baseline; }
 .home-game-card__score strong { color: var(--app-accent); font-size: 24px; font-weight: 700; }
 .home-game-card__score.is-perfect strong { color: var(--app-correct); }
@@ -1774,33 +1778,36 @@ body {
 
 .weekly-card {
   position: relative;
-  display: flex;
+  display: grid;
   width: 100%;
   height: auto;
   min-height: 150px;
   margin-top: 0;
-  padding: 16px 28px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  padding: 12px 18px;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 12px;
   border: 2px solid #b8872d;
   border-radius: 10px;
   color: #d6be87;
   background: linear-gradient(135deg, #211e19, var(--app-elevated) 55%, #221d15);
   font: inherit;
+  text-align: left;
   cursor: pointer;
   transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 .weekly-card:hover,
 .weekly-card:focus-visible { background: linear-gradient(135deg, #292419, var(--app-surface) 55%, #2a2114); outline: none; transform: translateY(-3px); box-shadow: 0 18px 40px rgb(0 0 0 / 24%); }
-.weekly-card__crown { font-size: 24px; }
+.weekly-card__identity,
+.weekly-card__details { display: flex; min-width: 0; flex-direction: column; }
+.weekly-card__identity { align-items: flex-start; justify-content: flex-start; gap: 6px; }
+.weekly-card__details { align-items: flex-end; justify-content: flex-end; gap: 5px; text-align: right; }
 .weekly-card__title { font-size: clamp(11px, 1.15vw, 13px); font-weight: 700; letter-spacing: 0.18em; }
 .weekly-card__issue { color: rgb(214 190 135 / 70%); }
 .weekly-card small { color: #97918a; font-size: 14px; }
 .weekly-card { text-decoration: none; }
-.weekly-card__status { display: flex; min-height: 20px; flex-direction: column; align-items: center; gap: 5px; color: var(--app-text-primary); font-size: 12px; text-align: center; }
-.weekly-card__stats { bottom: 8px; }
+.weekly-card__status { display: flex; min-height: 20px; flex-direction: column; align-items: flex-end; gap: 5px; color: var(--app-text-primary); font-size: 12px; text-align: right; }
 
 .weekly-modal-backdrop {
   position: fixed;
@@ -2084,7 +2091,6 @@ html[data-theme="light"] .weekly-card {
 }
 html[data-theme="light"] .weekly-card:hover,
 html[data-theme="light"] .weekly-card:focus-visible { background: var(--app-surface); }
-html[data-theme="light"] .weekly-card__crown,
 html[data-theme="light"] .weekly-card__title { color: #d9a640; }
 html[data-theme="light"] .weekly-card small { color: var(--app-text-secondary); }
 html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); }
@@ -3268,6 +3274,12 @@ html[data-theme="light"] {
   text-align: right;
 }
 
+.anagram-home-card__stats {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
 .home-game-card--anagram .home-game-card__score strong {
   color: var(--anagram-on-accent);
 }
@@ -3414,10 +3426,13 @@ html[data-theme="light"] {
     font-size: 14px;
   }
 
-  .home-game-card--anagram {
+  .home-game-card,
+  .weekly-card {
     grid-template-columns: 1fr;
   }
 
+  .home-game-card__details,
+  .weekly-card__details,
   .anagram-home-card__details {
     align-items: flex-end;
   }

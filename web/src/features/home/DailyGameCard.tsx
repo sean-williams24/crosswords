@@ -38,19 +38,21 @@ export function DailyGameCard({
 }: DailyGameCardProps) {
   return (
     <Link aria-label={issueNumber === null ? title : `${title}, issue #${issueNumber}`} className={`home-game-card ${className}`} to={destination}>
-      <HomeGameIssueNumber issueNumber={issueNumber} />
-      <div className="home-game-card__content">
+      <div className="home-game-card__identity">
         {children}
         <p className="home-game-card__title">{title}</p>
         {description ? <p className="home-game-card__description">{description}</p> : null}
-        <DashboardStatusLabel status={status} />
+        <HomeGameIssueNumber issueNumber={issueNumber} />
       </div>
-      {score !== undefined || streak !== undefined ? (
-        <div className="home-game-card__stats">
-          {score !== null && score !== undefined ? <HomeGameScore score={score} /> : <span />}
-          {streak && streak > 0 ? <span className="home-game-card__streak">🔥 {streak}</span> : null}
-        </div>
-      ) : null}
+      <div className="home-game-card__details">
+        <DashboardStatusLabel status={status} />
+        {score !== undefined || streak !== undefined ? (
+          <div className="home-game-card__stats">
+            {score !== null && score !== undefined ? <HomeGameScore score={score} /> : null}
+            {streak && streak > 0 ? <span className="home-game-card__streak">🔥 {streak}</span> : null}
+          </div>
+        ) : null}
+      </div>
     </Link>
   );
 }
