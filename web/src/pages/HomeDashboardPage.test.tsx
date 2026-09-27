@@ -269,6 +269,8 @@ describe("web home dashboard", () => {
     expect(styles).toMatch(/\.home-game-card\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*1fr 1fr;/);
     expect(styles).toMatch(/\.home-game-card__identity\s*\{[^}]*align-items:\s*flex-start;[^}]*justify-content:\s*flex-start;/);
     expect(styles).toMatch(/\.home-game-card__details\s*\{[^}]*align-items:\s*flex-end;[^}]*justify-content:\s*flex-end;/);
+    expect(styles).toMatch(/\.home-game-card__title\s*\{[^}]*font-size:\s*clamp\(17px, 2vw, 24px\)/);
+    expect(styles).toMatch(/\.weekly-card__title\s*\{[^}]*font-size:\s*clamp\(17px, 2vw, 24px\)/);
     expect(styles).toContain(".home-game-card--backword .home-game-card__logo { margin-bottom: -16px; transform: translateX(-16.3%); }");
     expect(styles).toContain(".weekly-card__issue { color: rgb(214 190 135 / 70%); }");
   });

@@ -1663,7 +1663,7 @@ body {
 .home-game-card__details { align-items: flex-end; justify-content: flex-end; gap: 5px; text-align: right; }
 .home-game-card__logo { width: min(130px, 100%); height: auto; object-fit: contain; }
 .home-game-card--backword .home-game-card__logo { margin-bottom: -16px; transform: translateX(-16.3%); }
-.home-game-card__title { margin: 0; color: #f6f6f6; font-size: clamp(11px, 1.15vw, 13px); font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; }
+.home-game-card__title { margin: 0; color: #f6f6f6; font-size: clamp(16px, 2vw, 16px); font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; }
 .home-game-card--backword .home-game-card__title { display: none; }
 .home-game-card__description { margin: 0; color: #b4b4b8; font-size: 14px; font-weight: 500; }
 .home-game-card__issue { color: rgb(var(--app-primary-rgb) / 58%); font-family: "Outfit", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
@@ -1803,7 +1803,7 @@ body {
 .weekly-card__details { display: flex; min-width: 0; flex-direction: column; }
 .weekly-card__identity { align-items: flex-start; justify-content: flex-start; gap: 6px; }
 .weekly-card__details { align-items: flex-end; justify-content: flex-end; gap: 5px; text-align: right; }
-.weekly-card__title { font-size: clamp(11px, 1.15vw, 13px); font-weight: 700; letter-spacing: 0.18em; }
+.weekly-card__title { font-size: clamp(16px, 2vw, 16px); font-weight: 700; letter-spacing: 0.18em; }
 .weekly-card__issue { color: rgb(214 190 135 / 70%); }
 .weekly-card small { color: #97918a; font-size: 14px; }
 .weekly-card { text-decoration: none; }
