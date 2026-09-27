@@ -32,7 +32,7 @@ struct AnagramCard: View {
             .padding(.vertical, AnagramHomeCardLayout.verticalPadding)
             .foregroundStyle(Color.anagramOnOrange)
             .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
-            .background(Color.anagramOrange.colorScheme(.light))
+            .background(Color.anagramOrange)
             .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         }
         .buttonStyle(.plain)
