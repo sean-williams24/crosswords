@@ -396,7 +396,17 @@ dashboard reads the released Word of the Day row for the browser's local
 calendar date. During initial loading, all four game cards remain non-interactive
 outlined skeletons until account startup and the WOTD request settle. When the
 row is unavailable, its place becomes an informational unavailable card while
-the three playable game cards remain available.
+the four playable game cards remain available.
+
+On wide browser dashboards, Anagram, Backword, Quick Crossword, and the weekly
+Pro Crossword share one four-column game row above the full-width Word of the
+Day panel. This content uses a 1440-point desktop cap so the cards occupy more
+of a wide viewport. The row becomes two columns on intermediate layouts and one
+column on mobile. Each game keeps its archive action directly beneath its card,
+shown as the iOS-style archive box icon beside a concise `Archive` label. The
+dashboard goes directly from its global header into the cards without a daily
+title or date. The weekly card identifies its Sunday cadence inside the card
+instead of using a separate section below the daily content.
 
 The browser Backword letter cells use the iOS `Surface`, `GridLine`,
 `TextSecondary`, `Accent`, and `Correct` asset values. Empty cells are a 50%

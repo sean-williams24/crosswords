@@ -23,14 +23,6 @@ import { HomeArchiveLink } from "../features/home/HomeArchiveLink";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
 import { anagramCloudRecord, backwordCloudRecord, crosswordCloudRecord } from "../features/sync/progressSync";
 
-function formattedToday() {
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric"
-  }).format(new Date());
-}
-
 export function HomeDashboardPage() {
   const { entitlement, ready, user } = useAuth();
   const [today, setToday] = useState(localDateString);
@@ -89,20 +81,16 @@ export function HomeDashboardPage() {
         <HomeProfileRatingLink fraction={profileRating.fraction} tier={profileRating.tier} />
       </header>
 
-      <section className="home-dashboard__content" aria-labelledby="daily-games-title">
-        <div className="home-dashboard__heading">
-          <h1 id="daily-games-title">Daily Games</h1>
-          <p>{formattedToday()}</p>
-        </div>
-
+      <section aria-label="Games" className="home-dashboard__content">
         <div aria-busy={isLoading} className="home-dashboard__daily-layout">
           {isLoading ? <span className="home-dashboard__loading-label" role="status">Loading daily games</span> : null}
-          <div className="home-dashboard__daily-cards">
+          <div className="home-dashboard__games-grid">
             {isLoading ? (
               <>
+                <HomeDashboardLoadingCard variant="crossword" />
                 <HomeDashboardLoadingCard variant="backword" />
                 <HomeDashboardLoadingCard variant="crossword" />
-                <HomeDashboardLoadingCard variant="crossword" />
+                <HomeDashboardLoadingCard variant="weekly" />
               </>
             ) : (
               <>
@@ -110,7 +98,7 @@ export function HomeDashboardPage() {
                   <AnagramHomeCard issueNumber={issueNumbers.anagram} length={anagramLength}
                     score={anagramProgress?.outcome ? anagramProgress.releaseDateScore : null}
                     status={anagramStatus} streak={anagramStreak} />
-                  <HomeArchiveLink to="/archive?game=anagram">Anagram Archive</HomeArchiveLink>
+                  <HomeArchiveLink ariaLabel="Anagram Archive" to="/archive?game=anagram" />
                 </div> : null}
                 <div className="home-dashboard__game">
                   <DailyGameCard
@@ -123,7 +111,7 @@ export function HomeDashboardPage() {
                   >
                     <img alt="Backword" className="home-game-card__logo" src="/brand/backword-logo.png" />
                   </DailyGameCard>
-                  <HomeArchiveLink to="/archive?game=backword">Backword Archive</HomeArchiveLink>
+                  <HomeArchiveLink ariaLabel="Backword Archive" to="/archive?game=backword" />
                 </div>
                 <div className="home-dashboard__game">
                   <DailyGameCard
@@ -136,7 +124,27 @@ export function HomeDashboardPage() {
                     streak={crosswordStatus.streak}
                     title="Quick Crossword"
                   />
-                  <HomeArchiveLink to="/archive?game=daily">Quick Crossword Archive</HomeArchiveLink>
+                  <HomeArchiveLink ariaLabel="Quick Crossword Archive" to="/archive?game=daily" />
+                </div>
+                <div className="home-dashboard__game">
+                  {entitlement?.isPro ? (
+                    <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/weekly-crossword">
+                      <span className="weekly-card__crown" aria-hidden="true">♛</span>
+                      <HomeGameIssueNumber className="weekly-card__issue" issueNumber={issueNumbers.weeklyCrossword} />
+                      <span className="weekly-card__title">PRO CROSSWORD</span>
+                      <small>13×13 · Weekly</small>
+                      <span className="weekly-card__status"><span className={`home-status home-status--${weeklyCrosswordStatus.tone}`}>{weeklyCrosswordStatus.label}</span></span>
+                      {weeklyCrosswordStatus.score !== null || weeklyCrosswordStatus.streak ? <span className="home-game-card__stats weekly-card__stats">{weeklyCrosswordStatus.score !== null ? <HomeGameScore score={weeklyCrosswordStatus.score} /> : <span />}{weeklyCrosswordStatus.streak ? <span className="home-game-card__streak">🔥 {weeklyCrosswordStatus.streak}</span> : null}</span> : null}
+                    </Link>
+                  ) : (
+                    <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/pro?return_to=%2Fweekly-crossword">
+                      <span className="weekly-card__crown" aria-hidden="true">♛</span>
+                      <HomeGameIssueNumber className="weekly-card__issue" issueNumber={issueNumbers.weeklyCrossword} />
+                      <span className="weekly-card__title">PRO CROSSWORD</span>
+                      <small>13×13 · Weekly</small>
+                    </Link>
+                  )}
+                  <HomeArchiveLink ariaLabel="Pro Crossword Archive" to="/archive?game=weekly" />
                 </div>
               </>
             )}
@@ -154,35 +162,6 @@ export function HomeDashboardPage() {
             onLoadStateChange={setWordOfTheDayState}
           />
         </div>
-
-        <section className="weekly-card-section" aria-labelledby="weekly-games-title">
-          <div>
-            <h2 id="weekly-games-title">Weekly Games</h2>
-            <p>Refreshes every Sunday</p>
-          </div>
-          {isLoading ? <HomeDashboardLoadingCard variant="weekly" /> : (
-            <div className="weekly-card-stack">
-              {entitlement?.isPro ? (
-                <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/weekly-crossword">
-                  <span className="weekly-card__crown" aria-hidden="true">♛</span>
-                  <HomeGameIssueNumber className="weekly-card__issue" issueNumber={issueNumbers.weeklyCrossword} />
-                  <span className="weekly-card__title">PRO CROSSWORD</span>
-                  <small>13×13</small>
-                  <span className="weekly-card__status"><span className={`home-status home-status--${weeklyCrosswordStatus.tone}`}>{weeklyCrosswordStatus.label}</span></span>
-                  {weeklyCrosswordStatus.score !== null || weeklyCrosswordStatus.streak ? <span className="home-game-card__stats weekly-card__stats">{weeklyCrosswordStatus.score !== null ? <HomeGameScore score={weeklyCrosswordStatus.score} /> : <span />}{weeklyCrosswordStatus.streak ? <span className="home-game-card__streak">🔥 {weeklyCrosswordStatus.streak}</span> : null}</span> : null}
-                </Link>
-              ) : (
-                <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/pro?return_to=%2Fweekly-crossword">
-                  <span className="weekly-card__crown" aria-hidden="true">♛</span>
-                  <HomeGameIssueNumber className="weekly-card__issue" issueNumber={issueNumbers.weeklyCrossword} />
-                  <span className="weekly-card__title">PRO CROSSWORD</span>
-                  <small>13×13</small>
-                </Link>
-              )}
-              <HomeArchiveLink to="/archive?game=weekly">Pro Crossword Archive</HomeArchiveLink>
-            </div>
-          )}
-        </section>
       </section>
 
       <Footer />

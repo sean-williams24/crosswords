@@ -112,9 +112,10 @@ describe("web home dashboard", () => {
   });
 
   it("renders the daily cards and playable Backword link", () => {
-    renderDashboard();
+    const { container } = renderDashboard();
 
-    expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Daily Games" })).not.toBeInTheDocument();
+    expect(container.querySelector(".home-dashboard__heading")).not.toBeInTheDocument();
     const loginButton = screen.getByRole("link", { name: "Login" });
     const profileRating = screen.getByRole("link", { name: "Overall rating: Novice. View player profile" });
     expect(loginButton.parentElement).toHaveClass("home-dashboard__actions");
@@ -131,9 +132,9 @@ describe("web home dashboard", () => {
     expect(crosswordStats).not.toBeNull();
     expect(crosswordStats?.parentElement).toBe(crosswordCard);
     expect(crosswordStats?.querySelector(".home-game-card__streak")).toBeNull();
-    const dailyLayout = crosswordCard.closest(".home-dashboard__daily-layout");
-    expect(dailyLayout).not.toBeNull();
-    expect(crosswordCard.closest(".home-dashboard__daily-cards")?.parentElement).toBe(dailyLayout);
+    const gamesGrid = crosswordCard.closest(".home-dashboard__games-grid");
+    expect(gamesGrid).not.toBeNull();
+    expect(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game")).toHaveLength(4);
     expect(screen.getByLabelText("Issue #121")).toHaveClass("home-game-card__issue");
     expect(screen.getByLabelText("Issue #122")).toHaveClass("home-game-card__issue");
     expect(screen.getByLabelText("Issue #23")).toHaveClass("weekly-card__issue");
@@ -146,6 +147,28 @@ describe("web home dashboard", () => {
     expect(screen.getByRole("link", { name: "Anagram Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Danagram");
     expect(screen.getByRole("link", { name: "Quick Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Ddaily");
     expect(screen.getByRole("link", { name: "Pro Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dweekly");
+    expect(screen.getAllByText("Archive", { selector: ".home-archive-link > span" })).toHaveLength(4);
+    expect(container.querySelectorAll(".home-archive-link > svg")).toHaveLength(4);
+    expect(screen.getByText("13×13 · Weekly")).toBeInTheDocument();
+  });
+
+  it("lays out all four games before the full-width Word of the Day panel", () => {
+    const { container } = renderDashboard();
+    const layout = container.querySelector(".home-dashboard__daily-layout");
+    const gamesGrid = layout?.querySelector(":scope > .home-dashboard__games-grid");
+    const wordOfTheDay = layout?.querySelector(":scope > .wotd-widget");
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(layout?.children[0]).toBe(gamesGrid);
+    expect(layout?.children[1]).toBe(wordOfTheDay);
+    expect(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game")).toHaveLength(4);
+    expect(styles).toContain(".home-dashboard__content {\n  width: min(100% - 48px, 1440px);");
+    expect(styles).toContain(".home-dashboard__games-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));");
+    expect(styles).toMatch(/\.home-archive-link\s*\{[^}]*display:\s*flex;[^}]*align-items:\s*center;[^}]*justify-content:\s*center;[^}]*gap:\s*8px;/);
+    expect(styles).not.toMatch(/\.home-archive-link\s*\{[^}]*flex-direction:\s*column;/);
+    expect(styles).toContain(".home-dashboard__games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }");
+    expect(styles).toContain(".home-dashboard__games-grid { grid-template-columns: 1fr; gap: 20px; }");
+    expect(styles).toMatch(/\.home-dashboard-loading-card--weekly\s*\{[^}]*height:\s*150px(?![^}]*margin-top)/);
   });
 
   it("uses the Quick Crossword score treatment for earned Backword and Pro points", () => {
