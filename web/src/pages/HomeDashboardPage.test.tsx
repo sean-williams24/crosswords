@@ -138,7 +138,10 @@ describe("web home dashboard", () => {
     expect(screen.getByLabelText("Issue #122")).toHaveClass("home-game-card__issue");
     expect(screen.getByLabelText("Issue #23")).toHaveClass("weekly-card__issue");
     expect(screen.getAllByLabelText("Status: New")).toHaveLength(3);
-    expect(screen.getByRole("link", { name: "Anagram, issue #1" })).toHaveAttribute("href", "/anagram");
+    const anagramCard = screen.getByRole("link", { name: "Anagram, issue #1" });
+    expect(anagramCard).toHaveAttribute("href", "/anagram");
+    expect(within(anagramCard).getByLabelText("Status: New").querySelector(".home-status__icon"))
+      .toBeEmptyDOMElement();
     expect(screen.getByRole("link", { name: "Backword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dbackword");
     expect(screen.getByRole("link", { name: "Anagram Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Danagram");
     expect(screen.getByRole("link", { name: "Quick Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Ddaily");
@@ -224,6 +227,16 @@ describe("web home dashboard", () => {
     expect(styles).toContain('html[data-theme="light"] .home-game-card--backword .home-game-card__score small,\nhtml[data-theme="light"] .home-game-card--crossword .home-game-card__score small { color: rgb(255 255 255 / 58%); }');
     expect(styles).toContain('html[data-theme="light"] .home-game-card--backword .home-game-card__score.is-perfect strong { color: #c6f6b5; }');
     expect(styles).toContain('html[data-theme="light"] .weekly-card {\n  border-color: #d9a640;\n  color: #d9a640;\n  background: var(--app-surface);');
+  });
+
+  it("matches the iOS Anagram home-card colours and corners", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toContain('src: url("/fonts/Outfit-Black.ttf") format("truetype");');
+    expect(styles).toMatch(/\.home-game-card--anagram\s*\{[^}]*padding:\s*12px 18px[^}]*border-radius:\s*12px[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*var\(--anagram-accent\)/);
+    expect(styles).toMatch(/\.home-game-card--anagram \.home-status\s*\{[^}]*border:\s*0[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*color-mix\(in srgb, var\(--anagram-on-accent\) 12%, transparent\)/);
+    expect(styles).toMatch(/\.home-game-card--anagram \.home-game-card__streak\s*\{[^}]*border-radius:\s*12px[^}]*color:\s*var\(--anagram-on-accent\)/);
+    expect(styles).toMatch(/\.anagram-home-card__identity strong\s*\{[^}]*font-size:\s*clamp\(17px, 2vw, 24px\)[^}]*font-weight:\s*900/);
   });
 
   it("adds the Pro mark to the header logo for an active Pro account", () => {

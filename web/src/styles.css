@@ -26,6 +26,13 @@
   font-weight: 700;
 }
 
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-Black.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 900;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -3215,7 +3222,6 @@ html[data-theme="light"] {
   }
 }
 
-.home-game-card--anagram,
 .archive-entry-card--anagram {
   color: #fff4e8;
   background: linear-gradient(145deg, #9c4515, #71320e);
@@ -3223,23 +3229,27 @@ html[data-theme="light"] {
 
 .home-game-card--anagram {
   display: grid;
-  padding: 16px;
+  padding: 12px 18px;
   grid-template-columns: 1fr 1fr;
   align-items: stretch;
   justify-content: stretch;
-  border-radius: 0;
+  border-radius: 12px;
   gap: 12px;
+  color: var(--anagram-on-accent);
+  background: var(--anagram-accent);
   text-align: left;
 }
 
 .home-game-card--anagram .home-status {
-  border-color: #ffd4ad;
-  color: #fff4e8;
+  border: 0;
+  color: var(--anagram-on-accent);
+  background: color-mix(in srgb, var(--anagram-on-accent) 12%, transparent);
+  font-weight: 900;
 }
 
 .home-game-card--anagram .home-game-card__title,
 .home-game-card--anagram .home-game-card__description {
-  color: #fff4e8;
+  color: var(--anagram-on-accent);
 }
 
 .anagram-home-card__identity,
@@ -3256,15 +3266,15 @@ html[data-theme="light"] {
 }
 
 .anagram-home-card__identity strong {
-  font-size: clamp(17px, 2vw, 23px);
-  font-weight: 700;
+  font-size: clamp(17px, 2vw, 24px);
+  font-weight: 900;
   letter-spacing: .12em;
 }
 
 .anagram-home-card__identity > span {
   opacity: .84;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .anagram-home-card__details {
@@ -3276,17 +3286,20 @@ html[data-theme="light"] {
 }
 
 .home-game-card--anagram .home-game-card__score strong {
-  color: #fff4e8;
+  color: var(--anagram-on-accent);
 }
 
 .home-game-card--anagram .home-game-card__score small {
-  color: #ffdfc5;
+  color: color-mix(in srgb, var(--anagram-on-accent) 70%, transparent);
 }
 
 .home-game-card--anagram .home-game-card__streak {
   min-height: 24px;
-  border-radius: 0;
-  background: rgb(46 22 7 / 45%);
+  border: 0;
+  border-radius: 12px;
+  color: var(--anagram-on-accent);
+  background: color-mix(in srgb, var(--anagram-on-accent) 12%, transparent);
+  font-weight: 900;
 }
 
 .player-profile__table {
