@@ -2188,6 +2188,7 @@ html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); 
 /* Anagram mirrors the iOS game shell while widening the board for web viewports. */
 :root {
   --anagram-accent: #ffa65c;
+  --anagram-home-card-accent: var(--anagram-accent);
   --anagram-surface: #402b21;
   --anagram-ink: #ffedd9;
   --anagram-on-accent: #211208;
@@ -2197,6 +2198,7 @@ html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); 
 
 html[data-theme="light"] {
   --anagram-accent: #b3330a;
+  --anagram-home-card-accent: #bd460a;
   --anagram-surface: #ffeddb;
   --anagram-ink: #5c2614;
   --anagram-on-accent: #ffffff;
@@ -3236,7 +3238,7 @@ html[data-theme="light"] {
   border-radius: 12px;
   gap: 12px;
   color: var(--anagram-on-accent);
-  background: var(--anagram-accent);
+  background: var(--anagram-home-card-accent);
   text-align: left;
 }
 
