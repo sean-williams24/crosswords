@@ -23,7 +23,7 @@ describe("Backword website routes", () => {
   it("renders the game dashboard at /", () => {
     renderRoute("/");
 
-    expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Games" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent("Loading daily games");
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
@@ -153,7 +153,7 @@ describe("Backword website routes", () => {
   it("redirects the previous dashboard URL to the home page", () => {
     renderRoute("/home");
 
-    expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Games" })).toBeInTheDocument();
   });
 
   it("keeps marketing section text before screenshots in mobile source order", () => {
