@@ -29,6 +29,7 @@ extension Color {
     static let appTextSecondary = Color("TextSecondary")
     static let dailyCardBackground = Color("DailyCardBackground")
     static let dailyCardTitle = Color("DailyCardTitle")
+    static let homeCardBrightnessOverlay = Color.white
     static let solvedGold = Color("SolvedGold")
     static let appCrosswordBackground = Color("CrosswordBackground")
     static let backwordBackground = Color("BackwordBackground")
@@ -89,6 +90,10 @@ enum HomeCardBadgeBorderStyle: Equatable {
 
 enum HomeCardAppearance {
     static let lightModeBrightnessOverlayOpacity = 0.1
+
+    static func backgroundColorScheme(for systemColorScheme: ColorScheme) -> ColorScheme {
+        systemColorScheme
+    }
 
     static func shouldBrightenBackground(for colorScheme: ColorScheme) -> Bool {
         colorScheme == .light

@@ -84,7 +84,12 @@ struct DailyCrosswordCard: View {
                 .padding(.bottom, 10)
         }
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
-        .background(cardBackground)
+        .background(
+            cardBackground.environment(
+                \.colorScheme,
+                HomeCardAppearance.backgroundColorScheme(for: systemColorScheme)
+            )
+        )
         .overlay(alignment: .topTrailing) {
             issueNumberOverlay
         }
@@ -110,7 +115,7 @@ struct DailyCrosswordCard: View {
 
             if HomeCardAppearance.shouldBrightenBackground(for: systemColorScheme) {
                 RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                    .fill(Color.appTextPrimary.opacity(HomeCardAppearance.lightModeBrightnessOverlayOpacity))
+                    .fill(Color.homeCardBrightnessOverlay.opacity(HomeCardAppearance.lightModeBrightnessOverlayOpacity))
             }
         }
     }

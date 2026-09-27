@@ -107,6 +107,8 @@ struct HomeCardStreakLayoutTests {
 
     @Test("Home card backgrounds are brighter only in Light Mode")
     func homeCardBackgroundBrightness() {
+        #expect(HomeCardAppearance.backgroundColorScheme(for: .light) == .light)
+        #expect(HomeCardAppearance.backgroundColorScheme(for: .dark) == .dark)
         #expect(HomeCardAppearance.shouldBrightenBackground(for: .light))
         #expect(!HomeCardAppearance.shouldBrightenBackground(for: .dark))
         #expect(HomeCardAppearance.lightModeBrightnessOverlayOpacity == 0.1)
