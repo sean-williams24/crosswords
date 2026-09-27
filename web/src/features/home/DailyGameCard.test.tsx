@@ -41,4 +41,23 @@ describe("DailyGameCard", () => {
 
     expect(container).toBeEmptyDOMElement();
   });
+
+  it("adds the Anagram-equivalent offset when a streak appears without points", () => {
+    render(
+      <MemoryRouter>
+        <DailyGameCard
+          className="home-game-card--crossword"
+          destination="/crossword"
+          score={null}
+          status={{ label: "New", tone: "new" }}
+          streak={1}
+          title="Quick Crossword"
+        />
+      </MemoryRouter>
+    );
+
+    const card = screen.getByRole("link", { name: "Quick Crossword" });
+
+    expect(card.querySelector(".home-game-card__stats")).toHaveClass("home-game-card__stats--streak-only");
+  });
 });

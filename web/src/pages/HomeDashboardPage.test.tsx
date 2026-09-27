@@ -269,8 +269,12 @@ describe("web home dashboard", () => {
     expect(styles).toMatch(/\.home-game-card\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*1fr 1fr;/);
     expect(styles).toMatch(/\.home-game-card__identity\s*\{[^}]*align-items:\s*flex-start;[^}]*justify-content:\s*flex-start;/);
     expect(styles).toMatch(/\.home-game-card__details\s*\{[^}]*align-items:\s*flex-end;[^}]*justify-content:\s*flex-end;/);
-    expect(styles).toMatch(/\.home-game-card__title\s*\{[^}]*font-size:\s*clamp\(17px, 2vw, 24px\)/);
-    expect(styles).toMatch(/\.weekly-card__title\s*\{[^}]*font-size:\s*clamp\(17px, 2vw, 24px\)/);
+    expect(styles).toMatch(/\.home-game-card__stats\s*\{[^}]*flex-direction:\s*row;[^}]*align-items:\s*center;[^}]*gap:\s*8px;/);
+    expect(styles).toContain(".home-game-card__stats--streak-only { margin-top: 4px; }");
+    expect(styles).toMatch(/\.home-game-card__title\s*\{[^}]*font-size:\s*clamp\(16px, 2vw, 16px\)/);
+    expect(styles).toMatch(/\.weekly-card__title\s*\{[^}]*font-size:\s*clamp\(16px, 2vw, 16px\)/);
+    expect(styles).toContain(".home-game-card--crossword .home-game-card__identity { padding-top: 4px; }");
+    expect(styles).toMatch(/\.weekly-card__identity\s*\{[^}]*padding-top:\s*4px;/);
     expect(styles).toContain(".home-game-card--backword .home-game-card__logo { margin-bottom: -16px; transform: translateX(-16.3%); }");
     expect(styles).toContain(".weekly-card__issue { color: rgb(214 190 135 / 70%); }");
   });
@@ -302,8 +306,9 @@ describe("web home dashboard", () => {
     expect(styles).toMatch(/\.home-game-card--anagram\s*\{[^}]*padding:\s*12px 18px[^}]*border-radius:\s*12px[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*var\(--anagram-home-card-accent\)/);
     expect(styles).toMatch(/\.home-game-card--anagram \.home-status\s*\{[^}]*border:\s*0[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*color-mix\(in srgb, var\(--anagram-on-accent\) 12%, transparent\)/);
     expect(styles).toMatch(/\.home-game-card--anagram \.home-game-card__streak\s*\{[^}]*border-radius:\s*12px[^}]*color:\s*var\(--anagram-on-accent\)/);
-    expect(styles).toMatch(/\.anagram-home-card__stats\s*\{[^}]*flex-direction:\s*row;[^}]*align-items:\s*center;[^}]*gap:\s*8px;/);
+    expect(styles).toMatch(/\.home-game-card__stats\s*\{[^}]*flex-direction:\s*row;[^}]*align-items:\s*center;[^}]*gap:\s*8px;/);
     expect(styles).toMatch(/\.anagram-home-card__identity strong\s*\{[^}]*font-size:\s*clamp\(17px, 2vw, 24px\)[^}]*font-weight:\s*900/);
+    expect(styles).toMatch(/@media \(max-width: 430px\)\s*\{\s*\.anagram-home-card__identity strong\s*\{[^}]*font-size:\s*24px;/);
   });
 
   it("adds the Pro mark to the header logo for an active Pro account", () => {

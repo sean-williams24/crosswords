@@ -47,7 +47,7 @@ export function DailyGameCard({
       <div className="home-game-card__details">
         <DashboardStatusLabel status={status} />
         {score !== undefined || streak !== undefined ? (
-          <div className="home-game-card__stats">
+          <div className={`home-game-card__stats${(score === null || score === undefined) && streak ? " home-game-card__stats--streak-only" : ""}`}>
             {score !== null && score !== undefined ? <HomeGameScore score={score} /> : null}
             {streak && streak > 0 ? <span className="home-game-card__streak">🔥 {streak}</span> : null}
           </div>
