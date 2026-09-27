@@ -1665,7 +1665,6 @@ body {
 .home-game-card:focus-visible { transform: translateY(-4px); outline: none; box-shadow: 0 20px 48px rgb(0 0 0 / 28%); }
 .home-game-card:focus-visible::after { border-color: var(--app-text-primary); }
 .home-game-card--backword { background: linear-gradient(150deg, #34417c, #29356d); }
-.home-game-card--backword::after { border: 3px solid var(--app-accent); }
 .home-game-card--crossword { padding-bottom: 20px; background: linear-gradient(145deg, #30445e, #24364d); }
 .home-game-card--crossword .home-game-card__stats { bottom: 8px; }
 .home-game-card__content { display: flex; position: relative; z-index: 1; flex-direction: column; align-items: center; }
@@ -2071,7 +2070,6 @@ html[data-theme="light"] .home-dashboard-loading-card__line { background: rgb(99
 html[data-theme="light"] .home-game-card--backword {
   background: color(display-p3 0.670 0.655 0.845);
 }
-html[data-theme="light"] .home-game-card--backword::after { border: 0; }
 html[data-theme="light"] .home-game-card--crossword {
   color: #eeeeee;
   background: linear-gradient(rgb(255 255 255 / 10%), rgb(255 255 255 / 10%)), color(display-p3 0.289 0.397 0.544);

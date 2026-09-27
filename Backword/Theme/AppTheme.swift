@@ -29,6 +29,7 @@ extension Color {
     static let appTextSecondary = Color("TextSecondary")
     static let dailyCardBackground = Color("DailyCardBackground")
     static let dailyCardTitle = Color("DailyCardTitle")
+    static let dailyCardDescription = Color("DailyCardDescription")
     static let homeCardBrightnessOverlay = Color.white
     static let solvedGold = Color("SolvedGold")
     static let appCrosswordBackground = Color("CrosswordBackground")

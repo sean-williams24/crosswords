@@ -147,6 +147,27 @@ struct HomeCardStreakLayoutTests {
         #expect(DailyCrosswordCardStatusStyle.textStyle(for: .notStarted) == .statusColor)
     }
 
+    @Test("Daily card description matches the web home card colour")
+    func dailyCardDescriptionColour() throws {
+        let assetURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Backword/Resources/Assets.xcassets/DailyCardDescription.colorset/Contents.json")
+        let data = try Data(contentsOf: assetURL)
+        let json = try #require(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        let colors = try #require(json["colors"] as? [[String: Any]])
+        let color = try #require(colors.first?["color"] as? [String: Any])
+        let components = try #require(color["components"] as? [String: String])
+
+        #expect(color["color-space"] as? String == "srgb")
+        #expect(components == [
+            "red": "0.705882",
+            "green": "0.705882",
+            "blue": "0.721569",
+            "alpha": "1.000"
+        ])
+    }
+
     @Test("Streak button uses one edge inset for bottom and trailing padding")
     func streakButtonUsesSharedEdgeInset() {
         #expect(HomeCardStreakLayout.streakButtonEdgeInset == 12)

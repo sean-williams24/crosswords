@@ -58,7 +58,7 @@ struct DailyCrosswordCard: View {
 
                 Text("9×9")
                     .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
+                    .foregroundColor(.dailyCardDescription)
 
                 if viewModel.state == .loading {
                     ProgressView()

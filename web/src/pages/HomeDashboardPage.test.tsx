@@ -222,11 +222,18 @@ describe("web home dashboard", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
     expect(styles).toContain('html[data-theme="light"] .home-game-card--backword {\n  background: color(display-p3 0.670 0.655 0.845);');
-    expect(styles).toContain('html[data-theme="light"] .home-game-card--backword::after { border: 0; }');
     expect(styles).toContain('background: linear-gradient(rgb(255 255 255 / 10%), rgb(255 255 255 / 10%)), color(display-p3 0.289 0.397 0.544);');
     expect(styles).toContain('html[data-theme="light"] .home-game-card--backword .home-game-card__score small,\nhtml[data-theme="light"] .home-game-card--crossword .home-game-card__score small { color: rgb(255 255 255 / 58%); }');
     expect(styles).toContain('html[data-theme="light"] .home-game-card--backword .home-game-card__score.is-perfect strong { color: #c6f6b5; }');
     expect(styles).toContain('html[data-theme="light"] .weekly-card {\n  border-color: #d9a640;\n  color: #d9a640;\n  background: var(--app-surface);');
+  });
+
+  it("keeps the Backword home card borderless at rest in both themes", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).not.toContain(".home-game-card--backword::after");
+    expect(styles).toContain("border: 1px solid transparent;");
+    expect(styles).toContain(".home-game-card:focus-visible::after { border-color: var(--app-text-primary); }");
   });
 
   it("matches the iOS Anagram home-card colours in light and dark mode", () => {
