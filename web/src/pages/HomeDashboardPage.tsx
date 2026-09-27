@@ -94,12 +94,6 @@ export function HomeDashboardPage() {
               </>
             ) : (
               <>
-                {issueNumbers.anagram !== null ? <div className="home-dashboard__game">
-                  <AnagramHomeCard issueNumber={issueNumbers.anagram} length={anagramLength}
-                    score={anagramProgress?.outcome ? anagramProgress.releaseDateScore : null}
-                    status={anagramStatus} streak={anagramStreak} />
-                  <HomeArchiveLink ariaLabel="Anagram Archive" to="/archive?game=anagram" />
-                </div> : null}
                 <div className="home-dashboard__game">
                   <DailyGameCard
                     className="home-game-card--backword"
@@ -126,6 +120,12 @@ export function HomeDashboardPage() {
                   />
                   <HomeArchiveLink ariaLabel="Quick Crossword Archive" to="/archive?game=daily" />
                 </div>
+                {issueNumbers.anagram !== null ? <div className="home-dashboard__game">
+                  <AnagramHomeCard issueNumber={issueNumbers.anagram} length={anagramLength}
+                    score={anagramProgress?.outcome ? anagramProgress.releaseDateScore : null}
+                    status={anagramStatus} streak={anagramStreak} />
+                  <HomeArchiveLink ariaLabel="Anagram Archive" to="/archive?game=anagram" />
+                </div> : null}
                 <div className="home-dashboard__game">
                   {entitlement?.isPro ? (
                     <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/weekly-crossword">

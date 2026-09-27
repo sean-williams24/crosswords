@@ -135,6 +135,14 @@ describe("web home dashboard", () => {
     const gamesGrid = crosswordCard.closest(".home-dashboard__games-grid");
     expect(gamesGrid).not.toBeNull();
     expect(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game")).toHaveLength(4);
+    expect(Array.from(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game") ?? []).map((game) =>
+      game.querySelector("a")?.getAttribute("aria-label")
+    )).toEqual([
+      "Backword, issue #121",
+      "Quick Crossword, issue #122",
+      "Anagram, issue #1",
+      "Pro Crossword, issue #23"
+    ]);
     expect(screen.getByLabelText("Issue #121")).toHaveClass("home-game-card__issue");
     expect(screen.getByLabelText("Issue #122")).toHaveClass("home-game-card__issue");
     expect(screen.getByLabelText("Issue #23")).toHaveClass("weekly-card__issue");
@@ -166,6 +174,7 @@ describe("web home dashboard", () => {
     expect(styles).toContain(".home-dashboard__games-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));");
     expect(styles).toMatch(/\.home-archive-link\s*\{[^}]*display:\s*flex;[^}]*align-items:\s*center;[^}]*justify-content:\s*center;[^}]*gap:\s*8px;/);
     expect(styles).not.toMatch(/\.home-archive-link\s*\{[^}]*flex-direction:\s*column;/);
+    expect(styles).toContain("@media (min-width: 681px) and (max-width: 1200px) {");
     expect(styles).toContain(".home-dashboard__games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }");
     expect(styles).toContain(".home-dashboard__games-grid { grid-template-columns: 1fr; gap: 20px; }");
     expect(styles).toMatch(/\.home-dashboard-loading-card--weekly\s*\{[^}]*height:\s*150px(?![^}]*margin-top)/);

@@ -2125,10 +2125,13 @@ html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); 
   .wotd-unavailable-card { min-height: 380px; }
 }
 
-@media (min-width: 681px) and (max-width: 900px) {
-  .home-dashboard__content { width: min(100% - 40px, 756px); }
+@media (min-width: 681px) and (max-width: 1200px) {
   .home-dashboard__daily-layout { gap: 20px; }
   .home-dashboard__games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+}
+
+@media (min-width: 681px) and (max-width: 900px) {
+  .home-dashboard__content { width: min(100% - 40px, 756px); }
   .wotd-card { display: grid; }
   .wotd-drawer { display: grid; grid-template-rows: 0fr; opacity: 0; transform: translateY(-8px); }
   .wotd-drawer__inner { overflow: hidden; }

@@ -398,11 +398,11 @@ outlined skeletons until account startup and the WOTD request settle. When the
 row is unavailable, its place becomes an informational unavailable card while
 the four playable game cards remain available.
 
-On wide browser dashboards, Anagram, Backword, Quick Crossword, and the weekly
-Pro Crossword share one four-column game row above the full-width Word of the
+On wide browser dashboards, Backword, Quick Crossword, Anagram, and the weekly
+Pro Crossword appear in that order in one four-column row above the full-width Word of the
 Day panel. This content uses a 1440-point desktop cap so the cards occupy more
-of a wide viewport. The row becomes two columns on intermediate layouts and one
-column on mobile. Each game keeps its archive action directly beneath its card,
+of a wide viewport. The row becomes two columns at 1200 points and below, then
+one column on mobile. Each game keeps its archive action directly beneath its card,
 shown as the iOS-style archive box icon beside a concise `Archive` label. The
 dashboard goes directly from its global header into the cards without a daily
 title or date. The weekly card identifies its Sunday cadence inside the card
