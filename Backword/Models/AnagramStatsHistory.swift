@@ -80,7 +80,7 @@ struct AnagramStatsHistory {
 
         let currentStreak = AnagramHomeCardSummary(
             progress: progressByDate[today], history: Array(progressByDate.values),
-            isReview: false, now: releaseCalendar.now, calendar: calendar
+            now: releaseCalendar.now, calendar: calendar
         ).streak
         let averageSolveTime = CrosswordSolveTimeSummary.formattedAverageTime(
             from: rows.compactMap(\.solveTime)

@@ -1,13 +1,11 @@
 # BackWord
 
-## Anagram iOS review
+## Anagram
 
-In a DEBUG iOS build, Home shows **Anagram · Review**. It opens a bundled
-eight-letter sample, with a reset button in the game toolbar, so the orange
-layout and tap-to-place gameplay can be reviewed before backend publication.
-The production Anagram card appears only after a validated puzzle for the
-current local release date has been fetched or cached. The web game follows
-the iOS review. See [the v1 contract](docs/anagram-contract-v1.md),
+Home shows only the validated Anagram for the current local release date after
+it has been fetched or cached. The bundled DEBUG review puzzle remains available
+for SwiftUI previews and isolated development tests, but is not a second Home
+screen game. See [the v1 contract](docs/anagram-contract-v1.md),
 [release sequence](docs/anagram-release.md), and
 [backend content guide](Backend/ANAGRAM.md).
 

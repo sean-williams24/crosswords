@@ -60,6 +60,18 @@ struct AnagramClientTests {
         #expect(source.dailyRequests == 2)
     }
 
+    @Test @MainActor func serviceDoesNotSubstituteReviewPuzzleWhenTodayIsUnavailable() async {
+        let source = FakeAnagramSource()
+        let cache = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: cache) }
+
+        let service = AnagramService(dataSource: source, cacheDirectory: cache)
+        await service.refreshIfNeeded(now: Date())
+
+        #expect(service.todaysPuzzle == nil)
+        #expect(source.dailyRequests == 1)
+    }
+
     @Test @MainActor func viewModelStartsAndRestoresUndo() {
         let puzzle = AnagramPuzzle(
             id: UUID().uuidString, date: "2026-10-01", puzzleNumber: 1,

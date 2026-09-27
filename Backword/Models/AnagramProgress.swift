@@ -255,23 +255,24 @@ struct AnagramHomeCardSummary {
     let score: Int?
     let streak: Int
 
-    init(progress: AnagramProgress?, history: [AnagramProgress], isReview: Bool, now: Date = Date(), calendar: Calendar = .current) {
+    init(
+        progress: AnagramProgress?, history: [AnagramProgress],
+        now: Date = Date(), calendar: Calendar = .current
+    ) {
         switch progress?.outcome {
         case .none:
             status = progress == nil ? .new : .inProgress
         case .some(.solved):
-            status = (isReview || (progress?.releaseDateScore ?? 0) > 0) ? .solved : .finished
+            status = (progress?.releaseDateScore ?? 0) > 0 ? .solved : .finished
         case .some(.gaveUp):
             status = .gaveUp
         }
         if progress?.isComplete == true, let progress {
-            score = isReview && progress.outcome == .solved
-                ? AnagramProgress.points(for: (progress.elapsedSecondsAtCompletion ?? 0) + progress.penaltySeconds)
-                : progress.releaseDateScore
+            score = progress.releaseDateScore
         } else {
             score = nil
         }
-        streak = isReview ? 0 : Self.currentStreak(in: history, now: now, calendar: calendar)
+        streak = Self.currentStreak(in: history, now: now, calendar: calendar)
     }
 
     private static func currentStreak(in history: [AnagramProgress], now: Date, calendar: Calendar) -> Int {

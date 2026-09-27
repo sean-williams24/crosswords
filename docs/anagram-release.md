@@ -1,8 +1,9 @@
 # Anagram release sequence
 
-The iOS review build exposes a bundled puzzle in DEBUG. The production Home
-entry remains behind the first-release content gate until the backend has a
-published row for that day. Web implementation follows the iOS gameplay review.
+The bundled iOS review puzzle is retained for SwiftUI previews and isolated
+development tests. Home shows only the dated production puzzle after the
+backend has a published row for that local day. Web uses the same gameplay
+contract.
 
 1. Review every row of the 30-puzzle launch artifact, including familiarity,
    spelling, accepted alternatives, and the starting scramble. Run the

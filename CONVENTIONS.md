@@ -825,9 +825,10 @@ recalculates a terminal attempt's elapsed time and score. The production Home
 card appears only when a validated row for the current release date is
 available. That dated row is cached for offline play, and failed fetches can
 retry later. The earliest published date is cached as the rating start. The
-DEBUG review puzzle is excluded from `loadAll`, cloud migration, and rating
-points. Web implementation follows
-the iOS gameplay review. See [the v1 contract](./docs/anagram-contract-v1.md)
+DEBUG review puzzle is excluded from Home, `loadAll`, cloud migration, and
+rating points. It remains available for SwiftUI previews and isolated
+development tests. Web implementation follows the iOS gameplay contract. See
+[the v1 contract](./docs/anagram-contract-v1.md)
 for field names and cross-platform fixtures.
 
 On the web, the dated route is immutable while `/anagram` follows local

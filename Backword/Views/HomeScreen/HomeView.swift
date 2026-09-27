@@ -15,7 +15,6 @@ struct HomeView: View {
     @StateObject private var anagramService = AnagramService()
     @StateObject private var backwordStatsService = BackwordStatsService()
     @State private var anagramProgressRecords: [AnagramProgress] = []
-    @State private var reviewAnagramProgress: AnagramProgress?
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.launchSplashDidComplete) private var launchSplashDidComplete
     @Environment(\.horizontalSizeClass) var sizeClass
@@ -158,10 +157,6 @@ struct HomeView: View {
             if let puzzle = viewModel.todaysPuzzle {
                 crosswordDestination(puzzle: puzzle)
             }
-        #if DEBUG
-        case "anagram-review":
-            anagramDestination(puzzle: .review)
-        #endif
         default:
             EmptyView()
         }
@@ -442,27 +437,13 @@ struct HomeView: View {
             if let puzzle = anagramService.todaysPuzzle {
                 AnagramCard(
                     puzzle: puzzle,
-                    isReview: false,
                     summary: AnagramHomeCardSummary(
                         progress: anagramProgressRecords.first { $0.date == puzzle.date && $0.puzzleID == puzzle.id },
-                        history: anagramProgressRecords,
-                        isReview: false
+                        history: anagramProgressRecords
                     )
                 ) { navigationPath.append("anagram") }
                     .padding(.top, 20)
             }
-            #if DEBUG
-            AnagramCard(
-                puzzle: .review,
-                isReview: true,
-                summary: AnagramHomeCardSummary(
-                    progress: reviewAnagramProgress,
-                    history: [],
-                    isReview: true
-                )
-            ) { navigationPath.append("anagram-review") }
-                .padding(.top, 20)
-            #endif
         }
         .padding(.horizontal, appLayout.homeHorizontalPadding)
 
@@ -583,9 +564,6 @@ struct HomeView: View {
 
     private func refreshAnagramCardProgress() {
         anagramProgressRecords = AnagramProgress.loadAll()
-        #if DEBUG
-        reviewAnagramProgress = AnagramProgress.load(date: "review")
-        #endif
     }
 
     private var dailyCrosswordCard: some View {

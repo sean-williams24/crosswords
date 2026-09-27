@@ -5,7 +5,6 @@ struct AnagramCard: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let puzzle: AnagramPuzzle
-    let isReview: Bool
     let summary: AnagramHomeCardSummary
     let open: () -> Void
 
@@ -51,23 +50,15 @@ struct AnagramCard: View {
         .frame(maxHeight: .infinity, alignment: .topLeading)
     }
 
-    @ViewBuilder
     private var issueLabel: some View {
-        if isReview {
-            Text("REVIEW")
-                .font(AppFont.clueLabel(AppLayout.homeCardIssueNumberFontSize))
-                .foregroundStyle(Color.anagramOnOrange.opacity(0.58))
-                .dynamicTypeSize(.xSmall ... .xLarge)
-        } else {
-            HomeCardIssueNumber(issueNumber: puzzle.puzzleNumber, color: .anagramOnOrange)
-        }
+        HomeCardIssueNumber(issueNumber: puzzle.puzzleNumber, color: .anagramOnOrange)
     }
 
     private var detailsView: some View {
         VStack(alignment: .trailing, spacing: AnagramHomeCardLayout.contentSpacing) {
             Spacer(minLength: AnagramHomeCardLayout.minimumContentSpacing)
 
-            Text(isReview ? "Sample puzzle" : "\(puzzle.length) letters")
+            Text("\(puzzle.length) letters")
                 .font(AppFont.caption())
 
             statusLabel
@@ -140,10 +131,9 @@ struct AnagramCard: View {
     }
 
     private var accessibilitySummary: String {
-        let title = isReview ? "Anagram review puzzle" : "Anagram issue \(puzzle.puzzleNumber)"
         let points = summary.score.map { ", \($0) of 5 points" } ?? ""
         let streak = summary.streak > 0 ? ", \(summary.streak)-day streak" : ""
-        return "\(title), \(statusText)\(points)\(streak). Double tap to open."
+        return "Anagram issue \(puzzle.puzzleNumber), \(statusText)\(points)\(streak). Double tap to open."
     }
 }
 

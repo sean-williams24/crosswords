@@ -42,40 +42,35 @@ struct AnagramProgressTests {
         let yesterday = record(daysAgo: 1, outcome: .solved, score: 4)
         let twoDaysAgo = record(daysAgo: 2, outcome: .solved, score: 2)
         let history = [twoDaysAgo, yesterday]
-        let new = AnagramHomeCardSummary(progress: nil, history: history, isReview: false, now: now, calendar: calendar)
+        let new = AnagramHomeCardSummary(progress: nil, history: history, now: now, calendar: calendar)
         #expect(new.status == .new)
         #expect(new.score == nil)
         #expect(new.streak == 2)
 
         let playing = record(daysAgo: 0, outcome: nil, score: 0)
-        let inProgress = AnagramHomeCardSummary(progress: playing, history: history + [playing], isReview: false, now: now, calendar: calendar)
+        let inProgress = AnagramHomeCardSummary(progress: playing, history: history + [playing], now: now, calendar: calendar)
         #expect(inProgress.status == .inProgress)
         #expect(inProgress.streak == 2)
 
         let solved = record(daysAgo: 0, outcome: .solved, score: 5)
-        let completed = AnagramHomeCardSummary(progress: solved, history: history + [solved], isReview: false, now: now, calendar: calendar)
+        let completed = AnagramHomeCardSummary(progress: solved, history: history + [solved], now: now, calendar: calendar)
         #expect(completed.status == .solved)
         #expect(completed.score == 5)
         #expect(completed.streak == 3)
 
         let gaveUp = record(daysAgo: 0, outcome: .gaveUp, score: 0)
-        let failed = AnagramHomeCardSummary(progress: gaveUp, history: history + [gaveUp], isReview: false, now: now, calendar: calendar)
+        let failed = AnagramHomeCardSummary(progress: gaveUp, history: history + [gaveUp], now: now, calendar: calendar)
         #expect(failed.status == .gaveUp)
         #expect(failed.score == 0)
         #expect(failed.streak == 0)
 
         let lateSolve = record(daysAgo: 0, outcome: .solved, score: 0)
-        let finished = AnagramHomeCardSummary(progress: lateSolve, history: history + [lateSolve], isReview: false, now: now, calendar: calendar)
+        let finished = AnagramHomeCardSummary(progress: lateSolve, history: history + [lateSolve], now: now, calendar: calendar)
         #expect(finished.status == .finished)
         #expect(finished.streak == 0)
 
-        let review = AnagramHomeCardSummary(progress: solved, history: history + [solved], isReview: true, now: now, calendar: calendar)
-        #expect(review.status == .solved)
-        #expect(review.score == 5)
-        #expect(review.streak == 0)
-
         let oldSolve = record(daysAgo: 4, outcome: .solved, score: 5)
-        let interrupted = AnagramHomeCardSummary(progress: nil, history: [oldSolve], isReview: false, now: now, calendar: calendar)
+        let interrupted = AnagramHomeCardSummary(progress: nil, history: [oldSolve], now: now, calendar: calendar)
         #expect(interrupted.streak == 0)
     }
 
