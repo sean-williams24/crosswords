@@ -71,8 +71,8 @@ struct HomeCardStreakLayoutTests {
 
     @Test("Home card issue number overlay fits in the card's top whitespace")
     func homeCardIssueNumberLayout() {
-        #expect(HomeCardIssueNumberLayout.horizontalInset == 18)
-        #expect(HomeCardIssueNumberLayout.topInset == 8)
+        #expect(HomeCardIssueNumberLayout.horizontalInset == 14)
+        #expect(HomeCardIssueNumberLayout.topInset == 10)
         #expect(AppLayout.homeCardIssueNumberFontSize == 12)
     }
 

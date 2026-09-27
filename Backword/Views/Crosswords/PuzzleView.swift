@@ -383,7 +383,7 @@ struct PuzzleView: View {
     private var header: some View {
         VStack(spacing: 2) {
             ZStack {
-                Text("#\(viewModel.puzzle.puzzleNumber)")
+                Text(PuzzleHeaderContent.issueLabel(for: viewModel.puzzle.puzzleNumber))
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
                     .tracking(1)
@@ -518,6 +518,12 @@ struct PuzzleView: View {
             .flatMap { day in
                 viewModel.puzzle.size > 12 ? day.weeklyCrossword : day.dailyCrossword
             }
+    }
+}
+
+enum PuzzleHeaderContent {
+    static func issueLabel(for puzzleNumber: Int) -> String {
+        "#\(puzzleNumber)"
     }
 }
 

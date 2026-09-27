@@ -117,7 +117,7 @@ final class AnagramService: ObservableObject {
         return Self.archiveMonths(from: firstReleaseDate, through: today)
     }
 
-    static func archiveMonths(from firstDate: String, through currentDate: String) -> [ArchiveMonth] {
+    nonisolated static func archiveMonths(from firstDate: String, through currentDate: String) -> [ArchiveMonth] {
         guard let firstMonth = ArchiveMonth.from(dateString: firstDate),
               let currentMonth = ArchiveMonth.from(dateString: currentDate),
               firstMonth <= currentMonth else { return [] }

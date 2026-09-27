@@ -169,11 +169,8 @@ struct AnagramProgressTests {
         #expect(!progress.canRestart)
     }
 
-    @Test func terminalGiveUpCannotInheritAnotherBranchPoints() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        formatter.timeZone = .current
-        let start = formatter.date(from: "2026-10-01 12:00:00")!
+    @Test func terminalGiveUpCannotInheritAnotherBranchPoints() throws {
+        let start = try localDate("2026-10-01 12:00:00")
         var gaveUp = AnagramProgress(puzzle: puzzle, now: start)
         gaveUp.giveUp(now: start.addingTimeInterval(20))
         var laterSolve = AnagramProgress(puzzle: puzzle, now: start.addingTimeInterval(2))
@@ -224,11 +221,8 @@ struct AnagramProgressTests {
         #expect(merged.placementHistory == remote.placementHistory)
     }
 
-    @Test func earlierStartCorrectsCrossDeviceTerminalScore() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        formatter.timeZone = .current
-        let start = formatter.date(from: "2026-10-01 12:00:00")!
+    @Test func earlierStartCorrectsCrossDeviceTerminalScore() throws {
+        let start = try localDate("2026-10-01 12:00:00")
         var earlier = AnagramProgress(puzzle: puzzle, now: start)
         earlier.place(0, in: puzzle, now: start.addingTimeInterval(2))
         var later = AnagramProgress(puzzle: puzzle, now: start.addingTimeInterval(40))
@@ -243,11 +237,8 @@ struct AnagramProgressTests {
         #expect(merged.placementHistory == later.placementHistory)
     }
 
-    @Test func lateArchiveSolveCannotEarnReleasePoints() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        formatter.timeZone = .current
-        let start = formatter.date(from: "2026-10-02 12:00:00")!
+    @Test func lateArchiveSolveCannotEarnReleasePoints() throws {
+        let start = try localDate("2026-10-02 12:00:00")
         var progress = AnagramProgress(puzzle: puzzle, now: start)
         progress.finish(.solved, now: start.addingTimeInterval(12))
         #expect(progress.releaseDateScore == 0)
@@ -272,5 +263,14 @@ struct AnagramProgressTests {
         #expect(rating.maxPoints(isPro: true, now: firstDay, calendar: calendar, firstAnagramRelease: "2026-10-01") == 155)
         #expect(rating.maxPoints(isPro: false, now: established, calendar: calendar, firstAnagramRelease: "2026-10-01") == 210)
         #expect(rating.maxPoints(isPro: true, now: established, calendar: calendar, firstAnagramRelease: "2026-10-01") == 220)
+    }
+
+    private func localDate(_ value: String) throws -> Date {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = .current
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return try #require(formatter.date(from: value))
     }
 }

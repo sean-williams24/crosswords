@@ -146,12 +146,12 @@ struct OverallRatingTests {
 
     @Test("Free user max = 14 × 2 games × 5 pts = 140")
     func maxPointsFree() {
-        #expect(OverallRating().maxPoints(isPro: false) == 140)
+        #expect(OverallRating().maxPoints(isPro: false, firstAnagramRelease: nil) == 140)
     }
 
     @Test("Pro user max = 14 × 10 + 2 × 5 = 150")
     func maxPointsPro() {
-        #expect(OverallRating().maxPoints(isPro: true) == 150)
+        #expect(OverallRating().maxPoints(isPro: true, firstAnagramRelease: nil) == 150)
     }
 
     // MARK: totalPoints / fraction
@@ -180,7 +180,7 @@ struct OverallRatingTests {
         // Create a rating with more than max by adding weekly to free
         let r = perfectRating(days: 14, withWeekly: true)
         // Free user (ignores weekly) → fraction should still be 1.0
-        #expect(r.fraction(isPro: false) <= 1.0)
+        #expect(r.fraction(isPro: false, firstAnagramRelease: nil) <= 1.0)
     }
 
     @Test("fraction for half-perfect free → 0.5")
@@ -191,7 +191,7 @@ struct OverallRatingTests {
             // Only daily (5 pts) — no backword — gives 5/10 per day
             r.upsertDailyCrossword(score: 5, date: ds)
         }
-        let frac = r.fraction(isPro: false)
+        let frac = r.fraction(isPro: false, firstAnagramRelease: nil)
         #expect(abs(frac - 0.5) < 0.001)
     }
 
@@ -271,7 +271,7 @@ struct OverallRatingTests {
 
     @Test("Empty rating → Novice")
     func emptyTier() {
-        #expect(OverallRating().tier(isPro: false) == .novice)
+        #expect(OverallRating().tier(isPro: false, firstAnagramRelease: nil) == .novice)
     }
 
     @Test("~20% → Scribe")
@@ -282,48 +282,48 @@ struct OverallRatingTests {
             let ds = dateString(offsetByDays: -i)
             r.upsertDailyCrossword(score: 2, date: ds)
         }
-        #expect(r.tier(isPro: false) == .scribe)
+        #expect(r.tier(isPro: false, firstAnagramRelease: nil) == .scribe)
     }
 
     @Test("40% remains Scribe")
     func fortyPercentRemainsScribe() {
         // 40% of 140 = 56 pts, below the new 50% Linguist threshold.
-        #expect(ratingWithFreePoints(56).tier(isPro: false) == .scribe)
+        #expect(ratingWithFreePoints(56).tier(isPro: false, firstAnagramRelease: nil) == .scribe)
     }
 
     @Test("50% → Linguist")
     func linguistTier() {
         // 50% of 140 = 70 pts.
-        #expect(ratingWithFreePoints(70).tier(isPro: false) == .linguist)
+        #expect(ratingWithFreePoints(70).tier(isPro: false, firstAnagramRelease: nil) == .linguist)
     }
 
     @Test("60% remains Linguist")
     func sixtyPercentRemainsLinguist() {
         // 60% of 140 = 84 pts, below the new 75% Grandmaster threshold.
-        #expect(ratingWithFreePoints(84).tier(isPro: false) == .linguist)
+        #expect(ratingWithFreePoints(84).tier(isPro: false, firstAnagramRelease: nil) == .linguist)
     }
 
     @Test("75% → Grandmaster")
     func grandmasterTier() {
         // 75% of 140 = 105 pts.
-        #expect(ratingWithFreePoints(105).tier(isPro: false) == .grandmaster)
+        #expect(ratingWithFreePoints(105).tier(isPro: false, firstAnagramRelease: nil) == .grandmaster)
     }
 
     @Test("Just under 90% remains Grandmaster")
     func justUnderVirtuosoRemainsGrandmaster() {
         // 125 / 140 = 89.29%, below the new 90% Virtuoso threshold.
-        #expect(ratingWithFreePoints(125).tier(isPro: false) == .grandmaster)
+        #expect(ratingWithFreePoints(125).tier(isPro: false, firstAnagramRelease: nil) == .grandmaster)
     }
 
     @Test("90% → Virtuoso")
     func ninetyPercentVirtuosoTier() {
         // 90% of 140 = 126 pts.
-        #expect(ratingWithFreePoints(126).tier(isPro: false) == .virtuoso)
+        #expect(ratingWithFreePoints(126).tier(isPro: false, firstAnagramRelease: nil) == .virtuoso)
     }
 
     @Test("Perfect free score → Virtuoso")
     func virtuosoTier() {
-        #expect(perfectRating(days: 14).tier(isPro: false) == .virtuoso)
+        #expect(perfectRating(days: 14).tier(isPro: false, firstAnagramRelease: nil) == .virtuoso)
     }
 
     @Test("Tier thresholds are in ascending order")

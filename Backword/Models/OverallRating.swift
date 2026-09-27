@@ -176,8 +176,16 @@ struct OverallRating: Codable {
         )
     }
 
-    func fraction(isPro: Bool) -> Double {
-        let max = maxPoints(isPro: isPro)
+    func fraction(
+        isPro: Bool, now: Date = Date(), calendar: Calendar = .current,
+        firstAnagramRelease: String? = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+    ) -> Double {
+        let max = maxPoints(
+            isPro: isPro,
+            now: now,
+            calendar: calendar,
+            firstAnagramRelease: firstAnagramRelease
+        )
         guard max > 0 else { return 0 }
         return min(Double(totalPoints(isPro: isPro)) / Double(max), 1.0)
     }
@@ -230,8 +238,16 @@ struct OverallRating: Codable {
         } ?? .novice
     }
 
-    func tier(isPro: Bool) -> RatingTier {
-        let f = fraction(isPro: isPro)
+    func tier(
+        isPro: Bool, now: Date = Date(), calendar: Calendar = .current,
+        firstAnagramRelease: String? = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+    ) -> RatingTier {
+        let f = fraction(
+            isPro: isPro,
+            now: now,
+            calendar: calendar,
+            firstAnagramRelease: firstAnagramRelease
+        )
         return RatingTier.allCases.reversed().first { $0.threshold <= f } ?? .novice
     }
 
