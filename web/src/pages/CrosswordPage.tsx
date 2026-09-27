@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Footer } from "../components/Footer";
+import { InfoTooltip } from "../components/InfoTooltip";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { isCompletedOnReleaseDate, isLocalDateString, localDateString } from "../features/backword/date";
 import {
@@ -63,6 +64,7 @@ export function CrosswordPage() {
   const [showHint, setShowHint] = useState(false);
   const [showInstructionsTip, setShowInstructionsTip] = useState(false);
   const skipClueToggle = useRef(false);
+  const completionPresentedForDate = useRef<string | null>(null);
 
   const loadPuzzle = useCallback(async (requestedDate: string) => {
     setLoading(true);
@@ -166,7 +168,13 @@ export function CrosswordPage() {
   }, [archiveDate, date]);
 
   useEffect(() => {
-    if (loading || !puzzle || archiveDate || settings.hasSeenOnboarding) return;
+    if (loading || !progress?.completedAt || completionPresentedForDate.current === progress.date) return;
+    completionPresentedForDate.current = progress.date;
+    setSheet("completion");
+  }, [loading, progress?.completedAt, progress?.date]);
+
+  useEffect(() => {
+    if (loading || !puzzle || archiveDate || progress?.completedAt || settings.hasSeenOnboarding) return;
     setShowInstructionsTip(true);
     const updated = { ...settings, hasSeenOnboarding: true };
     storage.saveSettings(updated);
@@ -196,6 +204,7 @@ export function CrosswordPage() {
       track(gameStarted("daily_crossword"));
     }
     if (progress.completedAt === null && result.progress.completedAt !== null) {
+      completionPresentedForDate.current = result.progress.date;
       const startedAt = new Date(result.progress.startedAt).getTime();
       const completedAt = new Date(result.progress.completedAt).getTime();
       track(gameCompleted("daily_crossword", "solved", {
@@ -318,10 +327,11 @@ export function CrosswordPage() {
                 ⓘ
               </button>
               {showInstructionsTip ? (
-                <span id="cw-onboarding-info-tip" role="tooltip">
-                  <strong>How to play</strong>
-                  <span>Tap the info icon at any time to view game instructions</span>
-                </span>
+                <InfoTooltip
+                  description="Tap the info icon at any time to view game instructions"
+                  id="cw-onboarding-info-tip"
+                  onDismiss={() => setShowInstructionsTip(false)}
+                />
               ) : null}
             </span>
           </nav>

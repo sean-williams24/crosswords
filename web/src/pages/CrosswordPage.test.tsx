@@ -3,6 +3,9 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { localDateString } from "../features/backword/date";
+import { emptyProgress } from "../features/crossword/engine";
+import { createCrosswordStorage } from "../features/crossword/storage";
 import { CrosswordPage } from "./CrosswordPage";
 
 const repositoryDates = vi.hoisted(() => ({ values: [] as string[] }));
@@ -49,6 +52,8 @@ describe("CrosswordPage", () => {
     expect(statsAction).toHaveAccessibleName("Crossword stats");
     expect(await screen.findByRole("tooltip")).toHaveTextContent("Tap the info icon at any time to view game instructions");
     expect(screen.queryByRole("dialog", { name: "How to Play" })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Close tooltip" }));
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "How to play" }));
     expect(await screen.findByRole("dialog", { name: "How to Play" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Close How to Play" }));
@@ -76,6 +81,22 @@ describe("CrosswordPage", () => {
 
     await screen.findByRole("grid", { name: "Crossword grid" });
     expect(repositoryDates.values).toContain("2026-08-05");
+  });
+
+  it("reopens a completed game with results and sharing available", async () => {
+    const date = localDateString();
+    const progress = emptyProgress({ id: "today-crossword", date, size: 9 });
+    progress.entries[0][0] = "A";
+    progress.entries[0][1] = "B";
+    progress.completedClueIds = [0];
+    progress.completedAt = new Date().toISOString();
+    progress.releaseDateScore = 5;
+    createCrosswordStorage().saveProgress(progress);
+
+    render(<MemoryRouter><CrosswordPage /></MemoryRouter>);
+
+    expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Share result" })).toBeInTheDocument();
   });
 
   it("uses iOS-aligned compact spacing for the mobile puzzle", () => {

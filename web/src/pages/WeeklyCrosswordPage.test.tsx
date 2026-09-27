@@ -1,6 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
+import { localWeekStartString } from "../features/backword/date";
+import { emptyProgress } from "../features/crossword/engine";
+import { createCrosswordStorage } from "../features/crossword/storage";
 import { WeeklyCrosswordPage } from "./WeeklyCrosswordPage";
 
 vi.mock("../features/auth/AuthProvider", () => ({
@@ -55,5 +58,21 @@ describe("WeeklyCrosswordPage", () => {
     const gameShareButton = screen.getByRole("button", { name: "Share result" });
     expect(gameShareButton).toHaveClass("puzzle-result-share__button--compact");
     expect(gameShareButton.closest(".puzzle-result-share--compact")?.parentElement).toHaveClass("cw-game-main");
+  });
+
+  it("reopens a completed game with results and sharing available", async () => {
+    const date = localWeekStartString();
+    const progress = emptyProgress({ id: "weekly-crossword", date, size: 13 });
+    progress.entries[0][0] = "A";
+    progress.entries[0][1] = "B";
+    progress.completedClueIds = [0];
+    progress.completedAt = new Date().toISOString();
+    progress.releaseDateScore = 5;
+    createCrosswordStorage(undefined, { kind: "weekly", userId: "pro-player" }).saveProgress(progress);
+
+    render(<MemoryRouter><WeeklyCrosswordPage /></MemoryRouter>);
+
+    expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Share result" })).toBeInTheDocument();
   });
 });

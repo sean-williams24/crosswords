@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAnalytics } from "../analytics/AnalyticsProvider";
 import { resultShareFinished, resultShareOpened, resultShared } from "../analytics/events";
 import type { PuzzleShareResult } from "./puzzleResult";
@@ -18,6 +18,13 @@ type ShareCardFontSources = {
   bold?: string;
   semiBold?: string;
 };
+
+export const resultShareActionLabels = {
+  shareMenu: "Share menu",
+  copyResultsCard: "Copy results card",
+  downloadResultsCard: "Download results card",
+  copyResultsText: "Copy results text"
+} as const;
 
 /** A 1080px source stays sharp when social apps downsize it for display. */
 const shareCardPixelSize = 1080;
@@ -129,6 +136,13 @@ export function isSafariBrowser(userAgent: string): boolean {
   return /Safari\//i.test(userAgent) && !/(?:Chrome|CriOS|Chromium|FxiOS|EdgiOS)\//i.test(userAgent);
 }
 
+// Chrome's in-page share-menu action is unreliable for result-card files.
+// Safari provides the native menu consistently, so only expose it there when
+// the browser has implemented the Web Share API.
+export function canUseResultShareMenu(userAgent: string, hasNativeShare: boolean): boolean {
+  return isSafariBrowser(userAgent) && hasNativeShare;
+}
+
 async function rasterizeCard(svg: string): Promise<Blob | null> {
   if (typeof Image === "undefined" || typeof URL.createObjectURL !== "function") return null;
 
@@ -231,6 +245,7 @@ export function PuzzleResultShare({
   compact?: boolean;
 }) {
   const { track } = useAnalytics();
+  const shareControlRef = useRef<HTMLElement>(null);
   const [status, setStatus] = useState("");
   const [embeddedCardFile, setEmbeddedCardFile] = useState<File | null>(null);
   const [showShareActions, setShowShareActions] = useState(false);
@@ -238,8 +253,9 @@ export function PuzzleResultShare({
   const cardKey = JSON.stringify(result);
   const isChrome = isChromeBrowser(navigator.userAgent);
   const isSafari = isSafariBrowser(navigator.userAgent);
+  const canUseShareMenu = canUseResultShareMenu(navigator.userAgent, typeof navigator.share === "function");
   // Chrome and Safari use our in-page menu. Keep that menu available while the
-  // PNG is prepared so Copy result remains usable; its image actions appear as
+  // PNG is prepared so Copy results text remains usable; its image actions appear as
   // soon as the card is ready.
   const isCardReady = isChrome || isSafari || !navigator.share || embeddedCardFile !== null;
 
@@ -251,6 +267,26 @@ export function PuzzleResultShare({
     });
     return () => { isCurrent = false; };
   }, [cardFormat, cardKey]);
+
+  useEffect(() => {
+    if (!showShareActions) return;
+
+    const dismissWhenTappingOutside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !shareControlRef.current?.contains(event.target)) {
+        setShowShareActions(false);
+      }
+    };
+    const dismissOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setShowShareActions(false);
+    };
+
+    document.addEventListener("pointerdown", dismissWhenTappingOutside);
+    document.addEventListener("keydown", dismissOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", dismissWhenTappingOutside);
+      document.removeEventListener("keydown", dismissOnEscape);
+    };
+  }, [showShareActions]);
 
   function currentCardFile() {
     return embeddedCardFile ?? (cardFormat === "svg" ? createImmediateCardFile(result) : null);
@@ -328,7 +364,7 @@ export function PuzzleResultShare({
     void shareCard();
   }
 
-  return <section aria-label="Share your result" className={`puzzle-result-share${showPreview ? "" : " puzzle-result-share--button-only"}${compact ? " puzzle-result-share--compact" : ""}`}>
+  return <section aria-label="Share your result" className={`puzzle-result-share${showPreview ? "" : " puzzle-result-share--button-only"}${compact ? " puzzle-result-share--compact" : ""}`} ref={shareControlRef}>
     {showPreview ? <div aria-hidden="true" className="puzzle-result-share__preview">
       <img alt="" className="puzzle-result-share__logo" src="/brand/backword-logo.png" />
       <strong>{result.gameName} #{result.issueNumber}</strong>
@@ -338,8 +374,8 @@ export function PuzzleResultShare({
       {compact ? isCardReady ? <><svg aria-hidden="true" className="puzzle-result-share__icon" viewBox="0 0 24 24"><path d="M12 15V3m0 0 4 4m-4-4L8 7M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8" /></svg>Share</> : "Preparing…" : "Share result"}
     </button>
     {showShareActions ? <div aria-label="Share result options" className="puzzle-result-share__fallback" role="dialog">
-      {currentCardFile() ? <><button onClick={() => void shareCard()} type="button">Share image</button><button onClick={() => void copyCardImage()} type="button">Copy image</button><button onClick={downloadCard} type="button">Download card</button></> : <p>Image card is still preparing.</p>}
-      <button onClick={() => void copyResultText()} type="button">Copy result</button>
+      {currentCardFile() ? <>{canUseShareMenu ? <button onClick={() => void shareCard()} type="button">{resultShareActionLabels.shareMenu}</button> : null}<button onClick={() => void copyCardImage()} type="button">{resultShareActionLabels.copyResultsCard}</button><button onClick={downloadCard} type="button">{resultShareActionLabels.downloadResultsCard}</button></> : <p>Image card is still preparing.</p>}
+      <button onClick={() => void copyResultText()} type="button">{resultShareActionLabels.copyResultsText}</button>
     </div> : null}
     <span aria-live="polite" className="bw-share-status">{status}</span>
   </section>;

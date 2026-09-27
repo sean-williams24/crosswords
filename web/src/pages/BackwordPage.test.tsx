@@ -80,6 +80,24 @@ describe("Backword browser game", () => {
     expect(repositoryDates.values).not.toContain(localDateString());
   });
 
+  it("reopens a completed game with results and sharing available", async () => {
+    const date = localDateString();
+    localStorage.setItem("backword:web:progress:v1", JSON.stringify({
+      [date]: {
+        schemaVersion: 1,
+        date,
+        guesses: ["CASTLE"],
+        completedAt: new Date().toISOString(),
+        outcome: "won"
+      }
+    }));
+
+    renderGame();
+
+    expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Share result" })).toBeInTheDocument();
+  });
+
   it("opens and closes a menu with game and legal routes", async () => {
     const user = userEvent.setup();
     renderGame();
@@ -144,7 +162,7 @@ describe("Backword browser game", () => {
     expect(await screen.findByRole("region", { name: "How to play Backword" })).toBeInTheDocument();
     expect(screen.getAllByText("Guess the 6 letter word...")).toHaveLength(1);
     expect(screen.getByRole("button", { name: /^OK: Guess the 6 letter word/ })).toBeInTheDocument();
-    expect(await screen.findByRole("tooltip")).toHaveTextContent("Tap the info icon at any time to view game information and toggle difficulty");
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
     expect(document.querySelectorAll(".bw-onboarding-card")).toHaveLength(5);
     expect(document.querySelectorAll(".bw-onboarding-card[aria-hidden='true']")).toHaveLength(4);
 
@@ -152,6 +170,8 @@ describe("Backword browser game", () => {
     await user.click(firstButton);
     await waitFor(() => expect(firstButton).not.toBeInTheDocument());
     expect(screen.getByRole("button", { name: /^OK: Correctly placed letters/ })).toBeInTheDocument();
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+    expect(JSON.parse(localStorage.getItem("backword:web:settings:v1") ?? "{}").hasSeenInstructionsTip).toBe(false);
     first.unmount();
 
     renderGame();
@@ -159,6 +179,26 @@ describe("Backword browser game", () => {
     await dismissOnboarding(user, 4);
     expect(await screen.findByText("Guess the 6 letter word...")).toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "How to play Backword" })).not.toBeInTheDocument();
+    expect(await screen.findByRole("tooltip")).toHaveTextContent("Tap the info icon at any time to view game information and toggle difficulty");
+  });
+
+  it("shows the info tooltip after the final card and does not replay it after dismissal", async () => {
+    const user = userEvent.setup();
+    const first = renderGame();
+
+    expect(await screen.findByRole("region", { name: "How to play Backword" })).toBeInTheDocument();
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+    await dismissOnboarding(user);
+
+    expect(await screen.findByText("Guess the 6 letter word...")).toBeInTheDocument();
+    expect(await screen.findByRole("tooltip")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Close tooltip" }));
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+    first.unmount();
+
+    renderGame();
+    await screen.findByText("FORTRESS");
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 
   it("keeps the full instructions sheet manual during inline onboarding and persists mode changes", async () => {
@@ -201,6 +241,7 @@ describe("Backword browser game", () => {
     expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
     expect(screen.getByText("... in 1 guess")).toBeInTheDocument();
     expect(screen.getByText("5/70")).toBeInTheDocument();
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
     const shareButton = within(screen.getByRole("dialog", { name: "Solved!" })).getByRole("button", { name: "Share result" });
     expect(shareButton).toBeInTheDocument();
     expect(document.querySelector(".puzzle-result-share__preview")).not.toBeInTheDocument();

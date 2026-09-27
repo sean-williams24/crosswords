@@ -73,6 +73,12 @@ struct BackwordInstructionsTip: Tip {
     }
 }
 
+enum BackwordInstructionsTipPresentation {
+    static func isEligible(hasPendingOnboarding: Bool, isGameComplete: Bool) -> Bool {
+        hasPendingOnboarding && !isGameComplete
+    }
+}
+
 struct DailyCrosswordInstructionsTip: Tip {
     var title: Text {
         Text("How to play")

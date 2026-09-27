@@ -215,6 +215,9 @@ and the existing safe sign-in error alert.
 Overlapping render requests for the same control are coalesced while Google
 Identity is loading, with the newest handlers retained, so development-mode
 effect replays cannot briefly create duplicate native controls.
+The web clips overflow on the Google button's container because its iframe can
+paint a white gutter outside the visible button in mobile Safari. The iframe
+remains focusable, and the container shows a focus outline when it has focus.
 
 The signed-in account surface is the Overall Rating sheet. Home and Settings
 send signed-in users there directly; a successful sign-in dismisses its
@@ -251,15 +254,23 @@ acknowledged.
 The one-time info-button TipKit popover is triggered as soon as that first-launch
 deck appears and ignores TipKit's global display-frequency throttle, so its
 navigation hint cannot be delayed by another tip.
-The web game uses the same independently persisted deck and a one-time native
-tooltip on its info button; its full instructions sheet remains available only
-on request for new players, while rule updates still open it automatically.
+The web game uses the same independently persisted deck, then shows a one-time
+tooltip on its info button only after the final card is dismissed. Its full
+instructions sheet remains available only on request for new players, while
+rule updates still open it automatically. Web info tooltips can be dismissed
+with their close button, a tap outside, or the info-button action. The Backword
+tooltip also closes when the game reaches a terminal outcome so it cannot
+overlap the result-sharing control.
 Once onboarding is complete, the normal timed guess explainer returns on every
 unstarted game until its first guess is submitted. This keeps the game
 immediately playable while ensuring an interrupted first visit resumes at the
 appropriate instruction.
 On either platform, dismissing the front card uses an in-place dissolve rather
 than directional movement, so the next card can rise cleanly from the deck.
+
+The web game menu backdrop renders in a document-level portal above game content.
+It must stay outside the game header and shell so their stacking and overflow
+rules cannot place onboarding cards or info tooltips over the menu.
 
 ## Spoiler-Safe Result Sharing
 
@@ -360,6 +371,12 @@ menu, and every web route—including playable game surfaces—uses the same
 semantic palette. The light Backword lockup is the corresponding iOS artwork,
 while Google Identity uses its outline button in Light mode.
 
+Web game and dashboard headers reserve equal flexible space on both sides of
+the Backword mark. The lockup has an explicit width at each size, so the middle
+grid track has a stable width even when the menu is fixed or actions are wider
+than the left side. On narrow game viewports the mark scales down enough to
+leave space for both action buttons.
+
 ---
 
 ## Website Backword Parity
@@ -437,6 +454,10 @@ dynamic viewport and safe areas. Opening it locks the document at its current
 scroll offset while the menu itself can scroll when required, preventing mobile
 browser swipes from moving the page behind the menu. Wider viewports retain the
 rounded drawer.
+Each opening resets the menu's own scroll position to the top, even when the
+browser restores a previous position for its scrollable links.
+Activating a menu link also dismisses the drawer when it points to the current
+route, including on game pages where the page owns the menu's open state.
 
 ### Browser navigation
 
@@ -722,6 +743,8 @@ requested batch with pairs that both reviewers accept.
 
 The completion sheet is presented after both wins and failures and receives the answer explicitly. Its title is `Solved!`, `Finished`, or `Failed`. Wins show an `... in N guesses` label directly above the cells; failures show `The answer was...`. A late `Finished` result shows the no-points message above the standard completed stats content. The cells reveal from right to left and perform a single whole-word bounce. Winning cells transition from correct green to accent blue during the glow; failed cells and their glow remain red. Reduce Motion skips the staged animation and shows the completed word immediately.
 
+Returning to a persisted completed Backword reopens that same completion sheet, including result sharing. The web presents it once per game-page visit so dismissing it does not immediately reopen it.
+
 Backword keyboard letter entry and deletion use the same light impact as crossword letter input. Guess haptics reflect the result of each accepted submission. A non-winning guess gets a full-strength (`1.0`) impact only when it extends the correctly positioned suffix; automatic scheduled reveals alone retain the incorrect-guess feedback. Wins and final failures use distinct terminal patterns instead of also playing the intermediate guess pattern. During the completion animation, each right-to-left letter reveal plays one quick impact; Reduce Motion skips both the staged reveals and their per-letter impacts.
 
 The completion sheet also shows a live `NEXT BACKWORD IN` countdown. It must derive the next release from `ContentReleaseCalendar` on every tick so it follows local midnight and remains correct across timezone and daylight-saving transitions.
@@ -731,6 +754,8 @@ In DEBUG builds, the Backword header includes a ladybug button that simulates a 
 ## Crossword Completion Moment
 
 Daily and weekly crossword completion sheets use the solved grid as their visual centerpiece. Playable cells reveal in a diagonal wave; on-time solves finish with an accent bounce, glow, and restrained sparkle burst, late `Finished` solves use the wave and a softer bounce without sparkles, and `Gave up` reveals in red without a celebratory finish. Reduce Motion shows the final state immediately.
+
+Returning to any persisted terminal crossword, including an archive give-up, opens its completion sheet with result sharing available. The web presents it once per game-page visit so a manual dismissal remains respected.
 
 All crossword completion outcomes show a live release countdown derived from `ContentReleaseCalendar` on every tick. Daily puzzles count down to the next local midnight; weekly puzzles count down to the next local Sunday at midnight and include days in the display. A late `Finished` result shows its no-points message above the standard stats card and displays a score of zero.
 

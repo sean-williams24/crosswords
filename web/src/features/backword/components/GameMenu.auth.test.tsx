@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { useState } from "react";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -22,9 +23,14 @@ vi.mock("../../auth/AuthProvider", () => ({ useAuth: () => testAuth.value }));
 import { GameMenu } from "./GameMenu";
 import { ThemeProvider } from "../../theme/ThemeProvider";
 
-function renderMenu() {
-  return render(<ThemeProvider><MemoryRouter initialEntries={["/menu-test"]}><Routes>
-    <Route path="*" element={<GameMenu />} />
+function ControlledMenu() {
+  const [isOpen, setIsOpen] = useState(false);
+  return <GameMenu isOpen={isOpen} onClose={() => setIsOpen(false)} onOpen={() => setIsOpen(true)} />;
+}
+
+function renderMenu(initialPath = "/menu-test", controlled = false) {
+  return render(<ThemeProvider><MemoryRouter initialEntries={[initialPath]}><Routes>
+    <Route path="*" element={controlled ? <ControlledMenu /> : <GameMenu />} />
     <Route path="/" element={<p>Home</p>} />
   </Routes></MemoryRouter></ThemeProvider>);
 }
@@ -144,6 +150,44 @@ describe("GameMenu account actions", () => {
     scrollTo.mockRestore();
   });
 
+  it("resets the menu links to the top every time the menu opens", async () => {
+    const user = userEvent.setup();
+    const scrollTopSetter = vi.spyOn(Element.prototype, "scrollTop", "set");
+
+    try {
+      renderMenu();
+      await user.click(screen.getByRole("button", { name: "Open game menu" }));
+      expect(scrollTopSetter).toHaveBeenCalledWith(0);
+
+      const links = screen.getByRole("navigation", { name: "Game navigation links" });
+      links.scrollTop = 180;
+      await user.click(screen.getByRole("button", { name: "Close game menu" }));
+
+      const callsBeforeReopening = scrollTopSetter.mock.calls.length;
+      await user.click(screen.getByRole("button", { name: "Open game menu" }));
+
+      expect(scrollTopSetter).toHaveBeenCalledTimes(callsBeforeReopening + 1);
+      expect(scrollTopSetter).toHaveBeenLastCalledWith(0);
+      expect(screen.getByRole("navigation", { name: "Game navigation links" }).scrollTop).toBe(0);
+    } finally {
+      scrollTopSetter.mockRestore();
+    }
+  });
+
+  it.each([
+    { controlled: false, path: "/info", link: "Info" },
+    { controlled: true, path: "/backword", link: "Backword" }
+  ])("dismisses the $link menu link on its current page (controlled: $controlled)", async ({ controlled, path, link }) => {
+    const user = userEvent.setup();
+    renderMenu(path, controlled);
+
+    await user.click(screen.getByRole("button", { name: "Open game menu" }));
+    await user.click(screen.getByRole("link", { name: link }));
+
+    expect(screen.queryByRole("dialog", { name: "Game navigation" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open game menu" })).toHaveAttribute("aria-expanded", "false");
+  });
+
   it("restores page scrolling when an open menu unmounts", async () => {
     const user = userEvent.setup();
     const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation(() => undefined);
@@ -157,6 +201,25 @@ describe("GameMenu account actions", () => {
     expect(document.body.style.overflow).toBe("");
     expect(scrollTo).toHaveBeenCalledWith(0, 72);
     scrollTo.mockRestore();
+  });
+
+  it("layers the open menu outside game content and above other overlays", async () => {
+    const user = userEvent.setup();
+    const { container } = renderMenu();
+
+    await user.click(screen.getByRole("button", { name: "Open game menu" }));
+
+    const backdrop = screen.getByRole("dialog", { name: "Game navigation" }).parentElement;
+    expect(backdrop).toHaveClass("bw-menu-backdrop");
+    expect(backdrop?.parentElement).toBe(document.body);
+    expect(container).not.toContainElement(backdrop);
+
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const menuLayer = Number(styles.match(/\.bw-menu-backdrop \{[^}]*z-index:\s*(\d+)/)?.[1]);
+    const otherLayers = [...styles.matchAll(/z-index:\s*(\d+)/g)]
+      .map((match) => Number(match[1]))
+      .filter((layer) => layer !== menuLayer);
+    expect(menuLayer).toBeGreaterThan(Math.max(...otherLayers));
   });
 
   it("defines the phone menu as a full viewport overlay with a larger close control", () => {

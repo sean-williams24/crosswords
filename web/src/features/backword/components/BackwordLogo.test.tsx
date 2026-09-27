@@ -40,4 +40,18 @@ describe("BackwordLogo", () => {
 
     expect(styles).toMatch(/\.bw-logo__pro\s*\{[^}]*\btop:\s*41%/);
   });
+
+  it("centers the header lockup independently of menu and action widths", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    for (const header of ["bw-game-header", "home-dashboard__header"]) {
+      expect(styles).toMatch(new RegExp(`\\.${header}\\s*\\{[^}]*grid-template-columns:\\s*minmax\\(0, 1fr\\) auto minmax\\(0, 1fr\\)`));
+    }
+    expect(styles).toMatch(/\.home-dashboard__header > a\[aria-label="Backword home"\]\s*\{[^}]*grid-column:\s*2;[^}]*justify-self:\s*center/);
+    expect(styles).toMatch(/\.bw-logo-lockup\s*\{[^}]*grid-column:\s*2;[^}]*justify-self:\s*center;[^}]*width:\s*74px/);
+    expect(styles).toMatch(/\.bw-logo-lockup--large\s*\{[^}]*width:\s*149px/);
+    expect(styles).toMatch(/\.home-dashboard__header \.bw-logo-lockup\s*\{[^}]*width:\s*141px/);
+    expect(styles).toMatch(/@media \(max-width: 680px\)\s*\{[\s\S]*?\.home-dashboard__header \.bw-logo-lockup\s*\{[^}]*width:\s*113px/);
+    expect(styles).toMatch(/\.bw-game-header \.bw-logo-lockup--large\s*\{[^}]*width:\s*clamp\(80px, calc\(100vw - 208px\), 149px\)/);
+  });
 });

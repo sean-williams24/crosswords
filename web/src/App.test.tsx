@@ -61,7 +61,7 @@ describe("Backword website routes", () => {
     renderRoute("/anagram/review");
 
     expect(await screen.findByRole("tooltip")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Dismiss how to play tip" }));
+    fireEvent.click(screen.getByRole("button", { name: "Close tooltip" }));
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 

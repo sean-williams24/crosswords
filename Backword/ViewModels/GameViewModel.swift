@@ -45,6 +45,9 @@ final class GameViewModel: ObservableObject {
             loaded.save()
         }
         self.progress = loaded
+        // Use the same presentation trigger for a restored terminal game as
+        // for a game that completes during this session.
+        self.isComplete = loaded.isComplete
 
         // Select the first white cell
         if let first = firstWhiteCell() {

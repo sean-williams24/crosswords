@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BackwordCompletion } from "../features/backword/components/BackwordCompletion";
 import { BackwordInstructions } from "../features/backword/components/BackwordInstructions";
@@ -8,6 +8,7 @@ import { BackwordOnboardingCards } from "../features/backword/components/Backwor
 import { BackwordStats } from "../features/backword/components/BackwordStats";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { Footer } from "../components/Footer";
+import { InfoTooltip } from "../components/InfoTooltip";
 import { isCompletedOnReleaseDate, isLocalDateString, localDateString } from "../features/backword/date";
 import {
   BACKWORD_RULES_VERSION,
@@ -73,6 +74,7 @@ export function BackwordPage() {
   const [showDetailedExplainer, setShowDetailedExplainer] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showInstructionsTip, setShowInstructionsTip] = useState(false);
+  const completionPresentedForDate = useRef<string | null>(null);
 
   const onboardingSteps = useMemo(() => pendingBackwordOnboardingSteps(settings), [settings]);
 
@@ -167,10 +169,20 @@ export function BackwordPage() {
   }, [date, storage, user?.id]);
 
   useEffect(() => {
-    if (settings.hasSeenOnboarding && settings.lastSeenRulesVersion < BACKWORD_RULES_VERSION) {
+    if (
+      progress.outcome === "inProgress"
+      && settings.hasSeenOnboarding
+      && settings.lastSeenRulesVersion < BACKWORD_RULES_VERSION
+    ) {
       setSheet("instructions");
     }
-  }, [settings.hasSeenOnboarding, settings.lastSeenRulesVersion]);
+  }, [progress.outcome, settings.hasSeenOnboarding, settings.lastSeenRulesVersion]);
+
+  useEffect(() => {
+    if (loading || progress.completedAt === null || completionPresentedForDate.current === progress.date) return;
+    completionPresentedForDate.current = progress.date;
+    setSheet("completion");
+  }, [loading, progress.completedAt, progress.date]);
 
   useEffect(() => {
     if (progress.guesses.length > 0 || onboardingSteps.length > 0) {
@@ -182,13 +194,18 @@ export function BackwordPage() {
   }, [onboardingSteps.length, progress.guesses.length]);
 
   useEffect(() => {
-    if (loading || !word || onboardingSteps.length === 0 || settings.hasSeenInstructionsTip) {
-      if (onboardingSteps.length === 0) setShowInstructionsTip(false);
+    if (
+      loading
+      || !word
+      || progress.outcome !== "inProgress"
+    ) {
+      setShowInstructionsTip(false);
       return;
     }
+    if (onboardingSteps.length > 0 || settings.hasSeenInstructionsTip) return;
     setShowInstructionsTip(true);
     setSettings(storage.markInstructionsTipSeen(settings));
-  }, [loading, onboardingSteps.length, settings, storage, word]);
+  }, [loading, onboardingSteps.length, progress.outcome, settings, storage, word]);
 
   useEffect(() => {
     if (archiveDate) return;
@@ -262,6 +279,8 @@ export function BackwordPage() {
       track(gameStarted("backword"));
     }
     if (updated.outcome !== "inProgress") {
+      completionPresentedForDate.current = updated.date;
+      setShowInstructionsTip(false);
       track(gameCompleted("backword", updated.outcome, {
         mode: settings.mode,
         releaseDay: isCompletedOnReleaseDate(updated.date, updated.completedAt),
@@ -345,10 +364,11 @@ export function BackwordPage() {
                 ⓘ
               </button>
               {showInstructionsTip ? (
-                <span id="bw-onboarding-info-tip" role="tooltip">
-                  <strong>How to play</strong>
-                  <span>Tap the info icon at any time to view game information and toggle difficulty</span>
-                </span>
+                <InfoTooltip
+                  description="Tap the info icon at any time to view game information and toggle difficulty"
+                  id="bw-onboarding-info-tip"
+                  onDismiss={() => setShowInstructionsTip(false)}
+                />
               ) : null}
             </span>
           </nav>

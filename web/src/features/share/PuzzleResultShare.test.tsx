@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { isChromeBrowser, isSafariBrowser, PuzzleResultShare, shareCardFormat, shareCardRasterPixelSize, sharePuzzleResult } from "./PuzzleResultShare";
+import { canUseResultShareMenu, isChromeBrowser, isSafariBrowser, PuzzleResultShare, resultShareActionLabels, shareCardFormat, shareCardRasterPixelSize, sharePuzzleResult } from "./PuzzleResultShare";
 import type { PuzzleShareResult } from "./puzzleResult";
 
 const analytics = vi.hoisted(() => ({ track: vi.fn() }));
@@ -25,6 +25,15 @@ describe("result sharing", () => {
   });
 
   afterEach(() => vi.unstubAllGlobals());
+
+  it("uses descriptive labels for result-card actions", () => {
+    expect(resultShareActionLabels).toEqual({
+      shareMenu: "Share menu",
+      copyResultsCard: "Copy results card",
+      downloadResultsCard: "Download results card",
+      copyResultsText: "Copy results text"
+    });
+  });
 
   it("uses the logo rather than decorative tiles in the in-app card preview", () => {
     const { container } = render(<PuzzleResultShare result={result} />);
@@ -70,11 +79,29 @@ describe("result sharing", () => {
       render(<PuzzleResultShare compact result={result} showPreview={false} />);
       await user.click(screen.getByRole("button", { name: "Share result" }));
       expect(screen.getByRole("dialog", { name: "Share result options" })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Copy result" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Copy results text" })).toBeInTheDocument();
       expect(analytics.track).toHaveBeenCalledWith({
         name: "result_share_opened",
         parameters: { game: "backword", platform: "web", surface: "share_options" }
       });
+    } finally {
+      if (originalUserAgent) Object.defineProperty(navigator, "userAgent", originalUserAgent);
+      else delete (navigator as { userAgent?: string }).userAgent;
+    }
+  });
+
+  it("dismisses share actions when the player taps outside them", async () => {
+    const user = userEvent.setup();
+    const originalUserAgent = Object.getOwnPropertyDescriptor(navigator, "userAgent");
+    Object.defineProperty(navigator, "userAgent", { configurable: true, value: "Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36" });
+
+    try {
+      render(<PuzzleResultShare compact result={result} showPreview={false} />);
+      await user.click(screen.getByRole("button", { name: "Share result" }));
+      expect(screen.getByRole("dialog", { name: "Share result options" })).toBeInTheDocument();
+
+      await user.click(document.body);
+      expect(screen.queryByRole("dialog", { name: "Share result options" })).not.toBeInTheDocument();
     } finally {
       if (originalUserAgent) Object.defineProperty(navigator, "userAgent", originalUserAgent);
       else delete (navigator as { userAgent?: string }).userAgent;
@@ -97,7 +124,7 @@ describe("result sharing", () => {
       expect(container.querySelector(".puzzle-result-share__button--compact")).toBeEnabled();
       await user.click(screen.getByRole("button", { name: "Share result" }));
       expect(screen.getByRole("dialog", { name: "Share result options" })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Copy result" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Copy results text" })).toBeInTheDocument();
     } finally {
       if (originalUserAgent) Object.defineProperty(navigator, "userAgent", originalUserAgent);
       else delete (navigator as { userAgent?: string }).userAgent;
@@ -107,6 +134,15 @@ describe("result sharing", () => {
   it("identifies Safari without treating other WebKit browsers as Safari", () => {
     expect(isSafariBrowser("Mozilla/5.0 Version/18.5 Safari/605.1.15")).toBe(true);
     expect(isSafariBrowser("Mozilla/5.0 CriOS/140.0.0.0 Mobile/15E148 Safari/604.1")).toBe(false);
+  });
+
+  it("only exposes the result-card share menu in Safari with native sharing", () => {
+    const chrome = "Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36";
+    const safari = "Mozilla/5.0 Version/18.5 Safari/605.1.15";
+
+    expect(canUseResultShareMenu(chrome, true)).toBe(false);
+    expect(canUseResultShareMenu(safari, false)).toBe(false);
+    expect(canUseResultShareMenu(safari, true)).toBe(true);
   });
 
   it("waits for the image card before enabling a native share outside the custom-browser menu", () => {
