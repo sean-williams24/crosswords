@@ -14,7 +14,9 @@ struct AnagramColorAssetTests {
             }
         )
 
-        #expect(components(in: anyAppearance) == ["red": "1.000", "green": "0.650", "blue": "0.360", "alpha": "1.000"])
+        #expect(colorSpace(in: anyAppearance) == "display-p3")
+        #expect(components(in: anyAppearance) == ["red": "1.000", "green": "0.604", "blue": "0.331", "alpha": "1.000"])
+        #expect(colorSpace(in: darkAppearance) == "srgb")
         #expect(components(in: darkAppearance) == ["red": "0.967", "green": "0.434", "blue": "0.040", "alpha": "1.000"])
     }
 
@@ -30,5 +32,10 @@ struct AnagramColorAssetTests {
     private func components(in entry: [String: Any]) -> [String: String]? {
         let color = entry["color"] as? [String: Any]
         return color?["components"] as? [String: String]
+    }
+
+    private func colorSpace(in entry: [String: Any]) -> String? {
+        let color = entry["color"] as? [String: Any]
+        return color?["color-space"] as? String
     }
 }
