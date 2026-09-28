@@ -16,6 +16,7 @@ import { contentLoadFailed, gameCompleted, gameStarted } from "../features/analy
 import { loadLocalProfileRecords } from "../features/profile/profileRecords";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
 import { buildAnagramShareResult } from "../features/share/puzzleResult";
+import { PuzzleResultShare } from "../features/share/PuzzleResultShare";
 
 export function AnagramPage() {
   const { date: routeDate } = useParams<{ date?: string }>();
@@ -163,6 +164,7 @@ export function AnagramPage() {
               onPlace={(tile) => update(placeTile(progress, puzzle, tile))} onRestart={() => update(restartTiles(progress))}
               onResetReview={isReview ? () => { setProgress(null); setDialog(null); } : undefined}
               onShuffle={shuffle} onUndo={() => update(undoTile(progress))} progress={progress} puzzle={puzzle} />}
+        {shareResult && dialog === null ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
       </> : null}
     </main>
     <Footer />

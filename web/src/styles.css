@@ -1179,6 +1179,8 @@ a {
 
 @media (max-width: 699px) {
   .puzzle-result-share__fallback { top: auto; bottom: calc(100% + 8px); }
+  .anagram-main > .puzzle-result-share--compact { top: 0; right: 0; bottom: auto; }
+  .anagram-main > .puzzle-result-share--compact .puzzle-result-share__fallback { top: calc(100% + 8px); bottom: auto; }
 }
 .bw-completion-actions { display: grid; grid-template-columns: 1fr 1fr; margin-top: auto; padding: 10px 20px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--app-grid); }
 .bw-completion-actions button { padding: 11px; border: 0; color: var(--app-text-secondary); background: transparent; font: inherit; font-size: 13px; cursor: pointer; }
@@ -2230,6 +2232,7 @@ html[data-theme="light"] {
   --anagram-letter-size: clamp(60px, 8vw, 88px);
   --anagram-tray-letter-size: clamp(52px, 7vw, 76px);
   --anagram-answer-gap: clamp(7px, 1.3vw, 14px);
+  position: relative;
   display: flex;
   width: min(calc(100% - 40px), 960px);
   min-height: calc(100svh - 220px);
@@ -2503,7 +2506,7 @@ html[data-theme="light"] {
   cursor: pointer;
 }
 
-.anagram-dialog button:not(.anagram-dialog-close) {
+.anagram-dialog > button:not(.anagram-dialog-close) {
   min-height: 54px;
   padding: 9px 16px;
   border: 1px solid var(--anagram-line);
@@ -2518,13 +2521,13 @@ html[data-theme="light"] {
 
 .anagram-controls button:hover:not(:disabled),
 .anagram-secondary-controls button:hover:not(:disabled),
-.anagram-dialog button:not(.anagram-dialog-close):hover:not(:disabled) {
+.anagram-dialog > button:not(.anagram-dialog-close):hover:not(:disabled) {
   filter: brightness(1.1);
 }
 
 .anagram-controls button:focus-visible,
 .anagram-secondary-controls button:focus-visible,
-.anagram-dialog button:focus-visible,
+.anagram-dialog > button:focus-visible,
 .anagram-review-reset:focus-visible,
 .anagram-primary:focus-visible {
   outline: 2px solid var(--anagram-accent);
@@ -2608,7 +2611,7 @@ html[data-theme="light"] {
   cursor: pointer;
 }
 
-.anagram-dialog button:not(.anagram-dialog-close) {
+.anagram-dialog > button:not(.anagram-dialog-close) {
   margin: 10px 10px 0 0;
 }
 

@@ -1397,6 +1397,9 @@ Chrome and Safari expose an in-page result-share menu so its image copy and
 download paths do not depend on inconsistent native-sheet handling. The menu is
 anchored to the result button within completion modals, and remains openable
 while the PNG is prepared so text copying is never blocked by image rendering.
+Anagram uses the same menu action styling as the other games: its dialog button
+rules apply only to direct dialog controls, and its completed game keeps a
+compact share button on the main page after the completion dialog closes.
 
 Result-share analytics use a content-free funnel. `result_share_opened` records
 the share surface, `result_share_finished` records whether the platform reported

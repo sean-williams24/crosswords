@@ -1,4 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import fixtures from "../../../../docs/fixtures/anagram-v1.json";
@@ -11,6 +13,14 @@ const puzzle = mapAnagramRow(fixtures.puzzles[0]);
 const now = new Date("2026-10-01T10:00:00Z");
 
 describe("Anagram accessible controls", () => {
+  it("lets the shared share menu keep its standard action styling", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/\.anagram-dialog > button:not\(\.anagram-dialog-close\)\s*\{/);
+    expect(styles).not.toMatch(/\.anagram-dialog button:not\(\.anagram-dialog-close\)\s*\{/);
+    expect(styles).toMatch(/\.anagram-main > \.puzzle-result-share--compact\s*\{[^}]*top:\s*0;[^}]*bottom:\s*auto;/);
+  });
+
   it("exposes duplicate tile identities and disables unavailable actions", () => {
     const progress = startProgress(puzzle, now);
     const onPlace = vi.fn();
