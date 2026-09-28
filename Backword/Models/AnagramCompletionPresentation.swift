@@ -62,6 +62,12 @@ enum AnagramCompletionSheetPresentation {
     }
 }
 
+enum AnagramFirstUseTipPresentation {
+    static func shouldShow(showsFirstUseTip: Bool, hasSeenTip: Bool, isComplete: Bool) -> Bool {
+        showsFirstUseTip && !hasSeenTip && !isComplete
+    }
+}
+
 enum AnagramCompletionAnimation {
     static let revealInterval: TimeInterval = 0.12
     static let celebrationDuration: TimeInterval = 0.6

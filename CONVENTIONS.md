@@ -854,6 +854,12 @@ approved answer compatible with that lock.
 The Anagram How to Play control presents the same 85%-height bottom sheet used
 by the other games. Its gameplay, timer, hint, and scoring sections use the
 Anagram orange palette and must stay aligned with `AnagramProgress` behaviour.
+The first-use info popover appears only for an unfinished puzzle. A completed
+puzzle opens its stats sheet immediately and leaves the tip available for a
+later unfinished puzzle. If account sync completes the puzzle while the
+popover is open, the popover closes and the stats sheet waits for its dismissal;
+that automatic close does not consume the first-use tip. Manual stats and
+instructions requests also wait for the popover to dismiss before presenting.
 
 The timer measures wall time from Start, including app backgrounding, adverts,
 and navigation. The UI shows elapsed time as m:ss below one hour and h:mm:ss

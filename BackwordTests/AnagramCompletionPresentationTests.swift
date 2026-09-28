@@ -59,6 +59,22 @@ struct AnagramCompletionPresentationTests {
         #expect(!AnagramCompletionSheetPresentation.shouldPresent(isComplete: false, hasPresented: false))
     }
 
+    @Test("A completed puzzle skips the first-use popover while the completion sheet opens")
+    func firstUseTipPresentation() {
+        #expect(AnagramFirstUseTipPresentation.shouldShow(
+            showsFirstUseTip: true, hasSeenTip: false, isComplete: false
+        ))
+        #expect(!AnagramFirstUseTipPresentation.shouldShow(
+            showsFirstUseTip: true, hasSeenTip: false, isComplete: true
+        ))
+        #expect(!AnagramFirstUseTipPresentation.shouldShow(
+            showsFirstUseTip: true, hasSeenTip: true, isComplete: false
+        ))
+        #expect(!AnagramFirstUseTipPresentation.shouldShow(
+            showsFirstUseTip: false, hasSeenTip: false, isComplete: false
+        ))
+    }
+
     @Test("Countdown formats time and respects the first release")
     func countdown() throws {
         #expect(AnagramCountdownText.value(secondsRemaining: 3_661) == "01:01:01")

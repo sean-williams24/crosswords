@@ -1064,6 +1064,7 @@
 				INFOPLIST_FILE = Backword/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Backword;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Backword uses your device identifier to show personalized ads and measure ad performance.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -1254,8 +1255,9 @@
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BackWord;
+				INFOPLIST_KEY_CFBundleDisplayName = Backword;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Backword uses your device identifier to show personalized ads and measure ad performance.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";

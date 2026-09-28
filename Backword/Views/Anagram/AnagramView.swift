@@ -1,6 +1,12 @@
 import SwiftUI
 
 struct AnagramView: View {
+    private enum PendingSheet: Equatable {
+        case stats
+        case instructions
+        case completion
+    }
+
     @EnvironmentObject private var adService: AdService
     @EnvironmentObject private var storeService: StoreService
     @EnvironmentObject private var ratingService: OverallRatingService
@@ -14,6 +20,9 @@ struct AnagramView: View {
     @State private var showingFallback = false
     @State private var showingGiveUp = false
     @State private var showInfoTip = false
+    @State private var isTipDismissing = false
+    @State private var pendingSheet: PendingSheet?
+    @State private var isViewVisible = false
     @State private var showingStats = false
     @State private var showingCompletionStats = false
     @State private var hasPresentedCompletion = false
@@ -125,17 +134,39 @@ struct AnagramView: View {
             Text("This ends today's attempt for zero points.")
         }
         .onAppear {
-            if showsFirstUseTip && UserDefaults.standard.bool(forKey: "Anagram.firstUseTipShown") == false {
-                UserDefaults.standard.set(true, forKey: "Anagram.firstUseTipShown")
-                showInfoTip = true
-            }
+            isViewVisible = true
+            showInfoTip = AnagramFirstUseTipPresentation.shouldShow(
+                showsFirstUseTip: showsFirstUseTip,
+                hasSeenTip: UserDefaults.standard.bool(forKey: "Anagram.firstUseTipShown"),
+                isComplete: viewModel.progress?.isComplete == true
+            )
             presentCompletionIfNeeded()
+        }
+        .onDisappear {
+            isViewVisible = false
+            isTipDismissing = false
+            pendingSheet = nil
+        }
+        .onChange(of: showInfoTip) { wasShown, isShown in
+            guard wasShown && !isShown else { return }
+            isTipDismissing = true
+            if pendingSheet != .completion {
+                UserDefaults.standard.set(true, forKey: "Anagram.firstUseTipShown")
+            }
+            // SwiftUI clears the binding before the popover dismissal animation finishes.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isTipDismissing = false
+                guard isViewVisible, !showInfoTip, let sheet = pendingSheet else { return }
+                pendingSheet = nil
+                present(sheet)
+            }
         }
         .onChange(of: viewModel.progress?.outcome) { _, outcome in
             if outcome == nil {
                 hasPresentedCompletion = false
+                if pendingSheet == .completion { pendingSheet = nil }
             } else {
-                presentCompletionIfNeeded()
+                request(.completion)
             }
         }
         .onChange(of: accountService.syncRevision) { _, _ in
@@ -160,8 +191,7 @@ struct AnagramView: View {
 
                 HStack(spacing: 8) {
                     Button {
-                        showingCompletionStats = false
-                        showingStats = true
+                        request(.stats)
                     } label: {
                         Image(systemName: "brain.head.profile")
                             .font(AppFont.body(appLayout.iconGlyphSize))
@@ -171,7 +201,9 @@ struct AnagramView: View {
                     }
                     .accessibilityLabel("Anagram stats")
 
-                    Button { showingInstructions = true } label: {
+                    Button {
+                        request(.instructions)
+                    } label: {
                         Image(systemName: "info.circle")
                             .font(AppFont.body(appLayout.iconGlyphSize))
                             .frame(width: appLayout.iconSize)
@@ -291,6 +323,30 @@ struct AnagramView: View {
 
     private func reveal(_ source: AnagramProgress.HintSource) {
         viewModel.revealHint(source: source)
+    }
+
+    private func request(_ sheet: PendingSheet) {
+        if showInfoTip {
+            pendingSheet = sheet
+            isTipDismissing = true
+            showInfoTip = false
+        } else if isTipDismissing {
+            pendingSheet = sheet
+        } else {
+            present(sheet)
+        }
+    }
+
+    private func present(_ sheet: PendingSheet) {
+        switch sheet {
+        case .stats:
+            showingCompletionStats = false
+            showingStats = true
+        case .instructions:
+            showingInstructions = true
+        case .completion:
+            presentCompletionIfNeeded()
+        }
     }
 
     private func showRewardedHint() {
