@@ -1,26 +1,29 @@
 # Anagram content release
 
-`anagram_pool.json` is a finite, separate selection from the unchanged crossword
-bank. The current bank has 11,436 eligible 7–9 letter ASCII entries (22,299
-entries total); the plan's 9,753 count reflects an earlier snapshot. The pool
-has 75 familiar, family-friendly answers. Alternatives are included
-only where they are bank-backed, common standalone words. The pool is ordered:
-issue N always uses entry N, which makes replenishment repeatable. Its
-`reviewStatus` and each prepared artifact require editorial signoff before
-publication. The script checks spelling, multisets, issue/date uniqueness,
-scrambles, and repeats within 365 days; semantic suitability still needs a
-human reviewer. Frequency is evidence for that review, not an automatic gate.
-Run this after installing `Backend/requirements.txt` to get a zipf score and
-top-200,000 rank for every primary and alternative answer:
+`anagram_pool.json` contains 75 previously curated seed candidates. The 30-day
+launch artifact was manually approved; published rows stay immutable. Future
+issue numbers follow the Supabase queue, not pool positions. The unchanged
+crossword bank contains 11,436 eligible 7–9-letter ASCII entries. The Monday
+job searches it for additional candidates and maintains 30 future release
+days. It requires a primary wordfreq Zipf score of at least 3.5. Every common
+alternative found in the bank is presented to two separate AI reviews, along
+with likely missing alternatives from wordfreq's top 200,000 English words.
+Both reviews must agree on the accepted answer set. Any accepted external
+alternative causes the group to be rejected rather than silently omitting it.
+The script also validates scrambles, release sequence, exact reviewer responses,
+and a minimum 365-day gap between repeated letter combinations. It prefers
+never-used combinations.
+
+The original pool frequency report can still be regenerated with:
 
 ```bash
 python3 Backend/review_anagram_frequency.py \
   --output Backend/anagram_frequency_review.json
 ```
 
-The frequency report cannot be generated in an environment lacking `wordfreq`.
-The prepared artifact records `frequencyReview: pending_wordfreq_report` until
-an editor checks the report and changes it to `reviewed`.
+The frequency report remains historical evidence for the seed pool. Automated
+artifacts include their own scores, ranks, reviewer verdicts, source and prompt
+digests, policy version, and a digest of the exact artifact contents.
 
 The reviewed 30-day launch artifact is `anagram_launch_2026-09-26.json`. It is
 approved for publication beginning 26 September 2026. If the release date
@@ -32,27 +35,35 @@ python3 Backend/generate_anagram.py \
   --output Backend/anagram_launch_YYYY-MM-DD.json
 ```
 
-After the `20260925_add_anagram_v1.sql` migration and launch publication, a
-scheduled job can prepare the next 14-day batch without modifying Supabase:
+After the launch rows are published, the scheduled job can fill the buffer:
 
 ```bash
-SUPABASE_URL=... SUPABASE_KEY=... python3 Backend/generate_anagram.py \
-  --from-supabase --count 14 --output /tmp/anagram-replenishment.json
+SUPABASE_URL=... SUPABASE_KEY=... OPENAI_API_KEY=... \
+  python3 Backend/automate_anagram.py --publish \
+  --output /tmp/anagram-replenishment.json \
+  --report /tmp/anagram-review-report.json
 ```
 
-The key must be the service-role key so the read includes future queued rows.
-The command derives the next date and issue from that queue and fails closed
-when the pool runs out. The artifact can be attached to a review issue. Once an
-editor has checked the frequency report, answers, alternatives, and date range,
-set that exact artifact's `frequencyReview` to `reviewed` and `reviewStatus` to
-`approved`, then publish with:
+Use a service-role key so the read includes future queued rows. `--dry-run`
+instead of `--publish` performs curation and writes the artifact without
+inserting rows. `--today YYYY-MM-DD` sets the UTC planning date for a replay or
+test; `--model` changes the reviewer model. A full buffer is a successful no-op
+with no AI calls or writes. Missing launch rows, a gap, insufficient reviewed
+answers after eight 42-group candidate batches, API errors that prevent a full
+batch, or publication/readback failure stop the run and produce a report. The
+workflow uploads the report and creates or updates a GitHub issue on failure.
+
+The manually approved launch artifact remains supported. To publish one of
+those historical artifacts explicitly:
 
 ```bash
 SUPABASE_URL=... SUPABASE_KEY=... python3 Backend/publish_anagram.py \
   approved-artifact.json --yes
 ```
 
-Publication validates the batch against the fixed pool and the remote queue,
-then inserts all rows in one request. No upsert is used, and the table rejects
-later row edits or deletion. Launch and replenishment scripts never publish on
-their own.
+Publication re-reads the remote queue immediately before insert, verifies the
+manual pool match or the automated evidence against current sources, inserts
+the entire batch in one request, then reads the rows back. No upsert is used;
+the table rejects later row edits or deletion. Repository variable
+`ANAGRAM_REPLENISHMENT_ENABLED=true` enables the Monday 09:30 UTC schedule.
+Manual workflow dispatch remains available.

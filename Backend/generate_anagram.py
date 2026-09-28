@@ -78,6 +78,20 @@ def scramble(entry: dict, issue: int) -> str:
     raise ValueError(f"Could not scramble {answer}")
 
 
+def make_row(release: date, issue: int, entry: dict) -> dict:
+    return {
+        "id": str(uuid.uuid5(NAMESPACE, f"anagram-v1:{issue}:{release.isoformat()}")),
+        "date": release.isoformat(),
+        "puzzle_number": issue,
+        "schema_version": 1,
+        "puzzle_data": {
+            "answer": entry["answer"],
+            "acceptedAnswers": entry["acceptedAnswers"],
+            "initialScramble": scramble(entry, issue),
+        },
+    }
+
+
 def prepare(start_date: date, first_issue: int, count: int, pool: list[dict]) -> list[dict]:
     if first_issue < 1 or count < 1 or first_issue + count - 1 > len(pool):
         raise ValueError("Requested range exceeds the approved finite pool")
@@ -86,17 +100,7 @@ def prepare(start_date: date, first_issue: int, count: int, pool: list[dict]) ->
         issue = first_issue + index
         release = start_date + timedelta(days=index)
         entry = pool[issue - 1]
-        rows.append({
-            "id": str(uuid.uuid5(NAMESPACE, f"anagram-v1:{issue}:{release.isoformat()}")),
-            "date": release.isoformat(),
-            "puzzle_number": issue,
-            "schema_version": 1,
-            "puzzle_data": {
-                "answer": entry["answer"],
-                "acceptedAnswers": entry["acceptedAnswers"],
-                "initialScramble": scramble(entry, issue),
-            },
-        })
+        rows.append(make_row(release, issue, entry))
     validate_rows(rows)
     return rows
 

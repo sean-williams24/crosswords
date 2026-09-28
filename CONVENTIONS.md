@@ -797,13 +797,19 @@ Backword stats use the same release-date-based 14-day history. Every daily relea
 
 ## Anagram Daily Game
 
-Anagram uses a separate reviewed 7–9-letter pool and dated Supabase rows. A
-published puzzle's answer set, initial scramble, date, and issue number are
-immutable. The pool is finite and ordered: issue N uses pool entry N, leaving
-the crossword bank unchanged. Launch and replenishment artifacts require
-editorial signoff, including the wordfreq rank and Zipf review report, before
-explicit publication. The current source bank contains 11,436 seven-to-nine
-letter ASCII entries; the earlier plan's 9,753 count is stale. Each scramble
+Anagram uses dated Supabase rows. A published puzzle's answer set, initial
+scramble, date, and issue number are immutable. The 75-entry manually curated
+pool remains a preferred seed source. After the manually approved launch,
+automation may choose later issues from the unchanged crossword bank; pool
+position no longer determines issue number. Primaries require a wordfreq Zipf
+score of at least 3.5. Two separate AI reviews must agree on the complete,
+family-friendly, bank-backed answer set, and common external alternatives
+cause rejection. Automated evidence is bound to exact rows and revalidated
+before publication. Never-used letter combinations have priority; a repeated
+combination must be at least 365 release days after its last use. The Monday
+workflow maintains a 30-day future buffer and fails without publishing a
+partial batch. The current source bank contains 11,436 seven-to-nine-letter
+ASCII entries; the earlier plan's 9,753 count is stale. Each scramble
 index is a distinct tile identity; placing a tile
 leaves its tray slot empty. The tray keeps two centered, square-tile rows:
 4+3 for seven letters, 4+4 for eight, and 5+4 for nine. Tile size stays

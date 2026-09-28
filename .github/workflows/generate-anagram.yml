@@ -1,4 +1,4 @@
-name: Prepare Anagram Puzzles
+name: Replenish Anagram Puzzles
 
 on:
   schedule:
@@ -7,9 +7,14 @@ on:
 
 permissions:
   contents: read
+  issues: write
+
+concurrency:
+  group: anagram-replenishment
+  cancel-in-progress: false
 
 jobs:
-  prepare:
+  replenish:
     if: ${{ github.event_name == 'workflow_dispatch' || vars.ANAGRAM_REPLENISHMENT_ENABLED == 'true' }}
     runs-on: ubuntu-latest
     steps:
@@ -23,19 +28,80 @@ jobs:
       - name: Install dependencies
         run: pip install -r Backend/requirements.txt
 
-      - name: Prepare next reviewed batch
+      - name: Curate and publish buffer
+        id: replenish
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python3 Backend/generate_anagram.py \
-            --from-supabase \
-            --count 14 \
-            --output /tmp/anagram-replenishment.json
+          python3 Backend/automate_anagram.py \
+            --publish \
+            --output /tmp/anagram-replenishment.json \
+            --report /tmp/anagram-review-report.json
 
-      - name: Upload review artifact
+      - name: Upload curation evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: anagram-replenishment-${{ github.run_id }}
-          path: /tmp/anagram-replenishment.json
-          if-no-files-found: error
+          path: |
+            /tmp/anagram-replenishment.json
+            /tmp/anagram-review-report.json
+          if-no-files-found: warn
+
+      - name: Create or update failure issue
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const title = 'Anagram replenishment failed';
+            const reportPath = '/tmp/anagram-review-report.json';
+            let summary = 'No curation report was written. Check the workflow run.';
+            if (fs.existsSync(reportPath)) {
+              const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+              summary = `Status: ${report.status}; needed: ${report.needed ?? 'unknown'}; ` +
+                `attempts: ${report.attempts?.length ?? 0}; error: ${report.error ?? 'unknown'}`;
+            }
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open'
+            });
+            const existing = issues.find(issue => !issue.pull_request && issue.title === title);
+            const body = `Run: ${run}\n\n${summary}\n\nFull report is in the run artifact.`;
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo, title, body
+              });
+            }
+
+      - name: Create or update low candidate supply issue
+        if: steps.replenish.outputs.candidate_remaining != '' && fromJSON(steps.replenish.outputs.candidate_remaining) < 200
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const count = ${{ steps.replenish.outputs.candidate_remaining }};
+            const title = 'Anagram candidate supply is low';
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, state: 'open'
+            });
+            const existing = issues.find(issue => !issue.pull_request && issue.title === title);
+            const body = `${count} structurally eligible letter combinations remain. ` +
+              'They are candidates, not approved puzzles; AI review may reject them. ' +
+              `Published through ${{ steps.replenish.outputs.published_through }}.`;
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo, title, body
+              });
+            }

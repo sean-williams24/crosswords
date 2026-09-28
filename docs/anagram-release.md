@@ -12,21 +12,28 @@ contract.
 2. Apply the Anagram migration and verify read policies and the progress merge
    function in the target Supabase environment.
 3. Publish the reviewed rows with service credentials, then read them back and
-   confirm their hashes and release dates. Publication is a separate approved
-   operation; generating a batch never writes to Supabase.
+   confirm their hashes and release dates. The launch generator prepares its
+   artifact locally; publishing that manually approved artifact is separate.
 4. Enable the iOS production entry after the first dated row is available.
    Validate the Home card, gameplay, offline cache, account sync, and Pro
    archive against released rows.
 5. Review the iOS look and gameplay. Build the web client from the same v1
    contract and parity fixtures after that review.
 
-Scheduled replenishment produces review artifacts only. It does not publish
-unreviewed content. The content pool is independent of the crossword word bank,
-and a puzzle's date, issue number, answer set, and scramble are immutable once
-released.
+After launch, scheduled replenishment curates and publishes automatically.
+The original 75-entry pool supplies preferred seed candidates, and additional
+7–9-letter answers come from the unchanged crossword word bank. Wordfreq and
+two separate AI reviews check familiarity, family suitability, and the full
+answer set. The generator prefers never-used letter combinations and requires
+at least 365 days before any combination repeats. A puzzle's date, issue
+number, answer set, and scramble remain immutable once published.
 
 After the launch rows are published, set the repository variable
 `ANAGRAM_REPLENISHMENT_ENABLED=true` to activate the Monday workflow. It reads
-the published rows, creates a 14-day review artifact, and stops on exhausted
-content or a gap in the published sequence. Manual dispatch remains available
-for a one-off review batch.
+all published rows, including future queued rows, and fills the buffer through
+UTC today plus 30 days. A full buffer needs no AI calls or writes. A curation
+failure or queue gap stops publication and creates or updates a GitHub issue;
+the workflow retains the artifact and report for inspection. Manual dispatch
+remains available for a one-off buffer check or replenishment. The
+`SUPABASE_URL`, service-role `SUPABASE_KEY`, and `OPENAI_API_KEY` secrets must be
+configured before activation.
