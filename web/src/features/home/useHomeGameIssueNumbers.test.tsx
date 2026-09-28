@@ -46,4 +46,13 @@ describe("useHomeGameIssueNumbers", () => {
     expect(repositories.crossword.getByDate).toHaveBeenCalledWith("2026-09-16");
     expect(repositories.crossword.getCurrentWeekly).toHaveBeenCalledWith("2026-09-13");
   });
+
+  it("shows Anagram without waiting for first-release metadata", async () => {
+    repositories.anagram.getFirstReleaseDate.mockReturnValue(new Promise(() => {}));
+
+    render(<IssueNumbers date="2026-09-16" weekDate="2026-09-13" />);
+
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("121/1/122/23/null"));
+    expect(repositories.anagram.getByDate).toHaveBeenCalledWith("2026-09-16");
+  });
 });

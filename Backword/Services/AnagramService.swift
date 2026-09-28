@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import OSLog
 
 @MainActor
 protocol AnagramDataSource {
@@ -41,6 +42,7 @@ final class AnagramService: ObservableObject {
 
     private let dataSource: AnagramDataSource
     private let cacheDirectory: URL
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "Backword", category: "anagram")
     private var fetchedDate: String?
 
     init(
@@ -68,15 +70,12 @@ final class AnagramService: ObservableObject {
     }
 
     func refreshIfNeeded(now: Date = Date()) async {
-        let date = AnagramProgress.localDay(now)
+        let date = ContentReleaseCalendar(now: now).dailyDateString
         guard fetchedDate != date else { return }
         todaysPuzzle = cachedPuzzle(for: date)
         isLoading = true
         defer { isLoading = false }
         do {
-            if let first = try await dataSource.firstPublishedPuzzle(), first.isValid {
-                UserDefaults.standard.set(first.date, forKey: "Anagram.firstReleaseDate")
-            }
             if let puzzle = try await dataSource.puzzle(for: date), puzzle.isValid {
                 todaysPuzzle = puzzle
                 cache(puzzle)
@@ -84,6 +83,11 @@ final class AnagramService: ObservableObject {
             }
         } catch {
             // Keep the cache visible and retry on the next refresh/foreground.
+            logger.error("Anagram fetch failed for \(date, privacy: .public): \(error.localizedDescription, privacy: .private)")
+        }
+        if UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate") == nil,
+           let first = try? await dataSource.firstPublishedPuzzle(), first.isValid {
+            UserDefaults.standard.set(first.date, forKey: "Anagram.firstReleaseDate")
         }
     }
 

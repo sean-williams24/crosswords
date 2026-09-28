@@ -810,6 +810,14 @@ leaves its tray slot empty. The tray keeps two centered, square-tile rows:
 based on five columns so the shorter rows have balanced side margins. Undo
 follows placement history, while Restart
 clears player placements without changing the start time, hint, or penalty.
+The iOS Home midnight task refreshes Anagram alongside the other daily games.
+Anagram fetches today's locally dated puzzle before requesting optional
+first-release metadata, so that metadata cannot delay the Home card. A failed
+daily fetch retains any cache and remains retryable on the next Home refresh.
+The Anagram read policy exposes only through tomorrow's database date, matching
+the deployed daily crossword and Backword window. Clients still select only
+their device's local date, so a visible tomorrow row does not display early.
+
 During play, the tray and controls stay together at the bottom of the view,
 with the controls 40 points above the bottom safe area. The header, timer,
 and answer scroll above them.

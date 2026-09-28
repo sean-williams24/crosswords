@@ -52,6 +52,9 @@ export function useHomeGameIssueNumbers(
     void (async () => {
       try {
         const repository = createAnagramRepository();
+        const puzzle = await repository.getByDate(date);
+        anagramStorage.cachePuzzle(puzzle);
+        updateIssueNumber("anagram", puzzle.puzzleNumber);
         try {
           const firstRelease = await repository.getFirstReleaseDate();
           if (firstRelease) {
@@ -59,9 +62,6 @@ export function useHomeGameIssueNumbers(
             if (!cancelled) setIssueNumbers((current) => ({ ...current, firstAnagramRelease: firstRelease }));
           }
         } catch { /* Daily content may still be available. */ }
-        const puzzle = await repository.getByDate(date);
-        anagramStorage.cachePuzzle(puzzle);
-        updateIssueNumber("anagram", puzzle.puzzleNumber);
       } catch {
         // The card remains usable while content is offline or unreleased.
       }

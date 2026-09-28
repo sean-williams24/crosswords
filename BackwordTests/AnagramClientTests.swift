@@ -6,14 +6,20 @@ import Testing
 private final class FakeAnagramSource: AnagramDataSource {
     var puzzle: AnagramPuzzle?
     var shouldFail = false
+    var shouldFailFirstPublishedPuzzle = false
     var dailyRequests = 0
+    var requestedDates: [String] = []
+    var requests: [String] = []
 
     func firstPublishedPuzzle() async throws -> AnagramPuzzle? {
-        if shouldFail { throw URLError(.notConnectedToInternet) }
+        requests.append("firstRelease")
+        if shouldFail || shouldFailFirstPublishedPuzzle { throw URLError(.notConnectedToInternet) }
         return puzzle
     }
 
     func puzzle(for date: String) async throws -> AnagramPuzzle? {
+        requests.append("daily")
+        requestedDates.append(date)
         dailyRequests += 1
         if shouldFail { throw URLError(.notConnectedToInternet) }
         return puzzle
@@ -104,6 +110,37 @@ struct AnagramClientTests {
 
         #expect(service.todaysPuzzle == nil)
         #expect(source.dailyRequests == 1)
+    }
+
+    @Test @MainActor func dailyPuzzleLoadsWhenFirstReleaseMetadataFails() async {
+        let previousRelease = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+        UserDefaults.standard.removeObject(forKey: "Anagram.firstReleaseDate")
+        defer {
+            if let previousRelease {
+                UserDefaults.standard.set(previousRelease, forKey: "Anagram.firstReleaseDate")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "Anagram.firstReleaseDate")
+            }
+        }
+        let source = FakeAnagramSource()
+        source.shouldFailFirstPublishedPuzzle = true
+        let date = AnagramProgress.localDay(Date())
+        let puzzle = AnagramPuzzle(
+            id: UUID().uuidString, date: date, puzzleNumber: 3,
+            schemaVersion: 1, answer: "PICTURE",
+            acceptedAnswers: [], initialScramble: "PEIRTUC"
+        )
+        source.puzzle = puzzle
+        let cache = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: cache) }
+
+        let service = AnagramService(dataSource: source, cacheDirectory: cache)
+        await service.refreshIfNeeded()
+
+        #expect(service.todaysPuzzle == puzzle)
+        #expect(source.dailyRequests == 1)
+        #expect(source.requestedDates == [date])
+        #expect(source.requests == ["daily", "firstRelease"])
     }
 
     @Test @MainActor func viewModelStartsAndRestoresUndo() {

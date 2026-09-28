@@ -141,7 +141,7 @@ CREATE TABLE anagram_puzzles (
 CREATE INDEX idx_anagram_date ON anagram_puzzles (date);
 ALTER TABLE anagram_puzzles ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public can read released anagrams"
-    ON anagram_puzzles FOR SELECT USING (date <= CURRENT_DATE);
+    ON anagram_puzzles FOR SELECT USING (date <= CURRENT_DATE + 1);
 
 CREATE OR REPLACE FUNCTION reject_anagram_mutation()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
