@@ -39,6 +39,7 @@ struct SupabaseAnagramDataSource: AnagramDataSource {
 final class AnagramService: ObservableObject {
     @Published private(set) var todaysPuzzle: AnagramPuzzle?
     @Published private(set) var isLoading = false
+    @Published private(set) var hasAttemptedLoad = false
 
     private let dataSource: AnagramDataSource
     private let cacheDirectory: URL
@@ -73,8 +74,12 @@ final class AnagramService: ObservableObject {
         let date = ContentReleaseCalendar(now: now).dailyDateString
         guard fetchedDate != date else { return }
         todaysPuzzle = cachedPuzzle(for: date)
+        hasAttemptedLoad = false
         isLoading = true
-        defer { isLoading = false }
+        defer {
+            isLoading = false
+            hasAttemptedLoad = true
+        }
         do {
             if let puzzle = try await dataSource.puzzle(for: date), puzzle.isValid {
                 todaysPuzzle = puzzle
@@ -89,6 +94,17 @@ final class AnagramService: ObservableObject {
            let first = try? await dataSource.firstPublishedPuzzle(), first.isValid {
             UserDefaults.standard.set(first.date, forKey: "Anagram.firstReleaseDate")
         }
+    }
+
+    /// Clears cached content and leaves the loading card visible before the debug refetch.
+    func purgeCache(now: Date = Date(), minimumLoadingDuration: Duration = .seconds(2)) async {
+        try? FileManager.default.removeItem(at: cacheDirectory)
+        todaysPuzzle = nil
+        fetchedDate = nil
+        hasAttemptedLoad = false
+        isLoading = true
+        try? await Task.sleep(for: minimumLoadingDuration)
+        await refreshIfNeeded(now: now)
     }
 
     func fetchArchive(for month: ArchiveMonth, now: Date = Date()) async -> [AnagramPuzzle] {

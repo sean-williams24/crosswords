@@ -157,6 +157,7 @@
 		A0A000000000000000000120 /* AnagramCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */; };
 		A0A000000000000000000121 /* AnagramInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000021 /* AnagramInstructionsContentView.swift */; };
 		A0A000000000000000000122 /* AnagramInstructionsContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */; };
+		A0A000000000000000000140 /* AnagramPlaceholderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000040 /* AnagramPlaceholderCard.swift */; };
 		A11C0A110000000000000001 /* AccountSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C0A100000000000000001 /* AccountSyncTests.swift */; };
 		A11CC001300A000000000001 /* AccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11CC000300A000000000001 /* AccountSheet.swift */; };
 		A11DD001300A000000000001 /* AppleSignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11DD000300A000000000001 /* AppleSignInButton.swift */; };
@@ -344,6 +345,7 @@
 		A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramCompletionPresentationTests.swift; sourceTree = "<group>"; };
 		A0A000000000000000000021 /* AnagramInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramInstructionsContentView.swift; sourceTree = "<group>"; };
 		A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramInstructionsContentViewTests.swift; sourceTree = "<group>"; };
+		A0A000000000000000000040 /* AnagramPlaceholderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramPlaceholderCard.swift; sourceTree = "<group>"; };
 		A11C0A100000000000000001 /* AccountSyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSyncTests.swift; sourceTree = "<group>"; };
 		A11CC000300A000000000001 /* AccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSheet.swift; sourceTree = "<group>"; };
 		A11DD000300A000000000001 /* AppleSignInButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInButton.swift; sourceTree = "<group>"; };
@@ -600,6 +602,7 @@
 			isa = PBXGroup;
 			children = (
 				A0A000000000000000000008 /* AnagramCard.swift */,
+				A0A000000000000000000040 /* AnagramPlaceholderCard.swift */,
 				04ADAE942FFD100000000001 /* AdExplainerView.swift */,
 				04ADAE962FFD100000000001 /* AnimatedAdPreviewView.swift */,
 				F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */,
@@ -923,6 +926,7 @@
 				A0A000000000000000000110 /* AnagramStatsView.swift in Sources */,
 				A0A000000000000000000116 /* AnagramStatsHistoryView.swift in Sources */,
 				A0A000000000000000000108 /* AnagramCard.swift in Sources */,
+				A0A000000000000000000140 /* AnagramPlaceholderCard.swift in Sources */,
 				A0A000000000000000000107 /* AnagramView.swift in Sources */,
 				A0A000000000000000000106 /* AnagramLetterGrid.swift in Sources */,
 				A0A000000000000000000113 /* AnagramTrayLayout.swift in Sources */,
@@ -1058,7 +1062,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Backword/Backword.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
@@ -1251,7 +1255,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Backword/Backword.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;

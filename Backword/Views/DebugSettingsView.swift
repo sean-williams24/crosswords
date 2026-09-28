@@ -6,6 +6,7 @@ import UIKit
 struct DebugSettingsView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var backwordService: BackwordService
+    @EnvironmentObject var anagramService: AnagramService
     @EnvironmentObject var wotdService: WOTDService
     @EnvironmentObject var adService: AdService
     @EnvironmentObject var accountService: AccountService
@@ -302,6 +303,12 @@ struct DebugSettingsView: View {
                         showPurgeBackwordConfirmation = true
                     } label: {
                         Label("Purge Backword", systemImage: "trash")
+                    }
+                    Button(role: .destructive) {
+                        Task { await anagramService.purgeCache() }
+                        dismiss()
+                    } label: {
+                        Label("Purge Anagram", systemImage: "trash")
                     }
                     Button(role: .destructive) {
                         showPurgeWOTDConfirmation = true

@@ -205,6 +205,7 @@ struct HomeView: View {
                 DebugSettingsView(homeViewModel: viewModel)
                     .environmentObject(storeService)
                     .environmentObject(backwordService)
+                    .environmentObject(anagramService)
                     .environmentObject(adService)
                     .environmentObject(wotdService)
                     .environmentObject(accountService)
@@ -443,6 +444,13 @@ struct HomeView: View {
                     )
                 ) { navigationPath.append("anagram") }
                     .padding(.top, 20)
+            } else {
+                AnagramPlaceholderCard(
+                    isLoading: anagramService.isLoading || !anagramService.hasAttemptedLoad
+                ) {
+                    Task { await anagramService.refreshIfNeeded() }
+                }
+                .padding(.top, 20)
             }
         }
         .padding(.horizontal, appLayout.homeHorizontalPadding)

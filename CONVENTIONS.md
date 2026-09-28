@@ -820,6 +820,11 @@ The iOS Home midnight task refreshes Anagram alongside the other daily games.
 Anagram fetches today's locally dated puzzle before requesting optional
 first-release metadata, so that metadata cannot delay the Home card. A failed
 daily fetch retains any cache and remains retryable on the next Home refresh.
+While today's puzzle is unavailable, Home keeps an Anagram card in place with a
+loading indicator or a retry action after a failed fetch. The DEBUG cache purge
+starts on one tap, removes service-managed Anagram puzzle and archive content,
+and keeps the loading card visible for at least two seconds before fetching
+today's issue again; saved Anagram progress is unaffected.
 The Anagram read policy exposes only through tomorrow's database date, matching
 the deployed daily crossword and Backword window. Clients still select only
 their device's local date, so a visible tomorrow row does not display early.

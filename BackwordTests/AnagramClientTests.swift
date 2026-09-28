@@ -112,6 +112,56 @@ struct AnagramClientTests {
         #expect(source.dailyRequests == 1)
     }
 
+    @Test @MainActor func purgingCacheRemovesContentAndRetriesToday() async throws {
+        let previousRelease = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+        defer {
+            if let previousRelease {
+                UserDefaults.standard.set(previousRelease, forKey: "Anagram.firstReleaseDate")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "Anagram.firstReleaseDate")
+            }
+        }
+        let now = Date()
+        let date = AnagramProgress.localDay(now)
+        let puzzle = AnagramPuzzle(
+            id: UUID().uuidString, date: date, puzzleNumber: 4,
+            schemaVersion: 1, answer: "TRIANGLE",
+            acceptedAnswers: ["INTEGRAL"], initialScramble: "RAGTLINE"
+        )
+        let source = FakeAnagramSource()
+        source.puzzle = puzzle
+        let cache = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: cache) }
+        let service = AnagramService(dataSource: source, cacheDirectory: cache)
+
+        await service.refreshIfNeeded(now: now)
+        let dailyFile = cache.appendingPathComponent("\(date).json")
+        let archiveFile = cache.appendingPathComponent("archive-test.json")
+        try Data().write(to: archiveFile)
+        #expect(FileManager.default.fileExists(atPath: dailyFile.path))
+
+        source.shouldFail = true
+        let purge = Task {
+            await service.purgeCache(now: now, minimumLoadingDuration: .milliseconds(500))
+        }
+        try await Task.sleep(for: .milliseconds(50))
+        #expect(service.todaysPuzzle == nil)
+        #expect(service.isLoading)
+        #expect(!service.hasAttemptedLoad)
+        await purge.value
+        #expect(service.todaysPuzzle == nil)
+        #expect(service.hasAttemptedLoad)
+        #expect(!service.isLoading)
+        #expect(!FileManager.default.fileExists(atPath: dailyFile.path))
+        #expect(!FileManager.default.fileExists(atPath: archiveFile.path))
+        #expect(source.dailyRequests == 2)
+
+        source.shouldFail = false
+        await service.refreshIfNeeded(now: now)
+        #expect(service.todaysPuzzle == puzzle)
+        #expect(source.dailyRequests == 3)
+    }
+
     @Test @MainActor func dailyPuzzleLoadsWhenFirstReleaseMetadataFails() async {
         let previousRelease = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
         UserDefaults.standard.removeObject(forKey: "Anagram.firstReleaseDate")
