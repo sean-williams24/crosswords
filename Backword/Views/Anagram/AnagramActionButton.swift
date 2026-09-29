@@ -16,6 +16,7 @@ struct AnagramActionButton: View {
                 .overlay { Rectangle().strokeBorder(Color.anagramOrange, lineWidth: 1) }
         }
         .buttonStyle(.plain)
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .disabled(!enabled)
         .opacity(enabled ? 1 : 0.4)
     }
