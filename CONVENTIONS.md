@@ -384,9 +384,13 @@ while Google Identity uses its outline button in Light mode.
 
 Web game and dashboard headers reserve equal flexible space on both sides of
 the Backword mark. The lockup has an explicit width at each size, so the middle
-grid track has a stable width even when the menu is fixed or actions are wider
+grid track has a stable width even when the menu is out of flow or actions are wider
 than the left side. On narrow game viewports the mark scales down enough to
 leave space for both action buttons.
+
+The shared web menu button is absolutely positioned at the top of the page, so
+it scrolls away with the page content. The open navigation drawer remains a
+fixed, document-level overlay.
 
 ---
 

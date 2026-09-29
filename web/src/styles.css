@@ -235,7 +235,7 @@ a {
 }
 
 .bw-game-menu {
-  position: fixed;
+  position: absolute;
   z-index: 5;
   top: max(8px, env(safe-area-inset-top));
   left: clamp(16px, 4vw, 60px);
