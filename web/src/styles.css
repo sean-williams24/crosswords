@@ -2232,6 +2232,7 @@ html[data-theme="light"] {
   --anagram-letter-size: clamp(60px, 8vw, 88px);
   --anagram-tray-letter-size: clamp(52px, 7vw, 76px);
   --anagram-answer-gap: clamp(7px, 1.3vw, 14px);
+  --anagram-max-content-width: calc((9 * var(--anagram-letter-size)) + (8 * var(--anagram-answer-gap)));
   position: relative;
   display: flex;
   width: min(calc(100% - 40px), 960px);
@@ -2243,17 +2244,26 @@ html[data-theme="light"] {
 
 .anagram-main--7 { --anagram-content-width: calc((7 * var(--anagram-letter-size)) + (6 * var(--anagram-answer-gap))); }
 .anagram-main--8 { --anagram-content-width: calc((8 * var(--anagram-letter-size)) + (7 * var(--anagram-answer-gap))); }
-.anagram-main--9 { --anagram-content-width: calc((9 * var(--anagram-letter-size)) + (8 * var(--anagram-answer-gap))); }
+.anagram-main--9 { --anagram-content-width: var(--anagram-max-content-width); }
 
 .anagram-title-block,
-.anagram-gameplay-content {
-  width: min(100%, var(--anagram-content-width));
+.anagram-loading {
+  width: min(100%, var(--anagram-max-content-width));
   margin-inline: auto;
 }
 
 .anagram-title-block {
   flex: 0 0 auto;
   text-align: left;
+}
+
+.anagram-loading {
+  margin-top: 24px;
+}
+
+.anagram-gameplay-content {
+  width: min(100%, var(--anagram-content-width));
+  margin-inline: auto;
 }
 
 .anagram-title-block h1 {

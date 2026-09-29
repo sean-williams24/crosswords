@@ -921,7 +921,9 @@ without creating local progress, rating points, or cloud uploads. The web game
 shell mirrors the iOS Anagram hierarchy without showing a logo, and uses the
 same game menu, action icons, and site footer as the other web games. Wider
 viewports keep the answer in one row and widen the bottom game controls; narrow
-viewports use the same balanced letter rows as iOS.
+viewports use the same balanced letter rows as iOS. The web title, issue label,
+and loading message share the maximum nine-letter content width from the first
+render, so loading a puzzle cannot move their left edge.
 
 ---
 

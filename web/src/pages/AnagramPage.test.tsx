@@ -1,5 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { localDateString } from "../features/backword/date";
@@ -17,6 +19,23 @@ describe("Anagram browser game", () => {
   beforeEach(() => {
     localStorage.clear();
     Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
+  });
+
+  it("aligns the loading message with the stable title column", async () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const main = styles.match(/\.anagram-main\s*\{([^}]*)\}/)?.[1];
+    const titleAndLoading = styles.match(/\.anagram-title-block,\s*\.anagram-loading\s*\{([^}]*)\}/)?.[1];
+
+    expect(main).toMatch(/--anagram-max-content-width:\s*calc\(/);
+    expect(titleAndLoading).toMatch(/width:\s*min\(100%,\s*var\(--anagram-max-content-width\)\)/);
+    expect(titleAndLoading).toMatch(/margin-inline:\s*auto/);
+    expect(titleAndLoading).not.toContain("--anagram-content-width");
+    expect(styles).toMatch(/\.anagram-loading\s*\{\s*margin-top:\s*24px;/);
+
+    render(<MemoryRouter><AnagramPage /></MemoryRouter>);
+    expect(screen.getByRole("status")).toHaveTextContent("Loading Anagram…");
+    expect(screen.getByRole("status")).toHaveClass("anagram-loading");
+    await screen.findByRole("button", { name: "Start" });
   });
 
   it("shows the compact share action on the game after completion closes", async () => {

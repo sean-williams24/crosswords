@@ -154,7 +154,7 @@ export function AnagramPage() {
         <h1>ANAGRAM</h1>
         <p>{isReview ? "Review puzzle" : puzzle ? `Puzzle #${puzzle.puzzleNumber}` : "Daily puzzle"}</p>
       </div>
-      {loading ? <p role="status">Loading Anagram…</p> : null}
+      {loading ? <p className="anagram-loading" role="status">Loading Anagram…</p> : null}
       {!loading && error ? <div role="alert"><p>{error}</p><button onClick={() => void loadPuzzle()} type="button">Try again</button></div> : null}
       {puzzle ? <>
         {offline ? <p className="anagram-note">Playing saved game offline</p> : null}
