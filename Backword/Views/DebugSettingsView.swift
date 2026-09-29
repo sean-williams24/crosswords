@@ -16,6 +16,7 @@ struct DebugSettingsView: View {
     private let settings = AppSettings.shared
 
     @State private var showResetBackwordConfirmation = false
+    @State private var showResetAnagramConfirmation = false
     @State private var showResetDailyConfirmation = false
     @State private var showResetWeeklyConfirmation = false
     @State private var showResetUserDefaultsConfirmation = false
@@ -248,6 +249,28 @@ struct DebugSettingsView: View {
                     Button("Cancel", role: .cancel) {}
                 } message: {
                     Text("Your guesses for today will be cleared and the game will restart.")
+                }
+
+                Section("Anagram") {
+                    Button(role: .destructive) {
+                        showResetAnagramConfirmation = true
+                    } label: {
+                        Label("Reset Today's Anagram", systemImage: "arrow.counterclockwise")
+                    }
+                    .disabled(anagramService.todaysPuzzle?.date != ContentReleaseCalendar().dailyDateString)
+                }
+                .confirmationDialog(
+                    "Reset Today's Anagram?",
+                    isPresented: $showResetAnagramConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Reset", role: .destructive) {
+                        anagramService.debugResetTodaysProgress()
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("Your progress for today's Anagram will be cleared and the game will restart.")
                 }
 
 

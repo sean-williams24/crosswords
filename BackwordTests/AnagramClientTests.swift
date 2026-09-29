@@ -33,6 +33,50 @@ private final class FakeAnagramSource: AnagramDataSource {
 
 @Suite("Anagram clients")
 struct AnagramClientTests {
+    @Test("Debug reset clears only today's Anagram progress")
+    @MainActor
+    func debugResetTodaysProgress() async throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .current
+        let now = try #require(calendar.date(from: DateComponents(year: 2099, month: 1, day: 2, hour: 12)))
+        let today = AnagramProgress.localDay(now)
+        let yesterday = AnagramProgress.localDay(try #require(calendar.date(byAdding: .day, value: -1, to: now)))
+        let puzzle = AnagramPuzzle(
+            id: UUID().uuidString, date: today, puzzleNumber: 1,
+            schemaVersion: 1, answer: "TRIANGLE",
+            acceptedAnswers: [], initialScramble: "RAGTLINE"
+        )
+        let previousPuzzle = AnagramPuzzle(
+            id: UUID().uuidString, date: yesterday, puzzleNumber: 1,
+            schemaVersion: 1, answer: "TRIANGLE",
+            acceptedAnswers: [], initialScramble: "RAGTLINE"
+        )
+        let cache = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer {
+            AnagramProgress.delete(date: today)
+            AnagramProgress.delete(date: yesterday)
+            try? FileManager.default.removeItem(at: cache)
+        }
+        let current = AnagramProgress(puzzle: puzzle, now: now)
+        let previous = AnagramProgress(puzzle: previousPuzzle, now: now)
+        current.save()
+        previous.save()
+        let source = FakeAnagramSource()
+        source.puzzle = puzzle
+        source.shouldFailFirstPublishedPuzzle = true
+        let service = AnagramService(dataSource: source, cacheDirectory: cache)
+        await service.refreshIfNeeded(now: now)
+
+        service.debugResetTodaysProgress(now: try #require(calendar.date(byAdding: .day, value: 1, to: now)))
+        #expect(AnagramProgress.load(date: today) == current)
+
+        service.debugResetTodaysProgress(now: now)
+
+        #expect(AnagramProgress.load(date: today) == nil)
+        #expect(AnagramProgress.load(date: yesterday) == previous)
+        #expect(service.todaysPuzzle == puzzle)
+    }
+
     @Test("Archive months run newest first from the first published puzzle")
     func archiveMonths() {
         let months = AnagramService.archiveMonths(

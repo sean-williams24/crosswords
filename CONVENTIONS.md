@@ -829,6 +829,9 @@ loading indicator or a retry action after a failed fetch. The DEBUG cache purge
 starts on one tap, removes service-managed Anagram puzzle and archive content,
 and keeps the loading card visible for at least two seconds before fetching
 today's issue again; saved Anagram progress is unaffected.
+The DEBUG reset action clears only the saved progress for the currently loaded
+local-day Anagram. Dismissing Debug Settings reloads the Home card and rating
+from local progress so the game appears new immediately.
 The Anagram read policy exposes only through tomorrow's database date, matching
 the deployed daily crossword and Backword window. Clients still select only
 their device's local date, so a visible tomorrow row does not display early.

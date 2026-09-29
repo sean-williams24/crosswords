@@ -26,7 +26,7 @@ enum AnagramHintBannerMode: Equatable {
     }
 
     var primaryButtonTitle: String {
-        self == .watchAd ? "Watch" : "Reveal letter · +30 seconds"
+        self == .watchAd ? "Watch" : "Reveal letter"
     }
 
     var showsAdFreeButton: Bool { self != .timePenalty }

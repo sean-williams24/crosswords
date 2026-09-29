@@ -96,6 +96,14 @@ final class AnagramService: ObservableObject {
         }
     }
 
+    #if DEBUG
+    func debugResetTodaysProgress(now: Date = Date()) {
+        guard let puzzle = todaysPuzzle,
+              puzzle.date == AnagramProgress.localDay(now) else { return }
+        AnagramProgress.delete(date: puzzle.date)
+    }
+    #endif
+
     /// Clears cached content and leaves the loading card visible before the debug refetch.
     func purgeCache(now: Date = Date(), minimumLoadingDuration: Duration = .seconds(2)) async {
         try? FileManager.default.removeItem(at: cacheDirectory)

@@ -201,7 +201,10 @@ struct HomeView: View {
     private var settingsPresentationView: some View {
         primaryPresentationView
             #if DEBUG
-            .sheet(isPresented: $showDebugSettings) {
+            .sheet(isPresented: $showDebugSettings, onDismiss: {
+                refreshAnagramCardProgress()
+                ratingService.refresh()
+            }) {
                 DebugSettingsView(homeViewModel: viewModel)
                     .environmentObject(storeService)
                     .environmentObject(backwordService)
