@@ -16,8 +16,10 @@ struct AnagramView: View {
     @StateObject private var viewModel: AnagramViewModel
     private let showsFirstUseTip: Bool
     @State private var showingInstructions = false
-    @State private var showingHintConfirmation = false
-    @State private var showingFallback = false
+    @State private var showingHintBanner = false
+    @State private var hintBannerMode: AnagramHintBannerMode = .watchAd
+    @State private var isRewardedAdRequestInFlight = false
+    @State private var showingPaywall = false
     @State private var showingGiveUp = false
     @State private var showInfoTip = false
     @State private var isTipDismissing = false
@@ -45,6 +47,16 @@ struct AnagramView: View {
     var body: some View {
         VStack(spacing: 0) {
             navigationBar
+            if showingHintBanner {
+                AnagramHintBanner(
+                    mode: hintBannerMode,
+                    isBusy: isRewardedAdRequestInFlight,
+                    onPrimaryAction: useHintBannerPrimaryAction,
+                    onGoAdFree: { showingPaywall = true },
+                    onClose: closeHintBanner
+                )
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     header
@@ -109,21 +121,9 @@ struct AnagramView: View {
         .sheet(isPresented: $showingInstructions) {
             instructionsSheet
         }
-        .confirmationDialog("Reveal one letter?", isPresented: $showingHintConfirmation) {
-            if storeService.isProUser {
-                Button("Reveal letter · +30 seconds") { reveal(.timePenalty) }
-            } else {
-                Button("Watch an ad for a letter") { showRewardedHint() }
-            }
-            Button("Cancel", role: .cancel) { }
-        } message: {
-            Text("Your placed letters will return to the tray. The revealed letter stays locked and cannot be undone.")
-        }
-        .confirmationDialog("Ad unavailable", isPresented: $showingFallback) {
-            Button("Reveal letter · +30 seconds") { reveal(.timePenalty) }
-            Button("Cancel", role: .cancel) { }
-        } message: {
-            Text("The ad did not grant a hint. You can use the +30-second alternative.")
+        .sheet(isPresented: $showingPaywall) {
+            PaywallView()
+                .environmentObject(storeService)
         }
         .confirmationDialog("Give up?", isPresented: $showingGiveUp) {
             Button("Give up and reveal answer", role: .destructive) {
@@ -166,8 +166,15 @@ struct AnagramView: View {
                 hasPresentedCompletion = false
                 if pendingSheet == .completion { pendingSheet = nil }
             } else {
+                closeHintBanner()
                 request(.completion)
             }
+        }
+        .onChange(of: viewModel.canHint) { _, canHint in
+            if !canHint { closeHintBanner() }
+        }
+        .onChange(of: storeService.isProUser) { _, isProUser in
+            if showingHintBanner { hintBannerMode = AnagramHintBannerMode(isProUser: isProUser) }
         }
         .onChange(of: accountService.syncRevision) { _, _ in
             viewModel.reload()
@@ -315,7 +322,10 @@ struct AnagramView: View {
                 AnagramActionButton(title: "Shuffle", enabled: !progress.isComplete) { viewModel.shuffle() }
             }
             HStack(spacing: 10) {
-                AnagramActionButton(title: "Hint", enabled: viewModel.canHint) { showingHintConfirmation = true }
+                AnagramActionButton(title: "Hint", enabled: viewModel.canHint) {
+                    hintBannerMode = AnagramHintBannerMode(isProUser: storeService.isProUser)
+                    withAnimation { showingHintBanner = true }
+                }
                 AnagramActionButton(title: "Give up", enabled: !progress.isComplete) { showingGiveUp = true }
             }
         }
@@ -349,12 +359,29 @@ struct AnagramView: View {
         }
     }
 
-    private func showRewardedHint() {
+    private func closeHintBanner() {
+        withAnimation { showingHintBanner = false }
+    }
+
+    private func useHintBannerPrimaryAction() {
+        guard viewModel.canHint, !isRewardedAdRequestInFlight else { return }
+        if hintBannerMode != .watchAd {
+            closeHintBanner()
+            reveal(.timePenalty)
+            return
+        }
+
+        isRewardedAdRequestInFlight = true
         adService.showRewardedAd { result in
-            switch result {
-            case .earnedReward: reveal(.rewardedAd)
-            case .dismissedWithoutReward: break
-            case .unavailable, .failedToPresent: showingFallback = true
+            isRewardedAdRequestInFlight = false
+            switch AnagramHintAdAction(result: result) {
+            case .reveal:
+                closeHintBanner()
+                reveal(.rewardedAd)
+            case .offerTimePenalty:
+                hintBannerMode = .adUnavailable
+            case .close:
+                closeHintBanner()
             }
         }
     }

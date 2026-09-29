@@ -866,6 +866,12 @@ puzzle uses this presentation and calculates a display-only score, while remaini
 excluded from the persisted rating, streak, solved total, and history.
 The single hint clears placements, locks one correct tile, and allows any
 approved answer compatible with that lock.
+On iOS, tapping Hint opens an inline panel below the navigation bar. Free
+players can watch a rewarded ad for the letter or open the Pro paywall through
+“Go ad-free”; Pro players confirm a 30-second penalty instead. An ad grants a
+free letter only after its reward callback. If the ad is unavailable or cannot
+be presented, the panel offers the 30-second alternative without revealing a
+letter automatically. The Watch and Go ad-free buttons stay vertically stacked.
 The Anagram How to Play control presents the same 85%-height bottom sheet used
 by the other games. Its gameplay, timer, hint, and scoring sections use the
 Anagram orange palette and must stay aligned with `AnagramProgress` behaviour.

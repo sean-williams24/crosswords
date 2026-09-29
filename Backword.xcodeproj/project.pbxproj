@@ -157,6 +157,8 @@
 		A0A000000000000000000120 /* AnagramCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */; };
 		A0A000000000000000000121 /* AnagramInstructionsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000021 /* AnagramInstructionsContentView.swift */; };
 		A0A000000000000000000122 /* AnagramInstructionsContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */; };
+		A0A000000000000000000123 /* AnagramHintBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000023 /* AnagramHintBanner.swift */; };
+		A0A000000000000000000124 /* AnagramHintBannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000024 /* AnagramHintBannerTests.swift */; };
 		A0A000000000000000000140 /* AnagramPlaceholderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000040 /* AnagramPlaceholderCard.swift */; };
 		A11C0A110000000000000001 /* AccountSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C0A100000000000000001 /* AccountSyncTests.swift */; };
 		A11CC001300A000000000001 /* AccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11CC000300A000000000001 /* AccountSheet.swift */; };
@@ -345,6 +347,8 @@
 		A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramCompletionPresentationTests.swift; sourceTree = "<group>"; };
 		A0A000000000000000000021 /* AnagramInstructionsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramInstructionsContentView.swift; sourceTree = "<group>"; };
 		A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramInstructionsContentViewTests.swift; sourceTree = "<group>"; };
+		A0A000000000000000000023 /* AnagramHintBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramHintBanner.swift; sourceTree = "<group>"; };
+		A0A000000000000000000024 /* AnagramHintBannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramHintBannerTests.swift; sourceTree = "<group>"; };
 		A0A000000000000000000040 /* AnagramPlaceholderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramPlaceholderCard.swift; sourceTree = "<group>"; };
 		A11C0A100000000000000001 /* AccountSyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSyncTests.swift; sourceTree = "<group>"; };
 		A11CC000300A000000000001 /* AccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSheet.swift; sourceTree = "<group>"; };
@@ -432,6 +436,7 @@
 				A0A000000000000000000012 /* AnagramClientTests.swift */,
 				A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */,
 				A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */,
+				A0A000000000000000000024 /* AnagramHintBannerTests.swift */,
 				A0A000000000000000000009 /* AnagramProgressTests.swift */,
 				A0A000000000000000000017 /* AnagramStatsHistoryTests.swift */,
 				A0A000000000000000000014 /* AnagramTrayLayoutTests.swift */,
@@ -650,6 +655,7 @@
 			children = (
 				A0A000000000000000000019 /* AnagramCompletionWordView.swift */,
 				A0A000000000000000000021 /* AnagramInstructionsContentView.swift */,
+				A0A000000000000000000023 /* AnagramHintBanner.swift */,
 				A0A000000000000000000010 /* AnagramStatsView.swift */,
 				A0A000000000000000000016 /* AnagramStatsHistoryView.swift */,
 				A0A000000000000000000005 /* AnagramActionButton.swift */,
@@ -877,6 +883,7 @@
 				A0A000000000000000000112 /* AnagramClientTests.swift in Sources */,
 				A0A000000000000000000120 /* AnagramCompletionPresentationTests.swift in Sources */,
 				A0A000000000000000000122 /* AnagramInstructionsContentViewTests.swift in Sources */,
+				A0A000000000000000000124 /* AnagramHintBannerTests.swift in Sources */,
 				A0A000000000000000000109 /* AnagramProgressTests.swift in Sources */,
 				A0A000000000000000000114 /* AnagramTrayLayoutTests.swift in Sources */,
 				A0A000000000000000000117 /* AnagramStatsHistoryTests.swift in Sources */,
@@ -923,6 +930,7 @@
 				A0A000000000000000000111 /* AnagramArchiveRow.swift in Sources */,
 				A0A000000000000000000119 /* AnagramCompletionWordView.swift in Sources */,
 				A0A000000000000000000121 /* AnagramInstructionsContentView.swift in Sources */,
+				A0A000000000000000000123 /* AnagramHintBanner.swift in Sources */,
 				A0A000000000000000000110 /* AnagramStatsView.swift in Sources */,
 				A0A000000000000000000116 /* AnagramStatsHistoryView.swift in Sources */,
 				A0A000000000000000000108 /* AnagramCard.swift in Sources */,
