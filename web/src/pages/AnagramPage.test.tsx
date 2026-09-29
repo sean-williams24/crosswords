@@ -21,6 +21,15 @@ describe("Anagram browser game", () => {
     Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
   });
 
+  it("hides the footer in the mobile layout while retaining it on the page", async () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    expect(styles).toMatch(/@media \(max-width: 700px\) \{\s*\.anagram-page > \.site-footer \{ display: none; \}/);
+
+    render(<MemoryRouter><AnagramPage /></MemoryRouter>);
+    expect(document.querySelector(".anagram-page > .site-footer")).toBeInTheDocument();
+    await screen.findByRole("button", { name: "Start" });
+  });
+
   it("aligns the loading message with the stable title column", async () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
     const main = styles.match(/\.anagram-main\s*\{([^}]*)\}/)?.[1];
@@ -36,6 +45,25 @@ describe("Anagram browser game", () => {
     expect(screen.getByRole("status")).toHaveTextContent("Loading Anagram…");
     expect(screen.getByRole("status")).toHaveClass("anagram-loading");
     await screen.findByRole("button", { name: "Start" });
+  });
+
+  it("keeps the letter tray and controls at the bottom of the game board", async () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const board = styles.match(/\.anagram-board\s*\{([^}]*)\}/)?.[1];
+    const dock = styles.match(/\.anagram-gameplay-dock\s*\{([^}]*)\}/)?.[1];
+
+    expect(board).toMatch(/display:\s*flex/);
+    expect(board).toMatch(/flex-direction:\s*column/);
+    expect(board).toMatch(/padding:\s*clamp\(24px, 3\.5vh, 40px\) 0 48px/);
+    expect(styles).toMatch(/\.anagram-board\s*\{\s*padding-bottom:\s*80px;/);
+    expect(dock).toMatch(/margin:\s*auto auto 0/);
+
+    const user = userEvent.setup();
+    render(<MemoryRouter><AnagramPage /></MemoryRouter>);
+    await user.click(await screen.findByRole("button", { name: "Start" }));
+    const boardElement = screen.getByRole("region", { name: "Anagram board" });
+    expect(boardElement.querySelector(".anagram-gameplay-dock")).toContainElement(screen.getByLabelText("Scrambled letter tray"));
+    expect(boardElement.querySelector(".anagram-gameplay-dock")).toContainElement(screen.getByRole("button", { name: "Give up" }));
   });
 
   it("shows the compact share action on the game after completion closes", async () => {

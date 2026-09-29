@@ -132,7 +132,8 @@ struct AnagramProgress: Codable, Equatable {
     mutating func revealHint(in puzzle: AnagramPuzzle, source: HintSource, now: Date = Date()) {
         guard !hintUsed, !isComplete else { return }
         restart(now: now)
-        guard let target = placedTileIDs.firstIndex(where: { $0 == nil }),
+        let target = puzzle.hintCellIndex ?? 0
+        guard placedTileIDs.indices.contains(target), placedTileIDs[target] == nil,
               let tile = availableTileIDs.first(where: { Array(puzzle.initialScramble)[$0] == Array(puzzle.answer)[target] })
         else { return }
         placedTileIDs[target] = tile

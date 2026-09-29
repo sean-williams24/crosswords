@@ -50,6 +50,7 @@ struct AnagramView: View {
             if showingHintBanner {
                 AnagramHintBanner(
                     mode: hintBannerMode,
+                    narrowsAnswers: viewModel.puzzle.hintNarrowsAnswers,
                     isBusy: isRewardedAdRequestInFlight,
                     onPrimaryAction: useHintBannerPrimaryAction,
                     onGoAdFree: { showingPaywall = true },

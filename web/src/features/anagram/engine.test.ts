@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import fixtures from "../../../../docs/fixtures/anagram-v1.json";
-import { anagramStats, answerText, elapsedSeconds, giveUp, placeTile, pointsForSeconds, restartTiles, revealHint, startProgress, undoTile, validProgress, type AnagramProgress, type AnagramPuzzle } from "./engine";
+import { anagramStats, answerText, elapsedSeconds, giveUp, placeTile, pointsForSeconds, restartTiles, revealHint, startProgress, undoTile, validProgress, validPuzzle, type AnagramProgress, type AnagramPuzzle } from "./engine";
 import { mapAnagramRow } from "./repository";
 
 const puzzle = mapAnagramRow(fixtures.puzzles[0]) as AnagramPuzzle;
@@ -21,6 +21,12 @@ describe("Anagram v1 parity", () => {
   it("decodes shared puzzle fixtures and scoring boundaries", () => {
     expect(puzzle.answer).toBe("TRIANGLE");
     for (const scoreCase of fixtures.scoreCases) expect(pointsForSeconds(scoreCase.elapsedWithPenaltySeconds)).toBe(scoreCase.points);
+  });
+
+  it("reads a published hint position and rejects an invalid one", () => {
+    const row = { ...fixtures.puzzles[0], puzzle_data: { ...fixtures.puzzles[0].puzzle_data, hintCellIndex: 3 } };
+    expect(mapAnagramRow(row).hintCellIndex).toBe(3);
+    expect(() => mapAnagramRow({ ...row, puzzle_data: { ...row.puzzle_data, hintCellIndex: -1 } })).toThrow();
   });
 
   it("uses tile identities for duplicate letters and restores repeatable Undo history", () => {
@@ -49,6 +55,27 @@ describe("Anagram v1 parity", () => {
     expect(progress.penaltySeconds).toBe(30);
     expect(elapsedSeconds(progress, new Date(start.getTime() + 45000))).toBe(45);
     expect(validProgress(JSON.parse(JSON.stringify(progress)), puzzle)).toBe(true);
+  });
+
+  it("locks a published non-first hint and still accepts a compatible alternate", () => {
+    const shared: AnagramPuzzle = {
+      ...puzzle, answer: "GARDENS", acceptedAnswers: ["DANGERS"],
+      initialScramble: "SGENDRA", hintCellIndex: 1
+    };
+    expect(validPuzzle(shared)).toBe(true);
+    let progress = revealHint(placeTile(startProgress(shared, start), shared, 0, start), shared, start);
+    expect(progress.lockedCellIndex).toBe(1);
+    expect(progress.placedTileIDs[0]).toBeNull();
+    expect(shared.initialScramble[progress.lockedTileID!]).toBe("A");
+    for (const [index, letter] of [..."DANGERS"].entries()) {
+      if (index === 1) continue;
+      const tile = [...shared.initialScramble].findIndex((value, tileID) =>
+        value === letter && !progress.placedTileIDs.includes(tileID));
+      progress = placeTile(progress, shared, tile, start);
+    }
+    expect(progress.outcome).toBe("solved");
+    expect(validPuzzle({ ...shared, hintCellIndex: -1 })).toBe(false);
+    expect(validPuzzle({ ...shared, hintCellIndex: shared.answer.length })).toBe(false);
   });
 
   it("accepts alternate answers and awards release-day scores only", () => {

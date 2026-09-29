@@ -29,7 +29,11 @@ def validate_publication(artifact: dict, existing: list[dict]) -> list[dict]:
     else:
         expected_date = date.fromisoformat(artifact["firstReleaseDate"])
         expected_issue = 1
-    expected = prepare(expected_date, expected_issue, len(rows), load_pool())
+    legacy_launch = (not existing and expected_date == date(2026, 9, 26)
+                     and expected_issue == 1 and len(rows) == 30
+                     and all("hintCellIndex" not in row["puzzle_data"] for row in rows))
+    expected = prepare(expected_date, expected_issue, len(rows), load_pool(),
+                       include_hint=not legacy_launch)
     if rows != expected:
         raise ValueError("Batch differs from the approved pool or next contiguous issue/date range")
     return rows

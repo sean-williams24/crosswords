@@ -2,12 +2,13 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { localDateString } from "../backword/date";
 import { validPuzzle, type AnagramPuzzle } from "./engine";
 
-type AnagramRow = { id?: unknown; date?: unknown; puzzle_number?: unknown; schema_version?: unknown; puzzle_data?: { answer?: unknown; acceptedAnswers?: unknown; initialScramble?: unknown } | null };
+type AnagramRow = { id?: unknown; date?: unknown; puzzle_number?: unknown; schema_version?: unknown; puzzle_data?: { answer?: unknown; acceptedAnswers?: unknown; initialScramble?: unknown; hintCellIndex?: unknown } | null };
 
 export function mapAnagramRow(row: AnagramRow): AnagramPuzzle {
   const puzzle = { id: row.id, date: row.date, puzzleNumber: row.puzzle_number,
     schemaVersion: row.schema_version, answer: row.puzzle_data?.answer,
-    acceptedAnswers: row.puzzle_data?.acceptedAnswers, initialScramble: row.puzzle_data?.initialScramble } as AnagramPuzzle;
+    acceptedAnswers: row.puzzle_data?.acceptedAnswers, initialScramble: row.puzzle_data?.initialScramble,
+    hintCellIndex: row.puzzle_data?.hintCellIndex } as AnagramPuzzle;
   if (typeof puzzle.id !== "string" || !Array.isArray(puzzle.acceptedAnswers) || !validPuzzle(puzzle)) {
     throw new Error("Anagram puzzle data is invalid.");
   }

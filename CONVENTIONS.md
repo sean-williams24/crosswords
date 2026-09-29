@@ -866,6 +866,13 @@ puzzle uses this presentation and calculates a display-only score, while remaini
 excluded from the persisted rating, streak, solved total, and history.
 The single hint clears placements, locks one correct tile, and allows any
 approved answer compatible with that lock.
+New puzzle rows publish an immutable zero-based `hintCellIndex`; web and iOS
+both reveal the primary answer's letter there. The generator selects among
+positions compatible with the most accepted answers using a stable
+issue-and-answer hash, so a shared position takes priority. If no position
+fits every answer, the hint may rule out alternatives; the hint confirmation
+explains this when it applies. Older rows without the field reveal position 0,
+preserving saved progress and the published launch payload.
 On iOS, tapping Hint opens an inline panel below the navigation bar. Free
 players can watch a rewarded ad for the letter or open the Pro paywall through
 “Go ad-free”; Pro players confirm a 30-second penalty instead. An ad grants a
@@ -929,11 +936,14 @@ require Pro, while today's route stays free. Vite development builds expose an
 in-memory `/anagram/review` fixture so the unreleased game can be reviewed
 without creating local progress, rating points, or cloud uploads. The web game
 shell mirrors the iOS Anagram hierarchy without showing a logo, and uses the
-same game menu, action icons, and site footer as the other web games. Wider
+same game menu and action icons as the other web games. The site footer appears
+on wider viewports and is hidden in the mobile layout at 700px and below. Wider
 viewports keep the answer in one row and widen the bottom game controls; narrow
 viewports use the same balanced letter rows as iOS. The web title, issue label,
 and loading message share the maximum nine-letter content width from the first
-render, so loading a puzzle cannot move their left edge.
+render, so loading a puzzle cannot move their left edge. The letter tray and
+controls sit at the bottom of the flexible board, with spare vertical space
+between them and the answer, matching the iOS gameplay dock.
 
 ---
 

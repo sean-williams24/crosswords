@@ -131,6 +131,54 @@ struct AnagramProgressTests {
         #expect(progress.elapsedSeconds(at: start.addingTimeInterval(100)) == 100)
     }
 
+    @Test func publishedHintLocksItsPositionAndKeepsSharedAlternativesSolvable() throws {
+        let puzzle = AnagramPuzzle(
+            id: "shared-hint", date: "2026-10-01", puzzleNumber: 1,
+            schemaVersion: 1, answer: "GARDENS", acceptedAnswers: ["DANGERS"],
+            initialScramble: "SGENDRA", hintCellIndex: 1
+        )
+        #expect(puzzle.isValid)
+        #expect(!puzzle.hintNarrowsAnswers)
+        var progress = AnagramProgress(puzzle: puzzle)
+        progress.place(0, in: puzzle)
+        progress.revealHint(in: puzzle, source: .timePenalty)
+        #expect(progress.lockedCellIndex == 1)
+        #expect(progress.placedTileIDs[0] == nil)
+        #expect(progress.lockedTileID.map { Array(puzzle.initialScramble)[$0] } == "A")
+        for (index, letter) in Array("DANGERS").enumerated() where index != 1 {
+            let tile = try #require(progress.availableTileIDs.first {
+                Array(puzzle.initialScramble)[$0] == letter
+            })
+            progress.place(tile, in: puzzle)
+        }
+        #expect(progress.outcome == .solved)
+    }
+
+    @Test func oldPuzzleWithoutHintPositionStillRevealsFirstCell() throws {
+        let decoded = try JSONDecoder().decode(AnagramPuzzle.self,
+                                               from: JSONEncoder().encode(puzzle))
+        #expect(decoded.hintCellIndex == nil)
+        #expect(decoded.hintNarrowsAnswers)
+        var progress = AnagramProgress(puzzle: decoded)
+        progress.revealHint(in: decoded, source: .timePenalty)
+        #expect(progress.lockedCellIndex == 0)
+    }
+
+    @Test func publishedPuzzleRowDecodesHintPosition() throws {
+        let payload: [String: Any] = [
+            "id": "shared-hint", "date": "2026-10-01", "puzzle_number": 1,
+            "schema_version": 1,
+            "puzzle_data": [
+                "answer": "GARDENS", "acceptedAnswers": ["DANGERS"],
+                "initialScramble": "SGENDRA", "hintCellIndex": 1
+            ]
+        ]
+        let data = try JSONSerialization.data(withJSONObject: payload)
+        let row = try JSONDecoder().decode(AnagramPuzzleRow.self, from: data)
+        #expect(row.puzzle.hintCellIndex == 1)
+        #expect(row.puzzle.isValid)
+    }
+
     @Test func rewardedHintHasNoPenaltyAndCanOnlyBeUsedOnce() {
         let start = Date(timeIntervalSince1970: 1_800_000_000)
         var progress = AnagramProgress(puzzle: puzzle, now: start)

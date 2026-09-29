@@ -8,6 +8,7 @@ export type AnagramPuzzle = {
   answer: string;
   acceptedAnswers: string[];
   initialScramble: string;
+  hintCellIndex?: number;
 };
 
 export type AnagramProgress = {
@@ -67,6 +68,8 @@ export function validPuzzle(puzzle: AnagramPuzzle): boolean {
     && new Set(answers).size === answers.length
     && answers.every((answer) => /^[A-Z]{7,9}$/.test(answer) && sortedLetters(answer) === sortedLetters(puzzle.answer))
     && sortedLetters(puzzle.initialScramble) === sortedLetters(puzzle.answer)
+    && (puzzle.hintCellIndex === undefined || (Number.isInteger(puzzle.hintCellIndex)
+      && puzzle.hintCellIndex >= 0 && puzzle.hintCellIndex < puzzle.answer.length))
     && !answers.includes(puzzle.initialScramble);
 }
 
@@ -165,11 +168,14 @@ export function reshuffle(progress: AnagramProgress, order: number[], now = new 
 export function revealHint(progress: AnagramProgress, puzzle: AnagramPuzzle, now = new Date()): AnagramProgress {
   if (progress.outcome || progress.hintUsed) return progress;
   const cleared = restartTiles(progress, now);
-  const tile = availableTileIDs(cleared).find((id) => puzzle.initialScramble[id] === puzzle.answer[0]);
+  const target = puzzle.hintCellIndex ?? 0;
+  const tile = availableTileIDs(cleared).find((id) => puzzle.initialScramble[id] === puzzle.answer[target]);
   if (tile === undefined) return progress;
-  return { ...cleared, placedTileIDs: [tile, ...cleared.placedTileIDs.slice(1)], placementHistory: [],
+  const placedTileIDs = [...cleared.placedTileIDs];
+  placedTileIDs[target] = tile;
+  return { ...cleared, placedTileIDs, placementHistory: [],
     hintUsed: true, hintSource: "time_penalty", penaltySeconds: 30,
-    lockedCellIndex: 0, lockedTileID: tile, updatedAt: now.toISOString() };
+    lockedCellIndex: target, lockedTileID: tile, updatedAt: now.toISOString() };
 }
 
 export function giveUp(progress: AnagramProgress, now = new Date()): AnagramProgress {

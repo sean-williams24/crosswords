@@ -7,7 +7,7 @@ import types
 import unittest
 from unittest.mock import patch
 
-from generate_anagram import load_pool, points_for_seconds, prepare, signature, validate_rows
+from generate_anagram import hint_cell_index, load_pool, make_row, points_for_seconds, prepare, signature, validate_rows
 from publish_anagram import validate_publication
 from review_anagram_frequency import build_report
 
@@ -31,6 +31,34 @@ class AnagramContentTests(unittest.TestCase):
         validate_rows(next_rows, launch)
         self.assertEqual(next_rows[0]["puzzle_number"], 31)
         self.assertEqual(next_rows[-1]["date"], "2026-11-08")
+
+    def test_hint_position_is_stable_and_preserves_the_most_answers(self):
+        rows = prepare(date(2026, 9, 26), 1, 30, self.pool)
+        self.assertGreater(len({row["puzzle_data"]["hintCellIndex"] for row in rows}), 1)
+        for issue, entry in enumerate(self.pool[:30], start=1):
+            index = hint_cell_index(entry, issue)
+            self.assertEqual(index, hint_cell_index(entry, issue))
+            matching = sum(word[index] == entry["answer"][index] for word in entry["acceptedAnswers"])
+            self.assertEqual(matching, max(
+                sum(word[position] == letter for word in entry["acceptedAnswers"])
+                for position, letter in enumerate(entry["answer"])))
+        gardens = next(entry for entry in self.pool if entry["answer"] == "GARDENS")
+        self.assertIn(hint_cell_index(gardens, 2), [1, 4, 6])
+        triangle = self.pool[0]
+        self.assertEqual(hint_cell_index(triangle, 1), 3)
+
+    def test_hint_position_validation_rejects_invalid_or_avoidable_exclusions(self):
+        gardens = next(entry for entry in self.pool if entry["answer"] == "GARDENS")
+        row = make_row(date(2026, 10, 1), 1, gardens)
+        for bad in [-1, len(gardens["answer"]), True, None]:
+            broken = copy.deepcopy(row)
+            broken["puzzle_data"]["hintCellIndex"] = bad
+            with self.assertRaisesRegex(ValueError, "Invalid hint position"):
+                validate_rows([broken])
+        broken = copy.deepcopy(row)
+        broken["puzzle_data"]["hintCellIndex"] = 0
+        with self.assertRaisesRegex(ValueError, "Hint excludes avoidable alternatives"):
+            validate_rows([broken])
 
     def test_wrong_scramble_or_repeated_combination_is_rejected(self):
         rows = prepare(date(2026, 10, 1), 1, 2, self.pool)
@@ -65,7 +93,8 @@ class AnagramContentTests(unittest.TestCase):
 
     def test_checked_in_launch_artifact_is_generated_and_approved(self):
         artifact = json.loads((Path(__file__).parent / "anagram_launch_2026-09-26.json").read_text())
-        self.assertEqual(artifact["rows"], prepare(date(2026, 9, 26), 1, 30, self.pool))
+        self.assertEqual(artifact["rows"], prepare(date(2026, 9, 26), 1, 30, self.pool,
+                                                   include_hint=False))
         self.assertEqual(artifact["reviewStatus"], "approved")
         self.assertEqual(artifact["frequencyReview"], "reviewed")
         self.assertEqual(validate_publication(artifact, []), artifact["rows"])

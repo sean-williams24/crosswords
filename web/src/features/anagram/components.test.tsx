@@ -83,6 +83,7 @@ describe("Anagram accessible controls", () => {
     rerender(<AnagramDialog {...props} kind="hint" />);
 
     expect(screen.getByRole("dialog", { name: "Reveal a letter" }).parentElement).toHaveClass("anagram-dialog-backdrop--centered");
+    expect(screen.getByText(/locked letter may rule out some other answers/)).toBeInTheDocument();
   });
 
   it("matches the iOS How to Play information hierarchy", () => {

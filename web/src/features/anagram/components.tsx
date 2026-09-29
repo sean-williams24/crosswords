@@ -83,6 +83,10 @@ export function AnagramDialog({ kind, onClose, onConfirmHint, onConfirmGiveUp, p
   history: AnagramProgress[]; now: Date;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const hintPosition = puzzle?.hintCellIndex ?? 0;
+  const hintLetter = puzzle?.answer[hintPosition];
+  const hintNarrowsAnswers = puzzle?.acceptedAnswers.some((answer) =>
+    answer[hintPosition] !== hintLetter) ?? false;
   useEffect(() => {
     closeRef.current?.focus();
     const escape = (event: KeyboardEvent) => { if (event.key === "Escape") onClose(); };
@@ -138,7 +142,7 @@ export function AnagramDialog({ kind, onClose, onConfirmHint, onConfirmGiveUp, p
     <section aria-label={kind === "result" && progress && puzzle ? anagramCompletionTitle(progress, puzzle) : kind === "stats" ? "Anagram stats" : kind === "instructions" ? "How to Play" : kind === "hint" ? "Reveal a letter" : "Give up"} aria-modal="true" className={`anagram-dialog${kind === "stats" ? " anagram-dialog--stats" : kind === "instructions" ? " anagram-dialog--instructions" : kind === "result" ? " anagram-dialog--completion" : ""}`} role="dialog">
       {kind !== "result" ? <button aria-label={kind === "stats" ? "Close Anagram stats" : kind === "instructions" ? "Close How to Play" : "Close"} className="anagram-dialog-close" onClick={onClose} ref={closeRef} type="button">×</button> : null}
       {kind === "instructions" ? <><header className="anagram-instructions-header"><h2>How to Play</h2></header><div className="anagram-instructions-scroll"><AnagramInstructions /></div></> : null}
-      {kind === "hint" ? <><h2>Reveal a letter?</h2><p>Your placed letters will return to the tray and Undo history will clear. One correct letter will lock in place. A 30 second scoring penalty applies; the timer keeps running.</p><button className="anagram-primary" onClick={onConfirmHint} type="button">Reveal letter (+30s)</button><button onClick={onClose} type="button">Cancel</button></> : null}
+      {kind === "hint" ? <><h2>Reveal a letter?</h2><p>Your placed letters will return to the tray and Undo history will clear. One correct letter will lock in place. A 30 second scoring penalty applies; the timer keeps running.{hintNarrowsAnswers ? " The locked letter may rule out some other answers." : ""}</p><button className="anagram-primary" onClick={onConfirmHint} type="button">Reveal letter (+30s)</button><button onClick={onClose} type="button">Cancel</button></> : null}
       {kind === "giveUp" ? <><h2>Give up?</h2><p>This ends today’s attempt for zero points and reveals the answer. You cannot replay it for a higher score.</p><button className="anagram-primary" onClick={onConfirmGiveUp} type="button">Give up and reveal</button><button onClick={onClose} type="button">Keep playing</button></> : null}
       {kind === "stats" ? <><header className="anagram-stats-header"><h2>Anagram Stats</h2></header><div className="anagram-stats-scroll">{ratingBar}{statsSummary}{historyTable}</div></> : null}
       {kind === "result" && progress && puzzle ? <AnagramCompletion countdown={countdown} historyTable={historyTable} onClose={onClose} progress={progress} puzzle={puzzle} ratingBar={ratingBar} shareResult={shareResult} statsSummary={statsSummary} /> : null}

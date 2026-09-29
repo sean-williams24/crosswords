@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 from datetime import date, timedelta
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -78,21 +79,38 @@ def scramble(entry: dict, issue: int) -> str:
     raise ValueError(f"Could not scramble {answer}")
 
 
-def make_row(release: date, issue: int, entry: dict) -> dict:
+def hint_cell_index(entry: dict, issue: int) -> int:
+    """Choose a stable position that preserves as many approved answers as possible."""
+    answer = entry["answer"]
+    alternatives = entry["acceptedAnswers"]
+    compatibility = [sum(other[index] == letter for other in alternatives)
+                     for index, letter in enumerate(answer)]
+    best_count = max(compatibility)
+    best = [index for index, count in enumerate(compatibility)
+            if count == best_count]
+    digest = hashlib.sha256(f"anagram-hint-v1:{issue}:{answer}".encode()).digest()
+    return best[int.from_bytes(digest, "big") % len(best)]
+
+
+def make_row(release: date, issue: int, entry: dict, *, include_hint: bool = True) -> dict:
+    puzzle_data = {
+        "answer": entry["answer"],
+        "acceptedAnswers": entry["acceptedAnswers"],
+        "initialScramble": scramble(entry, issue),
+    }
+    if include_hint:
+        puzzle_data["hintCellIndex"] = hint_cell_index(entry, issue)
     return {
         "id": str(uuid.uuid5(NAMESPACE, f"anagram-v1:{issue}:{release.isoformat()}")),
         "date": release.isoformat(),
         "puzzle_number": issue,
         "schema_version": 1,
-        "puzzle_data": {
-            "answer": entry["answer"],
-            "acceptedAnswers": entry["acceptedAnswers"],
-            "initialScramble": scramble(entry, issue),
-        },
+        "puzzle_data": puzzle_data,
     }
 
 
-def prepare(start_date: date, first_issue: int, count: int, pool: list[dict]) -> list[dict]:
+def prepare(start_date: date, first_issue: int, count: int, pool: list[dict],
+            *, include_hint: bool = True) -> list[dict]:
     if first_issue < 1 or count < 1 or first_issue + count - 1 > len(pool):
         raise ValueError("Requested range exceeds the approved finite pool")
     rows = []
@@ -100,7 +118,7 @@ def prepare(start_date: date, first_issue: int, count: int, pool: list[dict]) ->
         issue = first_issue + index
         release = start_date + timedelta(days=index)
         entry = pool[issue - 1]
-        rows.append(make_row(release, issue, entry))
+        rows.append(make_row(release, issue, entry, include_hint=include_hint))
     validate_rows(rows)
     return rows
 
@@ -137,6 +155,15 @@ def validate_rows(rows: list[dict], existing: list[dict] | None = None) -> None:
             raise ValueError(f"Invalid alternatives: {issue}")
         if signature(initial) != signature(answer) or initial in {answer, *accepted}:
             raise ValueError(f"Invalid scramble: {issue}")
+        if "hintCellIndex" in data:
+            hint_index = data["hintCellIndex"]
+            if type(hint_index) is not int or not 0 <= hint_index < len(answer):
+                raise ValueError(f"Invalid hint position: {issue}")
+            matching = sum(other[hint_index] == answer[hint_index] for other in accepted)
+            best_matching = max(sum(other[index] == letter for other in accepted)
+                                for index, letter in enumerate(answer))
+            if matching != best_matching:
+                raise ValueError(f"Hint excludes avoidable alternatives: {issue}")
         key = signature(answer)
         prior = previous_by_signature.get(key)
         if prior is not None and (release - prior).days < 365:

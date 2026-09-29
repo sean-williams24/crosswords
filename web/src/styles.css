@@ -2331,7 +2331,7 @@ html[data-theme="light"] {
 .anagram-board {
   display: flex;
   min-height: max(500px, calc(100svh - 344px));
-  padding: clamp(24px, 3.5vh, 40px) 0 24px;
+  padding: clamp(24px, 3.5vh, 40px) 0 48px;
   flex: 1;
   flex-direction: column;
 }
@@ -2445,7 +2445,7 @@ html[data-theme="light"] {
 
 .anagram-gameplay-dock {
   width: 100%;
-  margin: clamp(60px, 8vh, 88px) auto 0;
+  margin: auto auto 0;
   padding-top: 0;
 }
 
@@ -3331,6 +3331,8 @@ html[data-theme="light"] {
 }
 
 @media (max-width: 700px) {
+  .anagram-page > .site-footer { display: none; }
+
   .anagram-header,
   .anagram-main {
     width: min(calc(100% - 32px), 960px);
@@ -3412,7 +3414,7 @@ html[data-theme="light"] {
   }
 
   .anagram-board {
-    padding-bottom: 40px;
+    padding-bottom: 80px;
   }
 
   .anagram-answer-block {

@@ -48,6 +48,7 @@ enum AnagramHintAdAction: Equatable {
 
 struct AnagramHintBanner: View {
     let mode: AnagramHintBannerMode
+    let narrowsAnswers: Bool
     let isBusy: Bool
     let onPrimaryAction: () -> Void
     let onGoAdFree: () -> Void
@@ -81,6 +82,12 @@ struct AnagramHintBanner: View {
                 .font(AppFont.caption(12))
                 .foregroundStyle(Color.anagramInk.opacity(0.72))
                 .fixedSize(horizontal: false, vertical: true)
+            if narrowsAnswers {
+                Text("The locked letter may rule out some other answers.")
+                    .font(AppFont.caption(12))
+                    .foregroundStyle(Color.anagramInk.opacity(0.72))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 

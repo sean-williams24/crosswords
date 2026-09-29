@@ -41,6 +41,7 @@ struct AnagramHintBannerTests {
     func bannerDoesNotCompressBelowItsContent() {
         let banner = AnagramHintBanner(
             mode: .adUnavailable,
+            narrowsAnswers: false,
             isBusy: false,
             onPrimaryAction: {},
             onGoAdFree: {},

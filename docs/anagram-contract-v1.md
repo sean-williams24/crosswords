@@ -14,7 +14,8 @@ date. Before content is published, the iOS game uses a bundled review fixture.
 {
   "answer": "TRIANGLE",
   "acceptedAnswers": ["INTEGRAL"],
-  "initialScramble": "RAGTLINE"
+  "initialScramble": "RAGTLINE",
+  "hintCellIndex": 3
 }
 ```
 
@@ -23,7 +24,13 @@ the primary answer. Every accepted answer has exactly the same letter multiset
 as `answer`. `initialScramble` has that same multiset and is not an accepted
 answer. The character at each zero-based index in `initialScramble` is a
 distinct tile identity, even when characters repeat. Dates and issue numbers
-are unique. A published row is immutable.
+are unique. A published row is immutable. `hintCellIndex` is a zero-based answer
+position chosen when the row is generated. It favours positions shared by all
+accepted answers; if none exist, it preserves as many alternatives as possible.
+The choice is stable for a given issue and primary answer. Older rows without
+this field use position 0. A hint locks the primary answer's letter at this
+position, so an alternative with a different letter there cannot be entered
+after the hint.
 
 ## Progress
 
@@ -60,8 +67,8 @@ has one entry per answer cell. A revealed, locked cell is represented by
 appears in `placedTileIDs`. `placementHistory` lists only player-placed tile
 IDs, oldest first. Undo removes its last ID. Restart returns all history IDs
 to the tray. A hint clears the history and player placements before locking
-one correct tile. `hintSource` is `rewarded_ad` or `time_penalty`; a failed or
-cancelled advert does not consume the hint. The penalty is 30 seconds for
+one correct tile at the puzzle's hint position. `hintSource` is `rewarded_ad`
+or `time_penalty`; a failed or cancelled advert does not consume the hint. The penalty is 30 seconds for
 `time_penalty` and zero for `rewarded_ad`.
 
 `outcome` is `solved` or `gave_up`; terminal records cannot resume.
