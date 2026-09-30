@@ -348,6 +348,20 @@ they recognise an already-updated payload and never overwrite a divergent row.
 
 ## Home Card Appearance
 
+Home presents Backword, Quick Crossword, Anagram, and Pro Crossword in that
+order. Regular-width iPad layouts use two equal columns, while compact layouts
+use one column. The Pro upsell follows the games when visible, with Word of the
+Day below it. The game cards have no separate daily or weekly section headings
+or date labels; their own content identifies each game.
+The Pro Crossword card fills its grid column rather than keeping a fixed iPad
+width.
+
+Home shows the complete Word of the Day entry in two columns when its viewport
+is at least 901 points wide. Narrower viewports use the existing compact card
+button and detail sheet. Accessibility Dynamic Type sizes also use the button
+so the two columns do not squeeze enlarged text. The full Home panel and sheet
+share the same part-of-speech explanation.
+
 The Backword card keeps its dark content palette for readable logo and status
 content in either appearance. Its background follows the system colour scheme:
 Light Mode uses a flat, opaque pastel lavender, while Dark Mode keeps the

@@ -102,24 +102,34 @@ struct HomeView: View {
             ZStack {
                 AppBackgroundGradient()
 
-                ScrollView {
-                    VStack(spacing: 20) {
-                        RatingBarView(
-                            rating: ratingService.rating,
-                            isPro: storeService.isProUser
-                        )
-                        .padding(.horizontal, appLayout.homeHorizontalPadding)
-                        .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
+                GeometryReader { viewport in
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            RatingBarView(
+                                rating: ratingService.rating,
+                                isPro: storeService.isProUser
+                            )
+                            .padding(.horizontal, appLayout.homeHorizontalPadding)
+                            .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
 
-                        dailyGamesView
-                        adFreeExperienceButton
-                        wotd
-                        weeklyGamesView
+                            gamesGrid
+                            adFreeExperienceButton
+                            HomeWordOfTheDayView(
+                                word: wotdService.todaysWord,
+                                showsInlineDetails: HomeWordOfTheDayLayout.showsInlineDetails(
+                                    viewportWidth: viewport.size.width,
+                                    dynamicTypeSize: dynamicTypeSize
+                                )
+                            ) {
+                                showWOTD = true
+                            }
+                            .padding(.horizontal, appLayout.homeHorizontalPadding)
+                        }
+                        .padding(.top, 16)
+                        .padding(.bottom, 100)
                     }
-                    .padding(.top, 16)
-                    .padding(.bottom, 100)
+                    .scrollIndicators(.hidden)
                 }
-                .scrollIndicators(.hidden)
             }
             .safeAreaInset(edge: .top, spacing: 0) {
                 navigationBar
@@ -403,81 +413,47 @@ struct HomeView: View {
         ratingService.refresh()
     }
 
-    private func dateView(for date: String) -> some View {
-        Text(date)
-            .font(AppFont.caption())
-            .foregroundColor(Color.appTextSecondary)
-            .tracking(1)
-            .multilineTextAlignment(.leading)
-            .padding(.bottom, 26)
-    }
-
-    @ViewBuilder
-    private var dailyGamesView: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("Daily Games")
-                .font(AppFont.header(20))
-                .foregroundColor(.appTextHeading)
-                .padding(.bottom, 6)
-
-            TimelineView(.periodic(from: .now, by: 60)) { context in
-                dateView(for: dailyReleaseLabel(at: context.date))
-            }
-
-            if sizeClass == .regular {
-                HStack(spacing: 45) {
-                    backwordCard
-                    dailyCrosswordCard
-                }
-                .padding(.bottom, 60)
-            } else {
-                Group {
-                    backwordCard
-//                        .shadow(color: .primary, radius: 2, x: 0, y: 1)
-                        .padding(.bottom, 20)
-                    dailyCrosswordCard
-                }
-            }
-            if let puzzle = anagramService.todaysPuzzle {
-                AnagramCard(
-                    puzzle: puzzle,
-                    summary: AnagramHomeCardSummary(
-                        progress: anagramProgressRecords.first { $0.date == puzzle.date && $0.puzzleID == puzzle.id },
-                        history: anagramProgressRecords
-                    )
-                ) { navigationPath.append("anagram") }
-                    .padding(.top, 20)
-            } else {
-                AnagramPlaceholderCard(
-                    isLoading: anagramService.isLoading || !anagramService.hasAttemptedLoad
-                ) {
-                    Task { await anagramService.refreshIfNeeded() }
-                }
-                .padding(.top, 20)
+    private var gamesGrid: some View {
+        LazyVGrid(columns: HomeGamesLayout.columns(for: sizeClass), spacing: HomeGamesLayout.spacing) {
+            ForEach(HomeGamesLayout.games, id: \.self) { game in
+                gameCard(for: game)
             }
         }
         .padding(.horizontal, appLayout.homeHorizontalPadding)
-
     }
 
     @ViewBuilder
-    private var weeklyGamesView: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("Weekly Games")
-                .font(AppFont.header(20))
-                .foregroundColor(.appTextHeading)
-                .padding(.top, isIpad ? 6 : 0)
-                .padding(.bottom, 6)
-
-            TimelineView(.periodic(from: .now, by: 60)) { context in
-                dateView(for: weeklyRefreshLabel(at: context.date))
-            }
-            .padding(.bottom, isIpad ? 16 : 0)
-
+    private func gameCard(for game: HomeGamesLayout.Game) -> some View {
+        switch game {
+        case .backword:
+            backwordCard
+        case .quickCrossword:
+            dailyCrosswordCard
+        case .anagram:
+            anagramCard
+        case .proCrossword:
             WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
                 .environmentObject(storeService)
         }
-        .padding(.horizontal, appLayout.homeHorizontalPadding)
+    }
+
+    @ViewBuilder
+    private var anagramCard: some View {
+        if let puzzle = anagramService.todaysPuzzle {
+            AnagramCard(
+                puzzle: puzzle,
+                summary: AnagramHomeCardSummary(
+                    progress: anagramProgressRecords.first { $0.date == puzzle.date && $0.puzzleID == puzzle.id },
+                    history: anagramProgressRecords
+                )
+            ) { navigationPath.append("anagram") }
+        } else {
+            AnagramPlaceholderCard(
+                isLoading: anagramService.isLoading || !anagramService.hasAttemptedLoad
+            ) {
+                Task { await anagramService.refreshIfNeeded() }
+            }
+        }
     }
 
     @ViewBuilder
@@ -778,97 +754,27 @@ struct HomeView: View {
         SettingsTip.homeChromeReady = false
     }
 
-    // MARK: - Word of the Day Card
-
-    private var chevronRight: some View {
-        HStack {
-            Spacer()
-            Image(systemName: "chevron.right")
-                .foregroundStyle(Color.primary)
-        }
-    }
-
-    @ViewBuilder
-    private var wotd: some View {
-        Button {
-            showWOTD = true
-        } label: {
-            wotdCard()
-        }
-        .buttonStyle(.plain)
-        .disabled(wotdService.todaysWord == nil)
-    }
-
-    @ViewBuilder
-    private func wotdCard() -> some View {
-        ZStack {
-            chevronRight
-
-            HStack {
-                Spacer()
-                    .frame(width: 30)
-
-                VStack(spacing: 6) {
-                    Text("WORD OF THE DAY")
-                        .font(AppFont.clueLabel(10))
-                        .foregroundColor(.appTextHeading)
-                        .tracking(3)
-                        .multilineTextAlignment(.center)
-
-                    if let word = wotdService.todaysWord {
-                        Text(word.word)
-                            .font(AppFont.header(22))
-                            .foregroundColor(.appTextPrimary)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.7)
-                    } else {
-                        ProgressView()
-                            .frame(minHeight: 30)
-                    }
-                }
-                Spacer()
-                    .frame(width: 30)
-            }
-        }
-        .padding(.horizontal, 24)
-        .padding(.vertical, 16)
-        .frame(maxWidth: .infinity)
-        .background(Color.appSurface)
-        .cornerRadius(AppLayout.cardCornerRadius)
-        .padding(.horizontal, appLayout.homeHorizontalPadding)
-        .padding(.bottom, isIpad ? 16 : 0)
-    }
-
-    private var isIpad: Bool {
-        sizeClass == .regular
-    }
-
     // MARK: - Helpers
 
     private func secondsUntilMidnight() -> TimeInterval? {
         ContentReleaseCalendar().secondsUntilDailyRefresh()
     }
+}
 
-    private func dailyReleaseLabel(at date: Date = Date()) -> String {
-        let releaseCalendar = ContentReleaseCalendar(now: date)
-        guard let seconds = releaseCalendar.secondsUntilDailyRefresh(),
-              seconds <= 3_600
-        else {
-            return releaseCalendar.formattedToday
-        }
-
-        let totalMinutes = max(0, Int(seconds / 60))
-        let hours = totalMinutes / 60
-        let minutes = totalMinutes % 60
-        return hours > 0
-            ? String(format: "Resets in %d:%02d", hours, minutes)
-            : String(format: "%d minutes remaining", minutes)
+enum HomeGamesLayout {
+    enum Game: CaseIterable, Hashable, Sendable {
+        case backword
+        case quickCrossword
+        case anagram
+        case proCrossword
     }
 
-    /// Returns a label like "Refreshes Sundays at midnight" for the local weekly reset.
-    private func weeklyRefreshLabel(at date: Date = Date()) -> String {
-        _ = date
-        return "Refreshes Sundays at midnight"
+    static let games = Game.allCases
+    static let spacing: CGFloat = 20
+
+    static func columns(for sizeClass: UserInterfaceSizeClass?) -> [GridItem] {
+        let count = sizeClass == .regular ? 2 : 1
+        return Array(repeating: GridItem(.flexible(minimum: 0), spacing: spacing), count: count)
     }
 }
 
