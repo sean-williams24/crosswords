@@ -290,7 +290,7 @@ struct DebugSettingsView: View {
                         Label("Replay Backword rules update", systemImage: "arrow.counterclockwise")
                     }
                 }
-                confirmationDialog(
+                .confirmationDialog(
                     "Reset first-time onboarding?",
                     isPresented: $showOnboardingResetConfirmation,
                     titleVisibility: .visible
