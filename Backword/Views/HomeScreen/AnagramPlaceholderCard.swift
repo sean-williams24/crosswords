@@ -49,7 +49,8 @@ struct AnagramPlaceholderCard: View {
         Text("ANAGRAM")
             .font(AppFont.clueLabel(appLayout.isiPad ? 28 : 24))
             .tracking(3)
-            .fixedSize(horizontal: true, vertical: false)
+            .lineLimit(1)
+            .minimumScaleFactor(0.35)
     }
 
     private var detail: some View {

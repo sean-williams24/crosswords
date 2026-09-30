@@ -1,5 +1,7 @@
 import Foundation
 import Testing
+import SwiftUI
+import UIKit
 @testable import Backword
 
 @Suite("Home tab bar")
@@ -76,9 +78,10 @@ struct HomeCardStreakLayoutTests {
         #expect(AppLayout.homeCardIssueNumberFontSize == 12)
     }
 
-    @Test("Anagram card stacks only for accessibility text sizes")
+    @Test("Anagram card stacks as soon as text grows beyond Large")
     func anagramCardResponsiveLayout() {
         #expect(!AnagramHomeCardLayout.usesStackedLayout(for: .large))
+        #expect(AnagramHomeCardLayout.usesStackedLayout(for: .xLarge))
         #expect(AnagramHomeCardLayout.usesStackedLayout(for: .accessibility1))
     }
 
@@ -296,6 +299,51 @@ struct HomeCardStreakLayoutTests {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return try #require(formatter.date(from: string))
+    }
+}
+
+@MainActor
+@Suite("Anagram Home card sizing")
+struct AnagramHomeCardSizingTests {
+    private let cardWidth: CGFloat = 280
+
+    @Test("Loaded Anagram card stays within a narrow Home column as text grows")
+    func loadedCardFitsHomeColumn() {
+        let puzzle = AnagramPuzzle(
+            id: "anagram-home-sizing",
+            date: "2026-09-29",
+            puzzleNumber: 123,
+            schemaVersion: 1,
+            answer: "TRIANGLE",
+            acceptedAnswers: ["INTEGRAL"],
+            initialScramble: "RAGTLINE"
+        )
+        let progress = AnagramProgress(puzzle: puzzle, now: Date())
+        let card = AnagramCard(
+            puzzle: puzzle,
+            summary: AnagramHomeCardSummary(progress: progress, history: [])
+        ) {}
+
+        for dynamicTypeSize in [DynamicTypeSize.large, .xLarge, .xxxLarge, .accessibility5] {
+            #expect(fittingWidth(of: card, at: dynamicTypeSize) <= cardWidth + 0.5)
+        }
+    }
+
+    @Test("Anagram loading and retry cards stay within a narrow Home column")
+    func placeholderCardsFitHomeColumn() {
+        for dynamicTypeSize in [DynamicTypeSize.large, .xLarge, .xxxLarge, .accessibility5] {
+            for isLoading in [true, false] {
+                let card = AnagramPlaceholderCard(isLoading: isLoading, retry: {})
+                #expect(fittingWidth(of: card, at: dynamicTypeSize) <= cardWidth + 0.5)
+            }
+        }
+    }
+
+    private func fittingWidth<Content: View>(of content: Content, at dynamicTypeSize: DynamicTypeSize) -> CGFloat {
+        let host = UIHostingController(rootView: content
+            .environment(\.horizontalSizeClass, .compact)
+            .environment(\.dynamicTypeSize, dynamicTypeSize))
+        return host.sizeThatFits(in: CGSize(width: cardWidth, height: 10_000)).width
     }
 }
 

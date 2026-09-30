@@ -843,8 +843,10 @@ The shared Anagram action button caps Dynamic Type at Large so Start and all
 five gameplay controls keep their full labels in the fixed-width button rows.
 The Anagram Home card uses a two-column layout: its title sits at the top-left
 with the issue number directly beneath it, while puzzle length, status, score,
-and streak group at the bottom-right. Accessibility Dynamic Type sizes stack
-those regions vertically while preserving their left/right alignment. The card
+and streak group at the bottom-right. Dynamic Type sizes above Large stack
+those regions vertically while preserving their left/right alignment. The title
+scales within the available card width so neither the loaded card nor its
+placeholder widens the Home scroll content. The card
 uses a dedicated semantic background colour so Home can match the web card without
 changing the orange used by Anagram gameplay, stats, completion, archive, or
 sharing. Its default appearance matches the existing light card orange; its

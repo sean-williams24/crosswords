@@ -43,10 +43,11 @@ struct AnagramCard: View {
             Text("ANAGRAM")
                 .font(AppFont.clueLabel(appLayout.isiPad ? 28 : 24))
                 .tracking(3)
+                .lineLimit(1)
+                .minimumScaleFactor(0.35)
 
             issueLabel
         }
-        .fixedSize(horizontal: true, vertical: false)
         .frame(maxHeight: .infinity, alignment: .topLeading)
     }
 
@@ -144,6 +145,6 @@ enum AnagramHomeCardLayout {
     static let statsSpacing: CGFloat = 8
 
     static func usesStackedLayout(for dynamicTypeSize: DynamicTypeSize) -> Bool {
-        dynamicTypeSize.isAccessibilitySize
+        dynamicTypeSize > .large
     }
 }
