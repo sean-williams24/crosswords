@@ -169,14 +169,3 @@ struct HomeWordOfTheDayView: View {
         }
     }
 }
-
-enum HomeWordOfTheDayLayout {
-    static let minimumInlineViewportWidth: CGFloat = 901
-
-    static func showsInlineDetails(
-        viewportWidth: CGFloat,
-        dynamicTypeSize: DynamicTypeSize
-    ) -> Bool {
-        viewportWidth >= minimumInlineViewportWidth && !dynamicTypeSize.isAccessibilitySize
-    }
-}

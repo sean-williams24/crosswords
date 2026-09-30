@@ -356,10 +356,9 @@ or date labels; their own content identifies each game.
 The Pro Crossword card fills its grid column rather than keeping a fixed iPad
 width.
 
-Home shows the complete Word of the Day entry in two columns when its viewport
-is at least 901 points wide. Narrower viewports use the existing compact card
-button and detail sheet. Accessibility Dynamic Type sizes also use the button
-so the two columns do not squeeze enlarged text. The full Home panel and sheet
+Home shows the complete Word of the Day entry whenever the game cards use two
+columns. It switches to the compact card button and detail sheet at the same
+size-class change that stacks the game cards. The full Home panel and sheet
 share the same part-of-speech explanation.
 
 The Backword card keeps its dark content palette for readable logo and status

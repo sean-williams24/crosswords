@@ -102,34 +102,29 @@ struct HomeView: View {
             ZStack {
                 AppBackgroundGradient()
 
-                GeometryReader { viewport in
-                    ScrollView {
-                        VStack(spacing: 20) {
-                            RatingBarView(
-                                rating: ratingService.rating,
-                                isPro: storeService.isProUser
-                            )
-                            .padding(.horizontal, appLayout.homeHorizontalPadding)
-                            .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
+                ScrollView {
+                    VStack(spacing: 20) {
+                        RatingBarView(
+                            rating: ratingService.rating,
+                            isPro: storeService.isProUser
+                        )
+                        .padding(.horizontal, appLayout.homeHorizontalPadding)
+                        .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
 
-                            gamesGrid
-                            adFreeExperienceButton
-                            HomeWordOfTheDayView(
-                                word: wotdService.todaysWord,
-                                showsInlineDetails: HomeWordOfTheDayLayout.showsInlineDetails(
-                                    viewportWidth: viewport.size.width,
-                                    dynamicTypeSize: dynamicTypeSize
-                                )
-                            ) {
-                                showWOTD = true
-                            }
-                            .padding(.horizontal, appLayout.homeHorizontalPadding)
+                        gamesGrid
+                        adFreeExperienceButton
+                        HomeWordOfTheDayView(
+                            word: wotdService.todaysWord,
+                            showsInlineDetails: HomeGamesLayout.usesTwoColumns(for: sizeClass)
+                        ) {
+                            showWOTD = true
                         }
-                        .padding(.top, 16)
-                        .padding(.bottom, 100)
+                        .padding(.horizontal, appLayout.homeHorizontalPadding)
                     }
-                    .scrollIndicators(.hidden)
+                    .padding(.top, 16)
+                    .padding(.bottom, 100)
                 }
+                .scrollIndicators(.hidden)
             }
             .safeAreaInset(edge: .top, spacing: 0) {
                 navigationBar
@@ -772,8 +767,12 @@ enum HomeGamesLayout {
     static let games = Game.allCases
     static let spacing: CGFloat = 20
 
+    static func usesTwoColumns(for sizeClass: UserInterfaceSizeClass?) -> Bool {
+        sizeClass == .regular
+    }
+
     static func columns(for sizeClass: UserInterfaceSizeClass?) -> [GridItem] {
-        let count = sizeClass == .regular ? 2 : 1
+        let count = usesTwoColumns(for: sizeClass) ? 2 : 1
         return Array(repeating: GridItem(.flexible(minimum: 0), spacing: spacing), count: count)
     }
 }

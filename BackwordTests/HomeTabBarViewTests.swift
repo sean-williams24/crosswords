@@ -8,6 +8,7 @@ import UIKit
 struct HomeGamesLayoutTests {
     @Test("Regular width arranges the four games in two columns")
     func regularWidthGames() {
+        #expect(HomeGamesLayout.usesTwoColumns(for: .regular))
         #expect(HomeGamesLayout.columns(for: .regular).count == 2)
         #expect(HomeGamesLayout.games == [
             .backword,
@@ -19,25 +20,15 @@ struct HomeGamesLayoutTests {
 
     @Test("Compact width keeps the games in one column")
     func compactWidthGames() {
+        #expect(!HomeGamesLayout.usesTwoColumns(for: .compact))
+        #expect(!HomeGamesLayout.usesTwoColumns(for: nil))
         #expect(HomeGamesLayout.columns(for: .compact).count == 1)
         #expect(HomeGamesLayout.columns(for: nil).count == 1)
     }
 }
 
-@Suite("Home Word of the Day layout")
-struct HomeWordOfTheDayLayoutTests {
-    @Test("Wide viewports show the full Word of the Day on Home")
-    func wideViewportShowsDetails() {
-        #expect(!HomeWordOfTheDayLayout.showsInlineDetails(viewportWidth: 900, dynamicTypeSize: .large))
-        #expect(HomeWordOfTheDayLayout.showsInlineDetails(viewportWidth: 901, dynamicTypeSize: .large))
-        #expect(HomeWordOfTheDayLayout.showsInlineDetails(viewportWidth: 1_024, dynamicTypeSize: .xxxLarge))
-    }
-
-    @Test("Accessibility text sizes keep the compact Word of the Day button")
-    func accessibilityTextUsesButton() {
-        #expect(!HomeWordOfTheDayLayout.showsInlineDetails(viewportWidth: 1_366, dynamicTypeSize: .accessibility1))
-    }
-
+@Suite("Home Word of the Day")
+struct HomeWordOfTheDayTests {
     @Test("The Home panel and detail sheet share the part-of-speech explanation")
     func partOfSpeechExplanation() {
         let word = WordOfTheDay(
