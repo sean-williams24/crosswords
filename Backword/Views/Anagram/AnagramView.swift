@@ -273,12 +273,17 @@ struct AnagramView: View {
             }
             .font(AppFont.header(24))
             .foregroundStyle(Color.anagramInk)
+            .dynamicTypeSize(...DynamicTypeSize.xLarge)
+
             Text("Tap letters to build an answer. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points.")
                 .font(AppFont.body())
                 .foregroundStyle(Color.anagramInk)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+
             Text("\(viewModel.puzzle.length) letters - one optional hint - no time limit")
                 .font(AppFont.caption())
                 .foregroundStyle(Color.anagramOrange)
+                .dynamicTypeSize(...DynamicTypeSize.large)
             AnagramActionButton(title: "Start", prominent: true) { viewModel.start() }
         }
         .padding(20)
