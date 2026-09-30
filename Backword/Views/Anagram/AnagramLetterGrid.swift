@@ -41,6 +41,7 @@ struct AnagramLetterGrid: View {
             Text("YOUR ANSWER")
                 .font(AppFont.clueLabel())
                 .foregroundStyle(Color.anagramOrange)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
             LazyVGrid(columns: answerColumns, spacing: AppLayout.anagramAnswerTileSpacing) {
                 ForEach(0..<puzzle.length, id: \.self) { cell in
                     answerCell(cell)

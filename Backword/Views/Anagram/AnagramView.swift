@@ -58,31 +58,32 @@ struct AnagramView: View {
                 )
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    header
-         
-                    if let progress = viewModel.progress {
-                        activeGame(progress)
-                    } else {
-                        instructions
-                    }
-                    #if DEBUG
-                    if viewModel.puzzle.date == "review" {
-                        Button("Reset review puzzle") {
-                            AnagramProgress.delete(date: "review")
-                            viewModel.reload()
-                            hasPresentedCompletion = false
-                        }
-                        .font(AppFont.body())
-                        .foregroundStyle(Color.anagramOrange)
-                    }
-                    #endif
+
+            VStack(alignment: .leading, spacing: 24) {
+                header
+
+                if let progress = viewModel.progress {
+                    activeGame(progress)
+                } else {
+                    instructions
                 }
-                .padding(AppLayout.screenPadding)
-                .frame(maxWidth: 560)
-                .frame(maxWidth: .infinity)
+            #if DEBUG
+                if viewModel.puzzle.date == "review" {
+                    Button("Reset review puzzle") {
+                        AnagramProgress.delete(date: "review")
+                        viewModel.reload()
+                        hasPresentedCompletion = false
+                    }
+                    .font(AppFont.body())
+                    .foregroundStyle(Color.anagramOrange)
+                }
+            #endif
             }
+            .padding(AppLayout.screenPadding)
+            .frame(maxWidth: 560)
+            .frame(maxWidth: .infinity)
+
+            Spacer()
             if let progress = viewModel.progress {
                 gameplayDock(progress)
                     .padding(.horizontal, AppLayout.screenPadding)
@@ -256,9 +257,11 @@ struct AnagramView: View {
             Text("ANAGRAM")
                 .font(AppFont.header(34))
                 .foregroundStyle(Color.anagramOrange)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
             Text(viewModel.puzzle.puzzleNumber == 0 ? "Review puzzle" : "Puzzle #\(viewModel.puzzle.puzzleNumber)")
                 .font(AppFont.caption())
                 .foregroundStyle(Color.appTextSecondary)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         }
     }
 
