@@ -12,6 +12,7 @@ struct BackwordView: View {
     @State private var showInstructions = false
     @State private var instructionsPresentation: BackwordInstructionsPresentation?
     @State private var showStats = false
+    @State private var showGiveUpConfirmation = false
     @State private var pulses = false
     @State private var selectedFailureMessage: String = ""
     @State private var shouldPopAfterCompletionSheet = false
@@ -129,12 +130,24 @@ struct BackwordView: View {
         .animation(.easeInOut(duration: 0.3), value: viewModel.shouldShowExplainerBanner)
         .animation(.easeInOut(duration: 0.3), value: viewModel.isDetailedExplainerVisible)
         .animation(.spring(response: 0.4, dampingFraction: 0.82), value: viewModel.onboardingSteps)
+        .alert("Give up?", isPresented: $showGiveUpConfirmation) {
+            Button("Cancel", role: .cancel) {}
+            Button("Reveal Answer", role: .destructive) {
+                viewModel.giveUp()
+                ratingService.refresh()
+                statsService.refresh()
+                showStats = true
+            }
+        } message: {
+            Text("This will reveal the answer for zero points.")
+        }
         .onChange(of: viewModel.isComplete) { _, complete in
             updateInstructionsTipPresentation()
 
             if complete {
                 ratingService.refresh()
                 statsService.refresh()
+                guard !showStats else { return }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     guard viewModel.isComplete else { return }
                     showStats = true
@@ -224,6 +237,7 @@ struct BackwordView: View {
         ZStack {
             // Centre title always perfectly centred
             BackwordLogo()
+                .dynamicTypeSize(...DynamicTypeSize.xxLarge)
 
             HStack {
                 Button {
@@ -236,23 +250,37 @@ struct BackwordView: View {
                         .padding(.vertical, 8)
                 }
 
+            #if DEBUG
+            if !viewModel.isComplete {
+                Button {
+                    viewModel.debugSimulateFailure()
+                } label: {
+                    Image(systemName: "ladybug")
+                        .font(AppFont.body(appLayout.iconGlyphSize))
+                        .frame(width: appLayout.iconSize)
+                        .padding(.vertical, 8)
+                        .foregroundColor(.appGaveUp)
+                }
+                .accessibilityLabel("Simulate failed game")
+            }
+            #endif
+
                 Spacer()
 
                 HStack(spacing: 8) {
-                    #if DEBUG
                     if !viewModel.isComplete {
                         Button {
-                            viewModel.debugSimulateFailure()
+                            showGiveUpConfirmation = true
                         } label: {
-                            Image(systemName: "ladybug")
+                            Image(systemName: "flag.fill")
                                 .font(AppFont.body(appLayout.iconGlyphSize))
                                 .frame(width: appLayout.iconSize)
                                 .padding(.vertical, 8)
-                                .foregroundColor(.appGaveUp)
+                                .foregroundColor(.appTextPrimary)
                         }
-                        .accessibilityLabel("Simulate failed game")
+                        .accessibilityLabel("Give up")
                     }
-                    #endif
+
 
                     Button {
                         statsService.refresh()
@@ -345,6 +373,7 @@ struct BackwordView: View {
                         inputLetter: inputChar,
                         isCursor: showCursor,
                         isNew: viewModel.newlyRevealedIndex == i,
+                        isFailed: viewModel.isFailed,
                         size: size
                     )
                     .animation(.spring(response: 0.4, dampingFraction: 0.6), value: viewModel.revealedLetters[i] != nil)

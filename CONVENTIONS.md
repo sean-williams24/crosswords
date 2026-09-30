@@ -773,6 +773,8 @@ The completion sheet is presented after both wins and failures and receives the 
 
 Returning to a persisted completed Backword reopens that same completion sheet, including result sharing. The web presents it once per game-page visit so dismissing it does not immediately reopen it.
 
+On iOS, the Backword flag confirms a give-up before ending the attempt. Give-up uses the failed terminal result: it preserves earlier guesses, reveals every answer letter in the game and completion sheet, records zero points, and cannot accept more input.
+
 Backword keyboard letter entry and deletion use the same light impact as crossword letter input. Guess haptics reflect the result of each accepted submission. A non-winning guess gets a full-strength (`1.0`) impact only when it extends the correctly positioned suffix; automatic scheduled reveals alone retain the incorrect-guess feedback. Wins and final failures use distinct terminal patterns instead of also playing the intermediate guess pattern. During the completion animation, each right-to-left letter reveal plays one quick impact; Reduce Motion skips both the staged reveals and their per-letter impacts.
 
 The completion sheet also shows a live `NEXT BACKWORD IN` countdown. It must derive the next release from `ContentReleaseCalendar` on every tick so it follows local midnight and remains correct across timezone and daylight-saving transitions.
