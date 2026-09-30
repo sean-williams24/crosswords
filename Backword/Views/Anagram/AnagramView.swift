@@ -61,10 +61,7 @@ struct AnagramView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     header
-                    if UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate") != nil {
-                        GameScoreProgressBarView(rating: ratingService.rating, category: .anagram)
-                            .accessibilityLabel("Anagram rolling rating")
-                    }
+         
                     if let progress = viewModel.progress {
                         activeGame(progress)
                     } else {
