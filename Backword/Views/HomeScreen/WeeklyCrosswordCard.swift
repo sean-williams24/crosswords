@@ -6,6 +6,7 @@ import SwiftUI
 struct WeeklyCrosswordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.colorScheme) private var systemColorScheme
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject private var statsService: StatsService
     @EnvironmentObject var storeService: StoreService
     @ScaledMetric private var iconSize: CGFloat = 10
@@ -13,10 +14,6 @@ struct WeeklyCrosswordCard: View {
     @ObservedObject var viewModel: HomeViewModel
     @State private var showPaywall = false
     var isProUser: Bool = false
-
-    private var isIpad: Bool {
-        sizeClass == .regular
-    }
 
     private var appLayout: AppLayout {
         AppLayout(sizeClass: sizeClass)
@@ -56,52 +53,21 @@ struct WeeklyCrosswordCard: View {
     }
 
     private var content: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 12) {
-                ViewThatFits {
-                    horizontalTitleContent
-                    verticalTitleContent
+        Group {
+            if AnagramHomeCardLayout.usesStackedLayout(for: dynamicTypeSize) {
+                VStack(alignment: .leading, spacing: AnagramHomeCardLayout.columnSpacing) {
+                    identityView
+                    detailsView
                 }
-
-                Text("13×13")
-                    .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
-
-                if viewModel.state == .loading {
-                    ProgressView()
-                } else {
-                    if isProUser {
-                        if viewModel.weeklyPuzzle == nil {
-                            Text("Failed to fetch today's crossword.\nTap here to try again.")
-                                .font(AppFont.caption())
-                                .foregroundColor(.appTextSecondary)
-                        } else {
-                            StatusLabelView(
-                                status: viewModel.weeklyPuzzleStatus,
-                                borderStyle: badgeBorderStyle
-                            )
-                        }
-                    } else {
-                        HStack(spacing: 6) {
-                            Text("Pro Only")
-                                .font(AppFont.caption())
-                                .foregroundColor(.appAccent)
-                            Image(systemName: "lock.fill")
-                                .font(.system(size: iconSize))
-                                .foregroundColor(.appAccent)
-                                .offset(y: offset)
-                        }
-                    }
+            } else {
+                HStack(alignment: .top, spacing: AnagramHomeCardLayout.columnSpacing) {
+                    identityView
+                    detailsView
                 }
             }
-            .padding(.horizontal, 24)
-            .padding(.top, 24)
-            .padding(.bottom, 8)
-
-            bottomStatsView
-                .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
-                .padding(.bottom, 10)
         }
+        .padding(.horizontal, AnagramHomeCardLayout.horizontalPadding)
+        .padding(.vertical, AnagramHomeCardLayout.verticalPadding)
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(
             Color.appSurface.overlay(
@@ -109,9 +75,6 @@ struct WeeklyCrosswordCard: View {
             )
         )
         .cornerRadius(AppLayout.cardCornerRadius)
-        .overlay(alignment: .topTrailing) {
-            issueNumberOverlay
-        }
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .stroke(proGradient, lineWidth: 1.5)
@@ -125,19 +88,70 @@ struct WeeklyCrosswordCard: View {
         }
     }
 
-    @ViewBuilder
-    private var issueNumberOverlay: some View {
-        if let issueNumber = viewModel.weeklyPuzzle?.puzzleNumber {
-            HomeCardIssueNumber(issueNumber: issueNumber, color: .solvedGold)
-            .padding(.trailing, HomeCardIssueNumberLayout.horizontalInset)
-            .padding(.top, HomeCardIssueNumberLayout.topInset)
+    private var identityView: some View {
+        VStack(alignment: .leading, spacing: AnagramHomeCardLayout.identitySpacing) {
+            Text("PRO \nCROSSWORD")
+                .font(AppFont.clueLabel(appLayout.isiPad ? 20 : 16))
+                .foregroundStyle(proGradient)
+                .tracking(3)
+                .lineLimit(2)
+                .minimumScaleFactor(0.35)
+                .multilineTextAlignment(.leading)
+                .accessibilityLabel("Pro Crossword")
+
+            Text("13×13")
+                .font(AppFont.caption())
+                .foregroundColor(.appTextSecondary)
+
+            if let issueNumber = viewModel.weeklyPuzzle?.puzzleNumber {
+                HomeCardIssueNumber(issueNumber: issueNumber, color: .solvedGold)
+            }
+        }
+        .frame(maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    private var detailsView: some View {
+        VStack(alignment: .trailing, spacing: AnagramHomeCardLayout.contentSpacing) {
+            Spacer(minLength: AnagramHomeCardLayout.minimumContentSpacing)
+
+            if viewModel.state == .loading {
+                ProgressView()
+            } else if isProUser {
+                if viewModel.weeklyPuzzle == nil {
+                    Text("Failed to fetch today's crossword.\nTap here to try again.")
+                        .font(AppFont.caption())
+                        .foregroundColor(.appTextSecondary)
+                        .multilineTextAlignment(.trailing)
+                } else {
+                    StatusLabelView(
+                        status: viewModel.weeklyPuzzleStatus,
+                        borderStyle: badgeBorderStyle
+                    )
+                }
+            } else {
+                proOnlyLabel
+            }
+
+            bottomStatsView
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+    }
+
+    private var proOnlyLabel: some View {
+        HStack(spacing: 6) {
+            Text("Pro Only")
+                .font(AppFont.caption())
+                .foregroundColor(.appAccent)
+            Image(systemName: "lock.fill")
+                .font(.system(size: iconSize))
+                .foregroundColor(.appAccent)
+                .offset(y: offset)
         }
     }
 
     private var bottomStatsView: some View {
-        HStack {
+        HStack(spacing: AnagramHomeCardLayout.statsSpacing) {
             scoreView
-            Spacer(minLength: 2)
             StreakButton(
                 streak: statsService.stats.currentStreak(isWeekly: true),
                 borderStyle: badgeBorderStyle
@@ -161,43 +175,6 @@ struct WeeklyCrosswordCard: View {
 
     private var badgeBorderStyle: HomeCardBadgeBorderStyle {
         BackwordCardAppearance.badgeBorderStyle(for: systemColorScheme)
-    }
-
-    private var horizontalTitleContent: some View {
-        HStack(spacing: 6) {
-            crown
-            Text("PRO CROSSWORD")
-                .font(AppFont.clueLabel(isIpad ? 15 : 11))
-                .foregroundStyle(proGradient)
-                .tracking(3)
-                .multilineTextAlignment(.center)
-            crown
-        }
-    }
-
-    private var verticalTitleContent: some View {
-        VStack(alignment: .center, spacing: 0) {
-            HStack {
-                crown
-                Text("PRO")
-                    .font(AppFont.clueLabel(11))
-                    .foregroundStyle(proGradient)
-                    .tracking(3)
-                    .multilineTextAlignment(.center)
-                crown
-            }
-            Text("CROSSWORD")
-                .font(AppFont.clueLabel(11))
-                .foregroundStyle(proGradient)
-                .tracking(3)
-                .multilineTextAlignment(.center)
-        }
-    }
-
-    private var crown: some View {
-        Image(systemName: "crown.fill")
-            .font(.system(size: iconSize))
-            .foregroundStyle(proGradient)
     }
 
     private var proGradient: LinearGradient {

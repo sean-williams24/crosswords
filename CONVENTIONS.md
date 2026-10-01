@@ -422,6 +422,11 @@ Quick Crossword follows the Anagram and Midword card layout: its two-line title,
 streak grouped at the bottom-right. It shares their padding and spacing and
 stacks the two regions above Large Dynamic Type, retaining left/right alignment.
 
+Pro Crossword uses the same layout with its crowned two-line title, `13×13`
+description, and issue number at the top-left. Status (or the Pro Only prompt),
+score, and weekly streak sit at the bottom-right. Its gold gradient and border,
+Pro navigation, and non-Pro paywall behaviour are retained.
+
 Home shows the complete Word of the Day entry whenever the game cards use two
 columns. It switches to the compact card button and detail sheet at the same
 size-class change that stacks the game cards. The full Home panel and sheet

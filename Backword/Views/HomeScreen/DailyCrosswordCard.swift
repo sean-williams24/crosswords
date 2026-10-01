@@ -75,7 +75,7 @@ struct DailyCrosswordCard: View {
     private var identityView: some View {
         VStack(alignment: .leading, spacing: AnagramHomeCardLayout.identitySpacing) {
             Text("QUICK\nCROSSWORD")
-                .font(AppFont.clueLabel(appLayout.isiPad ? 24 : 16))
+                .font(AppFont.clueLabel(appLayout.isiPad ? 20 : 16))
                 .foregroundColor(.dailyCardTitle)
                 .tracking(3)
                 .lineLimit(2)
