@@ -15,9 +15,10 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
+MidwordTriple = tuple[str, str, str]
 
 
-def load_approved(path: Path = ROOT / "midword_approved.json") -> list[tuple[str, str, str]]:
+def load_inventory(path: Path = ROOT / "midword_approved.json") -> tuple[list[MidwordTriple], set[MidwordTriple]]:
     raw = json.loads(path.read_text())
     triples = []
     for item in raw["triples"]:
@@ -34,15 +35,27 @@ def load_approved(path: Path = ROOT / "midword_approved.json") -> list[tuple[str
         raise ValueError("Duplicate approved entry")
     if len({(first, second) for first, _, second in triples}) != len(triples):
         raise ValueError("Approved entries reuse a prompt pair")
-    return triples
+    moderate_raw = raw.get("moderate_triples", [])
+    if not isinstance(moderate_raw, list) or any(not isinstance(item, str) for item in moderate_raw):
+        raise ValueError("Moderate Midword entries must be a list of triples")
+    if len(set(moderate_raw)) != len(moderate_raw):
+        raise ValueError("Duplicate moderate Midword entry")
+    if not set(moderate_raw).issubset(set(raw["triples"])):
+        raise ValueError("Moderate Midword entries must be approved triples")
+    return triples, {tuple(item.split()) for item in moderate_raw}
+
+
+def load_approved(path: Path = ROOT / "midword_approved.json") -> list[MidwordTriple]:
+    return load_inventory(path)[0]
 
 
 def select_puzzles(
-    approved: list[tuple[str, str, str]],
+    approved: list[MidwordTriple],
     existing: list[dict],
     start: date,
     target_days: int,
     seed: int = 0,
+    moderate: set[MidwordTriple] | None = None,
 ) -> list[dict]:
     if target_days < 1:
         raise ValueError("target_days must be positive")
@@ -52,6 +65,8 @@ def select_puzzles(
     next_number = max((row["puzzle_number"] for row in existing), default=0) + 1
     pool = [item for item in approved if (item[0], item[2]) not in used_pairs and item not in used_signatures]
     random.Random(seed).shuffle(pool)
+    if moderate:
+        pool.sort(key=lambda item: item not in moderate)
     planned = []
     recent_answers: list[str] = []
     for offset in range(target_days):
@@ -113,8 +128,8 @@ def main() -> None:
         client = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"])
         existing = fetch_existing(client)
 
-    approved = load_approved()
-    planned = select_puzzles(approved, existing, args.date, args.target_days, args.seed)
+    approved, moderate = load_inventory()
+    planned = select_puzzles(approved, existing, args.date, args.target_days, args.seed, moderate)
     used = existing + planned
     used_pairs = {(row["first_word"], row["second_word"]) for row in used}
     remaining = sum((first, second) not in used_pairs for first, _, second in approved)

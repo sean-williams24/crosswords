@@ -76,7 +76,7 @@ struct MidwordView: View {
 
     private var gameContent: some View {
         VStack(spacing: 24) {
-            Text("Find the word in the middle")
+            Text("Find the word link")
                 .font(AppFont.body())
                 .foregroundColor(.midwordText.opacity(0.85))
             MidwordBoardView(puzzle: viewModel.puzzle, input: viewModel.input, won: viewModel.progress.isWon)
@@ -153,7 +153,8 @@ struct MidwordView: View {
 
     private var navTitle: some View {
         Text("MIDWORD")
-            .font(AppFont.header(24))
+            .font(AppFont.header(30))
+            .foregroundColor(.midwordAccent)
             .accessibilityAddTraits(.isHeader)
     }
 

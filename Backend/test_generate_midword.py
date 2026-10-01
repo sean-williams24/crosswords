@@ -5,7 +5,7 @@ import tempfile
 from datetime import date
 from pathlib import Path
 
-from generate_midword import default_start_date, load_approved, select_puzzles
+from generate_midword import default_start_date, load_approved, load_inventory, select_puzzles
 from build_midword_bank import discover
 
 
@@ -34,8 +34,27 @@ class MidwordGeneratorTests(unittest.TestCase):
 
     def test_first_publication_can_include_launch_day(self):
         self.assertEqual(default_start_date(date(2026, 10, 1)), date(2026, 10, 1))
-        planned = select_puzzles(load_approved(), [], date(2026, 10, 1), 1)
+        approved, moderate = load_inventory()
+        planned = select_puzzles(approved, [], date(2026, 10, 1), 1, moderate=moderate)
         self.assertEqual(planned[0]["date"], "2026-10-01")
+
+    def test_first_three_weeks_prefer_moderate_puzzles(self):
+        approved, moderate = load_inventory()
+        planned = select_puzzles(approved, [], date(2026, 10, 1), 21, moderate=moderate)
+        self.assertEqual(len(planned), 21)
+        self.assertTrue(all((row["first_word"], row["answer"], row["second_word"]) in moderate
+                            for row in planned))
+
+    def test_published_puzzles_are_not_reselected_when_difficulty_changes(self):
+        approved, moderate = load_inventory()
+        existing = [{"date": "2026-10-01", "puzzle_number": 1,
+                     "first_word": "RAIN", "answer": "BOW", "second_word": "TIE"}]
+        planned = select_puzzles(approved, existing, date(2026, 10, 1), 21, moderate=moderate)
+        self.assertEqual(len(planned), 20)
+        self.assertEqual(planned[0]["date"], "2026-10-02")
+        self.assertEqual(planned[0]["puzzle_number"], 2)
+        self.assertTrue(all((row["first_word"], row["answer"], row["second_word"]) in moderate
+                            for row in planned))
 
     def test_approved_inventory_and_compounds(self):
         triples = load_approved()
@@ -74,6 +93,18 @@ class MidwordGeneratorTests(unittest.TestCase):
             path.write_text(json.dumps({"triples": ["BANK NOTE BOOK", "BANK CARD BOOK"]}))
             with self.assertRaisesRegex(ValueError, "prompt pair"):
                 load_approved(path)
+
+    def test_moderate_inventory_must_be_approved_and_unique(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "approved.json"
+            path.write_text(json.dumps({"triples": ["BANK NOTE BOOK"],
+                                        "moderate_triples": ["RAIN BOW TIE"]}))
+            with self.assertRaisesRegex(ValueError, "approved triples"):
+                load_inventory(path)
+            path.write_text(json.dumps({"triples": ["BANK NOTE BOOK"],
+                                        "moderate_triples": ["BANK NOTE BOOK", "BANK NOTE BOOK"]}))
+            with self.assertRaisesRegex(ValueError, "Duplicate moderate"):
+                load_inventory(path)
 
 
 if __name__ == "__main__":

@@ -263,6 +263,10 @@ and ambiguous pairs, so new entries need editorial review of both compounds
 and competing links. The scheduled publisher uses only approved entries and
 fails before writing if its full coverage window cannot be filled. The batch
 publishing RPC validates and inserts all selected rows in one transaction.
+The approved bank marks moderately challenging triples separately. Publishing
+shuffles deterministically within that tier and selects it first, then uses
+the remaining approved triples when needed. Already published dates and issue
+numbers are never changed when the bank or difficulty ranking changes.
 
 Midword uses its own chartreuse and charcoal semantic colours. Its input,
 previous guesses, and completion tiles use the reusable Backword cell's default
