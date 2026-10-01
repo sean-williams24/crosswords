@@ -117,8 +117,6 @@ struct HomeView: View {
                         .padding(.horizontal, appLayout.homeHorizontalPadding)
                         .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
 
-                        gamesGrid
-                        adFreeExperienceButton
                         HomeWordOfTheDayView(
                             word: wotdService.todaysWord,
                             showsInlineDetails: HomeGamesLayout.usesTwoColumns(for: sizeClass)
@@ -126,6 +124,8 @@ struct HomeView: View {
                             showWOTD = true
                         }
                         .padding(.horizontal, appLayout.homeHorizontalPadding)
+                        gamesGrid
+                        adFreeExperienceButton
                     }
                     .padding(.top, 16)
                     .padding(.bottom, 100)

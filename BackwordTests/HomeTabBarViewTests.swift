@@ -345,6 +345,66 @@ struct HomeCardStreakLayoutTests {
 }
 
 @MainActor
+@Suite("Quick Crossword Home card sizing")
+struct DailyCrosswordHomeCardSizingTests {
+    @Test("Quick card fits narrow columns with loading, retry, and puzzle content",
+          arguments: [DynamicTypeSize.large, .xLarge, .xxxLarge, .accessibility5])
+    func cardFitsHomeColumn(dynamicTypeSize: DynamicTypeSize) {
+        let viewModel = HomeViewModel(puzzleService: PuzzleService(), storeService: StoreService())
+        let statsService = StatsService()
+
+        for state in [HomeViewModel.State.loading, .failed, .success] {
+            viewModel.state = state
+            viewModel.todaysPuzzle = state == .success ? Puzzle.sample : nil
+
+            let card = DailyCrosswordCard(viewModel: viewModel, showDailyCrossword: {})
+                .environmentObject(statsService)
+                .environment(\.horizontalSizeClass, .compact)
+                .environment(\.dynamicTypeSize, dynamicTypeSize)
+            let host = UIHostingController(rootView: card)
+            let size = host.sizeThatFits(in: CGSize(width: 280, height: 10_000))
+
+            #expect(size.width <= 280.5)
+            #expect(size.height >= AppLayout.cardHeightSmall)
+        }
+    }
+
+    @Test("Quick card fits score and streak alongside progress and completion status",
+          arguments: [DynamicTypeSize.large, .xLarge, .accessibility5])
+    func cardWithStatsFitsHomeColumn(dynamicTypeSize: DynamicTypeSize) {
+        let viewModel = HomeViewModel(puzzleService: PuzzleService(), storeService: StoreService())
+        viewModel.state = .success
+        viewModel.todaysPuzzle = Puzzle.sample
+        let statsService = StatsService()
+        statsService.stats.currentStreak = 12
+        statsService.stats.lastCompletedDate = Date()
+
+        for isComplete in [false, true] {
+            var progress = UserProgress(
+                puzzleId: Puzzle.sample.id,
+                size: Puzzle.sample.size,
+                puzzleDate: Puzzle.sample.date,
+                totalClues: Puzzle.sample.clues.count,
+                isWeekly: false
+            )
+            progress.completedClueIds = Set(Puzzle.sample.clues.prefix(isComplete ? Puzzle.sample.clues.count : 1).map(\.id))
+            progress.completedAt = isComplete ? Date() : nil
+            viewModel.todaysProgress = progress
+
+            let card = DailyCrosswordCard(viewModel: viewModel, showDailyCrossword: {})
+                .environmentObject(statsService)
+                .environment(\.horizontalSizeClass, .compact)
+                .environment(\.dynamicTypeSize, dynamicTypeSize)
+            let host = UIHostingController(rootView: card)
+            let size = host.sizeThatFits(in: CGSize(width: 280, height: 10_000))
+
+            #expect(size.width <= 280.5)
+            #expect(size.height >= AppLayout.cardHeightSmall)
+        }
+    }
+}
+
+@MainActor
 @Suite("Anagram Home card sizing")
 struct AnagramHomeCardSizingTests {
     private let cardWidth: CGFloat = 280

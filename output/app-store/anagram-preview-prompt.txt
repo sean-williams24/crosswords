@@ -1,0 +1,10 @@
+Tool: built-in image_gen
+Export: anagram-preview-1242x2688.png (resized to match supplied reference dimensions)
+
+Use case: compositing.
+Create one polished portrait App Store promotional screenshot matching image 2, using the exact Anagram app screenshot in image 1 as the phone screen content.
+Image 1 is the supporting insert: preserve its dark UI, orange color, all labels, all tile letters and positions, timer 1:00, title ANAGRAM, Puzzle #7, T followed by six empty answer boxes, letter bank E A [empty dark tile] W / E H R, and all five buttons. Do not redesign or invent UI.
+Image 2 is the composition/style reference and edit target: preserve its blue vertical gradient from medium blue at the top to deep navy at the bottom, large centered straight-on black rounded iPhone frame with soft shadow, black dynamic island, generous top headline area, and overall margins and proportions. Replace its home screen with image 1 fitted cleanly inside the phone, keeping the entire gameplay UI visible and readable without distortion.
+Replace the headline with exact text: "Unscramble the Anagram"
+Set it in the same bold white rounded sans-serif type, centered near the top, matching image 2's headline size and spacing. One line if possible with comfortable side margins.
+Output a single flat finished marketing image, no extra scene, no extra captions, no watermark. Target portrait dimensions 1242 × 2688 matching reference 2. Preserve the reference format faithfully.

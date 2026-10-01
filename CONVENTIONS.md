@@ -417,6 +417,11 @@ or date labels; their own content identifies each game.
 The Pro Crossword card fills its grid column rather than keeping a fixed iPad
 width.
 
+Quick Crossword follows the Anagram and Midword card layout: its two-line title,
+`9×9` description, and issue number sit at the top-left, with status, score, and
+streak grouped at the bottom-right. It shares their padding and spacing and
+stacks the two regions above Large Dynamic Type, retaining left/right alignment.
+
 Home shows the complete Word of the Day entry whenever the game cards use two
 columns. It switches to the compact card button and detail sheet at the same
 size-class change that stacks the game cards. The full Home panel and sheet
