@@ -2,12 +2,17 @@ import SwiftUI
 
 struct MidwordCard: View {
     @Environment(\.horizontalSizeClass) private var sizeClass
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let puzzle: MidwordPuzzle?
     let progress: MidwordProgress?
     let isLoading: Bool
     let loadFailed: Bool
     let retry: () -> Void
     let play: () -> Void
+
+    private var appLayout: AppLayout {
+        AppLayout(sizeClass: sizeClass)
+    }
 
     var body: some View {
         Group {
@@ -23,34 +28,82 @@ struct MidwordCard: View {
     }
 
     private var cardContent: some View {
-        VStack(spacing: 14) {
+        Group {
+            if AnagramHomeCardLayout.usesStackedLayout(for: dynamicTypeSize) {
+                VStack(alignment: .leading, spacing: AnagramHomeCardLayout.columnSpacing) {
+                    identityView
+                    detailsView
+                }
+            } else {
+                HStack(alignment: .top, spacing: AnagramHomeCardLayout.columnSpacing) {
+                    identityView
+                    detailsView
+                }
+            }
+        }
+        .padding(.horizontal, AnagramHomeCardLayout.horizontalPadding)
+        .padding(.vertical, AnagramHomeCardLayout.verticalPadding)
+        .foregroundStyle(Color.midwordOnAccent)
+        .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
+        .background(Color.midwordAccent)
+    }
+
+    private var identityView: some View {
+        VStack(alignment: .leading, spacing: AnagramHomeCardLayout.identitySpacing) {
             Text("MIDWORD")
-                .font(AppFont.header(26))
+                .font(AppFont.clueLabel(appLayout.isiPad ? 28 : 24))
+                .tracking(3)
+                .lineLimit(1)
+                .minimumScaleFactor(0.35)
+
+            if let puzzle {
+                HomeCardIssueNumber(issueNumber: puzzle.puzzleNumber, color: .midwordOnAccent)
+            }
+        }
+        .frame(maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    private var detailsView: some View {
+        VStack(alignment: .trailing, spacing: AnagramHomeCardLayout.contentSpacing) {
+            Spacer(minLength: AnagramHomeCardLayout.minimumContentSpacing)
 
             if puzzle != nil {
-                StatusLabelView(status: status, textStyle: .primary)
-                    .environment(\.colorScheme, .light)
-                if let progress, progress.isComplete {
-                    Text("\(progress.releaseDateScore) / 5 points")
-                        .font(AppFont.caption())
+                statusLabel
+                HStack(spacing: AnagramHomeCardLayout.statsSpacing) {
+                    scoreLabel
                 }
             } else if isLoading {
                 ProgressView().tint(.midwordOnAccent)
             } else if loadFailed {
                 Button("Try again", action: retry)
-                    .font(AppFont.body())
+                    .font(AppFont.caption().bold())
             }
         }
-        .foregroundColor(.midwordOnAccent)
-        .multilineTextAlignment(.center)
-        .padding(AppLayout.screenPadding)
-        .frame(maxWidth: .infinity, minHeight: AppLayout(sizeClass: sizeClass).cardHeight)
-        .background(Color.midwordAccent)
-        .overlay(alignment: .topTrailing) {
-            if let puzzle {
-                HomeCardIssueNumber(issueNumber: puzzle.puzzleNumber, color: .midwordOnAccent)
-                    .padding(.trailing, HomeCardIssueNumberLayout.horizontalInset)
-                    .padding(.top, HomeCardIssueNumberLayout.topInset)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+    }
+
+    private var statusLabel: some View {
+        HStack(spacing: 4) {
+            Image(systemName: status.icon)
+                .font(.caption2)
+            Text(status.label)
+                .font(AppFont.clueLabel(11))
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 5)
+        .background(Color.midwordOnAccent.opacity(0.12))
+        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+    }
+
+    @ViewBuilder
+    private var scoreLabel: some View {
+        if let progress, progress.isComplete {
+            HStack(spacing: 4) {
+                Text("\(progress.releaseDateScore)")
+                    .font(AppFont.header(24))
+                Text("/ 5")
+                    .font(AppFont.header(12))
+                    .opacity(0.7)
             }
         }
     }

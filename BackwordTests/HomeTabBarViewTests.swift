@@ -6,7 +6,7 @@ import UIKit
 
 @Suite("Home games layout")
 struct HomeGamesLayoutTests {
-    @Test("Regular width arranges the four games in two columns")
+    @Test("Regular width arranges the five games in two columns")
     func regularWidthGames() {
         #expect(HomeGamesLayout.usesTwoColumns(for: .regular))
         #expect(HomeGamesLayout.columns(for: .regular).count == 2)
@@ -14,6 +14,7 @@ struct HomeGamesLayoutTests {
             .backword,
             .quickCrossword,
             .anagram,
+            .midword,
             .proCrossword
         ])
     }

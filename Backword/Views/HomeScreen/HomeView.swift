@@ -430,19 +430,6 @@ struct HomeView: View {
             ForEach(HomeGamesLayout.games, id: \.self) { game in
                 gameCard(for: game)
             }
-            MidwordCard(
-                puzzle: midwordService.todaysPuzzle,
-                progress: midwordProgress,
-                isLoading: midwordService.isLoading,
-                loadFailed: midwordService.loadFailed,
-                retry: { Task { await midwordService.refreshIfNeeded(force: true) } },
-                play: {
-                    cancelSettingsTipPresentation()
-                    hasOpenedDailyGameThisSession = true
-                    navigationPath.append("midword")
-                }
-            )
-            .padding(.top, 20)
         }
         .padding(.horizontal, appLayout.homeHorizontalPadding)
     }
@@ -456,10 +443,27 @@ struct HomeView: View {
             dailyCrosswordCard
         case .anagram:
             anagramCard
+        case .midword:
+            midwordCard
         case .proCrossword:
             WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
                 .environmentObject(storeService)
         }
+    }
+
+    private var midwordCard: some View {
+        MidwordCard(
+            puzzle: midwordService.todaysPuzzle,
+            progress: midwordProgress,
+            isLoading: midwordService.isLoading,
+            loadFailed: midwordService.loadFailed,
+            retry: { Task { await midwordService.refreshIfNeeded(force: true) } },
+            play: {
+                cancelSettingsTipPresentation()
+                hasOpenedDailyGameThisSession = true
+                navigationPath.append("midword")
+            }
+        )
     }
 
     @ViewBuilder
@@ -795,6 +799,7 @@ enum HomeGamesLayout {
         case backword
         case quickCrossword
         case anagram
+        case midword
         case proCrossword
     }
 

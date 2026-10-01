@@ -287,11 +287,13 @@ rating progress bar spans the screen with the same spacing above the keyboard
 as Backword. Completion reveals the answer with the same timing and Reduce
 Motion behaviour as Backword.
 
-The Midword Home card uses the shared adaptive minimum card height, issue-number
-overlay, and status badge. Empty progress is New; accepted guesses are In
+The Midword Home card matches Anagram's layout and typography: title and issue
+number at the top-left, status and completed score at the bottom-right, with
+the same spacing, padding, and stacked layout above Large Dynamic Type. It
+retains its own semantic colours, including a charcoal status badge and text.
+Empty progress is New; accepted guesses are In
 Progress; wins are Solved on the release date or Finished later; exhausted
-attempts are Failed. The badge resolves its colours in Light Mode so its dark
-label remains readable on the chartreuse card in either system appearance.
+attempts are Failed.
 
 Midword progress is saved locally first in the current guest/account namespace,
 then uploaded through the account-tagged cloud queue. Cross-device conflicts
@@ -406,8 +408,9 @@ they recognise an already-updated payload and never overwrite a divergent row.
 
 ## Home Card Appearance
 
-Home presents Backword, Quick Crossword, Anagram, and Pro Crossword in that
-order. Regular-width iPad layouts use two equal columns, while compact layouts
+Home presents Backword, Quick Crossword, Anagram, Midword, and Pro Crossword in
+that order, with the same grid spacing between every game card and no extra
+Midword padding. Regular-width iPad layouts use two equal columns, while compact layouts
 use one column. The Pro upsell follows the games when visible, with Word of the
 Day below it. The game cards have no separate daily or weekly section headings
 or date labels; their own content identifies each game.
