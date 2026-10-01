@@ -222,6 +222,12 @@ describe("GameMenu account actions", () => {
     expect(menuLayer).toBeGreaterThan(Math.max(...otherLayers));
   });
 
+  it("keeps the menu button at the top of the page so it scrolls away", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/\.bw-game-menu \{[^}]*position: absolute;[^}]*top: max\(8px, env\(safe-area-inset-top\)\)/);
+  });
+
   it("defines the phone menu as a full viewport overlay with a larger close control", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 

@@ -44,6 +44,14 @@ struct ArchiveView: View {
                         .environmentObject(ratingService)
                 }
             }
+            .navigationDestination(isPresented: $viewModel.showAnagramPuzzle) {
+                if let puzzle = viewModel.selectedAnagramPuzzle {
+                    AnagramView(puzzle: puzzle)
+                        .environmentObject(storeService)
+                        .environmentObject(adService)
+                        .environmentObject(ratingService)
+                }
+            }
             .task {
                 await viewModel.loadInitialArchive()
             }
@@ -64,7 +72,10 @@ struct ArchiveView: View {
                     }
                     .padding(.horizontal, AppLayout.screenPadding)
                     .padding(.top, 16)
-                    .padding(.bottom, 112)
+                    .padding(
+                        .bottom,
+                        ArchiveTabBarLayout.layout(for: dynamicTypeSize).archiveContentBottomPadding
+                    )
                 }
                 .onChange(of: viewModel.expandedScrollToken(for: viewModel.activeType)) { _, token in
                     guard token != nil else { return }
@@ -160,6 +171,12 @@ struct ArchiveView: View {
                     viewModel.openPuzzle(puzzle, type: .daily)
                 }
             }
+        case .anagram:
+            ForEach(content.anagramPuzzles) { puzzle in
+                AnagramArchiveRow(puzzle: puzzle) {
+                    viewModel.openAnagram(puzzle)
+                }
+            }
         case .weekly:
             ForEach(content.weeklyPuzzles) { puzzle in
                 ArchivePuzzleRow(puzzle: puzzle, isWeekly: true) {
@@ -177,6 +194,8 @@ struct ArchiveView: View {
             return ArchiveMonthContent(midwordPuzzles: viewModel.currentMidwordPuzzles)
         case .daily:
             return ArchiveMonthContent(dailyPuzzles: viewModel.currentDailyPuzzles)
+        case .anagram:
+            return ArchiveMonthContent(anagramPuzzles: viewModel.currentAnagramPuzzles)
         case .weekly:
             return ArchiveMonthContent(weeklyPuzzles: viewModel.currentWeeklyPuzzles)
         }

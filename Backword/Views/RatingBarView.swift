@@ -14,11 +14,13 @@ struct RatingBarView: View {
     let rating: OverallRating
     let isPro: Bool
     var category: RatingGameCategory? = nil
+    var accentColor: Color? = nil
+    var trackColor: Color? = nil
 
     private func pointsView(category: RatingGameCategory) -> some View {
         Text("\(rating.points(for: category))/\(rating.maxPoints(for: category))")
             .font(AppFont.clueLabel(14))
-            .foregroundColor(.accentColor)
+            .foregroundColor(accentColor ?? .accentColor)
             .monospacedDigit()
             .frame(maxWidth: .infinity, alignment: .trailing)
     }
@@ -49,11 +51,13 @@ struct RatingBarView: View {
                 RatingProgressTrack(
                     fraction: fraction,
                     style: .detailed(
-                        markerColor: tier.color,
+                        markerColor: accentColor ?? tier.color,
                         pulses: pulses,
                         markerAnimationDelay: 0.05
                     ),
-                    animates: animates
+                    animates: animates,
+                    accentColor: accentColor,
+                    trackColor: trackColor
                 )
 
                 if let category {

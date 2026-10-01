@@ -2,7 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
 import { GameMenu } from "../features/backword/components/GameMenu";
-import { backwordCloudRecord, crosswordCloudRecord, fetchCloudProgress, refreshAccountProgress } from "../features/sync/progressSync";
+import { anagramCloudRecord, backwordCloudRecord, crosswordCloudRecord, fetchCloudProgress, refreshAccountProgress } from "../features/sync/progressSync";
+import { createAnagramStorage } from "../features/anagram/storage";
+import { createAnagramRepository } from "../features/anagram/repository";
 import { createBackwordStorage } from "../features/backword/storage";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { buildPlayerProfileRating, formatProfileDate, midwordLaunchDate } from "../features/profile/profileRating";
@@ -16,6 +18,7 @@ const ratingLevels = ["Novice", "Scribe", "Linguist", "Grandmaster", "Virtuoso"]
 
 type ProfileRecords = {
   backword: Awaited<ReturnType<typeof fetchCloudProgress>>;
+  anagram: Awaited<ReturnType<typeof fetchCloudProgress>>;
   dailyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
   weeklyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
   midword: Awaited<ReturnType<typeof fetchCloudProgress>>;
@@ -38,6 +41,7 @@ export function PlayerProfilePage() {
   const [deletionSummary, setDeletionSummary] = useState<AccountDeletionSummary | null>(null);
   const [isFinishingDeletion, setIsFinishingDeletion] = useState(false);
   const [deletionFinishError, setDeletionFinishError] = useState<string | null>(null);
+  const [anagramFirstRelease, setAnagramFirstRelease] = useState(() => createAnagramStorage().firstReleaseDate());
   const userId = user?.id;
   const guestRecords = useMemo(() => userId ? null : loadLocalProfileRecords(), [userId]);
   const cachedAccountRecords = useMemo(() => userId ? loadLocalProfileRecords(userId) : null, [userId]);
@@ -47,6 +51,7 @@ export function PlayerProfilePage() {
     setIsSyncing(true);
     setSyncError(null);
     const backwordStorage = createBackwordStorage(window.localStorage, { userId });
+    const anagramStorage = createAnagramStorage(window.localStorage, { userId });
     const crosswordStorage = createCrosswordStorage(window.localStorage, { userId });
     try {
       await Promise.all([
@@ -57,6 +62,8 @@ export function PlayerProfilePage() {
           backwordStorage.loadAllProgress().map(backwordCloudRecord),
           (record) => backwordStorage.replaceProgress(record.payload)
         ),
+        refreshAccountProgress(userId, "anagram", anagramStorage.loadAllProgress().map(anagramCloudRecord),
+          (record) => anagramStorage.replaceProgress(record.payload)),
         refreshAccountProgress(
           userId,
           "daily_crossword",
@@ -64,13 +71,14 @@ export function PlayerProfilePage() {
           (record) => crosswordStorage.replaceProgress(record.payload)
         )
       ]);
-      const [backword, dailyCrossword, weeklyCrossword, midword] = await Promise.all([
+      const [backword, anagram, dailyCrossword, weeklyCrossword, midword] = await Promise.all([
         fetchCloudProgress("backword"),
+        fetchCloudProgress("anagram"),
         fetchCloudProgress("daily_crossword"),
         fetchCloudProgress("weekly_crossword"),
         fetchCloudProgress("midword")
       ]);
-      setRecords({ userId, value: { backword, dailyCrossword, weeklyCrossword, midword } });
+      setRecords({ userId, value: { backword, anagram, dailyCrossword, weeklyCrossword, midword } });
     } catch (error) {
       console.error("Account profile refresh failed", error);
       setSyncError(accountActionErrorMessage("refresh"));
@@ -83,11 +91,21 @@ export function PlayerProfilePage() {
     void refreshProfile();
   }, [refreshProfile]);
 
+  useEffect(() => {
+    let active = true;
+    try {
+      void createAnagramRepository().getFirstReleaseDate().then((date) => {
+        if (date && active) { createAnagramStorage().setFirstReleaseDate(date); setAnagramFirstRelease(date); }
+      }).catch(() => undefined);
+    } catch { /* Keep cached release metadata while offline or unconfigured. */ }
+    return () => { active = false; };
+  }, []);
+
   const isPro = user ? (entitlement?.isPro ?? false) : false;
   const profileRecords = userId
     ? records?.userId === userId ? records.value : cachedAccountRecords!
     : guestRecords!;
-  const rating = useMemo(() => buildPlayerProfileRating(profileRecords, isPro), [isPro, profileRecords]);
+  const rating = useMemo(() => buildPlayerProfileRating(profileRecords, isPro), [isPro, profileRecords, anagramFirstRelease]);
 
   async function handleSignOut() {
     setIsSigningOut(true);
@@ -173,13 +191,14 @@ export function PlayerProfilePage() {
               <h2 id="rating-breakdown-title">LAST 14 DAYS</h2>
               <div className="player-profile__table-scroll">
                 <div className={`player-profile__table${isPro ? " has-weekly" : ""}`}>
-                  <div className="player-profile__table-heading"><span>Date</span><span>Quick</span>{isPro ? <span>Weekly</span> : null}<span>Backword</span><span>Midword</span><span>Total</span></div>
+                  <div className="player-profile__table-heading"><span>Date</span><span>Quick</span>{isPro ? <span>Weekly</span> : null}<span>Backword</span><span>Anagram</span><span>Midword</span><span>Total</span></div>
                   {rating.days.map((day, index) => (
                     <div className="player-profile__table-row" key={day.date}>
                       <span>{formatProfileDate(day.date)}{index === 0 ? <small>TODAY</small> : null}</span>
                       <ScoreChip score={day.dailyCrossword} />
                       {isPro ? day.weeklyCrossword === null ? <span className="player-profile__empty-score">—</span> : <ScoreChip score={day.weeklyCrossword} /> : null}
                       <ScoreChip score={day.backword} />
+                      <ScoreChip score={day.anagram} />
                       {day.date >= midwordLaunchDate ? <ScoreChip score={day.midword} /> : <span className="player-profile__empty-score">—</span>}
                       <strong className={day.total === 0 ? "is-zero" : ""}>{day.total}</strong>
                     </div>
@@ -224,6 +243,7 @@ function ScoringDetailsContent() {
     <ScoringRule rows={[["100% complete", "5 pts"], ["75–99% complete", "4 pts"], ["50–74% complete", "3 pts"], ["25–49% complete", "2 pts"], ["1–24% complete", "1 pt"], ["Missed", "0 pts"]]} title="Quick & Weekly Crossword" />
     <p>− 1 point deducted for every 3 hints used</p>
     <ScoringRule rows={[["Win in 1 guess", "5 pts"], ["Win in 2 guesses", "4 pts"], ["Win in 3 guesses", "3 pts"], ["Win in 4 guesses", "2 pts"], ["Win in 5 guesses", "1 pt"], ["Loss or missed", "0 pts"]]} title="Backword" />
+    <ScoringRule rows={[["Under 30 seconds", "5 pts"], ["Under 60 seconds", "4 pts"], ["Under 120 seconds", "3 pts"], ["Under 180 seconds", "2 pts"], ["180 seconds or more", "1 pt"], ["Give up or missed", "0 pts"]]} title="Anagram" />
   </div>;
 }
 

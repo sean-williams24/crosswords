@@ -1,5 +1,14 @@
 # BackWord
 
+## Anagram
+
+Home shows only the validated Anagram for the current local release date after
+it has been fetched or cached. The bundled DEBUG review puzzle remains available
+for SwiftUI previews and isolated development tests, but is not a second Home
+screen game. See [the v1 contract](docs/anagram-contract-v1.md),
+[release sequence](docs/anagram-release.md), and
+[backend content guide](Backend/ANAGRAM.md).
+
 ## Historical Backword clue repairs
 
 `Backend/repair_backword_clues.py` repairs released Backword archive clues using

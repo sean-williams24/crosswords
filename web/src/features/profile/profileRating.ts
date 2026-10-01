@@ -21,6 +21,7 @@ export type PlayerProfileDay = {
   weeklyCrossword: number | null;
   backword: number;
   midword: number;
+  anagram: number;
   total: number;
 };
 
@@ -83,6 +84,7 @@ export function buildPlayerProfileRating(
     dailyCrossword: ProfileProgress[];
     weeklyCrossword: ProfileProgress[];
     midword?: ProfileProgress[];
+    anagram?: ProfileProgress[];
   },
   isPro: boolean,
   now = new Date()
@@ -94,9 +96,13 @@ export function buildPlayerProfileRating(
   const backwordScores = backwordScoreMap(records.backword, visibleDates);
   const weeklyScores = scoreMap(records.weeklyCrossword, visibleDates);
   const midwordScores = scoreMap(records.midword ?? [], visibleDates);
+  const firstRelease = typeof window !== "undefined" ? window.localStorage.getItem("backword:web:anagram:first-release:v1") : null;
+  const releasedAnagramDates = new Set(dates.filter((date) => firstRelease !== null && date >= firstRelease));
+  const anagramScores = scoreMap(records.anagram ?? [], releasedAnagramDates);
   const days = dates.map((date) => {
     const dailyCrossword = dailyScores.get(date) ?? 0;
     const backword = backwordScores.get(date) ?? 0;
+    const anagram = anagramScores.get(date) ?? 0;
     const midword = date >= midwordLaunchDate ? midwordScores.get(date) ?? 0 : 0;
     const weeklyCrossword = isPro ? weeklyScores.get(date) ?? null : null;
     return {
@@ -104,11 +110,13 @@ export function buildPlayerProfileRating(
       dailyCrossword,
       weeklyCrossword,
       backword,
+      anagram,
       midword,
-      total: dailyCrossword + backword + midword + (weeklyCrossword ?? 0)
+      total: dailyCrossword + backword + anagram + midword + (weeklyCrossword ?? 0)
     };
   });
-  const maxPoints = 140 + (isPro ? 10 : 0) + dates.filter((date) => date >= midwordLaunchDate).length * 5;
+  const anagramPossiblePoints = firstRelease ? dates.filter((date) => date >= firstRelease).length * 5 : 0;
+  const maxPoints = 140 + (isPro ? 10 : 0) + anagramPossiblePoints + dates.filter((date) => date >= midwordLaunchDate).length * 5;
   const totalPoints = days.reduce((total, day) => total + day.total, 0);
   const fraction = Math.min(totalPoints / maxPoints, 1);
   const tier = [...tierThresholds].reverse().find(([, threshold]) => fraction >= threshold)?.[0] ?? "Novice";

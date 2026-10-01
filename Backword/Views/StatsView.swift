@@ -8,6 +8,7 @@ struct StatsView: View {
     private var winRate: Int?
     private var totalCompleted: Int
     private var averageTimeSeconds: String?
+    private var usesAnagramColors = false
 
     init(stats: BackwordStats) {
         currentStreak = stats.currentStreak
@@ -33,6 +34,19 @@ struct StatsView: View {
         averageTimeSeconds = displayedAverageTime
     }
 
+    init(anagram history: AnagramStatsHistory) {
+        currentStreak = history.currentStreak
+        longestStreak = history.bestStreak
+        totalCompleted = history.totalSolved
+        averageTimeSeconds = history.averageSolveTime
+        usesAnagramColors = true
+    }
+
+    private var surfaceColor: Color { usesAnagramColors ? .anagramSurface : .appSurface }
+    private var primaryColor: Color { usesAnagramColors ? .anagramInk : .appTextPrimary }
+    private var secondaryColor: Color { usesAnagramColors ? .anagramOrange : .appTextSecondary }
+    private var dividerColor: Color { usesAnagramColors ? .anagramOrange : .appGridLine }
+
     var body: some View {
         summaryRow
     }
@@ -45,7 +59,7 @@ struct StatsView: View {
         }
         .padding(.vertical, 20)
         .padding(.horizontal, 16)
-        .background(Color.appSurface)
+        .background(surfaceColor)
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
@@ -110,7 +124,7 @@ struct StatsView: View {
 
     private var divider: some View {
         Rectangle()
-            .fill(Color.appGridLine.opacity(0.5))
+            .fill(dividerColor.opacity(0.5))
             .frame(width: 1, height: 40)
     }
 
@@ -121,11 +135,11 @@ struct StatsView: View {
         VStack(spacing: 4) {
             Text(value)
                 .font(AppFont.header(28))
-                .foregroundColor(.appTextPrimary)
+                .foregroundColor(primaryColor)
                 .fixedSize(horizontal: true, vertical: false)
             Text(label)
                 .font(AppFont.clueLabel(11))
-                .foregroundColor(.appTextSecondary)
+                .foregroundColor(secondaryColor)
                 .tracking(1)
                 .lineLimit(2)
                 .fixedSize(horizontal: true, vertical: false)

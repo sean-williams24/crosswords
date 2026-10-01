@@ -100,6 +100,7 @@ enum ArchiveGameType: String, CaseIterable, Codable, Hashable {
     case backword
     case midword
     case daily
+    case anagram
     case weekly
 }
 
@@ -108,6 +109,7 @@ struct ArchiveMonthContent: Equatable {
     var weeklyPuzzles: [Puzzle] = []
     var backwordWords: [BackwordWord] = []
     var midwordPuzzles: [MidwordPuzzle] = []
+    var anagramPuzzles: [AnagramPuzzle] = []
 
     func isEmpty(for type: ArchiveGameType) -> Bool {
         switch type {
@@ -117,6 +119,8 @@ struct ArchiveMonthContent: Equatable {
             return midwordPuzzles.isEmpty
         case .daily:
             return dailyPuzzles.isEmpty
+        case .anagram:
+            return anagramPuzzles.isEmpty
         case .weekly:
             return weeklyPuzzles.isEmpty
         }

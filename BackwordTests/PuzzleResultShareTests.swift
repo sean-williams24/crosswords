@@ -6,17 +6,18 @@ import Testing
 struct PuzzleResultShareTests {
     @Test("Backword result is spoiler-safe and links to its exact issue")
     func backwordResultIsSpoilerSafe() {
-        var progress = BackwordProgress(date: "2026-09-16")
+        let today = ContentReleaseCalendar().dailyDateString
+        var progress = BackwordProgress(date: today)
         progress.guesses = ["CASTLE"]
         progress.wonFlag = true
         progress.completedAt = Date(timeIntervalSince1970: 1_789_593_840)
 
         var rating = OverallRating()
-        rating.upsertBackword(score: 5, date: "2026-09-16")
+        rating.upsertBackword(score: 5, date: today)
         var stats = BackwordStats()
         stats.gamesWon = 3
         stats.currentStreak = 3
-        stats.lastCompletedDate = "2026-09-16"
+        stats.lastCompletedDate = today
 
         let word = BackwordWord(
             id: "word-id",
@@ -39,7 +40,7 @@ struct PuzzleResultShareTests {
         #expect(result.streak == 3)
         #expect(result.totalGamesSolved == 3)
         #expect(result.primaryStat == .init(label: "ATTEMPTS", value: "1/5"))
-        #expect(result.shareURL.absoluteString == "https://www.playbackword.com/backword/2026-09-16?utm_source=share&utm_medium=social&utm_campaign=completed_puzzle")
+        #expect(result.shareURL.absoluteString == "https://www.playbackword.com/backword/\(today)?utm_source=share&utm_medium=social&utm_campaign=completed_puzzle")
         #expect(result.caption.contains("CASTLE") == false)
         #expect(result.caption.contains("fortress") == false)
         #expect(result.caption.contains("word-id") == false)
@@ -103,8 +104,45 @@ struct PuzzleResultShareTests {
         #expect(result.game == PuzzleShareResult.Game.weeklyCrossword)
         #expect(result.score == 4)
         #expect(result.totalGamesSolved == 1)
-        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "SOLVE TIME", value: "01:23"))
+        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "SOLVE TIME", value: "1:23"))
         #expect(result.shareURL.path == "/weekly-crossword/2026-09-14")
+    }
+
+    @Test("Anagram result reports its score and stays spoiler-safe")
+    func anagramResultReportsStats() {
+        let date = AnagramProgress.localDay(Date())
+        let puzzle = AnagramPuzzle(
+            id: "anagram-id", date: date, puzzleNumber: 8, schemaVersion: 1,
+            answer: "TRIANGLE", acceptedAnswers: [], initialScramble: "RAGTLINE"
+        )
+        var progress = AnagramProgress(puzzle: puzzle)
+        progress.outcome = .solved
+        progress.completedAt = Date()
+        progress.elapsedSecondsAtCompletion = 45
+        progress.releaseDateScore = 4
+        let history = AnagramStatsHistory(
+            rows: [], currentStreak: 2, bestStreak: 3,
+            totalSolved: 6, averageSolveTime: "0:45"
+        )
+        var rating = OverallRating()
+        rating.upsertAnagram(score: 4, date: date)
+
+        let result = PuzzleShareResult.anagram(
+            completion: AnagramCompletion(puzzle: puzzle, progress: progress),
+            history: history,
+            rating: rating,
+            isPro: false
+        )
+
+        #expect(result.game == .anagram)
+        #expect(result.issueLabel == "Anagram #8")
+        #expect(result.score == 4)
+        #expect(result.streak == 2)
+        #expect(result.totalGamesSolved == 6)
+        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "SOLVE TIME", value: "0:45"))
+        #expect(result.shareURL.path == "/anagram/\(date)")
+        #expect(result.caption.contains("TRIANGLE") == false)
+        #expect(result.caption.contains("RAGTLINE") == false)
     }
 
     @Test("A one-point result uses the singular score label")
@@ -138,10 +176,11 @@ struct PuzzleResultShareTests {
         #expect(completionTime == "12:00 AM")
     }
 
-    @Test("Backword and Pro Crossword share cards always use a dark appearance")
+    @Test("Backword, Anagram, and Pro Crossword share cards always use a dark appearance")
     func darkShareCardAppearance() {
         #expect(PuzzleShareResult.Game.weeklyCrossword.usesDarkShareCardAppearance)
         #expect(PuzzleShareResult.Game.backword.usesDarkShareCardAppearance)
+        #expect(PuzzleShareResult.Game.anagram.usesDarkShareCardAppearance)
         #expect(!PuzzleShareResult.Game.dailyCrossword.usesDarkShareCardAppearance)
     }
 

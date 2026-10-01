@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "./App";
 import { ThemeProvider } from "./features/theme/ThemeProvider";
@@ -23,7 +23,7 @@ describe("Backword website routes", () => {
   it("renders the game dashboard at /", () => {
     renderRoute("/");
 
-    expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Games" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent("Loading daily games");
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
@@ -37,13 +37,49 @@ describe("Backword website routes", () => {
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
   });
 
+  it("renders the playable Anagram route", () => {
+    renderRoute("/anagram");
+
+    expect(screen.getByRole("heading", { level: 1, name: "ANAGRAM" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Anagram stats" })).toHaveTextContent("🧠");
+    expect(screen.getByRole("button", { name: "How to play Anagram" })).toHaveTextContent("ⓘ");
+    expect(screen.queryByLabelText("Backword home")).not.toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
+  });
+
+  it("provides an in-memory Anagram review puzzle in development", async () => {
+    renderRoute("/anagram/review");
+
+    const reviewLabel = await screen.findByText("Review puzzle");
+    expect(reviewLabel).toBeInTheDocument();
+    expect(reviewLabel.closest("main")).toHaveClass("anagram-main--8");
+    expect(screen.getByRole("button", { name: "Start" })).toBeInTheDocument();
+  });
+
+  it("dismisses the Anagram information tip from its close button", async () => {
+    renderRoute("/anagram/review");
+
+    expect(await screen.findByRole("tooltip")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Close tooltip" }));
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
+
+  it("dismisses the Anagram information tip when the page is tapped", async () => {
+    renderRoute("/anagram/review");
+
+    expect(await screen.findByRole("tooltip")).toBeInTheDocument();
+    fireEvent.click(document.body);
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
+
   it("keeps the marketing page and footer links at /info", () => {
     renderRoute("/info");
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Backword" })
     ).toBeInTheDocument();
-    expect(screen.getByLabelText("Download Backword on the App Store")).toHaveAttribute(
+    expect(screen.getByLabelText("Download Backword on the App Store from footer")).toHaveAttribute(
       "href",
       "https://apps.apple.com/app/backword/id6773428497"
     );
@@ -52,6 +88,7 @@ describe("Backword website routes", () => {
     expect(footerLinks.map((link) => link.textContent)).toEqual([
       "Home",
       "Backword",
+      "Anagram",
       "Crossword",
       "Pro Crossword",
       "Archive",
@@ -66,6 +103,7 @@ describe("Backword website routes", () => {
     expect(footerLinks.map((link) => link.getAttribute("href"))).toEqual([
       "/",
       "/backword",
+      "/anagram",
       "/crossword",
       "/pro?return_to=%2Fweekly-crossword",
       "/pro?return_to=%2Farchive",
@@ -77,10 +115,10 @@ describe("Backword website routes", () => {
       "/privacy-choices",
       "/terms"
     ]);
-    expect(screen.getAllByRole("link", { name: /Play.*Backword/i }).length).toBeGreaterThan(1);
+    expect(screen.getAllByRole("link", { name: "Play" }).length).toBeGreaterThan(1);
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Play today’s Backword" })).toHaveAttribute(
+    expect(screen.getAllByRole("link", { name: "Play" })[0]).toHaveAttribute(
       "href",
       "/backword"
     );
@@ -115,7 +153,7 @@ describe("Backword website routes", () => {
   it("redirects the previous dashboard URL to the home page", () => {
     renderRoute("/home");
 
-    expect(screen.getByRole("heading", { level: 1, name: "Daily Games" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Games" })).toBeInTheDocument();
   });
 
   it("keeps marketing section text before screenshots in mobile source order", () => {

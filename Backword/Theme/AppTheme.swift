@@ -29,6 +29,8 @@ extension Color {
     static let appTextSecondary = Color("TextSecondary")
     static let dailyCardBackground = Color("DailyCardBackground")
     static let dailyCardTitle = Color("DailyCardTitle")
+    static let dailyCardDescription = Color("DailyCardDescription")
+    static let homeCardBrightnessOverlay = Color.white
     static let solvedGold = Color("SolvedGold")
     static let appCrosswordBackground = Color("CrosswordBackground")
     static let backwordBackground = Color("BackwordBackground")
@@ -41,6 +43,11 @@ extension Color {
     static let midwordAccent = Color("MidwordAccent")
     static let midwordText = Color("MidwordText")
     static let midwordOnAccent = Color("MidwordOnAccent")
+    static let anagramOrange = Color("AnagramOrange")
+    static let anagramHomeCardBackground = Color("AnagramHomeCardBackground")
+    static let anagramSurface = Color("AnagramSurface")
+    static let anagramInk = Color("AnagramInk")
+    static let anagramOnOrange = Color("AnagramOnOrange")
 }
 
 enum AppGradient {
@@ -89,6 +96,10 @@ enum HomeCardBadgeBorderStyle: Equatable {
 
 enum HomeCardAppearance {
     static let lightModeBrightnessOverlayOpacity = 0.1
+
+    static func backgroundColorScheme(for systemColorScheme: ColorScheme) -> ColorScheme {
+        systemColorScheme
+    }
 
     static func shouldBrightenBackground(for colorScheme: ColorScheme) -> Bool {
         colorScheme == .light
@@ -155,6 +166,16 @@ struct AppLayout {
     static let cardHeightLarge: CGFloat = 194
     static let screenPadding: CGFloat = 20
     static let screenPaddingLarge: CGFloat = 45
+    static let anagramAnswerTileSpacing: CGFloat = 6
+    static let anagramTrayTileSpacing: CGFloat = 8
+    static let anagramBottomDockInset: CGFloat = 40
+    static let anagramTrayPreferredTileSize: CGFloat = 52
+    static let anagramTraySizingColumns = 5
+    static let statsHistoryRowInset: CGFloat = 14
+    static let statsHistoryScoreColumnWidth: CGFloat = 50
+    static let statsHistoryAccessibleScoreColumnWidth: CGFloat = 60
+    static let statsHistoryTimeColumnWidth: CGFloat = 72
+    static let statsHistoryScoreChipSize: CGFloat = 24
     static let dailyCompletionGridWidth: CGFloat = 238
     static let weeklyCompletionGridWidth: CGFloat = 286
     static let completionGridSpacing: CGFloat = 2

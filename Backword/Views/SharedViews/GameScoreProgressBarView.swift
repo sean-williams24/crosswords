@@ -40,6 +40,8 @@ struct RatingProgressTrack: View {
     let fraction: Double
     let style: Style
     let animates: Bool
+    var accentColor: Color? = nil
+    var trackColor: Color? = nil
 
     private var clampedFraction: CGFloat {
         CGFloat(min(max(fraction, 0), 1))
@@ -53,12 +55,14 @@ struct RatingProgressTrack: View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 Rectangle()
-                    .fill(style.trackColor)
+                    .fill(trackColor ?? style.trackColor)
                     .frame(height: 8)
                     .cornerRadius(style.cornerRadius)
 
                 Rectangle()
-                    .fill(Self.barGradient)
+                    .fill(accentColor.map {
+                        LinearGradient(colors: [$0.opacity(0.7), $0], startPoint: .leading, endPoint: .trailing)
+                    } ?? Self.barGradient)
                     .frame(height: 8)
                     .cornerRadius(style.cornerRadius)
                     .mask(alignment: .leading) {

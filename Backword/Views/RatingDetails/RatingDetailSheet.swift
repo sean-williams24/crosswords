@@ -20,6 +20,7 @@ struct RatingDetailSheet: View {
 
     private var tier: RatingTier { rating.tier(isPro: isPro) }
     private var fraction: Double { rating.fraction(isPro: isPro) }
+    private var anagramReleased: Bool { UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate") != nil }
     
     // Full 14-day calendar, most recent first. Days with no recorded activity default to zero scores.
     private var recentDays: [DailyScore] {
@@ -281,7 +282,7 @@ struct RatingDetailSheet: View {
         if useHorizontalScroll {
             ScrollView(.horizontal, showsIndicators: true) {
                 tableViewContent(isScrolling: true)
-                    .frame(minWidth: isPro ? 500 : 450)
+                    .frame(minWidth: isPro ? 560 : 520)
             }
         } else {
             tableViewContent(isScrolling: false)
@@ -309,6 +310,10 @@ struct RatingDetailSheet: View {
 
                 Text("Midword")
                     .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
+                if anagramReleased {
+                    Text("Anagram")
+                        .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
+                }
 
                 Text("Total")
                     .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
@@ -339,7 +344,7 @@ struct RatingDetailSheet: View {
 
     private func breakdownRow(day: DailyScore, isScrolling: Bool) -> some View {
         let weeklyScore = isPro ? (day.weeklyCrossword ?? 0) : 0
-        let total = day.dailyCrossword + weeklyScore + day.backword + day.midword
+        let total = day.dailyCrossword + weeklyScore + day.backword + day.midword + day.anagram
         let isToday = day.date == ContentReleaseCalendar().dailyDateString
         let hasWeekly = day.weeklyCrossword != nil
 
@@ -383,6 +388,10 @@ struct RatingDetailSheet: View {
             } else {
                 Text("—")
                     .foregroundColor(.appTextSecondary)
+                    .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
+            }
+            if anagramReleased {
+                ScoreChipView(score: day.anagram)
                     .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
             }
 

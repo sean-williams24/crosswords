@@ -10,17 +10,20 @@ struct DailyScore: Codable {
     var backword: Int         // 0–5
     var midword: Int = 0     // 0–5; absent in ratings saved before Midword
 
-    var total: Int { dailyCrossword + (weeklyCrossword ?? 0) + backword + midword }
+    var anagram: Int = 0
 
-    init(date: String, dailyCrossword: Int, weeklyCrossword: Int?, backword: Int, midword: Int = 0) {
+    var total: Int { dailyCrossword + (weeklyCrossword ?? 0) + backword + midword + anagram }
+
+    init(date: String, dailyCrossword: Int, weeklyCrossword: Int?, backword: Int, midword: Int = 0, anagram: Int = 0) {
         self.date = date
         self.dailyCrossword = dailyCrossword
         self.weeklyCrossword = weeklyCrossword
         self.backword = backword
         self.midword = midword
+        self.anagram = anagram
     }
 
-    enum CodingKeys: String, CodingKey { case date, dailyCrossword, weeklyCrossword, backword, midword }
+    enum CodingKeys: String, CodingKey { case date, dailyCrossword, weeklyCrossword, backword, midword, anagram }
 
     init(from decoder: Decoder) throws {
         let data = try decoder.container(keyedBy: CodingKeys.self)
@@ -29,6 +32,7 @@ struct DailyScore: Codable {
         weeklyCrossword = try data.decodeIfPresent(Int.self, forKey: .weeklyCrossword)
         backword = try data.decode(Int.self, forKey: .backword)
         midword = try data.decodeIfPresent(Int.self, forKey: .midword) ?? 0
+        anagram = try data.decodeIfPresent(Int.self, forKey: .anagram) ?? 0
     }
 }
 
@@ -37,6 +41,7 @@ struct DailyScore: Codable {
 enum RatingGameCategory: String, CaseIterable {
     case backword
     case midword
+    case anagram
     case dailyCrossword
     case weeklyCrossword
 
@@ -46,6 +51,8 @@ enum RatingGameCategory: String, CaseIterable {
             return "Backword"
         case .midword:
             return "Midword"
+        case .anagram:
+            return "Anagram"
         case .dailyCrossword:
             return "Quick crossword"
         case .weeklyCrossword:
@@ -55,7 +62,7 @@ enum RatingGameCategory: String, CaseIterable {
 
     var maxPoints: Int {
         switch self {
-        case .backword, .midword, .dailyCrossword:
+        case .backword, .midword, .anagram, .dailyCrossword:
             return 14 * 5
         case .weeklyCrossword:
             return 2 * 5
@@ -164,18 +171,31 @@ struct OverallRating: Codable {
         window.reduce(0) { $0 + scoreFor($1, isPro: isPro) }
     }
 
-    func maxPoints(isPro: Bool) -> Int {
+    func maxPoints(
+        isPro: Bool, now: Date = Date(), calendar: Calendar = .current,
+        firstAnagramRelease: String? = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+    ) -> Int {
         // Quick Crossword + Backword every day = 10 pts/day
         // Pro users also get up to 2 weekly puzzles in a 14-day window = 10 pts
         let dailyMax = Self.windowDays * 5 * 2   // 140
         let weeklyMax = isPro ? 2 * 5 : 0        // 10 or 0
-        let range = Self.windowDateRange()
+        let range = Self.windowDateRange(now: now, calendar: calendar)
         let midwordDays = Self.midwordEligibleDays(in: range)
-        return dailyMax + weeklyMax + midwordDays * 5
+        return dailyMax + weeklyMax + midwordDays * 5 + Self.anagramPossiblePoints(
+            now: now, calendar: calendar, firstRelease: firstAnagramRelease
+        )
     }
 
-    func fraction(isPro: Bool) -> Double {
-        let max = maxPoints(isPro: isPro)
+    func fraction(
+        isPro: Bool, now: Date = Date(), calendar: Calendar = .current,
+        firstAnagramRelease: String? = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+    ) -> Double {
+        let max = maxPoints(
+            isPro: isPro,
+            now: now,
+            calendar: calendar,
+            firstAnagramRelease: firstAnagramRelease
+        )
         guard max > 0 else { return 0 }
         return min(Double(totalPoints(isPro: isPro)) / Double(max), 1.0)
     }
@@ -188,6 +208,8 @@ struct OverallRating: Codable {
                 score = day.backword
             case .midword:
                 score = day.midword
+            case .anagram:
+                score = day.anagram
             case .dailyCrossword:
                 score = day.dailyCrossword
             case .weeklyCrossword:
@@ -206,6 +228,7 @@ struct OverallRating: Codable {
         switch category {
         case .backword: return day.backword
         case .midword: return day.midword
+        case .anagram: return day.anagram
         case .dailyCrossword: return day.dailyCrossword
         case .weeklyCrossword: return day.weeklyCrossword ?? 0
         }
@@ -228,8 +251,16 @@ struct OverallRating: Codable {
         } ?? .novice
     }
 
-    func tier(isPro: Bool) -> RatingTier {
-        let f = fraction(isPro: isPro)
+    func tier(
+        isPro: Bool, now: Date = Date(), calendar: Calendar = .current,
+        firstAnagramRelease: String? = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+    ) -> RatingTier {
+        let f = fraction(
+            isPro: isPro,
+            now: now,
+            calendar: calendar,
+            firstAnagramRelease: firstAnagramRelease
+        )
         return RatingTier.allCases.reversed().first { $0.threshold <= f } ?? .novice
     }
 
@@ -238,6 +269,7 @@ struct OverallRating: Codable {
             + (isPro ? Self.clampScore(day.weeklyCrossword ?? 0) : 0)
             + Self.clampScore(day.backword)
             + (day.date >= Self.midwordLaunchDate ? Self.clampScore(day.midword) : 0)
+            + Self.clampScore(day.anagram)
     }
 
     // MARK: - Mutation
@@ -257,6 +289,10 @@ struct OverallRating: Codable {
     mutating func upsertMidword(score: Int, date: String) {
         guard date >= Self.midwordLaunchDate else { return }
         upsert(date: date) { $0.midword = Self.clampScore(score) }
+    }
+
+    mutating func upsertAnagram(score: Int, date: String) {
+        upsert(date: date) { $0.anagram = Self.clampScore(score) }
     }
 
     private mutating func upsert(date: String, update: (inout DailyScore) -> Void) {
@@ -288,6 +324,7 @@ struct OverallRating: Codable {
                 existing.dailyCrossword = max(existing.dailyCrossword, normalized.dailyCrossword)
                 existing.backword = max(existing.backword, normalized.backword)
                 existing.midword = max(existing.midword, normalized.midword)
+                existing.anagram = max(existing.anagram, normalized.anagram)
                 switch (existing.weeklyCrossword, normalized.weeklyCrossword) {
                 case let (existingScore?, normalizedScore?):
                     existing.weeklyCrossword = max(existingScore, normalizedScore)
@@ -308,7 +345,8 @@ struct OverallRating: Codable {
             dailyCrossword: clampScore(day.dailyCrossword),
             weeklyCrossword: day.weeklyCrossword.map(clampScore),
             backword: clampScore(day.backword),
-            midword: clampScore(day.midword)
+            midword: clampScore(day.midword),
+            anagram: clampScore(day.anagram)
         )
     }
 
@@ -326,6 +364,18 @@ struct OverallRating: Codable {
         guard let start = formatter.date(from: first),
               let end = formatter.date(from: range.today) else { return 0 }
         return min(windowDays, max(0, formatter.calendar.dateComponents([.day], from: start, to: end).day ?? 0) + 1)
+    }
+
+    static func anagramPossiblePoints(
+        now: Date = Date(), calendar: Calendar = .current,
+        firstRelease: String? = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+    ) -> Int {
+        guard let firstRelease else { return 0 }
+        let releaseCalendar = ContentReleaseCalendar(now: now, calendar: calendar)
+        return (0..<windowDays).reduce(0) { total, offset in
+            guard let day = releaseCalendar.dailyDateString(offsetByDays: -offset), day >= firstRelease else { return total }
+            return total + 5
+        }
     }
 
     static func windowDateRange(

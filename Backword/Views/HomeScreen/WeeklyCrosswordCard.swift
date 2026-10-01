@@ -102,7 +102,7 @@ struct WeeklyCrosswordCard: View {
                 .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
                 .padding(.bottom, 10)
         }
-        .frame(maxWidth: isIpad ? 400 : .infinity, minHeight: appLayout.cardHeight)
+        .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(
             Color.appSurface.overlay(
                 proGradient.opacity(0.02)

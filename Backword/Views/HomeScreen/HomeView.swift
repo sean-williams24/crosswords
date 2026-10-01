@@ -14,7 +14,9 @@ struct HomeView: View {
     @StateObject private var backwordService = BackwordService()
     @StateObject private var midwordService = MidwordService()
     @State private var midwordProgress: MidwordProgress?
+    @StateObject private var anagramService = AnagramService()
     @StateObject private var backwordStatsService = BackwordStatsService()
+    @State private var anagramProgressRecords: [AnagramProgress] = []
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.launchSplashDidComplete) private var launchSplashDidComplete
     @Environment(\.horizontalSizeClass) var sizeClass
@@ -56,9 +58,11 @@ struct HomeView: View {
         await wotdService.refreshIfNeeded()
         await backwordService.refreshIfNeeded()
         await midwordService.refreshIfNeeded()
-        refreshMidwordProgress()
+        await anagramService.refreshIfNeeded()
         await viewModel.prefetchCurrentArchiveMonthIfNeeded()
         backwordStatsService.refresh()
+        refreshMidwordProgress()
+        refreshAnagramCardProgress()
         ratingService.refresh()
         ratingService.recordCurrentPuzzles(
             daily: viewModel.todaysPuzzle,
@@ -82,9 +86,11 @@ struct HomeView: View {
             await wotdService.refreshIfNeeded()
             await backwordService.refreshIfNeeded()
             await midwordService.refreshIfNeeded()
-            refreshMidwordProgress()
+            await anagramService.refreshIfNeeded()
             await viewModel.prefetchCurrentArchiveMonthIfNeeded()
             backwordStatsService.refresh()
+            refreshMidwordProgress()
+            refreshAnagramCardProgress()
             ratingService.refresh()
         }
     }
@@ -111,10 +117,15 @@ struct HomeView: View {
                         .padding(.horizontal, appLayout.homeHorizontalPadding)
                         .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
 
-                        dailyGamesView
+                        gamesGrid
                         adFreeExperienceButton
-                        wotd
-                        weeklyGamesView
+                        HomeWordOfTheDayView(
+                            word: wotdService.todaysWord,
+                            showsInlineDetails: HomeGamesLayout.usesTwoColumns(for: sizeClass)
+                        ) {
+                            showWOTD = true
+                        }
+                        .padding(.horizontal, appLayout.homeHorizontalPadding)
                     }
                     .padding(.top, 16)
                     .padding(.bottom, 100)
@@ -130,36 +141,59 @@ struct HomeView: View {
             .ignoresSafeArea(.keyboard)
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: String.self) { destination in
-                if destination == "weekly",
-                   let puzzle = viewModel.weeklyPuzzle {
-                    PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
-                        .environmentObject(statsService)
-                        .environmentObject(storeService)
-                        .environmentObject(adService)
-                        .environmentObject(ratingService)
-                } else if destination == "backword",
-                          let word = backwordService.todaysWord {
-                    BackwordView(word: word)
-                        .environmentObject(storeService)
-                        .environmentObject(adService)
-                        .environmentObject(ratingService)
-                } else if destination == "midword",
-                          let puzzle = midwordService.todaysPuzzle {
-                    MidwordView(puzzle: puzzle)
-                        .environmentObject(ratingService)
-                } else if destination == "puzzle",
-                          let puzzle = viewModel.todaysPuzzle {
-                    PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
-                        .environmentObject(statsService)
-                        .environmentObject(storeService)
-                        .environmentObject(adService)
-                        .environmentObject(ratingService)
-                }
+                navigationDestination(for: destination)
             }
         }
     }
 
-    private var homePresentationView: some View {
+    @ViewBuilder
+    private func navigationDestination(for destination: String) -> some View {
+        switch destination {
+        case "weekly":
+            if let puzzle = viewModel.weeklyPuzzle {
+                crosswordDestination(puzzle: puzzle)
+            }
+        case "backword":
+            if let word = backwordService.todaysWord {
+                BackwordView(word: word)
+                    .environmentObject(storeService)
+                    .environmentObject(adService)
+                    .environmentObject(ratingService)
+            }
+        case "midword":
+            if let puzzle = midwordService.todaysPuzzle {
+                MidwordView(puzzle: puzzle)
+                    .environmentObject(ratingService)
+            }
+        case "anagram":
+            if let puzzle = anagramService.todaysPuzzle {
+                anagramDestination(puzzle: puzzle)
+            }
+        case "puzzle":
+            if let puzzle = viewModel.todaysPuzzle {
+                crosswordDestination(puzzle: puzzle)
+            }
+        default:
+            EmptyView()
+        }
+    }
+
+    private func crosswordDestination(puzzle: Puzzle) -> some View {
+        PuzzleView(viewModel: GameViewModel(puzzle: puzzle))
+            .environmentObject(statsService)
+            .environmentObject(storeService)
+            .environmentObject(adService)
+            .environmentObject(ratingService)
+    }
+
+    private func anagramDestination(puzzle: AnagramPuzzle) -> some View {
+        AnagramView(puzzle: puzzle)
+            .environmentObject(storeService)
+            .environmentObject(adService)
+            .environmentObject(ratingService)
+    }
+
+    private var primaryPresentationView: some View {
         homeNavigationView
             .fullScreenCover(isPresented: $showArchive) {
                 ArchiveView()
@@ -178,11 +212,20 @@ struct HomeView: View {
                     showRatingDetails = false
                 }
             }
+    }
+
+    private var settingsPresentationView: some View {
+        primaryPresentationView
             #if DEBUG
-            .sheet(isPresented: $showDebugSettings) {
+            .sheet(isPresented: $showDebugSettings, onDismiss: {
+                refreshMidwordProgress()
+                refreshAnagramCardProgress()
+                ratingService.refresh()
+            }) {
                 DebugSettingsView(homeViewModel: viewModel)
                     .environmentObject(storeService)
                     .environmentObject(backwordService)
+                    .environmentObject(anagramService)
                     .environmentObject(adService)
                     .environmentObject(wotdService)
                     .environmentObject(accountService)
@@ -208,6 +251,10 @@ struct HomeView: View {
                 }
                     .environmentObject(accountService)
             }
+    }
+
+    private var homePresentationView: some View {
+        settingsPresentationView
             .sheet(isPresented: $showWOTD) {
                 if let word = wotdService.todaysWord {
                     WOTDDetailView(word: word)
@@ -226,7 +273,7 @@ struct HomeView: View {
             }
     }
 
-    private var homeLifecycleView: some View {
+    private var homeTaskView: some View {
         homePresentationView
             .task {
                 await refreshHomeContent()
@@ -234,18 +281,11 @@ struct HomeView: View {
             .task {
                 await refreshHomeContentAtMidnight()
             }
-            .onAppear {
-                logoVisible = false
-                proLogoVisible = false
-                updateSettingsTipReadiness()
-                animateLogo()
-                Task {
-                    await viewModel.refreshIfNeeded()
-                    await viewModel.prefetchCurrentArchiveMonthIfNeeded()
-                    backwordStatsService.refresh()
-                    refreshMidwordProgress()
-                }
-            }
+            .onAppear(perform: handleHomeAppear)
+    }
+
+    private var homeTipObservationView: some View {
+        homeTaskView
             .onChange(of: launchSplashDidComplete) { _, _ in
                 updateSettingsTipReadiness()
             }
@@ -253,14 +293,6 @@ struct HomeView: View {
                 updateSettingsTipReadiness()
             }
             .onChange(of: adService.isPresentingFullScreenAd) { _, _ in
-                updateSettingsTipReadiness()
-            }
-            .onChange(of: navigationPath) { oldPath, newPath in
-                if !oldPath.isEmpty, newPath.isEmpty, hasOpenedDailyGameThisSession {
-                    didReturnFromDailyGame = true
-                    backwordStatsService.refresh()
-                    refreshMidwordProgress()
-                }
                 updateSettingsTipReadiness()
             }
             .onChange(of: showArchive) { _, _ in
@@ -281,50 +313,33 @@ struct HomeView: View {
             .onChange(of: showRatingDetails) { _, _ in
                 updateSettingsTipReadiness()
             }
-            .onChange(of: scenePhase) { _, newPhase in
-                updateSettingsTipReadiness()
-                if newPhase == .background || newPhase == .inactive {
-                    logoVisible = false
-                    proLogoVisible = false
-                } else if newPhase == .active {
-                    animateLogo()
+    }
 
-                    guard !adService.isPresentingFullScreenAd else { return }
-
-                    Task {
-                        await storeService.updateSubscriptionStatus(source: "scene_active")
-                        await viewModel.refreshIfNeeded()
-                        await wotdService.refreshIfNeeded()
-                        await backwordService.refreshIfNeeded()
-                        await midwordService.refreshIfNeeded()
-                        refreshMidwordProgress()
-                        await viewModel.prefetchCurrentArchiveMonthIfNeeded()
-                        await accountService.refreshAccountData()
-                    }
-                }
+    private var homeStateObservationView: some View {
+        homeTipObservationView
+            .onChange(of: navigationPath) { oldPath, newPath in
+                handleNavigationPathChange(oldPath: oldPath, newPath: newPath)
             }
+            .onChange(of: scenePhase) { _, newPhase in
+                handleScenePhaseChange(newPhase)
+            }
+    }
+
+    private var homeAccountObservationView: some View {
+        homeStateObservationView
             .onChange(of: accountService.userID) { _, _ in
-                statsService.refreshForActiveProgress()
-                backwordStatsService.refresh()
-                refreshMidwordProgress()
-                ratingService.refresh()
+                refreshProgressAfterAccountChange()
             }
             .onChange(of: accountService.syncRevision) { _, _ in
-                statsService.refreshForActiveProgress()
-                backwordStatsService.refresh()
-                refreshMidwordProgress()
-                ratingService.refresh()
+                refreshProgressAfterAccountChange()
             }
+    }
+
+    private var homeLifecycleView: some View {
+        homeAccountObservationView
             .alert(
                 AccountDeletionPresentation.title,
-                isPresented: Binding(
-                    get: { accountService.accountDeletionNotice != nil },
-                    set: { isPresented in
-                        if !isPresented {
-                            accountService.dismissAccountDeletionNotice()
-                        }
-                    }
-                )
+                isPresented: accountDeletionNoticeBinding
             ) {
                 Button("Continue", role: .cancel) {
                     accountService.dismissAccountDeletionNotice()
@@ -342,40 +357,78 @@ struct HomeView: View {
             }
     }
 
-    private func dateView(for date: String) -> some View {
-        Text(date)
-            .font(AppFont.caption())
-            .foregroundColor(Color.appTextSecondary)
-            .tracking(1)
-            .multilineTextAlignment(.leading)
-            .padding(.bottom, 26)
+    private var accountDeletionNoticeBinding: Binding<Bool> {
+        Binding(
+            get: { accountService.accountDeletionNotice != nil },
+            set: { isPresented in
+                if !isPresented {
+                    accountService.dismissAccountDeletionNotice()
+                }
+            }
+        )
     }
 
-    @ViewBuilder
-    private var dailyGamesView: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("Daily Games")
-                .font(AppFont.header(20))
-                .foregroundColor(.appTextHeading)
-                .padding(.bottom, 6)
+    private func handleHomeAppear() {
+        logoVisible = false
+        proLogoVisible = false
+        updateSettingsTipReadiness()
+        animateLogo()
+        Task {
+            await viewModel.refreshIfNeeded()
+            await viewModel.prefetchCurrentArchiveMonthIfNeeded()
+            backwordStatsService.refresh()
+            refreshMidwordProgress()
+            refreshAnagramCardProgress()
+        }
+    }
 
-            TimelineView(.periodic(from: .now, by: 60)) { context in
-                dateView(for: dailyReleaseLabel(at: context.date))
+    private func handleNavigationPathChange(oldPath: [String], newPath: [String]) {
+        if !oldPath.isEmpty, newPath.isEmpty, hasOpenedDailyGameThisSession {
+            didReturnFromDailyGame = true
+            backwordStatsService.refresh()
+        }
+        refreshMidwordProgress()
+        refreshAnagramCardProgress()
+        updateSettingsTipReadiness()
+    }
+
+    private func handleScenePhaseChange(_ newPhase: ScenePhase) {
+        updateSettingsTipReadiness()
+        if newPhase == .background || newPhase == .inactive {
+            logoVisible = false
+            proLogoVisible = false
+        } else if newPhase == .active {
+            animateLogo()
+
+            guard !adService.isPresentingFullScreenAd else { return }
+
+            Task {
+                await storeService.updateSubscriptionStatus(source: "scene_active")
+                await viewModel.refreshIfNeeded()
+                await wotdService.refreshIfNeeded()
+                await backwordService.refreshIfNeeded()
+                await midwordService.refreshIfNeeded()
+                await anagramService.refreshIfNeeded()
+                await viewModel.prefetchCurrentArchiveMonthIfNeeded()
+                await accountService.refreshAccountData()
+                refreshMidwordProgress()
+                refreshAnagramCardProgress()
             }
+        }
+    }
 
-            if sizeClass == .regular {
-                HStack(spacing: 45) {
-                    backwordCard
-                    dailyCrosswordCard
-                }
-                .padding(.bottom, 60)
-            } else {
-                Group {
-                    backwordCard
-//                        .shadow(color: .primary, radius: 2, x: 0, y: 1)
-                        .padding(.bottom, 20)
-                    dailyCrosswordCard
-                }
+    private func refreshProgressAfterAccountChange() {
+        statsService.refreshForActiveProgress()
+        backwordStatsService.refresh()
+        refreshMidwordProgress()
+        refreshAnagramCardProgress()
+        ratingService.refresh()
+    }
+
+    private var gamesGrid: some View {
+        LazyVGrid(columns: HomeGamesLayout.columns(for: sizeClass), spacing: HomeGamesLayout.spacing) {
+            ForEach(HomeGamesLayout.games, id: \.self) { game in
+                gameCard(for: game)
             }
             MidwordCard(
                 puzzle: midwordService.todaysPuzzle,
@@ -392,27 +445,40 @@ struct HomeView: View {
             .padding(.top, 20)
         }
         .padding(.horizontal, appLayout.homeHorizontalPadding)
-
     }
 
     @ViewBuilder
-    private var weeklyGamesView: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("Weekly Games")
-                .font(AppFont.header(20))
-                .foregroundColor(.appTextHeading)
-                .padding(.top, isIpad ? 6 : 0)
-                .padding(.bottom, 6)
-
-            TimelineView(.periodic(from: .now, by: 60)) { context in
-                dateView(for: weeklyRefreshLabel(at: context.date))
-            }
-            .padding(.bottom, isIpad ? 16 : 0)
-
+    private func gameCard(for game: HomeGamesLayout.Game) -> some View {
+        switch game {
+        case .backword:
+            backwordCard
+        case .quickCrossword:
+            dailyCrosswordCard
+        case .anagram:
+            anagramCard
+        case .proCrossword:
             WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
                 .environmentObject(storeService)
         }
-        .padding(.horizontal, appLayout.homeHorizontalPadding)
+    }
+
+    @ViewBuilder
+    private var anagramCard: some View {
+        if let puzzle = anagramService.todaysPuzzle {
+            AnagramCard(
+                puzzle: puzzle,
+                summary: AnagramHomeCardSummary(
+                    progress: anagramProgressRecords.first { $0.date == puzzle.date && $0.puzzleID == puzzle.id },
+                    history: anagramProgressRecords
+                )
+            ) { navigationPath.append("anagram") }
+        } else {
+            AnagramPlaceholderCard(
+                isLoading: anagramService.isLoading || !anagramService.hasAttemptedLoad
+            ) {
+                Task { await anagramService.refreshIfNeeded() }
+            }
+        }
     }
 
     @ViewBuilder
@@ -506,6 +572,10 @@ struct HomeView: View {
             openDailyGame(.backword)
         }
         .environmentObject(backwordStatsService)
+    }
+
+    private func refreshAnagramCardProgress() {
+        anagramProgressRecords = AnagramProgress.loadAll()
     }
 
     private var dailyCrosswordCard: some View {
@@ -713,97 +783,31 @@ struct HomeView: View {
         SettingsTip.homeChromeReady = false
     }
 
-    // MARK: - Word of the Day Card
-
-    private var chevronRight: some View {
-        HStack {
-            Spacer()
-            Image(systemName: "chevron.right")
-                .foregroundStyle(Color.primary)
-        }
-    }
-
-    @ViewBuilder
-    private var wotd: some View {
-        Button {
-            showWOTD = true
-        } label: {
-            wotdCard()
-        }
-        .buttonStyle(.plain)
-        .disabled(wotdService.todaysWord == nil)
-    }
-
-    @ViewBuilder
-    private func wotdCard() -> some View {
-        ZStack {
-            chevronRight
-
-            HStack {
-                Spacer()
-                    .frame(width: 30)
-
-                VStack(spacing: 6) {
-                    Text("WORD OF THE DAY")
-                        .font(AppFont.clueLabel(10))
-                        .foregroundColor(.appTextHeading)
-                        .tracking(3)
-                        .multilineTextAlignment(.center)
-
-                    if let word = wotdService.todaysWord {
-                        Text(word.word)
-                            .font(AppFont.header(22))
-                            .foregroundColor(.appTextPrimary)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.7)
-                    } else {
-                        ProgressView()
-                            .frame(minHeight: 30)
-                    }
-                }
-                Spacer()
-                    .frame(width: 30)
-            }
-        }
-        .padding(.horizontal, 24)
-        .padding(.vertical, 16)
-        .frame(maxWidth: .infinity)
-        .background(Color.appSurface)
-        .cornerRadius(AppLayout.cardCornerRadius)
-        .padding(.horizontal, appLayout.homeHorizontalPadding)
-        .padding(.bottom, isIpad ? 16 : 0)
-    }
-
-    private var isIpad: Bool {
-        sizeClass == .regular
-    }
-
     // MARK: - Helpers
 
     private func secondsUntilMidnight() -> TimeInterval? {
         ContentReleaseCalendar().secondsUntilDailyRefresh()
     }
+}
 
-    private func dailyReleaseLabel(at date: Date = Date()) -> String {
-        let releaseCalendar = ContentReleaseCalendar(now: date)
-        guard let seconds = releaseCalendar.secondsUntilDailyRefresh(),
-              seconds <= 3_600
-        else {
-            return releaseCalendar.formattedToday
-        }
-
-        let totalMinutes = max(0, Int(seconds / 60))
-        let hours = totalMinutes / 60
-        let minutes = totalMinutes % 60
-        return hours > 0
-            ? String(format: "Resets in %d:%02d", hours, minutes)
-            : String(format: "%d minutes remaining", minutes)
+enum HomeGamesLayout {
+    enum Game: CaseIterable, Hashable, Sendable {
+        case backword
+        case quickCrossword
+        case anagram
+        case proCrossword
     }
 
-    /// Returns a label like "Refreshes Sundays at midnight" for the local weekly reset.
-    private func weeklyRefreshLabel(at date: Date = Date()) -> String {
-        _ = date
-        return "Refreshes Sundays at midnight"
+    static let games = Game.allCases
+    static let spacing: CGFloat = 20
+
+    static func usesTwoColumns(for sizeClass: UserInterfaceSizeClass?) -> Bool {
+        sizeClass == .regular
+    }
+
+    static func columns(for sizeClass: UserInterfaceSizeClass?) -> [GridItem] {
+        let count = usesTwoColumns(for: sizeClass) ? 2 : 1
+        return Array(repeating: GridItem(.flexible(minimum: 0), spacing: spacing), count: count)
     }
 }
 
@@ -834,28 +838,53 @@ private enum DailyGame {
     }
 }
 
-#Preview("Default") {
-    let puzzleService = PuzzleService()
-    let storeService = StoreService()
-    return HomeView(viewModel: HomeViewModel(puzzleService: puzzleService, storeService: storeService))
-        .environmentObject(puzzleService)
-        .environmentObject(StatsService())
-        .environmentObject(storeService)
-        .environmentObject(AdService())
-        .environmentObject(OverallRatingService())
-        .environmentObject(AccountService())
+#if DEBUG
+@MainActor
+struct HomeViewPreviewContainer: View {
+    @StateObject private var puzzleService: PuzzleService
+    @StateObject private var statsService: StatsService
+    @StateObject private var storeService: StoreService
+    @StateObject private var adService: AdService
+    @StateObject private var ratingService: OverallRatingService
+    @StateObject private var accountService: AccountService
+    @StateObject private var viewModel: HomeViewModel
+
+    init(completedPuzzle: Bool = false) {
+        let puzzleService = PuzzleService()
+        let storeService = StoreService()
+        let viewModel = HomeViewModel(
+            puzzleService: puzzleService,
+            storeService: storeService
+        )
+        if completedPuzzle {
+            viewModel.debugSetSampleCompleted()
+        }
+
+        _puzzleService = StateObject(wrappedValue: puzzleService)
+        _statsService = StateObject(wrappedValue: StatsService())
+        _storeService = StateObject(wrappedValue: storeService)
+        _adService = StateObject(wrappedValue: AdService())
+        _ratingService = StateObject(wrappedValue: OverallRatingService())
+        _accountService = StateObject(wrappedValue: AccountService())
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+
+    var body: some View {
+        HomeView(viewModel: viewModel)
+            .environmentObject(puzzleService)
+            .environmentObject(statsService)
+            .environmentObject(storeService)
+            .environmentObject(adService)
+            .environmentObject(ratingService)
+            .environmentObject(accountService)
+    }
 }
 
-#if DEBUG
+#Preview("Default") {
+    HomeViewPreviewContainer()
+}
+
 #Preview("Completed Puzzle") {
-    let vm = HomeViewModel(puzzleService: PuzzleService(), storeService: StoreService())
-    vm.debugSetSampleCompleted()
-    return HomeView(viewModel: vm)
-        .environmentObject(PuzzleService())
-        .environmentObject(StatsService())
-        .environmentObject(StoreService())
-        .environmentObject(AdService())
-        .environmentObject(OverallRatingService())
-        .environmentObject(AccountService())
+    HomeViewPreviewContainer(completedPuzzle: true)
 }
 #endif

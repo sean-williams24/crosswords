@@ -27,6 +27,17 @@ statistics, streaks, and ratings are derived from active progress rather than
 merged as aggregate counters. Local saves always complete first and cloud writes
 are retried on later account syncs.
 
+The web Home screen reconciles all four account-scoped game caches with cloud
+progress whenever a signed-in player arrives there. Each successful game refresh
+is retained even if another game is temporarily unavailable, and the Home cards
+and rating are recalculated after the refresh batch settles. During that refresh,
+the rating bar becomes the visible Home sync indicator and uses a motion-reduced
+static state when requested by the player's system settings. A completed Home
+refresh remains fresh for five minutes within the current authenticated browser
+session, using a tab-scoped timestamp so route changes and page refreshes do not
+repeat the full sync. A new authentication session uses a distinct timestamp key
+and therefore refreshes immediately.
+
 Shared payload decoders must accept an omitted optional timestamp from Swift's
 `Codable` output as equivalent to the web's explicit `null`. In particular, an
 unfinished iOS Backword record may omit `completedAt`; the web normalises it to
@@ -295,6 +306,12 @@ server-side conflict handling remains intact. Midword table grants are explicit:
 players can read released puzzles, while only the service role among Data API
 roles can insert the approved batch through its publishing function.
 
+The combined overall rating includes both Anagram and Midword independently.
+Each adds five possible points per released day within the rolling window:
+Anagram from its first published date, Midword from 2026-10-01. Once both
+have fourteen releases, the overall maximum is 280 free or 290 Pro. Both
+score columns remain present in the profile breakdown.
+
 ## Backword Onboarding
 
 New Backword players receive five instructions inline, beneath the revealed
@@ -389,6 +406,19 @@ they recognise an already-updated payload and never overwrite a divergent row.
 
 ## Home Card Appearance
 
+Home presents Backword, Quick Crossword, Anagram, and Pro Crossword in that
+order. Regular-width iPad layouts use two equal columns, while compact layouts
+use one column. The Pro upsell follows the games when visible, with Word of the
+Day below it. The game cards have no separate daily or weekly section headings
+or date labels; their own content identifies each game.
+The Pro Crossword card fills its grid column rather than keeping a fixed iPad
+width.
+
+Home shows the complete Word of the Day entry whenever the game cards use two
+columns. It switches to the compact card button and detail sheet at the same
+size-class change that stacks the game cards. The full Home panel and sheet
+share the same part-of-speech explanation.
+
 The Backword card keeps its dark content palette for readable logo and status
 content in either appearance. Its background follows the system colour scheme:
 Light Mode uses a flat, opaque pastel lavender, while Dark Mode keeps the
@@ -425,9 +455,13 @@ while Google Identity uses its outline button in Light mode.
 
 Web game and dashboard headers reserve equal flexible space on both sides of
 the Backword mark. The lockup has an explicit width at each size, so the middle
-grid track has a stable width even when the menu is fixed or actions are wider
+grid track has a stable width even when the menu is out of flow or actions are wider
 than the left side. On narrow game viewports the mark scales down enough to
 leave space for both action buttons.
+
+The shared web menu button is absolutely positioned at the top of the page, so
+it scrolls away with the page content. The open navigation drawer remains a
+fixed, document-level overlay.
 
 ---
 
@@ -465,7 +499,17 @@ dashboard reads the released Word of the Day row for the browser's local
 calendar date. During initial loading, all four game cards remain non-interactive
 outlined skeletons until account startup and the WOTD request settle. When the
 row is unavailable, its place becomes an informational unavailable card while
-the three playable game cards remain available.
+the four playable game cards remain available.
+
+On wide browser dashboards, Backword, Quick Crossword, Anagram, and the weekly
+Pro Crossword appear in that order in one four-column row above the full-width Word of the
+Day panel. This content uses a 1440-point desktop cap so the cards occupy more
+of a wide viewport. The row becomes two columns at 1200 points and below, then
+one column on mobile. Each game keeps its archive action directly beneath its card,
+shown as the iOS-style archive box icon beside a concise `Archive` label. The
+dashboard goes directly from its global header into the cards without a daily
+title or date. The weekly card identifies its Sunday cadence inside the card
+instead of using a separate section below the daily content.
 
 The browser Backword letter cells use the iOS `Surface`, `GridLine`,
 `TextSecondary`, `Accent`, and `Correct` asset values. Empty cells are a 50%
@@ -746,9 +790,9 @@ Backword archive rows keep the guess-count status label after a win. On-time win
 
 ### Backword home-card appearance
 
-The home-screen Backword card always resolves its semantic colours in Dark Mode. Its dark crossword-colour backing is retained beneath the translucent Backword background, so the card background, border, logo, status, score, streak, loading/error, and completed-word states remain visually identical in Light and Dark Mode without changing the rest of the Home screen's appearance. Status labels keep their status-coloured icon and chip, while the label text uses the primary semantic colour for legibility. In Light Mode only, both daily-game card backgrounds receive a 10% primary-text-colour overlay; the contents retain the fixed Dark Mode palette.
+The home-screen Backword card always resolves its semantic colours in Dark Mode. Its dark crossword-colour backing is retained beneath the translucent Backword background, so the card background, logo, status, score, streak, loading/error, and completed-word states remain visually identical in Light and Dark Mode without changing the rest of the Home screen's appearance. The web card has no visible border at rest in either appearance; its shared focus border remains available for keyboard navigation. Status labels keep their status-coloured icon and chip, while the label text uses the primary semantic colour for legibility. In Light Mode only, both daily-game card backgrounds receive a 10% primary-text-colour overlay; the contents retain the fixed Dark Mode palette.
 
-The Daily Crossword card uses the same fixed Dark Mode palette. Its in-progress status keeps the accent-coloured icon and chip, but uses the primary semantic text colour for its label so it remains light against the dark card.
+The Daily Crossword card keeps its content in the fixed Dark Mode palette, while its background follows the system appearance independently. In Light Mode the background uses the Display P3 daily-card asset (`1.000` alpha, `0.289` red, `0.397` green, `0.544` blue) beneath a 10% white overlay, matching the web Home card exactly. Its `9×9` description uses the fixed sRGB web colour `#B4B4B8` in both appearances so it remains legible against either card background. Its in-progress status keeps the accent-coloured icon and chip, but uses the primary semantic text colour for its label so it remains light against the dark card.
 
 ## Backword Letter Reveals
 
@@ -786,6 +830,8 @@ requested batch with pairs that both reviewers accept.
 The completion sheet is presented after both wins and failures and receives the answer explicitly. Its title is `Solved!`, `Finished`, or `Failed`. Wins show an `... in N guesses` label directly above the cells; failures show `The answer was...`. A late `Finished` result shows the no-points message above the standard completed stats content. The cells reveal from right to left and perform a single whole-word bounce. Winning cells transition from correct green to accent blue during the glow; failed cells and their glow remain red. Reduce Motion skips the staged animation and shows the completed word immediately.
 
 Returning to a persisted completed Backword reopens that same completion sheet, including result sharing. The web presents it once per game-page visit so dismissing it does not immediately reopen it.
+
+On iOS, the Backword flag confirms a give-up before ending the attempt. Give-up uses the failed terminal result: it preserves earlier guesses, reveals every answer letter in the game and completion sheet, records zero points, and cannot accept more input.
 
 Backword keyboard letter entry and deletion use the same light impact as crossword letter input. Guess haptics reflect the result of each accepted submission. A non-winning guess gets a full-strength (`1.0`) impact only when it extends the correctly positioned suffix; automatic scheduled reveals alone retain the incorrect-guess feedback. Wins and final failures use distinct terminal patterns instead of also playing the intermediate guess pattern. During the completion animation, each right-to-left letter reveal plays one quick impact; Reduce Motion skips both the staged reveals and their per-letter impacts.
 
@@ -825,6 +871,159 @@ Daily and weekly crossword bars update the shared `OverallRatingService` as the 
 Crossword stats histories are release-date based, so unplayed and in-progress puzzles remain visible rather than limiting the table to completions. Daily stats show all 14 releases in the rolling window. Weekly stats show the two releases in that same 14-day window under `Last 14 Days`, followed by the next five older weekly releases under `Previous Games`.
 
 Backword stats use the same release-date-based 14-day history. Every daily release is shown, including unplayed and in-progress games. Rows show the saved guess count when play has started, distinguish solved and failed completions, and use the recorded Backword rating score with completed progress as a fallback.
+
+## Anagram Daily Game
+
+Anagram uses dated Supabase rows. A published puzzle's answer set, initial
+scramble, date, and issue number are immutable. The 75-entry manually curated
+pool remains a preferred seed source. After the manually approved launch,
+automation may choose later issues from the unchanged crossword bank; pool
+position no longer determines issue number. Primaries require a wordfreq Zipf
+score of at least 3.5. Two separate AI reviews must agree on the complete,
+family-friendly, bank-backed answer set, and common external alternatives
+cause rejection. Automated evidence is bound to exact rows and revalidated
+before publication. Never-used letter combinations have priority; a repeated
+combination must be at least 365 release days after its last use. The Monday
+workflow maintains a 30-day future buffer and fails without publishing a
+partial batch. The current source bank contains 11,436 seven-to-nine-letter
+ASCII entries; the earlier plan's 9,753 count is stale. Each scramble
+index is a distinct tile identity; placing a tile
+leaves its tray slot empty. The tray keeps two centered, square-tile rows:
+4+3 for seven letters, 4+4 for eight, and 5+4 for nine. Tile size stays
+based on five columns so the shorter rows have balanced side margins. Undo
+follows placement history, while Restart
+clears player placements without changing the start time, hint, or penalty.
+The iOS Home midnight task refreshes Anagram alongside the other daily games.
+Anagram fetches today's locally dated puzzle before requesting optional
+first-release metadata, so that metadata cannot delay the Home card. A failed
+daily fetch retains any cache and remains retryable on the next Home refresh.
+While today's puzzle is unavailable, Home keeps an Anagram card in place with a
+loading indicator or a retry action after a failed fetch. The DEBUG cache purge
+starts on one tap, removes service-managed Anagram puzzle and archive content,
+and keeps the loading card visible for at least two seconds before fetching
+today's issue again; saved Anagram progress is unaffected.
+The DEBUG reset action clears only the saved progress for the currently loaded
+local-day Anagram. Dismissing Debug Settings reloads the Home card and rating
+from local progress so the game appears new immediately.
+The Anagram read policy exposes only through tomorrow's database date, matching
+the deployed daily crossword and Backword window. Clients still select only
+their device's local date, so a visible tomorrow row does not display early.
+
+During play, the tray and controls stay together at the bottom of the view,
+with the controls 40 points above the bottom safe area. The header, timer,
+and answer scroll above them.
+The shared Anagram action button caps Dynamic Type at Large so Start and all
+five gameplay controls keep their full labels in the fixed-width button rows.
+The Anagram Home card uses a two-column layout: its title sits at the top-left
+with the issue number directly beneath it, while puzzle length, status, score,
+and streak group at the bottom-right. Dynamic Type sizes above Large stack
+those regions vertically while preserving their left/right alignment. The title
+scales within the available card width so neither the loaded card nor its
+placeholder widens the Home scroll content. The card
+uses a dedicated semantic background colour so Home can match the web card without
+changing the orange used by Anagram gameplay, stats, completion, archive, or
+sharing. Its default appearance matches the existing light card orange; its
+dark appearance matches the web Home card's sRGB `0.967, 0.434, 0.040`.
+It shows a score only after completion. The streak counts consecutive on-time solved
+releases and continues from yesterday until today's attempt is completed; a
+give-up or late solve today ends it. The DEBUG review puzzle remains available
+to previews and isolated tests, but never appears on Home or contributes to a
+streak or rating.
+The Anagram Stats sheet follows the other games' rating bar, streak/solved/time
+summary, and 14-day Date/Score/Time table while retaining Anagram colors.
+The summary counts original-release-day solves; its average time uses solves
+within the displayed 14 days. Archive and DEBUG review attempts contribute
+neither scores nor streaks. A give-up appears in its release-day row with zero
+points, and unplayed days remain visible as zero rows.
+Completing an Anagram automatically presents that stats sheet in its finished
+state. The answer reveals one letter at a time before the next-release countdown,
+refreshed Anagram rating bar, share action, completion metrics, summary, and
+14-day history appear. The completed game board remains visible behind the sheet,
+with its timer frozen and gameplay controls disabled. Before the first published
+Anagram, the countdown targets that launch date; afterward it targets the next
+local midnight. The DEBUG review
+puzzle uses this presentation and calculates a display-only score, while remaining
+excluded from the persisted rating, streak, solved total, and history.
+The single hint clears placements, locks one correct tile, and allows any
+approved answer compatible with that lock.
+New puzzle rows publish an immutable zero-based `hintCellIndex`; web and iOS
+both reveal the primary answer's letter there. The generator selects among
+positions compatible with the most accepted answers using a stable
+issue-and-answer hash, so a shared position takes priority. If no position
+fits every answer, the hint may rule out alternatives; the hint confirmation
+explains this when it applies. Older rows without the field reveal position 0,
+preserving saved progress and the published launch payload.
+On iOS, tapping Hint opens an inline panel below the navigation bar. Free
+players can watch a rewarded ad for the letter or open the Pro paywall through
+“Go ad-free”; Pro players confirm a 30-second penalty instead. An ad grants a
+free letter only after its reward callback. If the ad is unavailable or cannot
+be presented, the panel offers the 30-second alternative without revealing a
+letter automatically. The Watch and Go ad-free buttons stay vertically stacked.
+The Anagram How to Play control presents the same 85%-height bottom sheet used
+by the other games. Its gameplay, timer, hint, and scoring sections use the
+Anagram orange palette and must stay aligned with `AnagramProgress` behaviour.
+The first-use info popover appears only for an unfinished puzzle. A completed
+puzzle opens its stats sheet immediately and leaves the tip available for a
+later unfinished puzzle. If account sync completes the puzzle while the
+popover is open, the popover closes and the stats sheet waits for its dismissal;
+that automatic close does not consume the first-use tip. Manual stats and
+instructions requests also wait for the popover to dismiss before presenting.
+
+The timer measures wall time from Start, including app backgrounding, adverts,
+and navigation. The UI shows elapsed time as m:ss below one hour and h:mm:ss
+afterward; saved durations and scoring remain in seconds. Scoring adds any hint
+penalty to elapsed time and uses strict
+under-30/60/120/180-second thresholds for 5/4/3/2 points; later solves earn
+1 point. Give up is terminal and earns zero. Only an original-release-day
+completion adds a score to the 14-day rating. Possible Anagram points begin
+on the first published release date, so the overall maximum ramps to 210
+free or 220 Pro after 14 Anagram releases.
+
+Cloud conflicts keep a complete tile arrangement with its Undo history.
+Terminal outcomes take precedence; a consumed hint takes precedence over an
+unhinted in-progress branch; ties use progress rank and update time. The
+earliest start, consumed hint, largest penalty, and highest previously earned
+release score survive the merge, except that a newly discovered earlier start
+recalculates a terminal attempt's elapsed time and score. The production Home
+card appears only when a validated row for the current release date is
+available. That dated row is cached for offline play, and failed fetches can
+retry later. The earliest published date is cached as the rating start. The
+DEBUG review puzzle is excluded from Home, `loadAll`, cloud migration, and
+rating points. It remains available for SwiftUI previews and isolated
+development tests. Web implementation follows the iOS gameplay contract. See
+[the v1 contract](./docs/anagram-contract-v1.md)
+for field names and cross-platform fixtures.
+
+On iOS, Anagram is a first-class tab in the shared Pro archive beside Backword,
+Quick Crossword, and Pro Crossword. It uses the shared current-month list,
+lazy earlier-month expansion, status labels, and in-stack game navigation.
+Today's released Anagram is included, matching the other game archives; future
+rows remain excluded. Anagram archive progress persists normally, while the
+release-date scoring rule prevents an older puzzle from earning points.
+
+On the web, the dated route is immutable while `/anagram` follows local
+midnight. The initial scramble is never rendered before Start. Local storage
+keeps the complete v1 progress object under a guest or account namespace and
+uses the same tile IDs for tray positions, cells, and Undo history. The web hint
+uses `time_penalty` and locks one letter immediately for every player. Local
+edits are saved before a queued account upload; a failed upload remains queued
+for retry. The home card appears only after today's validated puzzle is cached
+or fetched. Its issue number and the earliest published date come from content;
+the latter controls when Anagram points enter the overall rating maximum. The
+Anagram stats bar always uses the established 70-point scale, and its history
+always shows all 14 calendar days. Dated past routes and the Anagram Archive
+require Pro, while today's route stays free. Vite development builds expose an
+in-memory `/anagram/review` fixture so the unreleased game can be reviewed
+without creating local progress, rating points, or cloud uploads. The web game
+shell mirrors the iOS Anagram hierarchy without showing a logo, and uses the
+same game menu and action icons as the other web games. The site footer appears
+on wider viewports and is hidden in the mobile layout at 700px and below. Wider
+viewports keep the answer in one row and widen the bottom game controls; narrow
+viewports use the same balanced letter rows as iOS. The web title, issue label,
+and loading message share the maximum nine-letter content width from the first
+render, so loading a puzzle cannot move their left edge. The letter tray and
+controls sit at the bottom of the flexible board, with spare vertical space
+between them and the answer, matching the iOS gameplay dock.
 
 ---
 
@@ -1317,6 +1516,9 @@ Chrome and Safari expose an in-page result-share menu so its image copy and
 download paths do not depend on inconsistent native-sheet handling. The menu is
 anchored to the result button within completion modals, and remains openable
 while the PNG is prepared so text copying is never blocked by image rendering.
+Anagram uses the same menu action styling as the other games: its dialog button
+rules apply only to direct dialog controls, and its completed game keeps a
+compact share button on the main page after the completion dialog closes.
 
 Result-share analytics use a content-free funnel. `result_share_opened` records
 the share surface, `result_share_finished` records whether the platform reported
@@ -1338,3 +1540,14 @@ Crossword alone uses a gold footer.
 The share-only Backword wordmark remains one vector design across both
 platforms. Its `BACK` paths use the original Backword home-card blue #5B8DC9;
 `WORD` remains white.
+
+---
+
+## Archive game selector
+
+The iOS archive game selector uses one horizontal row through Large Dynamic
+Type. Above Large, it switches to a two-column grid with three rows so all five game
+names remain visible with full-size tap targets. Archive scroll content adds
+matching bottom clearance for the taller selector. The selector container uses
+a 25-point continuous corner radius, matching the selected capsules' radius
+plus their inset so corner selections are not clipped.

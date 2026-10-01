@@ -51,14 +51,14 @@ struct DailyCrosswordCard: View {
         VStack(spacing: 0) {
             VStack(spacing: 12) {
                 Text("QUICK CROSSWORD")
-                    .font(AppFont.clueLabel(isIpad ? 15 : 11))
+                    .font(AppFont.clueLabel(isIpad ? 16 : 12))
                     .foregroundColor(.dailyCardTitle)
                     .tracking(3)
                     .multilineTextAlignment(.center)
 
                 Text("9×9")
                     .font(AppFont.caption())
-                    .foregroundColor(.appTextSecondary)
+                    .foregroundColor(.dailyCardDescription)
 
                 if viewModel.state == .loading {
                     ProgressView()
@@ -84,7 +84,12 @@ struct DailyCrosswordCard: View {
                 .padding(.bottom, 10)
         }
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
-        .background(cardBackground)
+        .background(
+            cardBackground.environment(
+                \.colorScheme,
+                HomeCardAppearance.backgroundColorScheme(for: systemColorScheme)
+            )
+        )
         .overlay(alignment: .topTrailing) {
             issueNumberOverlay
         }
@@ -110,7 +115,7 @@ struct DailyCrosswordCard: View {
 
             if HomeCardAppearance.shouldBrightenBackground(for: systemColorScheme) {
                 RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                    .fill(Color.appTextPrimary.opacity(HomeCardAppearance.lightModeBrightnessOverlayOpacity))
+                    .fill(Color.homeCardBrightnessOverlay.opacity(HomeCardAppearance.lightModeBrightnessOverlayOpacity))
             }
         }
     }

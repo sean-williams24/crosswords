@@ -4,6 +4,11 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { ArchivePage } from "./ArchivePage";
 
 const repositories = vi.hoisted(() => ({
+  anagram: {
+    getArchiveMonths: vi.fn(async () => ["2026-08"]),
+    getArchiveMonth: vi.fn(async () => [{ id: "anagram-1", date: "2026-08-04", puzzleNumber: 4, schemaVersion: 1,
+      answer: "TRIANGLE", acceptedAnswers: ["INTEGRAL"], initialScramble: "RAGTLINE" }])
+  },
   backword: {
     getArchiveMonths: vi.fn(async () => ["2026-08", "2026-07"]),
     getArchiveMonth: vi.fn(async (month: string) => month === "2026-08" ? [{
@@ -33,6 +38,7 @@ vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => auth.value }));
 vi.mock("../features/auth/AuthButton", () => ({ AuthButton: () => <a href="/sign-in">Login</a> }));
 vi.mock("../features/backword/components/GameMenu", () => ({ GameMenu: () => <button type="button">Menu</button> }));
 vi.mock("../features/backword/repository", () => ({ createBackwordRepository: () => repositories.backword }));
+vi.mock("../features/anagram/repository", () => ({ createAnagramRepository: () => repositories.anagram }));
 vi.mock("../features/crossword/repository", () => ({ createCrosswordRepository: () => repositories.crossword }));
 
 describe("ArchivePage", () => {
@@ -40,6 +46,8 @@ describe("ArchivePage", () => {
     localStorage.clear();
     auth.value = { entitlement: { isPro: true, expiresAt: null }, entitlementReady: true, ready: true, user: { id: "pro-player" } };
     repositories.backword.getArchiveMonths.mockClear();
+    repositories.anagram.getArchiveMonths.mockClear();
+    repositories.anagram.getArchiveMonth.mockClear();
     repositories.backword.getArchiveMonth.mockClear();
     repositories.crossword.getArchiveMonths.mockClear();
     repositories.crossword.getArchiveMonth.mockClear();
@@ -83,6 +91,18 @@ describe("ArchivePage", () => {
 
     await waitFor(() => expect(repositories.crossword.getArchiveMonth).toHaveBeenCalledWith("daily", "2026-08"));
     expect(await screen.findByRole("link", { name: /New/i })).toHaveAttribute("href", "/crossword/2026-08-05");
+  });
+
+  it("opens a dated Anagram from the Pro archive without exposing its answer", async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><ArchivePage /></MemoryRouter>);
+    await screen.findByRole("link", { name: /New/i });
+
+    await user.click(screen.getAllByRole("button", { name: "Anagram" })[0]);
+
+    await waitFor(() => expect(repositories.anagram.getArchiveMonth).toHaveBeenCalledWith("2026-08"));
+    expect(await screen.findByRole("link", { name: /New/i })).toHaveAttribute("href", "/anagram/2026-08-04");
+    expect(screen.queryByText("TRIANGLE")).not.toBeInTheDocument();
   });
 
   it("uses Quick as the compact crossword archive label", async () => {

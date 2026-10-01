@@ -739,6 +739,51 @@ struct BackwordViewModelTests {
 
     // MARK: - Fail Condition
 
+    @Test("Giving up ends the game for zero points and reveals the answer")
+    func giveUpRevealsAnswer() throws {
+        let haptics = BackwordHapticsSpy()
+        let vm = makeViewModel("CASTLE", haptics: haptics)
+        defer { BackwordProgress.delete(date: vm.word.date) }
+
+        vm.currentInput = "CA"
+        vm.giveUp()
+
+        #expect(vm.isComplete)
+        #expect(vm.isFailed)
+        #expect(!vm.isWon)
+        #expect(vm.didComplete)
+        #expect(vm.progress.completedScore == 0)
+        #expect(vm.guessCount == 0)
+        #expect(vm.currentInput.isEmpty)
+        #expect(vm.revealedLetters == Array("CASTLE").map { Optional($0) })
+        #expect(haptics.playedTypes == [.backwordGameLost])
+
+        let saved = try #require(BackwordProgress.load(date: vm.word.date))
+        #expect(saved.isFailed)
+        #expect(saved.completedScore == 0)
+
+        vm.giveUp()
+        vm.currentInput = "CASTLE"
+        vm.submitGuess()
+        #expect(vm.guessCount == 0)
+        #expect(haptics.playedTypes == [.backwordGameLost])
+    }
+
+    @Test("Giving up preserves guesses already made")
+    func giveUpPreservesGuesses() {
+        let vm = makeViewModel("CASTLE")
+        defer { BackwordProgress.delete(date: vm.word.date) }
+        vm.currentInput = "XXXXXX"
+        vm.submitGuess()
+
+        vm.giveUp()
+
+        #expect(vm.guessCount == 1)
+        #expect(vm.guessesForHistory == ["XXXXXX"])
+        #expect(vm.revealedLetters == Array("CASTLE").map { Optional($0) })
+        #expect(vm.progress.completedScore == 0)
+    }
+
     @Test("Five wrong guesses causes failure")
     func fiveWrongGuesessFail() async throws {
         let haptics = BackwordHapticsSpy()

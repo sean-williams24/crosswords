@@ -10,12 +10,14 @@ import UIKit
 struct PuzzleShareResult: Equatable {
     enum Game: String, Equatable {
         case backword
+        case anagram
         case dailyCrossword = "daily_crossword"
         case weeklyCrossword = "weekly_crossword"
 
         var displayName: String {
             switch self {
             case .backword: "Backword"
+            case .anagram: "Anagram"
             case .dailyCrossword: "Quick Crossword"
             case .weeklyCrossword: "Pro Crossword"
             }
@@ -24,6 +26,7 @@ struct PuzzleShareResult: Equatable {
         var analyticsGame: BackwordAnalyticsEvent.Game {
             switch self {
             case .backword: .backword
+            case .anagram: .anagram
             case .dailyCrossword: .dailyCrossword
             case .weeklyCrossword: .weeklyCrossword
             }
@@ -32,15 +35,16 @@ struct PuzzleShareResult: Equatable {
         var pathPrefix: String {
             switch self {
             case .backword: "/backword/"
+            case .anagram: "/anagram/"
             case .dailyCrossword: "/crossword/"
             case .weeklyCrossword: "/weekly-crossword/"
             }
         }
 
-        /// Backword and Pro Crossword cards retain their dark visual identities
+        /// Backword, Anagram, and Pro Crossword cards retain their dark visual identities
         /// independently of the device appearance used to create the share image.
         var usesDarkShareCardAppearance: Bool {
-            self == .backword || self == .weeklyCrossword
+            self == .backword || self == .anagram || self == .weeklyCrossword
         }
 
         /// The lavender Backword card needs a darker label treatment than the
@@ -156,6 +160,32 @@ struct PuzzleShareResult: Equatable {
         )
     }
 
+    static func anagram(
+        completion: AnagramCompletion,
+        history: AnagramStatsHistory,
+        rating: OverallRating,
+        isPro: Bool
+    ) -> PuzzleShareResult {
+        let displayState = AnagramCompletionDisplayState.make(completion: completion)
+        return PuzzleShareResult(
+            game: .anagram,
+            issueNumber: completion.puzzle.puzzleNumber == 0 ? nil : completion.puzzle.puzzleNumber,
+            date: completion.puzzle.date,
+            outcome: displayState.style == .solved ? "SOLVED" : "COMPLETED",
+            score: completion.score,
+            streak: history.currentStreak,
+            totalGamesSolved: history.totalSolved,
+            ratingTier: rating.tier(isPro: isPro).displayName,
+            ratingPoints: rating.totalPoints(isPro: isPro),
+            ratingMaxPoints: rating.maxPoints(isPro: isPro),
+            primaryStat: Stat(
+                label: "SOLVE TIME",
+                value: (completion.progress.elapsedSecondsAtCompletion ?? 0).formattedTimeHHMMSS
+            ),
+            timeStat: nil
+        )
+    }
+
     static func completedTime(_ date: Date?, timeZone: TimeZone = .current) -> String {
         guard let date else { return "—" }
         let formatter = DateFormatter()
@@ -251,7 +281,7 @@ private struct PuzzleResultShareCard: View {
 
             Text("playbackword.com")
                 .font(AppFont.shareCardTitle(scaled(55)))
-                .foregroundColor(result.game == .weeklyCrossword ? .solvedGold : .appGridLine)
+                .foregroundColor(footerColor)
                 .tracking(scaled(3))
                 .frame(width: scaled(952), alignment: .trailing)
                 .offset(x: scaled(64), y: scaled(966))
@@ -273,6 +303,8 @@ private struct PuzzleResultShareCard: View {
                 Color.appCrosswordBackground
                 Color.backwordBackground
             }
+        case .anagram:
+            Color.anagramSurface
         case .dailyCrossword:
             Color.shareCardDailyBackground
         case .weeklyCrossword:
@@ -365,9 +397,25 @@ private struct PuzzleResultShareCard: View {
         if result.game.usesHighContrastShareCardStatLabels {
             return .shareCardBackwordStatLabel
         }
-        return result.game == .dailyCrossword
-            ? .shareCardDailyStatLabel
-            : .shareCardWeeklyStatLabel
+        switch result.game {
+        case .anagram:
+            return .anagramOrange
+        case .dailyCrossword:
+            return .shareCardDailyStatLabel
+        case .backword, .weeklyCrossword:
+            return .shareCardWeeklyStatLabel
+        }
+    }
+
+    private var footerColor: Color {
+        switch result.game {
+        case .anagram:
+            return .anagramOrange
+        case .weeklyCrossword:
+            return .solvedGold
+        case .backword, .dailyCrossword:
+            return .appGridLine
+        }
     }
 
     private func scaled(_ designValue: CGFloat) -> CGFloat {
@@ -378,6 +426,8 @@ private struct PuzzleResultShareCard: View {
 struct PuzzleResultShareButton: View {
     let result: PuzzleShareResult
     var compact = false
+    var foregroundColor: Color = .appTextPrimary
+    var backgroundColor: Color = .appSurface
     @Environment(\.scenePhase) private var scenePhase
     @State private var presentsShareSheet = false
     @State private var shareSheetBackgrounded = false
@@ -390,11 +440,11 @@ struct PuzzleResultShareButton: View {
         } label: {
             Label(compact ? "Share" : "Share result", systemImage: "square.and.arrow.up")
                 .font(AppFont.body(16))
-                .foregroundColor(.appTextPrimary)
+                .foregroundColor(foregroundColor)
                 .frame(maxWidth: compact ? nil : .infinity)
                 .padding(.horizontal, compact ? 14 : 0)
                 .padding(.vertical, compact ? 10 : 14)
-                .background(compact ? Color.appAccent : Color.appSurface)
+                .background(compact ? Color.appAccent : backgroundColor)
                 .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
                 .shadow(
                     color: compact ? Color.appTextPrimary.opacity(0.16) : .clear,

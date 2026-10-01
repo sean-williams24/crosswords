@@ -5,7 +5,10 @@ type DashboardStatusLabelProps = {
 };
 
 export function DashboardStatusLabel({ status }: DashboardStatusLabelProps) {
-  const symbol = status.tone === "failed" ? "×" : status.tone === "progress" ? "✎" : "✓";
+  const symbol = status.tone === "failed" ? "×"
+    : status.tone === "progress" ? "✎"
+    : status.tone === "solved" ? "✓"
+    : "";
 
   return (
     <span className={`home-status home-status--${status.tone}`} aria-label={`Status: ${status.label}`}>

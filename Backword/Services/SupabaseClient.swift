@@ -256,6 +256,7 @@ final class AccountService: ObservableObject {
     private var pendingGuestBackword: [BackwordProgress] = []
     private var pendingGuestMidword: [MidwordProgress] = []
     private var pendingGuestCrosswords: [UserProgress] = []
+    private var pendingGuestAnagrams: [AnagramProgress] = []
 
     private struct AppleEntitlementClaimRequest: Encodable {
         let transactionID: String
@@ -374,16 +375,19 @@ final class AccountService: ObservableObject {
         let guestBackword = pendingGuestBackword
         let guestMidword = pendingGuestMidword
         let guestCrosswords = pendingGuestCrosswords
+        let guestAnagrams = pendingGuestAnagrams
         pendingGuestBackword = []
         pendingGuestMidword = []
         pendingGuestCrosswords = []
+        pendingGuestAnagrams = []
         let refreshID = UUID()
         let task = Task<Void, Never> { @MainActor [weak self] in
             guard let self else { return }
             await self.performAccountRefresh(
                 guestBackword: guestBackword,
                 guestMidword: guestMidword,
-                guestCrosswords: guestCrosswords
+                guestCrosswords: guestCrosswords,
+                guestAnagrams: guestAnagrams
             )
         }
         accountRefreshTask = (id: refreshID, task: task)
@@ -399,7 +403,8 @@ final class AccountService: ObservableObject {
     private func performAccountRefresh(
         guestBackword: [BackwordProgress],
         guestMidword: [MidwordProgress],
-        guestCrosswords: [UserProgress]
+        guestCrosswords: [UserProgress],
+        guestAnagrams: [AnagramProgress]
     ) async {
         guard session != nil else {
             isProUser = false
@@ -412,8 +417,15 @@ final class AccountService: ObservableObject {
         } catch {
             if AccountSessionValidation.requiresLocalSignOut(for: error) {
                 await clearUnavailableAccountSession()
-            } else if AccountErrorPresentation.shouldPresent(error) {
-                logger.error("Account session validation could not reach the server: \(error.localizedDescription, privacy: .public)")
+            } else {
+                // Keep the claimed guest records queued for the next online
+                // account refresh; a transient validation error is not a sync.
+                pendingGuestBackword = guestBackword
+                pendingGuestCrosswords = guestCrosswords
+                pendingGuestAnagrams = guestAnagrams
+                if AccountErrorPresentation.shouldPresent(error) {
+                    logger.error("Account session validation could not reach the server: \(error.localizedDescription, privacy: .public)")
+                }
             }
             return
         }
@@ -426,7 +438,8 @@ final class AccountService: ObservableObject {
                 accountID: accountID.uuidString,
                 guestBackword: guestBackword,
                 guestMidword: guestMidword,
-                guestCrosswords: guestCrosswords
+                guestCrosswords: guestCrosswords,
+                guestAnagrams: guestAnagrams
             )
             syncRevision &+= 1
         }
@@ -631,9 +644,10 @@ final class AccountService: ObservableObject {
         let candidateGuestBackword = isMigratingGuestProgress ? BackwordProgress.loadAll() : []
         let candidateGuestMidword = isMigratingGuestProgress ? MidwordProgress.loadAll() : []
         let candidateGuestCrosswords = isMigratingGuestProgress ? UserProgress.loadAll() : []
+        let candidateGuestAnagrams = isMigratingGuestProgress ? AnagramProgress.loadAll() : []
         let accountID = newSession?.user.id.uuidString
         let mayMigrateGuestProgress = accountID.map { accountID in
-            (!candidateGuestBackword.isEmpty || !candidateGuestMidword.isEmpty || !candidateGuestCrosswords.isEmpty)
+            (!candidateGuestAnagrams.isEmpty || !candidateGuestBackword.isEmpty || !candidateGuestMidword.isEmpty || !candidateGuestCrosswords.isEmpty)
                 && ProgressStorageNamespace.claimGuestMigration(for: accountID)
         } ?? false
         let guestBackword = mayMigrateGuestProgress ? candidateGuestBackword : []
@@ -645,6 +659,7 @@ final class AccountService: ObservableObject {
         pendingGuestBackword = guestBackword
         pendingGuestMidword = guestMidword
         pendingGuestCrosswords = guestCrosswords
+        pendingGuestAnagrams = mayMigrateGuestProgress ? candidateGuestAnagrams : []
     }
 
 }
@@ -720,6 +735,11 @@ final class ProgressCloudSync {
         let progress: MidwordProgress
     }
 
+    private struct PendingAnagramUpload {
+        let accountID: String
+        let progress: AnagramProgress
+    }
+
     private let client = SupabaseClient.shared.client
     private let iso8601: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
@@ -732,6 +752,7 @@ final class ProgressCloudSync {
     private var pendingBackword: [String: PendingBackwordUpload] = [:]
     private var pendingMidword: [String: PendingMidwordUpload] = [:]
     private var pendingCrosswords: [String: PendingCrosswordUpload] = [:]
+    private var pendingAnagrams: [String: PendingAnagramUpload] = [:]
 
     private init() {}
 
@@ -758,6 +779,12 @@ final class ProgressCloudSync {
         pendingMidword["\(accountID):\(progress.date)"] = PendingMidwordUpload(
             accountID: accountID, progress: progress
         )
+        scheduleFlush(immediately: progress.isComplete)
+    }
+
+    func scheduleUpload(_ progress: AnagramProgress) {
+        guard let accountID = ProgressStorageNamespace.accountID else { return }
+        pendingAnagrams["\(accountID):\(progress.date)"] = PendingAnagramUpload(accountID: accountID, progress: progress)
         scheduleFlush(immediately: progress.isComplete)
     }
 
@@ -790,9 +817,16 @@ final class ProgressCloudSync {
                 pendingMidword.removeValue(forKey: key)
             }
         }
+        let anagrams = pendingAnagrams
+        for (key, pending) in anagrams where pending.accountID == activeAccountID {
+            guard ProgressStorageNamespace.accountID == pending.accountID else { return }
+            if await upload(pending.progress), ProgressStorageNamespace.accountID == pending.accountID {
+                pendingAnagrams.removeValue(forKey: key)
+            }
+        }
     }
 
-    func sync(accountID: String, guestBackword: [BackwordProgress], guestMidword: [MidwordProgress] = [], guestCrosswords: [UserProgress]) async {
+    func sync(accountID: String, guestBackword: [BackwordProgress], guestMidword: [MidwordProgress] = [], guestCrosswords: [UserProgress], guestAnagrams: [AnagramProgress] = []) async {
         guard ProgressStorageNamespace.accountID == accountID else { return }
         await flushPendingUploads()
         guard ProgressStorageNamespace.accountID == accountID else { return }
@@ -802,21 +836,25 @@ final class ProgressCloudSync {
         _ = await mergeMidword(MidwordProgress.loadAll())
         guard ProgressStorageNamespace.accountID == accountID else { return }
         _ = await mergeCrosswords(UserProgress.loadAll())
+        _ = await mergeAnagrams(AnagramProgress.loadAll())
         guard ProgressStorageNamespace.accountID == accountID else { return }
         let uploadedBackword = await mergeBackword(guestBackword)
         let uploadedMidword = await mergeMidword(guestMidword)
         guard ProgressStorageNamespace.accountID == accountID else { return }
         let uploadedCrosswords = await mergeCrosswords(guestCrosswords)
+        let uploadedAnagrams = await mergeAnagrams(guestAnagrams)
         guard ProgressStorageNamespace.accountID == accountID else { return }
         await pullBackword()
         await pullMidword()
         guard ProgressStorageNamespace.accountID == accountID else { return }
         await pullCrosswords()
+        await pullAnagrams()
         guard ProgressStorageNamespace.accountID == accountID else { return }
         removeSuccessfullyMigratedGuestProgress(
             backwordDates: uploadedBackword,
             midwordDates: uploadedMidword,
             crosswordIDs: uploadedCrosswords,
+            anagramDates: uploadedAnagrams,
             activeAccountID: accountID
         )
     }
@@ -854,6 +892,47 @@ final class ProgressCloudSync {
             if await upload(progress) { uploaded.insert(progress.puzzleId) }
         }
         return uploaded
+    }
+
+    private func mergeAnagrams(_ records: [AnagramProgress]) async -> Set<String> {
+        var uploaded = Set<String>()
+        for progress in records where progress.date != "review" {
+            if await upload(progress) { uploaded.insert(progress.date) }
+        }
+        return uploaded
+    }
+
+    @discardableResult
+    private func upload(_ progress: AnagramProgress) async -> Bool {
+        let payload = CloudAnagramPayload(progress, formatter: iso8601)
+        let request = MergeProgressRequest(
+            gameType: "anagram", contentKey: progress.date, releaseDate: progress.date,
+            status: progress.outcome?.rawValue ?? "in_progress",
+            progressRank: progress.isComplete ? 100 : progress.placementHistory.count,
+            releaseScore: progress.releaseDateScore,
+            clientUpdatedAt: payload.updatedAt,
+            payload: payload
+        )
+        do {
+            try await client.rpc("merge_game_progress", params: request).execute()
+            return true
+        } catch { return false }
+    }
+
+    private func pullAnagrams() async {
+        guard let rows: [CloudProgressRow<CloudAnagramPayload>] = try? await client
+            .from("game_progress").select().eq("game_type", value: "anagram")
+            .execute().value else { return }
+        for row in rows {
+            guard let remote = row.payload.progress(formatter: iso8601) else { continue }
+            if let local = AnagramProgress.load(date: remote.date), local.puzzleID == remote.puzzleID {
+                let merged = AnagramProgress.merged(local, remote)
+                merged.save()
+                if merged != remote { await upload(merged) }
+            } else {
+                remote.save()
+            }
+        }
     }
 
     @discardableResult
@@ -1006,15 +1085,17 @@ final class ProgressCloudSync {
         backwordDates: Set<String>,
         midwordDates: Set<String>,
         crosswordIDs: Set<String>,
+        anagramDates: Set<String>,
         activeAccountID: String
     ) {
-        guard !backwordDates.isEmpty || !midwordDates.isEmpty || !crosswordIDs.isEmpty else { return }
+        guard !anagramDates.isEmpty || !backwordDates.isEmpty || !midwordDates.isEmpty || !crosswordIDs.isEmpty else { return }
         guard ProgressStorageNamespace.accountID == activeAccountID else { return }
         ProgressStorageNamespace.activate(accountID: nil)
         for date in backwordDates { BackwordProgress.delete(date: date) }
         for date in midwordDates { MidwordProgress.delete(date: date) }
         for puzzleID in crosswordIDs { UserProgress.delete(puzzleId: puzzleID) }
-        if BackwordProgress.loadAll().isEmpty && MidwordProgress.loadAll().isEmpty && UserProgress.loadAll().isEmpty {
+        for date in anagramDates { AnagramProgress.delete(date: date) }
+        if AnagramProgress.loadAll().isEmpty && BackwordProgress.loadAll().isEmpty && MidwordProgress.loadAll().isEmpty && UserProgress.loadAll().isEmpty {
             ProgressStorageNamespace.clearGuestMigrationClaim()
         }
         ProgressStorageNamespace.activate(accountID: activeAccountID)
@@ -1059,6 +1140,80 @@ private struct MergeProgressRequest<Payload: Encodable>: Encodable {
 
 private struct CloudProgressRow<Payload: Decodable>: Decodable {
     let payload: Payload
+}
+
+private struct CloudAnagramPayload: Codable {
+    let schemaVersion: Int
+    let puzzleID: String
+    let date: String
+    let startedAt: String
+    let trayOrder: [Int]
+    let placedTileIDs: [Int?]
+    let placementHistory: [Int]
+    let hintUsed: Bool
+    let hintSource: AnagramProgress.HintSource?
+    let penaltySeconds: Int
+    let lockedCellIndex: Int?
+    let lockedTileID: Int?
+    let outcome: AnagramProgress.Outcome?
+    let completedAt: String?
+    let elapsedSecondsAtCompletion: Int?
+    let releaseDateScore: Int
+    let updatedAt: String
+
+    init(_ progress: AnagramProgress, formatter: ISO8601DateFormatter) {
+        schemaVersion = progress.schemaVersion
+        puzzleID = progress.puzzleID
+        date = progress.date
+        startedAt = formatter.string(from: progress.startedAt)
+        trayOrder = progress.trayOrder
+        placedTileIDs = progress.placedTileIDs
+        placementHistory = progress.placementHistory
+        hintUsed = progress.hintUsed
+        hintSource = progress.hintSource
+        penaltySeconds = progress.penaltySeconds
+        lockedCellIndex = progress.lockedCellIndex
+        lockedTileID = progress.lockedTileID
+        outcome = progress.outcome
+        completedAt = progress.completedAt.map(formatter.string(from:))
+        elapsedSecondsAtCompletion = progress.elapsedSecondsAtCompletion
+        releaseDateScore = progress.releaseDateScore
+        updatedAt = formatter.string(from: progress.updatedAt)
+    }
+
+    func progress(formatter: ISO8601DateFormatter) -> AnagramProgress? {
+        let completion = completedAt.flatMap(formatter.date(from:))
+        guard schemaVersion == 1, let start = formatter.date(from: startedAt),
+              let update = formatter.date(from: updatedAt),
+              trayOrder.sorted() == Array(0..<trayOrder.count),
+              placedTileIDs.count == trayOrder.count,
+              Set(placedTileIDs.compactMap { $0 }).count == placedTileIDs.compactMap { $0 }.count,
+              placedTileIDs.compactMap({ $0 }).allSatisfy({ (0..<trayOrder.count).contains($0) }),
+              Set(placementHistory).count == placementHistory.count,
+              placementHistory.allSatisfy({ placedTileIDs.contains($0) }),
+              Set(placementHistory) == Set(placedTileIDs.compactMap { $0 }.filter { $0 != lockedTileID }),
+              (0...5).contains(releaseDateScore), penaltySeconds >= 0,
+              (outcome == nil) == (completedAt == nil),
+              outcome == nil || completion != nil,
+              (hintUsed ? hintSource != nil :
+                hintSource == nil && penaltySeconds == 0 && lockedCellIndex == nil && lockedTileID == nil),
+              (!hintUsed || outcome != nil || (lockedCellIndex != nil && lockedTileID != nil)),
+              ((lockedCellIndex == nil && lockedTileID == nil)
+                || (lockedCellIndex != nil && lockedTileID != nil
+                    && placedTileIDs.indices.contains(lockedCellIndex!)
+                    && placedTileIDs[lockedCellIndex!] == lockedTileID))
+        else { return nil }
+        return AnagramProgress(
+            puzzleID: puzzleID, date: date, startedAt: start,
+            trayOrder: trayOrder, placedTileIDs: placedTileIDs,
+            placementHistory: placementHistory, hintUsed: hintUsed,
+            hintSource: hintSource, penaltySeconds: penaltySeconds,
+            lockedCellIndex: lockedCellIndex, lockedTileID: lockedTileID,
+            outcome: outcome, completedAt: completion,
+            elapsedSecondsAtCompletion: elapsedSecondsAtCompletion,
+            releaseDateScore: releaseDateScore, updatedAt: update
+        )
+    }
 }
 
 private struct CloudBackwordPayload: Codable {

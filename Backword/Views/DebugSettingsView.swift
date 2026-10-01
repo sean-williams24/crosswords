@@ -6,6 +6,7 @@ import UIKit
 struct DebugSettingsView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var backwordService: BackwordService
+    @EnvironmentObject var anagramService: AnagramService
     @EnvironmentObject var wotdService: WOTDService
     @EnvironmentObject var adService: AdService
     @EnvironmentObject var accountService: AccountService
@@ -15,6 +16,7 @@ struct DebugSettingsView: View {
     private let settings = AppSettings.shared
 
     @State private var showResetBackwordConfirmation = false
+    @State private var showResetAnagramConfirmation = false
     @State private var showResetDailyConfirmation = false
     @State private var showResetWeeklyConfirmation = false
     @State private var showResetUserDefaultsConfirmation = false
@@ -249,6 +251,28 @@ struct DebugSettingsView: View {
                     Text("Your guesses for today will be cleared and the game will restart.")
                 }
 
+                Section("Anagram") {
+                    Button(role: .destructive) {
+                        showResetAnagramConfirmation = true
+                    } label: {
+                        Label("Reset Today's Anagram", systemImage: "arrow.counterclockwise")
+                    }
+                    .disabled(anagramService.todaysPuzzle?.date != ContentReleaseCalendar().dailyDateString)
+                }
+                .confirmationDialog(
+                    "Reset Today's Anagram?",
+                    isPresented: $showResetAnagramConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Reset", role: .destructive) {
+                        anagramService.debugResetTodaysProgress()
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("Your progress for today's Anagram will be cleared and the game will restart.")
+                }
+
 
                 // MARK: - Onboarding
 
@@ -266,7 +290,7 @@ struct DebugSettingsView: View {
                         Label("Replay Backword rules update", systemImage: "arrow.counterclockwise")
                     }
                 }
-                confirmationDialog(
+                .confirmationDialog(
                     "Reset first-time onboarding?",
                     isPresented: $showOnboardingResetConfirmation,
                     titleVisibility: .visible
@@ -302,6 +326,12 @@ struct DebugSettingsView: View {
                         showPurgeBackwordConfirmation = true
                     } label: {
                         Label("Purge Backword", systemImage: "trash")
+                    }
+                    Button(role: .destructive) {
+                        Task { await anagramService.purgeCache() }
+                        dismiss()
+                    } label: {
+                        Label("Purge Anagram", systemImage: "trash")
                     }
                     Button(role: .destructive) {
                         showPurgeWOTDConfirmation = true

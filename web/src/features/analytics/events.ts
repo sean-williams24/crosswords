@@ -1,4 +1,4 @@
-export type AnalyticsGame = "backword" | "daily_crossword" | "weekly_crossword";
+export type AnalyticsGame = "backword" | "daily_crossword" | "weekly_crossword" | "anagram";
 export type AnalyticsPlatform = "web" | "ios";
 
 export type AnalyticsEvent = {

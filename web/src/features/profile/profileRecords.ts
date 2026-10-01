@@ -1,11 +1,13 @@
 import { createBackwordStorage } from "../backword/storage";
+import { createAnagramStorage } from "../anagram/storage";
 import { createCrosswordStorage } from "../crossword/storage";
-import { backwordCloudRecord, crosswordCloudRecord, type CloudRecord } from "../sync/progressSync";
+import { anagramCloudRecord, backwordCloudRecord, crosswordCloudRecord, type CloudRecord } from "../sync/progressSync";
 
 export type LocalProfileRecords = {
   backword: CloudRecord<unknown>[];
   dailyCrossword: CloudRecord<unknown>[];
   weeklyCrossword: CloudRecord<unknown>[];
+  anagram: CloudRecord<unknown>[];
 };
 
 /**
@@ -14,6 +16,7 @@ export type LocalProfileRecords = {
  */
 export function loadLocalProfileRecords(userId?: string): LocalProfileRecords {
   const backwordStorage = createBackwordStorage(window.localStorage, { userId });
+  const anagramStorage = createAnagramStorage(window.localStorage, { userId });
   const dailyCrosswordStorage = createCrosswordStorage(window.localStorage, { userId });
   const weeklyCrosswordStorage = createCrosswordStorage(window.localStorage, {
     kind: "weekly",
@@ -22,6 +25,7 @@ export function loadLocalProfileRecords(userId?: string): LocalProfileRecords {
 
   return {
     backword: backwordStorage.loadAllProgress().map(backwordCloudRecord),
+    anagram: anagramStorage.loadAllProgress().map(anagramCloudRecord),
     dailyCrossword: dailyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
     weeklyCrossword: weeklyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress, "weekly"))
   };

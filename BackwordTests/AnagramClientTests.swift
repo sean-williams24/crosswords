@@ -1,0 +1,262 @@
+import Foundation
+import Testing
+@testable import Backword
+
+@MainActor
+private final class FakeAnagramSource: AnagramDataSource {
+    var puzzle: AnagramPuzzle?
+    var shouldFail = false
+    var shouldFailFirstPublishedPuzzle = false
+    var dailyRequests = 0
+    var requestedDates: [String] = []
+    var requests: [String] = []
+
+    func firstPublishedPuzzle() async throws -> AnagramPuzzle? {
+        requests.append("firstRelease")
+        if shouldFail || shouldFailFirstPublishedPuzzle { throw URLError(.notConnectedToInternet) }
+        return puzzle
+    }
+
+    func puzzle(for date: String) async throws -> AnagramPuzzle? {
+        requests.append("daily")
+        requestedDates.append(date)
+        dailyRequests += 1
+        if shouldFail { throw URLError(.notConnectedToInternet) }
+        return puzzle
+    }
+
+    func puzzles(for month: ArchiveMonth, through date: String) async throws -> [AnagramPuzzle] {
+        if shouldFail { throw URLError(.notConnectedToInternet) }
+        return puzzle.map { [$0] } ?? []
+    }
+}
+
+@Suite("Anagram clients")
+struct AnagramClientTests {
+    @Test("Debug reset clears only today's Anagram progress")
+    @MainActor
+    func debugResetTodaysProgress() async throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .current
+        let now = try #require(calendar.date(from: DateComponents(year: 2099, month: 1, day: 2, hour: 12)))
+        let today = AnagramProgress.localDay(now)
+        let yesterday = AnagramProgress.localDay(try #require(calendar.date(byAdding: .day, value: -1, to: now)))
+        let puzzle = AnagramPuzzle(
+            id: UUID().uuidString, date: today, puzzleNumber: 1,
+            schemaVersion: 1, answer: "TRIANGLE",
+            acceptedAnswers: [], initialScramble: "RAGTLINE"
+        )
+        let previousPuzzle = AnagramPuzzle(
+            id: UUID().uuidString, date: yesterday, puzzleNumber: 1,
+            schemaVersion: 1, answer: "TRIANGLE",
+            acceptedAnswers: [], initialScramble: "RAGTLINE"
+        )
+        let cache = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer {
+            AnagramProgress.delete(date: today)
+            AnagramProgress.delete(date: yesterday)
+            try? FileManager.default.removeItem(at: cache)
+        }
+        let current = AnagramProgress(puzzle: puzzle, now: now)
+        let previous = AnagramProgress(puzzle: previousPuzzle, now: now)
+        current.save()
+        previous.save()
+        let source = FakeAnagramSource()
+        source.puzzle = puzzle
+        source.shouldFailFirstPublishedPuzzle = true
+        let service = AnagramService(dataSource: source, cacheDirectory: cache)
+        await service.refreshIfNeeded(now: now)
+
+        service.debugResetTodaysProgress(now: try #require(calendar.date(byAdding: .day, value: 1, to: now)))
+        #expect(AnagramProgress.load(date: today) == current)
+
+        service.debugResetTodaysProgress(now: now)
+
+        #expect(AnagramProgress.load(date: today) == nil)
+        #expect(AnagramProgress.load(date: yesterday) == previous)
+        #expect(service.todaysPuzzle == puzzle)
+    }
+
+    @Test("Archive months run newest first from the first published puzzle")
+    func archiveMonths() {
+        let months = AnagramService.archiveMonths(
+            from: "2025-12-20",
+            through: "2026-02-03"
+        )
+
+        #expect(months.map(\.key) == ["2026-02", "2026-01", "2025-12"])
+    }
+
+    @Test @MainActor func archiveIncludesTodaysReleasedPuzzle() async throws {
+        let source = FakeAnagramSource()
+        let cache = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: cache) }
+        let now = Date(timeIntervalSince1970: 1_790_467_200)
+        let today = AnagramProgress.localDay(now)
+        let puzzle = AnagramPuzzle(
+            id: "todays-archive-anagram",
+            date: today,
+            puzzleNumber: 1,
+            schemaVersion: 1,
+            answer: "TRIANGLE",
+            acceptedAnswers: ["INTEGRAL"],
+            initialScramble: "RAGTLINE"
+        )
+        source.puzzle = puzzle
+        let service = AnagramService(dataSource: source, cacheDirectory: cache)
+
+        let month = try #require(ArchiveMonth.from(dateString: today))
+        let puzzles = await service.fetchArchive(for: month, now: now)
+
+        #expect(puzzles == [puzzle])
+    }
+
+    @Test @MainActor func serviceUsesCacheOfflineAndRetries() async {
+        let previousRelease = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+        defer {
+            if let previousRelease {
+                UserDefaults.standard.set(previousRelease, forKey: "Anagram.firstReleaseDate")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "Anagram.firstReleaseDate")
+            }
+        }
+        let now = Date()
+        let date = AnagramProgress.localDay(now)
+        let puzzle = AnagramPuzzle(
+            id: UUID().uuidString, date: date, puzzleNumber: 1,
+            schemaVersion: 1, answer: "TRIANGLE",
+            acceptedAnswers: ["INTEGRAL"], initialScramble: "RAGTLINE"
+        )
+        let source = FakeAnagramSource()
+        source.puzzle = puzzle
+        let cache = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: cache) }
+        let online = AnagramService(dataSource: source, cacheDirectory: cache)
+        await online.refreshIfNeeded(now: now)
+        #expect(online.todaysPuzzle == puzzle)
+        source.shouldFail = true
+        let offline = AnagramService(dataSource: source, cacheDirectory: cache)
+        await offline.refreshIfNeeded(now: now)
+        #expect(offline.todaysPuzzle == puzzle)
+        source.shouldFail = false
+        await offline.refreshIfNeeded(now: now)
+        #expect(offline.todaysPuzzle == puzzle)
+        #expect(source.dailyRequests == 2)
+    }
+
+    @Test @MainActor func serviceDoesNotSubstituteReviewPuzzleWhenTodayIsUnavailable() async {
+        let source = FakeAnagramSource()
+        let cache = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: cache) }
+
+        let service = AnagramService(dataSource: source, cacheDirectory: cache)
+        await service.refreshIfNeeded(now: Date())
+
+        #expect(service.todaysPuzzle == nil)
+        #expect(source.dailyRequests == 1)
+    }
+
+    @Test @MainActor func purgingCacheRemovesContentAndRetriesToday() async throws {
+        let previousRelease = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+        defer {
+            if let previousRelease {
+                UserDefaults.standard.set(previousRelease, forKey: "Anagram.firstReleaseDate")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "Anagram.firstReleaseDate")
+            }
+        }
+        let now = Date()
+        let date = AnagramProgress.localDay(now)
+        let puzzle = AnagramPuzzle(
+            id: UUID().uuidString, date: date, puzzleNumber: 4,
+            schemaVersion: 1, answer: "TRIANGLE",
+            acceptedAnswers: ["INTEGRAL"], initialScramble: "RAGTLINE"
+        )
+        let source = FakeAnagramSource()
+        source.puzzle = puzzle
+        let cache = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: cache) }
+        let service = AnagramService(dataSource: source, cacheDirectory: cache)
+
+        await service.refreshIfNeeded(now: now)
+        let dailyFile = cache.appendingPathComponent("\(date).json")
+        let archiveFile = cache.appendingPathComponent("archive-test.json")
+        try Data().write(to: archiveFile)
+        #expect(FileManager.default.fileExists(atPath: dailyFile.path))
+
+        source.shouldFail = true
+        let purge = Task {
+            await service.purgeCache(now: now, minimumLoadingDuration: .milliseconds(500))
+        }
+        try await Task.sleep(for: .milliseconds(50))
+        #expect(service.todaysPuzzle == nil)
+        #expect(service.isLoading)
+        #expect(!service.hasAttemptedLoad)
+        await purge.value
+        #expect(service.todaysPuzzle == nil)
+        #expect(service.hasAttemptedLoad)
+        #expect(!service.isLoading)
+        #expect(!FileManager.default.fileExists(atPath: dailyFile.path))
+        #expect(!FileManager.default.fileExists(atPath: archiveFile.path))
+        #expect(source.dailyRequests == 2)
+
+        source.shouldFail = false
+        await service.refreshIfNeeded(now: now)
+        #expect(service.todaysPuzzle == puzzle)
+        #expect(source.dailyRequests == 3)
+    }
+
+    @Test @MainActor func dailyPuzzleLoadsWhenFirstReleaseMetadataFails() async {
+        let previousRelease = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
+        UserDefaults.standard.removeObject(forKey: "Anagram.firstReleaseDate")
+        defer {
+            if let previousRelease {
+                UserDefaults.standard.set(previousRelease, forKey: "Anagram.firstReleaseDate")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "Anagram.firstReleaseDate")
+            }
+        }
+        let source = FakeAnagramSource()
+        source.shouldFailFirstPublishedPuzzle = true
+        let date = AnagramProgress.localDay(Date())
+        let puzzle = AnagramPuzzle(
+            id: UUID().uuidString, date: date, puzzleNumber: 3,
+            schemaVersion: 1, answer: "PICTURE",
+            acceptedAnswers: [], initialScramble: "PEIRTUC"
+        )
+        source.puzzle = puzzle
+        let cache = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: cache) }
+
+        let service = AnagramService(dataSource: source, cacheDirectory: cache)
+        await service.refreshIfNeeded()
+
+        #expect(service.todaysPuzzle == puzzle)
+        #expect(source.dailyRequests == 1)
+        #expect(source.requestedDates == [date])
+        #expect(source.requests == ["daily", "firstRelease"])
+    }
+
+    @Test @MainActor func viewModelStartsAndRestoresUndo() {
+        let puzzle = AnagramPuzzle(
+            id: UUID().uuidString, date: "2026-10-01", puzzleNumber: 1,
+            schemaVersion: 1, answer: "TRIANGLE",
+            acceptedAnswers: ["INTEGRAL"], initialScramble: "RAGTLINE"
+        )
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        let fresh = AnagramViewModel(puzzle: puzzle, persistsChanges: false)
+        #expect(fresh.canStart)
+        fresh.start(now: now)
+        fresh.place(0, now: now.addingTimeInterval(2))
+        fresh.place(1, now: now.addingTimeInterval(3))
+        let restored = AnagramViewModel(
+            puzzle: puzzle, initialProgress: fresh.progress, persistsChanges: false
+        )
+        #expect(restored.progress?.placementHistory == [0, 1])
+        restored.undo(now: now.addingTimeInterval(4))
+        #expect(restored.progress?.placementHistory == [0])
+        #expect(restored.progress?.startedAt == now)
+        restored.reload()
+        #expect(restored.progress?.placementHistory == [0])
+    }
+}

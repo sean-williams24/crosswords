@@ -1,0 +1,564 @@
+{
+  "source": "wordfreq English top 200,000 and zipf_frequency",
+  "reviewStatus": "reviewed",
+  "entries": [
+    {
+      "issue": 1,
+      "answer": "TRIANGLE",
+      "zipf": 3.93,
+      "top200kRank": 7993,
+      "acceptedAnswers": [
+        {
+          "word": "INTEGRAL",
+          "zipf": 3.96,
+          "top200kRank": 7570
+        },
+        {
+          "word": "RELATING",
+          "zipf": 4.21,
+          "top200kRank": 5076
+        },
+        {
+          "word": "ALTERING",
+          "zipf": 3.59,
+          "top200kRank": 13089
+        },
+        {
+          "word": "ALERTING",
+          "zipf": 2.98,
+          "top200kRank": 29536
+        }
+      ]
+    },
+    {
+      "issue": 2,
+      "answer": "BALANCE",
+      "zipf": 4.76,
+      "top200kRank": 1782,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 3,
+      "answer": "PICTURE",
+      "zipf": 5.13,
+      "top200kRank": 777,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 4,
+      "answer": "LIBRARY",
+      "zipf": 4.86,
+      "top200kRank": 1459,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 5,
+      "answer": "JOURNEY",
+      "zipf": 4.65,
+      "top200kRank": 2256,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 6,
+      "answer": "KITCHEN",
+      "zipf": 4.65,
+      "top200kRank": 2257,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 7,
+      "answer": "WEATHER",
+      "zipf": 4.87,
+      "top200kRank": 1443,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 8,
+      "answer": "GARDENS",
+      "zipf": 4.27,
+      "top200kRank": 4529,
+      "acceptedAnswers": [
+        {
+          "word": "DANGERS",
+          "zipf": 3.89,
+          "top200kRank": 8408
+        }
+      ]
+    },
+    {
+      "issue": 9,
+      "answer": "MONSTER",
+      "zipf": 4.49,
+      "top200kRank": 3074,
+      "acceptedAnswers": [
+        {
+          "word": "MENTORS",
+          "zipf": 3.29,
+          "top200kRank": 19902
+        }
+      ]
+    },
+    {
+      "issue": 10,
+      "answer": "LANTERN",
+      "zipf": 3.61,
+      "top200kRank": 12804,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 11,
+      "answer": "FLOWERS",
+      "zipf": 4.64,
+      "top200kRank": 2299,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 12,
+      "answer": "HISTORY",
+      "zipf": 5.39,
+      "top200kRank": 397,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 13,
+      "answer": "MORNING",
+      "zipf": 5.33,
+      "top200kRank": 470,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 14,
+      "answer": "COUNTRY",
+      "zipf": 5.48,
+      "top200kRank": 313,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 15,
+      "answer": "PLAYFUL",
+      "zipf": 3.53,
+      "top200kRank": 14385,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 16,
+      "answer": "DIAMOND",
+      "zipf": 4.42,
+      "top200kRank": 3480,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 17,
+      "answer": "CAPTURE",
+      "zipf": 4.42,
+      "top200kRank": 3472,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 18,
+      "answer": "CUSHION",
+      "zipf": 3.58,
+      "top200kRank": 13316,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 19,
+      "answer": "FREEDOM",
+      "zipf": 4.86,
+      "top200kRank": 1454,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 20,
+      "answer": "SURPRISE",
+      "zipf": 4.75,
+      "top200kRank": 1841,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 21,
+      "answer": "WHISPER",
+      "zipf": 3.74,
+      "top200kRank": 10637,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 22,
+      "answer": "SUNSHINE",
+      "zipf": 4.16,
+      "top200kRank": 5556,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 23,
+      "answer": "ELEPHANT",
+      "zipf": 4.08,
+      "top200kRank": 6236,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 24,
+      "answer": "MOUNTAIN",
+      "zipf": 4.73,
+      "top200kRank": 1910,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 25,
+      "answer": "NOTEBOOK",
+      "zipf": 3.74,
+      "top200kRank": 10583,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 26,
+      "answer": "BIRTHDAY",
+      "zipf": 4.76,
+      "top200kRank": 1783,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 27,
+      "answer": "CALENDAR",
+      "zipf": 4.3,
+      "top200kRank": 4288,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 28,
+      "answer": "CHOCOLATE",
+      "zipf": 4.49,
+      "top200kRank": 3047,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 29,
+      "answer": "ADVENTURE",
+      "zipf": 4.46,
+      "top200kRank": 3205,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 30,
+      "answer": "BUTTERFLY",
+      "zipf": 3.93,
+      "top200kRank": 7891,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 31,
+      "answer": "HAPPINESS",
+      "zipf": 4.44,
+      "top200kRank": 3365,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 32,
+      "answer": "BASEBALL",
+      "zipf": 4.54,
+      "top200kRank": 2773,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 33,
+      "answer": "BICYCLE",
+      "zipf": 3.98,
+      "top200kRank": 7314,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 34,
+      "answer": "BROCCOLI",
+      "zipf": 3.5,
+      "top200kRank": 14907,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 35,
+      "answer": "BUILDING",
+      "zipf": 5.29,
+      "top200kRank": 510,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 36,
+      "answer": "CAMPFIRE",
+      "zipf": 3.1,
+      "top200kRank": 25310,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 37,
+      "answer": "CARPENTER",
+      "zipf": 3.81,
+      "top200kRank": 9449,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 38,
+      "answer": "CHILDREN",
+      "zipf": 5.47,
+      "top200kRank": 318,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 39,
+      "answer": "COMPUTER",
+      "zipf": 4.97,
+      "top200kRank": 1136,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 40,
+      "answer": "CREATURE",
+      "zipf": 4.16,
+      "top200kRank": 5488,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 41,
+      "answer": "CUSTOMER",
+      "zipf": 4.61,
+      "top200kRank": 2434,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 42,
+      "answer": "DAUGHTER",
+      "zipf": 5.07,
+      "top200kRank": 900,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 43,
+      "answer": "WATERFALL",
+      "zipf": 3.54,
+      "top200kRank": 14249,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 44,
+      "answer": "DINOSAUR",
+      "zipf": 3.77,
+      "top200kRank": 10037,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 45,
+      "answer": "DISTANCE",
+      "zipf": 4.85,
+      "top200kRank": 1479,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 46,
+      "answer": "EXERCISE",
+      "zipf": 4.68,
+      "top200kRank": 2109,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 47,
+      "answer": "FAMILIES",
+      "zipf": 4.94,
+      "top200kRank": 1218,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 48,
+      "answer": "FIREWORK",
+      "zipf": 2.96,
+      "top200kRank": 30421,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 49,
+      "answer": "FOOTBALL",
+      "zipf": 5.11,
+      "top200kRank": 806,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 50,
+      "answer": "FRIENDLY",
+      "zipf": 4.64,
+      "top200kRank": 2300,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 51,
+      "answer": "GLASSES",
+      "zipf": 4.34,
+      "top200kRank": 4021,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 52,
+      "answer": "GRAPHICS",
+      "zipf": 4.19,
+      "top200kRank": 5224,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 53,
+      "answer": "HOSPITAL",
+      "zipf": 5.07,
+      "top200kRank": 905,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 54,
+      "answer": "LANGUAGE",
+      "zipf": 5.1,
+      "top200kRank": 831,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 55,
+      "answer": "LAUGHTER",
+      "zipf": 4.1,
+      "top200kRank": 6065,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 56,
+      "answer": "LEMONADE",
+      "zipf": 3.44,
+      "top200kRank": 16271,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 57,
+      "answer": "LIGHTNING",
+      "zipf": 4.22,
+      "top200kRank": 4960,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 58,
+      "answer": "MAGAZINE",
+      "zipf": 4.74,
+      "top200kRank": 1869,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 59,
+      "answer": "MEDICINE",
+      "zipf": 4.73,
+      "top200kRank": 1908,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 60,
+      "answer": "MIDNIGHT",
+      "zipf": 4.31,
+      "top200kRank": 4253,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 61,
+      "answer": "PAINTING",
+      "zipf": 4.6,
+      "top200kRank": 2494,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 62,
+      "answer": "PANCAKES",
+      "zipf": 3.59,
+      "top200kRank": 13209,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 63,
+      "answer": "PARTNERS",
+      "zipf": 4.56,
+      "top200kRank": 2690,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 64,
+      "answer": "PERSONAL",
+      "zipf": 5.2,
+      "top200kRank": 640,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 65,
+      "answer": "RAINBOWS",
+      "zipf": 3.19,
+      "top200kRank": 22784,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 66,
+      "answer": "SANDWICH",
+      "zipf": 4.13,
+      "top200kRank": 5835,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 67,
+      "answer": "UPSTAIRS",
+      "zipf": 3.87,
+      "top200kRank": 8742,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 68,
+      "answer": "SCISSORS",
+      "zipf": 3.58,
+      "top200kRank": 13418,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 69,
+      "answer": "SHOULDER",
+      "zipf": 4.5,
+      "top200kRank": 3025,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 70,
+      "answer": "STARFISH",
+      "zipf": 3.0,
+      "top200kRank": 29103,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 71,
+      "answer": "SUNLIGHT",
+      "zipf": 3.86,
+      "top200kRank": 8865,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 72,
+      "answer": "TREASURE",
+      "zipf": 4.17,
+      "top200kRank": 5460,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 73,
+      "answer": "VACATION",
+      "zipf": 4.4,
+      "top200kRank": 3664,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 74,
+      "answer": "WILDLIFE",
+      "zipf": 4.33,
+      "top200kRank": 4132,
+      "acceptedAnswers": []
+    },
+    {
+      "issue": 75,
+      "answer": "WORKSHOP",
+      "zipf": 4.15,
+      "top200kRank": 5650,
+      "acceptedAnswers": []
+    }
+  ]
+}

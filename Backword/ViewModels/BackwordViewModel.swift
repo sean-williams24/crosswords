@@ -241,6 +241,24 @@ final class BackwordViewModel: ObservableObject {
     }
     #endif
 
+    // MARK: - Give Up
+
+    func giveUp() {
+        guard !progress.isComplete else { return }
+
+        stopExplainerCountdown()
+        currentInput = ""
+        invalidWordMessage = nil
+        newlyRevealedIndex = nil
+        progress.wonFlag = false
+        didComplete = true
+        progress.completedAt = Date()
+        progress.save()
+        recordCompletion(guessCount: nil)
+        logGameCompletion(outcome: .gaveUp)
+        haptics.play(.backwordGameLost)
+    }
+
     // MARK: - Submit Guess
 
     func submitGuess() {

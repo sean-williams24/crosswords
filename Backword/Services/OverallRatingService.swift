@@ -58,6 +58,11 @@ final class OverallRatingService: ObservableObject {
         for progress in MidwordProgress.loadAll() where progress.date >= cutoff && progress.isComplete {
             rating.upsertMidword(score: progress.releaseDateScore, date: progress.date)
         }
+        if let firstRelease = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate") {
+            for progress in AnagramProgress.loadAll() where progress.date >= max(cutoff, firstRelease) {
+                rating.upsertAnagram(score: progress.releaseDateScore, date: progress.date)
+            }
+        }
 
         Self.applyCrosswordReleaseDateScores(
             progressRecords,
