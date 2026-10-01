@@ -26,7 +26,6 @@ struct MidwordGuessRow: View {
                     isCorrect: isCorrect,
                     isFailed: !isCorrect,
                     size: cellSize,
-                    cornerRadius: 0,
                     accentColor: .midwordAccent,
                     surfaceColor: .midwordBackground,
                     textColor: .midwordText,

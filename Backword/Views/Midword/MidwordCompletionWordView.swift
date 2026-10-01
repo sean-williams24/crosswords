@@ -23,7 +23,6 @@ struct MidwordCompletionWordView: View {
                         isFailed: revealed && failed,
                         isCelebrating: revealed && celebrates && !failed,
                         size: cellSize,
-                        cornerRadius: 0,
                         accentColor: .midwordAccent,
                         surfaceColor: .midwordBackground,
                         textColor: .appTextPrimary,

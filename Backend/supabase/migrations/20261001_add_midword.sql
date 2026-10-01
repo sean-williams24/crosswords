@@ -14,6 +14,10 @@ CREATE POLICY "Public can read released Midword puzzles"
     ON public.midword_puzzles FOR SELECT
     USING (date <= (NOW() AT TIME ZONE 'Pacific/Kiritimati')::date);
 
+REVOKE ALL ON TABLE public.midword_puzzles FROM PUBLIC, anon, authenticated, service_role;
+GRANT SELECT ON TABLE public.midword_puzzles TO anon, authenticated;
+GRANT SELECT, INSERT ON TABLE public.midword_puzzles TO service_role;
+
 ALTER TABLE public.game_progress DROP CONSTRAINT game_progress_game_type_check;
 ALTER TABLE public.game_progress ADD CONSTRAINT game_progress_game_type_check
     CHECK (game_type IN ('backword', 'anagram', 'midword', 'daily_crossword', 'weekly_crossword'));

@@ -25,6 +25,13 @@ class MidwordGeneratorTests(unittest.TestCase):
         self.assertEqual(midword_types, anagram_types | {"midword"})
         self.assertEqual(schema_types, midword_types)
 
+    def test_migration_declares_midword_data_api_access(self):
+        migration = (Path(__file__).parent / "supabase" / "migrations" /
+                     "20261001_add_midword.sql").read_text()
+        self.assertIn("GRANT SELECT ON TABLE public.midword_puzzles TO anon, authenticated;", migration)
+        self.assertIn("GRANT SELECT, INSERT ON TABLE public.midword_puzzles TO service_role;", migration)
+        self.assertIn("REVOKE ALL ON FUNCTION public.publish_midword_batch(JSONB) FROM anon, authenticated;", migration)
+
     def test_first_publication_can_include_launch_day(self):
         self.assertEqual(default_start_date(date(2026, 10, 1)), date(2026, 10, 1))
         planned = select_puzzles(load_approved(), [], date(2026, 10, 1), 1)

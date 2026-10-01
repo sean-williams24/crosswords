@@ -357,16 +357,8 @@ struct BackwordView: View {
     // MARK: - Submit Button
 
     private var submitButton: some View {
-        Button {
+        GameSubmitButton {
             viewModel.submitGuess()
-        } label: {
-            Text("Submit")
-                .font(AppFont.clueLabel(15))
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(Color.appAccent)
-                .cornerRadius(AppLayout.cardCornerRadius)
         }
     }
 

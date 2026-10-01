@@ -38,7 +38,6 @@ struct MidwordBoardView: View {
                     isCursor: !won && index == letters.count,
                     isCorrect: won,
                     size: cellSize,
-                    cornerRadius: 0,
                     accentColor: .midwordAccent,
                     surfaceColor: .midwordBackground,
                     textColor: .midwordText,

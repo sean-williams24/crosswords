@@ -88,6 +88,39 @@ struct MidwordGameTests {
         #expect(vm.message == "Already guessed")
     }
 
+    @Test("Submit is available only while the answer input is full")
+    @MainActor
+    func submitAvailability() {
+        let game = puzzle()
+        let vm = MidwordViewModel(puzzle: game, progress: MidwordProgress(date: game.date))
+        #expect(!vm.canSubmit)
+        for character in "NOT" { vm.enterLetter(character) }
+        #expect(!vm.canSubmit)
+        vm.enterLetter("E")
+        #expect(vm.canSubmit)
+        vm.deleteLetter()
+        #expect(!vm.canSubmit)
+        vm.enterLetter("E")
+        #expect(vm.canSubmit)
+    }
+
+    @Test("Completed games never offer Submit", arguments: [false, true])
+    @MainActor
+    func completedSubmitAvailability(won: Bool) {
+        let game = puzzle()
+        var progress = MidwordProgress(date: game.date)
+        if won {
+            progress.submit("NOTE", for: game)
+        } else {
+            for _ in 0..<5 { progress.submit("TEST", for: game) }
+        }
+        let vm = MidwordViewModel(puzzle: game, progress: progress)
+        for character in "NOTE" { vm.enterLetter(character) }
+        #expect(vm.isComplete)
+        #expect(vm.input.isEmpty)
+        #expect(!vm.canSubmit)
+    }
+
     @Test("A completed game stays complete after later submissions")
     func completedGameIsImmutable() {
         let game = puzzle()

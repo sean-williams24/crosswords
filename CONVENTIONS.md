@@ -264,10 +264,13 @@ and competing links. The scheduled publisher uses only approved entries and
 fails before writing if its full coverage window cannot be filled. The batch
 publishing RPC validates and inserts all selected rows in one transaction.
 
-Midword uses its own chartreuse and charcoal semantic colours. The reusable
-Backword cell accepts colour and square-corner options; its existing default
-appearance remains unchanged. Completion reveals the answer with the same
-timing and Reduce Motion behaviour as Backword.
+Midword uses its own chartreuse and charcoal semantic colours. Its input,
+previous guesses, and completion tiles use the reusable Backword cell's default
+rounded corners. Both games share the Submit button styling, with Midword's
+own button colours, and show it only when the answer input is full. Midword's
+rating progress bar spans the screen with the same spacing above the keyboard
+as Backword. Completion reveals the answer with the same timing and Reduce
+Motion behaviour as Backword.
 
 The Midword Home card uses the shared adaptive minimum card height, issue-number
 overlay, and status badge. Empty progress is New; accepted guesses are In
@@ -284,7 +287,9 @@ each Midword release from `2026-10-01` onward.
 The Midword database migration extends the live `game_progress` game-type
 constraint without removing Anagram, which was added on the remote database
 before Midword. It does not replace `merge_game_progress`, so Anagram's
-server-side conflict handling remains intact.
+server-side conflict handling remains intact. Midword table grants are explicit:
+players can read released puzzles, while only the service role among Data API
+roles can insert the approved batch through its publishing function.
 
 ## Backword Onboarding
 

@@ -34,6 +34,7 @@ struct MidwordView: View {
                 }
             }
         }
+        .animation(.easeInOut(duration: 0.2), value: viewModel.canSubmit)
         .background(Color.midwordBackground.ignoresSafeArea())
         .environment(\.colorScheme, .dark)
         .toolbar(.hidden, for: .navigationBar)
@@ -103,17 +104,19 @@ struct MidwordView: View {
     @ViewBuilder
     private var inputControls: some View {
         if !viewModel.isComplete {
-            VStack(spacing: 6) {
+            VStack(spacing: 0) {
                 GameScoreProgressBarView(rating: ratingService.rating, category: .midword)
+                    .padding(.vertical, viewModel.canSubmit ? 5 : 0)
+                if viewModel.canSubmit {
+                    GameSubmitButton(
+                        backgroundColor: .midwordAccent,
+                        textColor: .midwordOnAccent
+                    ) { viewModel.submitGuess() }
                     .padding(.horizontal, AppLayout.screenPadding)
-                Button("Submit") { viewModel.submitGuess() }
-                    .font(AppFont.header(18))
-                    .foregroundColor(.midwordOnAccent)
-                    .frame(maxWidth: .infinity, minHeight: 48)
-                    .background(Color.midwordAccent)
-                    .disabled(!viewModel.canSubmit)
-                    .opacity(viewModel.canSubmit ? 1 : 0.5)
-                    .padding(.horizontal, AppLayout.screenPadding)
+                    .padding(.top, 10)
+                    .background(Color.midwordBackground)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
                 CustomKeyboardView(
                     onKeyTap: { key in
                         if let letter = key.first { viewModel.enterLetter(letter) }

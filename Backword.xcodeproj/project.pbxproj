@@ -30,7 +30,6 @@
 		05C0B0033006000000000001 /* BackwordCompletionWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0B0023006000000000001 /* BackwordCompletionWordView.swift */; };
 		05C0B0053006000000000001 /* BackwordCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C0B0043006000000000001 /* BackwordCompletionPresentationTests.swift */; };
 		05D1A0013001000000000001 /* ContentReleaseCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */; };
-		09FF00013011000000000001 /* PuzzleResultShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FF00003011000000000001 /* PuzzleResultShareTests.swift */; };
 		05D1A0033001000000000001 /* DailyAuxiliaryContentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */; };
 		05D1A0053001000000000001 /* CompletionDisplayStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */; };
 		05D1A0073001000000000001 /* CompletionDisplayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1A0063001000000000001 /* CompletionDisplayState.swift */; };
@@ -46,13 +45,14 @@
 		06CC00073007000000000001 /* CrosswordCompletionPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */; };
 		07AA10013008000000000001 /* CrosswordStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA10003008000000000001 /* CrosswordStatsHistory.swift */; };
 		07AB00023008000000000001 /* BackwordRulesUpdateNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */; };
-		07AD00023010000000000001 /* BackwordOnboardingCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AD00013010000000000001 /* BackwordOnboardingCardsView.swift */; };
 		07AB00043008000000000001 /* BackwordRulesUpdateNoticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */; };
 		07AC00023009000000000001 /* BackwordModeToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AC00013009000000000001 /* BackwordModeToggle.swift */; };
+		07AD00023010000000000001 /* BackwordOnboardingCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AD00013010000000000001 /* BackwordOnboardingCardsView.swift */; };
 		07AD10013010000000000001 /* BackwordStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AD10003010000000000001 /* BackwordStatsHistory.swift */; };
 		07AD10033010000000000001 /* BackwordStatsHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AD10023010000000000001 /* BackwordStatsHistoryTests.swift */; };
 		0838E5D52FE2D3A200000001 /* HomeTabBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */; };
 		0838E5D72FE2E5AB00000001 /* ArchiveTabBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */; };
+		09FF00013011000000000001 /* PuzzleResultShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FF00003011000000000001 /* PuzzleResultShareTests.swift */; };
 		0A5F0E3C2FE322C700F00E3C /* LaunchSplashViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */; };
 		0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */; };
 		0F0F00013010000000000001 /* GoogleSignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0F00023010000000000001 /* GoogleSignInButton.swift */; };
@@ -119,7 +119,6 @@
 		86E5BFFE2FA2BECA00A42156 /* Outfit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86E5BFED2FA2BECA00A42156 /* Outfit-Bold.ttf */; };
 		86E5C00A2FA9211200A42156 /* WeeklyCrosswordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */; };
 		86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */; };
-		F10000000000000000000002 /* HomeCardIssueNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000001 /* HomeCardIssueNumber.swift */; };
 		86E5C00E2FA94D8A00A42156 /* StreakButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E5C00D2FA94D8A00A42156 /* StreakButton.swift */; };
 		86F02E462FB9BE220083B752 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 86F02E452FB9BE220083B752 /* Supabase */; };
 		86F02E482FBA14FF0083B752 /* StatusLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F02E472FBA14FF0083B752 /* StatusLabelView.swift */; };
@@ -140,10 +139,24 @@
 		A11CC001300A000000000001 /* AccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11CC000300A000000000001 /* AccountSheet.swift */; };
 		A11DD001300A000000000001 /* AppleSignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11DD000300A000000000001 /* AppleSignInButton.swift */; };
 		A220B5F6D4E48FCC57832B9C /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15EB4D0D354246894E51C7E /* CacheService.swift */; };
+		A82CFBD4790ADB40E195ADD8 /* MidwordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8013956F1CB59F9C80F81AB /* MidwordCard.swift */; };
+		A83D7E3FB67BDC4A73E32933 /* MidwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */; };
+		A84B89AE16F5D3929016DE05 /* MidwordGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */; };
+		A86355B66F25A22B9C9AB15B /* MidwordCompletionWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AB82BBFACA33CA3778BC1A /* MidwordCompletionWordView.swift */; };
+		A8668C9DDE853E7503FE8BC4 /* MidwordPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8593FC71ACF6AF5027A308D /* MidwordPuzzle.swift */; };
+		A873D88AC6DE0B55EFDB427A /* MidwordProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84B19CBE925E605AAA62242 /* MidwordProgress.swift */; };
+		A87593C9AEA8FA0C03E315E7 /* MidwordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */; };
+		A8B82A5874D65009EBF8F772 /* MidwordArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E256D89F4E7DE3DFD5A5AF /* MidwordArchiveRow.swift */; };
+		A8B927B73ABB0E4C3B21B75A /* MidwordBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BADC74D85E195F31F646D /* MidwordBoardView.swift */; };
+		A8C7F36D88E76EDF2BADA86A /* MidwordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */; };
+		A8C8B52EC75BCACC3BADB7A8 /* MidwordInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */; };
+		A8C9A673F6B624C5D7673E8C /* MidwordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85BAE372EF092378192E9B2 /* MidwordService.swift */; };
+		A8E5B970FFA351CAFAACA37B /* MidwordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8220AB384E18F7E4E984338 /* MidwordViewModel.swift */; };
 		ABCD10000000000000000004 /* FeedbackEmailContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000001 /* FeedbackEmailContentTests.swift */; };
 		ABCD10000000000000000005 /* FeedbackEmailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000002 /* FeedbackEmailContent.swift */; };
 		ABCD10000000000000000006 /* MailComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000003 /* MailComposerView.swift */; };
 		AC638DF36320A3F8C6EFDE6E /* CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741EF0B3C1470452272529E1 /* CompletionView.swift */; };
+		AD602F7C819B45D0A146E1B3 /* MidwordAttemptCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD602F7C819B45D0A146E1B4 /* MidwordAttemptCounterView.swift */; };
 		B022F8B276983EAF1219E126 /* WOTDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */; };
 		B87E042C9276130084747CA3 /* StatsView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8254031869B9E1FAC8C5A377 /* StatsView2.swift */; };
 		BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2519353944EB9D4F32644E32 /* ClueBarView.swift */; };
@@ -160,23 +173,10 @@
 		E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894071960CD50EDF948DA15E /* BackwordApp.swift */; };
 		E9501AAB5231A6C28698D2E6 /* BackwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */; };
 		EAD7311D1E0CE5265794E80E /* BackwordWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */; };
+		F10000000000000000000002 /* HomeCardIssueNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000001 /* HomeCardIssueNumber.swift */; };
 		F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A3938FD382B86EEB78063 /* ArchiveView.swift */; };
 		FB8811D4DA46B6D23CDE6ED8 /* OverallRating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FDFB84159BB8E3A26031D0 /* OverallRating.swift */; };
 		FC2E739DC6045316AD55D0F4 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 9919F8A6B05C3D85B7C8E63E /* GoogleMobileAds */; };
-		A8668C9DDE853E7503FE8BC4 /* MidwordPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8593FC71ACF6AF5027A308D /* MidwordPuzzle.swift */; };
-		A873D88AC6DE0B55EFDB427A /* MidwordProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84B19CBE925E605AAA62242 /* MidwordProgress.swift */; };
-		A8C9A673F6B624C5D7673E8C /* MidwordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85BAE372EF092378192E9B2 /* MidwordService.swift */; };
-		A8E5B970FFA351CAFAACA37B /* MidwordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8220AB384E18F7E4E984338 /* MidwordViewModel.swift */; };
-		A82CFBD4790ADB40E195ADD8 /* MidwordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8013956F1CB59F9C80F81AB /* MidwordCard.swift */; };
-		A8B82A5874D65009EBF8F772 /* MidwordArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E256D89F4E7DE3DFD5A5AF /* MidwordArchiveRow.swift */; };
-		A8B927B73ABB0E4C3B21B75A /* MidwordBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BADC74D85E195F31F646D /* MidwordBoardView.swift */; };
-		A8C8B52EC75BCACC3BADB7A8 /* MidwordInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */; };
-		A87593C9AEA8FA0C03E315E7 /* MidwordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */; };
-		A83D7E3FB67BDC4A73E32933 /* MidwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */; };
-		A84B89AE16F5D3929016DE05 /* MidwordGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */; };
-		A86355B66F25A22B9C9AB15B /* MidwordCompletionWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AB82BBFACA33CA3778BC1A /* MidwordCompletionWordView.swift */; };
-		A8C7F36D88E76EDF2BADA86A /* MidwordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */; };
-		AD602F7C819B45D0A146E1B3 /* MidwordAttemptCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD602F7C819B45D0A146E1B4 /* MidwordAttemptCounterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,7 +211,6 @@
 		05C0B0023006000000000001 /* BackwordCompletionWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordCompletionWordView.swift; sourceTree = "<group>"; };
 		05C0B0043006000000000001 /* BackwordCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordCompletionPresentationTests.swift; sourceTree = "<group>"; };
 		05D1A0003001000000000001 /* ContentReleaseCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentReleaseCalendarTests.swift; sourceTree = "<group>"; };
-		09FF00003011000000000001 /* PuzzleResultShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleResultShareTests.swift; sourceTree = "<group>"; };
 		05D1A0023001000000000001 /* DailyAuxiliaryContentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAuxiliaryContentServiceTests.swift; sourceTree = "<group>"; };
 		05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayStateTests.swift; sourceTree = "<group>"; };
 		05D1A0063001000000000001 /* CompletionDisplayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDisplayState.swift; sourceTree = "<group>"; };
@@ -225,13 +224,14 @@
 		06CC00063007000000000001 /* CrosswordCompletionPresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCompletionPresentationTests.swift; sourceTree = "<group>"; };
 		07AA10003008000000000001 /* CrosswordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordStatsHistory.swift; sourceTree = "<group>"; };
 		07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNotice.swift; sourceTree = "<group>"; };
-		07AD00013010000000000001 /* BackwordOnboardingCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordOnboardingCardsView.swift; sourceTree = "<group>"; };
 		07AB00033008000000000001 /* BackwordRulesUpdateNoticeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordRulesUpdateNoticeTests.swift; sourceTree = "<group>"; };
 		07AC00013009000000000001 /* BackwordModeToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordModeToggle.swift; sourceTree = "<group>"; };
+		07AD00013010000000000001 /* BackwordOnboardingCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordOnboardingCardsView.swift; sourceTree = "<group>"; };
 		07AD10003010000000000001 /* BackwordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsHistory.swift; sourceTree = "<group>"; };
 		07AD10023010000000000001 /* BackwordStatsHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsHistoryTests.swift; sourceTree = "<group>"; };
 		0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewTests.swift; sourceTree = "<group>"; };
 		0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTabBarViewTests.swift; sourceTree = "<group>"; };
+		09FF00003011000000000001 /* PuzzleResultShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleResultShareTests.swift; sourceTree = "<group>"; };
 		0A5F0E3B2FE322C700F00E3C /* LaunchSplashViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchSplashViewTests.swift; sourceTree = "<group>"; };
 		0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleView.swift; sourceTree = "<group>"; };
 		0C4762545EDB078B5DA1FA49 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
@@ -301,7 +301,6 @@
 		86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCrosswordCard.swift; sourceTree = "<group>"; };
 		86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCrosswordCard.swift; sourceTree = "<group>"; };
 		86E5C00D2FA94D8A00A42156 /* StreakButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakButton.swift; sourceTree = "<group>"; };
-		F10000000000000000000001 /* HomeCardIssueNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCardIssueNumber.swift; sourceTree = "<group>"; };
 		86F02E472FBA14FF0083B752 /* StatusLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusLabelView.swift; sourceTree = "<group>"; };
 		86F02E492FBA15550083B752 /* PuzzleStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleStatus.swift; sourceTree = "<group>"; };
 		86FAA14E2FB4F8C00022EFF6 /* CustomKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomKeyboardView.swift; sourceTree = "<group>"; };
@@ -321,9 +320,23 @@
 		A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModelTests.swift; sourceTree = "<group>"; };
 		A38BFC4B60EA86A8DF662F3E /* UserProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProgress.swift; sourceTree = "<group>"; };
 		A476BC6A4DF0107699E2A1FD /* BackwordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordService.swift; sourceTree = "<group>"; };
+		A8013956F1CB59F9C80F81AB /* MidwordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordCard.swift; sourceTree = "<group>"; };
+		A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordGuessRow.swift; sourceTree = "<group>"; };
+		A81BADC74D85E195F31F646D /* MidwordBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordBoardView.swift; sourceTree = "<group>"; };
+		A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordGameTests.swift; sourceTree = "<group>"; };
+		A8220AB384E18F7E4E984338 /* MidwordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordViewModel.swift; sourceTree = "<group>"; };
+		A84B19CBE925E605AAA62242 /* MidwordProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordProgress.swift; sourceTree = "<group>"; };
+		A8593FC71ACF6AF5027A308D /* MidwordPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordPuzzle.swift; sourceTree = "<group>"; };
+		A85BAE372EF092378192E9B2 /* MidwordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordService.swift; sourceTree = "<group>"; };
+		A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStatsView.swift; sourceTree = "<group>"; };
+		A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordInstructionsView.swift; sourceTree = "<group>"; };
+		A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordView.swift; sourceTree = "<group>"; };
+		A8AB82BBFACA33CA3778BC1A /* MidwordCompletionWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordCompletionWordView.swift; sourceTree = "<group>"; };
+		A8E256D89F4E7DE3DFD5A5AF /* MidwordArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordArchiveRow.swift; sourceTree = "<group>"; };
 		ABCD10000000000000000001 /* FeedbackEmailContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackEmailContentTests.swift; sourceTree = "<group>"; };
 		ABCD10000000000000000002 /* FeedbackEmailContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackEmailContent.swift; sourceTree = "<group>"; };
 		ABCD10000000000000000003 /* MailComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposerView.swift; sourceTree = "<group>"; };
+		AD602F7C819B45D0A146E1B4 /* MidwordAttemptCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordAttemptCounterView.swift; sourceTree = "<group>"; };
 		B35393D8C1799968B4B9119D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveMonth.swift; sourceTree = "<group>"; };
 		B8669C3DD88CF9BC44A72C69 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
@@ -343,21 +356,8 @@
 		EE5A3938FD382B86EEB78063 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
 		F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveDataSource.swift; sourceTree = "<group>"; };
 		F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		F10000000000000000000001 /* HomeCardIssueNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCardIssueNumber.swift; sourceTree = "<group>"; };
 		F31C198A0EE68F6859AD60A4 /* PuzzleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleService.swift; sourceTree = "<group>"; };
-		A8593FC71ACF6AF5027A308D /* MidwordPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordPuzzle.swift; sourceTree = "<group>"; };
-		A84B19CBE925E605AAA62242 /* MidwordProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordProgress.swift; sourceTree = "<group>"; };
-		A85BAE372EF092378192E9B2 /* MidwordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordService.swift; sourceTree = "<group>"; };
-		A8220AB384E18F7E4E984338 /* MidwordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordViewModel.swift; sourceTree = "<group>"; };
-		A8013956F1CB59F9C80F81AB /* MidwordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordCard.swift; sourceTree = "<group>"; };
-		A8E256D89F4E7DE3DFD5A5AF /* MidwordArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordArchiveRow.swift; sourceTree = "<group>"; };
-		A81BADC74D85E195F31F646D /* MidwordBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordBoardView.swift; sourceTree = "<group>"; };
-		A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordInstructionsView.swift; sourceTree = "<group>"; };
-		A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStatsView.swift; sourceTree = "<group>"; };
-		A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordView.swift; sourceTree = "<group>"; };
-		A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordGameTests.swift; sourceTree = "<group>"; };
-		A8AB82BBFACA33CA3778BC1A /* MidwordCompletionWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordCompletionWordView.swift; sourceTree = "<group>"; };
-		A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordGuessRow.swift; sourceTree = "<group>"; };
-		AD602F7C819B45D0A146E1B4 /* MidwordAttemptCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordAttemptCounterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -619,6 +619,20 @@
 			path = Crosswords;
 			sourceTree = "<group>";
 		};
+		A80AED63B3AB2532B11AFCB6 /* Midword */ = {
+			isa = PBXGroup;
+			children = (
+				A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */,
+				AD602F7C819B45D0A146E1B4 /* MidwordAttemptCounterView.swift */,
+				A8AB82BBFACA33CA3778BC1A /* MidwordCompletionWordView.swift */,
+				A81BADC74D85E195F31F646D /* MidwordBoardView.swift */,
+				A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */,
+				A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */,
+				A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */,
+			);
+			path = Midword;
+			sourceTree = "<group>";
+		};
 		BBA3617EFAC18A3821319F9A /* Backword */ = {
 			isa = PBXGroup;
 			children = (
@@ -720,20 +734,6 @@
 				E6C438C3B404924971764D12 /* CrosswordsProducts.storekit */,
 			);
 			path = Configuration;
-			sourceTree = "<group>";
-		};
-		A80AED63B3AB2532B11AFCB6 /* Midword */ = {
-			isa = PBXGroup;
-			children = (
-				A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */,
-				AD602F7C819B45D0A146E1B4 /* MidwordAttemptCounterView.swift */,
-				A8AB82BBFACA33CA3778BC1A /* MidwordCompletionWordView.swift */,
-				A81BADC74D85E195F31F646D /* MidwordBoardView.swift */,
-				A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */,
-				A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */,
-				A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */,
-			);
-			path = Midword;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

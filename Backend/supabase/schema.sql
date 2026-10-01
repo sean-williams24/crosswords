@@ -139,6 +139,9 @@ ALTER TABLE midword_puzzles ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public can read released Midword puzzles"
     ON midword_puzzles FOR SELECT
     USING (date <= (NOW() AT TIME ZONE 'Pacific/Kiritimati')::date);
+REVOKE ALL ON TABLE midword_puzzles FROM PUBLIC, anon, authenticated, service_role;
+GRANT SELECT ON TABLE midword_puzzles TO anon, authenticated;
+GRANT SELECT, INSERT ON TABLE midword_puzzles TO service_role;
 
 CREATE OR REPLACE FUNCTION publish_midword_batch(p_rows JSONB)
 RETURNS INTEGER
