@@ -150,6 +150,10 @@ struct ArchiveView: View {
             ForEach(content.backwordWords) { word in
                 BackwordArchiveRow(word: word)
             }
+        case .midword:
+            ForEach(content.midwordPuzzles) { puzzle in
+                MidwordArchiveRow(puzzle: puzzle)
+            }
         case .daily:
             ForEach(content.dailyPuzzles) { puzzle in
                 ArchivePuzzleRow(puzzle: puzzle, isWeekly: false) {
@@ -169,6 +173,8 @@ struct ArchiveView: View {
         switch viewModel.activeType {
         case .backword:
             return ArchiveMonthContent(backwordWords: viewModel.currentBackwordWords)
+        case .midword:
+            return ArchiveMonthContent(midwordPuzzles: viewModel.currentMidwordPuzzles)
         case .daily:
             return ArchiveMonthContent(dailyPuzzles: viewModel.currentDailyPuzzles)
         case .weekly:

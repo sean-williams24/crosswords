@@ -55,6 +55,10 @@ final class OverallRatingService: ObservableObject {
             rating.upsertBackword(score: score, date: bw.date)
         }
 
+        for progress in MidwordProgress.loadAll() where progress.date >= cutoff && progress.isComplete {
+            rating.upsertMidword(score: progress.releaseDateScore, date: progress.date)
+        }
+
         Self.applyCrosswordReleaseDateScores(
             progressRecords,
             to: &rating,

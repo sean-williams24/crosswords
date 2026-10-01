@@ -63,7 +63,7 @@ struct ArchiveViewModelTests {
 
         await viewModel.loadInitialArchive()
 
-        #expect(dataSource.availableMonthPolicies.count == 3)
+        #expect(dataSource.availableMonthPolicies.count == 4)
         #expect(dataSource.availableMonthPolicies.allSatisfy { $0 == .cacheFirst })
     }
 

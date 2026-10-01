@@ -37,6 +37,10 @@ extension Color {
     static let shareCardBackwordStatLabel = Color("ShareCardBackwordStatLabel")
     static let shareCardDailyStatLabel = Color("ShareCardDailyStatLabel")
     static let shareCardWeeklyStatLabel = Color("ShareCardWeeklyStatLabel")
+    static let midwordBackground = Color("MidwordBackground")
+    static let midwordAccent = Color("MidwordAccent")
+    static let midwordText = Color("MidwordText")
+    static let midwordOnAccent = Color("MidwordOnAccent")
 }
 
 enum AppGradient {

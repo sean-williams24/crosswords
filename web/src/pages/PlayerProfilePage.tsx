@@ -5,7 +5,7 @@ import { GameMenu } from "../features/backword/components/GameMenu";
 import { backwordCloudRecord, crosswordCloudRecord, fetchCloudProgress, refreshAccountProgress } from "../features/sync/progressSync";
 import { createBackwordStorage } from "../features/backword/storage";
 import { createCrosswordStorage } from "../features/crossword/storage";
-import { buildPlayerProfileRating, formatProfileDate } from "../features/profile/profileRating";
+import { buildPlayerProfileRating, formatProfileDate, midwordLaunchDate } from "../features/profile/profileRating";
 import { loadLocalProfileRecords } from "../features/profile/profileRecords";
 import { Footer } from "../components/Footer";
 import { accountActionErrorMessage } from "../features/auth/authErrorPresentation";
@@ -18,6 +18,7 @@ type ProfileRecords = {
   backword: Awaited<ReturnType<typeof fetchCloudProgress>>;
   dailyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
   weeklyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
+  midword: Awaited<ReturnType<typeof fetchCloudProgress>>;
 };
 
 type AccountProfileRecords = {
@@ -63,12 +64,13 @@ export function PlayerProfilePage() {
           (record) => crosswordStorage.replaceProgress(record.payload)
         )
       ]);
-      const [backword, dailyCrossword, weeklyCrossword] = await Promise.all([
+      const [backword, dailyCrossword, weeklyCrossword, midword] = await Promise.all([
         fetchCloudProgress("backword"),
         fetchCloudProgress("daily_crossword"),
-        fetchCloudProgress("weekly_crossword")
+        fetchCloudProgress("weekly_crossword"),
+        fetchCloudProgress("midword")
       ]);
-      setRecords({ userId, value: { backword, dailyCrossword, weeklyCrossword } });
+      setRecords({ userId, value: { backword, dailyCrossword, weeklyCrossword, midword } });
     } catch (error) {
       console.error("Account profile refresh failed", error);
       setSyncError(accountActionErrorMessage("refresh"));
@@ -171,13 +173,14 @@ export function PlayerProfilePage() {
               <h2 id="rating-breakdown-title">LAST 14 DAYS</h2>
               <div className="player-profile__table-scroll">
                 <div className={`player-profile__table${isPro ? " has-weekly" : ""}`}>
-                  <div className="player-profile__table-heading"><span>Date</span><span>Quick</span>{isPro ? <span>Weekly</span> : null}<span>Backword</span><span>Total</span></div>
+                  <div className="player-profile__table-heading"><span>Date</span><span>Quick</span>{isPro ? <span>Weekly</span> : null}<span>Backword</span><span>Midword</span><span>Total</span></div>
                   {rating.days.map((day, index) => (
                     <div className="player-profile__table-row" key={day.date}>
                       <span>{formatProfileDate(day.date)}{index === 0 ? <small>TODAY</small> : null}</span>
                       <ScoreChip score={day.dailyCrossword} />
                       {isPro ? day.weeklyCrossword === null ? <span className="player-profile__empty-score">—</span> : <ScoreChip score={day.weeklyCrossword} /> : null}
                       <ScoreChip score={day.backword} />
+                      {day.date >= midwordLaunchDate ? <ScoreChip score={day.midword} /> : <span className="player-profile__empty-score">—</span>}
                       <strong className={day.total === 0 ? "is-zero" : ""}>{day.total}</strong>
                     </div>
                   ))}

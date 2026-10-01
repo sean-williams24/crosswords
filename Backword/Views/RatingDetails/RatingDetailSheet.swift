@@ -281,7 +281,7 @@ struct RatingDetailSheet: View {
         if useHorizontalScroll {
             ScrollView(.horizontal, showsIndicators: true) {
                 tableViewContent(isScrolling: true)
-                    .frame(minWidth: isPro ? 420 : 380)
+                    .frame(minWidth: isPro ? 500 : 450)
             }
         } else {
             tableViewContent(isScrolling: false)
@@ -305,6 +305,9 @@ struct RatingDetailSheet: View {
                 }
 
                 Text("Backword")
+                    .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
+
+                Text("Midword")
                     .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
 
                 Text("Total")
@@ -331,12 +334,12 @@ struct RatingDetailSheet: View {
     }
 
     private var useHorizontalScroll: Bool {
-        dynamicTypeSize >= (isPro ? .xLarge : .xxLarge)
+        dynamicTypeSize >= .medium
     }
 
     private func breakdownRow(day: DailyScore, isScrolling: Bool) -> some View {
         let weeklyScore = isPro ? (day.weeklyCrossword ?? 0) : 0
-        let total = day.dailyCrossword + weeklyScore + day.backword
+        let total = day.dailyCrossword + weeklyScore + day.backword + day.midword
         let isToday = day.date == ContentReleaseCalendar().dailyDateString
         let hasWeekly = day.weeklyCrossword != nil
 
@@ -373,6 +376,15 @@ struct RatingDetailSheet: View {
 
             ScoreChipView(score: day.backword)
                 .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
+
+            if day.date >= OverallRating.midwordLaunchDate {
+                ScoreChipView(score: day.midword)
+                    .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
+            } else {
+                Text("—")
+                    .foregroundColor(.appTextSecondary)
+                    .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
+            }
 
             Text("\(total)")
                 .font(AppFont.clueLabel(13))
@@ -422,6 +434,11 @@ struct RatingDetailSheet: View {
                     Divider().background(Color.appGridLine.opacity(0.5))
 
                     ScoringRuleView.backword()
+                        .padding(.leading, 8)
+
+                    Divider().background(Color.appGridLine.opacity(0.5))
+
+                    ScoringRuleView.backword(title: "Midword")
                         .padding(.leading, 8)
 
                     Divider().background(Color.appGridLine.opacity(0.5))

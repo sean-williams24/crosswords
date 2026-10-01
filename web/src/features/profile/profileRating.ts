@@ -4,6 +4,7 @@ import type { BackwordProgress } from "../backword/types";
 import type { CloudRecord } from "../sync/progressSync";
 
 const windowDays = 14;
+export const midwordLaunchDate = "2026-10-01";
 const tierThresholds = [
   ["Novice", 0],
   ["Scribe", 0.2],
@@ -19,6 +20,7 @@ export type PlayerProfileDay = {
   dailyCrossword: number;
   weeklyCrossword: number | null;
   backword: number;
+  midword: number;
   total: number;
 };
 
@@ -80,6 +82,7 @@ export function buildPlayerProfileRating(
     backword: BackwordProfileProgress[];
     dailyCrossword: ProfileProgress[];
     weeklyCrossword: ProfileProgress[];
+    midword?: ProfileProgress[];
   },
   isPro: boolean,
   now = new Date()
@@ -90,19 +93,22 @@ export function buildPlayerProfileRating(
   const dailyScores = scoreMap(records.dailyCrossword, visibleDates);
   const backwordScores = backwordScoreMap(records.backword, visibleDates);
   const weeklyScores = scoreMap(records.weeklyCrossword, visibleDates);
+  const midwordScores = scoreMap(records.midword ?? [], visibleDates);
   const days = dates.map((date) => {
     const dailyCrossword = dailyScores.get(date) ?? 0;
     const backword = backwordScores.get(date) ?? 0;
+    const midword = date >= midwordLaunchDate ? midwordScores.get(date) ?? 0 : 0;
     const weeklyCrossword = isPro ? weeklyScores.get(date) ?? null : null;
     return {
       date,
       dailyCrossword,
       weeklyCrossword,
       backword,
-      total: dailyCrossword + backword + (weeklyCrossword ?? 0)
+      midword,
+      total: dailyCrossword + backword + midword + (weeklyCrossword ?? 0)
     };
   });
-  const maxPoints = 140 + (isPro ? 10 : 0);
+  const maxPoints = 140 + (isPro ? 10 : 0) + dates.filter((date) => date >= midwordLaunchDate).length * 5;
   const totalPoints = days.reduce((total, day) => total + day.total, 0);
   const fraction = Math.min(totalPoints / maxPoints, 1);
   const tier = [...tierThresholds].reverse().find(([, threshold]) => fraction >= threshold)?.[0] ?? "Novice";

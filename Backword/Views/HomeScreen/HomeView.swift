@@ -12,6 +12,8 @@ struct HomeView: View {
     @ObservedObject private var settings = AppSettings.shared
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
+    @StateObject private var midwordService = MidwordService()
+    @State private var midwordProgress: MidwordProgress?
     @StateObject private var backwordStatsService = BackwordStatsService()
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.launchSplashDidComplete) private var launchSplashDidComplete
@@ -53,6 +55,8 @@ struct HomeView: View {
         await viewModel.refreshIfNeeded()
         await wotdService.refreshIfNeeded()
         await backwordService.refreshIfNeeded()
+        await midwordService.refreshIfNeeded()
+        refreshMidwordProgress()
         await viewModel.prefetchCurrentArchiveMonthIfNeeded()
         backwordStatsService.refresh()
         ratingService.refresh()
@@ -77,6 +81,8 @@ struct HomeView: View {
             await viewModel.loadTodaysPuzzle()
             await wotdService.refreshIfNeeded()
             await backwordService.refreshIfNeeded()
+            await midwordService.refreshIfNeeded()
+            refreshMidwordProgress()
             await viewModel.prefetchCurrentArchiveMonthIfNeeded()
             backwordStatsService.refresh()
             ratingService.refresh()
@@ -136,6 +142,10 @@ struct HomeView: View {
                     BackwordView(word: word)
                         .environmentObject(storeService)
                         .environmentObject(adService)
+                        .environmentObject(ratingService)
+                } else if destination == "midword",
+                          let puzzle = midwordService.todaysPuzzle {
+                    MidwordView(puzzle: puzzle)
                         .environmentObject(ratingService)
                 } else if destination == "puzzle",
                           let puzzle = viewModel.todaysPuzzle {
@@ -233,6 +243,7 @@ struct HomeView: View {
                     await viewModel.refreshIfNeeded()
                     await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                     backwordStatsService.refresh()
+                    refreshMidwordProgress()
                 }
             }
             .onChange(of: launchSplashDidComplete) { _, _ in
@@ -248,6 +259,7 @@ struct HomeView: View {
                 if !oldPath.isEmpty, newPath.isEmpty, hasOpenedDailyGameThisSession {
                     didReturnFromDailyGame = true
                     backwordStatsService.refresh()
+                    refreshMidwordProgress()
                 }
                 updateSettingsTipReadiness()
             }
@@ -284,6 +296,8 @@ struct HomeView: View {
                         await viewModel.refreshIfNeeded()
                         await wotdService.refreshIfNeeded()
                         await backwordService.refreshIfNeeded()
+                        await midwordService.refreshIfNeeded()
+                        refreshMidwordProgress()
                         await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                         await accountService.refreshAccountData()
                     }
@@ -292,11 +306,13 @@ struct HomeView: View {
             .onChange(of: accountService.userID) { _, _ in
                 statsService.refreshForActiveProgress()
                 backwordStatsService.refresh()
+                refreshMidwordProgress()
                 ratingService.refresh()
             }
             .onChange(of: accountService.syncRevision) { _, _ in
                 statsService.refreshForActiveProgress()
                 backwordStatsService.refresh()
+                refreshMidwordProgress()
                 ratingService.refresh()
             }
             .alert(
@@ -361,6 +377,19 @@ struct HomeView: View {
                     dailyCrosswordCard
                 }
             }
+            MidwordCard(
+                puzzle: midwordService.todaysPuzzle,
+                progress: midwordProgress,
+                isLoading: midwordService.isLoading,
+                loadFailed: midwordService.loadFailed,
+                retry: { Task { await midwordService.refreshIfNeeded(force: true) } },
+                play: {
+                    cancelSettingsTipPresentation()
+                    hasOpenedDailyGameThisSession = true
+                    navigationPath.append("midword")
+                }
+            )
+            .padding(.top, 20)
         }
         .padding(.horizontal, appLayout.homeHorizontalPadding)
 
@@ -667,6 +696,10 @@ struct HomeView: View {
         cancelSettingsTipPresentation()
         hasOpenedDailyGameThisSession = true
         navigationPath.append("backword")
+    }
+
+    private func refreshMidwordProgress() {
+        midwordProgress = midwordService.todaysPuzzle.flatMap { MidwordProgress.load(date: $0.date) }
     }
 
     private func navigateToDailyCrossword() {

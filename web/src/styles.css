@@ -2002,12 +2002,12 @@ body {
 .player-profile__breakdown { overflow: hidden; padding-top: 20px; }
 .player-profile__breakdown h2 { padding: 0 20px 15px; }
 .player-profile__table-scroll { overflow-x: auto; }
-.player-profile__table { min-width: 420px; }
+.player-profile__table { min-width: 490px; }
 .player-profile__table-heading,
-.player-profile__table-row { display: grid; grid-template-columns: minmax(138px, 1fr) 66px 84px 58px; align-items: center; gap: 4px; padding: 10px 14px; border-top: 1px solid rgb(var(--app-grid-rgb) / 60%); }
-.player-profile__table.has-weekly { min-width: 500px; }
+.player-profile__table-row { display: grid; grid-template-columns: minmax(138px, 1fr) 66px 84px 66px 58px; align-items: center; gap: 4px; padding: 10px 14px; border-top: 1px solid rgb(var(--app-grid-rgb) / 60%); }
+.player-profile__table.has-weekly { min-width: 560px; }
 .player-profile__table.has-weekly .player-profile__table-heading,
-.player-profile__table.has-weekly .player-profile__table-row { grid-template-columns: minmax(138px, 1fr) 66px 72px 84px 58px; }
+.player-profile__table.has-weekly .player-profile__table-row { grid-template-columns: minmax(138px, 1fr) 66px 72px 84px 66px 58px; }
 .player-profile__table-heading { color: var(--app-text-secondary); font-size: 10px; font-weight: 700; letter-spacing: .08em; }
 .player-profile__table-heading span:not(:first-child),
 .player-profile__table-row > *:not(:first-child) { text-align: center; }

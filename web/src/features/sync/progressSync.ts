@@ -3,7 +3,7 @@ import type { BackwordProgress } from "../backword/types";
 import type { CrosswordKind, CrosswordProgress } from "../crossword/types";
 import { supabase } from "../../lib/supabase";
 
-export type CloudGameType = "backword" | "daily_crossword" | "weekly_crossword";
+export type CloudGameType = "backword" | "midword" | "daily_crossword" | "weekly_crossword";
 
 export type CloudRecord<T> = {
   game_type: CloudGameType;

@@ -243,6 +243,49 @@ existing `puzzle_number` fields. Backword issue numbers are assigned once in
 chronological release order, persisted as `backword_words.puzzle_number`, and
 must be retained when an existing Backword entry is replaced.
 
+Midword issue numbers are assigned at publication and never reused or renumbered.
+The `midword_puzzles.date` value is the local-calendar release key. Like other
+daily games, only a win completed on that release date earns rating points.
+
+## Midword
+
+Midword shows two words vertically. The player supplies one 3–6-letter word
+that forms two familiar closed compounds without spelling changes: BANK + NOTE
+and NOTE + BOOK. The input row shows the exact answer length. The player has
+five accepted guesses; an on-time win earns 5, 4, 3, 2, or 1 points. Invalid,
+incomplete, and duplicate guesses do not consume an attempt. Wrong accepted
+guesses receive whole-word feedback, with no positional letter hints.
+
+Puzzle content comes from `Backend/midword_approved.json`. The discovery script
+only produces candidates for review; it must never publish them. Candidate
+selection from the existing word bank and `wordfreq` can produce false splits
+and ambiguous pairs, so new entries need editorial review of both compounds
+and competing links. The scheduled publisher uses only approved entries and
+fails before writing if its full coverage window cannot be filled. The batch
+publishing RPC validates and inserts all selected rows in one transaction.
+
+Midword uses its own chartreuse and charcoal semantic colours. The reusable
+Backword cell accepts colour and square-corner options; its existing default
+appearance remains unchanged. Completion reveals the answer with the same
+timing and Reduce Motion behaviour as Backword.
+
+The Midword Home card uses the shared adaptive minimum card height, issue-number
+overlay, and status badge. Empty progress is New; accepted guesses are In
+Progress; wins are Solved on the release date or Finished later; exhausted
+attempts are Failed. The badge resolves its colours in Light Mode so its dark
+label remains readable on the chartreuse card in either system appearance.
+
+Midword progress is saved locally first in the current guest/account namespace,
+then uploaded through the account-tagged cloud queue. Cross-device conflicts
+select one whole guess list; the greater release-day score snapshot is retained
+independently. Rating uses a 14-day window and adds five possible points for
+each Midword release from `2026-10-01` onward.
+
+The Midword database migration extends the live `game_progress` game-type
+constraint without removing Anagram, which was added on the remote database
+before Midword. It does not replace `merge_game_progress`, so Anagram's
+server-side conflict handling remains intact.
+
 ## Backword Onboarding
 
 New Backword players receive five instructions inline, beneath the revealed

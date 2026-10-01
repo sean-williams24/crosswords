@@ -254,6 +254,7 @@ final class AccountService: ObservableObject {
     private var authStateTask: Task<Void, Never>?
     private var accountRefreshTask: (id: UUID, task: Task<Void, Never>)?
     private var pendingGuestBackword: [BackwordProgress] = []
+    private var pendingGuestMidword: [MidwordProgress] = []
     private var pendingGuestCrosswords: [UserProgress] = []
 
     private struct AppleEntitlementClaimRequest: Encodable {
@@ -371,14 +372,17 @@ final class AccountService: ObservableObject {
         }
 
         let guestBackword = pendingGuestBackword
+        let guestMidword = pendingGuestMidword
         let guestCrosswords = pendingGuestCrosswords
         pendingGuestBackword = []
+        pendingGuestMidword = []
         pendingGuestCrosswords = []
         let refreshID = UUID()
         let task = Task<Void, Never> { @MainActor [weak self] in
             guard let self else { return }
             await self.performAccountRefresh(
                 guestBackword: guestBackword,
+                guestMidword: guestMidword,
                 guestCrosswords: guestCrosswords
             )
         }
@@ -394,6 +398,7 @@ final class AccountService: ObservableObject {
 
     private func performAccountRefresh(
         guestBackword: [BackwordProgress],
+        guestMidword: [MidwordProgress],
         guestCrosswords: [UserProgress]
     ) async {
         guard session != nil else {
@@ -420,6 +425,7 @@ final class AccountService: ObservableObject {
             await ProgressCloudSync.shared.sync(
                 accountID: accountID.uuidString,
                 guestBackword: guestBackword,
+                guestMidword: guestMidword,
                 guestCrosswords: guestCrosswords
             )
             syncRevision &+= 1
@@ -623,18 +629,21 @@ final class AccountService: ObservableObject {
     private func activateProgressPersistence(for newSession: Session?) {
         let isMigratingGuestProgress = ProgressStorageNamespace.accountID == nil && newSession != nil
         let candidateGuestBackword = isMigratingGuestProgress ? BackwordProgress.loadAll() : []
+        let candidateGuestMidword = isMigratingGuestProgress ? MidwordProgress.loadAll() : []
         let candidateGuestCrosswords = isMigratingGuestProgress ? UserProgress.loadAll() : []
         let accountID = newSession?.user.id.uuidString
         let mayMigrateGuestProgress = accountID.map { accountID in
-            (!candidateGuestBackword.isEmpty || !candidateGuestCrosswords.isEmpty)
+            (!candidateGuestBackword.isEmpty || !candidateGuestMidword.isEmpty || !candidateGuestCrosswords.isEmpty)
                 && ProgressStorageNamespace.claimGuestMigration(for: accountID)
         } ?? false
         let guestBackword = mayMigrateGuestProgress ? candidateGuestBackword : []
+        let guestMidword = mayMigrateGuestProgress ? candidateGuestMidword : []
         let guestCrosswords = mayMigrateGuestProgress
             ? AccountProgressMigration.captureGuestReleaseDateScores(candidateGuestCrosswords, rating: OverallRating.load())
             : []
         ProgressStorageNamespace.activate(accountID: newSession?.user.id.uuidString)
         pendingGuestBackword = guestBackword
+        pendingGuestMidword = guestMidword
         pendingGuestCrosswords = guestCrosswords
     }
 
@@ -706,6 +715,11 @@ final class ProgressCloudSync {
         let progress: UserProgress
     }
 
+    private struct PendingMidwordUpload {
+        let accountID: String
+        let progress: MidwordProgress
+    }
+
     private let client = SupabaseClient.shared.client
     private let iso8601: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
@@ -716,6 +730,7 @@ final class ProgressCloudSync {
     }()
     private var scheduledUploadTask: Task<Void, Never>?
     private var pendingBackword: [String: PendingBackwordUpload] = [:]
+    private var pendingMidword: [String: PendingMidwordUpload] = [:]
     private var pendingCrosswords: [String: PendingCrosswordUpload] = [:]
 
     private init() {}
@@ -738,6 +753,14 @@ final class ProgressCloudSync {
         scheduleFlush(immediately: progress.isComplete || progress.gaveUpAt != nil)
     }
 
+    func scheduleUpload(_ progress: MidwordProgress) {
+        guard let accountID = ProgressStorageNamespace.accountID else { return }
+        pendingMidword["\(accountID):\(progress.date)"] = PendingMidwordUpload(
+            accountID: accountID, progress: progress
+        )
+        scheduleFlush(immediately: progress.isComplete)
+    }
+
     /// Called when the app backgrounds and before a full pull. Failed records
     /// intentionally stay in these account-scoped local files and are retried
     /// on the next foreground/connection sync.
@@ -747,6 +770,7 @@ final class ProgressCloudSync {
         guard let activeAccountID = ProgressStorageNamespace.accountID else { return }
 
         let backword = pendingBackword
+        let midword = pendingMidword
         let crosswords = pendingCrosswords
         for (key, pending) in backword where pending.accountID == activeAccountID {
             guard ProgressStorageNamespace.accountID == pending.accountID else { return }
@@ -760,28 +784,38 @@ final class ProgressCloudSync {
                 pendingCrosswords.removeValue(forKey: key)
             }
         }
+        for (key, pending) in midword where pending.accountID == activeAccountID {
+            guard ProgressStorageNamespace.accountID == pending.accountID else { return }
+            if await upload(pending.progress), ProgressStorageNamespace.accountID == pending.accountID {
+                pendingMidword.removeValue(forKey: key)
+            }
+        }
     }
 
-    func sync(accountID: String, guestBackword: [BackwordProgress], guestCrosswords: [UserProgress]) async {
+    func sync(accountID: String, guestBackword: [BackwordProgress], guestMidword: [MidwordProgress] = [], guestCrosswords: [UserProgress]) async {
         guard ProgressStorageNamespace.accountID == accountID else { return }
         await flushPendingUploads()
         guard ProgressStorageNamespace.accountID == accountID else { return }
         // Flush any account-scoped local records that were saved while offline
         // before pulling the server's winning records.
         _ = await mergeBackword(BackwordProgress.loadAll())
+        _ = await mergeMidword(MidwordProgress.loadAll())
         guard ProgressStorageNamespace.accountID == accountID else { return }
         _ = await mergeCrosswords(UserProgress.loadAll())
         guard ProgressStorageNamespace.accountID == accountID else { return }
         let uploadedBackword = await mergeBackword(guestBackword)
+        let uploadedMidword = await mergeMidword(guestMidword)
         guard ProgressStorageNamespace.accountID == accountID else { return }
         let uploadedCrosswords = await mergeCrosswords(guestCrosswords)
         guard ProgressStorageNamespace.accountID == accountID else { return }
         await pullBackword()
+        await pullMidword()
         guard ProgressStorageNamespace.accountID == accountID else { return }
         await pullCrosswords()
         guard ProgressStorageNamespace.accountID == accountID else { return }
         removeSuccessfullyMigratedGuestProgress(
             backwordDates: uploadedBackword,
+            midwordDates: uploadedMidword,
             crosswordIDs: uploadedCrosswords,
             activeAccountID: accountID
         )
@@ -799,6 +833,14 @@ final class ProgressCloudSync {
     }
 
     private func mergeBackword(_ guestProgress: [BackwordProgress]) async -> Set<String> {
+        var uploaded = Set<String>()
+        for progress in guestProgress {
+            if await upload(progress) { uploaded.insert(progress.date) }
+        }
+        return uploaded
+    }
+
+    private func mergeMidword(_ guestProgress: [MidwordProgress]) async -> Set<String> {
         var uploaded = Set<String>()
         for progress in guestProgress {
             if await upload(progress) { uploaded.insert(progress.date) }
@@ -833,6 +875,21 @@ final class ProgressCloudSync {
         } catch {
             return false
         }
+    }
+
+    @discardableResult
+    private func upload(_ progress: MidwordProgress) async -> Bool {
+        let payload = CloudMidwordPayload(progress, formatter: iso8601)
+        let request = MergeProgressRequest(
+            gameType: "midword", contentKey: progress.date, releaseDate: progress.date,
+            status: payload.status, progressRank: progress.guesses.count,
+            releaseScore: progress.releaseDateScore, clientUpdatedAt: payload.updatedAt,
+            payload: payload
+        )
+        do {
+            try await client.rpc("merge_game_progress", params: request).execute()
+            return true
+        } catch { return false }
     }
 
     @discardableResult
@@ -875,6 +932,31 @@ final class ProgressCloudSync {
                 await upload(local)
             } else {
                 remote.save()
+            }
+        }
+    }
+
+    private func pullMidword() async {
+        guard let rows: [CloudProgressRow<CloudMidwordPayload>] = try? await client
+            .from("game_progress").select().eq("game_type", value: "midword")
+            .execute().value else { return }
+        for row in rows {
+            guard let decoded = row.payload.progress(formatter: iso8601) else { continue }
+            if let saved = MidwordProgress.load(date: decoded.date) {
+                var local = saved
+                var remote = decoded
+                let score = max(local.releaseDateScore, remote.releaseDateScore)
+                local.releaseDateScore = score
+                remote.releaseDateScore = score
+                if CloudProgressRanking.shouldReplace(local: local, with: remote) {
+                    remote.save()
+                    if remote.releaseDateScore != decoded.releaseDateScore { await upload(remote) }
+                } else {
+                    if local != saved { local.save() }
+                    await upload(local)
+                }
+            } else {
+                decoded.save()
             }
         }
     }
@@ -922,15 +1004,17 @@ final class ProgressCloudSync {
 
     private func removeSuccessfullyMigratedGuestProgress(
         backwordDates: Set<String>,
+        midwordDates: Set<String>,
         crosswordIDs: Set<String>,
         activeAccountID: String
     ) {
-        guard !backwordDates.isEmpty || !crosswordIDs.isEmpty else { return }
+        guard !backwordDates.isEmpty || !midwordDates.isEmpty || !crosswordIDs.isEmpty else { return }
         guard ProgressStorageNamespace.accountID == activeAccountID else { return }
         ProgressStorageNamespace.activate(accountID: nil)
         for date in backwordDates { BackwordProgress.delete(date: date) }
+        for date in midwordDates { MidwordProgress.delete(date: date) }
         for puzzleID in crosswordIDs { UserProgress.delete(puzzleId: puzzleID) }
-        if BackwordProgress.loadAll().isEmpty && UserProgress.loadAll().isEmpty {
+        if BackwordProgress.loadAll().isEmpty && MidwordProgress.loadAll().isEmpty && UserProgress.loadAll().isEmpty {
             ProgressStorageNamespace.clearGuestMigrationClaim()
         }
         ProgressStorageNamespace.activate(accountID: activeAccountID)
@@ -1010,6 +1094,41 @@ private struct CloudBackwordPayload: Codable {
     }
 }
 
+private struct CloudMidwordPayload: Codable {
+    let schemaVersion: Int
+    let date: String
+    let guesses: [String]
+    let outcome: String
+    let completedAt: String?
+    let releaseDateScore: Int
+    let updatedAt: String
+
+    init(_ progress: MidwordProgress, formatter: ISO8601DateFormatter) {
+        schemaVersion = 1
+        date = progress.date
+        guesses = progress.guesses
+        outcome = progress.isWon ? "won" : (progress.isFailed ? "failed" : "inProgress")
+        completedAt = progress.completedAt.map { formatter.string(from: $0) }
+        releaseDateScore = progress.releaseDateScore
+        updatedAt = formatter.string(from: progress.updatedAt)
+    }
+
+    func progress(formatter: ISO8601DateFormatter) -> MidwordProgress? {
+        var value = MidwordProgress(date: date)
+        guard guesses.count <= 5, guesses.allSatisfy({ (3...6).contains($0.count) }) else { return nil }
+        value.guesses = guesses
+        value.completedAt = completedAt.flatMap { formatter.date(from: $0) }
+        value.won = outcome == "won"
+        value.releaseDateScore = min(5, max(0, releaseDateScore))
+        value.updatedAt = formatter.date(from: updatedAt) ?? value.completedAt ?? Date()
+        return value
+    }
+
+    var status: String {
+        outcome == "won" ? "solved" : (outcome == "failed" ? "failed" : "in_progress")
+    }
+}
+
 private struct CloudCrosswordPayload: Codable {
     let schemaVersion: Int
     let puzzleId: String
@@ -1075,6 +1194,15 @@ private struct CloudCrosswordPayload: Codable {
 }
 
 enum CloudProgressRanking {
+    static func shouldReplace(local: MidwordProgress, with remote: MidwordProgress) -> Bool {
+        if local.isWon != remote.isWon { return remote.isWon }
+        if local.isComplete != remote.isComplete { return remote.isComplete }
+        if local.isWon && local.guesses.count != remote.guesses.count {
+            return remote.guesses.count < local.guesses.count
+        }
+        if local.guesses.count != remote.guesses.count { return remote.guesses.count > local.guesses.count }
+        return remote.updatedAt > local.updatedAt
+    }
     static func shouldReplace(local: BackwordProgress, with remote: BackwordProgress, formatter: ISO8601DateFormatter) -> Bool {
         if remote.isWon != local.isWon { return remote.isWon }
         if remote.isComplete != local.isComplete { return remote.isComplete }

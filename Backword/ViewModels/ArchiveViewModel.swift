@@ -54,6 +54,10 @@ final class ArchiveViewModel: ObservableObject {
         content(for: currentMonth, type: .backword).backwordWords
     }
 
+    var currentMidwordPuzzles: [MidwordPuzzle] {
+        content(for: currentMonth, type: .midword).midwordPuzzles
+    }
+
     func currentContentIsEmpty(for type: ArchiveGameType) -> Bool {
         content(for: currentMonth, type: type).isEmpty(for: type)
     }
@@ -108,10 +112,12 @@ final class ArchiveViewModel: ObservableObject {
         defer { isLoading = false }
 
         async let backwordMonths = dataSource.availableMonths(for: .backword, policy: .cacheFirst)
+        async let midwordMonths = dataSource.availableMonths(for: .midword, policy: .cacheFirst)
         async let dailyMonths = dataSource.availableMonths(for: .daily, policy: .cacheFirst)
         async let weeklyMonths = dataSource.availableMonths(for: .weekly, policy: .cacheFirst)
 
         monthsByType[.backword] = await backwordMonths
+        monthsByType[.midword] = await midwordMonths
         monthsByType[.daily] = await dailyMonths
         monthsByType[.weekly] = await weeklyMonths
 
@@ -153,10 +159,12 @@ final class ArchiveViewModel: ObservableObject {
 
     private func loadCurrentMonth() async {
         async let backword = dataSource.loadMonth(currentMonth, for: .backword, policy: .cacheFirst)
+        async let midword = dataSource.loadMonth(currentMonth, for: .midword, policy: .cacheFirst)
         async let daily = dataSource.loadMonth(currentMonth, for: .daily, policy: .cacheFirst)
         async let weekly = dataSource.loadMonth(currentMonth, for: .weekly, policy: .cacheFirst)
 
         contentByMonth[ArchiveMonthKey(type: .backword, month: currentMonth)] = await backword
+        contentByMonth[ArchiveMonthKey(type: .midword, month: currentMonth)] = await midword
         contentByMonth[ArchiveMonthKey(type: .daily, month: currentMonth)] = await daily
         contentByMonth[ArchiveMonthKey(type: .weekly, month: currentMonth)] = await weekly
     }
@@ -168,6 +176,7 @@ final class ArchiveViewModel: ObservableObject {
 
 enum ArchiveTab: String, CaseIterable {
     case backword = "Backword"
+    case midword = "Midword"
     case daily = "Quick\n Crossword"
     case weekly = "Pro\n Crossword"
 
@@ -175,6 +184,8 @@ enum ArchiveTab: String, CaseIterable {
         switch self {
         case .backword:
             return .backword
+        case .midword:
+            return .midword
         case .daily:
             return .daily
         case .weekly:
@@ -193,6 +204,8 @@ private extension ArchiveMonthContent {
         switch type {
         case .backword:
             return backwordWords.count
+        case .midword:
+            return midwordPuzzles.count
         case .daily:
             return dailyPuzzles.count
         case .weekly:

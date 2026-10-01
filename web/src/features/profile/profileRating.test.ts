@@ -4,6 +4,18 @@ import { buildPlayerProfileRating } from "./profileRating";
 const now = new Date(2026, 7, 17, 12);
 
 describe("buildPlayerProfileRating", () => {
+  it("adds Midword release scores and phases in the new daily maximum", () => {
+    const records = {
+      backword: [], dailyCrossword: [], weeklyCrossword: [],
+      midword: [{ release_date: "2026-10-01", release_score: 5 }]
+    };
+    const launch = buildPlayerProfileRating(records, false, new Date(2026, 9, 1, 12));
+    const mature = buildPlayerProfileRating(records, false, new Date(2026, 9, 14, 12));
+    expect(launch.maxPoints).toBe(145);
+    expect(launch.totalPoints).toBe(5);
+    expect(mature.maxPoints).toBe(210);
+  });
+
   it("builds a zero-filled 14-day window from cloud release scores", () => {
     const rating = buildPlayerProfileRating({
       backword: [{ release_date: "2026-08-17", release_score: 5 }],

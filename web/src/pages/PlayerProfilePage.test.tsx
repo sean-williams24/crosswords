@@ -70,8 +70,8 @@ describe("PlayerProfilePage", () => {
     const proStatus = screen.getByText("is active for this account").closest("p");
     expect(proStatus?.querySelector(".player-profile__pro-logo")).toHaveAttribute("src", "/brand/backword-pro.png");
     expect(screen.queryByRole("link", { name: /Manage web subscription through Link/ })).not.toBeInTheDocument();
-    expect(screen.getByText("0 / 150 pts")).toBeInTheDocument();
-    await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(3));
+    expect(screen.getByText(/0 \/ \d+ pts/)).toBeInTheDocument();
+    await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(4));
     expect(screen.getByText("Weekly")).toBeInTheDocument();
 
     const rating = screen.getByLabelText("Overall rating");
@@ -158,7 +158,7 @@ describe("PlayerProfilePage", () => {
     renderPage();
 
     expect(screen.getByRole("heading", { name: "Player Profile" })).toBeInTheDocument();
-    expect(screen.getByText("3 / 140 pts")).toBeInTheDocument();
+    expect(screen.getByText(/3 \/ \d+ pts/)).toBeInTheDocument();
     expect(screen.queryByText("YOUR BACKWORD ACCOUNT")).not.toBeInTheDocument();
     expect(screen.queryByLabelText("Account summary")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "HOW SCORING WORKS" })).not.toBeInTheDocument();
@@ -208,11 +208,11 @@ describe("PlayerProfilePage", () => {
     }));
     renderPage();
 
-    expect(screen.getByText("3 / 150 pts")).toBeInTheDocument();
+    expect(screen.getByText(/3 \/ \d+ pts/)).toBeInTheDocument();
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
     resolveFetch([]);
 
-    await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(fetchCallsBeforeRender + 3));
+    await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(fetchCallsBeforeRender + 4));
   });
 
   it("compensates for transparent padding around the Pro logo", () => {

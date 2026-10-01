@@ -25,6 +25,9 @@ Backend/*.py
 !Backend/generate_clue_repairs.py
 !Backend/build_remaining_clue_repair_queue.py
 !Backend/test_generate_backword.py
+!Backend/generate_midword.py
+!Backend/build_midword_bank.py
+!Backend/test_generate_midword.py
 !Backend/test_generate_wotd.py
 !Backend/test_repair_weekly_duplicate_clues.py
 !Backend/test_sync_supabase_crossword_edits.py

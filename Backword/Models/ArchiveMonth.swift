@@ -98,6 +98,7 @@ struct ArchiveMonth: Codable, Hashable, Identifiable, Comparable {
 
 enum ArchiveGameType: String, CaseIterable, Codable, Hashable {
     case backword
+    case midword
     case daily
     case weekly
 }
@@ -106,11 +107,14 @@ struct ArchiveMonthContent: Equatable {
     var dailyPuzzles: [Puzzle] = []
     var weeklyPuzzles: [Puzzle] = []
     var backwordWords: [BackwordWord] = []
+    var midwordPuzzles: [MidwordPuzzle] = []
 
     func isEmpty(for type: ArchiveGameType) -> Bool {
         switch type {
         case .backword:
             return backwordWords.isEmpty
+        case .midword:
+            return midwordPuzzles.isEmpty
         case .daily:
             return dailyPuzzles.isEmpty
         case .weekly:
