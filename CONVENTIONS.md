@@ -290,7 +290,9 @@ Motion behaviour as Backword.
 The Midword Home card matches Anagram's layout and typography: title and issue
 number at the top-left, status and completed score at the bottom-right, with
 the same spacing, padding, and stacked layout above Large Dynamic Type. It
-retains its own semantic colours, including a charcoal status badge and text.
+uses a dedicated semantic foreground: white text and a translucent white status
+badge in Light Mode, retaining the existing black foreground in Dark Mode.
+Gameplay controls continue to use their separate on-accent colour.
 Empty progress is New; accepted guesses are In
 Progress; wins are Solved on the release date or Finished later; exhausted
 attempts are Failed.

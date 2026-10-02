@@ -43,7 +43,7 @@ struct MidwordCard: View {
         }
         .padding(.horizontal, AnagramHomeCardLayout.horizontalPadding)
         .padding(.vertical, AnagramHomeCardLayout.verticalPadding)
-        .foregroundStyle(Color.midwordOnAccent)
+        .foregroundStyle(Color.midwordHomeCardForeground)
         .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(Color.midwordAccent)
     }
@@ -57,7 +57,7 @@ struct MidwordCard: View {
                 .minimumScaleFactor(0.35)
 
             if let puzzle {
-                HomeCardIssueNumber(issueNumber: puzzle.puzzleNumber, color: .midwordOnAccent)
+                HomeCardIssueNumber(issueNumber: puzzle.puzzleNumber, color: .midwordHomeCardForeground)
             }
         }
         .frame(maxHeight: .infinity, alignment: .topLeading)
@@ -73,7 +73,7 @@ struct MidwordCard: View {
                     scoreLabel
                 }
             } else if isLoading {
-                ProgressView().tint(.midwordOnAccent)
+                ProgressView().tint(.midwordHomeCardForeground)
             } else if loadFailed {
                 Button("Try again", action: retry)
                     .font(AppFont.caption().bold())
@@ -91,7 +91,7 @@ struct MidwordCard: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 5)
-        .background(Color.midwordOnAccent.opacity(0.12))
+        .background(Color.midwordHomeCardForeground.opacity(0.12))
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
     }
 

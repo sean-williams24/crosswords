@@ -153,9 +153,9 @@ struct MidwordView: View {
 
     private var navTitle: some View {
         Text("MIDWORD")
-            .font(AppFont.header(30))
-            .foregroundColor(.midwordAccent)
-            .accessibilityAddTraits(.isHeader)
+            .font(AppFont.header(34))
+            .foregroundStyle(Color.midwordAccent)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
     private var navControls: some View {

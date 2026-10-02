@@ -49,10 +49,25 @@ struct MidwordBoardView: View {
 
     private func prompt(_ word: String) -> some View {
         Text(word)
-            .font(AppFont.header(34))
+            .font(AppFont.clueNumber(34))
             .foregroundColor(.midwordText)
             .minimumScaleFactor(0.7)
             .lineLimit(2)
             .accessibilityAddTraits(.isStaticText)
     }
+}
+
+#Preview {
+    let puzzle = MidwordPuzzle(
+        id: "midword-preview",
+        date: "2026-10-01",
+        puzzleNumber: 1,
+        firstWord: "BANK",
+        secondWord: "BOOK",
+        answer: "NOTE",
+        alternatives: []
+    )
+    var progress = MidwordProgress(date: puzzle.date)
+    MidwordBoardView(puzzle: puzzle, input: "", won: false)
+        .padding(.horizontal)
 }
