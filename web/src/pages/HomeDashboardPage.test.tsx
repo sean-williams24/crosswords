@@ -335,7 +335,7 @@ describe("web home dashboard", () => {
     expect(styles).not.toMatch(/\.weekly-modal__hero\s*\{[^}]*\bbackground\s*:/);
   });
 
-  it("uses the Anagram identity and details layout across all game cards", () => {
+  it("keeps game identity and status grouped while crossword cards use the Anagram layout", () => {
     const { container } = renderDashboard();
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
@@ -366,8 +366,19 @@ describe("web home dashboard", () => {
     expect(styles).toMatch(/\.weekly-card__title\s*\{[^}]*font-size:\s*clamp\(16px, 2vw, 16px\)/);
     expect(styles).toContain(".home-game-card--crossword .home-game-card__identity { padding-top: 4px; }");
     expect(styles).toMatch(/\.weekly-card__identity\s*\{[^}]*padding-top:\s*4px;/);
-    expect(styles).toContain(".home-game-card--backword .home-game-card__logo { margin-bottom: -16px; transform: translateX(-16.3%); }");
     expect(styles).toContain(".weekly-card__issue { color: rgb(214 190 135 / 70%); }");
+  });
+
+  it("centers the Backword logo and status with the issue at the top-left and stats at the bottom", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    expect(styles).toMatch(/\.home-game-card--backword\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*align-items:\s*center;[^}]*justify-content:\s*center;[^}]*gap:\s*0;/);
+    expect(styles).toMatch(/\.home-game-card--backword \.home-game-card__identity,\s*\.home-game-card--backword \.home-game-card__details\s*\{[^}]*position:\s*static;[^}]*align-items:\s*center;/);
+    expect(styles).toContain(".home-game-card--backword .home-game-card__logo { margin-bottom: 12px; }");
+    expect(styles).not.toContain("transform: translateX(-16.3%)");
+    expect(styles).toContain(".home-game-card--backword .home-game-card__issue { position: absolute; top: 12px; left: 18px; }");
+    expect(styles).toContain(".home-game-card--backword .home-game-card__stats { position: absolute; right: 12px; bottom: 12px; left: 18px; justify-content: space-between; }");
+    expect(styles).toContain(".home-game-card--backword .home-game-card__streak { margin-left: auto; }");
   });
 
   it("matches the iOS light home-card surfaces", () => {

@@ -356,6 +356,11 @@ or date labels; their own content identifies each game.
 The Pro Crossword card fills its grid column rather than keeping a fixed iPad
 width.
 
+The web Backword card uses a centered logo with the status beneath it, matching
+iOS. Its issue number sits at the top-left and its score/streak sit along the
+bottom edge. It does not use the crossword cards' two-column identity/details
+layout.
+
 Home shows the complete Word of the Day entry whenever the game cards use two
 columns. It switches to the compact card button and detail sheet at the same
 size-class change that stacks the game cards. The full Home panel and sheet

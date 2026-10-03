@@ -1663,7 +1663,7 @@ body {
 .home-game-card:hover,
 .home-game-card:focus-visible { transform: translateY(-4px); outline: none; box-shadow: 0 20px 48px rgb(0 0 0 / 28%); }
 .home-game-card:focus-visible::after { border-color: var(--app-text-primary); }
-.home-game-card--backword { background: linear-gradient(150deg, #34417c, #29356d); }
+.home-game-card--backword { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; text-align: center; background: linear-gradient(150deg, #34417c, #29356d); }
 .home-game-card--crossword { background: linear-gradient(145deg, #30445e, #24364d); }
 .home-game-card__identity,
 .home-game-card__details { position: relative; z-index: 1; display: flex; min-width: 0; flex-direction: column; }
@@ -1671,7 +1671,13 @@ body {
 .home-game-card__details { align-items: flex-end; justify-content: flex-end; gap: 5px; text-align: right; }
 .home-game-card--crossword .home-game-card__identity { padding-top: 4px; }
 .home-game-card__logo { width: min(130px, 100%); height: auto; object-fit: contain; }
-.home-game-card--backword .home-game-card__logo { margin-bottom: -16px; transform: translateX(-16.3%); }
+.home-game-card--backword .home-game-card__identity,
+.home-game-card--backword .home-game-card__details { position: static; align-items: center; gap: 0; text-align: center; }
+.home-game-card--backword .home-game-card__logo { margin-bottom: 12px; }
+.home-game-card--backword .home-status { margin-top: 2px; }
+.home-game-card--backword .home-game-card__issue { position: absolute; top: 12px; left: 18px; }
+.home-game-card--backword .home-game-card__stats { position: absolute; right: 12px; bottom: 12px; left: 18px; justify-content: space-between; }
+.home-game-card--backword .home-game-card__streak { margin-left: auto; }
 .home-game-card__title { margin: 0; color: #f6f6f6; font-size: clamp(16px, 2vw, 16px); font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; }
 .home-game-card--backword .home-game-card__title { display: none; }
 .home-game-card__description { margin: 0; color: #b4b4b8; font-size: 14px; font-weight: 500; }
