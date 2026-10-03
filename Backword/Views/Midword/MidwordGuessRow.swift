@@ -3,7 +3,7 @@ import SwiftUI
 struct MidwordGuessRow: View {
     let guess: String
     let isCorrect: Bool
-    @ScaledMetric private var cellSize: CGFloat = 34
+    @ScaledMetric private var cellSize: CGFloat = 56
 
     var body: some View {
         GeometryReader { geometry in
