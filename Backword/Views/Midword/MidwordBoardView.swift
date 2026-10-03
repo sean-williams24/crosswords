@@ -5,13 +5,14 @@ struct MidwordBoardView: View {
     let input: String
     let won: Bool
 
-    @ScaledMetric private var cellSize: CGFloat = 46
+    @ScaledMetric private var cellSize: CGFloat = 56
 
     var body: some View {
         VStack(spacing: 18) {
             prompt(puzzle.firstWord)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading)
             GeometryReader { geometry in
                 ScrollView(.horizontal, showsIndicators: false) {
                     guessCells
@@ -24,6 +25,7 @@ struct MidwordBoardView: View {
             prompt(puzzle.secondWord)
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.trailing)
         }
         .frame(maxWidth: .infinity)
     }
@@ -49,7 +51,7 @@ struct MidwordBoardView: View {
 
     private func prompt(_ word: String) -> some View {
         Text(word)
-            .font(AppFont.clueNumber(34))
+            .font(AppFont.clueLabel(36))
             .foregroundColor(.midwordText)
             .minimumScaleFactor(0.7)
             .lineLimit(2)
@@ -70,4 +72,5 @@ struct MidwordBoardView: View {
     var progress = MidwordProgress(date: puzzle.date)
     MidwordBoardView(puzzle: puzzle, input: "", won: false)
         .padding(.horizontal)
+        .background(Color.gray)
 }
