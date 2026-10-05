@@ -1,14 +1,22 @@
 import SwiftUI
 
+struct MidwordSheetPresentation: Equatable {
+    var showsStats = false
+    var showsInstructions = false
+    var showsCompletion = false
+
+    var isPresentingSheet: Bool {
+        showsStats || showsInstructions || showsCompletion
+    }
+}
+
 struct MidwordView: View {
     @StateObject private var viewModel: MidwordViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.horizontalSizeClass) private var sizeClass
     @EnvironmentObject private var ratingService: OverallRatingService
-    @State private var showStats = false
-    @State private var showInstructions = false
-    @State private var showCompletion = false
+    @State private var sheetPresentation = MidwordSheetPresentation()
 
     private var appLayout: AppLayout { AppLayout(sizeClass: sizeClass) }
 
@@ -36,31 +44,32 @@ struct MidwordView: View {
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.canSubmit)
         .background(Color.midwordBackground.ignoresSafeArea())
+        .blur(radius: sheetPresentation.isPresentingSheet ? AppLayout.sheetBackgroundBlurRadius : 0)
         .environment(\.colorScheme, .dark)
         .toolbar(.hidden, for: .navigationBar)
         .enableSwipeBack()
         .navigationBarBackButtonHidden()
-        .onAppear { if viewModel.isComplete { showCompletion = true } }
+        .onAppear { if viewModel.isComplete { sheetPresentation.showsCompletion = true } }
         .onChange(of: viewModel.isComplete) { _, complete in
             if complete {
                 ratingService.refresh()
-                showCompletion = true
+                sheetPresentation.showsCompletion = true
             }
         }
-        .sheet(isPresented: $showCompletion) {
+        .sheet(isPresented: $sheetPresentation.showsCompletion) {
             MidwordStatsView(puzzle: viewModel.puzzle, progress: viewModel.progress, showsCompletion: true)
         }
-        .sheet(isPresented: $showStats) {
+        .sheet(isPresented: $sheetPresentation.showsStats) {
             MidwordStatsView(puzzle: viewModel.puzzle, progress: viewModel.progress, showsCompletion: false)
         }
-        .sheet(isPresented: $showInstructions) {
+        .sheet(isPresented: $sheetPresentation.showsInstructions) {
             NavigationStack {
                 MidwordInstructionsView()
                     .navigationTitle("How to Play")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
-                            Button { showInstructions = false } label: {
+                            Button { sheetPresentation.showsInstructions = false } label: {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(.appTextSecondary)
                             }
@@ -169,12 +178,12 @@ struct MidwordView: View {
             }
             .accessibilityLabel("Back")
             Spacer()
-            Button { showStats = true } label: {
+            Button { sheetPresentation.showsStats = true } label: {
                 Image(systemName: "brain.head.profile")
                     .frame(width: appLayout.iconSize, height: appLayout.iconSize)
             }
             .accessibilityLabel("Statistics")
-            Button { showInstructions = true } label: {
+            Button { sheetPresentation.showsInstructions = true } label: {
                 Image(systemName: "info.circle")
                     .frame(width: appLayout.iconSize, height: appLayout.iconSize)
             }

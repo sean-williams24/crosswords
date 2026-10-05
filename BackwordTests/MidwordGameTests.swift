@@ -9,6 +9,20 @@ struct MidwordGameTests {
                       firstWord: "BANK", secondWord: "BOOK", answer: "NOTE", alternatives: [])
     }
 
+    @Test("Every Midword sheet blurs the presenting view", arguments: [
+        MidwordSheetPresentation(showsStats: true),
+        MidwordSheetPresentation(showsInstructions: true),
+        MidwordSheetPresentation(showsCompletion: true)
+    ])
+    func sheetPresentationBlur(presentation: MidwordSheetPresentation) {
+        #expect(presentation.isPresentingSheet)
+    }
+
+    @Test("Midword view is not blurred without a sheet")
+    func noSheetPresentationBlur() {
+        #expect(!MidwordSheetPresentation().isPresentingSheet)
+    }
+
     @Test("Both compounds must use the same middle word")
     func compounds() {
         let game = puzzle()

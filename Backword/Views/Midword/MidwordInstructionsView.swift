@@ -21,7 +21,7 @@ struct MidwordInstructionsView: View {
                         .font(AppFont.body())
                     Spacer()
                 }
-                Text("You get five guesses. Solve it on your first try for five points, or on your fifth try for one point. An incorrect guess is marked as a whole word; no letters are revealed.")
+                Text("You get five guesses. Solve it on your first try for five points, or on your fifth try for one point.")
                     .font(AppFont.body())
             }
             .foregroundColor(.appTextPrimary)
