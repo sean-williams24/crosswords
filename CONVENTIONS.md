@@ -4,6 +4,15 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 ---
 
+## Midword Statistics
+
+Midword statistics count only puzzles won on their release date with a positive
+`releaseDateScore`. Archive completions do not affect totals, streaks, guess
+distribution, or the 14-day score history. An unfinished current puzzle keeps
+yesterday's streak alive, while a failed current puzzle resets it.
+
+---
+
 ## Accounts, Cloud Sync, and Pro Entitlements
 
 Accounts are optional. Guest records retain the historical local persistence

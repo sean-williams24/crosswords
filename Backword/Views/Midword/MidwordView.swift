@@ -17,6 +17,7 @@ struct MidwordView: View {
     @Environment(\.horizontalSizeClass) private var sizeClass
     @EnvironmentObject private var ratingService: OverallRatingService
     @State private var sheetPresentation = MidwordSheetPresentation()
+    @State private var shouldPopAfterCompletionSheet = false
 
     private var appLayout: AppLayout { AppLayout(sizeClass: sizeClass) }
 
@@ -56,8 +57,18 @@ struct MidwordView: View {
                 sheetPresentation.showsCompletion = true
             }
         }
-        .sheet(isPresented: $sheetPresentation.showsCompletion) {
-            MidwordStatsView(puzzle: viewModel.puzzle, progress: viewModel.progress, showsCompletion: true)
+        .sheet(
+            isPresented: $sheetPresentation.showsCompletion,
+            onDismiss: {
+                if shouldPopAfterCompletionSheet { dismiss() }
+            }
+        ) {
+            MidwordStatsView(
+                puzzle: viewModel.puzzle,
+                progress: viewModel.progress,
+                showsCompletion: true,
+                shouldPop: $shouldPopAfterCompletionSheet
+            )
         }
         .sheet(isPresented: $sheetPresentation.showsStats) {
             MidwordStatsView(puzzle: viewModel.puzzle, progress: viewModel.progress, showsCompletion: false)

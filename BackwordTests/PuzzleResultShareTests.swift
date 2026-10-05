@@ -145,6 +145,40 @@ struct PuzzleResultShareTests {
         #expect(result.caption.contains("RAGTLINE") == false)
     }
 
+    @Test("Midword result reports guesses without revealing its compounds")
+    func midwordResultReportsStats() {
+        let puzzle = MidwordPuzzle(
+            id: "midword-id", date: "2026-10-05", puzzleNumber: 5,
+            firstWord: "BANK", secondWord: "BOOK", answer: "NOTE", alternatives: []
+        )
+        var progress = MidwordProgress(date: puzzle.date)
+        progress.guesses = ["PAGE", "NOTE"]
+        progress.completedAt = Date()
+        progress.won = true
+        progress.releaseDateScore = 4
+        let history = MidwordStatsHistory(
+            rows: [], currentStreak: 2, bestStreak: 3,
+            totalSolved: 4, guessDistribution: [2: 1]
+        )
+
+        let result = PuzzleShareResult.midword(
+            puzzle: puzzle,
+            progress: progress,
+            history: history,
+            rating: OverallRating(),
+            isPro: false
+        )
+
+        #expect(result.game == .midword)
+        #expect(result.issueLabel == "Midword #5")
+        #expect(result.score == 4)
+        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "GUESSES", value: "2/5"))
+        #expect(result.shareURL.path == "/midword/2026-10-05")
+        #expect(result.caption.contains("NOTE") == false)
+        #expect(result.caption.contains("BANK") == false)
+        #expect(result.caption.contains("BOOK") == false)
+    }
+
     @Test("A one-point result uses the singular score label")
     func singularScoreLabel() {
         let result = PuzzleShareResult(
@@ -176,11 +210,12 @@ struct PuzzleResultShareTests {
         #expect(completionTime == "12:00 AM")
     }
 
-    @Test("Backword, Anagram, and Pro Crossword share cards always use a dark appearance")
+    @Test("Dark game share cards always use a dark appearance")
     func darkShareCardAppearance() {
         #expect(PuzzleShareResult.Game.weeklyCrossword.usesDarkShareCardAppearance)
         #expect(PuzzleShareResult.Game.backword.usesDarkShareCardAppearance)
         #expect(PuzzleShareResult.Game.anagram.usesDarkShareCardAppearance)
+        #expect(PuzzleShareResult.Game.midword.usesDarkShareCardAppearance)
         #expect(!PuzzleShareResult.Game.dailyCrossword.usesDarkShareCardAppearance)
     }
 

@@ -2,149 +2,325 @@ import SwiftUI
 
 struct MidwordStatsView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @EnvironmentObject private var ratingService: OverallRatingService
     @EnvironmentObject private var storeService: StoreService
+    @State private var progressRecords: [MidwordProgress] = []
+    @State private var showHeader = false
+    @State private var showAnswer = false
+    @State private var showCountdown = false
+    @State private var showDetails = false
+
     let puzzle: MidwordPuzzle
     let progress: MidwordProgress
     let showsCompletion: Bool
+    private let previewHistory: MidwordStatsHistory?
+    @Binding private var shouldPop: Bool
 
-    private var completed: [MidwordProgress] {
-        MidwordProgress.loadAll().filter { item in
-            guard let finished = item.completedAt else { return false }
-            return item.date >= OverallRating.midwordLaunchDate
-                && ContentReleaseCalendar(now: finished).dailyDateString == item.date
-        }
+    init(
+        puzzle: MidwordPuzzle,
+        progress: MidwordProgress,
+        showsCompletion: Bool,
+        previewHistory: MidwordStatsHistory? = nil,
+        shouldPop: Binding<Bool> = .constant(false)
+    ) {
+        self.puzzle = puzzle
+        self.progress = progress
+        self.showsCompletion = showsCompletion
+        self.previewHistory = previewHistory
+        _shouldPop = shouldPop
     }
 
-    private var currentStreak: Int {
-        let wins = Set(completed.filter(\.isWon).map(\.date))
-        let today = ContentReleaseCalendar().dailyDateString
-        if completed.contains(where: { $0.date == today && !$0.isWon }) { return 0 }
-        let start = wins.contains(today) ? 0 : 1
-        var count = 0
-        var offset = start
-        while offset <= wins.count {
-            guard let date = ContentReleaseCalendar().dailyDateString(offsetByDays: -offset),
-                  wins.contains(date) else { break }
-            count += 1
-            offset += 1
-        }
-        return count
+    private var history: MidwordStatsHistory {
+        previewHistory ?? MidwordStatsHistory.make(
+            rating: ratingService.rating,
+            progressRecords: progressRecords
+        )
     }
 
     var body: some View {
+        Group {
+            if showsCompletion { completionBody } else { statsBody }
+        }
+        .environment(\.colorScheme, .dark)
+        .onAppear {
+            ratingService.refresh()
+            guard previewHistory == nil else { return }
+            progressRecords = MidwordProgress.loadAll()
+        }
+    }
+
+    private var statsBody: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    if showsCompletion {
-                        Text(progress.isWon ? "Solved!" : "Finished")
-                            .font(AppFont.header(38))
-                            .foregroundColor(progress.isWon ? .midwordAccent : .appGaveUp)
-                        Text(progress.isWon ? "In \(progress.guesses.count) guesses" : "The answer was")
-                            .font(AppFont.body())
-                        MidwordCompletionWordView(word: puzzle.answer, failed: progress.isFailed)
-                        Text("\(puzzle.firstCompound)  ·  \(puzzle.secondCompound)")
-                            .font(AppFont.body())
-                            .multilineTextAlignment(.center)
-                        Text("\(progress.releaseDateScore) points")
-                            .font(AppFont.header(24))
-                        TimelineView(.periodic(from: .now, by: 1)) { context in
-                            let remaining = max(0, Int(ContentReleaseCalendar(now: context.date).secondsUntilDailyRefresh() ?? 0))
-                            Text("NEXT MIDWORD IN  \(remaining / 3600)h \((remaining % 3600) / 60)m \(remaining % 60)s")
-                                .font(AppFont.caption())
-                        }
-                        ShareLink(item: "Midword #\(puzzle.puzzleNumber) · \(progress.releaseDateScore)/5") {
-                            Label("Share result", systemImage: "square.and.arrow.up")
-                                .font(AppFont.body())
-                        }
-                    }
-                    RatingBarView(rating: ratingService.rating, isPro: storeService.isProUser, category: .midword)
-                    if dynamicTypeSize.isAccessibilitySize {
-                        VStack(spacing: 16) {
-                            stat("PLAYED", value: completed.count)
-                            stat("WON", value: completed.filter(\.isWon).count)
-                            stat("STREAK", value: currentStreak)
-                        }
-                    } else {
-                        HStack {
-                            stat("PLAYED", value: completed.count)
-                            stat("WON", value: completed.filter(\.isWon).count)
-                            stat("STREAK", value: currentStreak)
-                        }
-                    }
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Guess distribution").font(AppFont.header(20))
-                        ForEach(1...5, id: \.self) { count in
-                            HStack {
-                                Text("\(count)")
-                                GeometryReader { geometry in
-                                    let wins = completed.filter { $0.isWon && $0.guesses.count == count }.count
-                                    RoundedRectangle(cornerRadius: 3)
-                                        .fill(Color.midwordAccent)
-                                        .frame(width: max(3, geometry.size.width * CGFloat(wins) / CGFloat(max(1, completed.count))), height: 20)
-                                }
-                                .frame(height: 20)
-                            }
-                            .font(AppFont.body())
-                        }
-                    }
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Last 14 days").font(AppFont.header(20))
-                        ForEach(0..<14, id: \.self) { offset in
-                            if let date = ContentReleaseCalendar().dailyDateString(offsetByDays: -offset),
-                               date >= OverallRating.midwordLaunchDate {
-                                let item = MidwordProgress.load(date: date)
-                                if dynamicTypeSize.isAccessibilitySize {
-                                    VStack(alignment: .leading) {
-                                        Text(date)
-                                        Text(historyLabel(item))
-                                    }
-                                    .font(AppFont.caption())
-                                } else {
-                                    HStack {
-                                        Text(date)
-                                        Spacer()
-                                        Text(historyLabel(item))
-                                    }
-                                    .font(AppFont.caption())
-                                }
-                            }
-                        }
-                    }
+            VStack(spacing: 0) {
+                ratingBar.padding(.top, 20).padding(.bottom, 10)
+                ScrollView(showsIndicators: false) {
+                    statsContent
+                        .padding(.top, 20)
+                        .padding(.bottom, AppLayout.anagramBottomDockInset)
                 }
-                .frame(maxWidth: .infinity)
-                .foregroundColor(.appTextPrimary)
-                .padding(AppLayout.screenPadding)
             }
-            .background(Color.appBackground)
+            .background(Color.midwordBackground)
             .navigationTitle("Midword Stats")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color.appBackground, for: .navigationBar)
+            .toolbarBackground(Color.midwordBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { dismiss() } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.appTextSecondary)
+                        Image(systemName: "xmark.circle.fill").foregroundStyle(Color.midwordAccent)
                     }
+                    .accessibilityLabel("Close Midword stats")
                 }
             }
         }
     }
 
-    private func stat(_ title: String, value: Int) -> some View {
+    private var completionBody: some View {
+        ZStack {
+            Color.midwordBackground.ignoresSafeArea()
+            VStack(spacing: 0) {
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 20) {
+                        completionHeader
+                        if showAnswer {
+                            MidwordCompletionWordView(word: puzzle.answer, failed: progress.isFailed)
+                                .padding(.horizontal, AppLayout.screenPadding)
+                                .frame(maxWidth: 560)
+                                .transition(.scale(scale: 0.88).combined(with: .opacity))
+                            Text("\(puzzle.firstCompound)  ·  \(puzzle.secondCompound)")
+                                .font(AppFont.body())
+                                .foregroundStyle(Color.midwordText)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, AppLayout.screenPadding)
+                                .transition(.opacity)
+                        }
+                        if showCountdown {
+                            nextMidwordCountdown
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                        }
+                        if showDetails {
+                            VStack(spacing: 20) {
+                                ratingBar
+                                PuzzleResultShareButton(
+                                    result: shareResult,
+                                    foregroundColor: .midwordAccent,
+                                    backgroundColor: .midwordText.opacity(0.08)
+                                )
+                                .padding(.horizontal, AppLayout.screenPadding)
+                                completionStats
+                                statsContent
+                            }
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 32)
+                    .padding(.bottom, 28)
+                }
+                Button {
+                    dismiss()
+                    shouldPop = true
+                } label: {
+                    Text("HOME")
+                        .font(AppFont.body())
+                        .foregroundStyle(Color.midwordAccent)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                }
+                .padding(.horizontal, AppLayout.screenPadding)
+                .padding(.bottom, 20)
+                .opacity(showDetails ? 1 : 0)
+            }
+        }
+        .task(id: progress.completedAt) { await runCompletionPresentation() }
+    }
+
+    private var completionHeader: some View {
+        VStack(spacing: 8) {
+            Text(progress.isWon ? "Solved!" : "Finished")
+                .font(AppFont.header(40))
+                .foregroundStyle(progress.isWon ? Color.midwordAccent : Color.appGaveUp)
+            Text("PUZZLE #\(puzzle.puzzleNumber)")
+                .font(AppFont.clueLabel(14))
+                .foregroundStyle(Color.midwordAccent)
+                .tracking(3)
+            Text(progress.isWon ? "In \(progress.guesses.count) guesses" : "The answer was...")
+                .font(AppFont.body())
+                .foregroundStyle(Color.midwordText)
+        }
+        .scaleEffect(showHeader ? 1 : 0.62)
+        .opacity(showHeader ? 1 : 0)
+    }
+
+    private var nextMidwordCountdown: some View {
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            VStack(spacing: 6) {
+                Text("NEXT MIDWORD IN")
+                    .font(AppFont.clueLabel(12))
+                    .foregroundStyle(Color.midwordAccent)
+                    .tracking(2)
+                Text(MidwordCountdownText.value(
+                    secondsRemaining: ContentReleaseCalendar(now: context.date).secondsUntilDailyRefresh()
+                ))
+                .font(AppFont.header(24))
+                .foregroundStyle(Color.midwordText)
+                .monospacedDigit()
+            }
+            .accessibilityElement(children: .combine)
+        }
+    }
+
+    private var ratingBar: some View {
+        RatingBarView(
+            rating: ratingService.rating,
+            isPro: storeService.isProUser,
+            category: .midword,
+            accentColor: .midwordAccent,
+            trackColor: .midwordText.opacity(0.12)
+        )
+        .padding(.horizontal, AppLayout.screenPadding)
+    }
+
+    private var statsContent: some View {
+        VStack(spacing: 28) {
+            summaryCard.padding(.horizontal, AppLayout.screenPadding)
+            guessDistributionCard.padding(.horizontal, AppLayout.screenPadding)
+            MidwordStatsHistoryView(rows: history.rows)
+        }
+    }
+
+    private var completionStats: some View {
+        HStack(spacing: 0) {
+            completionStat(value: "\(progress.guesses.count)/5", label: "GUESSES")
+            divider
+            completionStat(value: "\(progress.releaseDateScore)/5", label: "POINTS")
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 20)
+        .background(Color.midwordText.opacity(0.08))
+        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        .padding(.horizontal, AppLayout.screenPadding)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+    }
+
+    private var summaryCard: some View {
+        ViewThatFits {
+            HStack(spacing: 0) {
+                completionStat(value: "\(history.currentStreak)", label: "CURRENT\nSTREAK")
+                divider
+                completionStat(value: "\(history.totalSolved)", label: "TOTAL\nSOLVED")
+                divider
+                completionStat(value: "\(history.bestStreak)", label: "BEST\nSTREAK")
+            }
+            VStack(spacing: 16) {
+                completionStat(value: "\(history.currentStreak)", label: "CURRENT STREAK")
+                completionStat(value: "\(history.totalSolved)", label: "TOTAL SOLVED")
+                completionStat(value: "\(history.bestStreak)", label: "BEST STREAK")
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 20)
+        .background(Color.midwordText.opacity(0.08))
+        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+    }
+
+    private var guessDistributionCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("GUESS DISTRIBUTION")
+                .font(AppFont.clueLabel(12))
+                .foregroundStyle(Color.midwordAccent)
+                .tracking(2)
+            ForEach(1...5, id: \.self) { guessCount in
+                HStack(spacing: 10) {
+                    Text("\(guessCount)")
+                        .font(AppFont.clueLabel(11))
+                        .foregroundStyle(Color.midwordText)
+                        .frame(width: 14)
+                    GeometryReader { geometry in
+                        let count = history.guessDistribution[guessCount, default: 0]
+                        let maximum = max(1, history.guessDistribution.values.max() ?? 0)
+                        ZStack(alignment: .leading) {
+                            Capsule().fill(Color.midwordText.opacity(0.08))
+                            Capsule().fill(Color.midwordAccent)
+                                .frame(width: max(count > 0 ? 8 : 0, geometry.size.width * CGFloat(count) / CGFloat(maximum)))
+                        }
+                    }
+                    .frame(height: 18)
+                    Text("\(history.guessDistribution[guessCount, default: 0])")
+                        .font(AppFont.body(12))
+                        .foregroundStyle(Color.midwordText)
+                        .frame(width: 22, alignment: .trailing)
+                }
+            }
+        }
+        .padding(16)
+        .background(Color.midwordText.opacity(0.08))
+        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+    }
+
+    private func completionStat(value: String, label: String) -> some View {
         VStack(spacing: 4) {
-            Text("\(value)").font(AppFont.statNumber(36))
-            Text(title).font(AppFont.caption())
+            Text(value)
+                .font(AppFont.header(24))
+                .foregroundStyle(Color.midwordText)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+            Text(label)
+                .font(AppFont.clueLabel(10))
+                .foregroundStyle(Color.midwordAccent)
+                .tracking(1)
+                .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
     }
 
-    private func historyLabel(_ item: MidwordProgress?) -> String {
-        guard let item else { return "Not played" }
-        if item.isWon { return "\(item.guesses.count) guesses · \(item.releaseDateScore) pts" }
-        if item.isFailed { return "Failed" }
-        return "In progress · \(item.guesses.count) guesses"
+    private var divider: some View {
+        Rectangle().fill(Color.midwordAccent.opacity(0.5)).frame(width: 1, height: 40)
+    }
+
+    private var shareResult: PuzzleShareResult {
+        .midword(
+            puzzle: puzzle,
+            progress: progress,
+            history: history,
+            rating: ratingService.rating,
+            isPro: storeService.isProUser
+        )
+    }
+
+    @MainActor
+    private func runCompletionPresentation() async {
+        if reduceMotion {
+            showHeader = true
+            showAnswer = true
+            showCountdown = true
+            showDetails = true
+            return
+        }
+        withAnimation(.spring(response: 0.55, dampingFraction: 0.68)) { showHeader = true }
+        try? await Task.sleep(for: .milliseconds(220))
+        guard !Task.isCancelled else { return }
+        withAnimation(.spring(response: 0.45, dampingFraction: 0.76)) { showAnswer = true }
+        try? await Task.sleep(for: .milliseconds(900))
+        guard !Task.isCancelled else { return }
+        withAnimation(.easeOut(duration: 0.3)) { showCountdown = true }
+        try? await Task.sleep(for: .milliseconds(180))
+        guard !Task.isCancelled else { return }
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.82)) { showDetails = true }
+    }
+}
+
+enum MidwordCountdownText {
+    static func value(secondsRemaining: TimeInterval?) -> String {
+        guard let secondsRemaining else { return "--:--:--" }
+        let totalSeconds = Int(ceil(max(0, secondsRemaining)))
+        return String(
+            format: "%02d:%02d:%02d",
+            totalSeconds / 3_600,
+            (totalSeconds % 3_600) / 60,
+            totalSeconds % 60
+        )
     }
 }

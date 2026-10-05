@@ -159,6 +159,9 @@
 		A0A000000000000000000122 /* AnagramInstructionsContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */; };
 		A0A000000000000000000123 /* AnagramHintBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000023 /* AnagramHintBanner.swift */; };
 		A0A000000000000000000124 /* AnagramHintBannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000024 /* AnagramHintBannerTests.swift */; };
+		A0B000000000000000000101 /* MidwordStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B000000000000000000001 /* MidwordStatsHistory.swift */; };
+		A0B000000000000000000102 /* MidwordStatsHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B000000000000000000002 /* MidwordStatsHistoryView.swift */; };
+		A0B000000000000000000103 /* MidwordStatsHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B000000000000000000003 /* MidwordStatsHistoryTests.swift */; };
 		A0A000000000000000000140 /* AnagramPlaceholderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000040 /* AnagramPlaceholderCard.swift */; };
 		A11C0A110000000000000001 /* AccountSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C0A100000000000000001 /* AccountSyncTests.swift */; };
 		A11CC001300A000000000001 /* AccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11CC000300A000000000001 /* AccountSheet.swift */; };
@@ -366,6 +369,9 @@
 		A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramInstructionsContentViewTests.swift; sourceTree = "<group>"; };
 		A0A000000000000000000023 /* AnagramHintBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramHintBanner.swift; sourceTree = "<group>"; };
 		A0A000000000000000000024 /* AnagramHintBannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramHintBannerTests.swift; sourceTree = "<group>"; };
+		A0B000000000000000000001 /* MidwordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStatsHistory.swift; sourceTree = "<group>"; };
+		A0B000000000000000000002 /* MidwordStatsHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStatsHistoryView.swift; sourceTree = "<group>"; };
+		A0B000000000000000000003 /* MidwordStatsHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStatsHistoryTests.swift; sourceTree = "<group>"; };
 		A0A000000000000000000040 /* AnagramPlaceholderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramPlaceholderCard.swift; sourceTree = "<group>"; };
 		A11C0A100000000000000001 /* AccountSyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSyncTests.swift; sourceTree = "<group>"; };
 		A11CC000300A000000000001 /* AccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSheet.swift; sourceTree = "<group>"; };
@@ -467,6 +473,7 @@
 		00EC67C42E7E2A26C6A44CB3 /* BackwordTests */ = {
 			isa = PBXGroup;
 			children = (
+				A0B000000000000000000003 /* MidwordStatsHistoryTests.swift */,
 				A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */,
 				A821CFAEED5E90B1ABE4E8DE /* MidwordInstructionsViewTests.swift */,
 				A0A000000000000000000012 /* AnagramClientTests.swift */,
@@ -519,6 +526,7 @@
 			children = (
 				A8593FC71ACF6AF5027A308D /* MidwordPuzzle.swift */,
 				A84B19CBE925E605AAA62242 /* MidwordProgress.swift */,
+				A0B000000000000000000001 /* MidwordStatsHistory.swift */,
 				A0A000000000000000000018 /* AnagramCompletionPresentation.swift */,
 				A0A000000000000000000002 /* AnagramProgress.swift */,
 				A0A000000000000000000015 /* AnagramStatsHistory.swift */,
@@ -718,6 +726,7 @@
 				A81BADC74D85E195F31F646D /* MidwordBoardView.swift */,
 				A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */,
 				A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */,
+				A0B000000000000000000002 /* MidwordStatsHistoryView.swift */,
 				A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */,
 			);
 			path = Midword;
@@ -939,6 +948,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0B000000000000000000103 /* MidwordStatsHistoryTests.swift in Sources */,
 				A84B89AE16F5D3929016DE05 /* MidwordGameTests.swift in Sources */,
 				A84B89AE16F5D3929016DE06 /* MidwordInstructionsViewTests.swift in Sources */,
 				A0A000000000000000000112 /* AnagramClientTests.swift in Sources */,
@@ -989,6 +999,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0B000000000000000000101 /* MidwordStatsHistory.swift in Sources */,
+				A0B000000000000000000102 /* MidwordStatsHistoryView.swift in Sources */,
 				A8C7F36D88E76EDF2BADA86A /* MidwordGuessRow.swift in Sources */,
 				AD602F7C819B45D0A146E1B3 /* MidwordAttemptCounterView.swift in Sources */,
 				A86355B66F25A22B9C9AB15B /* MidwordCompletionWordView.swift in Sources */,

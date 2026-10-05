@@ -11,6 +11,7 @@ struct PuzzleShareResult: Equatable {
     enum Game: String, Equatable {
         case backword
         case anagram
+        case midword
         case dailyCrossword = "daily_crossword"
         case weeklyCrossword = "weekly_crossword"
 
@@ -18,6 +19,7 @@ struct PuzzleShareResult: Equatable {
             switch self {
             case .backword: "Backword"
             case .anagram: "Anagram"
+            case .midword: "Midword"
             case .dailyCrossword: "Quick Crossword"
             case .weeklyCrossword: "Pro Crossword"
             }
@@ -27,6 +29,7 @@ struct PuzzleShareResult: Equatable {
             switch self {
             case .backword: .backword
             case .anagram: .anagram
+            case .midword: .midword
             case .dailyCrossword: .dailyCrossword
             case .weeklyCrossword: .weeklyCrossword
             }
@@ -36,6 +39,7 @@ struct PuzzleShareResult: Equatable {
             switch self {
             case .backword: "/backword/"
             case .anagram: "/anagram/"
+            case .midword: "/midword/"
             case .dailyCrossword: "/crossword/"
             case .weeklyCrossword: "/weekly-crossword/"
             }
@@ -44,7 +48,7 @@ struct PuzzleShareResult: Equatable {
         /// Backword, Anagram, and Pro Crossword cards retain their dark visual identities
         /// independently of the device appearance used to create the share image.
         var usesDarkShareCardAppearance: Bool {
-            self == .backword || self == .anagram || self == .weeklyCrossword
+            self == .backword || self == .anagram || self == .midword || self == .weeklyCrossword
         }
 
         /// The lavender Backword card needs a darker label treatment than the
@@ -186,6 +190,29 @@ struct PuzzleShareResult: Equatable {
         )
     }
 
+    static func midword(
+        puzzle: MidwordPuzzle,
+        progress: MidwordProgress,
+        history: MidwordStatsHistory,
+        rating: OverallRating,
+        isPro: Bool
+    ) -> PuzzleShareResult {
+        PuzzleShareResult(
+            game: .midword,
+            issueNumber: puzzle.puzzleNumber,
+            date: puzzle.date,
+            outcome: progress.isWon ? "SOLVED" : "COMPLETED",
+            score: progress.releaseDateScore,
+            streak: history.currentStreak,
+            totalGamesSolved: history.totalSolved,
+            ratingTier: rating.tier(isPro: isPro).displayName,
+            ratingPoints: rating.totalPoints(isPro: isPro),
+            ratingMaxPoints: rating.maxPoints(isPro: isPro),
+            primaryStat: Stat(label: "GUESSES", value: "\(progress.guesses.count)/5"),
+            timeStat: nil
+        )
+    }
+
     static func completedTime(_ date: Date?, timeZone: TimeZone = .current) -> String {
         guard let date else { return "—" }
         let formatter = DateFormatter()
@@ -305,6 +332,8 @@ private struct PuzzleResultShareCard: View {
             }
         case .anagram:
             Color.anagramSurface
+        case .midword:
+            Color.midwordBackground
         case .dailyCrossword:
             Color.shareCardDailyBackground
         case .weeklyCrossword:
@@ -400,6 +429,8 @@ private struct PuzzleResultShareCard: View {
         switch result.game {
         case .anagram:
             return .anagramOrange
+        case .midword:
+            return .midwordAccent
         case .dailyCrossword:
             return .shareCardDailyStatLabel
         case .backword, .weeklyCrossword:
@@ -411,6 +442,8 @@ private struct PuzzleResultShareCard: View {
         switch result.game {
         case .anagram:
             return .anagramOrange
+        case .midword:
+            return .midwordAccent
         case .weeklyCrossword:
             return .solvedGold
         case .backword, .dailyCrossword:
