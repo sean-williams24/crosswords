@@ -85,6 +85,7 @@ struct MidwordView: View {
             if let message = viewModel.message {
                 Text(message).font(AppFont.body()).foregroundColor(.midwordText)
                     .accessibilityAddTraits(.updatesFrequently)
+                    .transition(.opacity)
             }
             if !viewModel.progress.guesses.isEmpty {
                 VStack(alignment: .center, spacing: 10) {
@@ -100,6 +101,7 @@ struct MidwordView: View {
         .frame(maxWidth: .infinity)
         .padding(AppLayout.screenPadding)
         .animation(.spring(response: 0.4, dampingFraction: 0.75), value: viewModel.progress.guesses.count)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.message != nil)
     }
 
     @ViewBuilder

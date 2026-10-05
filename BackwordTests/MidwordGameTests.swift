@@ -72,6 +72,9 @@ struct MidwordGameTests {
         #expect(vm.remainingAttempts == 5)
         #expect(vm.input == "ZZZZ")
         #expect(vm.message == "Not in the dictionary")
+
+        vm.deleteLetter()
+        #expect(vm.message == nil)
     }
 
     @Test("Repeated guesses and extra input do not use another attempt")
