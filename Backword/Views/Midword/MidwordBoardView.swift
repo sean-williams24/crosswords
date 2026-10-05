@@ -12,7 +12,6 @@ struct MidwordBoardView: View {
             prompt(puzzle.firstWord)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading)
             GeometryReader { geometry in
                 ScrollView(.horizontal, showsIndicators: false) {
                     guessCells
@@ -25,7 +24,6 @@ struct MidwordBoardView: View {
             prompt(puzzle.secondWord)
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: .infinity, alignment: .trailing)
-                .padding(.trailing)
         }
         .frame(maxWidth: .infinity)
     }
