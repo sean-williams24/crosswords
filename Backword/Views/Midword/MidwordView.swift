@@ -76,9 +76,10 @@ struct MidwordView: View {
 
     private var gameContent: some View {
         VStack(spacing: 24) {
-            Text("Find the word link")
+            Text("Find the connecting word to make\ntwo compounds")
                 .font(AppFont.body())
                 .foregroundColor(.midwordText.opacity(0.85))
+                .multilineTextAlignment(.center)
             MidwordBoardView(puzzle: viewModel.puzzle, input: viewModel.input, won: viewModel.progress.isWon)
             MidwordAttemptCounterView(progress: viewModel.progress)
             if let message = viewModel.message {
