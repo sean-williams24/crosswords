@@ -71,8 +71,9 @@ struct MidwordView: View {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button { sheetPresentation.showsInstructions = false } label: {
                                 Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.appTextSecondary)
+                                    .foregroundStyle(Color.midwordAccent)
                             }
+                            .accessibilityLabel("Close How to Play")
                         }
                     }
                     .toolbarBackground(Color.appBackground, for: .navigationBar)

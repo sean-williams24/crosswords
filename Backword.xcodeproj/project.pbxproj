@@ -167,6 +167,7 @@
 		A82CFBD4790ADB40E195ADD8 /* MidwordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8013956F1CB59F9C80F81AB /* MidwordCard.swift */; };
 		A83D7E3FB67BDC4A73E32933 /* MidwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */; };
 		A84B89AE16F5D3929016DE05 /* MidwordGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */; };
+		A84B89AE16F5D3929016DE06 /* MidwordInstructionsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A821CFAEED5E90B1ABE4E8DE /* MidwordInstructionsViewTests.swift */; };
 		A86355B66F25A22B9C9AB15B /* MidwordCompletionWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AB82BBFACA33CA3778BC1A /* MidwordCompletionWordView.swift */; };
 		A8668C9DDE853E7503FE8BC4 /* MidwordPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8593FC71ACF6AF5027A308D /* MidwordPuzzle.swift */; };
 		A873D88AC6DE0B55EFDB427A /* MidwordProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84B19CBE925E605AAA62242 /* MidwordProgress.swift */; };
@@ -376,6 +377,7 @@
 		A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordGuessRow.swift; sourceTree = "<group>"; };
 		A81BADC74D85E195F31F646D /* MidwordBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordBoardView.swift; sourceTree = "<group>"; };
 		A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordGameTests.swift; sourceTree = "<group>"; };
+		A821CFAEED5E90B1ABE4E8DE /* MidwordInstructionsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordInstructionsViewTests.swift; sourceTree = "<group>"; };
 		A8220AB384E18F7E4E984338 /* MidwordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordViewModel.swift; sourceTree = "<group>"; };
 		A84B19CBE925E605AAA62242 /* MidwordProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordProgress.swift; sourceTree = "<group>"; };
 		A8593FC71ACF6AF5027A308D /* MidwordPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordPuzzle.swift; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */,
+				A821CFAEED5E90B1ABE4E8DE /* MidwordInstructionsViewTests.swift */,
 				A0A000000000000000000012 /* AnagramClientTests.swift */,
 				A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */,
 				A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */,
@@ -937,6 +940,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A84B89AE16F5D3929016DE05 /* MidwordGameTests.swift in Sources */,
+				A84B89AE16F5D3929016DE06 /* MidwordInstructionsViewTests.swift in Sources */,
 				A0A000000000000000000112 /* AnagramClientTests.swift in Sources */,
 				A0A000000000000000000120 /* AnagramCompletionPresentationTests.swift in Sources */,
 				A0A000000000000000000122 /* AnagramInstructionsContentViewTests.swift in Sources */,
