@@ -37,7 +37,8 @@ struct MidwordCompletionWordView: View {
                     accentColor: .midwordAccent,
                     surfaceColor: .midwordBackground,
                     textColor: .appTextPrimary,
-                    correctColor: .midwordAccent
+                    correctColor: .midwordAccent,
+                    inactiveBorderColor: .midwordInactiveCellBorder
                 )
             }
         }

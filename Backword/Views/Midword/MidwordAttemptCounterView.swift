@@ -16,7 +16,7 @@ struct MidwordAttemptCounterView: View {
                         RoundedRectangle(cornerRadius: 3)
                             .strokeBorder(
                                 isWinSlot ? Color.midwordAccent :
-                                    isUsed ? Color.midwordAccent.opacity(0.5) : Color.appGridLine,
+                                    isUsed ? Color.midwordAccent.opacity(0.5) : Color.midwordInactiveCellBorder,
                                 lineWidth: 1
                             )
                     }

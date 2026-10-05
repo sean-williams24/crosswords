@@ -41,7 +41,8 @@ struct MidwordBoardView: View {
                     accentColor: .midwordAccent,
                     surfaceColor: .midwordBackground,
                     textColor: .midwordText,
-                    correctColor: .midwordAccent
+                    correctColor: .midwordAccent,
+                    inactiveBorderColor: .midwordInactiveCellBorder
                 )
             }
         }

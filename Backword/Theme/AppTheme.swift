@@ -41,6 +41,7 @@ extension Color {
     static let shareCardWeeklyStatLabel = Color("ShareCardWeeklyStatLabel")
     static let midwordBackground = Color("MidwordBackground")
     static let midwordAccent = Color("MidwordAccent")
+    static let midwordInactiveCellBorder = Color("MidwordInactiveCellBorder")
     static let midwordText = Color("MidwordText")
     static let midwordOnAccent = Color("MidwordOnAccent")
     static let midwordHomeCardForeground = Color("MidwordHomeCardForeground")

@@ -29,6 +29,15 @@ struct MidwordColorAssetTests {
         #expect(components(in: color) == ["red": "0x00", "green": "0x00", "blue": "0x00", "alpha": "1.000"])
     }
 
+    @Test("Inactive cell borders remain distinct from the Midword background")
+    func inactiveCellBorder() throws {
+        let colors = try loadColors(named: "MidwordInactiveCellBorder")
+        #expect(colors.count == 1)
+        let color = try #require(colors.first)
+        #expect(color["appearances"] == nil)
+        #expect(components(in: color) == ["red": "0x52", "green": "0x52", "blue": "0x52", "alpha": "1.000"])
+    }
+
     private func loadColors(named name: String) throws -> [[String: Any]] {
         let url = URL(fileURLWithPath: #filePath)
             .resolvingSymlinksInPath()

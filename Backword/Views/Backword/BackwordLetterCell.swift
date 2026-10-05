@@ -18,6 +18,7 @@ struct BackwordLetterCell: View {
     var textColor: Color = .appTextPrimary
     var correctColor: Color = .appCorrect
     var failedColor: Color = .appGaveUp
+    var inactiveBorderColor: Color = .appGridLine
 
     @State private var flashed = false
 
@@ -76,7 +77,7 @@ struct BackwordLetterCell: View {
         if flashed { return accentColor }
         if letter != nil { return accentColor.opacity(0.5) }
         if inputLetter != nil { return textColor.opacity(0.5) }
-        return .appGridLine
+        return inactiveBorderColor
     }
 
     private func letterText(_ character: Character) -> some View {
