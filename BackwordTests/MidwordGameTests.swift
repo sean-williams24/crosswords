@@ -91,6 +91,21 @@ struct MidwordGameTests {
         #expect(vm.message == nil)
     }
 
+    @Test("Repeated-letter strings are rejected even when the dictionary accepts them")
+    @MainActor
+    func repeatedLetterRejection() {
+        let game = puzzle()
+        let vm = MidwordViewModel(puzzle: game, progress: MidwordProgress(date: game.date))
+        for character in "DDDD" { vm.enterLetter(character) }
+
+        vm.submitGuess(isValidWord: { _ in true })
+
+        #expect(vm.remainingAttempts == 5)
+        #expect(vm.progress.guesses.isEmpty)
+        #expect(vm.input == "DDDD")
+        #expect(vm.message == "Not in the dictionary")
+    }
+
     @Test("Repeated guesses and extra input do not use another attempt")
     @MainActor
     func duplicateAndInputLimit() {

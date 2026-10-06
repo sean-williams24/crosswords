@@ -11,6 +11,10 @@ Midword statistics count only puzzles won on their release date with a positive
 distribution, or the 14-day score history. An unfinished current puzzle keeps
 yesterday's streak alive, while a failed current puzzle resets it.
 
+Midword rejects guesses made from a single repeated letter, even if the system
+dictionary recognises the string. A configured answer or reviewed alternative
+remains valid regardless of dictionary validation.
+
 ---
 
 ## Accounts, Cloud Sync, and Pro Entitlements

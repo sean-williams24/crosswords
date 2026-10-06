@@ -50,17 +50,20 @@ struct MidwordCard: View {
 
     private var identityView: some View {
         VStack(alignment: .leading, spacing: AnagramHomeCardLayout.identitySpacing) {
-            Text("MIDWORD")
-                .font(AppFont.clueLabel(appLayout.isiPad ? 28 : 24))
-                .tracking(3)
-                .lineLimit(1)
-                .minimumScaleFactor(0.35)
+            logo
 
             if let puzzle {
                 HomeCardIssueNumber(issueNumber: puzzle.puzzleNumber, color: .midwordHomeCardForeground)
             }
         }
         .frame(maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    private var logo: some View {
+        Image("MidwordLogoLight")
+            .resizable()
+            .scaledToFit()
+            .frame(height: 30)
     }
 
     private var detailsView: some View {

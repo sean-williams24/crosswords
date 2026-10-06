@@ -97,7 +97,7 @@ struct MidwordView: View {
 
     private var gameContent: some View {
         VStack(spacing: 24) {
-            Text("Find the connecting word to make\ntwo compounds")
+            Text("Find the link that ends the top word and starts the bottom word to make 2 new words")
                 .font(AppFont.body())
                 .foregroundColor(.midwordText.opacity(0.85))
                 .multilineTextAlignment(.center)
@@ -176,10 +176,10 @@ struct MidwordView: View {
     }
 
     private var navTitle: some View {
-        Text("MIDWORD")
-            .font(AppFont.header(34))
-            .foregroundStyle(Color.midwordAccent)
-            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+        Image("MidwordLogo")
+            .resizable()
+            .scaledToFit()
+            .frame(height: 38)
     }
 
     private var navControls: some View {

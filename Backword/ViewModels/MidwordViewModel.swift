@@ -41,7 +41,9 @@ final class MidwordViewModel: ObservableObject {
             message = "Already guessed"
             return
         }
-        guard puzzle.accepts(input) || isValidWord(input) else {
+        let isApprovedAnswer = puzzle.accepts(input)
+        let hasMultipleDistinctLetters = Set(input).count > 1
+        guard isApprovedAnswer || (hasMultipleDistinctLetters && isValidWord(input)) else {
             message = "Not in the dictionary"
             return
         }
