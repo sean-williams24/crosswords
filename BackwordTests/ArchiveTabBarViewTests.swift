@@ -63,19 +63,36 @@ struct ArchiveTabBarViewTests {
     }
 }
 
+@Suite("Archive issue and date layout")
+struct ArchiveIssueDateLayoutTests {
+    @Test("Keeps metadata inline at standard Dynamic Type sizes")
+    func inlineLayout() {
+        #expect(!ArchiveIssueDateLayout.stacksVertically(for: .large))
+        #expect(!ArchiveIssueDateLayout.stacksVertically(for: .xxxLarge))
+    }
+
+    @Test("Stacks metadata at accessibility Dynamic Type sizes")
+    func stackedLayout() {
+        #expect(ArchiveIssueDateLayout.stacksVertically(for: .accessibility1))
+        #expect(ArchiveIssueDateLayout.stacksVertically(for: .accessibility5))
+    }
+}
+
 @Suite("Backword archive row")
 struct BackwordArchiveRowTests {
-    @Test("Displays the connection clue above the formatted date")
+    @Test("Formats the issue, date, and clue for the shared archive-card layout")
     func archiveDetails() {
         let word = BackwordWord(
             id: "archive-word",
             date: "2026-07-20",
+            puzzleNumber: 42,
             word: "CASTLE",
             clue: "CHESS"
         )
 
         let content = BackwordArchiveRowContent(word: word, today: "2026-07-20")
 
+        #expect(content.issueNumber == "# 42")
         #expect(content.clue == "CHESS")
         #expect(content.formattedDate == "Monday, Jul 20")
         #expect(content.isToday)
@@ -87,6 +104,29 @@ struct ArchivePuzzleRowTests {
     @Test("Formats the puzzle number above the date")
     func puzzleNumber() {
         #expect(ArchivePuzzleRowContent.puzzleNumber(23) == "# 23")
+    }
+}
+
+@Suite("Midword archive row")
+struct MidwordArchiveRowTests {
+    @Test("Formats the clue, date, and issue for the shared archive-card layout")
+    func archiveDetails() {
+        let puzzle = MidwordPuzzle(
+            id: "archive-midword",
+            date: "2026-10-01",
+            puzzleNumber: 42,
+            firstWord: "PAGE",
+            secondWord: "CASE",
+            answer: "TURN",
+            alternatives: []
+        )
+
+        let content = MidwordArchiveRowContent(puzzle: puzzle, today: "2026-10-01")
+
+        #expect(content.clue == "PAGE  ·  ?  ·  CASE")
+        #expect(content.formattedDate == "Thursday, Oct 1")
+        #expect(content.issueNumber == "# 42")
+        #expect(content.isToday)
     }
 }
 

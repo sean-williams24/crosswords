@@ -77,13 +77,11 @@ private struct ArchiveDetails: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(content.clue.uppercased())
-                .font(AppFont.clueLabel(12))
-                .foregroundColor(.appAccent)
-
-            Text(content.formattedDate)
-                .font(AppFont.body())
-                .foregroundColor(.appTextPrimary)
+            ArchiveIssueDateView(
+                issueNumber: content.issueNumber,
+                formattedDate: content.formattedDate,
+                accentColor: .appAccent
+            )
 
             if content.isToday {
                 Text("TODAY")
@@ -91,16 +89,22 @@ private struct ArchiveDetails: View {
                     .foregroundColor(.appAccent)
                     .tracking(1)
             }
+
+            Text(content.clue.uppercased())
+                .font(AppFont.clueLabel(16))
+                .foregroundColor(.appAccent)
         }
     }
 }
 
 struct BackwordArchiveRowContent: Equatable {
+    let issueNumber: String?
     let clue: String
     let formattedDate: String
     let isToday: Bool
 
     init(word: BackwordWord, today: String = ContentReleaseCalendar().dailyDateString) {
+        issueNumber = word.puzzleNumber.map { "# \($0)" }
         clue = word.clue
         formattedDate = Self.formatDate(word.date)
         isToday = word.date == today
@@ -124,6 +128,7 @@ struct BackwordArchiveRowContent: Equatable {
         word: .init(
             id: "",
             date: "Wednesday, May 20",
+            puzzleNumber: 42,
             word: "CASTLE",
             clue: "CHESS"
         )
