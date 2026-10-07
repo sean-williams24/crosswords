@@ -4,22 +4,33 @@ import SwiftUI
 
 @Suite("Archive tab bar")
 struct ArchiveTabBarViewTests {
-    @Test("Uses one row through Large Dynamic Type")
+    @Test("Uses one row at standard Dynamic Type sizes")
     func regularLayout() {
         #expect(ArchiveTabBarLayout.layout(for: .medium) == .singleRow)
         #expect(ArchiveTabBarLayout.layout(for: .large) == .singleRow)
+        #expect(ArchiveTabBarLayout.layout(for: .xxxLarge) == .singleRow)
         #expect(ArchiveTabBarLayout.singleRow.height == 54)
         #expect(ArchiveTabBarLayout.singleRow.archiveContentBottomPadding == 112)
         #expect(ArchiveTabBarLayout.singleRow.containerCornerRadius == 25)
+        #expect(ArchiveTabBarLayout.minimumTitleScaleFactor == 0.75)
     }
 
-    @Test("Uses a two-column grid above Large Dynamic Type")
+    @Test("Uses two rows at accessibility Dynamic Type sizes")
     func accessibleLayout() {
-        #expect(ArchiveTabBarLayout.layout(for: .xLarge) == .twoColumnGrid)
-        #expect(ArchiveTabBarLayout.layout(for: .accessibility5) == .twoColumnGrid)
-        #expect(ArchiveTabBarLayout.twoColumnGrid.height == 162)
-        #expect(ArchiveTabBarLayout.twoColumnGrid.archiveContentBottomPadding == 220)
-        #expect(ArchiveTabBarLayout.twoColumnGrid.containerCornerRadius == 25)
+        #expect(ArchiveTabBarLayout.layout(for: .accessibility1) == .twoRowGrid)
+        #expect(ArchiveTabBarLayout.layout(for: .accessibility5) == .twoRowGrid)
+        #expect(ArchiveTabBarLayout.twoRowGrid.height == 108)
+        #expect(ArchiveTabBarLayout.twoRowGrid.archiveContentBottomPadding == 166)
+        #expect(ArchiveTabBarLayout.twoRowGrid.containerCornerRadius == 25)
+    }
+
+    @Test("Splits five tabs across two centred rows")
+    func splitLayoutRows() {
+        let rows = ArchiveTabBarLayout.rows(for: ArchiveTab.allCases)
+
+        #expect(rows.count == 2)
+        #expect(rows[0] == [.backword, .midword, .daily])
+        #expect(rows[1] == [.anagram, .weekly])
     }
 
     @Test("Backword tab content")

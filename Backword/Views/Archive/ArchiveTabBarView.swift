@@ -2,18 +2,18 @@ import SwiftUI
 
 enum ArchiveTabBarLayout: Equatable {
     case singleRow
-    case twoColumnGrid
+    case twoRowGrid
 
     static func layout(for dynamicTypeSize: DynamicTypeSize) -> ArchiveTabBarLayout {
-        dynamicTypeSize > .large ? .twoColumnGrid : .singleRow
+        dynamicTypeSize.isAccessibilitySize ? .twoRowGrid : .singleRow
     }
 
     var height: CGFloat {
         switch self {
         case .singleRow:
             return 54
-        case .twoColumnGrid:
-            return CGFloat((ArchiveTab.allCases.count + 1) / 2) * 54
+        case .twoRowGrid:
+            return 108
         }
     }
 
@@ -23,6 +23,16 @@ enum ArchiveTabBarLayout: Equatable {
 
     var containerCornerRadius: CGFloat {
         25
+    }
+
+    static let minimumTitleScaleFactor: CGFloat = 0.75
+
+    static func rows(for tabs: [ArchiveTab], columnCount: Int = 3) -> [[ArchiveTab]] {
+        guard columnCount > 0 else { return [] }
+
+        return stride(from: 0, to: tabs.count, by: columnCount).map { startIndex in
+            Array(tabs[startIndex..<min(startIndex + columnCount, tabs.count)])
+        }
     }
 }
 
@@ -70,17 +80,14 @@ struct ArchiveTabBarView: View {
 
     var body: some View {
         Group {
-            if layout == .twoColumnGrid {
-                LazyVGrid(
-                    columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 2),
-                    spacing: 0
-                ) {
-                    tabButtons
+            if layout == .twoRowGrid {
+                VStack(spacing: 0) {
+                    ForEach(Array(tabRows.enumerated()), id: \.offset) { _, row in
+                        evenlySpacedTabRow(row)
+                    }
                 }
             } else {
-                HStack(spacing: 0) {
-                    tabButtons
-                }
+                evenlySpacedTabRow(tabs)
             }
         }
         .frame(maxWidth: 420)
@@ -102,12 +109,19 @@ struct ArchiveTabBarView: View {
         RoundedRectangle(cornerRadius: layout.containerCornerRadius, style: .continuous)
     }
 
-    @ViewBuilder
-    private var tabButtons: some View {
-        ForEach(tabs, id: \.self) { tab in
-            tabButton(for: tab)
-                .frame(height: 54)
+    private var tabRows: [[ArchiveTab]] {
+        ArchiveTabBarLayout.rows(for: tabs)
+    }
+
+    private func evenlySpacedTabRow(_ rowTabs: [ArchiveTab]) -> some View {
+        HStack(spacing: 0) {
+            Spacer(minLength: 0)
+            ForEach(rowTabs, id: \.self) { tab in
+                tabButton(for: tab)
+                Spacer(minLength: 0)
+            }
         }
+        .frame(height: 54)
     }
 
     private func tabButton(for tab: ArchiveTab) -> some View {
@@ -120,16 +134,12 @@ struct ArchiveTabBarView: View {
                 .font(AppFont.clueLabel(selectedTab == tab ? 13 : 11))
                 .foregroundStyle(selectedTab == tab ? Color.appTextPrimary : Color.appTextSecondary)
                 .lineLimit(1)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background {
-                    if selectedTab == tab {
-                        Capsule()
-                            .fill(Color.appAccent.opacity(0.14))
-                            .padding(6)
-                    }
-                }
+                .minimumScaleFactor(ArchiveTabBarLayout.minimumTitleScaleFactor)
+                .allowsTightening(true)
+                .frame(maxHeight: .infinity)
                 .contentShape(Rectangle())
         }
+        .frame(minHeight: 44)
         .buttonStyle(.plain)
         .accessibilityLabel(content.accessibilityLabel)
         .accessibilityAddTraits(selectedTab == tab ? .isSelected : [])
