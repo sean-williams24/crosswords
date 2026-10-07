@@ -42,7 +42,6 @@ struct MidwordStatsView: View {
         Group {
             if showsCompletion { completionBody } else { statsBody }
         }
-        .environment(\.colorScheme, .dark)
         .onAppear {
             ratingService.refresh()
             guard previewHistory == nil else { return }

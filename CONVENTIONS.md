@@ -300,6 +300,14 @@ rating progress bar spans the screen with the same spacing above the keyboard
 as Backword. Completion reveals the answer with the same timing and Reduce
 Motion behaviour as Backword.
 
+Midword gameplay, stats, and completion follow the app's selected appearance,
+as its instructions already do. Light Mode uses the same warm background and
+dark text as the instructions; Dark Mode retains the charcoal background and
+white text. The shared letter-cell cursor uses its configured text colour so
+it remains visible in either appearance. Inactive cells and unused attempts
+have appearance-specific borders. The green accent and black on-accent text
+are shared across appearances; exported share cards still resolve in Dark Mode.
+
 The Midword Home card matches Anagram's layout and typography: title and issue
 number at the top-left, status and completed score at the bottom-right, with
 the same spacing, padding, and stacked layout above Large Dynamic Type. It

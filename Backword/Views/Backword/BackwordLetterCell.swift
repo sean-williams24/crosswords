@@ -41,7 +41,7 @@ struct BackwordLetterCell: View {
             if let ch = displayLetter {
                 letterText(ch)
             } else if isCursor {
-                PulsingUnderscore(size: size)
+                PulsingUnderscore(size: size, textColor: textColor)
             } else {
                 Text("_")
                     .font(AppFont.gridLetter(size * 0.38))
@@ -114,12 +114,13 @@ private struct PulsingBorder: View {
 
 private struct PulsingUnderscore: View {
     let size: CGFloat
+    let textColor: Color
     @State private var pulse = false
 
     var body: some View {
         Text("_")
             .font(AppFont.gridLetter(size * 0.38))
-            .foregroundColor(.white.opacity(pulse ? 1 : 0.2))
+            .foregroundColor(textColor.opacity(pulse ? 1 : 0.2))
             .onAppear {
                 withAnimation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true)) {
                     pulse = true

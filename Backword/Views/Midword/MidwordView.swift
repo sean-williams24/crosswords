@@ -46,7 +46,6 @@ struct MidwordView: View {
         .animation(.easeInOut(duration: 0.2), value: viewModel.canSubmit)
         .background(Color.midwordBackground.ignoresSafeArea())
         .blur(radius: sheetPresentation.isPresentingSheet ? AppLayout.sheetBackgroundBlurRadius : 0)
-        .environment(\.colorScheme, .dark)
         .toolbar(.hidden, for: .navigationBar)
         .enableSwipeBack()
         .navigationBarBackButtonHidden()
@@ -242,8 +241,14 @@ private extension MidwordView {
     }
 }
 
-#Preview("Active") {
+#Preview("Active — Light") {
     MidwordView.preview()
+        .environment(\.colorScheme, .light)
+}
+
+#Preview("Active — Dark") {
+    MidwordView.preview()
+        .environment(\.colorScheme, .dark)
 }
 
 #Preview("In progress") {
