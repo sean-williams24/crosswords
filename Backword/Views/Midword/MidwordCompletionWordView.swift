@@ -5,42 +5,40 @@ struct MidwordCompletionWordView: View {
     let failed: Bool
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @ScaledMetric private var cellSize: CGFloat = 44
+    @ScaledMetric private var cellSize = AppLayout.midwordCompletionCellSize
     @State private var revealStep = 0
     @State private var celebrates = false
     private let haptics = HapticsEngine()
 
     var body: some View {
-        GeometryReader { geometry in
-            ScrollView(.horizontal, showsIndicators: false) {
-                letters
-                    .frame(minWidth: geometry.size.width, alignment: .center)
-            }
-        }
-        .frame(height: cellSize)
-        .scaleEffect(celebrates ? 1.06 : 1)
-        .task(id: word) { await animate() }
+        letters
+            .scaleEffect(celebrates ? AppLayout.midwordCompletionCelebrationScale : 1)
+            .task(id: word) { await animate() }
     }
 
     private var letters: some View {
-        HStack(spacing: 8) {
-            ForEach(Array(word.enumerated()), id: \.offset) { index, letter in
-                let revealed = BackwordCompletionAnimation.revealedIndices(
-                    letterCount: word.count, revealStep: revealStep
-                ).contains(index)
-                BackwordLetterCell(
-                    letter: revealed ? letter : nil,
-                    isCorrect: revealed && !failed,
-                    isFailed: revealed && failed,
-                    isCelebrating: revealed && celebrates && !failed,
-                    size: cellSize,
-                    accentColor: .midwordAccent,
-                    surfaceColor: .midwordBackground,
-                    textColor: .midwordText,
-                    correctColor: .midwordAccent,
-                    inactiveBorderColor: .midwordInactiveCellBorder
-                )
-            }
+        FittedLetterRow(
+            count: word.count,
+            preferredCellSize: cellSize,
+            spacing: AppLayout.midwordCompletionCellSpacing,
+            maximumScale: AppLayout.midwordCompletionCelebrationScale
+        ) { index, fittedCellSize in
+            let letter = Array(word)[index]
+            let revealed = BackwordCompletionAnimation.revealedIndices(
+                letterCount: word.count, revealStep: revealStep
+            ).contains(index)
+            BackwordLetterCell(
+                letter: revealed ? letter : nil,
+                isCorrect: revealed && !failed,
+                isFailed: revealed && failed,
+                isCelebrating: revealed && celebrates && !failed,
+                size: fittedCellSize,
+                accentColor: .midwordAccent,
+                surfaceColor: .midwordBackground,
+                textColor: .midwordText,
+                correctColor: .midwordAccent,
+                inactiveBorderColor: .midwordInactiveCellBorder
+            )
         }
     }
 

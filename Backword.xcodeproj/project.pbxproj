@@ -189,6 +189,8 @@
 		AD602F7C819B45D0A146E1B3 /* MidwordAttemptCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD602F7C819B45D0A146E1B4 /* MidwordAttemptCounterView.swift */; };
 		B022F8B276983EAF1219E126 /* WOTDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */; };
 		B77DC0100000000000000001 /* ../CrosswordsTests/MidwordColorAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */; };
+		B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */; };
+		B77DC0200000000000000001 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */; };
 		B87E042C9276130084747CA3 /* StatsView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8254031869B9E1FAC8C5A377 /* StatsView2.swift */; };
 		BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2519353944EB9D4F32644E32 /* ClueBarView.swift */; };
 		BEF00EC711F525FD3B8EB3DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B35393D8C1799968B4B9119D /* Assets.xcassets */; };
@@ -402,6 +404,8 @@
 		B35393D8C1799968B4B9119D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveMonth.swift; sourceTree = "<group>"; };
 		B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/MidwordColorAssetTests.swift; sourceTree = "<group>"; };
+		B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/LetterRowSizingTests.swift; sourceTree = "<group>"; };
+		B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/GameDynamicTypeContainerTests.swift; sourceTree = "<group>"; };
 		B8669C3DD88CF9BC44A72C69 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingTests.swift; sourceTree = "<group>"; };
 		C31664D1AD154A3FB5415AA5 /* ArchivePuzzleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivePuzzleRow.swift; sourceTree = "<group>"; };
@@ -484,6 +488,8 @@
 				A0A000000000000000000024 /* AnagramHintBannerTests.swift */,
 				A0A000000000000000000009 /* AnagramProgressTests.swift */,
 				B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */,
+				B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */,
+				B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */,
 				A0A000000000000000000017 /* AnagramStatsHistoryTests.swift */,
 				A0A000000000000000000014 /* AnagramTrayLayoutTests.swift */,
 				09FF00003011000000000001 /* PuzzleResultShareTests.swift */,
@@ -960,6 +966,8 @@
 				A0A000000000000000000124 /* AnagramHintBannerTests.swift in Sources */,
 				A0A000000000000000000109 /* AnagramProgressTests.swift in Sources */,
 				B77DC0100000000000000001 /* ../CrosswordsTests/MidwordColorAssetTests.swift in Sources */,
+				B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */,
+				B77DC0200000000000000001 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift in Sources */,
 				A0A000000000000000000114 /* AnagramTrayLayoutTests.swift in Sources */,
 				A0A000000000000000000117 /* AnagramStatsHistoryTests.swift in Sources */,
 				0F0F00033010000000000001 /* GoogleSignInButtonTests.swift in Sources */,

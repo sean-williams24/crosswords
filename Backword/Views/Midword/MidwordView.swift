@@ -13,7 +13,6 @@ struct MidwordSheetPresentation: Equatable {
 struct MidwordView: View {
     @StateObject private var viewModel: MidwordViewModel
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.horizontalSizeClass) private var sizeClass
     @EnvironmentObject private var ratingService: OverallRatingService
     @State private var sheetPresentation = MidwordSheetPresentation()
@@ -26,21 +25,11 @@ struct MidwordView: View {
     }
 
     var body: some View {
-        Group {
-            if dynamicTypeSize.isAccessibilitySize {
-                ScrollView {
-                    VStack(spacing: 0) {
-                        navBar
-                        gameContent
-                        inputControls
-                    }
-                }
-            } else {
-                VStack(spacing: 0) {
-                    navBar
-                    ScrollView { gameContent }
-                    inputControls
-                }
+        GameDynamicTypeContainer {
+            VStack(spacing: 0) {
+                navBar
+                ScrollView { gameContent }
+                inputControls
             }
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.canSubmit)
@@ -156,18 +145,9 @@ struct MidwordView: View {
     }
 
     private var navBar: some View {
-        Group {
-            if dynamicTypeSize.isAccessibilitySize {
-                VStack(spacing: 12) {
-                    navTitle
-                    navControls
-                }
-            } else {
-                ZStack {
-                    navTitle
-                    navControls
-                }
-            }
+        ZStack {
+            navTitle
+            navControls
         }
         .foregroundColor(.midwordText)
         .padding(.horizontal, AppLayout.screenPadding)
@@ -265,6 +245,6 @@ private extension MidwordView {
 
 #Preview("Accessibility") {
     MidwordView.preview(guesses: ["PAGE"], input: "NO")
-        .environment(\.dynamicTypeSize, .accessibility3)
+        .environment(\.dynamicTypeSize, .accessibility5)
 }
 #endif

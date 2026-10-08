@@ -300,6 +300,18 @@ rating progress bar spans the screen with the same spacing above the keyboard
 as Backword. Completion reveals the answer with the same timing and Reduce
 Motion behaviour as Backword.
 
+Midword gameplay, stats, and completion cap Dynamic Type at XXX Large
+size through `GameDynamicTypeContainer`. The cap applies above child views so
+custom fonts and `@ScaledMetric` dimensions use the same bounded environment;
+smaller system text sizes remain supported. The gameplay header and keyboard
+stay pinned while puzzle content scrolls, including at accessibility settings.
+
+Midword input, previous guesses, and completion rows never scroll horizontally.
+`FittedLetterRow` shrinks square cells and their gaps proportionally to fit the
+available width, keeping shorter rows centered at their preferred size. Cell
+letter sizes follow the fitted cell size. Completion rows reserve enough width
+for their celebration scale so the animation also stays within the screen.
+
 Midword gameplay, stats, and completion follow the app's selected appearance,
 as its instructions already do. Light Mode uses the same warm background and
 dark text as the instructions; Dark Mode retains the charcoal background and

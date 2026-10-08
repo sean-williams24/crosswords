@@ -39,7 +39,7 @@ struct MidwordStatsView: View {
     }
 
     var body: some View {
-        Group {
+        GameDynamicTypeContainer {
             if showsCompletion { completionBody } else { statsBody }
         }
         .onAppear {

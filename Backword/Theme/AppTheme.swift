@@ -187,6 +187,13 @@ struct AppLayout {
     static let homeNavigationIconGlyphSize: CGFloat = 20
     static let homeCardIssueNumberFontSize: CGFloat = 12
     static let sheetBackgroundBlurRadius: CGFloat = 4
+    static let gameMaximumDynamicTypeSize: DynamicTypeSize = .xxxLarge
+    static let midwordInputCellSize: CGFloat = 56
+    static let midwordCompletionCellSize: CGFloat = 44
+    static let midwordInputCellSpacing: CGFloat = 7
+    static let midwordGuessCellSpacing: CGFloat = 6
+    static let midwordCompletionCellSpacing: CGFloat = 8
+    static let midwordCompletionCelebrationScale: CGFloat = 1.06
 
     var isiPad: Bool {
         sizeClass == .regular
