@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AD5100013011000000000001 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5100023011000000000001 /* AdServices.framework */; };
-		AD5100033011000000000001 /* AppleAdsAttributionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5100043011000000000001 /* AppleAdsAttributionService.swift */; };
-		AD5100053011000000000001 /* AppleAdsAttributionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5100063011000000000001 /* AppleAdsAttributionServiceTests.swift */; };
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
 		04ADAE912FFD100000000001 /* AdExplainerPresentationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */; };
@@ -171,6 +168,9 @@
 		ABCD10000000000000000005 /* FeedbackEmailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000002 /* FeedbackEmailContent.swift */; };
 		ABCD10000000000000000006 /* MailComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000003 /* MailComposerView.swift */; };
 		AC638DF36320A3F8C6EFDE6E /* CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741EF0B3C1470452272529E1 /* CompletionView.swift */; };
+		AD5100013011000000000001 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5100023011000000000001 /* AdServices.framework */; };
+		AD5100033011000000000001 /* AppleAdsAttributionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5100043011000000000001 /* AppleAdsAttributionService.swift */; };
+		AD5100053011000000000001 /* AppleAdsAttributionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5100063011000000000001 /* AppleAdsAttributionServiceTests.swift */; };
 		B022F8B276983EAF1219E126 /* WOTDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */; };
 		B87E042C9276130084747CA3 /* StatsView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8254031869B9E1FAC8C5A377 /* StatsView2.swift */; };
 		BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2519353944EB9D4F32644E32 /* ClueBarView.swift */; };
@@ -205,9 +205,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AD5100023011000000000001 /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
-		AD5100043011000000000001 /* AppleAdsAttributionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAdsAttributionService.swift; sourceTree = "<group>"; };
-		AD5100063011000000000001 /* AppleAdsAttributionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppleAdsAttributionServiceTests.swift; path = ../CrosswordsTests/AppleAdsAttributionServiceTests.swift; sourceTree = "<group>"; };
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
 		04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicyTests.swift; sourceTree = "<group>"; };
@@ -366,6 +363,9 @@
 		ABCD10000000000000000001 /* FeedbackEmailContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackEmailContentTests.swift; sourceTree = "<group>"; };
 		ABCD10000000000000000002 /* FeedbackEmailContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackEmailContent.swift; sourceTree = "<group>"; };
 		ABCD10000000000000000003 /* MailComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposerView.swift; sourceTree = "<group>"; };
+		AD5100023011000000000001 /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
+		AD5100043011000000000001 /* AppleAdsAttributionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAdsAttributionService.swift; sourceTree = "<group>"; };
+		AD5100063011000000000001 /* AppleAdsAttributionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppleAdsAttributionServiceTests.swift; path = ../CrosswordsTests/AppleAdsAttributionServiceTests.swift; sourceTree = "<group>"; };
 		B35393D8C1799968B4B9119D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveMonth.swift; sourceTree = "<group>"; };
 		B8669C3DD88CF9BC44A72C69 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
@@ -1086,7 +1086,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Backword/Backword.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
@@ -1101,7 +1101,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.7;
+				MARKETING_VERSION = 1.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1279,7 +1279,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Backword/Backword.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
@@ -1294,7 +1294,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.7;
+				MARKETING_VERSION = 1.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
