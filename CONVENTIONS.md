@@ -639,6 +639,32 @@ activation is emitted only from a direct, verified StoreKit purchase that grants
 Pro access. Restores, renewals, entitlement refreshes, and account-linked access
 never count as a new purchase conversion.
 
+### Apple Ads campaign measurement on iOS
+
+The application target links Apple's `AdServices.framework`. Firebase Analytics
+owns Apple Ads attribution-token retrieval and the automatic `firebase_campaign`
+event. Do not add a second token exchange, `campaign_details`, manual `first_open`,
+or a custom install event for the same acquisition: that could duplicate or
+overwrite the SDK's attribution. Missing attribution is not proof of an organic
+install.
+
+After Firebase configures at launch, `AppleAdsAttributionService` sets the default
+`platform=ios` and `environment` event parameters, plus the `app_environment`
+user property. This labels automatic SDK events and custom milestones for
+reporting. Context is refreshed on each app launch; repeated configuration in
+one launch is ignored, and unavailable Firebase can be retried. Production
+campaign reports select `app_environment=appstore` and the iOS data stream to
+exclude Debug/TestFlight and website activity. Existing environment detection
+uses the debug build flag and sandbox receipt for TestFlight.
+
+Existing `game_started`, `game_completed`, and verified
+`pro_entitlement_activated` events measure engagement and purchases. Automatic
+`first_open`, sessions and engagement measure opens/returns; no new gameplay or
+purchase events are emitted solely because attribution is enabled. Apple Ads
+downloads and Firebase first opens are distinct metrics, and ad spend remains
+in Apple Ads. See [the campaign measurement guide](docs/apple-ads-measurement.md)
+for console configuration and release verification.
+
 ## Crossword Configuration & Word Repeat Prevention
 
 ### Daily crossword (9×9)

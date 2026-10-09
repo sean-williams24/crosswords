@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD5100013011000000000001 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5100023011000000000001 /* AdServices.framework */; };
+		AD5100033011000000000001 /* AppleAdsAttributionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5100043011000000000001 /* AppleAdsAttributionService.swift */; };
+		AD5100053011000000000001 /* AppleAdsAttributionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5100063011000000000001 /* AppleAdsAttributionServiceTests.swift */; };
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
 		04ADAE912FFD100000000001 /* AdExplainerPresentationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */; };
@@ -202,6 +205,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AD5100023011000000000001 /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
+		AD5100043011000000000001 /* AppleAdsAttributionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAdsAttributionService.swift; sourceTree = "<group>"; };
+		AD5100063011000000000001 /* AppleAdsAttributionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppleAdsAttributionServiceTests.swift; path = ../CrosswordsTests/AppleAdsAttributionServiceTests.swift; sourceTree = "<group>"; };
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
 		04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicyTests.swift; sourceTree = "<group>"; };
@@ -420,6 +426,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86123BEA2FC900E5008A929E /* StoreKit.framework in Frameworks */,
+				AD5100013011000000000001 /* AdServices.framework in Frameworks */,
 				86F02E462FB9BE220083B752 /* Supabase in Frameworks */,
 				05F1E1A52FFCFD9300F1E1A5 /* FirebaseAnalytics in Frameworks */,
 				05F1E1A62FFCFD9300F1E1A5 /* FirebaseCore in Frameworks */,
@@ -455,6 +462,7 @@
 				05C0B0043006000000000001 /* BackwordCompletionPresentationTests.swift */,
 				07AD10023010000000000001 /* BackwordStatsHistoryTests.swift */,
 				05A1D9B62FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift */,
+				AD5100063011000000000001 /* AppleAdsAttributionServiceTests.swift */,
 				05AD00032FFD000000000001 /* AdConsentServiceTests.swift */,
 				05AD30032FFF100000000001 /* AppReviewPromptServiceTests.swift */,
 				05D1A0043001000000000001 /* CompletionDisplayStateTests.swift */,
@@ -531,6 +539,7 @@
 				05AD30012FFF100000000001 /* AppReviewPromptService.swift */,
 				F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */,
 				3C16166B681E34C0C10A14A3 /* BackwordAnalyticsService.swift */,
+				AD5100043011000000000001 /* AppleAdsAttributionService.swift */,
 				A476BC6A4DF0107699E2A1FD /* BackwordService.swift */,
 				86FAA1582FB9B9150022EFF6 /* SupabaseClient.swift */,
 				0F0F00063010000000000001 /* GoogleNativeSignInService.swift */,
@@ -630,6 +639,7 @@
 			isa = PBXGroup;
 			children = (
 				86123BE92FC900E5008A929E /* StoreKit.framework */,
+				AD5100023011000000000001 /* AdServices.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -898,6 +908,7 @@
 				04F1AE892FE2A3E6007A1001 /* AppVersionInfoTests.swift in Sources */,
 				0838E5D72FE2E5AB00000001 /* ArchiveTabBarViewTests.swift in Sources */,
 				05A1D9B72FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift in Sources */,
+				AD5100053011000000000001 /* AppleAdsAttributionServiceTests.swift in Sources */,
 				05AD00042FFD000000000001 /* AdConsentServiceTests.swift in Sources */,
 				05AD30042FFF100000000001 /* AppReviewPromptServiceTests.swift in Sources */,
 				05C0A0033005000000000001 /* BackwordCompletionDisplayStateTests.swift in Sources */,
@@ -955,6 +966,7 @@
 				04ADAE932FFD100000000001 /* AdExplainerPresentationPolicy.swift in Sources */,
 				0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */,
 				3C16166C681E34C0C10A14A3 /* BackwordAnalyticsService.swift in Sources */,
+				AD5100033011000000000001 /* AppleAdsAttributionService.swift in Sources */,
 				E2020AB31629439996CCB55A /* ArchiveMonth.swift in Sources */,
 				1E354F5B18434CB3B98C776D /* ArchiveMonthGrid.swift in Sources */,
 				1A9378281C994E16BFCC1FDC /* ArchivePuzzleRow.swift in Sources */,

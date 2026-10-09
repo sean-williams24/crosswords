@@ -326,6 +326,11 @@ final class BackwordAnalyticsService {
 
     private var isConfigured = false
 
+    private let appleAdsAttributionService = AppleAdsAttributionService(
+        setDefaultEventParameters: { Analytics.setDefaultEventParameters($0) },
+        setUserProperty: { Analytics.setUserProperty($0, forName: $1) }
+    )
+
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "Backword",
         category: "analytics"
@@ -342,6 +347,7 @@ final class BackwordAnalyticsService {
 
         if FirebaseApp.app() != nil {
             isConfigured = true
+            configureAppleAdsMeasurement()
             return true
         }
 
@@ -349,11 +355,19 @@ final class BackwordAnalyticsService {
         let didConfigure = FirebaseApp.app() != nil
         if didConfigure {
             isConfigured = true
+            configureAppleAdsMeasurement()
             logger.info("Firebase Analytics configured")
         } else {
             logger.error("Firebase Analytics configuration did not create a Firebase app")
         }
         return didConfigure
+    }
+
+    private func configureAppleAdsMeasurement() {
+        appleAdsAttributionService.configureIfPossible(
+            analyticsConfigured: isConfigured,
+            environment: AppEnvironment.current
+        )
     }
 
     func log(_ event: BackwordAnalyticsEvent) {

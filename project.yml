@@ -30,6 +30,7 @@ targets:
     sources:
       - path: Backword
     dependencies:
+      - sdk: AdServices.framework
       - package: GoogleMobileAds
       - package: GoogleUserMessagingPlatform
     settings:
@@ -45,6 +46,7 @@ targets:
     platform: iOS
     sources:
       - path: BackwordTests
+      - path: CrosswordsTests/AppleAdsAttributionServiceTests.swift
     dependencies:
       - target: Backword
     settings:
