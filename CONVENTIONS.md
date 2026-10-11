@@ -641,6 +641,22 @@ never count as a new purchase conversion.
 
 ### Apple Ads campaign measurement on iOS
 
+Firebase advertising use is disabled on iOS independently of rewarded-ad
+consent. `Info.plist` defaults ad storage, ad user data and ad personalization to
+denied. `AnalyticsStartupService` also reapplies those restrictions once per
+launch after Firebase is available, overriding persisted advertising grants
+before app-owned measurement starts. It does not change analytics-storage
+consent or force analytics collection on. ATT/UMP approval for a rewarded hint
+must not grant Firebase advertising permissions.
+
+Consent changes can clear Firebase user properties, so advertising restrictions
+must precede the reporting-context setup below. Missing configuration and failed
+SDK setup remain retryable; successful startup is idempotent within one launch.
+Ordinary gameplay reporting is retained, subject to any separate analytics
+consent requirements. This policy reduces Firebase advertising capabilities;
+it is not a claim that every advertising attribution report is unaffected.
+See [Google's consent controls](https://developers.google.com/tag-platform/security/guides/app-consent?platform=ios).
+
 The application target links Apple's `AdServices.framework`. Firebase Analytics
 owns Apple Ads attribution-token retrieval and the automatic `firebase_campaign`
 event. Do not add a second token exchange, `campaign_details`, manual `first_open`,

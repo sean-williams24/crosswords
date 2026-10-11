@@ -7,13 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		ADA120013011000000000001 /* AdConsentPreparing.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA120003011000000000001 /* AdConsentPreparing.swift */; };
-		ADA120033011000000000001 /* AdConsentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA120023011000000000001 /* AdConsentCoordinator.swift */; };
-		ADA120053011000000000001 /* DeferredAdConsentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA120043011000000000001 /* DeferredAdConsentTests.swift */; };
-		ADA110013011000000000001 /* AdConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA110003011000000000001 /* AdConfiguration.swift */; };
-		ADA110033011000000000001 /* ProAdBenefitsContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA110023011000000000001 /* ProAdBenefitsContent.swift */; };
-		ADA110053011000000000001 /* PreGameAdConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA110043011000000000001 /* PreGameAdConfigurationTests.swift */; };
-		ADA110073011000000000001 /* PreGameAdServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA110063011000000000001 /* PreGameAdServiceTests.swift */; };
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
 		04ADAE912FFD100000000001 /* AdExplainerPresentationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */; };
@@ -178,6 +171,15 @@
 		AD5100013011000000000001 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5100023011000000000001 /* AdServices.framework */; };
 		AD5100033011000000000001 /* AppleAdsAttributionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5100043011000000000001 /* AppleAdsAttributionService.swift */; };
 		AD5100053011000000000001 /* AppleAdsAttributionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5100063011000000000001 /* AppleAdsAttributionServiceTests.swift */; };
+		ADA110013011000000000001 /* AdConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA110003011000000000001 /* AdConfiguration.swift */; };
+		ADA110033011000000000001 /* ProAdBenefitsContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA110023011000000000001 /* ProAdBenefitsContent.swift */; };
+		ADA110053011000000000001 /* PreGameAdConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA110043011000000000001 /* PreGameAdConfigurationTests.swift */; };
+		ADA110073011000000000001 /* PreGameAdServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA110063011000000000001 /* PreGameAdServiceTests.swift */; };
+		ADA120013011000000000001 /* AdConsentPreparing.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA120003011000000000001 /* AdConsentPreparing.swift */; };
+		ADA120033011000000000001 /* AdConsentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA120023011000000000001 /* AdConsentCoordinator.swift */; };
+		ADA120053011000000000001 /* DeferredAdConsentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA120043011000000000001 /* DeferredAdConsentTests.swift */; };
+		ADA130013011000000000001 /* AnalyticsStartupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA130003011000000000001 /* AnalyticsStartupService.swift */; };
+		ADA130033011000000000001 /* AnalyticsStartupServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA130023011000000000001 /* AnalyticsStartupServiceTests.swift */; };
 		B022F8B276983EAF1219E126 /* WOTDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */; };
 		B87E042C9276130084747CA3 /* StatsView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8254031869B9E1FAC8C5A377 /* StatsView2.swift */; };
 		BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2519353944EB9D4F32644E32 /* ClueBarView.swift */; };
@@ -212,13 +214,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		ADA120003011000000000001 /* AdConsentPreparing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdConsentPreparing.swift; sourceTree = "<group>"; };
-		ADA120023011000000000001 /* AdConsentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdConsentCoordinator.swift; sourceTree = "<group>"; };
-		ADA120043011000000000001 /* DeferredAdConsentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeferredAdConsentTests.swift; path = ../CrosswordsTests/DeferredAdConsentTests.swift; sourceTree = "<group>"; };
-		ADA110003011000000000001 /* AdConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdConfiguration.swift; sourceTree = "<group>"; };
-		ADA110023011000000000001 /* ProAdBenefitsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProAdBenefitsContent.swift; sourceTree = "<group>"; };
-		ADA110043011000000000001 /* PreGameAdConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PreGameAdConfigurationTests.swift; path = ../CrosswordsTests/PreGameAdConfigurationTests.swift; sourceTree = "<group>"; };
-		ADA110063011000000000001 /* PreGameAdServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PreGameAdServiceTests.swift; path = ../CrosswordsTests/PreGameAdServiceTests.swift; sourceTree = "<group>"; };
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
 		04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicyTests.swift; sourceTree = "<group>"; };
@@ -380,6 +375,15 @@
 		AD5100023011000000000001 /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
 		AD5100043011000000000001 /* AppleAdsAttributionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAdsAttributionService.swift; sourceTree = "<group>"; };
 		AD5100063011000000000001 /* AppleAdsAttributionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppleAdsAttributionServiceTests.swift; path = ../CrosswordsTests/AppleAdsAttributionServiceTests.swift; sourceTree = "<group>"; };
+		ADA110003011000000000001 /* AdConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdConfiguration.swift; sourceTree = "<group>"; };
+		ADA110023011000000000001 /* ProAdBenefitsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProAdBenefitsContent.swift; sourceTree = "<group>"; };
+		ADA110043011000000000001 /* PreGameAdConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PreGameAdConfigurationTests.swift; path = ../CrosswordsTests/PreGameAdConfigurationTests.swift; sourceTree = "<group>"; };
+		ADA110063011000000000001 /* PreGameAdServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PreGameAdServiceTests.swift; path = ../CrosswordsTests/PreGameAdServiceTests.swift; sourceTree = "<group>"; };
+		ADA120003011000000000001 /* AdConsentPreparing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdConsentPreparing.swift; sourceTree = "<group>"; };
+		ADA120023011000000000001 /* AdConsentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdConsentCoordinator.swift; sourceTree = "<group>"; };
+		ADA120043011000000000001 /* DeferredAdConsentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeferredAdConsentTests.swift; path = ../CrosswordsTests/DeferredAdConsentTests.swift; sourceTree = "<group>"; };
+		ADA130003011000000000001 /* AnalyticsStartupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsStartupService.swift; sourceTree = "<group>"; };
+		ADA130023011000000000001 /* AnalyticsStartupServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AnalyticsStartupServiceTests.swift; path = ../CrosswordsTests/AnalyticsStartupServiceTests.swift; sourceTree = "<group>"; };
 		B35393D8C1799968B4B9119D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveMonth.swift; sourceTree = "<group>"; };
 		B8669C3DD88CF9BC44A72C69 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
@@ -456,6 +460,7 @@
 		00EC67C42E7E2A26C6A44CB3 /* BackwordTests */ = {
 			isa = PBXGroup;
 			children = (
+				ADA130023011000000000001 /* AnalyticsStartupServiceTests.swift */,
 				ADA120043011000000000001 /* DeferredAdConsentTests.swift */,
 				ADA110043011000000000001 /* PreGameAdConfigurationTests.swift */,
 				ADA110063011000000000001 /* PreGameAdServiceTests.swift */,
@@ -551,6 +556,7 @@
 		480E47CB48DFD8452D953BA9 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				ADA130003011000000000001 /* AnalyticsStartupService.swift */,
 				ADA120003011000000000001 /* AdConsentPreparing.swift */,
 				ADA120023011000000000001 /* AdConsentCoordinator.swift */,
 				A0A000000000000000000003 /* AnagramService.swift */,
@@ -932,6 +938,7 @@
 				0838E5D72FE2E5AB00000001 /* ArchiveTabBarViewTests.swift in Sources */,
 				05A1D9B72FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift in Sources */,
 				AD5100053011000000000001 /* AppleAdsAttributionServiceTests.swift in Sources */,
+				ADA130033011000000000001 /* AnalyticsStartupServiceTests.swift in Sources */,
 				05AD00042FFD000000000001 /* AdConsentServiceTests.swift in Sources */,
 				ADA120053011000000000001 /* DeferredAdConsentTests.swift in Sources */,
 				05AD30042FFF100000000001 /* AppReviewPromptServiceTests.swift in Sources */,
@@ -995,6 +1002,7 @@
 				0DA31D12549E411AB92C784C /* ArchiveDataSource.swift in Sources */,
 				3C16166C681E34C0C10A14A3 /* BackwordAnalyticsService.swift in Sources */,
 				AD5100033011000000000001 /* AppleAdsAttributionService.swift in Sources */,
+				ADA130013011000000000001 /* AnalyticsStartupService.swift in Sources */,
 				E2020AB31629439996CCB55A /* ArchiveMonth.swift in Sources */,
 				1E354F5B18434CB3B98C776D /* ArchiveMonthGrid.swift in Sources */,
 				1A9378281C994E16BFCC1FDC /* ArchivePuzzleRow.swift in Sources */,

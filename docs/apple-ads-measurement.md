@@ -9,9 +9,23 @@ the app does not exchange or log raw attribution tokens itself. This is the
 
 `AppleAdsAttributionService` configures default `platform`/`environment` event
 parameters and the user property `app_environment` immediately after Firebase
-initialisation. It does not force analytics collection on or modify consent.
+initialisation and the app's advertising restrictions. It does not force
+analytics collection on or modify consent.
 Default parameters also apply to automatic SDK events. They have lower
 precedence than parameters supplied by a particular event.
+
+The iOS app denies Firebase ad storage, ad user data and ad personalization in
+`Info.plist` and reapplies those denials at startup before reporting context and
+app-owned events. Gameplay analytics collection and analytics-storage consent
+are unchanged. Requesting a rewarded hint, accepting UMP consent or approving
+ATT does not enable advertising use of Firebase gameplay data. AdMob rewarded
+ads continue through their separate consent flow.
+
+These restrictions limit advertising identifiers, remarketing and some Google
+Ads conversion exports. Apple supports an AdServices standard attribution
+response without ATT permission, but that does not establish that Firebase's
+integration works identically with these advertising-consent restrictions.
+The release checks below are required to verify that integration.
 
 | Question | Measurement |
 | --- | --- |
@@ -54,6 +68,72 @@ this change.
    before relying on a keyword-level report.
 
 These console settings are manual; the repository cannot create or verify them.
+
+Review the iOS stream's advertising integrations, audience exports and available
+personalization controls, plus property-level data sharing. Confirm gameplay
+data is not being used for remarketing or shared for cross-company advertising
+tracking. If iOS and web share a GA4 property, review the scope before changing
+property-wide controls. Do not assume an ATT approval authorizes every form of
+advertising data use.
+
+## Check attribution after the advertising restrictions
+
+The goal is to check both whether attribution still works and whether its
+coverage changes. One attributed install establishes the first, not the second.
+
+1. **Save a baseline before releasing.** For a representative period, record
+   Apple Ads new downloads, Firebase first opens, and Firebase new users acquired
+   with **First user source / medium = Apple / search**. Record campaigns,
+   countries, date range, time zones and the existing app version. If you have
+   no previous campaign data, you can check functionality but cannot establish
+   unchanged coverage yet.
+2. **Check the app locally in Xcode.** Add
+   `-FIRAnalyticsVerboseLoggingEnabled` alongside the existing Firebase debug
+   argument. Confirm `ad_storage`, `ad_user_data` and `ad_personalization` are
+   denied. Confirm gameplay events still arrive in DebugView and the
+   `app_environment` property is restored. Repeat on an upgraded installation,
+   and after a rewarded hint with ATT allowed and denied: the Firebase
+   advertising states should stay denied. This checks the configuration, not
+   Apple Ads install attribution.
+3. **Release the app version and observe genuine campaign installs.** A user
+   must download the released version through an Apple Ads campaign and open
+   it. Xcode and TestFlight installs cannot substitute for this check. Include
+   new players who never request a hint, so the test does not depend on ATT
+   being shown or approved. Do not collect or manually log attribution tokens.
+4. **Allow report processing, typically 24–48 hours.** In GA4's User acquisition
+   report or an Exploration, select the iOS stream and the new **App version**,
+   plus **app_environment = appstore**. Look for **Apple / search** using the
+   *first-user* acquisition dimension and **New users** (or `first_open` events),
+   rather than all users: returning players who update could retain attribution
+   from an older release. Google documents keyword IDs in the
+   campaign term where supplied; do not require keyword text or a campaign
+   name to consider attribution successful. Then check that these acquired
+   users also have gameplay events. Keep Firebase debug mode out of release
+   verification.
+5. **Compare coverage over a comparable period.** With campaign targeting and
+   spend reasonably stable, compare Apple-attributed Firebase first opens/new users
+   against Apple Ads new downloads before and after release. Filter Firebase
+   to the new app version to avoid mixing releases. Downloads and first opens
+   differ, reports have lag, and small counts fluctuate, so identical totals
+   are not an acceptance criterion. A sustained large decline warrants
+   investigation; a single install does not prove there is no impact.
+6. **Investigate missing attribution without weakening consent.** If Apple Ads
+   shows new downloads and the new version has ordinary first opens but no
+   Apple-attributed users, check the installed version, iOS data stream,
+   campaign/date filters, reporting delay and `AdServices.framework` linkage.
+   If these are correct, investigate Firebase's consent-dependent attribution
+   behavior. Missing attribution is not proof of organic acquisition, and it
+   is not a reason to grant advertising permissions without consent.
+
+Apple Ads' own spend and download reports remain the independent reference.
+These checks establish whether the app still receives attribution; they do not
+promise that detailed attribution is unchanged for every user.
+
+Sources: [Google consent configuration](https://developers.google.com/tag-platform/security/guides/app-consent?platform=ios),
+[consent effects on reporting](https://support.google.com/analytics/answer/13802165),
+[Google's Apple Ads integration](https://support.google.com/analytics/answer/10311900),
+[report processing times](https://support.google.com/analytics/answer/11198161),
+[Apple's standard and detailed attribution responses](https://developer.apple.com/documentation/adservices/aaattribution/attributiontoken()).
 
 ## Verify and release
 

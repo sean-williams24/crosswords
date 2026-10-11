@@ -324,7 +324,28 @@ struct BackwordAnalyticsEvent: Equatable {
 final class BackwordAnalyticsService {
     static let shared = BackwordAnalyticsService()
 
-    private var isConfigured = false
+    private lazy var startupService = AnalyticsStartupService(
+        hasConfigurationFile: {
+            Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil
+        },
+        isSDKConfigured: { FirebaseApp.app() != nil },
+        configureSDK: { FirebaseApp.configure() },
+        restrictAdvertisingUse: {
+            // Keep gameplay data out of Firebase advertising features, even
+            // after the user permits tracking for a rewarded hint ad.
+            Analytics.setConsent([
+                .adStorage: .denied,
+                .adUserData: .denied,
+                .adPersonalization: .denied
+            ])
+        },
+        configureMeasurement: { [unowned self] in
+            self.appleAdsAttributionService.configureIfPossible(
+                analyticsConfigured: true,
+                environment: AppEnvironment.current
+            )
+        }
+    )
 
     private let appleAdsAttributionService = AppleAdsAttributionService(
         setDefaultEventParameters: { Analytics.setDefaultEventParameters($0) },
@@ -340,38 +361,17 @@ final class BackwordAnalyticsService {
 
     @discardableResult
     func configureIfPossible() -> Bool {
-        guard Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil else {
-            logger.info("Firebase Analytics not configured because GoogleService-Info.plist is missing")
-            return false
-        }
-
-        if FirebaseApp.app() != nil {
-            isConfigured = true
-            configureAppleAdsMeasurement()
-            return true
-        }
-
-        FirebaseApp.configure()
-        let didConfigure = FirebaseApp.app() != nil
+        let didConfigure = startupService.configureIfPossible()
         if didConfigure {
-            isConfigured = true
-            configureAppleAdsMeasurement()
             logger.info("Firebase Analytics configured")
         } else {
-            logger.error("Firebase Analytics configuration did not create a Firebase app")
+            logger.info("Firebase Analytics unavailable: configuration is missing or SDK setup failed")
         }
         return didConfigure
     }
 
-    private func configureAppleAdsMeasurement() {
-        appleAdsAttributionService.configureIfPossible(
-            analyticsConfigured: isConfigured,
-            environment: AppEnvironment.current
-        )
-    }
-
     func log(_ event: BackwordAnalyticsEvent) {
-        guard isConfigured else { return }
+        guard startupService.isConfigured else { return }
         Analytics.logEvent(event.name, parameters: event.parameters)
     }
 }
