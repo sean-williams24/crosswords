@@ -158,9 +158,17 @@ describe("Midword browser gameplay", () => {
   it("retains invalid and duplicate input without consuming an attempt", async () => {
     const user = userEvent.setup(); renderGame(); await screen.findByRole("region", { name: "Midword board" });
     await typeGuess(user, "ZZZZ");
-    expect(screen.getByRole("alert")).toHaveTextContent("Not in the dictionary");
+    const label = screen.getByRole("alert");
+    expect(label).toHaveTextContent("Not in the dictionary");
+    const transition = label.closest(".game-input-message");
+    expect(transition).toHaveClass("game-input-message--visible");
+    expect(transition?.parentElement).toContainElement(screen.getByLabelText("5 attempts remaining"));
     expect(screen.getByLabelText("5 attempts remaining")).toBeInTheDocument();
-    await user.keyboard("{Backspace}{Backspace}{Backspace}{Backspace}");
+    await user.keyboard("{Backspace}");
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(transition).not.toHaveClass("game-input-message--visible");
+    expect(label).toHaveTextContent("Not in the dictionary");
+    await user.keyboard("{Backspace}{Backspace}{Backspace}");
     await typeGuess(user, "PAGE");
     const history = screen.getByRole("region", { name: "Previous guesses" });
     const previousGuess = within(history).getByRole("group", { name: "PAGE, incorrect" });
@@ -171,6 +179,8 @@ describe("Midword browser gameplay", () => {
     expect(history).not.toContainElement(answerInput);
     await typeGuess(user, "PAGE");
     expect(screen.getByRole("alert")).toHaveTextContent("Already guessed");
+    expect(screen.getByRole("alert")).toBe(label);
+    expect(transition).toHaveClass("game-input-message--visible");
     expect(screen.getByLabelText("4 attempts remaining")).toBeInTheDocument();
     expect(within(history).getAllByRole("group")).toHaveLength(1);
     expect(createMidwordStorage().loadProgress(localDateString()).guesses).toEqual(["PAGE"]);

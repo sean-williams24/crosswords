@@ -83,7 +83,9 @@ html[data-theme="dark"] .midword-header h1::after {
 .midword-guesses h2 { margin: 0; color: var(--midword-muted); font-size: 14px; font-weight: 400; text-align: center; }
 .midword-guesses .midword-letter-row { width: min(100%, calc(var(--midword-letter-count) * 48px + (var(--midword-letter-count) - 1) * 7px)); }
 .midword-guesses .midword-letter-row > span { font-size: clamp(16px, 4.5vw, 22px); }
+.midword-attempt-status { display: flex; max-width: 100%; flex-direction: column; align-items: center; }
 .midword-message, .midword-note { margin: 0; font-size: 14px; text-align: center; }
+.midword-message { margin-top: 22px; }
 .midword-controls { padding-top: 12px; background: var(--midword-background); }
 .midword-controls .bw-key { color: var(--midword-text); background: color-mix(in srgb, var(--midword-text) 12%, var(--midword-background)); }
 .midword-controls .bw-key-delete, .midword-page .bw-submit, .midword-page .bw-primary-button { color: var(--midword-on-accent); background: var(--midword-accent); }
@@ -159,6 +161,7 @@ html[data-theme="dark"] .midword-home-card__identity img { filter: brightness(0)
 @media (max-width: 680px) {
   .midword-page > .site-footer { display: none; }
   .midword-main { gap: 18px; }
+  .midword-message { margin-top: 18px; }
   .midword-controls { padding-bottom: env(safe-area-inset-bottom); }
   .midword-dialog { max-height: 94dvh; }
 }

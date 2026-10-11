@@ -308,10 +308,18 @@ describe("Backword browser game", () => {
 
     await user.keyboard("XXXXXX{Enter}");
 
-    expect(await screen.findByRole("alert")).toHaveTextContent("Not a valid word");
+    const label = await screen.findByRole("alert");
+    expect(label).toHaveTextContent("Not a valid word");
+    const transition = label.closest(".game-input-message");
+    expect(transition).toHaveClass("game-input-message--visible");
+    expect(transition?.parentElement).toHaveClass("bw-answer-input");
     expect(screen.queryByText("Previous Guesses")).not.toBeInTheDocument();
     expect(screen.getByLabelText("0 of 5 guesses used")).toBeInTheDocument();
     expect(navigator.vibrate).toHaveBeenCalledWith([30, 50, 80]);
+    await waitFor(() => expect(screen.queryByRole("alert")).not.toBeInTheDocument(), { timeout: 2500 });
+    expect(transition).not.toHaveClass("game-input-message--visible");
+    expect(label).toBeInTheDocument();
+    expect(label).toHaveTextContent("Not a valid word");
   });
 
   it("shows returning players the version 4 rules update and records its dismissal", async () => {

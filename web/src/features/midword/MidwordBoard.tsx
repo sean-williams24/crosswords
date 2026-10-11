@@ -1,5 +1,6 @@
 import { accepts, type MidwordProgress, type MidwordPuzzle } from "./engine";
 import { MidwordLetterRow } from "./MidwordLetterRow";
+import { GameInputMessage } from "../../components/GameInputMessage";
 
 export function MidwordBoard({ puzzle, progress, input, message }: {
   puzzle: MidwordPuzzle; progress: MidwordProgress; input: string; message: string;
@@ -13,11 +14,13 @@ export function MidwordBoard({ puzzle, progress, input, message }: {
         length={puzzle.answer.length} word={won ? puzzle.answer : input} />
       <p className="midword-prompt midword-prompt--second">{puzzle.secondWord}</p>
     </section>
-    <div aria-label={`${Math.max(0, 5 - progress.guesses.length)} attempts remaining`} className="bw-guess-counter midword-attempts">
-      {Array.from({ length: 5 }, (_, index) => <span key={index} className={progress.outcome === "failed" ? "is-failed"
-        : won && index === progress.guesses.length - 1 ? "is-won" : index < progress.guesses.length ? "is-used" : ""} />)}
+    <div className="midword-attempt-status">
+      <div aria-label={`${Math.max(0, 5 - progress.guesses.length)} attempts remaining`} className="bw-guess-counter midword-attempts">
+        {Array.from({ length: 5 }, (_, index) => <span key={index} className={progress.outcome === "failed" ? "is-failed"
+          : won && index === progress.guesses.length - 1 ? "is-won" : index < progress.guesses.length ? "is-used" : ""} />)}
+      </div>
+      <GameInputMessage className="midword-message" message={message} />
     </div>
-    {message ? <p className="midword-message" role="alert">{message}</p> : null}
     {progress.guesses.length ? <section aria-label="Previous guesses" className="midword-guesses">
       <h2>Previous guesses</h2>
       {progress.guesses.map((guess, index) => <MidwordLetterRow correct={accepts(puzzle, guess)} failed={!accepts(puzzle, guess)}

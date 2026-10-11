@@ -575,6 +575,17 @@ inert, and removed from the accessibility tree immediately, including during
 the exit transition. Reduce Motion removes the transition. Crossword and
 Anagram retain their automatic answer checking.
 
+## Website Guess Validation Messages
+
+Backword and Midword animate validation labels with the same expanding/fading
+timing as Submit. A shared message component retains the last label during its
+exit so its text fades with its height instead of disappearing immediately.
+Hidden labels are excluded from the accessibility tree; visible labels remain
+assertive alerts. The message is grouped with its preceding input or attempts
+indicator, so a collapsed label leaves no extra flex gap. Reduce Motion removes
+the transition. Validation, guess counts, and existing dismissal timing stay
+unchanged; Midword's duplicate-guess label uses the same transition.
+
 ## Website Backword Parity
 
 The browser Backword game lives at `/backword` as an immersive route outside the

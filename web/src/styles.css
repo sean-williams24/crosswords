@@ -652,11 +652,27 @@ a {
   color: var(--bw-accent);
 }
 
+.bw-answer-input { max-width: 100%; flex-shrink: 0; }
+
+.game-input-message {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 240ms ease, opacity 180ms ease;
+}
+
+.game-input-message--visible { grid-template-rows: 1fr; opacity: 1; }
+.game-input-message__inner { min-height: 0; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .game-input-message { transition: none; }
+}
+
 .bw-invalid-word {
   color: var(--bw-error, #ff6b6b);
   font-size: 0.875rem;
   font-weight: 700;
-  margin: 10px 0 -2px;
+  margin: 10px 0 0;
   text-align: center;
 }
 

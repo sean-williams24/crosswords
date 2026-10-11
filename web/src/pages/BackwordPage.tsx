@@ -9,6 +9,7 @@ import { BackwordStats } from "../features/backword/components/BackwordStats";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { Footer } from "../components/Footer";
 import { GameSubmitButton } from "../components/GameSubmitButton";
+import { GameInputMessage } from "../components/GameInputMessage";
 import { InfoTooltip } from "../components/InfoTooltip";
 import { isCompletedOnReleaseDate, isLocalDateString, localDateString } from "../features/backword/date";
 import {
@@ -408,19 +409,16 @@ export function BackwordPage() {
                 ))}
               </div>
 
-              <LetterRow
-                answer={word.word}
-                input={input}
-                inputError={inputError}
-                outcome={progress.outcome}
-                revealed={revealed}
-              />
-
-              {invalidWordMessage ? (
-                <p aria-live="assertive" className="bw-invalid-word" role="alert">
-                  {invalidWordMessage}
-                </p>
-              ) : null}
+              <div className="bw-answer-input">
+                <LetterRow
+                  answer={word.word}
+                  input={input}
+                  inputError={inputError}
+                  outcome={progress.outcome}
+                  revealed={revealed}
+                />
+                <GameInputMessage className="bw-invalid-word" message={invalidWordMessage} />
+              </div>
 
               {progress.guesses.length ? (
                 <section className="bw-guess-history">
