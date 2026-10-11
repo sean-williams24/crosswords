@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Footer } from "../components/Footer";
+import { GameSubmitButton } from "../components/GameSubmitButton";
 import { useAuth } from "../features/auth/AuthProvider";
 import { ProAccessRedirect } from "../features/pro/ProAccessRedirect";
 import { isCompletedOnReleaseDate, isLocalDateString, localDateString } from "../features/backword/date";
@@ -152,10 +153,10 @@ function MidwordGame({ date }: { date: string }) {
 
   return <div className="bw-page midword-page">
     <div className="bw-shell midword-shell">
-      <header className="bw-game-header midword-header">
+      <header className="bw-game-header bw-game-header--offset midword-header">
         <GameMenu isOpen={menuOpen} onOpen={() => setMenuOpen(true)} onClose={() => setMenuOpen(false)} />
-        <h1><img alt="Midword" src="/brand/midword-logo.png" /></h1>
-        <nav aria-label="Midword actions"><button aria-label="Midword stats" className="bw-icon-button" onClick={() => setSheet("stats")} type="button">🧠</button>
+        <h1 className="bw-logo-lockup bw-logo-lockup--large"><img alt="Midword" className="bw-logo bw-logo--large" src="/brand/midword-logo.png" /></h1>
+        <nav aria-label="Midword actions" className="bw-game-actions--top bw-game-actions--logo-header"><button aria-label="Midword stats" className="bw-icon-button" onClick={() => setSheet("stats")} type="button">🧠</button>
           <button aria-label="How to play Midword" className="bw-icon-button bw-info-icon" onClick={() => setSheet("instructions")} type="button">ⓘ</button></nav>
       </header>
       <main className="midword-main">
@@ -169,8 +170,8 @@ function MidwordGame({ date }: { date: string }) {
           </> : null}
       </main>
       {!loading && puzzle && !progress.completedAt ? <footer className="bw-game-controls midword-controls">
-        <div aria-label={`${stats.rollingScore} of 70 Midword points`} className="midword-game-score"><span style={{ width: `${stats.rollingScore / 70 * 100}%` }} /></div>
-        {canSubmit ? <button className="bw-submit" onClick={submit} type="button">Submit</button> : null}
+        <div aria-label={`${stats.rollingScore} of 70 Midword points`} className="bw-game-score bw-game-score--keyboard-width"><span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} /></div>
+        <GameSubmitButton onSubmit={submit} visible={canSubmit} />
         <BackwordKeyboard ariaLabel="Midword keyboard" disabled={false} onDelete={deleteLetter} onLetter={enterLetter} />
       </footer> : null}
     </div>

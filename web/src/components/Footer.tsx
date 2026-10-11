@@ -21,6 +21,9 @@ export function Footer() {
           <Link className="transition hover:text-textPrimary" to="/anagram">
             Anagram
           </Link>
+          <Link className="transition hover:text-textPrimary" to="/midword">
+            Midword
+          </Link>
           <Link className="transition hover:text-textPrimary" to="/crossword">
             Crossword
           </Link>

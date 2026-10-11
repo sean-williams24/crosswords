@@ -899,6 +899,26 @@ a {
   transition: clip-path 500ms ease;
 }
 
+.game-submit {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  pointer-events: none;
+  transition: grid-template-rows 240ms ease, opacity 180ms ease;
+}
+
+.game-submit--visible {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.game-submit__inner { min-height: 0; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .game-submit { transition: none; }
+}
+
 .bw-submit,
 .bw-primary-button,
 .bw-secondary-button {

@@ -22,18 +22,20 @@ html[data-theme="light"] {
   --bw-surface: var(--midword-surface);
   --bw-grid: var(--midword-border);
   --bw-correct: var(--midword-accent);
+  height: auto;
+  min-height: 100svh;
+  min-height: 100dvh;
   color: var(--midword-text);
   background: var(--midword-background);
 }
 .midword-shell {
-  height: 100svh;
-  height: 100dvh;
-  flex: none;
+  flex: 1 0 auto;
+  overflow: visible;
   background: var(--midword-background);
 }
-.midword-header { flex: 0 0 auto; padding-top: max(14px, env(safe-area-inset-top)); }
-.midword-header h1 { position: relative; grid-column: 2; margin: 0; }
-.midword-header h1 img { display: block; width: clamp(130px, 26vw, 190px); height: auto; }
+.midword-page > .site-footer { flex: 0 0 auto; }
+.midword-header { flex: 0 0 auto; }
+.midword-header h1 { margin: 0; }
 html[data-theme="dark"] .midword-header h1 img { opacity: 0; }
 html[data-theme="dark"] .midword-header h1::after {
   content: ""; position: absolute; inset: 0;
@@ -45,13 +47,14 @@ html[data-theme="dark"] .midword-header h1::after {
   position: relative;
   display: flex;
   min-height: 0;
-  padding: 16px max(16px, env(safe-area-inset-left)) 30px;
-  flex: 1 1 auto;
+  padding: 16px max(16px, env(safe-area-inset-left)) 24px;
+  flex: 1 0 auto;
   flex-direction: column;
   align-items: center;
   gap: 22px;
-  overflow-y: auto;
+  overflow: visible;
 }
+.midword-main > * { flex-shrink: 0; }
 .midword-issue { margin: 0; color: var(--midword-muted); font-size: 12px; font-weight: 700; letter-spacing: .13em; }
 .midword-explainer { width: min(100%, 520px); margin: 0; color: var(--midword-muted); font-size: 16px; line-height: 1.5; text-align: center; }
 .midword-board { display: flex; width: min(100%, 430px); flex-direction: column; gap: 18px; }
@@ -78,12 +81,12 @@ html[data-theme="dark"] .midword-header h1::after {
 .midword-attempts .is-used { background: color-mix(in srgb, var(--midword-accent) 70%, transparent); border-color: var(--midword-accent); }
 .midword-guesses { width: min(100%, 430px); display: flex; flex-direction: column; gap: 10px; }
 .midword-guesses h2 { margin: 0; color: var(--midword-muted); font-size: 14px; font-weight: 400; text-align: center; }
+.midword-guesses .midword-letter-row { width: min(100%, calc(var(--midword-letter-count) * 48px + (var(--midword-letter-count) - 1) * 7px)); }
+.midword-guesses .midword-letter-row > span { font-size: clamp(16px, 4.5vw, 22px); }
 .midword-message, .midword-note { margin: 0; font-size: 14px; text-align: center; }
-.midword-controls { background: var(--midword-background); }
+.midword-controls { padding-top: 12px; background: var(--midword-background); }
 .midword-controls .bw-key { color: var(--midword-text); background: color-mix(in srgb, var(--midword-text) 12%, var(--midword-background)); }
 .midword-controls .bw-key-delete, .midword-page .bw-submit, .midword-page .bw-primary-button { color: var(--midword-on-accent); background: var(--midword-accent); }
-.midword-game-score { width: 100%; height: 7px; margin-bottom: 5px; background: var(--midword-surface); }
-.midword-game-score > span { display: block; height: 100%; background: var(--midword-accent); }
 .midword-dialog {
   display: flex; width: min(100%, 680px); max-height: 90dvh; padding: 0; flex-direction: column;
   color: var(--midword-text); background: var(--midword-background);
@@ -155,9 +158,7 @@ html[data-theme="dark"] .midword-home-card__identity img { filter: brightness(0)
 @keyframes midword-celebrate { 45% { transform: translateY(-5px) scale(1.06); } }
 @media (max-width: 680px) {
   .midword-page > .site-footer { display: none; }
-  .midword-header { padding-inline: 12px; }
   .midword-main { gap: 18px; }
-  .midword-header nav { gap: 0; }
   .midword-controls { padding-bottom: env(safe-area-inset-bottom); }
   .midword-dialog { max-height: 94dvh; }
 }

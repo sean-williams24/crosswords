@@ -8,6 +8,7 @@ import { BackwordOnboardingCards } from "../features/backword/components/Backwor
 import { BackwordStats } from "../features/backword/components/BackwordStats";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { Footer } from "../components/Footer";
+import { GameSubmitButton } from "../components/GameSubmitButton";
 import { InfoTooltip } from "../components/InfoTooltip";
 import { isCompletedOnReleaseDate, isLocalDateString, localDateString } from "../features/backword/date";
 import {
@@ -455,9 +456,7 @@ export function BackwordPage() {
               <div aria-label={`${stats.rollingScore} of 70 Backword points`} className="bw-game-score bw-game-score--keyboard-width">
                 <span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} />
               </div>
-              {canSubmit ? (
-                <button className="bw-submit" onClick={handleSubmit} type="button">Submit</button>
-              ) : null}
+              <GameSubmitButton onSubmit={handleSubmit} visible={canSubmit} />
               <BackwordKeyboard
                 disabled={progress.outcome !== "inProgress"}
                 onDelete={deleteLetter}

@@ -5,6 +5,7 @@ import { localDateOffset, localDateString } from "../features/backword/date";
 import { createMidwordStorage } from "../features/midword/storage";
 import { emptyProgress, submitGuess, type MidwordPuzzle } from "../features/midword/engine";
 import { MidwordPage } from "./MidwordPage";
+import { readFileSync } from "node:fs";
 
 const mocks = vi.hoisted(() => ({
   fetch: vi.fn(), track: vi.fn(), queue: vi.fn(), migrate: vi.fn().mockResolvedValue(undefined),
@@ -51,6 +52,95 @@ describe("Midword browser gameplay", () => {
     expect(screen.getByLabelText("5 attempts remaining")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Submit" })).not.toBeInTheDocument();
   });
+  it("keeps site navigation after the board and controls before and after the first guess", async () => {
+    const user = userEvent.setup(); renderGame();
+    const board = await screen.findByRole("region", { name: "Midword board" });
+    const main = board.closest("main");
+    const shell = main?.parentElement;
+    const footer = screen.getByRole("navigation", { name: "Footer" }).closest("footer");
+    expect(screen.queryByRole("region", { name: "Previous guesses" })).not.toBeInTheDocument();
+    expect(shell?.nextElementSibling).toBe(footer);
+    expect(shell?.parentElement).toHaveClass("midword-page");
+    expect(footer).toContainElement(screen.getByRole("link", { name: "Midword" }));
+    await typeGuess(user, "PAGE");
+    expect(main).toContainElement(screen.getByRole("region", { name: "Previous guesses" }));
+    expect(shell?.nextElementSibling).toBe(footer);
+    expect(main).not.toContainElement(screen.getByRole("group", { name: "Midword keyboard" }));
+  });
+  it("lets a long guess history and Submit extend the page instead of scrolling behind the keyboard", async () => {
+    const style = document.createElement("style");
+    style.textContent = readFileSync("src/features/midword/midword.css", "utf8");
+    document.head.append(style);
+    try {
+      createMidwordStorage().saveProgress({ ...emptyProgress(localDateString()), guesses: ["PAGE", "READ", "LINE", "BOOK"] });
+      const user = userEvent.setup(); renderGame();
+      const history = await screen.findByRole("region", { name: "Previous guesses" });
+      await user.keyboard("WORD");
+      expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
+      expect(within(history).getAllByRole("group")).toHaveLength(4);
+      const main = history.closest("main")!;
+      const shell = main.parentElement!;
+      expect(getComputedStyle(main).overflow).toBe("visible");
+      expect(getComputedStyle(main).flexShrink).toBe("0");
+      expect(getComputedStyle(shell).overflow).toBe("visible");
+      expect(getComputedStyle(shell.parentElement!).height).toBe("auto");
+      expect(shell.lastElementChild).toContainElement(screen.getByRole("group", { name: "Midword keyboard" }));
+    } finally {
+      style.remove();
+    }
+  });
+  it("uses Backword's centered large logo layout and header action placement", async () => {
+    renderGame();
+    const logo = await screen.findByRole("img", { name: "Midword" });
+    expect(logo).toHaveClass("bw-logo", "bw-logo--large");
+    expect(logo.parentElement).toHaveClass("bw-logo-lockup", "bw-logo-lockup--large");
+    expect(logo.closest("header")).toHaveClass("bw-game-header", "bw-game-header--offset");
+    expect(screen.getByRole("navigation", { name: "Midword actions" })).toHaveClass("bw-game-actions--top", "bw-game-actions--logo-header");
+  });
+  it("uses the shared keyboard-width rating bar with a visible zero-score fill and no Today label", async () => {
+    renderGame();
+    const bar = await screen.findByLabelText("0 of 70 Midword points");
+    expect(bar).toHaveClass("bw-game-score", "bw-game-score--keyboard-width");
+    expect(bar.firstElementChild).toHaveStyle({ clipPath: "inset(0 99% 0 0)" });
+    expect(screen.queryByText(/^Today:/)).not.toBeInTheDocument();
+    expect(bar.parentElement).toContainElement(screen.getByRole("group", { name: "Midword keyboard" }));
+  });
+  it("fills the rating bar from earned history without awarding points for today's wrong guesses", async () => {
+    const yesterday = localDateOffset(localDateString(), -1);
+    createMidwordStorage().saveProgress({ ...emptyProgress(yesterday), guesses: ["PAGE", "WORD", "NOTE"],
+      outcome: "won", completedAt: new Date(`${yesterday}T12:00:00`).toISOString(), releaseDateScore: 3 });
+    const user = userEvent.setup(); renderGame();
+    const bar = await screen.findByLabelText("3 of 70 Midword points");
+    expect(bar.firstElementChild).toHaveStyle({ clipPath: `inset(0 ${100 - 3 / 70 * 100}% 0 0)` });
+    await typeGuess(user, "PAGE");
+    expect(screen.queryByText(/^Today:/)).not.toBeInTheDocument();
+    expect(bar).toHaveAttribute("aria-label", "3 of 70 Midword points");
+  });
+  it("places the rating bar directly above the keyboard or Submit as input is filled and cleared", async () => {
+    const user = userEvent.setup(); renderGame();
+    const bar = await screen.findByLabelText("0 of 70 Midword points");
+    await typeGuess(user, "PAGE");
+    const history = screen.getByRole("region", { name: "Previous guesses" });
+    const keyboard = screen.getByRole("group", { name: "Midword keyboard" });
+    const transition = bar.nextElementSibling;
+    expect(transition).toHaveClass("game-submit");
+    expect(transition).not.toHaveClass("game-submit--visible");
+    expect(transition?.nextElementSibling).toBe(keyboard);
+    await user.keyboard("WORD");
+    const submit = screen.getByRole("button", { name: "Submit" });
+    expect(bar.nextElementSibling).toBe(transition);
+    expect(transition).toHaveClass("game-submit--visible");
+    expect(transition).toContainElement(submit);
+    expect(transition?.nextElementSibling).toBe(keyboard);
+    expect(history).toBeInTheDocument();
+    expect(bar.closest("footer")?.previousElementSibling).toContainElement(history);
+    expect(screen.queryByText(/^Today:/)).not.toBeInTheDocument();
+    await user.keyboard("{Backspace}");
+    expect(screen.queryByRole("button", { name: "Submit" })).not.toBeInTheDocument();
+    expect(bar.nextElementSibling).toBe(transition);
+    expect(transition).not.toHaveClass("game-submit--visible");
+    expect(submit).toBeDisabled();
+  });
   it("accepts the on-screen keyboard, reveals completion and saves a release-day score", async () => {
     const user = userEvent.setup(); renderGame();
     const keyboard = await screen.findByRole("group", { name: "Midword keyboard" });
@@ -72,10 +162,17 @@ describe("Midword browser gameplay", () => {
     expect(screen.getByLabelText("5 attempts remaining")).toBeInTheDocument();
     await user.keyboard("{Backspace}{Backspace}{Backspace}{Backspace}");
     await typeGuess(user, "PAGE");
-    expect(screen.getByLabelText("PAGE, incorrect")).toBeInTheDocument();
+    const history = screen.getByRole("region", { name: "Previous guesses" });
+    const previousGuess = within(history).getByRole("group", { name: "PAGE, incorrect" });
+    expect(previousGuess.children).toHaveLength(4);
+    expect(history).toHaveClass("midword-guesses");
+    const answerInput = screen.getByRole("group", { name: "Middle word, 0 of 4 letters entered" });
+    expect(answerInput.children).toHaveLength(4);
+    expect(history).not.toContainElement(answerInput);
     await typeGuess(user, "PAGE");
     expect(screen.getByRole("alert")).toHaveTextContent("Already guessed");
     expect(screen.getByLabelText("4 attempts remaining")).toBeInTheDocument();
+    expect(within(history).getAllByRole("group")).toHaveLength(1);
     expect(createMidwordStorage().loadProgress(localDateString()).guesses).toEqual(["PAGE"]);
   });
   it("fails on the fifth wrong word and restores that terminal result on reload", async () => {

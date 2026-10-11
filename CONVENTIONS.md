@@ -359,10 +359,25 @@ five-attempt rules as iOS. Wrong guesses get whole-word feedback only.
 
 The browser uses the current native Midword colour assets and wordmarks,
 including appearance-specific backgrounds, borders, and Home-card foregrounds.
-Its header and keyboard remain pinned while board and guess history scroll.
+The header, board, guess history, progress bar, and keyboard stay in normal
+document flow and scroll together with the viewport. The page fills at least
+the viewport height, including the site footer on wider screens, and grows
+with its content rather than scrolling the board behind the keyboard. The board
+has 24px of bottom padding above the rating bar, with another 12px above the
+bar inside the controls. The bar sits directly above the keyboard or Submit
+button when shown, moving up and down as the button appears and disappears.
+Long guess histories extend the page without shrinking their rows. Mobile
+retains its hidden site footer.
+The gameplay wordmark shares Backword's centered large-logo dimensions,
+narrow-screen sizing, header offset, and action placement in both appearances.
+Above the keyboard, Midword uses the shared rounded, keyboard-width rating
+bar and masked rating gradient, including the minimum visible fill at zero.
+The gameplay rating bar has no Today score label.
 Completion reveals the primary answer and both compounds; animation is removed
 when Reduce Motion is requested. Instructions, statistics, navigation, sharing,
 and Pro entry points use the established web game controls.
+Previous-guess cells cap at 48px with smaller lettering; the active answer
+cells retain their 56px cap. Both rows shrink to fit narrow viewports.
 
 Guesses are validated offline against a checked-in 3–6-letter wordfreq list,
 with reviewed name and explicit profanity exclusions. Approved answers bypass
@@ -548,6 +563,17 @@ it scrolls away with the page content. The open navigation drawer remains a
 fixed, document-level overlay.
 
 ---
+
+## Website Submit Button Transitions
+
+Backword and Midword share a Submit control that expands and fades over 240ms
+when the answer input becomes full, and collapses when it is cleared or edited.
+The control stays mounted so either direction can reverse smoothly during rapid
+input. Its collapsed height is zero, keeping the rating bar directly above the
+keyboard; the bar moves with the button's height. Hidden controls are disabled,
+inert, and removed from the accessibility tree immediately, including during
+the exit transition. Reduce Motion removes the transition. Crossword and
+Anagram retain their automatic answer checking.
 
 ## Website Backword Parity
 

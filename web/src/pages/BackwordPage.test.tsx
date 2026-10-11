@@ -137,6 +137,31 @@ describe("Backword browser game", () => {
     expect(screen.queryByRole("button", { name: "Share result" })).not.toBeInTheDocument();
   });
 
+  it("expands and collapses the shared Submit control above the keyboard as input changes", async () => {
+    const user = userEvent.setup();
+    renderGame();
+    const bar = await screen.findByLabelText("0 of 70 Backword points");
+    const transition = bar.nextElementSibling;
+    const keyboard = screen.getByRole("group", { name: "Backword keyboard" });
+    expect(transition).toHaveClass("game-submit");
+    expect(transition?.nextElementSibling).toBe(keyboard);
+    expect(screen.queryByRole("button", { name: "Submit" })).not.toBeInTheDocument();
+
+    await user.keyboard("CASTLE");
+    const submit = screen.getByRole("button", { name: "Submit" });
+    expect(transition).toHaveClass("game-submit--visible");
+    expect(transition).toContainElement(submit);
+    await user.keyboard("{Backspace}");
+    expect(transition).not.toHaveClass("game-submit--visible");
+    expect(submit).toBeDisabled();
+    expect(screen.queryByRole("button", { name: "Submit" })).not.toBeInTheDocument();
+
+    await user.keyboard("E");
+    expect(screen.getByRole("button", { name: "Submit" })).toBe(submit);
+    await user.click(submit);
+    expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
+  });
+
   it("uses the iOS semantic treatment for Backword letter cells", async () => {
     const { container } = renderGame();
 

@@ -22,11 +22,13 @@ describe("Footer", () => {
     expect(within(footer).getByRole("link", { name: "Pro Crossword" })).toHaveAttribute("href", "/pro?return_to=%2Fweekly-crossword");
     expect(within(footer).getByRole("link", { name: "Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive");
     expect(within(footer).getByRole("link", { name: "Anagram" })).toHaveAttribute("href", "/anagram");
+    expect(within(footer).getByRole("link", { name: "Midword" })).toHaveAttribute("href", "/midword");
 
     auth.entitlement = { isPro: true, expiresAt: null };
     rerender(<MemoryRouter><Footer /></MemoryRouter>);
 
     expect(within(footer).getByRole("link", { name: "Pro Crossword" })).toHaveAttribute("href", "/weekly-crossword");
     expect(within(footer).getByRole("link", { name: "Archive" })).toHaveAttribute("href", "/archive");
+    expect(within(footer).getByRole("link", { name: "Midword" })).toHaveAttribute("href", "/midword");
   });
 });
