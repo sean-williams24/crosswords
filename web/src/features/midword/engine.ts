@@ -57,7 +57,7 @@ export function submitGuess(progress: MidwordProgress, puzzle: MidwordPuzzle, in
     || guess.length !== puzzle.answer.length || !/^[A-Z]+$/.test(guess)) return unchanged(null);
   if (progress.guesses.includes(guess)) return unchanged("Already guessed");
   const won = accepts(puzzle, guess);
-  if (!won && (new Set(guess).size === 1 || !isValidWord(guess))) return unchanged("Not in the dictionary");
+  if (!won && (new Set(guess).size === 1 || !isValidWord(guess))) return unchanged("Not a valid word");
   const guesses = [...progress.guesses, guess];
   const completedAt = won || guesses.length === 5 ? now.toISOString() : null;
   return { progress: { ...progress, guesses, outcome: won ? "won" : completedAt ? "failed" : "inProgress", completedAt, updatedAt: now.toISOString(),

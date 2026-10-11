@@ -49,7 +49,9 @@ function MidwordGame({ date }: { date: string }) {
   const [puzzle, setPuzzle] = useState<MidwordPuzzle | null>(null);
   const [progress, setProgress] = useState(() => storage.loadProgress(date));
   const [input, setInput] = useState("");
-  const [message, setMessage] = useState("");
+  const [feedback, setFeedback] = useState<{ message: string } | null>(null);
+  const [inputError, setInputError] = useState(false);
+  const message = feedback?.message ?? "";
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [offline, setOffline] = useState(false);
@@ -59,6 +61,17 @@ function MidwordGame({ date }: { date: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [now, setNow] = useState(new Date());
   const completionPresented = useRef(false);
+
+  useEffect(() => {
+    setInputError(feedback !== null);
+    if (!feedback) return;
+    const shakeTimer = window.setTimeout(() => setInputError(false), 500);
+    const messageTimer = window.setTimeout(() => setFeedback(null), 2_000);
+    return () => {
+      window.clearTimeout(shakeTimer);
+      window.clearTimeout(messageTimer);
+    };
+  }, [feedback]);
 
   useEffect(() => {
     let active = true;
@@ -107,7 +120,7 @@ function MidwordGame({ date }: { date: string }) {
 
   useEffect(() => {
     if (loading || !puzzle || !progress.completedAt || completionPresented.current) return;
-    completionPresented.current = true; setInput(""); setSheet("completion");
+    completionPresented.current = true; setInput(""); setFeedback(null); setSheet("completion");
   }, [loading, progress.completedAt, puzzle]);
   useEffect(() => {
     if (sheet !== "completion") return;
@@ -123,17 +136,17 @@ function MidwordGame({ date }: { date: string }) {
   const canSubmit = !!puzzle && !progress.completedAt && input.length === puzzle.answer.length;
   const enterLetter = useCallback((letter: string) => {
     if (!puzzle || progress.completedAt || !/^[a-z]$/i.test(letter)) return;
-    setInput((current) => (current + letter.toUpperCase()).slice(0, puzzle.answer.length)); setMessage("");
+    setInput((current) => (current + letter.toUpperCase()).slice(0, puzzle.answer.length)); setFeedback(null);
   }, [progress.completedAt, puzzle]);
   const deleteLetter = useCallback(() => {
-    if (!progress.completedAt) { setInput((current) => current.slice(0, -1)); setMessage(""); }
+    if (!progress.completedAt) { setInput((current) => current.slice(0, -1)); setFeedback(null); }
   }, [progress.completedAt]);
   const submit = useCallback(() => {
     if (!puzzle) return;
     const result = submitGuess(progress, puzzle, input, (word) => validMidwordGuesses.has(word));
-    if (result.message) { setMessage(result.message); navigator.vibrate?.([30, 50, 80]); }
+    if (result.message) { setFeedback({ message: result.message }); navigator.vibrate?.([30, 50, 80]); }
     if (result.progress === progress) return;
-    storage.saveProgress(result.progress); setProgress(result.progress); setInput(""); setMessage("");
+    storage.saveProgress(result.progress); setProgress(result.progress); setInput(""); setFeedback(null);
     if (!progress.guesses.length) track(gameStarted("midword"));
     if (result.progress.completedAt) track(gameCompleted("midword", result.progress.outcome === "won" ? "won" : "failed", {
       releaseDay: isCompletedOnReleaseDate(date, result.progress.completedAt), score: result.progress.releaseDateScore, durationSeconds: null
@@ -165,7 +178,7 @@ function MidwordGame({ date }: { date: string }) {
             <p className="midword-issue">PUZZLE #{puzzle.puzzleNumber}</p>
             {offline ? <p className="midword-note">Playing saved game offline</p> : null}
             {syncError ? <p className="midword-note">{syncError}</p> : null}
-            <MidwordBoard input={input} message={message} progress={progress} puzzle={puzzle} />
+            <MidwordBoard input={input} inputError={inputError} message={message} progress={progress} puzzle={puzzle} />
             {shareResult && sheet === null ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
           </> : null}
       </main>

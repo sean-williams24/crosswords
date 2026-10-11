@@ -2,15 +2,15 @@ import { accepts, type MidwordProgress, type MidwordPuzzle } from "./engine";
 import { MidwordLetterRow } from "./MidwordLetterRow";
 import { GameInputMessage } from "../../components/GameInputMessage";
 
-export function MidwordBoard({ puzzle, progress, input, message }: {
-  puzzle: MidwordPuzzle; progress: MidwordProgress; input: string; message: string;
+export function MidwordBoard({ puzzle, progress, input, inputError = false, message }: {
+  puzzle: MidwordPuzzle; progress: MidwordProgress; input: string; inputError?: boolean; message: string;
 }) {
   const won = progress.outcome === "won";
   return <>
     <p className="midword-explainer">Find the link that ends the top word and starts the bottom word to make 2 new words</p>
     <section aria-label="Midword board" className="midword-board">
       <p className="midword-prompt midword-prompt--first">{puzzle.firstWord}</p>
-      <MidwordLetterRow active={!progress.completedAt} correct={won} label={`Middle word, ${won ? puzzle.answer.length : input.length} of ${puzzle.answer.length} letters entered`}
+      <MidwordLetterRow active={!progress.completedAt} correct={won} inputError={inputError} label={`Middle word, ${won ? puzzle.answer.length : input.length} of ${puzzle.answer.length} letters entered`}
         length={puzzle.answer.length} word={won ? puzzle.answer : input} />
       <p className="midword-prompt midword-prompt--second">{puzzle.secondWord}</p>
     </section>

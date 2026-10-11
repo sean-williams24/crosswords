@@ -736,7 +736,8 @@ a {
   animation: bw-pulse-border 1.2s ease-in-out infinite;
 }
 
-.bw-letter-row.is-shaking { animation: bw-shake 420ms ease-in-out; }
+.bw-letter-row.is-shaking,
+.midword-letter-row.is-shaking { animation: bw-shake 420ms ease-in-out; }
 
 .bw-guess-history {
   display: flex;

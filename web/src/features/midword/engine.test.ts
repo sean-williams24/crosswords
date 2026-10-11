@@ -29,7 +29,8 @@ describe("Midword rules and statistics", () => {
       expect(submitGuess(progress, puzzle, word, () => false, now).progress).toBe(progress);
     }
     expect(submitGuess(progress, puzzle, "PAGE", () => true).message).toBe("Already guessed");
-    expect(submitGuess(progress, puzzle, "AAAA", () => true).message).toBe("Not in the dictionary");
+    expect(submitGuess(progress, puzzle, "AAAA", () => true).message).toBe("Not a valid word");
+    expect(submitGuess(progress, puzzle, "QWER", () => false).message).toBe("Not a valid word");
   });
   it("always accepts approved answers and alternatives independently of the dictionary", () => {
     const alternativePuzzle = { ...puzzle, alternatives: ["LINK"] };

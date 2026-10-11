@@ -583,8 +583,13 @@ exit so its text fades with its height instead of disappearing immediately.
 Hidden labels are excluded from the accessibility tree; visible labels remain
 assertive alerts. The message is grouped with its preceding input or attempts
 indicator, so a collapsed label leaves no extra flex gap. Reduce Motion removes
-the transition. Validation, guess counts, and existing dismissal timing stay
-unchanged; Midword's duplicate-guess label uses the same transition.
+the transition. Midword matches Backword's invalid-word feedback: the input
+row uses the shared 420ms horizontal shake, its shake state clears after 500ms,
+and the red, bold `Not a valid word` alert automatically hides after two seconds.
+Midword's duplicate-guess label uses the same feedback. Editing or an accepted
+submission clears Midword feedback immediately, and repeated rejections restart
+the dismissal timers; clearing feedback or leaving the game cancels them.
+Validation and guess counts stay unchanged. Reduce Motion also skips the shake.
 
 ## Website Backword Parity
 

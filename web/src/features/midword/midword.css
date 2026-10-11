@@ -85,7 +85,7 @@ html[data-theme="dark"] .midword-header h1::after {
 .midword-guesses .midword-letter-row > span { font-size: clamp(16px, 4.5vw, 22px); }
 .midword-attempt-status { display: flex; max-width: 100%; flex-direction: column; align-items: center; }
 .midword-message, .midword-note { margin: 0; font-size: 14px; text-align: center; }
-.midword-message { margin-top: 22px; }
+.midword-message { margin-top: 22px; color: var(--bw-error, #ff6b6b); font-weight: 700; }
 .midword-controls { padding-top: 12px; background: var(--midword-background); }
 .midword-controls .bw-key { color: var(--midword-text); background: color-mix(in srgb, var(--midword-text) 12%, var(--midword-background)); }
 .midword-controls .bw-key-delete, .midword-page .bw-submit, .midword-page .bw-primary-button { color: var(--midword-on-accent); background: var(--midword-accent); }

@@ -159,7 +159,8 @@ describe("Midword browser gameplay", () => {
     const user = userEvent.setup(); renderGame(); await screen.findByRole("region", { name: "Midword board" });
     await typeGuess(user, "ZZZZ");
     const label = screen.getByRole("alert");
-    expect(label).toHaveTextContent("Not in the dictionary");
+    expect(label).toHaveTextContent("Not a valid word");
+    expect(screen.getByLabelText("Middle word, 4 of 4 letters entered")).toHaveClass("is-shaking");
     const transition = label.closest(".game-input-message");
     expect(transition).toHaveClass("game-input-message--visible");
     expect(transition?.parentElement).toContainElement(screen.getByLabelText("5 attempts remaining"));
@@ -167,7 +168,8 @@ describe("Midword browser gameplay", () => {
     await user.keyboard("{Backspace}");
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     expect(transition).not.toHaveClass("game-input-message--visible");
-    expect(label).toHaveTextContent("Not in the dictionary");
+    expect(label).toHaveTextContent("Not a valid word");
+    expect(screen.getByLabelText("Middle word, 3 of 4 letters entered")).not.toHaveClass("is-shaking");
     await user.keyboard("{Backspace}{Backspace}{Backspace}");
     await typeGuess(user, "PAGE");
     const history = screen.getByRole("region", { name: "Previous guesses" });
@@ -184,6 +186,79 @@ describe("Midword browser gameplay", () => {
     expect(screen.getByLabelText("4 attempts remaining")).toBeInTheDocument();
     expect(within(history).getAllByRole("group")).toHaveLength(1);
     expect(createMidwordStorage().loadProgress(localDateString()).guesses).toEqual(["PAGE"]);
+  });
+  it("matches Backword's shake and red invalid-word label, hiding it after two seconds without consuming a guess", async () => {
+    renderGame(); await screen.findByRole("region", { name: "Midword board" });
+    vi.useFakeTimers();
+    try {
+      for (const key of ["Q", "W", "E", "R", "Enter"]) fireEvent.keyDown(window, { key });
+      const input = screen.getByLabelText("Middle word, 4 of 4 letters entered");
+      const label = screen.getByRole("alert");
+      expect(input).toHaveClass("is-shaking");
+      expect(label).toHaveTextContent("Not a valid word");
+      expect(screen.getByLabelText("5 attempts remaining")).toBeInTheDocument();
+      expect(createMidwordStorage().loadProgress(localDateString()).guesses).toEqual([]);
+      expect(screen.queryByRole("region", { name: "Previous guesses" })).not.toBeInTheDocument();
+
+      act(() => vi.advanceTimersByTime(500));
+      expect(input).not.toHaveClass("is-shaking");
+      expect(screen.getByRole("alert")).toBe(label);
+      act(() => vi.advanceTimersByTime(1499));
+      expect(screen.getByRole("alert")).toBe(label);
+      act(() => vi.advanceTimersByTime(1));
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      expect(label.closest(".game-input-message")).not.toHaveClass("game-input-message--visible");
+      expect(input).toHaveTextContent("QWER");
+      expect(screen.getByRole("button", { name: "Submit" })).toBeEnabled();
+
+      const styles = readFileSync("src/styles.css", "utf8");
+      expect(styles).toMatch(/\.bw-letter-row\.is-shaking,\s*\.midword-letter-row\.is-shaking\s*\{\s*animation: bw-shake 420ms ease-in-out;/);
+      const midwordStyles = readFileSync("src/features/midword/midword.css", "utf8");
+      expect(midwordStyles).toMatch(/\.midword-message\s*\{[^}]*color: var\(--bw-error, #ff6b6b\);[^}]*font-weight: 700;/);
+      expect(midwordStyles).toMatch(/@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.midword-page \*, \.midword-dialog \*\s*\{[^}]*animation: none !important;/);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it("restarts invalid-word feedback timers on repeated submission", async () => {
+    renderGame(); await screen.findByRole("region", { name: "Midword board" });
+    vi.useFakeTimers();
+    try {
+      for (const key of ["Z", "Z", "Z", "Z", "Enter"]) fireEvent.keyDown(window, { key });
+      act(() => vi.advanceTimersByTime(1000));
+      const input = screen.getByLabelText("Middle word, 4 of 4 letters entered");
+      expect(input).not.toHaveClass("is-shaking");
+      fireEvent.keyDown(window, { key: "Enter" });
+      expect(input).toHaveClass("is-shaking");
+      act(() => vi.advanceTimersByTime(1000));
+      expect(screen.getByRole("alert")).toHaveTextContent("Not a valid word");
+      expect(input).not.toHaveClass("is-shaking");
+      act(() => vi.advanceTimersByTime(999));
+      expect(screen.getByRole("alert")).toBeInTheDocument();
+      act(() => vi.advanceTimersByTime(1));
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      expect(screen.getByLabelText("5 attempts remaining")).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it("cancels feedback timers when input is edited or the game is unmounted", async () => {
+    const view = renderGame(); await screen.findByRole("region", { name: "Midword board" });
+    vi.useFakeTimers();
+    try {
+      for (const key of ["Z", "Z", "Z", "Z", "Enter"]) fireEvent.keyDown(window, { key });
+      expect(vi.getTimerCount()).toBe(2);
+      fireEvent.keyDown(window, { key: "Backspace" });
+      expect(vi.getTimerCount()).toBe(0);
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      expect(screen.getByLabelText("Middle word, 3 of 4 letters entered")).not.toHaveClass("is-shaking");
+      for (const key of ["Z", "Enter"]) fireEvent.keyDown(window, { key });
+      expect(vi.getTimerCount()).toBe(2);
+      view.unmount();
+      expect(vi.getTimerCount()).toBe(0);
+    } finally {
+      vi.useRealTimers();
+    }
   });
   it("fails on the fifth wrong word and restores that terminal result on reload", async () => {
     const user = userEvent.setup(); const view = renderGame(); await screen.findByRole("region", { name: "Midword board" });
