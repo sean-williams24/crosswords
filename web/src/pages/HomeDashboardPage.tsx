@@ -7,6 +7,8 @@ import { createBackwordStorage } from "../features/backword/storage";
 import { createAnagramStorage } from "../features/anagram/storage";
 import { anagramStats } from "../features/anagram/engine";
 import { AnagramHomeCard } from "../features/anagram/AnagramHomeCard";
+import { createMidwordStorage } from "../features/midword/storage";
+import { MidwordHomeCard } from "../features/midword/MidwordHomeCard";
 import { backwordDashboardScore, backwordDashboardStatus } from "../features/home/backwordStatus";
 import { HomeProfileRatingLink } from "../features/home/HomeProfileRatingLink";
 import { crosswordDashboardStatus, weeklyCrosswordDashboardStatus } from "../features/crossword/engine";
@@ -21,7 +23,7 @@ import { useAuth } from "../features/auth/AuthProvider";
 import { HomeDashboardLoadingCard } from "../features/home/HomeDashboardLoadingCard";
 import { HomeArchiveLink } from "../features/home/HomeArchiveLink";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
-import { anagramCloudRecord, backwordCloudRecord, crosswordCloudRecord, refreshAccountProgress } from "../features/sync/progressSync";
+import { anagramCloudRecord, midwordCloudRecord, backwordCloudRecord, crosswordCloudRecord, refreshAccountProgress } from "../features/sync/progressSync";
 
 type HomeSyncUser = { id: string; last_sign_in_at?: string };
 
@@ -44,6 +46,7 @@ function refreshHomeProgress(user: HomeSyncUser, key: string) {
   if (existing) return existing;
   const backwordStorage = createBackwordStorage(window.localStorage, { userId: user.id });
   const anagramStorage = createAnagramStorage(window.localStorage, { userId: user.id });
+  const midwordStorage = createMidwordStorage(window.localStorage, { userId: user.id });
   const dailyCrosswordStorage = createCrosswordStorage(window.localStorage, { userId: user.id });
   const weeklyCrosswordStorage = createCrosswordStorage(window.localStorage, { kind: "weekly", userId: user.id });
 
@@ -52,6 +55,8 @@ function refreshHomeProgress(user: HomeSyncUser, key: string) {
       (record) => backwordStorage.replaceProgress(record.payload)),
     refreshAccountProgress(user.id, "anagram", anagramStorage.loadAllProgress().map(anagramCloudRecord),
       (record) => anagramStorage.replaceProgress(record.payload)),
+    refreshAccountProgress(user.id, "midword", midwordStorage.loadAllProgress().map(midwordCloudRecord),
+      (record) => midwordStorage.replaceProgress(record.payload)),
     refreshAccountProgress(user.id, "daily_crossword", dailyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
       (record) => dailyCrosswordStorage.replaceProgress(record.payload)),
     refreshAccountProgress(user.id, "weekly_crossword", weeklyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress, "weekly")),
@@ -109,6 +114,7 @@ export function HomeDashboardPage() {
   const anagramStatus = anagramProgress?.outcome === "solved" ? { label: "Solved", tone: "solved" as const }
     : anagramProgress?.outcome === "gave_up" ? { label: "Gave up", tone: "failed" as const }
     : anagramProgress ? { label: "In Progress", tone: "progress" as const } : { label: "New", tone: "new" as const };
+  const midwordProgress = useMemo(() => createMidwordStorage(window.localStorage, { userId: user?.id }).loadProgress(today), [syncRevision, today, user?.id]);
   const crosswordStatus = useMemo(() => {
     const storage = createCrosswordStorage(window.localStorage, { userId: user?.id });
     const now = new Date();
@@ -127,6 +133,7 @@ export function HomeDashboardPage() {
     return buildPlayerProfileRating({
       backword: backwordStorage.loadAllProgress().map(backwordCloudRecord),
       anagram: anagramStorage.loadAllProgress().map(anagramCloudRecord),
+      midword: createMidwordStorage(window.localStorage, { userId: user?.id }).loadAllProgress().map(midwordCloudRecord),
       dailyCrossword: dailyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress)),
       weeklyCrossword: weeklyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress))
     }, entitlement?.isPro === true);
@@ -155,6 +162,7 @@ export function HomeDashboardPage() {
               <>
                 <HomeDashboardLoadingCard variant="crossword" />
                 <HomeDashboardLoadingCard variant="backword" />
+                <HomeDashboardLoadingCard variant="crossword" />
                 <HomeDashboardLoadingCard variant="crossword" />
                 <HomeDashboardLoadingCard variant="weekly" />
               </>
@@ -192,6 +200,10 @@ export function HomeDashboardPage() {
                     status={anagramStatus} streak={anagramStreak} />
                   <HomeArchiveLink ariaLabel="Anagram Archive" to="/archive?game=anagram" />
                 </div> : null}
+                <div className="home-dashboard__game">
+                  <MidwordHomeCard issueNumber={issueNumbers.midword ?? null} progress={midwordProgress} />
+                  <HomeArchiveLink ariaLabel="Midword Archive" to="/archive?game=midword" />
+                </div>
                 <div className="home-dashboard__game">
                   {entitlement?.isPro ? (
                     <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/weekly-crossword">

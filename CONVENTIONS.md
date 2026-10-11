@@ -40,7 +40,7 @@ statistics, streaks, and ratings are derived from active progress rather than
 merged as aggregate counters. Local saves always complete first and cloud writes
 are retried on later account syncs.
 
-The web Home screen reconciles all four account-scoped game caches with cloud
+The web Home screen reconciles all five account-scoped game caches with cloud
 progress whenever a signed-in player arrives there. Each successful game refresh
 is retained even if another game is temporarily unavailable, and the Home cards
 and rating are recalculated after the refresh batch settles. During that refresh,
@@ -349,6 +349,42 @@ Anagram from its first published date, Midword from 2026-10-01. Once both
 have fourteen releases, the overall maximum is 280 free or 290 Pro. Both
 score columns remain present in the profile breakdown.
 
+## Website Midword Parity
+
+Midword is playable at `/midword`, with immutable dated links at
+`/midword/:date`. Earlier releases require the existing Pro archive gate;
+invalid and future dates never fetch puzzle content. The browser reads the
+same `midword_puzzles` rows, exact answer lengths, approved alternatives, and
+five-attempt rules as iOS. Wrong guesses get whole-word feedback only.
+
+The browser uses the current native Midword colour assets and wordmarks,
+including appearance-specific backgrounds, borders, and Home-card foregrounds.
+Its header and keyboard remain pinned while board and guess history scroll.
+Completion reveals the primary answer and both compounds; animation is removed
+when Reduce Motion is requested. Instructions, statistics, navigation, sharing,
+and Pro entry points use the established web game controls.
+
+Guesses are validated offline against a checked-in 3–6-letter wordfreq list,
+with reviewed name and explicit profanity exclusions. Approved answers bypass
+that list. `web/scripts/generate_midword_guesses.py` rebuilds the attributed
+CC BY-SA asset using the Backend virtual environment.
+
+Browser Midword progress uses the native **cloud** schema (`schemaVersion: 1`,
+`outcome`, and ISO timestamps), rather than Swift's device-local `won` field.
+An omitted `completedAt` normalises to `null`. Local saves precede queued
+account uploads; guest ownership protects Midword-only migrations too. Conflicts
+select one whole guess list using native ranking (won, terminal, fewer guesses
+for wins, more guesses otherwise, then latest update), retaining the maximum
+release-day score separately. Account/date changes remount gameplay, and pending
+loads and syncs cannot update the new account's displayed game.
+
+Home refreshes all five game caches and adds Midword before Pro Crossword in
+its responsive game row. Local Player Profile and completion sharing include
+Midword immediately, before cloud upload completes. Its share payload contains
+only aggregate result metadata and the dated link. Statistics exclude archive
+solves and show only release-day wins, matching native streaks, distribution,
+and the post-launch 14-day history.
+
 ## Backword Onboarding
 
 New Backword players receive five instructions inline, beneath the revealed
@@ -544,13 +580,13 @@ Quick Crossword progress to present card status; non-Pro weekly and archive
 entry points direct players to the web Pro page rather than a modal or the iOS
 App Store. The web
 dashboard reads the released Word of the Day row for the browser's local
-calendar date. During initial loading, all four game cards remain non-interactive
+calendar date. During initial loading, all five game cards remain non-interactive
 outlined skeletons until account startup and the WOTD request settle. When the
 row is unavailable, its place becomes an informational unavailable card while
-the four playable game cards remain available.
+the five playable game cards remain available.
 
-On wide browser dashboards, Backword, Quick Crossword, Anagram, and the weekly
-Pro Crossword appear in that order in one four-column row above the full-width Word of the
+On wide browser dashboards, Backword, Quick Crossword, Anagram, Midword, and the weekly
+Pro Crossword appear in that order in one five-column row above the full-width Word of the
 Day panel. This content uses a 1440-point desktop cap so the cards occupy more
 of a wide viewport. The row becomes two columns at 1200 points and below, then
 one column on mobile. Each game keeps its archive action directly beneath its card,

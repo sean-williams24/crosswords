@@ -1573,7 +1573,7 @@ body {
   letter-spacing: 0.3em;
 }
 .home-dashboard__daily-layout { display: grid; gap: 28px; }
-.home-dashboard__games-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: stretch; gap: 20px; }
+.home-dashboard__games-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: stretch; gap: 20px; }
 .home-dashboard__game { display: grid; grid-template-rows: 1fr auto; gap: 8px; }
 .home-archive-link {
   display: flex;

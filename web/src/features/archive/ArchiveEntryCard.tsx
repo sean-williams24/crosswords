@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import type { MidwordPuzzle } from "../midword/engine";
+import { midwordStatus } from "../midword/engine";
+import { createMidwordStorage } from "../midword/storage";
 import type { AnagramPuzzle } from "../anagram/engine";
 import { createAnagramStorage } from "../anagram/storage";
 import { backwordDashboardStatus } from "../home/backwordStatus";
@@ -9,11 +12,11 @@ import type { DashboardStatus } from "../home/backwordStatus";
 import type { BackwordWord } from "../backword/types";
 import type { CrosswordDashboardStatus } from "../crossword/types";
 
-export type ArchiveGameType = "backword" | "daily" | "weekly" | "anagram";
+export type ArchiveGameType = "backword" | "daily" | "weekly" | "anagram" | "midword";
 
 type ArchiveEntryCardProps = {
   gameType: ArchiveGameType;
-  item: BackwordWord | CrosswordPuzzle | AnagramPuzzle;
+  item: BackwordWord | CrosswordPuzzle | AnagramPuzzle | MidwordPuzzle;
   userId?: string;
 };
 
@@ -31,6 +34,7 @@ function destination(gameType: ArchiveGameType, date: string) {
     case "daily": return `/crossword/${date}`;
     case "weekly": return `/weekly-crossword/${date}`;
     case "anagram": return `/anagram/${date}`;
+    case "midword": return `/midword/${date}`;
   }
 }
 
@@ -41,6 +45,14 @@ function isCrosswordStatus(
 }
 
 export function ArchiveEntryCard({ gameType, item, userId }: ArchiveEntryCardProps) {
+  if (gameType === "midword") {
+    const progress = createMidwordStorage(window.localStorage, { userId }).loadProgress(item.date);
+    const status = midwordStatus(progress);
+    return <Link aria-label={`${formattedDate(item.date)}, ${status.label}`} className="archive-entry-card archive-entry-card--midword" to={destination(gameType, item.date)}>
+      <div className="archive-entry-card__main"><p>MIDWORD</p><h3>#{item.puzzleNumber}</h3><time dateTime={item.date}>{formattedDate(item.date)}</time></div>
+      <div className="archive-entry-card__status"><span className={`home-status home-status--${status.tone}`}>{status.label}</span>{progress.completedAt ? <strong>{progress.releaseDateScore}/5</strong> : null}</div>
+    </Link>;
+  }
   if (gameType === "anagram") {
     const anagram = item as AnagramPuzzle;
     const progress = createAnagramStorage(window.localStorage, { userId }).loadProgress(anagram);

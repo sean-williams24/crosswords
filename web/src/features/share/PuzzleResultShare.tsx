@@ -44,6 +44,8 @@ function shareCardPalette(game: PuzzleShareResult["game"]): ShareCardPalette {
       return { background: "#1e1d1b", border: "url(#pro-border)", statBackground: "#000000", statLabel: "#777777", footer: "#ebb838" };
     case "anagram":
       return { background: "#aa4d12", statBackground: "#30180d", statLabel: "#f9d7bc", footer: "#fff1e5" };
+    case "midword":
+      return { background: "#1f1f1f", statBackground: "#000000", statLabel: "#699c6c", footer: "#699c6c" };
   }
 }
 

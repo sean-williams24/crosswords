@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { BackwordPage } from "./pages/BackwordPage";
 import { AnagramPage } from "./pages/AnagramPage";
+import { MidwordPage } from "./pages/MidwordPage";
 import { ContactPage } from "./pages/ContactPage";
 import { CrosswordPage } from "./pages/CrosswordPage";
 import { WeeklyCrosswordPage } from "./pages/WeeklyCrosswordPage";
@@ -26,6 +27,8 @@ export default function App() {
         <Route path="/backword/:date" element={<BackwordPage />} />
         <Route path="/anagram" element={<AnagramPage />} />
         <Route path="/anagram/:date" element={<AnagramPage />} />
+        <Route path="/midword" element={<MidwordPage />} />
+        <Route path="/midword/:date" element={<MidwordPage />} />
         <Route path="/home" element={<Navigate to="/" replace />} />
         <Route path="/crossword" element={<CrosswordPage />} />
         <Route path="/crossword/:date" element={<CrosswordPage />} />

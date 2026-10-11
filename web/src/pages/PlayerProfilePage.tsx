@@ -4,6 +4,8 @@ import { useAuth } from "../features/auth/AuthProvider";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { anagramCloudRecord, backwordCloudRecord, crosswordCloudRecord, fetchCloudProgress, refreshAccountProgress } from "../features/sync/progressSync";
 import { createAnagramStorage } from "../features/anagram/storage";
+import { createMidwordStorage } from "../features/midword/storage";
+import { midwordCloudRecord } from "../features/sync/progressSync";
 import { createAnagramRepository } from "../features/anagram/repository";
 import { createBackwordStorage } from "../features/backword/storage";
 import { createCrosswordStorage } from "../features/crossword/storage";
@@ -52,6 +54,7 @@ export function PlayerProfilePage() {
     setSyncError(null);
     const backwordStorage = createBackwordStorage(window.localStorage, { userId });
     const anagramStorage = createAnagramStorage(window.localStorage, { userId });
+    const midwordStorage = createMidwordStorage(window.localStorage, { userId });
     const crosswordStorage = createCrosswordStorage(window.localStorage, { userId });
     try {
       await Promise.all([
@@ -64,6 +67,8 @@ export function PlayerProfilePage() {
         ),
         refreshAccountProgress(userId, "anagram", anagramStorage.loadAllProgress().map(anagramCloudRecord),
           (record) => anagramStorage.replaceProgress(record.payload)),
+        refreshAccountProgress(userId, "midword", midwordStorage.loadAllProgress().map(midwordCloudRecord),
+          (record) => midwordStorage.replaceProgress(record.payload)),
         refreshAccountProgress(
           userId,
           "daily_crossword",

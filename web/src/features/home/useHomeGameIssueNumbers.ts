@@ -3,6 +3,8 @@ import { localDateString, localWeekStartString } from "../backword/date";
 import { createBackwordRepository } from "../backword/repository";
 import { createAnagramRepository } from "../anagram/repository";
 import { createAnagramStorage } from "../anagram/storage";
+import { createMidwordRepository } from "../midword/repository";
+import { createMidwordStorage } from "../midword/storage";
 import { createBackwordStorage } from "../backword/storage";
 import { createCrosswordRepository } from "../crossword/repository";
 import { createCrosswordStorage } from "../crossword/storage";
@@ -10,6 +12,7 @@ import { createCrosswordStorage } from "../crossword/storage";
 export type HomeGameIssueNumbers = {
   backword: number | null;
   anagram: number | null;
+  midword: number | null;
   firstAnagramRelease: string | null;
   crossword: number | null;
   weeklyCrossword: number | null;
@@ -18,6 +21,7 @@ export type HomeGameIssueNumbers = {
 const emptyIssueNumbers: HomeGameIssueNumbers = {
   backword: null,
   anagram: null,
+  midword: null,
   firstAnagramRelease: null,
   crossword: null,
   weeklyCrossword: null
@@ -34,12 +38,14 @@ export function useHomeGameIssueNumbers(
     let cancelled = false;
     const backwordStorage = createBackwordStorage(window.localStorage);
     const anagramStorage = createAnagramStorage(window.localStorage);
+    const midwordStorage = createMidwordStorage(window.localStorage);
     const crosswordStorage = createCrosswordStorage(window.localStorage);
     const weeklyStorage = createCrosswordStorage(window.localStorage, { kind: "weekly" });
 
     setIssueNumbers({
       backword: backwordStorage.loadCachedWord(date)?.puzzleNumber ?? null,
       anagram: anagramStorage.loadCachedPuzzle(date)?.puzzleNumber ?? null,
+      midword: midwordStorage.loadCachedPuzzle(date)?.puzzleNumber ?? null,
       firstAnagramRelease: anagramStorage.firstReleaseDate(),
       crossword: crosswordStorage.loadCachedPuzzle(date)?.puzzleNumber ?? null,
       weeklyCrossword: weeklyStorage.loadCachedPuzzle(weekDate)?.puzzleNumber ?? null
@@ -49,6 +55,13 @@ export function useHomeGameIssueNumbers(
       if (!cancelled) setIssueNumbers((current) => ({ ...current, [game]: issueNumber }));
     };
 
+    void (async () => {
+      try {
+        const puzzle = await createMidwordRepository().getByDate(date);
+        midwordStorage.cachePuzzle(puzzle);
+        updateIssueNumber("midword", puzzle.puzzleNumber);
+      } catch { /* The card stays available for retry when daily content is offline. */ }
+    })();
     void (async () => {
       try {
         const repository = createAnagramRepository();

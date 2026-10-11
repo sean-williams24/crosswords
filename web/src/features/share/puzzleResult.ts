@@ -4,8 +4,9 @@ import type { BackwordProgress, BackwordStats, BackwordWord } from "../backword/
 import { completedInReleaseWindow, formatDuration, type WeeklyCrosswordStats } from "../crossword/engine";
 import type { CrosswordKind, CrosswordProgress, CrosswordPuzzle, CrosswordStats } from "../crossword/types";
 import type { PlayerProfileRating } from "../profile/profileRating";
+import type { MidwordProgress, MidwordPuzzle, MidwordStats } from "../midword/engine";
 
-export type ShareGame = "backword" | "daily_crossword" | "weekly_crossword" | "anagram";
+export type ShareGame = "backword" | "daily_crossword" | "weekly_crossword" | "anagram" | "midword";
 
 export type PuzzleShareResult = {
   game: ShareGame;
@@ -31,7 +32,22 @@ function gamePath(game: ShareGame, date: string) {
     case "daily_crossword": return `/crossword/${date}`;
     case "weekly_crossword": return `/weekly-crossword/${date}`;
     case "anagram": return `/anagram/${date}`;
+    case "midword": return `/midword/${date}`;
   }
+}
+
+export function buildMidwordShareResult({ puzzle, progress, stats, rating, origin }: {
+  puzzle: MidwordPuzzle; progress: MidwordProgress; stats: MidwordStats;
+  rating: PlayerProfileRating; origin?: string;
+}): PuzzleShareResult {
+  return withCaption({
+    game: "midword", gameName: "Midword", issueNumber: puzzle.puzzleNumber, date: progress.date,
+    outcome: progress.outcome === "won" ? "SOLVED" : "COMPLETED", score: progress.releaseDateScore,
+    streak: stats.currentStreak, totalGamesSolved: stats.totalSolved,
+    ratingTier: rating.tier, ratingPoints: rating.totalPoints, ratingMaxPoints: rating.maxPoints,
+    primaryStat: { label: "GUESSES", value: `${progress.guesses.length}/5` }, timeStat: null,
+    url: shareUrl("midword", progress.date, origin)
+  });
 }
 
 export function buildAnagramShareResult({ puzzle, progress, stats, rating, origin }: {

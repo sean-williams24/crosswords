@@ -25,6 +25,7 @@ const sync = vi.hoisted(() => ({
 
 vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => testAuth.value }));
 vi.mock("../features/sync/progressSync", () => ({
+  midwordCloudRecord: (progress: { date: string; releaseDateScore: number }) => ({ release_date: progress.date, release_score: progress.releaseDateScore, payload: progress }),
   anagramCloudRecord: (progress: { date: string }) => ({ release_date: progress.date, release_score: 0, payload: progress }),
   backwordCloudRecord: (progress: { date: string }) => ({ release_date: progress.date, release_score: 0, payload: progress }),
   crosswordCloudRecord: (progress: unknown) => progress,

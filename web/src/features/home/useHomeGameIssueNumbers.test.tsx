@@ -2,11 +2,13 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { useHomeGameIssueNumbers } from "./useHomeGameIssueNumbers";
 
 const repositories = vi.hoisted(() => ({
+  midword: { getByDate: vi.fn() },
   anagram: { getByDate: vi.fn(), getFirstReleaseDate: vi.fn() },
   backword: { getByDate: vi.fn() },
   crossword: { getByDate: vi.fn(), getCurrentWeekly: vi.fn() }
 }));
 
+vi.mock("../midword/repository", () => ({ createMidwordRepository: () => repositories.midword }));
 vi.mock("../anagram/repository", () => ({
   createAnagramRepository: () => repositories.anagram
 }));
@@ -21,12 +23,13 @@ vi.mock("../crossword/repository", () => ({
 function IssueNumbers({ date, weekDate }: { date: string; weekDate: string }) {
   const issues = useHomeGameIssueNumbers(date, weekDate);
 
-  return <output>{`${issues.backword}/${issues.anagram}/${issues.crossword}/${issues.weeklyCrossword}/${issues.firstAnagramRelease}`}</output>;
+  return <output>{`${issues.midword}/${issues.backword}/${issues.anagram}/${issues.crossword}/${issues.weeklyCrossword}/${issues.firstAnagramRelease}`}</output>;
 }
 
 describe("useHomeGameIssueNumbers", () => {
   beforeEach(() => {
     localStorage.clear();
+    repositories.midword.getByDate.mockResolvedValue({ id: "midword", date: "2026-09-16", puzzleNumber: 11, firstWord: "BANK", secondWord: "BOOK", answer: "NOTE", alternatives: [] });
     repositories.backword.getByDate.mockResolvedValue({
       id: "backword", puzzleNumber: 121, date: "2026-09-16", word: "CASTLE", clue: "Fortress"
     });
@@ -40,7 +43,7 @@ describe("useHomeGameIssueNumbers", () => {
   it("loads and caches the current issue number for each Home game card", async () => {
     render(<IssueNumbers date="2026-09-16" weekDate="2026-09-13" />);
 
-    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("121/1/122/23/2026-09-16"));
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("11/121/1/122/23/2026-09-16"));
     expect(repositories.anagram.getByDate).toHaveBeenCalledWith("2026-09-16");
     expect(repositories.backword.getByDate).toHaveBeenCalledWith("2026-09-16");
     expect(repositories.crossword.getByDate).toHaveBeenCalledWith("2026-09-16");
@@ -52,7 +55,7 @@ describe("useHomeGameIssueNumbers", () => {
 
     render(<IssueNumbers date="2026-09-16" weekDate="2026-09-13" />);
 
-    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("121/1/122/23/null"));
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("11/121/1/122/23/null"));
     expect(repositories.anagram.getByDate).toHaveBeenCalledWith("2026-09-16");
   });
 });

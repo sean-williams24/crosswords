@@ -22,7 +22,7 @@ const testWordOfTheDay = vi.hoisted(() => ({
 }));
 
 const testIssueNumbers = vi.hoisted(() => ({
-  value: { backword: 121, anagram: 1, crossword: 122, weeklyCrossword: 23 }
+  value: { backword: 121, anagram: 1, midword: 11, crossword: 122, weeklyCrossword: 23 }
 }));
 
 const sync = vi.hoisted(() => ({
@@ -73,7 +73,7 @@ describe("web home dashboard", () => {
     testAuth.value = { entitlement: null, ready: true, user: null };
     testWordOfTheDay.notify = null;
     testWordOfTheDay.state = "loaded";
-    testIssueNumbers.value = { backword: 121, anagram: 1, crossword: 122, weeklyCrossword: 23 };
+    testIssueNumbers.value = { backword: 121, anagram: 1, midword: 11, crossword: 122, weeklyCrossword: 23 };
     sync.refreshAccountProgress.mockReset();
     sync.refreshAccountProgress.mockResolvedValue(undefined);
   });
@@ -106,10 +106,11 @@ describe("web home dashboard", () => {
     testAuth.value.user = { id: "player-1" };
     view.rerender(<MemoryRouter><HomeDashboardPage /></MemoryRouter>);
 
-    await waitFor(() => expect(sync.refreshAccountProgress).toHaveBeenCalledTimes(4));
+    await waitFor(() => expect(sync.refreshAccountProgress).toHaveBeenCalledTimes(5));
     expect(sync.refreshAccountProgress.mock.calls.map((call) => [call[0], call[1]])).toEqual([
       ["player-1", "backword"],
       ["player-1", "anagram"],
+      ["player-1", "midword"],
       ["player-1", "daily_crossword"],
       ["player-1", "weekly_crossword"]
     ]);
@@ -143,7 +144,7 @@ describe("web home dashboard", () => {
     const firstVisit = renderDashboard();
 
     await screen.findByRole("link", { name: "Overall rating: Novice. View player profile" });
-    expect(sync.refreshAccountProgress).toHaveBeenCalledTimes(4);
+    expect(sync.refreshAccountProgress).toHaveBeenCalledTimes(5);
     expect(Array.from({ length: sessionStorage.length }, (_, index) => sessionStorage.key(index)))
       .toContain("backword:web:home-sync:v1:player-1:2026-09-27T20:00:00Z");
     firstVisit.unmount();
@@ -152,15 +153,15 @@ describe("web home dashboard", () => {
     renderDashboard();
 
     expect(screen.getByRole("link", { name: "Overall rating: Novice. View player profile" })).not.toHaveClass("is-syncing");
-    expect(sync.refreshAccountProgress).toHaveBeenCalledTimes(4);
+    expect(sync.refreshAccountProgress).toHaveBeenCalledTimes(5);
   });
 
-  it("keeps five non-interactive skeleton cards visible until Word of the Day loads", () => {
+  it("keeps six non-interactive skeleton cards visible until Word of the Day loads", () => {
     testWordOfTheDay.state = "loading";
     const { container } = renderDashboard();
 
     expect(screen.getByRole("status")).toHaveTextContent("Loading daily games");
-    expect(container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(5);
+    expect(container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(6);
     expect(screen.queryByRole("link", { name: "Quick Crossword" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Pro Crossword/i })).not.toBeInTheDocument();
 
@@ -176,7 +177,7 @@ describe("web home dashboard", () => {
     testAuth.value.ready = false;
     const view = renderDashboard();
 
-    expect(view.container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(5);
+    expect(view.container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(6);
 
     testAuth.value.ready = true;
     view.rerender(
@@ -222,34 +223,37 @@ describe("web home dashboard", () => {
     expect(crosswordStats?.querySelector(".home-game-card__streak")).toBeNull();
     const gamesGrid = crosswordCard.closest(".home-dashboard__games-grid");
     expect(gamesGrid).not.toBeNull();
-    expect(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game")).toHaveLength(4);
+    expect(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game")).toHaveLength(5);
     expect(Array.from(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game") ?? []).map((game) =>
       game.querySelector("a")?.getAttribute("aria-label")
     )).toEqual([
       "Backword, issue #121",
       "Quick Crossword, issue #122",
       "Anagram, issue #1",
+      "Midword, issue #11",
       "Pro Crossword, issue #23"
     ]);
     expect(screen.getByLabelText("Issue #121")).toHaveClass("home-game-card__issue");
     expect(screen.getByLabelText("Issue #122")).toHaveClass("home-game-card__issue");
     expect(screen.getByLabelText("Issue #23")).toHaveClass("weekly-card__issue");
-    expect(screen.getAllByLabelText("Status: New")).toHaveLength(3);
+    expect(screen.getAllByLabelText("Status: New")).toHaveLength(4);
     const anagramCard = screen.getByRole("link", { name: "Anagram, issue #1" });
     expect(anagramCard).toHaveAttribute("href", "/anagram");
     expect(within(anagramCard).getByLabelText("Status: New").querySelector(".home-status__icon"))
       .toBeEmptyDOMElement();
     expect(screen.getByRole("link", { name: "Backword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dbackword");
     expect(screen.getByRole("link", { name: "Anagram Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Danagram");
+    expect(screen.getByRole("link", { name: "Midword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dmidword");
+    expect(screen.getByRole("link", { name: "Midword, issue #11" })).toHaveAttribute("href", "/midword");
     expect(screen.getByRole("link", { name: "Quick Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Ddaily");
     expect(screen.getByRole("link", { name: "Pro Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dweekly");
-    expect(screen.getAllByText("Archive", { selector: ".home-archive-link > span" })).toHaveLength(4);
-    expect(container.querySelectorAll(".home-archive-link > svg")).toHaveLength(4);
+    expect(screen.getAllByText("Archive", { selector: ".home-archive-link > span" })).toHaveLength(5);
+    expect(container.querySelectorAll(".home-archive-link > svg")).toHaveLength(5);
     expect(screen.getByText("13×13")).toBeInTheDocument();
     expect(screen.queryByText("♛")).not.toBeInTheDocument();
   });
 
-  it("lays out all four games before the full-width Word of the Day panel", () => {
+  it("lays out all five games before the full-width Word of the Day panel", () => {
     const { container } = renderDashboard();
     const layout = container.querySelector(".home-dashboard__daily-layout");
     const gamesGrid = layout?.querySelector(":scope > .home-dashboard__games-grid");
@@ -258,9 +262,9 @@ describe("web home dashboard", () => {
 
     expect(layout?.children[0]).toBe(gamesGrid);
     expect(layout?.children[1]).toBe(wordOfTheDay);
-    expect(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game")).toHaveLength(4);
+    expect(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game")).toHaveLength(5);
     expect(styles).toContain(".home-dashboard__content {\n  width: min(100% - 48px, 1440px);");
-    expect(styles).toContain(".home-dashboard__games-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));");
+    expect(styles).toContain(".home-dashboard__games-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));");
     expect(styles).toMatch(/\.home-archive-link\s*\{[^}]*display:\s*flex;[^}]*align-items:\s*center;[^}]*justify-content:\s*center;[^}]*gap:\s*8px;/);
     expect(styles).not.toMatch(/\.home-archive-link\s*\{[^}]*flex-direction:\s*column;/);
     expect(styles).toContain("@media (min-width: 681px) and (max-width: 1200px) {");

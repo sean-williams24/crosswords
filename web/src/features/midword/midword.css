@@ -1,0 +1,166 @@
+/* Values mirror the current native Midword semantic assets. */
+:root {
+  --midword-accent: #699c6c;
+  --midword-accent: color(display-p3 0.412 0.612 0.424);
+  --midword-background: #1f1f1f;
+  --midword-text: #ffffff;
+  --midword-on-accent: #000000;
+  --midword-home-foreground: #000000;
+  --midword-border: #525252;
+  --midword-muted: color-mix(in srgb, var(--midword-text) 65%, transparent);
+  --midword-surface: color-mix(in srgb, var(--midword-text) 8%, var(--midword-background));
+}
+html[data-theme="light"] {
+  --midword-background: #f5f2eb;
+  --midword-text: #1a1a1a;
+  --midword-home-foreground: #ffffff;
+  --midword-border: #888880;
+}
+.midword-page {
+  --bw-accent: var(--midword-accent);
+  --bw-primary: var(--midword-text);
+  --bw-surface: var(--midword-surface);
+  --bw-grid: var(--midword-border);
+  --bw-correct: var(--midword-accent);
+  color: var(--midword-text);
+  background: var(--midword-background);
+}
+.midword-shell {
+  height: 100svh;
+  height: 100dvh;
+  flex: none;
+  background: var(--midword-background);
+}
+.midword-header { flex: 0 0 auto; padding-top: max(14px, env(safe-area-inset-top)); }
+.midword-header h1 { position: relative; grid-column: 2; margin: 0; }
+.midword-header h1 img { display: block; width: clamp(130px, 26vw, 190px); height: auto; }
+html[data-theme="dark"] .midword-header h1 img { opacity: 0; }
+html[data-theme="dark"] .midword-header h1::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(var(--midword-accent) 49%, var(--midword-text) 49%);
+  mask: url("/brand/midword-logo.png") center / contain no-repeat;
+}
+.midword-header .bw-icon-button { color: var(--midword-text); }
+.midword-main {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  padding: 16px max(16px, env(safe-area-inset-left)) 30px;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  overflow-y: auto;
+}
+.midword-issue { margin: 0; color: var(--midword-muted); font-size: 12px; font-weight: 700; letter-spacing: .13em; }
+.midword-explainer { width: min(100%, 520px); margin: 0; color: var(--midword-muted); font-size: 16px; line-height: 1.5; text-align: center; }
+.midword-board { display: flex; width: min(100%, 430px); flex-direction: column; gap: 18px; }
+.midword-prompt { margin: 0; font-size: clamp(26px, 6vw, 36px); font-weight: 700; letter-spacing: .08em; overflow-wrap: anywhere; }
+.midword-prompt--second { text-align: right; }
+.midword-letter-row {
+  display: grid;
+  width: min(100%, calc(var(--midword-letter-count) * 56px + (var(--midword-letter-count) - 1) * 7px));
+  margin-inline: auto;
+  grid-template-columns: repeat(var(--midword-letter-count), minmax(0, 1fr));
+  gap: clamp(4px, 1.5vw, 7px);
+}
+.midword-letter-row > span {
+  display: grid; min-width: 0; aspect-ratio: 1; place-items: center;
+  border: 1.5px solid var(--midword-border); border-radius: 6px;
+  color: var(--midword-muted); background: var(--midword-background);
+  font: 600 clamp(18px, 5.5vw, 26px) / 1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.midword-letter-row > .has-letter { color: var(--midword-text); border-color: color-mix(in srgb, var(--midword-text) 50%, transparent); }
+.midword-letter-row > .is-cursor { animation: midword-cursor 1.2s ease-in-out infinite; }
+.midword-letter-row.is-correct > span { border-color: var(--midword-accent); color: var(--midword-text); background: color-mix(in srgb, var(--midword-accent) 15%, var(--midword-background)); }
+.midword-letter-row.is-incorrect > span { color: var(--bw-failed); border-color: var(--bw-failed); background: color-mix(in srgb, var(--bw-failed) 10%, var(--midword-background)); }
+.midword-attempts span { background: var(--midword-background); border-color: var(--midword-border); }
+.midword-attempts .is-used { background: color-mix(in srgb, var(--midword-accent) 70%, transparent); border-color: var(--midword-accent); }
+.midword-guesses { width: min(100%, 430px); display: flex; flex-direction: column; gap: 10px; }
+.midword-guesses h2 { margin: 0; color: var(--midword-muted); font-size: 14px; font-weight: 400; text-align: center; }
+.midword-message, .midword-note { margin: 0; font-size: 14px; text-align: center; }
+.midword-controls { background: var(--midword-background); }
+.midword-controls .bw-key { color: var(--midword-text); background: color-mix(in srgb, var(--midword-text) 12%, var(--midword-background)); }
+.midword-controls .bw-key-delete, .midword-page .bw-submit, .midword-page .bw-primary-button { color: var(--midword-on-accent); background: var(--midword-accent); }
+.midword-game-score { width: 100%; height: 7px; margin-bottom: 5px; background: var(--midword-surface); }
+.midword-game-score > span { display: block; height: 100%; background: var(--midword-accent); }
+.midword-dialog {
+  display: flex; width: min(100%, 680px); max-height: 90dvh; padding: 0; flex-direction: column;
+  color: var(--midword-text); background: var(--midword-background);
+  --bw-primary: var(--midword-text); --bw-accent: var(--midword-accent);
+}
+.midword-dialog .bw-modal-header { flex: 0 0 auto; padding: 20px 24px; }
+.midword-dialog .bw-modal-header h2 { color: var(--midword-text); }
+.midword-dialog--completion .bw-modal-header h2 { color: var(--midword-accent); font-size: clamp(30px, 8vw, 40px); animation: midword-enter 550ms both; }
+.midword-dialog--completion.is-failed .bw-modal-header h2 { color: var(--bw-failed, #ec5454); }
+.midword-dialog .bw-modal-close { color: var(--midword-on-accent); background: var(--midword-accent); }
+.midword-dialog-scroll { display: flex; min-height: 0; padding: 0 clamp(18px, 5vw, 40px) 28px; flex-direction: column; gap: 24px; overflow-y: auto; }
+.midword-dialog h3 { margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.midword-instructions section + section { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--midword-border); }
+.midword-instructions p { font-size: 14px; line-height: 1.6; }
+.midword-example { padding: 10px; border-radius: 12px; background: color-mix(in srgb, var(--midword-accent) 10%, var(--midword-background)); text-align: center; font-weight: 700; }
+.midword-scoring { display: grid; gap: 10px; font-size: 14px; }
+.midword-scoring > div { display: flex; justify-content: space-between; }
+.midword-scoring dd { margin: 0; font-weight: 700; }
+.midword-summary { display: flex; padding: 20px 8px; border-radius: 12px; background: var(--midword-surface); }
+.midword-summary > div { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 5px; text-align: center; }
+.midword-summary > div + div { border-left: 1px solid var(--midword-border); }
+.midword-summary strong { font-size: 26px; }
+.midword-summary small { padding-inline: 5px; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+.midword-rating-section { display: flex; flex-direction: column; gap: 14px; text-align: center; }
+.midword-rating { position: relative; height: 8px; border-radius: 20px; background: var(--midword-surface); }
+.midword-rating > span { display: block; height: 100%; border-radius: inherit; background: var(--midword-accent); }
+.midword-rating > i { position: absolute; top: 50%; width: 20px; height: 20px; border: 3px solid var(--midword-accent); border-radius: 50%; background: var(--midword-text); transform: translate(-50%, -50%); }
+.midword-distribution { padding: 16px; border-radius: 12px; background: var(--midword-surface); }
+.midword-distribution > div { display: grid; grid-template-columns: 14px 1fr 22px; align-items: center; gap: 10px; margin-top: 10px; font-size: 12px; }
+.midword-distribution > div > div { height: 18px; border-radius: 20px; background: var(--midword-surface); overflow: hidden; }
+.midword-distribution i { display: block; height: 100%; border-radius: inherit; background: var(--midword-accent); }
+.midword-history table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.midword-history th, .midword-history td { padding: 12px 5px; border-bottom: 1px solid var(--midword-border); text-align: center; }
+.midword-history th:first-child, .midword-history td:first-child { text-align: left; }
+.midword-history th { font-size: 12px; font-weight: 400; }
+.midword-history td small { display: block; margin-top: 3px; color: var(--midword-muted); font-size: 9px; letter-spacing: .08em; }
+.midword-score-chip { display: inline-grid; width: 32px; height: 28px; border-radius: 5px; place-items: center; color: var(--midword-muted); background: var(--midword-surface); }
+.midword-score-chip.is-earned { color: var(--midword-on-accent); background: var(--midword-accent); }
+.midword-completion-header { text-align: center; animation: midword-enter 550ms both; }
+.midword-completion-header > strong { font-size: 13px; letter-spacing: .15em; }
+.midword-completion-header p { margin-bottom: 0; }
+.midword-completion-answer { text-align: center; animation: midword-enter 450ms 220ms both; }
+.midword-completion-answer .midword-letter-row { width: min(94%, calc(var(--midword-letter-count) * 44px + (var(--midword-letter-count) - 1) * 8px)); }
+.midword-completion-answer .is-correct > span { color: var(--midword-on-accent); background: var(--midword-accent); }
+.midword-completion-answer.is-celebrating .midword-letter-row { animation: midword-celebrate 660ms 550ms both; }
+.midword-completion-answer p { font-size: 14px; overflow-wrap: anywhere; }
+.midword-countdown { display: flex; flex-direction: column; gap: 6px; text-align: center; animation: midword-enter 300ms 1120ms both; }
+.midword-countdown span { font-size: 12px; letter-spacing: .15em; }
+.midword-countdown strong { font-size: 26px; font-variant-numeric: tabular-nums; }
+.midword-completion-details { display: flex; flex-direction: column; gap: 24px; animation: midword-enter 500ms 1300ms both; }
+.midword-completion-details > .puzzle-result-share .puzzle-result-share__button { color: var(--midword-accent); background: var(--midword-surface); }
+.midword-completion-details > .puzzle-result-share .bw-share-status { color: var(--midword-text); }
+.midword-completion-actions { display: flex; padding: 12px 20px max(20px, env(safe-area-inset-bottom)); border-top: 1px solid var(--midword-border); gap: 12px; }
+.midword-completion-actions button { flex: 1; padding: 14px 8px; border: 0; border-radius: 8px; color: var(--midword-text); background: var(--midword-surface); font: inherit; cursor: pointer; }
+.midword-page button:focus-visible, .midword-dialog button:focus-visible { outline: 2px solid var(--midword-accent); outline-offset: 3px; }
+.home-game-card--midword { display: grid; padding: 12px 18px; grid-template-columns: 1fr 1fr; gap: 12px; border-radius: 12px; color: var(--midword-home-foreground); background: var(--midword-accent); }
+.midword-home-card__identity, .midword-home-card__details { display: flex; min-width: 0; flex-direction: column; gap: 6px; }
+.midword-home-card__identity { align-items: flex-start; }
+.midword-home-card__identity img { width: min(100%, 150px); height: auto; }
+.home-game-card--midword .home-game-card__issue { color: var(--midword-home-foreground); opacity: .84; }
+.midword-home-card__details { justify-content: flex-end; align-items: flex-end; }
+.home-game-card--midword .home-status { border: 0; color: var(--midword-home-foreground); background: color-mix(in srgb, var(--midword-home-foreground) 12%, transparent); }
+.home-game-card--midword .home-game-card__score strong { color: var(--midword-home-foreground); }
+.home-game-card--midword .home-game-card__score small { color: var(--midword-home-foreground); opacity: .7; }
+html[data-theme="dark"] .midword-home-card__identity img { filter: brightness(0); }
+.archive-entry-card--midword { color: var(--midword-text); border-color: var(--midword-accent); background: var(--midword-background); }
+@keyframes midword-cursor { 50% { border-color: var(--midword-accent); color: var(--midword-text); } }
+@keyframes midword-enter { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+@keyframes midword-celebrate { 45% { transform: translateY(-5px) scale(1.06); } }
+@media (max-width: 680px) {
+  .midword-page > .site-footer { display: none; }
+  .midword-header { padding-inline: 12px; }
+  .midword-main { gap: 18px; }
+  .midword-header nav { gap: 0; }
+  .midword-controls { padding-bottom: env(safe-area-inset-bottom); }
+  .midword-dialog { max-height: 94dvh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .midword-page *, .midword-dialog * { animation: none !important; transition: none !important; }
+}

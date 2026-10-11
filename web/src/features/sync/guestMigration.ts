@@ -1,5 +1,6 @@
 import { createBackwordStorage } from "../backword/storage";
 import { createAnagramStorage } from "../anagram/storage";
+import { createMidwordStorage } from "../midword/storage";
 import { createCrosswordStorage } from "../crossword/storage";
 
 const guestMigrationOwnerKey = "backword:web:sync:guest-migration-owner:v1";
@@ -7,6 +8,7 @@ const guestMigrationOwnerKey = "backword:web:sync:guest-migration-owner:v1";
 function hasGuestProgress(storage: Storage) {
   return createBackwordStorage(storage).loadAllProgress().length > 0
     || createAnagramStorage(storage).loadAllProgress().length > 0
+    || createMidwordStorage(storage).loadAllProgress().length > 0
     || createCrosswordStorage(storage).loadAllProgress().length > 0;
 }
 
