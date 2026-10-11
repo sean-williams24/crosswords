@@ -13,22 +13,23 @@ export function MidwordRatingBar({ score }: { score: number }) {
 export function MidwordStatistics({ stats }: { stats: MidwordStats }) {
   return <>
     <section aria-label="Midword statistics summary" className="midword-summary">
-      <div><strong>{stats.currentStreak}</strong><small>Current streak</small></div>
-      <div><strong>{stats.totalSolved}</strong><small>Total solved</small></div>
-      <div><strong>{stats.bestStreak}</strong><small>Best streak</small></div>
+      <div><strong>{stats.currentStreak}</strong><small>Current<br /> streak</small></div>
+      <div><strong>{stats.totalSolved}</strong><small>Total<br /> solved</small></div>
+      <div><strong>{stats.bestStreak}</strong><small>Best<br /> streak</small></div>
     </section>
     <section className="midword-distribution"><h3>Guess distribution</h3>
       {stats.guessDistribution.map((count, index) => <div aria-label={`${index + 1} guesses: ${count} solves`} key={index}>
-        <span>{index + 1}</span><div><i style={{ width: `${count / Math.max(1, ...stats.guessDistribution) * 100}%` }} /></div><strong>{count}</strong>
+        <span>{index + 1}</span><div><i style={{ width: `${count / Math.max(1, ...stats.guessDistribution) * 100}%` }} /></div><span>{count}</span>
       </div>)}
     </section>
     <section className="midword-history"><h3>Last 14 days</h3>
-      <table><thead><tr><th>Date</th><th>Guesses</th><th>Score</th></tr></thead>
+      <table><thead><tr><th scope="col">Date</th><th scope="col">Score</th><th scope="col">Guesses</th></tr></thead>
         <tbody>{stats.rows.map((row) => <tr key={row.date}>
-          <td><time dateTime={row.date}>{formatProfileDate(row.date)}</time>
+          <td><time className={row.date === localDateString() ? "is-today" : undefined} dateTime={row.date}>{formatProfileDate(row.date)}</time>
             {row.date === localDateString() ? <small>TODAY</small> : null}
             {row.outcome !== "unplayed" ? <small>{row.outcome === "inProgress" ? "IN PROGRESS" : row.outcome.toUpperCase()}</small> : null}</td>
-          <td>{row.guessCount ?? "–"}</td><td><strong className={`midword-score-chip${row.score ? " is-earned" : ""}`}>{row.score}</strong></td>
+          <td><strong className={`midword-score-chip${row.score ? " is-earned" : ""}`}>{row.score}</strong></td>
+          <td className={`midword-history-guesses${row.guessCount === null ? " is-unplayed" : ""}`}>{row.guessCount === null ? "–" : `${row.guessCount}/5`}</td>
         </tr>)}</tbody>
       </table>
     </section>

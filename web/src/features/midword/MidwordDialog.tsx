@@ -16,7 +16,8 @@ export function MidwordDialog({ kind, onClose, puzzle, progress, stats, shareRes
   const navigate = useNavigate();
   const title = kind === "instructions" ? "How to Play" : kind === "stats" ? "Midword Stats"
     : progress.outcome === "won" ? "Solved!" : "Finished";
-  return <BackwordModal className={`midword-dialog midword-dialog--${kind}${progress.outcome === "failed" ? " is-failed" : ""}`} onClose={onClose} title={title}>
+  return <BackwordModal backdropClassName={kind === "instructions" ? "midword-instructions-backdrop" : undefined}
+    className={`midword-dialog midword-dialog--${kind}${progress.outcome === "failed" ? " is-failed" : ""}`} onClose={onClose} title={title}>
     <div className="midword-dialog-scroll">
       {kind === "instructions" ? <MidwordInstructions /> : kind === "stats" ? <>
         <MidwordRatingBar score={stats.rollingScore} /><MidwordStatistics stats={stats} />

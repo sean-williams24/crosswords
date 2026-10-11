@@ -378,6 +378,9 @@ when Reduce Motion is requested. Instructions, statistics, navigation, sharing,
 and Pro entry points use the established web game controls.
 Previous-guess cells cap at 48px with smaller lettering; the active answer
 cells retain their 56px cap. Both rows shrink to fit narrow viewports.
+Previous guesses use the primary Midword text colour (white in dark mode) and
+1px outcome-coloured borders at 45% opacity, retaining their subtle outcome
+background tints. This treatment applies only to guess history.
 
 Guesses are validated offline against a checked-in 3–6-letter wordfreq list,
 with reviewed name and explicit profanity exclusions. Approved answers bypass
@@ -399,6 +402,22 @@ Midword immediately, before cloud upload completes. Its share payload contains
 only aggregate result metadata and the dated link. Statistics exclude archive
 solves and show only release-day wins, matching native streaks, distribution,
 and the post-launch 14-day history.
+
+The browser stats and completion statistics mirror native `AppFont` weights:
+Outfit Regular for body text, Bold (700) for summary values, and Black (900)
+for labels, section headings, rating points, and score chips. Labels use the
+Midword accent, while values use Midword text. Cards and distribution tracks
+use text at 8% opacity; the rating track uses 12%. History follows the native
+Date / Score / Guesses order, with green today/status text, tinted zero-score
+chips, and guess counts out of five. These styles use semantic Midword colours
+in both appearances. The stats navigation title retains the native system font.
+
+Midword's info sheet follows Anagram's responsive instructions layout: centered
+on desktop, a bottom sheet on mobile, with a fixed title, circular accent close
+button, and scrolling content. Both games share instruction sections, icon
+rows, sentence-case headings, Outfit typography, subtle accent dividers, and
+scoring rows. Midword keeps its native connection/example/scoring guidance and
+green accent, using the app background and primary text like native instructions.
 
 ## Backword Onboarding
 

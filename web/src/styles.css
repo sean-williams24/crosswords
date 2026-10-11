@@ -2668,6 +2668,8 @@ html[data-theme="light"] {
 }
 
 .anagram-dialog--instructions {
+  --instructions-accent: var(--anagram-accent);
+  --instructions-ink: var(--anagram-ink);
   display: flex;
   width: min(100%, 640px);
   max-height: 91svh;
@@ -2730,55 +2732,58 @@ html[data-theme="light"] {
   overscroll-behavior: contain;
 }
 
-.anagram-instructions {
-  color: var(--anagram-ink);
+.game-instructions {
+  color: var(--instructions-ink);
+  font-family: "Outfit", sans-serif;
   font-size: 14px;
   line-height: 1.45;
 }
 
-.anagram-instructions__section + .anagram-instructions__section {
+.game-instructions__section + .game-instructions__section {
   margin-top: 18px;
   padding-top: 18px;
-  border-top: 1px solid color-mix(in srgb, var(--anagram-accent) 25%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--instructions-accent) 25%, transparent);
 }
 
-.anagram-instructions__section h3 {
+.game-instructions__section h3 {
   display: flex;
   margin: 0 0 12px;
   align-items: center;
   gap: 12px;
-  color: var(--anagram-ink);
+  color: var(--instructions-ink);
   font-size: 15px;
   font-weight: 700;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
-.anagram-dialog .anagram-instructions p {
+.game-instructions p {
   margin: 0;
-  color: var(--anagram-ink);
+  color: var(--instructions-ink);
   line-height: 1.45;
 }
 
-.anagram-instructions__section > p + p {
+.game-instructions__section > p + p {
   margin-top: 16px;
 }
 
-.anagram-instructions__row {
+.game-instructions__row {
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
   align-items: start;
   gap: 10px;
 }
 
-.anagram-instructions__row + .anagram-instructions__row {
+.game-instructions__row + .game-instructions__row {
   margin-top: 12px;
 }
 
-.anagram-instructions__icon {
+.game-instructions__icon {
   display: block;
   width: 22px;
   height: 22px;
   flex: 0 0 22px;
-  color: var(--anagram-accent);
+  color: var(--instructions-accent);
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -2786,7 +2791,7 @@ html[data-theme="light"] {
   stroke-width: 1.8;
 }
 
-.anagram-instructions__icon--letters {
+.game-instructions__icon--letters {
   font-size: 8px;
   font-weight: 700;
   letter-spacing: -.04em;
@@ -2794,32 +2799,32 @@ html[data-theme="light"] {
   text-align: center;
 }
 
-.anagram-instructions__scoring {
+.game-instructions__scoring {
   display: grid;
   margin: 0;
   gap: 10px;
 }
 
-.anagram-instructions__scoring > div {
+.game-instructions__scoring > div {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 20px;
 }
 
-.anagram-instructions__scoring dt,
-.anagram-instructions__scoring dd {
+.game-instructions__scoring dt,
+.game-instructions__scoring dd {
   margin: 0;
 }
 
-.anagram-instructions__scoring dd {
-  color: var(--anagram-accent);
+.game-instructions__scoring dd {
+  color: var(--instructions-accent);
   font-size: 14px;
   font-weight: 700;
   white-space: nowrap;
 }
 
-.anagram-instructions__scoring + p {
+.game-instructions__scoring + p {
   margin-top: 14px !important;
 }
 
