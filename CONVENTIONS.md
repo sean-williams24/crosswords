@@ -1000,6 +1000,23 @@ between them and the answer, matching the iOS gameplay dock.
 
 ---
 
+## App Store Header Assets
+
+Product page header artwork lives in `docs/app-store-assets/`, with
+self-contained SVG sources and opaque RGB PNG exports at Apple's supported
+3840 × 1646 and 5244 × 2950 sizes. It reuses the outlined share wordmark,
+including its blue `BACK` and white `WORD`, centred on a dark Backword-blue
+gradient. Keep the logo clear of the edges and check device crops in App Store
+Connect's Preview tool before submitting revised artwork.
+
+The current search-result artwork is `backword-search-minimal-3840x2560.png`:
+a flat wordmark and fine-line crossword motif on charcoal grey, referencing
+the app's dark Background colour (approximately `#181818`). Blue is reserved
+for the wordmark and a selected letter row. The quiet lower area accommodates
+metadata overlays. Keep the generated source and prompts alongside the export.
+This is promotional artwork rather than an app screenshot. The earlier 3D blue
+design is retained as a previous concept.
+
 ## App Store Review Prompt
 
 Backword requests the system App Store review prompt only after positive crossword completions. Backword word-game completions are intentionally excluded because that game has a faster loop and would make review prompts feel less earned.
