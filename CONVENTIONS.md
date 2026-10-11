@@ -749,6 +749,19 @@ When the setting is disabled, completed cells remain editable and deletable for 
 
 ## Daily Game Ad Explainer
 
+Pre-game interstitials are temporarily paused on iOS. The single internal switch
+`AdConfiguration.preGameInterstitialsEnabled` is `false` in every build
+configuration. Backword and Daily Crossword open directly; the explainer and its
+Settings section are hidden. Interstitial startup preloading, loading, eligibility,
+and presentation are disabled, without altering saved impression dates or the
+explainer opt-out preference. Rewarded hint ads, consent, and ad privacy choices
+remain active. Pro copy describes ad-free hints while the pause is in effect.
+
+To restore the existing pre-game ads in a future release, set that switch to
+`true`. This also restores the explainer, its Settings controls, and the original
+Pro ad-benefit copy. Update the tests that assert the paused production default.
+The original eligibility and presentation rules below are retained for that time.
+
 Non-Pro users can see a full-screen explainer before the Backword or daily crossword interstitial. The opt-out preference is shared across both games. The explainer is only shown when that game's once-per-day interstitial slot is still eligible; same-day repeat opens skip both the advert and the explainer.
 
 Backword keeps its onboarding-first behaviour: the Backword ad gate is skipped until the user has seen Backword onboarding.
@@ -1455,11 +1468,28 @@ Debug entitlement dumps may inspect `Transaction.currentEntitlements` and print 
 
 Ads are served via Google AdMob and managed by `AdService`. Free-tier users only.
 
+### Deferred iOS ad consent
+
+App launch only refreshes UMP consent information silently and updates the
+Settings privacy-options entry point. It never presents the consent form or
+Apple tracking permission, starts Mobile Ads, or preloads rewarded ads. The first
+rewarded hint request waits for the status refresh, presents any required consent
+form and tracking prompt, then starts and loads ads only when the SDK permits
+requests. See [Google's UMP integration guidance](https://developers.google.com/admob/ios/privacy).
+
+Concurrent launch and hint requests share the same status refresh, and a failed
+launch refresh remains retryable at the hint request. Interactive consent and ad
+startup are coalesced without an app-owned timeout, so reading a privacy form
+cannot prematurely complete a hint request. The existing hint fallback remains
+available if ads cannot be requested. Explicit Settings privacy choices still
+open on request. A future re-enabled interstitial can also prepare consent when
+its ad is requested; app launch remains silent.
+
 ### Ad formats
 
 | Format | Type | Purpose |
 |---|---|---|
-| Interstitial | `InterstitialAd` | Shown at natural transition points (game open, WOTD dismiss) |
+| Interstitial | `InterstitialAd` | Retained for transition points; temporarily disabled on iOS |
 | Rewarded | `RewardedAd` | Shown when the user requests a hint clue |
 
 ### Test IDs (DEBUG builds)
@@ -1475,7 +1505,7 @@ The test IDs must match the ad format exactly — using a Rewarded Interstitial 
 
 Interstitials are shown **at most once per calendar day per slot** using `showInterstitialOnce(slot:)`. The method stores the last-shown date in `UserDefaults` under the key `AdService.lastShown.<slot>` and no-ops if the current day already has a recorded impression.
 
-Current slots:
+Retained slots (inactive while pre-game interstitials are paused):
 
 | Slot | Trigger |
 |---|---|

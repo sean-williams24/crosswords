@@ -58,7 +58,7 @@ struct BackwordApp: App {
                     Task { await ProgressCloudSync.shared.flushPendingUploads() }
                 }
                 .task {
-                    await adService.prepareAdsIfNeeded()
+                    await adService.refreshConsentStatusIfNeeded()
                 }
         }
     }

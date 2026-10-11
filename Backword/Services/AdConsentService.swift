@@ -2,34 +2,9 @@ import AppTrackingTransparency
 import UIKit
 import UserMessagingPlatform
 
-enum AdPrivacyOptionsRequirementStatus: Equatable {
-    case unknown
-    case required
-    case notRequired
-
-    var isRequired: Bool {
-        self == .required
-    }
-}
-
-protocol AdConsentPreparing {
-    var privacyOptionsRequirementStatus: AdPrivacyOptionsRequirementStatus { get }
-    var isPrivacyOptionsRequired: Bool { get }
-
-    @MainActor
-    func prepareForAds() async -> Bool
-
-    @MainActor
-    func presentPrivacyOptionsForm() async
-}
-
-extension AdConsentPreparing {
-    var isPrivacyOptionsRequired: Bool {
-        privacyOptionsRequirementStatus.isRequired
-    }
-}
-
 struct GoogleAdConsentService: AdConsentPreparing {
+    nonisolated init() {}
+
     var privacyOptionsRequirementStatus: AdPrivacyOptionsRequirementStatus {
         switch ConsentInformation.shared.privacyOptionsRequirementStatus {
         case .required:
@@ -45,7 +20,6 @@ struct GoogleAdConsentService: AdConsentPreparing {
 
     @MainActor
     func prepareForAds() async -> Bool {
-        await requestConsentInfoUpdate()
         await presentConsentFormIfRequired()
 
         guard ConsentInformation.shared.canRequestAds else {
@@ -66,13 +40,13 @@ struct GoogleAdConsentService: AdConsentPreparing {
     }
 
     @MainActor
-    private func requestConsentInfoUpdate() async {
+    func updateConsentInfo() async -> Bool {
         let parameters = RequestParameters()
         parameters.isTaggedForUnderAgeOfConsent = false
 
-        await withCheckedContinuation { continuation in
-            ConsentInformation.shared.requestConsentInfoUpdate(with: parameters) { _ in
-                continuation.resume()
+        return await withCheckedContinuation { continuation in
+            ConsentInformation.shared.requestConsentInfoUpdate(with: parameters) { error in
+                continuation.resume(returning: error == nil)
             }
         }
     }

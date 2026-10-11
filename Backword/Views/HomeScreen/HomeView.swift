@@ -632,7 +632,8 @@ struct HomeView: View {
         return AdExplainerPresentationPolicy.shouldShow(
             isProUser: storeService.isProUser,
             hasDismissedExplainer: settings.hasDismissedAdExplainer,
-            isInterstitialEligibleToday: adService.canShowInterstitialToday(for: game.adPlacement)
+            isInterstitialEligibleToday: adService.canShowInterstitialToday(for: game.adPlacement),
+            preGameInterstitialsEnabled: adService.preGameInterstitialsEnabled
         )
     }
 
@@ -716,11 +717,10 @@ struct HomeView: View {
     }
 
     private func shouldUseAdGate(for game: DailyGame) -> Bool {
-        guard !storeService.isProUser else { return false }
-        if game == .backword {
-            return settings.hasSeenBackwordOnboarding
-        }
-        return true
+        adService.shouldUsePreGameAdGate(
+            isProUser: storeService.isProUser,
+            hasSeenRequiredOnboarding: game != .backword || settings.hasSeenBackwordOnboarding
+        )
     }
 
     private func navigate(to game: DailyGame) {

@@ -47,6 +47,9 @@ targets:
     sources:
       - path: BackwordTests
       - path: CrosswordsTests/AppleAdsAttributionServiceTests.swift
+      - path: CrosswordsTests/PreGameAdConfigurationTests.swift
+      - path: CrosswordsTests/PreGameAdServiceTests.swift
+      - path: CrosswordsTests/DeferredAdConsentTests.swift
     dependencies:
       - target: Backword
     settings:

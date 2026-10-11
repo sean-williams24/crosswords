@@ -64,7 +64,7 @@ struct InterstitialPresentationGateTests {
         let defaults = makeDefaults()
         defer { defaults.removePersistentDomain(forName: defaultsSuiteName) }
         let gate = makeGate(defaults: defaults)
-        let service = AdService(interstitialGate: gate)
+        let service = AdService(interstitialGate: gate, preGameInterstitialsEnabled: true)
         let now = Date(timeIntervalSince1970: 1_768_996_800) // 2026-01-20 12:00:00 UTC
 
         #expect(service.canShowInterstitialToday(for: .dailyPuzzleOpen, now: now))

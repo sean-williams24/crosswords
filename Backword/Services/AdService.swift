@@ -78,7 +78,8 @@ final class AdService: NSObject, ObservableObject {
     private var directInterstitialContext: DirectAdPresentationContext?
     private var rewardedAdContext: RewardedAdPresentationContext?
     private let interstitialGate: InterstitialPresentationGate
-    private let adConsentService: AdConsentPreparing
+    private let consentCoordinator: AdConsentCoordinator
+    let preGameInterstitialsEnabled: Bool
     private var startupTask: Task<Bool, Never>?
     private var adsHaveStarted = false
 
@@ -86,88 +87,71 @@ final class AdService: NSObject, ObservableObject {
 
     init(
         interstitialGate: InterstitialPresentationGate = InterstitialPresentationGate(userDefaults: .standard),
-        adConsentService: AdConsentPreparing = GoogleAdConsentService()
+        adConsentService: AdConsentPreparing = GoogleAdConsentService(),
+        preGameInterstitialsEnabled: Bool = AdConfiguration.preGameInterstitialsEnabled
     ) {
         self.interstitialGate = interstitialGate
-        self.adConsentService = adConsentService
+        self.consentCoordinator = AdConsentCoordinator(consentService: adConsentService)
+        self.preGameInterstitialsEnabled = preGameInterstitialsEnabled
         super.init()
     }
 
     @discardableResult
     func prepareAdsIfNeeded() async -> Bool {
+        if let startupTask {
+            return await startupTask.value
+        }
+
         if adsHaveStarted {
             return true
         }
 
-        if let startupTask {
-            return await awaitStartupTask(startupTask)
-        }
-
         let task = Task { @MainActor [self] in
             adStartupDidComplete = false
-            guard await adConsentService.prepareForAds() else {
-                refreshPrivacyOptionsRequirement()
+            defer {
                 startupTask = nil
                 adStartupDidComplete = true
+            }
+            guard await consentCoordinator.prepareForAds() else {
+                refreshPrivacyOptionsRequirement()
                 return false
             }
             refreshPrivacyOptionsRequirement()
 
-            guard !adsHaveStarted else {
-                startupTask = nil
-                adStartupDidComplete = true
-                return true
-            }
-
             await MobileAds.shared.start()
             adsHaveStarted = true
-            startupTask = nil
 
-            await loadAd()
+            if preGameInterstitialsEnabled {
+                await loadAd()
+            }
             await loadRewardedAd()
-            adStartupDidComplete = true
             return true
         }
         startupTask = task
-        return await awaitStartupTask(task)
+        // Consent and ATT are user-paced; do not race their decisions against a timeout.
+        return await task.value
     }
 
-    func refreshPrivacyOptionsRequirement() {
-        isPrivacyOptionsRequired = adConsentService.isPrivacyOptionsRequired
-    }
-
-    func presentPrivacyOptionsForm() async {
-        await adConsentService.presentPrivacyOptionsForm()
+    func refreshConsentStatusIfNeeded() async {
+        await consentCoordinator.refreshStatusIfNeeded()
         refreshPrivacyOptionsRequirement()
     }
 
-    private func awaitStartupTask(_ task: Task<Bool, Never>) async -> Bool {
-        await withTaskGroup(of: Bool.self) { group in
-            group.addTask {
-                await task.value
-            }
-            group.addTask {
-                try? await Task.sleep(nanoseconds: 8_000_000_000)
-                return false
-            }
+    func refreshPrivacyOptionsRequirement() {
+        isPrivacyOptionsRequired = consentCoordinator.isPrivacyOptionsRequired
+    }
 
-            let result = await group.next() ?? false
-            group.cancelAll()
-
-            if !result {
-                task.cancel()
-                startupTask = nil
-                adStartupDidComplete = true
-            }
-
-            return result
-        }
+    func presentPrivacyOptionsForm() async {
+        await consentCoordinator.presentPrivacyOptionsForm()
+        refreshPrivacyOptionsRequirement()
     }
 
     // MARK: - Load
 
     @discardableResult
     func loadAd() async -> Bool {
+        guard preGameInterstitialsEnabled, adsHaveStarted else { return false }
+
         do {
             interstitial = try await InterstitialAd.load(
                 with: interstitialAdUnitID,
@@ -184,6 +168,8 @@ final class AdService: NSObject, ObservableObject {
     }
 
     func loadRewardedAd() async {
+        guard adsHaveStarted else { return }
+
         do {
             rewarded = try await RewardedAd.load(
                 with: rewardedAdUnitID,
@@ -213,6 +199,8 @@ final class AdService: NSObject, ObservableObject {
     /// Presents the interstitial ad from the top-most view controller.
     /// Silently no-ops if no ad is loaded or no suitable view controller is found.
     func showInterstitial() {
+        guard preGameInterstitialsEnabled else { return }
+
         #if DEBUG
         guard debugAdsEnabled else {
             logger.interstitialSkippedDebugDisabled()
@@ -247,6 +235,11 @@ final class AdService: NSObject, ObservableObject {
     /// Shows the interstitial at most once per calendar day for the given slot identifier.
     /// Subsequent calls on the same day are silently ignored.
     func showInterstitialOnce(for type: UserDefaultsKey, onDismiss: @escaping () -> Void) {
+        guard preGameInterstitialsEnabled else {
+            onDismiss()
+            return
+        }
+
         #if DEBUG
         guard debugAdsEnabled else {
             logger.interstitialSkippedDebugDisabled(for: type)
@@ -294,7 +287,11 @@ final class AdService: NSObject, ObservableObject {
     }
 
     func canShowInterstitialToday(for type: UserDefaultsKey, now: Date = Date()) -> Bool {
-        interstitialGate.shouldPresent(type: type, now: now)
+        preGameInterstitialsEnabled && interstitialGate.shouldPresent(type: type, now: now)
+    }
+
+    func shouldUsePreGameAdGate(isProUser: Bool, hasSeenRequiredOnboarding: Bool) -> Bool {
+        preGameInterstitialsEnabled && !isProUser && hasSeenRequiredOnboarding
     }
 
     func showRewardedAd(onComplete: @escaping @MainActor (RewardedAdResult) -> Void) {

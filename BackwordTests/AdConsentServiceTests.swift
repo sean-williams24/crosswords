@@ -4,6 +4,27 @@ import Testing
 
 @Suite("Ad consent startup")
 struct AdConsentServiceTests {
+    @Test("Launch refresh updates privacy choices without starting ads or prompting")
+    @MainActor
+    func launchRefreshIsSilent() async {
+        let consentService = FakeAdConsentService(
+            canRequestAds: false,
+            privacyOptionsRequirementStatus: .required
+        )
+        let adService = AdService(adConsentService: consentService)
+
+        await adService.refreshConsentStatusIfNeeded()
+        await adService.refreshConsentStatusIfNeeded()
+        await adService.loadRewardedAd()
+
+        #expect(consentService.updateCallCount == 1)
+        #expect(consentService.prepareCallCount == 0)
+        #expect(consentService.presentPrivacyOptionsCallCount == 0)
+        #expect(adService.isPrivacyOptionsRequired)
+        #expect(!adService.adStartupDidComplete)
+        #expect(!adService.isPresentingFullScreenAd)
+    }
+
     @Test("Ad startup stops when consent preparation cannot request ads")
     @MainActor
     func adStartupStopsWhenConsentPreparationFails() async {
@@ -16,17 +37,39 @@ struct AdConsentServiceTests {
         let canRequestAds = await adService.prepareAdsIfNeeded()
 
         #expect(!canRequestAds)
+        #expect(consentService.updateCallCount == 1)
         #expect(consentService.prepareCallCount == 1)
         #expect(adService.isPrivacyOptionsRequired)
         #expect(adService.adStartupDidComplete)
         #expect(!adService.isPresentingFullScreenAd)
     }
 
+    @Test("Concurrent ad requests wait for the same consent interaction")
+    @MainActor
+    func concurrentAdRequestsShareConsentPreparation() async {
+        let consentService = FakeAdConsentService(canRequestAds: false, pausesPreparation: true)
+        let adService = AdService(adConsentService: consentService)
+        let firstRequest = Task { await adService.prepareAdsIfNeeded() }
+        await consentService.waitForPreparationToStart()
+
+        let secondRequest = Task { await adService.prepareAdsIfNeeded() }
+        await Task.yield()
+        #expect(consentService.prepareCallCount == 1)
+        #expect(!adService.adStartupDidComplete)
+
+        consentService.finishPreparation()
+        #expect(!(await firstRequest.value))
+        #expect(!(await secondRequest.value))
+        #expect(consentService.updateCallCount == 1)
+        #expect(consentService.prepareCallCount == 1)
+        #expect(adService.adStartupDidComplete)
+    }
+
     @Test("Interstitial gate continues when consent startup is not ready")
     @MainActor
     func interstitialGateContinuesWhenConsentStartupIsNotReady() {
         let consentService = FakeAdConsentService(canRequestAds: false)
-        let adService = AdService(adConsentService: consentService)
+        let adService = AdService(adConsentService: consentService, preGameInterstitialsEnabled: true)
         var didContinue = false
 
         adService.showInterstitialOnce(for: .dailyPuzzleOpen) {
@@ -121,24 +164,51 @@ struct AdConsentServiceTests {
 @MainActor
 private final class FakeAdConsentService: AdConsentPreparing {
     private let canRequestAds: Bool
+    private let pausesPreparation: Bool
+    private var preparationStartedContinuation: CheckedContinuation<Void, Never>?
+    private var preparationContinuations: [CheckedContinuation<Void, Never>] = []
     let privacyOptionsRequirementStatus: AdPrivacyOptionsRequirementStatus
     private(set) var prepareCallCount = 0
+    private(set) var updateCallCount = 0
     private(set) var presentPrivacyOptionsCallCount = 0
 
     init(
         canRequestAds: Bool,
-        privacyOptionsRequirementStatus: AdPrivacyOptionsRequirementStatus = .notRequired
+        privacyOptionsRequirementStatus: AdPrivacyOptionsRequirementStatus = .notRequired,
+        pausesPreparation: Bool = false
     ) {
         self.canRequestAds = canRequestAds
         self.privacyOptionsRequirementStatus = privacyOptionsRequirementStatus
+        self.pausesPreparation = pausesPreparation
+    }
+
+    func updateConsentInfo() async -> Bool {
+        updateCallCount += 1
+        return true
     }
 
     func prepareForAds() async -> Bool {
         prepareCallCount += 1
+        preparationStartedContinuation?.resume()
+        preparationStartedContinuation = nil
+        if pausesPreparation {
+            await withCheckedContinuation { preparationContinuations.append($0) }
+        }
         return canRequestAds
     }
 
     func presentPrivacyOptionsForm() async {
         presentPrivacyOptionsCallCount += 1
+    }
+
+    func waitForPreparationToStart() async {
+        guard prepareCallCount == 0 else { return }
+        await withCheckedContinuation { preparationStartedContinuation = $0 }
+    }
+
+    func finishPreparation() {
+        let continuations = preparationContinuations
+        preparationContinuations.removeAll()
+        continuations.forEach { $0.resume() }
     }
 }

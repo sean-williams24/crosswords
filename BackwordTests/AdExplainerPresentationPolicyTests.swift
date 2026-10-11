@@ -8,7 +8,8 @@ struct AdExplainerPresentationPolicyTests {
         #expect(AdExplainerPresentationPolicy.shouldShow(
             isProUser: false,
             hasDismissedExplainer: false,
-            isInterstitialEligibleToday: true
+            isInterstitialEligibleToday: true,
+            preGameInterstitialsEnabled: true
         ))
     }
 
@@ -17,7 +18,8 @@ struct AdExplainerPresentationPolicyTests {
         #expect(!AdExplainerPresentationPolicy.shouldShow(
             isProUser: true,
             hasDismissedExplainer: false,
-            isInterstitialEligibleToday: true
+            isInterstitialEligibleToday: true,
+            preGameInterstitialsEnabled: true
         ))
     }
 
@@ -26,7 +28,8 @@ struct AdExplainerPresentationPolicyTests {
         #expect(!AdExplainerPresentationPolicy.shouldShow(
             isProUser: false,
             hasDismissedExplainer: true,
-            isInterstitialEligibleToday: true
+            isInterstitialEligibleToday: true,
+            preGameInterstitialsEnabled: true
         ))
     }
 
@@ -35,7 +38,8 @@ struct AdExplainerPresentationPolicyTests {
         #expect(!AdExplainerPresentationPolicy.shouldShow(
             isProUser: false,
             hasDismissedExplainer: false,
-            isInterstitialEligibleToday: false
+            isInterstitialEligibleToday: false,
+            preGameInterstitialsEnabled: true
         ))
     }
 }

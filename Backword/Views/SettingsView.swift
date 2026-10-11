@@ -43,7 +43,7 @@ struct SettingsView: View {
                         .textCase(nil)
                 } footer: {
                     if SettingsSubscribeFooterVisibility.shouldShow(isProUser: storeService.isProUser) {
-                        Text("Subscribe to remove ads, access weekly crossword and all archive games.")
+                        Text(ProAdBenefitsContent(preGameInterstitialsEnabled: adService.preGameInterstitialsEnabled).settingsFooter)
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
                     }
@@ -87,18 +87,22 @@ struct SettingsView: View {
                         .foregroundColor(.appTextSecondary)
                 }
 
-                Section {
-                    adExplanationRow
-                } header: {
-                    Text("ADVERTS")
-                        .font(AppFont.clueLabel(12))
-                        .foregroundColor(.appAccent)
-                        .tracking(2)
-                        .textCase(nil)
-                } footer: {
-                    Text("When enabled, we explain full-screen adverts before showing one for a daily game.")
-                        .font(AppFont.caption())
-                        .foregroundColor(.appTextSecondary)
+                if AdExplainerPresentationPolicy.shouldOfferExplanationSetting(
+                    preGameInterstitialsEnabled: adService.preGameInterstitialsEnabled
+                ) {
+                    Section {
+                        adExplanationRow
+                    } header: {
+                        Text("ADVERTS")
+                            .font(AppFont.clueLabel(12))
+                            .foregroundColor(.appAccent)
+                            .tracking(2)
+                            .textCase(nil)
+                    } footer: {
+                        Text("When enabled, we explain full-screen adverts before showing one for a daily game.")
+                            .font(AppFont.caption())
+                            .foregroundColor(.appTextSecondary)
+                    }
                 }
 
                 Section {

@@ -11,7 +11,7 @@ struct AdFreeExperienceButtonContent: Equatable {
     }
 
     static let home = AdFreeExperienceButtonContent(
-        title: "Ad-free experience",
+        title: ProAdBenefitsContent().homeTitle,
         detail: "Archive access",
         subtitle: "Go Pro",
         systemImage: "sparkles"
