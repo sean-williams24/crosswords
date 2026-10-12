@@ -13,25 +13,26 @@ struct HomeGameCardLayoutTests {
     @Test("Normal game titles stay centred while header badges and footer keep the compact height",
           arguments: [CGFloat(180), 280, 600])
     func compactGameStates(width: CGFloat) {
-        let states: [[CGFloat]] = [
-            [30, 0, 28], // Anagram and Midword before completion.
-            [32, 0, 32], // Status, score, issue, and streak present.
-            [36, 32, 32], // Backword logo, streak, and footer.
-            [38, 32, 32] // Crossword title, dimensions with streak, and footer.
+        let states: [(identity: CGFloat, header: CGFloat, details: CGFloat, spacing: CGFloat)] = [
+            (30, 0, 28, 8), // Anagram before completion.
+            (AppLayout.midwordHomeCardLogoHeight, 32, 32, 8),
+            (AppLayout.homeCardLogoHeight, 32, 32, 4),
+            (38, 32, 32, 8) // Crossword title and footer.
         ]
         for heights in states {
             for minimumHeight: CGFloat in [120, 170] {
                 let frames = HomeGameCardLayout.frames(
                     width: width, minimumHeight: minimumHeight,
-                    heights: [.identity: heights[0], .header: heights[1], .details: heights[2]], spacing: 8
+                    heights: [.identity: heights.identity, .header: heights.header, .details: heights.details],
+                    spacing: heights.spacing
                 )
                 #expect(frames.size.height == minimumHeight)
                 #expect(frames.identity.midY == frames.size.height / 2)
                 #expect(frames.identity.midX == width / 2)
                 #expect(frames.details.maxY == minimumHeight)
-                #expect(frames.identity.maxY + 8 <= frames.details.minY)
-                if heights[1] > 0 {
-                    #expect(frames.header.maxY + 8 <= frames.identity.minY)
+                #expect(frames.identity.maxY + heights.spacing <= frames.details.minY)
+                if heights.header > 0 {
+                    #expect(frames.header.maxY + heights.spacing <= frames.identity.minY)
                 }
             }
         }
@@ -41,15 +42,15 @@ struct HomeGameCardLayoutTests {
     func completedBackword() {
         let frames = HomeGameCardLayout.frames(
             width: 280, minimumHeight: 120,
-            heights: [.header: 32, .identity: 36, .accessory: 32, .details: 32],
-            spacing: 8, identityPosition: .top
+            heights: [.header: 32, .identity: AppLayout.homeCardLogoHeight, .accessory: AppLayout.homeCardLetterCellSize, .details: 32],
+            spacing: 4, identityPosition: .top
         )
         #expect(frames.size.height == 120)
         #expect(frames.identity.minY == 0)
         #expect(frames.header.minY == 0)
-        #expect(frames.accessory.minY == 44)
+        #expect(frames.accessory.minY == AppLayout.homeCardLogoHeight + 4)
         #expect(frames.details.maxY == 120)
-        #expect(frames.accessory.maxY + 8 <= frames.details.minY)
+        #expect(frames.accessory.maxY + 4 <= frames.details.minY)
     }
 
     @MainActor
@@ -167,7 +168,7 @@ struct HomeGameCardLayoutTests {
     @Test("Shared card content keeps plain logos, crossword groups, and completed games compact")
     func sharedContent() {
         let plain = HomeGameCardContent(minimumHeight: 144) {
-            Color.clear.frame(height: 30)
+            Color.clear.frame(height: AppLayout.midwordHomeCardLogoHeight)
         } details: {
             Color.clear.frame(height: 28)
         }
@@ -181,8 +182,8 @@ struct HomeGameCardLayoutTests {
         } header: {
             Color.clear.frame(height: 28)
         }
-        let completed = HomeGameCardContent(minimumHeight: 144, identityPosition: .top) {
-            Color.clear.frame(height: 36)
+        let completed = HomeGameCardContent(minimumHeight: 144, identityPosition: .top, spacing: 4) {
+            Color.clear.frame(height: AppLayout.homeCardLogoHeight)
         } details: {
             Color.clear.frame(height: 32)
         } accessory: {

@@ -454,8 +454,11 @@ describe("web home dashboard", () => {
     }
     expect(styles).toContain(".weekly-card__details:has(.home-game-card__score) > .weekly-card__status");
     expect(styles).toContain("grid-row: 2;");
-    expect(styles).toMatch(/\.home-game-card__logo\s*\{[^}]*height:\s*36px;/);
-    expect(midwordStyles).toMatch(/\.midword-home-card__identity img\s*\{[^}]*height:\s*30px;/);
+    const backwordLogoHeight = nativeTheme.match(/homeCardLogoHeight: CGFloat = (\d+)/)![1];
+    const midwordLogoHeight = nativeTheme.match(/midwordHomeCardLogoHeight: CGFloat = (\d+)/)![1];
+    expect(styles).toMatch(new RegExp(`\\.home-game-card__logo\\s*\\{[^}]*height:\\s*${backwordLogoHeight}px;`));
+    expect(styles).toMatch(/\.home-game-card--backword\s*\{[^}]*row-gap:\s*4px;/);
+    expect(midwordStyles).toMatch(new RegExp(`\\.midword-home-card__identity img\\s*\\{[^}]*height:\\s*${midwordLogoHeight}px;`));
   });
 
   it("matches the iOS light home-card surfaces", () => {

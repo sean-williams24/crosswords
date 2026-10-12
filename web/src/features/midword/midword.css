@@ -172,7 +172,7 @@ html[data-theme="dark"] .midword-header h1::after {
 .home-game-card--midword { display: grid; padding: 12px 18px; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; border-radius: 12px; color: var(--midword-home-foreground); background: var(--midword-accent); }
 .midword-home-card__identity { display: flex; min-width: 0; flex-direction: column; gap: 6px; }
 .midword-home-card__identity { grid-area: identity; align-self: center; align-items: center; justify-content: center; text-align: center; }
-.midword-home-card__identity img { width: auto; max-width: 100%; height: 30px; object-fit: contain; }
+.midword-home-card__identity img { width: auto; max-width: 100%; height: 40px; object-fit: contain; }
 .home-game-card--midword .home-game-card__issue { color: var(--midword-home-foreground); opacity: .84; }
 .home-game-card--midword .home-game-card__streak { color: var(--midword-home-foreground); background: color-mix(in srgb, var(--midword-home-foreground) 12%, transparent); }
 .home-game-card--midword .home-status { border: 0; color: var(--midword-home-foreground); background: color-mix(in srgb, var(--midword-home-foreground) 12%, transparent); }

@@ -164,7 +164,8 @@ struct AppLayout {
     static let gridSpacing: CGFloat = 2
     static let cellCornerRadius: CGFloat = 2
     static let cardCornerRadius: CGFloat = 12
-    static let homeCardLogoHeight: CGFloat = 36
+    static let homeCardLogoHeight: CGFloat = 56
+    static let midwordHomeCardLogoHeight: CGFloat = 40
     static let homeCardLetterCellSize: CGFloat = 32
     static let cardHeightSmall: CGFloat = 144
     static let cardHeightLarge: CGFloat = 194

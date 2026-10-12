@@ -47,7 +47,7 @@ struct MidwordCard: View {
         Image("MidwordLogoLight")
             .resizable()
             .scaledToFit()
-            .frame(height: 30)
+            .frame(height: AppLayout.midwordHomeCardLogoHeight)
     }
 
     @ViewBuilder
