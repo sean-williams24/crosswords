@@ -1,3 +1,4 @@
+import { HomeGameStreak } from "../home/HomeGameStreak";
 import { Link } from "react-router-dom";
 import { DashboardStatusLabel } from "../home/DashboardStatusLabel";
 import { HomeGameIssueNumber } from "../home/HomeGameIssueNumber";
@@ -8,7 +9,7 @@ export function AnagramHomeCard({ issueNumber, status, score, streak }: {
   issueNumber: number | null; status: DashboardStatus; score: number | null; streak: number;
 }) {
   return <Link aria-label={issueNumber === null ? "Anagram" : `Anagram, issue #${issueNumber}`} className="home-game-card home-game-card--anagram" to="/anagram">
-    {streak > 0 ? <span className="home-game-card__streak" aria-label={`${streak}-day streak`}>🔥 {streak}</span> : null}
+    <HomeGameStreak streak={streak} />
     <div className="anagram-home-card__identity"><strong>ANAGRAM</strong></div>
     <div className="anagram-home-card__details">
       {score !== null ? <div className="home-game-card__stats anagram-home-card__stats">

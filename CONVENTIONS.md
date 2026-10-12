@@ -529,13 +529,18 @@ including when larger content needs extra space; loading reserves all six
 positions. The Anagram card stays present while its issue number is unavailable.
 At narrow mobile widths the cards stack in the same order. The single Archive
 card opens all game archives, using the existing Pro upgrade route when needed;
-individual game archive buttons are removed. Word of the Day follows the grid.
+individual game archive buttons are removed. Its centred title and icon have
+"Unlock the full archive for all five games" beneath them, also exposed as the
+link's accessible description. Word of the Day follows the grid.
 
 On web and iOS, each game's main logo or title is centred horizontally and
 vertically within its Home card. Completed iOS Backword keeps its logo at the
 top centre above the revealed word, matching the compact completed layout.
 All five game cards show their own positive current streak at the top-right;
-zero streaks are hidden. Backword and Midword use the same account-scoped release-day
+zero streaks are hidden. Web badges share `HomeGameStreak`: a compact 26px
+pill, bold 11px count, orange monochrome SVG flame, and subtle tinted background.
+They have no outline in either theme; game-specific count colours remain legible
+on Anagram, Midword, and Pro cards. Backword and Midword use the same account-scoped release-day
 statistics as their Stats screens; weekly crossword counts consecutive release
 weeks. Points stay at the bottom-left,
 status at the bottom centre, and issue numbers at the bottom-right. The top
@@ -581,13 +586,14 @@ content in either appearance. Its background follows the system colour scheme:
 Light Mode uses a flat, opaque pastel lavender, while Dark Mode keeps the
 existing darker purple. The card has no outline in either appearance.
 
-The Light Mode Backword `New` status label and streak badge use the same
+The iOS Light Mode Backword `New` status label and streak badge use the same
 background as the `In Progress` label for contrast against the pastel card.
 They have a one-point white outline in Light Mode; other Backword statuses
 retain the shared status-label background.
 
-The same Light Mode white outline applies to the Backword success badge and
-the status and streak badges on both crossword home cards.
+The same iOS Light Mode white outline applies to the Backword success badge
+and the status and streak badges on both crossword home cards. Web status
+badges retain their outline; web streak pills use the borderless style above.
 
 Won Backword cells on the Light Mode home card use a white surface fill with
 the Backword game's Correct-green outline and dark primary text. Dark Mode

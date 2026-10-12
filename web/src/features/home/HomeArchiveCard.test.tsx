@@ -15,6 +15,10 @@ describe("HomeArchiveCard", () => {
     expect(card).toHaveAttribute("href", isPro ? "/archive" : "/pro?return_to=%2Farchive");
     expect(card).toHaveClass("home-game-card", "home-game-card--archive");
     expect(card.querySelector(".home-game-card__identity")).toHaveTextContent("Archive");
+    const description = screen.getByText("Unlock the full archive for all five games");
+    expect(description.previousElementSibling).toHaveClass("home-archive-card__title");
+    expect(description.parentElement).toHaveClass("home-game-card__identity");
+    expect(card).toHaveAccessibleDescription("Unlock the full archive for all five games");
     expect(card.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
   });
 });

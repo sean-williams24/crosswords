@@ -1688,10 +1688,11 @@ body {
 .home-game-card:focus-visible::after { border-color: var(--app-text-primary); }
 .home-game-card--backword { row-gap: 4px; background: linear-gradient(150deg, #34417c, #29356d); }
 .home-game-card--crossword { row-gap: 0; background: linear-gradient(145deg, #30445e, #24364d); }
-.home-game-card--archive { background: var(--app-surface); }
+.home-game-card--archive { row-gap: 0; background: var(--app-surface); }
 .home-game-card__identity { position: relative; z-index: 1; display: flex; min-width: 0; flex-direction: column; }
 .home-game-card__identity { grid-area: identity; align-self: center; align-items: center; justify-content: center; gap: 6px; text-align: center; }
-.home-archive-card__identity { flex-direction: row; gap: 10px; }
+.home-archive-card__title { display: flex; align-items: center; gap: 10px; }
+.home-archive-card__description { max-width: 240px; margin: 0; color: var(--app-text-secondary); font-size: 12px; line-height: 16px; text-wrap: balance; }
 .home-archive-card__identity svg { flex: none; width: 24px; height: 24px; color: var(--app-accent); }
 .home-game-card--archive .home-game-card__title { color: var(--app-text-primary); }
 .home-game-card__details,
@@ -1723,7 +1724,9 @@ body {
 .home-game-card__score strong { color: var(--app-accent); font-size: 24px; font-weight: 700; }
 .home-game-card__score.is-perfect strong { color: var(--app-correct); }
 .home-game-card__score small { color: var(--app-text-secondary); font-size: 12px; font-weight: 700; }
-.home-game-card__streak { grid-area: streak; justify-self: end; align-self: start; display: inline-flex; min-height: 32px; padding: 6px 10px; align-items: center; border-radius: 12px; color: var(--app-text-primary); background: rgb(26 26 26 / 52%); font-family: "Outfit", sans-serif; font-size: 12px; font-weight: 700; }
+.home-game-card__streak { grid-area: streak; justify-self: end; align-self: start; display: inline-flex; min-height: 26px; padding: 4px 9px; align-items: center; gap: 4px; border: 0; border-radius: 999px; color: #eeeeee; background: rgb(99 164 222 / 12%); font-family: "Outfit", sans-serif; font-size: 11px; font-weight: 900; line-height: 16px; white-space: nowrap; }
+.home-game-card__streak-icon { flex: none; width: 13px; height: 15px; color: #ff9f0a; }
+.weekly-card .home-game-card__streak { color: var(--app-text-primary); background: rgb(var(--app-primary-rgb) / 10%); }
 
 .home-status {
   display: inline-flex;
@@ -2134,7 +2137,6 @@ html[data-theme="light"] .home-game-card--crossword .home-game-card__stats { col
 html[data-theme="light"] .home-game-card--backword .home-game-card__score small,
 html[data-theme="light"] .home-game-card--crossword .home-game-card__score small { color: rgb(255 255 255 / 58%); }
 html[data-theme="light"] .home-game-card--backword .home-game-card__score.is-perfect strong { color: #c6f6b5; }
-html[data-theme="light"] .home-game-card__streak { border: 1px solid #fff; color: #eeeeee; background: rgb(26 26 26 / 52%); }
 
 html[data-theme="light"] .weekly-card {
   border-color: #d9a640;
@@ -3369,9 +3371,6 @@ html[data-theme="light"] {
 }
 
 .home-game-card--anagram .home-game-card__streak {
-  min-height: 24px;
-  border: 0;
-  border-radius: 12px;
   color: var(--anagram-on-accent);
   background: color-mix(in srgb, var(--anagram-on-accent) 12%, transparent);
   font-weight: 900;

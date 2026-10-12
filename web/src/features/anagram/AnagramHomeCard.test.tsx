@@ -34,9 +34,9 @@ describe("AnagramHomeCard", () => {
     expect(card.querySelector(".anagram-home-card__details")?.querySelector(".home-status"))
       .toBe(within(card).getByLabelText("Status: Solved"));
     expect(within(stats as HTMLElement).getByText("4")).toBeInTheDocument();
-    expect(within(stats as HTMLElement).queryByText("🔥 3")).not.toBeInTheDocument();
+    expect(within(stats as HTMLElement).queryByLabelText("3-day streak")).not.toBeInTheDocument();
     if (streak > 0) {
-      expect(within(card).getByText(`🔥 ${streak}`).parentElement).toBe(card);
+      expect(within(card).getByLabelText(`${streak}-day streak`).parentElement).toBe(card);
     } else {
       expect(card.querySelector(".home-game-card__streak")).not.toBeInTheDocument();
     }

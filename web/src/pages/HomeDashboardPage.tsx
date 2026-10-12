@@ -16,6 +16,7 @@ import { HomeProfileRatingLink } from "../features/home/HomeProfileRatingLink";
 import { crosswordDashboardStatus, weeklyCrosswordDashboardStatus } from "../features/crossword/engine";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { DailyGameCard, HomeGameScore } from "../features/home/DailyGameCard";
+import { HomeGameStreak } from "../features/home/HomeGameStreak";
 import { HomeGameIssueNumber } from "../features/home/HomeGameIssueNumber";
 import { useHomeGameIssueNumbers } from "../features/home/useHomeGameIssueNumbers";
 import { WordOfTheDayCard, type WordOfTheDayLoadState } from "../features/wotd/components/WordOfTheDayCard";
@@ -212,7 +213,7 @@ export function HomeDashboardPage() {
                 <div className="home-dashboard__game">
                   {entitlement?.isPro ? (
                     <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/weekly-crossword">
-                      {weeklyCrosswordStatus.streak > 0 ? <span className="home-game-card__streak" aria-label={`${weeklyCrosswordStatus.streak}-week streak`}>🔥 {weeklyCrosswordStatus.streak}</span> : null}
+                      <HomeGameStreak streak={weeklyCrosswordStatus.streak} unit="week" />
                       <span className="weekly-card__identity">
                         <span className="weekly-card__title">PRO CROSSWORD</span>
                         <small className="weekly-card__description">13×13</small>
@@ -225,7 +226,7 @@ export function HomeDashboardPage() {
                     </Link>
                   ) : (
                     <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/pro?return_to=%2Fweekly-crossword">
-                      {weeklyCrosswordStatus.streak > 0 ? <span className="home-game-card__streak" aria-label={`${weeklyCrosswordStatus.streak}-week streak`}>🔥 {weeklyCrosswordStatus.streak}</span> : null}
+                      <HomeGameStreak streak={weeklyCrosswordStatus.streak} unit="week" />
                       <span className="weekly-card__identity">
                         <span className="weekly-card__title">PRO CROSSWORD</span>
                         <small className="weekly-card__description">13×13</small>

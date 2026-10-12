@@ -112,8 +112,8 @@ describe("web home dashboard", () => {
     const archiveDate = localDateOffset(today, -1);
     midwordStorage.saveProgress({ ...emptyMidwordProgress(archiveDate), guesses: ["NOTE"], outcome: "won", completedAt: new Date().toISOString(), releaseDateScore: 0 });
     const { container } = renderDashboard();
-    expect(container.querySelector(".home-game-card--backword > .home-game-card__streak")).toHaveTextContent("🔥 2");
-    expect(container.querySelector(".home-game-card--midword > .home-game-card__streak")).toHaveTextContent("🔥 1");
+    expect(container.querySelector(".home-game-card--backword > .home-game-card__streak")).toHaveTextContent("2");
+    expect(container.querySelector(".home-game-card--midword > .home-game-card__streak")).toHaveTextContent("1");
   });
 
   it("syncs every account game after sign-in and refreshes the home cards", async () => {
@@ -154,7 +154,7 @@ describe("web home dashboard", () => {
     ]);
     expect(await screen.findByLabelText("Status: 2 guesses")).toBeInTheDocument();
     const backwordCard = screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/backword")!;
-    expect(backwordCard.querySelector(":scope > .home-game-card__streak")).toHaveTextContent("🔥 1");
+    expect(backwordCard.querySelector(":scope > .home-game-card__streak")).toHaveTextContent("1");
   });
 
   it("animates the rating bar as a sync indicator until Home progress is refreshed", async () => {
@@ -474,6 +474,18 @@ describe("web home dashboard", () => {
     expect(midwordStyles).toMatch(new RegExp(`\\.midword-home-card__identity img\\s*\\{[^}]*height:\\s*${midwordLogoHeight}px;`));
   });
 
+  it("uses smaller iOS-style streak pills with a monochrome orange flame", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const streakRule = styles.match(/^\.home-game-card__streak\s*\{([^}]+)\}/m)![1];
+    expect(streakRule).toContain("min-height: 26px;");
+    expect(streakRule).toContain("padding: 4px 9px;");
+    expect(streakRule).toContain("border-radius: 999px;");
+    expect(streakRule).toContain("font-size: 11px;");
+    expect(streakRule).toContain("background: rgb(99 164 222 / 12%);");
+    expect(styles).toMatch(/\.home-game-card__streak-icon\s*\{[^}]*color:\s*#ff9f0a;/);
+    expect(styles).not.toMatch(/html\[data-theme="light"\] \.home-game-card__streak\s*\{[^}]*border:\s*1px/);
+  });
+
   it("matches the iOS light home-card surfaces", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
@@ -500,7 +512,7 @@ describe("web home dashboard", () => {
     expect(styles).toContain('--anagram-home-card-accent: color(display-p3 1 0.604 0.331);');
     expect(styles).toMatch(/\.home-game-card--anagram\s*\{[^}]*padding:\s*12px 18px[^}]*border-radius:\s*12px[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*var\(--anagram-home-card-accent\)/);
     expect(styles).toMatch(/\.home-game-card--anagram \.home-status\s*\{[^}]*border:\s*0[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*color-mix\(in srgb, var\(--anagram-on-accent\) 12%, transparent\)/);
-    expect(styles).toMatch(/\.home-game-card--anagram \.home-game-card__streak\s*\{[^}]*border-radius:\s*12px[^}]*color:\s*var\(--anagram-on-accent\)/);
+    expect(styles).toMatch(/\.home-game-card--anagram \.home-game-card__streak\s*\{[^}]*color:\s*var\(--anagram-on-accent\)/);
     expect(styles).toMatch(/\.home-game-card__stats\s*\{[^}]*display:\s*contents;/);
     expect(styles).toMatch(/\.anagram-home-card__identity strong\s*\{[^}]*font-size:\s*clamp\(17px, 2vw, 24px\)[^}]*font-weight:\s*900/);
     expect(styles).toMatch(/@media \(max-width: 430px\)\s*\{\s*\.anagram-home-card__identity strong\s*\{[^}]*font-size:\s*24px;/);

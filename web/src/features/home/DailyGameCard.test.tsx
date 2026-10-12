@@ -58,8 +58,8 @@ describe("DailyGameCard", () => {
       const details = card.querySelector(".home-game-card__details")!;
       expect(details.firstElementChild).toHaveClass("home-game-card__stats");
       expect(within(details.firstElementChild as HTMLElement).getByText("0")).toBeInTheDocument();
-      expect(within(details).queryByText("🔥 3")).not.toBeInTheDocument();
-      expect(within(card).getByText("🔥 3").parentElement).toBe(card);
+      expect(within(details).queryByLabelText("3-day streak")).not.toBeInTheDocument();
+      expect(within(card).getByLabelText("3-day streak").parentElement).toBe(card);
       expect(details.querySelector(".home-status")).toBe(screen.getByLabelText("Status: In Progress"));
     }
   );
@@ -87,7 +87,7 @@ describe("DailyGameCard", () => {
     const card = screen.getByRole("link", { name: "Quick Crossword" });
 
     expect(card.querySelector(".home-game-card__score")).not.toBeInTheDocument();
-    expect(within(card).getByText("🔥 1")).toHaveClass("home-game-card__streak");
+    expect(within(card).getByLabelText("1-day streak")).toHaveClass("home-game-card__streak");
     expect(within(card).getByLabelText("Status: New")).toBeInTheDocument();
   });
 });

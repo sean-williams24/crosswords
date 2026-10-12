@@ -37,7 +37,7 @@ describe("MidwordHomeCard", () => {
     const card = screen.getByRole("link", { name: "Midword, issue #11" });
     const badge = within(card).queryByLabelText(`${streak}-day streak`);
     if (streak > 0) {
-      expect(badge).toHaveTextContent(`🔥 ${streak}`);
+      expect(badge).toHaveTextContent(String(streak));
       expect(badge?.parentElement).toBe(card);
     } else {
       expect(badge).not.toBeInTheDocument();
