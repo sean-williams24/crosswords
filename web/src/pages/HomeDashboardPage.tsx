@@ -207,24 +207,27 @@ export function HomeDashboardPage() {
                 <div className="home-dashboard__game">
                   {entitlement?.isPro ? (
                     <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/weekly-crossword">
+                      {weeklyCrosswordStatus.streak ? <span className="home-game-card__streak">🔥 {weeklyCrosswordStatus.streak}</span> : null}
                       <span className="weekly-card__identity">
                         <span className="weekly-card__title">PRO CROSSWORD</span>
-                        <small>13×13</small>
-                        <HomeGameIssueNumber className="weekly-card__issue" issueNumber={issueNumbers.weeklyCrossword} />
+                        <small className="weekly-card__description">13×13</small>
                       </span>
                       <span className="weekly-card__details">
+                        {weeklyCrosswordStatus.score !== null ? <span className="home-game-card__stats weekly-card__stats">{weeklyCrosswordStatus.score !== null ? <HomeGameScore score={weeklyCrosswordStatus.score} /> : null}</span> : null}
                         <span className="weekly-card__status"><span className={`home-status home-status--${weeklyCrosswordStatus.tone}`}>{weeklyCrosswordStatus.label}</span></span>
-                        {weeklyCrosswordStatus.score !== null || weeklyCrosswordStatus.streak ? <span className="home-game-card__stats weekly-card__stats">{weeklyCrosswordStatus.score !== null ? <HomeGameScore score={weeklyCrosswordStatus.score} /> : null}{weeklyCrosswordStatus.streak ? <span className="home-game-card__streak">🔥 {weeklyCrosswordStatus.streak}</span> : null}</span> : null}
+                        <HomeGameIssueNumber className="weekly-card__issue" issueNumber={issueNumbers.weeklyCrossword} />
                       </span>
                     </Link>
                   ) : (
                     <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/pro?return_to=%2Fweekly-crossword">
                       <span className="weekly-card__identity">
                         <span className="weekly-card__title">PRO CROSSWORD</span>
-                        <small>13×13</small>
+                        <small className="weekly-card__description">13×13</small>
+                      </span>
+                      <span className="weekly-card__details">
+                        <span className="weekly-card__status"><span className="home-status">Pro Only</span></span>
                         <HomeGameIssueNumber className="weekly-card__issue" issueNumber={issueNumbers.weeklyCrossword} />
                       </span>
-                      <span className="weekly-card__details" />
                     </Link>
                   )}
                   <HomeArchiveLink ariaLabel="Pro Crossword Archive" to="/archive?game=weekly" />

@@ -320,9 +320,10 @@ it remains visible in either appearance. Inactive cells and unused attempts
 have appearance-specific borders. The green accent and black on-accent text
 are shared across appearances; exported share cards still resolve in Dark Mode.
 
-The Midword Home card matches Anagram's layout and typography: title and issue
-number at the top-left, status and completed score at the bottom-right, with
-the same spacing, padding, and stacked layout above Large Dynamic Type. It
+The Midword Home card matches Anagram's layout and typography: its logo is
+centred horizontally and vertically, its issue number stays at the bottom-right,
+status stays at the bottom centre, and completed score stays at the bottom-left,
+with the same spacing and padding. It
 uses a dedicated semantic foreground: white text and a translucent white status
 badge in Light Mode, retaining the existing black foreground in Dark Mode.
 Gameplay controls continue to use their separate on-accent colour.
@@ -522,15 +523,39 @@ or date labels; their own content identifies each game.
 The Pro Crossword card fills its grid column rather than keeping a fixed iPad
 width.
 
-Quick Crossword follows the Anagram and Midword card layout: its two-line title,
-`9×9` description, and issue number sit at the top-left, with status, score, and
-streak grouped at the bottom-right. It shares their padding and spacing and
-stacks the two regions above Large Dynamic Type, retaining left/right alignment.
+On web and iOS, each game's main logo or title is centred horizontally and
+vertically within its Home card. Completed iOS Backword keeps its logo at the
+top centre above the revealed word, matching the compact completed layout.
+Existing streak badges stay at the top-right, points at the bottom-left,
+status at the bottom centre, and issue numbers at the bottom-right. The top
+badges and
+bottom footer stay independent of the centred branding; footer side regions
+reserve equal widths so badges do not shift the centred status.
+When a very narrow footer cannot fit, its side information moves above status.
+Pro-only and loading states use the same arrangement.
 
-Pro Crossword uses the same layout with its crowned two-line title, `13×13`
-description, and issue number at the top-left. Status (or the Pro Only prompt),
-score, and weekly streak sit at the bottom-right. Its gold gradient and border,
-Pro navigation, and non-Pro paywall behaviour are retained.
+Normal Home cards keep Anagram and Midword's compact height: 144 points on iPhone
+and 194 on iPad (144px on web). Larger accessibility text can grow them to prevent
+overlap. Quick Crossword's `9×9` and Pro Crossword's `13×13` sit beneath
+their titles in the same identity group, centred as one view within the card.
+Crossword groups use the available space between the top streak and bottom
+status without adding extra row gaps, retaining the compact card height.
+Backword's completed word stays below its top-centred logo. The iOS Backword Home logo uses
+36 points and letter cells use 32, so completed games fit the compact card.
+Letter spacing is balanced at title edges, and title lines contain no trailing spaces.
+The iOS layout identifies regions using layout values rather than array
+positions: SwiftUI can omit an `EmptyView` or an inactive conditional region
+during loading and previews. Absent regions measure as zero.
+
+Web cards and their loading placeholders use a 144px minimum height to match
+compact iOS cards; longer content can grow them. Backword uses a 36px logo height
+and Midword uses 30px on both platforms. The web Midword Home card uses the
+unchanged iOS `MidwordLogoLight` image (white MID and black WORD) in both themes,
+without a colour filter. iOS cards share `HomeGameCardContent`,
+`HomeGameCardHeader`, and `HomeGameCardFooter` for this arrangement.
+
+Pro Crossword retains its gold gradient and border, Pro navigation, and non-Pro
+paywall behaviour.
 
 Home shows the complete Word of the Day entry whenever the game cards use two
 columns. It switches to the compact card button and detail sheet at the same
@@ -929,7 +954,7 @@ Backword keeps its onboarding-first behaviour: the Backword ad gate is skipped u
 
 Daily and weekly crossword cards display summary scores from `HomeViewModel`, not by reading progress files directly in the view. Cards ask the view model to refresh saved `UserProgress` when they appear; scores fall back to the loaded puzzle's clue count if legacy progress has no `totalClues` metadata. Weekly cards use `UserStats.currentStreak(isWeekly: true)` for their streak display.
 
-The Backword card uses the same stats row shape, but its score is hidden until `BackwordProgress.isComplete` because Backword only awards points at the end of a game. In the completed state, the Backword status label is centered over the score/streak row at regular Dynamic Type sizes and falls back above that row for accessibility Dynamic Type sizes.
+The Backword card uses the same stats row shape, but its score is hidden until `BackwordProgress.isComplete` because Backword only awards points at the end of a game. Its status stays at the bottom centre before and after completion, with points at the bottom-left and streak at the top-right. When the footer cannot fit horizontally, points move above the centred status.
 
 Backword archive rows keep the guess-count status label after a win. On-time wins use the same solved gold as on-time crossword archive completions, while wins finished on a later local release date use the normal correct green. Only Backwords completed on their local release date contribute points or update Backword statistics; archive completions remain visible in progress but score zero.
 
@@ -1059,12 +1084,11 @@ with the controls 40 points above the bottom safe area. The header, timer,
 and answer scroll above them.
 The shared Anagram action button caps Dynamic Type at Large so Start and all
 five gameplay controls keep their full labels in the fixed-width button rows.
-The Anagram Home card uses a two-column layout: its title sits at the top-left
-with the issue number directly beneath it, while puzzle length, status, score,
-and streak group at the bottom-right. Dynamic Type sizes above Large stack
-those regions vertically while preserving their left/right alignment. The title
-scales within the available card width so neither the loaded card nor its
-placeholder widens the Home scroll content. The card
+The Anagram Home card centres its title horizontally and vertically, with the
+issue number independently at the bottom-right, streak at the top-right, status at
+the bottom centre, and score at the bottom-left. These regions stay in separate rows at every Dynamic Type
+size. The title scales within the available card width so neither the loaded
+card nor its placeholder widens the Home scroll content. The card
 uses a dedicated semantic background colour so Home can match the web card without
 changing the orange used by Anagram gameplay, stats, completion, archive, or
 sharing. Its default appearance matches the existing light card orange; its

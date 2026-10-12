@@ -120,13 +120,6 @@ struct HomeCardStreakLayoutTests {
         #expect(AppLayout.homeCardIssueNumberFontSize == 12)
     }
 
-    @Test("Anagram card stacks as soon as text grows beyond Large")
-    func anagramCardResponsiveLayout() {
-        #expect(!AnagramHomeCardLayout.usesStackedLayout(for: .large))
-        #expect(AnagramHomeCardLayout.usesStackedLayout(for: .xLarge))
-        #expect(AnagramHomeCardLayout.usesStackedLayout(for: .accessibility1))
-    }
-
     @Test("Backword card always uses its dark colour palette")
     func backwordCardUsesDarkAppearance() {
         #expect(BackwordAppearance.colorScheme == .dark)

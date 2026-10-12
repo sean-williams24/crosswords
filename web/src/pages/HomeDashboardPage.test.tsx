@@ -270,7 +270,7 @@ describe("web home dashboard", () => {
     expect(styles).toContain("@media (min-width: 681px) and (max-width: 1200px) {");
     expect(styles).toContain(".home-dashboard__games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }");
     expect(styles).toContain(".home-dashboard__games-grid { grid-template-columns: 1fr; gap: 20px; }");
-    expect(styles).toMatch(/\.home-dashboard-loading-card--weekly\s*\{[^}]*height:\s*150px(?![^}]*margin-top)/);
+    expect(styles).toMatch(/\.home-dashboard-loading-card--weekly\s*\{[^}]*height:\s*144px(?![^}]*margin-top)/);
   });
 
   it("uses the Quick Crossword score treatment for earned Backword and Pro points", () => {
@@ -300,11 +300,18 @@ describe("web home dashboard", () => {
 
     const backwordCard = screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/backword");
     expect(backwordCard?.querySelector(".home-game-card__score")).toHaveTextContent("3/ 5");
+    expect(backwordCard?.querySelector(".home-game-card__details")?.querySelector(".home-status")).toHaveClass("home-status");
     const proCard = screen.getAllByRole("link", { name: /^Pro Crossword/ })
       .find((link) => link.getAttribute("href") === "/weekly-crossword")!;
     const proScore = proCard.querySelector(".weekly-card__stats .home-game-card__score");
     expect(proScore).toHaveTextContent("3/ 5");
     expect(proScore).toHaveClass("home-game-card__score");
+    expect(proCard.querySelector(".weekly-card__details")?.querySelector(".weekly-card__status")).toHaveClass("weekly-card__status");
+    expect(proCard.querySelector(".weekly-card__details")?.firstElementChild?.contains(proScore)).toBe(true);
+    expect(proCard.querySelector(".weekly-card__details > .weekly-card__issue")).toBeInTheDocument();
+    expect(proCard.querySelector(":scope > .home-game-card__streak")).toBeInTheDocument();
+    expect(proCard.querySelector(".weekly-card__identity > .weekly-card__description")).toHaveTextContent("13×13");
+    expect(proCard.querySelector(".weekly-card__details .home-game-card__streak")).not.toBeInTheDocument();
   });
 
   it("uses the menu upgrade treatment for the account link", () => {
@@ -339,39 +346,76 @@ describe("web home dashboard", () => {
     expect(styles).not.toMatch(/\.weekly-modal__hero\s*\{[^}]*\bbackground\s*:/);
   });
 
-  it("uses the Anagram identity and details layout across all game cards", () => {
+  it("centres every game brand independently of its footer issue number", () => {
     const { container } = renderDashboard();
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const midwordStyles = readFileSync(resolve(process.cwd(), "src/features/midword/midword.css"), "utf8");
 
-    const backwordCard = container.querySelector(".home-game-card--backword");
-    const crosswordCard = container.querySelector(".home-game-card--crossword");
-    const weeklyCard = container.querySelector(".weekly-card");
+    for (const [cardSelector, identitySelector] of [
+      [".home-game-card--backword", ".home-game-card__identity"],
+      [".home-game-card--crossword", ".home-game-card__identity"],
+      [".home-game-card--anagram", ".anagram-home-card__identity"],
+      [".home-game-card--midword", ".midword-home-card__identity"],
+      [".weekly-card", ".weekly-card__identity"]
+    ]) {
+      const card = container.querySelector(cardSelector)!;
+      expect(card.querySelector(".home-game-card__issue")).toBeInTheDocument();
+      expect(card.querySelector(`${identitySelector} .home-game-card__issue`)).not.toBeInTheDocument();
+      const identityRule = new RegExp(`${identitySelector.replace(".", "\\.")}\\s*\\{[^}]*align-items:\\s*center;[^}]*justify-content:\\s*center;`);
+      expect(styles + midwordStyles).toMatch(identityRule);
+    }
 
-    expect(backwordCard?.querySelector(".home-game-card__identity .home-game-card__logo")).toBeInTheDocument();
-    expect(backwordCard?.querySelector(".home-game-card__identity .home-game-card__issue")).toBeInTheDocument();
-    expect(backwordCard?.querySelector(".home-game-card__details .home-status")).toBeInTheDocument();
-    expect(crosswordCard?.querySelector(".home-game-card__identity .home-game-card__title")).toHaveTextContent("Quick Crossword");
-    expect(crosswordCard?.querySelector(".home-game-card__identity .home-game-card__description")).toHaveTextContent("9×9");
-    expect(crosswordCard?.querySelector(".home-game-card__details .home-status")).toBeInTheDocument();
-    expect(weeklyCard?.querySelector(".weekly-card__identity .weekly-card__title")).toHaveTextContent("PRO CROSSWORD");
-    expect(weeklyCard?.querySelector(".weekly-card__identity small")).toHaveTextContent("13×13");
-    expect(weeklyCard?.querySelector(".weekly-card__crown")).not.toBeInTheDocument();
-    expect(Array.from(weeklyCard?.querySelector(".weekly-card__identity")?.children ?? []).map((child) => child.className)).toEqual([
-      "weekly-card__title",
-      "",
-      "home-game-card__issue weekly-card__issue"
-    ]);
-    expect(styles).toMatch(/\.home-game-card\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*1fr 1fr;/);
-    expect(styles).toMatch(/\.home-game-card__identity\s*\{[^}]*align-items:\s*flex-start;[^}]*justify-content:\s*flex-start;/);
-    expect(styles).toMatch(/\.home-game-card__details\s*\{[^}]*align-items:\s*flex-end;[^}]*justify-content:\s*flex-end;/);
-    expect(styles).toMatch(/\.home-game-card__stats\s*\{[^}]*flex-direction:\s*row;[^}]*align-items:\s*center;[^}]*gap:\s*8px;/);
-    expect(styles).toContain(".home-game-card__stats--streak-only { margin-top: 4px; }");
-    expect(styles).toMatch(/\.home-game-card__title\s*\{[^}]*font-size:\s*clamp\(16px, 2vw, 16px\)/);
-    expect(styles).toMatch(/\.weekly-card__title\s*\{[^}]*font-size:\s*clamp\(16px, 2vw, 16px\)/);
-    expect(styles).toContain(".home-game-card--crossword .home-game-card__identity { padding-top: 4px; }");
-    expect(styles).toMatch(/\.weekly-card__identity\s*\{[^}]*padding-top:\s*4px;/);
-    expect(styles).toContain(".home-game-card--backword .home-game-card__logo { margin-bottom: -16px; transform: translateX(-16.3%); }");
-    expect(styles).toContain(".weekly-card__issue { color: rgb(214 190 135 / 70%); }");
+    expect(styles).toContain('grid-template-areas: ". . streak" "identity identity identity" "details details details";');
+    expect(styles).toMatch(/\.home-game-card__issue\s*\{[^}]*grid-column:\s*3;[^}]*grid-row:\s*1;[^}]*justify-self:\s*end;/);
+    expect(styles).toMatch(/\.midword-home-card__details\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*minmax\(0, 1fr\) auto minmax\(0, 1fr\);[^}]*align-items:\s*end;/);
+    expect(styles).not.toContain("transform: translateX(-16.3%)");
+    expect(container.querySelector(".weekly-card__identity > .weekly-card__description")).toHaveTextContent("13×13");
+    expect(container.querySelector(".weekly-card > .weekly-card__description")).toBeNull();
+    expect(container.querySelector(".weekly-card__description")?.previousElementSibling).toHaveClass("weekly-card__title");
+    expect(container.querySelector(".home-game-card--crossword .home-game-card__description")).toHaveTextContent("9×9");
+  });
+
+  it("centres branding between equal top and bottom spaces within compact cards", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    for (const selector of ["home-game-card", "weekly-card", "home-game-card--anagram"]) {
+      const rule = styles.match(new RegExp(`\\.${selector}\\s*\\{([^}]+)\\}`))![1];
+      expect(rule).toContain("grid-template-rows: minmax(32px, 1fr) auto minmax(32px, 1fr);");
+    }
+    expect(styles).toMatch(/\.home-game-card__issue\s*\{[^}]*align-self:\s*end;/);
+    expect(styles).toMatch(/\.midword-home-card__details\s*\{[^}]*align-self:\s*end;/);
+    expect(styles).not.toMatch(/\.home-game-card__description\s*\{[^}]*(?:grid-area|position):/);
+    expect(styles).not.toMatch(/\.weekly-card__description\s*\{[^}]*(?:grid-area|position):/);
+    expect(styles).toMatch(/\.home-game-card--crossword\s*\{[^}]*row-gap:\s*0;/);
+    expect(styles).toMatch(/\.weekly-card\s*\{[^}]*row-gap:\s*0;/);
+
+    for (const selector of ["home-game-card__title", "weekly-card__title", "anagram-home-card__identity strong"]) {
+      const rule = styles.match(new RegExp(`\\.${selector}\\s*\\{([^}]+)\\}`))![1];
+      const letterSpacing = rule.match(/letter-spacing:\s*([\d.]+em)/)![1];
+      expect(rule).toContain(`padding-left: ${letterSpacing};`);
+    }
+  });
+
+  it("keeps scores at the bottom left, status at the centre, and streaks at the top right", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const midwordStyles = readFileSync(resolve(process.cwd(), "src/features/midword/midword.css"), "utf8");
+    const nativeTheme = readFileSync(resolve(process.cwd(), "../Backword/Theme/AppTheme.swift"), "utf8");
+    const nativeHeight = nativeTheme.match(/cardHeightSmall: CGFloat = (\d+)/)![1];
+
+    for (const selector of ["home-game-card", "weekly-card", "home-dashboard-loading-card"]) {
+      expect(styles).toMatch(new RegExp(`\\.${selector}\\s*\\{[^}]*min-height:\\s*${nativeHeight}px;`));
+    }
+    expect(styles).not.toMatch(/\.home-game-card\s*\{[^}]*min-height:\s*160px;/);
+    expect(styles).toMatch(/\.home-game-card__score\s*\{[^}]*grid-column:\s*1;[^}]*grid-row:\s*1;[^}]*justify-self:\s*start;[^}]*align-self:\s*end;/);
+    expect(styles).toMatch(/\.home-game-card__streak\s*\{[^}]*grid-area:\s*streak;[^}]*justify-self:\s*end;[^}]*align-self:\s*start;/);
+    expect(styles).toMatch(/\.weekly-card__status\s*\{[^}]*grid-column:\s*2;[^}]*grid-row:\s*1;[^}]*justify-self:\s*center;/);
+    for (const selector of ["home-game-card__details", "anagram-home-card__details", "midword-home-card__details"]) {
+      expect(styles).toContain(`.${selector} > .home-status`);
+    }
+    expect(styles).toContain(".weekly-card__details:has(.home-game-card__score) > .weekly-card__status");
+    expect(styles).toContain("grid-row: 2;");
+    expect(styles).toMatch(/\.home-game-card__logo\s*\{[^}]*height:\s*36px;/);
+    expect(midwordStyles).toMatch(/\.midword-home-card__identity img\s*\{[^}]*height:\s*30px;/);
   });
 
   it("matches the iOS light home-card surfaces", () => {
@@ -401,7 +445,7 @@ describe("web home dashboard", () => {
     expect(styles).toMatch(/\.home-game-card--anagram\s*\{[^}]*padding:\s*12px 18px[^}]*border-radius:\s*12px[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*var\(--anagram-home-card-accent\)/);
     expect(styles).toMatch(/\.home-game-card--anagram \.home-status\s*\{[^}]*border:\s*0[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*color-mix\(in srgb, var\(--anagram-on-accent\) 12%, transparent\)/);
     expect(styles).toMatch(/\.home-game-card--anagram \.home-game-card__streak\s*\{[^}]*border-radius:\s*12px[^}]*color:\s*var\(--anagram-on-accent\)/);
-    expect(styles).toMatch(/\.home-game-card__stats\s*\{[^}]*flex-direction:\s*row;[^}]*align-items:\s*center;[^}]*gap:\s*8px;/);
+    expect(styles).toMatch(/\.home-game-card__stats\s*\{[^}]*display:\s*contents;/);
     expect(styles).toMatch(/\.anagram-home-card__identity strong\s*\{[^}]*font-size:\s*clamp\(17px, 2vw, 24px\)[^}]*font-weight:\s*900/);
     expect(styles).toMatch(/@media \(max-width: 430px\)\s*\{\s*\.anagram-home-card__identity strong\s*\{[^}]*font-size:\s*24px;/);
   });

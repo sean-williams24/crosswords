@@ -6,7 +6,6 @@ import SwiftUI
 struct WeeklyCrosswordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.colorScheme) private var systemColorScheme
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject private var statsService: StatsService
     @EnvironmentObject var storeService: StoreService
     @ScaledMetric private var iconSize: CGFloat = 10
@@ -53,22 +52,17 @@ struct WeeklyCrosswordCard: View {
     }
 
     private var content: some View {
-        Group {
-            if AnagramHomeCardLayout.usesStackedLayout(for: dynamicTypeSize) {
-                VStack(alignment: .leading, spacing: AnagramHomeCardLayout.columnSpacing) {
-                    identityView
-                    detailsView
-                }
-            } else {
-                HStack(alignment: .top, spacing: AnagramHomeCardLayout.columnSpacing) {
-                    identityView
-                    detailsView
-                }
+        HomeGameCardContent(minimumHeight: appLayout.cardHeight, spacing: .zero) {
+            identityView
+        } details: {
+            detailsView
+        } header: {
+            HomeGameCardHeader(spacing: AnagramHomeCardLayout.statsSpacing) {
+                EmptyView()
+            } streak: {
+                StreakButton(streak: statsService.stats.currentStreak(isWeekly: true), borderStyle: badgeBorderStyle)
             }
         }
-        .padding(.horizontal, AnagramHomeCardLayout.horizontalPadding)
-        .padding(.vertical, AnagramHomeCardLayout.verticalPadding)
-        .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(
             Color.appSurface.overlay(
                 proGradient.opacity(0.02)
@@ -89,31 +83,33 @@ struct WeeklyCrosswordCard: View {
     }
 
     private var identityView: some View {
-        VStack(alignment: .leading, spacing: AnagramHomeCardLayout.identitySpacing) {
-            Text("PRO \nCROSSWORD")
+        VStack(spacing: AnagramHomeCardLayout.identitySpacing) {
+            Text("PRO\nCROSSWORD")
                 .font(AppFont.clueLabel(appLayout.isiPad ? 20 : 16))
                 .foregroundStyle(proGradient)
                 .tracking(3)
+                .padding(.trailing, -3)
                 .lineLimit(2)
                 .minimumScaleFactor(0.35)
-                .multilineTextAlignment(.leading)
+                .multilineTextAlignment(.center)
                 .accessibilityLabel("Pro Crossword")
-
             Text("13×13")
                 .font(AppFont.caption())
                 .foregroundColor(.appTextSecondary)
-
-            if let issueNumber = viewModel.weeklyPuzzle?.puzzleNumber {
-                HomeCardIssueNumber(issueNumber: issueNumber, color: .solvedGold)
-            }
         }
-        .frame(maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    @ViewBuilder
+    private var issueLabel: some View {
+        if let issueNumber = viewModel.weeklyPuzzle?.puzzleNumber {
+            HomeCardIssueNumber(issueNumber: issueNumber, color: .solvedGold)
+        }
     }
 
     private var detailsView: some View {
-        VStack(alignment: .trailing, spacing: AnagramHomeCardLayout.contentSpacing) {
-            Spacer(minLength: AnagramHomeCardLayout.minimumContentSpacing)
-
+        HomeGameCardFooter(spacing: AnagramHomeCardLayout.statsSpacing) {
+            scoreView
+        } status: {
             if viewModel.state == .loading {
                 ProgressView()
             } else if isProUser {
@@ -121,7 +117,7 @@ struct WeeklyCrosswordCard: View {
                     Text("Failed to fetch today's crossword.\nTap here to try again.")
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
-                        .multilineTextAlignment(.trailing)
+                        .multilineTextAlignment(.center)
                 } else {
                     StatusLabelView(
                         status: viewModel.weeklyPuzzleStatus,
@@ -131,10 +127,9 @@ struct WeeklyCrosswordCard: View {
             } else {
                 proOnlyLabel
             }
-
-            bottomStatsView
+        } issue: {
+            issueLabel
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
     }
 
     private var proOnlyLabel: some View {
@@ -146,16 +141,6 @@ struct WeeklyCrosswordCard: View {
                 .font(.system(size: iconSize))
                 .foregroundColor(.appAccent)
                 .offset(y: offset)
-        }
-    }
-
-    private var bottomStatsView: some View {
-        HStack(spacing: AnagramHomeCardLayout.statsSpacing) {
-            scoreView
-            StreakButton(
-                streak: statsService.stats.currentStreak(isWeekly: true),
-                borderStyle: badgeBorderStyle
-            )
         }
     }
 

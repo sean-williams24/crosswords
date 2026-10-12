@@ -169,16 +169,14 @@ html[data-theme="dark"] .midword-header h1::after {
 .midword-completion-actions { display: flex; padding: 12px 20px max(20px, env(safe-area-inset-bottom)); border-top: 1px solid var(--midword-border); gap: 12px; }
 .midword-completion-actions button { flex: 1; padding: 14px 8px; border: 0; border-radius: 8px; color: var(--midword-text); background: var(--midword-surface); font: inherit; cursor: pointer; }
 .midword-page button:focus-visible, .midword-dialog button:focus-visible { outline: 2px solid var(--midword-accent); outline-offset: 3px; }
-.home-game-card--midword { display: grid; padding: 12px 18px; grid-template-columns: 1fr 1fr; gap: 12px; border-radius: 12px; color: var(--midword-home-foreground); background: var(--midword-accent); }
-.midword-home-card__identity, .midword-home-card__details { display: flex; min-width: 0; flex-direction: column; gap: 6px; }
-.midword-home-card__identity { align-items: flex-start; }
-.midword-home-card__identity img { width: min(100%, 150px); height: auto; }
+.home-game-card--midword { display: grid; padding: 12px 18px; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; border-radius: 12px; color: var(--midword-home-foreground); background: var(--midword-accent); }
+.midword-home-card__identity { display: flex; min-width: 0; flex-direction: column; gap: 6px; }
+.midword-home-card__identity { grid-area: identity; align-self: center; align-items: center; justify-content: center; text-align: center; }
+.midword-home-card__identity img { width: auto; max-width: 100%; height: 30px; object-fit: contain; }
 .home-game-card--midword .home-game-card__issue { color: var(--midword-home-foreground); opacity: .84; }
-.midword-home-card__details { justify-content: flex-end; align-items: flex-end; }
 .home-game-card--midword .home-status { border: 0; color: var(--midword-home-foreground); background: color-mix(in srgb, var(--midword-home-foreground) 12%, transparent); }
 .home-game-card--midword .home-game-card__score strong { color: var(--midword-home-foreground); }
 .home-game-card--midword .home-game-card__score small { color: var(--midword-home-foreground); opacity: .7; }
-html[data-theme="dark"] .midword-home-card__identity img { filter: brightness(0); }
 .archive-entry-card--midword { color: var(--midword-text); border-color: var(--midword-accent); background: var(--midword-background); }
 @keyframes midword-cursor { 50% { border-color: var(--midword-accent); color: var(--midword-text); } }
 @keyframes midword-enter { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }

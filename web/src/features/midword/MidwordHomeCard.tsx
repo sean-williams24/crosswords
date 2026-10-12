@@ -6,10 +6,11 @@ import { midwordStatus, type MidwordProgress } from "./engine";
 
 export function MidwordHomeCard({ issueNumber, progress }: { issueNumber: number | null; progress: MidwordProgress }) {
   return <Link aria-label={issueNumber === null ? "Midword" : `Midword, issue #${issueNumber}`} className="home-game-card home-game-card--midword" to="/midword">
-    <div className="midword-home-card__identity"><img alt="Midword" src="/brand/midword-logo-light.png" />
-      <HomeGameIssueNumber issueNumber={issueNumber} /></div>
-    <div className="midword-home-card__details"><DashboardStatusLabel status={midwordStatus(progress)} />
+    <div className="midword-home-card__identity"><img alt="Midword" src="/brand/midword-logo-light.png" /></div>
+    <div className="midword-home-card__details">
       {progress.completedAt ? <HomeGameScore score={progress.releaseDateScore} /> : null}
+      <DashboardStatusLabel status={midwordStatus(progress)} />
+    <HomeGameIssueNumber issueNumber={issueNumber} />
     </div>
   </Link>;
 }

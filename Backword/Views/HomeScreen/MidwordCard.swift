@@ -2,7 +2,6 @@ import SwiftUI
 
 struct MidwordCard: View {
     @Environment(\.horizontalSizeClass) private var sizeClass
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let puzzle: MidwordPuzzle?
     let progress: MidwordProgress?
     let isLoading: Bool
@@ -28,35 +27,13 @@ struct MidwordCard: View {
     }
 
     private var cardContent: some View {
-        Group {
-            if AnagramHomeCardLayout.usesStackedLayout(for: dynamicTypeSize) {
-                VStack(alignment: .leading, spacing: AnagramHomeCardLayout.columnSpacing) {
-                    identityView
-                    detailsView
-                }
-            } else {
-                HStack(alignment: .top, spacing: AnagramHomeCardLayout.columnSpacing) {
-                    identityView
-                    detailsView
-                }
-            }
-        }
-        .padding(.horizontal, AnagramHomeCardLayout.horizontalPadding)
-        .padding(.vertical, AnagramHomeCardLayout.verticalPadding)
-        .foregroundStyle(Color.midwordHomeCardForeground)
-        .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
-        .background(Color.midwordAccent)
-    }
-
-    private var identityView: some View {
-        VStack(alignment: .leading, spacing: AnagramHomeCardLayout.identitySpacing) {
+        HomeGameCardContent(minimumHeight: appLayout.cardHeight) {
             logo
-
-            if let puzzle {
-                HomeCardIssueNumber(issueNumber: puzzle.puzzleNumber, color: .midwordHomeCardForeground)
-            }
+        } details: {
+            detailsView
         }
-        .frame(maxHeight: .infinity, alignment: .topLeading)
+        .foregroundStyle(Color.midwordHomeCardForeground)
+        .background(Color.midwordAccent)
     }
 
     private var logo: some View {
@@ -66,23 +43,28 @@ struct MidwordCard: View {
             .frame(height: 30)
     }
 
-    private var detailsView: some View {
-        VStack(alignment: .trailing, spacing: AnagramHomeCardLayout.contentSpacing) {
-            Spacer(minLength: AnagramHomeCardLayout.minimumContentSpacing)
+    @ViewBuilder
+    private var issueLabel: some View {
+        if let issueNumber = puzzle?.puzzleNumber {
+            HomeCardIssueNumber(issueNumber: issueNumber, color: .midwordHomeCardForeground)
+        }
+    }
 
+    private var detailsView: some View {
+        HomeGameCardFooter(spacing: AnagramHomeCardLayout.statsSpacing) {
+            if puzzle != nil { scoreLabel }
+        } status: {
             if puzzle != nil {
                 statusLabel
-                HStack(spacing: AnagramHomeCardLayout.statsSpacing) {
-                    scoreLabel
-                }
             } else if isLoading {
                 ProgressView().tint(.midwordHomeCardForeground)
             } else if loadFailed {
                 Button("Try again", action: retry)
                     .font(AppFont.caption().bold())
             }
+        } issue: {
+            issueLabel
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
     }
 
     private var statusLabel: some View {

@@ -9,7 +9,6 @@ enum HomeCardStreakLayout {
 struct DailyCrosswordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.colorScheme) private var systemColorScheme
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject private var statsService: StatsService
     @ObservedObject var viewModel: HomeViewModel
     var showDailyCrossword: () -> Void
@@ -44,22 +43,17 @@ struct DailyCrosswordCard: View {
     }
 
     private var content: some View {
-        Group {
-            if AnagramHomeCardLayout.usesStackedLayout(for: dynamicTypeSize) {
-                VStack(alignment: .leading, spacing: AnagramHomeCardLayout.columnSpacing) {
-                    identityView
-                    detailsView
-                }
-            } else {
-                HStack(alignment: .top, spacing: AnagramHomeCardLayout.columnSpacing) {
-                    identityView
-                    detailsView
-                }
+        HomeGameCardContent(minimumHeight: appLayout.cardHeight, spacing: .zero) {
+            identityView
+        } details: {
+            detailsView
+        } header: {
+            HomeGameCardHeader(spacing: AnagramHomeCardLayout.statsSpacing) {
+                EmptyView()
+            } streak: {
+                StreakButton(streak: statsService.stats.liveCurrentStreak, borderStyle: badgeBorderStyle)
             }
         }
-        .padding(.horizontal, AnagramHomeCardLayout.horizontalPadding)
-        .padding(.vertical, AnagramHomeCardLayout.verticalPadding)
-        .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(
             cardBackground.environment(
                 \.colorScheme,
@@ -73,37 +67,39 @@ struct DailyCrosswordCard: View {
     }
 
     private var identityView: some View {
-        VStack(alignment: .leading, spacing: AnagramHomeCardLayout.identitySpacing) {
+        VStack(spacing: AnagramHomeCardLayout.identitySpacing) {
             Text("QUICK\nCROSSWORD")
                 .font(AppFont.clueLabel(appLayout.isiPad ? 20 : 16))
                 .foregroundColor(.dailyCardTitle)
                 .tracking(3)
+                .padding(.trailing, -3)
                 .lineLimit(2)
                 .minimumScaleFactor(0.35)
-                .multilineTextAlignment(.leading)
-
+                .multilineTextAlignment(.center)
             Text("9×9")
                 .font(AppFont.caption())
                 .foregroundColor(.dailyCardDescription)
-
-            if let issueNumber = viewModel.todaysPuzzle?.puzzleNumber {
-                HomeCardIssueNumber(issueNumber: issueNumber)
-            }
         }
-        .frame(maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    @ViewBuilder
+    private var issueLabel: some View {
+        if let issueNumber = viewModel.todaysPuzzle?.puzzleNumber {
+            HomeCardIssueNumber(issueNumber: issueNumber)
+        }
     }
 
     private var detailsView: some View {
-        VStack(alignment: .trailing, spacing: AnagramHomeCardLayout.contentSpacing) {
-            Spacer(minLength: AnagramHomeCardLayout.minimumContentSpacing)
-
+        HomeGameCardFooter(spacing: AnagramHomeCardLayout.statsSpacing) {
+            scoreView
+        } status: {
             if viewModel.state == .loading {
                 ProgressView()
             } else if viewModel.todaysPuzzle == nil {
                 Text("Failed to fetch today's crossword.\nTap here to try again.")
                     .font(AppFont.caption())
                     .foregroundColor(.appTextSecondary)
-                    .multilineTextAlignment(.trailing)
+                    .multilineTextAlignment(.center)
             } else {
                 StatusLabelView(
                     status: viewModel.puzzleStatus,
@@ -111,10 +107,9 @@ struct DailyCrosswordCard: View {
                     borderStyle: badgeBorderStyle
                 )
             }
-
-            bottomStatsView
+        } issue: {
+            issueLabel
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
     }
 
     private var cardBackground: some View {
@@ -126,16 +121,6 @@ struct DailyCrosswordCard: View {
                 RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                     .fill(Color.homeCardBrightnessOverlay.opacity(HomeCardAppearance.lightModeBrightnessOverlayOpacity))
             }
-        }
-    }
-
-    private var bottomStatsView: some View {
-        HStack(spacing: AnagramHomeCardLayout.statsSpacing) {
-            scoreView
-            StreakButton(
-                streak: statsService.stats.liveCurrentStreak,
-                borderStyle: badgeBorderStyle
-            )
         }
     }
 

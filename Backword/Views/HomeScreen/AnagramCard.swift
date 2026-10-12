@@ -2,7 +2,6 @@ import SwiftUI
 
 struct AnagramCard: View {
     @Environment(\.horizontalSizeClass) private var sizeClass
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let puzzle: AnagramPuzzle
     let summary: AnagramHomeCardSummary
@@ -14,23 +13,18 @@ struct AnagramCard: View {
 
     var body: some View {
         Button(action: open) {
-            Group {
-                if AnagramHomeCardLayout.usesStackedLayout(for: dynamicTypeSize) {
-                    VStack(alignment: .leading, spacing: AnagramHomeCardLayout.columnSpacing) {
-                        identityView
-                        detailsView
-                    }
-                } else {
-                    HStack(alignment: .top, spacing: AnagramHomeCardLayout.columnSpacing) {
-                        identityView
-                        detailsView
-                    }
+            HomeGameCardContent(minimumHeight: appLayout.cardHeight) {
+                identityView
+            } details: {
+                detailsView
+            } header: {
+                HomeGameCardHeader(spacing: AnagramHomeCardLayout.statsSpacing) {
+                    EmptyView()
+                } streak: {
+                    if summary.streak > 0 { streakLabel }
                 }
             }
-            .padding(.horizontal, AnagramHomeCardLayout.horizontalPadding)
-            .padding(.vertical, AnagramHomeCardLayout.verticalPadding)
             .foregroundStyle(Color.anagramOnOrange)
-            .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
             .background(Color.anagramHomeCardBackground)
             .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         }
@@ -39,16 +33,12 @@ struct AnagramCard: View {
     }
 
     private var identityView: some View {
-        VStack(alignment: .leading, spacing: AnagramHomeCardLayout.identitySpacing) {
-            Text("ANAGRAM")
-                .font(AppFont.clueLabel(appLayout.isiPad ? 28 : 24))
-                .tracking(3)
-                .lineLimit(1)
-                .minimumScaleFactor(0.35)
-
-            issueLabel
-        }
-        .frame(maxHeight: .infinity, alignment: .topLeading)
+        Text("ANAGRAM")
+            .font(AppFont.clueLabel(appLayout.isiPad ? 28 : 24))
+            .tracking(3)
+            .padding(.trailing, -3)
+            .lineLimit(1)
+            .minimumScaleFactor(0.35)
     }
 
     private var issueLabel: some View {
@@ -56,17 +46,13 @@ struct AnagramCard: View {
     }
 
     private var detailsView: some View {
-        VStack(alignment: .trailing, spacing: AnagramHomeCardLayout.contentSpacing) {
-            Spacer(minLength: AnagramHomeCardLayout.minimumContentSpacing)
-
+        HomeGameCardFooter(spacing: AnagramHomeCardLayout.statsSpacing) {
+            scoreLabel
+        } status: {
             statusLabel
-
-            HStack(spacing: AnagramHomeCardLayout.statsSpacing) {
-                scoreLabel
-                if summary.streak > 0 { streakLabel }
-            }
+        } issue: {
+            issueLabel
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
     }
 
     private var statusLabel: some View {
@@ -138,13 +124,7 @@ struct AnagramCard: View {
 enum AnagramHomeCardLayout {
     static let horizontalPadding: CGFloat = 18
     static let verticalPadding: CGFloat = 12
-    static let columnSpacing: CGFloat = 12
     static let identitySpacing: CGFloat = 4
     static let contentSpacing: CGFloat = 8
-    static let minimumContentSpacing: CGFloat = 4
     static let statsSpacing: CGFloat = 8
-
-    static func usesStackedLayout(for dynamicTypeSize: DynamicTypeSize) -> Bool {
-        dynamicTypeSize > .large
-    }
 }
