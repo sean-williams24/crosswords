@@ -1,5 +1,5 @@
 type HomeDashboardLoadingCardProps = {
-  variant: "backword" | "crossword" | "word-of-the-day" | "weekly";
+  variant: "backword" | "anagram" | "midword" | "crossword" | "archive" | "word-of-the-day" | "weekly";
 };
 
 export function HomeDashboardLoadingCard({ variant }: HomeDashboardLoadingCardProps) {

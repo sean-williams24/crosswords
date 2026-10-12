@@ -3,6 +3,14 @@ import { MemoryRouter } from "react-router-dom";
 import { AnagramHomeCard } from "./AnagramHomeCard";
 
 describe("AnagramHomeCard", () => {
+  it("keeps the card available before its issue number loads", () => {
+    render(<MemoryRouter><AnagramHomeCard issueNumber={null} score={null} status={{ label: "New", tone: "new" }} streak={0} /></MemoryRouter>);
+    const card = screen.getByRole("link", { name: "Anagram" });
+    expect(card).toHaveAttribute("href", "/anagram");
+    expect(card.querySelector(".home-game-card__issue")).toBeNull();
+    expect(card).not.toHaveTextContent("null");
+  });
+
   it.each([0, 3])("keeps a %i-day streak at the card level and points with the bottom status", (streak) => {
     render(
       <MemoryRouter>

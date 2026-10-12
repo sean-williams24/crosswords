@@ -26,7 +26,7 @@ const testWordOfTheDay = vi.hoisted(() => ({
 }));
 
 const testIssueNumbers = vi.hoisted(() => ({
-  value: { backword: 121, anagram: 1, midword: 11, crossword: 122, weeklyCrossword: 23 }
+  value: { backword: 121, anagram: 1 as number | null, midword: 11, crossword: 122, weeklyCrossword: 23 }
 }));
 
 const sync = vi.hoisted(() => ({
@@ -196,12 +196,18 @@ describe("web home dashboard", () => {
     expect(sync.refreshAccountProgress).toHaveBeenCalledTimes(5);
   });
 
-  it("keeps six non-interactive skeleton cards visible until Word of the Day loads", () => {
+  it("reserves six grid positions plus Word of the Day while content loads", () => {
     testWordOfTheDay.state = "loading";
     const { container } = renderDashboard();
 
     expect(screen.getByRole("status")).toHaveTextContent("Loading daily games");
-    expect(container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(6);
+    expect(container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(7);
+    const gridSkeletons = container.querySelectorAll(".home-dashboard__games-grid > .home-dashboard-loading-card");
+    expect(gridSkeletons).toHaveLength(6);
+    expect(Array.from(gridSkeletons).map((card) => card.className.split(" ")[1])).toEqual([
+      "home-dashboard-loading-card--backword", "home-dashboard-loading-card--anagram", "home-dashboard-loading-card--midword",
+      "home-dashboard-loading-card--crossword", "home-dashboard-loading-card--archive", "home-dashboard-loading-card--weekly"
+    ]);
     expect(screen.queryByRole("link", { name: "Quick Crossword" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Pro Crossword/i })).not.toBeInTheDocument();
 
@@ -217,7 +223,7 @@ describe("web home dashboard", () => {
     testAuth.value.ready = false;
     const view = renderDashboard();
 
-    expect(view.container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(6);
+    expect(view.container.querySelectorAll(".home-dashboard-loading-card")).toHaveLength(7);
 
     testAuth.value.ready = true;
     view.rerender(
@@ -263,14 +269,15 @@ describe("web home dashboard", () => {
     expect(crosswordStats?.querySelector(".home-game-card__streak")).toBeNull();
     const gamesGrid = crosswordCard.closest(".home-dashboard__games-grid");
     expect(gamesGrid).not.toBeNull();
-    expect(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game")).toHaveLength(5);
+    expect(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game")).toHaveLength(6);
     expect(Array.from(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game") ?? []).map((game) =>
       game.querySelector("a")?.getAttribute("aria-label")
     )).toEqual([
       "Backword, issue #121",
-      "Quick Crossword, issue #122",
       "Anagram, issue #1",
       "Midword, issue #11",
+      "Quick Crossword, issue #122",
+      "Archive",
       "Pro Crossword, issue #23"
     ]);
     expect(screen.getByLabelText("Issue #121")).toHaveClass("home-game-card__issue");
@@ -281,19 +288,16 @@ describe("web home dashboard", () => {
     expect(anagramCard).toHaveAttribute("href", "/anagram");
     expect(within(anagramCard).getByLabelText("Status: New").querySelector(".home-status__icon"))
       .toBeEmptyDOMElement();
-    expect(screen.getByRole("link", { name: "Backword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dbackword");
-    expect(screen.getByRole("link", { name: "Anagram Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Danagram");
-    expect(screen.getByRole("link", { name: "Midword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dmidword");
     expect(screen.getByRole("link", { name: "Midword, issue #11" })).toHaveAttribute("href", "/midword");
-    expect(screen.getByRole("link", { name: "Quick Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Ddaily");
-    expect(screen.getByRole("link", { name: "Pro Crossword Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive%3Fgame%3Dweekly");
-    expect(screen.getAllByText("Archive", { selector: ".home-archive-link > span" })).toHaveLength(5);
-    expect(container.querySelectorAll(".home-archive-link > svg")).toHaveLength(5);
+    expect(within(gamesGrid as HTMLElement).getByRole("link", { name: "Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive");
+    expect(container.querySelectorAll(".home-game-card--archive")).toHaveLength(1);
+    expect(container.querySelectorAll(".home-archive-link")).toHaveLength(0);
+    expect(screen.queryByRole("link", { name: /^(Backword|Anagram|Midword|Quick Crossword|Pro Crossword) Archive$/ })).not.toBeInTheDocument();
     expect(screen.getByText("13×13")).toBeInTheDocument();
     expect(screen.queryByText("♛")).not.toBeInTheDocument();
   });
 
-  it("lays out all five games before the full-width Word of the Day panel", () => {
+  it("lays out six equal cards in three columns before the full-width Word of the Day panel", () => {
     const { container } = renderDashboard();
     const layout = container.querySelector(".home-dashboard__daily-layout");
     const gamesGrid = layout?.querySelector(":scope > .home-dashboard__games-grid");
@@ -302,15 +306,25 @@ describe("web home dashboard", () => {
 
     expect(layout?.children[0]).toBe(gamesGrid);
     expect(layout?.children[1]).toBe(wordOfTheDay);
-    expect(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game")).toHaveLength(5);
+    expect(gamesGrid?.querySelectorAll(":scope > .home-dashboard__game")).toHaveLength(6);
     expect(styles).toContain(".home-dashboard__content {\n  width: min(100% - 48px, 1440px);");
-    expect(styles).toContain(".home-dashboard__games-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));");
-    expect(styles).toMatch(/\.home-archive-link\s*\{[^}]*display:\s*flex;[^}]*align-items:\s*center;[^}]*justify-content:\s*center;[^}]*gap:\s*8px;/);
-    expect(styles).not.toMatch(/\.home-archive-link\s*\{[^}]*flex-direction:\s*column;/);
+    expect(styles).toMatch(/\.home-dashboard__games-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\);[^}]*grid-auto-rows:\s*1fr;[^}]*align-items:\s*stretch;/);
+    expect(styles).toMatch(/\.home-dashboard__game\s*\{[^}]*display:\s*grid;[^}]*min-width:\s*0;/);
+    for (const wrapper of gamesGrid?.children ?? []) expect(wrapper.children).toHaveLength(1);
+    expect(styles).not.toContain(".home-archive-link");
     expect(styles).toContain("@media (min-width: 681px) and (max-width: 1200px) {");
-    expect(styles).toContain(".home-dashboard__games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }");
+    expect(styles).not.toContain(".home-dashboard__games-grid { grid-template-columns: repeat(2,");
     expect(styles).toContain(".home-dashboard__games-grid { grid-template-columns: 1fr; gap: 20px; }");
-    expect(styles).toMatch(/\.home-dashboard-loading-card--weekly\s*\{[^}]*height:\s*144px(?![^}]*margin-top)/);
+    expect(styles).not.toMatch(/\.home-dashboard-loading-card--weekly\s*\{[^}]*[;{]\s*height:/);
+  });
+
+  it("keeps the Anagram grid position when its issue number has not loaded", () => {
+    testIssueNumbers.value.anagram = null;
+    const { container } = renderDashboard();
+    const cards = container.querySelectorAll(".home-dashboard__games-grid > .home-dashboard__game");
+    expect(cards).toHaveLength(6);
+    expect(within(cards[1] as HTMLElement).getByRole("link", { name: "Anagram" })).toHaveAttribute("href", "/anagram");
+    expect(within(cards[4] as HTMLElement).getByRole("link", { name: "Archive" })).toBeInTheDocument();
   });
 
   it("uses the Quick Crossword score treatment for earned Backword and Pro points", () => {
@@ -419,7 +433,7 @@ describe("web home dashboard", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
     for (const selector of ["home-game-card", "weekly-card", "home-game-card--anagram"]) {
-      const rule = styles.match(new RegExp(`\\.${selector}\\s*\\{([^}]+)\\}`))![1];
+      const rule = styles.match(new RegExp(`^\\.${selector}\\s*\\{([^}]+)\\}`, "m"))![1];
       expect(rule).toContain("grid-template-rows: minmax(32px, 1fr) auto minmax(32px, 1fr);");
     }
     expect(styles).toMatch(/\.home-game-card__issue\s*\{[^}]*align-self:\s*end;/);
@@ -430,7 +444,7 @@ describe("web home dashboard", () => {
     expect(styles).toMatch(/\.weekly-card\s*\{[^}]*row-gap:\s*0;/);
 
     for (const selector of ["home-game-card__title", "weekly-card__title", "anagram-home-card__identity strong"]) {
-      const rule = styles.match(new RegExp(`\\.${selector}\\s*\\{([^}]+)\\}`))![1];
+      const rule = styles.match(new RegExp(`^\\.${selector}\\s*\\{([^}]+)\\}`, "m"))![1];
       const letterSpacing = rule.match(/letter-spacing:\s*([\d.]+em)/)![1];
       expect(rule).toContain(`padding-left: ${letterSpacing};`);
     }
@@ -454,9 +468,8 @@ describe("web home dashboard", () => {
     }
     expect(styles).toContain(".weekly-card__details:has(.home-game-card__score) > .weekly-card__status");
     expect(styles).toContain("grid-row: 2;");
-    const backwordLogoHeight = nativeTheme.match(/homeCardLogoHeight: CGFloat = (\d+)/)![1];
     const midwordLogoHeight = nativeTheme.match(/midwordHomeCardLogoHeight: CGFloat = (\d+)/)![1];
-    expect(styles).toMatch(new RegExp(`\\.home-game-card__logo\\s*\\{[^}]*height:\\s*${backwordLogoHeight}px;`));
+    expect(styles).toMatch(/\.home-game-card__logo\s*\{[^}]*height:\s*48px;/);
     expect(styles).toMatch(/\.home-game-card--backword\s*\{[^}]*row-gap:\s*4px;/);
     expect(midwordStyles).toMatch(new RegExp(`\\.midword-home-card__identity img\\s*\\{[^}]*height:\\s*${midwordLogoHeight}px;`));
   });

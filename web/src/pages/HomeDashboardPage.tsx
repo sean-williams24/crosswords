@@ -23,7 +23,7 @@ import { Footer } from "../components/Footer";
 import { AuthButton } from "../features/auth/AuthButton";
 import { useAuth } from "../features/auth/AuthProvider";
 import { HomeDashboardLoadingCard } from "../features/home/HomeDashboardLoadingCard";
-import { HomeArchiveLink } from "../features/home/HomeArchiveLink";
+import { HomeArchiveCard } from "../features/home/HomeArchiveCard";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
 import { anagramCloudRecord, midwordCloudRecord, backwordCloudRecord, crosswordCloudRecord, refreshAccountProgress } from "../features/sync/progressSync";
 
@@ -164,10 +164,11 @@ export function HomeDashboardPage() {
           <div className="home-dashboard__games-grid">
             {isLoading ? (
               <>
-                <HomeDashboardLoadingCard variant="crossword" />
                 <HomeDashboardLoadingCard variant="backword" />
+                <HomeDashboardLoadingCard variant="anagram" />
+                <HomeDashboardLoadingCard variant="midword" />
                 <HomeDashboardLoadingCard variant="crossword" />
-                <HomeDashboardLoadingCard variant="crossword" />
+                <HomeDashboardLoadingCard variant="archive" />
                 <HomeDashboardLoadingCard variant="weekly" />
               </>
             ) : (
@@ -184,7 +185,14 @@ export function HomeDashboardPage() {
                   >
                     <img alt="Backword" className="home-game-card__logo" src="/brand/backword-logo.png" />
                   </DailyGameCard>
-                  <HomeArchiveLink ariaLabel="Backword Archive" to="/archive?game=backword" />
+                </div>
+                <div className="home-dashboard__game">
+                  <AnagramHomeCard issueNumber={issueNumbers.anagram}
+                    score={anagramProgress?.outcome ? anagramProgress.releaseDateScore : null}
+                    status={anagramStatus} streak={anagramStreak} />
+                </div>
+                <div className="home-dashboard__game">
+                  <MidwordHomeCard issueNumber={issueNumbers.midword ?? null} progress={midwordProgress} streak={midwordStreak} />
                 </div>
                 <div className="home-dashboard__game">
                   <DailyGameCard
@@ -197,17 +205,9 @@ export function HomeDashboardPage() {
                     streak={crosswordStatus.streak}
                     title="Quick Crossword"
                   />
-                  <HomeArchiveLink ariaLabel="Quick Crossword Archive" to="/archive?game=daily" />
                 </div>
-                {issueNumbers.anagram !== null ? <div className="home-dashboard__game">
-                  <AnagramHomeCard issueNumber={issueNumbers.anagram}
-                    score={anagramProgress?.outcome ? anagramProgress.releaseDateScore : null}
-                    status={anagramStatus} streak={anagramStreak} />
-                  <HomeArchiveLink ariaLabel="Anagram Archive" to="/archive?game=anagram" />
-                </div> : null}
                 <div className="home-dashboard__game">
-                  <MidwordHomeCard issueNumber={issueNumbers.midword ?? null} progress={midwordProgress} streak={midwordStreak} />
-                  <HomeArchiveLink ariaLabel="Midword Archive" to="/archive?game=midword" />
+                  <HomeArchiveCard />
                 </div>
                 <div className="home-dashboard__game">
                   {entitlement?.isPro ? (
@@ -236,7 +236,6 @@ export function HomeDashboardPage() {
                       </span>
                     </Link>
                   )}
-                  <HomeArchiveLink ariaLabel="Pro Crossword Archive" to="/archive?game=weekly" />
                 </div>
               </>
             )}

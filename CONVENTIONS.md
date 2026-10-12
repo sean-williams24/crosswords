@@ -397,8 +397,8 @@ for wins, more guesses otherwise, then latest update), retaining the maximum
 release-day score separately. Account/date changes remount gameplay, and pending
 loads and syncs cannot update the new account's displayed game.
 
-Home refreshes all five game caches and adds Midword before Pro Crossword in
-its responsive game row. Local Player Profile and completion sharing include
+Home refreshes all five game caches and presents them alongside one shared
+Archive card in its responsive grid. Local Player Profile and completion sharing include
 Midword immediately, before cloud upload completes. Its share payload contains
 only aggregate result metadata and the dated link. Statistics exclude archive
 solves and show only release-day wins, matching native streaks, distribution,
@@ -514,14 +514,22 @@ they recognise an already-updated payload and never overwrite a divergent row.
 
 ## Home Card Appearance
 
-Home presents Backword, Quick Crossword, Anagram, Midword, and Pro Crossword in
-that order, with the same grid spacing between every game card and no extra
+iOS Home presents Backword, Quick Crossword, Anagram, Midword, and Pro Crossword
+in that order, with the same grid spacing between every game card and no extra
 Midword padding. Regular-width iPad layouts use two equal columns, while compact layouts
 use one column. The Pro upsell follows the games when visible, with Word of the
 Day below it. The game cards have no separate daily or weekly section headings
 or date labels; their own content identifies each game.
 The Pro Crossword card fills its grid column rather than keeping a fixed iPad
 width.
+
+Web Home uses three equal columns and two rows: Backword, Anagram, Midword;
+then Quick Crossword, Archive, Pro Crossword. Grid rows share the same height,
+including when larger content needs extra space; loading reserves all six
+positions. The Anagram card stays present while its issue number is unavailable.
+At narrow mobile widths the cards stack in the same order. The single Archive
+card opens all game archives, using the existing Pro upgrade route when needed;
+individual game archive buttons are removed. Word of the Day follows the grid.
 
 On web and iOS, each game's main logo or title is centred horizontally and
 vertically within its Home card. Completed iOS Backword keeps its logo at the
@@ -672,20 +680,19 @@ Quick Crossword progress to present card status; non-Pro weekly and archive
 entry points direct players to the web Pro page rather than a modal or the iOS
 App Store. The web
 dashboard reads the released Word of the Day row for the browser's local
-calendar date. During initial loading, all five game cards remain non-interactive
+calendar date. During initial loading, all six game/archive cards remain non-interactive
 outlined skeletons until account startup and the WOTD request settle. When the
 row is unavailable, its place becomes an informational unavailable card while
 the five playable game cards remain available.
 
-On wide browser dashboards, Backword, Quick Crossword, Anagram, Midword, and the weekly
-Pro Crossword appear in that order in one five-column row above the full-width Word of the
-Day panel. This content uses a 1440-point desktop cap so the cards occupy more
-of a wide viewport. The row becomes two columns at 1200 points and below, then
-one column on mobile. Each game keeps its archive action directly beneath its card,
-shown as the iOS-style archive box icon beside a concise `Archive` label. The
-dashboard goes directly from its global header into the cards without a daily
-title or date. The weekly card identifies its Sunday cadence inside the card
-instead of using a separate section below the daily content.
+On wide browser dashboards, a three-column grid shows Backword, Anagram, and
+Midword above Quick Crossword, Archive, and Pro Crossword. All six cards share
+equal widths and row heights above the full-width Word of the Day panel. This
+content uses a 1440-point desktop cap and stacks into one column on mobile.
+Archive is one full-size card for all games, replacing the separate archive
+buttons. The dashboard goes directly from its global header into the cards
+without a daily title or date. The weekly card identifies its game inside the
+card instead of using a separate section below the daily content.
 
 The browser Backword letter cells use the iOS `Surface`, `GridLine`,
 `TextSecondary`, `Accent`, and `Correct` asset values. Empty cells are a 50%
