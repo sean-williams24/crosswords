@@ -11,8 +11,8 @@ import AppKit
 @Suite("Home game card footer")
 struct HomeGameCardFooterTests {
     @Test("Header content stays at the top centre while streak badges stay at the top-right",
-          arguments: [CGFloat(180), 350])
-    func streakPosition(width: CGFloat) {
+          arguments: [CGFloat(180), 350], [false, true])
+    func streakPosition(width: CGFloat, showsCenter: Bool) {
         #if canImport(UIKit)
         let streakView = UIView()
         let titleView = UIView()
@@ -21,7 +21,9 @@ struct HomeGameCardFooterTests {
         let titleView = NSView()
         #endif
         let header = HomeGameCardHeader(spacing: 8) {
-            FooterStatusMarker(view: titleView).frame(width: 36, height: 12)
+            if showsCenter {
+                FooterStatusMarker(view: titleView).frame(width: 36, height: 12)
+            }
         } streak: {
             FooterStatusMarker(view: streakView).frame(width: 52, height: 32)
         }
@@ -47,8 +49,26 @@ struct HomeGameCardFooterTests {
         #endif
 
         #expect(abs(frame.maxX - width) < 0.5)
-        #expect(abs(titleFrame.midX - width / 2) < 0.5)
+        if showsCenter { #expect(abs(titleFrame.midX - width / 2) < 0.5) }
         #expect(abs(topDistance) < 0.5)
+    }
+
+    @Test("Home streak buttons hide zero counts and keep positive counts visible", arguments: [0, 3])
+    func streakVisibility(streak: Int) {
+        let button = StreakButton(streak: streak)
+        #if canImport(UIKit)
+        let host = UIHostingController(rootView: button)
+        let size = host.sizeThatFits(in: CGSize(width: 280, height: 10_000))
+        #else
+        let host = NSHostingView(rootView: button)
+        let size = host.fittingSize
+        #endif
+        if streak == 0 {
+            #expect(size == .zero)
+        } else {
+            #expect(size.width > 20)
+            #expect(size.height > 12)
+        }
     }
 
     @Test("Status stays at the bottom centre with and without stats, including narrow cards",

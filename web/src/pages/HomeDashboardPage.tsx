@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { localDateString, localWeekStartString } from "../features/backword/date";
+import { deriveStats } from "../features/backword/engine";
+import { midwordStats } from "../features/midword/engine";
 import { createBackwordStorage } from "../features/backword/storage";
 import { createAnagramStorage } from "../features/anagram/storage";
 import { anagramStats } from "../features/anagram/engine";
@@ -104,6 +106,7 @@ export function HomeDashboardPage() {
   const issueNumbers = useHomeGameIssueNumbers(today);
   const [wordOfTheDayState, setWordOfTheDayState] = useState<WordOfTheDayLoadState>("loading");
   const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, today, user?.id), [syncRevision, today, user?.id]);
+  const backwordStreak = useMemo(() => deriveStats(createBackwordStorage(window.localStorage, { userId: user?.id }).loadAllProgress()).currentStreak, [syncRevision, today, user?.id]);
   const backwordScore = useMemo(() => backwordDashboardScore(window.localStorage, today, user?.id), [syncRevision, today, user?.id]);
   const anagramProgress = useMemo(() => {
     const storage = createAnagramStorage(window.localStorage, { userId: user?.id });
@@ -115,6 +118,7 @@ export function HomeDashboardPage() {
     : anagramProgress?.outcome === "gave_up" ? { label: "Gave up", tone: "failed" as const }
     : anagramProgress ? { label: "In Progress", tone: "progress" as const } : { label: "New", tone: "new" as const };
   const midwordProgress = useMemo(() => createMidwordStorage(window.localStorage, { userId: user?.id }).loadProgress(today), [syncRevision, today, user?.id]);
+  const midwordStreak = useMemo(() => midwordStats(createMidwordStorage(window.localStorage, { userId: user?.id }).loadAllProgress()).currentStreak, [syncRevision, today, user?.id]);
   const crosswordStatus = useMemo(() => {
     const storage = createCrosswordStorage(window.localStorage, { userId: user?.id });
     const now = new Date();
@@ -174,6 +178,7 @@ export function HomeDashboardPage() {
                     destination="/backword"
                     issueNumber={issueNumbers.backword}
                     score={backwordScore}
+                    streak={backwordStreak}
                     status={backwordStatus}
                     title="Backword"
                   >
@@ -201,13 +206,13 @@ export function HomeDashboardPage() {
                   <HomeArchiveLink ariaLabel="Anagram Archive" to="/archive?game=anagram" />
                 </div> : null}
                 <div className="home-dashboard__game">
-                  <MidwordHomeCard issueNumber={issueNumbers.midword ?? null} progress={midwordProgress} />
+                  <MidwordHomeCard issueNumber={issueNumbers.midword ?? null} progress={midwordProgress} streak={midwordStreak} />
                   <HomeArchiveLink ariaLabel="Midword Archive" to="/archive?game=midword" />
                 </div>
                 <div className="home-dashboard__game">
                   {entitlement?.isPro ? (
                     <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/weekly-crossword">
-                      {weeklyCrosswordStatus.streak ? <span className="home-game-card__streak">🔥 {weeklyCrosswordStatus.streak}</span> : null}
+                      {weeklyCrosswordStatus.streak > 0 ? <span className="home-game-card__streak" aria-label={`${weeklyCrosswordStatus.streak}-week streak`}>🔥 {weeklyCrosswordStatus.streak}</span> : null}
                       <span className="weekly-card__identity">
                         <span className="weekly-card__title">PRO CROSSWORD</span>
                         <small className="weekly-card__description">13×13</small>
@@ -220,6 +225,7 @@ export function HomeDashboardPage() {
                     </Link>
                   ) : (
                     <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/pro?return_to=%2Fweekly-crossword">
+                      {weeklyCrosswordStatus.streak > 0 ? <span className="home-game-card__streak" aria-label={`${weeklyCrosswordStatus.streak}-week streak`}>🔥 {weeklyCrosswordStatus.streak}</span> : null}
                       <span className="weekly-card__identity">
                         <span className="weekly-card__title">PRO CROSSWORD</span>
                         <small className="weekly-card__description">13×13</small>

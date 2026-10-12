@@ -32,13 +32,13 @@ export function DailyGameCard({
   destination,
   issueNumber = null,
   score,
-  streak,
+  streak = 0,
   status,
   title
 }: DailyGameCardProps) {
   return (
     <Link aria-label={issueNumber === null ? title : `${title}, issue #${issueNumber}`} className={`home-game-card ${className}`} to={destination}>
-      {streak && streak > 0 ? <span className="home-game-card__streak">🔥 {streak}</span> : null}
+      {streak > 0 ? <span className="home-game-card__streak" aria-label={`${streak}-day streak`}>🔥 {streak}</span> : null}
       <div className="home-game-card__identity">
         {children}
         <p className="home-game-card__title">{title}</p>

@@ -6,6 +6,7 @@ struct MidwordCard: View {
     let progress: MidwordProgress?
     let isLoading: Bool
     let loadFailed: Bool
+    var currentStreak: Int = 0
     let retry: () -> Void
     let play: () -> Void
 
@@ -31,6 +32,12 @@ struct MidwordCard: View {
             logo
         } details: {
             detailsView
+        } header: {
+            HomeGameCardHeader(spacing: AnagramHomeCardLayout.statsSpacing) {
+                EmptyView()
+            } streak: {
+                StreakButton(streak: currentStreak, textColor: .midwordHomeCardForeground)
+            }
         }
         .foregroundStyle(Color.midwordHomeCardForeground)
         .background(Color.midwordAccent)

@@ -3,14 +3,14 @@ import { MemoryRouter } from "react-router-dom";
 import { AnagramHomeCard } from "./AnagramHomeCard";
 
 describe("AnagramHomeCard", () => {
-  it("keeps the streak at the card level and points with the bottom status", () => {
+  it.each([0, 3])("keeps a %i-day streak at the card level and points with the bottom status", (streak) => {
     render(
       <MemoryRouter>
         <AnagramHomeCard
           issueNumber={7}
           score={4}
           status={{ label: "Solved", tone: "solved" }}
-          streak={3}
+          streak={streak}
         />
       </MemoryRouter>
     );
@@ -27,6 +27,10 @@ describe("AnagramHomeCard", () => {
       .toBe(within(card).getByLabelText("Status: Solved"));
     expect(within(stats as HTMLElement).getByText("4")).toBeInTheDocument();
     expect(within(stats as HTMLElement).queryByText("🔥 3")).not.toBeInTheDocument();
-    expect(within(card).getByText("🔥 3").parentElement).toBe(card);
+    if (streak > 0) {
+      expect(within(card).getByText(`🔥 ${streak}`).parentElement).toBe(card);
+    } else {
+      expect(card.querySelector(".home-game-card__streak")).not.toBeInTheDocument();
+    }
   });
 });

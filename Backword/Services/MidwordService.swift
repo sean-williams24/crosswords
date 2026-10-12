@@ -6,12 +6,23 @@ final class MidwordService: ObservableObject {
     @Published private(set) var todaysPuzzle: MidwordPuzzle?
     @Published private(set) var isLoading = false
     @Published private(set) var loadFailed = false
+    @Published private(set) var currentStreak = 0
 
     private let client: Supabase.SupabaseClient
     private var loadedDate: String?
 
     init(client: Supabase.SupabaseClient = SupabaseClient.shared.client) {
         self.client = client
+    }
+
+    func refreshStats(
+        progressRecords: [MidwordProgress] = MidwordProgress.loadAll(),
+        releaseCalendar: ContentReleaseCalendar = ContentReleaseCalendar()
+    ) {
+        currentStreak = MidwordStatsHistory.make(
+            rating: OverallRating(), progressRecords: progressRecords,
+            releaseCalendar: releaseCalendar
+        ).currentStreak
     }
 
     func refreshIfNeeded(force: Bool = false) async {

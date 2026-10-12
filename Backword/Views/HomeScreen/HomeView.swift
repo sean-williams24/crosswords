@@ -457,6 +457,7 @@ struct HomeView: View {
             progress: midwordProgress,
             isLoading: midwordService.isLoading,
             loadFailed: midwordService.loadFailed,
+            currentStreak: midwordService.currentStreak,
             retry: { Task { await midwordService.refreshIfNeeded(force: true) } },
             play: {
                 cancelSettingsTipPresentation()
@@ -773,6 +774,7 @@ struct HomeView: View {
     }
 
     private func refreshMidwordProgress() {
+        midwordService.refreshStats()
         midwordProgress = midwordService.todaysPuzzle.flatMap { MidwordProgress.load(date: $0.date) }
     }
 

@@ -526,7 +526,10 @@ width.
 On web and iOS, each game's main logo or title is centred horizontally and
 vertically within its Home card. Completed iOS Backword keeps its logo at the
 top centre above the revealed word, matching the compact completed layout.
-Existing streak badges stay at the top-right, points at the bottom-left,
+All five game cards show their own positive current streak at the top-right;
+zero streaks are hidden. Backword and Midword use the same account-scoped release-day
+statistics as their Stats screens; weekly crossword counts consecutive release
+weeks. Points stay at the bottom-left,
 status at the bottom centre, and issue numbers at the bottom-right. The top
 badges and
 bottom footer stay independent of the centred branding; footer side regions
@@ -545,7 +548,8 @@ Backword's completed word stays below its top-centred logo. The iOS Backword Hom
 Letter spacing is balanced at title edges, and title lines contain no trailing spaces.
 The iOS layout identifies regions using layout values rather than array
 positions: SwiftUI can omit an `EmptyView` or an inactive conditional region
-during loading and previews. Absent regions measure as zero.
+during loading and previews. Absent regions measure as zero. Header spacers
+anchor the streak to the trailing edge even when the centre is an `EmptyView`.
 
 Web cards and their loading placeholders use a 144px minimum height to match
 compact iOS cards; longer content can grow them. Backword uses a 36px logo height

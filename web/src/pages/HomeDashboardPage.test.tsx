@@ -3,8 +3,12 @@ import { resolve } from "node:path";
 import { act, render, screen, waitFor, within } from "@testing-library/react";
 import { useLayoutEffect } from "react";
 import { MemoryRouter } from "react-router-dom";
-import { localDateString, localWeekStartString } from "../features/backword/date";
+import { localDateOffset, localDateString, localWeekStartString } from "../features/backword/date";
 import { emptyProgress } from "../features/crossword/engine";
+import { emptyProgress as emptyBackwordProgress } from "../features/backword/engine";
+import { createBackwordStorage } from "../features/backword/storage";
+import { emptyProgress as emptyMidwordProgress } from "../features/midword/engine";
+import { createMidwordStorage } from "../features/midword/storage";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { HomeDashboardPage } from "./HomeDashboardPage";
 
@@ -78,6 +82,40 @@ describe("web home dashboard", () => {
     sync.refreshAccountProgress.mockResolvedValue(undefined);
   });
 
+  afterEach(() => vi.useRealTimers());
+
+  it.each([false, true])("hides zero streaks on every game card (Pro: %s)", (isPro) => {
+    testAuth.value.entitlement = isPro ? { isPro: true, expiresAt: null } : null;
+    const { container } = renderDashboard();
+    for (const selector of [".home-game-card--backword", ".home-game-card--crossword", ".home-game-card--anagram", ".home-game-card--midword", ".weekly-card"]) {
+      const card = container.querySelector(selector)!;
+      const streak = card.querySelector(":scope > .home-game-card__streak");
+      expect(streak).toBeNull();
+      expect(card.querySelector("[class$='__identity'] .home-game-card__streak")).toBeNull();
+      expect(card.querySelector("[class$='__details'] .home-game-card__streak")).toBeNull();
+    }
+  });
+
+  it("uses saved release-day results for Backword and Midword Home streaks", () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date(2026, 9, 12, 12));
+    const today = localDateString();
+    const backwordStorage = createBackwordStorage();
+    const midwordStorage = createMidwordStorage();
+    for (const offset of [-1, 0]) {
+      const date = localDateOffset(today, offset);
+      const completedAt = new Date(`${date}T12:00:00`).toISOString();
+      backwordStorage.saveProgress({ ...emptyBackwordProgress(date), guesses: ["CASTLE"], outcome: "won", completedAt });
+    }
+    midwordStorage.saveProgress({ ...emptyMidwordProgress(today), guesses: ["NOTE"], outcome: "won", completedAt: new Date().toISOString(), releaseDateScore: 5 });
+    // An archive win completed today must not extend the Home streak.
+    const archiveDate = localDateOffset(today, -1);
+    midwordStorage.saveProgress({ ...emptyMidwordProgress(archiveDate), guesses: ["NOTE"], outcome: "won", completedAt: new Date().toISOString(), releaseDateScore: 0 });
+    const { container } = renderDashboard();
+    expect(container.querySelector(".home-game-card--backword > .home-game-card__streak")).toHaveTextContent("🔥 2");
+    expect(container.querySelector(".home-game-card--midword > .home-game-card__streak")).toHaveTextContent("🔥 1");
+  });
+
   it("syncs every account game after sign-in and refreshes the home cards", async () => {
     const today = localDateString();
     sync.refreshAccountProgress.mockImplementation(async (_userId, gameType, _records, applyWinner) => {
@@ -115,6 +153,8 @@ describe("web home dashboard", () => {
       ["player-1", "weekly_crossword"]
     ]);
     expect(await screen.findByLabelText("Status: 2 guesses")).toBeInTheDocument();
+    const backwordCard = screen.getAllByRole("link").find((link) => link.getAttribute("href") === "/backword")!;
+    expect(backwordCard.querySelector(":scope > .home-game-card__streak")).toHaveTextContent("🔥 1");
   });
 
   it("animates the rating bar as a sync indicator until Home progress is refreshed", async () => {

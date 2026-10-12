@@ -12,6 +12,7 @@ struct StreakButton: View {
     let streak: Int
     var backgroundStyle: StreakButtonBackgroundStyle = .surface
     var borderStyle: HomeCardBadgeBorderStyle = .none
+    var textColor: Color = .appTextPrimary
 
     var body: some View {
         if streak > 0 {
@@ -32,7 +33,7 @@ struct StreakButton: View {
                         .font(.caption)
                     Text("\(streak)")
                         .font(AppFont.clueLabel(12))
-                        .foregroundColor(.appTextPrimary)
+                        .foregroundColor(textColor)
                 }
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
@@ -46,7 +47,7 @@ struct StreakButton: View {
                     Text("\(streak)-day streak")
                         .fixedSize()
                         .font(AppFont.clueLabel(12))
-                        .foregroundColor(.appTextPrimary)
+                        .foregroundColor(textColor)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
                         .background(Color.appSurface)
@@ -57,6 +58,7 @@ struct StreakButton: View {
                 }
             }
             .animation(.easeInOut(duration: 0.2), value: showPopup)
+            .accessibilityLabel("\(streak)-day streak")
         }
     }
 

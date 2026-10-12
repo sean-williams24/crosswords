@@ -8,10 +8,12 @@ struct HomeGameCardHeader<Identity: View, Streak: View>: View {
     var body: some View {
         HStack(alignment: .top, spacing: spacing) {
             streak().hidden()
+            Spacer(minLength: 0)
             identity()
-                .frame(maxWidth: .infinity, alignment: .top)
                 .multilineTextAlignment(.center)
+            Spacer(minLength: 0)
             streak()
         }
+        .frame(maxWidth: .infinity)
     }
 }

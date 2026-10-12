@@ -32,6 +32,19 @@ describe("MidwordHomeCard", () => {
       .toBe(within(card).getByLabelText("Status: New"));
   });
 
+  it.each([0, 3])("keeps a %i-day streak outside the centred logo and footer", (streak) => {
+    render(<MemoryRouter><MidwordHomeCard issueNumber={11} progress={emptyProgress("2026-10-11")} streak={streak} /></MemoryRouter>);
+    const card = screen.getByRole("link", { name: "Midword, issue #11" });
+    const badge = within(card).queryByLabelText(`${streak}-day streak`);
+    if (streak > 0) {
+      expect(badge).toHaveTextContent(`🔥 ${streak}`);
+      expect(badge?.parentElement).toBe(card);
+    } else {
+      expect(badge).not.toBeInTheDocument();
+      expect(card.querySelector(".home-game-card__streak")).toBeNull();
+    }
+  });
+
   it("uses the unchanged white and black iOS Home logo in both themes", () => {
     render(<MemoryRouter><MidwordHomeCard issueNumber={11} progress={emptyProgress("2026-10-11")} /></MemoryRouter>);
     expect(screen.getByRole("img", { name: "Midword" })).toHaveAttribute("src", "/brand/midword-logo-light.png");

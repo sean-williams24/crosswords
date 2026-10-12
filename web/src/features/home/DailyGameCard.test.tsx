@@ -22,6 +22,7 @@ describe("DailyGameCard", () => {
     const identity = card.querySelector(".home-game-card__identity");
     const details = card.querySelector(".home-game-card__details");
 
+    expect(within(card).queryByLabelText("0-day streak")).not.toBeInTheDocument();
     expect(identity).not.toBeNull();
     expect(details).not.toBeNull();
     expect(within(identity as HTMLElement).getByText("Quick Crossword")).toBeInTheDocument();
