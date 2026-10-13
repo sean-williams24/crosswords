@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { HomeArchiveCard } from "./HomeArchiveCard";
@@ -8,6 +10,12 @@ vi.mock("../auth/AuthProvider", () => ({
 }));
 
 describe("HomeArchiveCard", () => {
+  it("uses a thin white border without changing the card dimensions", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    expect(styles).toMatch(/\.home-game-card::after\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;[^}]*border:\s*1px solid transparent;/);
+    expect(styles).toMatch(/\.home-game-card--archive::after,\s*\.home-game-card--archive:focus-visible::after\s*\{[^}]*border-color:\s*#fff;/);
+  });
+
   it.each([false, true])("opens the full archive through the correct access route (Pro: %s)", (isPro) => {
     auth.isPro = isPro;
     render(<MemoryRouter><HomeArchiveCard /></MemoryRouter>);

@@ -1689,6 +1689,8 @@ body {
 .home-game-card--backword { row-gap: 4px; background: linear-gradient(150deg, #34417c, #29356d); }
 .home-game-card--crossword { row-gap: 0; background: linear-gradient(145deg, #30445e, #24364d); }
 .home-game-card--archive { row-gap: 0; background: var(--app-surface); }
+.home-game-card--archive::after,
+.home-game-card--archive:focus-visible::after { border-color: #fff; }
 .home-game-card__identity { position: relative; z-index: 1; display: flex; min-width: 0; flex-direction: column; }
 .home-game-card__identity { grid-area: identity; align-self: center; align-items: center; justify-content: center; gap: 6px; text-align: center; }
 .home-archive-card__title { display: flex; align-items: center; gap: 10px; }

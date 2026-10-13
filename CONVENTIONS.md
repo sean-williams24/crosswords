@@ -531,7 +531,9 @@ At narrow mobile widths the cards stack in the same order. The single Archive
 card opens all game archives, using the existing Pro upgrade route when needed;
 individual game archive buttons are removed. Its centred title and icon have
 "Unlock the full archive for all five games" beneath them, also exposed as the
-link's accessible description. Word of the Day follows the grid.
+link's accessible description. The Archive card has a thin 1px white outline
+drawn inside its bounds, preserving the shared card dimensions. Word of the Day
+follows the grid.
 
 On web and iOS, each game's main logo or title is centred horizontally and
 vertically within its Home card. Completed iOS Backword keeps its logo at the
