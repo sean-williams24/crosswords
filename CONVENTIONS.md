@@ -520,7 +520,10 @@ Midword padding. Regular-width iPad layouts use two equal columns, while compact
 use one column. The archive upsell sits between Quick Crossword and Anagram
 when visible, spanning both columns on iPad. The two game grids retain the same
 spacing when the upsell is hidden for Pro users. Word of the Day precedes the
-games. The game cards have no separate daily or weekly section headings
+games. The Home archive card uses the semantic surface colour at 50% opacity in
+Light Mode for a lighter background, retaining 26% in Dark Mode. The shared ad
+explainer button keeps its 26% surface in both appearances.
+The game cards have no separate daily or weekly section headings
 or date labels; their own content identifies each game.
 The Pro Crossword card fills its grid column rather than keeping a fixed iPad
 width.

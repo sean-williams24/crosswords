@@ -116,6 +116,12 @@ enum HomeCardAppearance {
     }
 }
 
+enum AdFreeExperienceButtonAppearance {
+    static func backgroundOpacity(for colorScheme: ColorScheme, isArchiveCard: Bool) -> Double {
+        isArchiveCard && colorScheme == .light ? 0.5 : 0.26
+    }
+}
+
 // MARK: - Typography
 
 enum AppFont {

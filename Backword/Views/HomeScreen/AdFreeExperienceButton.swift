@@ -33,6 +33,7 @@ struct AdFreeExperienceButtonVisibility {
 
 struct AdFreeExperienceButton: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.colorScheme) private var colorScheme
     @State private var isAnimating = false
 
     private enum Layout {
@@ -114,7 +115,10 @@ struct AdFreeExperienceButton: View {
             .frame(height: height)
             .background(
                 RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                    .fill(Color.appSurface.opacity(0.26))
+                    .fill(Color.appSurface.opacity(AdFreeExperienceButtonAppearance.backgroundOpacity(
+                        for: colorScheme,
+                        isArchiveCard: content == .home
+                    )))
                     .overlay(
                         RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                             .stroke(proGradient, lineWidth: 0)

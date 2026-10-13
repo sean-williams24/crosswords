@@ -7,11 +7,11 @@ struct AdFreeExperienceButtonTests {
     func homeContentCopy() {
         let content = AdFreeExperienceButtonContent.home
 
-        #expect(content.title == "Unlock the archive")
-        #expect(content.detail == "for all 5 games")
+        #expect(content.title == "ARCHIVE")
+        #expect(content.detail == "Unlock the archive for all 5 games")
         #expect(content.subtitle == "Go Pro")
-        #expect(content.systemImage == "sparkles")
-        #expect(content.accessibilityLabel == "Unlock the archive, for all 5 games, Go Pro")
+        #expect(content.systemImage == "archivebox")
+        #expect(content.accessibilityLabel == "ARCHIVE, Unlock the archive for all 5 games, Go Pro")
     }
 
     @Test("Ad explainer content keeps the ad-free call to action")
@@ -31,5 +31,21 @@ struct AdFreeExperienceButtonTests {
         #expect(!AdFreeExperienceButtonVisibility.shouldShow(isProUser: true, subscriptionStatusLoaded: false))
         #expect(!AdFreeExperienceButtonVisibility.shouldShow(isProUser: true, subscriptionStatusLoaded: true))
         #expect(AdFreeExperienceButtonVisibility.shouldShow(isProUser: false, subscriptionStatusLoaded: true))
+    }
+
+    @Test("Archive card has a lighter surface in Light Mode")
+    func archiveCardLightModeBackground() {
+        let lightOpacity = AdFreeExperienceButtonAppearance.backgroundOpacity(for: .light, isArchiveCard: true)
+        let darkOpacity = AdFreeExperienceButtonAppearance.backgroundOpacity(for: .dark, isArchiveCard: true)
+
+        #expect(lightOpacity == 0.5)
+        #expect(darkOpacity == 0.26)
+        #expect(lightOpacity > darkOpacity)
+    }
+
+    @Test("Ad explainer retains its existing surface in both appearances")
+    func adExplainerBackground() {
+        #expect(AdFreeExperienceButtonAppearance.backgroundOpacity(for: .light, isArchiveCard: false) == 0.26)
+        #expect(AdFreeExperienceButtonAppearance.backgroundOpacity(for: .dark, isArchiveCard: false) == 0.26)
     }
 }
