@@ -1,8 +1,31 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { AnagramHomeCard } from "./AnagramHomeCard";
 
 describe("AnagramHomeCard", () => {
+  it.each(["light", "dark"])("matches the native %s streak colour for both count and flame", (theme) => {
+    render(<MemoryRouter><AnagramHomeCard issueNumber={7} score={null} status={{ label: "New", tone: "new" }} streak={3} /></MemoryRouter>);
+    const badge = screen.getByLabelText("3-day streak");
+    expect(badge.querySelector("svg")).toHaveAttribute("fill", "none");
+    expect(badge.querySelector("svg")).toHaveAttribute("stroke", "currentColor");
+
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const paletteRules = Array.from(styles.matchAll(/(:root|html\[data-theme="light"\])\s*\{([^}]+)\}/g));
+    const palette = paletteRules.find((rule) => rule[1] === (theme === "light" ? 'html[data-theme="light"]' : ":root")
+      && rule[2].includes("--anagram-on-accent:"))![2];
+    const foreground = palette.match(/--anagram-on-accent:\s*(#[\da-f]+);/)![1];
+    const nativeAsset = JSON.parse(readFileSync(resolve(process.cwd(), "../Backword/Resources/Assets.xcassets/AnagramOnOrange.colorset/Contents.json"), "utf8"));
+    const nativeColor = nativeAsset.colors.find((entry: { appearances?: { value: string }[] }) =>
+      theme === "dark" ? entry.appearances?.some((appearance) => appearance.value === "dark") : !entry.appearances).color.components;
+    const nativeHex = `#${[nativeColor.red, nativeColor.green, nativeColor.blue]
+      .map((component) => Math.round(Number(component) * 255).toString(16).padStart(2, "0")).join("")}`;
+    expect(foreground).toBe(nativeHex);
+    expect(styles).toMatch(/\.home-game-card--anagram \.home-game-card__streak\s*\{[^}]*color:\s*var\(--anagram-on-accent\);/);
+    expect(styles).toMatch(/\.home-game-card--anagram \.home-game-card__streak-icon\s*\{[^}]*color:\s*inherit;/);
+  });
+
   it("keeps the card available before its issue number loads", () => {
     render(<MemoryRouter><AnagramHomeCard issueNumber={null} score={null} status={{ label: "New", tone: "new" }} streak={0} /></MemoryRouter>);
     const card = screen.getByRole("link", { name: "Anagram" });

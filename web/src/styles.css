@@ -2129,6 +2129,7 @@ html[data-theme="light"] .home-dashboard-loading-card__line { background: rgb(99
 html[data-theme="light"] .home-game-card--backword {
   background: color(display-p3 0.670 0.655 0.845);
 }
+html[data-theme="light"] .home-game-card--backword .home-game-card__streak-icon { color: #fff; }
 html[data-theme="light"] .home-game-card--crossword {
   color: #eeeeee;
   background: linear-gradient(rgb(255 255 255 / 10%), rgb(255 255 255 / 10%)), color(display-p3 0.289 0.397 0.544);
@@ -3376,6 +3377,10 @@ html[data-theme="light"] {
   color: var(--anagram-on-accent);
   background: color-mix(in srgb, var(--anagram-on-accent) 12%, transparent);
   font-weight: 900;
+}
+
+.home-game-card--anagram .home-game-card__streak-icon {
+  color: inherit;
 }
 
 .player-profile__table {

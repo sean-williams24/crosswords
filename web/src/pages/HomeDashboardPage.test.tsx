@@ -474,7 +474,7 @@ describe("web home dashboard", () => {
     expect(midwordStyles).toMatch(new RegExp(`\\.midword-home-card__identity img\\s*\\{[^}]*height:\\s*${midwordLogoHeight}px;`));
   });
 
-  it("uses smaller iOS-style streak pills with a monochrome orange flame", () => {
+  it("uses smaller iOS-style streak pills with an orange flame and a white Backword flame in light mode", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
     const streakRule = styles.match(/^\.home-game-card__streak\s*\{([^}]+)\}/m)![1];
     expect(streakRule).toContain("min-height: 26px;");
@@ -483,6 +483,7 @@ describe("web home dashboard", () => {
     expect(streakRule).toContain("font-size: 11px;");
     expect(streakRule).toContain("background: rgb(99 164 222 / 12%);");
     expect(styles).toMatch(/\.home-game-card__streak-icon\s*\{[^}]*color:\s*#ff9f0a;/);
+    expect(styles).toMatch(/html\[data-theme="light"\] \.home-game-card--backword \.home-game-card__streak-icon\s*\{[^}]*color:\s*#fff;/);
     expect(styles).not.toMatch(/html\[data-theme="light"\] \.home-game-card__streak\s*\{[^}]*border:\s*1px/);
   });
 

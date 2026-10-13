@@ -540,7 +540,13 @@ vertically within its Home card. Completed iOS Backword keeps its logo at the
 top centre above the revealed word, matching the compact completed layout.
 All five game cards show their own positive current streak at the top-right;
 zero streaks are hidden. Web badges share `HomeGameStreak`: a compact 26px
-pill, bold 11px count, orange monochrome SVG flame, and subtle tinted background.
+pill, bold 11px count, Lucide's outline Flame SVG, and subtle tinted background.
+The flame uses `currentColor` for its stroke, retaining the orange default and
+game-specific CSS colours. Its ISC license ships at `/licenses/lucide.txt`.
+Backword's web streak flame is white in Light Mode and keeps the orange default
+in Dark Mode.
+Anagram's flame inherits its count colour, matching iOS: near-black in Dark Mode
+and white in Light Mode, using the shared Anagram on-accent palette.
 They have no outline in either theme; game-specific count colours remain legible
 on Anagram, Midword, and Pro cards. Backword and Midword use the same account-scoped release-day
 statistics as their Stats screens; weekly crossword counts consecutive release
