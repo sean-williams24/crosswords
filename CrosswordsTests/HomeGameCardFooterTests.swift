@@ -10,6 +10,59 @@ import AppKit
 @MainActor
 @Suite("Home game card footer")
 struct HomeGameCardFooterTests {
+    @Test("Pro Only badge adds the compact status capsule padding", arguments: [false, true])
+    func proOnlyCapsulePadding(dark: Bool) {
+        let scheme: ColorScheme = dark ? .dark : .light
+        let badge = ProOnlyBadge().environment(\.colorScheme, scheme)
+        let content = HStack(spacing: 6) {
+            Text("Pro Only")
+                .font(AppFont.clueLabel(10))
+                .tracking(0.8)
+            Image(systemName: "lock.fill")
+                .font(.system(size: 10))
+                .offset(y: 1)
+        }
+        .environment(\.colorScheme, scheme)
+
+        #if canImport(UIKit)
+        let badgeSize = UIHostingController(rootView: badge)
+            .sizeThatFits(in: CGSize(width: 280, height: 100))
+        let contentSize = UIHostingController(rootView: content)
+            .sizeThatFits(in: CGSize(width: 280, height: 100))
+        #else
+        let badgeSize = NSHostingView(rootView: badge).fittingSize
+        let contentSize = NSHostingView(rootView: content).fittingSize
+        #endif
+
+        #expect(abs(badgeSize.width - contentSize.width - 20) < 1)
+        #expect(abs(badgeSize.height - contentSize.height - 10) < 1)
+    }
+
+    @Test("Pro Only text and lock use black in Light Mode and white in Dark Mode", arguments: [false, true])
+    func proOnlyForeground(dark: Bool) {
+        let foreground = Color.homeCardProOnlyForeground(for: dark ? .dark : .light)
+        var components: [CGFloat] = []
+        #if canImport(UIKit)
+        let traits = UITraitCollection(userInterfaceStyle: dark ? .dark : .light)
+        let color = UIColor(foreground).resolvedColor(with: traits)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        if color.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+            components = [red, green, blue, alpha]
+        }
+        #else
+        let appearance = NSAppearance(named: dark ? .darkAqua : .aqua)
+        appearance?.performAsCurrentDrawingAppearance {
+            if let color = NSColor(foreground).usingColorSpace(.sRGB) {
+                components = [color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent]
+            }
+        }
+        #endif
+        #expect(components == (dark ? [1, 1, 1, 1] : [0, 0, 0, 1]))
+    }
+
     @Test("Header content stays at the top centre while streak badges stay at the top-right",
           arguments: [CGFloat(180), 350], [false, true])
     func streakPosition(width: CGFloat, showsCenter: Bool) {

@@ -31,6 +31,9 @@ extension Color {
     static let dailyCardTitle = Color("DailyCardTitle")
     static let dailyCardDescription = Color("DailyCardDescription")
     static let homeCardBrightnessOverlay = Color.white
+    static func homeCardProOnlyForeground(for colorScheme: ColorScheme) -> Color {
+        colorScheme == .light ? .black : .white
+    }
     static let solvedGold = Color("SolvedGold")
     static let appCrosswordBackground = Color("CrosswordBackground")
     static let backwordBackground = Color("BackwordBackground")

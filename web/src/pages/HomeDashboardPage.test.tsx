@@ -493,7 +493,41 @@ describe("web home dashboard", () => {
     expect(styles).toContain('background: linear-gradient(rgb(255 255 255 / 10%), rgb(255 255 255 / 10%)), color(display-p3 0.289 0.397 0.544);');
     expect(styles).toContain('html[data-theme="light"] .home-game-card--backword .home-game-card__score small,\nhtml[data-theme="light"] .home-game-card--crossword .home-game-card__score small { color: rgb(255 255 255 / 58%); }');
     expect(styles).toContain('html[data-theme="light"] .home-game-card--backword .home-game-card__score.is-perfect strong { color: #c6f6b5; }');
-    expect(styles).toContain('html[data-theme="light"] .weekly-card {\n  border-color: #d9a640;\n  color: #d9a640;\n  background: var(--app-surface);');
+  });
+
+  it.each([false, true])("gives the web Pro card a metallic fill and gradient border (Pro: %s)", (isPro) => {
+    testAuth.value.entitlement = isPro ? { isPro: true, expiresAt: null } : null;
+    const { container } = renderDashboard();
+    expect(container.querySelector(".weekly-card")).toBeInTheDocument();
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const cardRule = styles.match(/^\.weekly-card\s*\{([^}]+)\}/m)![1];
+    expect(cardRule).toContain("border: 2px solid transparent;");
+    expect(cardRule).toContain("--weekly-card-glow: 4%;");
+    expect(cardRule).toContain("rgb(255 193 77 / 3%) 75%) padding-box");
+    expect(cardRule).toContain("linear-gradient(135deg, #1c1c1e, #000000) padding-box");
+    expect(cardRule).toContain("linear-gradient(135deg, #ffd27a, #bc8a37 50%, #73502a) border-box");
+    expect(cardRule).toContain("--app-text-primary: #eeeeee;");
+    expect(styles).toMatch(/\.weekly-card:hover,\s*\.weekly-card:focus-visible\s*\{[^}]*--weekly-card-glow:\s*5%;/);
+    expect(styles).toMatch(/\.weekly-card:focus-visible\s*\{[^}]*outline:\s*2px solid #ffd27a;/);
+    expect(styles).not.toMatch(/html\[data-theme="light"\] \.weekly-card(?:[:\s][^{]*)?\s*\{[^}]*background:/);
+  });
+
+  it("matches native Pro title and metadata colours while keeping Pro Only white", () => {
+    const { container } = renderDashboard();
+    expect(container.querySelector(".weekly-card .home-status--pro-only")).toHaveTextContent("Pro Only");
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const nativeTheme = readFileSync(resolve(process.cwd(), "../Backword/Theme/AppTheme.swift"), "utf8");
+    const nativeStops = nativeTheme.match(/enum AppGradient\s*\{[\s\S]*?colors:\s*\[([\s\S]*?)\]/)![1];
+    const stops = Array.from(nativeStops.matchAll(/Color\(red: ([\d.]+), green: ([\d.]+), blue: ([\d.]+)\)/g),
+      (match) => `color(srgb ${Number(match[1])} ${Number(match[2])} ${Number(match[3])})`);
+    expect(stops).toHaveLength(3);
+    const titleRule = styles.match(/^\.weekly-card__title\s*\{([^}]+)\}/m)![1];
+    expect(titleRule).toContain(`linear-gradient(135deg, ${stops.join(", ")})`);
+    expect(titleRule).toContain("background-clip: text;");
+    expect(styles).toMatch(/\.weekly-card__issue\s*\{[^}]*color:\s*color\(srgb 0\.92 0\.72 0\.22 \/ 0\.58\);/);
+    expect(styles).toMatch(/\.weekly-card\s*\{[^}]*--app-text-secondary:\s*#777777;[^}]*--app-accent:\s*color\(srgb 0\.2 0\.467 0\.694\);/);
+    expect(styles).toMatch(/\.weekly-card \.home-status--pro-only\s*\{[^}]*color:\s*#fff;/);
+    expect(styles).not.toContain('html[data-theme="light"] .weekly-card__title');
   });
 
   it("keeps the Backword home card borderless at rest in both themes", () => {

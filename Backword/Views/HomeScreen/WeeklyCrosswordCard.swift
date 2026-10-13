@@ -8,8 +8,6 @@ struct WeeklyCrosswordCard: View {
     @Environment(\.colorScheme) private var systemColorScheme
     @EnvironmentObject private var statsService: StatsService
     @EnvironmentObject var storeService: StoreService
-    @ScaledMetric private var iconSize: CGFloat = 10
-    @ScaledMetric private var offset: CGFloat = 1
     @ObservedObject var viewModel: HomeViewModel
     @State private var showPaywall = false
     var isProUser: Bool = false
@@ -125,22 +123,10 @@ struct WeeklyCrosswordCard: View {
                     )
                 }
             } else {
-                proOnlyLabel
+                ProOnlyBadge()
             }
         } issue: {
             issueLabel
-        }
-    }
-
-    private var proOnlyLabel: some View {
-        HStack(spacing: 6) {
-            Text("Pro Only")
-                .font(AppFont.caption())
-                .foregroundColor(.appAccent)
-            Image(systemName: "lock.fill")
-                .font(.system(size: iconSize))
-                .foregroundColor(.appAccent)
-                .offset(y: offset)
         }
     }
 

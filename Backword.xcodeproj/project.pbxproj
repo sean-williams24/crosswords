@@ -213,6 +213,7 @@
 		F10000000000000000000004 /* HomeGameCardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000003 /* HomeGameCardContent.swift */; };
 		F10000000000000000000006 /* HomeGameCardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000005 /* HomeGameCardLayout.swift */; };
 		F1000000000000000000000A /* HomeGameCardHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000009 /* HomeGameCardHeader.swift */; };
+		F1000000000000000000000C /* ProOnlyBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000B /* ProOnlyBadge.swift */; };
 		F10000000000000000000008 /* HomeGameCardFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000007 /* HomeGameCardFooter.swift */; };
 		F2A000023010000000000001 /* HomeWordOfTheDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A000013010000000000001 /* HomeWordOfTheDayView.swift */; };
 		F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A3938FD382B86EEB78063 /* ArchiveView.swift */; };
@@ -437,6 +438,7 @@
 		F10000000000000000000003 /* HomeGameCardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGameCardContent.swift; sourceTree = "<group>"; };
 		F10000000000000000000005 /* HomeGameCardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGameCardLayout.swift; sourceTree = "<group>"; };
 		F10000000000000000000009 /* HomeGameCardHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGameCardHeader.swift; sourceTree = "<group>"; };
+		F1000000000000000000000B /* ProOnlyBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProOnlyBadge.swift; sourceTree = "<group>"; };
 		F10000000000000000000007 /* HomeGameCardFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGameCardFooter.swift; sourceTree = "<group>"; };
 		F2A000013010000000000001 /* HomeWordOfTheDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWordOfTheDayView.swift; sourceTree = "<group>"; };
 		F31C198A0EE68F6859AD60A4 /* PuzzleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleService.swift; sourceTree = "<group>"; };
@@ -698,6 +700,7 @@
 				F10000000000000000000007 /* HomeGameCardFooter.swift */,
 				F10000000000000000000009 /* HomeGameCardHeader.swift */,
 				86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */,
+				F1000000000000000000000B /* ProOnlyBadge.swift */,
 				86F02E472FBA14FF0083B752 /* StatusLabelView.swift */,
 				86F02E492FBA15550083B752 /* PuzzleStatus.swift */,
 			);
@@ -1176,6 +1179,7 @@
 				CDFB51C30CE8784881171A9F /* RatingDetailSheet.swift in Sources */,
 				8F92754416251062C7FCA46E /* CrosswordStatsView.swift in Sources */,
 				86E5C00A2FA9211200A42156 /* WeeklyCrosswordCard.swift in Sources */,
+				F1000000000000000000000C /* ProOnlyBadge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1833,6 +1833,11 @@ body {
 .wotd-detail__explainer > span { flex: none; color: var(--app-text-secondary); font-style: normal; }
 
 .weekly-card {
+  --weekly-card-glow: 4%;
+  --app-text-primary: #eeeeee;
+  --app-text-secondary: #777777;
+  --app-accent: color(srgb 0.2 0.467 0.694);
+  --app-primary-rgb: 238 238 238;
   position: relative;
   display: grid;
   width: 100%;
@@ -1846,10 +1851,13 @@ body {
   align-items: stretch;
   justify-content: stretch;
   gap: 8px;
-  border: 2px solid #b8872d;
+  border: 2px solid transparent;
   border-radius: 10px;
-  color: #d6be87;
-  background: linear-gradient(135deg, #211e19, var(--app-elevated) 55%, #221d15);
+  color: color(srgb 0.85 0.65 0.25);
+  background:
+    radial-gradient(ellipse at top left, rgb(255 193 77 / var(--weekly-card-glow)), rgb(255 193 77 / 3%) 75%) padding-box,
+    linear-gradient(135deg, #1c1c1e, #000000) padding-box,
+    linear-gradient(135deg, #ffd27a, #bc8a37 50%, #73502a) border-box;
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -1857,12 +1865,14 @@ body {
   row-gap: 0;
 }
 .weekly-card:hover,
-.weekly-card:focus-visible { background: linear-gradient(135deg, #292419, var(--app-surface) 55%, #2a2114); outline: none; transform: translateY(-3px); box-shadow: 0 18px 40px rgb(0 0 0 / 24%); }
+.weekly-card:focus-visible { --weekly-card-glow: 5%; outline: none; transform: translateY(-3px); box-shadow: 0 18px 40px rgb(0 0 0 / 24%); }
+.weekly-card:focus-visible { outline: 2px solid #ffd27a; outline-offset: 3px; }
 .weekly-card__identity { position: relative; display: flex; min-width: 0; flex-direction: column; }
 .weekly-card__identity { grid-area: identity; align-self: center; align-items: center; justify-content: center; gap: 6px; text-align: center; }
-.weekly-card__title { padding-left: 0.18em; font-size: clamp(16px, 2vw, 16px); font-weight: 700; letter-spacing: 0.18em; }
-.weekly-card__issue { color: rgb(214 190 135 / 70%); }
-.weekly-card__description { color: #97918a; font-size: 14px; }
+.weekly-card__title { padding-left: 0.18em; color: color(srgb 0.85 0.65 0.25); background: linear-gradient(135deg, color(srgb 0.85 0.65 0.25), color(srgb 0.78 0.52 0.2), color(srgb 0.85 0.65 0.25)); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: clamp(16px, 2vw, 16px); font-weight: 700; letter-spacing: 0.18em; }
+.weekly-card__issue { color: color(srgb 0.92 0.72 0.22 / 0.58); }
+.weekly-card__description { color: var(--app-text-secondary); font-size: 14px; }
+.weekly-card .home-status--pro-only { color: #fff; }
 .weekly-card { text-decoration: none; }
 .weekly-card__status { display: flex; min-height: 20px; flex-direction: column; align-items: center; gap: 5px; color: var(--app-text-primary); font-size: 12px; text-align: right; }
 
@@ -2114,10 +2124,8 @@ html[data-theme="light"] .home-dashboard-loading-card--weekly {
 html[data-theme="light"] .home-dashboard-loading-card::before { background: linear-gradient(105deg, transparent 28%, rgb(99 164 222 / 14%) 48%, transparent 68%); }
 html[data-theme="light"] .home-dashboard-loading-card__line { background: rgb(99 164 222 / 18%); }
 
-/* Keep the browser home cards visually identical to their iOS counterparts:
-   Backword uses its flat lavender asset colour, Quick Crossword uses the
-   slate daily-card surface under iOS's 10% white overlay, and Pro is a white
-   card with the same gold gradient represented by its lead colour. */
+/* Backword and Quick Crossword retain their iOS Light Mode surfaces.
+   Pro Crossword keeps its dark metallic treatment in both themes. */
 html[data-theme="light"] .home-game-card--backword {
   background: color(display-p3 0.670 0.655 0.845);
 }
@@ -2140,14 +2148,6 @@ html[data-theme="light"] .home-game-card--backword .home-game-card__score small,
 html[data-theme="light"] .home-game-card--crossword .home-game-card__score small { color: rgb(255 255 255 / 58%); }
 html[data-theme="light"] .home-game-card--backword .home-game-card__score.is-perfect strong { color: #c6f6b5; }
 
-html[data-theme="light"] .weekly-card {
-  border-color: #d9a640;
-  color: #d9a640;
-  background: var(--app-surface);
-}
-html[data-theme="light"] .weekly-card:hover,
-html[data-theme="light"] .weekly-card:focus-visible { background: var(--app-surface); }
-html[data-theme="light"] .weekly-card__title { color: #d9a640; }
 html[data-theme="light"] .weekly-card small { color: var(--app-text-secondary); }
 html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); }
 

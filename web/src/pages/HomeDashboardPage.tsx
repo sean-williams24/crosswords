@@ -232,7 +232,7 @@ export function HomeDashboardPage() {
                         <small className="weekly-card__description">13×13</small>
                       </span>
                       <span className="weekly-card__details">
-                        <span className="weekly-card__status"><span className="home-status">Pro Only</span></span>
+                        <span className="weekly-card__status"><span className="home-status home-status--pro-only">Pro Only</span></span>
                         <HomeGameIssueNumber className="weekly-card__issue" issueNumber={issueNumbers.weeklyCrossword} />
                       </span>
                     </Link>
