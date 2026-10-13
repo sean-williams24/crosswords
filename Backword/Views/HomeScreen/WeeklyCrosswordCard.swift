@@ -71,6 +71,7 @@ struct WeeklyCrosswordCard: View {
             RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                 .stroke(proGradient, lineWidth: 1.5)
         )
+        .environment(\.colorScheme, WeeklyCrosswordCardAppearance.colorScheme)
         .sheet(isPresented: $showPaywall) {
             PaywallView()
                 .environmentObject(storeService)

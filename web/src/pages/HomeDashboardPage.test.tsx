@@ -505,7 +505,7 @@ describe("web home dashboard", () => {
     expect(cardRule).toContain("--weekly-card-glow: 4%;");
     expect(cardRule).toContain("rgb(255 193 77 / 3%) 75%) padding-box");
     expect(cardRule).toContain("linear-gradient(135deg, #1c1c1e, #000000) padding-box");
-    expect(cardRule).toContain("linear-gradient(135deg, #ffd27a, #bc8a37 50%, #73502a) border-box");
+    expect(cardRule).toContain("linear-gradient(135deg, color(srgb 0.85 0.65 0.25), color(srgb 0.78 0.52 0.2), color(srgb 0.85 0.65 0.25)) border-box");
     expect(cardRule).toContain("--app-text-primary: #eeeeee;");
     expect(styles).toMatch(/\.weekly-card:hover,\s*\.weekly-card:focus-visible\s*\{[^}]*--weekly-card-glow:\s*5%;/);
     expect(styles).toMatch(/\.weekly-card:focus-visible\s*\{[^}]*outline:\s*2px solid #ffd27a;/);
@@ -523,6 +523,8 @@ describe("web home dashboard", () => {
     expect(stops).toHaveLength(3);
     const titleRule = styles.match(/^\.weekly-card__title\s*\{([^}]+)\}/m)![1];
     expect(titleRule).toContain(`linear-gradient(135deg, ${stops.join(", ")})`);
+    const cardRule = styles.match(/^\.weekly-card\s*\{([^}]+)\}/m)![1];
+    expect(cardRule).toContain(`linear-gradient(135deg, ${stops.join(", ")}) border-box`);
     expect(titleRule).toContain("background-clip: text;");
     expect(styles).toMatch(/\.weekly-card__issue\s*\{[^}]*color:\s*color\(srgb 0\.92 0\.72 0\.22 \/ 0\.58\);/);
     expect(styles).toMatch(/\.weekly-card\s*\{[^}]*--app-text-secondary:\s*#777777;[^}]*--app-accent:\s*color\(srgb 0\.2 0\.467 0\.694\);/);

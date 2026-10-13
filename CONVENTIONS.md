@@ -577,21 +577,24 @@ without a colour filter. iOS cards share `HomeGameCardContent`,
 
 Pro Crossword retains its gold gradient and border, Pro navigation, and non-Pro
 paywall behaviour.
+The iOS Pro Crossword Home card resolves its surface and content in Dark Mode
+in both app themes, preserving its existing dark palette and white Pro Only
+text and padlock. Its border continues to use `AppGradient.pro`; the web Home
+card uses those same darker three sRGB gold stops for its border in both themes.
 
 The web Pro Crossword Home card uses a 135-degree charcoal (`#1C1C1E`) to
 black fill with a subtle 3–4% amber glow, increasing to 5% on hover or focus.
-A 2px transparent border reveals a separate gold-to-bronze gradient from the
+A 2px transparent border reveals the native `AppGradient.pro` gold gradient from the
 top-left to the bottom-right. Background layers are clipped to the padding and
 border boxes so rounded corners and shared card dimensions remain intact.
 This metallic treatment applies in both themes, with light text colours scoped
-to the card. Keyboard focus adds an outer gold outline. iOS cards and other web
-game cards retain their existing appearance.
+to the card. Keyboard focus adds an outer gold outline.
 The web title uses the same three sRGB gold stops as iOS `AppGradient.pro`,
 clipped to the text. Its dimensions use the native dark secondary gray, Pro Only
 uses white on web, and issue numbers use `SolvedGold` at the same
 58% opacity as iOS. These text colours stay consistent across web themes.
-On iOS, Pro Only text and its padlock share a foreground: black in Light Mode
-and white in Dark Mode. The label uses the Ad-free experience card's Go Pro
+On iOS, Pro Only text and its padlock share a white foreground on this dark card.
+The label uses the Ad-free experience card's Go Pro
 typography (10-point Outfit Black with 0.8-point tracking), and the text and
 lock sit in a lightly tinted capsule with the same padding and corner radius
 as the other home card status badges.

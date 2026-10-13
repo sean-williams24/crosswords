@@ -73,6 +73,11 @@ enum BackwordAppearance {
     static let colorScheme: ColorScheme = .dark
 }
 
+/// Pro Home cards retain their dark surface and readable content in both themes.
+enum WeeklyCrosswordCardAppearance {
+    static let colorScheme: ColorScheme = .dark
+}
+
 enum BackwordCardAppearance {
     /// The card keeps dark, high-contrast content, while its background follows
     /// the system appearance so Light Mode can use the pastel lavender asset.
