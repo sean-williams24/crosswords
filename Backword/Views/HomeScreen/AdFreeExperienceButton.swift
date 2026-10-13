@@ -11,6 +11,13 @@ struct AdFreeExperienceButtonContent: Equatable {
     }
 
     static let home = AdFreeExperienceButtonContent(
+        title: "ARCHIVE",
+        detail: "Unlock the archive for all 5 games",
+        subtitle: "Go Pro",
+        systemImage: "archivebox"
+    )
+
+    static let adExplainer = AdFreeExperienceButtonContent(
         title: "Ad-free experience",
         detail: "Archive access",
         subtitle: "Go Pro",
@@ -55,13 +62,12 @@ struct AdFreeExperienceButton: View {
         Button(action: action) {
             HStack(spacing: 10) {
                 Image(systemName: content.systemImage)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(proGradient)
-                    .frame(width: 28, height: 28)
+                    .font(.system(size: 21, weight: .light))
+                    .foregroundStyle(Color.appAccent)
+                    .frame(width: 38, height: 38)
                     .background(Color.appSurface.opacity(0.26))
                     .clipShape(Circle())
                     .scaleEffect(isAnimating && !reduceMotion ? 1.12 : 1)
-                    .rotationEffect(.degrees(isAnimating && !reduceMotion ? 8 : -6))
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(content.title)

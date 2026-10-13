@@ -125,7 +125,6 @@ struct HomeView: View {
                         }
                         .padding(.horizontal, appLayout.homeHorizontalPadding)
                         gamesGrid
-                        adFreeExperienceButton
                     }
                     .padding(.top, 16)
                     .padding(.bottom, 100)
@@ -426,12 +425,20 @@ struct HomeView: View {
     }
 
     private var gamesGrid: some View {
+        VStack(spacing: HomeGamesLayout.spacing) {
+            gamesGrid(for: HomeGamesLayout.gamesBeforeArchiveButton)
+            adFreeExperienceButton
+            gamesGrid(for: HomeGamesLayout.gamesAfterArchiveButton)
+        }
+        .padding(.horizontal, appLayout.homeHorizontalPadding)
+    }
+
+    private func gamesGrid(for games: [HomeGamesLayout.Game]) -> some View {
         LazyVGrid(columns: HomeGamesLayout.columns(for: sizeClass), spacing: HomeGamesLayout.spacing) {
-            ForEach(HomeGamesLayout.games, id: \.self) { game in
+            ForEach(games, id: \.self) { game in
                 gameCard(for: game)
             }
         }
-        .padding(.horizontal, appLayout.homeHorizontalPadding)
     }
 
     @ViewBuilder
@@ -598,7 +605,6 @@ struct HomeView: View {
             AdFreeExperienceButton {
                 showPaywall = true
             }
-            .padding(.horizontal, appLayout.homeHorizontalPadding)
         }
     }
 
@@ -806,6 +812,8 @@ enum HomeGamesLayout {
     }
 
     static let games = Game.allCases
+    static let gamesBeforeArchiveButton = Array(games.prefix { $0 != .anagram })
+    static let gamesAfterArchiveButton = Array(games.drop { $0 != .anagram })
     static let spacing: CGFloat = 20
 
     static func usesTwoColumns(for sizeClass: UserInterfaceSizeClass?) -> Bool {

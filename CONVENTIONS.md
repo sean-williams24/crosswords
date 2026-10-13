@@ -517,8 +517,10 @@ they recognise an already-updated payload and never overwrite a divergent row.
 iOS Home presents Backword, Quick Crossword, Anagram, Midword, and Pro Crossword
 in that order, with the same grid spacing between every game card and no extra
 Midword padding. Regular-width iPad layouts use two equal columns, while compact layouts
-use one column. The Pro upsell follows the games when visible, with Word of the
-Day below it. The game cards have no separate daily or weekly section headings
+use one column. The archive upsell sits between Quick Crossword and Anagram
+when visible, spanning both columns on iPad. The two game grids retain the same
+spacing when the upsell is hidden for Pro users. Word of the Day precedes the
+games. The game cards have no separate daily or weekly section headings
 or date labels; their own content identifies each game.
 The Pro Crossword card fills its grid column rather than keeping a fixed iPad
 width.

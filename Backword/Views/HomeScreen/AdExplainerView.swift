@@ -94,6 +94,7 @@ struct AdExplainerView: View {
     private var bottomActionPanel: some View {
         VStack(spacing: 14) {
             AdFreeExperienceButton(
+                content: .adExplainer,
                 height: bottomControlHeight,
                 showDetails: false,
                 action: showAdFreeExperience

@@ -6,6 +6,14 @@ import UIKit
 
 @Suite("Home games layout")
 struct HomeGamesLayoutTests {
+    @Test("Archive button follows Quick Crossword and sits above Anagram")
+    func archiveButtonPosition() {
+        #expect(HomeGamesLayout.gamesBeforeArchiveButton == [.backword, .quickCrossword])
+        #expect(HomeGamesLayout.gamesAfterArchiveButton == [.anagram, .midword, .proCrossword])
+        #expect(HomeGamesLayout.gamesBeforeArchiveButton + HomeGamesLayout.gamesAfterArchiveButton
+                == HomeGamesLayout.games)
+    }
+
     @Test("Regular width arranges the five games in two columns")
     func regularWidthGames() {
         #expect(HomeGamesLayout.usesTwoColumns(for: .regular))

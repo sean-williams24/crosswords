@@ -3,9 +3,20 @@ import Testing
 
 @Suite("Ad free experience button")
 struct AdFreeExperienceButtonTests {
-    @Test("Home content uses paywall call to action copy")
+    @Test("Home content promotes archive access for all five games")
     func homeContentCopy() {
         let content = AdFreeExperienceButtonContent.home
+
+        #expect(content.title == "Unlock the archive")
+        #expect(content.detail == "for all 5 games")
+        #expect(content.subtitle == "Go Pro")
+        #expect(content.systemImage == "sparkles")
+        #expect(content.accessibilityLabel == "Unlock the archive, for all 5 games, Go Pro")
+    }
+
+    @Test("Ad explainer content keeps the ad-free call to action")
+    func adExplainerContentCopy() {
+        let content = AdFreeExperienceButtonContent.adExplainer
 
         #expect(content.title == "Ad-free experience")
         #expect(content.detail == "Archive access")
