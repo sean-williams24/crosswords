@@ -77,7 +77,7 @@ describe("Footer", () => {
     expect(screen.getByRole("link", { name: "Download Backword on the App Store from footer" })).toBeInTheDocument();
   });
 
-  it("centers copyright and the badge below links on smaller screens and flanks the top row on large screens", () => {
+  it("gives three columns equal outer and inner spacing and flanks the top row on large screens", () => {
     render(<MemoryRouter><Footer /></MemoryRouter>);
 
     const footer = screen.getByRole("contentinfo");
@@ -86,10 +86,12 @@ describe("Footer", () => {
     const badge = within(footer).getByRole("link", { name: "Download Backword on the App Store from footer" });
     const layout = navigation.parentElement;
 
+    expect(footer).toHaveClass("px-6", "sm:px-0", "lg:px-6");
     expect(layout).toHaveClass("grid", "items-start", "justify-items-center", "gap-8", "lg:grid-cols-[auto_minmax(0,1fr)_auto]", "lg:gap-x-16");
     expect(copyright.parentElement).toBe(layout);
     expect(badge.parentElement?.parentElement).toBe(layout);
     expect(navigation).toHaveClass("order-1", "lg:order-2", "justify-self-stretch", "lg:grid-cols-[repeat(6,max-content)]", "lg:justify-between");
+    expect(navigation).toHaveClass("sm:grid-cols-[repeat(3,max-content)]", "sm:justify-evenly", "sm:gap-x-0");
     expect(copyright).toHaveClass("order-2", "text-center", "lg:order-1", "lg:justify-self-start");
     expect(badge.parentElement).toHaveClass("order-3", "lg:justify-self-end");
   });
