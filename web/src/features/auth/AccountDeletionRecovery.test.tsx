@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Link, MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -58,5 +58,14 @@ describe("AccountDeletionRecovery", () => {
 
     await waitFor(() => expect(auth.validateAccountSession).toHaveBeenCalledOnce());
     expect(screen.getByText("/crossword")).toBeInTheDocument();
+  });
+
+  it("acknowledges an external deletion and goes to sign-in when tapping outside", () => {
+    render(<MemoryRouter initialEntries={["/crossword"]}>
+      <LocationProbe /><AccountDeletionRecovery />
+    </MemoryRouter>);
+    fireEvent.click(screen.getByRole("dialog", { name: "Your Backword account has been deleted" }).parentElement!);
+    expect(auth.acknowledgeAccountDeletion).toHaveBeenCalledOnce();
+    expect(screen.getByText("/sign-in")).toBeInTheDocument();
   });
 });

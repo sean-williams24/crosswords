@@ -37,7 +37,9 @@ export function BackwordModal({
   }, [onClose]);
 
   return (
-    <div className={`bw-modal-backdrop${backdropClassName ? ` ${backdropClassName}` : ""}`} role="presentation">
+    <div className={`bw-modal-backdrop${backdropClassName ? ` ${backdropClassName}` : ""}`} onClick={(event) => {
+      if (event.target === event.currentTarget) onClose();
+    }} role="presentation">
       <section
         aria-label={title}
         aria-modal="true"

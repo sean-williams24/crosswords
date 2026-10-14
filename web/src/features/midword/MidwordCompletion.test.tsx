@@ -80,6 +80,15 @@ describe("Midword completion native appearance", () => {
     expect(onClose).toHaveBeenCalledOnce();
   });
 
+  it("dismisses on taps outside the completion sheet and leaves taps inside alone", () => {
+    const onClose = renderCompletion();
+    const dialog = screen.getByRole("dialog", { name: "Finished" });
+    fireEvent.click(screen.getByText("BANKNOTE · NOTEBOOK"));
+    expect(onClose).not.toHaveBeenCalled();
+    fireEvent.click(dialog.parentElement!);
+    expect(onClose).toHaveBeenCalledOnce();
+  });
+
   it("matches native heading and countdown weights, spacing and full-width history", () => {
     const css = readFileSync("src/features/midword/midword.css", "utf8");
     const style = document.createElement("style");

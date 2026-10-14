@@ -138,7 +138,7 @@ export function AnagramDialog({ kind, onClose, onConfirmHint, onConfirmGiveUp, p
     : kind === "stats" || kind === "instructions" || kind === "result"
       ? " anagram-dialog-backdrop--stats"
       : "";
-  return <div className={`anagram-dialog-backdrop${backdropModifier}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+  return <div className={`anagram-dialog-backdrop${backdropModifier}`} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
     <section aria-label={kind === "result" && progress && puzzle ? anagramCompletionTitle(progress, puzzle) : kind === "stats" ? "Anagram stats" : kind === "instructions" ? "How to Play" : kind === "hint" ? "Reveal a letter" : "Give up"} aria-modal="true" className={`anagram-dialog${kind === "stats" ? " anagram-dialog--stats" : kind === "instructions" ? " anagram-dialog--instructions" : kind === "result" ? " anagram-dialog--completion" : ""}`} role="dialog">
       {kind !== "result" ? <button aria-label={kind === "stats" ? "Close Anagram stats" : kind === "instructions" ? "Close How to Play" : "Close"} className="anagram-dialog-close" onClick={onClose} ref={closeRef} type="button">×</button> : null}
       {kind === "instructions" ? <><header className="anagram-instructions-header"><h2>How to Play</h2></header><div className="anagram-instructions-scroll"><AnagramInstructions /></div></> : null}

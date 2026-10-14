@@ -13,6 +13,24 @@ const puzzle = mapAnagramRow(fixtures.puzzles[0]);
 const now = new Date("2026-10-01T10:00:00Z");
 
 describe("Anagram accessible controls", () => {
+  it.each(["instructions", "hint", "giveUp", "stats", "result"] as const)("dismisses the %s sheet only on backdrop clicks", (kind) => {
+    const onClose = vi.fn();
+    const onConfirmGiveUp = vi.fn();
+    const onConfirmHint = vi.fn();
+    render(<MemoryRouter><AnagramDialog history={[]} kind={kind} now={now}
+      onClose={onClose} onConfirmGiveUp={onConfirmGiveUp} onConfirmHint={onConfirmHint}
+      progress={startProgress(puzzle, now)} puzzle={puzzle} shareResult={null}
+      stats={{ averageSeconds: null, bestStreak: 0, played: 0, rollingScore: 0, solved: 0, streak: 0 }} /></MemoryRouter>);
+    const dialog = screen.getByRole("dialog");
+    fireEvent.click(dialog);
+    fireEvent.click(screen.getAllByRole("heading")[0]);
+    expect(onClose).not.toHaveBeenCalled();
+    fireEvent.click(dialog.parentElement!);
+    expect(onClose).toHaveBeenCalledOnce();
+    expect(onConfirmGiveUp).not.toHaveBeenCalled();
+    expect(onConfirmHint).not.toHaveBeenCalled();
+  });
+
   it("lets the shared share menu keep its standard action styling", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { useState } from "react";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -41,6 +41,19 @@ describe("GameMenu account actions", () => {
     document.body.removeAttribute("style");
     window.localStorage.removeItem("backword:web:theme:v1");
     Object.defineProperty(window, "scrollY", { configurable: true, value: 0 });
+  });
+
+  it.each([false, true])("dismisses only on backdrop clicks (controlled: %s)", async (controlled) => {
+    const user = userEvent.setup();
+    renderMenu("/menu-test", controlled);
+    await user.click(screen.getByRole("button", { name: "Open game menu" }));
+    const dialog = screen.getByRole("dialog", { name: "Game navigation" });
+    fireEvent.click(dialog);
+    fireEvent.click(within(dialog).getByRole("heading", { name: "Appearance" }));
+    expect(dialog).toBeInTheDocument();
+    fireEvent.click(dialog.parentElement!);
+    expect(screen.queryByRole("dialog", { name: "Game navigation" })).not.toBeInTheDocument();
+    expect(document.body.style.overflow).toBe("");
   });
 
   it("shows one Player Profile link for signed-in players without account actions", async () => {

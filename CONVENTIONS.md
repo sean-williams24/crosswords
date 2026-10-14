@@ -113,10 +113,11 @@ unauthenticated CORS `OPTIONS` preflight can reach its handler. It returns the
 same CORS headers on every outcome, while the actual deletion request remains
 authenticated through the handler's bearer-token validation.
 
-After a browser deletion succeeds, the player sees a non-dismissable summary
+After a browser deletion succeeds, the player sees a summary
 of the cloud account data removed and the Apple subscription and device-local
-data retained. Only after acknowledgement does the browser clear its local
-session and take the player to sign-in.
+data retained. Continuing or tapping outside that sheet acknowledges the summary,
+clears the browser's local session, and takes the player to sign-in. Both actions
+are disabled while that final step is in progress.
 
 Account deletion also clears both the `user_id` and `app_account_token` from
 the entitlement record before deleting the Supabase Auth user. Apple
@@ -689,6 +690,14 @@ Social profile URLs live in `siteConfig.socialLinks`; these external links use
 platform icons and visible names and open in a new tab.
 
 ---
+
+## Website Sheet Dismissal
+
+All web sheets dismiss when the player taps or clicks their backdrop, including
+game instructions, stats, completion, clues, confirmations, Pro details, and the
+navigation drawer. Events from inside a sheet must not dismiss it through the
+backdrop. The account-deleted summary uses its existing Continue action when
+the backdrop is tapped, so final session cleanup and sign-in navigation still run.
 
 ## Website Submit Button Transitions
 

@@ -127,7 +127,7 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
       {menuIsOpen ? createPortal(
         <div
           className="bw-menu-backdrop"
-          onMouseDown={(event) => {
+          onClick={(event) => {
             if (event.target === event.currentTarget) {
               closeMenu();
             }

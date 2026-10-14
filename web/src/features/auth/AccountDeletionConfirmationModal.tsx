@@ -23,7 +23,9 @@ export function AccountDeletionConfirmationModal({
   }, []);
 
   return (
-    <div className="bw-modal-backdrop" role="presentation">
+    <div className="bw-modal-backdrop" onClick={(event) => {
+      if (event.target === event.currentTarget && !isFinishing) onContinue();
+    }} role="presentation">
       <section aria-describedby="account-deleted-summary" aria-labelledby="account-deleted-title" aria-modal="true" className="bw-modal account-deletion-confirmation" role="dialog">
         <div className="account-deletion-confirmation__content">
           <p className="account-deletion-confirmation__eyebrow">ACCOUNT DELETED</p>
