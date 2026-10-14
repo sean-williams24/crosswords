@@ -660,6 +660,21 @@ The shared web menu button is absolutely positioned at the top of the page, so
 it scrolls away with the page content. The open navigation drawer remains a
 fixed, document-level overlay.
 
+The shared website footer groups its links into Explore, Free games, Pro Account,
+Support, Legal, and Socials, in that order, each with a heading and vertical list. Explore
+contains Home and Player Profile; Free games lists Backword, Crossword, Midword,
+and Anagram; Pro Account lists Pro Crossword, Archive, and Subscribe. The groups
+form six columns on large screens, three on small screens, and two on narrower
+screens. At the large breakpoint, copyright sits to the left of the link groups
+and the App Store badge sits to the right, both aligned with the top row. Link
+columns fit their content and distribute the remaining space between them,
+keeping equal 4rem gaps from copyright to Explore and from Socials to the badge.
+Below that breakpoint, copyright and the badge are each centred beneath the
+links. Pro Crossword and Archive retain their entitlement-aware destinations,
+and Subscribe appears in Pro Account only for players without Pro access.
+Social profile URLs live in `siteConfig.socialLinks`; these external links use
+platform icons and visible names and open in a new tab.
+
 ---
 
 ## Website Submit Button Transitions
