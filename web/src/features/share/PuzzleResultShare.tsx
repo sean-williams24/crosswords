@@ -240,11 +240,13 @@ async function share(
 export function PuzzleResultShare({
   result,
   showPreview = true,
-  compact = false
+  compact = false,
+  showIcon = false
 }: {
   result: PuzzleShareResult;
   showPreview?: boolean;
   compact?: boolean;
+  showIcon?: boolean;
 }) {
   const { track } = useAnalytics();
   const shareControlRef = useRef<HTMLElement>(null);
@@ -373,7 +375,8 @@ export function PuzzleResultShare({
       <div className="puzzle-result-share__stats"><span>{result.score} {result.score === 1 ? "PT" : "PTS"}</span><span>{result.primaryStat.value}</span><span>{result.ratingTier} {result.ratingPoints}/{result.ratingMaxPoints} PTS</span><span>{result.streak} {result.streak === 1 ? "day" : "days"}</span></div>
     </div> : null}
     <button aria-label={compact ? isCardReady ? "Share result" : "Preparing share card" : undefined} className={`bw-secondary-button puzzle-result-share__button${compact ? " puzzle-result-share__button--compact" : ""}`} disabled={!isCardReady} onClick={() => void handleShare()} type="button">
-      {compact ? isCardReady ? <><svg aria-hidden="true" className="puzzle-result-share__icon" viewBox="0 0 24 24"><path d="M12 15V3m0 0 4 4m-4-4L8 7M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8" /></svg>Share</> : "Preparing…" : "Share result"}
+      {(compact && isCardReady) || (!compact && showIcon) ? <svg aria-hidden="true" className="puzzle-result-share__icon" viewBox="0 0 24 24"><path d="M12 15V3m0 0 4 4m-4-4L8 7M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8" /></svg> : null}
+      {compact ? isCardReady ? "Share" : "Preparing…" : "Share result"}
     </button>
     {showShareActions ? <div aria-label="Share result options" className="puzzle-result-share__fallback" role="dialog">
       {currentCardFile() ? <>{canUseShareMenu ? <button onClick={() => void shareCard()} type="button">{resultShareActionLabels.shareMenu}</button> : null}<button onClick={() => void copyCardImage()} type="button">{resultShareActionLabels.copyResultsCard}</button><button onClick={downloadCard} type="button">{resultShareActionLabels.downloadResultsCard}</button></> : <p>Image card is still preparing.</p>}

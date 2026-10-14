@@ -152,7 +152,7 @@ describe("Midword browser gameplay", () => {
     expect(createMidwordStorage().loadProgress(localDateString()).releaseDateScore).toBe(5);
     expect(screen.queryByRole("group", { name: "Midword keyboard" })).not.toBeInTheDocument();
     expect(mocks.track.mock.calls.map((args) => args[0].name)).toEqual(["game_started", "game_completed"]);
-    await user.click(within(result).getByRole("button", { name: "BACK TO GAME" }));
+    await user.keyboard("{Escape}");
     expect(screen.getByRole("button", { name: "Share result" })).toBeInTheDocument();
   });
   it("retains invalid and duplicate input without consuming an attempt", async () => {

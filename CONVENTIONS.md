@@ -413,6 +413,13 @@ Date / Score / Guesses order, with green today/status text, tinted zero-score
 chips, and guess counts out of five. These styles use semantic Midword colours
 in both appearances. The stats navigation title retains the native system font.
 
+The completion sheet keeps its Outfit title inside the scrolling content and
+has a single pinned, text-only HOME action. It omits the toolbar and close
+button; Escape still dismisses the browser dialog. Answer tiles use native
+translucent outcome fills and borders with primary-colour lettering, including
+red failed answers. Cards are inset, while the 14-day history table spans the
+sheet width. Mobile presents a bottom sheet; wider screens center the sheet.
+
 Midword's info sheet follows Anagram's responsive instructions layout: centered
 on desktop, a bottom sheet on mobile, with a fixed title, circular accent close
 button, and scrolling content. Both games share instruction sections, icon

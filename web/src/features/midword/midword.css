@@ -101,8 +101,7 @@ html[data-theme="dark"] .midword-header h1::after {
 .midword-dialog .bw-modal-header h2 { color: var(--midword-text); }
 .midword-dialog--stats .bw-modal-header { border-bottom: 0; }
 .midword-dialog--stats .bw-modal-header h2 { font-family: system-ui, sans-serif; font-size: 17px; font-weight: 600; }
-.midword-dialog--completion .bw-modal-header h2 { color: var(--midword-accent); font-size: clamp(30px, 8vw, 40px); animation: midword-enter 550ms both; }
-.midword-dialog--completion.is-failed .bw-modal-header h2 { color: var(--bw-failed, #ec5454); }
+.midword-dialog--completion { width: min(100%, 560px); border-radius: 28px 28px 0 0; font-family: var(--midword-font); }
 .midword-dialog .bw-modal-close { color: var(--midword-on-accent); background: var(--midword-accent); }
 .midword-dialog-scroll { display: flex; min-height: 0; padding: 0 clamp(18px, 5vw, 40px) 28px; flex-direction: column; gap: 24px; overflow-y: auto; }
 .midword-dialog:not(.midword-dialog--instructions) h3 { margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
@@ -152,22 +151,34 @@ html[data-theme="dark"] .midword-header h1::after {
 .midword-history td small { display: block; margin-top: 1px; color: var(--midword-accent); font-size: 9px; font-weight: 900; letter-spacing: 1px; }
 .midword-score-chip { display: inline-grid; width: 24px; height: 24px; border-radius: 2px; place-items: center; color: color-mix(in srgb, var(--midword-accent) 65%, transparent); background: color-mix(in srgb, var(--midword-accent) 15%, transparent); font-size: 12px; font-weight: 900; }
 .midword-score-chip.is-earned { color: var(--midword-on-accent); background: var(--midword-accent); }
-.midword-completion-header { text-align: center; animation: midword-enter 550ms both; }
-.midword-completion-header > strong { font-size: 13px; letter-spacing: .15em; }
-.midword-completion-header p { margin-bottom: 0; }
-.midword-completion-answer { text-align: center; animation: midword-enter 450ms 220ms both; }
-.midword-completion-answer .midword-letter-row { width: min(94%, calc(var(--midword-letter-count) * 44px + (var(--midword-letter-count) - 1) * 8px)); }
-.midword-completion-answer .is-correct > span { color: var(--midword-on-accent); background: var(--midword-accent); }
+.midword-dialog .midword-completion-scroll { padding: 32px 0 28px; gap: 20px; overscroll-behavior: contain; }
+.midword-completion-scroll > *, .midword-completion-details > * { flex-shrink: 0; }
+.midword-completion-header { display: flex; padding-inline: 20px; flex-direction: column; gap: 8px; text-align: center; animation: midword-enter 550ms both; }
+.midword-completion-header h2 { margin: 0; color: var(--midword-accent); font-size: 40px; font-weight: 700; line-height: 1.2; }
+.midword-dialog--completion.is-failed .midword-completion-header h2 { color: var(--bw-failed); }
+.midword-completion-header > strong { color: var(--midword-accent); font-size: 14px; font-weight: 900; letter-spacing: 3px; }
+.midword-completion-header p { margin: 0; font-size: 16px; font-weight: 400; }
+.midword-completion-answer { display: flex; padding-inline: 20px; flex-direction: column; gap: 20px; text-align: center; animation: midword-enter 450ms 220ms both; }
+.midword-completion-answer .midword-letter-row { width: min(94%, calc(var(--midword-letter-count) * 44px + (var(--midword-letter-count) - 1) * 8px)); gap: 8px; }
+.midword-completion-answer .midword-letter-row > span { font-size: clamp(14px, 4.5vw, 20px); }
+.midword-completion-answer .is-correct > span { color: var(--midword-text); border-color: color-mix(in srgb, var(--midword-accent) 60%, transparent); background: color-mix(in srgb, var(--midword-accent) 15%, var(--midword-background)); }
+.midword-completion-answer .is-incorrect > span { color: var(--midword-text); border-color: color-mix(in srgb, var(--bw-failed) 75%, transparent); background: color-mix(in srgb, var(--bw-failed) 15%, var(--midword-background)); }
 .midword-completion-answer.is-celebrating .midword-letter-row { animation: midword-celebrate 660ms 550ms both; }
-.midword-completion-answer p { font-size: 14px; overflow-wrap: anywhere; }
+.midword-completion-answer p { margin: 0; font-size: 16px; font-weight: 400; overflow-wrap: anywhere; }
 .midword-countdown { display: flex; flex-direction: column; gap: 6px; text-align: center; animation: midword-enter 300ms 1120ms both; }
-.midword-countdown span { font-size: 12px; letter-spacing: .15em; }
-.midword-countdown strong { font-size: 26px; font-variant-numeric: tabular-nums; }
-.midword-completion-details { display: flex; flex-direction: column; gap: 24px; animation: midword-enter 500ms 1300ms both; }
-.midword-completion-details > .puzzle-result-share .puzzle-result-share__button { color: var(--midword-accent); background: var(--midword-surface); }
+.midword-countdown span { color: var(--midword-accent); font-size: 12px; font-weight: 900; letter-spacing: 2px; }
+.midword-countdown strong { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.midword-completion-details { display: flex; flex-direction: column; gap: 20px; animation: midword-enter 500ms 1300ms both; }
+.midword-completion-details > .midword-rating-section { margin: 12px 20px 0; }
+.midword-completion-details > .puzzle-result-share, .midword-completion-details > .midword-summary { margin-inline: 20px; }
+.midword-completion-details > .puzzle-result-share .puzzle-result-share__button { display: flex; width: 100%; min-height: 50px; margin: 0; align-items: center; justify-content: center; gap: 8px; color: var(--midword-accent); background: var(--midword-surface); font: 400 16px var(--midword-font); }
+.midword-completion-details .bw-share-status:empty { display: none; }
 .midword-completion-details > .puzzle-result-share .bw-share-status { color: var(--midword-text); }
-.midword-completion-actions { display: flex; padding: 12px 20px max(20px, env(safe-area-inset-bottom)); border-top: 1px solid var(--midword-border); gap: 12px; }
-.midword-completion-actions button { flex: 1; padding: 14px 8px; border: 0; border-radius: 8px; color: var(--midword-text); background: var(--midword-surface); font: inherit; cursor: pointer; }
+.midword-completion-statistics { display: flex; flex-direction: column; gap: 28px; }
+.midword-completion-statistics > .midword-summary, .midword-completion-statistics > .midword-distribution { margin-inline: 20px; }
+.midword-completion-statistics .midword-history h3 { margin-inline: 20px; }
+.midword-completion-actions { display: flex; flex: 0 0 auto; padding: 0 20px max(20px, env(safe-area-inset-bottom)); background: var(--midword-background); }
+.midword-completion-actions button { flex: 1; padding: 14px 8px; border: 0; color: var(--midword-accent); background: transparent; font: 400 16px var(--midword-font); cursor: pointer; }
 .midword-page button:focus-visible, .midword-dialog button:focus-visible { outline: 2px solid var(--midword-accent); outline-offset: 3px; }
 .home-game-card--midword { display: grid; padding: 12px 18px; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; border-radius: 12px; color: var(--midword-home-foreground); background: var(--midword-accent); }
 .midword-home-card__identity { display: flex; min-width: 0; flex-direction: column; gap: 6px; }
@@ -185,6 +196,8 @@ html[data-theme="dark"] .midword-header h1::after {
 @media (min-width: 700px) {
   .midword-instructions-backdrop { padding: 30px; align-items: center; }
   .midword-dialog--instructions { border-bottom: 1px solid var(--app-border); border-radius: 22px; box-shadow: 0 12px 50px rgb(0 0 0 / 30%); }
+  .midword-completion-backdrop { padding: 30px; align-items: center; }
+  .midword-dialog--completion { border-radius: 28px; }
 }
 @media (max-width: 680px) {
   .midword-page > .site-footer { display: none; }
