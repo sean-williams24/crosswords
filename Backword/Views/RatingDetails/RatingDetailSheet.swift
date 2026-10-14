@@ -447,11 +447,6 @@ struct RatingDetailSheet: View {
 
                     Divider().background(Color.appGridLine.opacity(0.5))
 
-                    ScoringRuleView.backword(title: "Midword")
-                        .padding(.leading, 8)
-
-                    Divider().background(Color.appGridLine.opacity(0.5))
-
                     VStack(alignment: .leading, spacing: 6) {
                         HStack(spacing: spacing) {
                             Image(systemName: "calendar")

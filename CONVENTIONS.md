@@ -351,6 +351,13 @@ Anagram from its first published date, Midword from 2026-10-01. Once both
 have fourteen releases, the overall maximum is 280 free or 290 Pro. Both
 score columns remain present in the profile breakdown.
 
+## Profile Scoring Guide
+
+iOS and web Player Profile explain Backword and Midword together under
+“Backword & Midword”, using one shared five-guess scoring guide: wins earn
+5–1 points for guesses 1–5, and losses or missed puzzles earn zero. Each game
+still earns its own rating points and has its own column in the 14-day breakdown.
+
 ## Website Midword Parity
 
 Midword is playable at `/midword`, with immutable dated links at

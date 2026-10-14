@@ -69,7 +69,7 @@ struct ScoringRuleView: View {
             .fixedSize(horizontal: false, vertical: true)
     }
 
-    static func backword(title: String = "Backword") -> some View {
+    static func backword(title: String = "Backword & Midword") -> ScoringRuleView {
         ScoringRuleView(
             icon: "backward.circle",
             title: title,

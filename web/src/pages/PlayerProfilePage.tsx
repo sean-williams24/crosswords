@@ -247,7 +247,7 @@ function ScoringDetailsContent() {
   return <div className="player-profile__scoring-details">
     <ScoringRule rows={[["100% complete", "5 pts"], ["75–99% complete", "4 pts"], ["50–74% complete", "3 pts"], ["25–49% complete", "2 pts"], ["1–24% complete", "1 pt"], ["Missed", "0 pts"]]} title="Quick & Weekly Crossword" />
     <p>− 1 point deducted for every 3 hints used</p>
-    <ScoringRule rows={[["Win in 1 guess", "5 pts"], ["Win in 2 guesses", "4 pts"], ["Win in 3 guesses", "3 pts"], ["Win in 4 guesses", "2 pts"], ["Win in 5 guesses", "1 pt"], ["Loss or missed", "0 pts"]]} title="Backword" />
+    <ScoringRule rows={[["Win in 1 guess", "5 pts"], ["Win in 2 guesses", "4 pts"], ["Win in 3 guesses", "3 pts"], ["Win in 4 guesses", "2 pts"], ["Win in 5 guesses", "1 pt"], ["Loss or missed", "0 pts"]]} title="Backword & Midword" />
     <ScoringRule rows={[["Under 30 seconds", "5 pts"], ["Under 60 seconds", "4 pts"], ["Under 120 seconds", "3 pts"], ["Under 180 seconds", "2 pts"], ["180 seconds or more", "1 pt"], ["Give up or missed", "0 pts"]]} title="Anagram" />
   </div>;
 }

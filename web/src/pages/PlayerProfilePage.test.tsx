@@ -101,6 +101,37 @@ describe("PlayerProfilePage", () => {
     expect(screen.getByRole("link", { name: /Manage web subscription through Link/ })).toHaveAttribute("target", "_blank");
   });
 
+  it.each(["guest", "signed-in"])("shows one shared Backword and Midword scoring guide for a %s player", async (player) => {
+    if (player === "guest") testAuth.value.user = null;
+    const fetchCallsBeforeRender = sync.fetchCloudProgress.mock.calls.length;
+    renderPage();
+
+    const summary = screen.getByLabelText("Player summary");
+    const guide = within(summary).getByText("Backword & Midword").parentElement!;
+    const rows = [
+      ["Win in 1 guess", "5 pts"],
+      ["Win in 2 guesses", "4 pts"],
+      ["Win in 3 guesses", "3 pts"],
+      ["Win in 4 guesses", "2 pts"],
+      ["Win in 5 guesses", "1 pt"],
+      ["Loss or missed", "0 pts"]
+    ];
+    for (const [label, points] of rows) {
+      const row = within(guide).getByText(label).parentElement!;
+      expect(within(row).getByText(points)).toBeInTheDocument();
+      expect(within(summary).getAllByText(label)).toHaveLength(1);
+    }
+    expect(within(summary).queryByText("Backword")).not.toBeInTheDocument();
+    expect(within(summary).queryByText("Midword")).not.toBeInTheDocument();
+    const breakdown = screen.getByRole("heading", { name: "LAST 14 DAYS" }).closest("section")!;
+    expect(within(breakdown).getByText("Backword")).toBeInTheDocument();
+    expect(within(breakdown).getByText("Midword")).toBeInTheDocument();
+
+    if (player === "signed-in") {
+      await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(fetchCallsBeforeRender + 5));
+    }
+  });
+
   it("signs out from the profile and returns Home", async () => {
     const user = userEvent.setup();
     renderPage();
@@ -170,7 +201,7 @@ describe("PlayerProfilePage", () => {
     expect(rollingWindow.compareDocumentPosition(dailyScoring) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(dailyScoring).toBeInTheDocument();
     expect(screen.getByText("− 1 point deducted for every 3 hints used")).toBeInTheDocument();
-    expect(within(screen.getByLabelText("Player summary")).getByText("Backword")).toBeInTheDocument();
+    expect(within(screen.getByLabelText("Player summary")).getByText("Backword & Midword")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Sign Out" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Delete Account" })).not.toBeInTheDocument();
     expect(sync.fetchCloudProgress).not.toHaveBeenCalled();
