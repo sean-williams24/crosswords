@@ -51,9 +51,9 @@ export function Footer() {
   ];
 
   return (
-    <footer className="site-footer border-t border-line/80 px-6 py-8 text-sm text-textSecondary sm:px-0 lg:px-6">
+    <footer className="site-footer border-t border-line/80 px-0 py-8 text-sm text-textSecondary lg:px-6">
       <div className="mx-auto grid max-w-6xl items-start justify-items-center gap-8 lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:gap-x-16">
-        <nav aria-label="Footer" className="order-1 grid grid-cols-2 justify-self-stretch gap-x-4 gap-y-8 sm:grid-cols-[repeat(3,max-content)] sm:justify-evenly sm:gap-x-0 lg:order-2 lg:grid-cols-[repeat(6,max-content)] lg:justify-between lg:gap-x-4">
+        <nav aria-label="Footer" className="order-1 grid grid-cols-[repeat(2,max-content)] justify-evenly justify-self-stretch gap-x-0 gap-y-8 sm:grid-cols-[repeat(3,max-content)] lg:order-2 lg:grid-cols-[repeat(6,max-content)] lg:justify-between lg:gap-x-4">
           {linkGroups.map(({ title, links }) => (
             <section key={title} aria-label={title}>
               <h2 className="mb-3 font-semibold text-textPrimary">{title}</h2>

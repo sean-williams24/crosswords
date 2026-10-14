@@ -665,9 +665,9 @@ Support, Legal, and Socials, in that order, each with a heading and vertical lis
 contains Home and Player Profile; Free games lists Backword, Crossword, Midword,
 and Anagram; Pro Account lists Pro Crossword, Archive, and Subscribe. The groups
 form six columns on large screens, three on small screens, and two on narrower
-screens. The three-column layout fits each column to its content and uses
+screens. Both the two- and three-column layouts fit each column to its content and use
 `space-evenly` with no extra horizontal gap or footer padding, making the
-leading, trailing, and two inter-column spaces equal. At the large breakpoint,
+leading, trailing, and inter-column spaces equal. At the large breakpoint,
 copyright sits to the left of the link groups
 and the App Store badge sits to the right, both aligned with the top row. Link
 columns fit their content and distribute the remaining space between them,
