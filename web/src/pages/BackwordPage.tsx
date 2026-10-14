@@ -335,7 +335,7 @@ export function BackwordPage() {
 
   return (
     <div className="bw-page">
-      <div className="bw-shell">
+      <div className="bw-shell bw-shell--backword">
         <header className="bw-game-header bw-game-header--offset">
           <GameMenu
             isOpen={isMenuOpen}

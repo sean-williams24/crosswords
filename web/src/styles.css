@@ -204,6 +204,8 @@ a {
   background: var(--app-background);
 }
 
+.bw-shell--backword { min-height: 100svh; }
+
 .bw-game-header {
   position: relative;
   z-index: 3;

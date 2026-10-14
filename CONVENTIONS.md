@@ -712,6 +712,13 @@ Validation and guess counts stay unchanged. Reduce Motion also skips the shake.
 
 ## Website Backword Parity
 
+Backword's game shell has a minimum height of one small viewport (`100svh`),
+independent of the site footer's height. The main game content grows into the
+remaining space above the score bar and keyboard, preserving the large layout's
+breathing room when the middle layout's footer wraps into more rows. The footer
+follows the game below that viewport. This is a minimum, not a fixed height, so
+long guess histories and the expanded Submit control can extend the page.
+
 The browser Backword game lives at `/backword` as an immersive route outside the
 marketing site's header and footer. Its game dashboard lives at `/`, while
 the marketing page lives at `/info`. The game uses the same daily Supabase row,

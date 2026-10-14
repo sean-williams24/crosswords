@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { parse } from "postcss";
 import { localDateString } from "../features/backword/date";
 import { BackwordPage } from "./BackwordPage";
 
@@ -135,6 +136,48 @@ describe("Backword browser game", () => {
     expect(controls?.querySelector(".bw-game-score")).toHaveClass("bw-game-score--keyboard-width");
     expect(controls?.querySelector(".bw-keyboard")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Share result" })).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ["two guesses", ["STACKS", "STANCE"]],
+    ["four guesses", ["STACKS", "STANCE", "PLANET", "MASTER"]]
+  ])("keeps the game at least a full viewport above the site footer with %s", async (_label, guesses) => {
+    const date = localDateString();
+    localStorage.setItem("backword:web:progress:v1", JSON.stringify({
+      [date]: {
+        schemaVersion: 1,
+        date,
+        guesses,
+        completedAt: null,
+        outcome: "inProgress"
+      }
+    }));
+    renderGame();
+
+    const history = await screen.findByRole("heading", { name: "Previous Guesses" });
+    const main = history.closest("main");
+    const shell = main!.parentElement!;
+    expect(shell).toHaveClass("bw-shell--backword");
+    expect(main?.nextElementSibling).toContainElement(screen.getByLabelText("0 of 70 Backword points"));
+    expect(shell.nextElementSibling).toBe(screen.getByRole("navigation", { name: "Footer" }).closest("footer"));
+
+    // JSDOM has no layout engine; check the effective flex sizing rules instead.
+    const styles = parse(readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8"));
+    const style = document.createElement("style");
+    styles.walkRules((rule) => {
+      if (rule.parent?.type === "root" && [".bw-shell", ".bw-shell--backword", ".bw-game-main"].includes(rule.selector)) {
+        style.textContent += rule.toString();
+      }
+    });
+    document.head.append(style);
+    try {
+      expect(getComputedStyle(shell).minHeight).toBe("100svh");
+      expect(getComputedStyle(shell).flexShrink).toBe("0");
+      expect(getComputedStyle(shell).height).toBe("");
+      expect(getComputedStyle(main!).flexGrow).toBe("1");
+    } finally {
+      style.remove();
+    }
   });
 
   it("expands and collapses the shared Submit control above the keyboard as input changes", async () => {
