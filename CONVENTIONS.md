@@ -532,13 +532,16 @@ Web Home uses three equal columns and two rows: Backword, Anagram, Midword;
 then Quick Crossword, Archive, Pro Crossword. Grid rows share the same height,
 including when larger content needs extra space; loading reserves all six
 positions. The Anagram card stays present while its issue number is unavailable.
-At narrow mobile widths the cards stack in the same order. The single Archive
-card opens all game archives, using the existing Pro upgrade route when needed;
+At mobile widths up to 680px, Word of the Day comes first, followed by Backword,
+Quick Crossword, Archive, Anagram, Midword, and Pro Crossword. Archive matches
+the compact Word of the Day card’s 95px height; mobile grid rows size to their
+content so Archive stays compact. Loading placeholders follow the same order
+and heights. The single Archive card opens all game archives, using the existing Pro upgrade route when needed;
 individual game archive buttons are removed. Its centred title and icon have
 "Unlock the full archive for all five games" beneath them, also exposed as the
 link's accessible description. The Archive card has a thin 1px white outline
-drawn inside its bounds, preserving the shared card dimensions. Word of the Day
-follows the grid.
+drawn inside its bounds, preserving the card dimensions. On wider screens,
+Word of the Day follows the grid.
 
 On web and iOS, each game's main logo or title is centred horizontally and
 vertically within its Home card. Completed iOS Backword keeps its logo at the
@@ -747,8 +750,9 @@ On wide browser dashboards, a three-column grid shows Backword, Anagram, and
 Midword above Quick Crossword, Archive, and Pro Crossword. All six cards share
 equal widths and row heights above the full-width Word of the Day panel. This
 content uses a 1440-point desktop cap and stacks into one column on mobile.
-Archive is one full-size card for all games, replacing the separate archive
-buttons. The dashboard goes directly from its global header into the cards
+Archive is one shared card for all games, full-size on desktop and compact on
+mobile, replacing the separate archive buttons. The dashboard goes directly
+from its global header into the cards
 without a daily title or date. The weekly card identifies its game inside the
 card instead of using a separate section below the daily content.
 

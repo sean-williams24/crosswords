@@ -162,19 +162,31 @@ export function HomeDashboardPage() {
       <section aria-label="Games" className="home-dashboard__content">
         <div aria-busy={isLoading} className="home-dashboard__daily-layout">
           {isLoading ? <span className="home-dashboard__loading-label" role="status">Loading daily games</span> : null}
+          {isLoading ? <HomeDashboardLoadingCard variant="word-of-the-day" /> : null}
+          {wordOfTheDayState === "unavailable" && !isLoading ? (
+            <section aria-label="Word of the Day unavailable" className="wotd-unavailable-card">
+              <p>WORD OF THE DAY</p>
+              <strong>Unavailable today</strong>
+              <span>Please check back later.</span>
+            </section>
+          ) : null}
+          <WordOfTheDayCard
+            className={isLoading ? "wotd-widget--preloading" : ""}
+            onLoadStateChange={setWordOfTheDayState}
+          />
           <div className="home-dashboard__games-grid">
             {isLoading ? (
               <>
                 <HomeDashboardLoadingCard variant="backword" />
-                <HomeDashboardLoadingCard variant="anagram" />
-                <HomeDashboardLoadingCard variant="midword" />
                 <HomeDashboardLoadingCard variant="crossword" />
                 <HomeDashboardLoadingCard variant="archive" />
+                <HomeDashboardLoadingCard variant="anagram" />
+                <HomeDashboardLoadingCard variant="midword" />
                 <HomeDashboardLoadingCard variant="weekly" />
               </>
             ) : (
               <>
-                <div className="home-dashboard__game">
+                <div className="home-dashboard__game home-dashboard__game--backword">
                   <DailyGameCard
                     className="home-game-card--backword"
                     destination="/backword"
@@ -187,15 +199,7 @@ export function HomeDashboardPage() {
                     <img alt="Backword" className="home-game-card__logo" src="/brand/backword-logo.png" />
                   </DailyGameCard>
                 </div>
-                <div className="home-dashboard__game">
-                  <AnagramHomeCard issueNumber={issueNumbers.anagram}
-                    score={anagramProgress?.outcome ? anagramProgress.releaseDateScore : null}
-                    status={anagramStatus} streak={anagramStreak} />
-                </div>
-                <div className="home-dashboard__game">
-                  <MidwordHomeCard issueNumber={issueNumbers.midword ?? null} progress={midwordProgress} streak={midwordStreak} />
-                </div>
-                <div className="home-dashboard__game">
+                <div className="home-dashboard__game home-dashboard__game--crossword">
                   <DailyGameCard
                     className="home-game-card--crossword"
                     description="9×9"
@@ -207,10 +211,18 @@ export function HomeDashboardPage() {
                     title="Quick Crossword"
                   />
                 </div>
-                <div className="home-dashboard__game">
+                <div className="home-dashboard__game home-dashboard__game--archive">
                   <HomeArchiveCard />
                 </div>
-                <div className="home-dashboard__game">
+                <div className="home-dashboard__game home-dashboard__game--anagram">
+                  <AnagramHomeCard issueNumber={issueNumbers.anagram}
+                    score={anagramProgress?.outcome ? anagramProgress.releaseDateScore : null}
+                    status={anagramStatus} streak={anagramStreak} />
+                </div>
+                <div className="home-dashboard__game home-dashboard__game--midword">
+                  <MidwordHomeCard issueNumber={issueNumbers.midword ?? null} progress={midwordProgress} streak={midwordStreak} />
+                </div>
+                <div className="home-dashboard__game home-dashboard__game--weekly">
                   {entitlement?.isPro ? (
                     <Link aria-label={issueNumbers.weeklyCrossword === null ? "Pro Crossword" : `Pro Crossword, issue #${issueNumbers.weeklyCrossword}`} className="weekly-card" to="/weekly-crossword">
                       <HomeGameStreak streak={weeklyCrosswordStatus.streak} unit="week" />
@@ -241,18 +253,6 @@ export function HomeDashboardPage() {
               </>
             )}
           </div>
-          {isLoading ? <HomeDashboardLoadingCard variant="word-of-the-day" /> : null}
-          {wordOfTheDayState === "unavailable" && !isLoading ? (
-            <section aria-label="Word of the Day unavailable" className="wotd-unavailable-card">
-              <p>WORD OF THE DAY</p>
-              <strong>Unavailable today</strong>
-              <span>Please check back later.</span>
-            </section>
-          ) : null}
-          <WordOfTheDayCard
-            className={isLoading ? "wotd-widget--preloading" : ""}
-            onLoadStateChange={setWordOfTheDayState}
-          />
         </div>
       </section>
 
