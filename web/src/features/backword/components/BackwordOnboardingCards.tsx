@@ -30,7 +30,11 @@ export function BackwordOnboardingCards({ mode, steps, onDismiss }: BackwordOnbo
   }
 
   return (
-    <section aria-label="How to play Backword" className="bw-onboarding-deck">
+    <section
+      aria-label="How to play Backword"
+      className="bw-onboarding-deck"
+      style={{ "--bw-onboarding-stack-height": `${Math.max(steps.length - 1, 0) * 15}px` } as CSSProperties}
+    >
       {[...steps].reverse().map((step, reverseIndex) => {
         const index = steps.length - reverseIndex - 1;
         const isTopCard = index === 0;
