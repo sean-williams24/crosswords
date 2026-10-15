@@ -33,7 +33,7 @@ describe("Backword onboarding cards", () => {
     });
   });
 
-  it.each<BackwordMode>(["easy", "normal"])("prefixes every %s instruction with a decorative filled bulb", (mode) => {
+  it.each<BackwordMode>(["easy", "normal"])("prefixes every %s instruction with a decorative two-tone bulb", (mode) => {
     const { container } = render(
       <BackwordOnboardingCards mode={mode} onDismiss={vi.fn()} steps={[...BACKWORD_ONBOARDING_STEPS]} />
     );
@@ -48,6 +48,9 @@ describe("Backword onboarding cards", () => {
       expect(icon).toHaveAttribute("focusable", "false");
       expect(icon).toHaveAttribute("fill", "currentColor");
       expect(icon).toHaveClass("bw-onboarding-card__icon");
+      expect(icon?.querySelector(".bw-onboarding-card__icon-globe")).toBeInTheDocument();
+      expect(icon?.querySelector(".bw-onboarding-card__icon-base"))
+        .toHaveAttribute("fill", "var(--app-text-muted)");
     }
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
     expect(screen.getAllByRole("article")).toHaveLength(1);

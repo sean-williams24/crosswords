@@ -465,8 +465,9 @@ than directional movement, so the next card can rise cleanly from the deck.
 Each onboarding card prefixes its instruction with a filled yellow lightbulb on
 iOS and web. The semantic instruction-icon colour stays bright yellow in both
 Light and Dark Mode. The icon is decorative and hidden from assistive technology.
-Web cards use a 24px bulb and 16px instruction text. Their shared grid row grows
-to fit wrapped instructions, with space below reserved for the remaining stack.
+Web cards use an original 24px two-tone SVG bulb with a yellow globe and a base
+in the theme's muted text colour. Their shared grid row grows to fit wrapped
+instructions, with space below reserved for the remaining stack.
 
 The web game menu backdrop renders in a document-level portal above game content.
 It must stay outside the game header and shell so their stacking and overflow
