@@ -57,11 +57,6 @@ struct WOTDDetailView: View {
                             .stroke(.clear)
                     )
                     .cornerRadius(AppLayout.cardCornerRadius)
-                    .shadow(color: Color(UIColor { traits in
-                        traits.userInterfaceStyle == .dark
-                            ? UIColor.white.withAlphaComponent(0.22)
-                            : UIColor.black.withAlphaComponent(0.22)
-                    }), radius: 4, x: 0, y: 3)
 
                     // Example
                     sectionBlock(title: "EXAMPLE") {

@@ -1827,7 +1827,7 @@ body {
 .wotd-detail__meta > span { color: var(--app-accent); }
 .wotd-detail__meta > b { color: var(--app-text-secondary); font-weight: 500; }
 .wotd-detail__meta > em { color: var(--app-text-secondary); }
-.wotd-detail__definition { padding: 20px; border-radius: 18px; background: var(--app-surface-raised); box-shadow: 0 8px 18px rgb(0 0 0 / 24%); }
+.wotd-detail__definition { padding: 20px; border-radius: 18px; background: var(--app-surface-raised); }
 .wotd-detail__secondary { display: grid; gap: 30px; }
 .wotd-detail__example { font-style: italic; }
 .wotd-detail__synonyms { display: flex; margin: 0; padding: 0; flex-wrap: wrap; gap: 10px; list-style: none; }

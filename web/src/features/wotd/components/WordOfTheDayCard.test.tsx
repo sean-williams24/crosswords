@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { parse } from "postcss";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { WordOfTheDayCard } from "./WordOfTheDayCard";
@@ -20,6 +23,31 @@ function repositoryFor(result: Promise<typeof word>): WordOfTheDayRepository {
 }
 
 describe("WordOfTheDayCard", () => {
+  it("keeps the definition background and rounded corners without a shadow", () => {
+    const styles = parse(readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8"));
+    const declarations: Record<string, string> = {};
+    styles.walkRules(".wotd-detail__definition", (rule) => {
+      rule.walkDecls((declaration) => {
+        declarations[declaration.prop] = declaration.value;
+      });
+    });
+
+    expect(declarations["background"]).toBe("var(--app-surface-raised)");
+    expect(declarations["border-radius"]).toBe("18px");
+    expect(declarations["box-shadow"] ?? "none").toBe("none");
+  });
+
+  it.each([
+    "Backword/Views/WOTDDetailView.swift",
+    "Backword/Views/HomeScreen/HomeWordOfTheDayView.swift"
+  ])("keeps the native WOTD surface shadow-free in %s", (path) => {
+    const source = readFileSync(resolve(process.cwd(), "..", path), "utf8");
+
+    expect(source).toContain(".background(Color.appBackground)");
+    expect(source).toContain("cornerRadius: AppLayout.cardCornerRadius");
+    expect(source).not.toMatch(/\.shadow\s*\(/);
+  });
+
   beforeEach(() => {
     Object.defineProperty(window, "matchMedia", {
       configurable: true,
