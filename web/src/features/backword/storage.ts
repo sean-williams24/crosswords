@@ -96,14 +96,16 @@ export function createBackwordStorage(
           typeof value.hasSeenOnboarding !== "boolean" ||
           typeof value.lastSeenRulesVersion !== "number" ||
           (value.dismissedOnboardingSteps !== undefined &&
-            (!Array.isArray(value.dismissedOnboardingSteps) || !value.dismissedOnboardingSteps.every(isOnboardingStep))) ||
+            (!Array.isArray(value.dismissedOnboardingSteps) || !value.dismissedOnboardingSteps.every((step: unknown) =>
+              isOnboardingStep(step) || step === "guessWord"))) ||
           (value.hasSeenInstructionsTip !== undefined && typeof value.hasSeenInstructionsTip !== "boolean")
         ) {
           return { ...defaultSettings };
         }
         return {
           ...value,
-          dismissedOnboardingSteps: value.dismissedOnboardingSteps ?? [],
+          // Ignore the retired first card without resetting existing preferences.
+          dismissedOnboardingSteps: value.dismissedOnboardingSteps?.filter(isOnboardingStep) ?? [],
           hasSeenInstructionsTip: value.hasSeenInstructionsTip ?? false
         } as BackwordSettings;
       } catch {

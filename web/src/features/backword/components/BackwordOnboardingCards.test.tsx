@@ -33,18 +33,26 @@ describe("Backword onboarding cards", () => {
     });
   });
 
-  it.each<BackwordMode>(["easy", "normal"])("prefixes every %s instruction with a decorative two-tone bulb", (mode) => {
+  it.each<BackwordMode>(["easy", "normal"])("uses a decorative info icon for the %s clue card and bulbs for other instructions", (mode) => {
     const { container } = render(
       <BackwordOnboardingCards mode={mode} onDismiss={vi.fn()} steps={[...BACKWORD_ONBOARDING_STEPS]} />
     );
 
     const cards = container.querySelectorAll("article");
     expect(cards).toHaveLength(BACKWORD_ONBOARDING_STEPS.length);
+    expect(cards).toHaveLength(5);
+    expect(screen.queryByText("Guess the 6 letter word...")).not.toBeInTheDocument();
+    expect(screen.getByRole("article")).toHaveTextContent(backwordOnboardingText("clue", mode));
     for (const step of BACKWORD_ONBOARDING_STEPS) {
       const text = screen.getByText(backwordOnboardingText(step, mode));
       const icon = text.previousElementSibling;
-      expect(icon?.tagName.toLowerCase()).toBe("svg");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      if (step === "clue") {
+        expect(icon).toHaveClass("bw-onboarding-card__info-icon");
+        expect(icon).toHaveTextContent("ⓘ");
+        continue;
+      }
+      expect(icon?.tagName.toLowerCase()).toBe("svg");
       expect(icon).toHaveAttribute("focusable", "false");
       expect(icon).toHaveAttribute("fill", "currentColor");
       expect(icon).toHaveClass("bw-onboarding-card__icon");
@@ -65,9 +73,9 @@ describe("Backword onboarding cards", () => {
         <BackwordOnboardingCards mode="easy" onDismiss={onDismiss} steps={[...BACKWORD_ONBOARDING_STEPS]} />
       );
 
-      fireEvent.click(screen.getByRole("button", { name: "OK: Guess the 6 letter word..." }));
+      fireEvent.click(screen.getByRole("button", { name: `OK: ${backwordOnboardingText("clue", "easy")}` }));
       act(() => vi.advanceTimersByTime(220));
-      expect(onDismiss).toHaveBeenCalledExactlyOnceWith("guessWord");
+      expect(onDismiss).toHaveBeenCalledExactlyOnceWith("clue");
 
       rerender(
         <BackwordOnboardingCards mode="easy" onDismiss={onDismiss} steps={BACKWORD_ONBOARDING_STEPS.slice(1)} />

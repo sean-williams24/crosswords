@@ -12,7 +12,7 @@ enum BackwordInstructionsPresentation: Equatable {
 }
 
 enum BackwordOnboardingStep: String, CaseIterable, Identifiable {
-    case initialGuess
+    case clue
     case connectedLetters
     case freeReveals
     case scoring
@@ -22,8 +22,8 @@ enum BackwordOnboardingStep: String, CaseIterable, Identifiable {
 
     func text(for mode: BackwordMode) -> String {
         switch self {
-        case .initialGuess:
-            return "Guess the 6 letter word..."
+        case .clue:
+            return "The clue is a word associated with the answer, or something connected to it"
         case .connectedLetters:
             return "Correctly placed letters reveal when they form an unbroken chain from the back of the word."
         case .freeReveals:

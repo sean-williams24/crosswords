@@ -51,7 +51,7 @@ export function BackwordOnboardingCards({ mode, steps, onDismiss }: BackwordOnbo
               zIndex: steps.length - index
             } as CSSProperties}
           >
-            <OnboardingLightbulbIcon />
+            {step === "clue" ? <span aria-hidden="true" className="bw-onboarding-card__info-icon">ⓘ</span> : <OnboardingLightbulbIcon />}
             <p>{backwordOnboardingText(step, mode)}</p>
             {isTopCard ? (
               <button aria-label={`OK: ${backwordOnboardingText(step, mode)}`} className="bw-onboarding-card__ok" onClick={() => dismiss(step)} type="button">

@@ -43,6 +43,12 @@ struct BackwordView: View {
                                 .frame(height: 100)
                         }
 
+                        Text("Guess the six letter word.\nSpell it forwards - letters reveal backwards.")
+                            .font(AppFont.body())
+                            .foregroundColor(.appTextPrimary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, AppLayout.screenPadding)
+
                         categoryView
                         guessCounter
                         revealedLetterRow
@@ -79,7 +85,6 @@ struct BackwordView: View {
                     }
                 }
                 VStack(spacing: 0) {
-                    clueExplainerView
                     Spacer()
                         .frame(height: 10)
 
@@ -465,13 +470,6 @@ struct BackwordView: View {
     }
 
     @ViewBuilder
-    private var clueExplainerView: some View {
-        if viewModel.shouldShowClueExplainer {
-            BackwordClueExplainerView()
-        }
-    }
-
-    @ViewBuilder
     private var horizontalCategoryContent: some View {
         HStack(spacing: 6) {
             categoryContent
@@ -526,24 +524,6 @@ struct BackwordView: View {
             }
     }
 
-}
-
-struct BackwordClueExplainerView: View {
-    var body: some View {
-        HStack(alignment: .firstTextBaseline) {
-            Image(systemName: "info.circle")
-                .font(AppFont.body(14))
-                .foregroundColor(.appCorrect)
-
-            Text("The clue is associated with the answer, or something connected to it")
-                .font(AppFont.body(14))
-                .foregroundColor(.appTextSecondary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, AppLayout.screenPadding)
-        .padding(.top, 10)
-        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-    }
 }
 
 // MARK: - Previews

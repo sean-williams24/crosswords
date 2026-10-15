@@ -1,5 +1,6 @@
 import { BACKWORD_RULES_VERSION, emptyProgress } from "./engine";
 import { createBackwordStorage } from "./storage";
+import { pendingBackwordOnboardingSteps } from "./onboarding";
 
 describe("Backword browser storage", () => {
   beforeEach(() => localStorage.clear());
@@ -46,10 +47,10 @@ describe("Backword browser storage", () => {
     const storage = createBackwordStorage(localStorage);
     let settings = storage.loadSettings();
 
-    settings = storage.dismissOnboardingStep(settings, "guessWord");
+    settings = storage.dismissOnboardingStep(settings, "clue");
     expect(settings).toMatchObject({
       hasSeenOnboarding: false,
-      dismissedOnboardingSteps: ["guessWord"]
+      dismissedOnboardingSteps: ["clue"]
     });
 
     for (const step of ["connectedLetters", "freeReveals", "scoring", "stuckHint"] as const) {
@@ -57,6 +58,32 @@ describe("Backword browser storage", () => {
     }
     expect(settings.hasSeenOnboarding).toBe(true);
     expect(settings.lastSeenRulesVersion).toBe(BACKWORD_RULES_VERSION);
+  });
+
+  it("ignores the retired first card without resetting saved preferences or acknowledgements", () => {
+    localStorage.setItem("backword:web:settings:v1", JSON.stringify({
+      schemaVersion: 1,
+      mode: "normal",
+      hasSeenOnboarding: false,
+      lastSeenRulesVersion: 3,
+      dismissedOnboardingSteps: ["guessWord", "connectedLetters", "freeReveals", "scoring"],
+      hasSeenInstructionsTip: true
+    }));
+    const storage = createBackwordStorage(localStorage);
+    const settings = storage.loadSettings();
+
+    expect(settings).toMatchObject({
+      mode: "normal",
+      lastSeenRulesVersion: 3,
+      dismissedOnboardingSteps: ["connectedLetters", "freeReveals", "scoring"],
+      hasSeenInstructionsTip: true
+    });
+    expect(pendingBackwordOnboardingSteps(settings)).toEqual(["clue", "stuckHint"]);
+    const afterClue = storage.dismissOnboardingStep(settings, "clue");
+    expect(storage.dismissOnboardingStep(afterClue, "stuckHint")).toMatchObject({
+      hasSeenOnboarding: true,
+      lastSeenRulesVersion: BACKWORD_RULES_VERSION
+    });
   });
 
   it("accepts iOS in-progress payloads that omit optional completedAt", () => {

@@ -640,7 +640,7 @@ a {
   margin: 0;
   color: var(--app-text-muted);
   font-size: 16px;
-  line-height: 2.5;
+  line-height: 1.8;
   text-align: center;
 }
 
@@ -885,16 +885,11 @@ a {
   background: var(--app-background);
 }
 
-.bw-clue-help {
-  width: min(100%, 600px);
-  margin: 0 auto;
-  padding: 8px 20px 10px;
-  color: var(--bw-secondary);
-  font-size: 13px;
-  line-height: 1.35;
+.bw-onboarding-card__info-icon {
+  color: var(--bw-correct);
+  font-size: 24px;
+  text-align: center;
 }
-
-.bw-clue-help span { margin-right: 5px; color: var(--bw-correct); }
 
 .bw-game-score {
   width: min(100%, var(--bw-keyboard-max-width));

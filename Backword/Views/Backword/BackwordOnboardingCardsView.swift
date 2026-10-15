@@ -14,6 +14,7 @@ struct BackwordOnboardingCardsView: View {
                 ForEach(Array(steps.enumerated().reversed()), id: \.element.id) { index, step in
                     BackwordOnboardingCard(
                         text: step.text(for: mode),
+                        isClueExplanation: step == .clue,
                         isTopCard: index == 0,
                         dismiss: {
                             withAnimation(.spring(response: 0.4, dampingFraction: 0.82)) {
@@ -90,6 +91,7 @@ private struct BackwordOnboardingDissolveModifier: ViewModifier {
 
 private struct BackwordOnboardingCard: View {
     let text: String
+    let isClueExplanation: Bool
     let isTopCard: Bool
     let dismiss: () -> Void
 
@@ -101,9 +103,9 @@ private struct BackwordOnboardingCard: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            Image(systemName: "lightbulb.fill")
+            Image(systemName: isClueExplanation ? "info.circle" : "lightbulb.fill")
                 .font(AppFont.body(AppLayout.onboardingInstructionIconSize))
-                .foregroundStyle(Color.appInstructionIcon)
+                .foregroundStyle(isClueExplanation ? Color.appCorrect : Color.appInstructionIcon)
                 .fixedSize()
                 .accessibilityHidden(true)
 

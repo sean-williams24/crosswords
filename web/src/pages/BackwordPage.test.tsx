@@ -73,9 +73,12 @@ describe("Backword browser game", () => {
     renderGame();
 
     const clue = await screen.findByText("FORTRESS");
-    const explainer = screen.getByText("Spell the word forwards, letters reveal backwards");
+    const explainer = screen.getByText("Spell the word forwards, letters reveal backwards.");
     const logo = screen.getByRole("img", { name: "Backword" });
+    const prompt = screen.getByText("Guess the six letter word");
 
+    expect(prompt.parentElement).toBe(explainer);
+    expect(prompt.nextElementSibling?.tagName).toBe("BR");
     expect(explainer.closest("main")).toHaveClass("bw-game-main");
     expect(logo.compareDocumentPosition(explainer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(explainer.compareDocumentPosition(clue) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -240,13 +243,16 @@ describe("Backword browser game", () => {
     const first = renderGame();
 
     expect(await screen.findByRole("region", { name: "How to play Backword" })).toBeInTheDocument();
-    expect(screen.getAllByText("Guess the 6 letter word...")).toHaveLength(1);
-    expect(screen.getByRole("button", { name: /^OK: Guess the 6 letter word/ })).toBeInTheDocument();
+    expect(screen.queryByText("Guess the 6 letter word...")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^OK: The clue is a word/ })).toBeInTheDocument();
+    const clueExplanation = screen.getByText("The clue is a word associated with the answer, or something connected to it");
+    expect(clueExplanation.closest(".bw-onboarding-card")).toHaveClass("is-top");
+    expect(document.querySelector(".bw-game-controls")).not.toHaveTextContent("The clue is a word");
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
     expect(document.querySelectorAll(".bw-onboarding-card")).toHaveLength(5);
     expect(document.querySelectorAll(".bw-onboarding-card[aria-hidden='true']")).toHaveLength(4);
 
-    const firstButton = screen.getByRole("button", { name: /^OK: Guess the 6 letter word/ });
+    const firstButton = screen.getByRole("button", { name: /^OK: The clue is a word/ });
     await user.click(firstButton);
     await waitFor(() => expect(firstButton).not.toBeInTheDocument());
     expect(screen.getByRole("button", { name: /^OK: Correctly placed letters/ })).toBeInTheDocument();
@@ -256,6 +262,7 @@ describe("Backword browser game", () => {
 
     renderGame();
     expect(await screen.findByRole("button", { name: /^OK: Correctly placed letters/ })).toBeInTheDocument();
+    expect(screen.queryByText("The clue is a word associated with the answer, or something connected to it")).not.toBeInTheDocument();
     await dismissOnboarding(user, 4);
     expect(await screen.findByText("Guess the 6 letter word...")).toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "How to play Backword" })).not.toBeInTheDocument();

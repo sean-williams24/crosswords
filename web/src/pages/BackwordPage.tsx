@@ -388,7 +388,7 @@ export function BackwordPage() {
         {!loading && word ? (
           <>
             <main className="bw-game-main">
-              <p className="bw-game-explainer">Spell the word forwards, letters reveal backwards.</p>
+              <p className="bw-game-explainer"><span>Guess the six letter word.</span><br />Spell it forwards - letters reveal backwards.</p>
               {usingCache ? <p className="bw-offline-note">Playing saved game offline</p> : null}
               {syncError ? <p className="bw-offline-note">{syncError}</p> : null}
               <p className="bw-clue"><span>Clue:</span> {word.clue.toUpperCase()}</p>
@@ -449,9 +449,6 @@ export function BackwordPage() {
             </main>
 
             <footer className="bw-game-controls">
-              {progress.guesses.length === 0 ? (
-                <p className="bw-clue-help"><span>ⓘ</span> The clue is a word associated with the answer, or something connected to it</p>
-              ) : null}
               <div aria-label={`${stats.rollingScore} of 70 Backword points`} className="bw-game-score bw-game-score--keyboard-width">
                 <span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} />
               </div>

@@ -139,7 +139,6 @@ final class BackwordViewModel: ObservableObject {
     var guessesForHistory: [String] { progress.guesses.reversed() }
     var maxGuesses: Int { 5 }
     var guessesRemaining: Int { maxGuesses - guessCount }
-    var shouldShowClueExplainer: Bool { progress.guesses.isEmpty }
     var shouldShowExplainerBanner: Bool {
         progress.guesses.isEmpty && onboardingSteps.isEmpty
     }

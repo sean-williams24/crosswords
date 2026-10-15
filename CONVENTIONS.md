@@ -439,12 +439,19 @@ green accent, using the app background and primary text like native instructions
 
 ## Backword Onboarding
 
-New Backword players receive five instructions inline, beneath the revealed
-letter row. The instructions render as a staggered card deck: only the front
+Backword shows “Guess the six letter word” on its own line above “Spell the word
+forwards, letters reveal backwards.” below the gameplay logo on iOS and web.
+New players receive five instructions inline, beneath the revealed letter row.
+The instructions render as a staggered card deck: only the front
 card is interactive, while the faded cards behind it indicate more guidance
 remains. Each card is dismissed independently and the remaining cards persist
 across launches; onboarding is complete only after all five have been
 acknowledged.
+The deck starts with the clue explanation and its decorative info icon, followed
+by the connected-letter rule. The clue explanation no longer appears above the
+keyboard. The former “Guess the 6 letter word...” card is retired.
+Saved acknowledgements for that card are ignored
+without resetting the remaining acknowledgements or other preferences.
 The one-time info-button TipKit popover is triggered as soon as that first-launch
 deck appears and ignores TipKit's global display-frequency throttle, so its
 navigation hint cannot be delayed by another tip.
@@ -462,8 +469,8 @@ appropriate instruction.
 On either platform, dismissing the front card uses an in-place dissolve rather
 than directional movement, so the next card can rise cleanly from the deck.
 
-Each onboarding card prefixes its instruction with a filled yellow lightbulb on
-iOS and web. The semantic instruction-icon colour stays bright yellow in both
+The remaining onboarding cards prefix their instructions with a filled yellow
+lightbulb on iOS and web. The semantic instruction-icon colour stays bright yellow in both
 Light and Dark Mode. The icon is decorative and hidden from assistive technology.
 Web cards use an original 24px two-tone SVG bulb with a yellow globe and a base
 in the theme's muted text colour. Their shared grid row grows to fit wrapped
