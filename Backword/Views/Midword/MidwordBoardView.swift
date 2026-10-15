@@ -46,7 +46,7 @@ struct MidwordBoardView: View {
 
     private func prompt(_ word: String) -> some View {
         Text(word)
-            .font(AppFont.clueLabel(36))
+            .font(AppFont.clueLabel(26))
             .foregroundColor(.midwordText)
             .minimumScaleFactor(0.7)
             .lineLimit(2)

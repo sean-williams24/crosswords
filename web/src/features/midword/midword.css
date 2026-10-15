@@ -57,8 +57,9 @@ html[data-theme="dark"] .midword-header h1::after {
 }
 .midword-main > * { flex-shrink: 0; }
 .midword-issue { margin: 0; color: var(--midword-muted); font-size: 12px; font-weight: 700; letter-spacing: .13em; }
-.midword-explainer { width: min(100%, 520px); margin: 0; color: var(--midword-muted); font-size: 16px; line-height: 1.5; text-align: center; }
-.midword-board { display: flex; width: min(100%, 430px); flex-direction: column; gap: 18px; }
+.midword-explainer, .midword-board { width: min(100%, 520px); }
+.midword-explainer { margin: 0; color: var(--midword-muted); font-size: 16px; line-height: 1.5; text-align: center; }
+.midword-board { display: flex; flex-direction: column; gap: 18px; }
 .midword-prompt { margin: 0; font-size: clamp(26px, 6vw, 36px); font-weight: 700; letter-spacing: .08em; overflow-wrap: anywhere; }
 .midword-prompt--second { text-align: right; }
 .midword-letter-row {

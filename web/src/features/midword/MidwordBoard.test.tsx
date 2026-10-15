@@ -9,6 +9,22 @@ const puzzle: MidwordPuzzle = {
   firstWord: "BANK", secondWord: "BOOK", answer: "NOTE", alternatives: []
 };
 
+describe("Midword prompt alignment", () => {
+  it("shares the explainer's responsive width and aligns the bottom prompt to the trailing edge", () => {
+    const style = document.createElement("style");
+    style.textContent = readFileSync("src/features/midword/midword.css", "utf8");
+    document.head.append(style);
+    try {
+      render(<MidwordBoard input="" message="" puzzle={puzzle} progress={emptyProgress(puzzle.date)} />);
+      const explainer = screen.getByText("Find the link that ends the top word and starts the bottom word to make 2 new words");
+      const board = screen.getByRole("region", { name: "Midword board" });
+      expect(getComputedStyle(explainer).width).toBe("min(100%, 520px)");
+      expect(getComputedStyle(board).width).toBe(getComputedStyle(explainer).width);
+      expect(getComputedStyle(within(board).getByText("BOOK")).textAlign).toBe("right");
+    } finally { style.remove(); }
+  });
+});
+
 describe("Midword previous guess appearance", () => {
   it("uses thin borders for correct and incorrect history without changing the active cells", () => {
     const style = document.createElement("style");

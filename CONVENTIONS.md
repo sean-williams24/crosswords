@@ -387,6 +387,8 @@ when Reduce Motion is requested. Instructions, statistics, navigation, sharing,
 and Pro entry points use the established web game controls.
 Previous-guess cells cap at 48px with smaller lettering; the active answer
 cells retain their 56px cap. Both rows shrink to fit narrow viewports.
+The prompt-word board shares the explainer's responsive 520px maximum width,
+aligning the top word's leading edge and bottom word's trailing edge with it.
 Previous guesses use the primary Midword text colour (white in dark mode) and
 1px outcome-coloured borders at 45% opacity, retaining their subtle outcome
 background tints. This treatment applies only to guess history.
