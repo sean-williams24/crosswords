@@ -635,6 +635,15 @@ a {
   overflow-y: auto;
 }
 
+.bw-game-explainer {
+  width: min(100%, 520px);
+  margin: 0;
+  color: var(--app-text-muted);
+  font-size: 16px;
+  line-height: 2.5;
+  text-align: center;
+}
+
 .bw-offline-note {
   align-self: stretch;
   margin: -8px 0 0;

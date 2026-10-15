@@ -388,6 +388,7 @@ export function BackwordPage() {
         {!loading && word ? (
           <>
             <main className="bw-game-main">
+              <p className="bw-game-explainer">Spell the word forwards, letters reveal backwards.</p>
               {usingCache ? <p className="bw-offline-note">Playing saved game offline</p> : null}
               {syncError ? <p className="bw-offline-note">{syncError}</p> : null}
               <p className="bw-clue"><span>Clue:</span> {word.clue.toUpperCase()}</p>

@@ -69,6 +69,18 @@ describe("Backword browser game", () => {
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
   });
 
+  it("explains the game below the logo and above the clue", async () => {
+    renderGame();
+
+    const clue = await screen.findByText("FORTRESS");
+    const explainer = screen.getByText("Spell the word forwards, letters reveal backwards");
+    const logo = screen.getByRole("img", { name: "Backword" });
+
+    expect(explainer.closest("main")).toHaveClass("bw-game-main");
+    expect(logo.compareDocumentPosition(explainer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(explainer.compareDocumentPosition(clue) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it("loads a dated archive route without replacing it with today", async () => {
     render(
       <MemoryRouter initialEntries={["/backword/2026-08-03"]}>
