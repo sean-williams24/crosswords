@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { BackwordCompletion } from "../features/backword/components/BackwordCompletion";
 import { BackwordInstructions } from "../features/backword/components/BackwordInstructions";
 import { BackwordKeyboard } from "../features/backword/components/BackwordKeyboard";
+import { BackwordLightbulbIcon } from "../features/backword/components/BackwordLightbulbIcon";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { BackwordOnboardingCards } from "../features/backword/components/BackwordOnboardingCards";
 import { BackwordStats } from "../features/backword/components/BackwordStats";
@@ -432,10 +433,10 @@ export function BackwordPage() {
                     />
                   ))}
                 </section>
-              ) : onboardingSteps.length === 0 ? (
+              ) : onboardingSteps.length === 0 && showDetailedExplainer ? (
                 <div className="bw-explainer-card">
-                  {showDetailedExplainer ? <span aria-hidden="true">💡</span> : null}
-                  <p>{showDetailedExplainer ? "If you’re stuck, guess any word to reveal letters" : "Guess the 6 letter word..."}</p>
+                  <BackwordLightbulbIcon />
+                  <p>If you’re stuck, guess any word to reveal letters</p>
                 </div>
               ) : null}
               {onboardingSteps.length ? (

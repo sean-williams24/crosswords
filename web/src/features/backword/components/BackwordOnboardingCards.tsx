@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { backwordOnboardingText } from "../onboarding";
 import type { BackwordMode, BackwordOnboardingStep } from "../types";
-import { OnboardingLightbulbIcon } from "./OnboardingLightbulbIcon";
+import { BackwordLightbulbIcon } from "./BackwordLightbulbIcon";
 
 type BackwordOnboardingCardsProps = {
   mode: BackwordMode;
@@ -51,7 +51,7 @@ export function BackwordOnboardingCards({ mode, steps, onDismiss }: BackwordOnbo
               zIndex: steps.length - index
             } as CSSProperties}
           >
-            {step === "clue" ? <span aria-hidden="true" className="bw-onboarding-card__info-icon">ⓘ</span> : <OnboardingLightbulbIcon />}
+            <BackwordLightbulbIcon className="bw-onboarding-card__icon" />
             <p>{backwordOnboardingText(step, mode)}</p>
             {isTopCard ? (
               <button aria-label={`OK: ${backwordOnboardingText(step, mode)}`} className="bw-onboarding-card__ok" onClick={() => dismiss(step)} type="button">

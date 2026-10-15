@@ -447,7 +447,7 @@ card is interactive, while the faded cards behind it indicate more guidance
 remains. Each card is dismissed independently and the remaining cards persist
 across launches; onboarding is complete only after all five have been
 acknowledged.
-The deck starts with the clue explanation and its decorative info icon, followed
+The deck starts with the clue explanation and its decorative lightbulb, followed
 by the connected-letter rule. The clue explanation no longer appears above the
 keyboard. The former “Guess the 6 letter word...” card is retired.
 Saved acknowledgements for that card are ignored
@@ -462,19 +462,18 @@ rule updates still open it automatically. Web info tooltips can be dismissed
 with their close button, a tap outside, or the info-button action. The Backword
 tooltip also closes when the game reaches a terminal outcome so it cannot
 overlap the result-sharing control.
-Once onboarding is complete, the normal timed guess explainer returns on every
-unstarted game until its first guess is submitted. This keeps the game
-immediately playable while ensuring an interrupted first visit resumes at the
-appropriate instruction.
+Once onboarding is complete, unstarted games show no immediate explainer capsule.
+After the existing 30-second delay, the lightbulb capsule shows the “If you're
+stuck” hint. Onboarding cards suppress that countdown; it starts when the final
+card is dismissed. Submitting the first guess hides the hint.
 On either platform, dismissing the front card uses an in-place dissolve rather
 than directional movement, so the next card can rise cleanly from the deck.
 
-The remaining onboarding cards prefix their instructions with a filled yellow
-lightbulb on iOS and web. The semantic instruction-icon colour stays bright yellow in both
-Light and Dark Mode. The icon is decorative and hidden from assistive technology.
-Web cards use an original 24px two-tone SVG bulb with a yellow globe and a base
-in the theme's muted text colour. Their shared grid row grows to fit wrapped
-instructions, with space below reserved for the remaining stack.
+Every onboarding card uses the same decorative lightbulb as the timed explainer
+capsule: iOS uses the `lightbulb` SF Symbol in `solvedGold`, and web uses the
+existing 💡 emoji. Both surfaces share an icon component on each platform,
+including its size, and hide it from assistive technology. Cards grow to fit
+wrapped instructions, with space below reserved for the remaining stack.
 
 The web game menu backdrop renders in a document-level portal above game content.
 It must stay outside the game header and shell so their stacking and overflow

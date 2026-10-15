@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { readFileSync } from "node:fs";
@@ -73,9 +73,9 @@ describe("Backword browser game", () => {
     renderGame();
 
     const clue = await screen.findByText("FORTRESS");
-    const explainer = screen.getByText("Spell the word forwards, letters reveal backwards.");
+    const explainer = screen.getByText("Spell it forwards - letters reveal backwards.");
     const logo = screen.getByRole("img", { name: "Backword" });
-    const prompt = screen.getByText("Guess the six letter word");
+    const prompt = screen.getByText("Guess the six letter word.");
 
     expect(prompt.parentElement).toBe(explainer);
     expect(prompt.nextElementSibling?.tagName).toBe("BR");
@@ -238,7 +238,7 @@ describe("Backword browser game", () => {
     expect(styles).toMatch(/@media \(min-width: 700px\)\s*\{[\s\S]*?\.puzzle-result-share--compact\s*\{[^}]*position:\s*fixed;[^}]*top:\s*calc\(max\(8px, env\(safe-area-inset-top\)\) \+ 54px\);[^}]*bottom:\s*auto;/);
   });
 
-  it("shows a persisted staggered onboarding deck, then restores the normal explainer", async () => {
+  it("shows a persisted staggered onboarding deck without an immediate explainer after dismissal", async () => {
     const user = userEvent.setup();
     const first = renderGame();
 
@@ -264,7 +264,8 @@ describe("Backword browser game", () => {
     expect(await screen.findByRole("button", { name: /^OK: Correctly placed letters/ })).toBeInTheDocument();
     expect(screen.queryByText("The clue is a word associated with the answer, or something connected to it")).not.toBeInTheDocument();
     await dismissOnboarding(user, 4);
-    expect(await screen.findByText("Guess the 6 letter word...")).toBeInTheDocument();
+    expect(screen.queryByText("Guess the 6 letter word...")).not.toBeInTheDocument();
+    expect(document.querySelector(".bw-explainer-card")).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "How to play Backword" })).not.toBeInTheDocument();
     expect(await screen.findByRole("tooltip")).toHaveTextContent("Tap the info icon at any time to view game information and toggle difficulty");
   });
@@ -277,7 +278,8 @@ describe("Backword browser game", () => {
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
     await dismissOnboarding(user);
 
-    expect(await screen.findByText("Guess the 6 letter word...")).toBeInTheDocument();
+    expect(screen.queryByText("Guess the 6 letter word...")).not.toBeInTheDocument();
+    expect(document.querySelector(".bw-explainer-card")).not.toBeInTheDocument();
     expect(await screen.findByRole("tooltip")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Close tooltip" }));
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
@@ -286,6 +288,45 @@ describe("Backword browser game", () => {
     renderGame();
     await screen.findByText("FORTRESS");
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
+
+  it.each([false, true])("shows the stuck hint only after 30 seconds when onboarding is complete: %s", async (hasSeenOnboarding) => {
+    localStorage.setItem("backword:web:settings:v1", JSON.stringify({
+      schemaVersion: 1,
+      mode: "easy",
+      hasSeenOnboarding,
+      lastSeenRulesVersion: 4,
+      hasSeenInstructionsTip: true
+    }));
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    let game: ReturnType<typeof renderGame> | undefined;
+    try {
+      await act(async () => { game = renderGame(); });
+      expect(screen.getByText("FORTRESS")).toBeInTheDocument();
+      expect(document.querySelector(".bw-explainer-card")).not.toBeInTheDocument();
+      expect(screen.queryByText("Guess the 6 letter word...")).not.toBeInTheDocument();
+
+      await act(async () => { vi.advanceTimersByTime(29_999); });
+      expect(document.querySelector(".bw-explainer-card")).not.toBeInTheDocument();
+      await act(async () => { vi.advanceTimersByTime(1); });
+
+      const hint = screen.queryByText("If you’re stuck, guess any word to reveal letters");
+      if (hasSeenOnboarding) {
+        expect(hint).toBeInTheDocument();
+        expect(hint?.previousElementSibling).toHaveTextContent("💡");
+        for (const key of "XXXXXX") fireEvent.keyDown(window, { key });
+        fireEvent.keyDown(window, { key: "Enter" });
+        expect(document.querySelector(".bw-explainer-card")).not.toBeInTheDocument();
+        await act(async () => { vi.advanceTimersByTime(30_000); });
+        expect(document.querySelector(".bw-explainer-card")).not.toBeInTheDocument();
+      } else {
+        expect(hint).not.toBeInTheDocument();
+        expect(screen.getByRole("region", { name: "How to play Backword" })).toBeInTheDocument();
+      }
+    } finally {
+      game?.unmount();
+      vi.useRealTimers();
+    }
   });
 
   it("keeps the full instructions sheet manual during inline onboarding and persists mode changes", async () => {

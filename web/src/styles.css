@@ -834,10 +834,8 @@ a {
 }
 
 .bw-onboarding-card__icon {
-  width: 24px;
-  height: 24px;
   flex: 0 0 auto;
-  color: var(--app-instruction-icon);
+  font-size: 15px;
 }
 
 .bw-onboarding-card p {
@@ -883,12 +881,6 @@ a {
   flex: 0 0 auto;
   padding-bottom: env(safe-area-inset-bottom);
   background: var(--app-background);
-}
-
-.bw-onboarding-card__info-icon {
-  color: var(--bw-correct);
-  font-size: 24px;
-  text-align: center;
 }
 
 .bw-game-score {

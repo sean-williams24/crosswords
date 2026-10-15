@@ -96,8 +96,8 @@ struct BackwordViewModelTests {
         #expect(!vm.onboardingSteps.contains(.clue))
     }
 
-    @Test("Explainer banner returns after onboarding is complete")
-    func explainerBannerReturnsAfterOnboarding() {
+    @Test("Explainer banner stays hidden after onboarding until the delay elapses")
+    func explainerBannerWaitsAfterOnboarding() {
         let word = makeWord()
         let settings = makeSettings()
         settings.markBackwordInstructionsSeen(.onboarding)
@@ -107,15 +107,20 @@ struct BackwordViewModelTests {
             settings: settings
         )
 
+        #expect(!vm.shouldShowExplainerBanner)
+        vm.markExplainerDelayElapsed()
         #expect(vm.shouldShowExplainerBanner)
-        #expect(vm.explainerText == "Guess the 6 letter word...")
+        #expect(vm.explainerText == "If you're stuck, guess any word to reveal a letter")
     }
 
     @Test("Explainer banner stays hidden while onboarding cards remain")
     func explainerBannerIsHiddenDuringOnboarding() {
         let vm = makeViewModel()
 
+        vm.markExplainerDelayElapsed()
+
         #expect(!vm.shouldShowExplainerBanner)
+        #expect(!vm.isDetailedExplainerVisible)
     }
 
     @Test("Explainer banner hides after the first guess")
@@ -129,10 +134,14 @@ struct BackwordViewModelTests {
             settings: settings
         )
         vm.wordValidator = { _ in true }
+        vm.markExplainerDelayElapsed()
+        #expect(vm.shouldShowExplainerBanner)
         vm.currentInput = "XXXXXX"
 
         vm.submitGuess()
 
+        #expect(!vm.shouldShowExplainerBanner)
+        vm.markExplainerDelayElapsed()
         #expect(!vm.shouldShowExplainerBanner)
     }
 
@@ -149,6 +158,7 @@ struct BackwordViewModelTests {
 
         vm.markExplainerDelayElapsed()
 
+        #expect(vm.shouldShowExplainerBanner)
         #expect(vm.explainerText == "If you're stuck, guess any word to reveal a letter")
     }
 

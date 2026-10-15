@@ -494,11 +494,7 @@ struct BackwordView: View {
 
     private var explainerBanner: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
-            if viewModel.isDetailedExplainerVisible {
-                Image(systemName: "lightbulb")
-                    .font(AppFont.body(15))
-                    .foregroundColor(.solvedGold)
-            }
+            BackwordLightbulbIcon()
 
             Text(viewModel.explainerText)
                 .font(AppFont.body(15))
