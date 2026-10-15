@@ -54,6 +54,7 @@
   --app-text-secondary: #777777;
   --app-text-muted: #b8b8b8;
   --app-accent: #3377b1;
+  --app-instruction-icon: #ffd60a;
   --app-correct: #66bb6a;
   --app-background-rgb: 17 17 17;
   --app-surface-rgb: 26 26 26;
@@ -86,6 +87,7 @@ html[data-theme="light"] {
   --app-text-secondary: #666666;
   --app-text-muted: #777777;
   --app-accent: #63a4de;
+  --app-instruction-icon: #a67c00;
   --app-correct: #66bb6a;
   --app-background-rgb: 245 242 235;
   --app-surface-rgb: 255 255 255;
@@ -821,6 +823,13 @@ a {
 .bw-onboarding-card.is-dismissing {
   pointer-events: none;
   animation: bw-onboarding-card-dissolve 220ms both cubic-bezier(.4,0,1,1);
+}
+
+.bw-onboarding-card__icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: var(--app-instruction-icon);
 }
 
 .bw-onboarding-card p {

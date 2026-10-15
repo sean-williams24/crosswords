@@ -462,6 +462,11 @@ appropriate instruction.
 On either platform, dismissing the front card uses an in-place dissolve rather
 than directional movement, so the next card can rise cleanly from the deck.
 
+Each onboarding card prefixes its instruction with a filled yellow lightbulb on
+iOS and web. The semantic instruction-icon colour uses bright yellow in Dark
+Mode and a deeper golden yellow in Light Mode to remain visible against the
+card surface. The icon is decorative and hidden from assistive technology.
+
 The web game menu backdrop renders in a document-level portal above game content.
 It must stay outside the game header and shell so their stacking and overflow
 rules cannot place onboarding cards or info tooltips over the menu.

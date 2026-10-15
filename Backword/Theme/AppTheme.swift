@@ -22,6 +22,7 @@ extension Color {
     static let appSurface = Color("Surface")
     static let appGridLine = Color("GridLine")
     static let appAccent = Color("Accent")
+    static let appInstructionIcon = Color("InstructionIcon")
     static let appCorrect = Color("Correct")
     static let appGaveUp = Color("GaveUp")
     static let appTextPrimary = Color("TextPrimary")
@@ -202,6 +203,7 @@ struct AppLayout {
     static let weeklyCompletionGridLetterSize: CGFloat = 8
     static let completionSparkleSize: CGFloat = 15
     static let homeNavigationIconGlyphSize: CGFloat = 20
+    static let onboardingInstructionIconSize: CGFloat = 18
     static let homeCardIssueNumberFontSize: CGFloat = 12
     static let sheetBackgroundBlurRadius: CGFloat = 4
     static let gameMaximumDynamicTypeSize: DynamicTypeSize = .xxxLarge
