@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F4B000023016000000000001 /* MidwordHomeCardLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B000013016000000000001 /* MidwordHomeCardLogo.swift */; };
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
 		04ADAE912FFD100000000001 /* AdExplainerPresentationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */; };
@@ -241,6 +242,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F4B000013016000000000001 /* MidwordHomeCardLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordHomeCardLogo.swift; sourceTree = "<group>"; };
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
 		04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicyTests.swift; sourceTree = "<group>"; };
@@ -707,6 +709,7 @@
 			isa = PBXGroup;
 			children = (
 				A8013956F1CB59F9C80F81AB /* MidwordCard.swift */,
+				F4B000013016000000000001 /* MidwordHomeCardLogo.swift */,
 				A0A000000000000000000008 /* AnagramCard.swift */,
 				A0A000000000000000000040 /* AnagramPlaceholderCard.swift */,
 				04ADAE942FFD100000000001 /* AdExplainerView.swift */,
@@ -1079,6 +1082,7 @@
 				A8C9A673F6B624C5D7673E8C /* MidwordService.swift in Sources */,
 				A8E5B970FFA351CAFAACA37B /* MidwordViewModel.swift in Sources */,
 				A82CFBD4790ADB40E195ADD8 /* MidwordCard.swift in Sources */,
+				F4B000023016000000000001 /* MidwordHomeCardLogo.swift in Sources */,
 				A8B82A5874D65009EBF8F772 /* MidwordArchiveRow.swift in Sources */,
 				A8B927B73ABB0E4C3B21B75A /* MidwordBoardView.swift in Sources */,
 				A8C8B52EC75BCACC3BADB7A8 /* MidwordInstructionsView.swift in Sources */,

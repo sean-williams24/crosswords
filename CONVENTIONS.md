@@ -633,7 +633,7 @@ their titles in the same identity group, centred as one view within the card.
 Crossword groups use the available space between the top streak and bottom
 status without adding extra row gaps, retaining the compact card height.
 Backword's completed word stays below its top-centred logo. The iOS Backword
-Home logo uses 48 points, with 32-point letter cells and 4-point content gaps
+Home logo uses a 56-point base height, with 32-point letter cells and 4-point content gaps
 to retain the compact completed card height.
 Letter spacing is balanced at title edges, and title lines contain no trailing spaces.
 The iOS layout identifies regions using layout values rather than array
@@ -642,8 +642,11 @@ during loading and previews. Absent regions measure as zero. Header spacers
 anchor the streak to the trailing edge even when the centre is an `EmptyView`.
 
 Web cards and their loading placeholders use a 144px minimum height to match
-compact iOS cards; longer content can grow them. Backword uses a 48-point/pixel
-logo height and Midword uses 40 on both platforms. Backword uses smaller vertical
+compact iOS cards; longer content can grow them. On iOS, Midword's Home logo
+keeps its compact 40-point base height while Backword uses 56 points. Both scale
+with Dynamic Type through `@ScaledMetric`, preserving Midword's smaller size.
+The card grows to keep the logo clear of its badges
+and footer. Web Backword uses a 48px logo height and Midword uses 40px. Backword uses smaller vertical
 content gaps to fit the larger logo within the existing card height. The web Midword Home card uses the
 unchanged iOS `MidwordLogoLight` image (white MID and black WORD) in both themes,
 without a colour filter. iOS cards share `HomeGameCardContent`,

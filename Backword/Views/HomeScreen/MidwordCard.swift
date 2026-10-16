@@ -29,7 +29,7 @@ struct MidwordCard: View {
 
     private var cardContent: some View {
         HomeGameCardContent(minimumHeight: appLayout.cardHeight) {
-            logo
+            MidwordHomeCardLogo()
         } details: {
             detailsView
         } header: {
@@ -41,13 +41,6 @@ struct MidwordCard: View {
         }
         .foregroundStyle(Color.midwordHomeCardForeground)
         .background(Color.midwordAccent)
-    }
-
-    private var logo: some View {
-        Image("MidwordLogoLight")
-            .resizable()
-            .scaledToFit()
-            .frame(height: AppLayout.midwordHomeCardLogoHeight)
     }
 
     @ViewBuilder

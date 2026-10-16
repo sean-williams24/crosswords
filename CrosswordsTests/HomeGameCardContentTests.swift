@@ -6,6 +6,36 @@ import UIKit
 @MainActor
 @Suite("Centred Home game card content")
 struct HomeGameCardContentTests {
+    @Test("Midword Home logo scales like Backword from its smaller base height",
+          arguments: [DynamicTypeSize.large, .xxxLarge, .accessibility1, .accessibility5])
+    func midwordLogoScalesLikeBackword(dynamicTypeSize: DynamicTypeSize) {
+        let proposal = CGSize(width: 280, height: 10_000)
+        let midword = UIHostingController(rootView: MidwordHomeCardLogo()
+            .environment(\.dynamicTypeSize, dynamicTypeSize))
+            .sizeThatFits(in: proposal)
+        let backword = UIHostingController(rootView: BackwordLogo(frame: AppLayout.homeCardLogoHeight)
+            .environment(\.dynamicTypeSize, dynamicTypeSize))
+            .sizeThatFits(in: proposal)
+
+        let expectedHeight = backword.height * AppLayout.midwordHomeCardLogoHeight / AppLayout.homeCardLogoHeight
+        #expect(abs(midword.height - expectedHeight) < 0.5)
+        #expect(midword.height < backword.height)
+        #expect(midword.width <= proposal.width)
+        if dynamicTypeSize == .large {
+            #expect(abs(midword.height - AppLayout.midwordHomeCardLogoHeight) < 0.5)
+        }
+    }
+
+    @Test("Midword Home logo grows beyond its default height at larger Dynamic Type sizes",
+          arguments: [DynamicTypeSize.xxxLarge, .accessibility1, .accessibility5])
+    func midwordLogoGrows(dynamicTypeSize: DynamicTypeSize) {
+        let size = UIHostingController(rootView: MidwordHomeCardLogo()
+            .environment(\.dynamicTypeSize, dynamicTypeSize))
+            .sizeThatFits(in: CGSize(width: 280, height: 10_000))
+
+        #expect(size.height > AppLayout.midwordHomeCardLogoHeight)
+    }
+
     @Test("Pro Home cards retain their dark surface and white Pro Only content")
     func proCardUsesDarkPalette() {
         let colorScheme = WeeklyCrosswordCardAppearance.colorScheme
