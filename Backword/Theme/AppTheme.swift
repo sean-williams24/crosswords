@@ -58,6 +58,18 @@ extension Color {
 }
 
 enum AppGradient {
+    // The stacked gameplay wordmark uses the same hard colour split as the web.
+    static let midwordLogo = LinearGradient(
+        stops: [
+            .init(color: .midwordAccent, location: 0),
+            .init(color: .midwordAccent, location: 0.49),
+            .init(color: .midwordText, location: 0.49),
+            .init(color: .midwordText, location: 1)
+        ],
+        startPoint: .top,
+        endPoint: .bottom
+    )
+
     static let pro = LinearGradient(
         colors: [
             Color(red: 0.85, green: 0.65, blue: 0.25),

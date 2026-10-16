@@ -155,10 +155,7 @@ struct MidwordView: View {
     }
 
     private var navTitle: some View {
-        Image("MidwordLogo")
-            .resizable()
-            .scaledToFit()
-            .frame(height: 38)
+        MidwordLogo()
     }
 
     private var navControls: some View {

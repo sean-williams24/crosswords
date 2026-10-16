@@ -330,6 +330,11 @@ it remains visible in either appearance. Inactive cells and unused attempts
 have appearance-specific borders. The green accent and black on-accent text
 are shared across appearances; exported share cards still resolve in Dark Mode.
 
+The iOS gameplay wordmark matches the web in Dark Mode: the existing logo's
+alpha mask is filled with semantic green above a 49% vertical split and white
+below it. Light Mode retains the original green-and-black image. The separate
+Home-card wordmark is unchanged.
+
 The Midword Home card matches Anagram's layout and typography: its logo is
 centred horizontally and vertically, its issue number stays at the bottom-right,
 status stays at the bottom centre, and completed score stays at the bottom-left,

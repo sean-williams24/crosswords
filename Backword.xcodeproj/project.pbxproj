@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F4D000023017000000000001 /* MidwordLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D000013017000000000001 /* MidwordLogo.swift */; };
+		F4D000023017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D000013017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift */; };
 		F4C000023016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C000013016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift */; };
 		F4B000023016000000000001 /* MidwordHomeCardLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B000013016000000000001 /* MidwordHomeCardLogo.swift */; };
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
@@ -243,6 +245,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F4D000013017000000000001 /* MidwordLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordLogo.swift; sourceTree = "<group>"; };
+		F4D000013017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/MidwordLogoTests.swift; sourceTree = "<group>"; };
 		F4C000013016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/SettingsAccountRowLayoutTests.swift; sourceTree = "<group>"; };
 		F4B000013016000000000001 /* MidwordHomeCardLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordHomeCardLogo.swift; sourceTree = "<group>"; };
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -530,6 +534,7 @@
 				B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */,
 				B77DC0800000000000000002 /* ../CrosswordsTests/MidwordDebugResetTests.swift */,
 				B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */,
+				F4D000013017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift */,
 				B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */,
 				B77DC0400000000000000002 /* ../CrosswordsTests/HomeGameCardContentTests.swift */,
 				B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */,
@@ -793,6 +798,7 @@
 				A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */,
 				A0B000000000000000000002 /* MidwordStatsHistoryView.swift */,
 				A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */,
+				F4D000013017000000000001 /* MidwordLogo.swift */,
 			);
 			path = Midword;
 			sourceTree = "<group>";
@@ -1027,6 +1033,7 @@
 				B77DC0A00000000000000001 /* ../CrosswordsTests/BackwordClueViewTests.swift in Sources */,
 				B77DC0800000000000000001 /* ../CrosswordsTests/MidwordDebugResetTests.swift in Sources */,
 				B77DC0100000000000000001 /* ../CrosswordsTests/MidwordColorAssetTests.swift in Sources */,
+				F4D000023017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift in Sources */,
 				B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */,
 				B77DC0400000000000000001 /* ../CrosswordsTests/HomeGameCardContentTests.swift in Sources */,
 				B77DC0500000000000000001 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift in Sources */,
@@ -1092,6 +1099,7 @@
 				A8C8B52EC75BCACC3BADB7A8 /* MidwordInstructionsView.swift in Sources */,
 				A87593C9AEA8FA0C03E315E7 /* MidwordStatsView.swift in Sources */,
 				A83D7E3FB67BDC4A73E32933 /* MidwordView.swift in Sources */,
+				F4D000023017000000000001 /* MidwordLogo.swift in Sources */,
 				A0A000000000000000000111 /* AnagramArchiveRow.swift in Sources */,
 				A0A000000000000000000119 /* AnagramCompletionWordView.swift in Sources */,
 				A0A000000000000000000121 /* AnagramInstructionsContentView.swift in Sources */,
