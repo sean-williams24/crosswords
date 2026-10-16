@@ -566,6 +566,10 @@ or date labels; their own content identifies each game.
 The Pro Crossword card fills its grid column rather than keeping a fixed iPad
 width.
 
+At maximum scroll, the last iOS Home card sits one game-card spacing (20 points)
+above the visible tab bar. The bottom safe-area inset already reserves the bar,
+so scroll-content bottom padding subtracts the bar's top padding from that gap.
+
 Web Home uses three equal columns and two rows: Backword, Anagram, Midword;
 then Quick Crossword, Archive, Pro Crossword. Grid rows share the same height,
 including when larger content needs extra space; loading reserves all six

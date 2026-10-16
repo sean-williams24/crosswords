@@ -109,7 +109,7 @@ struct HomeView: View {
                 AppBackgroundGradient()
 
                 ScrollView {
-                    VStack(spacing: 20) {
+                    VStack(spacing: HomeGamesLayout.spacing) {
                         RatingBarView(
                             rating: ratingService.rating,
                             isPro: storeService.isProUser
@@ -127,7 +127,7 @@ struct HomeView: View {
                         gamesGrid
                     }
                     .padding(.top, 16)
-                    .padding(.bottom, 100)
+                    .padding(.bottom, HomeGamesLayout.scrollBottomPadding)
                 }
                 .scrollIndicators(.hidden)
             }
@@ -815,6 +815,8 @@ enum HomeGamesLayout {
     static let gamesBeforeArchiveButton = Array(games.prefix { $0 != .anagram })
     static let gamesAfterArchiveButton = Array(games.drop { $0 != .anagram })
     static let spacing: CGFloat = 20
+    // The safe-area inset already reserves the tab bar, including its top padding.
+    static let scrollBottomPadding = spacing - AppLayout.homeTabBarTopPadding
 
     static func usesTwoColumns(for sizeClass: UserInterfaceSizeClass?) -> Bool {
         sizeClass == .regular

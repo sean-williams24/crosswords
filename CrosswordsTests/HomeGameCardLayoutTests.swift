@@ -10,6 +10,14 @@ import AppKit
 
 @Suite("Home card identity alignment")
 struct HomeGameCardLayoutTests {
+    @Test("The final Home card has the same gap above the tab bar as between cards")
+    func bottomScrollSpacing() {
+        #expect(HomeGamesLayout.spacing == 20)
+        #expect(HomeGamesLayout.scrollBottomPadding >= 0)
+        #expect(HomeGamesLayout.scrollBottomPadding + AppLayout.homeTabBarTopPadding
+                == HomeGamesLayout.spacing)
+    }
+
     @Test("Normal game titles stay centred while header badges and footer keep the compact height",
           arguments: [CGFloat(180), 280, 600])
     func compactGameStates(width: CGFloat) {

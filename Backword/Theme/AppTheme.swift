@@ -203,6 +203,7 @@ struct AppLayout {
     static let weeklyCompletionGridLetterSize: CGFloat = 8
     static let completionSparkleSize: CGFloat = 15
     static let homeNavigationIconGlyphSize: CGFloat = 20
+    static let homeTabBarTopPadding: CGFloat = 8
     static let onboardingInstructionIconSize: CGFloat = 18
     static let homeCardIssueNumberFontSize: CGFloat = 12
     static let sheetBackgroundBlurRadius: CGFloat = 4

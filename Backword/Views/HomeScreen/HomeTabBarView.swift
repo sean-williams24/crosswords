@@ -37,7 +37,7 @@ struct HomeTabBarView: View {
             .clipShape(Capsule())
             .shadow(color: .black.opacity(0.12), radius: 18, x: 0, y: 8)
             .padding(.horizontal, AppLayout.screenPadding)
-            .padding(.top, 8)
+            .padding(.top, AppLayout.homeTabBarTopPadding)
             .padding(.bottom, 8)
         }
         .frame(maxWidth: .infinity)
