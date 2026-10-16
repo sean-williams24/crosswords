@@ -621,7 +621,9 @@ status at the bottom centre, and issue numbers at the bottom-right. The top
 badges and
 bottom footer stay independent of the centred branding; footer side regions
 reserve equal widths so badges do not shift the centred status.
-When a very narrow footer cannot fit, its side information moves above status.
+When a footer cannot fit horizontally, including at larger Dynamic Type sizes,
+its side information moves below status, keeping points left-aligned and the
+issue number right-aligned.
 Pro-only and loading states use the same arrangement.
 
 Normal Home cards keep Anagram and Midword's compact height: 144 points on iPhone
@@ -1116,7 +1118,7 @@ Backword keeps its onboarding-first behaviour: the Backword ad gate is skipped u
 
 Daily and weekly crossword cards display summary scores from `HomeViewModel`, not by reading progress files directly in the view. Cards ask the view model to refresh saved `UserProgress` when they appear; scores fall back to the loaded puzzle's clue count if legacy progress has no `totalClues` metadata. Weekly cards use `UserStats.currentStreak(isWeekly: true)` for their streak display.
 
-The Backword card uses the same stats row shape, but its score is hidden until `BackwordProgress.isComplete` because Backword only awards points at the end of a game. Its status stays at the bottom centre before and after completion, with points at the bottom-left and streak at the top-right. When the footer cannot fit horizontally, points move above the centred status.
+The Backword card uses the same stats row shape, but its score is hidden until `BackwordProgress.isComplete` because Backword only awards points at the end of a game. Its status stays at the bottom centre before and after completion, with points at the bottom-left and streak at the top-right. When the footer cannot fit horizontally, points and the issue number move below the centred status.
 
 Backword archive rows keep the guess-count status label after a win. On-time wins use the same solved gold as on-time crossword archive completions, while wins finished on a later local release date use the normal correct green. Only Backwords completed on their local release date contribute points or update Backword statistics; archive completions remain visible in progress but score zero.
 

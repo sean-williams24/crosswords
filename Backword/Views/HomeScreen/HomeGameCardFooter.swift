@@ -24,12 +24,12 @@ struct HomeGameCardFooter<Score: View, Status: View, Issue: View>: View {
             }
 
             VStack(alignment: .center, spacing: spacing) {
+                status()
                 HStack(alignment: .bottom, spacing: spacing) {
                     score()
                     Spacer(minLength: spacing)
                     issue()
                 }
-                status()
             }
         }
         .frame(maxWidth: .infinity, alignment: .bottom)

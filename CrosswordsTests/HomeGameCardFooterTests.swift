@@ -124,7 +124,7 @@ struct HomeGameCardFooterTests {
         }
     }
 
-    @Test("Status stays at the bottom centre with and without stats, including narrow cards",
+    @Test("Status stays centred with side information below when narrow, with and without stats",
           arguments: [CGFloat(180), 350], [false, true])
     func statusPosition(width: CGFloat, showsStats: Bool) {
         #if canImport(UIKit)
@@ -161,7 +161,8 @@ struct HomeGameCardFooterTests {
         #endif
 
         #expect(abs(statusFrame.midX - width / 2) < 0.5)
-        #expect(abs(bottomDistance) < 0.5)
+        let expectedBottomDistance: CGFloat = width == 180 ? (showsStats ? 32 : 20) : 0
+        #expect(abs(bottomDistance - expectedBottomDistance) < 0.5)
         #expect(statusFrame.size == CGSize(width: 120, height: 28))
         #expect(size.height == (width == 180 ? (showsStats ? 60 : 48) : 28))
     }
