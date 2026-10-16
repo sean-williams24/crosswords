@@ -1243,6 +1243,8 @@ their device's local date, so a visible tomorrow row does not display early.
 During play, the tray and controls stay together at the bottom of the view,
 with the controls 40 points above the bottom safe area. The header, timer,
 and answer scroll above them.
+The game screen centres the Anagram title and issue label together across the
+available content width on both iOS and web, including before Start.
 The shared Anagram action button caps Dynamic Type at Large so Start and all
 five gameplay controls keep their full labels in the fixed-width button rows.
 The Anagram Home card centres its title horizontally and vertically, with the

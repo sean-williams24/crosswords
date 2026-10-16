@@ -253,7 +253,7 @@ struct AnagramView: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .center, spacing: 6) {
             Text("ANAGRAM")
                 .font(AppFont.header(34))
                 .foregroundStyle(Color.anagramOrange)
@@ -263,6 +263,8 @@ struct AnagramView: View {
                 .foregroundStyle(Color.appTextSecondary)
                 .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity)
     }
 
     private var instructions: some View {

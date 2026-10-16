@@ -66,6 +66,19 @@ describe("Anagram browser game", () => {
     await screen.findByRole("button", { name: "Start" });
   });
 
+  it("centres the game title and issue number in the same header", async () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const titleBlock = styles.match(/\.anagram-title-block\s*\{([^}]*)\}/)?.[1];
+    expect(titleBlock).toMatch(/text-align:\s*center/);
+
+    render(<MemoryRouter><AnagramPage /></MemoryRouter>);
+    const title = screen.getByRole("heading", { name: "ANAGRAM", level: 1 });
+    const header = title.closest(".anagram-title-block");
+    expect(header).toContainElement(screen.getByText("Daily puzzle"));
+    await screen.findByRole("button", { name: "Start" });
+    expect(header).toContainElement(screen.getByText("Puzzle #7"));
+  });
+
   it("keeps the letter tray and controls at the bottom of the game board", async () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
     const board = styles.match(/\.anagram-board\s*\{([^}]*)\}/)?.[1];
