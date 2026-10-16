@@ -338,6 +338,11 @@ select one whole guess list; the greater release-day score snapshot is retained
 independently. Rating uses a 14-day window and adds five possible points for
 each Midword release from `2026-10-01` onward.
 
+The DEBUG reset action deletes only today's local Midword progress in the active
+guest/account namespace. Earlier games and cached puzzle content are retained.
+It does not delete cloud progress, so a later account sync can restore that game.
+Dismissing Debug Settings reloads the Home card and streak from local progress.
+
 The Midword database migration extends the live `game_progress` game-type
 constraint without removing Anagram, which was added on the remote database
 before Midword. It does not replace `merge_game_progress`, so Anagram's
@@ -704,6 +709,10 @@ leave space for both action buttons.
 The shared web menu button is absolutely positioned at the top of the page, so
 it scrolls away with the page content. The open navigation drawer remains a
 fixed, document-level overlay.
+
+The shared website footer is hidden on every route at viewport widths of 680px
+and below, using the site's mobile breakpoint. Anagram retains its existing
+700px footer cutoff. Wider layouts keep the footer visible.
 
 The shared website footer groups its links into Explore, Free games, Pro Account,
 Support, Legal, and Socials, in that order, each with a heading and vertical list. Explore

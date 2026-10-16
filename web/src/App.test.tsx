@@ -14,10 +14,10 @@ function renderRoute(route: string) {
 }
 
 describe("Backword website routes", () => {
-  it("hides game footers only in the mobile layout", () => {
+  it("hides the shared site footer on every route in the mobile layout", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
-    expect(styles).toMatch(/@media \(max-width: 680px\) \{[\s\S]*?\.bw-page > \.site-footer \{ display: none; \}/);
+    expect(styles).toMatch(/@media \(max-width: 680px\) \{\s*\.site-footer \{ display: none; \}/);
   });
 
   it("renders the game dashboard at /", () => {

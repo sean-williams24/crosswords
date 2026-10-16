@@ -195,6 +195,7 @@
 		B77DC0500000000000000001 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */; };
 		B77DC0600000000000000001 /* ../CrosswordsTests/HomeGameCardFooterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0600000000000000002 /* ../CrosswordsTests/HomeGameCardFooterTests.swift */; };
 		B77DC0700000000000000001 /* ../CrosswordsTests/BackwordInstructionColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */; };
+		B77DC0800000000000000001 /* ../CrosswordsTests/MidwordDebugResetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0800000000000000002 /* ../CrosswordsTests/MidwordDebugResetTests.swift */; };
 		B87E042C9276130084747CA3 /* StatsView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8254031869B9E1FAC8C5A377 /* StatsView2.swift */; };
 		BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2519353944EB9D4F32644E32 /* ClueBarView.swift */; };
 		BEF00EC711F525FD3B8EB3DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B35393D8C1799968B4B9119D /* Assets.xcassets */; };
@@ -419,6 +420,7 @@
 		B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardLayoutTests.swift; sourceTree = "<group>"; };
 		B77DC0600000000000000002 /* ../CrosswordsTests/HomeGameCardFooterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardFooterTests.swift; sourceTree = "<group>"; };
 		B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/BackwordInstructionColorTests.swift; sourceTree = "<group>"; };
+		B77DC0800000000000000002 /* ../CrosswordsTests/MidwordDebugResetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/MidwordDebugResetTests.swift; sourceTree = "<group>"; };
 		B8669C3DD88CF9BC44A72C69 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingTests.swift; sourceTree = "<group>"; };
 		C31664D1AD154A3FB5415AA5 /* ArchivePuzzleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivePuzzleRow.swift; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 				A0A000000000000000000024 /* AnagramHintBannerTests.swift */,
 				A0A000000000000000000009 /* AnagramProgressTests.swift */,
 				B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */,
+				B77DC0800000000000000002 /* ../CrosswordsTests/MidwordDebugResetTests.swift */,
 				B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */,
 				B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */,
 				B77DC0400000000000000002 /* ../CrosswordsTests/HomeGameCardContentTests.swift */,
@@ -993,6 +996,7 @@
 				A0A000000000000000000124 /* AnagramHintBannerTests.swift in Sources */,
 				A0A000000000000000000109 /* AnagramProgressTests.swift in Sources */,
 				B77DC0700000000000000001 /* ../CrosswordsTests/BackwordInstructionColorTests.swift in Sources */,
+				B77DC0800000000000000001 /* ../CrosswordsTests/MidwordDebugResetTests.swift in Sources */,
 				B77DC0100000000000000001 /* ../CrosswordsTests/MidwordColorAssetTests.swift in Sources */,
 				B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */,
 				B77DC0400000000000000001 /* ../CrosswordsTests/HomeGameCardContentTests.swift in Sources */,

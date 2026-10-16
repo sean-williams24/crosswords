@@ -225,6 +225,7 @@ struct HomeView: View {
                     .environmentObject(storeService)
                     .environmentObject(backwordService)
                     .environmentObject(anagramService)
+                    .environmentObject(midwordService)
                     .environmentObject(adService)
                     .environmentObject(wotdService)
                     .environmentObject(accountService)

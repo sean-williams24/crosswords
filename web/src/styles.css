@@ -2161,7 +2161,7 @@ html[data-theme="light"] .weekly-card small { color: var(--app-text-secondary); 
 html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); }
 
 @media (max-width: 680px) {
-  .bw-page > .site-footer { display: none; }
+  .site-footer { display: none; }
   .legal-page__top-link {
     position: static;
     display: flex;

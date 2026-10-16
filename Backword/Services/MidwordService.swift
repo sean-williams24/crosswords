@@ -25,6 +25,12 @@ final class MidwordService: ObservableObject {
         ).currentStreak
     }
 
+    #if DEBUG
+    func debugResetTodaysProgress(now: Date = Date()) {
+        MidwordProgress.delete(date: ContentReleaseCalendar(now: now).dailyDateString)
+    }
+    #endif
+
     func refreshIfNeeded(force: Bool = false) async {
         let today = ContentReleaseCalendar().dailyDateString
         guard force || today != loadedDate else { return }
