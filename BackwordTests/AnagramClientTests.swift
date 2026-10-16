@@ -33,6 +33,53 @@ private final class FakeAnagramSource: AnagramDataSource {
 
 @Suite("Anagram clients")
 struct AnagramClientTests {
+    @Test("The game share action is absent until an attempt is complete")
+    @MainActor
+    func unfinishedGameHasNoShareResult() {
+        let puzzle = AnagramPuzzle(
+            id: "share-unfinished", date: AnagramProgress.localDay(Date()),
+            puzzleNumber: 21, schemaVersion: 1, answer: "TRIANGLE",
+            acceptedAnswers: [], initialScramble: "RAGTLINE"
+        )
+        for progress: AnagramProgress? in [nil, AnagramProgress(puzzle: puzzle)] {
+            let viewModel = AnagramViewModel(puzzle: puzzle, initialProgress: progress, persistsChanges: false)
+            #expect(viewModel.completionShareResult(rating: OverallRating(), isPro: false, progressRecords: []) == nil)
+        }
+    }
+
+    @Test("Completed games share the current result without duplicating stale saved progress",
+          arguments: [AnagramProgress.Outcome.solved, .gaveUp])
+    @MainActor
+    func completedGameShareResult(outcome: AnagramProgress.Outcome) throws {
+        let start = Calendar.current.startOfDay(for: Date()).addingTimeInterval(3_600)
+        let puzzle = AnagramPuzzle(
+            id: "share-completed", date: AnagramProgress.localDay(start),
+            puzzleNumber: 21, schemaVersion: 1, answer: "TRIANGLE",
+            acceptedAnswers: [], initialScramble: "RAGTLINE"
+        )
+        let stale = AnagramProgress(puzzle: puzzle, now: start)
+        var completed = stale
+        if outcome == .solved {
+            for tile in [3, 0, 5, 1, 6, 2, 4, 7] {
+                completed.place(tile, in: puzzle, now: start.addingTimeInterval(45))
+            }
+        } else {
+            completed.giveUp(now: start.addingTimeInterval(45))
+        }
+        let viewModel = AnagramViewModel(puzzle: puzzle, initialProgress: completed, persistsChanges: false)
+        let result = try #require(viewModel.completionShareResult(
+            rating: OverallRating(), isPro: false, progressRecords: [stale]
+        ))
+
+        #expect(result.game == .anagram)
+        #expect(result.issueLabel == "Anagram #21")
+        #expect(result.score == (outcome == .solved ? 4 : 0))
+        #expect(result.totalGamesSolved == (outcome == .solved ? 1 : 0))
+        #expect(result.shareURL.path == "/anagram/\(puzzle.date)")
+        #expect(!result.caption.contains(puzzle.answer))
+        #expect(!result.caption.contains(puzzle.initialScramble))
+    }
+
     @Test("Debug reset clears only today's Anagram progress")
     @MainActor
     func debugResetTodaysProgress() async throws {

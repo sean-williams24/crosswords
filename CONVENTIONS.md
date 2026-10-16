@@ -1850,7 +1850,9 @@ anchored to the result button within completion modals, and remains openable
 while the PNG is prepared so text copying is never blocked by image rendering.
 Anagram uses the same menu action styling as the other games: its dialog button
 rules apply only to direct dialog controls, and its completed game keeps a
-compact share button on the main page after the completion dialog closes.
+compact share button after the completion dialog closes. On smaller web layouts
+and in the iOS game view, this button sits above the letter tray in the gameplay
+dock, aligned to the right. The web share menu opens upward in this layout.
 
 Result-share analytics use a content-free funnel. `result_share_opened` records
 the share surface, `result_share_finished` records whether the platform reported

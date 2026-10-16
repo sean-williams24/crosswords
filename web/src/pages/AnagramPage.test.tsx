@@ -98,22 +98,38 @@ describe("Anagram browser game", () => {
     expect(boardElement.querySelector(".anagram-gameplay-dock")).toContainElement(screen.getByRole("button", { name: "Give up" }));
   });
 
-  it("shows the compact share action on the game after completion closes", async () => {
+  it.each(["solved", "gave_up"])("places the compact share action above the tray after a %s completion closes", async (outcome) => {
     const user = userEvent.setup();
     render(<MemoryRouter><AnagramPage /></MemoryRouter>);
 
     await user.click(await screen.findByRole("button", { name: "Start" }));
     expect(screen.queryByRole("button", { name: "Share result" })).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "Give up" }));
-    await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
-    const completion = await screen.findByRole("dialog", { name: "Finished" });
+    if (outcome === "solved") {
+      for (const letter of "TRIANGLE") {
+        await user.click(screen.getByRole("button", { name: new RegExp(`^Letter ${letter}, tray position`) }));
+      }
+    } else {
+      await user.click(screen.getByRole("button", { name: "Give up" }));
+      await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
+    }
+    const completion = await screen.findByRole("dialog", { name: outcome === "solved" ? "Solved!" : "Finished" });
     expect(within(completion).getByRole("button", { name: "Share result" })).toBeInTheDocument();
     expect(within(screen.getByRole("main")).queryByRole("button", { name: "Share result" })).not.toBeInTheDocument();
 
     await user.click(within(completion).getByRole("button", { name: "BACK TO GAME" }));
     const gameShareButton = within(screen.getByRole("main")).getByRole("button", { name: "Share result" });
     expect(gameShareButton).toHaveClass("puzzle-result-share__button--compact");
-    expect(gameShareButton.closest(".puzzle-result-share--compact")?.parentElement).toHaveClass("anagram-main");
+    const share = gameShareButton.closest(".puzzle-result-share--compact")!;
+    expect(share.parentElement).toHaveClass("anagram-gameplay-dock");
+    const tray = screen.getByLabelText("Scrambled letter tray");
+    expect(share.nextElementSibling).toBe(tray);
+
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const mobileSharing = styles.match(/@media \(max-width: 699px\) \{\s*\.puzzle-result-share__fallback[^}]*\}\s*\.anagram-gameplay-dock > \.puzzle-result-share--compact\s*\{([^}]*)\}/)?.[1];
+    expect(mobileSharing).toMatch(/position:\s*relative/);
+    expect(mobileSharing).toMatch(/top:\s*auto/);
+    expect(mobileSharing).toMatch(/margin:\s*0 0 16px auto/);
+    expect(styles).not.toContain(".anagram-main > .puzzle-result-share--compact");
   });
 });

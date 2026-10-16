@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { localDateString } from "../backword/date";
 import type { PuzzleShareResult } from "../share/puzzleResult";
+import { PuzzleResultShare } from "../share/PuzzleResultShare";
 import { answerText, availableTileIDs, elapsedSeconds, type AnagramProgress, type AnagramPuzzle } from "./engine";
 import { AnagramCompletion, anagramCompletionTitle } from "./AnagramCompletion";
 import { AnagramInstructions } from "./AnagramInstructions";
@@ -26,11 +27,12 @@ function historyDate(dateString: string) {
   }).format(new Date(year, month - 1, day, 12));
 }
 
-export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart, onShuffle, onHint, onGiveUp, onResetReview }: {
+export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart, onShuffle, onHint, onGiveUp, onResetReview, shareResult }: {
   puzzle: AnagramPuzzle; progress: AnagramProgress; now: Date;
   onPlace: (tile: number) => void; onUndo: () => void; onRestart: () => void;
   onShuffle: () => void; onHint: () => void; onGiveUp: () => void;
   onResetReview?: () => void;
+  shareResult?: PuzzleShareResult | null;
 }) {
   const ended = progress.outcome !== null;
   const available = new Set(availableTileIDs(progress));
@@ -55,6 +57,7 @@ export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart
       {onResetReview && ended ? <button className="anagram-review-reset" onClick={onResetReview} type="button">Reset review puzzle</button> : null}
     </div>
     <div className="anagram-gameplay-dock">
+      {ended && shareResult ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
       <div aria-label="Scrambled letter tray" className="anagram-tray">
         <div aria-label="Tray row 1" className="anagram-letter-row">
           {progress.trayOrder.map((tile, position) => available.has(tile)

@@ -1225,8 +1225,7 @@ a {
 
 @media (max-width: 699px) {
   .puzzle-result-share__fallback { top: auto; bottom: calc(100% + 8px); }
-  .anagram-main > .puzzle-result-share--compact { top: 0; right: 0; bottom: auto; }
-  .anagram-main > .puzzle-result-share--compact .puzzle-result-share__fallback { top: calc(100% + 8px); bottom: auto; }
+  .anagram-gameplay-dock > .puzzle-result-share--compact { position: relative; top: auto; right: auto; bottom: auto; width: fit-content; margin: 0 0 16px auto; }
 }
 .bw-completion-actions { display: grid; grid-template-columns: 1fr 1fr; margin-top: auto; padding: 10px 20px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--app-grid); }
 .bw-completion-actions button { padding: 11px; border: 0; color: var(--app-text-secondary); background: transparent; font: inherit; font-size: 13px; cursor: pointer; }

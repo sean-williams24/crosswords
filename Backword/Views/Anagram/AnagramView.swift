@@ -315,6 +315,13 @@ struct AnagramView: View {
 
     private func gameplayDock(_ progress: AnagramProgress) -> some View {
         VStack(alignment: .leading, spacing: 24) {
+            if let result = viewModel.completionShareResult(
+                rating: ratingService.rating, isPro: storeService.isProUser
+            ) {
+                PuzzleResultShareButton(result: result, compact: true)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+            }
             AnagramLetterGrid(puzzle: viewModel.puzzle, progress: progress, section: .tray) { tile in
                 viewModel.place(tile)
             }

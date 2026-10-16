@@ -21,6 +21,20 @@ final class AnagramViewModel: ObservableObject {
     var canRestart: Bool { progress?.canRestart ?? false }
     var canHint: Bool { progress.map { !$0.hintUsed && !$0.isComplete } ?? false }
 
+    func completionShareResult(
+        rating: OverallRating, isPro: Bool, progressRecords: [AnagramProgress]? = nil
+    ) -> PuzzleShareResult? {
+        guard let progress, progress.isComplete else { return nil }
+        let records = (progressRecords ?? AnagramProgress.loadAll())
+            .filter { $0.date != puzzle.date } + [progress]
+        return PuzzleShareResult.anagram(
+            completion: AnagramCompletion(puzzle: puzzle, progress: progress),
+            history: AnagramStatsHistory.make(rating: rating, progressRecords: records),
+            rating: rating,
+            isPro: isPro
+        )
+    }
+
     func start(now: Date = Date()) {
         guard progress == nil else { return }
         progress = AnagramProgress(puzzle: puzzle, now: now)
