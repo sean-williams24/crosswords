@@ -132,7 +132,11 @@ describe("puzzle share results", () => {
     expect(anagramCard).toContain('fill="#fff1e5" font-family="Outfit, sans-serif" font-size="55"');
   });
 
-  it("builds a spoiler-free Anagram result", () => {
+  it.each([
+    [0, "00:00:00"], [45, "00:00:45"], [59, "00:00:59"], [60, "00:01:00"],
+    [3599, "00:59:59"], [3600, "01:00:00"], [4845, "01:20:45"],
+    [90061, "25:01:01"], [360000, "100:00:00"]
+  ] as const)("builds a spoiler-free Anagram result with %i seconds shown as %s", (seconds, expectedTime) => {
     const answer = "TRIANGLE";
     const scramble = "RAGTLINE";
     const result = buildAnagramShareResult({
@@ -147,12 +151,12 @@ describe("puzzle share results", () => {
         placementHistory: [3, 0, 5, 1, 6, 2, 4, 7],
         hintUsed: false,
         hintSource: null,
-        penaltySeconds: 0,
+        penaltySeconds: 30,
         lockedCellIndex: null,
         lockedTileID: null,
         outcome: "solved",
         completedAt: "2026-10-01T10:00:45.000Z",
-        elapsedSecondsAtCompletion: 45,
+        elapsedSecondsAtCompletion: seconds,
         releaseDateScore: 4,
         updatedAt: "2026-10-01T10:00:45.000Z"
       },
@@ -165,9 +169,12 @@ describe("puzzle share results", () => {
       game: "anagram",
       issueNumber: 1,
       score: 4,
-      primaryStat: { label: "SOLVE TIME", value: "0:45" },
-      timeStat: { label: "PENALTY", value: "+0s" }
+      primaryStat: { label: "SOLVE TIME", value: expectedTime },
+      timeStat: { label: "PENALTY", value: "+00:00:30" }
     });
+    expect(result.caption).toContain(expectedTime);
+    expect(result.caption).toContain("+00:00:30");
+    expect(puzzleResultCardSvg(result)).toContain(`>${expectedTime}</text>`);
     expect(result.url).toContain("/anagram/2026-10-01?");
     expect(`${result.caption}${puzzleResultCardSvg(result)}`).not.toMatch(new RegExp(`${answer}|${scramble}`, "i"));
   });
@@ -184,16 +191,20 @@ describe("puzzle share results", () => {
     expect(result.caption).not.toMatch(/failed|lost|castle|bottle/i);
   });
 
-  it("builds daily and weekly crossword results without grid or clue content", () => {
+  it.each([[302, "00:05:02"], [4845, "01:20:45"]] as const)("builds daily and weekly crossword results with %i seconds shown as %s", (seconds, expectedTime) => {
     const progress = {
       schemaVersion: 1 as const, puzzleId: "puzzle-id", date: "2026-09-16", size: 9, entries: [["A"]], completedClueIds: [1], hintedClueIds: [], hintsUsed: 0,
-      startedAt: "2026-09-16T14:00:00.000Z", completedAt: "2026-09-16T14:05:02.000Z", releaseDateScore: 5
+      startedAt: "2026-09-16T14:00:00.000Z", completedAt: new Date(Date.parse("2026-09-16T14:00:00.000Z") + seconds * 1000).toISOString(), releaseDateScore: 5
     };
     const daily = buildCrosswordShareResult({ progress, puzzle: { puzzleNumber: 8 }, stats: { totalSolved: 1, currentStreak: 2, longestStreak: 2, averageSolveTimeSeconds: null, rollingScore: 5, history: [] }, kind: "daily", rating, origin: "https://www.playbackword.com" });
     const weekly = buildCrosswordShareResult({ progress: { ...progress, size: 13, isWeekly: true }, puzzle: { puzzleNumber: 3 }, stats: { totalSolved: 1, currentStreak: 1, longestStreak: 1, averageSolveTimeSeconds: null, rollingScore: 5, recentHistory: [], previousHistory: [] }, kind: "weekly", rating, origin: "https://www.playbackword.com" });
 
-    expect(daily).toMatchObject({ game: "daily_crossword", gameName: "Quick Crossword", score: 5, totalGamesSolved: 1, primaryStat: { label: "SOLVE TIME", value: "00:05:02" }, timeStat: null });
-    expect(weekly).toMatchObject({ game: "weekly_crossword", gameName: "Pro Crossword", issueNumber: 3, totalGamesSolved: 1, primaryStat: { label: "SOLVE TIME", value: "00:05:02" }, timeStat: null });
+    expect(daily).toMatchObject({ game: "daily_crossword", gameName: "Quick Crossword", score: 5, totalGamesSolved: 1, primaryStat: { label: "SOLVE TIME", value: expectedTime }, timeStat: null });
+    expect(weekly).toMatchObject({ game: "weekly_crossword", gameName: "Pro Crossword", issueNumber: 3, totalGamesSolved: 1, primaryStat: { label: "SOLVE TIME", value: expectedTime }, timeStat: null });
+    for (const result of [daily, weekly]) {
+      expect(result.caption).toContain(expectedTime);
+      expect(puzzleResultCardSvg(result)).toContain(`>${expectedTime}</text>`);
+    }
     expect(`${daily.caption}${puzzleResultCardSvg(daily)}`).not.toContain("puzzle-id");
     expect(`${daily.caption}${puzzleResultCardSvg(daily)}`).not.toContain("Test clue");
   });
@@ -203,7 +214,14 @@ describe("puzzle share results", () => {
     expect(shareUrl("weekly_crossword", "2026-09-14", "https://playbackword.com")).toContain("/weekly-crossword/2026-09-14?");
   });
 
-  it("formats Backword completion times with an AM or PM marker", () => {
-    expect(formatCompletionTime("2026-09-16T14:24:00.000Z")).toMatch(/^\d{1,2}:\d{2} (AM|PM)$/);
+  it("formats Backword completion times as a local 24-hour clock with seconds", () => {
+    const completedAt = "2026-09-16T14:24:45.000Z";
+    const local = new Date(completedAt);
+    const expected = [local.getHours(), local.getMinutes(), local.getSeconds()]
+      .map((part) => String(part).padStart(2, "0")).join(":");
+    expect(formatCompletionTime(completedAt)).toBe(expected);
+    expect(formatCompletionTime("2026-09-16T00:00:00")).toBe("00:00:00");
+    expect(formatCompletionTime(null)).toBe("—");
+    expect(formatCompletionTime("invalid")).toBe("—");
   });
 });

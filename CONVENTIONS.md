@@ -499,6 +499,12 @@ caption, analytics event, and deep link must never contain a Backword answer or
 guess, crossword clue or grid cell, or an account identifier. Failed Backword
 results use neutral completion wording and expose only aggregate metadata.
 
+Share-card times and their copied captions use `HH:mm:ss` on web and iOS,
+including durations below one hour. Durations retain total hours past 24 hours;
+Anagram penalties use `+HH:mm:ss`. Backword's completion time remains a local
+clock time, displayed with seconds on a 24-hour clock. These share-specific
+formats do not change gameplay timers or stored elapsed seconds.
+
 iOS uses one `UIActivityItemSource`: normal destinations receive the rendered
 card, while the system Copy action receives one caption with the exact dated web
 link. This deliberately avoids a copied image and text becoming two pasted

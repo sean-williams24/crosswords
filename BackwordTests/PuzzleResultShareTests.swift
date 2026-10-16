@@ -66,8 +66,9 @@ struct PuzzleResultShareTests {
         #expect(result.caption.contains("PLANET") == false)
     }
 
-    @Test("Crossword result reports duration, matching streak, and weekly route")
-    func crosswordResultReportsStats() {
+    @Test("Crossword result reports duration, matching streak, and weekly route",
+          arguments: [(83, "00:01:23"), (4_845, "01:20:45")])
+    func crosswordResultReportsStats(seconds: Int, expectedTime: String) {
         let puzzle = Puzzle(
             id: "weekly-id",
             puzzleNumber: 42,
@@ -78,7 +79,7 @@ struct PuzzleResultShareTests {
         )
         var progress = UserProgress(puzzleId: puzzle.id, size: puzzle.size)
         progress.startedAt = Date(timeIntervalSince1970: 1_800)
-        progress.completedAt = Date(timeIntervalSince1970: 1_883)
+        progress.completedAt = Date(timeIntervalSince1970: TimeInterval(1_800 + seconds))
 
         var rating = OverallRating()
         rating.upsertWeeklyCrossword(score: 4, date: puzzle.date)
@@ -87,7 +88,7 @@ struct PuzzleResultShareTests {
             PuzzleResult(
                 puzzleId: puzzle.id,
                 date: Date(),
-                timeSeconds: 83,
+                timeSeconds: seconds,
                 hintsUsed: 0,
                 isWeekly: true
             )
@@ -104,12 +105,14 @@ struct PuzzleResultShareTests {
         #expect(result.game == PuzzleShareResult.Game.weeklyCrossword)
         #expect(result.score == 4)
         #expect(result.totalGamesSolved == 1)
-        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "SOLVE TIME", value: "1:23"))
+        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "SOLVE TIME", value: expectedTime))
+        #expect(result.caption.contains(expectedTime))
         #expect(result.shareURL.path == "/weekly-crossword/2026-09-14")
     }
 
-    @Test("Anagram result reports its score and stays spoiler-safe")
-    func anagramResultReportsStats() {
+    @Test("Anagram result reports its score, duration and stays spoiler-safe",
+          arguments: [(45, "00:00:45"), (4_845, "01:20:45"), (90_061, "25:01:01")])
+    func anagramResultReportsStats(seconds: Int, expectedTime: String) {
         let date = AnagramProgress.localDay(Date())
         let puzzle = AnagramPuzzle(
             id: "anagram-id", date: date, puzzleNumber: 8, schemaVersion: 1,
@@ -118,7 +121,7 @@ struct PuzzleResultShareTests {
         var progress = AnagramProgress(puzzle: puzzle)
         progress.outcome = .solved
         progress.completedAt = Date()
-        progress.elapsedSecondsAtCompletion = 45
+        progress.elapsedSecondsAtCompletion = seconds
         progress.releaseDateScore = 4
         let history = AnagramStatsHistory(
             rows: [], currentStreak: 2, bestStreak: 3,
@@ -139,7 +142,8 @@ struct PuzzleResultShareTests {
         #expect(result.score == 4)
         #expect(result.streak == 2)
         #expect(result.totalGamesSolved == 6)
-        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "SOLVE TIME", value: "0:45"))
+        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "SOLVE TIME", value: expectedTime))
+        #expect(result.caption.contains(expectedTime))
         #expect(result.shareURL.path == "/anagram/\(date)")
         #expect(result.caption.contains("TRIANGLE") == false)
         #expect(result.caption.contains("RAGTLINE") == false)
@@ -199,15 +203,28 @@ struct PuzzleResultShareTests {
         #expect(result.scoreLabel == "1 pt")
     }
 
-    @Test("Backword completion time includes an AM or PM marker")
-    func completionTimeUsesTwelveHourClock() {
+    @Test("Share durations always include hours, minutes and seconds",
+          arguments: [(-1, "00:00:00"), (0, "00:00:00"), (59, "00:00:59"), (60, "00:01:00"),
+                      (3_599, "00:59:59"), (3_600, "01:00:00"), (4_845, "01:20:45"),
+                      (86_400, "24:00:00"), (360_000, "100:00:00")])
+    func fixedShareDuration(seconds: Int, expected: String) {
+        #expect(PuzzleShareResult.formattedDuration(seconds) == expected)
+    }
+
+    @Test("Backword completion time uses a local 24-hour clock with seconds")
+    func completionTimeIncludesSeconds() {
         let utc = TimeZone(secondsFromGMT: 0)!
         let completionTime = PuzzleShareResult.completedTime(
             Date(timeIntervalSince1970: 0),
             timeZone: utc
         )
 
-        #expect(completionTime == "12:00 AM")
+        #expect(completionTime == "00:00:00")
+        #expect(PuzzleShareResult.completedTime(Date(timeIntervalSince1970: 52_245), timeZone: utc) == "14:30:45")
+        #expect(PuzzleShareResult.completedTime(
+            Date(timeIntervalSince1970: 0), timeZone: TimeZone(secondsFromGMT: 3_600)!
+        ) == "01:00:00")
+        #expect(PuzzleShareResult.completedTime(nil, timeZone: utc) == "—")
     }
 
     @Test("Dark game share cards always use a dark appearance")

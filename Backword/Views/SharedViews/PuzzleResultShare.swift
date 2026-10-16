@@ -159,7 +159,7 @@ struct PuzzleShareResult: Equatable {
             ratingTier: rating.tier(isPro: isPro).displayName,
             ratingPoints: rating.totalPoints(isPro: isPro),
             ratingMaxPoints: rating.maxPoints(isPro: isPro),
-            primaryStat: Stat(label: "SOLVE TIME", value: Int(progress.elapsedTime).formattedTimeHHMMSS),
+            primaryStat: Stat(label: "SOLVE TIME", value: formattedDuration(Int(progress.elapsedTime))),
             timeStat: nil
         )
     }
@@ -184,7 +184,7 @@ struct PuzzleShareResult: Equatable {
             ratingMaxPoints: rating.maxPoints(isPro: isPro),
             primaryStat: Stat(
                 label: "SOLVE TIME",
-                value: (completion.progress.elapsedSecondsAtCompletion ?? 0).formattedTimeHHMMSS
+                value: formattedDuration(completion.progress.elapsedSecondsAtCompletion ?? 0)
             ),
             timeStat: nil
         )
@@ -213,12 +213,17 @@ struct PuzzleShareResult: Equatable {
         )
     }
 
+    static func formattedDuration(_ seconds: Int) -> String {
+        let seconds = max(0, seconds)
+        return String(format: "%02d:%02d:%02d", seconds / 3_600, (seconds % 3_600) / 60, seconds % 60)
+    }
+
     static func completedTime(_ date: Date?, timeZone: TimeZone = .current) -> String {
         guard let date else { return "—" }
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = timeZone
-        formatter.dateFormat = "h:mm a"
+        formatter.dateFormat = "HH:mm:ss"
         return formatter.string(from: date)
     }
 }
@@ -620,7 +625,7 @@ private extension PuzzleShareResult {
         ratingPoints: 68,
         ratingMaxPoints: 140,
         primaryStat: .init(label: "ATTEMPTS", value: "1 / 5"),
-        timeStat: .init(label: "COMPLETED", value: "2:30 PM")
+        timeStat: .init(label: "COMPLETED", value: "14:30:00")
     )
 
     static let previewBackwordCompleted = PuzzleShareResult(
@@ -635,7 +640,7 @@ private extension PuzzleShareResult {
         ratingPoints: 42,
         ratingMaxPoints: 140,
         primaryStat: .init(label: "ATTEMPTS", value: "5 / 5"),
-        timeStat: .init(label: "COMPLETED", value: "4:10 PM")
+        timeStat: .init(label: "COMPLETED", value: "16:10:00")
     )
 
     static let previewDailyCrosswordSolved = PuzzleShareResult(
@@ -649,7 +654,7 @@ private extension PuzzleShareResult {
         ratingTier: "Linguist",
         ratingPoints: 68,
         ratingMaxPoints: 140,
-        primaryStat: .init(label: "SOLVE TIME", value: "04:38"),
+        primaryStat: .init(label: "SOLVE TIME", value: "00:04:38"),
         timeStat: nil
     )
 
@@ -664,7 +669,7 @@ private extension PuzzleShareResult {
         ratingTier: "Cruciverbalist",
         ratingPoints: 122,
         ratingMaxPoints: 210,
-        primaryStat: .init(label: "SOLVE TIME", value: "12:47"),
+        primaryStat: .init(label: "SOLVE TIME", value: "00:12:47"),
         timeStat: nil
     )
 }
