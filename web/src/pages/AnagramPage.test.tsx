@@ -5,7 +5,8 @@ import { resolve } from "node:path";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { localDateString } from "../features/backword/date";
-import { reviewAnagramPuzzle } from "../features/anagram/engine";
+import { reviewAnagramPuzzle, startProgress } from "../features/anagram/engine";
+import { AnagramBoard } from "../features/anagram/components";
 import { AnagramPage } from "./AnagramPage";
 
 vi.mock("../features/anagram/repository", () => ({
@@ -16,6 +17,24 @@ vi.mock("../features/anagram/repository", () => ({
 }));
 
 describe("Anagram browser game", () => {
+  it.each([
+    { answer: "BUBBLES", initialScramble: "BBBLUES" },
+    { answer: "TRIANGLE", initialScramble: "RAGTLINE" },
+    { answer: "BLUEBERRY", initialScramble: "RYBBERUEL" }
+  ])("keeps every $answer tile in one row", ({ answer, initialScramble }) => {
+    const puzzle = { ...reviewAnagramPuzzle(localDateString()), answer, initialScramble, acceptedAnswers: [] };
+    const progress = startProgress(puzzle);
+    const onPlace = vi.fn();
+    render(<AnagramBoard puzzle={puzzle} progress={progress} now={new Date()}
+      onPlace={onPlace} onUndo={vi.fn()} onRestart={vi.fn()} onShuffle={vi.fn()} onHint={vi.fn()} onGiveUp={vi.fn()} />);
+    const tray = screen.getByLabelText("Scrambled letter tray");
+    expect(tray.querySelectorAll(".anagram-letter-row")).toHaveLength(1);
+    expect(within(tray).getAllByRole("button")).toHaveLength(answer.length);
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    expect(styles).not.toMatch(/\.anagram-tray\s*\{[^}]*flex-direction:\s*column/);
+    expect(styles).toMatch(/\.anagram-tile\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*0 1 var\(--anagram-tray-letter-size\)/);
+  });
+
   beforeEach(() => {
     localStorage.clear();
     Object.defineProperty(navigator, "share", { configurable: true, value: undefined });

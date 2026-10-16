@@ -2529,11 +2529,11 @@ html[data-theme="light"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(9px, 1.5vw, 14px);
 }
 
 .anagram-tray .anagram-letter-row {
-  display: contents;
+  width: 100%;
+  gap: var(--anagram-answer-gap);
 }
 
 .anagram-letter-row {
@@ -2544,6 +2544,8 @@ html[data-theme="light"] {
 
 .anagram-tile {
   width: var(--anagram-tray-letter-size);
+  min-width: 0;
+  flex: 0 1 var(--anagram-tray-letter-size);
   padding: 0;
   border: 0;
   color: var(--anagram-on-accent);
@@ -3491,12 +3493,8 @@ html[data-theme="light"] {
     font-size: clamp(18px, 6vw, 32px);
   }
 
-  .anagram-tray {
-    flex-direction: column;
-  }
-
-  .anagram-tray .anagram-letter-row {
-    display: flex;
+  .anagram-tray .anagram-tile {
+    font-size: clamp(18px, 6vw, 32px);
   }
 }
 
@@ -3525,11 +3523,6 @@ html[data-theme="light"] {
   .anagram-answer-block > p {
     margin-bottom: 14px;
     font-size: 14px;
-  }
-
-  .anagram-letter-row,
-  .anagram-tray {
-    gap: 8px;
   }
 
   .anagram-controls {

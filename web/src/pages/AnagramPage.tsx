@@ -134,12 +134,12 @@ export function AnagramPage() {
     setDialog(null);
   }
   function shuffle() {
-    if (!progress) return;
+    if (!progress || !puzzle) return;
     const available = progress.trayOrder.filter((tile) => !progress.placedTileIDs.includes(tile));
     const order = [...available];
     for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
     if (order.join() === available.join() && order.length > 1) order.push(order.shift()!);
-    update(reshuffle(progress, order));
+    update(reshuffle(progress, puzzle, order));
   }
 
   if (!ready || (user && !entitlementReady)) return <main className="anagram-page">Checking Anagram access…</main>;

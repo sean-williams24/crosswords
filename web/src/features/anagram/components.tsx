@@ -36,9 +36,6 @@ export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart
   const available = new Set(availableTileIDs(progress));
   const letters = [...puzzle.initialScramble];
   const answer = answerText(progress, puzzle);
-  const firstRow = puzzle.answer.length === 9 ? 5 : 4;
-  const rows = [Array.from({ length: firstRow }, (_, index) => index),
-    Array.from({ length: puzzle.answer.length - firstRow }, (_, index) => index + firstRow)];
   return <section aria-label="Anagram board" className="anagram-board">
     <div className="anagram-gameplay-content">
       <div className="anagram-timer">
@@ -59,11 +56,11 @@ export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart
     </div>
     <div className="anagram-gameplay-dock">
       <div aria-label="Scrambled letter tray" className="anagram-tray">
-        {rows.map((row, rowIndex) => <div aria-label={`Tray row ${rowIndex + 1}`} className="anagram-letter-row" key={rowIndex}>
-          {row.map((position) => { const tile = progress.trayOrder[position]; return available.has(tile)
+        <div aria-label="Tray row 1" className="anagram-letter-row">
+          {progress.trayOrder.map((tile, position) => available.has(tile)
             ? <button aria-label={`Letter ${letters[tile]}, tray position ${position + 1}`} className="anagram-tile" disabled={ended} key={tile} onClick={() => onPlace(tile)} type="button">{letters[tile]}</button>
-            : <span aria-hidden="true" className="anagram-tile anagram-tile--empty" key={tile} />; })}
-        </div>)}
+            : <span aria-hidden="true" className="anagram-tile anagram-tile--empty" key={tile} />)}
+        </div>
       </div>
       <div className="anagram-controls">
         <button disabled={ended || !progress.placementHistory.length} onClick={onUndo} type="button">Undo</button>

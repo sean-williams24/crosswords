@@ -1214,9 +1214,14 @@ workflow maintains a 30-day future buffer and fails without publishing a
 partial batch. The current source bank contains 11,436 seven-to-nine-letter
 ASCII entries; the earlier plan's 9,753 count is stale. Each scramble
 index is a distinct tile identity; placing a tile
-leaves its tray slot empty. The tray keeps two centered, square-tile rows:
-4+3 for seven letters, 4+4 for eight, and 5+4 for nine. Tile size stays
-based on five columns so the shorter rows have balanced side margins. Undo
+leaves its tray slot empty. The tray keeps all seven to nine square tiles on
+one centered line, shrinking tiles and spacing to fit the available width.
+New attempts, restored unfinished attempts, and Shuffle keep the primary answer's
+first letter out of the first tray slot by swapping available tile IDs. Published
+scrambles remain immutable, including for older puzzles. Duplicate copies of the
+first letter are also excluded from that slot; occupied slots stay fixed, and
+the rule is skipped when no different available letter can replace it. A full
+tray must not become an accepted answer as a result of the correction. Undo
 follows placement history, while Restart
 clears player placements without changing the start time, hint, or penalty.
 The iOS Home midnight task refreshes Anagram alongside the other daily games.
@@ -1344,7 +1349,7 @@ shell mirrors the iOS Anagram hierarchy without showing a logo, and uses the
 same game menu and action icons as the other web games. The site footer appears
 on wider viewports and is hidden in the mobile layout at 700px and below. Wider
 viewports keep the answer in one row and widen the bottom game controls; narrow
-viewports use the same balanced letter rows as iOS. The web title, issue label,
+viewports fit both the answer and tray on single lines, matching iOS. The web title, issue label,
 and loading message share the maximum nine-letter content width from the first
 render, so loading a puzzle cannot move their left edge. The letter tray and
 controls sit at the bottom of the flexible board, with spare vertical space

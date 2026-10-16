@@ -1,4 +1,4 @@
-import { normalizeAnagramProgress, validProgress, validPuzzle, type AnagramProgress, type AnagramPuzzle } from "./engine";
+import { avoidLeadingAnswerLetter, normalizeAnagramProgress, validProgress, validPuzzle, type AnagramProgress, type AnagramPuzzle } from "./engine";
 
 const PROGRESS_KEY = "backword:web:anagram:progress:v1";
 const PUZZLES_KEY = "backword:web:anagram:puzzles:v1";
@@ -19,7 +19,7 @@ export function createAnagramStorage(storage: Storage = window.localStorage, opt
       const value = readRecord(storage, scoped)[puzzle.date] as AnagramProgress | undefined;
       if (!value) return null;
       const normalized = normalizeAnagramProgress(value);
-      return validProgress(normalized, puzzle) ? normalized : null;
+      return validProgress(normalized, puzzle) ? avoidLeadingAnswerLetter(normalized, puzzle) : null;
     },
     loadAllProgress(): AnagramProgress[] {
       return Object.values(readRecord(storage, scoped)).filter((value): value is AnagramProgress => {
