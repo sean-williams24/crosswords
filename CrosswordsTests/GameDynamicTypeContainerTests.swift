@@ -16,17 +16,30 @@ struct GameDynamicTypeContainerTests {
         alternatives: []
     )
 
-    @Test("Keyboard stays compact above the game text limit", arguments: [
-        DynamicTypeSize.xxxLarge, .accessibility1, .accessibility5
-    ])
-    func keyboardStaysCompact(size: DynamicTypeSize) {
+    @Test("Standalone keyboard matches Midword's maximum at every accessibility size", arguments: [
+        DynamicTypeSize.xxxLarge, .accessibility1, .accessibility2,
+        .accessibility3, .accessibility4, .accessibility5
+    ], [CGFloat(320), CGFloat(768)])
+    func keyboardStaysCompact(size: DynamicTypeSize, width: CGFloat) {
         let keyboard = CustomKeyboardView(onKeyTap: { _ in }, onDelete: {})
-        let baseline = fittedSize(keyboard, at: AppLayout.gameMaximumDynamicTypeSize)
-        let enlarged = fittedSize(keyboard, at: size)
+        let midwordKeyboard = GameDynamicTypeContainer { keyboard }
+        let baseline = fittedKeyboardSize(midwordKeyboard, at: AppLayout.gameMaximumDynamicTypeSize, width: width)
+        let enlarged = fittedKeyboardSize(keyboard, at: size, width: width)
 
         #expect(abs(enlarged.height - baseline.height) < 0.5)
         #expect(enlarged.height < 320)
-        #expect(enlarged.width <= 320.5)
+        #expect(enlarged.width <= width + 0.5)
+    }
+
+    @Test("Standalone keyboard continues scaling below Midword's maximum")
+    func keyboardPreservesSmallerTextSizes() {
+        let keyboard = CustomKeyboardView(onKeyTap: { _ in }, onDelete: {})
+        let smaller = fittedKeyboardSize(keyboard, at: .xSmall, width: 320)
+        let standard = fittedKeyboardSize(keyboard, at: .large, width: 320)
+        let maximum = fittedKeyboardSize(keyboard, at: AppLayout.gameMaximumDynamicTypeSize, width: 320)
+
+        #expect(smaller.height < standard.height)
+        #expect(standard.height < maximum.height)
     }
 
     @Test("Prompt words and input cells stop growing at the game text limit", arguments: [
@@ -64,6 +77,15 @@ struct GameDynamicTypeContainerTests {
 
         #expect(abs(enlarged.height - baseline.height) < 0.5)
         #expect(smaller.height < baseline.height)
+    }
+
+    private func fittedKeyboardSize<Content: View>(_ content: Content, at size: DynamicTypeSize, width: CGFloat) -> CGSize {
+        let host = UIHostingController(rootView:
+            content
+                .environment(\.dynamicTypeSize, size)
+                .environment(\.accessibilityReduceMotion, true)
+        )
+        return host.sizeThatFits(in: CGSize(width: width, height: 10_000))
     }
 
     private func fittedSize<Content: View>(_ content: Content, at size: DynamicTypeSize) -> CGSize {

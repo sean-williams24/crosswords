@@ -351,6 +351,14 @@ Anagram from its first published date, Midword from 2026-10-01. Once both
 have fourteen releases, the overall maximum is 280 free or 290 Pro. Both
 score columns remain present in the profile breakdown.
 
+## Shared Game Keyboard Dynamic Type
+
+`CustomKeyboardView` caps Dynamic Type at XXX Large using the same
+`GameDynamicTypeContainer` as Midword. Backword, Midword, Quick Crossword, and
+Pro Crossword therefore share the same maximum keyboard size. The cap sits
+above `KeyboardRowsView` so row spacing, key spacing, key heights, and letter
+fonts all use the bounded environment, while smaller text settings still scale.
+
 ## Profile Scoring Guide
 
 iOS and web Player Profile explain Backword and Midword together under

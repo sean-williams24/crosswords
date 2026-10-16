@@ -48,6 +48,7 @@ struct BackwordView: View {
                             .foregroundColor(.appTextPrimary)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, AppLayout.screenPadding)
+                            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
 
                         categoryView
                         guessCounter
@@ -82,6 +83,7 @@ struct BackwordView: View {
                         PuzzleResultShareButton(result: completionShareResult, compact: true)
                             .padding(10)
                             .transition(.move(edge: .bottom).combined(with: .opacity))
+                            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
                     }
                 }
                 VStack(spacing: 0) {
@@ -482,12 +484,14 @@ struct BackwordView: View {
         Text("Clue: ")
             .font(AppFont.clueLabel(isIpad ? 25 : 16))
             .foregroundColor(.appAccent)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
 
         Text(viewModel.word.clue.uppercased())
             .font(AppFont.clueLabel(isIpad ? 30 : 19 ))
             .foregroundColor(.appTextPrimary)
             .lineLimit(1)
             .minimumScaleFactor(0.5)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
     // MARK: - Explainer Banner
