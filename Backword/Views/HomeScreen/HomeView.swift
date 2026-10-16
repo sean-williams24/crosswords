@@ -108,28 +108,11 @@ struct HomeView: View {
             ZStack {
                 AppBackgroundGradient()
 
-                ScrollView {
-                    VStack(spacing: HomeGamesLayout.spacing) {
-                        RatingBarView(
-                            rating: ratingService.rating,
-                            isPro: storeService.isProUser
-                        )
-                        .padding(.horizontal, appLayout.homeHorizontalPadding)
-                        .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
-
-                        HomeWordOfTheDayView(
-                            word: wotdService.todaysWord,
-                            showsInlineDetails: HomeGamesLayout.usesTwoColumns(for: sizeClass)
-                        ) {
-                            showWOTD = true
-                        }
-                        .padding(.horizontal, appLayout.homeHorizontalPadding)
-                        gamesGrid
-                    }
-                    .padding(.top, 16)
-                    .padding(.bottom, HomeGamesLayout.scrollBottomPadding)
+                HomeDashboardView(usesTwoColumns: HomeGamesLayout.usesTwoColumns(for: sizeClass)) {
+                    homeContent(isExpanded: true)
+                } compact: {
+                    homeContent(isExpanded: false)
                 }
-                .scrollIndicators(.hidden)
             }
             .safeAreaInset(edge: .top, spacing: 0) {
                 navigationBar
@@ -425,6 +408,56 @@ struct HomeView: View {
         ratingService.refresh()
     }
 
+    private func homeContent(isExpanded: Bool) -> some View {
+        VStack(spacing: HomeGamesLayout.spacing) {
+            RatingBarView(rating: ratingService.rating, isPro: storeService.isProUser)
+                .padding(.horizontal, appLayout.homeHorizontalPadding)
+                .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
+
+            if !isExpanded {
+                wordOfTheDay(showsInlineDetails: false)
+            }
+
+            HomeGamesView {
+                twoColumnGamesGrid
+            } stacked: {
+                gamesGrid
+            }
+
+            if isExpanded {
+                wordOfTheDay(showsInlineDetails: true)
+            }
+        }
+        .padding(.top, 16)
+        .padding(.bottom, HomeGamesLayout.scrollBottomPadding)
+    }
+
+    private func wordOfTheDay(showsInlineDetails: Bool) -> some View {
+        HomeWordOfTheDayView(word: wotdService.todaysWord, showsInlineDetails: showsInlineDetails) {
+            showWOTD = true
+        }
+        .padding(.horizontal, appLayout.homeHorizontalPadding)
+    }
+
+    private var twoColumnGamesGrid: some View {
+        // An eager grid measures every row, including completed states and larger text.
+        Grid(horizontalSpacing: HomeGamesLayout.spacing, verticalSpacing: HomeGamesLayout.spacing) {
+            GridRow {
+                backwordCard
+                dailyCrosswordCard
+            }
+            GridRow {
+                anagramCard
+                midwordCard
+            }
+            GridRow {
+                gameCard(for: .proCrossword)
+                HomeArchiveCard(isProUser: storeService.isProUser, openArchive: openArchive)
+            }
+        }
+        .padding(.horizontal, appLayout.homeHorizontalPadding)
+    }
+
     private var gamesGrid: some View {
         VStack(spacing: HomeGamesLayout.spacing) {
             gamesGrid(for: HomeGamesLayout.gamesBeforeArchiveButton)
@@ -562,17 +595,19 @@ struct HomeView: View {
     private var archiveFooterBar: some View {
         HomeTabBarView(
             isProUser: storeService.isProUser,
-            showArchive: {
-                if storeService.isProUser {
-                    showArchive = true
-                } else {
-                    showPaywall = true
-                }
-            },
+            showArchive: openArchive,
             showStats: {
                 showRatingDetails = true
             }
         )
+    }
+
+    private func openArchive() {
+        if storeService.isProUser {
+            showArchive = true
+        } else {
+            showPaywall = true
+        }
     }
 
     private var backwordCard: some View {

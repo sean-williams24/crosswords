@@ -560,11 +560,12 @@ they recognise an already-updated payload and never overwrite a divergent row.
 iOS Home presents Backword, Quick Crossword, Anagram, Midword, and Pro Crossword
 in that order, with the same grid spacing between every game card and no extra
 Midword padding. Regular-width iPad layouts use two equal columns, while compact layouts
-use one column. The archive upsell sits between Quick Crossword and Anagram
-when visible, spanning both columns on iPad. The two game grids retain the same
-spacing when the upsell is hidden for Pro users. Word of the Day precedes the
-games. The Home archive card uses the semantic surface colour at 50% opacity in
-Light Mode for a lighter background, retaining 26% in Dark Mode. The shared ad
+use one column. In the single-column layout, the archive upsell sits between
+Quick Crossword and Anagram when visible. The two game grids retain the same
+spacing when the upsell is hidden for Pro users. In the compact dashboard, Word
+of the Day precedes the games. The compact archive upsell uses the semantic
+surface colour at 50% opacity in Light Mode for a lighter background, retaining
+26% in Dark Mode. The shared ad
 explainer button keeps its 26% surface in both appearances.
 The game cards have no separate daily or weekly section headings
 or date labels; their own content identifies each game.
@@ -660,10 +661,20 @@ typography (10-point Outfit Black with 0.8-point tracking), and the text and
 lock sit in a lightly tinted capsule with the same padding and corner radius
 as the other home card status badges.
 
-Home shows the complete Word of the Day entry whenever the game cards use two
-columns. It switches to the compact card button and detail sheet at the same
-size-class change that stacks the game cards. The full Home panel and sheet
-share the same part-of-speech explanation.
+iOS Home shows the complete Word of the Day entry below the games only when a
+regular-width dashboard fits in the available height above the tab bar. Every
+two-column layout fills the sixth grid position, beside Pro Crossword, with an Archive
+card matching the web card's title, description, surface, and white outline.
+It remains present when Word of the Day becomes compact, and disappears only
+when the game cards stack into one column. It replaces the compact archive
+upsell in two-column layouts and remains visible for Pro users;
+both Archive entry points share the existing entitlement-gated destination.
+An eager grid and `ViewThatFits` measure the full content, including larger
+text, completed cards, spacing, and padding. If it no longer fits after a window
+resize or content change, Home restores the compact Word of the Day button above
+the games and its scrolling layout. Width still determines whether those games
+use one or two columns. The full Home panel and sheet share the same
+part-of-speech explanation.
 
 The Backword card keeps its dark content palette for readable logo and status
 content in either appearance. Its background follows the system colour scheme:

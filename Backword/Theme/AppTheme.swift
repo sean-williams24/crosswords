@@ -32,6 +32,7 @@ extension Color {
     static let dailyCardTitle = Color("DailyCardTitle")
     static let dailyCardDescription = Color("DailyCardDescription")
     static let homeCardBrightnessOverlay = Color.white
+    static let homeArchiveBorder = Color.white
     static func homeCardProOnlyForeground(for colorScheme: ColorScheme) -> Color {
         colorScheme == .light ? .black : .white
     }
@@ -204,6 +205,9 @@ struct AppLayout {
     static let completionSparkleSize: CGFloat = 15
     static let homeNavigationIconGlyphSize: CGFloat = 20
     static let homeTabBarTopPadding: CGFloat = 8
+    static let homeArchiveContentSpacing: CGFloat = 10
+    static let homeArchiveTitleSize: CGFloat = 24
+    static let homeArchiveBorderWidth: CGFloat = 1
     static let onboardingInstructionIconSize: CGFloat = 18
     static let homeCardIssueNumberFontSize: CGFloat = 12
     static let sheetBackgroundBlurRadius: CGFloat = 4
