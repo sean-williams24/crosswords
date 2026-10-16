@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F4C000023016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C000013016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift */; };
 		F4B000023016000000000001 /* MidwordHomeCardLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B000013016000000000001 /* MidwordHomeCardLogo.swift */; };
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
@@ -242,6 +243,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F4C000013016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/SettingsAccountRowLayoutTests.swift; sourceTree = "<group>"; };
 		F4B000013016000000000001 /* MidwordHomeCardLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordHomeCardLogo.swift; sourceTree = "<group>"; };
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
@@ -523,6 +525,7 @@
 				A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */,
 				A0A000000000000000000024 /* AnagramHintBannerTests.swift */,
 				A0A000000000000000000009 /* AnagramProgressTests.swift */,
+				F4C000013016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift */,
 				B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */,
 				B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */,
 				B77DC0800000000000000002 /* ../CrosswordsTests/MidwordDebugResetTests.swift */,
@@ -1019,6 +1022,7 @@
 				A0A000000000000000000122 /* AnagramInstructionsContentViewTests.swift in Sources */,
 				A0A000000000000000000124 /* AnagramHintBannerTests.swift in Sources */,
 				A0A000000000000000000109 /* AnagramProgressTests.swift in Sources */,
+				F4C000023016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift in Sources */,
 				B77DC0700000000000000001 /* ../CrosswordsTests/BackwordInstructionColorTests.swift in Sources */,
 				B77DC0A00000000000000001 /* ../CrosswordsTests/BackwordClueViewTests.swift in Sources */,
 				B77DC0800000000000000001 /* ../CrosswordsTests/MidwordDebugResetTests.swift in Sources */,

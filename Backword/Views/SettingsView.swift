@@ -211,26 +211,12 @@ struct SettingsView: View {
         Button {
             openAccountDestination()
         } label: {
-            HStack(spacing: 12) {
-                Image(systemName: accountService.isSignedIn ? "person.crop.circle.fill" : "person.crop.circle")
-                    .font(.title3)
-                    .foregroundColor(.appAccent)
-                    .frame(width: settingsIconColumnWidth)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(accountService.isSignedIn ? "Account" : "Create Account or Sign In")
-                        .font(AppFont.body(15))
-                        .foregroundColor(.appTextPrimary)
-                    Text(accountService.email ?? "Sync progress, stats and Pro across devices")
-                        .font(AppFont.caption())
-                        .foregroundColor(.appTextSecondary)
-                }
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .font(.caption.weight(.semibold))
-                    .foregroundColor(.appTextSecondary)
-            }
-            .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
+            SettingsAccountRowContent(
+                title: accountService.isSignedIn ? "Account" : "Create Account or Sign In",
+                detail: accountService.email ?? "Sync progress, stats and Pro across devices",
+                systemImage: accountService.isSignedIn ? "person.crop.circle.fill" : "person.crop.circle",
+                iconColumnWidth: settingsIconColumnWidth
+            )
         }
         .buttonStyle(.plain)
         .listRowBackground(Color.appSurface)

@@ -127,6 +127,9 @@ enum AdFreeExperienceButtonAppearance {
 // MARK: - Typography
 
 enum AppFont {
+    static let settingsAccountIcon: Font = .title3
+    static let settingsRowChevron: Font = .caption.weight(.semibold)
+
     static func header(_ size: CGFloat = 32) -> Font {
         .custom("Outfit-Bold", size: size, relativeTo: .largeTitle)
     }
@@ -185,6 +188,9 @@ struct AppLayout {
     static let homeCardLetterCellSize: CGFloat = 32
     static let cardHeightSmall: CGFloat = 144
     static let cardHeightLarge: CGFloat = 194
+    static let settingsAccountRowSpacing: CGFloat = 12
+    static let settingsAccountTextSpacing: CGFloat = 2
+    static let settingsAccountTitleSize: CGFloat = 15
     static let screenPadding: CGFloat = 20
     static let screenPaddingLarge: CGFloat = 45
     static let anagramAnswerTileSpacing: CGFloat = 6

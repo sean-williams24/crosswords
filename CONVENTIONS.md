@@ -260,6 +260,15 @@ destinations.
 
 ---
 
+## Settings Account Row Dynamic Type
+
+The iOS Settings account row keeps its horizontal layout through XXX Large.
+At Accessibility 1 and above, the title and email (or signed-out sync description)
+stack above a full-width row with the account icon on the left and chevron on
+the right. Account text wraps without a line limit in both layouts.
+
+---
+
 ## Game Issue Numbers
 
 Every daily game and crossword has an immutable issue number displayed as
