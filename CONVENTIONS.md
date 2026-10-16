@@ -525,6 +525,10 @@ game without introducing game content.
 
 ## Backword Clue and Letter Progression
 
+On iOS and web, the clue label and clue are centred together above the answer
+tiles. At larger iOS accessibility text sizes, they stack vertically with
+centred alignment.
+
 The Backword clue is always readable. No answer letters are supplied at the
 start: the first accepted wrong guess reveals the final letter. Hard Mode is
 off by default and uses the existing easier schedule, revealing one additional

@@ -654,11 +654,12 @@ a {
 
 .bw-clue {
   width: min(100%, 680px);
-  margin: 0 0 -8px;
+  margin: 0 0 24px;
   color: var(--bw-primary);
   font-size: clamp(18px, 4vw, 22px);
   font-weight: 700;
   line-height: 1.2;
+  text-align: center;
 }
 
 .bw-clue span {
@@ -1269,8 +1270,6 @@ a {
 }
 
 @media (max-width: 699px) {
-  .bw-clue { margin-bottom: 8px; }
-
   /* Crosswords are already identified by their dates, so the mobile header
      keeps the actions but drops the duplicate title. The reclaimed height lets
      the grid use the same near-edge treatment as the iOS game. */

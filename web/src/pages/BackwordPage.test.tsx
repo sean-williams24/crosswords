@@ -84,6 +84,33 @@ describe("Backword browser game", () => {
     expect(explainer.compareDocumentPosition(clue) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
+  it("centres the clue above the answer tiles with extra space before the guess counter", async () => {
+    renderGame();
+
+    const clue = await screen.findByText("FORTRESS");
+    expect(clue).toHaveTextContent("Clue: FORTRESS");
+    expect(clue.nextElementSibling).toHaveClass("bw-guess-counter");
+    const answer = clue.closest("main")!.querySelector(".bw-answer-input");
+    expect(answer).toBeInTheDocument();
+    expect(clue.compareDocumentPosition(answer!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+    // JSDOM has no layout engine; verify the rendered clue's alignment and spacing.
+    const styles = parse(readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8"));
+    const style = document.createElement("style");
+    styles.walkRules((rule) => {
+      if (rule.parent?.type === "root" && rule.selector === ".bw-clue") {
+        style.textContent += rule.toString();
+      }
+    });
+    document.head.append(style);
+    try {
+      expect(getComputedStyle(clue).textAlign).toBe("center");
+      expect(getComputedStyle(clue).marginBottom).toBe("24px");
+    } finally {
+      style.remove();
+    }
+  });
+
   it("loads a dated archive route without replacing it with today", async () => {
     render(
       <MemoryRouter initialEntries={["/backword/2026-08-03"]}>

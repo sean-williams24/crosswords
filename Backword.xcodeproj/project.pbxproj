@@ -226,6 +226,8 @@
 		F3A000063016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A000053016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift */; };
 		F3A000083016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A000073016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift */; };
 		F3A0000A3016000000000001 /* HomeGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A000093016000000000001 /* HomeGamesView.swift */; };
+		B77DC0900000000000000001 /* BackwordClueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0900000000000000002 /* BackwordClueView.swift */; };
+		B77DC0A00000000000000001 /* ../CrosswordsTests/BackwordClueViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -456,6 +458,8 @@
 		F3A000053016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeDashboardViewTests.swift; sourceTree = "<group>"; };
 		F3A000073016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeArchiveCardTests.swift; sourceTree = "<group>"; };
 		F3A000093016000000000001 /* HomeGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGamesView.swift; sourceTree = "<group>"; };
+		B77DC0900000000000000002 /* BackwordClueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordClueView.swift; sourceTree = "<group>"; };
+		B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/BackwordClueViewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -518,6 +522,7 @@
 				A0A000000000000000000024 /* AnagramHintBannerTests.swift */,
 				A0A000000000000000000009 /* AnagramProgressTests.swift */,
 				B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */,
+				B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */,
 				B77DC0800000000000000002 /* ../CrosswordsTests/MidwordDebugResetTests.swift */,
 				B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */,
 				B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */,
@@ -793,6 +798,7 @@
 				40ACCF7B840800AA52BD9ED7 /* BackwordGuessRow.swift */,
 				2259B66045D006E89462572C /* BackwordLetterCell.swift */,
 				464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */,
+				B77DC0900000000000000002 /* BackwordClueView.swift */,
 				86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */,
 				07AC00013009000000000001 /* BackwordModeToggle.swift */,
 				07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */,
@@ -1011,6 +1017,7 @@
 				A0A000000000000000000124 /* AnagramHintBannerTests.swift in Sources */,
 				A0A000000000000000000109 /* AnagramProgressTests.swift in Sources */,
 				B77DC0700000000000000001 /* ../CrosswordsTests/BackwordInstructionColorTests.swift in Sources */,
+				B77DC0A00000000000000001 /* ../CrosswordsTests/BackwordClueViewTests.swift in Sources */,
 				B77DC0800000000000000001 /* ../CrosswordsTests/MidwordDebugResetTests.swift in Sources */,
 				B77DC0100000000000000001 /* ../CrosswordsTests/MidwordColorAssetTests.swift in Sources */,
 				B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */,
@@ -1144,6 +1151,7 @@
 				8FB170C4A0F5A06EC9069AF6 /* BackwordService.swift in Sources */,
 				23B843AEA4BD3659C133FD9D /* BackwordStats.swift in Sources */,
 				E9501AAB5231A6C28698D2E6 /* BackwordView.swift in Sources */,
+				B77DC0900000000000000001 /* BackwordClueView.swift in Sources */,
 				1D5CED31842B691A8E91932F /* BackwordViewModel.swift in Sources */,
 				EAD7311D1E0CE5265794E80E /* BackwordWord.swift in Sources */,
 				860A8F3C2FCEBA5100C2BE38 /* TipFactory.swift in Sources */,

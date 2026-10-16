@@ -7,7 +7,6 @@ struct BackwordView: View {
     @EnvironmentObject var ratingService: OverallRatingService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) var sizeClass
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @State private var showInstructions = false
     @State private var instructionsPresentation: BackwordInstructionsPresentation?
@@ -50,7 +49,7 @@ struct BackwordView: View {
                             .padding(.horizontal, AppLayout.screenPadding)
                             .dynamicTypeSize(...DynamicTypeSize.accessibility1)
 
-                        categoryView
+                        BackwordClueView(clue: viewModel.word.clue)
                         guessCounter
                         revealedLetterRow
 
@@ -447,51 +446,6 @@ struct BackwordView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .center)
-    }
-
-    // MARK: - Hint Row
-
-    @ViewBuilder
-    private var categoryView: some View {
-        Group {
-            if dynamicTypeSize > .accessibility1 {
-                VStack(alignment: .leading) {
-                    categoryContent
-                }
-            } else {
-                VStack(alignment: .leading, spacing: 10) {
-                    horizontalCategoryContent
-                }
-            }
-        }
-        .fixedSize(horizontal: false, vertical: true)
-        .padding(.horizontal, 16)
-        .padding(.vertical, 7)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Clue: \(viewModel.word.clue)")
-    }
-
-    @ViewBuilder
-    private var horizontalCategoryContent: some View {
-        HStack(spacing: 6) {
-            categoryContent
-            Spacer()
-        }
-    }
-
-    @ViewBuilder
-    private var categoryContent: some View {
-        Text("Clue: ")
-            .font(AppFont.clueLabel(isIpad ? 25 : 16))
-            .foregroundColor(.appAccent)
-            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
-
-        Text(viewModel.word.clue.uppercased())
-            .font(AppFont.clueLabel(isIpad ? 30 : 19 ))
-            .foregroundColor(.appTextPrimary)
-            .lineLimit(1)
-            .minimumScaleFactor(0.5)
-            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
     // MARK: - Explainer Banner
