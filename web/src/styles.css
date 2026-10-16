@@ -1432,11 +1432,11 @@ body {
   cursor: pointer;
   transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
 }
-.archive-tabs button:hover,
-.archive-tabs button:focus-visible,
+.archive-tabs button:hover { color: var(--app-text-primary); }
+.archive-tabs button:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
 .archive-month-picker button:hover,
 .archive-month-picker button:focus-visible { border-color: #4d93cd; color: var(--app-text-primary); outline: none; }
-.archive-tabs button.is-selected,
+.archive-tabs button.is-selected { color: var(--app-text-primary); font-size: 16px; }
 .archive-month-picker button.is-selected { color: var(--app-text-primary); background: rgb(var(--app-accent-rgb) / 25%); border-color: rgb(79 145 199 / 45%); }
 .archive-month-picker { margin-top: 24px; padding-top: 20px; border-top: 1px solid rgb(var(--app-primary-rgb) / 9%); }
 .archive-month-picker__current { margin-top: 12px; color: var(--app-text-primary) !important; }
@@ -1503,6 +1503,7 @@ body {
   }
   .archive-tabs--compact { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
   .archive-tabs--compact button { min-height: 40px; padding: 8px; border-radius: 999px; text-align: center; font-size: 12px; }
+  .archive-tabs--compact button.is-selected { font-size: 14px; }
   .archive-month-picker { display: grid; grid-template-columns: 1fr; }
   .archive-month-picker > div { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .archive-month-picker > div button { min-height: 52px; padding: 6px; text-align: center; font-size: 11px; line-height: 1.2; }

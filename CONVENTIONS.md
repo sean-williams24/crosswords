@@ -1885,6 +1885,11 @@ platforms. Its `BACK` paths use the original Backword home-card blue #5B8DC9;
 
 ## Archive game selector
 
+The web archive game selector emphasises the selected game with primary text
+colour and a slightly larger font, matching iOS. Game buttons keep transparent
+backgrounds and borders, including on hover; keyboard focus has a visible
+outline. This applies to both the desktop sidebar and compact mobile selector.
+
 The iOS archive game selector uses one horizontal row through Large Dynamic
 Type. Above Large, it switches to a two-column grid with three rows so all five game
 names remain visible with full-size tap targets. Archive scroll content adds

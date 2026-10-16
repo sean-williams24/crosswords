@@ -1,6 +1,9 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { parse } from "postcss";
 import { ArchivePage } from "./ArchivePage";
 
 const repositories = vi.hoisted(() => ({
@@ -131,6 +134,45 @@ describe("ArchivePage", () => {
     await screen.findByRole("link", { name: /New/i });
 
     expect(screen.getByRole("button", { name: "Quick" })).toBeInTheDocument();
+  });
+
+  it.each([false, true])("emphasises selected game text without a capsule (compact: %s)", async (compact) => {
+    const user = userEvent.setup();
+    const view = render(<MemoryRouter><ArchivePage /></MemoryRouter>);
+    await screen.findByRole("link", { name: /New/i });
+
+    // JSDOM does not evaluate media queries; apply the compact rules explicitly.
+    const styles = parse(readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8"));
+    const style = document.createElement("style");
+    styles.walkRules((rule) => {
+      const isCompactRule = rule.parent?.type === "atrule" && rule.parent.name === "media" && rule.parent.params === "(max-width: 900px)";
+      if (rule.selector.includes(".archive-tabs") && (rule.parent?.type === "root" || (compact && isCompactRule))) {
+        style.textContent += rule.toString();
+      }
+    });
+    document.head.append(style);
+    try {
+      const selector = view.container.querySelector<HTMLElement>(compact ? ".archive-tabs--compact" : ".archive-sidebar .archive-tabs")!;
+      const backword = within(selector).getByRole("button", { name: "Backword" });
+      const anagram = within(selector).getByRole("button", { name: "Anagram" });
+      const expectTextSelection = (selected: HTMLElement, unselected: HTMLElement) => {
+        expect(selected).toHaveAttribute("aria-pressed", "true");
+        expect(unselected).toHaveAttribute("aria-pressed", "false");
+        expect(getComputedStyle(selected).fontSize).toBe(compact ? "14px" : "16px");
+        expect(getComputedStyle(unselected).fontSize).toBe(compact ? "12px" : "14px");
+        expect(getComputedStyle(selected).color).not.toBe(getComputedStyle(unselected).color);
+        for (const button of [selected, unselected]) {
+          expect(getComputedStyle(button).backgroundColor).toBe("rgba(0, 0, 0, 0)");
+          expect(getComputedStyle(button).borderTopColor).toBe("rgba(0, 0, 0, 0)");
+        }
+      };
+
+      expectTextSelection(backword, anagram);
+      await user.click(anagram);
+      expectTextSelection(anagram, backword);
+    } finally {
+      style.remove();
+    }
   });
 
   it("opens the game type selected by a home archive link", async () => {
