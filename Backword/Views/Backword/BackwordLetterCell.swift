@@ -12,6 +12,13 @@ struct BackwordLetterCell: View {
     var isCelebrating: Bool = false
     var size: CGFloat = 44
     var correctCellStyle: BackwordCorrectCellStyle = .game
+    var cornerRadius: CGFloat = 6
+    var accentColor: Color = .appAccent
+    var surfaceColor: Color = .appSurface
+    var textColor: Color = .appTextPrimary
+    var correctColor: Color = .appCorrect
+    var failedColor: Color = .appGaveUp
+    var inactiveBorderColor: Color = .appGridLine
 
     @State private var flashed = false
 
@@ -19,22 +26,22 @@ struct BackwordLetterCell: View {
 
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 6)
+            RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(cellBackground)
                 .environment(\.colorScheme, resolvedCellColorScheme)
 
             // Border — pulsing sub-view when cursor, static otherwise
             if isCursor {
-                PulsingBorder(size: size, cornerRadius: 6)
+                PulsingBorder(size: size, cornerRadius: cornerRadius, accentColor: accentColor)
             } else {
-                RoundedRectangle(cornerRadius: 6)
+                RoundedRectangle(cornerRadius: cornerRadius)
                     .strokeBorder(staticBorderColor, lineWidth: 1.5)
             }
 
             if let ch = displayLetter {
                 letterText(ch)
             } else if isCursor {
-                PulsingUnderscore(size: size)
+                PulsingUnderscore(size: size, textColor: textColor)
             } else {
                 Text("_")
                     .font(AppFont.gridLetter(size * 0.38))
@@ -54,29 +61,29 @@ struct BackwordLetterCell: View {
     }
 
     private var cellBackground: Color {
-        if isFailed { return .appGaveUp.opacity(0.15) }
+        if isFailed { return failedColor.opacity(0.15) }
         if isCorrect {
-            return correctCellStyle == .whiteHomeCard ? .appSurface : .appCorrect.opacity(0.15)
+            return correctCellStyle == .whiteHomeCard ? .appSurface : correctColor.opacity(0.15)
         }
-        if flashed { return .appAccent.opacity(0.25) }
-        if letter != nil || inputLetter != nil { return .appSurface }
-        return .appSurface.opacity(0.5)
+        if flashed { return accentColor.opacity(0.25) }
+        if letter != nil || inputLetter != nil { return surfaceColor }
+        return surfaceColor.opacity(0.5)
     }
 
     private var staticBorderColor: Color {
-        if isFailed { return .appGaveUp.opacity(0.75) }
-        if isCelebrating { return .appAccent }
-        if isCorrect { return .appCorrect.opacity(0.6) }
-        if flashed { return .appAccent }
-        if letter != nil { return .appAccent.opacity(0.5) }
-        if inputLetter != nil { return .appTextPrimary.opacity(0.5) }
-        return .appGridLine
+        if isFailed { return failedColor.opacity(0.75) }
+        if isCelebrating { return accentColor }
+        if isCorrect { return correctColor.opacity(0.6) }
+        if flashed { return accentColor }
+        if letter != nil { return accentColor.opacity(0.5) }
+        if inputLetter != nil { return textColor.opacity(0.5) }
+        return inactiveBorderColor
     }
 
     private func letterText(_ character: Character) -> some View {
         Text(String(character))
             .font(AppFont.gridLetter(size * 0.45))
-            .foregroundColor(.appTextPrimary)
+            .foregroundColor(textColor)
             .environment(\.colorScheme, resolvedCellColorScheme)
             .transition(.scale(scale: 0.4).combined(with: .opacity))
     }
@@ -91,11 +98,12 @@ struct BackwordLetterCell: View {
 private struct PulsingBorder: View {
     let size: CGFloat
     let cornerRadius: CGFloat
+    var accentColor: Color = .appAccent
     @State private var pulse = false
 
     var body: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
-            .strokeBorder(Color.appAccent.opacity(pulse ? 1 : 0.4), lineWidth: pulse ? 2 : 1.5)
+            .strokeBorder(accentColor.opacity(pulse ? 1 : 0.4), lineWidth: pulse ? 2 : 1.5)
             .onAppear {
                 withAnimation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true)) {
                     pulse = true
@@ -106,12 +114,13 @@ private struct PulsingBorder: View {
 
 private struct PulsingUnderscore: View {
     let size: CGFloat
+    let textColor: Color
     @State private var pulse = false
 
     var body: some View {
         Text("_")
             .font(AppFont.gridLetter(size * 0.38))
-            .foregroundColor(.white.opacity(pulse ? 1 : 0.2))
+            .foregroundColor(textColor.opacity(pulse ? 1 : 0.2))
             .onAppear {
                 withAnimation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true)) {
                     pulse = true

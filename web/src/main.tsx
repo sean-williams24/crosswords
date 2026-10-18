@@ -7,6 +7,7 @@ import { AuthProvider } from "./features/auth/AuthProvider";
 import { AnalyticsProvider, AnalyticsRouteTracker } from "./features/analytics/AnalyticsProvider";
 import { ThemeProvider } from "./features/theme/ThemeProvider";
 import "./styles.css";
+import "./features/midword/midword.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

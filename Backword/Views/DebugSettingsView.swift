@@ -7,6 +7,7 @@ struct DebugSettingsView: View {
     @EnvironmentObject var storeService: StoreService
     @EnvironmentObject var backwordService: BackwordService
     @EnvironmentObject var anagramService: AnagramService
+    @EnvironmentObject var midwordService: MidwordService
     @EnvironmentObject var wotdService: WOTDService
     @EnvironmentObject var adService: AdService
     @EnvironmentObject var accountService: AccountService
@@ -17,6 +18,7 @@ struct DebugSettingsView: View {
 
     @State private var showResetBackwordConfirmation = false
     @State private var showResetAnagramConfirmation = false
+    @State private var showResetMidwordConfirmation = false
     @State private var showResetDailyConfirmation = false
     @State private var showResetWeeklyConfirmation = false
     @State private var showResetUserDefaultsConfirmation = false
@@ -273,6 +275,27 @@ struct DebugSettingsView: View {
                     Text("Your progress for today's Anagram will be cleared and the game will restart.")
                 }
 
+                Section("Midword") {
+                    Button(role: .destructive) {
+                        showResetMidwordConfirmation = true
+                    } label: {
+                        Label("Reset Today's Midword", systemImage: "arrow.counterclockwise")
+                    }
+                    .disabled(midwordService.todaysPuzzle?.date != ContentReleaseCalendar().dailyDateString)
+                }
+                .confirmationDialog(
+                    "Reset Today's Midword?",
+                    isPresented: $showResetMidwordConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button("Reset", role: .destructive) {
+                        midwordService.debugResetTodaysProgress()
+                        dismiss()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("Your guesses for today's Midword will be cleared and the game will restart.")
+                }
 
                 // MARK: - Onboarding
 
@@ -434,6 +457,8 @@ struct DebugSettingsView: View {
     DebugSettingsView()
         .environmentObject(StoreService())
         .environmentObject(BackwordService())
+        .environmentObject(AnagramService())
+        .environmentObject(MidwordService())
         .environmentObject(WOTDService())
         .environmentObject(AdService())
         .environmentObject(AccountService())

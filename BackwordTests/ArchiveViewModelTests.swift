@@ -39,6 +39,7 @@ struct ArchiveViewModelTests {
         #expect(viewModel.currentAnagramPuzzles.map(\.id) == ["anagram-current"])
         #expect(viewModel.currentWeeklyPuzzles.map(\.id) == ["weekly-current"])
         #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .backword, month: currentMonth)))
+        #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .midword, month: currentMonth)))
         #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .daily, month: currentMonth)))
         #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .anagram, month: currentMonth)))
         #expect(dataSource.loadedMonths.contains(ArchiveMonthKey(type: .weekly, month: currentMonth)))
@@ -65,7 +66,7 @@ struct ArchiveViewModelTests {
 
         await viewModel.loadInitialArchive()
 
-        #expect(dataSource.availableMonthPolicies.count == 4)
+        #expect(dataSource.availableMonthPolicies.count == 5)
         #expect(dataSource.availableMonthPolicies.allSatisfy { $0 == .cacheFirst })
     }
 

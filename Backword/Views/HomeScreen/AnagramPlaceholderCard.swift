@@ -2,7 +2,6 @@ import SwiftUI
 
 struct AnagramPlaceholderCard: View {
     @Environment(\.horizontalSizeClass) private var sizeClass
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     let isLoading: Bool
     let retry: () -> Void
@@ -24,23 +23,12 @@ struct AnagramPlaceholderCard: View {
     }
 
     private var content: some View {
-        Group {
-            if AnagramHomeCardLayout.usesStackedLayout(for: dynamicTypeSize) {
-                VStack(alignment: .leading, spacing: AnagramHomeCardLayout.columnSpacing) {
-                    title
-                    detail
-                }
-            } else {
-                HStack(alignment: .top, spacing: AnagramHomeCardLayout.columnSpacing) {
-                    title
-                    detail
-                }
-            }
+        HomeGameCardContent(minimumHeight: appLayout.cardHeight) {
+            title
+        } details: {
+            detail
         }
-        .padding(.horizontal, AnagramHomeCardLayout.horizontalPadding)
-        .padding(.vertical, AnagramHomeCardLayout.verticalPadding)
         .foregroundStyle(Color.anagramOnOrange)
-        .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(Color.anagramHomeCardBackground)
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
     }
@@ -49,6 +37,7 @@ struct AnagramPlaceholderCard: View {
         Text("ANAGRAM")
             .font(AppFont.clueLabel(appLayout.isiPad ? 28 : 24))
             .tracking(3)
+            .padding(.trailing, -3)
             .lineLimit(1)
             .minimumScaleFactor(0.35)
     }
@@ -59,15 +48,15 @@ struct AnagramPlaceholderCard: View {
                 ProgressView()
                     .tint(.anagramOnOrange)
             } else {
-                VStack(alignment: .trailing, spacing: AnagramHomeCardLayout.contentSpacing) {
+                VStack(alignment: .center, spacing: AnagramHomeCardLayout.contentSpacing) {
                     Text("Failed to load today's puzzle.")
                         .font(AppFont.caption())
                     Label("Tap to retry", systemImage: "arrow.clockwise")
                         .font(AppFont.caption().bold())
                 }
-                .multilineTextAlignment(.trailing)
+                .multilineTextAlignment(.center)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+        .frame(maxWidth: .infinity, alignment: .bottom)
     }
 }

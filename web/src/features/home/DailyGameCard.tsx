@@ -1,3 +1,4 @@
+import { HomeGameStreak } from "./HomeGameStreak";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { DashboardStatus } from "./backwordStatus";
@@ -32,26 +33,26 @@ export function DailyGameCard({
   destination,
   issueNumber = null,
   score,
-  streak,
+  streak = 0,
   status,
   title
 }: DailyGameCardProps) {
   return (
     <Link aria-label={issueNumber === null ? title : `${title}, issue #${issueNumber}`} className={`home-game-card ${className}`} to={destination}>
+      <HomeGameStreak streak={streak} />
       <div className="home-game-card__identity">
         {children}
         <p className="home-game-card__title">{title}</p>
         {description ? <p className="home-game-card__description">{description}</p> : null}
-        <HomeGameIssueNumber issueNumber={issueNumber} />
       </div>
       <div className="home-game-card__details">
-        <DashboardStatusLabel status={status} />
         {score !== undefined || streak !== undefined ? (
-          <div className={`home-game-card__stats${(score === null || score === undefined) && streak ? " home-game-card__stats--streak-only" : ""}`}>
+          <div className="home-game-card__stats">
             {score !== null && score !== undefined ? <HomeGameScore score={score} /> : null}
-            {streak && streak > 0 ? <span className="home-game-card__streak">🔥 {streak}</span> : null}
           </div>
         ) : null}
+        <DashboardStatusLabel status={status} />
+        <HomeGameIssueNumber issueNumber={issueNumber} />
       </div>
     </Link>
   );

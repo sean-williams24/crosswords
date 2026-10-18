@@ -4,6 +4,19 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 ---
 
+## Midword Statistics
+
+Midword statistics count only puzzles won on their release date with a positive
+`releaseDateScore`. Archive completions do not affect totals, streaks, guess
+distribution, or the 14-day score history. An unfinished current puzzle keeps
+yesterday's streak alive, while a failed current puzzle resets it.
+
+Midword rejects guesses made from a single repeated letter, even if the system
+dictionary recognises the string. A configured answer or reviewed alternative
+remains valid regardless of dictionary validation.
+
+---
+
 ## Accounts, Cloud Sync, and Pro Entitlements
 
 Accounts are optional. Guest records retain the historical local persistence
@@ -27,7 +40,7 @@ statistics, streaks, and ratings are derived from active progress rather than
 merged as aggregate counters. Local saves always complete first and cloud writes
 are retried on later account syncs.
 
-The web Home screen reconciles all four account-scoped game caches with cloud
+The web Home screen reconciles all five account-scoped game caches with cloud
 progress whenever a signed-in player arrives there. Each successful game refresh
 is retained even if another game is temporarily unavailable, and the Home cards
 and rating are recalculated after the refresh batch settles. During that refresh,
@@ -100,10 +113,11 @@ unauthenticated CORS `OPTIONS` preflight can reach its handler. It returns the
 same CORS headers on every outcome, while the actual deletion request remains
 authenticated through the handler's bearer-token validation.
 
-After a browser deletion succeeds, the player sees a non-dismissable summary
+After a browser deletion succeeds, the player sees a summary
 of the cloud account data removed and the Apple subscription and device-local
-data retained. Only after acknowledgement does the browser clear its local
-session and take the player to sign-in.
+data retained. Continuing or tapping outside that sheet acknowledges the summary,
+clears the browser's local session, and takes the player to sign-in. Both actions
+are disabled while that final step is in progress.
 
 Account deletion also clears both the `user_id` and `app_account_token` from
 the entitlement record before deleting the Supabase Auth user. Apple
@@ -246,6 +260,15 @@ destinations.
 
 ---
 
+## Settings Account Row Dynamic Type
+
+The iOS Settings account row keeps its horizontal layout through XXX Large.
+At Accessibility 1 and above, the title and email (or signed-out sync description)
+stack above a full-width row with the account icon on the left and chevron on
+the right. Account text wraps without a line limit in both layouts.
+
+---
+
 ## Game Issue Numbers
 
 Every daily game and crossword has an immutable issue number displayed as
@@ -254,14 +277,208 @@ existing `puzzle_number` fields. Backword issue numbers are assigned once in
 chronological release order, persisted as `backword_words.puzzle_number`, and
 must be retained when an existing Backword entry is replaced.
 
+Midword issue numbers are assigned at publication and never reused or renumbered.
+The `midword_puzzles.date` value is the local-calendar release key. Like other
+daily games, only a win completed on that release date earns rating points.
+
+## Midword
+
+Midword shows two words vertically. The player supplies one 3–6-letter word
+that forms two familiar closed compounds without spelling changes: BANK + NOTE
+and NOTE + BOOK. The input row shows the exact answer length. The player has
+five accepted guesses; an on-time win earns 5, 4, 3, 2, or 1 points. Invalid,
+incomplete, and duplicate guesses do not consume an attempt. Wrong accepted
+guesses receive whole-word feedback, with no positional letter hints.
+
+Puzzle content comes from `Backend/midword_approved.json`. The discovery script
+only produces candidates for review; it must never publish them. Candidate
+selection from the existing word bank and `wordfreq` can produce false splits
+and ambiguous pairs, so new entries need editorial review of both compounds
+and competing links. The scheduled publisher uses only approved entries and
+fails before writing if its full coverage window cannot be filled. The batch
+publishing RPC validates and inserts all selected rows in one transaction.
+The approved bank marks moderately challenging triples separately. Publishing
+shuffles deterministically within that tier and selects it first, then uses
+the remaining approved triples when needed. Already published dates and issue
+numbers are never changed when the bank or difficulty ranking changes.
+
+Midword uses its own chartreuse and charcoal semantic colours. Its input,
+previous guesses, and completion tiles use the reusable Backword cell's default
+rounded corners. Both games share the Submit button styling, with Midword's
+own button colours, and show it only when the answer input is full. Midword's
+rating progress bar spans the screen with the same spacing above the keyboard
+as Backword. Completion reveals the answer with the same timing and Reduce
+Motion behaviour as Backword.
+
+Midword gameplay, stats, and completion cap Dynamic Type at XXX Large
+size through `GameDynamicTypeContainer`. The cap applies above child views so
+custom fonts and `@ScaledMetric` dimensions use the same bounded environment;
+smaller system text sizes remain supported. The gameplay header and keyboard
+stay pinned while puzzle content scrolls, including at accessibility settings.
+
+Midword input, previous guesses, and completion rows never scroll horizontally.
+`FittedLetterRow` shrinks square cells and their gaps proportionally to fit the
+available width, keeping shorter rows centered at their preferred size. Cell
+letter sizes follow the fitted cell size. Completion rows reserve enough width
+for their celebration scale so the animation also stays within the screen.
+
+Midword gameplay, stats, and completion follow the app's selected appearance,
+as its instructions already do. Light Mode uses the same warm background and
+dark text as the instructions; Dark Mode retains the charcoal background and
+white text. The shared letter-cell cursor uses its configured text colour so
+it remains visible in either appearance. Inactive cells and unused attempts
+have appearance-specific borders. The green accent and black on-accent text
+are shared across appearances; exported share cards still resolve in Dark Mode.
+
+The iOS gameplay wordmark matches the web in Dark Mode: the existing logo's
+alpha mask is filled with semantic green above a 49% vertical split and white
+below it. Light Mode retains the original green-and-black image. The separate
+Home-card wordmark is unchanged.
+
+The Midword Home card matches Anagram's layout and typography: its logo is
+centred horizontally and vertically, its issue number stays at the bottom-right,
+status stays at the bottom centre, and completed score stays at the bottom-left,
+with the same spacing and padding. It
+uses a dedicated semantic foreground: white text and a translucent white status
+badge in Light Mode, retaining the existing black foreground in Dark Mode.
+Gameplay controls continue to use their separate on-accent colour.
+Empty progress is New; accepted guesses are In
+Progress; wins are Solved on the release date or Finished later; exhausted
+attempts are Failed.
+
+Midword progress is saved locally first in the current guest/account namespace,
+then uploaded through the account-tagged cloud queue. Cross-device conflicts
+select one whole guess list; the greater release-day score snapshot is retained
+independently. Rating uses a 14-day window and adds five possible points for
+each Midword release from `2026-10-01` onward.
+
+The DEBUG reset action deletes only today's local Midword progress in the active
+guest/account namespace. Earlier games and cached puzzle content are retained.
+It does not delete cloud progress, so a later account sync can restore that game.
+Dismissing Debug Settings reloads the Home card and streak from local progress.
+
+The Midword database migration extends the live `game_progress` game-type
+constraint without removing Anagram, which was added on the remote database
+before Midword. It does not replace `merge_game_progress`, so Anagram's
+server-side conflict handling remains intact. Midword table grants are explicit:
+players can read released puzzles, while only the service role among Data API
+roles can insert the approved batch through its publishing function.
+
+The combined overall rating includes both Anagram and Midword independently.
+Each adds five possible points per released day within the rolling window:
+Anagram from its first published date, Midword from 2026-10-01. Once both
+have fourteen releases, the overall maximum is 280 free or 290 Pro. Both
+score columns remain present in the profile breakdown.
+
+## Shared Game Keyboard Dynamic Type
+
+`CustomKeyboardView` caps Dynamic Type at XXX Large using the same
+`GameDynamicTypeContainer` as Midword. Backword, Midword, Quick Crossword, and
+Pro Crossword therefore share the same maximum keyboard size. The cap sits
+above `KeyboardRowsView` so row spacing, key spacing, key heights, and letter
+fonts all use the bounded environment, while smaller text settings still scale.
+
+## Profile Scoring Guide
+
+iOS and web Player Profile explain Backword and Midword together under
+“Backword & Midword”, using one shared five-guess scoring guide: wins earn
+5–1 points for guesses 1–5, and losses or missed puzzles earn zero. Each game
+still earns its own rating points and has its own column in the 14-day breakdown.
+
+## Website Midword Parity
+
+Midword is playable at `/midword`, with immutable dated links at
+`/midword/:date`. Earlier releases require the existing Pro archive gate;
+invalid and future dates never fetch puzzle content. The browser reads the
+same `midword_puzzles` rows, exact answer lengths, approved alternatives, and
+five-attempt rules as iOS. Wrong guesses get whole-word feedback only.
+
+The browser uses the current native Midword colour assets and wordmarks,
+including appearance-specific backgrounds, borders, and Home-card foregrounds.
+The header, board, guess history, progress bar, and keyboard stay in normal
+document flow and scroll together with the viewport. The page fills at least
+the viewport height, including the site footer on wider screens, and grows
+with its content rather than scrolling the board behind the keyboard. The board
+has 24px of bottom padding above the rating bar, with another 12px above the
+bar inside the controls. The bar sits directly above the keyboard or Submit
+button when shown, moving up and down as the button appears and disappears.
+Long guess histories extend the page without shrinking their rows. Mobile
+retains its hidden site footer.
+The gameplay wordmark shares Backword's centered large-logo dimensions,
+narrow-screen sizing, header offset, and action placement in both appearances.
+Above the keyboard, Midword uses the shared rounded, keyboard-width rating
+bar and masked rating gradient, including the minimum visible fill at zero.
+The gameplay rating bar has no Today score label.
+Completion reveals the primary answer and both compounds; animation is removed
+when Reduce Motion is requested. Instructions, statistics, navigation, sharing,
+and Pro entry points use the established web game controls.
+Previous-guess cells cap at 48px with smaller lettering; the active answer
+cells retain their 56px cap. Both rows shrink to fit narrow viewports.
+The prompt-word board shares the explainer's responsive 520px maximum width,
+aligning the top word's leading edge and bottom word's trailing edge with it.
+Previous guesses use the primary Midword text colour (white in dark mode) and
+1px outcome-coloured borders at 45% opacity, retaining their subtle outcome
+background tints. This treatment applies only to guess history.
+
+Guesses are validated offline against a checked-in 3–6-letter wordfreq list,
+with reviewed name and explicit profanity exclusions. Approved answers bypass
+that list. `web/scripts/generate_midword_guesses.py` rebuilds the attributed
+CC BY-SA asset using the Backend virtual environment.
+
+Browser Midword progress uses the native **cloud** schema (`schemaVersion: 1`,
+`outcome`, and ISO timestamps), rather than Swift's device-local `won` field.
+An omitted `completedAt` normalises to `null`. Local saves precede queued
+account uploads; guest ownership protects Midword-only migrations too. Conflicts
+select one whole guess list using native ranking (won, terminal, fewer guesses
+for wins, more guesses otherwise, then latest update), retaining the maximum
+release-day score separately. Account/date changes remount gameplay, and pending
+loads and syncs cannot update the new account's displayed game.
+
+Home refreshes all five game caches and presents them alongside one shared
+Archive card in its responsive grid. Local Player Profile and completion sharing include
+Midword immediately, before cloud upload completes. Its share payload contains
+only aggregate result metadata and the dated link. Statistics exclude archive
+solves and show only release-day wins, matching native streaks, distribution,
+and the post-launch 14-day history.
+
+The browser stats and completion statistics mirror native `AppFont` weights:
+Outfit Regular for body text, Bold (700) for summary values, and Black (900)
+for labels, section headings, rating points, and score chips. Labels use the
+Midword accent, while values use Midword text. Cards and distribution tracks
+use text at 8% opacity; the rating track uses 12%. History follows the native
+Date / Score / Guesses order, with green today/status text, tinted zero-score
+chips, and guess counts out of five. These styles use semantic Midword colours
+in both appearances. The stats navigation title retains the native system font.
+
+The completion sheet keeps its Outfit title inside the scrolling content and
+has a single pinned, text-only HOME action. It omits the toolbar and close
+button; Escape still dismisses the browser dialog. Answer tiles use native
+translucent outcome fills and borders with primary-colour lettering, including
+red failed answers. Cards are inset, while the 14-day history table spans the
+sheet width. Mobile presents a bottom sheet; wider screens center the sheet.
+
+Midword's info sheet follows Anagram's responsive instructions layout: centered
+on desktop, a bottom sheet on mobile, with a fixed title, circular accent close
+button, and scrolling content. Both games share instruction sections, icon
+rows, sentence-case headings, Outfit typography, subtle accent dividers, and
+scoring rows. Midword keeps its native connection/example/scoring guidance and
+green accent, using the app background and primary text like native instructions.
+
 ## Backword Onboarding
 
-New Backword players receive five instructions inline, beneath the revealed
-letter row. The instructions render as a staggered card deck: only the front
+Backword shows “Guess the six letter word” on its own line above “Spell the word
+forwards, letters reveal backwards.” below the gameplay logo on iOS and web.
+New players receive five instructions inline, beneath the revealed letter row.
+The instructions render as a staggered card deck: only the front
 card is interactive, while the faded cards behind it indicate more guidance
 remains. Each card is dismissed independently and the remaining cards persist
 across launches; onboarding is complete only after all five have been
 acknowledged.
+The deck starts with the clue explanation and its decorative lightbulb, followed
+by the connected-letter rule. The clue explanation no longer appears above the
+keyboard. The former “Guess the 6 letter word...” card is retired.
+Saved acknowledgements for that card are ignored
+without resetting the remaining acknowledgements or other preferences.
 The one-time info-button TipKit popover is triggered as soon as that first-launch
 deck appears and ignores TipKit's global display-frequency throttle, so its
 navigation hint cannot be delayed by another tip.
@@ -272,12 +489,18 @@ rule updates still open it automatically. Web info tooltips can be dismissed
 with their close button, a tap outside, or the info-button action. The Backword
 tooltip also closes when the game reaches a terminal outcome so it cannot
 overlap the result-sharing control.
-Once onboarding is complete, the normal timed guess explainer returns on every
-unstarted game until its first guess is submitted. This keeps the game
-immediately playable while ensuring an interrupted first visit resumes at the
-appropriate instruction.
+Once onboarding is complete, unstarted games show no immediate explainer capsule.
+After the existing 30-second delay, the lightbulb capsule shows the “If you're
+stuck” hint. Onboarding cards suppress that countdown; it starts when the final
+card is dismissed. Submitting the first guess hides the hint.
 On either platform, dismissing the front card uses an in-place dissolve rather
 than directional movement, so the next card can rise cleanly from the deck.
+
+Every onboarding card uses the same decorative lightbulb as the timed explainer
+capsule: iOS uses the `lightbulb` SF Symbol in `solvedGold`, and web uses the
+existing 💡 emoji. Both surfaces share an icon component on each platform,
+including its size, and hide it from assistive technology. Cards grow to fit
+wrapped instructions, with space below reserved for the remaining stack.
 
 The web game menu backdrop renders in a document-level portal above game content.
 It must stay outside the game header and shell so their stacking and overflow
@@ -289,6 +512,12 @@ Completion sharing is a derived, local presentation only. The result card,
 caption, analytics event, and deep link must never contain a Backword answer or
 guess, crossword clue or grid cell, or an account identifier. Failed Backword
 results use neutral completion wording and expose only aggregate metadata.
+
+Share-card times and their copied captions use `HH:mm:ss` on web and iOS,
+including durations below one hour. Durations retain total hours past 24 hours;
+Anagram penalties use `+HH:mm:ss`. Backword's completion time remains a local
+clock time, displayed with seconds on a 24-hour clock. These share-specific
+formats do not change gameplay timers or stored elapsed seconds.
 
 iOS uses one `UIActivityItemSource`: normal destinations receive the rendered
 card, while the system Copy action receives one caption with the exact dated web
@@ -315,6 +544,10 @@ consistently supported PNG. This keeps shared imagery recognisably tied to its
 game without introducing game content.
 
 ## Backword Clue and Letter Progression
+
+On iOS and web, the clue label and clue are centred together above the answer
+tiles. At larger iOS accessibility text sizes, they stack vertically with
+centred alignment.
 
 The Backword clue is always readable. No answer letters are supplied at the
 start: the first accepted wrong guess reveals the final letter. Hard Mode is
@@ -348,36 +581,156 @@ they recognise an already-updated payload and never overwrite a divergent row.
 
 ## Home Card Appearance
 
-Home presents Backword, Quick Crossword, Anagram, and Pro Crossword in that
-order. Regular-width iPad layouts use two equal columns, while compact layouts
-use one column. The Pro upsell follows the games when visible, with Word of the
-Day below it. The game cards have no separate daily or weekly section headings
+iOS Home presents Backword, Quick Crossword, Anagram, Midword, and Pro Crossword
+in that order, with the same grid spacing between every game card and no extra
+Midword padding. Regular-width iPad layouts use two equal columns, while compact layouts
+use one column. In the single-column layout, the archive upsell sits between
+Quick Crossword and Anagram when visible. The two game grids retain the same
+spacing when the upsell is hidden for Pro users. In the compact dashboard, Word
+of the Day precedes the games. The compact archive upsell uses the semantic
+surface colour at 50% opacity in Light Mode for a lighter background, retaining
+26% in Dark Mode. The shared ad
+explainer button keeps its 26% surface in both appearances.
+The game cards have no separate daily or weekly section headings
 or date labels; their own content identifies each game.
 The Pro Crossword card fills its grid column rather than keeping a fixed iPad
 width.
 
-The web Backword card uses a centered logo with the status beneath it, matching
-iOS. Its issue number sits at the top-left and its score/streak sit along the
-bottom edge. It does not use the crossword cards' two-column identity/details
-layout.
+The iOS game grid measures all game cards at the available column
+width and gives every game card the tallest measured height in both one- and
+two-column layouts. The full Archive card shares that height in two columns.
+Dynamic Type, loading, errors, and completed states can increase that shared
+height; smaller text or
+wider columns can reduce it again. Cards fill the proposed height only inside
+this grid, keeping centred branding and bottom-aligned footers. The compact
+archive upsell between Quick Crossword and Anagram retains its own height and
+does not affect game-card sizing; hiding it removes its slot and extra spacing.
 
-Home shows the complete Word of the Day entry whenever the game cards use two
-columns. It switches to the compact card button and detail sheet at the same
-size-class change that stacks the game cards. The full Home panel and sheet
-share the same part-of-speech explanation.
+At maximum scroll, the last iOS Home card sits one game-card spacing (20 points)
+above the visible tab bar. The bottom safe-area inset already reserves the bar,
+so scroll-content bottom padding subtracts the bar's top padding from that gap.
+
+Web Home uses three equal columns and two rows: Backword, Anagram, Midword;
+then Quick Crossword, Archive, Pro Crossword. Grid rows share the same height,
+including when larger content needs extra space; loading reserves all six
+positions. The Anagram card stays present while its issue number is unavailable.
+At mobile widths up to 680px, Word of the Day comes first, followed by Backword,
+Quick Crossword, Archive, Anagram, Midword, and Pro Crossword. Archive matches
+the compact Word of the Day card’s 95px height; mobile grid rows size to their
+content so Archive stays compact. Loading placeholders follow the same order
+and heights. The single Archive card opens all game archives, using the existing Pro upgrade route when needed;
+individual game archive buttons are removed. Its centred title and icon have
+"Unlock the full archive for all five games" beneath them, also exposed as the
+link's accessible description. The Archive card has a thin 1px white outline
+drawn inside its bounds, preserving the card dimensions. On wider screens,
+Word of the Day follows the grid.
+
+On web and iOS, each game's main logo or title is centred horizontally and
+vertically within its Home card. Completed iOS Backword keeps its logo at the
+top centre above the revealed word, matching the compact completed layout.
+All five game cards show their own positive current streak at the top-right;
+zero streaks are hidden. Web badges share `HomeGameStreak`: a compact 26px
+pill, bold 11px count, Lucide's outline Flame SVG, and subtle tinted background.
+The flame uses `currentColor` for its stroke, retaining the orange default and
+game-specific CSS colours. Its ISC license ships at `/licenses/lucide.txt`.
+Backword's web streak flame is white in Light Mode and keeps the orange default
+in Dark Mode.
+Anagram's flame inherits its count colour, matching iOS: near-black in Dark Mode
+and white in Light Mode, using the shared Anagram on-accent palette.
+They have no outline in either theme; game-specific count colours remain legible
+on Anagram, Midword, and Pro cards. Backword and Midword use the same account-scoped release-day
+statistics as their Stats screens; weekly crossword counts consecutive release
+weeks. Points stay at the bottom-left,
+status at the bottom centre, and issue numbers at the bottom-right. The top
+badges and
+bottom footer stay independent of the centred branding; footer side regions
+reserve equal widths so badges do not shift the centred status.
+When a footer cannot fit horizontally, including at larger Dynamic Type sizes,
+its side information moves below status, keeping points left-aligned and the
+issue number right-aligned.
+Pro-only and loading states use the same arrangement.
+
+Normal Home cards keep Anagram and Midword's compact height: 144 points on iPhone
+and 194 on iPad (144px on web). Larger accessibility text can grow them to prevent
+overlap. Quick Crossword's `9×9` and Pro Crossword's `13×13` sit beneath
+their titles in the same identity group, centred as one view within the card.
+Crossword groups use the available space between the top streak and bottom
+status without adding extra row gaps, retaining the compact card height.
+Backword's completed word stays below its top-centred logo. The iOS Backword
+Home logo uses a 56-point base height, with 32-point letter cells and 4-point content gaps
+to retain the compact completed card height.
+Letter spacing is balanced at title edges, and title lines contain no trailing spaces.
+The iOS layout identifies regions using layout values rather than array
+positions: SwiftUI can omit an `EmptyView` or an inactive conditional region
+during loading and previews. Absent regions measure as zero. Header spacers
+anchor the streak to the trailing edge even when the centre is an `EmptyView`.
+
+Web cards and their loading placeholders use a 144px minimum height to match
+compact iOS cards; longer content can grow them. On iOS, Midword's Home logo
+keeps its compact 40-point base height while Backword uses 56 points. Both scale
+with Dynamic Type through `@ScaledMetric`, preserving Midword's smaller size.
+The card grows to keep the logo clear of its badges
+and footer. Web Backword uses a 48px logo height and Midword uses 40px. Backword uses smaller vertical
+content gaps to fit the larger logo within the existing card height. The web Midword Home card uses the
+unchanged iOS `MidwordLogoLight` image (white MID and black WORD) in both themes,
+without a colour filter. iOS cards share `HomeGameCardContent`,
+`HomeGameCardHeader`, and `HomeGameCardFooter` for this arrangement.
+
+Pro Crossword retains its gold gradient and border, Pro navigation, and non-Pro
+paywall behaviour.
+The iOS Pro Crossword Home card resolves its surface and content in Dark Mode
+in both app themes, preserving its existing dark palette and white Pro Only
+text and padlock. Its border continues to use `AppGradient.pro`; the web Home
+card uses those same darker three sRGB gold stops for its border in both themes.
+
+The web Pro Crossword Home card uses a 135-degree charcoal (`#1C1C1E`) to
+black fill with a subtle 3–4% amber glow, increasing to 5% on hover or focus.
+A 2px transparent border reveals the native `AppGradient.pro` gold gradient from the
+top-left to the bottom-right. Background layers are clipped to the padding and
+border boxes so rounded corners and shared card dimensions remain intact.
+This metallic treatment applies in both themes, with light text colours scoped
+to the card. Keyboard focus adds an outer gold outline.
+The web title uses the same three sRGB gold stops as iOS `AppGradient.pro`,
+clipped to the text. Its dimensions use the native dark secondary gray, Pro Only
+uses white on web, and issue numbers use `SolvedGold` at the same
+58% opacity as iOS. These text colours stay consistent across web themes.
+On iOS, Pro Only text and its padlock share a white foreground on this dark card.
+The label uses the Ad-free experience card's Go Pro
+typography (10-point Outfit Black with 0.8-point tracking), and the text and
+lock sit in a lightly tinted capsule with the same padding and corner radius
+as the other home card status badges.
+
+iOS Home shows the complete Word of the Day entry below the games only when a
+regular-width dashboard fits in the available height above the tab bar. Every
+two-column layout fills the sixth grid position, beside Pro Crossword, with an Archive
+card matching the web card's title, description, surface, and white outline.
+It remains present when Word of the Day becomes compact, and disappears only
+when the game cards stack into one column. It replaces the compact archive
+upsell in two-column layouts and remains visible for Pro users;
+both Archive entry points share the existing entitlement-gated destination.
+The full iOS Archive card keeps its title on one line, scaling the text down
+beside the icon when larger Dynamic Type or a narrow column needs more room.
+Its description continues to wrap freely.
+An eager grid and `ViewThatFits` measure the full content, including larger
+text, completed cards, spacing, and padding. If it no longer fits after a window
+resize or content change, Home restores the compact Word of the Day button above
+the games and its scrolling layout. Width still determines whether those games
+use one or two columns. The full Home panel and sheet share the same
+part-of-speech explanation.
 
 The Backword card keeps its dark content palette for readable logo and status
 content in either appearance. Its background follows the system colour scheme:
 Light Mode uses a flat, opaque pastel lavender, while Dark Mode keeps the
 existing darker purple. The card has no outline in either appearance.
 
-The Light Mode Backword `New` status label and streak badge use the same
+The iOS Light Mode Backword `New` status label and streak badge use the same
 background as the `In Progress` label for contrast against the pastel card.
 They have a one-point white outline in Light Mode; other Backword statuses
 retain the shared status-label background.
 
-The same Light Mode white outline applies to the Backword success badge and
-the status and streak badges on both crossword home cards.
+The same iOS Light Mode white outline applies to the Backword success badge
+and the status and streak badges on both crossword home cards. Web status
+badges retain their outline; web streak pills use the borderless style above.
 
 Won Backword cells on the Light Mode home card use a white surface fill with
 the Backword game's Correct-green outline and dark primary text. Dark Mode
@@ -410,9 +763,73 @@ The shared web menu button is absolutely positioned at the top of the page, so
 it scrolls away with the page content. The open navigation drawer remains a
 fixed, document-level overlay.
 
+The shared website footer is hidden on every route at viewport widths of 680px
+and below, using the site's mobile breakpoint. Anagram retains its existing
+700px footer cutoff. Wider layouts keep the footer visible.
+
+The shared website footer groups its links into Explore, Free games, Pro Account,
+Support, Legal, and Socials, in that order, each with a heading and vertical list. Explore
+contains Home and Player Profile; Free games lists Backword, Crossword, Midword,
+and Anagram; Pro Account lists Pro Crossword, Archive, and Subscribe. The groups
+form six columns on large screens, three on small screens, and two on narrower
+screens. Both the two- and three-column layouts fit each column to its content and use
+`space-evenly` with no extra horizontal gap or footer padding, making the
+leading, trailing, and inter-column spaces equal. At the large breakpoint,
+copyright sits to the left of the link groups
+and the App Store badge sits to the right, both aligned with the top row. Link
+columns fit their content and distribute the remaining space between them,
+keeping equal 4rem gaps from copyright to Explore and from Socials to the badge.
+Below that breakpoint, copyright and the badge are each centred beneath the
+links. Pro Crossword and Archive retain their entitlement-aware destinations,
+and Subscribe appears in Pro Account only for players without Pro access.
+Social profile URLs live in `siteConfig.socialLinks`; these external links use
+platform icons and visible names and open in a new tab.
+
 ---
 
+## Website Sheet Dismissal
+
+All web sheets dismiss when the player taps or clicks their backdrop, including
+game instructions, stats, completion, clues, confirmations, Pro details, and the
+navigation drawer. Events from inside a sheet must not dismiss it through the
+backdrop. The account-deleted summary uses its existing Continue action when
+the backdrop is tapped, so final session cleanup and sign-in navigation still run.
+
+## Website Submit Button Transitions
+
+Backword and Midword share a Submit control that expands and fades over 240ms
+when the answer input becomes full, and collapses when it is cleared or edited.
+The control stays mounted so either direction can reverse smoothly during rapid
+input. Its collapsed height is zero, keeping the rating bar directly above the
+keyboard; the bar moves with the button's height. Hidden controls are disabled,
+inert, and removed from the accessibility tree immediately, including during
+the exit transition. Reduce Motion removes the transition. Crossword and
+Anagram retain their automatic answer checking.
+
+## Website Guess Validation Messages
+
+Backword and Midword animate validation labels with the same expanding/fading
+timing as Submit. A shared message component retains the last label during its
+exit so its text fades with its height instead of disappearing immediately.
+Hidden labels are excluded from the accessibility tree; visible labels remain
+assertive alerts. The message is grouped with its preceding input or attempts
+indicator, so a collapsed label leaves no extra flex gap. Reduce Motion removes
+the transition. Midword matches Backword's invalid-word feedback: the input
+row uses the shared 420ms horizontal shake, its shake state clears after 500ms,
+and the red, bold `Not a valid word` alert automatically hides after two seconds.
+Midword's duplicate-guess label uses the same feedback. Editing or an accepted
+submission clears Midword feedback immediately, and repeated rejections restart
+the dismissal timers; clearing feedback or leaving the game cancels them.
+Validation and guess counts stay unchanged. Reduce Motion also skips the shake.
+
 ## Website Backword Parity
+
+Backword's game shell has a minimum height of one small viewport (`100svh`),
+independent of the site footer's height. The main game content grows into the
+remaining space above the score bar and keyboard, preserving the large layout's
+breathing room when the middle layout's footer wraps into more rows. The footer
+follows the game below that viewport. This is a minimum, not a fixed height, so
+long guess histories and the expanded Submit control can extend the page.
 
 The browser Backword game lives at `/backword` as an immersive route outside the
 marketing site's header and footer. Its game dashboard lives at `/`, while
@@ -443,20 +860,20 @@ Quick Crossword progress to present card status; non-Pro weekly and archive
 entry points direct players to the web Pro page rather than a modal or the iOS
 App Store. The web
 dashboard reads the released Word of the Day row for the browser's local
-calendar date. During initial loading, all four game cards remain non-interactive
+calendar date. During initial loading, all six game/archive cards remain non-interactive
 outlined skeletons until account startup and the WOTD request settle. When the
 row is unavailable, its place becomes an informational unavailable card while
-the four playable game cards remain available.
+the five playable game cards remain available.
 
-On wide browser dashboards, Backword, Quick Crossword, Anagram, and the weekly
-Pro Crossword appear in that order in one four-column row above the full-width Word of the
-Day panel. This content uses a 1440-point desktop cap so the cards occupy more
-of a wide viewport. The row becomes two columns at 1200 points and below, then
-one column on mobile. Each game keeps its archive action directly beneath its card,
-shown as the iOS-style archive box icon beside a concise `Archive` label. The
-dashboard goes directly from its global header into the cards without a daily
-title or date. The weekly card identifies its Sunday cadence inside the card
-instead of using a separate section below the daily content.
+On wide browser dashboards, a three-column grid shows Backword, Anagram, and
+Midword above Quick Crossword, Archive, and Pro Crossword. All six cards share
+equal widths and row heights above the full-width Word of the Day panel. This
+content uses a 1440-point desktop cap and stacks into one column on mobile.
+Archive is one shared card for all games, full-size on desktop and compact on
+mobile, replacing the separate archive buttons. The dashboard goes directly
+from its global header into the cards
+without a daily title or date. The weekly card identifies its game inside the
+card instead of using a separate section below the daily content.
 
 The browser Backword letter cells use the iOS `Surface`, `GridLine`,
 `TextSecondary`, `Accent`, and `Correct` asset values. Empty cells are a 50%
@@ -772,6 +1189,8 @@ Settings section are hidden. Interstitial startup preloading, loading, eligibili
 and presentation are disabled, without altering saved impression dates or the
 explainer opt-out preference. Rewarded hint ads, consent, and ad privacy choices
 remain active. Pro copy describes ad-free hints while the pause is in effect.
+The Home Archive upsell keeps its archive-focused copy independently of this
+switch.
 
 To restore the existing pre-game ads in a future release, set that switch to
 `true`. This also restores the explainer, its Settings controls, and the original
@@ -786,7 +1205,7 @@ Backword keeps its onboarding-first behaviour: the Backword ad gate is skipped u
 
 Daily and weekly crossword cards display summary scores from `HomeViewModel`, not by reading progress files directly in the view. Cards ask the view model to refresh saved `UserProgress` when they appear; scores fall back to the loaded puzzle's clue count if legacy progress has no `totalClues` metadata. Weekly cards use `UserStats.currentStreak(isWeekly: true)` for their streak display.
 
-The Backword card uses the same stats row shape, but its score is hidden until `BackwordProgress.isComplete` because Backword only awards points at the end of a game. In the completed state, the Backword status label is centered over the score/streak row at regular Dynamic Type sizes and falls back above that row for accessibility Dynamic Type sizes.
+The Backword card uses the same stats row shape, but its score is hidden until `BackwordProgress.isComplete` because Backword only awards points at the end of a game. Its status stays at the bottom centre before and after completion, with points at the bottom-left and streak at the top-right. When the footer cannot fit horizontally, points and the issue number move below the centred status.
 
 Backword archive rows keep the guess-count status label after a win. On-time wins use the same solved gold as on-time crossword archive completions, while wins finished on a later local release date use the normal correct green. Only Backwords completed on their local release date contribute points or update Backword statistics; archive completions remain visible in progress but score zero.
 
@@ -890,9 +1309,14 @@ workflow maintains a 30-day future buffer and fails without publishing a
 partial batch. The current source bank contains 11,436 seven-to-nine-letter
 ASCII entries; the earlier plan's 9,753 count is stale. Each scramble
 index is a distinct tile identity; placing a tile
-leaves its tray slot empty. The tray keeps two centered, square-tile rows:
-4+3 for seven letters, 4+4 for eight, and 5+4 for nine. Tile size stays
-based on five columns so the shorter rows have balanced side margins. Undo
+leaves its tray slot empty. The tray keeps all seven to nine square tiles on
+one centered line, shrinking tiles and spacing to fit the available width.
+New attempts, restored unfinished attempts, and Shuffle keep the primary answer's
+first letter out of the first tray slot by swapping available tile IDs. Published
+scrambles remain immutable, including for older puzzles. Duplicate copies of the
+first letter are also excluded from that slot; occupied slots stay fixed, and
+the rule is skipped when no different available letter can replace it. A full
+tray must not become an accepted answer as a result of the correction. Undo
 follows placement history, while Restart
 clears player placements without changing the start time, hint, or penalty.
 The iOS Home midnight task refreshes Anagram alongside the other daily games.
@@ -914,14 +1338,15 @@ their device's local date, so a visible tomorrow row does not display early.
 During play, the tray and controls stay together at the bottom of the view,
 with the controls 40 points above the bottom safe area. The header, timer,
 and answer scroll above them.
+The game screen centres the Anagram title and issue label together across the
+available content width on both iOS and web, including before Start.
 The shared Anagram action button caps Dynamic Type at Large so Start and all
 five gameplay controls keep their full labels in the fixed-width button rows.
-The Anagram Home card uses a two-column layout: its title sits at the top-left
-with the issue number directly beneath it, while puzzle length, status, score,
-and streak group at the bottom-right. Dynamic Type sizes above Large stack
-those regions vertically while preserving their left/right alignment. The title
-scales within the available card width so neither the loaded card nor its
-placeholder widens the Home scroll content. The card
+The Anagram Home card centres its title horizontally and vertically, with the
+issue number independently at the bottom-right, streak at the top-right, status at
+the bottom centre, and score at the bottom-left. These regions stay in separate rows at every Dynamic Type
+size. The title scales within the available card width so neither the loaded
+card nor its placeholder widens the Home scroll content. The card
 uses a dedicated semantic background colour so Home can match the web card without
 changing the orange used by Anagram gameplay, stats, completion, archive, or
 sharing. Its default appearance matches the existing light card orange; its
@@ -1021,7 +1446,7 @@ shell mirrors the iOS Anagram hierarchy without showing a logo, and uses the
 same game menu and action icons as the other web games. The site footer appears
 on wider viewports and is hidden in the mobile layout at 700px and below. Wider
 viewports keep the answer in one row and widen the bottom game controls; narrow
-viewports use the same balanced letter rows as iOS. The web title, issue label,
+viewports fit both the answer and tray on single lines, matching iOS. The web title, issue label,
 and loading message share the maximum nine-letter content width from the first
 render, so loading a puzzle cannot move their left edge. The letter tray and
 controls sit at the bottom of the flexible board, with spare vertical space
@@ -1554,7 +1979,9 @@ anchored to the result button within completion modals, and remains openable
 while the PNG is prepared so text copying is never blocked by image rendering.
 Anagram uses the same menu action styling as the other games: its dialog button
 rules apply only to direct dialog controls, and its completed game keeps a
-compact share button on the main page after the completion dialog closes.
+compact share button after the completion dialog closes. On smaller web layouts
+and in the iOS game view, this button sits above the letter tray in the gameplay
+dock, aligned to the right. The web share menu opens upward in this layout.
 
 Result-share analytics use a content-free funnel. `result_share_opened` records
 the share surface, `result_share_finished` records whether the platform reported
@@ -1581,9 +2008,14 @@ platforms. Its `BACK` paths use the original Backword home-card blue #5B8DC9;
 
 ## Archive game selector
 
+The web archive game selector emphasises the selected game with primary text
+colour and a slightly larger font, matching iOS. Game buttons keep transparent
+backgrounds and borders, including on hover; keyboard focus has a visible
+outline. This applies to both the desktop sidebar and compact mobile selector.
+
 The iOS archive game selector uses one horizontal row through Large Dynamic
-Type. Above Large, it switches to a two-column, two-row grid so all four game
+Type. Above Large, it switches to a two-column grid with three rows so all five game
 names remain visible with full-size tap targets. Archive scroll content adds
 matching bottom clearance for the taller selector. The selector container uses
-a 27-point continuous corner radius, matching the selected capsules' radius
+a 25-point continuous corner radius, matching the selected capsules' radius
 plus their inset so corner selections are not clipped.

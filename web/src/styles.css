@@ -38,6 +38,7 @@
 @tailwind utilities;
 
 :root {
+  --home-compact-card-height: 95px;
   --app-background: #111111;
   --app-elevated: #171717;
   --app-surface: #1a1a1a;
@@ -53,6 +54,7 @@
   --app-text-secondary: #777777;
   --app-text-muted: #b8b8b8;
   --app-accent: #3377b1;
+  --app-instruction-icon: #ffd60a;
   --app-correct: #66bb6a;
   --app-background-rgb: 17 17 17;
   --app-surface-rgb: 26 26 26;
@@ -85,6 +87,7 @@ html[data-theme="light"] {
   --app-text-secondary: #666666;
   --app-text-muted: #777777;
   --app-accent: #63a4de;
+  --app-instruction-icon: #ffd60a;
   --app-correct: #66bb6a;
   --app-background-rgb: 245 242 235;
   --app-surface-rgb: 255 255 255;
@@ -202,6 +205,8 @@ a {
   overflow: hidden;
   background: var(--app-background);
 }
+
+.bw-shell--backword { min-height: 100svh; }
 
 .bw-game-header {
   position: relative;
@@ -630,6 +635,15 @@ a {
   overflow-y: auto;
 }
 
+.bw-game-explainer {
+  width: min(100%, 520px);
+  margin: 0;
+  color: var(--app-text-muted);
+  font-size: 16px;
+  line-height: 1.8;
+  text-align: center;
+}
+
 .bw-offline-note {
   align-self: stretch;
   margin: -8px 0 0;
@@ -640,11 +654,12 @@ a {
 
 .bw-clue {
   width: min(100%, 680px);
-  margin: 0 0 -8px;
+  margin: 0 0 24px;
   color: var(--bw-primary);
   font-size: clamp(18px, 4vw, 22px);
   font-weight: 700;
   line-height: 1.2;
+  text-align: center;
 }
 
 .bw-clue span {
@@ -652,11 +667,27 @@ a {
   color: var(--bw-accent);
 }
 
+.bw-answer-input { max-width: 100%; flex-shrink: 0; }
+
+.game-input-message {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 240ms ease, opacity 180ms ease;
+}
+
+.game-input-message--visible { grid-template-rows: 1fr; opacity: 1; }
+.game-input-message__inner { min-height: 0; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .game-input-message { transition: none; }
+}
+
 .bw-invalid-word {
   color: var(--bw-error, #ff6b6b);
   font-size: 0.875rem;
   font-weight: 700;
-  margin: 10px 0 -2px;
+  margin: 10px 0 0;
   text-align: center;
 }
 
@@ -720,7 +751,8 @@ a {
   animation: bw-pulse-border 1.2s ease-in-out infinite;
 }
 
-.bw-letter-row.is-shaking { animation: bw-shake 420ms ease-in-out; }
+.bw-letter-row.is-shaking,
+.midword-letter-row.is-shaking { animation: bw-shake 420ms ease-in-out; }
 
 .bw-guess-history {
   display: flex;
@@ -768,18 +800,17 @@ a {
 
 .bw-onboarding-deck {
   position: relative;
+  display: grid;
   width: min(100%, 570px);
-  height: 136px;
+  padding-bottom: var(--bw-onboarding-stack-height);
   margin-top: 20px;
 }
 
 .bw-onboarding-card {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
+  position: relative;
+  grid-area: 1 / 1;
   display: flex;
-  height: 86px;
+  min-height: 86px;
   box-sizing: border-box;
   padding: 8px 18px 8px 14px;
   align-items: center;
@@ -803,10 +834,16 @@ a {
   animation: bw-onboarding-card-dissolve 220ms both cubic-bezier(.4,0,1,1);
 }
 
+.bw-onboarding-card__icon {
+  flex: 0 0 auto;
+  font-size: 15px;
+}
+
 .bw-onboarding-card p {
   margin: 0;
+  min-width: 0;
   font-size: 13px;
-  line-height: 1.28;
+  line-height: 1.3;
 }
 
 .bw-onboarding-card__ok {
@@ -847,17 +884,6 @@ a {
   background: var(--app-background);
 }
 
-.bw-clue-help {
-  width: min(100%, 600px);
-  margin: 0 auto;
-  padding: 8px 20px 10px;
-  color: var(--bw-secondary);
-  font-size: 13px;
-  line-height: 1.35;
-}
-
-.bw-clue-help span { margin-right: 5px; color: var(--bw-correct); }
-
 .bw-game-score {
   width: min(100%, var(--bw-keyboard-max-width));
   height: 7px;
@@ -897,6 +923,26 @@ a {
     var(--bw-rating-virtuoso-deep) 100%
   );
   transition: clip-path 500ms ease;
+}
+
+.game-submit {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  pointer-events: none;
+  transition: grid-template-rows 240ms ease, opacity 180ms ease;
+}
+
+.game-submit--visible {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.game-submit__inner { min-height: 0; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .game-submit { transition: none; }
 }
 
 .bw-submit,
@@ -1179,8 +1225,7 @@ a {
 
 @media (max-width: 699px) {
   .puzzle-result-share__fallback { top: auto; bottom: calc(100% + 8px); }
-  .anagram-main > .puzzle-result-share--compact { top: 0; right: 0; bottom: auto; }
-  .anagram-main > .puzzle-result-share--compact .puzzle-result-share__fallback { top: calc(100% + 8px); bottom: auto; }
+  .anagram-gameplay-dock > .puzzle-result-share--compact { position: relative; top: auto; right: auto; bottom: auto; width: fit-content; margin: 0 0 16px auto; }
 }
 .bw-completion-actions { display: grid; grid-template-columns: 1fr 1fr; margin-top: auto; padding: 10px 20px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--app-grid); }
 .bw-completion-actions button { padding: 11px; border: 0; color: var(--app-text-secondary); background: transparent; font: inherit; font-size: 13px; cursor: pointer; }
@@ -1224,8 +1269,6 @@ a {
 }
 
 @media (max-width: 699px) {
-  .bw-clue { margin-bottom: 8px; }
-
   /* Crosswords are already identified by their dates, so the mobile header
      keeps the actions but drops the duplicate title. The reclaimed height lets
      the grid use the same near-edge treatment as the iOS game. */
@@ -1389,11 +1432,11 @@ body {
   cursor: pointer;
   transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
 }
-.archive-tabs button:hover,
-.archive-tabs button:focus-visible,
+.archive-tabs button:hover { color: var(--app-text-primary); }
+.archive-tabs button:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
 .archive-month-picker button:hover,
 .archive-month-picker button:focus-visible { border-color: #4d93cd; color: var(--app-text-primary); outline: none; }
-.archive-tabs button.is-selected,
+.archive-tabs button.is-selected { color: var(--app-text-primary); font-size: 16px; }
 .archive-month-picker button.is-selected { color: var(--app-text-primary); background: rgb(var(--app-accent-rgb) / 25%); border-color: rgb(79 145 199 / 45%); }
 .archive-month-picker { margin-top: 24px; padding-top: 20px; border-top: 1px solid rgb(var(--app-primary-rgb) / 9%); }
 .archive-month-picker__current { margin-top: 12px; color: var(--app-text-primary) !important; }
@@ -1460,6 +1503,7 @@ body {
   }
   .archive-tabs--compact { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
   .archive-tabs--compact button { min-height: 40px; padding: 8px; border-radius: 999px; text-align: center; font-size: 12px; }
+  .archive-tabs--compact button.is-selected { font-size: 14px; }
   .archive-month-picker { display: grid; grid-template-columns: 1fr; }
   .archive-month-picker > div { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .archive-month-picker > div button { min-height: 52px; padding: 6px; text-align: center; font-size: 11px; line-height: 1.2; }
@@ -1573,33 +1617,14 @@ body {
   letter-spacing: 0.3em;
 }
 .home-dashboard__daily-layout { display: grid; gap: 28px; }
-.home-dashboard__games-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: stretch; gap: 20px; }
-.home-dashboard__game { display: grid; grid-template-rows: 1fr auto; gap: 8px; }
-.home-archive-link {
-  display: flex;
-  height: 44px;
-  padding: 6px 10px;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border: 1px solid rgb(var(--app-primary-rgb) / 15%);
-  border-radius: 8px;
-  color: var(--app-text-muted);
-  background: rgb(var(--app-primary-rgb) / 4%);
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
-}
-.home-archive-link:hover,
-.home-archive-link:focus-visible { border-color: #5fa4dc; color: var(--app-text-primary); background: rgb(95 164 220 / 12%); outline: none; }
-.home-archive-link svg { width: 20px; height: 20px; color: currentColor; }
+.home-dashboard__games-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; align-items: stretch; gap: 20px; }
+.home-dashboard__game { display: grid; min-width: 0; }
 .home-dashboard__loading-label { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .home-dashboard-loading-card {
   --home-skeleton-width: 56%;
   position: relative;
   display: flex;
-  min-height: 150px;
+  min-height: 144px;
   padding: 24px;
   flex-direction: column;
   align-items: center;
@@ -1631,19 +1656,24 @@ body {
 .home-dashboard-loading-card__line--title { width: var(--home-skeleton-width); height: 18px; }
 .home-dashboard-loading-card__line--detail { width: 40%; }
 .home-dashboard-loading-card--backword { --home-skeleton-width: 46%; border-color: #42659a; background: #202b49; }
+.home-dashboard-loading-card--anagram { border-color: var(--anagram-home-card-accent); background: var(--anagram-home-card-accent); }
+.home-dashboard-loading-card--midword { border-color: var(--midword-accent); background: var(--midword-accent); }
+.home-dashboard-loading-card--archive { background: var(--app-surface); }
 .home-dashboard-loading-card--crossword { --home-skeleton-width: 62%; background: #1c2a38; }
-.home-dashboard-loading-card--word-of-the-day { min-height: 95px; padding: 16px 34px; background: var(--app-elevated); }
-.home-dashboard-loading-card--weekly { min-height: 150px; height: 150px; border-color: #7e683b; background: #1c1a16; }
+.home-dashboard-loading-card--word-of-the-day { min-height: var(--home-compact-card-height); padding: 16px 34px; background: var(--app-elevated); }
+.home-dashboard-loading-card--weekly { min-height: 144px; border-color: #7e683b; background: #1c1a16; }
 @keyframes home-dashboard-skeleton-shimmer { to { transform: translateX(100%); } }
 .home-game-card {
   position: relative;
   display: grid;
-  min-height: 150px;
+  min-height: 144px;
   padding: 12px 18px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas: ". . streak" "identity identity identity" "details details details";
+  grid-template-rows: minmax(32px, 1fr) auto minmax(32px, 1fr);
   align-items: stretch;
   justify-content: stretch;
-  gap: 12px;
+  gap: 8px;
   overflow: hidden;
   border-radius: 10px;
   color: var(--app-text-primary);
@@ -1663,32 +1693,49 @@ body {
 .home-game-card:hover,
 .home-game-card:focus-visible { transform: translateY(-4px); outline: none; box-shadow: 0 20px 48px rgb(0 0 0 / 28%); }
 .home-game-card:focus-visible::after { border-color: var(--app-text-primary); }
-.home-game-card--backword { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; text-align: center; background: linear-gradient(150deg, #34417c, #29356d); }
-.home-game-card--crossword { background: linear-gradient(145deg, #30445e, #24364d); }
-.home-game-card__identity,
-.home-game-card__details { position: relative; z-index: 1; display: flex; min-width: 0; flex-direction: column; }
-.home-game-card__identity { align-items: flex-start; justify-content: flex-start; gap: 6px; }
-.home-game-card__details { align-items: flex-end; justify-content: flex-end; gap: 5px; text-align: right; }
-.home-game-card--crossword .home-game-card__identity { padding-top: 4px; }
-.home-game-card__logo { width: min(130px, 100%); height: auto; object-fit: contain; }
-.home-game-card--backword .home-game-card__identity,
-.home-game-card--backword .home-game-card__details { position: static; align-items: center; gap: 0; text-align: center; }
-.home-game-card--backword .home-game-card__logo { margin-bottom: 12px; }
-.home-game-card--backword .home-status { margin-top: 2px; }
-.home-game-card--backword .home-game-card__issue { position: absolute; top: 12px; left: 18px; }
-.home-game-card--backword .home-game-card__stats { position: absolute; right: 12px; bottom: 12px; left: 18px; justify-content: space-between; }
-.home-game-card--backword .home-game-card__streak { margin-left: auto; }
-.home-game-card__title { margin: 0; color: #f6f6f6; font-size: clamp(16px, 2vw, 16px); font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; }
+.home-game-card--backword { row-gap: 4px; background: linear-gradient(150deg, #34417c, #29356d); }
+.home-game-card--crossword { row-gap: 0; background: linear-gradient(145deg, #30445e, #24364d); }
+.home-game-card--archive { row-gap: 0; background: var(--app-surface); }
+.home-game-card--archive::after,
+.home-game-card--archive:focus-visible::after { border-color: #fff; }
+.home-game-card__identity { position: relative; z-index: 1; display: flex; min-width: 0; flex-direction: column; }
+.home-game-card__identity { grid-area: identity; align-self: center; align-items: center; justify-content: center; gap: 6px; text-align: center; }
+.home-archive-card__title { display: flex; align-items: center; gap: 10px; }
+.home-archive-card__description { max-width: 240px; margin: 0; color: var(--app-text-secondary); font-size: 12px; line-height: 16px; text-wrap: balance; }
+.home-archive-card__identity svg { flex: none; width: 24px; height: 24px; color: var(--app-accent); }
+.home-game-card--archive .home-game-card__title { color: var(--app-text-primary); }
+.home-game-card__details,
+.weekly-card__details,
+.anagram-home-card__details,
+.midword-home-card__details {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-width: 0;
+  grid-area: details;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-self: end;
+  align-items: end;
+  gap: 8px;
+  text-align: right;
+}
+.home-game-card__details > .home-status,
+.anagram-home-card__details > .home-status,
+.midword-home-card__details > .home-status,
+.weekly-card__status { grid-column: 2; grid-row: 1; justify-self: center; }
+.home-game-card__logo { width: auto; max-width: 100%; height: 48px; object-fit: contain; }
+.home-game-card__title { margin: 0; padding-left: 0.18em; color: #f6f6f6; font-size: clamp(16px, 2vw, 16px); font-weight: 900; letter-spacing: 0.18em; text-transform: uppercase; }
 .home-game-card--backword .home-game-card__title { display: none; }
 .home-game-card__description { margin: 0; color: #b4b4b8; font-size: 14px; font-weight: 500; }
-.home-game-card__issue { color: rgb(var(--app-primary-rgb) / 58%); font-family: "Outfit", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
-.home-game-card__stats { display: flex; flex-direction: row; align-items: center; gap: 8px; color: var(--app-text-muted); font-family: "Outfit", sans-serif; }
-.home-game-card__stats--streak-only { margin-top: 4px; }
-.home-game-card__score { display: inline-flex; gap: 4px; align-items: baseline; }
+.home-game-card__issue { grid-column: 3; grid-row: 1; justify-self: end; align-self: end; color: rgb(var(--app-primary-rgb) / 58%); font-family: "Outfit", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+.home-game-card__stats { display: contents; color: var(--app-text-muted); font-family: "Outfit", sans-serif; }
+.home-game-card__score { grid-column: 1; grid-row: 1; justify-self: start; align-self: end; display: inline-flex; gap: 4px; align-items: baseline; }
 .home-game-card__score strong { color: var(--app-accent); font-size: 24px; font-weight: 700; }
 .home-game-card__score.is-perfect strong { color: var(--app-correct); }
 .home-game-card__score small { color: var(--app-text-secondary); font-size: 12px; font-weight: 700; }
-.home-game-card__streak { display: inline-flex; min-height: 32px; padding: 6px 10px; align-items: center; border-radius: 12px; color: var(--app-text-primary); background: rgb(26 26 26 / 52%); font-size: 12px; font-weight: 700; }
+.home-game-card__streak { grid-area: streak; justify-self: end; align-self: start; display: inline-flex; min-height: 26px; padding: 4px 9px; align-items: center; gap: 4px; border: 0; border-radius: 999px; color: #eeeeee; background: rgb(99 164 222 / 12%); font-family: "Outfit", sans-serif; font-size: 11px; font-weight: 900; line-height: 16px; white-space: nowrap; }
+.home-game-card__streak-icon { flex: none; width: 13px; height: 15px; color: #ff9f0a; }
+.weekly-card .home-game-card__streak { color: var(--app-text-primary); background: rgb(var(--app-primary-rgb) / 10%); }
 
 .home-status {
   display: inline-flex;
@@ -1712,7 +1759,7 @@ body {
 .wotd-widget--preloading { display: none; }
 .wotd-unavailable-card {
   display: flex;
-  min-height: 95px;
+  min-height: var(--home-compact-card-height);
   padding: 16px 34px;
   flex-direction: column;
   align-items: center;
@@ -1730,7 +1777,7 @@ body {
 .wotd-card {
   display: grid;
   grid-template-columns: 1fr;
-  height: 95px;
+  height: var(--home-compact-card-height);
   width: 100%;
   min-height: 0;
   padding: 10px 34px;
@@ -1784,7 +1831,7 @@ body {
 .wotd-detail__meta > span { color: var(--app-accent); }
 .wotd-detail__meta > b { color: var(--app-text-secondary); font-weight: 500; }
 .wotd-detail__meta > em { color: var(--app-text-secondary); }
-.wotd-detail__definition { padding: 20px; border-radius: 18px; background: var(--app-surface-raised); box-shadow: 0 8px 18px rgb(0 0 0 / 24%); }
+.wotd-detail__definition { padding: 20px; border-radius: 18px; background: var(--app-surface-raised); }
 .wotd-detail__secondary { display: grid; gap: 30px; }
 .wotd-detail__example { font-style: italic; }
 .wotd-detail__synonyms { display: flex; margin: 0; padding: 0; flex-wrap: wrap; gap: 10px; list-style: none; }
@@ -1793,37 +1840,48 @@ body {
 .wotd-detail__explainer > span { flex: none; color: var(--app-text-secondary); font-style: normal; }
 
 .weekly-card {
+  --weekly-card-glow: 4%;
+  --app-text-primary: #eeeeee;
+  --app-text-secondary: #777777;
+  --app-accent: color(srgb 0.2 0.467 0.694);
+  --app-primary-rgb: 238 238 238;
   position: relative;
   display: grid;
   width: 100%;
   height: auto;
-  min-height: 150px;
+  min-height: 144px;
   margin-top: 0;
   padding: 12px 18px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas: ". . streak" "identity identity identity" "details details details";
+  grid-template-rows: minmax(32px, 1fr) auto minmax(32px, 1fr);
   align-items: stretch;
   justify-content: stretch;
-  gap: 12px;
-  border: 2px solid #b8872d;
+  gap: 8px;
+  border: 2px solid transparent;
   border-radius: 10px;
-  color: #d6be87;
-  background: linear-gradient(135deg, #211e19, var(--app-elevated) 55%, #221d15);
+  color: color(srgb 0.85 0.65 0.25);
+  background:
+    radial-gradient(ellipse at top left, rgb(255 193 77 / var(--weekly-card-glow)), rgb(255 193 77 / 3%) 75%) padding-box,
+    linear-gradient(135deg, #1c1c1e, #000000) padding-box,
+    linear-gradient(135deg, color(srgb 0.85 0.65 0.25), color(srgb 0.78 0.52 0.2), color(srgb 0.85 0.65 0.25)) border-box;
   font: inherit;
   text-align: left;
   cursor: pointer;
   transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  row-gap: 0;
 }
 .weekly-card:hover,
-.weekly-card:focus-visible { background: linear-gradient(135deg, #292419, var(--app-surface) 55%, #2a2114); outline: none; transform: translateY(-3px); box-shadow: 0 18px 40px rgb(0 0 0 / 24%); }
-.weekly-card__identity,
-.weekly-card__details { display: flex; min-width: 0; flex-direction: column; }
-.weekly-card__identity { padding-top: 4px; align-items: flex-start; justify-content: flex-start; gap: 6px; }
-.weekly-card__details { align-items: flex-end; justify-content: flex-end; gap: 5px; text-align: right; }
-.weekly-card__title { font-size: clamp(16px, 2vw, 16px); font-weight: 700; letter-spacing: 0.18em; }
-.weekly-card__issue { color: rgb(214 190 135 / 70%); }
-.weekly-card small { color: #97918a; font-size: 14px; }
+.weekly-card:focus-visible { --weekly-card-glow: 5%; outline: none; transform: translateY(-3px); box-shadow: 0 18px 40px rgb(0 0 0 / 24%); }
+.weekly-card:focus-visible { outline: 2px solid #ffd27a; outline-offset: 3px; }
+.weekly-card__identity { position: relative; display: flex; min-width: 0; flex-direction: column; }
+.weekly-card__identity { grid-area: identity; align-self: center; align-items: center; justify-content: center; gap: 6px; text-align: center; }
+.weekly-card__title { padding-left: 0.18em; color: color(srgb 0.85 0.65 0.25); background: linear-gradient(135deg, color(srgb 0.85 0.65 0.25), color(srgb 0.78 0.52 0.2), color(srgb 0.85 0.65 0.25)); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: clamp(16px, 2vw, 16px); font-weight: 700; letter-spacing: 0.18em; }
+.weekly-card__issue { color: color(srgb 0.92 0.72 0.22 / 0.58); }
+.weekly-card__description { color: var(--app-text-secondary); font-size: 14px; }
+.weekly-card .home-status--pro-only { color: #fff; }
 .weekly-card { text-decoration: none; }
-.weekly-card__status { display: flex; min-height: 20px; flex-direction: column; align-items: flex-end; gap: 5px; color: var(--app-text-primary); font-size: 12px; text-align: right; }
+.weekly-card__status { display: flex; min-height: 20px; flex-direction: column; align-items: center; gap: 5px; color: var(--app-text-primary); font-size: 12px; text-align: right; }
 
 .weekly-modal-backdrop {
   position: fixed;
@@ -2010,12 +2068,12 @@ body {
 .player-profile__breakdown { overflow: hidden; padding-top: 20px; }
 .player-profile__breakdown h2 { padding: 0 20px 15px; }
 .player-profile__table-scroll { overflow-x: auto; }
-.player-profile__table { min-width: 420px; }
+.player-profile__table { min-width: 564px; }
 .player-profile__table-heading,
-.player-profile__table-row { display: grid; grid-template-columns: minmax(138px, 1fr) 66px 84px 58px; align-items: center; gap: 4px; padding: 10px 14px; border-top: 1px solid rgb(var(--app-grid-rgb) / 60%); }
-.player-profile__table.has-weekly { min-width: 500px; }
+.player-profile__table-row { display: grid; grid-template-columns: minmax(138px, 1fr) 66px 84px 66px 66px 58px; align-items: center; gap: 4px; padding: 10px 14px; border-top: 1px solid rgb(var(--app-grid-rgb) / 60%); }
+.player-profile__table.has-weekly { min-width: 634px; }
 .player-profile__table.has-weekly .player-profile__table-heading,
-.player-profile__table.has-weekly .player-profile__table-row { grid-template-columns: minmax(138px, 1fr) 66px 72px 84px 58px; }
+.player-profile__table.has-weekly .player-profile__table-row { grid-template-columns: minmax(138px, 1fr) 66px 72px 84px 66px 66px 58px; }
 .player-profile__table-heading { color: var(--app-text-secondary); font-size: 10px; font-weight: 700; letter-spacing: .08em; }
 .player-profile__table-heading span:not(:first-child),
 .player-profile__table-row > *:not(:first-child) { text-align: center; }
@@ -2073,13 +2131,12 @@ html[data-theme="light"] .home-dashboard-loading-card--weekly {
 html[data-theme="light"] .home-dashboard-loading-card::before { background: linear-gradient(105deg, transparent 28%, rgb(99 164 222 / 14%) 48%, transparent 68%); }
 html[data-theme="light"] .home-dashboard-loading-card__line { background: rgb(99 164 222 / 18%); }
 
-/* Keep the browser home cards visually identical to their iOS counterparts:
-   Backword uses its flat lavender asset colour, Quick Crossword uses the
-   slate daily-card surface under iOS's 10% white overlay, and Pro is a white
-   card with the same gold gradient represented by its lead colour. */
+/* Backword and Quick Crossword retain their iOS Light Mode surfaces.
+   Pro Crossword keeps its dark metallic treatment in both themes. */
 html[data-theme="light"] .home-game-card--backword {
   background: color(display-p3 0.670 0.655 0.845);
 }
+html[data-theme="light"] .home-game-card--backword .home-game-card__streak-icon { color: #fff; }
 html[data-theme="light"] .home-game-card--crossword {
   color: #eeeeee;
   background: linear-gradient(rgb(255 255 255 / 10%), rgb(255 255 255 / 10%)), color(display-p3 0.289 0.397 0.544);
@@ -2098,21 +2155,12 @@ html[data-theme="light"] .home-game-card--crossword .home-game-card__stats { col
 html[data-theme="light"] .home-game-card--backword .home-game-card__score small,
 html[data-theme="light"] .home-game-card--crossword .home-game-card__score small { color: rgb(255 255 255 / 58%); }
 html[data-theme="light"] .home-game-card--backword .home-game-card__score.is-perfect strong { color: #c6f6b5; }
-html[data-theme="light"] .home-game-card__streak { border: 1px solid #fff; color: #eeeeee; background: rgb(26 26 26 / 52%); }
 
-html[data-theme="light"] .weekly-card {
-  border-color: #d9a640;
-  color: #d9a640;
-  background: var(--app-surface);
-}
-html[data-theme="light"] .weekly-card:hover,
-html[data-theme="light"] .weekly-card:focus-visible { background: var(--app-surface); }
-html[data-theme="light"] .weekly-card__title { color: #d9a640; }
 html[data-theme="light"] .weekly-card small { color: var(--app-text-secondary); }
 html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); }
 
 @media (max-width: 680px) {
-  .bw-page > .site-footer { display: none; }
+  .site-footer { display: none; }
   .legal-page__top-link {
     position: static;
     display: flex;
@@ -2135,14 +2183,37 @@ html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); 
   .player-profile__content { width: min(100% - 24px, 756px); }
   .home-dashboard__content { padding-top: 6px; }
   .home-dashboard__daily-layout { gap: 20px; }
-  .home-dashboard__games-grid { grid-template-columns: 1fr; gap: 20px; }
-  .home-game-card { min-height: 160px; border-radius: 10px; }
-  .wotd-card { height: 95px; min-height: 0; border-radius: 10px; }
+  .home-dashboard__games-grid { grid-template-columns: 1fr; grid-auto-rows: auto; gap: 20px; }
+  .home-game-card--archive,
+  .home-dashboard-loading-card--word-of-the-day,
+  .home-dashboard-loading-card--archive {
+    min-height: var(--home-compact-card-height);
+    height: var(--home-compact-card-height);
+    padding: 12px 18px;
+  }
+  .home-game-card--archive { grid-template-rows: 1fr; grid-template-areas: "identity identity identity"; }
+  .home-dashboard-loading-card--word-of-the-day,
+  .home-dashboard-loading-card--archive { gap: 8px; }
+  .home-game-card { border-radius: 10px; }
+  .wotd-card { height: var(--home-compact-card-height); min-height: 0; border-radius: 10px; }
   .weekly-modal__body { padding-inline: 26px; }
   .crossword-coming-soon__preview { margin: 36px auto auto; }
 }
 
 @media (min-width: 681px) {
+  .home-dashboard__games-grid { order: -1; }
+  .home-dashboard__game--backword,
+  .home-dashboard-loading-card--backword { order: 0; }
+  .home-dashboard__game--anagram,
+  .home-dashboard-loading-card--anagram { order: 1; }
+  .home-dashboard__game--midword,
+  .home-dashboard-loading-card--midword { order: 2; }
+  .home-dashboard__game--crossword,
+  .home-dashboard-loading-card--crossword { order: 3; }
+  .home-dashboard__game--archive,
+  .home-dashboard-loading-card--archive { order: 4; }
+  .home-dashboard__game--weekly,
+  .home-dashboard-loading-card--weekly { order: 5; }
   .wotd-card { display: none; }
   .wotd-drawer { display: block; opacity: 1; transform: none; }
   .wotd-drawer__inner { overflow: visible; }
@@ -2157,7 +2228,6 @@ html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); 
 
 @media (min-width: 681px) and (max-width: 1200px) {
   .home-dashboard__daily-layout { gap: 20px; }
-  .home-dashboard__games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 }
 
 @media (min-width: 681px) and (max-width: 900px) {
@@ -2260,7 +2330,7 @@ html[data-theme="light"] {
 
 .anagram-title-block {
   flex: 0 0 auto;
-  text-align: left;
+  text-align: center;
 }
 
 .anagram-loading {
@@ -2459,11 +2529,11 @@ html[data-theme="light"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(9px, 1.5vw, 14px);
 }
 
 .anagram-tray .anagram-letter-row {
-  display: contents;
+  width: 100%;
+  gap: var(--anagram-answer-gap);
 }
 
 .anagram-letter-row {
@@ -2474,6 +2544,8 @@ html[data-theme="light"] {
 
 .anagram-tile {
   width: var(--anagram-tray-letter-size);
+  min-width: 0;
+  flex: 0 1 var(--anagram-tray-letter-size);
   padding: 0;
   border: 0;
   color: var(--anagram-on-accent);
@@ -2637,6 +2709,8 @@ html[data-theme="light"] {
 }
 
 .anagram-dialog--instructions {
+  --instructions-accent: var(--anagram-accent);
+  --instructions-ink: var(--anagram-ink);
   display: flex;
   width: min(100%, 640px);
   max-height: 91svh;
@@ -2699,55 +2773,58 @@ html[data-theme="light"] {
   overscroll-behavior: contain;
 }
 
-.anagram-instructions {
-  color: var(--anagram-ink);
+.game-instructions {
+  color: var(--instructions-ink);
+  font-family: "Outfit", sans-serif;
   font-size: 14px;
   line-height: 1.45;
 }
 
-.anagram-instructions__section + .anagram-instructions__section {
+.game-instructions__section + .game-instructions__section {
   margin-top: 18px;
   padding-top: 18px;
-  border-top: 1px solid color-mix(in srgb, var(--anagram-accent) 25%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--instructions-accent) 25%, transparent);
 }
 
-.anagram-instructions__section h3 {
+.game-instructions__section h3 {
   display: flex;
   margin: 0 0 12px;
   align-items: center;
   gap: 12px;
-  color: var(--anagram-ink);
+  color: var(--instructions-ink);
   font-size: 15px;
   font-weight: 700;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
-.anagram-dialog .anagram-instructions p {
+.game-instructions p {
   margin: 0;
-  color: var(--anagram-ink);
+  color: var(--instructions-ink);
   line-height: 1.45;
 }
 
-.anagram-instructions__section > p + p {
+.game-instructions__section > p + p {
   margin-top: 16px;
 }
 
-.anagram-instructions__row {
+.game-instructions__row {
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
   align-items: start;
   gap: 10px;
 }
 
-.anagram-instructions__row + .anagram-instructions__row {
+.game-instructions__row + .game-instructions__row {
   margin-top: 12px;
 }
 
-.anagram-instructions__icon {
+.game-instructions__icon {
   display: block;
   width: 22px;
   height: 22px;
   flex: 0 0 22px;
-  color: var(--anagram-accent);
+  color: var(--instructions-accent);
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -2755,7 +2832,7 @@ html[data-theme="light"] {
   stroke-width: 1.8;
 }
 
-.anagram-instructions__icon--letters {
+.game-instructions__icon--letters {
   font-size: 8px;
   font-weight: 700;
   letter-spacing: -.04em;
@@ -2763,32 +2840,32 @@ html[data-theme="light"] {
   text-align: center;
 }
 
-.anagram-instructions__scoring {
+.game-instructions__scoring {
   display: grid;
   margin: 0;
   gap: 10px;
 }
 
-.anagram-instructions__scoring > div {
+.game-instructions__scoring > div {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 20px;
 }
 
-.anagram-instructions__scoring dt,
-.anagram-instructions__scoring dd {
+.game-instructions__scoring dt,
+.game-instructions__scoring dd {
   margin: 0;
 }
 
-.anagram-instructions__scoring dd {
-  color: var(--anagram-accent);
+.game-instructions__scoring dd {
+  color: var(--instructions-accent);
   font-size: 14px;
   font-weight: 700;
   white-space: nowrap;
 }
 
-.anagram-instructions__scoring + p {
+.game-instructions__scoring + p {
   margin-top: 14px !important;
 }
 
@@ -3246,11 +3323,13 @@ html[data-theme="light"] {
 .home-game-card--anagram {
   display: grid;
   padding: 12px 18px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas: ". . streak" "identity identity identity" "details details details";
+  grid-template-rows: minmax(32px, 1fr) auto minmax(32px, 1fr);
   align-items: stretch;
   justify-content: stretch;
   border-radius: 12px;
-  gap: 12px;
+  gap: 8px;
   color: var(--anagram-on-accent);
   background: var(--anagram-home-card-accent);
   text-align: left;
@@ -3268,35 +3347,52 @@ html[data-theme="light"] {
   color: var(--anagram-on-accent);
 }
 
-.anagram-home-card__identity,
-.anagram-home-card__details {
+.anagram-home-card__identity {
   display: flex;
   min-width: 0;
   flex-direction: column;
 }
 
 .anagram-home-card__identity {
-  align-items: flex-start;
-  justify-content: flex-start;
+  grid-area: identity;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 6px;
 }
 
 .anagram-home-card__identity strong {
+  padding-left: .12em;
   font-size: clamp(17px, 2vw, 24px);
   font-weight: 900;
   letter-spacing: .12em;
 }
 
-.anagram-home-card__identity > span {
+@media (max-width: 300px) {
+  :is(.home-game-card__details, .anagram-home-card__details, .midword-home-card__details, .weekly-card__details):has(.home-game-card__score) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  :is(.home-game-card__details, .anagram-home-card__details, .midword-home-card__details, .weekly-card__details):has(.home-game-card__score) > .home-status,
+  .weekly-card__details:has(.home-game-card__score) > .weekly-card__status {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: center;
+  }
+  :is(.home-game-card__details, .anagram-home-card__details, .midword-home-card__details, .weekly-card__details):has(.home-game-card__score) > .home-game-card__issue {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+  }
+}
+
+.anagram-home-card__issue {
+  color: var(--anagram-on-accent);
   opacity: .84;
   font-size: 12px;
   font-weight: 900;
 }
 
 .anagram-home-card__details {
-  align-items: flex-end;
-  justify-content: flex-end;
-  gap: 5px;
   font-size: 13px;
   text-align: right;
 }
@@ -3310,30 +3406,31 @@ html[data-theme="light"] {
 }
 
 .home-game-card--anagram .home-game-card__streak {
-  min-height: 24px;
-  border: 0;
-  border-radius: 12px;
   color: var(--anagram-on-accent);
   background: color-mix(in srgb, var(--anagram-on-accent) 12%, transparent);
   font-weight: 900;
 }
 
+.home-game-card--anagram .home-game-card__streak-icon {
+  color: inherit;
+}
+
 .player-profile__table {
-  min-width: 490px;
+  min-width: 564px;
 }
 
 .player-profile__table-heading,
 .player-profile__table-row {
-  grid-template-columns: minmax(120px, 1fr) 58px 74px 74px 52px;
+  grid-template-columns: minmax(120px, 1fr) 58px 74px 74px 74px 52px;
 }
 
 .player-profile__table.has-weekly {
-  min-width: 560px;
+  min-width: 634px;
 }
 
 .player-profile__table.has-weekly .player-profile__table-heading,
 .player-profile__table.has-weekly .player-profile__table-row {
-  grid-template-columns: minmax(120px, 1fr) 58px 66px 74px 74px 52px;
+  grid-template-columns: minmax(120px, 1fr) 58px 66px 74px 74px 74px 52px;
 }
 
 @media (max-width: 700px) {
@@ -3396,12 +3493,8 @@ html[data-theme="light"] {
     font-size: clamp(18px, 6vw, 32px);
   }
 
-  .anagram-tray {
-    flex-direction: column;
-  }
-
-  .anagram-tray .anagram-letter-row {
-    display: flex;
+  .anagram-tray .anagram-tile {
+    font-size: clamp(18px, 6vw, 32px);
   }
 }
 
@@ -3432,11 +3525,6 @@ html[data-theme="light"] {
     font-size: 14px;
   }
 
-  .anagram-letter-row,
-  .anagram-tray {
-    gap: 8px;
-  }
-
   .anagram-controls {
     margin-top: 30px;
   }
@@ -3455,14 +3543,9 @@ html[data-theme="light"] {
 
   .home-game-card,
   .weekly-card {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   }
 
-  .home-game-card__details,
-  .weekly-card__details,
-  .anagram-home-card__details {
-    align-items: flex-end;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -28,12 +28,13 @@ export function WeeklyCrosswordModal({ onClose, showSignIn = false }: WeeklyCros
   }, [onClose]);
 
   return (
-    <div className="weekly-modal-backdrop" onMouseDown={onClose}>
+    <div className="weekly-modal-backdrop" onClick={(event) => {
+      if (event.target === event.currentTarget) onClose();
+    }}>
       <section
         aria-labelledby="weekly-modal-title"
         aria-modal="true"
         className="weekly-modal"
-        onMouseDown={(event) => event.stopPropagation()}
         role="dialog"
       >
         <button

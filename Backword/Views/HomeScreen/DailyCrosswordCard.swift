@@ -11,15 +11,10 @@ struct DailyCrosswordCard: View {
     @Environment(\.colorScheme) private var systemColorScheme
     @EnvironmentObject private var statsService: StatsService
     @ObservedObject var viewModel: HomeViewModel
-    @ScaledMetric private var iconSize: CGFloat = 10
     var showDailyCrossword: () -> Void
 
     private var appLayout: AppLayout {
         AppLayout(sizeClass: sizeClass)
-    }
-
-    private var isIpad: Bool {
-        sizeClass == .regular
     }
 
     var body: some View {
@@ -48,63 +43,72 @@ struct DailyCrosswordCard: View {
     }
 
     private var content: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 12) {
-                Text("QUICK CROSSWORD")
-                    .font(AppFont.clueLabel(isIpad ? 16 : 12))
-                    .foregroundColor(.dailyCardTitle)
-                    .tracking(3)
-                    .multilineTextAlignment(.center)
-
-                Text("9×9")
-                    .font(AppFont.caption())
-                    .foregroundColor(.dailyCardDescription)
-
-                if viewModel.state == .loading {
-                    ProgressView()
-                } else if viewModel.todaysPuzzle == nil {
-                    Text("Failed to fetch today's crossword.\nTap here to try again.")
-                        .font(AppFont.caption())
-                        .foregroundColor(.appTextSecondary)
-                        .multilineTextAlignment(.center)
-                } else {
-                    StatusLabelView(
-                        status: viewModel.puzzleStatus,
-                        textStyle: DailyCrosswordCardStatusStyle.textStyle(for: viewModel.puzzleStatus),
-                        borderStyle: badgeBorderStyle
-                    )
-                }
+        HomeGameCardContent(minimumHeight: appLayout.cardHeight, spacing: .zero) {
+            identityView
+        } details: {
+            detailsView
+        } header: {
+            HomeGameCardHeader(spacing: AnagramHomeCardLayout.statsSpacing) {
+                EmptyView()
+            } streak: {
+                StreakButton(streak: statsService.stats.liveCurrentStreak, borderStyle: badgeBorderStyle)
             }
-            .padding(.horizontal, 24)
-            .padding(.top, 24)
-            .padding(.bottom, 8)
-
-            bottomStatsView
-                .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
-                .padding(.bottom, 10)
         }
-        .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(
             cardBackground.environment(
                 \.colorScheme,
                 HomeCardAppearance.backgroundColorScheme(for: systemColorScheme)
             )
         )
-        .overlay(alignment: .topTrailing) {
-            issueNumberOverlay
-        }
         .environment(\.colorScheme, BackwordAppearance.colorScheme)
         .onAppear {
             viewModel.refreshProgressFromDisk()
         }
     }
 
+    private var identityView: some View {
+        VStack(spacing: AnagramHomeCardLayout.identitySpacing) {
+            Text("QUICK\nCROSSWORD")
+                .font(AppFont.clueLabel(appLayout.isiPad ? 20 : 16))
+                .foregroundColor(.dailyCardTitle)
+                .tracking(3)
+                .padding(.trailing, -3)
+                .lineLimit(2)
+                .minimumScaleFactor(0.35)
+                .multilineTextAlignment(.center)
+            Text("9×9")
+                .font(AppFont.caption())
+                .foregroundColor(.dailyCardDescription)
+        }
+    }
+
     @ViewBuilder
-    private var issueNumberOverlay: some View {
+    private var issueLabel: some View {
         if let issueNumber = viewModel.todaysPuzzle?.puzzleNumber {
             HomeCardIssueNumber(issueNumber: issueNumber)
-            .padding(.trailing, HomeCardIssueNumberLayout.horizontalInset)
-            .padding(.top, HomeCardIssueNumberLayout.topInset)
+        }
+    }
+
+    private var detailsView: some View {
+        HomeGameCardFooter(spacing: AnagramHomeCardLayout.statsSpacing) {
+            scoreView
+        } status: {
+            if viewModel.state == .loading {
+                ProgressView()
+            } else if viewModel.todaysPuzzle == nil {
+                Text("Failed to fetch today's crossword.\nTap here to try again.")
+                    .font(AppFont.caption())
+                    .foregroundColor(.appTextSecondary)
+                    .multilineTextAlignment(.center)
+            } else {
+                StatusLabelView(
+                    status: viewModel.puzzleStatus,
+                    textStyle: DailyCrosswordCardStatusStyle.textStyle(for: viewModel.puzzleStatus),
+                    borderStyle: badgeBorderStyle
+                )
+            }
+        } issue: {
+            issueLabel
         }
     }
 
@@ -117,17 +121,6 @@ struct DailyCrosswordCard: View {
                 RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
                     .fill(Color.homeCardBrightnessOverlay.opacity(HomeCardAppearance.lightModeBrightnessOverlayOpacity))
             }
-        }
-    }
-
-    private var bottomStatsView: some View {
-        HStack {
-            scoreView
-            Spacer(minLength: 2)
-            StreakButton(
-                streak: statsService.stats.liveCurrentStreak,
-                borderStyle: badgeBorderStyle
-            )
         }
     }
 

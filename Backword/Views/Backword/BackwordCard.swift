@@ -3,7 +3,6 @@ import SwiftUI
 struct BackwordCard: View {
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.colorScheme) private var systemColorScheme
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject private var statsService: BackwordStatsService
     @ScaledMetric private var spacing: CGFloat = 10
     @ObservedObject private var settings = AppSettings.shared
@@ -35,36 +34,33 @@ struct BackwordCard: View {
     }
 
     private var cardContainer: some View {
-        VStack(alignment: .center, spacing: 0) {
-            VStack(alignment: .center, spacing: 0) {
-                BackwordLogo(frame: 48, forceDark: true)
-                    .padding(.vertical, 10)
-
-                if let progress, progress.isComplete {
-                    completedPuzzleContent(progress: progress)
-                        .padding(.bottom, 8)
-                } else if service.isLoading {
-                    loadingView
-                } else if service.todaysWord == nil {
-                    errorView
-                } else {
-                    playView
-                }
-            }
-            .padding(.horizontal, 24)
-            .padding(.top, 10)
-
+        HomeGameCardContent(
+            minimumHeight: appLayout.cardHeight,
+            identityPosition: progress?.isComplete == true ? .top : .center,
+            spacing: AnagramHomeCardLayout.identitySpacing
+        ) {
+            BackwordLogo(frame: AppLayout.homeCardLogoHeight, forceDark: true)
+        } details: {
+            bottomStatsView
+        } accessory: {
             if let progress, progress.isComplete {
-                completedStatsView(progress: progress)
-                    .padding(.top, 8)
-                    .padding(.bottom, 10)
-            } else {
-                bottomStatsView
-                    .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
-                    .padding(.bottom, 10)
+                completedPuzzleContent(progress: progress)
+            } else if service.isLoading {
+                loadingView
+            } else if service.todaysWord == nil {
+                errorView
+            }
+        } header: {
+            HomeGameCardHeader(spacing: AnagramHomeCardLayout.statsSpacing) {
+                EmptyView()
+            } streak: {
+                StreakButton(
+                    streak: statsService.stats.liveCurrentStreak,
+                    backgroundStyle: .inProgress,
+                    borderStyle: badgeBorderStyle
+                )
             }
         }
-        .frame(maxWidth: .infinity, minHeight: appLayout.cardHeight)
         .background(
             cardBackground.environment(
                 \.colorScheme,
@@ -73,18 +69,13 @@ struct BackwordCard: View {
         )
         .background(Color.appCrosswordBackground)
         .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
-        .overlay(alignment: .topTrailing) {
-            issueNumberOverlay
-        }
         .environment(\.colorScheme, BackwordAppearance.colorScheme)
     }
 
     @ViewBuilder
-    private var issueNumberOverlay: some View {
+    private var issueNumberLabel: some View {
         if let issueNumber = service.todaysWord?.puzzleNumber {
             HomeCardIssueNumber(issueNumber: issueNumber)
-            .padding(.trailing, HomeCardIssueNumberLayout.horizontalInset)
-            .padding(.top, HomeCardIssueNumberLayout.topInset)
         }
     }
 
@@ -93,14 +84,12 @@ struct BackwordCard: View {
     }
 
     private var bottomStatsView: some View {
-        HStack {
+        HomeGameCardFooter(spacing: AnagramHomeCardLayout.statsSpacing) {
             scoreView
-            Spacer(minLength: 2)
-            StreakButton(
-                streak: statsService.stats.liveCurrentStreak,
-                backgroundStyle: .inProgress,
-                borderStyle: badgeBorderStyle
-            )
+        } status: {
+            statusLabel
+        } issue: {
+            issueNumberLabel
         }
     }
 
@@ -119,8 +108,14 @@ struct BackwordCard: View {
     }
 
     @ViewBuilder
-    private var playView: some View {
-        if let status {
+    private var statusLabel: some View {
+        if let progress, progress.isComplete {
+            StatusLabelView(
+                status: .status(for: progress),
+                textStyle: BackwordCardStatusStyle.textStyle,
+                borderStyle: badgeBorderStyle
+            )
+        } else if !service.isLoading, service.todaysWord != nil, let status {
             StatusLabelView(
                 status: status,
                 textStyle: BackwordCardStatusStyle.textStyle,
@@ -130,7 +125,6 @@ struct BackwordCard: View {
                 ),
                 borderStyle: badgeBorderStyle
             )
-                .padding(.bottom, 16)
         }
     }
 
@@ -190,7 +184,7 @@ struct BackwordCard: View {
                         BackwordLetterCell(
                             letter: letters[i],
                             isCorrect: true,
-                            size: 40,
+                            size: AppLayout.homeCardLetterCellSize,
                             correctCellStyle: BackwordCardAppearance.correctCellStyle(
                                 for: systemColorScheme
                             )
@@ -205,7 +199,7 @@ struct BackwordCard: View {
                     ForEach(0..<6, id: \.self) { i in
                         BackwordLetterCell(
                             letter: revealed.contains(i) ? letters[i] : nil,
-                            size: 40
+                            size: AppLayout.homeCardLetterCellSize
                         )
                     }
                 }
@@ -224,47 +218,6 @@ struct BackwordCard: View {
         }
     }
 
-    @ViewBuilder
-    private func completedStatsView(progress: BackwordProgress) -> some View {
-        if dynamicTypeSize > .accessibility1 {
-            VStack(spacing: 8) {
-                StatusLabelView(
-                    status: .status(for: progress),
-                    textStyle: BackwordCardStatusStyle.textStyle,
-                    borderStyle: badgeBorderStyle
-                )
-                    .fixedSize(horizontal: true, vertical: false)
-                bottomStatsView
-            }
-            .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
-            .frame(maxWidth: .infinity)
-        } else {
-            horizontalCompletedStatsView(progress: progress)
-        }
-    }
-
-    private func horizontalCompletedStatsView(progress: BackwordProgress) -> some View {
-        ZStack {
-            HStack(alignment: .center) {
-                scoreView
-                Spacer(minLength: 2)
-                StreakButton(
-                    streak: statsService.stats.liveCurrentStreak,
-                    backgroundStyle: .inProgress,
-                    borderStyle: badgeBorderStyle
-                )
-            }
-
-            StatusLabelView(
-                status: .status(for: progress),
-                textStyle: BackwordCardStatusStyle.textStyle,
-                borderStyle: badgeBorderStyle
-            )
-                .fixedSize(horizontal: true, vertical: false)
-        }
-        .padding(.horizontal, HomeCardStreakLayout.streakButtonEdgeInset)
-        .frame(maxWidth: .infinity)
-    }
 }
 
 private extension BackwordCard {

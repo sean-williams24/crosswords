@@ -122,6 +122,7 @@ struct OverallRatingTests {
             let ds = dateString(offsetByDays: -i)
             r.upsertDailyCrossword(score: 5, date: ds)
             r.upsertBackword(score: 5, date: ds)
+            if ds >= OverallRating.midwordLaunchDate { r.upsertMidword(score: 5, date: ds) }
             if withWeekly { r.upsertWeeklyCrossword(score: 5, date: ds) }
         }
         return r
@@ -136,22 +137,54 @@ struct OverallRatingTests {
             remaining -= daily
             let backword = min(5, remaining)
             remaining -= backword
+            let midword = ds >= OverallRating.midwordLaunchDate ? min(5, remaining) : 0
+            remaining -= midword
             r.upsertDailyCrossword(score: daily, date: ds)
             r.upsertBackword(score: backword, date: ds)
+            r.upsertMidword(score: midword, date: ds)
         }
         return r
     }
 
-    // MARK: maxPoints
-
-    @Test("Free user max = 14 × 2 games × 5 pts = 140")
-    func maxPointsFree() {
-        #expect(OverallRating().maxPoints(isPro: false, firstAnagramRelease: nil) == 140)
+    @Test("Both new games contribute independently to the overall maximum")
+    func combinedGameMaximum() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let launch = calendar.date(from: DateComponents(year: 2026, month: 10, day: 1, hour: 12))!
+        let mature = calendar.date(from: DateComponents(year: 2026, month: 10, day: 14, hour: 12))!
+        let rating = OverallRating()
+        #expect(rating.maxPoints(isPro: false, now: launch, calendar: calendar, firstAnagramRelease: "2026-09-26") == 175)
+        #expect(rating.maxPoints(isPro: false, now: mature, calendar: calendar, firstAnagramRelease: "2026-09-26") == 280)
+        #expect(rating.maxPoints(isPro: true, now: mature, calendar: calendar, firstAnagramRelease: "2026-09-26") == 290)
     }
 
-    @Test("Pro user max = 14 × 10 + 2 × 5 = 150")
+    @Test("Daily scores preserve both new games and decode older saves")
+    func combinedGameScorePersistence() throws {
+        let score = DailyScore(date: "2026-10-01", dailyCrossword: 1, weeklyCrossword: nil, backword: 2, midword: 3, anagram: 4)
+        let restored = try JSONDecoder().decode(DailyScore.self, from: JSONEncoder().encode(score))
+        #expect(restored.midword == 3)
+        #expect(restored.anagram == 4)
+        #expect(restored.total == 10)
+        let legacy = Data(#"{"date":"2026-10-01","dailyCrossword":1,"backword":2}"#.utf8)
+        let decoded = try JSONDecoder().decode(DailyScore.self, from: legacy)
+        #expect(decoded.midword == 0)
+        #expect(decoded.anagram == 0)
+    }
+
+    // MARK: maxPoints
+
+    private var midwordReleaseDays: Int {
+        (0..<14).filter { dateString(offsetByDays: -$0) >= OverallRating.midwordLaunchDate }.count
+    }
+
+    @Test("Free rating maximum phases in Midword releases")
+    func maxPointsFree() {
+        #expect(OverallRating().maxPoints(isPro: false, firstAnagramRelease: nil) == 140 + midwordReleaseDays * 5)
+    }
+
+    @Test("Pro rating maximum phases in Midword releases")
     func maxPointsPro() {
-        #expect(OverallRating().maxPoints(isPro: true, firstAnagramRelease: nil) == 150)
+        #expect(OverallRating().maxPoints(isPro: true, firstAnagramRelease: nil) == 150 + midwordReleaseDays * 5)
     }
 
     // MARK: totalPoints / fraction
@@ -164,7 +197,7 @@ struct OverallRatingTests {
     @Test("14 perfect days (free) → 140 points")
     func perfectTotalFree() {
         let r = perfectRating(days: 14)
-        #expect(r.totalPoints(isPro: false) == 140)
+        #expect(r.totalPoints(isPro: false) == r.maxPoints(isPro: false, firstAnagramRelease: nil))
     }
 
     @Test("14 perfect days (pro) → 150 points")
@@ -172,7 +205,7 @@ struct OverallRatingTests {
         let r = perfectRating(days: 14, withWeekly: true)
         // 14 × (5 daily + 5 backword) + 14 × 5 weekly = 210 total points
         // But max is 150, so totalPoints can exceed maxPoints
-        #expect(r.totalPoints(isPro: true) == 210)
+        #expect(r.totalPoints(isPro: true) == 210 + midwordReleaseDays * 5)
     }
 
     @Test("fraction clamps at 1.0 even when over max")
@@ -192,7 +225,7 @@ struct OverallRatingTests {
             r.upsertDailyCrossword(score: 5, date: ds)
         }
         let frac = r.fraction(isPro: false, firstAnagramRelease: nil)
-        #expect(abs(frac - 0.5) < 0.001)
+        #expect(abs(frac - 70.0 / Double(r.maxPoints(isPro: false, firstAnagramRelease: nil))) < 0.001)
     }
 
     @Test("Per-game rolling totals use category-specific maximums")
@@ -210,6 +243,7 @@ struct OverallRatingTests {
 
         #expect(rating.points(for: .backword) == 42)
         #expect(rating.maxPoints(for: .backword) == 70)
+        #expect(rating.maxPoints(for: .midword) == midwordReleaseDays * 5)
         #expect(rating.points(for: .anagram) == 42)
         #expect(rating.maxPoints(for: .anagram) == 70)
         #expect(rating.points(for: .dailyCrossword) == 28)
@@ -277,48 +311,50 @@ struct OverallRatingTests {
     @Test("~20% → Scribe")
     func scribeTier() {
         // 20% of 140 = 28 pts. 14 days × 2 pts daily = 28.
-        var r = OverallRating()
-        for i in 0..<14 {
-            let ds = dateString(offsetByDays: -i)
-            r.upsertDailyCrossword(score: 2, date: ds)
-        }
+        let r = ratingWithFreePoints(Int(ceil(Double(OverallRating().maxPoints(isPro: false, firstAnagramRelease: nil)) * 0.2)))
         #expect(r.tier(isPro: false, firstAnagramRelease: nil) == .scribe)
     }
 
     @Test("40% remains Scribe")
     func fortyPercentRemainsScribe() {
         // 40% of 140 = 56 pts, below the new 50% Linguist threshold.
-        #expect(ratingWithFreePoints(56).tier(isPro: false, firstAnagramRelease: nil) == .scribe)
+        let max = OverallRating().maxPoints(isPro: false, firstAnagramRelease: nil)
+        #expect(ratingWithFreePoints(Int(Double(max) * 0.4)).tier(isPro: false, firstAnagramRelease: nil) == .scribe)
     }
 
     @Test("50% → Linguist")
     func linguistTier() {
         // 50% of 140 = 70 pts.
-        #expect(ratingWithFreePoints(70).tier(isPro: false, firstAnagramRelease: nil) == .linguist)
+        let max = OverallRating().maxPoints(isPro: false, firstAnagramRelease: nil)
+        #expect(ratingWithFreePoints(Int(ceil(Double(max) * 0.5))).tier(isPro: false, firstAnagramRelease: nil) == .linguist)
     }
 
     @Test("60% remains Linguist")
     func sixtyPercentRemainsLinguist() {
         // 60% of 140 = 84 pts, below the new 75% Grandmaster threshold.
-        #expect(ratingWithFreePoints(84).tier(isPro: false, firstAnagramRelease: nil) == .linguist)
+        let max = OverallRating().maxPoints(isPro: false, firstAnagramRelease: nil)
+        #expect(ratingWithFreePoints(Int(Double(max) * 0.6)).tier(isPro: false, firstAnagramRelease: nil) == .linguist)
     }
 
     @Test("75% → Grandmaster")
     func grandmasterTier() {
         // 75% of 140 = 105 pts.
-        #expect(ratingWithFreePoints(105).tier(isPro: false, firstAnagramRelease: nil) == .grandmaster)
+        let max = OverallRating().maxPoints(isPro: false, firstAnagramRelease: nil)
+        #expect(ratingWithFreePoints(Int(ceil(Double(max) * 0.75))).tier(isPro: false, firstAnagramRelease: nil) == .grandmaster)
     }
 
     @Test("Just under 90% remains Grandmaster")
     func justUnderVirtuosoRemainsGrandmaster() {
         // 125 / 140 = 89.29%, below the new 90% Virtuoso threshold.
-        #expect(ratingWithFreePoints(125).tier(isPro: false, firstAnagramRelease: nil) == .grandmaster)
+        let max = OverallRating().maxPoints(isPro: false, firstAnagramRelease: nil)
+        #expect(ratingWithFreePoints(Int(ceil(Double(max) * 0.9)) - 1).tier(isPro: false, firstAnagramRelease: nil) == .grandmaster)
     }
 
     @Test("90% → Virtuoso")
     func ninetyPercentVirtuosoTier() {
         // 90% of 140 = 126 pts.
-        #expect(ratingWithFreePoints(126).tier(isPro: false, firstAnagramRelease: nil) == .virtuoso)
+        let max = OverallRating().maxPoints(isPro: false, firstAnagramRelease: nil)
+        #expect(ratingWithFreePoints(Int(ceil(Double(max) * 0.9))).tier(isPro: false, firstAnagramRelease: nil) == .virtuoso)
     }
 
     @Test("Perfect free score → Virtuoso")

@@ -4,6 +4,7 @@ import type { BackwordProgress } from "../backword/types";
 import type { CloudRecord } from "../sync/progressSync";
 
 const windowDays = 14;
+export const midwordLaunchDate = "2026-10-01";
 const tierThresholds = [
   ["Novice", 0],
   ["Scribe", 0.2],
@@ -19,6 +20,7 @@ export type PlayerProfileDay = {
   dailyCrossword: number;
   weeklyCrossword: number | null;
   backword: number;
+  midword: number;
   anagram: number;
   total: number;
 };
@@ -81,6 +83,7 @@ export function buildPlayerProfileRating(
     backword: BackwordProfileProgress[];
     dailyCrossword: ProfileProgress[];
     weeklyCrossword: ProfileProgress[];
+    midword?: ProfileProgress[];
     anagram?: ProfileProgress[];
   },
   isPro: boolean,
@@ -92,6 +95,7 @@ export function buildPlayerProfileRating(
   const dailyScores = scoreMap(records.dailyCrossword, visibleDates);
   const backwordScores = backwordScoreMap(records.backword, visibleDates);
   const weeklyScores = scoreMap(records.weeklyCrossword, visibleDates);
+  const midwordScores = scoreMap(records.midword ?? [], visibleDates);
   const firstRelease = typeof window !== "undefined" ? window.localStorage.getItem("backword:web:anagram:first-release:v1") : null;
   const releasedAnagramDates = new Set(dates.filter((date) => firstRelease !== null && date >= firstRelease));
   const anagramScores = scoreMap(records.anagram ?? [], releasedAnagramDates);
@@ -99,6 +103,7 @@ export function buildPlayerProfileRating(
     const dailyCrossword = dailyScores.get(date) ?? 0;
     const backword = backwordScores.get(date) ?? 0;
     const anagram = anagramScores.get(date) ?? 0;
+    const midword = date >= midwordLaunchDate ? midwordScores.get(date) ?? 0 : 0;
     const weeklyCrossword = isPro ? weeklyScores.get(date) ?? null : null;
     return {
       date,
@@ -106,11 +111,12 @@ export function buildPlayerProfileRating(
       weeklyCrossword,
       backword,
       anagram,
-      total: dailyCrossword + backword + anagram + (weeklyCrossword ?? 0)
+      midword,
+      total: dailyCrossword + backword + anagram + midword + (weeklyCrossword ?? 0)
     };
   });
   const anagramPossiblePoints = firstRelease ? dates.filter((date) => date >= firstRelease).length * 5 : 0;
-  const maxPoints = 140 + (isPro ? 10 : 0) + anagramPossiblePoints;
+  const maxPoints = 140 + (isPro ? 10 : 0) + anagramPossiblePoints + dates.filter((date) => date >= midwordLaunchDate).length * 5;
   const totalPoints = days.reduce((total, day) => total + day.total, 0);
   const fraction = Math.min(totalPoints / maxPoints, 1);
   const tier = [...tierThresholds].reverse().find(([, threshold]) => fraction >= threshold)?.[0] ?? "Novice";

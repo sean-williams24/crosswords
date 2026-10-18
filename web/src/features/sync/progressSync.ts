@@ -1,11 +1,12 @@
 import { backwordScore } from "../backword/engine";
 import { localDateString } from "../backword/date";
 import { normalizeAnagramProgress, pointsForSeconds, type AnagramProgress } from "../anagram/engine";
+import { decodeProgress, type MidwordProgress } from "../midword/engine";
 import type { BackwordProgress } from "../backword/types";
 import type { CrosswordKind, CrosswordProgress } from "../crossword/types";
 import { supabase } from "../../lib/supabase";
 
-export type CloudGameType = "backword" | "daily_crossword" | "weekly_crossword" | "anagram";
+export type CloudGameType = "backword" | "midword" | "anagram" | "daily_crossword" | "weekly_crossword";
 
 export type CloudRecord<T> = {
   game_type: CloudGameType;
@@ -64,6 +65,15 @@ export function anagramCloudRecord(progress: AnagramProgress): CloudRecord<Anagr
   };
 }
 
+export function midwordCloudRecord(progress: MidwordProgress): CloudRecord<MidwordProgress> {
+  return {
+    game_type: "midword", content_key: progress.date, release_date: progress.date, schema_version: 1,
+    status: progress.outcome === "won" ? "solved" : progress.outcome === "failed" ? "failed" : "in_progress",
+    progress_rank: progress.guesses.length, release_score: progress.releaseDateScore,
+    client_updated_at: progress.updatedAt, payload: progress
+  };
+}
+
 export function crosswordCloudRecord(
   progress: CrosswordProgress,
   kind: CrosswordKind = progress.isWeekly ? "weekly" : "daily"
@@ -87,6 +97,24 @@ function statusRank(status: CloudRecord<unknown>["status"]) {
 
 /** Returns a whole-record winner; conflicting grids and guesses are never merged. */
 export function chooseBestProgress<T>(first: CloudRecord<T>, second: CloudRecord<T>): CloudRecord<T> {
+  if (first.game_type === "midword" && second.game_type === "midword") {
+    const a = decodeProgress(first.payload), b = decodeProgress(second.payload);
+    if (!a) return second;
+    if (!b) return first;
+    // Match native Midword ranking while retaining earned points independently.
+    const aWon = a.outcome === "won", bWon = b.outcome === "won";
+    const aComplete = a.completedAt !== null, bComplete = b.completedAt !== null;
+    let winner: CloudRecord<T>;
+    if (aWon !== bWon) winner = aWon ? first : second;
+    else if (aComplete !== bComplete) winner = aComplete ? first : second;
+    else if (a.guesses.length !== b.guesses.length) {
+      const preferFirst = aWon ? a.guesses.length < b.guesses.length : a.guesses.length > b.guesses.length;
+      winner = preferFirst ? first : second;
+    } else winner = Date.parse(a.updatedAt) >= Date.parse(b.updatedAt) ? first : second;
+    const score = Math.max(first.release_score, second.release_score, a.releaseDateScore, b.releaseDateScore);
+    return { ...winner, game_type: "midword", release_score: score,
+      payload: { ...(winner.payload === first.payload ? a : b), releaseDateScore: score } as T };
+  }
   if (first.game_type === "anagram" && second.game_type === "anagram") {
     const a = normalizeAnagramProgress(first.payload as AnagramProgress);
     const b = normalizeAnagramProgress(second.payload as AnagramProgress);

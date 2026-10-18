@@ -3,11 +3,14 @@ import { useParams } from "react-router-dom";
 import { BackwordCompletion } from "../features/backword/components/BackwordCompletion";
 import { BackwordInstructions } from "../features/backword/components/BackwordInstructions";
 import { BackwordKeyboard } from "../features/backword/components/BackwordKeyboard";
+import { BackwordLightbulbIcon } from "../features/backword/components/BackwordLightbulbIcon";
 import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { BackwordOnboardingCards } from "../features/backword/components/BackwordOnboardingCards";
 import { BackwordStats } from "../features/backword/components/BackwordStats";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { Footer } from "../components/Footer";
+import { GameSubmitButton } from "../components/GameSubmitButton";
+import { GameInputMessage } from "../components/GameInputMessage";
 import { InfoTooltip } from "../components/InfoTooltip";
 import { isCompletedOnReleaseDate, isLocalDateString, localDateString } from "../features/backword/date";
 import {
@@ -333,7 +336,7 @@ export function BackwordPage() {
 
   return (
     <div className="bw-page">
-      <div className="bw-shell">
+      <div className="bw-shell bw-shell--backword">
         <header className="bw-game-header bw-game-header--offset">
           <GameMenu
             isOpen={isMenuOpen}
@@ -386,6 +389,7 @@ export function BackwordPage() {
         {!loading && word ? (
           <>
             <main className="bw-game-main">
+              <p className="bw-game-explainer"><span>Guess the six letter word.</span><br />Spell it forwards - letters reveal backwards.</p>
               {usingCache ? <p className="bw-offline-note">Playing saved game offline</p> : null}
               {syncError ? <p className="bw-offline-note">{syncError}</p> : null}
               <p className="bw-clue"><span>Clue:</span> {word.clue.toUpperCase()}</p>
@@ -407,19 +411,16 @@ export function BackwordPage() {
                 ))}
               </div>
 
-              <LetterRow
-                answer={word.word}
-                input={input}
-                inputError={inputError}
-                outcome={progress.outcome}
-                revealed={revealed}
-              />
-
-              {invalidWordMessage ? (
-                <p aria-live="assertive" className="bw-invalid-word" role="alert">
-                  {invalidWordMessage}
-                </p>
-              ) : null}
+              <div className="bw-answer-input">
+                <LetterRow
+                  answer={word.word}
+                  input={input}
+                  inputError={inputError}
+                  outcome={progress.outcome}
+                  revealed={revealed}
+                />
+                <GameInputMessage className="bw-invalid-word" message={invalidWordMessage} />
+              </div>
 
               {progress.guesses.length ? (
                 <section className="bw-guess-history">
@@ -432,10 +433,10 @@ export function BackwordPage() {
                     />
                   ))}
                 </section>
-              ) : onboardingSteps.length === 0 ? (
+              ) : onboardingSteps.length === 0 && showDetailedExplainer ? (
                 <div className="bw-explainer-card">
-                  {showDetailedExplainer ? <span aria-hidden="true">💡</span> : null}
-                  <p>{showDetailedExplainer ? "If you’re stuck, guess any word to reveal letters" : "Guess the 6 letter word..."}</p>
+                  <BackwordLightbulbIcon />
+                  <p>If you’re stuck, guess any word to reveal letters</p>
                 </div>
               ) : null}
               {onboardingSteps.length ? (
@@ -449,15 +450,10 @@ export function BackwordPage() {
             </main>
 
             <footer className="bw-game-controls">
-              {progress.guesses.length === 0 ? (
-                <p className="bw-clue-help"><span>ⓘ</span> The clue is a word associated with the answer, or something connected to it</p>
-              ) : null}
               <div aria-label={`${stats.rollingScore} of 70 Backword points`} className="bw-game-score bw-game-score--keyboard-width">
                 <span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} />
               </div>
-              {canSubmit ? (
-                <button className="bw-submit" onClick={handleSubmit} type="button">Submit</button>
-              ) : null}
+              <GameSubmitButton onSubmit={handleSubmit} visible={canSubmit} />
               <BackwordKeyboard
                 disabled={progress.outcome !== "inProgress"}
                 onDelete={deleteLetter}

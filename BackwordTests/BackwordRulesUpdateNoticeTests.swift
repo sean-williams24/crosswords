@@ -27,6 +27,27 @@ struct BackwordRulesUpdateNoticeTests {
 @MainActor
 @Suite("Backword instructions layout")
 struct BackwordInstructionsLayoutTests {
+    @Test("Profile shares the five-guess scoring guide for Backword and Midword")
+    func profileSharesGuessScoringGuide() {
+        let rule = ScoringRuleView.backword()
+
+        #expect(rule.title == "Backword & Midword")
+        #expect(rule.rows.count == 6)
+        for guessCount in 1...5 {
+            let row = rule.rows[guessCount - 1]
+            let expectedPoints = Int.backwordScore(guessCount: guessCount)
+            #expect(row.0 == "Win in \(guessCount) \(guessCount == 1 ? "guess" : "guesses")")
+            #expect(row.1 == "\(expectedPoints) \(expectedPoints == 1 ? "pt" : "pts")")
+        }
+        #expect(rule.rows[5].0 == "Loss or missed")
+        #expect(rule.rows[5].1 == "0 pts")
+    }
+
+    @Test("Backword instructions retain their own scoring heading")
+    func backwordInstructionsScoringHeading() {
+        #expect(ScoringRuleView.backword(title: "Scoring").title == "Scoring")
+    }
+
     @Test("Hard mode toggle title reflects its state")
     func hardModeToggleTitleReflectsState() {
         #expect(BackwordModeToggle.title(isEnabled: false) == "Hard Mode - Off")
@@ -87,21 +108,5 @@ struct BackwordInstructionsLayoutTests {
         )
 
         #expect(fittedSize.width <= availableWidth + 0.5)
-    }
-}
-
-@MainActor
-@Suite("Backword clue explainer layout")
-struct BackwordClueExplainerLayoutTests {
-    @Test("White container fills the available horizontal width")
-    func fillsAvailableWidth() {
-        let availableWidth: CGFloat = 320
-        let host = UIHostingController(rootView: BackwordClueExplainerView())
-
-        let fittedSize = host.sizeThatFits(
-            in: CGSize(width: availableWidth, height: 1_000)
-        )
-
-        #expect(abs(fittedSize.width - availableWidth) < 0.5)
     }
 }

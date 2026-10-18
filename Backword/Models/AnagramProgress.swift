@@ -29,6 +29,7 @@ struct AnagramProgress: Codable, Equatable {
         updatedAt = now
         trayOrder = Array(0..<puzzle.length)
         placedTileIDs = Array(repeating: nil, count: puzzle.length)
+        avoidLeadingAnswerLetter(in: puzzle)
     }
 
     init(
@@ -120,13 +121,31 @@ struct AnagramProgress: Codable, Equatable {
         updatedAt = now
     }
 
-    mutating func shuffle(using order: [Int], now: Date = Date()) {
+    mutating func shuffle(using order: [Int], in puzzle: AnagramPuzzle, now: Date = Date()) {
         guard !isComplete else { return }
         let available = availableTileIDs
         guard order.sorted() == available.sorted() else { return }
         var iterator = order.makeIterator()
         trayOrder = trayOrder.map { available.contains($0) ? iterator.next()! : $0 }
+        avoidLeadingAnswerLetter(in: puzzle)
         updatedAt = now
+    }
+
+    /// Keep published tile identities and occupied tray slots intact.
+    mutating func avoidLeadingAnswerLetter(in puzzle: AnagramPuzzle) {
+        let letters = Array(puzzle.initialScramble)
+        guard !isComplete, let first = trayOrder.first,
+              availableTileIDs.contains(first), letters[first] == puzzle.answer.first else { return }
+        for index in trayOrder.indices.dropFirst() {
+            let tile = trayOrder[index]
+            guard availableTileIDs.contains(tile), letters[tile] != puzzle.answer.first else { continue }
+            var candidate = trayOrder
+            candidate.swapAt(0, index)
+            if placedTileIDs.allSatisfy({ $0 == nil }),
+               puzzle.answers.contains(String(candidate.map { letters[$0] })) { continue }
+            trayOrder = candidate
+            return
+        }
     }
 
     mutating func revealHint(in puzzle: AnagramPuzzle, source: HintSource, now: Date = Date()) {

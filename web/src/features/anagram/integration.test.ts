@@ -43,11 +43,11 @@ describe("Anagram account and rating integration", () => {
     const rating = buildPlayerProfileRating({ backword: [], dailyCrossword: [], weeklyCrossword: [], anagram: [
       { release_date: "2026-10-01", release_score: 4 }
     ] }, false, new Date("2026-10-02T12:00:00Z"));
-    expect(rating.maxPoints).toBe(150);
+    expect(rating.maxPoints).toBe(160);
     expect(rating.totalPoints).toBe(4);
     expect(rating.days[0].anagram).toBe(0);
     expect(rating.days[1].anagram).toBe(4);
     localStorage.setItem("backword:web:anagram:first-release:v1", "2026-09-01");
-    expect(buildPlayerProfileRating({ backword: [], dailyCrossword: [], weeklyCrossword: [] }, false, new Date("2026-10-02T12:00:00Z")).maxPoints).toBe(210);
+    expect(buildPlayerProfileRating({ backword: [], dailyCrossword: [], weeklyCrossword: [] }, false, new Date("2026-10-02T12:00:00Z")).maxPoints).toBe(220);
   });
 });

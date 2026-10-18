@@ -22,6 +22,7 @@ extension Color {
     static let appSurface = Color("Surface")
     static let appGridLine = Color("GridLine")
     static let appAccent = Color("Accent")
+    static let appInstructionIcon = Color("InstructionIcon")
     static let appCorrect = Color("Correct")
     static let appGaveUp = Color("GaveUp")
     static let appTextPrimary = Color("TextPrimary")
@@ -31,6 +32,10 @@ extension Color {
     static let dailyCardTitle = Color("DailyCardTitle")
     static let dailyCardDescription = Color("DailyCardDescription")
     static let homeCardBrightnessOverlay = Color.white
+    static let homeArchiveBorder = Color.white
+    static func homeCardProOnlyForeground(for colorScheme: ColorScheme) -> Color {
+        colorScheme == .light ? .black : .white
+    }
     static let solvedGold = Color("SolvedGold")
     static let appCrosswordBackground = Color("CrosswordBackground")
     static let backwordBackground = Color("BackwordBackground")
@@ -39,6 +44,12 @@ extension Color {
     static let shareCardBackwordStatLabel = Color("ShareCardBackwordStatLabel")
     static let shareCardDailyStatLabel = Color("ShareCardDailyStatLabel")
     static let shareCardWeeklyStatLabel = Color("ShareCardWeeklyStatLabel")
+    static let midwordBackground = Color("MidwordBackground")
+    static let midwordAccent = Color("MidwordAccent")
+    static let midwordInactiveCellBorder = Color("MidwordInactiveCellBorder")
+    static let midwordText = Color("MidwordText")
+    static let midwordOnAccent = Color("MidwordOnAccent")
+    static let midwordHomeCardForeground = Color("MidwordHomeCardForeground")
     static let anagramOrange = Color("AnagramOrange")
     static let anagramHomeCardBackground = Color("AnagramHomeCardBackground")
     static let anagramSurface = Color("AnagramSurface")
@@ -47,6 +58,18 @@ extension Color {
 }
 
 enum AppGradient {
+    // The stacked gameplay wordmark uses the same hard colour split as the web.
+    static let midwordLogo = LinearGradient(
+        stops: [
+            .init(color: .midwordAccent, location: 0),
+            .init(color: .midwordAccent, location: 0.49),
+            .init(color: .midwordText, location: 0.49),
+            .init(color: .midwordText, location: 1)
+        ],
+        startPoint: .top,
+        endPoint: .bottom
+    )
+
     static let pro = LinearGradient(
         colors: [
             Color(red: 0.85, green: 0.65, blue: 0.25),
@@ -61,6 +84,11 @@ enum AppGradient {
 /// Keeps the home-screen Backword card visually consistent with its dark design
 /// in either system appearance.
 enum BackwordAppearance {
+    static let colorScheme: ColorScheme = .dark
+}
+
+/// Pro Home cards retain their dark surface and readable content in both themes.
+enum WeeklyCrosswordCardAppearance {
     static let colorScheme: ColorScheme = .dark
 }
 
@@ -102,9 +130,18 @@ enum HomeCardAppearance {
     }
 }
 
+enum AdFreeExperienceButtonAppearance {
+    static func backgroundOpacity(for colorScheme: ColorScheme, isArchiveCard: Bool) -> Double {
+        isArchiveCard && colorScheme == .light ? 0.5 : 0.26
+    }
+}
+
 // MARK: - Typography
 
 enum AppFont {
+    static let settingsAccountIcon: Font = .title3
+    static let settingsRowChevron: Font = .caption.weight(.semibold)
+
     static func header(_ size: CGFloat = 32) -> Font {
         .custom("Outfit-Bold", size: size, relativeTo: .largeTitle)
     }
@@ -158,15 +195,20 @@ struct AppLayout {
     static let gridSpacing: CGFloat = 2
     static let cellCornerRadius: CGFloat = 2
     static let cardCornerRadius: CGFloat = 12
+    static let homeCardLogoHeight: CGFloat = 56
+    static let midwordHomeCardLogoHeight: CGFloat = 40
+    static let homeCardLetterCellSize: CGFloat = 32
     static let cardHeightSmall: CGFloat = 144
     static let cardHeightLarge: CGFloat = 194
+    static let settingsAccountRowSpacing: CGFloat = 12
+    static let settingsAccountTextSpacing: CGFloat = 2
+    static let settingsAccountTitleSize: CGFloat = 15
     static let screenPadding: CGFloat = 20
     static let screenPaddingLarge: CGFloat = 45
     static let anagramAnswerTileSpacing: CGFloat = 6
     static let anagramTrayTileSpacing: CGFloat = 8
     static let anagramBottomDockInset: CGFloat = 40
     static let anagramTrayPreferredTileSize: CGFloat = 52
-    static let anagramTraySizingColumns = 5
     static let statsHistoryRowInset: CGFloat = 14
     static let statsHistoryScoreColumnWidth: CGFloat = 50
     static let statsHistoryAccessibleScoreColumnWidth: CGFloat = 60
@@ -179,7 +221,20 @@ struct AppLayout {
     static let weeklyCompletionGridLetterSize: CGFloat = 8
     static let completionSparkleSize: CGFloat = 15
     static let homeNavigationIconGlyphSize: CGFloat = 20
+    static let homeTabBarTopPadding: CGFloat = 8
+    static let homeArchiveContentSpacing: CGFloat = 10
+    static let homeArchiveTitleSize: CGFloat = 24
+    static let homeArchiveBorderWidth: CGFloat = 1
+    static let onboardingInstructionIconSize: CGFloat = 18
     static let homeCardIssueNumberFontSize: CGFloat = 12
+    static let sheetBackgroundBlurRadius: CGFloat = 4
+    static let gameMaximumDynamicTypeSize: DynamicTypeSize = .xxxLarge
+    static let midwordInputCellSize: CGFloat = 56
+    static let midwordCompletionCellSize: CGFloat = 44
+    static let midwordInputCellSpacing: CGFloat = 7
+    static let midwordGuessCellSpacing: CGFloat = 6
+    static let midwordCompletionCellSpacing: CGFloat = 8
+    static let midwordCompletionCelebrationScale: CGFloat = 1.06
 
     var isiPad: Bool {
         sizeClass == .regular

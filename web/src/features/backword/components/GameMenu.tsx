@@ -127,7 +127,7 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
       {menuIsOpen ? createPortal(
         <div
           className="bw-menu-backdrop"
-          onMouseDown={(event) => {
+          onClick={(event) => {
             if (event.target === event.currentTarget) {
               closeMenu();
             }
@@ -181,6 +181,7 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
               <Link className="bw-menu-link bw-menu-link--primary" to="/">Home</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/backword">Backword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/anagram">Anagram</Link>
+              <Link className="bw-menu-link bw-menu-link--primary" to="/midword">Midword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to="/crossword">Quick Crossword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to={weeklyCrosswordDestination}>Pro Crossword</Link>
               <Link className="bw-menu-link bw-menu-link--primary" to={archiveDestination}>Archive</Link>

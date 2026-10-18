@@ -7,7 +7,6 @@ struct BackwordView: View {
     @EnvironmentObject var ratingService: OverallRatingService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) var sizeClass
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @State private var showInstructions = false
     @State private var instructionsPresentation: BackwordInstructionsPresentation?
@@ -43,7 +42,14 @@ struct BackwordView: View {
                                 .frame(height: 100)
                         }
 
-                        categoryView
+                        Text("Guess the six letter word.\nSpell it forwards - letters reveal backwards.")
+                            .font(AppFont.body())
+                            .foregroundColor(.appTextPrimary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, AppLayout.screenPadding)
+                            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+
+                        BackwordClueView(clue: viewModel.word.clue)
                         guessCounter
                         revealedLetterRow
 
@@ -76,10 +82,10 @@ struct BackwordView: View {
                         PuzzleResultShareButton(result: completionShareResult, compact: true)
                             .padding(10)
                             .transition(.move(edge: .bottom).combined(with: .opacity))
+                            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
                     }
                 }
                 VStack(spacing: 0) {
-                    clueExplainerView
                     Spacer()
                         .frame(height: 10)
 
@@ -386,16 +392,8 @@ struct BackwordView: View {
     // MARK: - Submit Button
 
     private var submitButton: some View {
-        Button {
+        GameSubmitButton {
             viewModel.submitGuess()
-        } label: {
-            Text("Submit")
-                .font(AppFont.clueLabel(15))
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(Color.appAccent)
-                .cornerRadius(AppLayout.cardCornerRadius)
         }
     }
 
@@ -450,65 +448,11 @@ struct BackwordView: View {
         .frame(maxWidth: .infinity, alignment: .center)
     }
 
-    // MARK: - Hint Row
-
-    @ViewBuilder
-    private var categoryView: some View {
-        Group {
-            if dynamicTypeSize > .accessibility1 {
-                VStack(alignment: .leading) {
-                    categoryContent
-                }
-            } else {
-                VStack(alignment: .leading, spacing: 10) {
-                    horizontalCategoryContent
-                }
-            }
-        }
-        .fixedSize(horizontal: false, vertical: true)
-        .padding(.horizontal, 16)
-        .padding(.vertical, 7)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Clue: \(viewModel.word.clue)")
-    }
-
-    @ViewBuilder
-    private var clueExplainerView: some View {
-        if viewModel.shouldShowClueExplainer {
-            BackwordClueExplainerView()
-        }
-    }
-
-    @ViewBuilder
-    private var horizontalCategoryContent: some View {
-        HStack(spacing: 6) {
-            categoryContent
-            Spacer()
-        }
-    }
-
-    @ViewBuilder
-    private var categoryContent: some View {
-        Text("Clue: ")
-            .font(AppFont.clueLabel(isIpad ? 25 : 16))
-            .foregroundColor(.appAccent)
-
-        Text(viewModel.word.clue.uppercased())
-            .font(AppFont.clueLabel(isIpad ? 30 : 19 ))
-            .foregroundColor(.appTextPrimary)
-            .lineLimit(1)
-            .minimumScaleFactor(0.5)
-    }
-
     // MARK: - Explainer Banner
 
     private var explainerBanner: some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
-            if viewModel.isDetailedExplainerVisible {
-                Image(systemName: "lightbulb")
-                    .font(AppFont.body(15))
-                    .foregroundColor(.solvedGold)
-            }
+            BackwordLightbulbIcon()
 
             Text(viewModel.explainerText)
                 .font(AppFont.body(15))
@@ -534,24 +478,6 @@ struct BackwordView: View {
             }
     }
 
-}
-
-struct BackwordClueExplainerView: View {
-    var body: some View {
-        HStack(alignment: .firstTextBaseline) {
-            Image(systemName: "info.circle")
-                .font(AppFont.body(14))
-                .foregroundColor(.appCorrect)
-
-            Text("The clue is associated with the answer, or something connected to it")
-                .font(AppFont.body(14))
-                .foregroundColor(.appTextSecondary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, AppLayout.screenPadding)
-        .padding(.top, 10)
-        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-    }
 }
 
 // MARK: - Previews

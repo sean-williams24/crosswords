@@ -139,16 +139,16 @@ final class BackwordViewModel: ObservableObject {
     var guessesForHistory: [String] { progress.guesses.reversed() }
     var maxGuesses: Int { 5 }
     var guessesRemaining: Int { maxGuesses - guessCount }
-    var shouldShowClueExplainer: Bool { progress.guesses.isEmpty }
     var shouldShowExplainerBanner: Bool {
+        isExplainerEligible && isDetailedExplainerVisible
+    }
+
+    private var isExplainerEligible: Bool {
         progress.guesses.isEmpty && onboardingSteps.isEmpty
     }
 
     var explainerText: String {
-        if isDetailedExplainerVisible {
-            return "If you're stuck, guess any word to reveal a letter"
-        }
-        return "Guess the 6 letter word..."
+        "If you're stuck, guess any word to reveal a letter"
     }
 
     /// Number of cells the user types into.
@@ -195,7 +195,7 @@ final class BackwordViewModel: ObservableObject {
     }
 
     func startExplainerCountdown() {
-        guard shouldShowExplainerBanner, explainerTask == nil else { return }
+        guard isExplainerEligible, explainerTask == nil else { return }
 
         explainerTask = Task { [weak self] in
             try? await Task.sleep(nanoseconds: 30_000_000_000)
@@ -210,7 +210,7 @@ final class BackwordViewModel: ObservableObject {
     }
 
     func markExplainerDelayElapsed() {
-        guard shouldShowExplainerBanner else { return }
+        guard isExplainerEligible else { return }
         isDetailedExplainerVisible = true
     }
 

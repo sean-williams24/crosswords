@@ -124,6 +124,8 @@ enum PuzzleLaunchContext: Equatable {
             return puzzle.id != currentWeeklyPuzzleId
         case .backword, .anagram:
             return false
+        case .midword:
+            return false
         }
     }
 }

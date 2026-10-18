@@ -5,6 +5,7 @@ type BackwordModalProps = {
   onClose: () => void;
   children: ReactNode;
   className?: string;
+  backdropClassName?: string;
   showCloseButton?: boolean;
 };
 
@@ -13,6 +14,7 @@ export function BackwordModal({
   onClose,
   children,
   className = "",
+  backdropClassName = "",
   showCloseButton = true
 }: BackwordModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -35,7 +37,9 @@ export function BackwordModal({
   }, [onClose]);
 
   return (
-    <div className="bw-modal-backdrop" role="presentation">
+    <div className={`bw-modal-backdrop${backdropClassName ? ` ${backdropClassName}` : ""}`} onClick={(event) => {
+      if (event.target === event.currentTarget) onClose();
+    }} role="presentation">
       <section
         aria-label={title}
         aria-modal="true"

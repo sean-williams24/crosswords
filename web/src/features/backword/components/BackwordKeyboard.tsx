@@ -5,18 +5,20 @@ const rows = [
 ];
 
 type BackwordKeyboardProps = {
+  ariaLabel?: string;
   disabled: boolean;
   onDelete: () => void;
   onLetter: (letter: string) => void;
 };
 
 export function BackwordKeyboard({
+  ariaLabel = "Backword keyboard",
   disabled,
   onDelete,
   onLetter
 }: BackwordKeyboardProps) {
   return (
-    <div aria-label="Backword keyboard" className="bw-keyboard" role="group">
+    <div aria-label={ariaLabel} className="bw-keyboard" role="group">
       {rows.map((row, rowIndex) => (
         <div className="bw-keyboard-row" key={row.join("")}>
           {row.map((letter) => (

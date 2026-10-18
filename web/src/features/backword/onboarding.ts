@@ -1,7 +1,7 @@
 import type { BackwordMode, BackwordOnboardingStep, BackwordSettings } from "./types";
 
 export const BACKWORD_ONBOARDING_STEPS: readonly BackwordOnboardingStep[] = [
-  "guessWord",
+  "clue",
   "connectedLetters",
   "freeReveals",
   "scoring",
@@ -15,8 +15,8 @@ export function pendingBackwordOnboardingSteps(settings: BackwordSettings): Back
 
 export function backwordOnboardingText(step: BackwordOnboardingStep, mode: BackwordMode): string {
   switch (step) {
-    case "guessWord":
-      return "Guess the 6 letter word...";
+    case "clue":
+      return "The clue is a word associated with the answer, or something connected to it";
     case "connectedLetters":
       return "Correctly placed letters reveal when they form an unbroken chain from the back of the word.";
     case "freeReveals":

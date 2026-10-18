@@ -104,6 +104,14 @@ final class CacheService {
         load([BackwordWord].self, from: archiveFileURL(prefix: "archive_backword", month: month))
     }
 
+    func saveMidwordArchive(_ puzzles: [MidwordPuzzle], for month: ArchiveMonth) {
+        save(puzzles, to: archiveFileURL(prefix: "archive_midword", month: month))
+    }
+
+    func loadMidwordArchive(for month: ArchiveMonth) -> [MidwordPuzzle]? {
+        load([MidwordPuzzle].self, from: archiveFileURL(prefix: "archive_midword", month: month))
+    }
+
     func saveAnagramArchive(_ puzzles: [AnagramPuzzle], for month: ArchiveMonth) {
         save(puzzles, to: archiveFileURL(prefix: "archive_anagram", month: month))
     }

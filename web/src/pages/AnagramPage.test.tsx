@@ -5,7 +5,8 @@ import { resolve } from "node:path";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { localDateString } from "../features/backword/date";
-import { reviewAnagramPuzzle } from "../features/anagram/engine";
+import { reviewAnagramPuzzle, startProgress } from "../features/anagram/engine";
+import { AnagramBoard } from "../features/anagram/components";
 import { AnagramPage } from "./AnagramPage";
 
 vi.mock("../features/anagram/repository", () => ({
@@ -16,6 +17,24 @@ vi.mock("../features/anagram/repository", () => ({
 }));
 
 describe("Anagram browser game", () => {
+  it.each([
+    { answer: "BUBBLES", initialScramble: "BBBLUES" },
+    { answer: "TRIANGLE", initialScramble: "RAGTLINE" },
+    { answer: "BLUEBERRY", initialScramble: "RYBBERUEL" }
+  ])("keeps every $answer tile in one row", ({ answer, initialScramble }) => {
+    const puzzle = { ...reviewAnagramPuzzle(localDateString()), answer, initialScramble, acceptedAnswers: [] };
+    const progress = startProgress(puzzle);
+    const onPlace = vi.fn();
+    render(<AnagramBoard puzzle={puzzle} progress={progress} now={new Date()}
+      onPlace={onPlace} onUndo={vi.fn()} onRestart={vi.fn()} onShuffle={vi.fn()} onHint={vi.fn()} onGiveUp={vi.fn()} />);
+    const tray = screen.getByLabelText("Scrambled letter tray");
+    expect(tray.querySelectorAll(".anagram-letter-row")).toHaveLength(1);
+    expect(within(tray).getAllByRole("button")).toHaveLength(answer.length);
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    expect(styles).not.toMatch(/\.anagram-tray\s*\{[^}]*flex-direction:\s*column/);
+    expect(styles).toMatch(/\.anagram-tile\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*0 1 var\(--anagram-tray-letter-size\)/);
+  });
+
   beforeEach(() => {
     localStorage.clear();
     Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
@@ -47,6 +66,19 @@ describe("Anagram browser game", () => {
     await screen.findByRole("button", { name: "Start" });
   });
 
+  it("centres the game title and issue number in the same header", async () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const titleBlock = styles.match(/\.anagram-title-block\s*\{([^}]*)\}/)?.[1];
+    expect(titleBlock).toMatch(/text-align:\s*center/);
+
+    render(<MemoryRouter><AnagramPage /></MemoryRouter>);
+    const title = screen.getByRole("heading", { name: "ANAGRAM", level: 1 });
+    const header = title.closest(".anagram-title-block");
+    expect(header).toContainElement(screen.getByText("Daily puzzle"));
+    await screen.findByRole("button", { name: "Start" });
+    expect(header).toContainElement(screen.getByText("Puzzle #7"));
+  });
+
   it("keeps the letter tray and controls at the bottom of the game board", async () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
     const board = styles.match(/\.anagram-board\s*\{([^}]*)\}/)?.[1];
@@ -66,22 +98,38 @@ describe("Anagram browser game", () => {
     expect(boardElement.querySelector(".anagram-gameplay-dock")).toContainElement(screen.getByRole("button", { name: "Give up" }));
   });
 
-  it("shows the compact share action on the game after completion closes", async () => {
+  it.each(["solved", "gave_up"])("places the compact share action above the tray after a %s completion closes", async (outcome) => {
     const user = userEvent.setup();
     render(<MemoryRouter><AnagramPage /></MemoryRouter>);
 
     await user.click(await screen.findByRole("button", { name: "Start" }));
     expect(screen.queryByRole("button", { name: "Share result" })).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "Give up" }));
-    await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
-    const completion = await screen.findByRole("dialog", { name: "Finished" });
+    if (outcome === "solved") {
+      for (const letter of "TRIANGLE") {
+        await user.click(screen.getByRole("button", { name: new RegExp(`^Letter ${letter}, tray position`) }));
+      }
+    } else {
+      await user.click(screen.getByRole("button", { name: "Give up" }));
+      await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
+    }
+    const completion = await screen.findByRole("dialog", { name: outcome === "solved" ? "Solved!" : "Finished" });
     expect(within(completion).getByRole("button", { name: "Share result" })).toBeInTheDocument();
     expect(within(screen.getByRole("main")).queryByRole("button", { name: "Share result" })).not.toBeInTheDocument();
 
     await user.click(within(completion).getByRole("button", { name: "BACK TO GAME" }));
     const gameShareButton = within(screen.getByRole("main")).getByRole("button", { name: "Share result" });
     expect(gameShareButton).toHaveClass("puzzle-result-share__button--compact");
-    expect(gameShareButton.closest(".puzzle-result-share--compact")?.parentElement).toHaveClass("anagram-main");
+    const share = gameShareButton.closest(".puzzle-result-share--compact")!;
+    expect(share.parentElement).toHaveClass("anagram-gameplay-dock");
+    const tray = screen.getByLabelText("Scrambled letter tray");
+    expect(share.nextElementSibling).toBe(tray);
+
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    const mobileSharing = styles.match(/@media \(max-width: 699px\) \{\s*\.puzzle-result-share__fallback[^}]*\}\s*\.anagram-gameplay-dock > \.puzzle-result-share--compact\s*\{([^}]*)\}/)?.[1];
+    expect(mobileSharing).toMatch(/position:\s*relative/);
+    expect(mobileSharing).toMatch(/top:\s*auto/);
+    expect(mobileSharing).toMatch(/margin:\s*0 0 16px auto/);
+    expect(styles).not.toContain(".anagram-main > .puzzle-result-share--compact");
   });
 });

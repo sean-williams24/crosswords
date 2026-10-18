@@ -4,10 +4,12 @@ import { useAuth } from "../features/auth/AuthProvider";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { anagramCloudRecord, backwordCloudRecord, crosswordCloudRecord, fetchCloudProgress, refreshAccountProgress } from "../features/sync/progressSync";
 import { createAnagramStorage } from "../features/anagram/storage";
+import { createMidwordStorage } from "../features/midword/storage";
+import { midwordCloudRecord } from "../features/sync/progressSync";
 import { createAnagramRepository } from "../features/anagram/repository";
 import { createBackwordStorage } from "../features/backword/storage";
 import { createCrosswordStorage } from "../features/crossword/storage";
-import { buildPlayerProfileRating, formatProfileDate } from "../features/profile/profileRating";
+import { buildPlayerProfileRating, formatProfileDate, midwordLaunchDate } from "../features/profile/profileRating";
 import { loadLocalProfileRecords } from "../features/profile/profileRecords";
 import { Footer } from "../components/Footer";
 import { accountActionErrorMessage } from "../features/auth/authErrorPresentation";
@@ -21,6 +23,7 @@ type ProfileRecords = {
   anagram: Awaited<ReturnType<typeof fetchCloudProgress>>;
   dailyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
   weeklyCrossword: Awaited<ReturnType<typeof fetchCloudProgress>>;
+  midword: Awaited<ReturnType<typeof fetchCloudProgress>>;
 };
 
 type AccountProfileRecords = {
@@ -51,6 +54,7 @@ export function PlayerProfilePage() {
     setSyncError(null);
     const backwordStorage = createBackwordStorage(window.localStorage, { userId });
     const anagramStorage = createAnagramStorage(window.localStorage, { userId });
+    const midwordStorage = createMidwordStorage(window.localStorage, { userId });
     const crosswordStorage = createCrosswordStorage(window.localStorage, { userId });
     try {
       await Promise.all([
@@ -63,6 +67,8 @@ export function PlayerProfilePage() {
         ),
         refreshAccountProgress(userId, "anagram", anagramStorage.loadAllProgress().map(anagramCloudRecord),
           (record) => anagramStorage.replaceProgress(record.payload)),
+        refreshAccountProgress(userId, "midword", midwordStorage.loadAllProgress().map(midwordCloudRecord),
+          (record) => midwordStorage.replaceProgress(record.payload)),
         refreshAccountProgress(
           userId,
           "daily_crossword",
@@ -70,13 +76,14 @@ export function PlayerProfilePage() {
           (record) => crosswordStorage.replaceProgress(record.payload)
         )
       ]);
-      const [backword, anagram, dailyCrossword, weeklyCrossword] = await Promise.all([
+      const [backword, anagram, dailyCrossword, weeklyCrossword, midword] = await Promise.all([
         fetchCloudProgress("backword"),
         fetchCloudProgress("anagram"),
         fetchCloudProgress("daily_crossword"),
-        fetchCloudProgress("weekly_crossword")
+        fetchCloudProgress("weekly_crossword"),
+        fetchCloudProgress("midword")
       ]);
-      setRecords({ userId, value: { backword, anagram, dailyCrossword, weeklyCrossword } });
+      setRecords({ userId, value: { backword, anagram, dailyCrossword, weeklyCrossword, midword } });
     } catch (error) {
       console.error("Account profile refresh failed", error);
       setSyncError(accountActionErrorMessage("refresh"));
@@ -188,8 +195,8 @@ export function PlayerProfilePage() {
             <section className="player-profile__breakdown" aria-labelledby="rating-breakdown-title">
               <h2 id="rating-breakdown-title">LAST 14 DAYS</h2>
               <div className="player-profile__table-scroll">
-                  <div className={`player-profile__table${isPro ? " has-weekly" : ""}`}>
-                  <div className="player-profile__table-heading"><span>Date</span><span>Quick</span>{isPro ? <span>Weekly</span> : null}<span>Backword</span><span>Anagram</span><span>Total</span></div>
+                <div className={`player-profile__table${isPro ? " has-weekly" : ""}`}>
+                  <div className="player-profile__table-heading"><span>Date</span><span>Quick</span>{isPro ? <span>Weekly</span> : null}<span>Backword</span><span>Anagram</span><span>Midword</span><span>Total</span></div>
                   {rating.days.map((day, index) => (
                     <div className="player-profile__table-row" key={day.date}>
                       <span>{formatProfileDate(day.date)}{index === 0 ? <small>TODAY</small> : null}</span>
@@ -197,6 +204,7 @@ export function PlayerProfilePage() {
                       {isPro ? day.weeklyCrossword === null ? <span className="player-profile__empty-score">—</span> : <ScoreChip score={day.weeklyCrossword} /> : null}
                       <ScoreChip score={day.backword} />
                       <ScoreChip score={day.anagram} />
+                      {day.date >= midwordLaunchDate ? <ScoreChip score={day.midword} /> : <span className="player-profile__empty-score">—</span>}
                       <strong className={day.total === 0 ? "is-zero" : ""}>{day.total}</strong>
                     </div>
                   ))}
@@ -239,7 +247,7 @@ function ScoringDetailsContent() {
   return <div className="player-profile__scoring-details">
     <ScoringRule rows={[["100% complete", "5 pts"], ["75–99% complete", "4 pts"], ["50–74% complete", "3 pts"], ["25–49% complete", "2 pts"], ["1–24% complete", "1 pt"], ["Missed", "0 pts"]]} title="Quick & Weekly Crossword" />
     <p>− 1 point deducted for every 3 hints used</p>
-    <ScoringRule rows={[["Win in 1 guess", "5 pts"], ["Win in 2 guesses", "4 pts"], ["Win in 3 guesses", "3 pts"], ["Win in 4 guesses", "2 pts"], ["Win in 5 guesses", "1 pt"], ["Loss or missed", "0 pts"]]} title="Backword" />
+    <ScoringRule rows={[["Win in 1 guess", "5 pts"], ["Win in 2 guesses", "4 pts"], ["Win in 3 guesses", "3 pts"], ["Win in 4 guesses", "2 pts"], ["Win in 5 guesses", "1 pt"], ["Loss or missed", "0 pts"]]} title="Backword & Midword" />
     <ScoringRule rows={[["Under 30 seconds", "5 pts"], ["Under 60 seconds", "4 pts"], ["Under 120 seconds", "3 pts"], ["Under 180 seconds", "2 pts"], ["180 seconds or more", "1 pt"], ["Give up or missed", "0 pts"]]} title="Anagram" />
   </div>;
 }

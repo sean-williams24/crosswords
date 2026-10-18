@@ -101,6 +101,8 @@ private struct BackwordOnboardingCard: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
+            BackwordLightbulbIcon()
+
             Text(text)
                 .font(AppFont.body(13))
                 .foregroundColor(.appTextSecondary)

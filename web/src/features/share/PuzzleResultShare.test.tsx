@@ -61,6 +61,13 @@ describe("result sharing", () => {
     expect(container.querySelector(".puzzle-result-share--compact")).toBeInTheDocument();
   });
 
+  it("can show the native share icon with the full completion button label", () => {
+    render(<PuzzleResultShare result={result} showIcon showPreview={false} />);
+    const button = screen.getByRole("button", { name: "Share result" });
+    expect(button.querySelector(".puzzle-result-share__icon")).toHaveAttribute("aria-hidden", "true");
+    expect(button).not.toHaveClass("puzzle-result-share__button--compact");
+  });
+
   it("uses a PNG image card for both Chrome and Safari", () => {
     expect(shareCardFormat("Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36")).toBe("png");
     expect(shareCardFormat("Mozilla/5.0 Version/18.5 Safari/605.1.15")).toBe("png");

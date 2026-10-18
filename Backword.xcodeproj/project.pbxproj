@@ -160,10 +160,28 @@
 		A0A000000000000000000123 /* AnagramHintBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000023 /* AnagramHintBanner.swift */; };
 		A0A000000000000000000124 /* AnagramHintBannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000024 /* AnagramHintBannerTests.swift */; };
 		A0A000000000000000000140 /* AnagramPlaceholderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000040 /* AnagramPlaceholderCard.swift */; };
+		A0B000000000000000000101 /* MidwordStatsHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B000000000000000000001 /* MidwordStatsHistory.swift */; };
+		A0B000000000000000000102 /* MidwordStatsHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B000000000000000000002 /* MidwordStatsHistoryView.swift */; };
+		A0B000000000000000000103 /* MidwordStatsHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B000000000000000000003 /* MidwordStatsHistoryTests.swift */; };
 		A11C0A110000000000000001 /* AccountSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C0A100000000000000001 /* AccountSyncTests.swift */; };
 		A11CC001300A000000000001 /* AccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11CC000300A000000000001 /* AccountSheet.swift */; };
 		A11DD001300A000000000001 /* AppleSignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11DD000300A000000000001 /* AppleSignInButton.swift */; };
+		A1C0A0013016000000000001 /* ArchiveIssueDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0A0023016000000000001 /* ArchiveIssueDateView.swift */; };
 		A220B5F6D4E48FCC57832B9C /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15EB4D0D354246894E51C7E /* CacheService.swift */; };
+		A82CFBD4790ADB40E195ADD8 /* MidwordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8013956F1CB59F9C80F81AB /* MidwordCard.swift */; };
+		A83D7E3FB67BDC4A73E32933 /* MidwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */; };
+		A84B89AE16F5D3929016DE05 /* MidwordGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */; };
+		A84B89AE16F5D3929016DE06 /* MidwordInstructionsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A821CFAEED5E90B1ABE4E8DE /* MidwordInstructionsViewTests.swift */; };
+		A86355B66F25A22B9C9AB15B /* MidwordCompletionWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AB82BBFACA33CA3778BC1A /* MidwordCompletionWordView.swift */; };
+		A8668C9DDE853E7503FE8BC4 /* MidwordPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8593FC71ACF6AF5027A308D /* MidwordPuzzle.swift */; };
+		A873D88AC6DE0B55EFDB427A /* MidwordProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84B19CBE925E605AAA62242 /* MidwordProgress.swift */; };
+		A87593C9AEA8FA0C03E315E7 /* MidwordStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */; };
+		A8B82A5874D65009EBF8F772 /* MidwordArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E256D89F4E7DE3DFD5A5AF /* MidwordArchiveRow.swift */; };
+		A8B927B73ABB0E4C3B21B75A /* MidwordBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81BADC74D85E195F31F646D /* MidwordBoardView.swift */; };
+		A8C7F36D88E76EDF2BADA86A /* MidwordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */; };
+		A8C8B52EC75BCACC3BADB7A8 /* MidwordInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */; };
+		A8C9A673F6B624C5D7673E8C /* MidwordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85BAE372EF092378192E9B2 /* MidwordService.swift */; };
+		A8E5B970FFA351CAFAACA37B /* MidwordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8220AB384E18F7E4E984338 /* MidwordViewModel.swift */; };
 		ABCD10000000000000000004 /* FeedbackEmailContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000001 /* FeedbackEmailContentTests.swift */; };
 		ABCD10000000000000000005 /* FeedbackEmailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000002 /* FeedbackEmailContent.swift */; };
 		ABCD10000000000000000006 /* MailComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000003 /* MailComposerView.swift */; };
@@ -171,6 +189,7 @@
 		AD5100013011000000000001 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5100023011000000000001 /* AdServices.framework */; };
 		AD5100033011000000000001 /* AppleAdsAttributionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5100043011000000000001 /* AppleAdsAttributionService.swift */; };
 		AD5100053011000000000001 /* AppleAdsAttributionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5100063011000000000001 /* AppleAdsAttributionServiceTests.swift */; };
+		AD602F7C819B45D0A146E1B3 /* MidwordAttemptCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD602F7C819B45D0A146E1B4 /* MidwordAttemptCounterView.swift */; };
 		ADA110013011000000000001 /* AdConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA110003011000000000001 /* AdConfiguration.swift */; };
 		ADA110033011000000000001 /* ProAdBenefitsContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA110023011000000000001 /* ProAdBenefitsContent.swift */; };
 		ADA110053011000000000001 /* PreGameAdConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA110043011000000000001 /* PreGameAdConfigurationTests.swift */; };
@@ -181,6 +200,16 @@
 		ADA130013011000000000001 /* AnalyticsStartupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA130003011000000000001 /* AnalyticsStartupService.swift */; };
 		ADA130033011000000000001 /* AnalyticsStartupServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA130023011000000000001 /* AnalyticsStartupServiceTests.swift */; };
 		B022F8B276983EAF1219E126 /* WOTDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */; };
+		B77DC0100000000000000001 /* ../CrosswordsTests/MidwordColorAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */; };
+		B77DC0200000000000000001 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */; };
+		B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */; };
+		B77DC0400000000000000001 /* ../CrosswordsTests/HomeGameCardContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0400000000000000002 /* ../CrosswordsTests/HomeGameCardContentTests.swift */; };
+		B77DC0500000000000000001 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */; };
+		B77DC0600000000000000001 /* ../CrosswordsTests/HomeGameCardFooterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0600000000000000002 /* ../CrosswordsTests/HomeGameCardFooterTests.swift */; };
+		B77DC0700000000000000001 /* ../CrosswordsTests/BackwordInstructionColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */; };
+		B77DC0800000000000000001 /* ../CrosswordsTests/MidwordDebugResetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0800000000000000002 /* ../CrosswordsTests/MidwordDebugResetTests.swift */; };
+		B77DC0900000000000000001 /* BackwordClueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0900000000000000002 /* BackwordClueView.swift */; };
+		B77DC0A00000000000000001 /* ../CrosswordsTests/BackwordClueViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */; };
 		B87E042C9276130084747CA3 /* StatsView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8254031869B9E1FAC8C5A377 /* StatsView2.swift */; };
 		BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2519353944EB9D4F32644E32 /* ClueBarView.swift */; };
 		BEF00EC711F525FD3B8EB3DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B35393D8C1799968B4B9119D /* Assets.xcassets */; };
@@ -197,7 +226,23 @@
 		E9501AAB5231A6C28698D2E6 /* BackwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */; };
 		EAD7311D1E0CE5265794E80E /* BackwordWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */; };
 		F10000000000000000000002 /* HomeCardIssueNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000001 /* HomeCardIssueNumber.swift */; };
+		F10000000000000000000004 /* HomeGameCardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000003 /* HomeGameCardContent.swift */; };
+		F10000000000000000000006 /* HomeGameCardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000005 /* HomeGameCardLayout.swift */; };
+		F10000000000000000000008 /* HomeGameCardFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000007 /* HomeGameCardFooter.swift */; };
+		F1000000000000000000000A /* HomeGameCardHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000009 /* HomeGameCardHeader.swift */; };
+		F1000000000000000000000C /* ProOnlyBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000B /* ProOnlyBadge.swift */; };
 		F2A000023010000000000001 /* HomeWordOfTheDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A000013010000000000001 /* HomeWordOfTheDayView.swift */; };
+		F3A000023016000000000001 /* HomeDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A000013016000000000001 /* HomeDashboardView.swift */; };
+		F3A000043016000000000001 /* HomeArchiveCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A000033016000000000001 /* HomeArchiveCard.swift */; };
+		F3A000063016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A000053016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift */; };
+		F3A000083016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A000073016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift */; };
+		F3A0000A3016000000000001 /* HomeGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A000093016000000000001 /* HomeGamesView.swift */; };
+		F4B000023016000000000001 /* MidwordHomeCardLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B000013016000000000001 /* MidwordHomeCardLogo.swift */; };
+		F4C000023016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C000013016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift */; };
+		F4D000023017000000000001 /* MidwordLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D000013017000000000001 /* MidwordLogo.swift */; };
+		F4D000023017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D000013017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift */; };
+		F4E000023017000000000001 /* HomeGameCardsGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E000013017000000000001 /* HomeGameCardsGrid.swift */; };
+		F4E000043017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E000033017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift */; };
 		F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A3938FD382B86EEB78063 /* ArchiveView.swift */; };
 		FB8811D4DA46B6D23CDE6ED8 /* OverallRating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FDFB84159BB8E3A26031D0 /* OverallRating.swift */; };
 		FC2E739DC6045316AD55D0F4 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 9919F8A6B05C3D85B7C8E63E /* GoogleMobileAds */; };
@@ -363,18 +408,37 @@
 		A0A000000000000000000023 /* AnagramHintBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramHintBanner.swift; sourceTree = "<group>"; };
 		A0A000000000000000000024 /* AnagramHintBannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramHintBannerTests.swift; sourceTree = "<group>"; };
 		A0A000000000000000000040 /* AnagramPlaceholderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramPlaceholderCard.swift; sourceTree = "<group>"; };
+		A0B000000000000000000001 /* MidwordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStatsHistory.swift; sourceTree = "<group>"; };
+		A0B000000000000000000002 /* MidwordStatsHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStatsHistoryView.swift; sourceTree = "<group>"; };
+		A0B000000000000000000003 /* MidwordStatsHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStatsHistoryTests.swift; sourceTree = "<group>"; };
 		A11C0A100000000000000001 /* AccountSyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSyncTests.swift; sourceTree = "<group>"; };
 		A11CC000300A000000000001 /* AccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSheet.swift; sourceTree = "<group>"; };
 		A11DD000300A000000000001 /* AppleSignInButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInButton.swift; sourceTree = "<group>"; };
+		A1C0A0023016000000000001 /* ArchiveIssueDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveIssueDateView.swift; sourceTree = "<group>"; };
 		A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModelTests.swift; sourceTree = "<group>"; };
 		A38BFC4B60EA86A8DF662F3E /* UserProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProgress.swift; sourceTree = "<group>"; };
 		A476BC6A4DF0107699E2A1FD /* BackwordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordService.swift; sourceTree = "<group>"; };
+		A8013956F1CB59F9C80F81AB /* MidwordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordCard.swift; sourceTree = "<group>"; };
+		A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordGuessRow.swift; sourceTree = "<group>"; };
+		A81BADC74D85E195F31F646D /* MidwordBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordBoardView.swift; sourceTree = "<group>"; };
+		A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordGameTests.swift; sourceTree = "<group>"; };
+		A821CFAEED5E90B1ABE4E8DE /* MidwordInstructionsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordInstructionsViewTests.swift; sourceTree = "<group>"; };
+		A8220AB384E18F7E4E984338 /* MidwordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordViewModel.swift; sourceTree = "<group>"; };
+		A84B19CBE925E605AAA62242 /* MidwordProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordProgress.swift; sourceTree = "<group>"; };
+		A8593FC71ACF6AF5027A308D /* MidwordPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordPuzzle.swift; sourceTree = "<group>"; };
+		A85BAE372EF092378192E9B2 /* MidwordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordService.swift; sourceTree = "<group>"; };
+		A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStatsView.swift; sourceTree = "<group>"; };
+		A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordInstructionsView.swift; sourceTree = "<group>"; };
+		A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordView.swift; sourceTree = "<group>"; };
+		A8AB82BBFACA33CA3778BC1A /* MidwordCompletionWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordCompletionWordView.swift; sourceTree = "<group>"; };
+		A8E256D89F4E7DE3DFD5A5AF /* MidwordArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordArchiveRow.swift; sourceTree = "<group>"; };
 		ABCD10000000000000000001 /* FeedbackEmailContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackEmailContentTests.swift; sourceTree = "<group>"; };
 		ABCD10000000000000000002 /* FeedbackEmailContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackEmailContent.swift; sourceTree = "<group>"; };
 		ABCD10000000000000000003 /* MailComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposerView.swift; sourceTree = "<group>"; };
 		AD5100023011000000000001 /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
 		AD5100043011000000000001 /* AppleAdsAttributionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAdsAttributionService.swift; sourceTree = "<group>"; };
 		AD5100063011000000000001 /* AppleAdsAttributionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppleAdsAttributionServiceTests.swift; path = ../CrosswordsTests/AppleAdsAttributionServiceTests.swift; sourceTree = "<group>"; };
+		AD602F7C819B45D0A146E1B4 /* MidwordAttemptCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordAttemptCounterView.swift; sourceTree = "<group>"; };
 		ADA110003011000000000001 /* AdConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdConfiguration.swift; sourceTree = "<group>"; };
 		ADA110023011000000000001 /* ProAdBenefitsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProAdBenefitsContent.swift; sourceTree = "<group>"; };
 		ADA110043011000000000001 /* PreGameAdConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PreGameAdConfigurationTests.swift; path = ../CrosswordsTests/PreGameAdConfigurationTests.swift; sourceTree = "<group>"; };
@@ -386,6 +450,16 @@
 		ADA130023011000000000001 /* AnalyticsStartupServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AnalyticsStartupServiceTests.swift; path = ../CrosswordsTests/AnalyticsStartupServiceTests.swift; sourceTree = "<group>"; };
 		B35393D8C1799968B4B9119D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveMonth.swift; sourceTree = "<group>"; };
+		B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/MidwordColorAssetTests.swift; sourceTree = "<group>"; };
+		B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/GameDynamicTypeContainerTests.swift; sourceTree = "<group>"; };
+		B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/LetterRowSizingTests.swift; sourceTree = "<group>"; };
+		B77DC0400000000000000002 /* ../CrosswordsTests/HomeGameCardContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardContentTests.swift; sourceTree = "<group>"; };
+		B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardLayoutTests.swift; sourceTree = "<group>"; };
+		B77DC0600000000000000002 /* ../CrosswordsTests/HomeGameCardFooterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardFooterTests.swift; sourceTree = "<group>"; };
+		B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/BackwordInstructionColorTests.swift; sourceTree = "<group>"; };
+		B77DC0800000000000000002 /* ../CrosswordsTests/MidwordDebugResetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/MidwordDebugResetTests.swift; sourceTree = "<group>"; };
+		B77DC0900000000000000002 /* BackwordClueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordClueView.swift; sourceTree = "<group>"; };
+		B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/BackwordClueViewTests.swift; sourceTree = "<group>"; };
 		B8669C3DD88CF9BC44A72C69 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingTests.swift; sourceTree = "<group>"; };
 		C31664D1AD154A3FB5415AA5 /* ArchivePuzzleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivePuzzleRow.swift; sourceTree = "<group>"; };
@@ -404,8 +478,24 @@
 		F051619E8C954DB295AB5E32 /* ArchiveDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveDataSource.swift; sourceTree = "<group>"; };
 		F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		F10000000000000000000001 /* HomeCardIssueNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCardIssueNumber.swift; sourceTree = "<group>"; };
+		F10000000000000000000003 /* HomeGameCardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGameCardContent.swift; sourceTree = "<group>"; };
+		F10000000000000000000005 /* HomeGameCardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGameCardLayout.swift; sourceTree = "<group>"; };
+		F10000000000000000000007 /* HomeGameCardFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGameCardFooter.swift; sourceTree = "<group>"; };
+		F10000000000000000000009 /* HomeGameCardHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGameCardHeader.swift; sourceTree = "<group>"; };
+		F1000000000000000000000B /* ProOnlyBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProOnlyBadge.swift; sourceTree = "<group>"; };
 		F2A000013010000000000001 /* HomeWordOfTheDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWordOfTheDayView.swift; sourceTree = "<group>"; };
 		F31C198A0EE68F6859AD60A4 /* PuzzleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleService.swift; sourceTree = "<group>"; };
+		F3A000013016000000000001 /* HomeDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDashboardView.swift; sourceTree = "<group>"; };
+		F3A000033016000000000001 /* HomeArchiveCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeArchiveCard.swift; sourceTree = "<group>"; };
+		F3A000053016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeDashboardViewTests.swift; sourceTree = "<group>"; };
+		F3A000073016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeArchiveCardTests.swift; sourceTree = "<group>"; };
+		F3A000093016000000000001 /* HomeGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGamesView.swift; sourceTree = "<group>"; };
+		F4B000013016000000000001 /* MidwordHomeCardLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordHomeCardLogo.swift; sourceTree = "<group>"; };
+		F4C000013016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/SettingsAccountRowLayoutTests.swift; sourceTree = "<group>"; };
+		F4D000013017000000000001 /* MidwordLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordLogo.swift; sourceTree = "<group>"; };
+		F4D000013017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/MidwordLogoTests.swift; sourceTree = "<group>"; };
+		F4E000013017000000000001 /* HomeGameCardsGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGameCardsGrid.swift; sourceTree = "<group>"; };
+		F4E000033017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardsGridTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -464,11 +554,28 @@
 				ADA120043011000000000001 /* DeferredAdConsentTests.swift */,
 				ADA110043011000000000001 /* PreGameAdConfigurationTests.swift */,
 				ADA110063011000000000001 /* PreGameAdServiceTests.swift */,
+				A0B000000000000000000003 /* MidwordStatsHistoryTests.swift */,
+				A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */,
+				A821CFAEED5E90B1ABE4E8DE /* MidwordInstructionsViewTests.swift */,
 				A0A000000000000000000012 /* AnagramClientTests.swift */,
 				A0A000000000000000000020 /* AnagramCompletionPresentationTests.swift */,
 				A0A000000000000000000022 /* AnagramInstructionsContentViewTests.swift */,
 				A0A000000000000000000024 /* AnagramHintBannerTests.swift */,
 				A0A000000000000000000009 /* AnagramProgressTests.swift */,
+				F4C000013016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift */,
+				B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */,
+				B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */,
+				B77DC0800000000000000002 /* ../CrosswordsTests/MidwordDebugResetTests.swift */,
+				B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */,
+				F4D000013017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift */,
+				B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */,
+				B77DC0400000000000000002 /* ../CrosswordsTests/HomeGameCardContentTests.swift */,
+				F4E000033017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift */,
+				B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */,
+				F3A000073016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift */,
+				F3A000053016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift */,
+				B77DC0600000000000000002 /* ../CrosswordsTests/HomeGameCardFooterTests.swift */,
+				B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */,
 				A0A000000000000000000017 /* AnagramStatsHistoryTests.swift */,
 				A0A000000000000000000014 /* AnagramTrayLayoutTests.swift */,
 				09FF00003011000000000001 /* PuzzleResultShareTests.swift */,
@@ -514,6 +621,9 @@
 			children = (
 				ADA110003011000000000001 /* AdConfiguration.swift */,
 				ADA110023011000000000001 /* ProAdBenefitsContent.swift */,
+				A8593FC71ACF6AF5027A308D /* MidwordPuzzle.swift */,
+				A84B19CBE925E605AAA62242 /* MidwordProgress.swift */,
+				A0B000000000000000000001 /* MidwordStatsHistory.swift */,
 				A0A000000000000000000018 /* AnagramCompletionPresentation.swift */,
 				A0A000000000000000000002 /* AnagramProgress.swift */,
 				A0A000000000000000000015 /* AnagramStatsHistory.swift */,
@@ -559,6 +669,7 @@
 				ADA130003011000000000001 /* AnalyticsStartupService.swift */,
 				ADA120003011000000000001 /* AdConsentPreparing.swift */,
 				ADA120023011000000000001 /* AdConsentCoordinator.swift */,
+				A85BAE372EF092378192E9B2 /* MidwordService.swift */,
 				A0A000000000000000000003 /* AnagramService.swift */,
 				3C161669681E34C0C10A14A3 /* AdLogger.swift */,
 				05AD00012FFD000000000001 /* AdConsentService.swift */,
@@ -605,6 +716,8 @@
 		86AFC3CC2FBE53AF007623C3 /* Archive */ = {
 			isa = PBXGroup;
 			children = (
+				A1C0A0023016000000000001 /* ArchiveIssueDateView.swift */,
+				A8E256D89F4E7DE3DFD5A5AF /* MidwordArchiveRow.swift */,
 				A0A000000000000000000011 /* AnagramArchiveRow.swift */,
 				EE5A3938FD382B86EEB78063 /* ArchiveView.swift */,
 				1A9378292FE2E56600000001 /* ArchiveTabBarView.swift */,
@@ -644,18 +757,29 @@
 		86E5C0062FA9207600A42156 /* HomeScreen */ = {
 			isa = PBXGroup;
 			children = (
+				A8013956F1CB59F9C80F81AB /* MidwordCard.swift */,
+				F4B000013016000000000001 /* MidwordHomeCardLogo.swift */,
 				A0A000000000000000000008 /* AnagramCard.swift */,
 				A0A000000000000000000040 /* AnagramPlaceholderCard.swift */,
 				04ADAE942FFD100000000001 /* AdExplainerView.swift */,
 				04ADAE962FFD100000000001 /* AnimatedAdPreviewView.swift */,
 				F0FDCCDB6369D4F6CDBBED8C /* HomeView.swift */,
+				F3A000033016000000000001 /* HomeArchiveCard.swift */,
+				F3A000093016000000000001 /* HomeGamesView.swift */,
+				F3A000013016000000000001 /* HomeDashboardView.swift */,
 				F2A000013010000000000001 /* HomeWordOfTheDayView.swift */,
 				867281252FE2D39C00000001 /* HomeTabBarView.swift */,
 				809E28C82FF638D200FF7B33 /* AdFreeExperienceButton.swift */,
 				86E5C00B2FA94D8A00A42156 /* DailyCrosswordCard.swift */,
 				86E5C00D2FA94D8A00A42156 /* StreakButton.swift */,
 				F10000000000000000000001 /* HomeCardIssueNumber.swift */,
+				F10000000000000000000003 /* HomeGameCardContent.swift */,
+				F4E000013017000000000001 /* HomeGameCardsGrid.swift */,
+				F10000000000000000000005 /* HomeGameCardLayout.swift */,
+				F10000000000000000000007 /* HomeGameCardFooter.swift */,
+				F10000000000000000000009 /* HomeGameCardHeader.swift */,
 				86E5C0092FA9211200A42156 /* WeeklyCrosswordCard.swift */,
+				F1000000000000000000000B /* ProOnlyBadge.swift */,
 				86F02E472FBA14FF0083B752 /* StatusLabelView.swift */,
 				86F02E492FBA15550083B752 /* PuzzleStatus.swift */,
 			);
@@ -706,6 +830,22 @@
 			path = Anagram;
 			sourceTree = "<group>";
 		};
+		A80AED63B3AB2532B11AFCB6 /* Midword */ = {
+			isa = PBXGroup;
+			children = (
+				A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */,
+				AD602F7C819B45D0A146E1B4 /* MidwordAttemptCounterView.swift */,
+				A8AB82BBFACA33CA3778BC1A /* MidwordCompletionWordView.swift */,
+				A81BADC74D85E195F31F646D /* MidwordBoardView.swift */,
+				A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */,
+				A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */,
+				A0B000000000000000000002 /* MidwordStatsHistoryView.swift */,
+				A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */,
+				F4D000013017000000000001 /* MidwordLogo.swift */,
+			);
+			path = Midword;
+			sourceTree = "<group>";
+		};
 		BBA3617EFAC18A3821319F9A /* Backword */ = {
 			isa = PBXGroup;
 			children = (
@@ -713,6 +853,7 @@
 				40ACCF7B840800AA52BD9ED7 /* BackwordGuessRow.swift */,
 				2259B66045D006E89462572C /* BackwordLetterCell.swift */,
 				464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */,
+				B77DC0900000000000000002 /* BackwordClueView.swift */,
 				86AFC3D22FC20460007623C3 /* BackwordInstructionsContentView.swift */,
 				07AC00013009000000000001 /* BackwordModeToggle.swift */,
 				07AB00013008000000000001 /* BackwordRulesUpdateNotice.swift */,
@@ -765,6 +906,7 @@
 		D5A47C913B0947C0B37F2D61 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				A8220AB384E18F7E4E984338 /* MidwordViewModel.swift */,
 				A0A000000000000000000004 /* AnagramViewModel.swift */,
 				625E52DC74D846679E9A73FE /* ArchiveViewModel.swift */,
 				64455C838772CB66C039CCE2 /* BackwordViewModel.swift */,
@@ -777,6 +919,7 @@
 		EFC005C9CEABE981870F3D65 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A80AED63B3AB2532B11AFCB6 /* Midword */,
 				860A8F242FCE196700C2BE38 /* SharedViews */,
 				BBA3617EFAC18A3821319F9A /* Backword */,
 				A0A000000000000000000201 /* Anagram */,
@@ -920,11 +1063,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0B000000000000000000103 /* MidwordStatsHistoryTests.swift in Sources */,
+				A84B89AE16F5D3929016DE05 /* MidwordGameTests.swift in Sources */,
+				A84B89AE16F5D3929016DE06 /* MidwordInstructionsViewTests.swift in Sources */,
 				A0A000000000000000000112 /* AnagramClientTests.swift in Sources */,
 				A0A000000000000000000120 /* AnagramCompletionPresentationTests.swift in Sources */,
 				A0A000000000000000000122 /* AnagramInstructionsContentViewTests.swift in Sources */,
 				A0A000000000000000000124 /* AnagramHintBannerTests.swift in Sources */,
 				A0A000000000000000000109 /* AnagramProgressTests.swift in Sources */,
+				F4C000023016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift in Sources */,
+				B77DC0700000000000000001 /* ../CrosswordsTests/BackwordInstructionColorTests.swift in Sources */,
+				B77DC0A00000000000000001 /* ../CrosswordsTests/BackwordClueViewTests.swift in Sources */,
+				B77DC0800000000000000001 /* ../CrosswordsTests/MidwordDebugResetTests.swift in Sources */,
+				B77DC0100000000000000001 /* ../CrosswordsTests/MidwordColorAssetTests.swift in Sources */,
+				F4D000023017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift in Sources */,
+				B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */,
+				B77DC0400000000000000001 /* ../CrosswordsTests/HomeGameCardContentTests.swift in Sources */,
+				F4E000043017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift in Sources */,
+				B77DC0500000000000000001 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift in Sources */,
+				F3A000083016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift in Sources */,
+				F3A000063016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift in Sources */,
+				B77DC0600000000000000001 /* ../CrosswordsTests/HomeGameCardFooterTests.swift in Sources */,
+				B77DC0200000000000000001 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift in Sources */,
 				A0A000000000000000000114 /* AnagramTrayLayoutTests.swift in Sources */,
 				A0A000000000000000000117 /* AnagramStatsHistoryTests.swift in Sources */,
 				0F0F00033010000000000001 /* GoogleSignInButtonTests.swift in Sources */,
@@ -972,6 +1132,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0B000000000000000000101 /* MidwordStatsHistory.swift in Sources */,
+				A0B000000000000000000102 /* MidwordStatsHistoryView.swift in Sources */,
+				A8C7F36D88E76EDF2BADA86A /* MidwordGuessRow.swift in Sources */,
+				AD602F7C819B45D0A146E1B3 /* MidwordAttemptCounterView.swift in Sources */,
+				A86355B66F25A22B9C9AB15B /* MidwordCompletionWordView.swift in Sources */,
+				A8668C9DDE853E7503FE8BC4 /* MidwordPuzzle.swift in Sources */,
+				A873D88AC6DE0B55EFDB427A /* MidwordProgress.swift in Sources */,
+				A8C9A673F6B624C5D7673E8C /* MidwordService.swift in Sources */,
+				A8E5B970FFA351CAFAACA37B /* MidwordViewModel.swift in Sources */,
+				A82CFBD4790ADB40E195ADD8 /* MidwordCard.swift in Sources */,
+				F4B000023016000000000001 /* MidwordHomeCardLogo.swift in Sources */,
+				A8B82A5874D65009EBF8F772 /* MidwordArchiveRow.swift in Sources */,
+				A8B927B73ABB0E4C3B21B75A /* MidwordBoardView.swift in Sources */,
+				A8C8B52EC75BCACC3BADB7A8 /* MidwordInstructionsView.swift in Sources */,
+				A87593C9AEA8FA0C03E315E7 /* MidwordStatsView.swift in Sources */,
+				A83D7E3FB67BDC4A73E32933 /* MidwordView.swift in Sources */,
+				F4D000023017000000000001 /* MidwordLogo.swift in Sources */,
 				A0A000000000000000000111 /* AnagramArchiveRow.swift in Sources */,
 				A0A000000000000000000119 /* AnagramCompletionWordView.swift in Sources */,
 				A0A000000000000000000121 /* AnagramInstructionsContentView.swift in Sources */,
@@ -1024,6 +1201,11 @@
 				07AC00023009000000000001 /* BackwordModeToggle.swift in Sources */,
 				86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */,
 				F10000000000000000000002 /* HomeCardIssueNumber.swift in Sources */,
+				F10000000000000000000004 /* HomeGameCardContent.swift in Sources */,
+				F4E000023017000000000001 /* HomeGameCardsGrid.swift in Sources */,
+				F10000000000000000000006 /* HomeGameCardLayout.swift in Sources */,
+				F10000000000000000000008 /* HomeGameCardFooter.swift in Sources */,
+				F1000000000000000000000A /* HomeGameCardHeader.swift in Sources */,
 				86E5C00E2FA94D8A00A42156 /* StreakButton.swift in Sources */,
 				E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */,
 				869FCBE42F99871800A280F2 /* BackwordStatsView.swift in Sources */,
@@ -1041,6 +1223,7 @@
 				8FB170C4A0F5A06EC9069AF6 /* BackwordService.swift in Sources */,
 				23B843AEA4BD3659C133FD9D /* BackwordStats.swift in Sources */,
 				E9501AAB5231A6C28698D2E6 /* BackwordView.swift in Sources */,
+				B77DC0900000000000000001 /* BackwordClueView.swift in Sources */,
 				1D5CED31842B691A8E91932F /* BackwordViewModel.swift in Sources */,
 				EAD7311D1E0CE5265794E80E /* BackwordWord.swift in Sources */,
 				860A8F3C2FCEBA5100C2BE38 /* TipFactory.swift in Sources */,
@@ -1067,6 +1250,9 @@
 				86FAA14F2FB4F8C00022EFF6 /* CustomKeyboardView.swift in Sources */,
 				867281262FE2D39C00000001 /* HomeTabBarView.swift in Sources */,
 				86728124E533B5942EADAB51 /* HomeView.swift in Sources */,
+				F3A000043016000000000001 /* HomeArchiveCard.swift in Sources */,
+				F3A0000A3016000000000001 /* HomeGamesView.swift in Sources */,
+				F3A000023016000000000001 /* HomeDashboardView.swift in Sources */,
 				F2A000023010000000000001 /* HomeWordOfTheDayView.swift in Sources */,
 				05256FA0ABC9B788BBAABD5B /* HomeViewModel.swift in Sources */,
 				549205098DAD4DCC7F508DD1 /* KeyboardInputView.swift in Sources */,
@@ -1075,6 +1261,7 @@
 				753A45E043CDDEBF5C5DBB36 /* PaywallView.swift in Sources */,
 				30E8BB67675128C8176A7F6E /* Puzzle.swift in Sources */,
 				86AFC3CE2FBE53CA007623C3 /* BackwordArchiveRow.swift in Sources */,
+				A1C0A0013016000000000001 /* ArchiveIssueDateView.swift in Sources */,
 				51C6F9994EF7199F8EDDF3CA /* PuzzleGridView.swift in Sources */,
 				39D867F5E790F76409AF8AE0 /* PuzzleService.swift in Sources */,
 				02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */,
@@ -1100,6 +1287,7 @@
 				CDFB51C30CE8784881171A9F /* RatingDetailSheet.swift in Sources */,
 				8F92754416251062C7FCA46E /* CrosswordStatsView.swift in Sources */,
 				86E5C00A2FA9211200A42156 /* WeeklyCrosswordCard.swift in Sources */,
+				F1000000000000000000000C /* ProOnlyBadge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1137,7 +1325,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.0.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1330,7 +1518,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.0.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

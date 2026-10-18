@@ -4,6 +4,37 @@ import { buildPlayerProfileRating } from "./profileRating";
 const now = new Date(2026, 7, 17, 12);
 
 describe("buildPlayerProfileRating", () => {
+  it("combines Anagram and Midword scores with independent release windows", () => {
+    window.localStorage.setItem("backword:web:anagram:first-release:v1", "2026-09-26");
+    try {
+      const records = {
+        backword: [], dailyCrossword: [], weeklyCrossword: [],
+        anagram: [{ release_date: "2026-10-01", release_score: 4 }],
+        midword: [{ release_date: "2026-10-01", release_score: 5 }]
+      };
+      const launch = buildPlayerProfileRating(records, false, new Date(2026, 9, 1, 12));
+      expect(launch.maxPoints).toBe(175);
+      expect(launch.totalPoints).toBe(9);
+      expect(launch.days[0]).toMatchObject({ anagram: 4, midword: 5, total: 9 });
+      expect(buildPlayerProfileRating(records, false, new Date(2026, 9, 14, 12)).maxPoints).toBe(280);
+      expect(buildPlayerProfileRating(records, true, new Date(2026, 9, 14, 12)).maxPoints).toBe(290);
+    } finally {
+      window.localStorage.removeItem("backword:web:anagram:first-release:v1");
+    }
+  });
+
+  it("adds Midword release scores and phases in the new daily maximum", () => {
+    const records = {
+      backword: [], dailyCrossword: [], weeklyCrossword: [],
+      midword: [{ release_date: "2026-10-01", release_score: 5 }]
+    };
+    const launch = buildPlayerProfileRating(records, false, new Date(2026, 9, 1, 12));
+    const mature = buildPlayerProfileRating(records, false, new Date(2026, 9, 14, 12));
+    expect(launch.maxPoints).toBe(145);
+    expect(launch.totalPoints).toBe(5);
+    expect(mature.maxPoints).toBe(210);
+  });
+
   it("builds a zero-filled 14-day window from cloud release scores", () => {
     const rating = buildPlayerProfileRating({
       backword: [{ release_date: "2026-08-17", release_score: 5 }],

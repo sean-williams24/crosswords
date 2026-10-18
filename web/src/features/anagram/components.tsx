@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { localDateString } from "../backword/date";
 import type { PuzzleShareResult } from "../share/puzzleResult";
+import { PuzzleResultShare } from "../share/PuzzleResultShare";
 import { answerText, availableTileIDs, elapsedSeconds, type AnagramProgress, type AnagramPuzzle } from "./engine";
 import { AnagramCompletion, anagramCompletionTitle } from "./AnagramCompletion";
 import { AnagramInstructions } from "./AnagramInstructions";
@@ -26,19 +27,17 @@ function historyDate(dateString: string) {
   }).format(new Date(year, month - 1, day, 12));
 }
 
-export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart, onShuffle, onHint, onGiveUp, onResetReview }: {
+export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart, onShuffle, onHint, onGiveUp, onResetReview, shareResult }: {
   puzzle: AnagramPuzzle; progress: AnagramProgress; now: Date;
   onPlace: (tile: number) => void; onUndo: () => void; onRestart: () => void;
   onShuffle: () => void; onHint: () => void; onGiveUp: () => void;
   onResetReview?: () => void;
+  shareResult?: PuzzleShareResult | null;
 }) {
   const ended = progress.outcome !== null;
   const available = new Set(availableTileIDs(progress));
   const letters = [...puzzle.initialScramble];
   const answer = answerText(progress, puzzle);
-  const firstRow = puzzle.answer.length === 9 ? 5 : 4;
-  const rows = [Array.from({ length: firstRow }, (_, index) => index),
-    Array.from({ length: puzzle.answer.length - firstRow }, (_, index) => index + firstRow)];
   return <section aria-label="Anagram board" className="anagram-board">
     <div className="anagram-gameplay-content">
       <div className="anagram-timer">
@@ -58,12 +57,13 @@ export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart
       {onResetReview && ended ? <button className="anagram-review-reset" onClick={onResetReview} type="button">Reset review puzzle</button> : null}
     </div>
     <div className="anagram-gameplay-dock">
+      {ended && shareResult ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
       <div aria-label="Scrambled letter tray" className="anagram-tray">
-        {rows.map((row, rowIndex) => <div aria-label={`Tray row ${rowIndex + 1}`} className="anagram-letter-row" key={rowIndex}>
-          {row.map((position) => { const tile = progress.trayOrder[position]; return available.has(tile)
+        <div aria-label="Tray row 1" className="anagram-letter-row">
+          {progress.trayOrder.map((tile, position) => available.has(tile)
             ? <button aria-label={`Letter ${letters[tile]}, tray position ${position + 1}`} className="anagram-tile" disabled={ended} key={tile} onClick={() => onPlace(tile)} type="button">{letters[tile]}</button>
-            : <span aria-hidden="true" className="anagram-tile anagram-tile--empty" key={tile} />; })}
-        </div>)}
+            : <span aria-hidden="true" className="anagram-tile anagram-tile--empty" key={tile} />)}
+        </div>
       </div>
       <div className="anagram-controls">
         <button disabled={ended || !progress.placementHistory.length} onClick={onUndo} type="button">Undo</button>
@@ -138,7 +138,7 @@ export function AnagramDialog({ kind, onClose, onConfirmHint, onConfirmGiveUp, p
     : kind === "stats" || kind === "instructions" || kind === "result"
       ? " anagram-dialog-backdrop--stats"
       : "";
-  return <div className={`anagram-dialog-backdrop${backdropModifier}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+  return <div className={`anagram-dialog-backdrop${backdropModifier}`} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
     <section aria-label={kind === "result" && progress && puzzle ? anagramCompletionTitle(progress, puzzle) : kind === "stats" ? "Anagram stats" : kind === "instructions" ? "How to Play" : kind === "hint" ? "Reveal a letter" : "Give up"} aria-modal="true" className={`anagram-dialog${kind === "stats" ? " anagram-dialog--stats" : kind === "instructions" ? " anagram-dialog--instructions" : kind === "result" ? " anagram-dialog--completion" : ""}`} role="dialog">
       {kind !== "result" ? <button aria-label={kind === "stats" ? "Close Anagram stats" : kind === "instructions" ? "Close How to Play" : "Close"} className="anagram-dialog-close" onClick={onClose} ref={closeRef} type="button">×</button> : null}
       {kind === "instructions" ? <><header className="anagram-instructions-header"><h2>How to Play</h2></header><div className="anagram-instructions-scroll"><AnagramInstructions /></div></> : null}

@@ -12,6 +12,8 @@ struct HomeView: View {
     @ObservedObject private var settings = AppSettings.shared
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
+    @StateObject private var midwordService = MidwordService()
+    @State private var midwordProgress: MidwordProgress?
     @StateObject private var anagramService = AnagramService()
     @StateObject private var backwordStatsService = BackwordStatsService()
     @State private var anagramProgressRecords: [AnagramProgress] = []
@@ -55,9 +57,11 @@ struct HomeView: View {
         await viewModel.refreshIfNeeded()
         await wotdService.refreshIfNeeded()
         await backwordService.refreshIfNeeded()
+        await midwordService.refreshIfNeeded()
         await anagramService.refreshIfNeeded()
         await viewModel.prefetchCurrentArchiveMonthIfNeeded()
         backwordStatsService.refresh()
+        refreshMidwordProgress()
         refreshAnagramCardProgress()
         ratingService.refresh()
         ratingService.recordCurrentPuzzles(
@@ -81,9 +85,11 @@ struct HomeView: View {
             await viewModel.loadTodaysPuzzle()
             await wotdService.refreshIfNeeded()
             await backwordService.refreshIfNeeded()
+            await midwordService.refreshIfNeeded()
             await anagramService.refreshIfNeeded()
             await viewModel.prefetchCurrentArchiveMonthIfNeeded()
             backwordStatsService.refresh()
+            refreshMidwordProgress()
             refreshAnagramCardProgress()
             ratingService.refresh()
         }
@@ -102,29 +108,11 @@ struct HomeView: View {
             ZStack {
                 AppBackgroundGradient()
 
-                ScrollView {
-                    VStack(spacing: 20) {
-                        RatingBarView(
-                            rating: ratingService.rating,
-                            isPro: storeService.isProUser
-                        )
-                        .padding(.horizontal, appLayout.homeHorizontalPadding)
-                        .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
-
-                        gamesGrid
-                        adFreeExperienceButton
-                        HomeWordOfTheDayView(
-                            word: wotdService.todaysWord,
-                            showsInlineDetails: HomeGamesLayout.usesTwoColumns(for: sizeClass)
-                        ) {
-                            showWOTD = true
-                        }
-                        .padding(.horizontal, appLayout.homeHorizontalPadding)
-                    }
-                    .padding(.top, 16)
-                    .padding(.bottom, 100)
+                HomeDashboardView(usesTwoColumns: HomeGamesLayout.usesTwoColumns(for: sizeClass)) {
+                    homeContent(isExpanded: true)
+                } compact: {
+                    homeContent(isExpanded: false)
                 }
-                .scrollIndicators(.hidden)
             }
             .safeAreaInset(edge: .top, spacing: 0) {
                 navigationBar
@@ -152,6 +140,11 @@ struct HomeView: View {
                 BackwordView(word: word)
                     .environmentObject(storeService)
                     .environmentObject(adService)
+                    .environmentObject(ratingService)
+            }
+        case "midword":
+            if let puzzle = midwordService.todaysPuzzle {
+                MidwordView(puzzle: puzzle)
                     .environmentObject(ratingService)
             }
         case "anagram":
@@ -207,6 +200,7 @@ struct HomeView: View {
         primaryPresentationView
             #if DEBUG
             .sheet(isPresented: $showDebugSettings, onDismiss: {
+                refreshMidwordProgress()
                 refreshAnagramCardProgress()
                 ratingService.refresh()
             }) {
@@ -214,6 +208,7 @@ struct HomeView: View {
                     .environmentObject(storeService)
                     .environmentObject(backwordService)
                     .environmentObject(anagramService)
+                    .environmentObject(midwordService)
                     .environmentObject(adService)
                     .environmentObject(wotdService)
                     .environmentObject(accountService)
@@ -365,6 +360,7 @@ struct HomeView: View {
             await viewModel.refreshIfNeeded()
             await viewModel.prefetchCurrentArchiveMonthIfNeeded()
             backwordStatsService.refresh()
+            refreshMidwordProgress()
             refreshAnagramCardProgress()
         }
     }
@@ -374,6 +370,7 @@ struct HomeView: View {
             didReturnFromDailyGame = true
             backwordStatsService.refresh()
         }
+        refreshMidwordProgress()
         refreshAnagramCardProgress()
         updateSettingsTipReadiness()
     }
@@ -393,9 +390,11 @@ struct HomeView: View {
                 await viewModel.refreshIfNeeded()
                 await wotdService.refreshIfNeeded()
                 await backwordService.refreshIfNeeded()
+                await midwordService.refreshIfNeeded()
                 await anagramService.refreshIfNeeded()
                 await viewModel.prefetchCurrentArchiveMonthIfNeeded()
                 await accountService.refreshAccountData()
+                refreshMidwordProgress()
                 refreshAnagramCardProgress()
             }
         }
@@ -404,13 +403,62 @@ struct HomeView: View {
     private func refreshProgressAfterAccountChange() {
         statsService.refreshForActiveProgress()
         backwordStatsService.refresh()
+        refreshMidwordProgress()
         refreshAnagramCardProgress()
         ratingService.refresh()
     }
 
+    private func homeContent(isExpanded: Bool) -> some View {
+        VStack(spacing: HomeGamesLayout.spacing) {
+            RatingBarView(rating: ratingService.rating, isPro: storeService.isProUser)
+                .padding(.horizontal, appLayout.homeHorizontalPadding)
+                .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
+
+            if !isExpanded {
+                wordOfTheDay(showsInlineDetails: false)
+            }
+
+            HomeGamesView {
+                twoColumnGamesGrid
+            } stacked: {
+                gamesGrid
+            }
+
+            if isExpanded {
+                wordOfTheDay(showsInlineDetails: true)
+            }
+        }
+        .padding(.top, 16)
+        .padding(.bottom, HomeGamesLayout.scrollBottomPadding)
+    }
+
+    private func wordOfTheDay(showsInlineDetails: Bool) -> some View {
+        HomeWordOfTheDayView(word: wotdService.todaysWord, showsInlineDetails: showsInlineDetails) {
+            showWOTD = true
+        }
+        .padding(.horizontal, appLayout.homeHorizontalPadding)
+    }
+
+    private var twoColumnGamesGrid: some View {
+        HomeGameCardsGrid(spacing: HomeGamesLayout.spacing) {
+            backwordCard
+            dailyCrosswordCard
+            anagramCard
+            midwordCard
+            gameCard(for: .proCrossword)
+            HomeArchiveCard(isProUser: storeService.isProUser, openArchive: openArchive)
+        }
+        .padding(.horizontal, appLayout.homeHorizontalPadding)
+    }
+
     private var gamesGrid: some View {
-        LazyVGrid(columns: HomeGamesLayout.columns(for: sizeClass), spacing: HomeGamesLayout.spacing) {
-            ForEach(HomeGamesLayout.games, id: \.self) { game in
+        HomeGameCardsGrid(columns: 1, spacing: HomeGamesLayout.spacing) {
+            ForEach(HomeGamesLayout.gamesBeforeArchiveButton, id: \.self) { game in
+                gameCard(for: game)
+            }
+            adFreeExperienceButton
+                .layoutValue(key: HomeGameCardsGridLayout.IntrinsicHeightKey.self, value: true)
+            ForEach(HomeGamesLayout.gamesAfterArchiveButton, id: \.self) { game in
                 gameCard(for: game)
             }
         }
@@ -426,10 +474,28 @@ struct HomeView: View {
             dailyCrosswordCard
         case .anagram:
             anagramCard
+        case .midword:
+            midwordCard
         case .proCrossword:
             WeeklyCrosswordCard(viewModel: viewModel, isProUser: storeService.isProUser)
                 .environmentObject(storeService)
         }
+    }
+
+    private var midwordCard: some View {
+        MidwordCard(
+            puzzle: midwordService.todaysPuzzle,
+            progress: midwordProgress,
+            isLoading: midwordService.isLoading,
+            loadFailed: midwordService.loadFailed,
+            currentStreak: midwordService.currentStreak,
+            retry: { Task { await midwordService.refreshIfNeeded(force: true) } },
+            play: {
+                cancelSettingsTipPresentation()
+                hasOpenedDailyGameThisSession = true
+                navigationPath.append("midword")
+            }
+        )
     }
 
     @ViewBuilder
@@ -519,17 +585,19 @@ struct HomeView: View {
     private var archiveFooterBar: some View {
         HomeTabBarView(
             isProUser: storeService.isProUser,
-            showArchive: {
-                if storeService.isProUser {
-                    showArchive = true
-                } else {
-                    showPaywall = true
-                }
-            },
+            showArchive: openArchive,
             showStats: {
                 showRatingDetails = true
             }
         )
+    }
+
+    private func openArchive() {
+        if storeService.isProUser {
+            showArchive = true
+        } else {
+            showPaywall = true
+        }
     }
 
     private var backwordCard: some View {
@@ -563,7 +631,6 @@ struct HomeView: View {
             AdFreeExperienceButton {
                 showPaywall = true
             }
-            .padding(.horizontal, appLayout.homeHorizontalPadding)
         }
     }
 
@@ -738,6 +805,11 @@ struct HomeView: View {
         navigationPath.append("backword")
     }
 
+    private func refreshMidwordProgress() {
+        midwordService.refreshStats()
+        midwordProgress = midwordService.todaysPuzzle.flatMap { MidwordProgress.load(date: $0.date) }
+    }
+
     private func navigateToDailyCrossword() {
         cancelSettingsTipPresentation()
         hasOpenedDailyGameThisSession = true
@@ -761,11 +833,16 @@ enum HomeGamesLayout {
         case backword
         case quickCrossword
         case anagram
+        case midword
         case proCrossword
     }
 
     static let games = Game.allCases
+    static let gamesBeforeArchiveButton = Array(games.prefix { $0 != .anagram })
+    static let gamesAfterArchiveButton = Array(games.drop { $0 != .anagram })
     static let spacing: CGFloat = 20
+    // The safe-area inset already reserves the tab bar, including its top padding.
+    static let scrollBottomPadding = spacing - AppLayout.homeTabBarTopPadding
 
     static func usesTwoColumns(for sizeClass: UserInterfaceSizeClass?) -> Bool {
         sizeClass == .regular

@@ -103,11 +103,27 @@ export function validProgress(progress: AnagramProgress, puzzle: AnagramPuzzle):
 
 export function startProgress(puzzle: AnagramPuzzle, now = new Date()): AnagramProgress {
   const timestamp = now.toISOString();
-  return { schemaVersion: 1, puzzleID: puzzle.id, date: puzzle.date, startedAt: timestamp,
+  return avoidLeadingAnswerLetter({ schemaVersion: 1, puzzleID: puzzle.id, date: puzzle.date, startedAt: timestamp,
     trayOrder: Array.from({ length: puzzle.answer.length }, (_, index) => index),
     placedTileIDs: Array(puzzle.answer.length).fill(null), placementHistory: [], hintUsed: false,
     hintSource: null, penaltySeconds: 0, lockedCellIndex: null, lockedTileID: null,
-    outcome: null, completedAt: null, elapsedSecondsAtCompletion: null, releaseDateScore: 0, updatedAt: timestamp };
+    outcome: null, completedAt: null, elapsedSecondsAtCompletion: null, releaseDateScore: 0, updatedAt: timestamp }, puzzle);
+}
+
+export function avoidLeadingAnswerLetter(progress: AnagramProgress, puzzle: AnagramPuzzle): AnagramProgress {
+  const available = new Set(availableTileIDs(progress));
+  const first = progress.trayOrder[0];
+  if (progress.outcome || !available.has(first) || puzzle.initialScramble[first] !== puzzle.answer[0]) return progress;
+  for (let index = 1; index < progress.trayOrder.length; index++) {
+    const tile = progress.trayOrder[index];
+    if (!available.has(tile) || puzzle.initialScramble[tile] === puzzle.answer[0]) continue;
+    const trayOrder = [...progress.trayOrder];
+    [trayOrder[0], trayOrder[index]] = [trayOrder[index], trayOrder[0]];
+    if (progress.placedTileIDs.every((tile) => tile === null)
+      && [puzzle.answer, ...puzzle.acceptedAnswers].includes(trayOrder.map((tile) => puzzle.initialScramble[tile]).join(""))) continue;
+    return { ...progress, trayOrder };
+  }
+  return progress;
 }
 
 export function availableTileIDs(progress: AnagramProgress): number[] {
@@ -157,12 +173,12 @@ export function restartTiles(progress: AnagramProgress, now = new Date()): Anagr
     placementHistory: [], updatedAt: now.toISOString() };
 }
 
-export function reshuffle(progress: AnagramProgress, order: number[], now = new Date()): AnagramProgress {
+export function reshuffle(progress: AnagramProgress, puzzle: AnagramPuzzle, order: number[], now = new Date()): AnagramProgress {
   const available = availableTileIDs(progress);
   if (progress.outcome || order.length !== available.length || order.slice().sort().join() !== available.slice().sort().join()) return progress;
   let index = 0;
   const set = new Set(available);
-  return { ...progress, trayOrder: progress.trayOrder.map((tile) => set.has(tile) ? order[index++] : tile), updatedAt: now.toISOString() };
+  return avoidLeadingAnswerLetter({ ...progress, trayOrder: progress.trayOrder.map((tile) => set.has(tile) ? order[index++] : tile), updatedAt: now.toISOString() }, puzzle);
 }
 
 export function revealHint(progress: AnagramProgress, puzzle: AnagramPuzzle, now = new Date()): AnagramProgress {

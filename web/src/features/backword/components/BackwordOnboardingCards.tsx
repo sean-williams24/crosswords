@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { backwordOnboardingText } from "../onboarding";
 import type { BackwordMode, BackwordOnboardingStep } from "../types";
+import { BackwordLightbulbIcon } from "./BackwordLightbulbIcon";
 
 type BackwordOnboardingCardsProps = {
   mode: BackwordMode;
@@ -29,7 +30,11 @@ export function BackwordOnboardingCards({ mode, steps, onDismiss }: BackwordOnbo
   }
 
   return (
-    <section aria-label="How to play Backword" className="bw-onboarding-deck">
+    <section
+      aria-label="How to play Backword"
+      className="bw-onboarding-deck"
+      style={{ "--bw-onboarding-stack-height": `${Math.max(steps.length - 1, 0) * 15}px` } as CSSProperties}
+    >
       {[...steps].reverse().map((step, reverseIndex) => {
         const index = steps.length - reverseIndex - 1;
         const isTopCard = index === 0;
@@ -46,6 +51,7 @@ export function BackwordOnboardingCards({ mode, steps, onDismiss }: BackwordOnbo
               zIndex: steps.length - index
             } as CSSProperties}
           >
+            <BackwordLightbulbIcon className="bw-onboarding-card__icon" />
             <p>{backwordOnboardingText(step, mode)}</p>
             {isTopCard ? (
               <button aria-label={`OK: ${backwordOnboardingText(step, mode)}`} className="bw-onboarding-card__ok" onClick={() => dismiss(step)} type="button">

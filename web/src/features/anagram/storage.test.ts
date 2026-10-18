@@ -7,6 +7,21 @@ import { createAnagramStorage } from "./storage";
 const puzzle = mapAnagramRow(fixtures.puzzles[0]);
 
 describe("Anagram storage", () => {
+  it("corrects legacy leading letters without changing tile identities or saved play", () => {
+    const repeated = { ...puzzle, answer: "BUBBLES", acceptedAnswers: [], initialScramble: "BBBLUES" };
+    const storage = createAnagramStorage(localStorage);
+    const saved = placeTile({ ...startProgress(repeated), trayOrder: [0, 1, 2, 3, 4, 5, 6] }, repeated, 4);
+    storage.saveProgress(saved);
+    const restored = storage.loadProgress(repeated)!;
+    expect(repeated.initialScramble[restored.trayOrder[0]]).not.toBe(repeated.answer[0]);
+    expect([...restored.trayOrder].sort()).toEqual([0, 1, 2, 3, 4, 5, 6]);
+    expect(restored.placementHistory).toEqual(saved.placementHistory);
+    expect(restored.placedTileIDs).toEqual(saved.placedTileIDs);
+    expect(restored.startedAt).toBe(saved.startedAt);
+    expect(restored.updatedAt).toBe(saved.updatedAt);
+    storage.deleteProgress(puzzle.date);
+  });
+
   it("restores one whole arrangement with its Undo history and isolates accounts", () => {
     const storage = createAnagramStorage(localStorage, { userId: "account-a" });
     const guest = createAnagramStorage(localStorage);

@@ -12,6 +12,7 @@ final class AnagramViewModel: ObservableObject {
         self.persistsChanges = persistsChanges
         let saved = initialProgress ?? (persistsChanges ? AnagramProgress.load(date: puzzle.date) : nil)
         progress = saved.flatMap { $0.isValid(for: puzzle) ? $0 : nil }
+        progress?.avoidLeadingAnswerLetter(in: puzzle)
     }
 
     var canStart: Bool { progress == nil }
@@ -19,6 +20,20 @@ final class AnagramViewModel: ObservableObject {
     var canUndo: Bool { progress?.canUndo ?? false }
     var canRestart: Bool { progress?.canRestart ?? false }
     var canHint: Bool { progress.map { !$0.hintUsed && !$0.isComplete } ?? false }
+
+    func completionShareResult(
+        rating: OverallRating, isPro: Bool, progressRecords: [AnagramProgress]? = nil
+    ) -> PuzzleShareResult? {
+        guard let progress, progress.isComplete else { return nil }
+        let records = (progressRecords ?? AnagramProgress.loadAll())
+            .filter { $0.date != puzzle.date } + [progress]
+        return PuzzleShareResult.anagram(
+            completion: AnagramCompletion(puzzle: puzzle, progress: progress),
+            history: AnagramStatsHistory.make(rating: rating, progressRecords: records),
+            rating: rating,
+            isPro: isPro
+        )
+    }
 
     func start(now: Date = Date()) {
         guard progress == nil else { return }
@@ -57,7 +72,7 @@ final class AnagramViewModel: ObservableObject {
         if order == next.availableTileIDs && order.count > 1 {
             order.append(order.removeFirst())
         }
-        next.shuffle(using: order, now: now)
+        next.shuffle(using: order, in: puzzle, now: now)
         progress = next
         persist()
     }
@@ -82,6 +97,7 @@ final class AnagramViewModel: ObservableObject {
         progress = AnagramProgress.load(date: puzzle.date).flatMap {
             $0.isValid(for: puzzle) ? $0 : nil
         }
+        progress?.avoidLeadingAnswerLetter(in: puzzle)
     }
 
     private func persist() {

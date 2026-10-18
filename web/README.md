@@ -40,6 +40,21 @@ VITE_APP_STORE_CAMPAIGN_TOKENS={"default":"web_default","tiktok:launch":"tiktok_
 
 Keep browser game integration in `src/lib` and page-level gameplay in `src/pages` or feature-specific folders.
 
+Midword is available at `/midword` and in Home, the game menu, Player Profile,
+and the Pro archive. It uses the existing Supabase configuration and the native
+`midword_puzzles` table and `midword` progress type; no new browser credentials
+are needed. Its focused checks are:
+
+```bash
+npm run test -- src/features/midword src/pages/MidwordPage.test.tsx
+```
+
+To regenerate its offline guess dictionary from the attributed wordfreq data:
+
+```bash
+../Backend/.venv/bin/python scripts/generate_midword_guesses.py
+```
+
 While running `npm run dev`, the game menu includes a **Debug → Force Pro
 access** switch. It requires a signed-in test account, is saved only in that
 browser, and affects only the client-side entitlement used to exercise protected

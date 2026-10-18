@@ -16,7 +16,6 @@ import { contentLoadFailed, gameCompleted, gameStarted } from "../features/analy
 import { loadLocalProfileRecords } from "../features/profile/profileRecords";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
 import { buildAnagramShareResult } from "../features/share/puzzleResult";
-import { PuzzleResultShare } from "../features/share/PuzzleResultShare";
 
 export function AnagramPage() {
   const { date: routeDate } = useParams<{ date?: string }>();
@@ -134,12 +133,12 @@ export function AnagramPage() {
     setDialog(null);
   }
   function shuffle() {
-    if (!progress) return;
+    if (!progress || !puzzle) return;
     const available = progress.trayOrder.filter((tile) => !progress.placedTileIDs.includes(tile));
     const order = [...available];
     for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
     if (order.join() === available.join() && order.length > 1) order.push(order.shift()!);
-    update(reshuffle(progress, order));
+    update(reshuffle(progress, puzzle, order));
   }
 
   if (!ready || (user && !entitlementReady)) return <main className="anagram-page">Checking Anagram access…</main>;
@@ -163,8 +162,8 @@ export function AnagramPage() {
           : <AnagramBoard now={now} onGiveUp={() => setDialog("giveUp")} onHint={() => setDialog("hint")}
               onPlace={(tile) => update(placeTile(progress, puzzle, tile))} onRestart={() => update(restartTiles(progress))}
               onResetReview={isReview ? () => { setProgress(null); setDialog(null); } : undefined}
-              onShuffle={shuffle} onUndo={() => update(undoTile(progress))} progress={progress} puzzle={puzzle} />}
-        {shareResult && dialog === null ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
+              onShuffle={shuffle} onUndo={() => update(undoTile(progress))} progress={progress} puzzle={puzzle}
+              shareResult={dialog === null ? shareResult : null} />}
       </> : null}
     </main>
     <Footer />

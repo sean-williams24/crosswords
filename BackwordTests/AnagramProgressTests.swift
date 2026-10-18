@@ -15,6 +15,90 @@ struct AnagramProgressTests {
         acceptedAnswers: ["REDESIGN", "RESIGNED"], initialScramble: "EGDRSNEI"
     )
 
+    private var leadingRepeated: AnagramPuzzle {
+        AnagramPuzzle(
+            id: "leading-repeated", date: puzzle.date, puzzleNumber: 3,
+            schemaVersion: 1, answer: "BUBBLES", acceptedAnswers: [], initialScramble: "BBBLUES"
+        )
+    }
+
+    @Test func startingTrayNeverLeadsWithAnswerFirstLetterIncludingDuplicates() {
+        let puzzle = leadingRepeated
+        let progress = AnagramProgress(puzzle: puzzle)
+        let letters = Array(puzzle.initialScramble)
+        #expect(letters[progress.trayOrder[0]] != puzzle.answer.first)
+        #expect(progress.trayOrder.sorted() == Array(0..<puzzle.length))
+        #expect(progress.placedTileIDs.allSatisfy { $0 == nil })
+        #expect(progress.isValid(for: puzzle))
+        #expect(!puzzle.answers.contains(String(progress.trayOrder.map { letters[$0] })))
+        #expect(AnagramProgress(puzzle: self.puzzle).trayOrder == Array(0..<self.puzzle.length))
+    }
+
+    @Test func shuffleMovesLeadingAnswerLetterAndPreservesHintAndHistory() {
+        var progress = AnagramProgress(puzzle: puzzle)
+        progress.revealHint(in: puzzle, source: .timePenalty)
+        progress.place(1, in: puzzle)
+        let before = progress
+        progress.shuffle(using: Array(progress.availableTileIDs.reversed()), in: puzzle)
+        #expect(Array(puzzle.initialScramble)[progress.trayOrder[0]] != puzzle.answer.first)
+        #expect(progress.placedTileIDs == before.placedTileIDs)
+        #expect(progress.placementHistory == before.placementHistory)
+        #expect(progress.lockedTileID == before.lockedTileID)
+        #expect(progress.penaltySeconds == before.penaltySeconds)
+        #expect(progress.startedAt == before.startedAt)
+        #expect(progress.isValid(for: puzzle))
+    }
+
+    @Test func shuffleCannotPutAnswerFirstLetterInFirstTraySlot() {
+        var progress = AnagramProgress(puzzle: puzzle)
+        progress.shuffle(using: [3, 0, 1, 2, 4, 5, 6, 7], in: puzzle)
+        #expect(Array(puzzle.initialScramble)[progress.trayOrder[0]] != puzzle.answer.first)
+        #expect(progress.trayOrder.sorted() == Array(0..<puzzle.length))
+    }
+
+    @Test func correctingLeadingLetterDoesNotRevealAnAcceptedAnswer() {
+        let puzzle = AnagramPuzzle(
+            id: "reactor", date: self.puzzle.date, puzzleNumber: 4, schemaVersion: 1,
+            answer: "REACTOR", acceptedAnswers: ["CREATOR"], initialScramble: "RCEATOR"
+        )
+        let progress = AnagramProgress(puzzle: puzzle)
+        let letters = Array(puzzle.initialScramble)
+        #expect(letters[progress.trayOrder[0]] != puzzle.answer.first)
+        #expect(!puzzle.answers.contains(String(progress.trayOrder.map { letters[$0] })))
+        #expect(progress.isValid(for: puzzle))
+    }
+
+    @Test func shuffleKeepsEmptyTraySlotsFixedAndHandlesOnlyMatchingLettersRemaining() {
+        var progress = AnagramProgress(puzzle: puzzle)
+        progress.place(0, in: puzzle)
+        let order = [3, 1, 2, 4, 5, 6, 7]
+        progress.shuffle(using: order, in: puzzle)
+        #expect(progress.trayOrder[0] == 0)
+        #expect(progress.availableTileIDs == order)
+        #expect(progress.placementHistory == [0])
+
+        let repeated = leadingRepeated
+        var remaining = AnagramProgress(puzzle: repeated)
+        for tile in 3...6 { remaining.place(tile, in: repeated) }
+        remaining.shuffle(using: [2, 1, 0], in: repeated)
+        #expect(remaining.availableTileIDs == [2, 1, 0])
+        #expect(remaining.isValid(for: repeated))
+    }
+
+    @Test @MainActor func restoredTrayCorrectsLeadingLetterWithoutResettingProgress() throws {
+        let puzzle = leadingRepeated
+        var saved = AnagramProgress(puzzle: puzzle)
+        saved.trayOrder = Array(0..<puzzle.length)
+        saved.place(4, in: puzzle)
+        let viewModel = AnagramViewModel(puzzle: puzzle, initialProgress: saved, persistsChanges: false)
+        let restored = try #require(viewModel.progress)
+        #expect(Array(puzzle.initialScramble)[restored.trayOrder[0]] != puzzle.answer.first)
+        #expect(restored.placementHistory == saved.placementHistory)
+        #expect(restored.placedTileIDs == saved.placedTileIDs)
+        #expect(restored.startedAt == saved.startedAt)
+        #expect(restored.updatedAt == saved.updatedAt)
+    }
+
     @Test func homeCardStatusScoreAndStreakFollowReleaseDayResults() {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
@@ -205,7 +289,7 @@ struct AnagramProgressTests {
         progress.undo(now: start.addingTimeInterval(12))
         let placement = progress.placedTileIDs
         let available = progress.availableTileIDs
-        progress.shuffle(using: Array(available.reversed()), now: start.addingTimeInterval(15))
+        progress.shuffle(using: Array(available.reversed()), in: puzzle, now: start.addingTimeInterval(15))
         #expect(progress.placedTileIDs == placement)
         #expect(progress.availableTileIDs == Array(available.reversed()))
         #expect(progress.startedAt == start)
@@ -307,10 +391,10 @@ struct AnagramProgressTests {
         let rating = OverallRating()
         let firstDay = formatter.date(from: "2026-10-01T12:00:00Z")!
         let established = formatter.date(from: "2026-10-14T12:00:00Z")!
-        #expect(rating.maxPoints(isPro: false, now: firstDay, calendar: calendar, firstAnagramRelease: "2026-10-01") == 145)
-        #expect(rating.maxPoints(isPro: true, now: firstDay, calendar: calendar, firstAnagramRelease: "2026-10-01") == 155)
-        #expect(rating.maxPoints(isPro: false, now: established, calendar: calendar, firstAnagramRelease: "2026-10-01") == 210)
-        #expect(rating.maxPoints(isPro: true, now: established, calendar: calendar, firstAnagramRelease: "2026-10-01") == 220)
+        #expect(rating.maxPoints(isPro: false, now: firstDay, calendar: calendar, firstAnagramRelease: "2026-10-01") == 150)
+        #expect(rating.maxPoints(isPro: true, now: firstDay, calendar: calendar, firstAnagramRelease: "2026-10-01") == 160)
+        #expect(rating.maxPoints(isPro: false, now: established, calendar: calendar, firstAnagramRelease: "2026-10-01") == 280)
+        #expect(rating.maxPoints(isPro: true, now: established, calendar: calendar, firstAnagramRelease: "2026-10-01") == 290)
     }
 
     private func localDate(_ value: String) throws -> Date {

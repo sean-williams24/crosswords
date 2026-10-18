@@ -16,6 +16,11 @@ export const siteConfig = {
   appStoreUrl: "https://apps.apple.com/app/backword/id6773428497",
   developerName: "Sean Williams",
   supportEmail: "backword.support@gmail.com",
+  socialLinks: [
+    { label: "Instagram", href: "https://instagram.com/play.backword?dlrf=MTg1d3pmcmsydzIycA%3D%3D&utm_source=qr" },
+    { label: "TikTok", href: "https://www.tiktok.com/@play.backword" },
+    { label: "Facebook", href: "https://www.facebook.com/share/1CWvuRkqxe/?mibextid=wwXIfr" }
+  ],
   lastUpdated: "August 31, 2026",
   environment: {
     supabaseUrl: "VITE_SUPABASE_URL",

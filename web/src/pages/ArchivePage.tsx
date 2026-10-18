@@ -5,6 +5,8 @@ import { BackwordLogo } from "../features/backword/components/BackwordLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { createBackwordRepository } from "../features/backword/repository";
 import { createAnagramRepository } from "../features/anagram/repository";
+import { createMidwordRepository } from "../features/midword/repository";
+import type { MidwordPuzzle } from "../features/midword/engine";
 import type { AnagramPuzzle } from "../features/anagram/engine";
 import type { BackwordRepository } from "../features/backword/repository";
 import type { BackwordWord } from "../features/backword/types";
@@ -16,21 +18,22 @@ import type { CrosswordRepository } from "../features/crossword/repository";
 import type { CrosswordPuzzle } from "../features/crossword/types";
 import { ProAccessRedirect } from "../features/pro/ProAccessRedirect";
 
-type ArchiveItem = BackwordWord | CrosswordPuzzle | AnagramPuzzle;
+type ArchiveItem = BackwordWord | CrosswordPuzzle | AnagramPuzzle | MidwordPuzzle;
 type MonthsByType = Record<ArchiveGameType, string[]>;
 type SelectedMonths = Partial<Record<ArchiveGameType, string>>;
 
 const archiveTypes: { id: ArchiveGameType; label: string; shortLabel: string }[] = [
   { id: "backword", label: "Backword", shortLabel: "Backword" },
   { id: "anagram", label: "Anagram", shortLabel: "Anagram" },
+  { id: "midword", label: "Midword", shortLabel: "Midword" },
   { id: "daily", label: "Quick Crossword", shortLabel: "Quick" },
   { id: "weekly", label: "Pro Crossword", shortLabel: "Pro" }
 ];
 
-const emptyMonths: MonthsByType = { backword: [], anagram: [], daily: [], weekly: [] };
+const emptyMonths: MonthsByType = { backword: [], anagram: [], midword: [], daily: [], weekly: [] };
 
 function archiveTypeFromSearch(value: string | null): ArchiveGameType {
-  return value === "daily" || value === "weekly" || value === "backword" || value === "anagram" ? value : "backword";
+  return value === "daily" || value === "weekly" || value === "backword" || value === "anagram" || value === "midword" ? value : "backword";
 }
 
 function displayMonth(month: string) {
@@ -70,13 +73,14 @@ function ArchiveContent({ entitlement, user }: Pick<ReturnType<typeof useAuth>, 
   const repositories = useMemo((): {
     backword: BackwordRepository | null;
     anagram: ReturnType<typeof createAnagramRepository> | null;
+    midword: ReturnType<typeof createMidwordRepository> | null;
     crossword: CrosswordRepository | null;
     error: string | null;
   } => {
     try {
-      return { backword: createBackwordRepository(), anagram: createAnagramRepository(), crossword: createCrosswordRepository(), error: null };
+      return { backword: createBackwordRepository(), anagram: createAnagramRepository(), midword: createMidwordRepository(), crossword: createCrosswordRepository(), error: null };
     } catch {
-      return { backword: null, anagram: null, crossword: null, error: "The archive needs its Supabase configuration before it can load." };
+      return { backword: null, anagram: null, midword: null, crossword: null, error: "The archive needs its Supabase configuration before it can load." };
     }
   }, []);
   const [activeType, setActiveType] = useState<ArchiveGameType>(() => archiveTypeFromSearch(searchParams.get("game")));
@@ -88,8 +92,8 @@ function ArchiveContent({ entitlement, user }: Pick<ReturnType<typeof useAuth>, 
   const [errors, setErrors] = useState<Partial<Record<ArchiveGameType, string>>>({});
 
   useEffect(() => {
-    if (!repositories.backword || !repositories.anagram || !repositories.crossword) {
-      setErrors({ backword: repositories.error ?? undefined, anagram: repositories.error ?? undefined, daily: repositories.error ?? undefined, weekly: repositories.error ?? undefined });
+    if (!repositories.backword || !repositories.anagram || !repositories.midword || !repositories.crossword) {
+      setErrors({ backword: repositories.error ?? undefined, anagram: repositories.error ?? undefined, midword: repositories.error ?? undefined, daily: repositories.error ?? undefined, weekly: repositories.error ?? undefined });
       setLoadingMonths(false);
       return;
     }
@@ -97,13 +101,15 @@ function ArchiveContent({ entitlement, user }: Pick<ReturnType<typeof useAuth>, 
     void Promise.allSettled([
       repositories.backword.getArchiveMonths(),
       repositories.anagram.getArchiveMonths(),
+      repositories.midword.getArchiveMonths(),
       repositories.crossword.getArchiveMonths("daily"),
       repositories.crossword.getArchiveMonths("weekly")
-    ]).then(([backword, anagram, daily, weekly]) => {
+    ]).then(([backword, anagram, midword, daily, weekly]) => {
       if (cancelled) return;
       const nextMonths: MonthsByType = {
         backword: backword.status === "fulfilled" ? backword.value : [],
         anagram: anagram.status === "fulfilled" ? anagram.value : [],
+        midword: midword.status === "fulfilled" ? midword.value : [],
         daily: daily.status === "fulfilled" ? daily.value : [],
         weekly: weekly.status === "fulfilled" ? weekly.value : []
       };
@@ -111,12 +117,14 @@ function ArchiveContent({ entitlement, user }: Pick<ReturnType<typeof useAuth>, 
       setSelectedMonths((current) => ({
         backword: current.backword ?? nextMonths.backword[0],
         anagram: current.anagram ?? nextMonths.anagram[0],
+        midword: current.midword ?? nextMonths.midword[0],
         daily: current.daily ?? nextMonths.daily[0],
         weekly: current.weekly ?? nextMonths.weekly[0]
       }));
       setErrors({
         ...(backword.status === "rejected" ? { backword: "Backword history is unavailable right now." } : {}),
         ...(anagram.status === "rejected" ? { anagram: "Anagram history is unavailable right now." } : {}),
+        ...(midword.status === "rejected" ? { midword: "Midword history is unavailable right now." } : {}),
         ...(daily.status === "rejected" ? { daily: "Quick Crossword history is unavailable right now." } : {}),
         ...(weekly.status === "rejected" ? { weekly: "Pro Crossword history is unavailable right now." } : {})
       });
@@ -130,13 +138,14 @@ function ArchiveContent({ entitlement, user }: Pick<ReturnType<typeof useAuth>, 
   const selectedContent = contentKey ? content[contentKey] : undefined;
 
   useEffect(() => {
-    if (!repositories.backword || !repositories.anagram || !repositories.crossword || !selectedMonth || !contentKey || content[contentKey] !== undefined) return;
+    if (!repositories.backword || !repositories.anagram || !repositories.midword || !repositories.crossword || !selectedMonth || !contentKey || content[contentKey] !== undefined) return;
     let cancelled = false;
     setLoadingContent(contentKey);
     setErrors((current) => ({ ...current, [activeType]: undefined }));
     const request = activeType === "backword"
       ? repositories.backword.getArchiveMonth(selectedMonth)
       : activeType === "anagram" ? repositories.anagram.getArchiveMonth(selectedMonth)
+      : activeType === "midword" ? repositories.midword.getArchiveMonth(selectedMonth)
       : repositories.crossword.getArchiveMonth(activeType === "weekly" ? "weekly" : "daily", selectedMonth);
     void request.then((items) => {
       if (!cancelled) setContent((current) => ({ ...current, [contentKey]: items }));

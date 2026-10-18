@@ -3,7 +3,7 @@ export type BackwordMode = "normal" | "easy";
 export type BackwordOutcome = "inProgress" | "won" | "failed";
 
 export type BackwordOnboardingStep =
-  | "guessWord"
+  | "clue"
   | "connectedLetters"
   | "freeReveals"
   | "scoring"

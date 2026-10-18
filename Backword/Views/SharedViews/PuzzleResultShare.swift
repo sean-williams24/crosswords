@@ -11,6 +11,7 @@ struct PuzzleShareResult: Equatable {
     enum Game: String, Equatable {
         case backword
         case anagram
+        case midword
         case dailyCrossword = "daily_crossword"
         case weeklyCrossword = "weekly_crossword"
 
@@ -18,6 +19,7 @@ struct PuzzleShareResult: Equatable {
             switch self {
             case .backword: "Backword"
             case .anagram: "Anagram"
+            case .midword: "Midword"
             case .dailyCrossword: "Quick Crossword"
             case .weeklyCrossword: "Pro Crossword"
             }
@@ -27,6 +29,7 @@ struct PuzzleShareResult: Equatable {
             switch self {
             case .backword: .backword
             case .anagram: .anagram
+            case .midword: .midword
             case .dailyCrossword: .dailyCrossword
             case .weeklyCrossword: .weeklyCrossword
             }
@@ -36,6 +39,7 @@ struct PuzzleShareResult: Equatable {
             switch self {
             case .backword: "/backword/"
             case .anagram: "/anagram/"
+            case .midword: "/midword/"
             case .dailyCrossword: "/crossword/"
             case .weeklyCrossword: "/weekly-crossword/"
             }
@@ -44,7 +48,7 @@ struct PuzzleShareResult: Equatable {
         /// Backword, Anagram, and Pro Crossword cards retain their dark visual identities
         /// independently of the device appearance used to create the share image.
         var usesDarkShareCardAppearance: Bool {
-            self == .backword || self == .anagram || self == .weeklyCrossword
+            self == .backword || self == .anagram || self == .midword || self == .weeklyCrossword
         }
 
         /// The lavender Backword card needs a darker label treatment than the
@@ -155,7 +159,7 @@ struct PuzzleShareResult: Equatable {
             ratingTier: rating.tier(isPro: isPro).displayName,
             ratingPoints: rating.totalPoints(isPro: isPro),
             ratingMaxPoints: rating.maxPoints(isPro: isPro),
-            primaryStat: Stat(label: "SOLVE TIME", value: Int(progress.elapsedTime).formattedTimeHHMMSS),
+            primaryStat: Stat(label: "SOLVE TIME", value: formattedDuration(Int(progress.elapsedTime))),
             timeStat: nil
         )
     }
@@ -180,10 +184,38 @@ struct PuzzleShareResult: Equatable {
             ratingMaxPoints: rating.maxPoints(isPro: isPro),
             primaryStat: Stat(
                 label: "SOLVE TIME",
-                value: (completion.progress.elapsedSecondsAtCompletion ?? 0).formattedTimeHHMMSS
+                value: formattedDuration(completion.progress.elapsedSecondsAtCompletion ?? 0)
             ),
             timeStat: nil
         )
+    }
+
+    static func midword(
+        puzzle: MidwordPuzzle,
+        progress: MidwordProgress,
+        history: MidwordStatsHistory,
+        rating: OverallRating,
+        isPro: Bool
+    ) -> PuzzleShareResult {
+        PuzzleShareResult(
+            game: .midword,
+            issueNumber: puzzle.puzzleNumber,
+            date: puzzle.date,
+            outcome: progress.isWon ? "SOLVED" : "COMPLETED",
+            score: progress.releaseDateScore,
+            streak: history.currentStreak,
+            totalGamesSolved: history.totalSolved,
+            ratingTier: rating.tier(isPro: isPro).displayName,
+            ratingPoints: rating.totalPoints(isPro: isPro),
+            ratingMaxPoints: rating.maxPoints(isPro: isPro),
+            primaryStat: Stat(label: "GUESSES", value: "\(progress.guesses.count)/5"),
+            timeStat: nil
+        )
+    }
+
+    static func formattedDuration(_ seconds: Int) -> String {
+        let seconds = max(0, seconds)
+        return String(format: "%02d:%02d:%02d", seconds / 3_600, (seconds % 3_600) / 60, seconds % 60)
     }
 
     static func completedTime(_ date: Date?, timeZone: TimeZone = .current) -> String {
@@ -191,7 +223,7 @@ struct PuzzleShareResult: Equatable {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = timeZone
-        formatter.dateFormat = "h:mm a"
+        formatter.dateFormat = "HH:mm:ss"
         return formatter.string(from: date)
     }
 }
@@ -305,6 +337,8 @@ private struct PuzzleResultShareCard: View {
             }
         case .anagram:
             Color.anagramSurface
+        case .midword:
+            Color.midwordBackground
         case .dailyCrossword:
             Color.shareCardDailyBackground
         case .weeklyCrossword:
@@ -400,6 +434,8 @@ private struct PuzzleResultShareCard: View {
         switch result.game {
         case .anagram:
             return .anagramOrange
+        case .midword:
+            return .midwordAccent
         case .dailyCrossword:
             return .shareCardDailyStatLabel
         case .backword, .weeklyCrossword:
@@ -411,6 +447,8 @@ private struct PuzzleResultShareCard: View {
         switch result.game {
         case .anagram:
             return .anagramOrange
+        case .midword:
+            return .midwordAccent
         case .weeklyCrossword:
             return .solvedGold
         case .backword, .dailyCrossword:
@@ -587,7 +625,7 @@ private extension PuzzleShareResult {
         ratingPoints: 68,
         ratingMaxPoints: 140,
         primaryStat: .init(label: "ATTEMPTS", value: "1 / 5"),
-        timeStat: .init(label: "COMPLETED", value: "2:30 PM")
+        timeStat: .init(label: "COMPLETED", value: "14:30:00")
     )
 
     static let previewBackwordCompleted = PuzzleShareResult(
@@ -602,7 +640,7 @@ private extension PuzzleShareResult {
         ratingPoints: 42,
         ratingMaxPoints: 140,
         primaryStat: .init(label: "ATTEMPTS", value: "5 / 5"),
-        timeStat: .init(label: "COMPLETED", value: "4:10 PM")
+        timeStat: .init(label: "COMPLETED", value: "16:10:00")
     )
 
     static let previewDailyCrosswordSolved = PuzzleShareResult(
@@ -616,7 +654,7 @@ private extension PuzzleShareResult {
         ratingTier: "Linguist",
         ratingPoints: 68,
         ratingMaxPoints: 140,
-        primaryStat: .init(label: "SOLVE TIME", value: "04:38"),
+        primaryStat: .init(label: "SOLVE TIME", value: "00:04:38"),
         timeStat: nil
     )
 
@@ -631,7 +669,7 @@ private extension PuzzleShareResult {
         ratingTier: "Cruciverbalist",
         ratingPoints: 122,
         ratingMaxPoints: 210,
-        primaryStat: .init(label: "SOLVE TIME", value: "12:47"),
+        primaryStat: .init(label: "SOLVE TIME", value: "00:12:47"),
         timeStat: nil
     )
 }
