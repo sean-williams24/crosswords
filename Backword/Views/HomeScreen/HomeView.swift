@@ -452,20 +452,17 @@ struct HomeView: View {
     }
 
     private var gamesGrid: some View {
-        VStack(spacing: HomeGamesLayout.spacing) {
-            gamesGrid(for: HomeGamesLayout.gamesBeforeArchiveButton)
+        HomeGameCardsGrid(columns: 1, spacing: HomeGamesLayout.spacing) {
+            ForEach(HomeGamesLayout.gamesBeforeArchiveButton, id: \.self) { game in
+                gameCard(for: game)
+            }
             adFreeExperienceButton
-            gamesGrid(for: HomeGamesLayout.gamesAfterArchiveButton)
-        }
-        .padding(.horizontal, appLayout.homeHorizontalPadding)
-    }
-
-    private func gamesGrid(for games: [HomeGamesLayout.Game]) -> some View {
-        LazyVGrid(columns: HomeGamesLayout.columns(for: sizeClass), spacing: HomeGamesLayout.spacing) {
-            ForEach(games, id: \.self) { game in
+                .layoutValue(key: HomeGameCardsGridLayout.IntrinsicHeightKey.self, value: true)
+            ForEach(HomeGamesLayout.gamesAfterArchiveButton, id: \.self) { game in
                 gameCard(for: game)
             }
         }
+        .padding(.horizontal, appLayout.homeHorizontalPadding)
     }
 
     @ViewBuilder

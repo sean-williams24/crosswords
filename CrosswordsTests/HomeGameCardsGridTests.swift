@@ -67,15 +67,86 @@ struct HomeGameCardsGridTests {
         }
     }
 
-    @Test("New measurements can shrink every row after taller content disappears")
-    func contentCanShrink() {
+    @Test("Stacked games share a height across the optional compact archive upsell",
+          arguments: [DynamicTypeSize.large, .xxxLarge, .accessibility1, .accessibility5],
+          [CGFloat(320), 390])
+    func stackedCards(dynamicTypeSize: DynamicTypeSize, width: CGFloat) throws {
+        for showsUpsell in [false, true] {
+            let measurements = Measurements()
+            let grid = HomeGameCardsGrid(columns: 1, spacing: 20) {
+                ForEach(0..<2) { index in
+                    stackedCard(index: index, measurements: measurements)
+                }
+                Group {
+                    if showsUpsell {
+                        CardProbe(index: 5, measurements: measurements) {
+                            AdFreeExperienceButton(action: {})
+                        }
+                    }
+                }
+                .layoutValue(key: HomeGameCardsGridLayout.IntrinsicHeightKey.self, value: true)
+                ForEach(2..<5) { index in
+                    stackedCard(index: index, measurements: measurements)
+                }
+            }
+            .environment(\.horizontalSizeClass, .compact)
+            .environment(\.dynamicTypeSize, dynamicTypeSize)
+            .transaction { $0.disablesAnimations = true }
+
+            let size = layout(grid, width: width)
+            let tallest = try #require((0..<5).compactMap { measurements.idealHeights[$0] }.max())
+            let upsellHeight = showsUpsell ? try #require(measurements.idealHeights[5]) : 0
+            #expect(measurements.frames.count == (showsUpsell ? 6 : 5))
+            let totalSpacing: CGFloat = showsUpsell ? 100 : 80
+            let expectedHeight = 5 * tallest + upsellHeight + totalSpacing
+            #expect(abs(size.height - expectedHeight) < 0.5)
+            let order = showsUpsell ? [0, 1, 5, 2, 3, 4] : [0, 1, 2, 3, 4]
+            var previousFrame: CGRect?
+            for index in order {
+                let frame = try #require(measurements.frames[index])
+                #expect(abs(frame.width - width) < 0.5)
+                #expect(abs(frame.height - (index == 5 ? upsellHeight : tallest)) < 0.5)
+                if let previousFrame {
+                    #expect(abs(frame.minY - previousFrame.maxY - 20) < 0.5)
+                }
+                previousFrame = frame
+            }
+        }
+    }
+
+    @Test("New measurements can shrink every row after taller content disappears", arguments: [1, 2])
+    func contentCanShrink(columns: Int) {
         for tallest: CGFloat in [194, 400, 194] {
-            let grid = HomeGameCardsGrid(spacing: 20) {
+            let grid = HomeGameCardsGrid(columns: columns, spacing: 20) {
                 ForEach(0..<6) { index in
                     Color.clear.frame(minHeight: index == 4 ? tallest : 144)
                 }
             }
-            #expect(layout(grid, width: 580).height == 3 * tallest + 40)
+            let rows = CGFloat(6 / columns)
+            #expect(layout(grid, width: 580).height == rows * tallest + (rows - 1) * 20)
+        }
+    }
+
+    private func stackedCard(index: Int, measurements: Measurements) -> some View {
+        CardProbe(index: index, measurements: measurements) {
+            HomeGameCardContent(minimumHeight: AppLayout.cardHeightSmall) {
+                Text(index == 1 || index == 4 ? "QUICK\nCROSSWORD" : "ANAGRAM")
+                    .font(AppFont.clueLabel(16))
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.35)
+            } details: {
+                if index == 2 {
+                    ProgressView()
+                } else {
+                    Text("In Progress")
+                        .font(AppFont.caption())
+                }
+            } accessory: {
+                // Force the tallest content below the upsell to exercise both groups.
+                if index == 4 {
+                    Color.clear.frame(height: 180)
+                }
+            }
         }
     }
 
