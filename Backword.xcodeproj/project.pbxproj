@@ -232,6 +232,8 @@
 		F3A0000A3016000000000001 /* HomeGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A000093016000000000001 /* HomeGamesView.swift */; };
 		B77DC0900000000000000001 /* BackwordClueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0900000000000000002 /* BackwordClueView.swift */; };
 		B77DC0A00000000000000001 /* ../CrosswordsTests/BackwordClueViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */; };
+		F4E000023017000000000001 /* HomeGameCardsGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E000013017000000000001 /* HomeGameCardsGrid.swift */; };
+		F4E000043017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E000033017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -468,6 +470,8 @@
 		F3A000093016000000000001 /* HomeGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGamesView.swift; sourceTree = "<group>"; };
 		B77DC0900000000000000002 /* BackwordClueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordClueView.swift; sourceTree = "<group>"; };
 		B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/BackwordClueViewTests.swift; sourceTree = "<group>"; };
+		F4E000013017000000000001 /* HomeGameCardsGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGameCardsGrid.swift; sourceTree = "<group>"; };
+		F4E000033017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardsGridTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -537,6 +541,7 @@
 				F4D000013017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift */,
 				B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */,
 				B77DC0400000000000000002 /* ../CrosswordsTests/HomeGameCardContentTests.swift */,
+				F4E000033017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift */,
 				B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */,
 				F3A000073016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift */,
 				F3A000053016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift */,
@@ -733,6 +738,7 @@
 				86E5C00D2FA94D8A00A42156 /* StreakButton.swift */,
 				F10000000000000000000001 /* HomeCardIssueNumber.swift */,
 				F10000000000000000000003 /* HomeGameCardContent.swift */,
+				F4E000013017000000000001 /* HomeGameCardsGrid.swift */,
 				F10000000000000000000005 /* HomeGameCardLayout.swift */,
 				F10000000000000000000007 /* HomeGameCardFooter.swift */,
 				F10000000000000000000009 /* HomeGameCardHeader.swift */,
@@ -1036,6 +1042,7 @@
 				F4D000023017000000000002 /* ../CrosswordsTests/MidwordLogoTests.swift in Sources */,
 				B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */,
 				B77DC0400000000000000001 /* ../CrosswordsTests/HomeGameCardContentTests.swift in Sources */,
+				F4E000043017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift in Sources */,
 				B77DC0500000000000000001 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift in Sources */,
 				F3A000083016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift in Sources */,
 				F3A000063016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift in Sources */,
@@ -1147,6 +1154,7 @@
 				86E5C00C2FA94D8A00A42156 /* DailyCrosswordCard.swift in Sources */,
 				F10000000000000000000002 /* HomeCardIssueNumber.swift in Sources */,
 				F10000000000000000000004 /* HomeGameCardContent.swift in Sources */,
+				F4E000023017000000000001 /* HomeGameCardsGrid.swift in Sources */,
 				F10000000000000000000006 /* HomeGameCardLayout.swift in Sources */,
 				F10000000000000000000008 /* HomeGameCardFooter.swift in Sources */,
 				F1000000000000000000000A /* HomeGameCardHeader.swift in Sources */,

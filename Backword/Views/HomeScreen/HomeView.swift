@@ -440,20 +440,13 @@ struct HomeView: View {
     }
 
     private var twoColumnGamesGrid: some View {
-        // An eager grid measures every row, including completed states and larger text.
-        Grid(horizontalSpacing: HomeGamesLayout.spacing, verticalSpacing: HomeGamesLayout.spacing) {
-            GridRow {
-                backwordCard
-                dailyCrosswordCard
-            }
-            GridRow {
-                anagramCard
-                midwordCard
-            }
-            GridRow {
-                gameCard(for: .proCrossword)
-                HomeArchiveCard(isProUser: storeService.isProUser, openArchive: openArchive)
-            }
+        HomeGameCardsGrid(spacing: HomeGamesLayout.spacing) {
+            backwordCard
+            dailyCrosswordCard
+            anagramCard
+            midwordCard
+            gameCard(for: .proCrossword)
+            HomeArchiveCard(isProUser: storeService.isProUser, openArchive: openArchive)
         }
         .padding(.horizontal, appLayout.homeHorizontalPadding)
     }

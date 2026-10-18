@@ -596,6 +596,13 @@ or date labels; their own content identifies each game.
 The Pro Crossword card fills its grid column rather than keeping a fixed iPad
 width.
 
+The iOS two-column game grid measures all six cards at the available column
+width and gives every card the tallest measured height. Dynamic Type, loading,
+errors, and completed states can increase that shared height; smaller text or
+wider columns can reduce it again. Cards fill the proposed height only inside
+this grid, keeping centred branding and bottom-aligned footers. Single-column
+cards retain their content-driven heights and the compact archive upsell.
+
 At maximum scroll, the last iOS Home card sits one game-card spacing (20 points)
 above the visible tab bar. The bottom safe-area inset already reserves the bar,
 so scroll-content bottom padding subtracts the bar's top padding from that gap.

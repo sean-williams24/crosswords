@@ -35,6 +35,7 @@ struct HomeGameCardLayout: Layout {
     let minimumHeight: CGFloat
     let spacing: CGFloat
     var identityPosition: IdentityPosition = .center
+    var fillsProposedHeight = false
 
     static func frames(
         width: CGFloat, minimumHeight: CGFloat, heights: [Region: CGFloat], spacing: CGFloat,
@@ -70,7 +71,8 @@ struct HomeGameCardLayout: Layout {
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         let width = proposal.width ?? subviews.map { $0.sizeThatFits(.unspecified).width }.max() ?? 0
         let frames = Self.frames(
-            width: width, minimumHeight: minimumHeight,
+            width: width,
+            minimumHeight: fillsProposedHeight ? max(minimumHeight, proposal.height ?? 0) : minimumHeight,
             heights: heights(for: subviews, width: width), spacing: spacing, identityPosition: identityPosition
         )
         return frames.size

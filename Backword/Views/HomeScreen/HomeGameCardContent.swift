@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct HomeGameCardContent<Identity: View, Details: View, Accessory: View, Header: View>: View {
+    @Environment(\.homeCardFillsProposedHeight) private var fillsProposedHeight
     let minimumHeight: CGFloat
     var identityPosition: HomeGameCardLayout.IdentityPosition = .center
     var spacing: CGFloat = AnagramHomeCardLayout.contentSpacing
@@ -13,7 +14,8 @@ struct HomeGameCardContent<Identity: View, Details: View, Accessory: View, Heade
         HomeGameCardLayout(
             minimumHeight: minimumHeight - 2 * AnagramHomeCardLayout.verticalPadding,
             spacing: spacing,
-            identityPosition: identityPosition
+            identityPosition: identityPosition,
+            fillsProposedHeight: fillsProposedHeight
         ) {
             header()
                 .frame(maxWidth: .infinity, alignment: .center)

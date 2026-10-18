@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeArchiveCard: View {
     @Environment(\.horizontalSizeClass) private var sizeClass
+    @Environment(\.homeCardFillsProposedHeight) private var fillsProposedHeight
 
     let isProUser: Bool
     let openArchive: () -> Void
@@ -24,7 +25,11 @@ struct HomeArchiveCard: View {
             }
             .multilineTextAlignment(.center)
             .padding(AppLayout.screenPadding)
-            .frame(maxWidth: .infinity, minHeight: AppLayout(sizeClass: sizeClass).cardHeight)
+            .frame(
+                maxWidth: .infinity,
+                minHeight: AppLayout(sizeClass: sizeClass).cardHeight,
+                maxHeight: fillsProposedHeight ? .infinity : nil
+            )
             .background(Color.appSurface)
             .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
             .overlay {
