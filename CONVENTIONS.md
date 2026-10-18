@@ -708,6 +708,9 @@ It remains present when Word of the Day becomes compact, and disappears only
 when the game cards stack into one column. It replaces the compact archive
 upsell in two-column layouts and remains visible for Pro users;
 both Archive entry points share the existing entitlement-gated destination.
+The full iOS Archive card keeps its title on one line, scaling the text down
+beside the icon when larger Dynamic Type or a narrow column needs more room.
+Its description continues to wrap freely.
 An eager grid and `ViewThatFits` measure the full content, including larger
 text, completed cards, spacing, and padding. If it no longer fits after a window
 resize or content change, Home restores the compact Word of the Day button above

@@ -15,6 +15,8 @@ struct HomeArchiveCard: View {
                         .foregroundStyle(Color.appAccent)
                     Text("ARCHIVE")
                         .foregroundStyle(Color.appTextPrimary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.35)
                 }
                 .font(AppFont.clueLabel(AppLayout.homeArchiveTitleSize))
 
