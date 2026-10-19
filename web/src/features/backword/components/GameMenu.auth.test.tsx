@@ -56,6 +56,23 @@ describe("GameMenu account actions", () => {
     expect(document.body.style.overflow).toBe("");
   });
 
+  it("orders game links as Backword, Quick Crossword, Anagram, Midword, and Pro Crossword", async () => {
+    const user = userEvent.setup();
+    renderMenu();
+    await user.click(screen.getByRole("button", { name: "Open game menu" }));
+
+    const navigation = screen.getByRole("navigation", { name: "Game navigation links" });
+    expect(within(navigation).getAllByRole("link").slice(0, 7).map((link) => link.textContent)).toEqual([
+      "Home",
+      "Backword",
+      "Quick Crossword",
+      "Anagram",
+      "Midword",
+      "Pro Crossword",
+      "Archive"
+    ]);
+  });
+
   it("shows one Player Profile link for signed-in players without account actions", async () => {
     const user = userEvent.setup();
     renderMenu();
