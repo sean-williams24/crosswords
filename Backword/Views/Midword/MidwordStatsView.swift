@@ -78,58 +78,52 @@ struct MidwordStatsView: View {
     private var completionBody: some View {
         ZStack {
             Color.midwordBackground.ignoresSafeArea()
-            VStack(spacing: 0) {
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 20) {
-                        completionHeader
-                        if showAnswer {
-                            MidwordCompletionWordView(word: puzzle.answer, failed: progress.isFailed)
-                                .padding(.horizontal, AppLayout.screenPadding)
-                                .frame(maxWidth: 560)
-                                .transition(.scale(scale: 0.88).combined(with: .opacity))
-                            Text("\(puzzle.firstCompound)  ·  \(puzzle.secondCompound)")
-                                .font(AppFont.body())
-                                .foregroundStyle(Color.midwordText)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal, AppLayout.screenPadding)
-                                .transition(.opacity)
-                        }
-                        if showCountdown {
-                            nextMidwordCountdown
-                                .transition(.move(edge: .bottom).combined(with: .opacity))
-                        }
-                        if showDetails {
-                            VStack(spacing: 20) {
-                                ratingBar
-                                PuzzleResultShareButton(
-                                    result: shareResult,
-                                    foregroundColor: .midwordAccent,
-                                    backgroundColor: .midwordText.opacity(0.08)
-                                )
-                                .padding(.horizontal, AppLayout.screenPadding)
-                                completionStats
-                                statsContent
-                            }
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                        }
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 20) {
+                    completionHeader
+                    if showAnswer {
+                        MidwordCompletionWordView(word: puzzle.answer, failed: progress.isFailed)
+                            .padding(.horizontal, AppLayout.screenPadding)
+                            .frame(maxWidth: 560)
+                            .transition(.scale(scale: 0.88).combined(with: .opacity))
+                        Text("\(puzzle.firstCompound)  ·  \(puzzle.secondCompound)")
+                            .font(AppFont.body())
+                            .foregroundStyle(Color.midwordText)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, AppLayout.screenPadding)
+                            .transition(.opacity)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 32)
-                    .padding(.bottom, 28)
+                    if showCountdown {
+                        nextMidwordCountdown
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                    if showDetails {
+                        VStack(spacing: 20) {
+                            ratingBar
+                            PuzzleResultShareButton(
+                                result: shareResult,
+                                foregroundColor: .midwordAccent,
+                                backgroundColor: .midwordText.opacity(0.08)
+                            )
+                            .padding(.horizontal, AppLayout.screenPadding)
+                            completionStats
+                            statsContent
+                        }
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
                 }
-                Button {
+                .frame(maxWidth: .infinity)
+                .padding(.top, 32)
+                .padding(.bottom, 28)
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                StatsHomeBar(foregroundColor: .midwordAccent, backgroundColor: .midwordBackground) {
                     dismiss()
                     shouldPop = true
-                } label: {
-                    Text("HOME")
-                        .font(AppFont.body())
-                        .foregroundStyle(Color.midwordAccent)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
                 }
-                .padding(.horizontal, AppLayout.screenPadding)
-                .padding(.bottom, 20)
                 .opacity(showDetails ? 1 : 0)
+                .allowsHitTesting(showDetails)
+                .accessibilityHidden(!showDetails)
             }
         }
         .task(id: progress.completedAt) { await runCompletionPresentation() }

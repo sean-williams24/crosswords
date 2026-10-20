@@ -93,60 +93,52 @@ struct BackwordStatsView: View {
             Color.appBackground
                 .ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 20) {
-                        if let title = displayState.title {
-                            Text(title)
-                                .font(AppFont.header(40))
-                                .foregroundColor(titleColor)
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 20) {
+                    if let title = displayState.title {
+                        Text(title)
+                            .font(AppFont.header(40))
+                            .foregroundColor(titleColor)
+                    }
+
+                    if let completionWord {
+                        if let completionGuessSummary {
+                            Text(completionGuessSummary)
+                                .font(AppFont.body(16))
+                                .foregroundColor(.appTextSecondary)
                         }
 
-                        if let completionWord {
-                            if let completionGuessSummary {
-                                Text(completionGuessSummary)
-                                    .font(AppFont.body(16))
-                                    .foregroundColor(.appTextSecondary)
-                            }
+                        BackwordCompletionWordView(
+                            word: completionWord,
+                            isFailed: isFailedCompletion
+                        )
+                    }
 
-                            BackwordCompletionWordView(
-                                word: completionWord,
-                                isFailed: isFailedCompletion
-                            )
+                    nextBackwordCountdown
+
+                    Group {
+                        ratingBarView
+
+                        if let shareResult {
+                            PuzzleResultShareButton(result: shareResult)
+                                .padding(.horizontal, AppLayout.screenPadding)
                         }
 
-                        nextBackwordCountdown
-
-                        Group {
-                            ratingBarView
-
-                            if let shareResult {
-                                PuzzleResultShareButton(result: shareResult)
-                                    .padding(.horizontal, AppLayout.screenPadding)
-                            }
-
-                            completionMessage
-                            if displayState.showsStats {
-                                completedStatsContent
-                            }
+                        completionMessage
+                        if displayState.showsStats {
+                            completedStatsContent
                         }
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 36)
-                    .padding(.bottom, 28)
                 }
-
-                Button {
+                .frame(maxWidth: .infinity)
+                .padding(.top, 36)
+                .padding(.bottom, 28)
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                StatsHomeBar {
                     dismiss()
                     shouldPop = true
-                } label: {
-                    Text("HOME")
-                        .font(AppFont.body())
-                        .foregroundColor(.appTextSecondary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 14)
                 }
-                .padding(.horizontal, AppLayout.screenPadding)
             }
         }
     }

@@ -33,65 +33,58 @@ struct CompletionView: View {
             Color.appBackground
                 .ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 24) {
-                        celebrationHeader
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 24) {
+                    celebrationHeader
 
-                        if showGrid {
-                            CrosswordCompletionGridView(
-                                puzzle: viewModel.puzzle,
-                                style: gridStyle
+                    if showGrid {
+                        CrosswordCompletionGridView(
+                            puzzle: viewModel.puzzle,
+                            style: gridStyle
+                        )
+                        .transition(.scale(scale: 0.88).combined(with: .opacity))
+                    }
+
+                    if showCountdown {
+                        nextCrosswordCountdown
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+
+                    if showDetails {
+                        VStack(spacing: 20) {
+                            RatingBarView(
+                                rating: ratingService.rating,
+                                isPro: storeService.isProUser,
+                                category: category
                             )
-                            .transition(.scale(scale: 0.88).combined(with: .opacity))
-                        }
+                            .padding(.horizontal, AppLayout.screenPadding)
 
-                        if showCountdown {
-                            nextCrosswordCountdown
-                                .transition(.move(edge: .bottom).combined(with: .opacity))
-                        }
-
-                        if showDetails {
-                            VStack(spacing: 20) {
-                                RatingBarView(
-                                    rating: ratingService.rating,
-                                    isPro: storeService.isProUser,
-                                    category: category
-                                )
+                            PuzzleResultShareButton(result: shareResult)
                                 .padding(.horizontal, AppLayout.screenPadding)
 
-                                PuzzleResultShareButton(result: shareResult)
-                                    .padding(.horizontal, AppLayout.screenPadding)
-
-                                if displayState.showsStats {
-                                    statsCard
-                                }
-
-                                if let message = displayState.message {
-                                    completionMessage(message)
-                                }
+                            if displayState.showsStats {
+                                statsCard
                             }
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 32)
-                    .padding(.bottom, 28)
-                }
 
-                Button {
+                            if let message = displayState.message {
+                                completionMessage(message)
+                            }
+                        }
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.top, 32)
+                .padding(.bottom, 28)
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                StatsHomeBar {
                     dismiss()
                     shouldPop = true
-                } label: {
-                    Text("HOME")
-                        .font(AppFont.body())
-                        .foregroundColor(.appTextSecondary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
                 }
-                .padding(.horizontal, AppLayout.screenPadding)
-                .padding(.bottom, 20)
                 .opacity(showDetails ? 1 : 0)
+                .allowsHitTesting(showDetails)
+                .accessibilityHidden(!showDetails)
             }
         }
         .onAppear {

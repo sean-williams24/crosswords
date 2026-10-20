@@ -1269,6 +1269,15 @@ The completion sheet also shows a live `NEXT BACKWORD IN` countdown. It must der
 
 In DEBUG builds, the Backword header includes a ladybug button that simulates a five-guess failure and presents the real failure completion flow. The simulation is intentionally in-memory only: it must not save progress or record player stats.
 
+## Stats Sheet Home Bar
+
+All five games share `StatsHomeBar` in their completion stats sheets. It floats
+over scrolling content in a bottom safe-area inset, using native Liquid Glass
+on iOS 26 and ultra-thin material on earlier versions. The Home label uses
+symmetric padding to stay centred horizontally and vertically, while its touch
+target grows with Dynamic Type. Game-specific foreground colours and completion
+reveal timing remain intact.
+
 ## Crossword Completion Moment
 
 Daily and weekly crossword completion sheets use the solved grid as their visual centerpiece. Playable cells reveal in a diagonal wave; on-time solves finish with an accent bounce, glow, and restrained sparkle burst, late `Finished` solves use the wave and a softer bounce without sparkles, and `Gave up` reveals in red without a celebratory finish. Reduce Motion shows the final state immediately.

@@ -84,62 +84,55 @@ struct AnagramStatsView: View {
             Color.appBackground
                 .ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 20) {
-                        completionHeader(completion, displayState: displayState)
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 20) {
+                    completionHeader(completion, displayState: displayState)
 
-                        if showAnswer {
-                            AnagramCompletionWordView(
-                                word: completion.answer,
-                                celebrates: displayState.style == .solved
+                    if showAnswer {
+                        AnagramCompletionWordView(
+                            word: completion.answer,
+                            celebrates: displayState.style == .solved
+                        )
+                        .padding(.horizontal, AppLayout.screenPadding)
+                        .frame(maxWidth: 560)
+                        .transition(.scale(scale: 0.88).combined(with: .opacity))
+                    }
+
+                    if showCountdown {
+                        nextAnagramCountdown
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+
+                    if showDetails {
+                        VStack(spacing: 20) {
+                            ratingBar
+
+                            PuzzleResultShareButton(
+                                result: shareResult(for: completion),
+                                foregroundColor: .anagramOrange,
+                                backgroundColor: .anagramSurface
                             )
                             .padding(.horizontal, AppLayout.screenPadding)
-                            .frame(maxWidth: 560)
-                            .transition(.scale(scale: 0.88).combined(with: .opacity))
+
+                            completionStats(completion)
+
+                            statsContent
                         }
-
-                        if showCountdown {
-                            nextAnagramCountdown
-                                .transition(.move(edge: .bottom).combined(with: .opacity))
-                        }
-
-                        if showDetails {
-                            VStack(spacing: 20) {
-                                ratingBar
-
-                                PuzzleResultShareButton(
-                                    result: shareResult(for: completion),
-                                    foregroundColor: .anagramOrange,
-                                    backgroundColor: .anagramSurface
-                                )
-                                .padding(.horizontal, AppLayout.screenPadding)
-
-                                completionStats(completion)
-
-                                statsContent
-                            }
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                        }
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 32)
-                    .padding(.bottom, 28)
                 }
-
-                Button {
+                .frame(maxWidth: .infinity)
+                .padding(.top, 32)
+                .padding(.bottom, 28)
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                StatsHomeBar(foregroundColor: .anagramOrange) {
                     dismiss()
                     shouldPop = true
-                } label: {
-                    Text("HOME")
-                        .font(AppFont.body())
-                        .foregroundStyle(Color.anagramOrange)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
                 }
-                .padding(.horizontal, AppLayout.screenPadding)
-                .padding(.bottom, 20)
                 .opacity(showDetails ? 1 : 0)
+                .allowsHitTesting(showDetails)
+                .accessibilityHidden(!showDetails)
             }
         }
         .task(id: completion.progress.completedAt) {
