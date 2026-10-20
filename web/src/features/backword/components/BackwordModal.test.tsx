@@ -26,4 +26,13 @@ describe("shared game sheet dismissal", () => {
     fireEvent.keyDown(window, { key: "Escape" });
     expect(onClose).toHaveBeenCalledOnce();
   });
+
+  it("keeps the stats title when its redundant close button is hidden", () => {
+    render(<BackwordModal onClose={vi.fn()} showHeader showCloseButton={false} title="Game stats">
+      <p>Stats content</p>
+    </BackwordModal>);
+
+    expect(screen.getByRole("heading", { name: "Game stats" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Close Game stats" })).not.toBeInTheDocument();
+  });
 });

@@ -5,14 +5,20 @@ import { resolve } from "node:path";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { localDateString } from "../features/backword/date";
-import { reviewAnagramPuzzle, startProgress } from "../features/anagram/engine";
+import { giveUp, placeTile, reviewAnagramPuzzle, startProgress } from "../features/anagram/engine";
+import { createAnagramStorage } from "../features/anagram/storage";
 import { AnagramBoard } from "../features/anagram/components";
 import { AnagramPage } from "./AnagramPage";
+
+const repositoryState = vi.hoisted(() => ({ offline: false }));
 
 vi.mock("../features/anagram/repository", () => ({
   createAnagramRepository: () => ({
     getFirstReleaseDate: async () => localDateString(),
-    getByDate: async (date: string) => ({ ...reviewAnagramPuzzle(date), id: "today-anagram", puzzleNumber: 7 })
+    getByDate: async (date: string) => {
+      if (repositoryState.offline) throw new Error("Offline");
+      return { ...reviewAnagramPuzzle(date), id: "today-anagram", puzzleNumber: 7 };
+    }
   })
 }));
 
@@ -37,7 +43,54 @@ describe("Anagram browser game", () => {
 
   beforeEach(() => {
     localStorage.clear();
+    repositoryState.offline = false;
     Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
+  });
+
+  it.each([
+    { outcome: "solved", offline: false },
+    { outcome: "gave_up", offline: false },
+    { outcome: "solved", offline: true },
+    { outcome: "gave_up", offline: true }
+  ] as const)("reopens a saved $outcome result once per visit with offline=$offline", async ({ outcome, offline }) => {
+    const user = userEvent.setup();
+    const date = localDateString();
+    const puzzle = { ...reviewAnagramPuzzle(date), id: "today-anagram", puzzleNumber: 7 };
+    const finishedAt = new Date(`${date}T12:00:00`);
+    let progress = startProgress(puzzle, new Date(finishedAt.getTime() - 20_000));
+    if (outcome === "gave_up") {
+      progress = giveUp(progress, finishedAt);
+    } else {
+      for (const letter of puzzle.answer) {
+        const tile = Array.from(puzzle.initialScramble).findIndex((value, index) =>
+          value === letter && !progress.placedTileIDs.includes(index));
+        progress = placeTile(progress, puzzle, tile, finishedAt);
+      }
+    }
+    const storage = createAnagramStorage();
+    storage.cachePuzzle(puzzle);
+    storage.saveProgress(progress);
+    const saved = storage.loadProgress(puzzle);
+    repositoryState.offline = offline;
+    const game = <MemoryRouter><AnagramPage /></MemoryRouter>;
+    const page = render(game);
+    const title = outcome === "solved" ? "Solved!" : "Finished";
+
+    const completion = await screen.findByRole("dialog", { name: title });
+    expect(within(completion).getByRole("button", { name: "Share result" })).toBeInTheDocument();
+    expect(within(completion).queryByRole("button", { name: /^Close/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+    if (offline) expect(screen.getByText("Playing saved game offline")).toBeInTheDocument();
+
+    await user.click(within(completion).getByRole("button", { name: "BACK TO GAME" }));
+    page.rerender(game);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(storage.loadProgress(puzzle)).toEqual(saved);
+
+    page.unmount();
+    render(<MemoryRouter><AnagramPage /></MemoryRouter>);
+    expect(await screen.findByRole("dialog", { name: title })).toBeInTheDocument();
+    expect(storage.loadProgress(puzzle)).toEqual(saved);
   });
 
   it("hides the footer in the mobile layout while retaining it on the page", async () => {

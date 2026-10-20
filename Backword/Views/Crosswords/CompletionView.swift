@@ -78,7 +78,7 @@ struct CompletionView: View {
                 .padding(.bottom, 28)
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                StatsHomeBar {
+                StatsHomeBar(onBackToGame: { dismiss() }) {
                     dismiss()
                     shouldPop = true
                 }

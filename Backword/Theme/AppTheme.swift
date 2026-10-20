@@ -211,6 +211,7 @@ struct AppLayout {
     static let anagramTrayPreferredTileSize: CGFloat = 52
     static let statsHistoryRowInset: CGFloat = 14
     static let statsHomeButtonVerticalPadding: CGFloat = 14
+    static let statsHomeButtonHorizontalPadding: CGFloat = 8
     static let statsHomeBarVerticalPadding: CGFloat = 8
     static let minimumTouchTarget: CGFloat = 44
     static let statsHistoryScoreColumnWidth: CGFloat = 50

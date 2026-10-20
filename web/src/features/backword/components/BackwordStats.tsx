@@ -1,3 +1,4 @@
+import { StatsSheetActions } from "../../../components/StatsSheetActions";
 import type { BackwordStats as BackwordStatsModel } from "../types";
 import { BackwordModal } from "./BackwordModal";
 
@@ -13,10 +14,11 @@ export function BackwordStats({
   highlightGuessCount
 }: BackwordStatsProps) {
   return (
-    <BackwordModal className="bw-stats-modal" onClose={onClose} title="Backword Stats">
-      <div className="bw-modal-scroll bw-stats-scroll">
+    <BackwordModal className="bw-stats-modal" onClose={onClose} showHeader showCloseButton={false} title="Backword Stats">
+      <div className="bw-modal-scroll bw-stats-scroll stats-sheet-scroll">
         <StatsContent highlightGuessCount={highlightGuessCount} stats={stats} />
       </div>
+      <StatsSheetActions onClose={onClose} showHome={false} />
     </BackwordModal>
   );
 }

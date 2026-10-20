@@ -63,15 +63,25 @@ describe("Midword completion native appearance", () => {
     expect(screen.getByText("In 2 guesses")).toBeInTheDocument();
   });
 
-  it("keeps a single HOME action outside the scroll area and navigates home", async () => {
+  it("keeps HOME and BACK TO GAME outside the scroll area and navigates home", async () => {
     const user = userEvent.setup();
     renderCompletion();
     const home = screen.getByRole("button", { name: "HOME" });
-    expect(screen.getAllByRole("button")).toEqual([home]);
+    const back = screen.getByRole("button", { name: "BACK TO GAME" });
+    expect(screen.getAllByRole("button")).toEqual([home, back]);
     expect(home).toHaveFocus();
     expect(home.closest(".midword-completion-scroll")).toBeNull();
+    expect(back.closest(".midword-completion-scroll")).toBeNull();
     await user.click(home);
     expect(screen.getByText("Home destination")).toBeInTheDocument();
+  });
+
+  it("returns to the completed game without navigating home", async () => {
+    const user = userEvent.setup();
+    const onClose = renderCompletion();
+    await user.click(screen.getByRole("button", { name: "BACK TO GAME" }));
+    expect(onClose).toHaveBeenCalledOnce();
+    expect(screen.queryByText("Home destination")).not.toBeInTheDocument();
   });
 
   it("retains Escape dismissal without a toolbar close button", () => {
@@ -108,7 +118,6 @@ describe("Midword completion native appearance", () => {
       expect(countdown.letterSpacing).toBe("2px");
       expect(getComputedStyle(screen.getByText("00:30:00")).fontSize).toBe("24px");
       expect(getComputedStyle(screen.getByRole("heading", { name: "Finished" }).closest(".midword-completion-scroll")!).padding).toBe("32px 0px 28px");
-      expect(getComputedStyle(screen.getByRole("button", { name: "HOME" }).parentElement!).flexShrink).toBe("0");
       const rule = (selector: string) => css.slice(css.indexOf(`${selector} {`)).split("}")[0];
       for (const outcome of ["is-correct", "is-incorrect"]) {
         expect(rule(`.midword-completion-answer .${outcome} > span`)).toContain("color: var(--midword-text)");
@@ -116,7 +125,6 @@ describe("Midword completion native appearance", () => {
       }
       expect(rule(".midword-completion-header > strong")).toContain("color: var(--midword-accent)");
       expect(rule(".midword-countdown span")).toContain("color: var(--midword-accent)");
-      expect(rule(".midword-completion-actions button")).toContain("background: transparent");
       expect(css).toContain(".midword-completion-statistics > .midword-summary, .midword-completion-statistics > .midword-distribution { margin-inline: 20px; }");
       expect(rule(".midword-completion-statistics")).toContain("gap: 28px");
       expect(css).toContain(".midword-completion-backdrop { padding: 30px; align-items: center; }");

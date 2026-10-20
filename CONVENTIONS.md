@@ -460,8 +460,8 @@ chips, and guess counts out of five. These styles use semantic Midword colours
 in both appearances. The stats navigation title retains the native system font.
 
 The completion sheet keeps its Outfit title inside the scrolling content and
-has a single pinned, text-only HOME action. It omits the toolbar and close
-button; Escape still dismisses the browser dialog. Answer tiles use native
+has pinned HOME and BACK TO GAME actions in the shared glass footer. It omits
+the toolbar and close button; Escape still dismisses the browser dialog. Answer tiles use native
 translucent outcome fills and borders with primary-colour lettering, including
 red failed answers. Cards are inset, while the 14-day history table spans the
 sheet width. Mobile presents a bottom sheet; wider screens center the sheet.
@@ -1271,12 +1271,26 @@ In DEBUG builds, the Backword header includes a ladybug button that simulates a 
 
 ## Stats Sheet Home Bar
 
-All five games share `StatsHomeBar` in their completion stats sheets. It floats
+All five games share `StatsHomeBar` in their stats and completion sheets. It floats
 over scrolling content in a bottom safe-area inset, using native Liquid Glass
 on iOS 26 and ultra-thin material on earlier versions. The Home label uses
 symmetric padding to stay centred horizontally and vertically, while its touch
-target grows with Dynamic Type. Game-specific foreground colours and completion
-reveal timing remain intact.
+target grows with Dynamic Type. Completion sheets offer Home and Back to game;
+ordinary stats sheets offer Back to game. Back to game only dismisses the sheet
+and never triggers navigation or starts another attempt. Game-specific foreground
+colours and completion reveal timing remain intact.
+Stats sheets retain their titles but omit the redundant top-right close button
+on both platforms. Web stats focus Back to game on opening; Escape and backdrop
+dismissal remain available.
+
+Web uses the shared `StatsSheetActions` footer with the same actions. Its glass
+effect combines a translucent surface, background blur, saturation, and a subtle
+highlight. Stats content scrolls beneath it with bottom clearance for the final
+row and device safe area. Browsers without backdrop-filter support, and players
+requesting reduced transparency, receive an opaque surface instead.
+Individual web footer buttons keep square edges inside the rounded glass bar.
+Keyboard focus uses the same neutral fill as hover, without a coloured outline;
+this overrides game-specific focus rings, including Midword's autofocus state.
 
 ## Crossword Completion Moment
 
@@ -1381,7 +1395,10 @@ within the displayed 14 days. Archive and DEBUG review attempts contribute
 neither scores nor streaks. A give-up appears in its release-day row with zero
 points, and unplayed days remain visible as zero rows.
 Completing an Anagram automatically presents that stats sheet in its finished
-state. The answer reveals one letter at a time before the next-release countdown,
+state. Returning to a saved solved or given-up Anagram also opens that completion
+sheet, including when the web loads a cached puzzle offline. The browser presents
+it once per game-page visit, so Back to game keeps it closed until a later visit.
+The answer reveals one letter at a time before the next-release countdown,
 refreshed Anagram rating bar, share action, completion metrics, summary, and
 14-day history appear. The completed game board remains visible behind the sheet,
 with its timer frozen and gameplay controls disabled. Before the first published

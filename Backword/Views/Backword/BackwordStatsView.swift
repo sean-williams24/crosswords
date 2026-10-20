@@ -70,21 +70,13 @@ struct BackwordStatsView: View {
                     }
                 }
             }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                StatsHomeBar(onBackToGame: { dismiss() })
+            }
             .navigationTitle("Backword Stats")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        dismiss()
-                        shouldPop = isCompleted
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.appTextSecondary)
-                    }
-                }
-            }
         }
     }
 
@@ -135,7 +127,7 @@ struct BackwordStatsView: View {
                 .padding(.bottom, 28)
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                StatsHomeBar {
+                StatsHomeBar(onBackToGame: { dismiss() }) {
                     dismiss()
                     shouldPop = true
                 }

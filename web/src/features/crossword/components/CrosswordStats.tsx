@@ -1,3 +1,4 @@
+import { StatsSheetActions } from "../../../components/StatsSheetActions";
 import { BackwordModal } from "../../backword/components/BackwordModal";
 import { formatDuration } from "../engine";
 import type { WeeklyCrosswordStats } from "../engine";
@@ -11,10 +12,11 @@ type CrosswordStatsProps = {
 
 export function CrosswordStats({ onClose, stats, kind = "daily" }: CrosswordStatsProps) {
   return (
-    <BackwordModal className="bw-stats-modal" onClose={onClose} title={`${kind === "weekly" ? "Weekly" : "Quick"} Crossword Stats`}>
-      <div className="bw-modal-scroll bw-stats-scroll">
+    <BackwordModal className="bw-stats-modal" onClose={onClose} showHeader showCloseButton={false} title={`${kind === "weekly" ? "Weekly" : "Quick"} Crossword Stats`}>
+      <div className="bw-modal-scroll bw-stats-scroll stats-sheet-scroll">
         <CrosswordStatsContent stats={stats} kind={kind} />
       </div>
+      <StatsSheetActions onClose={onClose} showHome={false} />
     </BackwordModal>
   );
 }

@@ -61,19 +61,13 @@ struct AnagramStatsView: View {
                 }
             }
             .background(Color.appBackground)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                StatsHomeBar(foregroundColor: .anagramOrange, onBackToGame: { dismiss() })
+            }
             .navigationTitle("Anagram Stats")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { dismiss() } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(Color.anagramOrange)
-                    }
-                    .accessibilityLabel("Close Anagram stats")
-                }
-            }
         }
     }
 
@@ -126,7 +120,7 @@ struct AnagramStatsView: View {
                 .padding(.bottom, 28)
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                StatsHomeBar(foregroundColor: .anagramOrange) {
+                StatsHomeBar(foregroundColor: .anagramOrange, onBackToGame: { dismiss() }) {
                     dismiss()
                     shouldPop = true
                 }

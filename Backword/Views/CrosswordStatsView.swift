@@ -39,18 +39,13 @@ struct CrosswordStatsView: View {
                 }
             }
             .background(AppBackgroundGradient())
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                StatsHomeBar(onBackToGame: { onDismiss?() })
+            }
             .navigationTitle(isWeekly ? "Weekly Crossword Stats" : "Quick Crossword Stats")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.appBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { onDismiss?() } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.appTextSecondary)
-                    }
-                }
-            }
         }
         .onAppear {
             ratingService.refresh()

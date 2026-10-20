@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { useAuth } from "../features/auth/AuthProvider";
@@ -37,10 +37,13 @@ export function AnagramPage() {
   const [dialog, setDialog] = useState<"instructions" | "hint" | "giveUp" | "stats" | "result" | null>(null);
   const [showTip, setShowTip] = useState(false);
   const [now, setNow] = useState(new Date());
+  const completionPresented = useRef(false);
   const isArchive = date < today;
   const needsPro = isArchive && !entitlement?.isPro;
 
   const loadPuzzle = useCallback(async () => {
+    completionPresented.current = false;
+    setDialog(null);
     setLoading(true); setError(""); setOffline(false); setPuzzle(null); setProgress(null);
     if (isReview) {
       setPuzzle(reviewAnagramPuzzle(today));
@@ -96,6 +99,12 @@ export function AnagramPage() {
     document.addEventListener("visibilitychange", refresh);
     return () => { window.removeEventListener("focus", refresh); window.removeEventListener("online", refresh); document.removeEventListener("visibilitychange", refresh); };
   }, [isReview, puzzle, storage, user?.id]);
+  useEffect(() => {
+    if (loading || !puzzle || !progress?.outcome || completionPresented.current) return;
+    completionPresented.current = true;
+    setShowTip(false);
+    setDialog("result");
+  }, [loading, puzzle, progress?.outcome]);
   useEffect(() => {
     if (!puzzle || progress || (!isReview && storage.hasSeenTip())) return;
     setShowTip(true);
@@ -161,7 +170,7 @@ export function AnagramPage() {
         {!progress ? <section className="anagram-start"><div><strong>Unscramble the letters.</strong><strong>Find the word.</strong></div><p>Tap letters to build an answer. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points.</p><small>{puzzle.answer.length} letters · one optional hint · no time limit</small><button className="anagram-primary" onClick={begin} type="button">Start</button></section>
           : <AnagramBoard now={now} onGiveUp={() => setDialog("giveUp")} onHint={() => setDialog("hint")}
               onPlace={(tile) => update(placeTile(progress, puzzle, tile))} onRestart={() => update(restartTiles(progress))}
-              onResetReview={isReview ? () => { setProgress(null); setDialog(null); } : undefined}
+              onResetReview={isReview ? () => { completionPresented.current = false; setProgress(null); setDialog(null); } : undefined}
               onShuffle={shuffle} onUndo={() => update(undoTile(progress))} progress={progress} puzzle={puzzle}
               shareResult={dialog === null ? shareResult : null} />}
       </> : null}

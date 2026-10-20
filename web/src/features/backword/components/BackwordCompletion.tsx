@@ -1,5 +1,5 @@
+import { StatsSheetActions } from "../../../components/StatsSheetActions";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { countdownText, secondsUntilNextLocalMidnight } from "../date";
 import { isCompletedOnReleaseDate } from "../date";
 import type { BackwordProgress, BackwordStats, BackwordWord } from "../types";
@@ -24,7 +24,6 @@ export function BackwordCompletion({
   rating,
   onClose
 }: BackwordCompletionProps) {
-  const navigate = useNavigate();
   const [seconds, setSeconds] = useState(() => secondsUntilNextLocalMidnight());
   const failed = progress.outcome === "failed";
   const onTime = isCompletedOnReleaseDate(progress.date, progress.completedAt);
@@ -53,7 +52,7 @@ export function BackwordCompletion({
       showCloseButton={false}
       title={title}
     >
-      <div className="bw-modal-scroll bw-completion-scroll">
+      <div className="bw-modal-scroll bw-completion-scroll stats-sheet-scroll">
         <h2 className={failed ? "is-failed" : onTime ? "" : "is-finished"}>{title}</h2>
         <p className="bw-completion-summary">{summary}</p>
         <div
@@ -82,10 +81,7 @@ export function BackwordCompletion({
           stats={stats}
         />
       </div>
-      <div className="bw-completion-actions">
-        <button onClick={() => navigate("/")} type="button">HOME</button>
-        <button onClick={onClose} type="button">BACK TO GAME</button>
-      </div>
+      <StatsSheetActions onClose={onClose} />
     </BackwordModal>
   );
 }

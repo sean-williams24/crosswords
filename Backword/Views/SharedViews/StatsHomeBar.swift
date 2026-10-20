@@ -3,22 +3,35 @@ import SwiftUI
 struct StatsHomeBar: View {
     var foregroundColor: Color = .appTextSecondary
     var backgroundColor: Color = .appBackground
-    let action: () -> Void
+    let onBackToGame: () -> Void
+    var action: (() -> Void)? = nil
 
     var body: some View {
-        Button(action: action) {
-            Text("HOME")
-                .font(AppFont.body())
-                .foregroundStyle(foregroundColor)
-                .padding(.vertical, AppLayout.statsHomeButtonVerticalPadding)
-                .frame(maxWidth: .infinity, minHeight: AppLayout.minimumTouchTarget, alignment: .center)
-                .contentShape(Capsule())
+        HStack(spacing: 0) {
+            if let action {
+                footerButton("HOME", accessibilityLabel: "Home", action: action)
+            }
+            footerButton("BACK TO GAME", accessibilityLabel: "Back to game", action: onBackToGame)
         }
+        .fixedSize(horizontal: false, vertical: true)
         .buttonStyle(.plain)
         .background { glassBackground }
-        .accessibilityLabel("Home")
         .padding(.horizontal, AppLayout.screenPadding)
         .padding(.vertical, AppLayout.statsHomeBarVerticalPadding)
+    }
+
+    private func footerButton(_ title: String, accessibilityLabel: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(AppFont.body())
+                .foregroundStyle(foregroundColor)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, AppLayout.statsHomeButtonHorizontalPadding)
+                .padding(.vertical, AppLayout.statsHomeButtonVerticalPadding)
+                .frame(maxWidth: .infinity, minHeight: AppLayout.minimumTouchTarget, maxHeight: .infinity, alignment: .center)
+                .contentShape(Rectangle())
+        }
+        .accessibilityLabel(accessibilityLabel)
     }
 
     @ViewBuilder

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { StatsSheetActions } from "../../components/StatsSheetActions";
 import { countdownText, secondsUntilNextLocalMidnight } from "../backword/date";
 import { PuzzleResultShare } from "../share/PuzzleResultShare";
 import type { PuzzleShareResult } from "../share/puzzleResult";
@@ -6,15 +6,14 @@ import type { MidwordProgress, MidwordPuzzle, MidwordStats } from "./engine";
 import { MidwordLetterRow } from "./MidwordLetterRow";
 import { MidwordRatingBar, MidwordStatistics } from "./MidwordStatistics";
 
-export function MidwordCompletion({ puzzle, progress, stats, shareResult, now }: {
+export function MidwordCompletion({ puzzle, progress, stats, shareResult, now, onClose }: {
   puzzle: MidwordPuzzle; progress: MidwordProgress; stats: MidwordStats;
-  shareResult: PuzzleShareResult | null; now: Date;
+  shareResult: PuzzleShareResult | null; now: Date; onClose: () => void;
 }) {
-  const navigate = useNavigate();
   const won = progress.outcome === "won";
 
   return <>
-    <div className="midword-dialog-scroll midword-completion-scroll">
+    <div className="midword-dialog-scroll midword-completion-scroll stats-sheet-scroll">
       <header className="midword-completion-header">
         <h2>{won ? "Solved!" : "Finished"}</h2>
         <strong>PUZZLE #{puzzle.puzzleNumber}</strong>
@@ -38,8 +37,6 @@ export function MidwordCompletion({ puzzle, progress, stats, shareResult, now }:
         <div className="midword-completion-statistics"><MidwordStatistics stats={stats} /></div>
       </div>
     </div>
-    <div className="midword-completion-actions">
-      <button autoFocus onClick={() => navigate("/")} type="button">HOME</button>
-    </div>
+    <StatsSheetActions onClose={onClose} autoFocusHome />
   </>;
 }

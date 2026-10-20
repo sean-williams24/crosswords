@@ -60,18 +60,13 @@ struct MidwordStatsView: View {
                 }
             }
             .background(Color.midwordBackground)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                StatsHomeBar(foregroundColor: .midwordAccent, backgroundColor: .midwordBackground, onBackToGame: { dismiss() })
+            }
             .navigationTitle("Midword Stats")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.midwordBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { dismiss() } label: {
-                        Image(systemName: "xmark.circle.fill").foregroundStyle(Color.midwordAccent)
-                    }
-                    .accessibilityLabel("Close Midword stats")
-                }
-            }
         }
     }
 
@@ -117,7 +112,7 @@ struct MidwordStatsView: View {
                 .padding(.bottom, 28)
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                StatsHomeBar(foregroundColor: .midwordAccent, backgroundColor: .midwordBackground) {
+                StatsHomeBar(foregroundColor: .midwordAccent, backgroundColor: .midwordBackground, onBackToGame: { dismiss() }) {
                     dismiss()
                     shouldPop = true
                 }

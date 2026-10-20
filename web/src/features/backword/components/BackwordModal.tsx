@@ -7,6 +7,7 @@ type BackwordModalProps = {
   className?: string;
   backdropClassName?: string;
   showCloseButton?: boolean;
+  showHeader?: boolean;
 };
 
 export function BackwordModal({
@@ -15,7 +16,8 @@ export function BackwordModal({
   children,
   className = "",
   backdropClassName = "",
-  showCloseButton = true
+  showCloseButton = true,
+  showHeader = showCloseButton
 }: BackwordModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -46,10 +48,10 @@ export function BackwordModal({
         className={`bw-modal ${className}`}
         role="dialog"
       >
-        {showCloseButton ? (
+        {showHeader ? (
           <header className="bw-modal-header">
             <h2>{title}</h2>
-            <button
+            {showCloseButton ? <button
               aria-label={`Close ${title}`}
               className="bw-icon-button bw-modal-close"
               onClick={onClose}
@@ -57,7 +59,7 @@ export function BackwordModal({
               type="button"
             >
               ✕
-            </button>
+            </button> : null}
           </header>
         ) : null}
         {children}

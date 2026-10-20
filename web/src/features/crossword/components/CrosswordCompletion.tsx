@@ -1,6 +1,6 @@
+import { StatsSheetActions } from "../../../components/StatsSheetActions";
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
-import { useNavigate } from "react-router-dom";
 import { BackwordModal } from "../../backword/components/BackwordModal";
 import {
   countdownText,
@@ -26,7 +26,6 @@ type CrosswordCompletionProps = {
 };
 
 export function CrosswordCompletion({ onClose, progress, puzzle, stats, kind = "daily", rating }: CrosswordCompletionProps) {
-  const navigate = useNavigate();
   const [seconds, setSeconds] = useState(() => kind === "weekly" ? secondsUntilNextLocalSunday() : secondsUntilNextLocalMidnight());
   const onTime = completedInReleaseWindow(kind, progress.date, progress.completedAt);
   const completedAt = new Date(progress.completedAt ?? "").getTime();
@@ -41,7 +40,7 @@ export function CrosswordCompletion({ onClose, progress, puzzle, stats, kind = "
 
   return (
     <BackwordModal className="bw-completion-modal cw-completion-modal" onClose={onClose} showCloseButton={false} title={onTime ? "Solved!" : "Finished"}>
-      <div className="bw-modal-scroll bw-completion-scroll">
+      <div className="bw-modal-scroll bw-completion-scroll stats-sheet-scroll">
         <h2 className={onTime ? "" : "is-finished"}>{onTime ? "Solved!" : "Finished"}</h2>
         <p className="bw-completion-summary">PUZZLE #{puzzle.puzzleNumber}</p>
         <div aria-label="Completed crossword grid" className={`cw-completion-grid ${kind === "weekly" ? "cw-completion-grid--weekly" : ""}`} style={{ "--cw-grid-size": puzzle.size } as CSSProperties}>
@@ -60,7 +59,7 @@ export function CrosswordCompletion({ onClose, progress, puzzle, stats, kind = "
         <PuzzleResultShare result={shareResult} showPreview={false} />
         <CrosswordStatsContent stats={stats} kind={kind} />
       </div>
-      <div className="bw-completion-actions"><button onClick={() => navigate("/")} type="button">HOME</button><button onClick={onClose} type="button">BACK TO GAME</button></div>
+      <StatsSheetActions onClose={onClose} />
     </BackwordModal>
   );
 }

@@ -1079,6 +1079,7 @@ a {
 }
 
 .bw-modal {
+  position: relative;
   display: flex;
   width: min(100%, 640px);
   max-height: min(92svh, 900px);
@@ -1227,8 +1228,6 @@ a {
   .puzzle-result-share__fallback { top: auto; bottom: calc(100% + 8px); }
   .anagram-gameplay-dock > .puzzle-result-share--compact { position: relative; top: auto; right: auto; bottom: auto; width: fit-content; margin: 0 0 16px auto; }
 }
-.bw-completion-actions { display: grid; grid-template-columns: 1fr 1fr; margin-top: auto; padding: 10px 20px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--app-grid); }
-.bw-completion-actions button { padding: 11px; border: 0; color: var(--app-text-secondary); background: transparent; font: inherit; font-size: 13px; cursor: pointer; }
 
 @keyframes bw-pulse-border {
   0%, 100% { border-color: rgb(var(--bw-cell-accent-rgb) / 40%); border-width: 1.5px; }
@@ -3136,26 +3135,6 @@ html[data-theme="light"] {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: .1em;
-}
-
-.anagram-completion-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-top: auto;
-  padding: 10px 20px calc(10px + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--app-grid);
-}
-
-.anagram-dialog .anagram-completion-actions button {
-  min-height: 0;
-  margin: 0;
-  padding: 11px;
-  border: 0;
-  color: var(--app-text-secondary);
-  background: transparent;
-  font: inherit;
-  font-size: 13px;
-  cursor: pointer;
 }
 
 @keyframes anagram-completion-header-in {

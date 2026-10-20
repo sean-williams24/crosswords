@@ -1,5 +1,5 @@
+import { StatsSheetActions } from "../../components/StatsSheetActions";
 import type { CSSProperties, ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
 import { PuzzleResultShare } from "../share/PuzzleResultShare";
 import type { PuzzleShareResult } from "../share/puzzleResult";
 import { answerText, pointsForSeconds, type AnagramProgress, type AnagramPuzzle } from "./engine";
@@ -33,7 +33,6 @@ export function AnagramCompletion({
   shareResult: PuzzleShareResult | null;
   statsSummary: ReactNode;
 }) {
-  const navigate = useNavigate();
   const isReview = puzzle.puzzleNumber === 0;
   const solved = progress.outcome === "solved";
   const celebrates = solved && (isReview || progress.releaseDateScore > 0);
@@ -55,7 +54,7 @@ export function AnagramCompletion({
     : !celebrates ? "Solved after its release day" : null;
 
   return <>
-    <div className="anagram-completion-scroll" style={presentationStyle}>
+    <div className="anagram-completion-scroll stats-sheet-scroll" style={presentationStyle}>
       <header className="anagram-completion-header">
         <h2>{title}</h2>
         <strong>{isReview ? "REVIEW PUZZLE" : `PUZZLE #${puzzle.puzzleNumber}`}</strong>
@@ -86,9 +85,6 @@ export function AnagramCompletion({
       </div>
     </div>
 
-    <div className="anagram-completion-actions">
-      <button onClick={() => navigate("/")} type="button">HOME</button>
-      <button onClick={onClose} type="button">BACK TO GAME</button>
-    </div>
+    <StatsSheetActions onClose={onClose} />
   </>;
 }
