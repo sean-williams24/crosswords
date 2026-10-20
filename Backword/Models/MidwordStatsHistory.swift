@@ -36,9 +36,10 @@ struct MidwordStatsHistory {
         let progressByDate = Dictionary(records.map { ($0.date, $0) }, uniquingKeysWith: { current, candidate in
             candidate.updatedAt > current.updatedAt ? candidate : current
         })
+        // The snapshot preserves release-day eligibility across timezone changes
+        // and whole-record merges with a later Archive attempt.
         let eligibleSolves = progressByDate.values.filter { progress in
-            progress.isWon && progress.releaseDateScore > 0 &&
-                progress.completedAt.map { dateString($0, calendar: calendar) == progress.date } == true
+            progress.isWon && progress.releaseDateScore > 0
         }
 
         let rows = (0..<14).compactMap { offset -> MidwordStatsHistoryRow? in
@@ -48,7 +49,7 @@ struct MidwordStatsHistory {
             let progress = progressByDate[dateStr]
             let onTime = progress?.completedAt.map { dateString($0, calendar: calendar) == dateStr } == true
             let outcome: MidwordStatsHistoryRow.Outcome
-            if let progress, onTime, progress.isWon, progress.releaseDateScore > 0 {
+            if let progress, progress.isWon, progress.releaseDateScore > 0 {
                 outcome = .solved
             } else if let progress, onTime, progress.isFailed {
                 outcome = .failed

@@ -11,9 +11,9 @@ Midword statistics count only puzzles won on their release date with a positive
 distribution, or the 14-day score history. An unfinished current puzzle keeps
 yesterday's streak alive, while a failed current puzzle resets it.
 
-Browser Midword statistics trust a completed win's positive `releaseDateScore`
+iOS and browser Midword statistics trust a completed win's positive `releaseDateScore`
 as proof of release-day eligibility, matching Player Profile. Do not recheck
-the completion timestamp in the viewing browser's timezone: a timezone change
+the completion timestamp in the viewing device's timezone: a timezone change
 or a whole-record merge with a later Archive attempt can change that date
 without invalidating the earned score. Zero-score Archive wins remain excluded.
 
