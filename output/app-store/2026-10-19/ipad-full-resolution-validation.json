@@ -1,0 +1,75 @@
+{
+  "sourceWidth": 2064,
+  "sourceHeight": 2752,
+  "masterWidth": 2064,
+  "masterHeight": 2752,
+  "screenWidth": 1560,
+  "screenHeight": 2080,
+  "sourceScale": 0.7558139534883721,
+  "uploadMatchesMaster": true,
+  "opaqueRGB": true,
+  "sRGB": true,
+  "sourceSHA256": "980b428f4475da7cc530405a7e7680b9acb31358e927056eaa7a9916e6e9d17b",
+  "title": "Your daily word game ritual",
+  "titleTop": 141,
+  "titleBottom": 297,
+  "titleCenterErrorPixels": 0,
+  "sourceColorChecks": [
+    {
+      "card": "Backword",
+      "sourceRGB": [
+        42,
+        52,
+        105
+      ],
+      "exportRGB": [
+        42,
+        52,
+        105
+      ],
+      "maxChannelError": 0
+    },
+    {
+      "card": "Quick Crossword",
+      "sourceRGB": [
+        41,
+        56,
+        77
+      ],
+      "exportRGB": [
+        41,
+        56,
+        77
+      ],
+      "maxChannelError": 0
+    },
+    {
+      "card": "Anagram",
+      "sourceRGB": [
+        247,
+        111,
+        10
+      ],
+      "exportRGB": [
+        247,
+        111,
+        10
+      ],
+      "maxChannelError": 0
+    },
+    {
+      "card": "Midword",
+      "sourceRGB": [
+        88,
+        158,
+        103
+      ],
+      "exportRGB": [
+        88,
+        158,
+        103
+      ],
+      "maxChannelError": 0
+    }
+  ]
+}

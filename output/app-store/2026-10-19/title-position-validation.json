@@ -1,0 +1,72 @@
+[
+  {
+    "key": "backword",
+    "nativeWidth": 853,
+    "nativeHeight": 1844,
+    "deviceTop": 311,
+    "titleTop": 106,
+    "titleBottom": 198,
+    "spaceAbove": 106,
+    "spaceBelow": 112,
+    "centerErrorPixels": 3.5,
+    "exportWidth": 1206,
+    "exportHeight": 2622,
+    "estimatedExportCapitalHeight": 52.6
+  },
+  {
+    "key": "crossword",
+    "nativeWidth": 853,
+    "nativeHeight": 1844,
+    "deviceTop": 311,
+    "titleTop": 107,
+    "titleBottom": 201,
+    "spaceAbove": 107,
+    "spaceBelow": 109,
+    "centerErrorPixels": 1.5,
+    "exportWidth": 1206,
+    "exportHeight": 2622,
+    "estimatedExportCapitalHeight": 49.8
+  },
+  {
+    "key": "midword",
+    "nativeWidth": 853,
+    "nativeHeight": 1844,
+    "deviceTop": 310,
+    "titleTop": 124,
+    "titleBottom": 173,
+    "spaceAbove": 124,
+    "spaceBelow": 136,
+    "centerErrorPixels": 6.5,
+    "exportWidth": 1206,
+    "exportHeight": 2622,
+    "estimatedExportCapitalHeight": 52.6
+  },
+  {
+    "key": "home",
+    "nativeWidth": 853,
+    "nativeHeight": 1844,
+    "deviceTop": 320,
+    "titleTop": 112,
+    "titleBottom": 209,
+    "spaceAbove": 112,
+    "spaceBelow": 110,
+    "centerErrorPixels": 0.5,
+    "exportWidth": 1206,
+    "exportHeight": 2622,
+    "estimatedExportCapitalHeight": 48.3
+  },
+  {
+    "key": "ipad",
+    "nativeWidth": 2064,
+    "nativeHeight": 2752,
+    "deviceTop": 438,
+    "titleTop": 141,
+    "titleBottom": 297,
+    "spaceAbove": 141,
+    "spaceBelow": 140,
+    "centerErrorPixels": 0,
+    "exportWidth": 2064,
+    "exportHeight": 2752,
+    "estimatedExportCapitalHeight": 56
+  }
+]

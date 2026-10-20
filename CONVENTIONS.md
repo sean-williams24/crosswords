@@ -1471,6 +1471,37 @@ metadata overlays. Keep the generated source and prompts alongside the export.
 This is promotional artwork rather than an app screenshot. The earlier 3D blue
 design is retained as a previous concept.
 
+## App Store Screenshot Assets
+
+The October 2026 screenshot set lives in `output/app-store/2026-10-19/`.
+Keep the original captures in `sources/`, selected generated compositions in
+`generated/`, and current PNG exports in `upload-ready/`, with their paths in
+the manifest. The iPhone 6.1-inch / 6.3-inch upload slot uses exactly
+1206 × 2622; the 13-inch iPad slot uses 2064 × 2752. Keep these display classes
+in separate upload folders. Earlier exports belong in the local-only,
+gitignored `previous-exports/` directory.
+The approved style reference is `sources/existing-style-reference.png`: a
+muted blue-to-dark-teal gradient with matte black device frames. The brighter
+Anagram preview in the parent folder is not the palette reference for this set.
+The reference capture's App Store viewer margins and rounded carousel corners
+are excluded from the exported artwork.
+Headline font and weight should also follow the text inside that card. iPhone
+headlines keep a consistent size rather than enlarging short captions to fill
+the width. The iPad headline uses approximately the same final pixel letter
+height as the iPhone headlines; do not enlarge it in proportion to canvas width.
+The latest backdrop revision darkens the fade down the device sides into navy.
+For colour comparison, convert the Display P3 reference capture to sRGB first;
+tag final PNG exports sRGB. Avoid lifting the lower gradient back to bright blue.
+Center the entire headline block vertically between the artwork's top edge and
+the top edge of the device frame. Balance the clear space above and below the
+block for both one-line and two-line captions; keep the device position fixed.
+The iPad master is rebuilt at 2064 × 2752 by `render-ipad.swift`, using the
+original capture directly for the screen and Core Text/Outfit Bold for the
+headline. Make future iPad copy or layout revisions in that renderer and
+rerender from the source capture to retain screen detail and native resolution.
+The Archive promotional screenshot uses `render-archive.swift` in the same
+way, compositing its original capture into a native 1206 × 2622 iPhone artwork.
+
 ## App Store Review Prompt
 
 Backword requests the system App Store review prompt only after positive crossword completions. Backword word-game completions are intentionally excluded because that game has a faster loop and would make review prompts feel less earned.

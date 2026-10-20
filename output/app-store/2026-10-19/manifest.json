@@ -1,0 +1,82 @@
+[
+  {
+    "key": "backword",
+    "file": "upload-ready/iphone-6.1-6.3/02-backword-1206x2622.png",
+    "headline": "Guess forwards. Reveal backwards.",
+    "width": 1206,
+    "height": 2622,
+    "source": "sources/backword.png",
+    "generated": "generated/backword.png"
+  },
+  {
+    "key": "crossword",
+    "file": "upload-ready/iphone-6.1-6.3/03-quick-crossword-1206x2622.png",
+    "headline": "Your daily crossword fix",
+    "width": 1206,
+    "height": 2622,
+    "source": "sources/crossword.png",
+    "generated": "generated/crossword.png"
+  },
+  {
+    "key": "midword",
+    "file": "upload-ready/iphone-6.1-6.3/04-midword-1206x2622.png",
+    "headline": "Find the missing link",
+    "width": 1206,
+    "height": 2622,
+    "source": "sources/midword.png",
+    "generated": "generated/midword.png"
+  },
+  {
+    "key": "home",
+    "file": "upload-ready/iphone-6.1-6.3/01-home-1206x2622.png",
+    "headline": "Four free daily games",
+    "width": 1206,
+    "height": 2622,
+    "source": "sources/home-new.png",
+    "generated": "generated/home.png"
+  },
+  {
+    "key": "ipad",
+    "file": "upload-ready/ipad-13/05-ipad-2064x2752.png",
+    "headline": "Your daily word game ritual",
+    "width": 2064,
+    "height": 2752,
+    "source": "sources/ipad.png",
+    "generated": "generated/ipad.png",
+    "renderer": "render-ipad.swift"
+  },
+  {
+    "key": "anagram",
+    "file": "upload-ready/iphone-6.1-6.3/06-anagram-1206x2622.png",
+    "headline": "Unscramble the Anagram",
+    "width": 1206,
+    "height": 2622,
+    "source": "sources/app-store-anagram-1242x2688.png"
+  },
+  {
+    "key": "weekly-crossword",
+    "file": "upload-ready/iphone-6.1-6.3/07-pro-crossword-1206x2622.png",
+    "headline": "Solve a deeper weekly crossword",
+    "width": 1206,
+    "height": 2622,
+    "source": "sources/app-store-pro-crossword-1242x2688.png"
+  },
+  {
+    "key": "archive",
+    "file": "upload-ready/iphone-6.1-6.3/08-archive-1206x2622.png",
+    "headline": "Play all past puzzles in the archive",
+    "width": 1206,
+    "height": 2622,
+    "source": "sources/archive.png",
+    "generated": "generated/archive.png",
+    "renderer": "render-archive.swift"
+  },
+  {
+    "key": "rating",
+    "file": "upload-ready/iphone-6.1-6.3/09-rating-1206x2622.png",
+    "headline": "Climb the rating tiers",
+    "width": 1206,
+    "height": 2622,
+    "source": "sources/app-store-rating-1206x2622.png"
+  }
+]

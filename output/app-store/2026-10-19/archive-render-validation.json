@@ -1,0 +1,25 @@
+{
+  "sourceWidth": 1206,
+  "sourceHeight": 2622,
+  "masterWidth": 1206,
+  "masterHeight": 2622,
+  "opaqueRGB": true,
+  "sRGB": true,
+  "sourcePreserved": true,
+  "uploadMatchesMaster": true,
+  "sourceScale": 0.7611940298507462,
+  "title": "Play all past puzzles in the archive",
+  "titleTop": 156,
+  "titleBottom": 285,
+  "titleCenterErrorPixels": 0.5,
+  "sourceCardRGB": [
+    26,
+    26,
+    26
+  ],
+  "exportCardRGB": [
+    26,
+    26,
+    26
+  ]
+}
