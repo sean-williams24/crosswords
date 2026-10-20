@@ -385,6 +385,9 @@ iOS and web Player Profile explain Backword and Midword together under
 5–1 points for guesses 1–5, and losses or missed puzzles earn zero. Each game
 still earns its own rating points and has its own column in the 14-day breakdown.
 
+Both platforms order the breakdown columns as Quick, Weekly (Pro only),
+Backword, Midword, Anagram, followed by Total.
+
 ## Website Midword Parity
 
 Midword is playable at `/midword`, with immutable dated links at

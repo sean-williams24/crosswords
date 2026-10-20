@@ -93,6 +93,35 @@ describe("PlayerProfilePage", () => {
     expect(screen.queryByRole("dialog", { name: "How scoring works" })).not.toBeInTheDocument();
   });
 
+  it.each([false, true])("matches iOS breakdown column and score order with Pro access %s", async (isPro) => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date(2026, 9, 20, 12));
+    try {
+      testAuth.value.entitlement = { isPro, expiresAt: null, provider: "apple" };
+      localStorage.setItem("backword:web:anagram:first-release:v1", "2026-10-01");
+      const scores: Record<string, number> = {
+        daily_crossword: 1, weekly_crossword: 2, backword: 3, midword: 4, anagram: 5
+      };
+      sync.fetchCloudProgress.mockImplementation(async (game: string) => [
+        { release_date: "2026-10-20", release_score: scores[game] }
+      ]);
+      const { container } = renderPage();
+
+      const headings = container.querySelector(".player-profile__table-heading")!;
+      expect(Array.from(headings.children, (cell) => cell.textContent)).toEqual([
+        "Date", "Quick", ...(isPro ? ["Weekly"] : []), "Backword", "Midword", "Anagram", "Total"
+      ]);
+      await waitFor(() => {
+        const today = container.querySelector(".player-profile__table-row")!;
+        expect(Array.from(today.children).slice(1).map((cell) => cell.textContent)).toEqual(
+          isPro ? ["1", "2", "3", "4", "5", "15"] : ["1", "3", "4", "5", "13"]
+        );
+      });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("links active Stripe subscribers to Link to manage their web subscription", () => {
     testAuth.value.entitlement = { isPro: true, expiresAt: null, provider: "stripe" };
     renderPage();
