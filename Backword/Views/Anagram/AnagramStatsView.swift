@@ -2,14 +2,9 @@ import SwiftUI
 
 struct AnagramStatsView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @EnvironmentObject private var ratingService: OverallRatingService
     @EnvironmentObject private var storeService: StoreService
     @State private var progressRecords: [AnagramProgress] = []
-    @State private var showHeader = false
-    @State private var showAnswer = false
-    @State private var showCountdown = false
-    @State private var showDetails = false
 
     private let previewHistory: AnagramStatsHistory?
     private let completion: AnagramCompletion?
@@ -72,67 +67,49 @@ struct AnagramStatsView: View {
     }
 
     private func completionBody(_ completion: AnagramCompletion) -> some View {
-        let displayState = AnagramCompletionDisplayState.make(completion: completion)
-
-        return ZStack {
+        ZStack {
             Color.appBackground
                 .ignoresSafeArea()
 
             ScrollView(showsIndicators: false) {
-                VStack(spacing: 20) {
-                    completionHeader(completion, displayState: displayState)
-
-                    if showAnswer {
-                        AnagramCompletionWordView(
-                            word: completion.answer,
-                            celebrates: displayState.style == .solved
-                        )
-                        .padding(.horizontal, AppLayout.screenPadding)
-                        .frame(maxWidth: 560)
-                        .transition(.scale(scale: 0.88).combined(with: .opacity))
-                    }
-
-                    if showCountdown {
-                        nextAnagramCountdown
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                    }
-
-                    if showDetails {
-                        VStack(spacing: 20) {
-                            ratingBar
-
-                            PuzzleResultShareButton(
-                                result: shareResult(for: completion),
-                                foregroundColor: .anagramOrange,
-                                backgroundColor: .anagramSurface
-                            )
-                            .padding(.horizontal, AppLayout.screenPadding)
-
-                            completionStats(completion)
-
-                            statsContent
-                        }
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 32)
-                .padding(.bottom, 28)
+                completionContent(completion)
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 StatsHomeBar(foregroundColor: .anagramOrange, onBackToGame: { dismiss() }) {
                     dismiss()
                     shouldPop = true
                 }
-                .opacity(showDetails ? 1 : 0)
-                .allowsHitTesting(showDetails)
-                .accessibilityHidden(!showDetails)
             }
         }
-        .task(id: completion.progress.completedAt) {
-            await runCompletionPresentation(completion, displayState: displayState)
-        }
         .interactiveDismissDisabled(false)
+    }
+
+    // Keep the full layout in place while the answer animates, as Backword does.
+    private func completionContent(_ completion: AnagramCompletion) -> some View {
+        let displayState = AnagramCompletionDisplayState.make(completion: completion)
+
+        return VStack(spacing: 20) {
+            completionHeader(completion, displayState: displayState)
+            AnagramCompletionWordView(
+                word: completion.answer,
+                celebrates: displayState.style == .solved
+            )
+            .padding(.horizontal, AppLayout.screenPadding)
+            .frame(maxWidth: 560)
+            nextAnagramCountdown
+            ratingBar
+            PuzzleResultShareButton(
+                result: shareResult(for: completion),
+                foregroundColor: .anagramOrange,
+                backgroundColor: .anagramSurface
+            )
+            .padding(.horizontal, AppLayout.screenPadding)
+            completionStats(completion)
+            statsContent
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 32)
+        .padding(.bottom, 28)
     }
 
     private func completionHeader(
@@ -155,8 +132,6 @@ struct AnagramStatsView: View {
                     .foregroundStyle(Color.anagramInk)
             }
         }
-        .scaleEffect(showHeader ? 1 : 0.62)
-        .opacity(showHeader ? 1 : 0)
     }
 
     private var nextAnagramCountdown: some View {
@@ -245,46 +220,6 @@ struct AnagramStatsView: View {
             rating: ratingService.rating,
             isPro: storeService.isProUser
         )
-    }
-
-    @MainActor
-    private func runCompletionPresentation(
-        _ completion: AnagramCompletion,
-        displayState: AnagramCompletionDisplayState
-    ) async {
-        if reduceMotion {
-            showHeader = true
-            showAnswer = true
-            showCountdown = true
-            showDetails = true
-            return
-        }
-
-        withAnimation(.spring(response: 0.55, dampingFraction: 0.68)) {
-            showHeader = true
-        }
-        try? await Task.sleep(nanoseconds: 220_000_000)
-        guard !Task.isCancelled else { return }
-
-        withAnimation(.spring(response: 0.45, dampingFraction: 0.76)) {
-            showAnswer = true
-        }
-        let duration = AnagramCompletionAnimation.presentationDuration(
-            letterCount: completion.answer.count,
-            celebrates: displayState.style == .solved
-        )
-        try? await Task.sleep(nanoseconds: UInt64(duration * 1_000_000_000))
-        guard !Task.isCancelled else { return }
-
-        withAnimation(.easeOut(duration: 0.3)) {
-            showCountdown = true
-        }
-        try? await Task.sleep(nanoseconds: 180_000_000)
-        guard !Task.isCancelled else { return }
-
-        withAnimation(.spring(response: 0.5, dampingFraction: 0.82)) {
-            showDetails = true
-        }
     }
 }
 

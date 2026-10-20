@@ -1269,6 +1269,15 @@ The completion sheet also shows a live `NEXT BACKWORD IN` countdown. It must der
 
 In DEBUG builds, the Backword header includes a ladybug button that simulates a five-guess failure and presents the real failure completion flow. The simulation is intentionally in-memory only: it must not save progress or record player stats.
 
+## iOS Completion Sheet Layout
+
+Midword and Anagram match Backword by laying out the full completion sheet
+immediately: header, answer cells, countdown, rating, sharing, metrics, history,
+and footer. Answer cells retain their existing reveal and celebration animations.
+Do not insert or spring whole sections into the scroll view during that reveal:
+keeping the content height stable avoids layout jumps during presentation.
+Reduce Motion still shows the answer immediately.
+
 ## Stats Sheet Home Bar
 
 All five games share `StatsHomeBar` in their stats and completion sheets. It floats
@@ -1398,9 +1407,10 @@ Completing an Anagram automatically presents that stats sheet in its finished
 state. Returning to a saved solved or given-up Anagram also opens that completion
 sheet, including when the web loads a cached puzzle offline. The browser presents
 it once per game-page visit, so Back to game keeps it closed until a later visit.
-The answer reveals one letter at a time before the next-release countdown,
+The answer reveals one letter at a time. On iOS, the next-release countdown,
 refreshed Anagram rating bar, share action, completion metrics, summary, and
-14-day history appear. The completed game board remains visible behind the sheet,
+14-day history are laid out immediately, matching Backword; the web retains
+its staged presentation. The completed game board remains visible behind the sheet,
 with its timer frozen and gameplay controls disabled. Before the first published
 Anagram, the countdown targets that launch date; afterward it targets the next
 local midnight. The DEBUG review

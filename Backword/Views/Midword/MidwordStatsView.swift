@@ -2,14 +2,9 @@ import SwiftUI
 
 struct MidwordStatsView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @EnvironmentObject private var ratingService: OverallRatingService
     @EnvironmentObject private var storeService: StoreService
     @State private var progressRecords: [MidwordProgress] = []
-    @State private var showHeader = false
-    @State private var showAnswer = false
-    @State private var showCountdown = false
-    @State private var showDetails = false
 
     let puzzle: MidwordPuzzle
     let progress: MidwordProgress
@@ -74,54 +69,43 @@ struct MidwordStatsView: View {
         ZStack {
             Color.midwordBackground.ignoresSafeArea()
             ScrollView(showsIndicators: false) {
-                VStack(spacing: 20) {
-                    completionHeader
-                    if showAnswer {
-                        MidwordCompletionWordView(word: puzzle.answer, failed: progress.isFailed)
-                            .padding(.horizontal, AppLayout.screenPadding)
-                            .frame(maxWidth: 560)
-                            .transition(.scale(scale: 0.88).combined(with: .opacity))
-                        Text("\(puzzle.firstCompound)  ·  \(puzzle.secondCompound)")
-                            .font(AppFont.body())
-                            .foregroundStyle(Color.midwordText)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, AppLayout.screenPadding)
-                            .transition(.opacity)
-                    }
-                    if showCountdown {
-                        nextMidwordCountdown
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                    }
-                    if showDetails {
-                        VStack(spacing: 20) {
-                            ratingBar
-                            PuzzleResultShareButton(
-                                result: shareResult,
-                                foregroundColor: .midwordAccent,
-                                backgroundColor: .midwordText.opacity(0.08)
-                            )
-                            .padding(.horizontal, AppLayout.screenPadding)
-                            completionStats
-                            statsContent
-                        }
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 32)
-                .padding(.bottom, 28)
+                completionContent
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 StatsHomeBar(foregroundColor: .midwordAccent, backgroundColor: .midwordBackground, onBackToGame: { dismiss() }) {
                     dismiss()
                     shouldPop = true
                 }
-                .opacity(showDetails ? 1 : 0)
-                .allowsHitTesting(showDetails)
-                .accessibilityHidden(!showDetails)
             }
         }
-        .task(id: progress.completedAt) { await runCompletionPresentation() }
+    }
+
+    // Keep the full layout in place while the answer animates, as Backword does.
+    private var completionContent: some View {
+        VStack(spacing: 20) {
+            completionHeader
+            MidwordCompletionWordView(word: puzzle.answer, failed: progress.isFailed)
+                .padding(.horizontal, AppLayout.screenPadding)
+                .frame(maxWidth: 560)
+            Text("\(puzzle.firstCompound)  ·  \(puzzle.secondCompound)")
+                .font(AppFont.body())
+                .foregroundStyle(Color.midwordText)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, AppLayout.screenPadding)
+            nextMidwordCountdown
+            ratingBar
+            PuzzleResultShareButton(
+                result: shareResult,
+                foregroundColor: .midwordAccent,
+                backgroundColor: .midwordText.opacity(0.08)
+            )
+            .padding(.horizontal, AppLayout.screenPadding)
+            completionStats
+            statsContent
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 32)
+        .padding(.bottom, 28)
     }
 
     private var completionHeader: some View {
@@ -137,8 +121,6 @@ struct MidwordStatsView: View {
                 .font(AppFont.body())
                 .foregroundStyle(Color.midwordText)
         }
-        .scaleEffect(showHeader ? 1 : 0.62)
-        .opacity(showHeader ? 1 : 0)
     }
 
     private var nextMidwordCountdown: some View {
@@ -276,27 +258,6 @@ struct MidwordStatsView: View {
             rating: ratingService.rating,
             isPro: storeService.isProUser
         )
-    }
-
-    @MainActor
-    private func runCompletionPresentation() async {
-        if reduceMotion {
-            showHeader = true
-            showAnswer = true
-            showCountdown = true
-            showDetails = true
-            return
-        }
-        withAnimation(.spring(response: 0.55, dampingFraction: 0.68)) { showHeader = true }
-        try? await Task.sleep(for: .milliseconds(220))
-        guard !Task.isCancelled else { return }
-        withAnimation(.spring(response: 0.45, dampingFraction: 0.76)) { showAnswer = true }
-        try? await Task.sleep(for: .milliseconds(900))
-        guard !Task.isCancelled else { return }
-        withAnimation(.easeOut(duration: 0.3)) { showCountdown = true }
-        try? await Task.sleep(for: .milliseconds(180))
-        guard !Task.isCancelled else { return }
-        withAnimation(.spring(response: 0.5, dampingFraction: 0.82)) { showDetails = true }
     }
 }
 
