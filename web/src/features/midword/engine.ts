@@ -79,7 +79,9 @@ export function midwordStats(records: MidwordProgress[], now = new Date()) {
     const previous = byDate.get(record.date);
     if (!previous || Date.parse(record.updatedAt) > Date.parse(previous.updatedAt)) byDate.set(record.date, record);
   }
-  const eligible = (p?: MidwordProgress) => p?.outcome === "won" && p.releaseDateScore > 0 && isCompletedOnReleaseDate(p.date, p.completedAt);
+  // The snapshot records release-day eligibility at play time and survives
+  // timezone changes and whole-record merges with a later archive attempt.
+  const eligible = (p?: MidwordProgress) => p?.outcome === "won" && !!p.completedAt && p.releaseDateScore > 0;
   const solved = [...byDate.values()].filter(eligible).sort((a, b) => a.date.localeCompare(b.date));
   const solvedDates = new Set(solved.map((p) => p.date));
   let bestStreak = 0, run = 0;

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { localDateOffset } from "../backword/date";
+import { buildPlayerProfileRating } from "../profile/profileRating";
+import { chooseBestProgress, midwordCloudRecord } from "../sync/progressSync";
 import { accepts, decodeProgress, emptyProgress, midwordStats, midwordStatus, submitGuess, validPuzzle, type MidwordPuzzle } from "./engine";
 import { validMidwordGuesses } from "./validGuesses";
 
@@ -79,6 +81,41 @@ describe("Midword rules and statistics", () => {
     const rows = midwordStats([], new Date(2026, 10, 1, 12)).rows;
     expect(rows).toHaveLength(14);
     expect(rows[13].date).toBe(localDateOffset("2026-11-01", -13));
+  });
+  it("keeps earned points when the completion falls on another date in the viewing timezone", () => {
+    // The saved Oct 15 solve now falls on Oct 14 in the viewing timezone.
+    const completedAt = new Date(2026, 9, 14, 23, 30).toISOString();
+    const progress = { ...submit(), date: "2026-10-15", completedAt, updatedAt: completedAt };
+    const viewingDate = new Date(2026, 9, 16, 12);
+    const stats = midwordStats([progress], viewingDate);
+    const rating = buildPlayerProfileRating({ backword: [], dailyCrossword: [], weeklyCrossword: [],
+      midword: [midwordCloudRecord(progress)] }, false, viewingDate);
+
+    expect(stats.rows.find((row) => row.date === progress.date)).toMatchObject({ outcome: "solved", score: 5, guessCount: 1 });
+    expect(stats.rollingScore).toBe(5);
+    expect(stats.rollingScore).toBe(rating.totalPoints);
+    expect(stats.totalSolved).toBe(1);
+    expect(stats.currentStreak).toBe(1);
+    expect(stats.bestStreak).toBe(1);
+    expect(stats.guessDistribution).toEqual([1, 0, 0, 0, 0]);
+  });
+  it("uses the release-day score preserved separately from a merged archive attempt", () => {
+    const onTime = { ...submit(), date: "2026-10-15", guesses: ["PAGE", "NOTE"],
+      releaseDateScore: 4, completedAt: "2026-10-15T12:00:00Z", updatedAt: "2026-10-15T12:00:00Z" };
+    const archive = { ...onTime, guesses: ["NOTE"], releaseDateScore: 0,
+      completedAt: "2026-10-16T12:00:00Z", updatedAt: "2026-10-16T12:00:00Z" };
+    const merged = chooseBestProgress(midwordCloudRecord(onTime), midwordCloudRecord(archive));
+    expect(merged.payload.completedAt).toBe(archive.completedAt);
+
+    const viewingDate = new Date(2026, 9, 16, 12);
+    const stats = midwordStats([merged.payload], viewingDate);
+    const rating = buildPlayerProfileRating({ backword: [], dailyCrossword: [], weeklyCrossword: [],
+      midword: [merged] }, false, viewingDate);
+    expect(stats.rows.find((row) => row.date === onTime.date)).toMatchObject({ outcome: "solved", score: 4, guessCount: 1 });
+    expect(stats.rollingScore).toBe(rating.totalPoints);
+    expect(stats.currentStreak).toBe(1);
+    expect(stats.guessDistribution).toEqual([1, 0, 0, 0, 0]);
+    expect(midwordStats([archive], viewingDate)).toMatchObject({ totalSolved: 0, rollingScore: 0 });
   });
   it("bundles common 3–6-letter guesses for offline play", () => {
     for (const word of ["CAT", "NOTE", "WORD", "HOUSE", "CASTLE"]) expect(validMidwordGuesses.has(word)).toBe(true);
