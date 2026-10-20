@@ -7,6 +7,7 @@ struct AnagramCompletionWordView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var revealStep = 0
     @State private var isCelebrating = false
+    private let haptics = HapticsEngine()
 
     private var letters: [Character] {
         Array(word.uppercased())
@@ -66,12 +67,16 @@ struct AnagramCompletionWordView: View {
         isCelebrating = false
         guard !reduceMotion else { return }
 
-        for step in AnagramCompletionAnimation.revealSteps(letterCount: letters.count) {
-            guard await pause(seconds: AnagramCompletionAnimation.revealInterval) else { return }
+        let revealed = await CompletionLetterReveal.run(
+            steps: AnagramCompletionAnimation.revealSteps(letterCount: letters.count),
+            interval: AnagramCompletionAnimation.revealInterval,
+            haptics: haptics
+        ) { step in
             withAnimation(.spring(response: 0.32, dampingFraction: 0.68)) {
                 revealStep = step
             }
         }
+        guard revealed else { return }
 
         guard celebrates, await pause(seconds: 0.28) else { return }
         withAnimation(.spring(response: 0.38, dampingFraction: 0.5)) {

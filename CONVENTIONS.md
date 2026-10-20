@@ -1278,6 +1278,11 @@ Do not insert or spring whole sections into the scroll view during that reveal:
 keeping the content height stable avoids layout jumps during presentation.
 Reduce Motion still shows the answer immediately.
 
+Anagram's iOS completion reveal plays the same light impact as Backword and
+Midword for each letter, including revealed give-up answers. Dismissing the sheet
+stops remaining reveal impacts; Reduce Motion skips these per-letter impacts
+along with the staged reveal.
+
 ## Stats Sheet Home Bar
 
 All five games share `StatsHomeBar` in their stats and completion sheets. It floats
@@ -1360,6 +1365,14 @@ the rule is skipped when no different available letter can replace it. A full
 tray must not become an accepted answer as a result of the correction. Undo
 follows placement history, while Restart
 clears player placements without changing the start time, hint, or penalty.
+
+On iOS, Start, tile placement, Undo (letter removal), and Restart play the same
+light impact as the other games' letter input. Shuffle uses a soft impact when
+the tray order changes, and an applied Hint plays warning feedback. A final
+incorrect arrangement uses incorrect-guess feedback; a solve or confirmed
+give-up uses the existing win or loss pattern instead of an extra letter impact.
+Ignored or disabled actions and restored progress never replay gameplay haptics.
+
 The iOS Home midnight task refreshes Anagram alongside the other daily games.
 Anagram fetches today's locally dated puzzle before requesting optional
 first-release metadata, so that metadata cannot delay the Home card. A failed
