@@ -34202,7 +34202,7 @@
     },
     {
         "word": "ASHY",
-        "text": "Covered in ash",
+        "text": "Covered in fire residue",
         "hint": "Common description for dry skin",
         "hard_text": "Gray and powdery",
         "clues": [
@@ -184406,7 +184406,7 @@
     },
     {
         "word": "USABLE",
-        "text": "Fit for use; practical",
+        "text": "Functional",
         "hint": "functional",
         "hard_text": "Ready for action without complications",
         "clues": [
@@ -204917,7 +204917,7 @@
     },
     {
         "word": "MARRIES",
-        "text": "Joins in marriage",
+        "text": "Weds",
         "hint": "Weds",
         "hard_text": "Unites two in holy matrimony",
         "clues": [
