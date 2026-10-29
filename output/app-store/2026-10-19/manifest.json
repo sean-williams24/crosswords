@@ -6,7 +6,8 @@
     "width": 1206,
     "height": 2622,
     "source": "sources/backword.png",
-    "generated": "generated/backword.png"
+    "generated": "generated/backword.png",
+    "renderer": "render-iphone.swift"
   },
   {
     "key": "crossword",
@@ -15,7 +16,8 @@
     "width": 1206,
     "height": 2622,
     "source": "sources/crossword.png",
-    "generated": "generated/crossword.png"
+    "generated": "generated/crossword.png",
+    "renderer": "render-iphone.swift"
   },
   {
     "key": "midword",
@@ -24,7 +26,8 @@
     "width": 1206,
     "height": 2622,
     "source": "sources/midword.png",
-    "generated": "generated/midword.png"
+    "generated": "generated/midword.png",
+    "renderer": "render-iphone.swift"
   },
   {
     "key": "home",
@@ -33,7 +36,8 @@
     "width": 1206,
     "height": 2622,
     "source": "sources/home-new.png",
-    "generated": "generated/home.png"
+    "generated": "generated/home.png",
+    "renderer": "render-iphone.swift"
   },
   {
     "key": "ipad",
@@ -51,7 +55,9 @@
     "headline": "Unscramble the Anagram",
     "width": 1206,
     "height": 2622,
-    "source": "sources/app-store-anagram-1242x2688.png"
+    "source": "sources/anagram.png",
+    "generated": "generated/anagram.png",
+    "renderer": "render-iphone.swift"
   },
   {
     "key": "weekly-crossword",

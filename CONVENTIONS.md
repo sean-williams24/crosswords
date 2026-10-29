@@ -1559,6 +1559,11 @@ headline. Make future iPad copy or layout revisions in that renderer and
 rerender from the source capture to retain screen detail and native resolution.
 The Archive promotional screenshot uses `render-archive.swift` in the same
 way, compositing its original capture into a native 1206 × 2622 iPhone artwork.
+Home, Backword, Quick Crossword, Midword and Anagram use `render-iphone.swift` at the
+same native iPhone dimensions, palette and 52px headline capital height.
+Each original screen is downsampled once with its aspect ratio retained;
+never regenerate the app UI or enlarge a smaller promotional composition.
+Make future copy/layout changes in the renderer and rerender from `sources/`.
 
 ## App Store Review Prompt
 

@@ -26,6 +26,29 @@ size as the iPhone headlines. Its complete two-line block remains centered
 vertically between the canvas top and the device frame, as do all iPhone titles.
 The dark blue-to-navy backgrounds and reference typography are retained.
 
+Home, Backword, Quick Crossword, Midword and Anagram were rebuilt on 21 October directly
+at **1206 × 2622** from their original captures using `render-iphone.swift`.
+Each screen is downsampled once, proportionally, to fit the matte black frame.
+Headlines use native Core Text/Outfit Bold at a consistent 52px capital height,
+centered between the canvas top and the phone. The gradient matches the native
+iPad and Archive artwork. No generated UI or enlarged intermediate artwork is
+used in these five exports; each upload PNG is identical to its native master.
+
+To rebuild all five from the project root:
+
+```sh
+CLANG_MODULE_CACHE_PATH=/private/tmp/backword-swift-module-cache \
+SWIFT_MODULECACHE_PATH=/private/tmp/backword-swift-module-cache \
+swift output/app-store/2026-10-19/render-iphone.swift \
+  "$PWD/output/app-store/2026-10-19"
+```
+
+[iphone-render-validation.json](iphone-render-validation.json) records source
+hashes, dimensions, proportional scales, colour checks and headline centering.
+Make future changes in the renderer and rerender from the original captures.
+To rebuild only Anagram, append `anagram` after the asset-directory argument.
+Its original 1206 × 2622 capture is saved unchanged in `sources/anagram.png`.
+
 The iPad master is now rendered directly at **2064 × 2752** using the original
 full-resolution capture and native Core Text for the headline. Its app screen
 is composited from `sources/ipad.png` with one downsample to fit the tablet
@@ -54,19 +77,20 @@ Its title is centered above the phone at a 52px capital height. Rebuild using
 renderer. [archive-render-validation.json](archive-render-validation.json)
 records dimensions, source preservation, colour and title-centering checks.
 
-The Anagram and iPhone Pro Crossword images were downloaded from the App Store
-and resized on 20 October 2026 using Core Graphics, without regeneration or
-layout changes. Their 1242 × 2688 originals remain in `sources/`; only resizing
-and opaque sRGB PNG export were applied.
+The iPhone Pro Crossword image was downloaded from the App Store and resized
+on 20 October 2026 using Core Graphics, without regeneration or layout changes.
+Its 1242 × 2688 original remains in `sources/`; only resizing and opaque sRGB
+PNG export were applied. The previous Anagram download also remains in
+`sources/app-store-anagram-1242x2688.png` for reference; the current Anagram
+artwork uses the original app capture directly.
 The additional rating screenshot is preserved as supplied at 1206 × 2622,
 with its original bytes also saved in `sources/app-store-rating-1206x2622.png`.
 
 `sources/` retains the original app captures and existing App Store style
 reference. Home uses `sources/home-new.png` (1206 × 2622); the earlier Home
-capture remains in `sources/home.png`. `generated/` contains intermediate
-iPhone image_gen compositions before export, plus the full-size native iPad
-master. The four prepared iPhone compositions are generated raster images;
-the iPad uses the original screenshot directly with the headline
+capture remains in `sources/home.png`. `generated/` contains native masters
+for Home, Backword, Quick Crossword, Midword, Anagram, iPad and Archive, all composed
+directly from the original captures. The iPad headline is
 “Your daily word game ritual”.
 
 The local-only, gitignored `previous-exports/` directory retains superseded files, including the earlier
@@ -76,7 +100,8 @@ from `upload-ready/` for this upload.
 [manifest.json](manifest.json) lists current export paths, exact dimensions,
 captions and source captures.
 
-Prompt history:
+Historical image generation prompts (superseded by native renderers for the
+seven rebuilt compositions):
 
 - [prompts.md](prompts.md): original generation.
 - [typography-prompts.md](typography-prompts.md): initial font revisions.

@@ -1,0 +1,568 @@
+[
+  {
+    "key": "backword",
+    "source": "sources/backword.png",
+    "sourceSHA256": "aac5c1c5d0ec1e09cd61244d4d001a7418d5afd7d1ee625f405441a005ffa462",
+    "sourceWidth": 1170,
+    "sourceHeight": 2532,
+    "masterWidth": 1206,
+    "masterHeight": 2622,
+    "opaqueRGB": true,
+    "sRGB": true,
+    "sourcePreserved": true,
+    "uploadMatchesMaster": true,
+    "sourceScaleX": 0.7846153846153846,
+    "sourceScaleY": 0.7846153846153846,
+    "screenRect": [
+      144,
+      488,
+      918,
+      1986.6461538461538
+    ],
+    "title": "Guess forwards. Reveal backwards.",
+    "titleCapitalHeight": 52,
+    "titleTop": 155,
+    "titleBottom": 285,
+    "titleCenterErrorPixels": 1.0,
+    "backgroundMatchesNativeArchive": true,
+    "sourceColourChecks": [
+      {
+        "sourcePoint": [
+          585,
+          1570
+        ],
+        "exportPoint": [
+          603,
+          1720
+        ],
+        "sourceRGB": [
+          10,
+          9,
+          10
+        ],
+        "exportRGB": [
+          10,
+          9,
+          10
+        ]
+      },
+      {
+        "sourcePoint": [
+          328,
+          703
+        ],
+        "exportPoint": [
+          401,
+          1040
+        ],
+        "sourceRGB": [
+          38,
+          86,
+          127
+        ],
+        "exportRGB": [
+          38,
+          86,
+          127
+        ]
+      },
+      {
+        "sourcePoint": [
+          936,
+          886
+        ],
+        "exportPoint": [
+          878,
+          1183
+        ],
+        "sourceRGB": [
+          26,
+          26,
+          26
+        ],
+        "exportRGB": [
+          26,
+          26,
+          26
+        ]
+      }
+    ]
+  },
+  {
+    "key": "crossword",
+    "source": "sources/crossword.png",
+    "sourceSHA256": "d1c5895223d4df3c72e43aed1ba435002e76a0036b0f8dbc5db6298ee80b9446",
+    "sourceWidth": 1170,
+    "sourceHeight": 2532,
+    "masterWidth": 1206,
+    "masterHeight": 2622,
+    "opaqueRGB": true,
+    "sRGB": true,
+    "sourcePreserved": true,
+    "uploadMatchesMaster": true,
+    "sourceScaleX": 0.7846153846153846,
+    "sourceScaleY": 0.7846153846153846,
+    "screenRect": [
+      144,
+      488,
+      918,
+      1986.6461538461538
+    ],
+    "title": "Your daily crossword fix",
+    "titleCapitalHeight": 52,
+    "titleTop": 156,
+    "titleBottom": 285,
+    "titleCenterErrorPixels": 0.5,
+    "backgroundMatchesNativeArchive": true,
+    "sourceColourChecks": [
+      {
+        "sourcePoint": [
+          328,
+          760
+        ],
+        "exportPoint": [
+          401,
+          1084
+        ],
+        "sourceRGB": [
+          37,
+          63,
+          39
+        ],
+        "exportRGB": [
+          37,
+          63,
+          39
+        ]
+      },
+      {
+        "sourcePoint": [
+          550,
+          886
+        ],
+        "exportPoint": [
+          576,
+          1183
+        ],
+        "sourceRGB": [
+          37,
+          63,
+          39
+        ],
+        "exportRGB": [
+          37,
+          63,
+          39
+        ]
+      },
+      {
+        "sourcePoint": [
+          901,
+          1013
+        ],
+        "exportPoint": [
+          851,
+          1283
+        ],
+        "sourceRGB": [
+          22,
+          42,
+          60
+        ],
+        "exportRGB": [
+          22,
+          42,
+          60
+        ]
+      },
+      {
+        "sourcePoint": [
+          94,
+          810
+        ],
+        "exportPoint": [
+          218,
+          1124
+        ],
+        "sourceRGB": [
+          26,
+          26,
+          26
+        ],
+        "exportRGB": [
+          26,
+          26,
+          26
+        ]
+      }
+    ]
+  },
+  {
+    "key": "midword",
+    "source": "sources/midword.png",
+    "sourceSHA256": "978c8dd758d3ab81ccec1fd067b194460e4b096828f79bad40d5241df7587612",
+    "sourceWidth": 1170,
+    "sourceHeight": 2532,
+    "masterWidth": 1206,
+    "masterHeight": 2622,
+    "opaqueRGB": true,
+    "sRGB": true,
+    "sourcePreserved": true,
+    "uploadMatchesMaster": true,
+    "sourceScaleX": 0.7846153846153846,
+    "sourceScaleY": 0.7846153846153846,
+    "screenRect": [
+      144,
+      488,
+      918,
+      1986.6461538461538
+    ],
+    "title": "Find the missing link",
+    "titleCapitalHeight": 52,
+    "titleTop": 186,
+    "titleBottom": 255,
+    "titleCenterErrorPixels": 0.5,
+    "backgroundMatchesNativeArchive": true,
+    "sourceColourChecks": [
+      {
+        "sourcePoint": [
+          58,
+          633
+        ],
+        "exportPoint": [
+          190,
+          985
+        ],
+        "sourceRGB": [
+          31,
+          31,
+          31
+        ],
+        "exportRGB": [
+          31,
+          31,
+          31
+        ]
+      },
+      {
+        "sourcePoint": [
+          328,
+          1063
+        ],
+        "exportPoint": [
+          401,
+          1322
+        ],
+        "sourceRGB": [
+          71,
+          119,
+          81
+        ],
+        "exportRGB": [
+          71,
+          119,
+          81
+        ]
+      },
+      {
+        "sourcePoint": [
+          292,
+          1291
+        ],
+        "exportPoint": [
+          373,
+          1501
+        ],
+        "sourceRGB": [
+          62,
+          39,
+          39
+        ],
+        "exportRGB": [
+          62,
+          39,
+          39
+        ]
+      },
+      {
+        "sourcePoint": [
+          1030,
+          2279
+        ],
+        "exportPoint": [
+          952,
+          2276
+        ],
+        "sourceRGB": [
+          88,
+          157,
+          103
+        ],
+        "exportRGB": [
+          88,
+          157,
+          103
+        ]
+      }
+    ]
+  },
+  {
+    "key": "home",
+    "source": "sources/home-new.png",
+    "sourceSHA256": "7d0028f37b987a25487c7c24bba11e1f685bbe802c33b70e85ffae569c09b739",
+    "sourceWidth": 1206,
+    "sourceHeight": 2622,
+    "masterWidth": 1206,
+    "masterHeight": 2622,
+    "opaqueRGB": true,
+    "sRGB": true,
+    "sourcePreserved": true,
+    "uploadMatchesMaster": true,
+    "sourceScaleX": 0.7611940298507462,
+    "sourceScaleY": 0.7611940298507462,
+    "screenRect": [
+      144,
+      488,
+      918,
+      1995.8507462686566
+    ],
+    "title": "Four free daily games",
+    "titleCapitalHeight": 52,
+    "titleTop": 148,
+    "titleBottom": 294,
+    "titleCenterErrorPixels": 0.0,
+    "backgroundMatchesNativeArchive": true,
+    "sourceColourChecks": [
+      {
+        "sourcePoint": [
+          181,
+          524
+        ],
+        "exportPoint": [
+          282,
+          887
+        ],
+        "sourceRGB": [
+          42,
+          52,
+          105
+        ],
+        "exportRGB": [
+          42,
+          52,
+          105
+        ]
+      },
+      {
+        "sourcePoint": [
+          181,
+          1049
+        ],
+        "exportPoint": [
+          282,
+          1286
+        ],
+        "sourceRGB": [
+          41,
+          56,
+          77
+        ],
+        "exportRGB": [
+          41,
+          56,
+          77
+        ]
+      },
+      {
+        "sourcePoint": [
+          181,
+          1521
+        ],
+        "exportPoint": [
+          282,
+          1646
+        ],
+        "sourceRGB": [
+          247,
+          111,
+          10
+        ],
+        "exportRGB": [
+          247,
+          111,
+          10
+        ]
+      },
+      {
+        "sourcePoint": [
+          181,
+          2019
+        ],
+        "exportPoint": [
+          282,
+          2025
+        ],
+        "sourceRGB": [
+          88,
+          158,
+          103
+        ],
+        "exportRGB": [
+          88,
+          158,
+          103
+        ]
+      }
+    ]
+  },
+  {
+    "key": "anagram",
+    "source": "sources/anagram.png",
+    "sourceSHA256": "9fe2feed31a5626d1563087bc3fb91c21dc71da579760daa8e5b9b8f9f0b9dbc",
+    "sourceWidth": 1206,
+    "sourceHeight": 2622,
+    "masterWidth": 1206,
+    "masterHeight": 2622,
+    "opaqueRGB": true,
+    "sRGB": true,
+    "sourcePreserved": true,
+    "uploadMatchesMaster": true,
+    "sourceScaleX": 0.7611940298507462,
+    "sourceScaleY": 0.7611940298507462,
+    "screenRect": [
+      144,
+      488,
+      918,
+      1995.8507462686566
+    ],
+    "title": "Unscramble the Anagram",
+    "titleCapitalHeight": 52,
+    "titleTop": 186,
+    "titleBottom": 255,
+    "titleCenterErrorPixels": 0.5,
+    "titleHorizontalRasterCenterErrorPixels": 1.5,
+    "backgroundMatchesNativeArchive": true,
+    "sourceColourChecks": [
+      {
+        "sourcePoint": [
+          603,
+          1311
+        ],
+        "exportPoint": [
+          603,
+          1486
+        ],
+        "sourceRGB": [
+          23,
+          24,
+          24
+        ],
+        "exportRGB": [
+          23,
+          24,
+          24
+        ]
+      },
+      {
+        "sourcePoint": [
+          241,
+          891
+        ],
+        "exportPoint": [
+          327,
+          1166
+        ],
+        "sourceRGB": [
+          64,
+          43,
+          33
+        ],
+        "exportRGB": [
+          64,
+          43,
+          33
+        ]
+      },
+      {
+        "sourcePoint": [
+          84,
+          865
+        ],
+        "exportPoint": [
+          208,
+          1146
+        ],
+        "sourceRGB": [
+          255,
+          166,
+          92
+        ],
+        "exportRGB": [
+          255,
+          166,
+          92
+        ]
+      },
+      {
+        "sourcePoint": [
+          193,
+          1626
+        ],
+        "exportPoint": [
+          291,
+          1726
+        ],
+        "sourceRGB": [
+          255,
+          166,
+          92
+        ],
+        "exportRGB": [
+          255,
+          166,
+          92
+        ]
+      },
+      {
+        "sourcePoint": [
+          663,
+          1678
+        ],
+        "exportPoint": [
+          649,
+          1765
+        ],
+        "sourceRGB": [
+          43,
+          34,
+          29
+        ],
+        "exportRGB": [
+          43,
+          34,
+          29
+        ]
+      },
+      {
+        "sourcePoint": [
+          121,
+          2124
+        ],
+        "exportPoint": [
+          236,
+          2105
+        ],
+        "sourceRGB": [
+          64,
+          43,
+          33
+        ],
+        "exportRGB": [
+          64,
+          43,
+          33
+        ]
+      }
+    ]
+  }
+]
