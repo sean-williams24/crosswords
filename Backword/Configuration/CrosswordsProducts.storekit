@@ -67,11 +67,11 @@
       "localizations" : [
         {
           "description" : "Unlock all five games, the archive, and an ad-free experience",
-          "displayName" : "intervls Pro",
+          "displayName" : "Intervls Pro",
           "locale" : "en_GB"
         }
       ],
-      "name" : "intervls Pro",
+      "name" : "Intervls Pro",
       "subscriptions" : [
         {
           "adHocOffers" : [
@@ -94,7 +94,7 @@
           "localizations" : [
             {
               "description" : "Ad-free, unlimited archive & hints",
-              "displayName" : "intervls Pro Monthly",
+              "displayName" : "Intervls Pro Monthly",
               "locale" : "en_GB"
             }
           ],
@@ -125,7 +125,7 @@
           "localizations" : [
             {
               "description" : "Ad-free, unlimited archive & hints — best value",
-              "displayName" : "intervls Pro Annual",
+              "displayName" : "Intervls Pro Annual",
               "locale" : "en_GB"
             }
           ],

@@ -93,7 +93,7 @@
   ],
   "capture_requirements": [
     "Capture the updated app in Xcode; preserve full-resolution originals.",
-    "Include intervls Home, account/paywall context where present, and retained game names.",
+    "Include Intervls Home, account/paywall context where present, and retained game names.",
     "Use 1206x2622 iPhone and 2064x2752 iPad export slots, rechecking App Store Connect requirements at submission.",
     "Review every image for old umbrella branding; a Backword game title remains correct.",
     "Do not reuse historic screenshots as proof of the renamed app."

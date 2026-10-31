@@ -64,8 +64,8 @@ describe("PlayerProfilePage", () => {
     renderPage();
 
     expect(screen.getByRole("heading", { name: "Player Profile" })).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "intervls home" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Download intervls on the App Store" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Intervls home" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Download Intervls on the App Store" })).not.toBeInTheDocument();
     const footer = screen.getByRole("navigation", { name: "Footer" });
     expect(within(footer).getByRole("link", { name: "Player Profile" })).toHaveAttribute("href", "/player-profile");
     expect(screen.getByText("player@example.com")).toBeInTheDocument();
@@ -177,8 +177,8 @@ describe("PlayerProfilePage", () => {
     await user.click(screen.getAllByRole("button", { name: "Delete Account" })[0]);
 
     expect(testAuth.value.deleteAccount).toHaveBeenCalledOnce();
-    const confirmation = await screen.findByRole("dialog", { name: "Your intervls account has been deleted" });
-    expect(confirmation).toHaveTextContent("Deleted from intervls");
+    const confirmation = await screen.findByRole("dialog", { name: "Your Intervls account has been deleted" });
+    expect(confirmation).toHaveTextContent("Deleted from Intervls");
     expect(confirmation).toHaveTextContent("Not deleted");
     expect(confirmation).toHaveTextContent("An Apple subscription was not cancelled");
     expect(confirmation).toHaveTextContent("Your Apple purchase record");
@@ -199,7 +199,7 @@ describe("PlayerProfilePage", () => {
 
     await user.click(screen.getAllByRole("button", { name: "Delete Account" })[0]);
 
-    const confirmation = await screen.findByRole("dialog", { name: "Your intervls account has been deleted" });
+    const confirmation = await screen.findByRole("dialog", { name: "Your Intervls account has been deleted" });
     expect(confirmation).toHaveTextContent("Stripe retains legally required billing records");
     expect(confirmation).not.toHaveTextContent("Apple subscription");
     expect(confirmation).not.toHaveTextContent("Apple purchase record");

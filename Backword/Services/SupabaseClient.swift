@@ -66,8 +66,8 @@ enum AccountSessionValidation {
 }
 
 enum AccountDeletionPresentation {
-    static let title = "Your intervls account was deleted"
-    static let message = "Your intervls account, cloud-synced game progress, stats, and rating were deleted. This device has been signed out and is now playing as a guest. Your Apple subscription and game data stored locally on this device were not deleted. Any web subscription will stop renewing and cannot unlock this deleted account."
+    static let title = "Your Intervls account was deleted"
+    static let message = "Your Intervls account, cloud-synced game progress, stats, and rating were deleted. This device has been signed out and is now playing as a guest. Your Apple subscription and game data stored locally on this device were not deleted. Any web subscription will stop renewing and cannot unlock this deleted account."
 }
 
 enum AccountSignInProvider: Equatable {

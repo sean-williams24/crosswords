@@ -35,7 +35,7 @@ describe("puzzle share results", () => {
     expect(`${result.caption}${puzzleResultCardSvg(result)}`).not.toContain("BOTTLE");
   });
 
-  it("uses the intervls vector wordmark while retaining the game title", () => {
+  it("uses the Intervls vector wordmark while retaining the game title", () => {
     const card = puzzleResultCardSvg({
       game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1, totalGamesSolved: 7,
       ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
@@ -227,7 +227,7 @@ describe("puzzle share results", () => {
 });
 
 
-it("defaults all five shared game links to intervls", () => {
+it("defaults all five shared game links to Intervls", () => {
   for (const game of ["backword", "midword", "anagram", "daily_crossword", "weekly_crossword"] as const) {
     expect(new URL(shareUrl(game, "2026-10-29")).origin).toBe("https://intervls.com");
   }

@@ -1,4 +1,4 @@
-# intervls brand kit
+# Intervls brand kit
 
 The app and website use Sean's supplied wordmarks:
 

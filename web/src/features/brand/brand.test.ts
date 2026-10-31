@@ -5,7 +5,15 @@ import { brand, isLegacyOrigin, migrationDestination } from "./brand";
 import { routeMetadata } from "./SiteMetadata";
 import { siteConfig } from "../../lib/siteConfig";
 
-describe("intervls URLs and release protection", () => {
+describe("Intervls URLs and release protection", () => {
+  it("capitalizes the app and Pro display names, including social metadata and page titles", () => {
+    expect(brand.name).toBe("Intervls");
+    expect(brand.proName).toBe("Intervls Pro");
+    const html = new DOMParser().parseFromString(readFileSync(resolve(process.cwd(), "index.html"), "utf8"), "text/html");
+    expect(html.querySelector('meta[property="og:site_name"]')?.getAttribute("content")).toBe(brand.name);
+    expect(routeMetadata("/pro", brand.origin, true).title).toBe("Intervls Pro | Intervls");
+    expect(routeMetadata("/unknown", brand.origin, true).title).toBe("Intervls");
+  });
   it("uses the approved Home title and marketing line before and after hydration", () => {
     const html = new DOMParser().parseFromString(readFileSync(resolve(process.cwd(), "index.html"), "utf8"), "text/html");
     expect(brand.homeTitle).toBe("Intervls — Free daily word games");
@@ -35,10 +43,10 @@ describe("intervls URLs and release protection", () => {
     expect(routeMetadata("/", "https://preview.vercel.app", true).robots).toBe("noindex,follow");
     expect(routeMetadata("/", brand.legacyOrigins[0], true).robots).toBe("noindex,follow");
     expect(routeMetadata("/player-profile", brand.origin, true).robots).toBe("noindex,follow");
-    expect(routeMetadata("/backword/2026-10-29", brand.origin, true)).toMatchObject({ title: "Backword | intervls", robots: "index,follow", canonical: "https://intervls.com/backword/2026-10-29" });
+    expect(routeMetadata("/backword/2026-10-29", brand.origin, true)).toMatchObject({ title: "Backword | Intervls", robots: "index,follow", canonical: "https://intervls.com/backword/2026-10-29" });
   });
   it("uses the existing App Store listing and the confirmed support inbox", () => {
-    expect(siteConfig.appName).toBe("intervls");
+    expect(siteConfig.appName).toBe("Intervls");
     expect(siteConfig.appStoreUrl).toBe("https://apps.apple.com/app/id6773428497");
     expect(siteConfig.supportEmail).toBe("support@intervls.com");
   });

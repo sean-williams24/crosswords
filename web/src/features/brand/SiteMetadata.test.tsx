@@ -14,7 +14,7 @@ describe("browser titles and social previews", () => {
     expect(document.querySelector('meta[property="og:title"]')).toHaveAttribute("content", "Intervls — Free daily word games to challenge your mind");
 
     fireEvent.click(screen.getByRole("link", { name: "Play Backword" }));
-    expect(document.title).toBe("Backword | intervls");
+    expect(document.title).toBe("Backword | Intervls");
     fireEvent.click(screen.getByRole("link", { name: "Home" }));
     expect(document.title).toBe("Intervls — Free daily word games");
     expect(document.querySelector('meta[property="og:title"]')).toHaveAttribute("content", "Intervls — Free daily word games to challenge your mind");

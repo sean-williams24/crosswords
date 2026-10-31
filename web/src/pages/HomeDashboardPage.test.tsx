@@ -254,7 +254,7 @@ describe("web home dashboard", () => {
     const loginButton = screen.getByRole("link", { name: "Login" });
     const profileRating = screen.getByRole("link", { name: "Overall rating: Novice. View player profile" });
     expect(loginButton.parentElement).toHaveClass("home-dashboard__actions");
-    expect(screen.queryByLabelText("Download intervls on the App Store")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Download Intervls on the App Store")).not.toBeInTheDocument();
     expect(loginButton).toHaveAttribute("href", "/sign-in");
     expect(profileRating).toHaveAttribute("href", "/player-profile");
     expect(profileRating.querySelector(".home-profile-rating-link__marker")).toBeInTheDocument();
@@ -421,7 +421,7 @@ describe("web home dashboard", () => {
     expect(styles).toContain(".home-dashboard__header > .home-profile-rating-link { position: absolute; top: calc(max(20px, env(safe-area-inset-top)) + 54px); right: clamp(20px, 4vw, 60px); }");
     expect(styles).toContain("@media (min-width: 681px) and (max-width: 1100px) {");
     expect(styles).toContain(".home-dashboard__header > .home-profile-rating-link { top: 118px; right: auto; left: 50%; transform: translateX(-50%); }");
-    expect(styles).toContain("@media (max-width: 1100px) {\n  .home-dashboard__header > a[aria-label=\"intervls home\"] { align-self: start; margin-top: 25px; }");
+    expect(styles).toContain("@media (max-width: 1100px) {\n  .home-dashboard__header > a[aria-label=\"Intervls home\"] { align-self: start; margin-top: 25px; }");
     expect(styles).toContain(".home-profile-rating-link__track { position: relative; display: block; height: 18px; }");
     expect(styles).toContain("animation: home-profile-rating-sync 2.5s ease-in-out infinite;");
     expect(styles).toContain("@keyframes home-profile-rating-sync { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }");
@@ -569,7 +569,7 @@ describe("web home dashboard", () => {
     expect(styles).not.toContain('html[data-theme="light"] .weekly-card__title');
   });
 
-  it("keeps the intervls home card borderless at rest in both themes", () => {
+  it("keeps the Intervls home card borderless at rest in both themes", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
     expect(styles).not.toContain(".home-game-card--backword::after");
@@ -599,7 +599,7 @@ describe("web home dashboard", () => {
     };
     renderDashboard();
 
-    expect(within(screen.getByRole("link", { name: "intervls home" })).getByRole("img", { name: "Pro" }))
+    expect(within(screen.getByRole("link", { name: "Intervls home" })).getByRole("img", { name: "Pro" }))
       .toHaveClass("brand-logo__pro");
   });
 

@@ -1535,7 +1535,7 @@ body {
   margin-inline: auto;
 }
 
-.home-dashboard__header > a[aria-label="intervls home"] { grid-column: 2; justify-self: center; }
+.home-dashboard__header > a[aria-label="Intervls home"] { grid-column: 2; justify-self: center; }
 .home-dashboard__header .bw-logo-lockup { height: 72px; width: 141px; }
 .home-dashboard__actions {
   position: absolute;
@@ -2242,7 +2242,7 @@ html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); 
 }
 
 @media (max-width: 1100px) {
-  .home-dashboard__header > a[aria-label="intervls home"] { align-self: start; margin-top: 25px; }
+  .home-dashboard__header > a[aria-label="Intervls home"] { align-self: start; margin-top: 25px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3529,7 +3529,7 @@ html[data-theme="light"] {
   }
 }
 
-/* intervls is the umbrella identity. Backword game logo rules remain independent. */
+/* Intervls is the umbrella identity. Backword game logo rules remain independent. */
 .brand-logo { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.35rem; flex-shrink: 0; }
 .brand-logo > img { display: block; width: 9rem; height: auto; max-width: 100%; }
 .brand-logo--large > img { width: 11rem; }

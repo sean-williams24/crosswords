@@ -74,18 +74,18 @@ export function DomainMigrationPage() {
     <BrandLogo large />
     <section className="migration-panel" aria-labelledby="migration-title">
       <p className="migration-eyebrow">Same games. A new name.</p>
-      <h1 id="migration-title">Backword is {brand.launchEnabled ? "now" : "becoming"} intervls</h1>
-      {!brand.launchEnabled ? <p className="migration-notice">intervls is being prepared. You can sync and check your history now; moving to the new website opens at launch.</p> : null}
+      <h1 id="migration-title">Backword is {brand.launchEnabled ? "now" : "becoming"} Intervls</h1>
+      {!brand.launchEnabled ? <p className="migration-notice">Intervls is being prepared. You can sync and check your history now; moving to the new website opens at launch.</p> : null}
       <p>We’re moving to intervls.com. Your games, scores, and Pro subscription can come with you.</p>
       {!inventory ? <p role="alert">We cannot read this browser’s saves. Open this link in the browser and device you used to play, and allow website storage before moving your history.</p> : <>
         {!inventory.hasSaves && !user ? <>
           <p>No saved games were found on this website address in this browser.</p>
-          <button className="migration-primary" disabled={!authReady || !brand.launchEnabled} onClick={continueWithoutSaves}>Continue to intervls</button>
+          <button className="migration-primary" disabled={!authReady || !brand.launchEnabled} onClick={continueWithoutSaves}>Continue to Intervls</button>
         </> : <>
-          <p>Sign in here to save your history, then use the same Apple or Google account on intervls. We’ll check all five games before you move.</p>
-          {otherAccounts ? <p className="migration-notice">This browser also holds saves for another account. Sign into each account here to sync its history before using it on intervls.</p> : null}
+          <p>Sign in here to save your history, then use the same Apple or Google account on Intervls. We’ll check all five games before you move.</p>
+          {otherAccounts ? <p className="migration-notice">This browser also holds saves for another account. Sign into each account here to sync its history before using it on Intervls.</p> : null}
           {!user ? <Link className="migration-primary" to="/sign-in" state={{ returnTo }}>Sign in to keep my progress</Link> : <>
-            <p>Signed in{user.email ? ` as ${user.email}` : ""}. Use this same account on intervls.</p>
+            <p>Signed in{user.email ? ` as ${user.email}` : ""}. Use this same account on Intervls.</p>
             <ul className="migration-games" aria-label="Save transfer progress" aria-live="polite">
               {migrationGames.map((game) => {
                 const status = games.find((item) => item.game === game.type)?.status ?? "pending";
@@ -93,8 +93,8 @@ export function DomainMigrationPage() {
                 return <li key={game.type}><span>{game.name}</span><span>{label}</span></li>;
               })}
             </ul>
-            {verified ? <p role="status">Your saves for this account are confirmed. {brand.launchEnabled ? "You can continue and sign in on intervls." : "Your history is ready for launch."}</p> : null}
-            <button className="migration-primary" disabled={busy} onClick={() => void sync(verified)}>{busy ? "Checking your saves…" : verified ? brand.launchEnabled ? "Continue to intervls" : "Check saves again" : "Sync and check my saves"}</button>
+            {verified ? <p role="status">Your saves for this account are confirmed. {brand.launchEnabled ? "You can continue and sign in on Intervls." : "Your history is ready for launch."}</p> : null}
+            <button className="migration-primary" disabled={busy} onClick={() => void sync(verified)}>{busy ? "Checking your saves…" : verified ? brand.launchEnabled ? "Continue to Intervls" : "Check saves again" : "Sync and check my saves"}</button>
             <button className="migration-secondary" disabled={busy} onClick={() => void signOut().catch(() => setError("We could not sign out. Please try again."))}>Use a different account</button>
           </>}
           <label className="migration-fresh"><input type="checkbox" checked={startFresh} disabled={busy} onChange={(event) => setStartFresh(event.target.checked)} /> I want to continue without moving this browser’s history. My old saves will stay here for recovery.</label>
@@ -102,7 +102,7 @@ export function DomainMigrationPage() {
         </>}
       </>}
       {error ? <p role="alert">{error}</p> : null}
-      <p className="migration-small">Keep this browser’s old website data until your history appears on intervls. Device settings and analytics choices start fresh on the new website.</p>
+      <p className="migration-small">Keep this browser’s old website data until your history appears on Intervls. Device settings and analytics choices start fresh on the new website.</p>
       <p className="migration-small"><a href="https://www.playbackword.com/move">Check saves on www.playbackword.com</a> · <a href="https://playbackword.com/move">Check saves on playbackword.com</a></p>
     </section>
   </main>;

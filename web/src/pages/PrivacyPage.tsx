@@ -6,7 +6,7 @@ export function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      intro="This policy explains how intervls handles information in the iOS app and on this website."
+      intro="This policy explains how Intervls handles information in the iOS app and on this website."
       sections={privacySections}
       topLink={
         <Link

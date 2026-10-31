@@ -7,7 +7,7 @@ describe("account-deleted sheet dismissal", () => {
     const onContinue = vi.fn();
     render(<AccountDeletionConfirmationModal error="Please try again" isFinishing={false}
       onContinue={onContinue} summary={null} />);
-    const dialog = screen.getByRole("dialog", { name: "Your intervls account has been deleted" });
+    const dialog = screen.getByRole("dialog", { name: "Your Intervls account has been deleted" });
     fireEvent.click(dialog);
     fireEvent.click(screen.getByRole("heading", { name: "Not deleted" }));
     expect(onContinue).not.toHaveBeenCalled();

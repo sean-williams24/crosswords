@@ -127,7 +127,7 @@ export function PlayerProfilePage() {
   }
 
   async function removeAccount() {
-    if (!window.confirm("Delete your intervls account and synced progress? If you subscribed through Apple, that subscription is not cancelled. If you subscribed on the web, it will stop renewing. Pro access ends when this account is deleted.")) return;
+    if (!window.confirm("Delete your Intervls account and synced progress? If you subscribed through Apple, that subscription is not cancelled. If you subscribed on the web, it will stop renewing. Pro access ends when this account is deleted.")) return;
     setIsDeleting(true);
     setSyncError(null);
     try {

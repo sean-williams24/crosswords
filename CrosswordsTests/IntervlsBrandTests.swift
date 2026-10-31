@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Backword
 
-@Suite("intervls identity and upgrade compatibility")
+@Suite("Intervls identity and upgrade compatibility")
 struct IntervlsBrandTests {
     @Test("Home uses half the standard wordmark height")
     func homeLogoSizing() {
@@ -40,10 +40,10 @@ struct IntervlsBrandTests {
         #expect(overhang <= 12)
     }
 
-    @Test("Public URLs and overall brand use intervls")
+    @Test("Public URLs and overall brand use Intervls")
     func publicIdentity() {
-        #expect(AppBrand.name == "intervls")
-        #expect(AppBrand.proName == "intervls Pro")
+        #expect(AppBrand.name == "Intervls")
+        #expect(AppBrand.proName == "Intervls Pro")
         #expect(AppBrand.website.absoluteString == "https://intervls.com")
         #expect(AppBrand.logoAsset != "BackWordLogo")
         #expect(AppBrand.shareLogoAsset != "BackWordLogoShare")
@@ -60,6 +60,6 @@ struct IntervlsBrandTests {
     func legacyErrorCompatibility() {
         #expect(AccountEntitlementPresentation.isAlreadyLinkedPurchaseError("This purchase belongs to a different Backword account."))
         #expect(AccountEntitlementPresentation.isAlreadyLinkedPurchaseError("This subscription is already linked to another Backword account."))
-        #expect(AccountEntitlementPresentation.linkedElsewhereExplanation.contains("intervls account"))
+        #expect(AccountEntitlementPresentation.linkedElsewhereExplanation.contains("Intervls account"))
     }
 }

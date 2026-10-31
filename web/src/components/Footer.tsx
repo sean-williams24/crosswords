@@ -71,7 +71,7 @@ export function Footer() {
           ))}
           <FooterSocialLinks links={siteConfig.socialLinks} />
         </nav>
-        <p className="order-2 whitespace-nowrap text-center lg:order-1 lg:justify-self-start lg:text-left">© 2026 intervls</p>
+        <p className="order-2 whitespace-nowrap text-center lg:order-1 lg:justify-self-start lg:text-left">© 2026 Intervls</p>
         <div className="order-3 lg:justify-self-end">
           <AppStoreBadge placement="footer" />
         </div>

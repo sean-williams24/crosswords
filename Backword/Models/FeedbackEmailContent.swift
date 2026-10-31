@@ -19,7 +19,7 @@ struct FeedbackEmailContent: Equatable {
 
     init(
         recipient: String = Self.supportRecipient,
-        subject: String = "intervls Feedback",
+        subject: String = "Intervls Feedback",
         appVersion: AppVersionInfo,
         systemName: String,
         systemVersion: String,
@@ -32,7 +32,7 @@ struct FeedbackEmailContent: Equatable {
 
 
         ---
-        App: intervls
+        App: Intervls
         \(appVersion.displayText)
         OS: \(systemName) \(systemVersion)
         Device: \(deviceModel)

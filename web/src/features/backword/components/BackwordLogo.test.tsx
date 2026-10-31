@@ -47,7 +47,7 @@ describe("BackwordLogo", () => {
     for (const header of ["bw-game-header", "home-dashboard__header"]) {
       expect(styles).toMatch(new RegExp(`\\.${header}\\s*\\{[^}]*grid-template-columns:\\s*minmax\\(0, 1fr\\) auto minmax\\(0, 1fr\\)`));
     }
-    expect(styles).toMatch(/\.home-dashboard__header > a\[aria-label="intervls home"\]\s*\{[^}]*grid-column:\s*2;[^}]*justify-self:\s*center/);
+    expect(styles).toMatch(/\.home-dashboard__header > a\[aria-label="Intervls home"\]\s*\{[^}]*grid-column:\s*2;[^}]*justify-self:\s*center/);
     expect(styles).toMatch(/\.bw-logo-lockup\s*\{[^}]*grid-column:\s*2;[^}]*justify-self:\s*center;[^}]*width:\s*74px/);
     expect(styles).toMatch(/\.bw-logo-lockup--large\s*\{[^}]*width:\s*149px/);
     expect(styles).toMatch(/\.home-dashboard__header \.bw-logo-lockup\s*\{[^}]*width:\s*141px/);

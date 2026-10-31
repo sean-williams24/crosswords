@@ -42,7 +42,7 @@ function colorCount(png: Buffer, target: readonly number[]) {
   return count;
 }
 
-describe("intervls release artifacts", () => {
+describe("Intervls release artifacts", () => {
   it.each([
     "docs/intervls-brand/social-cover-1640x624.png",
     "web/public/brand/intervls-social-preview.png",
@@ -63,6 +63,9 @@ describe("intervls release artifacts", () => {
   });
   it("supplies store copy within Apple's field limits and retains purchase identity", () => {
     const metadata = JSON.parse(read("docs/intervls-rebrand/app-store-metadata.en-GB.json").toString());
+    expect(metadata.name).toBe(brand.name);
+    expect(metadata.subscription_group_display_name).toBe(brand.proName);
+    expect(metadata.subscriptions.map((item: { display_name: string }) => item.display_name)).toEqual(["Intervls Pro Monthly", "Intervls Pro Annual"]);
     for (const [key, max] of [["name", 30], ["subtitle", 30], ["promotional_text", 170], ["keywords", 100], ["description", 4000], ["whats_new", 4000]] as const) {
       expect(metadata[key].length, key).toBeLessThanOrEqual(max);
       expect(metadata[key].length, key).toBeGreaterThan(0);
@@ -117,7 +120,7 @@ describe("intervls release artifacts", () => {
     expect(installed.equals(read("docs/intervls-brand/Web tab icon.png"))).toBe(true);
     expect(favicon?.getAttribute("sizes")).toBe(`${installed.readUInt32BE(16)}x${installed.readUInt32BE(20)}`);
   });
-  it.runIf(process.platform === "darwin")("uses a 180px export of the supplied intervls icon for Apple Home Screen shortcuts", () => {
+  it.runIf(process.platform === "darwin")("uses a 180px export of the supplied Intervls icon for Apple Home Screen shortcuts", () => {
     const html = new DOMParser().parseFromString(read("web/index.html").toString(), "text/html");
     const icon = html.querySelector('link[rel="apple-touch-icon"]');
     expect(icon?.getAttribute("href")).toBe("/apple-touch-icon.png");
@@ -133,7 +136,7 @@ describe("intervls release artifacts", () => {
     for (const appearance of ["light", "dark"]) {
       const svg = read(`web/public/brand/intervls-${appearance}.svg`).toString();
       const document = new DOMParser().parseFromString(svg, "image/svg+xml");
-      expect(document.documentElement.getAttribute("aria-label")).toBe("intervls");
+      expect(document.documentElement.getAttribute("aria-label")).toBe("Intervls");
       expect(document.querySelector("image")?.getAttribute("href")?.startsWith("data:image/png;base64,")).toBe(true);
       expect(document.querySelector("text")).toBeNull();
       expect(document.querySelector("path")).toBeNull();

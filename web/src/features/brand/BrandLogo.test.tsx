@@ -8,9 +8,9 @@ import { BackwordLogo } from "../backword/components/BackwordLogo";
 
 describe("umbrella and game brand separation", () => {
   afterEach(() => localStorage.removeItem(themeStorageKey));
-  it("renders intervls alongside the unchanged Backword game mark", () => {
+  it("renders Intervls alongside the unchanged Backword game mark", () => {
     render(<><BrandLogo isPro /><BackwordLogo /></>);
-    expect(screen.getByRole("img", { name: "intervls" })).toHaveAttribute("src", "/brand/intervls-dark.svg");
+    expect(screen.getByRole("img", { name: "Intervls" })).toHaveAttribute("src", "/brand/intervls-dark.svg");
     expect(screen.getByRole("img", { name: "Backword" })).toHaveAttribute("src", "/brand/backword-logo.png");
     expect(screen.getByRole("img", { name: "Pro" })).toHaveAttribute("src", "/brand/backword-pro.png");
     expect(screen.getByRole("img", { name: "Pro" })).toHaveClass("brand-logo__pro");
@@ -18,7 +18,7 @@ describe("umbrella and game brand separation", () => {
   it.each(["light", "dark"])("selects the supplied %s artwork with the matching theme", (appearance) => {
     localStorage.setItem(themeStorageKey, appearance);
     render(<ThemeProvider><BrandLogo /></ThemeProvider>);
-    expect(screen.getByRole("img", { name: "intervls" })).toHaveAttribute("src", `/brand/intervls-${appearance}.svg`);
+    expect(screen.getByRole("img", { name: "Intervls" })).toHaveAttribute("src", `/brand/intervls-${appearance}.svg`);
     expect(screen.queryByRole("img", { name: "Pro" })).not.toBeInTheDocument();
   });
 

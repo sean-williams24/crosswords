@@ -1,10 +1,10 @@
-# intervls launch copy
+# Intervls launch copy
 
 All text is prepared for review. No posts or emails have been sent. Rebrand the existing Instagram, TikTok, and Facebook accounts; keep followers and history. Current profile links stay in the website config until the new usernames have actually been secured.
 
 ## Profile details
 
-- Display name: **intervls**
+- Display name: **Intervls**
 - First-choice username: **intervls**. Check availability in each existing account. Resolve any unavailable name before changing usernames or website links; do not assume old profile links will redirect.
 - Website: **https://intervls.com**
 - Contact: **support@intervls.com**
@@ -17,37 +17,37 @@ Update Facebook Page name and username separately, the About section, contact/we
 
 ## Advance notice
 
-Backword is becoming intervls.
+Backword is becoming Intervls.
 
 Same games, a new name, and a new home at intervls.com. The Backword game is staying Backword, alongside Midword, Anagram, Quick Crossword, and Pro Crossword.
 
-Play on the web? Sign in on the current Backword website to sync your history before moving. Keep the old website data in your browser until your history appears on intervls.
+Play on the web? Sign in on the current Backword website to sync your history before moving. Keep the old website data in your browser until your history appears on Intervls.
 
 Your iOS saves and existing Pro subscription stay with the updated app. We’ll share the launch date here.
 
 ## Launch announcement / pinned post
 
-Backword is now intervls!
+Backword is now Intervls!
 
 Free daily word games to challenge your mind. Play Backword, Midword, Anagram, and Quick Crossword, with a weekly Pro Crossword for subscribers.
 
 Play at https://intervls.com or update the existing app from the App Store. Your iOS saves and existing Pro subscription continue with the update.
 
-Moving from the old website? Open your old bookmark in the browser you used to play, sign in, and let us check your saves. Then sign in with the same Apple or Google account on intervls.
+Moving from the old website? Open your old bookmark in the browser you used to play, sign in, and let us check your saves. Then sign in with the same Apple or Google account on Intervls.
 
 Need your old history? https://intervls.com/recover-history
 Help: support@intervls.com
 
 ## Support signature
 
-intervls Support
+Intervls Support
 support@intervls.com
 https://intervls.com
 Formerly Backword
 
 ## Missing-history reply
 
-Your old browser history may still be saved on the old website. On the same device and browser you used to play, open https://intervls.com/recover-history and check both old website addresses. Sign in there and finish “Sync and check my saves”. When your saves are confirmed, return to intervls and sign in with the same provider and account.
+Your old browser history may still be saved on the old website. On the same device and browser you used to play, open https://intervls.com/recover-history and check both old website addresses. Sign in there and finish “Sync and check my saves”. When your saves are confirmed, return to Intervls and sign in with the same provider and account.
 
 Please keep your old website data until the history appears. If you used Apple’s Hide My Email, continue using Apple to sign in. Settings and analytics choices start fresh on the new website.
 

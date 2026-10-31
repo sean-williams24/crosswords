@@ -157,7 +157,7 @@ describe("Backword browser game", () => {
     expect(within(menu).getByRole("link", { name: "Archive" })).toHaveAttribute("href", "/pro?return_to=%2Farchive");
     expect(within(menu).getByRole("link", { name: "Info" })).toHaveAttribute("href", "/info");
     expect(within(menu).getByRole("link", { name: "Contact" })).toHaveAttribute("href", "/contact");
-    expect(within(menu).getByLabelText("Download intervls on the App Store").parentElement).toHaveClass(
+    expect(within(menu).getByLabelText("Download Intervls on the App Store").parentElement).toHaveClass(
       "bw-menu-store-badge"
     );
     expect(within(menu).getByRole("link", { name: "Privacy" })).toHaveAttribute("href", "/privacy");

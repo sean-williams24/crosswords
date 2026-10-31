@@ -8,7 +8,7 @@ struct FeedbackEmailContentTests {
         let content = makeContent()
 
         #expect(content.recipient == "support@intervls.com")
-        #expect(content.subject == "intervls Feedback")
+        #expect(content.subject == "Intervls Feedback")
     }
 
     @Test("Body includes issue prompt and diagnostics")
@@ -16,7 +16,7 @@ struct FeedbackEmailContentTests {
         let content = makeContent()
 
         #expect(content.body.contains("Please describe the issue:"))
-        #expect(content.body.contains("App: intervls"))
+        #expect(content.body.contains("App: Intervls"))
         #expect(content.body.contains("Version 1.2.3 (Build 45)"))
         #expect(content.body.contains("OS: iOS 18.0"))
         #expect(content.body.contains("Device: iPhone"))
@@ -30,7 +30,7 @@ struct FeedbackEmailContentTests {
 
         #expect(url.scheme == "mailto")
         #expect(urlString.contains("support@intervls.com"))
-        #expect(urlString.contains("subject=intervls%20Feedback"))
+        #expect(urlString.contains("subject=Intervls%20Feedback"))
         #expect(urlString.contains("body="))
         #expect(urlString.contains("Please%20describe%20the%20issue"))
         #expect(!urlString.contains(" "))

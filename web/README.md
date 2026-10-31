@@ -1,6 +1,6 @@
-# intervls Web
+# Intervls Web
 
-Vite + React website for intervls, hosted on Vercel with Supabase gameplay and accounts.
+Vite + React website for Intervls, hosted on Vercel with Supabase gameplay and accounts.
 
 The rebrand is prepared locally. Read [the release runbook](../docs/intervls-rebrand/README.md) before deployment: the new branding is visible even with the launch switch off. Both old HTTPS origins must retain save recovery and callbacks.
 
@@ -131,7 +131,7 @@ URLs in App Store Connect:
 - **Privacy Choices URL:** `https://intervls.com/privacy-choices`
 
 The iOS app exposes both links in Settings and on the paywall. Update the App
-Privacy data types in App Store Connect whenever intervls’s data practices or
+Privacy data types in App Store Connect whenever Intervls’s data practices or
 third-party SDK configuration changes.
 
 
@@ -139,4 +139,4 @@ third-party SDK configuration changes.
 
 `VITE_REBRAND_LAUNCH_ENABLED=false` keeps preparation noindex and leaves the legacy game routes playable. Enable it only on the coordinated launch deployment to show the old-domain migration bridge. `VITE_REBRAND_NOTICE_ENABLED=false` is an optional advance-notice switch. Vite embeds both at build time. The renamed UI itself is not gated by these switches.
 
-`/move` on either old HTTPS origin verifies all five games and the current account's queued saves. `/recover-history` on intervls links back to both original origins. Guest progress is only removed after verified server readback; an explicit continue-without-history action retains it. The existing browser storage keys remain stable. Checkout origin configuration belongs in Supabase, not Vercel/browser variables.
+`/move` on either old HTTPS origin verifies all five games and the current account's queued saves. `/recover-history` on Intervls links back to both original origins. Guest progress is only removed after verified server readback; an explicit continue-without-history action retains it. The existing browser storage keys remain stable. Checkout origin configuration belongs in Supabase, not Vercel/browser variables.

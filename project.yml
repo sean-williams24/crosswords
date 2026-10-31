@@ -13,7 +13,7 @@ settings:
     TARGETED_DEVICE_FAMILY: 1
     INFOPLIST_KEY_UILaunchScreen_Generation: true
     INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
-    INFOPLIST_KEY_CFBundleDisplayName: intervls
+    INFOPLIST_KEY_CFBundleDisplayName: Intervls
 
 packages:
   GoogleMobileAds:

@@ -1,6 +1,6 @@
 export const brand = {
-  name: "intervls",
-  proName: "intervls Pro",
+  name: "Intervls",
+  proName: "Intervls Pro",
   homeTitle: "Intervls — Free daily word games",
   tagline: "Free daily word games to challenge your mind",
   origin: "https://intervls.com",

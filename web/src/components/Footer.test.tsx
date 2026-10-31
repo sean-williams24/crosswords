@@ -73,8 +73,8 @@ describe("Footer", () => {
       }
     }
 
-    expect(screen.getByText("© 2026 intervls")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Download intervls on the App Store from footer" })).toBeInTheDocument();
+    expect(screen.getByText("© 2026 Intervls")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Download Intervls on the App Store from footer" })).toBeInTheDocument();
   });
 
   it("gives two and three columns equal outer and inner spacing and flanks the top row on large screens", () => {
@@ -82,8 +82,8 @@ describe("Footer", () => {
 
     const footer = screen.getByRole("contentinfo");
     const navigation = within(footer).getByRole("navigation", { name: "Footer" });
-    const copyright = within(footer).getByText("© 2026 intervls");
-    const badge = within(footer).getByRole("link", { name: "Download intervls on the App Store from footer" });
+    const copyright = within(footer).getByText("© 2026 Intervls");
+    const badge = within(footer).getByRole("link", { name: "Download Intervls on the App Store from footer" });
     const layout = navigation.parentElement;
 
     expect(footer).toHaveClass("px-0", "lg:px-6");

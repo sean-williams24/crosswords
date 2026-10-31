@@ -29,15 +29,15 @@ describe("old-domain save recovery", () => {
     sync.run.mockResolvedValue({ ready: false, games: [] });
     show(); fireEvent.click(screen.getByRole("button", { name: "Sync and check my saves" }));
     await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("Some saves have not been confirmed"));
-    expect(screen.queryByRole("button", { name: "Continue to intervls" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Continue to Intervls" })).not.toBeInTheDocument();
   });
   it("invalidates a successful check when another tab changes storage", async () => {
     context.user = { id: "alice", email: "alice@example.com" };
     sync.run.mockResolvedValue({ ready: true, games: [] });
     show(); fireEvent.click(screen.getByRole("button", { name: "Sync and check my saves" }));
-    await screen.findByRole("button", { name: "Continue to intervls" });
+    await screen.findByRole("button", { name: "Continue to Intervls" });
     fireEvent(window, new StorageEvent("storage", { key: migrationGames[0].key }));
-    expect(screen.queryByRole("button", { name: "Continue to intervls" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Continue to Intervls" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Sync and check my saves" })).toBeInTheDocument();
   });
 });

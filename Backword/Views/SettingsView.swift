@@ -522,7 +522,7 @@ enum SettingsAccountActionVisibility {
 }
 
 enum SettingsDeletionConfirmationPresentation {
-    static let title = "Delete intervls account?"
+    static let title = "Delete Intervls account?"
     static let message = "This permanently deletes your cloud progress and account. It does not cancel your Apple subscription. Any web subscription stops renewing and cannot unlock a deleted account."
 }
 

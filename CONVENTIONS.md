@@ -4,9 +4,12 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 ---
 
-## intervls Rebrand and Domain Recovery
+## Intervls Rebrand and Domain Recovery
 
-The umbrella app/site is `intervls` and the subscription is `intervls Pro`.
+The umbrella app/site is `Intervls` and the subscription is `Intervls Pro`.
+Capitalize the brand in display names, copy, metadata, and accessibility labels.
+Keep domains, email addresses, social handles, asset paths, and supplied logo
+lettering unchanged.
 Backword remains an individual game. Use `IntervlsLogo` / `BrandLogo` for Home,
 account, paywall, and overall share branding; retain the game-specific Backword
 logo. The public origin is `https://intervls.com` and confirmed support is
@@ -20,7 +23,7 @@ card's opaque sRGB surface colour, `#293364`.
 
 The subscription logo retains the existing gold PRO artwork (`Pro` on iOS,
 `/brand/backword-pro.png` on the web), including its original lettering. Do not
-replace it with accent-blue text when composing the intervls Pro logo.
+replace it with accent-blue text when composing the Intervls Pro logo.
 Place its visible lettering beneath the wordmark at the right edge, compensating
 for the original PRO image's transparent padding rather than centering the badge.
 On the iOS paywall, use a trailing-aligned logo stack with spacing that accounts

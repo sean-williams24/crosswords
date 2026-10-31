@@ -1,4 +1,4 @@
-# Backword → intervls release runbook
+# Backword → Intervls release runbook
 
 Repository implementation prepared on 29 October 2026. Support address confirmed by Sean: **support@intervls.com**. Nothing has been committed, deployed, submitted to Apple, posted to social media, or changed in production dashboards by this task.
 
@@ -24,7 +24,7 @@ The feature switches control migration/indexing and the optional notice. **They 
 
 ## 1. Confirm names, assets, support, and access
 
-- [ ] Confirm `intervls` can be entered on the existing App Store app record (ID `6773428497`); review relevant name conflicts before approving the identity.
+- [ ] Confirm `Intervls` can be entered on the existing App Store app record (ID `6773428497`); review relevant name conflicts before approving the identity.
 - [ ] In the existing Instagram, TikTok, and Facebook accounts, check the desired `intervls` username. Resolve unavailable handles before changing any username. Keep the existing account IDs, followers, and history.
 - [ ] Review the brand kit in `../intervls-brand/`, including social crops, iOS icon, Light/Dark wordmarks, and App Store header/search previews.
 - [ ] Confirm incoming and outgoing mail for `support@intervls.com`. Keep the old Gmail inbox monitored/forwarded. Verify provider MX/SPF/DKIM/DMARC records; preserve them during website DNS changes.
@@ -93,7 +93,7 @@ Use `app-store-metadata.en-GB.json` as the copy source and audit every active Ap
 
 Fresh captures are a launch blocker. `capture-manifest.json` lists all nine App Store placements and website media needing review. Make new captures from the updated app; keep the historic `output/app-store/2026-10-19/` set intact. Stage the new originals under `output/app-store/intervls/sources/`.
 
-Reuse the native Core Text/device composition workflow documented in `output/app-store/2026-10-19/README.md`. Adapt its source dimensions to the new originals; never resize an original merely to satisfy an old source-dimension assertion. Home, Backword, Quick Crossword, Midword, Anagram, Archive, iPad, Pro Crossword, and rating all require review; the last two historic exports do not have equivalent reusable native renderers. Render them from fresh captures using the same composition rules. Do not label historic exports as refreshed intervls imagery.
+Reuse the native Core Text/device composition workflow documented in `output/app-store/2026-10-19/README.md`. Adapt its source dimensions to the new originals; never resize an original merely to satisfy an old source-dimension assertion. Home, Backword, Quick Crossword, Midword, Anagram, Archive, iPad, Pro Crossword, and rating all require review; the last two historic exports do not have equivalent reusable native renderers. Render them from fresh captures using the same composition rules. Do not label historic exports as refreshed Intervls imagery.
 
 - [ ] Regenerate opaque sRGB upload images at the display-slot dimensions actually offered by App Store Connect; inspect full-resolution output and the upload preview.
 - [ ] Replace website Home poster/video and game screenshots after capture review.

@@ -41,7 +41,7 @@ preview API version and Stripe Link manages customer billing and subscriptions;
 do not configure or deploy Stripe's ordinary Billing Customer Portal.
 
 
-## intervls domain transition
+## Intervls domain transition
 
 `create-stripe-checkout` now separates browser CORS origins from the server-selected return destination. Add `WEB_ALLOWED_ORIGINS` as a JSON array of exact HTTPS origins and set `WEB_CHECKOUT_RETURN_ORIGIN` to the desired return origin. Existing installations with only `WEB_ORIGIN` keep working. Values must not have a trailing slash or path. Keep old domains in the allowlist for recovery.
 

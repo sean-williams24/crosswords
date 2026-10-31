@@ -22,7 +22,7 @@ export function SignInPage() {
   const navigationHeader = (
     <header className="home-dashboard__header auth-page__header">
       <GameMenu />
-      <Link aria-label="intervls home" to="/">
+      <Link aria-label="Intervls home" to="/">
         <BrandLogo isPro={entitlement?.isPro === true} large />
       </Link>
     </header>
@@ -73,7 +73,7 @@ export function SignInPage() {
         <ul className="auth-content__benefits auth-content__benefits--sign-in">
           <li><AccountBenefitIcon name="sync" /><span>Continue a game on another device or the web.</span></li>
           <li><AccountBenefitIcon name="stats" /><span>Keep your stats, streaks, and score history safe.</span></li>
-          <li><AccountBenefitIcon name="pro" /><span>Keep your verified Pro access connected to intervls.</span></li>
+          <li><AccountBenefitIcon name="pro" /><span>Keep your verified Pro access connected to Intervls.</span></li>
         </ul>
         {signInError ? <div className="auth-sign-in-alert" role="alert">
           <span aria-hidden="true" className="auth-sign-in-alert__icon">!</span>

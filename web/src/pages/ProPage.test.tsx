@@ -57,6 +57,9 @@ describe("ProPage", () => {
     auth.value.user = null;
     renderPage("/pro?return_to=%2Fweekly-crossword");
 
+    expect(screen.getByRole("link", { name: "Intervls home" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("list", { name: "Included with Intervls Pro" })).toBeInTheDocument();
+    expect(screen.getByText("Unlock Pro on the web and iOS with one Intervls account.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Start 7-day free trial" })).toBeInTheDocument();
     expect(screen.getByText("Or")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Login" })).toHaveAttribute("href", "/sign-in");

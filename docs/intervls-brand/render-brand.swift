@@ -105,7 +105,7 @@ func drawLogo(_ source: LogoSource, in rect: CGRect, context: CGContext) {
 }
 func svg(_ source: LogoSource) -> String {
     """
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 \(canvas.width) \(canvas.height)" role="img" aria-label="intervls"><svg width="100%" height="100%" viewBox="\(source.crop.minX) \(source.crop.minY) \(source.crop.width) \(source.crop.height)" preserveAspectRatio="xMidYMid meet"><image width="\(source.image.width)" height="\(source.image.height)" href="data:image/png;base64,\(source.embeddedPNG.base64EncodedString())"/></svg></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 \(canvas.width) \(canvas.height)" role="img" aria-label="Intervls"><svg width="100%" height="100%" viewBox="\(source.crop.minX) \(source.crop.minY) \(source.crop.width) \(source.crop.height)" preserveAspectRatio="xMidYMid meet"><image width="\(source.image.width)" height="\(source.image.height)" href="data:image/png;base64,\(source.embeddedPNG.base64EncodedString())"/></svg></svg>
     """
 }
 if !promotionalOnly {
@@ -188,4 +188,4 @@ let manifest: [String: Any] = [
 if !promotionalOnly {
     try JSONSerialization.data(withJSONObject: manifest, options: [.prettyPrinted, .sortedKeys]).write(to: output.appendingPathComponent("import-manifest.json"))
 }
-print(promotionalOnly ? "Refreshed promotional artwork only; wordmark and icon assets were not changed." : "Imported supplied intervls light/dark logos and refreshed wordmark artwork. Icon assets were not changed.")
+print(promotionalOnly ? "Refreshed promotional artwork only; wordmark and icon assets were not changed." : "Imported supplied Intervls light/dark logos and refreshed wordmark artwork. Icon assets were not changed.")

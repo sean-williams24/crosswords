@@ -150,7 +150,7 @@ export function HomeDashboardPage() {
     <main className="home-dashboard">
       <header className="home-dashboard__header">
         <GameMenu />
-        <Link aria-label="intervls home" to="/">
+        <Link aria-label="Intervls home" to="/">
           <BrandLogo isPro={entitlement?.isPro === true} large />
         </Link>
         <div className="home-dashboard__actions">

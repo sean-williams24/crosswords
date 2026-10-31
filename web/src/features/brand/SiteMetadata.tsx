@@ -5,7 +5,7 @@ import { brand } from "./brand";
 const pageNames: Record<string, string> = {
   "/": "Free daily word games", "/info": "Daily word games", "/backword": "Backword",
   "/midword": "Midword", "/anagram": "Anagram", "/crossword": "Quick Crossword",
-  "/pro": "intervls Pro", "/contact": "Contact", "/privacy": "Privacy Policy",
+  "/pro": "Intervls Pro", "/contact": "Contact", "/privacy": "Privacy Policy",
   "/privacy-choices": "Privacy Choices", "/terms": "Terms of Use"
 };
 
@@ -14,7 +14,7 @@ export function routeMetadata(pathname: string, origin: string, launched = brand
   const name = pageNames[basePath];
   const canonical = new URL(brand.origin);
   canonical.pathname = pathname;
-  const title = basePath === "/" ? brand.homeTitle : name ? `${name} | intervls` : "intervls";
+  const title = basePath === "/" ? brand.homeTitle : name ? `${name} | Intervls` : "Intervls";
   return {
     title,
     socialTitle: basePath === "/" ? `Intervls — ${brand.tagline}` : title,

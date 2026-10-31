@@ -9,6 +9,7 @@ beforeEach(() => { settings.launched = false; settings.notice = true; settings.l
 describe("advance rebrand notice", () => {
   it("offers a save check that retains the current dated game destination", () => {
     show("/backword/2026-10-29");
+    expect(screen.getByText("Backword is becoming Intervls. Keep your history ready for the move.")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Check and sync my saves" })).toHaveAttribute("href", "/move?return_to=%2Fbackword%2F2026-10-29");
   });
   it("keeps the notice out of authentication callbacks", () => {

@@ -165,7 +165,7 @@ function ArchiveContent({ entitlement, user }: Pick<ReturnType<typeof useAuth>, 
     <div className="archive-page">
       <header className="home-dashboard__header archive-page__header">
         <GameMenu />
-        <Link aria-label="intervls home" to="/"><BrandLogo isPro={entitlement?.isPro === true} large /></Link>
+        <Link aria-label="Intervls home" to="/"><BrandLogo isPro={entitlement?.isPro === true} large /></Link>
         <div className="home-dashboard__actions"><AuthButton className="auth-button--menu-upgrade" /></div>
       </header>
       <main className="archive-page__content">
