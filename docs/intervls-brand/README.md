@@ -13,9 +13,9 @@ These sources contain raster artwork. PDF/SVG containers do not make the letteri
 
 ## App icon
 
-`IV-icon.png` is Sean's supplied trial iOS app icon. Keep it unchanged. `import-icon.swift` exports it as an opaque 1024 × 1024 PNG to `intervls-icon.png` and the iOS AppIcon catalog, verifying that every visible pixel is preserved. The previous draft is kept as `intervls-icon-draft.png`; the earlier Backword icon remains as `previous-app-icon.png`.
+`intervls-icon.png` is Sean's current supplied app icon. Keep this source unchanged when importing. `import-icon.swift` exports opaque 1024 × 1024 PNGs to the iOS AppIcon catalog and `web/public/brand/intervls-icon.png`, verifying that every visible pixel is preserved. It also exports the 180 × 180 Apple touch icon. Earlier versions remain as `IV-icon.png`, `intervls-icon-draft.png`, and `previous-app-icon.png`.
 
-The wordmark importer does not write icons. The website favicon and Apple touch icon are managed separately. To reimport the iOS icon from the repository root:
+The wordmark importer does not write icons. The website favicon is managed separately. To refresh the iOS and web app icons from the repository root:
 
 ```sh
 CLANG_MODULE_CACHE_PATH=/private/tmp/intervls-swift-module-cache \
@@ -31,11 +31,7 @@ It is separate from the iOS app icon and Apple touch icon. After replacing the
 source, copy it again to the public path to update the favicon.
 
 The Apple touch icon uses `intervls-icon.png`, resized to 180 × 180 for Home
-Screen shortcuts. Regenerate it from the repository root:
-
-```sh
-sips -z 180 180 docs/intervls-brand/intervls-icon.png --out web/public/apple-touch-icon.png
-```
+Screen shortcuts by `import-icon.swift` above, after removing its unused alpha channel.
 
 | Export | Purpose |
 | --- | --- |

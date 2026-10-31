@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 // Export the supplied icon without an alpha channel; preserve the source artwork.
 let root = URL(fileURLWithPath: CommandLine.arguments.dropFirst().first ?? FileManager.default.currentDirectoryPath)
 let kit = root.appendingPathComponent("docs/intervls-brand")
-let sourceURL = kit.appendingPathComponent("IV-icon.png")
+let sourceURL = kit.appendingPathComponent("intervls-icon.png")
 let sourceData = try Data(contentsOf: sourceURL)
 let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
 let width = 1024
@@ -46,14 +46,23 @@ guard CGImageDestinationFinalize(destination), pixels(loadImage(encoded as Data)
     fatalError("The exported icon must preserve every visible source pixel.")
 }
 
-let canonical = kit.appendingPathComponent("intervls-icon.png")
-let backup = kit.appendingPathComponent("intervls-icon-draft.png")
-if !FileManager.default.fileExists(atPath: backup.path), FileManager.default.fileExists(atPath: canonical.path) {
-    try FileManager.default.copyItem(at: canonical, to: backup)
+let outputs = [
+    "Backword/Resources/Assets.xcassets/AppIcon.appiconset/intervls-icon.png",
+    "web/public/brand/intervls-icon.png"
+]
+for output in outputs {
+    try (encoded as Data).write(to: root.appendingPathComponent(output), options: .atomic)
 }
-try (encoded as Data).write(to: canonical, options: .atomic)
-try (encoded as Data).write(to: root.appendingPathComponent("Backword/Resources/Assets.xcassets/AppIcon.appiconset/intervls-icon.png"), options: .atomic)
+let touchIcon = Process()
+touchIcon.executableURL = URL(fileURLWithPath: "/usr/bin/sips")
+touchIcon.arguments = ["-z", "180", "180", root.appendingPathComponent(outputs[0]).path,
+                       "--out", root.appendingPathComponent("web/public/apple-touch-icon.png").path]
+try touchIcon.run()
+touchIcon.waitUntilExit()
+guard touchIcon.terminationStatus == 0 else {
+    fatalError("Could not export the Apple touch icon.")
+}
 guard try Data(contentsOf: sourceURL) == sourceData else {
     fatalError("The original icon source must remain unchanged.")
 }
-print("Installed 1024 × 1024 opaque iOS icon; all source pixels preserved.")
+print("Installed opaque iOS and web icons plus the 180 × 180 Apple touch icon; all source pixels preserved.")

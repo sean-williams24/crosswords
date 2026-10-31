@@ -79,8 +79,8 @@ describe("Intervls release artifacts", () => {
     expect(metadata.description).toContain("Midword: find");
   });
   it.each([
-    ["docs/intervls-brand/intervls-icon.png", 1024, 1024],
     ["Backword/Resources/Assets.xcassets/AppIcon.appiconset/intervls-icon.png", 1024, 1024],
+    ["web/public/brand/intervls-icon.png", 1024, 1024],
     ["web/public/apple-touch-icon.png", 180, 180],
     ["docs/intervls-brand/social-cover-1640x624.png", 1640, 624],
     ["web/public/brand/intervls-social-preview.png", 1200, 630],
@@ -100,14 +100,14 @@ describe("Intervls release artifacts", () => {
     expect(manifest.screenshots).toHaveLength(9);
     expect(manifest.screenshots.every((image: { status: string }) => image.status === "awaiting_fresh_capture")).toBe(true);
   });
-  it("uses the supplied trial icon in the existing iOS AppIcon catalog and preserves the earlier draft", () => {
+  it("uses matching current app icons on iOS and the web and preserves the earlier draft", () => {
     const directory = "Backword/Resources/Assets.xcassets/AppIcon.appiconset";
     const catalog = JSON.parse(read(`${directory}/Contents.json`).toString());
     expect(catalog.images).toEqual([{ filename: "intervls-icon.png", idiom: "universal", platform: "ios", size: "1024x1024" }]);
     const installed = read(`${directory}/${catalog.images[0].filename}`);
-    expect(installed.equals(read("docs/intervls-brand/intervls-icon.png"))).toBe(true);
+    expect(installed.equals(read("web/public/brand/intervls-icon.png"))).toBe(true);
     expect(installed.equals(read("docs/intervls-brand/intervls-icon-draft.png"))).toBe(false);
-    const original = read("docs/intervls-brand/IV-icon.png");
+    const original = read("docs/intervls-brand/intervls-icon.png");
     expect(original.readUInt32BE(16)).toBe(1024);
     expect(original.readUInt32BE(20)).toBe(1024);
   });
@@ -128,7 +128,7 @@ describe("Intervls release artifacts", () => {
     const fixture = mkdtempSync(join(tmpdir(), "intervls-touch-icon-"));
     try {
       const expected = join(fixture, "apple-touch-icon.png");
-      execFileSync("/usr/bin/sips", ["-z", "180", "180", resolve(root, "docs/intervls-brand/intervls-icon.png"), "--out", expected], { stdio: "pipe" });
+      execFileSync("/usr/bin/sips", ["-z", "180", "180", resolve(root, "web/public/brand/intervls-icon.png"), "--out", expected], { stdio: "pipe" });
       expect(read(`web/public${icon?.getAttribute("href")}`).equals(readFileSync(expected))).toBe(true);
     } finally { rmSync(fixture, { recursive: true, force: true }); }
   });

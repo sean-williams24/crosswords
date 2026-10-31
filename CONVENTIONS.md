@@ -39,13 +39,14 @@ in their PDF/SVG layout, and records source hashes and matching canvas geometry.
 Do not recreate the wordmark with Outfit: that remains the app/tagline font only.
 These supplied logos are raster artwork inside PDF/SVG containers. App icons
 are supplied separately and must never be overwritten by the wordmark importer.
-The current trial iOS icon comes from `docs/intervls-brand/IV-icon.png`.
-`import-icon.swift` removes only its unused alpha channel, verifies identical
-visible pixels, and preserves the previous draft for comparison.
+The current app icon source is `docs/intervls-brand/intervls-icon.png`.
+`import-icon.swift` preserves that source, removes only its unused alpha channel,
+verifies identical visible pixels, and updates the iOS AppIcon catalog and
+`web/public/brand/intervls-icon.png`. Earlier icon drafts remain for comparison.
 The browser-tab favicon has its own supplied source, `Web tab icon.png`, copied
 unchanged to `web/public/brand/intervls-tab-icon.png`.
-The Apple touch icon uses `docs/intervls-brand/intervls-icon.png`, resized to
-180 × 180 at `web/public/apple-touch-icon.png` for Home Screen shortcuts.
+The same importer resizes the opaque icon to 180 × 180 at
+`web/public/apple-touch-icon.png` for Home Screen shortcuts.
 
 This is an upgrade of the existing app/service. Bundle ID, App Store ID,
 subscription IDs/groups, Supabase/Firebase projects, account UUIDs, Stripe
