@@ -861,18 +861,21 @@ The shared website footer is hidden on every route at viewport widths of 680px
 and below, using the site's mobile breakpoint. Anagram retains its existing
 700px footer cutoff. Wider layouts keep the footer visible.
 
-The shared website footer groups its links into Explore, Free games, Pro Account,
-Support, Legal, and Socials, in that order, each with a heading and vertical list. Explore
+The shared website footer groups its links into Intervls, Free games, Pro Account,
+Support, Legal, and Socials, in that order, each with a heading and vertical list. Intervls
 contains Home and Player Profile; Free games lists Backword, Crossword, Midword,
 and Anagram; Pro Account lists Pro Crossword, Archive, and Subscribe. The groups
 form six columns on large screens, three on small screens, and two on narrower
-screens. Both the two- and three-column layouts fit each column to its content and use
-`space-evenly` with no extra horizontal gap or footer padding, making the
-leading, trailing, and inter-column spaces equal. At the large breakpoint,
+screens. At every breakpoint, link columns share the available width equally
+using `minmax(0, 1fr)` tracks and equal 1rem horizontal gaps. The three-column
+compact grid sizes to its content and is centred as a group with equal space
+on either side; its width is capped at the container width. The six-column
+desktop grid stretches across the available middle track. Longer labels wrap
+within their column. At the large breakpoint,
 copyright sits to the left of the link groups
 and the App Store badge sits to the right, both aligned with the top row. Link
-columns fit their content and distribute the remaining space between them,
-keeping equal 4rem gaps from copyright to Explore and from Socials to the badge.
+columns retain equal widths, with equal 4rem gaps from copyright to Intervls
+and from Socials to the badge.
 Below that breakpoint, copyright and the badge are each centred beneath the
 links. Pro Crossword and Archive retain their entitlement-aware destinations,
 and Subscribe appears in Pro Account only for players without Pro access.

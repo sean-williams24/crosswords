@@ -20,7 +20,7 @@ describe("Footer", () => {
     const footer = screen.getByRole("navigation", { name: "Footer" });
     const groups = [
       {
-        title: "Explore",
+        title: "Intervls",
         links: [["Home", "/"], ["Player Profile", "/player-profile"]]
       },
       {
@@ -77,7 +77,7 @@ describe("Footer", () => {
     expect(screen.getByRole("link", { name: "Download Intervls on the App Store from footer" })).toBeInTheDocument();
   });
 
-  it("gives two and three columns equal outer and inner spacing and flanks the top row on large screens", () => {
+  it("uses equal-width link columns with equal gaps at every breakpoint and flanks the top row on large screens", () => {
     render(<MemoryRouter><Footer /></MemoryRouter>);
 
     const footer = screen.getByRole("contentinfo");
@@ -90,10 +90,17 @@ describe("Footer", () => {
     expect(layout).toHaveClass("grid", "items-start", "justify-items-center", "gap-8", "lg:grid-cols-[auto_minmax(0,1fr)_auto]", "lg:gap-x-16");
     expect(copyright.parentElement).toBe(layout);
     expect(badge.parentElement?.parentElement).toBe(layout);
-    expect(navigation).toHaveClass("order-1", "lg:order-2", "justify-self-stretch", "lg:grid-cols-[repeat(6,max-content)]", "lg:justify-between");
-    expect(navigation).toHaveClass("grid-cols-[repeat(2,max-content)]", "sm:grid-cols-[repeat(3,max-content)]", "justify-evenly", "gap-x-0");
+    expect(navigation).toHaveClass("order-1", "lg:order-2", "justify-self-stretch", "grid-cols-2", "sm:grid-cols-3", "lg:grid-cols-6", "gap-x-4");
     expect(copyright).toHaveClass("order-2", "text-center", "lg:order-1", "lg:justify-self-start");
     expect(badge.parentElement).toHaveClass("order-3", "lg:justify-self-end");
+  });
+
+  it("centers the three-column compact grid with equal side space and restores the full desktop width", () => {
+    render(<MemoryRouter><Footer /></MemoryRouter>);
+
+    const navigation = screen.getByRole("navigation", { name: "Footer" });
+    expect(navigation).toHaveClass("sm:grid-cols-3", "sm:w-max", "sm:max-w-full", "sm:justify-self-center");
+    expect(navigation).toHaveClass("lg:grid-cols-6", "lg:w-auto", "lg:justify-self-stretch");
   });
 
   it("sends non-Pro subscribers to Pro and Pro subscribers to the protected destinations", () => {
@@ -113,8 +120,8 @@ describe("Footer", () => {
     expect(within(footer).getByRole("link", { name: "Archive" })).toHaveAttribute("href", "/archive");
     expect(within(footer).getByRole("link", { name: "Midword" })).toHaveAttribute("href", "/midword");
     expect(within(footer).queryByRole("link", { name: "Subscribe" })).not.toBeInTheDocument();
-    const explore = within(footer).getByRole("region", { name: "Explore" });
-    expect(within(explore).getByRole("link", { name: "Player Profile" })).toHaveAttribute("href", "/player-profile");
+    const intervls = within(footer).getByRole("region", { name: "Intervls" });
+    expect(within(intervls).getByRole("link", { name: "Player Profile" })).toHaveAttribute("href", "/player-profile");
     const proAccount = within(footer).getByRole("region", { name: "Pro Account" });
     expect(within(proAccount).getAllByRole("link").map((link) => link.textContent))
       .toEqual(["Pro Crossword", "Archive"]);
