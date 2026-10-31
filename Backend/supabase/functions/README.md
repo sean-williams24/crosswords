@@ -39,3 +39,12 @@ digital-product prices in Stripe, and keep the `STRIPE_SECRET_KEY` and price
 IDs in Supabase Edge Function secrets. Checkout uses Stripe's Managed Payments
 preview API version and Stripe Link manages customer billing and subscriptions;
 do not configure or deploy Stripe's ordinary Billing Customer Portal.
+
+
+## intervls domain transition
+
+`create-stripe-checkout` now separates browser CORS origins from the server-selected return destination. Add `WEB_ALLOWED_ORIGINS` as a JSON array of exact HTTPS origins and set `WEB_CHECKOUT_RETURN_ORIGIN` to the desired return origin. Existing installations with only `WEB_ORIGIN` keep working. Values must not have a trailing slash or path. Keep old domains in the allowlist for recovery.
+
+Before launch: `WEB_ALLOWED_ORIGINS=["https://www.playbackword.com","https://playbackword.com","https://intervls.com"]`, with checkout returns still set to the old site. At launch: set `WEB_CHECKOUT_RETURN_ORIGIN=https://intervls.com`. Keep Stripe metadata keys, customer/subscription/price IDs, Apple bundle/product IDs, existing Supabase provider callback, and native `backword://login-callback` unchanged.
+
+The complete dashboard settings and release gates are in [`docs/intervls-rebrand/README.md`](../../../docs/intervls-rebrand/README.md). This rename needs no database migration and changes no entitlement or webhook identity.

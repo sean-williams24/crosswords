@@ -1,4 +1,8 @@
-# BackWord
+# intervls
+
+The app and website are being rebranded from Backword to intervls. The Backword
+game keeps its name. See the [rebrand release runbook](docs/intervls-rebrand/README.md)
+for migration, dashboard, asset, and coordinated-launch gates.
 
 ## Anagram
 

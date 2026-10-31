@@ -1,3 +1,4 @@
+import { brand } from "../brand/brand";
 import { backwordScore } from "../backword/engine";
 import { elapsedSeconds, type AnagramProgress, type AnagramPuzzle } from "../anagram/engine";
 import type { BackwordProgress, BackwordStats, BackwordWord } from "../backword/types";
@@ -68,7 +69,7 @@ export function buildAnagramShareResult({ puzzle, progress, stats, rating, origi
   });
 }
 
-export function shareUrl(game: ShareGame, date: string, origin = window.location.origin): string {
+export function shareUrl(game: ShareGame, date: string, origin: string = brand.origin): string {
   const url = new URL(gamePath(game, date), origin);
   url.searchParams.set("utm_source", "share");
   url.searchParams.set("utm_medium", "social");

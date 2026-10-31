@@ -1,4 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { RebrandNotice } from "./features/brand/RebrandNotice";
+import { SiteMetadata } from "./features/brand/SiteMetadata";
 import { Layout } from "./components/Layout";
 import { BackwordPage } from "./pages/BackwordPage";
 import { AnagramPage } from "./pages/AnagramPage";
@@ -18,36 +20,47 @@ import { ArchivePage } from "./pages/ArchivePage";
 import { ProPage } from "./pages/ProPage";
 import { AccountDeletionRecovery } from "./features/auth/AccountDeletionRecovery";
 
+import { LegacyMigrationGate } from "./features/migration/LegacyMigrationGate";
+import { DomainMigrationPage } from "./features/migration/DomainMigrationPage";
+import { RecoverHistoryPage } from "./features/migration/RecoverHistoryPage";
+import { isLegacyOrigin } from "./features/brand/brand";
+
 export default function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<HomeDashboardPage />} />
-        <Route path="/backword" element={<BackwordPage />} />
-        <Route path="/backword/:date" element={<BackwordPage />} />
-        <Route path="/anagram" element={<AnagramPage />} />
-        <Route path="/anagram/:date" element={<AnagramPage />} />
-        <Route path="/midword" element={<MidwordPage />} />
-        <Route path="/midword/:date" element={<MidwordPage />} />
-        <Route path="/home" element={<Navigate to="/" replace />} />
-        <Route path="/crossword" element={<CrosswordPage />} />
-        <Route path="/crossword/:date" element={<CrosswordPage />} />
-        <Route path="/weekly-crossword" element={<WeeklyCrosswordPage />} />
-        <Route path="/weekly-crossword/:date" element={<WeeklyCrosswordPage />} />
-        <Route path="/archive" element={<ArchivePage />} />
-        <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
-        <Route path="/info" element={<Layout><InfoPage /></Layout>} />
-        <Route path="/privacy" element={<Layout><PrivacyPage /></Layout>} />
-        <Route path="/privacy-choices" element={<Layout><PrivacyChoicesPage /></Layout>} />
-        <Route path="/privacy-choice" element={<Navigate to="/privacy-choices" replace />} />
-        <Route path="/terms" element={<Layout><TermsPage /></Layout>} />
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/player-profile" element={<PlayerProfilePage />} />
-        <Route path="/pro" element={<ProPage />} />
-        <Route path="/auth/callback" element={<AuthCallbackPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-      <AccountDeletionRecovery />
+      <SiteMetadata />
+      <LegacyMigrationGate>
+        <RebrandNotice />
+        <Routes>
+          <Route path="/move" element={isLegacyOrigin(window.location.origin) ? <DomainMigrationPage /> : <RecoverHistoryPage />} />
+          <Route path="/recover-history" element={<RecoverHistoryPage />} />
+          <Route path="/" element={<HomeDashboardPage />} />
+          <Route path="/backword" element={<BackwordPage />} />
+          <Route path="/backword/:date" element={<BackwordPage />} />
+          <Route path="/anagram" element={<AnagramPage />} />
+          <Route path="/anagram/:date" element={<AnagramPage />} />
+          <Route path="/midword" element={<MidwordPage />} />
+          <Route path="/midword/:date" element={<MidwordPage />} />
+          <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="/crossword" element={<CrosswordPage />} />
+          <Route path="/crossword/:date" element={<CrosswordPage />} />
+          <Route path="/weekly-crossword" element={<WeeklyCrosswordPage />} />
+          <Route path="/weekly-crossword/:date" element={<WeeklyCrosswordPage />} />
+          <Route path="/archive" element={<ArchivePage />} />
+          <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
+          <Route path="/info" element={<Layout><InfoPage /></Layout>} />
+          <Route path="/privacy" element={<Layout><PrivacyPage /></Layout>} />
+          <Route path="/privacy-choices" element={<Layout><PrivacyChoicesPage /></Layout>} />
+          <Route path="/privacy-choice" element={<Navigate to="/privacy-choices" replace />} />
+          <Route path="/terms" element={<Layout><TermsPage /></Layout>} />
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/player-profile" element={<PlayerProfilePage />} />
+          <Route path="/pro" element={<ProPage />} />
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        <AccountDeletionRecovery />
+      </LegacyMigrationGate>
     </>
   );
 }

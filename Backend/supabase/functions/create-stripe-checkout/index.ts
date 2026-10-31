@@ -1,11 +1,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { stripeRequest } from "../_shared/stripe.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": Deno.env.get("WEB_ORIGIN") ?? "",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS"
-};
+import { allowedWebOrigins, checkoutCorsHeaders, validOrigin } from "../_shared/webOrigins.ts";
 
 // Managed Payments is currently exposed by Stripe through this preview API
 // version. Keep it scoped to Checkout so normal subscription reads and account
@@ -16,10 +12,6 @@ type CheckoutRequest = { plan?: "monthly" | "annual"; returnPath?: string };
 type StripeCustomer = { id: string };
 type StripeCheckoutSession = { url: string | null };
 
-function response(message: string, status: number) {
-  return new Response(message, { status, headers: corsHeaders });
-}
-
 function errorMessage(error: unknown) {
   return error instanceof Error ? error.message : "We couldn't start secure checkout. Please try again.";
 }
@@ -29,6 +21,16 @@ function safeReturnPath(path: string | undefined) {
 }
 
 Deno.serve(async (request) => {
+  const origin = request.headers.get("Origin");
+  let allowed: string[];
+  try {
+    allowed = allowedWebOrigins(Deno.env.get("WEB_ORIGIN"), Deno.env.get("WEB_ALLOWED_ORIGINS"));
+  } catch {
+    return new Response("Web subscriptions are not configured.", { status: 503 });
+  }
+  const corsHeaders = checkoutCorsHeaders(origin, allowed);
+  const response = (message: string, status: number) => new Response(message, { status, headers: corsHeaders });
+  if (origin && !allowed.includes(origin)) return response("Origin not allowed", 403);
   if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (request.method !== "POST") return response("Method not allowed", 405);
 
@@ -43,8 +45,8 @@ Deno.serve(async (request) => {
     const body = await request.json().catch(() => null) as CheckoutRequest | null;
     if (body?.plan !== "monthly" && body?.plan !== "annual") return response("Invalid subscription plan", 400);
     const priceID = body.plan === "monthly" ? Deno.env.get("STRIPE_MONTHLY_PRICE_ID") : Deno.env.get("STRIPE_ANNUAL_PRICE_ID");
-    const webOrigin = Deno.env.get("WEB_ORIGIN");
-    if (!priceID || !webOrigin) return response("Web subscriptions are not configured.", 503);
+    const webOrigin = Deno.env.get("WEB_CHECKOUT_RETURN_ORIGIN") ?? Deno.env.get("WEB_ORIGIN");
+    if (!priceID || !webOrigin || !validOrigin(webOrigin)) return response("Web subscriptions are not configured.", 503);
 
     const { data: entitlement, error: entitlementError } = await caller.rpc("current_user_pro_entitlement");
     if (entitlementError) return response("Could not check Pro access", 503);

@@ -38,7 +38,7 @@ describe("result sharing", () => {
   it("uses the logo rather than decorative tiles in the in-app card preview", () => {
     const { container } = render(<PuzzleResultShare result={result} />);
 
-    expect(container.querySelector(".puzzle-result-share__logo")).toHaveAttribute("src", "/brand/backword-logo.png");
+    expect(container.querySelector(".puzzle-result-share__logo")).toHaveAttribute("src", "/brand/intervls-dark.svg");
     expect(container.querySelector(".puzzle-result-share__tiles")).not.toBeInTheDocument();
     expect(container.querySelector(".puzzle-result-share__eyebrow")).not.toBeInTheDocument();
     expect(container).toHaveTextContent("3 days");

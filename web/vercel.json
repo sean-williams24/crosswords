@@ -5,5 +5,182 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.intervls.com"
+        }
+      ],
+      "destination": "https://intervls.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/info",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/info",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/contact",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-choices",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/privacy-choices",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-choice",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/privacy-choices",
+      "permanent": true
+    },
+    {
+      "source": "/terms",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/terms",
+      "permanent": true
+    },
+    {
+      "source": "/info",
+      "has": [
+        {
+          "type": "host",
+          "value": "playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/info",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "has": [
+        {
+          "type": "host",
+          "value": "playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/contact",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "has": [
+        {
+          "type": "host",
+          "value": "playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-choices",
+      "has": [
+        {
+          "type": "host",
+          "value": "playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/privacy-choices",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-choice",
+      "has": [
+        {
+          "type": "host",
+          "value": "playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/privacy-choices",
+      "permanent": true
+    },
+    {
+      "source": "/terms",
+      "has": [
+        {
+          "type": "host",
+          "value": "playbackword.com"
+        }
+      ],
+      "destination": "https://intervls.com/terms",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.playbackword.com"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "playbackword.com"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    }
   ]
 }

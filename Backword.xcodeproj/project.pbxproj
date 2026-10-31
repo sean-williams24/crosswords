@@ -64,6 +64,8 @@
 		143A79FE56648107686BEF85 /* OverallRatingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */; };
 		149802310440A77534BB615E /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8820C57EC2BCBADADEC4006C /* AppTheme.swift */; };
 		15C99D922FE2A3E6007A1001 /* AppVersionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */; };
+		1A7E20261029000000000002 /* AppBrand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7E20261029000000000001 /* AppBrand.swift */; };
+		1A7E20261029000000000004 /* ../CrosswordsTests/IntervlsBrandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7E20261029000000000003 /* ../CrosswordsTests/IntervlsBrandTests.swift */; };
 		1A9378281C994E16BFCC1FDC /* ArchivePuzzleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31664D1AD154A3FB5415AA5 /* ArchivePuzzleRow.swift */; };
 		1A93782A2FE2E56600000001 /* ArchiveTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9378292FE2E56600000001 /* ArchiveTabBarView.swift */; };
 		1D5CED31842B691A8E91932F /* BackwordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64455C838772CB66C039CCE2 /* BackwordViewModel.swift */; };
@@ -315,6 +317,8 @@
 		0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGridPattern.swift; sourceTree = "<group>"; };
 		15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionInfo.swift; sourceTree = "<group>"; };
 		19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingService.swift; sourceTree = "<group>"; };
+		1A7E20261029000000000001 /* AppBrand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBrand.swift; sourceTree = "<group>"; };
+		1A7E20261029000000000003 /* ../CrosswordsTests/IntervlsBrandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/IntervlsBrandTests.swift; sourceTree = "<group>"; };
 		1A9378292FE2E56600000001 /* ArchiveTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTabBarView.swift; sourceTree = "<group>"; };
 		1E4D0C7C19A4685DF1DC48C2 /* UserStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStats.swift; sourceTree = "<group>"; };
 		20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordWord.swift; sourceTree = "<group>"; };
@@ -597,6 +601,7 @@
 				04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */,
 				049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */,
 				04F1AE882FE2A3E6007A1001 /* AppVersionInfoTests.swift */,
+				1A7E20261029000000000003 /* ../CrosswordsTests/IntervlsBrandTests.swift */,
 				0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */,
 				30AAC0EA05C940EEA05D4CE9 /* ArchiveViewModelTests.swift */,
 				05C0A0023005000000000001 /* BackwordCompletionDisplayStateTests.swift */,
@@ -651,6 +656,7 @@
 				07AD10003010000000000001 /* BackwordStatsHistory.swift */,
 				05D1A0083001000000000001 /* CrosswordSolveTimeSummary.swift */,
 				15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */,
+				1A7E20261029000000000001 /* AppBrand.swift */,
 				E6124F655D1ABA64F820B278 /* BackwordProgress.swift */,
 				C99766A650EBD6521697BD6C /* BackwordStats.swift */,
 				20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */,
@@ -1111,6 +1117,7 @@
 				ADA110053011000000000001 /* PreGameAdConfigurationTests.swift in Sources */,
 				ADA110073011000000000001 /* PreGameAdServiceTests.swift in Sources */,
 				04F1AE892FE2A3E6007A1001 /* AppVersionInfoTests.swift in Sources */,
+				1A7E20261029000000000004 /* ../CrosswordsTests/IntervlsBrandTests.swift in Sources */,
 				0838E5D72FE2E5AB00000001 /* ArchiveTabBarViewTests.swift in Sources */,
 				05A1D9B72FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift in Sources */,
 				AD5100053011000000000001 /* AppleAdsAttributionServiceTests.swift in Sources */,
@@ -1207,6 +1214,7 @@
 				437E4CF0032D9E5D69A92C43 /* AppSettings.swift in Sources */,
 				05D2A0013002000000000001 /* DailyCrosswordInstructionsContentView.swift in Sources */,
 				15C99D922FE2A3E6007A1001 /* AppVersionInfo.swift in Sources */,
+				1A7E20261029000000000002 /* AppBrand.swift in Sources */,
 				149802310440A77534BB615E /* AppTheme.swift in Sources */,
 				ABCD10000000000000000005 /* FeedbackEmailContent.swift in Sources */,
 				05AD10022FFE000000000001 /* LegalLink.swift in Sources */,
@@ -1330,9 +1338,9 @@
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Backword;
+				INFOPLIST_KEY_CFBundleDisplayName = intervls;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Backword uses your device identifier to show personalized ads and measure ad performance.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "intervls uses your device identifier to show personalized ads and measure ad performance.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -1411,7 +1419,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Backword;
+				INFOPLIST_KEY_CFBundleDisplayName = intervls;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
@@ -1495,7 +1503,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Backword;
+				INFOPLIST_KEY_CFBundleDisplayName = intervls;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
@@ -1523,9 +1531,9 @@
 				DEVELOPMENT_TEAM = DN4729AK8V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Backword/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Backword;
+				INFOPLIST_KEY_CFBundleDisplayName = intervls;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Backword uses your device identifier to show personalized ads and measure ad performance.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "intervls uses your device identifier to show personalized ads and measure ad performance.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";

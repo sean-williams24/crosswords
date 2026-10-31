@@ -7,7 +7,7 @@ export function PrivacyChoicesPage() {
     <>
       <LegalPage
         title="Privacy Choices"
-        intro="Learn how to manage your Backword account, cloud progress, subscriptions, advertising choices, website analytics, and privacy requests."
+        intro="Learn how to manage your intervls account, cloud progress, subscriptions, advertising choices, website analytics, and privacy requests."
         sections={privacyChoicesSections}
       />
       <div className="analytics-preferences-wrap"><AnalyticsPreferences /></div>

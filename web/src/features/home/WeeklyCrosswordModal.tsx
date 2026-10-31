@@ -1,3 +1,4 @@
+import { BrandLogo } from "../brand/BrandLogo";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { AppStoreBadge } from "../../components/AppStoreBadge";
@@ -47,10 +48,7 @@ export function WeeklyCrosswordModal({ onClose, showSignIn = false }: WeeklyCros
           ×
         </button>
         <div className="weekly-modal__hero">
-          <div className="weekly-modal__logo" aria-label="Backword Pro">
-            <img alt="Backword" src="/brand/backword-logo.png" />
-            <img alt="Pro" src="/brand/backword-pro.png" />
-          </div>
+          <div className="weekly-modal__logo" aria-label="intervls Pro"><BrandLogo isPro large /></div>
         </div>
         <div className="weekly-modal__body">
           <h2 className="weekly-modal__title" id="weekly-modal-title">The full game experience</h2>
@@ -62,7 +60,7 @@ export function WeeklyCrosswordModal({ onClose, showSignIn = false }: WeeklyCros
               </li>
             ))}
           </ul>
-          <p className="weekly-modal__intro">Play on the web and iOS with one Backword Pro subscription.</p>
+          <p className="weekly-modal__intro">Play on the web and iOS with one intervls Pro subscription.</p>
           {showSignIn ? <Link className="weekly-modal__sign-in" state={{ returnTo: "/pro" }} to="/sign-in">Sign in to get Pro <span aria-hidden="true">→</span></Link> : <Link className="weekly-modal__sign-in" to="/pro">Choose a plan <span aria-hidden="true">→</span></Link>}
           <div className="weekly-modal__store-badge">
             <AppStoreBadge placement="weekly_modal" />

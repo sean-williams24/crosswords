@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 struct FeedbackEmailContent: Equatable {
-    static let supportRecipient = "backword.support@gmail.com"
+    static let supportRecipient = "support@intervls.com"
 
     let recipient: String
     let subject: String
@@ -19,7 +19,7 @@ struct FeedbackEmailContent: Equatable {
 
     init(
         recipient: String = Self.supportRecipient,
-        subject: String = "Backword Feedback",
+        subject: String = "intervls Feedback",
         appVersion: AppVersionInfo,
         systemName: String,
         systemVersion: String,
@@ -32,7 +32,7 @@ struct FeedbackEmailContent: Equatable {
 
 
         ---
-        App: Backword
+        App: intervls
         \(appVersion.displayText)
         OS: \(systemName) \(systemVersion)
         Device: \(deviceModel)

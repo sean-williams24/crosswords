@@ -1,6 +1,8 @@
-# Backword Web
+# intervls Web
 
-Minimal Vite + React website for Backword, ready for Vercel static hosting and future Supabase-powered gameplay.
+Vite + React website for intervls, hosted on Vercel with Supabase gameplay and accounts.
+
+The rebrand is prepared locally. Read [the release runbook](../docs/intervls-rebrand/README.md) before deployment: the new branding is visible even with the launch switch off. Both old HTTPS origins must retain save recovery and callbacks.
 
 ## Scripts
 
@@ -92,7 +94,7 @@ Connect and `VITE_APP_STORE_CAMPAIGN_TOKENS` maps accepted website campaigns to
 their Apple `ct` tokens. Use lower-case UTM links such as:
 
 ```text
-https://www.playbackword.com/?utm_source=tiktok&utm_medium=organic_social&utm_campaign=launch&utm_content=video_a
+https://intervls.com/?utm_source=tiktok&utm_medium=organic_social&utm_campaign=launch&utm_content=video_a
 ```
 
 GA4 custom event dimensions to create: `game`, `outcome`, `mode`, `release_day`,
@@ -112,7 +114,7 @@ Enable Google and Apple providers in Supabase Auth. Google web sign-in uses
 Google Identity Services and exchanges its ID token directly with Supabase, so
 add every exact site origin that can show the Google button to the Google Web
 OAuth client’s Authorized JavaScript origins. For Backword this includes
-`https://www.playbackword.com` and `https://playbackword.com`; add
+`https://intervls.com`, `https://www.playbackword.com`, and `https://playbackword.com`; add
 `https://backword.vercel.app` when using Vercel's production URL for testing,
 and your local origin (normally `http://localhost:5173`) for local development.
 Origins must not include a path. Apple web login still needs the deployed site's `/auth/callback`, local development's
@@ -125,9 +127,16 @@ Origins must not include a path. Apple web login still needs the deployed site's
 Before submitting an app version with accounts or cloud sync, set these public
 URLs in App Store Connect:
 
-- **Privacy Policy URL:** `https://www.playbackword.com/privacy`
-- **Privacy Choices URL:** `https://www.playbackword.com/privacy-choices`
+- **Privacy Policy URL:** `https://intervls.com/privacy`
+- **Privacy Choices URL:** `https://intervls.com/privacy-choices`
 
 The iOS app exposes both links in Settings and on the paywall. Update the App
-Privacy data types in App Store Connect whenever Backword’s data practices or
+Privacy data types in App Store Connect whenever intervls’s data practices or
 third-party SDK configuration changes.
+
+
+## Rebrand switches
+
+`VITE_REBRAND_LAUNCH_ENABLED=false` keeps preparation noindex and leaves the legacy game routes playable. Enable it only on the coordinated launch deployment to show the old-domain migration bridge. `VITE_REBRAND_NOTICE_ENABLED=false` is an optional advance-notice switch. Vite embeds both at build time. The renamed UI itself is not gated by these switches.
+
+`/move` on either old HTTPS origin verifies all five games and the current account's queued saves. `/recover-history` on intervls links back to both original origins. Guest progress is only removed after verified server readback; an explicit continue-without-history action retains it. The existing browser storage keys remain stable. Checkout origin configuration belongs in Supabase, not Vercel/browser variables.

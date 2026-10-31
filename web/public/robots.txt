@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /auth/
+Disallow: /move
+Disallow: /recover-history
+Disallow: /player-profile
+Sitemap: https://intervls.com/sitemap.xml

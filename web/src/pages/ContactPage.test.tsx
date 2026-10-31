@@ -16,11 +16,11 @@ describe("ContactPage", () => {
 
     expect(screen.getByRole("link", { name: "Send email" })).toHaveAttribute(
       "href",
-      "mailto:backword.support@gmail.com"
+      "mailto:support@intervls.com"
     );
-    expect(screen.getByRole("link", { name: "backword.support@gmail.com" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "support@intervls.com" })).toHaveAttribute(
       "href",
-      "mailto:backword.support@gmail.com"
+      "mailto:support@intervls.com"
     );
     expect(screen.getByText("Tapping opens your email app.")).toBeInTheDocument();
     expect(screen.getByText(/Or contact us at/)).toBeInTheDocument();

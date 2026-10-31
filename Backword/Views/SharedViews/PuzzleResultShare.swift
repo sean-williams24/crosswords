@@ -92,7 +92,7 @@ struct PuzzleShareResult: Equatable {
     }
 
     var shareURL: URL {
-        var components = URLComponents(string: "https://www.playbackword.com\(game.pathPrefix)\(date)")!
+        var components = URLComponents(string: "https://intervls.com\(game.pathPrefix)\(date)")!
         components.queryItems = [
             URLQueryItem(name: "utm_source", value: "share"),
             URLQueryItem(name: "utm_medium", value: "social"),
@@ -294,7 +294,7 @@ private struct PuzzleResultShareCard: View {
                 .tracking(scaled(4))
                 .offset(x: scaled(64), y: scaled(178))
 
-            Image("BackWordLogoShare")
+            Image(AppBrand.shareLogoAsset)
                 .resizable()
                 .scaledToFit()
                 .frame(width: scaled(252), height: scaled(126))
@@ -311,7 +311,7 @@ private struct PuzzleResultShareCard: View {
             statTile(label: timeStat.label, value: shareCardValue(timeStat.value), height: scaled(190))
                 .offset(x: scaled(64), y: scaled(760))
 
-            Text("playbackword.com")
+            Text(AppBrand.websiteHost)
                 .font(AppFont.shareCardTitle(scaled(55)))
                 .foregroundColor(footerColor)
                 .tracking(scaled(3))

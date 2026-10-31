@@ -34,7 +34,7 @@ struct LaunchSplashAnimationTiming: Equatable {
 }
 
 struct LaunchSplashLogoSizing {
-    static let phoneFrame: CGFloat = 96
+    static let phoneFrame: CGFloat = AppLayout.brandSplashLogoHeight
 
     static func frame(userInterfaceIdiom: UIUserInterfaceIdiom) -> CGFloat {
         userInterfaceIdiom == .pad ? phoneFrame * 2 : phoneFrame
@@ -76,7 +76,7 @@ struct LaunchSplashView<Content: View>: View {
         ZStack {
             AppBackgroundGradient()
 
-            BackwordLogo(frame: LaunchSplashLogoSizing.frame(userInterfaceIdiom: UIDevice.current.userInterfaceIdiom))
+            IntervlsLogo(frame: LaunchSplashLogoSizing.frame(userInterfaceIdiom: UIDevice.current.userInterfaceIdiom))
                 .opacity(logoOpacity)
                 .scaleEffect(logoScale)
                 .offset(y: logoOffset)

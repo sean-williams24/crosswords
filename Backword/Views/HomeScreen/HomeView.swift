@@ -21,9 +21,9 @@ struct HomeView: View {
     @Environment(\.launchSplashDidComplete) private var launchSplashDidComplete
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    @ScaledMetric var proLogoFrame: CGFloat = 18
-    @ScaledMetric var navBarVStackSpacing: CGFloat = -12
-    @ScaledMetric var navBarProLogoOffset: CGFloat = 20
+    @ScaledMetric var proLogoFrame: CGFloat = AppLayout.homeProLogoHeight
+    @ScaledMetric var navBarVStackSpacing: CGFloat = AppLayout.homeProLogoSpacing
+    @ScaledMetric var navBarProLogoOffset: CGFloat = AppLayout.homeProLogoTrailingOffset
     @State private var showArchive = false
     @State private var showPaywall = false
     @State private var showWOTD = false
@@ -520,8 +520,8 @@ struct HomeView: View {
     @ViewBuilder
     private var navigationBar: some View {
         ZStack(alignment: .center) {
-            VStack(spacing: navBarVStackSpacing) {
-                BackwordLogo()
+            VStack(alignment: .trailing, spacing: navBarVStackSpacing) {
+                IntervlsLogo(frame: AppLayout.brandHomeLogoHeight)
                     .offset(x: logoVisible ? 0 : 120)
                     .opacity(logoVisible ? 1 : 0)
                 #if DEBUG

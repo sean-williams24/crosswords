@@ -190,6 +190,7 @@ export function GameMenu({ isOpen, onClose, onOpen }: GameMenuProps) {
               <Link className="bw-menu-link bw-menu-link--primary" to="/contact">Contact</Link>
               {!user ? <AuthButton className="bw-menu-link bw-menu-link--primary bw-menu-auth" /> : null}
               {!entitlement?.isPro ? <Link className="bw-menu-upgrade" to="/pro">Get full access</Link> : null}
+              <Link className="bw-menu-link bw-menu-link--secondary" to="/recover-history">Recover old history</Link>
               <div className="bw-menu-links__legal">
                 <Link className="bw-menu-link bw-menu-link--secondary" to="/privacy">Privacy</Link>
                 <Link className="bw-menu-link bw-menu-link--secondary" to="/terms">Terms</Link>

@@ -1,0 +1,38 @@
+{
+  "canvas" : {
+    "height" : 100,
+    "width" : 500.64516129032256
+  },
+  "icons_managed_separately" : true,
+  "source_kind" : "supplied raster artwork; PDF\/SVG containers are not vector lettering",
+  "sources" : [
+    {
+      "appearance" : "light",
+      "crop" : {
+        "height" : 470,
+        "width" : 2354,
+        "x" : 53,
+        "y" : 233
+      },
+      "embedded_png_sha256" : "46844cc0913a548fba771c9a43c8e8dd7c0b31fbdd7b75ccf5ef8c9f349f0292",
+      "file" : "intervls-light2.pdf",
+      "image_height" : 936,
+      "image_width" : 2460,
+      "sha256" : "5397cca41f09c2035561e7cc3b443ba0a24a66183c13c9f6b760f9bedde34dfe"
+    },
+    {
+      "appearance" : "dark",
+      "crop" : {
+        "height" : 310,
+        "width" : 1552,
+        "x" : 42,
+        "y" : 157
+      },
+      "embedded_png_sha256" : "39d3bbe563f53706e4d7fac4cbe265feb594976f300e9dfb3ba9cb049e45a473",
+      "file" : "intervls-dark2.png",
+      "image_height" : 624,
+      "image_width" : 1640,
+      "sha256" : "39d3bbe563f53706e4d7fac4cbe265feb594976f300e9dfb3ba9cb049e45a473"
+    }
+  ]
+}

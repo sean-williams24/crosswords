@@ -5,6 +5,7 @@ import { decodeProgress, type MidwordProgress } from "../midword/engine";
 import type { BackwordProgress } from "../backword/types";
 import type { CrosswordKind, CrosswordProgress } from "../crossword/types";
 import { supabase } from "../../lib/supabase";
+import { ProgressQueue } from "./progressQueue";
 
 export type CloudGameType = "backword" | "midword" | "anagram" | "daily_crossword" | "weekly_crossword";
 
@@ -20,22 +21,26 @@ export type CloudRecord<T> = {
   payload: T;
 };
 
-const queueKey = (userId: string) => `backword:web:sync:queue:v1:${userId}`;
 const uploadTimers = new Map<string, number>();
 const crosswordTypingDebounceMs = 700;
 
-function readQueue(userId: string): CloudRecord<unknown>[] {
-  try {
-    const value: unknown = JSON.parse(localStorage.getItem(queueKey(userId)) ?? "[]");
-    return Array.isArray(value) ? value as CloudRecord<unknown>[] : [];
-  } catch {
-    return [];
-  }
+export async function requireSyncSession(userId: string) {
+  if (!supabase) throw new Error("Cloud sync is not configured.");
+  const { data, error } = await supabase.auth.getSession();
+  if (error || data.session?.user.id !== userId) throw new Error("Sign in with the same account to finish syncing.");
+  return data.session;
 }
 
-function writeQueue(userId: string, queue: CloudRecord<unknown>[]) {
-  localStorage.setItem(queueKey(userId), JSON.stringify(queue));
+let progressQueue: ProgressQueue | undefined;
+function queue() {
+  return progressQueue ??= new ProgressQueue(localStorage, async () => {
+    if (!supabase) return null;
+    const { data } = await supabase.auth.getSession();
+    return data.session?.user.id ?? null;
+  }, mergeOnServer);
 }
+
+export function pendingSyncRecords(userId: string) { return queue().pending(userId); }
 
 function completionScore(progress: BackwordProgress) {
   return backwordScore(progress);
@@ -97,6 +102,15 @@ function statusRank(status: CloudRecord<unknown>["status"]) {
 
 /** Returns a whole-record winner; conflicting grids and guesses are never merged. */
 export function chooseBestProgress<T>(first: CloudRecord<T>, second: CloudRecord<T>): CloudRecord<T> {
+  const winner = chooseWholeRecord(first, second);
+  if (first.game_type === "daily_crossword" || first.game_type === "weekly_crossword") {
+    const score = Math.max(first.release_score, second.release_score);
+    return { ...winner, release_score: score, payload: { ...winner.payload, releaseDateScore: score } };
+  }
+  return winner;
+}
+
+function chooseWholeRecord<T>(first: CloudRecord<T>, second: CloudRecord<T>): CloudRecord<T> {
   if (first.game_type === "midword" && second.game_type === "midword") {
     const a = decodeProgress(first.payload), b = decodeProgress(second.payload);
     if (!a) return second;
@@ -156,7 +170,8 @@ export function chooseBestProgress<T>(first: CloudRecord<T>, second: CloudRecord
   return Date.parse(first.client_updated_at) >= Date.parse(second.client_updated_at) ? first : second;
 }
 
-async function mergeOnServer(record: CloudRecord<unknown>) {
+async function mergeOnServer(userId: string, record: CloudRecord<unknown>) {
+  const session = await requireSyncSession(userId);
   if (!supabase) throw new Error("Cloud sync is not configured.");
   const { error } = await supabase.rpc("merge_game_progress", {
     p_game_type: record.game_type,
@@ -168,12 +183,12 @@ async function mergeOnServer(record: CloudRecord<unknown>) {
     p_release_score: record.release_score,
     p_client_updated_at: record.client_updated_at,
     p_payload: record.payload
-  });
+  }).setHeader("Authorization", `Bearer ${session.access_token}`);
   if (error) throw error;
 }
 
 export async function queueAndSync(userId: string, record: CloudRecord<unknown>) {
-  queueRecord(userId, record);
+  queue().enqueue(userId, record);
   return flushSyncQueue(userId);
 }
 
@@ -183,7 +198,7 @@ export async function queueAndSync(userId: string, record: CloudRecord<unknown>)
  * under the signed-in user ID for the next retry.
  */
 export function queueAndDebounce(userId: string, record: CloudRecord<unknown>) {
-  queueRecord(userId, record);
+  queue().enqueue(userId, record);
   const key = `${userId}:${record.game_type}:${record.content_key}`;
   const previousTimer = uploadTimers.get(key);
   if (previousTimer !== undefined) window.clearTimeout(previousTimer);
@@ -200,36 +215,34 @@ export function queueAndDebounce(userId: string, record: CloudRecord<unknown>) {
   }, crosswordTypingDebounceMs));
 }
 
-function queueRecord(userId: string, record: CloudRecord<unknown>) {
-  const queue = readQueue(userId).filter((item) =>
-    item.game_type !== record.game_type || item.content_key !== record.content_key
-  );
-  queue.push(record);
-  writeQueue(userId, queue);
+export function flushSyncQueue(userId: string) {
+  return queue().flush(userId);
 }
 
-export async function flushSyncQueue(userId: string) {
-  const queue = readQueue(userId);
-  const remaining: CloudRecord<unknown>[] = [];
-  for (const record of queue) {
-    try {
-      await mergeOnServer(record);
-    } catch {
-      remaining.push(record);
-    }
-  }
-  writeQueue(userId, remaining);
-  return remaining.length === 0;
-}
-
-export async function fetchCloudProgress<T>(gameType: CloudGameType): Promise<CloudRecord<T>[]> {
+export async function fetchCloudProgress<T>(gameType: CloudGameType, userId?: string): Promise<CloudRecord<T>[]> {
   if (!supabase) return [];
-  const { data, error } = await supabase
-    .from("game_progress")
-    .select("game_type, content_key, release_date, schema_version, status, progress_rank, release_score, client_updated_at, payload")
-    .eq("game_type", gameType);
-  if (error) throw error;
-  return (data ?? []) as CloudRecord<T>[];
+  if (!userId) {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) throw error;
+    userId = data.session?.user.id;
+  }
+  if (!userId) throw new Error("Sign in to read your saved progress.");
+  const records: CloudRecord<T>[] = [];
+  const pageSize = 500;
+  for (let offset = 0; ;) {
+    const session = await requireSyncSession(userId);
+    let query = supabase.from("game_progress")
+      .select("game_type, content_key, release_date, schema_version, status, progress_rank, release_score, client_updated_at, payload", { count: "exact" })
+      .eq("game_type", gameType);
+    query = query.eq("user_id", userId).setHeader("Authorization", `Bearer ${session.access_token}`)
+      .order("content_key").range(offset, offset + pageSize - 1);
+    const { data, error, count } = await query;
+    await requireSyncSession(userId);
+    if (error) throw error;
+    records.push(...(data ?? []) as CloudRecord<T>[]);
+    if (!(data ?? []).length || (count !== null && count !== undefined && records.length >= count)) return records;
+    offset += (data ?? []).length;
+  }
 }
 
 export async function migrateProgress<T>(
@@ -240,7 +253,8 @@ export async function migrateProgress<T>(
   applyWinner: (record: CloudRecord<T>) => void,
   removeGuest: (record: CloudRecord<T>) => void
 ) {
-  const cloudRecords = await fetchCloudProgress<T>(gameType);
+  const cloudRecords = await fetchCloudProgress<T>(gameType, userId);
+  await requireSyncSession(userId);
   const candidates = [...guestRecords, ...accountRecords, ...cloudRecords];
   const winners = new Map<string, CloudRecord<T>>();
   for (const candidate of candidates) {
@@ -249,11 +263,13 @@ export async function migrateProgress<T>(
   }
   const uploadedKeys = new Set<string>();
   for (const winner of winners.values()) {
+    await requireSyncSession(userId);
     applyWinner(winner);
     if (await queueAndSync(userId, winner as CloudRecord<unknown>)) {
       uploadedKeys.add(winner.content_key);
     }
   }
+  await requireSyncSession(userId);
   for (const guest of guestRecords) {
     if (uploadedKeys.has(guest.content_key)) removeGuest(guest);
   }

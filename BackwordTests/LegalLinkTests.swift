@@ -8,21 +8,21 @@ struct LegalLinkTests {
         #expect(LegalLink.all == [.privacyPolicy, .privacyChoices, .termsOfUse])
     }
 
-    @Test("Privacy policy points to Backword website")
+    @Test("Privacy policy points to intervls website")
     func privacyPolicyURL() {
         #expect(LegalLink.privacyPolicy.title == "Privacy Policy")
-        #expect(LegalLink.privacyPolicy.url.absoluteString == "https://www.playbackword.com/privacy")
+        #expect(LegalLink.privacyPolicy.url.absoluteString == "https://intervls.com/privacy")
     }
 
-    @Test("Privacy choices point to Backword website")
+    @Test("Privacy choices point to intervls website")
     func privacyChoicesURL() {
         #expect(LegalLink.privacyChoices.title == "Privacy Choices")
-        #expect(LegalLink.privacyChoices.url.absoluteString == "https://www.playbackword.com/privacy-choices")
+        #expect(LegalLink.privacyChoices.url.absoluteString == "https://intervls.com/privacy-choices")
     }
 
-    @Test("Terms point to Backword website")
+    @Test("Terms point to intervls website")
     func termsURL() {
         #expect(LegalLink.termsOfUse.title == "Terms of Use")
-        #expect(LegalLink.termsOfUse.url.absoluteString == "https://www.playbackword.com/terms")
+        #expect(LegalLink.termsOfUse.url.absoluteString == "https://intervls.com/terms")
     }
 }

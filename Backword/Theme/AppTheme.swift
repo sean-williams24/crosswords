@@ -189,6 +189,16 @@ enum AppFont {
 // MARK: - Spacing & Layout
 
 struct AppLayout {
+    static let brandLogoHeight: CGFloat = 38
+    static let brandHomeLogoHeight: CGFloat = brandLogoHeight / 2
+    static let brandSplashLogoHeight: CGFloat = 48
+    static let paywallProLogoHeight: CGFloat = 48
+    static let paywallProLogoTrailingOffset: CGFloat = 34
+    // Compensate for the original PRO bitmap's transparent top margin.
+    static let paywallProLogoSpacing: CGFloat = -10
+    static let homeProLogoHeight: CGFloat = 18
+    static let homeProLogoTrailingOffset: CGFloat = paywallProLogoTrailingOffset * homeProLogoHeight / paywallProLogoHeight
+    static let homeProLogoSpacing: CGFloat = paywallProLogoSpacing * homeProLogoHeight / paywallProLogoHeight
     let sizeClass: UserInterfaceSizeClass?
 
     // Statically available constants

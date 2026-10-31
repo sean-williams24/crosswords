@@ -40,7 +40,7 @@ struct PuzzleResultShareTests {
         #expect(result.streak == 3)
         #expect(result.totalGamesSolved == 3)
         #expect(result.primaryStat == .init(label: "ATTEMPTS", value: "1/5"))
-        #expect(result.shareURL.absoluteString == "https://www.playbackword.com/backword/\(today)?utm_source=share&utm_medium=social&utm_campaign=completed_puzzle")
+        #expect(result.shareURL.absoluteString == "https://intervls.com/backword/\(today)?utm_source=share&utm_medium=social&utm_campaign=completed_puzzle")
         #expect(result.caption.contains("CASTLE") == false)
         #expect(result.caption.contains("fortress") == false)
         #expect(result.caption.contains("word-id") == false)

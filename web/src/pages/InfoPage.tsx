@@ -1,16 +1,17 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { PhoneMockup } from "../components/PhoneMockup";
+import { siteConfig } from "../lib/siteConfig";
 
 export function InfoPage() {
   return (
     <>
       <ScreenshotSection
-        title="Backword"
-        body="Four word games and a Word of the Day, all in one daily ritual: Backword, Anagram, a Quick Crossword, and a deeper weekly crossword."
-        secondaryBody="Build the highest score you can across all four games over a rolling 14-day period, climb the rating tiers, and see how long you can sustain the top level."
+        title="intervls"
+        body={`${siteConfig.tagline}. Play Backword, Anagram, Midword, and Quick Crossword, discover a Word of the Day, and explore a deeper weekly Pro Crossword.`}
+        secondaryBody="Build the highest score you can across all five games over a rolling 14-day period, climb the rating tiers, and see how long you can sustain the top level."
         headingLevel="h1"
-        screenshotAlt="Backword home screen"
+        screenshotAlt="intervls home screen"
         screenshotPosition="right"
         screenshotSrc="/screenshots/home.mp4"
         screenshotSize="compact"
@@ -37,7 +38,7 @@ export function InfoPage() {
         title="A quick 9 x 9 crossword every day."
         body="Fifteen clues, a compact grid, and a fresh Quick Crossword for a spare 15 minutes."
         headingLevel="h2"
-        screenshotAlt="Backword Quick Crossword screen"
+        screenshotAlt="intervls Quick Crossword screen"
         screenshotPosition="right"
         screenshotSrc="/screenshots/crossword.png"
       >
@@ -51,7 +52,7 @@ export function InfoPage() {
         title="A larger 13 x 13 puzzle for a slower challenge."
         body="Settle into a bigger grid with more clues when you want something longer to sit with."
         headingLevel="h2"
-        screenshotAlt="Backword weekly crossword screen"
+        screenshotAlt="intervls Pro Crossword screen"
         screenshotPosition="left"
         screenshotSrc="/screenshots/crossword-weekly.png"
       >

@@ -37,7 +37,8 @@ export function Footer() {
       title: "Support",
       links: [
         { label: "Info", to: "/info" },
-        { label: "Contact", to: "/contact" }
+        { label: "Contact", to: "/contact" },
+        { label: "Recover old history", to: "/recover-history" }
       ]
     },
     {
@@ -70,7 +71,7 @@ export function Footer() {
           ))}
           <FooterSocialLinks links={siteConfig.socialLinks} />
         </nav>
-        <p className="order-2 whitespace-nowrap text-center lg:order-1 lg:justify-self-start lg:text-left">© 2026 Backword</p>
+        <p className="order-2 whitespace-nowrap text-center lg:order-1 lg:justify-self-start lg:text-left">© 2026 intervls</p>
         <div className="order-3 lg:justify-self-end">
           <AppStoreBadge placement="footer" />
         </div>

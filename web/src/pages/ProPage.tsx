@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { BackwordLogo } from "../features/backword/components/BackwordLogo";
+import { BrandLogo } from "../features/brand/BrandLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { startStripeCheckout, type ProPlan } from "../features/pro/billing";
 import { useAuth } from "../features/auth/AuthProvider";
@@ -129,13 +129,13 @@ export function ProPage() {
     <main className="pro-page">
       <header className="home-dashboard__header pro-page__header">
         <GameMenu />
-        <Link aria-label="Backword home" to="/"><BackwordLogo isPro large /></Link>
+        <Link aria-label="intervls home" to="/"><BrandLogo isPro large /></Link>
       </header>
       <section aria-labelledby="pro-page-title" className="pro-page__content">
         {entitlement?.isPro ? (
           <div className="pro-page__active">
             <h1 id="pro-page-title">You’re all set</h1>
-            <p>{debugProOverrideActive ? "Debug Pro access is enabled locally in this browser." : entitlement.cancelAtPeriodEnd ? "Your Pro access stays active until the end of the current billing period" : "Thanks for subscribing - Pro is active for this Backword account on the web and iOS"}</p>
+            <p>{debugProOverrideActive ? "Debug Pro access is enabled locally in this browser." : entitlement.cancelAtPeriodEnd ? "Your Pro access stays active until the end of the current billing period" : "Thanks for subscribing - Pro is active for this intervls account on the web and iOS"}</p>
             <Link className="pro-page__secondary" to={returnPath}>Lets play</Link>
             {!debugProOverrideActive ? entitlement.provider === "stripe" ? <p className="pro-page__provider-note">Your web subscription is managed through <a href="https://link.com" onClick={() => track(subscriptionManagementClicked("stripe"))} rel="noreferrer" target="_blank">Link</a></p> : <p className="pro-page__provider-note">This subscription is managed through your Apple ID.</p> : null}
           </div>
@@ -143,9 +143,9 @@ export function ProPage() {
           <>
             <div className="pro-page__intro">
               <h1 id="pro-page-title">The full game experience</h1>
-              <p>Unlock Pro on the web and iOS with one Backword account.</p>
+              <p>Unlock Pro on the web and iOS with one intervls account.</p>
             </div>
-            <ul aria-label="Included with Backword Pro" className="pro-page__features">
+            <ul aria-label="Included with intervls Pro" className="pro-page__features">
               {features.map((feature) => <li key={feature.title}>
                 <div>
                   <h2>{feature.title}</h2>

@@ -35,7 +35,7 @@ describe("AccountDeletionRecovery", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole("dialog", { name: "Your Backword account has been deleted" })).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Your intervls account has been deleted" })).toBeInTheDocument();
     expect(screen.getByText(/If you subscribed through Apple/)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Continue to sign in" }));
 
@@ -64,7 +64,7 @@ describe("AccountDeletionRecovery", () => {
     render(<MemoryRouter initialEntries={["/crossword"]}>
       <LocationProbe /><AccountDeletionRecovery />
     </MemoryRouter>);
-    fireEvent.click(screen.getByRole("dialog", { name: "Your Backword account has been deleted" }).parentElement!);
+    fireEvent.click(screen.getByRole("dialog", { name: "Your intervls account has been deleted" }).parentElement!);
     expect(auth.acknowledgeAccountDeletion).toHaveBeenCalledOnce();
     expect(screen.getByText("/sign-in")).toBeInTheDocument();
   });

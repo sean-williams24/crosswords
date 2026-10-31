@@ -7,9 +7,9 @@ struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.openURL) private var openURL
-    @ScaledMetric private var proLogoFrame: CGFloat = 48
-    @ScaledMetric private var proLogoOffset: CGFloat = 34
-    @ScaledMetric private var proLogoVStackSpacing: CGFloat = -29
+    @ScaledMetric private var proLogoFrame: CGFloat = AppLayout.paywallProLogoHeight
+    @ScaledMetric private var proLogoOffset: CGFloat = AppLayout.paywallProLogoTrailingOffset
+    @ScaledMetric private var proLogoVStackSpacing: CGFloat = AppLayout.paywallProLogoSpacing
     @ScaledMetric private var purchaseControlsTopPadding: CGFloat = 64
 
     @State private var selectedPlan: Plan = .annual
@@ -55,8 +55,8 @@ struct PaywallView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ZStack {
-                        VStack(spacing: proLogoVStackSpacing) {
-                            BackwordLogo(frame: 78, forceDark: false)
+                        VStack(alignment: .trailing, spacing: proLogoVStackSpacing) {
+                            IntervlsLogo(frame: AppLayout.brandLogoHeight)
                                 .offset(x: logoVisible ? 0 : 120)
                                 .opacity(logoVisible ? 1 : 0)
 

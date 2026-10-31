@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Footer } from "../components/Footer";
-import { BackwordLogo } from "../features/backword/components/BackwordLogo";
+import { BrandLogo } from "../features/brand/BrandLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { createBackwordRepository } from "../features/backword/repository";
 import { createAnagramRepository } from "../features/anagram/repository";
@@ -165,7 +165,7 @@ function ArchiveContent({ entitlement, user }: Pick<ReturnType<typeof useAuth>, 
     <div className="archive-page">
       <header className="home-dashboard__header archive-page__header">
         <GameMenu />
-        <Link aria-label="Backword home" to="/"><BackwordLogo isPro={entitlement?.isPro === true} large /></Link>
+        <Link aria-label="intervls home" to="/"><BrandLogo isPro={entitlement?.isPro === true} large /></Link>
         <div className="home-dashboard__actions"><AuthButton className="auth-button--menu-upgrade" /></div>
       </header>
       <main className="archive-page__content">

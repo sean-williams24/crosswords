@@ -1,3 +1,5 @@
+import { brand } from "../features/brand/brand";
+
 function campaignTokensFromEnvironment(): Record<string, string> {
   try {
     const parsed: unknown = JSON.parse(import.meta.env.VITE_APP_STORE_CAMPAIGN_TOKENS ?? "{}");
@@ -11,17 +13,17 @@ function campaignTokensFromEnvironment(): Record<string, string> {
 }
 
 export const siteConfig = {
-  appName: "Backword",
-  tagline: "A word game that works backwards.",
-  appStoreUrl: "https://apps.apple.com/app/backword/id6773428497",
+  appName: brand.name,
+  tagline: brand.tagline,
+  appStoreUrl: "https://apps.apple.com/app/id6773428497",
   developerName: "Sean Williams",
-  supportEmail: "backword.support@gmail.com",
+  supportEmail: "support@intervls.com",
   socialLinks: [
     { label: "Instagram", href: "https://instagram.com/play.backword?dlrf=MTg1d3pmcmsydzIycA%3D%3D&utm_source=qr" },
     { label: "TikTok", href: "https://www.tiktok.com/@play.backword" },
     { label: "Facebook", href: "https://www.facebook.com/share/1CWvuRkqxe/?mibextid=wwXIfr" }
   ],
-  lastUpdated: "August 31, 2026",
+  lastUpdated: "October 29, 2026",
   environment: {
     supabaseUrl: "VITE_SUPABASE_URL",
     supabaseAnonKey: "VITE_SUPABASE_ANON_KEY"

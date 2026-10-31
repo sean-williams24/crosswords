@@ -66,12 +66,12 @@
       "id" : "D4E5F6A7-B8C9-0D1E-2F3A-4B5C6D7E8F9A",
       "localizations" : [
         {
-          "description" : "Unlock the full crossword experience",
-          "displayName" : "Crosswords Pro",
+          "description" : "Unlock all five games, the archive, and an ad-free experience",
+          "displayName" : "intervls Pro",
           "locale" : "en_GB"
         }
       ],
-      "name" : "Crosswords Pro",
+      "name" : "intervls Pro",
       "subscriptions" : [
         {
           "adHocOffers" : [
@@ -94,7 +94,7 @@
           "localizations" : [
             {
               "description" : "Ad-free, unlimited archive & hints",
-              "displayName" : "Monthly",
+              "displayName" : "intervls Pro Monthly",
               "locale" : "en_GB"
             }
           ],
@@ -125,7 +125,7 @@
           "localizations" : [
             {
               "description" : "Ad-free, unlimited archive & hints — best value",
-              "displayName" : "Annual",
+              "displayName" : "intervls Pro Annual",
               "locale" : "en_GB"
             }
           ],

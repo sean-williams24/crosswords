@@ -28,10 +28,10 @@ describe("SignInPage", () => {
     expect(screen.getByText(/Play as a guest whenever you like/i)).toBeInTheDocument();
     expect(container.querySelectorAll(".auth-benefit-icon--sync, .auth-benefit-icon--stats, .auth-benefit-icon--pro")).toHaveLength(3);
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Backword home" }).querySelector("img")).toHaveClass(
-      "bw-logo--large"
+    expect(screen.getByRole("link", { name: "intervls home" }).querySelector(".brand-logo")).toHaveClass(
+      "brand-logo--large"
     );
-    expect(screen.getByRole("link", { name: "Backword home" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: "intervls home" })).toHaveAttribute("href", "/");
     expect(container.querySelector(".auth-card")).not.toBeInTheDocument();
     expect(container.querySelector(".auth-content")).toBeInTheDocument();
   });

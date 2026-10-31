@@ -77,11 +77,11 @@ export function PlayerProfilePage() {
         )
       ]);
       const [backword, anagram, dailyCrossword, weeklyCrossword, midword] = await Promise.all([
-        fetchCloudProgress("backword"),
-        fetchCloudProgress("anagram"),
-        fetchCloudProgress("daily_crossword"),
-        fetchCloudProgress("weekly_crossword"),
-        fetchCloudProgress("midword")
+        fetchCloudProgress("backword", userId),
+        fetchCloudProgress("anagram", userId),
+        fetchCloudProgress("daily_crossword", userId),
+        fetchCloudProgress("weekly_crossword", userId),
+        fetchCloudProgress("midword", userId)
       ]);
       setRecords({ userId, value: { backword, anagram, dailyCrossword, weeklyCrossword, midword } });
     } catch (error) {
@@ -127,7 +127,7 @@ export function PlayerProfilePage() {
   }
 
   async function removeAccount() {
-    if (!window.confirm("Delete your Backword account and synced progress? If you subscribed through Apple, that subscription is not cancelled. If you subscribed on the web, it will stop renewing. Pro access ends when this account is deleted.")) return;
+    if (!window.confirm("Delete your intervls account and synced progress? If you subscribed through Apple, that subscription is not cancelled. If you subscribed on the web, it will stop renewing. Pro access ends when this account is deleted.")) return;
     setIsDeleting(true);
     setSyncError(null);
     try {

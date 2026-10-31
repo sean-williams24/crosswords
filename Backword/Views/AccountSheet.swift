@@ -53,7 +53,7 @@ struct AccountSheet: View {
 
     private var signedOutHeader: some View {
         VStack(spacing: AppLayout.screenPadding) {
-            BackwordLogo(frame: 48)
+            IntervlsLogo()
                 .accessibilityHidden(true)
             Text(AccountSheetGuestAccessPresentation.pageTitle)
                 .font(AppFont.header(18))
@@ -153,7 +153,7 @@ struct AccountSheet: View {
         VStack(alignment: .leading, spacing: 12) {
             benefit("arrow.triangle.2.circlepath", "Continue a game on another device or the web.")
             benefit("chart.bar.fill", "Keep your stats, streaks, and score history safe.")
-            benefit("crown.fill", "Keep your verified Pro access connected to Backword.")
+            benefit("crown.fill", "Keep your verified Pro access connected to intervls.")
         }
     }
 
@@ -180,7 +180,7 @@ enum AccountPresentationDestination: Equatable {
 
 enum AccountEntitlementPresentation {
     static let linkedElsewhereExplanation =
-        "This App Store subscription is linked to another Backword account, so it is not shared with this account or on the web."
+        "This App Store subscription is linked to another intervls account, so it is not shared with this account or on the web."
 
     static func isAlreadyLinkedPurchaseError(_ message: String) -> Bool {
         message == "This purchase belongs to a different Backword account."

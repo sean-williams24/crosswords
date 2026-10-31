@@ -35,14 +35,14 @@ describe("puzzle share results", () => {
     expect(`${result.caption}${puzzleResultCardSvg(result)}`).not.toContain("BOTTLE");
   });
 
-  it("uses the original vector Backword logo on the share card", () => {
+  it("uses the intervls vector wordmark while retaining the game title", () => {
     const card = puzzleResultCardSvg({
       game: "backword", gameName: "Backword", issueNumber: 7, date: "2026-09-16", outcome: "SOLVED", score: 5, streak: 1, totalGamesSolved: 7,
       ratingTier: "Linguist", ratingPoints: 68, ratingMaxPoints: 140,
       primaryStat: { label: "ATTEMPTS", value: "1 / 5" }, url: "https://www.playbackword.com/backword/2026-09-16", caption: ""
     });
 
-    expect(card).toContain('<image href="https://www.playbackword.com/brand/backword-logo-share.svg"');
+    expect(card).toContain(`<image href="${window.location.origin}/brand/intervls-dark.svg"`);
     expect(card).not.toContain('<g aria-label="Backword logo"');
     expect(card).toContain('width="1080" height="1080"');
     expect(card).toContain('<rect width="1080" height="1080" rx="48" fill="#293364"/>');
@@ -54,7 +54,7 @@ describe("puzzle share results", () => {
     expect(card).toContain("SOLVED");
     expect(card).toContain('font-family="Outfit, sans-serif"');
     expect(card).not.toContain('font-family="Arial, sans-serif"');
-    expect(card).toContain('<text x="1016" y="1010" fill="#e0ddd6" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">playbackword.com</text>');
+    expect(card).toContain('<text x="1016" y="1010" fill="#e0ddd6" font-family="Outfit, sans-serif" font-size="55" font-weight="700" letter-spacing="3" text-anchor="end">intervls.com</text>');
     expect(card).not.toContain("PLAY →");
     expect(card).not.toContain("<circle");
   });
@@ -224,4 +224,11 @@ describe("puzzle share results", () => {
     expect(formatCompletionTime(null)).toBe("—");
     expect(formatCompletionTime("invalid")).toBe("—");
   });
+});
+
+
+it("defaults all five shared game links to intervls", () => {
+  for (const game of ["backword", "midword", "anagram", "daily_crossword", "weekly_crossword"] as const) {
+    expect(new URL(shareUrl(game, "2026-10-29")).origin).toBe("https://intervls.com");
+  }
 });

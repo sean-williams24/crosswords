@@ -3,6 +3,7 @@ export type AnalyticsPlatform = "web" | "ios";
 
 export type AnalyticsEvent = {
   name:
+    | "domain_migration"
     | "game_started"
     | "game_completed"
     | "result_shared"
@@ -147,4 +148,10 @@ export function subscriptionManagementClicked(provider: "stripe"): AnalyticsEven
 
 export function proAccessGateRedirected(feature: "archive" | "weekly_crossword"): AnalyticsEvent {
   return { name: "pro_access_gate_redirected", parameters: { feature } };
+}
+
+
+/** Migration reporting is aggregate and only emitted after optional analytics consent. */
+export function domainMigration(outcome: "started" | "verified" | "failed" | "continued_without_history"): AnalyticsEvent {
+  return { name: "domain_migration", parameters: { platform: "web", outcome } };
 }

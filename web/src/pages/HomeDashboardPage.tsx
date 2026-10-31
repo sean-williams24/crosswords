@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { BackwordLogo } from "../features/backword/components/BackwordLogo";
+import { BrandLogo } from "../features/brand/BrandLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { localDateString, localWeekStartString } from "../features/backword/date";
 import { deriveStats } from "../features/backword/engine";
@@ -150,8 +150,8 @@ export function HomeDashboardPage() {
     <main className="home-dashboard">
       <header className="home-dashboard__header">
         <GameMenu />
-        <Link aria-label="Backword home" to="/">
-          <BackwordLogo isPro={entitlement?.isPro === true} large />
+        <Link aria-label="intervls home" to="/">
+          <BrandLogo isPro={entitlement?.isPro === true} large />
         </Link>
         <div className="home-dashboard__actions">
           <AuthButton className="auth-button--menu-upgrade" />

@@ -17,7 +17,7 @@ export function AppStoreBadge({ placement = "header" }: Partial<AppStoreBadgePro
     <a
       className="inline-flex transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-heading focus:ring-offset-2 focus:ring-offset-ink"
       href={href}
-      aria-label={placement === "footer" ? "Download Backword on the App Store from footer" : "Download Backword on the App Store"}
+      aria-label={placement === "footer" ? "Download intervls on the App Store from footer" : "Download intervls on the App Store"}
       onClick={() => track(appStoreClick(placement, campaignToken))}
     >
       <img

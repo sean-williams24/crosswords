@@ -284,7 +284,7 @@ struct AccountSyncTests {
 
     @Test("Settings deletion confirmation explains the destructive action")
     func settingsDeletionConfirmationPresentation() {
-        #expect(SettingsDeletionConfirmationPresentation.title == "Delete Backword account?")
+        #expect(SettingsDeletionConfirmationPresentation.title == "Delete intervls account?")
         #expect(SettingsDeletionConfirmationPresentation.message.contains("cloud progress"))
         #expect(SettingsDeletionConfirmationPresentation.message.contains("does not cancel your Apple subscription"))
     }

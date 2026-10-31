@@ -1,0 +1,32 @@
+{
+  "app_store_id": "6773428497",
+  "bundle_id": "com.backword.app",
+  "locale": "en-GB",
+  "name": "intervls",
+  "subtitle": "Free daily word games",
+  "promotional_text": "Backword is now intervls. Play Backword, Midword, Anagram, Quick Crossword, and Pro Crossword, with your history and Pro access together in one place.",
+  "keywords": "word,puzzle,crossword,anagram,daily,brain,spelling,midword,backword,vocabulary,logic",
+  "description": "Free daily word games to challenge your mind. Discover intervls — the new name for Backword.\n\nFIVE GAMES, ONE PLACE\n• Backword: guess a six-letter word as its correct ending reveals from right to left.\n• Midword: find the missing word that connects two others.\n• Anagram: unscramble the letters and find the answer.\n• Quick Crossword: a fresh, compact 9 × 9 crossword each day.\n• Pro Crossword: settle into a deeper 13 × 13 weekly challenge with intervls Pro.\n\nPlay four free daily games, discover a Word of the Day, build streaks, and climb the rating tiers across your recent results.\n\nYOUR PROGRESS, TOGETHER\nPlay as a guest, or sign in with Apple or Google to sync your game history between iOS and the web. Existing Backword players keep their app saves when updating. Web players can sign in on the old website to move their history to intervls.com.\n\nINTERVLS PRO\nUnlock the archive, Pro Crossword, and an ad-free experience. Eligible account-linked access works across iOS and the web. Existing Backword Pro subscriptions continue with the renamed app.\n\nMonthly and annual subscriptions are available. Prices, any eligible introductory offer, and renewal terms are shown before purchase. Subscriptions renew automatically unless cancelled through your subscription provider. Manage App Store subscriptions in your Apple account settings.\n\nPrivacy: https://intervls.com/privacy\nTerms: https://intervls.com/terms\nSupport: support@intervls.com",
+  "whats_new": "Backword is now intervls!\n\nA new name and icon for the same five games: Backword, Midword, Anagram, Quick Crossword, and Pro Crossword.\n\nYour app saves, scores, streaks, account, and existing Pro subscription stay with you. Visit intervls.com to play on the web. If you played on the old website, sign in there first to sync your history before moving.",
+  "marketing_url": "https://intervls.com",
+  "support_url": "https://intervls.com/contact",
+  "privacy_policy_url": "https://intervls.com/privacy",
+  "privacy_choices_url": "https://intervls.com/privacy-choices",
+  "support_email": "support@intervls.com",
+  "review_notes": "This is a rebrand of the existing Backword app to intervls, submitted under the same app record and bundle ID. The Backword game keeps its name, alongside Midword, Anagram, Quick Crossword, and Pro Crossword. Existing Apple subscription products and purchase entitlements are retained. Please select manual release after approval for the coordinated website launch.\n\nGuest gameplay remains available. Apple and Google sign-in are optional for cloud sync and account-linked Pro access. Existing web guests use an old-domain migration page to sync and verify history before moving to intervls.com. The new domain is prepared ahead of the public launch; both old-domain callbacks and native sign-in remain supported.",
+  "release_option": "MANUAL",
+  "subscription_group_display_name": "intervls Pro",
+  "subscriptions": [
+    {
+      "product_id": "com.backword.monthlypro",
+      "display_name": "intervls Pro Monthly",
+      "description": "Monthly Pro, archive and no ads"
+    },
+    {
+      "product_id": "com.backword.annualpro",
+      "display_name": "intervls Pro Annual",
+      "description": "Annual Pro, archive and no ads"
+    }
+  ],
+  "existing_localisations": "Audit the existing App Store listing and update every active localisation before submitting; this file supplies en-GB copy."
+}

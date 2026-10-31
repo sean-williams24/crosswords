@@ -13,7 +13,7 @@ settings:
     TARGETED_DEVICE_FAMILY: 1
     INFOPLIST_KEY_UILaunchScreen_Generation: true
     INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
-    INFOPLIST_KEY_CFBundleDisplayName: BackWord
+    INFOPLIST_KEY_CFBundleDisplayName: intervls
 
 packages:
   GoogleMobileAds:
@@ -47,6 +47,7 @@ targets:
     platform: iOS
     sources:
       - path: BackwordTests
+      - path: CrosswordsTests/IntervlsBrandTests.swift
       - path: CrosswordsTests/AppleAdsAttributionServiceTests.swift
       - path: CrosswordsTests/PreGameAdConfigurationTests.swift
       - path: CrosswordsTests/PreGameAdServiceTests.swift

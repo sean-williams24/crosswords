@@ -28,7 +28,7 @@ struct LaunchSplashViewTests {
         let phoneFrame = LaunchSplashLogoSizing.frame(userInterfaceIdiom: .phone)
         let iPadFrame = LaunchSplashLogoSizing.frame(userInterfaceIdiom: .pad)
 
-        #expect(phoneFrame == 96)
+        #expect(phoneFrame == 48)
         #expect(abs(iPadFrame - (phoneFrame * 2)) < 0.001)
     }
 

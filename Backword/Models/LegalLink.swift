@@ -8,17 +8,17 @@ struct LegalLink: Equatable, Identifiable {
 
     static let privacyPolicy = LegalLink(
         title: "Privacy Policy",
-        url: URL(string: "https://www.playbackword.com/privacy")!
+        url: AppBrand.website.appendingPathComponent("privacy")
     )
 
     static let termsOfUse = LegalLink(
         title: "Terms of Use",
-        url: URL(string: "https://www.playbackword.com/terms")!
+        url: AppBrand.website.appendingPathComponent("terms")
     )
 
     static let privacyChoices = LegalLink(
         title: "Privacy Choices",
-        url: URL(string: "https://www.playbackword.com/privacy-choices")!
+        url: AppBrand.website.appendingPathComponent("privacy-choices")
     )
 
     static let all: [LegalLink] = [

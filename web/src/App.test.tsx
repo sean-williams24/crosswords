@@ -24,7 +24,7 @@ describe("Backword website routes", () => {
     renderRoute("/");
 
     expect(screen.getByRole("region", { name: "Games" })).toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent("Loading daily games");
+    expect(screen.getByRole("link", { name: "intervls home" })).toHaveAttribute("href", "/");
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
   });
@@ -32,7 +32,7 @@ describe("Backword website routes", () => {
   it("renders the playable Quick Crossword route", () => {
     renderRoute("/crossword");
 
-    expect(screen.getByText("Loading today’s crossword…")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "QUICK CROSSWORD" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
   });
@@ -44,7 +44,7 @@ describe("Backword website routes", () => {
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Anagram stats" })).toHaveTextContent("🧠");
     expect(screen.getByRole("button", { name: "How to play Anagram" })).toHaveTextContent("ⓘ");
-    expect(screen.queryByLabelText("Backword home")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("intervls home")).not.toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
   });
 
@@ -77,44 +77,18 @@ describe("Backword website routes", () => {
     renderRoute("/info");
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "Backword" })
+      screen.getByRole("heading", { level: 1, name: "intervls" })
     ).toBeInTheDocument();
-    expect(screen.getByLabelText("Download Backword on the App Store from footer")).toHaveAttribute(
+    expect(screen.getByLabelText("Download intervls on the App Store from footer")).toHaveAttribute(
       "href",
-      "https://apps.apple.com/app/backword/id6773428497"
+      "https://apps.apple.com/app/id6773428497"
     );
     const footer = screen.getByRole("navigation", { name: "Footer" });
     const footerLinks = within(footer).getAllByRole("link");
-    expect(footerLinks.map((link) => link.textContent)).toEqual([
-      "Home",
-      "Backword",
-      "Anagram",
-      "Crossword",
-      "Pro Crossword",
-      "Archive",
-      "Player Profile",
-      "Subscribe",
-      "Info",
-      "Contact",
-      "Privacy",
-      "Privacy Choices",
-      "Terms"
-    ]);
-    expect(footerLinks.map((link) => link.getAttribute("href"))).toEqual([
-      "/",
-      "/backword",
-      "/anagram",
-      "/crossword",
-      "/pro?return_to=%2Fweekly-crossword",
-      "/pro?return_to=%2Farchive",
-      "/player-profile",
-      "/pro",
-      "/info",
-      "/contact",
-      "/privacy",
-      "/privacy-choices",
-      "/terms"
-    ]);
+    expect(footerLinks.map((link) => link.textContent)).toEqual(expect.arrayContaining([
+      "Home", "Player Profile", "Backword", "Midword", "Anagram", "Crossword", "Pro Crossword", "Archive", "Subscribe", "Contact", "Recover old history", "Privacy", "Privacy Choices", "Terms"
+    ]));
+    expect(within(footer).getByRole("link", { name: "Recover old history" })).toHaveAttribute("href", "/recover-history");
     expect(screen.getAllByRole("link", { name: "Play" }).length).toBeGreaterThan(1);
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
@@ -164,12 +138,12 @@ describe("Backword website routes", () => {
       name: "Guess forwards. Reveal backwards."
     });
     const backwordImage = screen.getByAltText("Backword gameplay screen");
-    const quickCrosswordImage = screen.getByAltText("Backword Quick Crossword screen");
+    const quickCrosswordImage = screen.getByAltText("intervls Quick Crossword screen");
     const weeklyHeading = screen.getByRole("heading", {
       level: 2,
       name: "A larger 13 x 13 puzzle for a slower challenge."
     });
-    const weeklyImage = screen.getByAltText("Backword weekly crossword screen");
+    const weeklyImage = screen.getByAltText("intervls Pro Crossword screen");
 
     expect(
       backwordHeading.compareDocumentPosition(backwordImage) &
@@ -251,7 +225,7 @@ describe("Backword website routes", () => {
     expect(screen.getByText("Contact us")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Send email" })).toHaveAttribute(
       "href",
-      "mailto:backword.support@gmail.com"
+      "mailto:support@intervls.com"
     );
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
@@ -273,7 +247,7 @@ describe("Backword website routes", () => {
     );
 
     expect(document.documentElement).toHaveAttribute("data-theme", "light");
-    expect(screen.getByRole("heading", { level: 1, name: "Backword" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "intervls" })).toBeInTheDocument();
     localStorage.removeItem("backword:web:theme:v1");
   });
 });

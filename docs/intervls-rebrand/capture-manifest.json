@@ -1,0 +1,101 @@
+{
+  "status": "blocked_on_developer_captures",
+  "release_root": "output/app-store/intervls",
+  "screenshots": [
+    {
+      "key": "backword",
+      "file": "upload-ready/iphone-6.1-6.3/02-backword-1206x2622.png",
+      "headline": "Guess forwards. Reveal backwards.",
+      "width": 1206,
+      "height": 2622,
+      "source": "sources/backword.png",
+      "status": "awaiting_fresh_capture"
+    },
+    {
+      "key": "crossword",
+      "file": "upload-ready/iphone-6.1-6.3/03-quick-crossword-1206x2622.png",
+      "headline": "Your daily crossword fix",
+      "width": 1206,
+      "height": 2622,
+      "source": "sources/crossword.png",
+      "status": "awaiting_fresh_capture"
+    },
+    {
+      "key": "midword",
+      "file": "upload-ready/iphone-6.1-6.3/04-midword-1206x2622.png",
+      "headline": "Find the missing link",
+      "width": 1206,
+      "height": 2622,
+      "source": "sources/midword.png",
+      "status": "awaiting_fresh_capture"
+    },
+    {
+      "key": "home",
+      "file": "upload-ready/iphone-6.1-6.3/01-home-1206x2622.png",
+      "headline": "Four free daily games",
+      "width": 1206,
+      "height": 2622,
+      "source": "sources/home.png",
+      "status": "awaiting_fresh_capture"
+    },
+    {
+      "key": "ipad",
+      "file": "upload-ready/ipad-13/05-ipad-2064x2752.png",
+      "headline": "Free daily word games to challenge your mind",
+      "width": 2064,
+      "height": 2752,
+      "source": "sources/ipad.png",
+      "status": "awaiting_fresh_capture"
+    },
+    {
+      "key": "anagram",
+      "file": "upload-ready/iphone-6.1-6.3/06-anagram-1206x2622.png",
+      "headline": "Unscramble the Anagram",
+      "width": 1206,
+      "height": 2622,
+      "source": "sources/anagram.png",
+      "status": "awaiting_fresh_capture"
+    },
+    {
+      "key": "weekly-crossword",
+      "file": "upload-ready/iphone-6.1-6.3/07-pro-crossword-1206x2622.png",
+      "headline": "Solve a deeper weekly crossword",
+      "width": 1206,
+      "height": 2622,
+      "source": "sources/weekly-crossword.png",
+      "status": "awaiting_fresh_capture"
+    },
+    {
+      "key": "archive",
+      "file": "upload-ready/iphone-6.1-6.3/08-archive-1206x2622.png",
+      "headline": "Play all past puzzles in the archive",
+      "width": 1206,
+      "height": 2622,
+      "source": "sources/archive.png",
+      "status": "awaiting_fresh_capture"
+    },
+    {
+      "key": "rating",
+      "file": "upload-ready/iphone-6.1-6.3/09-rating-1206x2622.png",
+      "headline": "Climb the rating tiers",
+      "width": 1206,
+      "height": 2622,
+      "source": "sources/rating.png",
+      "status": "awaiting_fresh_capture"
+    }
+  ],
+  "website_assets": [
+    "web/public/screenshots/home.png",
+    "web/public/screenshots/home.mp4",
+    "web/public/screenshots/backword-game.png",
+    "web/public/screenshots/crossword.png",
+    "web/public/screenshots/crossword-weekly.png"
+  ],
+  "capture_requirements": [
+    "Capture the updated app in Xcode; preserve full-resolution originals.",
+    "Include intervls Home, account/paywall context where present, and retained game names.",
+    "Use 1206x2622 iPhone and 2064x2752 iPad export slots, rechecking App Store Connect requirements at submission.",
+    "Review every image for old umbrella branding; a Backword game title remains correct.",
+    "Do not reuse historic screenshots as proof of the renamed app."
+  ]
+}

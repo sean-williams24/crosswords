@@ -42,7 +42,7 @@ describe("Footer", () => {
       },
       {
         title: "Support",
-        links: [["Info", "/info"], ["Contact", "/contact"]]
+        links: [["Info", "/info"], ["Contact", "/contact"], ["Recover old history", "/recover-history"]]
       },
       {
         title: "Legal",
@@ -60,7 +60,7 @@ describe("Footer", () => {
 
     expect(within(footer).getAllByRole("heading", { level: 2 }).map((heading) => heading.textContent))
       .toEqual(groups.map(({ title }) => title));
-    expect(within(footer).getAllByRole("link")).toHaveLength(17);
+    expect(within(footer).getAllByRole("link")).toHaveLength(18);
     for (const { title, links } of groups) {
       const group = within(footer).getByRole("region", { name: title });
       expect(within(group).getByRole("heading", { name: title, level: 2 })).toBeInTheDocument();
@@ -73,8 +73,8 @@ describe("Footer", () => {
       }
     }
 
-    expect(screen.getByText("© 2026 Backword")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Download Backword on the App Store from footer" })).toBeInTheDocument();
+    expect(screen.getByText("© 2026 intervls")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Download intervls on the App Store from footer" })).toBeInTheDocument();
   });
 
   it("gives two and three columns equal outer and inner spacing and flanks the top row on large screens", () => {
@@ -82,8 +82,8 @@ describe("Footer", () => {
 
     const footer = screen.getByRole("contentinfo");
     const navigation = within(footer).getByRole("navigation", { name: "Footer" });
-    const copyright = within(footer).getByText("© 2026 Backword");
-    const badge = within(footer).getByRole("link", { name: "Download Backword on the App Store from footer" });
+    const copyright = within(footer).getByText("© 2026 intervls");
+    const badge = within(footer).getByRole("link", { name: "Download intervls on the App Store from footer" });
     const layout = navigation.parentElement;
 
     expect(footer).toHaveClass("px-0", "lg:px-6");
