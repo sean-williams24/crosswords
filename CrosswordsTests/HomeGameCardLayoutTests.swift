@@ -28,7 +28,7 @@ struct HomeGameCardLayoutTests {
             (38, 32, 32, 8) // Crossword title and footer.
         ]
         for heights in states {
-            for minimumHeight: CGFloat in [120, 170] {
+            for minimumHeight: CGFloat in [128, 170] {
                 let frames = HomeGameCardLayout.frames(
                     width: width, minimumHeight: minimumHeight,
                     heights: [.identity: heights.identity, .header: heights.header, .details: heights.details],
@@ -46,18 +46,18 @@ struct HomeGameCardLayoutTests {
         }
     }
 
-    @Test("Completed Backword keeps the compact logo, cells, and footer arrangement")
+    @Test("Completed Backword grows enough for its current logo, cells, and footer")
     func completedBackword() {
         let frames = HomeGameCardLayout.frames(
             width: 280, minimumHeight: 120,
             heights: [.header: 32, .identity: AppLayout.homeCardLogoHeight, .accessory: AppLayout.homeCardLetterCellSize, .details: 32],
             spacing: 4, identityPosition: .top
         )
-        #expect(frames.size.height == 120)
+        #expect(frames.size.height == 128)
         #expect(frames.identity.minY == 0)
         #expect(frames.header.minY == 0)
         #expect(frames.accessory.minY == AppLayout.homeCardLogoHeight + 4)
-        #expect(frames.details.maxY == 120)
+        #expect(frames.details.maxY == 128)
         #expect(frames.accessory.maxY + 4 <= frames.details.minY)
     }
 
@@ -86,10 +86,10 @@ struct HomeGameCardLayoutTests {
         #if canImport(UIKit)
         let host = UIHostingController(rootView: card)
         let size = host.sizeThatFits(in: CGSize(width: 280, height: 10_000))
-        host.view.frame = CGRect(origin: .zero, size: size)
-        host.view.layoutIfNeeded()
-        let brandFrame = brandView.convert(brandView.bounds, to: host.view)
-        let headerFrame = headerView.convert(headerView.bounds, to: host.view)
+        let (brandFrame, headerFrame) = withLaidOutHostingController(host, size: size) {
+            (brandView.convert(brandView.bounds, to: host.view),
+             headerView.convert(headerView.bounds, to: host.view))
+        }
         let topDistance = headerFrame.minY
         #else
         let host = NSHostingView(rootView: card)
@@ -135,10 +135,10 @@ struct HomeGameCardLayoutTests {
         #if canImport(UIKit)
         let host = UIHostingController(rootView: card)
         let size = host.sizeThatFits(in: CGSize(width: 280, height: 10_000))
-        host.view.frame = CGRect(origin: .zero, size: size)
-        host.view.layoutIfNeeded()
-        let titleFrame = titleView.convert(titleView.bounds, to: host.view)
-        let dimensionsFrame = dimensionsView.convert(dimensionsView.bounds, to: host.view)
+        let (titleFrame, dimensionsFrame) = withLaidOutHostingController(host, size: size) {
+            (titleView.convert(titleView.bounds, to: host.view),
+             dimensionsView.convert(dimensionsView.bounds, to: host.view))
+        }
         let gap = dimensionsFrame.minY - titleFrame.maxY
         #else
         let host = NSHostingView(rootView: card)
@@ -173,7 +173,7 @@ struct HomeGameCardLayoutTests {
     }
 
     @MainActor
-    @Test("Shared card content keeps plain logos, crossword groups, and completed games compact")
+    @Test("Shared card content stays compact and grows when completed artwork needs space")
     func sharedContent() {
         let plain = HomeGameCardContent(minimumHeight: 144) {
             Color.clear.frame(height: AppLayout.midwordHomeCardLogoHeight)
@@ -203,7 +203,7 @@ struct HomeGameCardLayoutTests {
                 Color.clear.frame(width: 52, height: 32)
             }
         }
-        for card in [AnyView(plain), AnyView(described), AnyView(completed)] {
+        for (card, expectedHeight) in [(AnyView(plain), CGFloat(144)), (AnyView(described), 144), (AnyView(completed), 152)] {
             #if canImport(UIKit)
             let host = UIHostingController(rootView: card)
             let size = host.sizeThatFits(in: CGSize(width: 280, height: 10_000))
@@ -212,7 +212,7 @@ struct HomeGameCardLayoutTests {
             let size = host.fittingSize
             #endif
             #expect(size.width == 280)
-            #expect(size.height == 144)
+            #expect(size.height == expectedHeight)
         }
     }
 

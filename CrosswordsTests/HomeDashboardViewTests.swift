@@ -69,14 +69,15 @@ struct HomeDashboardViewTests {
             .environment(\.horizontalSizeClass, usesTwoColumns ? .regular : .compact)
         #if canImport(UIKit)
         let host = UIHostingController(rootView: content)
-        host.view.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        host.view.layoutIfNeeded()
+        return withLaidOutHostingController(host, size: CGSize(width: width, height: height)) {
+            selection
+        }
         #else
         let host = NSHostingView(rootView: content)
         host.frame = CGRect(x: 0, y: 0, width: width, height: height)
         host.layoutSubtreeIfNeeded()
-        #endif
         return selection
+        #endif
     }
 
     private func dashboard(selection: Selection, expandedHeight: CGFloat, usesTwoColumns: Bool = true) -> some View {

@@ -164,15 +164,14 @@ struct HomeGameCardsGridTests {
         #if canImport(UIKit)
         let host = UIHostingController(rootView: content)
         let size = host.sizeThatFits(in: CGSize(width: width, height: 10_000))
-        host.view.frame = CGRect(origin: .zero, size: size)
-        host.view.layoutIfNeeded()
+        return withLaidOutHostingController(host, size: size) { size }
         #else
         let host = NSHostingView(rootView: content.frame(width: width))
         let size = host.fittingSize
         host.frame = CGRect(origin: .zero, size: size)
         host.layoutSubtreeIfNeeded()
-        #endif
         return size
+        #endif
     }
 
     private final class Measurements {

@@ -1,0 +1,7 @@
+Use case: compositing.
+Asset type: Stripe product image for Intervls Pro.
+Create one polished flat brand graphic, exactly 902 pixels wide by 700 pixels high, matching the attached Backword Pro product image's aspect ratio and minimal style.
+Input image 1 is the supplied white italic Intervls wordmark, with transparent padding; preserve its EXACT distinctive lettering and proportions. Input image 2 is the existing gold italic PRO artwork; preserve its exact shape and gold color.
+Composition: opaque uniform near-black #111111 background. Large white Intervls wordmark centered across the canvas with its visible bounds approximately x=125 to 750, y=255 to 380. Gold PRO directly beneath at the right, visible bounds approximately x=555 to 770, y=400 to 477. This wordmark-plus-badge group should feel balanced and centered overall with generous empty space above and below. The gold PRO has a slight trailing overhang past the right edge of Intervls, like the Backword Pro reference.
+Text (verbatim): "Intervls" and "PRO" only.
+Constraints: reuse the reference lettering faithfully, no font substitution, no blue BACK, no WORD, no border, no gradients, no texture, no shadow, no mockup, no additional copy, no watermark. Opaque background. Crisp antialiased edges. Output 902x700 PNG.

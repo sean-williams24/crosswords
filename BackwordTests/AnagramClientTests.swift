@@ -181,14 +181,18 @@ struct AnagramClientTests {
         let online = AnagramService(dataSource: source, cacheDirectory: cache)
         await online.refreshIfNeeded(now: now)
         #expect(online.todaysPuzzle == puzzle)
+        #expect(source.dailyRequests == 1)
         source.shouldFail = true
         let offline = AnagramService(dataSource: source, cacheDirectory: cache)
         await offline.refreshIfNeeded(now: now)
         #expect(offline.todaysPuzzle == puzzle)
+        #expect(source.dailyRequests == 2)
         source.shouldFail = false
         await offline.refreshIfNeeded(now: now)
         #expect(offline.todaysPuzzle == puzzle)
-        #expect(source.dailyRequests == 2)
+        #expect(source.dailyRequests == 3)
+        await offline.refreshIfNeeded(now: now)
+        #expect(source.dailyRequests == 3)
     }
 
     @Test @MainActor func serviceDoesNotSubstituteReviewPuzzleWhenTodayIsUnavailable() async {

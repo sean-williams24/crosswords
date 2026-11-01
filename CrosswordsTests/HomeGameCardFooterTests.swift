@@ -85,11 +85,11 @@ struct HomeGameCardFooterTests {
         #if canImport(UIKit)
         let host = UIHostingController(rootView: header)
         let size = host.sizeThatFits(in: CGSize(width: width, height: 10_000))
-        host.view.frame = CGRect(origin: .zero, size: size)
-        host.view.layoutIfNeeded()
-        let frame = streakView.convert(streakView.bounds, to: host.view)
-        let titleFrame = titleView.convert(titleView.bounds, to: host.view)
-        let topDistance = frame.minY - host.view.bounds.minY
+        let (frame, titleFrame, topDistance) = withLaidOutHostingController(host, size: size) {
+            let frame = streakView.convert(streakView.bounds, to: host.view)
+            return (frame, titleView.convert(titleView.bounds, to: host.view),
+                    frame.minY - host.view.bounds.minY)
+        }
         #else
         let host = NSHostingView(rootView: header)
         host.frame = CGRect(origin: .zero, size: host.fittingSize)
@@ -145,10 +145,10 @@ struct HomeGameCardFooterTests {
         #if canImport(UIKit)
         let host = UIHostingController(rootView: footer)
         let size = host.sizeThatFits(in: CGSize(width: width, height: 10_000))
-        host.view.frame = CGRect(origin: .zero, size: size)
-        host.view.layoutIfNeeded()
-        let statusFrame = statusView.convert(statusView.bounds, to: host.view)
-        let bottomDistance = host.view.bounds.maxY - statusFrame.maxY
+        let (statusFrame, bottomDistance) = withLaidOutHostingController(host, size: size) {
+            let frame = statusView.convert(statusView.bounds, to: host.view)
+            return (frame, host.view.bounds.maxY - frame.maxY)
+        }
         #else
         let host = NSHostingView(rootView: footer)
         let size = host.fittingSize

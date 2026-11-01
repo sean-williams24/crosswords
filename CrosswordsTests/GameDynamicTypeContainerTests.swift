@@ -83,7 +83,8 @@ struct GameDynamicTypeContainerTests {
         let host = UIHostingController(rootView:
             content
                 .environment(\.dynamicTypeSize, size)
-                .environment(\.accessibilityReduceMotion, true)
+                // Use SwiftUI's writable test override for the read-only system value.
+                .environment(\._accessibilityReduceMotion, true)
         )
         return host.sizeThatFits(in: CGSize(width: width, height: 10_000))
     }
@@ -92,7 +93,7 @@ struct GameDynamicTypeContainerTests {
         let host = UIHostingController(rootView:
             GameDynamicTypeContainer { content }
                 .environment(\.dynamicTypeSize, size)
-                .environment(\.accessibilityReduceMotion, true)
+                .environment(\._accessibilityReduceMotion, true)
         )
         return host.sizeThatFits(in: CGSize(width: 320, height: 10_000))
     }

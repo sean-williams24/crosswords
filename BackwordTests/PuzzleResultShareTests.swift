@@ -81,8 +81,10 @@ struct PuzzleResultShareTests {
         progress.startedAt = Date(timeIntervalSince1970: 1_800)
         progress.completedAt = Date(timeIntervalSince1970: TimeInterval(1_800 + seconds))
 
-        var rating = OverallRating()
-        rating.upsertWeeklyCrossword(score: 4, date: puzzle.date)
+        // Preserve this historical fixture: upsert trims dates outside the live window.
+        let rating = OverallRating(dailyScores: [
+            DailyScore(date: puzzle.date, dailyCrossword: 0, weeklyCrossword: 4, backword: 0)
+        ])
         var stats = UserStats()
         stats.history = [
             PuzzleResult(

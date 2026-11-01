@@ -80,13 +80,13 @@ struct CompletionSheetLayoutTests {
         let host = UIHostingController(rootView: content
             .environmentObject(OverallRatingService(rating: OverallRating()))
             .environmentObject(StoreService())
-            .environment(\.accessibilityReduceMotion, reduceMotion)
+            // SwiftUI exposes a writable override for tests; the system value is read-only.
+            .environment(\._accessibilityReduceMotion, reduceMotion)
             .environment(\.dynamicTypeSize, .large)
         )
-        host.view.frame = CGRect(x: 0, y: 0, width: 390, height: 800)
-        host.view.setNeedsLayout()
-        host.view.layoutIfNeeded()
-        return try #require(scrollView(in: host.view)).contentSize
+        return try withLaidOutHostingController(host, size: CGSize(width: 390, height: 800)) {
+            try #require(scrollView(in: host.view)).contentSize
+        }
     }
 
     private func scrollView(in view: UIView) -> UIScrollView? {

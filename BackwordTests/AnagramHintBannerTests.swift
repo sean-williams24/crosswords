@@ -20,7 +20,8 @@ struct AnagramHintBannerTests {
         let mode = AnagramHintBannerMode(isProUser: true)
 
         #expect(mode == .timePenalty)
-        #expect(mode.primaryButtonTitle == "Reveal letter · +30 seconds")
+        #expect(mode.primaryButtonTitle == "Reveal letter")
+        #expect(mode.subtitle == "Reveal one letter with a 30-second penalty.")
         #expect(!mode.showsAdFreeButton)
     }
 

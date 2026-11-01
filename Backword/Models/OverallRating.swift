@@ -357,13 +357,18 @@ struct OverallRating: Codable {
     private static func midwordEligibleDays(in range: (cutoff: String, today: String)) -> Int {
         guard range.today >= midwordLaunchDate else { return 0 }
         let first = max(range.cutoff, midwordLaunchDate)
+        // These strings are calendar dates. Use UTC for parsing and counting so
+        // a device's daylight-saving transition cannot remove an eligible day.
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
         let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = calendar
+        formatter.timeZone = calendar.timeZone
         formatter.dateFormat = "yyyy-MM-dd"
         guard let start = formatter.date(from: first),
               let end = formatter.date(from: range.today) else { return 0 }
-        return min(windowDays, max(0, formatter.calendar.dateComponents([.day], from: start, to: end).day ?? 0) + 1)
+        return min(windowDays, max(0, calendar.dateComponents([.day], from: start, to: end).day ?? 0) + 1)
     }
 
     static func anagramPossiblePoints(

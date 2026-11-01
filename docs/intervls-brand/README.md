@@ -36,6 +36,7 @@ Screen shortcuts by `import-icon.swift` above, after removing its unused alpha c
 | Export | Purpose |
 | --- | --- |
 | `intervls-light.svg` / `.pdf` | Cropped supplied logo on light surfaces |
+| `intervls-pro-stripe-902x700.png` | Stripe product image, matching the supplied Backword Pro reference dimensions |
 | `intervls-dark.svg` / `.pdf` | Cropped supplied logo on dark surfaces and share cards |
 | `social-cover-1640x624.png` | Social cover using the supplied dark logo |
 | `social-preview-1200x630.png` | Website link preview using the supplied dark logo |
@@ -57,3 +58,8 @@ The promotional tagline is **Free daily word games to challenge your mind**.
 Its blue matches the iOS Backword Home card in Dark Mode: opaque sRGB `#293364`.
 Add `--promotional-only` to regenerate only PNG promotional artwork and the
 website link preview while preserving the imported wordmark PDFs/SVGs.
+
+The Stripe image is a separate imagegen export with a white Intervls wordmark
+and a trailing gold PRO badge on a near-black background. It is ready for manual
+upload to Stripe; the brand renderer does not regenerate it. Its generation
+prompt is saved in `stripe-product-prompt.txt`.

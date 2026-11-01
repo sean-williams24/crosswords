@@ -173,6 +173,21 @@ struct OverallRatingTests {
 
     // MARK: maxPoints
 
+    @Test("Midword's mature maximum retains all 14 dates across daylight-saving changes",
+          arguments: ["Europe/London", "America/New_York", "Australia/Sydney"],
+          [(2026, 11, 2), (2026, 11, 9), (2027, 3, 29), (2027, 4, 5)])
+    func maximumAcrossDaylightSaving(timeZone: String, components: (Int, Int, Int)) throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = try #require(TimeZone(identifier: timeZone))
+        let now = try #require(calendar.date(from: DateComponents(
+            year: components.0, month: components.1, day: components.2, hour: 12
+        )))
+        let rating = OverallRating()
+
+        #expect(rating.maxPoints(isPro: false, now: now, calendar: calendar, firstAnagramRelease: nil) == 210)
+        #expect(rating.maxPoints(isPro: true, now: now, calendar: calendar, firstAnagramRelease: nil) == 220)
+    }
+
     private var midwordReleaseDays: Int {
         (0..<14).filter { dateString(offsetByDays: -$0) >= OverallRating.midwordLaunchDate }.count
     }

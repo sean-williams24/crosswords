@@ -695,7 +695,8 @@ The iOS game grid measures all game cards at the available column
 width and gives every game card the tallest measured height in both one- and
 two-column layouts. The full Archive card shares that height in two columns.
 Dynamic Type, loading, errors, and completed states can increase that shared
-height; smaller text or
+height, including when the current logo, cells, and footer exceed the minimum;
+smaller text or
 wider columns can reduce it again. Cards fill the proposed height only inside
 this grid, keeping centred branding and bottom-aligned footers. The compact
 archive upsell between Quick Crossword and Anagram retains its own height and
@@ -1367,6 +1368,15 @@ Do not insert or spring whole sections into the scroll view during that reveal:
 keeping the content height stable avoids layout jumps during presentation.
 Reduce Motion still shows the answer immediately.
 
+iOS layout tests override Reduce Motion with `\._accessibilityReduceMotion`.
+SwiftUI's `\.accessibilityReduceMotion` is read-only; keep the underscored writable
+override confined to test code.
+
+Layout tests that inspect placement callbacks, UIKit marker frames, or scroll
+views attach their hosting controller to a temporary window and complete layout
+before reading measurements. Detached hosting controllers can measure intrinsic
+sizes but do not reliably create or place their descendants.
+
 Anagram's iOS completion reveal plays the same light impact as Backword and
 Midword for each letter, including revealed give-up answers. Dismissing the sheet
 stops remaining reveal impacts; Reduce Motion skips these per-letter impacts
@@ -1683,6 +1693,10 @@ All services (`PuzzleService`, `WOTDService`, `BackwordService`, `OverallRatingS
 - Daily content flips at **local midnight**.
 - Weekly crossword flips at **local Sunday midnight**.
 - Date strings remain plain `yyyy-MM-dd` values and are used directly in Supabase `date` filters and cache keys.
+
+When counting rating-eligible days between plain date strings, parse and count
+with the same UTC Gregorian calendar. Mixing UTC parsing with a device-timezone
+calendar can lose a day across a daylight-saving change.
 
 This means US, Canada, Europe, and Australia each see the puzzle for their own local calendar day. Australian users no longer wait until UTC midnight reaches their morning.
 
