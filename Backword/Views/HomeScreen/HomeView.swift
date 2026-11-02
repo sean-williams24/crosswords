@@ -524,6 +524,7 @@ struct HomeView: View {
                 IntervlsLogo(frame: AppLayout.brandHomeLogoHeight)
                     .offset(x: logoVisible ? 0 : 120)
                     .opacity(logoVisible ? 1 : 0)
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 #if DEBUG
                     .onTapGesture(count: HomeNavigationDebugGesturePolicy.tapCount) {
                         showDebugSettings = true
