@@ -21,7 +21,7 @@ Backword is becoming Intervls.
 
 Same games, a new name, and a new home at intervls.com. The Backword game is staying Backword, alongside Midword, Anagram, Quick Crossword, and Pro Crossword.
 
-Play on the web? Sign in on the current Backword website to sync your history before moving. Keep the old website data in your browser until your history appears on Intervls.
+Play on the web? Sign in on the current Backword website before launch and check that your history has synced. On Intervls, sign in with that same Apple or Google account. Browser-only history and unsynced saves will start fresh on the new website.
 
 Your iOS saves and existing Pro subscription stay with the updated app. We’ll share the launch date here.
 
@@ -33,9 +33,7 @@ Free daily word games to challenge your mind. Play Backword, Midword, Anagram, a
 
 Play at https://intervls.com or update the existing app from the App Store. Your iOS saves and existing Pro subscription continue with the update.
 
-Moving from the old website? Open your old bookmark in the browser you used to play, sign in, and let us check your saves. Then sign in with the same Apple or Google account on Intervls.
-
-Need your old history? https://intervls.com/recover-history
+Moving from the old website? Your old links now take you to Intervls. Sign in with the same Apple or Google account to access history already synced to your account. Browser-only history and unsynced saves do not transfer to the new website.
 Help: support@intervls.com
 
 ## Support signature
@@ -47,9 +45,9 @@ Formerly Backword
 
 ## Missing-history reply
 
-Your old browser history may still be saved on the old website. On the same device and browser you used to play, open https://intervls.com/recover-history and check both old website addresses. Sign in there and finish “Sync and check my saves”. When your saves are confirmed, return to Intervls and sign in with the same provider and account.
+History already synced to your account is available when you sign in on Intervls with the same Apple or Google account. If you used Apple’s Hide My Email, continue using Apple to sign in. If cloud history is missing, contact support with the games and dates affected; do not send passwords or sign-in tokens.
 
-Please keep your old website data until the history appears. If you used Apple’s Hide My Email, continue using Apple to sign in. Settings and analytics choices start fresh on the new website.
+History saved only in the old browser, including unsynced saves, does not transfer to the new website. There is no self-service transfer or recovery screen. Settings and analytics choices also start fresh.
 
 For iOS, update the existing app rather than deleting it. If Pro is missing, use Restore Purchases for an App Store purchase, or sign in with the account linked to your existing subscription.
 

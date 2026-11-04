@@ -42,7 +42,7 @@ describe("Footer", () => {
       },
       {
         title: "Support",
-        links: [["Info", "/info"], ["Contact", "/contact"], ["Recover old history", "/recover-history"]]
+        links: [["Info", "/info"], ["Contact", "/contact"]]
       },
       {
         title: "Legal",
@@ -60,7 +60,7 @@ describe("Footer", () => {
 
     expect(within(footer).getAllByRole("heading", { level: 2 }).map((heading) => heading.textContent))
       .toEqual(groups.map(({ title }) => title));
-    expect(within(footer).getAllByRole("link")).toHaveLength(18);
+    expect(within(footer).getAllByRole("link")).toHaveLength(17);
     for (const { title, links } of groups) {
       const group = within(footer).getByRole("region", { name: title });
       expect(within(group).getByRole("heading", { name: title, level: 2 })).toBeInTheDocument();

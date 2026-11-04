@@ -29,6 +29,25 @@ describe("Backword website routes", () => {
     expect(screen.getByRole("navigation", { name: "Footer" })).toBeInTheDocument();
   });
 
+  it.each(["/move", "/recover-history"])("takes retired %s links home without changing browser saves", (route) => {
+    const key = "backword:web:progress:v1";
+    const saved = '{"old-save":{"schemaVersion":99}}';
+    localStorage.setItem(key, saved);
+    renderRoute(route);
+
+    expect(screen.getByRole("region", { name: "Games" })).toBeInTheDocument();
+    expect(screen.queryByText("Sync and check my saves")).not.toBeInTheDocument();
+    expect(localStorage.getItem(key)).toBe(saved);
+  });
+
+  it("keeps support accessible in the game menu without offering the retired history recovery", () => {
+    renderRoute("/");
+    fireEvent.click(screen.getByRole("button", { name: "Open game menu" }));
+
+    expect(screen.queryByRole("link", { name: "Recover old history" })).not.toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Contact" }).every((link) => link.getAttribute("href") === "/contact")).toBe(true);
+  });
+
   it("renders the playable Quick Crossword route", () => {
     renderRoute("/crossword");
 
@@ -86,9 +105,9 @@ describe("Backword website routes", () => {
     const footer = screen.getByRole("navigation", { name: "Footer" });
     const footerLinks = within(footer).getAllByRole("link");
     expect(footerLinks.map((link) => link.textContent)).toEqual(expect.arrayContaining([
-      "Home", "Player Profile", "Backword", "Midword", "Anagram", "Crossword", "Pro Crossword", "Archive", "Subscribe", "Contact", "Recover old history", "Privacy", "Privacy Choices", "Terms"
+      "Home", "Player Profile", "Backword", "Midword", "Anagram", "Crossword", "Pro Crossword", "Archive", "Subscribe", "Contact", "Privacy", "Privacy Choices", "Terms"
     ]));
-    expect(within(footer).getByRole("link", { name: "Recover old history" })).toHaveAttribute("href", "/recover-history");
+    expect(within(footer).queryByRole("link", { name: "Recover old history" })).not.toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: "Play" }).length).toBeGreaterThan(1);
     expect(screen.getByRole("button", { name: "Open game menu" })).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();

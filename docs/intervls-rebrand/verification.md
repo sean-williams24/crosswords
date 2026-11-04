@@ -1,5 +1,30 @@
 # Local verification — 29 October 2026
 
+## Simplified web launch — 4 November 2026
+
+- Replaced the cross-domain guest migration plan with direct Vercel domain
+  redirects to be enabled manually at launch. The existing apex-to-www Backword
+  redirect stays in place during preparation.
+- Removed the migration gate, recovery page/links, migration analytics, and local
+  HTTPS/localhost rehearsal tooling. Retired `/move` and `/recover-history` links
+  fall through to Home without clearing browser storage.
+- Kept normal account cloud sync, guest ownership protections, save keys, durable
+  upload queues, native callbacks, and purchase identities.
+- Updated release/support/App Review copy: only already-synced cloud history
+  follows the account; browser-only history and unsynced saves do not transfer.
+- All **81 focused tests passed across 12 files**, covering routes/navigation,
+  preview/indexing policy, launch copy, analytics, guest ownership, durable queues,
+  account-bound/paginated transport, AuthProvider, and the Pro page.
+- Application and tooling TypeScript checks (`tsc --noEmit`) and
+  `git diff --check` passed. These mocked/unit checks do not verify live accounts,
+  checkout, or domain redirects.
+- No production domains, DNS, dashboards, or backend settings changed by agents.
+  Stop any running rehearsal server with Ctrl-C. The earlier generated private
+  CA files stay ignored; administrator setup failed before hosts routing began.
+
+The earlier migration coordinator/rehearsal test results below describe retired
+code and are no longer launch requirements.
+
 ## Approved title and tagline update
 
 - Home uses `Intervls — Free daily word games` in the static HTML and after React navigation. Page-specific game titles remain intact.

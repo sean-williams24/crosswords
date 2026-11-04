@@ -10,7 +10,7 @@ See [local verification](verification.md) for the checks run and their limits.
 | --- | --- |
 | Overall iOS/web branding, account/paywall/legal/share copy | Implemented locally |
 | Backword, Midword, Anagram, Quick Crossword, Pro Crossword names | Retained |
-| Both-origin recovery page, all-game coordinator, durable queue and readback | Implemented and covered by focused tests |
+| Simplified web launch | Direct old-domain redirects at launch; browser-only history starts fresh; normal account sync retained |
 | Supplied light/dark wordmarks and wordmark promotional artwork | Integrated from Sean’s supplied originals; supplied IV-icon trial installed for iOS visual review |
 | App Store metadata, social announcements, support replies | Drafts prepared alongside this runbook |
 | App Store screenshots and website video/images | Awaiting fresh captures from the updated app; see `capture-manifest.json` |
@@ -20,7 +20,21 @@ See [local verification](verification.md) for the checks run and their limits.
 | Xcode focused tests, upgrade rehearsal, device/visual checks | Awaiting developer verification under AGENTS.md |
 | Commit, Apple submission, production release | Await review and completion of the gates below |
 
-The feature switches control migration/indexing and the optional notice. **They do not hide the new branding.** Keep this full change on a preview until the coordinated launch is ready. Prepare intervls.com against the reviewed preview/branch in the same Vercel project, while the existing Backword domains retain the existing production deployment. Do not promote this change just to display an advance notice.
+The feature switches control indexing and the optional notice. **They do not hide the new branding.** Keep this full change on a preview until the coordinated launch is ready. Prepare intervls.com against the reviewed preview/branch in the same Vercel project, while the existing Backword domains retain the existing production deployment. Do not promote this change just to display an advance notice.
+
+## Simplified web launch decision — 4 November 2026
+
+With nine known web users, the launch no longer includes a guest-history transfer
+or local migration rehearsal. Both Backword hostnames will redirect directly to
+Intervls at launch. History **already synced** to the existing Supabase account
+remains available after signing into that same account. Browser-only guest
+history and unsynced account saves start fresh on the new domain. Settings,
+sessions, cached puzzles, and consent also start fresh. The iOS app's local data
+and existing purchase/account identities remain compatible.
+
+There is no recovery-screen promise. Before launch, players can use normal
+sign-in and sync on the current Backword website. Account-history restoration,
+Apple/Google sign-in, Pro access, and payment checks remain release gates.
 
 ## 1. Confirm names, assets, support, and access
 
@@ -37,12 +51,12 @@ Use the existing Vercel project and Supabase backend. Do not create another app,
 
 1. Deploy the reviewed branch as a preview with both rebrand switches false. Assign `intervls.com` and `www.intervls.com` to that preview/branch using Vercel's domain settings; leave the old domains on their existing production deployment. Use the project-specific A/CNAME records Vercel supplies, without replacing unrelated mail/TXT records or nameservers.
 2. Verify HTTPS, `/contact`, `/privacy`, `/privacy-choices`, `/terms`, static images, and `/app-ads.txt` on intervls.com. The app reviewer must be able to open support/legal URLs. The new site's HTML stays `noindex` until launch.
-3. Check that `www.intervls.com` redirects to the apex. **Do not configure a Vercel domain-level redirect for either Backword hostname.** Such redirects would bypass browser saves and auth callbacks.
-4. Retain old-domain DNS, TLS, JavaScript/fonts/images, `/move`, and `/auth/callback` indefinitely. Do not merge apex/www origins before their local saves have been inspected.
+3. Check that `www.intervls.com` redirects to the apex. Keep the existing `playbackword.com` → `www.playbackword.com` redirect during preparation.
+4. Keep the old-domain registrations, DNS, and TLS. At launch, change both Backword hostnames to direct permanent redirects to Intervls using the domain settings described in section 5. No local migration rehearsal is needed.
 
 ### Google / Apple / Supabase
 
-| Service | Prepare before launch | Keep for recovery and older iOS versions |
+| Service | Prepare before launch | Preserve compatibility |
 | --- | --- | --- |
 | Google Web OAuth client | Add exact JavaScript origin `https://intervls.com`; update consent brand/logo, homepage, privacy URL, support details, and verify the new domain if requested | `https://www.playbackword.com`, `https://playbackword.com`, existing native client and development/test origins |
 | Apple Services ID | Update description and website-domain configuration on the existing Services ID; retain its primary App ID association | Existing Services ID, native App ID, keys, and actual Supabase provider return URL |
@@ -69,16 +83,23 @@ Update the existing Stripe product names, business website/support details, and 
 
 Run only focused affected tests. Agents may run the web unit tests and static checks. The developer handles Xcode tests, app builds, simulator/device review, and capture under the repository instructions.
 
-### Web / migration rehearsal
+### Web / account and launch checks
 
-- [ ] On both old HTTPS origins, prepare histories spanning all five games: partial, completed, failed/gave-up, Archive play, hints, historical scores, and streaks. Include signed-in caches and queued uploads.
-- [ ] Open an old Home/game/archive/profile bookmark with the launch-enabled preview. The old origin must display the migration check before leaving.
-- [ ] Sign in using Apple, then repeat with a separate Google test account. Check per-game verified states, cross-device conflicts, successful readback, and restored Pro access.
-- [ ] Disconnect during upload/readback, reload, cancel sign-in, switch accounts, and retry. Failed records must stay local; another account must not receive a claimed guest batch.
-- [ ] Edit in another tab during sync, including an earlier game while a later game uploads. Continuation must remain blocked until the full current state is verified. Old app/tab versions may still write: close/reload them and recheck.
-- [ ] Open intervls.com, sign in with the same provider/account, and compare history, scores, ratings, and streaks. Settings, cached puzzles, and analytics consent start independently on the new origin.
-- [ ] Verify the explicit “continue without moving history” choice preserves the old saves and that `/recover-history` remains accessible in the mobile menu as well as the footer.
-- [ ] Verify long histories beyond one backend page load fully, and pending uploads survive another tab's writes. No OAuth tokens/codes/session are copied into the destination URL.
+Use the Intervls preview with the same existing backend. No local HTTPS, hosts
+file changes, or Safari migration profile is required.
+
+- [ ] Sign in on Intervls with Apple and Google. Confirm sign-out and re-sign-in work in a private window without a Vercel login prompt.
+- [ ] Use an existing account with known cloud history. Compare its games, scores, ratings, and streaks on Intervls. Check Home, dated games, Archive, and Player Profile; use the same provider/account.
+- [ ] Check guest gameplay on Intervls. Explain in launch/support copy that browser-only Backword history and unsynced saves do not transfer.
+- [ ] Confirm an existing Apple Pro account stays Pro without offering a second subscription. Check Stripe Pro access with its existing account.
+- [ ] With a separate non-Pro test account, check Stripe Checkout, cancellation/success return links, and subscription management in the appropriate test environment.
+- [ ] Confirm support/legal pages, static images, and `/app-ads.txt` load publicly; keep the preview noindex.
+- [ ] After the launch redirects are enabled, test both old hostnames at `/`, a dated game, `/contact`, `/privacy`, and `/app-ads.txt`. Confirm they reach the corresponding Intervls URL without a redirect loop. Sign in afresh on Intervls rather than reusing an old callback URL.
+
+The old migration/recovery screens and local rehearsal commands have been removed.
+Stop a running rehearsal terminal with Ctrl-C. The failed administrator setup did
+not install a hosts-file routing block; generated local certificate files remain
+ignored in `web/.rehearsal/` and are not required by this release.
 
 ### iOS / purchase checks — developer
 
@@ -106,18 +127,30 @@ Advance notice can be posted using `social-and-support-copy.md` while Apple revi
 
 ## 5. Coordinated launch
 
-1. Confirm Apple approval, completed captures, brand approval, email delivery, and successful both-domain auth/migration/payment rehearsal.
-2. Promote the reviewed Vercel release to production with `VITE_REBRAND_LAUNCH_ENABLED=true` and `VITE_REBRAND_NOTICE_ENABLED=false`. Vite embeds these at build time; changing dashboard values requires a fresh deployment. Ensure the old and new domains all use that release; retain only the explicit www.intervls.com and old informational-page redirects supplied in `web/vercel.json`.
-3. Update Supabase Site URL and Checkout return origin to `https://intervls.com`; keep legacy auth origins/callbacks. Confirm callbacks, old dated links, and app-ads.txt again.
+1. Confirm Apple approval, completed captures, brand approval, email delivery, and successful new-domain sign-in, cloud-history, and payment checks.
+2. Build and promote the reviewed Vercel release to production with `VITE_REBRAND_LAUNCH_ENABLED=true` and `VITE_REBRAND_NOTICE_ENABLED=false`. Vite embeds these at build time; changing dashboard values requires a fresh deployment. Move `intervls.com` and `www.intervls.com` from the preview branch to Production and verify the new site publicly before redirecting old players.
+3. Update Supabase Site URL, `WEB_ORIGIN`, and `WEB_CHECKOUT_RETURN_ORIGIN` to `https://intervls.com`; retain existing account/provider identifiers and the explicit Checkout allowlist. In Vercel **Project → Settings → Domains**, edit **each** `playbackword.com` and `www.playbackword.com`: select **Redirect to Another Domain**, choose **308 Permanent Redirect**, target **intervls.com**, and save. Replace the apex's existing www redirect so both old hostnames go directly to Intervls. Verify dated paths and campaign query strings are preserved. Keep `www.intervls.com` redirecting to the apex. Browser sessions are origin-local: users sign in again on Intervls. Test a fresh Apple/Google flow there and native `backword://login-callback`; retain existing provider callback/allowlist entries for compatibility, but do not rely on old web callbacks once the domain redirects are enabled.
 4. Release the approved iOS version manually. Allow Apple's availability window; confirm the renamed listing is visible before the social launch announcement.
 5. Rename existing social profiles, apply approved assets/bios/links and contact fields, then update the website's social profile URLs to the actually secured usernames. Refresh active ad creatives/landing pages, QR codes, and campaign links while retaining existing campaign identifiers where continuity is useful.
 6. Update AdMob display/consent details and linked website, Firebase/GA4 display and website settings, Google OAuth consent branding, and Apple Ads creatives/campaign display names. Keep service IDs, app registrations, and historical analytics.
-7. Verify the new Search Console property, submit `https://intervls.com/sitemap.xml`, inspect canonical URLs, and monitor indexing. The old game/Home pages remain migration bridges with noindex; **do not submit Change of Address or blanket-redirect those pages** under this save-first policy.
+7. Verify the new Search Console property, submit `https://intervls.com/sitemap.xml`, inspect canonical URLs, and monitor indexing. The old domains now permanently redirect to the equivalent new URLs; keep those redirects active.
 
-## 6. Monitor, recover, and retain
+## 6. Monitor and retain
 
-For the first 48 hours, check both domains daily for sign-in errors, per-game migration failures, pending queue recovery, missing history/Pro reports, Stripe return issues, and ad verification. Check weekly during the first month, then as part of routine maintenance. For consenting users, GA4's `domain_migration` event reports only `started`, `verified`, `failed`, and `continued_without_history`; it contains no account IDs or puzzle payloads. Consent-free users remain untracked, so support/rehearsal checks are still necessary.
+For the first 48 hours, check sign-in, missing cloud history/Pro reports, Stripe
+returns, old-domain redirects, and ad verification daily. Check weekly during the
+first month, then as part of routine maintenance. Missing-history replies must
+distinguish cloud-synced history from browser-only/unsynced records; do not direct
+players to a recovery screen or promise that local history transferred.
 
-Keep old-domain registrations, TLS, callbacks, migration code/static dependencies, and the old support inbox available indefinitely. Do not clear a player's old storage until their new-domain history is confirmed. Keep a “formerly Backword” explanation in active support/social surfaces for at least 90 days.
+Keep both old-domain registrations, DNS, TLS, permanent redirects, and the old
+support inbox active. Keep a “formerly Backword” explanation in active
+support/social surfaces for at least 90 days.
 
-If authentication, sync, or payment checks fail, hold launch or revert to the last validated deployment/configuration. Choose a known-good version that understands both historical queue arrays and the new per-write queue entries; retain stored entries during rollback. Do not erase saves, rewrite accounts, rotate product IDs, or run database rollback migrations for this rename. The iOS release cannot be instantaneously rolled back like the website, so retain backend compatibility with both old and renamed app versions.
+If authentication, account sync, or payment checks fail, hold launch or restore
+the recorded Vercel deployment/domain settings and backend origin settings.
+Choose a known-good version that understands both historical queue arrays and
+the new per-write queue entries. Retain stored entries during rollback. Do not
+erase saves, rewrite accounts, rotate product IDs, or run database rollback
+migrations for this rename. An iOS release cannot be instantly rolled back like
+the website, so retain backend compatibility with both app versions.

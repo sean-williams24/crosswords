@@ -78,6 +78,16 @@ describe("Intervls release artifacts", () => {
     expect(metadata.description).toContain("Backword: guess");
     expect(metadata.description).toContain("Midword: find");
   });
+
+  it("explains the guest-history reset consistently without promising a recovery flow", () => {
+    const metadata = JSON.parse(read("docs/intervls-rebrand/app-store-metadata.en-GB.json").toString());
+    expect(metadata.review_notes).toContain("browser-only history and unsynced saves do not transfer");
+    expect(metadata.review_notes).toContain("iOS update retains existing local data");
+    const support = read("docs/intervls-rebrand/social-and-support-copy.md").toString();
+    expect(support).toContain("History already synced to your account");
+    expect(support).toContain("There is no self-service transfer or recovery screen.");
+    expect(support).not.toMatch(/recover-history|Sync and check my saves/);
+  });
   it.each([
     ["Backword/Resources/Assets.xcassets/AppIcon.appiconset/intervls-icon.png", 1024, 1024],
     ["web/public/brand/intervls-icon.png", 1024, 1024],

@@ -37,8 +37,7 @@ export function Footer() {
       title: "Support",
       links: [
         { label: "Info", to: "/info" },
-        { label: "Contact", to: "/contact" },
-        { label: "Recover old history", to: "/recover-history" }
+        { label: "Contact", to: "/contact" }
       ]
     },
     {

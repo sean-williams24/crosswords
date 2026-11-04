@@ -4,7 +4,7 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 ---
 
-## Intervls Rebrand and Domain Recovery
+## Intervls Rebrand and Domain Launch
 
 The umbrella app/site is `Intervls` and the subscription is `Intervls Pro`.
 Capitalize the brand in display names, copy, metadata, and accessibility labels.
@@ -55,37 +55,37 @@ customers/prices/metadata keys, local save paths/keys, Keychain identifiers, and
 also remain recognised by the renamed UI. Do not perform a global Backword
 replacement across technical identifiers or game names.
 
-Both old HTTPS origins retain a migration bridge indefinitely after launch.
-Do not apply a domain-level redirect: local browser history cannot be read from
-the new origin. Only public informational paths have permanent server redirects.
-Keep callbacks and static dependencies working on each old origin. Settings,
-puzzle caches, sign-in sessions, and consent are origin-local and are not copied.
-The new site's recovery route links to each original origin without auth tokens.
+The web launch uses direct permanent redirects from both Backword hostnames to
+`https://intervls.com`, configured in Vercel's domain settings only at launch.
+Keep the old hostnames on their existing production deployment during preview.
+Preserve paths for old bookmarks. The repository provides the new-domain www
+canonical redirect; it does not activate old-domain redirects during preparation.
 
-The coordinator reconciles all five games, account caches, and pending uploads
-with the same account; guest ownership remains binding after interruption. It
-uses server readback and a final whole-browser recheck before allowing a move.
-A changed account, unreadable save, failed upload, missing readback, or concurrent
-edit blocks verified continuation. Players can explicitly continue without
-moving history while retaining the old records. Normal account cloud reads are
-paginated so long histories also restore on the new origin.
+This deliberately drops cross-domain browser-history migration for the small web
+user base. There is no migration gate, history recovery page, or local routing
+rehearsal. History already synced to the existing Supabase account is available
+on Intervls after signing into that same account. Browser-only guest history and
+unsynced account saves do not transfer. Neither do settings, sessions, puzzle
+caches, or consent. Do not promise recovery of old-origin browser data after the
+redirect. Normal guest-to-account sync, account ownership, and save keys remain
+compatible; the iOS upgrade continues to retain local data.
 
 New queued writes use unique `backword:web:sync:entry:v2:<account>:<entry>` keys,
 while legacy queue arrays remain readable. Acknowledgement removes only the
 uploaded entry; concurrent writers cannot be erased by replacing a queue
-snapshot. Uploads and migration reads bind their Authorization header to the
+snapshot. Uploads and cloud reads bind their Authorization header to the
 checked account session. Web Locks serialize cooperating tabs where supported.
 Preserve both formats during rollback.
 
-`VITE_REBRAND_LAUNCH_ENABLED` controls the legacy bridge and new-site indexing;
+`VITE_REBRAND_LAUNCH_ENABLED` controls new-site indexing;
 `VITE_REBRAND_NOTICE_ENABLED` controls an optional advance notice. Both default
 off. They do not hide updated branding: keep the full change in preview until
-release. Preview/new prelaunch pages and old bridges remain noindex. Checkout
+release. Preview/new prelaunch pages and legacy origins remain noindex. Checkout
 uses an explicit `WEB_ALLOWED_ORIGINS` list independently from the configured
 `WEB_CHECKOUT_RETURN_ORIGIN`; historical `WEB_ORIGIN` is a compatible fallback.
 
 Full launch gates, dashboard settings, capture requirements, copy, and the
-retention/rollback policy live in `docs/intervls-rebrand/README.md`. Fresh app
+redirect/rollback policy live in `docs/intervls-rebrand/README.md`. Fresh app
 captures and developer Xcode/upgrade verification are required before release.
 
 ---

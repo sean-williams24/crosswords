@@ -137,6 +137,8 @@ third-party SDK configuration changes.
 
 ## Rebrand switches
 
-`VITE_REBRAND_LAUNCH_ENABLED=false` keeps preparation noindex and leaves the legacy game routes playable. Enable it only on the coordinated launch deployment to show the old-domain migration bridge. `VITE_REBRAND_NOTICE_ENABLED=false` is an optional advance-notice switch. Vite embeds both at build time. The renamed UI itself is not gated by these switches.
+`VITE_REBRAND_LAUNCH_ENABLED=false` keeps preparation noindex. Enable it on the coordinated production launch deployment to allow indexing. `VITE_REBRAND_NOTICE_ENABLED=false` controls an optional advance notice on the old domain. Vite embeds both at build time. The renamed UI itself is not gated by these switches.
 
-`/move` on either old HTTPS origin verifies all five games and the current account's queued saves. `/recover-history` on Intervls links back to both original origins. Guest progress is only removed after verified server readback; an explicit continue-without-history action retains it. The existing browser storage keys remain stable. Checkout origin configuration belongs in Supabase, not Vercel/browser variables.
+At launch, set both Backword domains to redirect directly to `https://intervls.com` in Vercel's domain settings, preserving paths. Until then, keep them on the existing production deployment. The repository handles `www.intervls.com` → `intervls.com`; it does not switch the old domains early.
+
+There is no cross-domain guest-history transfer or recovery screen. History already synced to the existing Supabase account remains available after signing in with the same account on Intervls. Browser-only guest history, unsynced account saves, settings, sessions, and consent do not transfer across domains. Existing storage keys, account ownership protections, and durable sync queues remain compatible. Checkout origin configuration belongs in Supabase, not Vercel/browser variables.

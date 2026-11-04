@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
   appStoreClick,
-  domainMigration,
   contentLoadFailed,
   durationBand,
   gameCompleted,
@@ -89,10 +88,4 @@ describe("analytics event schema", () => {
     ]);
     expect(JSON.stringify(events)).not.toMatch(/customer|checkout_id|email|payment|return_to/i);
   });
-});
-
-
-it("reports only aggregate migration outcomes", () => {
-  expect(domainMigration("verified")).toEqual({ name: "domain_migration", parameters: { platform: "web", outcome: "verified" } });
-  expect(Object.keys(domainMigration("failed").parameters)).toEqual(["platform", "outcome"]);
 });

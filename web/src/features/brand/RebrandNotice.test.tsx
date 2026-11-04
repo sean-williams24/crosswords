@@ -7,10 +7,10 @@ import { RebrandNotice } from "./RebrandNotice";
 function show(path: string) { render(<MemoryRouter initialEntries={[path]}><RebrandNotice /></MemoryRouter>); }
 beforeEach(() => { settings.launched = false; settings.notice = true; settings.legacy = true; });
 describe("advance rebrand notice", () => {
-  it("offers a save check that retains the current dated game destination", () => {
+  it("explains the guest-history reset and offers normal account sign-in", () => {
     show("/backword/2026-10-29");
-    expect(screen.getByText("Backword is becoming Intervls. Keep your history ready for the move.")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Check and sync my saves" })).toHaveAttribute("href", "/move?return_to=%2Fbackword%2F2026-10-29");
+    expect(screen.getByText(/Browser-only history will start fresh on Intervls/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Sign in to sync" })).toHaveAttribute("href", "/sign-in");
   });
   it("keeps the notice out of authentication callbacks", () => {
     show("/auth/callback?code=secret"); expect(screen.queryByRole("complementary")).not.toBeInTheDocument();
