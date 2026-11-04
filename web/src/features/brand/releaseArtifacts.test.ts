@@ -5,6 +5,7 @@ import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { brand } from "./brand";
 import { inflateSync } from "node:zlib";
+import { createHash } from "node:crypto";
 
 const root = resolve(process.cwd(), "..");
 function read(path: string) { return readFileSync(resolve(root, path)); }
@@ -104,11 +105,28 @@ describe("Intervls release artifacts", () => {
     expect(png.readUInt32BE(20)).toBe(height);
     expect(png[25]).toBe(2); // Truecolour RGB, without an alpha channel.
   });
-  it("keeps fresh captures explicitly pending and leaves historical exports intact", () => {
+  it("records Home and iPad as ready for review and keeps the other captures pending", () => {
     const manifest = JSON.parse(read("docs/intervls-rebrand/capture-manifest.json").toString());
-    expect(manifest.status).toBe("blocked_on_developer_captures");
+    expect(manifest.status).toBe("partially_refreshed_pending_review");
     expect(manifest.screenshots).toHaveLength(9);
-    expect(manifest.screenshots.every((image: { status: string }) => image.status === "awaiting_fresh_capture")).toBe(true);
+    expect(manifest.screenshots.find((image: { key: string }) => image.key === "home").status).toBe("ready_for_review");
+    expect(manifest.screenshots.find((image: { key: string }) => image.key === "ipad").status).toBe("ready_for_review");
+    expect(manifest.screenshots.filter((image: { key: string }) => !["home", "ipad"].includes(image.key))
+      .every((image: { status: string }) => image.status === "awaiting_fresh_capture")).toBe(true);
+    expect(manifest.website_assets).toContain("web/public/screenshots/home.png");
+    expect(manifest.website_assets).not.toContain("web/public/screenshots/home.mp4");
+  });
+  it.each(["home", "ipad"])("supplies refreshed %s artwork at its declared size with its source preserved", (key) => {
+    const manifest = JSON.parse(read("docs/intervls-rebrand/capture-manifest.json").toString());
+    const image = manifest.screenshots.find((entry: { key: string }) => entry.key === key);
+    const exported = read(`${manifest.release_root}/${image.file}`);
+    expect(exported.subarray(1, 4).toString()).toBe("PNG");
+    expect(exported.readUInt32BE(16)).toBe(image.width);
+    expect(exported.readUInt32BE(20)).toBe(image.height);
+    expect(exported[25]).toBe(2);
+    expect(exported.equals(read(`${manifest.release_root}/generated/${key}.png`))).toBe(true);
+    expect(createHash("sha256").update(read(`${manifest.release_root}/${image.source}`)).digest("hex"))
+      .toBe(image.source_sha256);
   });
   it("uses matching current app icons on iOS and the web and preserves the earlier draft", () => {
     const directory = "Backword/Resources/Assets.xcassets/AppIcon.appiconset";

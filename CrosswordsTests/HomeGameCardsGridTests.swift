@@ -21,7 +21,7 @@ struct HomeGameCardsGridTests {
                     Button {} label: {
                         HomeGameCardContent(
                             minimumHeight: AppLayout.cardHeightLarge,
-                            identityPosition: index == 0 ? .top : .center
+                            identityPosition: index == 0 ? .aboveFooter : .center
                         ) {
                             Text(index == 1 || index == 4 ? "QUICK\nCROSSWORD" : "ANAGRAM")
                                 .font(AppFont.clueLabel(20))

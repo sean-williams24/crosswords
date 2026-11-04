@@ -1,5 +1,5 @@
 {
-  "status": "blocked_on_developer_captures",
+  "status": "partially_refreshed_pending_review",
   "release_root": "output/app-store/intervls",
   "screenshots": [
     {
@@ -36,7 +36,9 @@
       "width": 1206,
       "height": 2622,
       "source": "sources/home.png",
-      "status": "awaiting_fresh_capture"
+      "status": "ready_for_review",
+      "captured_at": "2026-11-04",
+      "source_sha256": "e513960a45961cce58a887196ffb11edb7f28594ce945e06d146c9866ee14af4"
     },
     {
       "key": "ipad",
@@ -45,7 +47,9 @@
       "width": 2064,
       "height": 2752,
       "source": "sources/ipad.png",
-      "status": "awaiting_fresh_capture"
+      "status": "ready_for_review",
+      "captured_at": "2026-11-04",
+      "source_sha256": "5ac0c7df27b382c95452ef21d35c6ea35bb6e8b74a2ac873b01e40b6bf1d8574"
     },
     {
       "key": "anagram",
@@ -86,7 +90,6 @@
   ],
   "website_assets": [
     "web/public/screenshots/home.png",
-    "web/public/screenshots/home.mp4",
     "web/public/screenshots/backword-game.png",
     "web/public/screenshots/crossword.png",
     "web/public/screenshots/crossword-weekly.png"

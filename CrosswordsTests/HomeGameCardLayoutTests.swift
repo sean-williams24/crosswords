@@ -51,7 +51,7 @@ struct HomeGameCardLayoutTests {
         let frames = HomeGameCardLayout.frames(
             width: 280, minimumHeight: 120,
             heights: [.header: 32, .identity: AppLayout.homeCardLogoHeight, .accessory: AppLayout.homeCardLetterCellSize, .details: 32],
-            spacing: 4, identityPosition: .top
+            spacing: 4, identityPosition: .aboveFooter
         )
         #expect(frames.size.height == 128)
         #expect(frames.identity.minY == 0)
@@ -190,7 +190,7 @@ struct HomeGameCardLayoutTests {
         } header: {
             Color.clear.frame(height: 28)
         }
-        let completed = HomeGameCardContent(minimumHeight: 144, identityPosition: .top, spacing: 4) {
+        let completed = HomeGameCardContent(minimumHeight: 144, identityPosition: .aboveFooter, spacing: 4) {
             Color.clear.frame(height: AppLayout.homeCardLogoHeight)
         } details: {
             Color.clear.frame(height: 32)

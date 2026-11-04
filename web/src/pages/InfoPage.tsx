@@ -13,7 +13,7 @@ export function InfoPage() {
         headingLevel="h1"
         screenshotAlt="Intervls home screen"
         screenshotPosition="right"
-        screenshotSrc="/screenshots/home.mp4"
+        screenshotSrc="/screenshots/home.png"
         screenshotSize="compact"
         spacing="compact"
       >

@@ -36,7 +36,7 @@ struct BackwordCard: View {
     private var cardContainer: some View {
         HomeGameCardContent(
             minimumHeight: appLayout.cardHeight,
-            identityPosition: progress?.isComplete == true ? .top : .center,
+            identityPosition: progress?.isComplete == true ? .aboveFooter : .center,
             spacing: AnagramHomeCardLayout.identitySpacing
         ) {
             BackwordLogo(frame: AppLayout.homeCardLogoHeight, forceDark: true)

@@ -722,8 +722,10 @@ drawn inside its bounds, preserving the card dimensions. On wider screens,
 Word of the Day follows the grid.
 
 On web and iOS, each game's main logo or title is centred horizontally and
-vertically within its Home card. Completed iOS Backword keeps its logo at the
-top centre above the revealed word, matching the compact completed layout.
+vertically within its Home card. Completed iOS Backword centres its logo and
+revealed word together in the space above the footer, independently of the
+top-right streak. Taller iPad and shared grid cards split extra space evenly
+above and below this group; compact iPhone cards retain their existing fit.
 All five game cards show their own positive current streak at the top-right;
 zero streaks are hidden. Web badges share `HomeGameStreak`: a compact 26px
 pill, bold 11px count, Lucide's outline Flame SVG, and subtle tinted background.
@@ -752,7 +754,7 @@ overlap. Quick Crossword's `9×9` and Pro Crossword's `13×13` sit beneath
 their titles in the same identity group, centred as one view within the card.
 Crossword groups use the available space between the top streak and bottom
 status without adding extra row gaps, retaining the compact card height.
-Backword's completed word stays below its top-centred logo. The iOS Backword
+Backword's completed word stays below its logo in that centred group. The iOS Backword
 Home logo uses a 56-point base height, with 32-point letter cells and 4-point content gaps
 to retain the compact completed card height.
 Letter spacing is balanced at title edges, and title lines contain no trailing spaces.
@@ -839,6 +841,10 @@ explicit user choices; System applies no preferred colour scheme so iOS follows
 the device setting.
 
 ## Website Appearance
+
+The Info page's Home preview uses the current app screenshot at
+`web/public/screenshots/home.png` inside the shared `PhoneMockup` bezel, matching
+the game previews below it. It is a static image rather than an autoplay video.
 
 The website mirrors the iOS Light, Dark, and System choices with a
 browser-local `backword:web:theme:v1` preference. It is never account-synced.

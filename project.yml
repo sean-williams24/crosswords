@@ -53,6 +53,7 @@ targets:
       - path: CrosswordsTests/PreGameAdServiceTests.swift
       - path: CrosswordsTests/DeferredAdConsentTests.swift
       - path: CrosswordsTests/AnalyticsStartupServiceTests.swift
+      - path: CrosswordsTests/CompletedBackwordCardLayoutTests.swift
     dependencies:
       - target: Backword
     settings:

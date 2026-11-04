@@ -1,0 +1,171 @@
+{
+  "color_checks": [
+    {
+      "export_point": [
+        403,
+        571
+      ],
+      "export_srgb": [
+        25,
+        26,
+        26
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        200,
+        70
+      ],
+      "source_srgb": [
+        25,
+        26,
+        26
+      ]
+    },
+    {
+      "export_point": [
+        358,
+        896
+      ],
+      "export_srgb": [
+        42,
+        52,
+        105
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        140,
+        500
+      ],
+      "source_srgb": [
+        42,
+        52,
+        105
+      ]
+    },
+    {
+      "export_point": [
+        1098,
+        896
+      ],
+      "export_srgb": [
+        41,
+        56,
+        77
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        1120,
+        500
+      ],
+      "source_srgb": [
+        41,
+        56,
+        77
+      ]
+    },
+    {
+      "export_point": [
+        358,
+        1160
+      ],
+      "export_srgb": [
+        247,
+        111,
+        10
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        140,
+        850
+      ],
+      "source_srgb": [
+        247,
+        111,
+        10
+      ]
+    },
+    {
+      "export_point": [
+        1098,
+        1160
+      ],
+      "export_srgb": [
+        88,
+        158,
+        103
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        1120,
+        850
+      ],
+      "source_srgb": [
+        88,
+        158,
+        103
+      ]
+    },
+    {
+      "export_point": [
+        343,
+        1803
+      ],
+      "export_srgb": [
+        26,
+        26,
+        26
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        120,
+        1700
+      ],
+      "source_srgb": [
+        26,
+        26,
+        26
+      ]
+    },
+    {
+      "export_point": [
+        1537,
+        2521
+      ],
+      "export_srgb": [
+        10,
+        10,
+        11
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        1700,
+        2650
+      ],
+      "source_srgb": [
+        10,
+        10,
+        11
+      ]
+    }
+  ],
+  "headline_center_target_y": 219,
+  "headline_center_y": 219.5,
+  "height": 2752,
+  "outside_screen_and_headline_changed_pixels": 0,
+  "screen_scale": 0.7558139534883721,
+  "simulator_handle_removed": true,
+  "source_height": 2752,
+  "source_width": 2064,
+  "verification": "passed",
+  "width": 2064,
+  "date": "2026-11-04",
+  "source_sha256": "5ac0c7df27b382c95452ef21d35c6ea35bb6e8b74a2ac873b01e40b6bf1d8574",
+  "export_sha256": "19ee589611bd41e1b1a75fbf5369d89f38ce0130ab93f9a066ecac26d7cdf1d1",
+  "source_bytes_preserved": true,
+  "master_matches_export": true,
+  "export_has_alpha": false,
+  "export_profile": "sRGB IEC61966-2.1",
+  "visual_review": "passed",
+  "headline": "Free daily word games to challenge your mind",
+  "base_renderer_sha256": "8414c489f40f1e92e78937d70ed063b1db7ed573545ccf118d4bd76f0762f083"
+}

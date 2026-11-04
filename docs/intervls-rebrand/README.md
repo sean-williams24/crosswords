@@ -90,7 +90,11 @@ file changes, or Safari migration profile is required.
 
 - [ ] Sign in on Intervls with Apple and Google. Confirm sign-out and re-sign-in work in a private window without a Vercel login prompt.
 - [ ] Use an existing account with known cloud history. Compare its games, scores, ratings, and streaks on Intervls. Check Home, dated games, Archive, and Player Profile; use the same provider/account.
-- [ ] Check guest gameplay on Intervls. Explain in launch/support copy that browser-only Backword history and unsynced saves do not transfer.
+- [ ] Check guest saves while signed out on Intervls. In each game, make a saved action, refresh the same tab, and check it remains:
+  - Backword / Midword: submit a valid guess and confirm it appears in the guess history. Letters merely typed into the answer box are an unsaved draft.
+  - Anagram: press Start, then place at least one tile. The arrangement and running game should restore.
+  - Quick Crossword: enter at least one grid letter. It should restore without a separate Submit action.
+  - Keep the same origin and browser session throughout. Explain in launch/support copy that browser-only Backword history and unsynced saves do not transfer.
 - [ ] Confirm an existing Apple Pro account stays Pro without offering a second subscription. Check Stripe Pro access with its existing account.
 - [ ] With a separate non-Pro test account, check Stripe Checkout, cancellation/success return links, and subscription management in the appropriate test environment.
 - [ ] Confirm support/legal pages, static images, and `/app-ads.txt` load publicly; keep the preview noindex.

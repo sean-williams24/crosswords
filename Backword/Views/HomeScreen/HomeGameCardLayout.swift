@@ -7,7 +7,7 @@ struct HomeGameCardLayout: Layout {
     }
 
     enum IdentityPosition {
-        case center, top
+        case center, aboveFooter
     }
 
     struct RegionKey: LayoutValueKey {
@@ -55,10 +55,10 @@ struct HomeGameCardLayout: Layout {
             let headerInset = headerHeight > 0 ? headerHeight + spacing : 0
             height = max(minimumHeight, brandingHeight + 2 * max(headerInset, footerInset))
             identityY = (height - brandingHeight) / 2
-        case .top:
-            // Completed Backword keeps its logo above the cells, beside the streak.
+        case .aboveFooter:
+            // Centre completed branding in the space above the footer, beside the streak.
             height = max(minimumHeight, max(headerHeight, brandingHeight) + footerInset)
-            identityY = 0
+            identityY = (height - footerInset - brandingHeight) / 2
         }
         return Frames(
             header: CGRect(x: 0, y: 0, width: width, height: headerHeight),

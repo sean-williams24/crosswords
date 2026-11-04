@@ -206,6 +206,7 @@
 		B77DC0200000000000000001 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */; };
 		B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */; };
 		B77DC0400000000000000001 /* ../CrosswordsTests/HomeGameCardContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0400000000000000002 /* ../CrosswordsTests/HomeGameCardContentTests.swift */; };
+		C04D00010000000000000001 /* ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D00020000000000000001 /* ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift */; };
 		B77DC0500000000000000001 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */; };
 		B77DC0600000000000000001 /* ../CrosswordsTests/HomeGameCardFooterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0600000000000000002 /* ../CrosswordsTests/HomeGameCardFooterTests.swift */; };
 		B77DC0700000000000000001 /* ../CrosswordsTests/BackwordInstructionColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */; };
@@ -463,6 +464,7 @@
 		B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/GameDynamicTypeContainerTests.swift; sourceTree = "<group>"; };
 		B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/LetterRowSizingTests.swift; sourceTree = "<group>"; };
 		B77DC0400000000000000002 /* ../CrosswordsTests/HomeGameCardContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardContentTests.swift; sourceTree = "<group>"; };
+		C04D00020000000000000001 /* ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift; sourceTree = "<group>"; };
 		B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardLayoutTests.swift; sourceTree = "<group>"; };
 		B77DC0600000000000000002 /* ../CrosswordsTests/HomeGameCardFooterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardFooterTests.swift; sourceTree = "<group>"; };
 		B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/BackwordInstructionColorTests.swift; sourceTree = "<group>"; };
@@ -590,6 +592,7 @@
 				B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */,
 				B77DC0400000000000000002 /* ../CrosswordsTests/HomeGameCardContentTests.swift */,
 				F4E000033017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift */,
+				C04D00020000000000000001 /* ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift */,
 				B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */,
 				F3A000073016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift */,
 				F3A000053016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift */,
@@ -1106,6 +1109,7 @@
 				B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */,
 				B77DC0400000000000000001 /* ../CrosswordsTests/HomeGameCardContentTests.swift in Sources */,
 				F4E000043017000000000001 /* ../CrosswordsTests/HomeGameCardsGridTests.swift in Sources */,
+				C04D00010000000000000001 /* ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift in Sources */,
 				B77DC0500000000000000001 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift in Sources */,
 				F3A000083016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift in Sources */,
 				F3A000063016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift in Sources */,

@@ -1,0 +1,124 @@
+{
+  "color_checks": [
+    {
+      "export_point": [
+        222,
+        566
+      ],
+      "export_srgb": [
+        26,
+        26,
+        26
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        100,
+        100
+      ],
+      "source_srgb": [
+        26,
+        26,
+        26
+      ]
+    },
+    {
+      "export_point": [
+        222,
+        959
+      ],
+      "export_srgb": [
+        26,
+        26,
+        26
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        100,
+        600
+      ],
+      "source_srgb": [
+        26,
+        26,
+        26
+      ]
+    },
+    {
+      "export_point": [
+        222,
+        1155
+      ],
+      "export_srgb": [
+        41,
+        52,
+        104
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        100,
+        850
+      ],
+      "source_srgb": [
+        41,
+        52,
+        104
+      ]
+    },
+    {
+      "export_point": [
+        222,
+        1563
+      ],
+      "export_srgb": [
+        41,
+        55,
+        77
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        100,
+        1370
+      ],
+      "source_srgb": [
+        41,
+        55,
+        77
+      ]
+    },
+    {
+      "export_point": [
+        222,
+        1932
+      ],
+      "export_srgb": [
+        246,
+        110,
+        9
+      ],
+      "max_channel_difference": 0,
+      "source_point": [
+        100,
+        1840
+      ],
+      "source_srgb": [
+        246,
+        110,
+        9
+      ]
+    }
+  ],
+  "height": 2622,
+  "outside_screen_changed_pixels": 0,
+  "screen_scale": 0.7846153846153846,
+  "source_height": 2532,
+  "source_width": 1170,
+  "verification": "passed",
+  "width": 1206,
+  "date": "2026-11-04",
+  "source_sha256": "e513960a45961cce58a887196ffb11edb7f28594ce945e06d146c9866ee14af4",
+  "export_sha256": "c223a184f6b8242fc561b6caa1b755ab8b74bc89b4878c330ee3f8f8f7d4b2d1",
+  "source_bytes_preserved": true,
+  "master_matches_export": true,
+  "export_has_alpha": false,
+  "export_profile": "sRGB IEC61966-2.1",
+  "visual_review": "passed"
+}
