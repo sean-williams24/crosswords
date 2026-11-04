@@ -13,7 +13,9 @@ lettering unchanged.
 Backword remains an individual game. Use `IntervlsLogo` / `BrandLogo` for Home,
 account, paywall, and overall share branding; retain the game-specific Backword
 logo. The public origin is `https://intervls.com` and confirmed support is
-`support@intervls.com`.
+`support@intervls.com`. Use this address for all public support contacts,
+feedback recipients, legal copy, and release materials. Legacy inboxes are
+inbound forwarding only, not published contact addresses.
 
 The browser Home title is `Intervls — Free daily word games`. Marketing copy uses
 `Free daily word games to challenge your mind`, including social previews and
@@ -1049,7 +1051,7 @@ account-sync flow.
 ### Browser feedback
 
 The browser contact page opens a blank `mailto:` message addressed to
-`backword.support@gmail.com`. It does not collect, submit, retain, or process
+`support@intervls.com`. It does not collect, submit, retain, or process
 feedback; the sender's configured email app delivers it instead.
 
 ### Browser daily crossword parity

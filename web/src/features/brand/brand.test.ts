@@ -43,6 +43,19 @@ describe("Intervls URLs and release protection", () => {
     expect(siteConfig.appStoreUrl).toBe("https://apps.apple.com/app/id6773428497");
     expect(siteConfig.supportEmail).toBe("support@intervls.com");
   });
+  it.each([
+    "Backword/Models/FeedbackEmailContent.swift",
+    "CONVENTIONS.md",
+    "docs/intervls-rebrand/README.md",
+    "docs/intervls-rebrand/app-store-metadata.en-GB.json",
+    "docs/intervls-rebrand/social-and-support-copy.md"
+  ])("uses the confirmed support inbox consistently in %s", (path) => {
+    const content = readFileSync(resolve(process.cwd(), "..", path), "utf8");
+    const addresses = content.match(/[\w.%+-]+@[\w.-]+\.[a-z]{2,}/gi) ?? [];
+
+    expect(addresses.length).toBeGreaterThan(0);
+    expect([...new Set(addresses)]).toEqual([siteConfig.supportEmail]);
+  });
   it("keeps the new-domain canonical redirect ready while old-domain redirects wait for launch settings", () => {
     const config = JSON.parse(readFileSync(resolve(process.cwd(), "vercel.json"), "utf8"));
     expect(config.redirects).toEqual([{

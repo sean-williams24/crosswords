@@ -51,6 +51,6 @@ History saved only in the old browser, including unsynced saves, does not transf
 
 For iOS, update the existing app rather than deleting it. If Pro is missing, use Restore Purchases for an App Store purchase, or sign in with the account linked to your existing subscription.
 
-## Old support inbox
+## Support inbox transition
 
-Keep `backword.support@gmail.com` monitored. Configure forwarding to the confirmed new inbox and update its signature. Verify incoming and outgoing mail for `support@intervls.com` before publication. Do not send an announcement email to players from this task without a separately approved recipient list and message.
+Use `support@intervls.com` for all published contact details and support replies. Keep the legacy inbox monitored and forward incoming messages to `support@intervls.com`; update its signature to show the new address. Verify incoming and outgoing mail for `support@intervls.com` before publication. Do not send an announcement email to players from this task without a separately approved recipient list and message.
