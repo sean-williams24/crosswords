@@ -11,7 +11,7 @@ const root = resolve(process.cwd(), "..");
 function read(path: string) { return readFileSync(resolve(root, path)); }
 
 // Decode the RGB PNG scanlines to check the exported pixels, including PNG filters.
-function colorCount(png: Buffer, target: readonly number[]) {
+function pixelBounds(png: Buffer, matches: (r: number, g: number, b: number) => boolean) {
   expect(png[24]).toBe(8);
   expect(png[25]).toBe(2);
   expect(png[28]).toBe(0);
@@ -25,6 +25,7 @@ function colorCount(png: Buffer, target: readonly number[]) {
   const data = inflateSync(Buffer.concat(chunks));
   const stride = width * 3;
   let previous = Buffer.alloc(stride), count = 0;
+  let minY = height, maxY = -1;
   for (let y = 0; y < height; y++) {
     const start = y * (stride + 1), filter = data[start];
     const row = Buffer.alloc(stride);
@@ -37,20 +38,56 @@ function colorCount(png: Buffer, target: readonly number[]) {
       const adjustment = [0, left, up, Math.floor((left + up) / 2), paeth][filter];
       row[x] = (data[start + 1 + x] + adjustment) & 255;
     }
-    for (let x = 0; x < stride; x += 3) if (row[x] === target[0] && row[x + 1] === target[1] && row[x + 2] === target[2]) count++;
+    for (let x = 0; x < stride; x += 3) {
+      if (matches(row[x], row[x + 1], row[x + 2])) {
+        count++;
+        minY = Math.min(minY, y);
+        maxY = Math.max(maxY, y);
+      }
+    }
     previous = row;
   }
-  return count;
+  return { count, minY, maxY, centerY: (minY + maxY) / 2 / height };
+}
+
+const promotionalBlue = [127, 169, 227] as const;
+const isPromotionalBlue = (r: number, g: number, b: number) =>
+  r === promotionalBlue[0] && g === promotionalBlue[1] && b === promotionalBlue[2];
+function luminance(rgb: readonly number[]) {
+  const linear = rgb.map((value) => {
+    const channel = value / 255;
+    return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+  });
+  return linear[0] * 0.2126 + linear[1] * 0.7152 + linear[2] * 0.0722;
 }
 
 describe("Intervls release artifacts", () => {
   it.each([
     "docs/intervls-brand/social-cover-1640x624.png",
+    "docs/intervls-brand/social-preview-1200x630.png",
     "web/public/brand/intervls-social-preview.png",
     "docs/intervls-brand/app-store-header-3840x1646.png",
     "docs/intervls-brand/app-store-header-5244x2950.png"
-  ])("uses the Backword dark Home-card blue in %s", (path) => {
-    expect(colorCount(read(path), [41, 51, 100])).toBeGreaterThan(500);
+  ])("uses legible light-blue promotional text in %s", (path) => {
+    expect(pixelBounds(read(path), isPromotionalBlue).count).toBeGreaterThan(500);
+    expect((luminance(promotionalBlue) + 0.05) / (luminance([24, 24, 24]) + 0.05)).toBeGreaterThan(7);
+  });
+  it.each([
+    ["app-store-header-3840x1646.png", 0.39, 0.67],
+    ["app-store-header-5244x2950.png", 0.34, 0.72]
+  ] as const)("keeps the title and subtitle inside the intended crop in %s", (name, titleCenter, subtitleCenter) => {
+    const png = read(`docs/intervls-brand/${name}`);
+    const title = pixelBounds(png, (r, g, b) => r > 220 && g > 220 && b > 220);
+    const subtitle = pixelBounds(png, isPromotionalBlue);
+    expect(title.count).toBeGreaterThan(500);
+    expect(subtitle.count).toBeGreaterThan(500);
+    expect(title.centerY).toBeCloseTo(titleCenter, 2);
+    expect(subtitle.centerY).toBeCloseTo(subtitleCenter, 2);
+    expect(title.maxY).toBeLessThan(subtitle.minY);
+  });
+  it("keeps the website link preview identical to the social export", () => {
+    expect(read("web/public/brand/intervls-social-preview.png"))
+      .toEqual(read("docs/intervls-brand/social-preview-1200x630.png"));
   });
   it("keeps the approved marketing line in launch copy and the artwork renderer", () => {
     const metadata = JSON.parse(read("docs/intervls-rebrand/app-store-metadata.en-GB.json").toString());

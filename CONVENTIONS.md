@@ -20,8 +20,12 @@ inbound forwarding only, not published contact addresses.
 The browser Home title is `Intervls — Free daily word games`. Marketing copy uses
 `Free daily word games to challenge your mind`, including social previews and
 promotional artwork. Keep page-specific game titles and Pro access explanations.
-App Store and social promotional text uses the iOS Dark Mode Backword Home
-card's opaque sRGB surface colour, `#293364`.
+App Store and social promotional text uses light blue `#7FA9E3` for contrast
+against the near-black artwork background. The wider 3840 × 1646 App Store
+header moves the wordmark down and the tagline up by 5% of the canvas height
+each to allow more room for landscape cropping. The taller 5244 × 2950 header
+retains its original layout. These are static exports; spacing changes apply
+wherever the App Store displays that asset, rather than to a device orientation.
 
 The subscription logo retains the existing gold PRO artwork (`Pro` on iOS,
 `/brand/backword-pro.png` on the web), including its original lettering. Do not

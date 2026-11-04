@@ -14,8 +14,8 @@ let web = root.appendingPathComponent("web/public/brand")
 let fm = FileManager.default
 let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
 let background = CGColor(srgbRed: 0.094, green: 0.094, blue: 0.094, alpha: 1)
-// Opaque sRGB equivalent of the iOS Dark Mode Backword Home card (#293364).
-let blue = CGColor(srgbRed: 41.0 / 255, green: 51.0 / 255, blue: 100.0 / 255, alpha: 1)
+// Promotional text needs a lighter blue against the near-black canvas (#7FA9E3).
+let blue = CGColor(srgbRed: 127.0 / 255, green: 169.0 / 255, blue: 227.0 / 255, alpha: 1)
 for directory in [output, web] { try fm.createDirectory(at: directory, withIntermediateDirectories: true) }
 
 func bitmap(_ width: Int, _ height: Int, alpha: Bool) -> CGContext {
@@ -156,19 +156,23 @@ func drawTagline(_ context: CGContext, center: CGPoint, size: CGFloat) {
     context.textPosition = CGPoint(x: center.x - box.midX, y: center.y - box.midY)
     CTLineDraw(line, context)
 }
-func poster(_ name: String, _ width: Int, _ height: Int, tagline: Bool = true) throws {
+func poster(_ name: String, _ width: Int, _ height: Int, tagline: Bool = true, landscapeHeader: Bool = false) throws {
     let context = bitmap(width, height, alpha: false)
     context.setFillColor(background); context.fill(CGRect(x: 0, y: 0, width: width, height: height))
     // Do not enlarge the supplied raster wordmark, including in the largest promotional exports.
     let markWidth = min(CGFloat(width) * 0.7, dark.crop.width - 4)
-    drawLogo(dark, in: CGRect(x: (CGFloat(width) - markWidth) / 2, y: CGFloat(height) * (tagline ? 0.47 : 0.28),
+    // Quartz Y increases upward. Bring the wide header's lettering inward by 5% of
+    // the canvas height on each side, leaving more clearance for App Store cropping.
+    let logoY: CGFloat = tagline ? (landscapeHeader ? 0.42 : 0.47) : 0.28
+    let taglineY: CGFloat = landscapeHeader ? 0.33 : 0.28
+    drawLogo(dark, in: CGRect(x: (CGFloat(width) - markWidth) / 2, y: CGFloat(height) * logoY,
                              width: markWidth, height: CGFloat(height) * 0.38), context: context)
-    if tagline { drawTagline(context, center: CGPoint(x: CGFloat(width) / 2, y: CGFloat(height) * 0.28), size: CGFloat(width) * 0.034) }
+    if tagline { drawTagline(context, center: CGPoint(x: CGFloat(width) / 2, y: CGFloat(height) * taglineY), size: CGFloat(width) * 0.034) }
     try pngData(context.makeImage()!).write(to: output.appendingPathComponent(name))
 }
 try poster("social-cover-1640x624.png", 1640, 624)
 try poster("social-preview-1200x630.png", 1200, 630)
-try poster("app-store-header-3840x1646.png", 3840, 1646)
+try poster("app-store-header-3840x1646.png", 3840, 1646, landscapeHeader: true)
 try poster("app-store-header-5244x2950.png", 5244, 2950)
 try poster("app-store-search-3840x2560.png", 3840, 2560, tagline: false)
 let ogTarget = web.appendingPathComponent("intervls-social-preview.png")

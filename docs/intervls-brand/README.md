@@ -55,7 +55,12 @@ swift docs/intervls-brand/render-brand.swift "$PWD"
 This updates the website wordmarks/link preview, iOS wordmark image sets, and wordmark-based promotional exports. Outfit is used only for the existing tagline. Game logos, source files, icons, and original screenshots are preserved. Review the updated app in Xcode before release; fresh screenshots/video remain outstanding.
 
 The promotional tagline is **Free daily word games to challenge your mind**.
-Its blue matches the iOS Backword Home card in Dark Mode: opaque sRGB `#293364`.
+Its light blue is opaque sRGB `#7FA9E3`, chosen for legibility on the near-black
+background. The wide 3840 × 1646 header brings the wordmark down and tagline up
+by 5% of the image height each, giving both more clearance in the landscape
+App Store crop. The taller header and social layouts retain their spacing.
+These are static images: the wider header's adjustment applies wherever that
+asset is displayed, so check its App Store preview after upload.
 Add `--promotional-only` to regenerate only PNG promotional artwork and the
 website link preview while preserving the imported wordmark PDFs/SVGs.
 
