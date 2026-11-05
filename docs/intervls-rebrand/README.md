@@ -56,6 +56,10 @@ Use the existing Vercel project and Supabase backend. Do not create another app,
 
 ### Google / Apple / Supabase
 
+For Google branding rejection findings, follow the
+[OAuth verification remediation guide](google-oauth-verification.md) before
+requesting another review.
+
 | Service | Prepare before launch | Preserve compatibility |
 | --- | --- | --- |
 | Google Web OAuth client | Add exact JavaScript origin `https://intervls.com`; update consent brand/logo, homepage, privacy URL, support details, and verify the new domain if requested | `https://www.playbackword.com`, `https://playbackword.com`, existing native client and development/test origins |

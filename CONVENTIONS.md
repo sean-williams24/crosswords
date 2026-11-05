@@ -1134,6 +1134,21 @@ shows an en dash rather than falling back to an all-time average.
 
 ## Website Analytics and Acquisition Attribution
 
+### Google sign-in privacy disclosures
+
+The public privacy policy explicitly covers Google identity/profile data,
+Supabase token verification and storage, local sessions, account purposes,
+Stripe billing email sharing, and account deletion versus Google access removal.
+Keep these disclosures aligned with both native and browser sign-in and backend
+billing; Google profile metadata may include a picture even though the UI does
+not display it. Google sign-in profile data and tokens are not analytics or ad
+payloads. Privacy policy edits update `privacyLastUpdated` in `content/legal.ts`
+without changing the dates on unrelated legal pages.
+Google brand verification also requires Search Console ownership by a Cloud
+project owner/editor and a matching submitted brand/logo; code changes alone
+cannot establish those dashboard facts. See
+`docs/intervls-rebrand/google-oauth-verification.md` for the remediation steps.
+
 Website analytics are optional globally: Firebase Analytics initialises only
 after an explicit browser opt-in, and withdrawing consent removes the saved
 first-touch campaign context. The browser tracks only aggregate milestones

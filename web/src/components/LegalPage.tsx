@@ -10,16 +10,17 @@ type LegalPageProps = {
   title: string;
   intro: string;
   sections: readonly LegalSection[];
+  lastUpdated?: string;
   topLink?: ReactNode;
 };
 
-export function LegalPage({ title, intro, sections, topLink }: LegalPageProps) {
+export function LegalPage({ title, intro, sections, lastUpdated = siteConfig.lastUpdated, topLink }: LegalPageProps) {
   return (
     <section className="px-6 pb-16 pt-8 sm:py-24">
       <div className="relative mx-auto max-w-3xl">
         {topLink ? <div className="legal-page__top-link">{topLink}</div> : null}
         <p className="text-sm font-medium uppercase tracking-[0.16em] text-heading">
-          Last updated {siteConfig.lastUpdated}
+          Last updated {lastUpdated}
         </p>
         <h1 className="mt-4 text-4xl font-semibold tracking-normal text-textPrimary sm:text-5xl">
           {title}

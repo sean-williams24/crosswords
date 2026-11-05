@@ -1,5 +1,7 @@
 import { siteConfig } from "../lib/siteConfig";
 
+export const privacyLastUpdated = "November 5, 2026";
+
 export const privacySections = [
   {
     title: "Who We Are",
@@ -17,6 +19,17 @@ export const privacySections = [
       "Advertising information: Intervls uses Google AdMob to show ads. Google and its partners may collect information such as device identifiers, advertising identifiers where permitted, ad interactions, approximate location, diagnostics, and usage information to deliver ads, limit ad frequency, prevent fraud, and report ad performance.",
       "Website information: When you visit this website, hosting providers may process standard technical information such as IP address, browser type, device information, pages visited, and timestamps for security, diagnostics, and reliability.",
       "Optional website analytics: If you allow analytics, Intervls uses Google Firebase Analytics to measure page views, broad campaign source, game and Pro-subscription milestones, sign-in milestones, App Store link clicks, grouped content-load failures, result-card share interactions and outcomes, and broad domain-migration outcomes. We do not send guesses, answers, clue text, entered letters, account identifiers, names, email addresses, Stripe customer details, checkout identifiers, or payment information to website analytics."
+    ]
+  },
+  {
+    title: "Google Sign-In Data",
+    body: [
+      "Signing in with Google is optional. When you choose it, Google provides an identity token and basic account information: your Google account identifier, email address and verification status, and, where available, your name and profile picture. Intervls does not receive your Google password or request access to Gmail, Google Drive, Google Calendar, contacts, or other Google account content.",
+      "We send the Google identity token to Supabase, our authentication provider, to verify your identity and create or sign in to your Intervls account. We use your account information to recognise you on later sign-ins, associate your saved gameplay and Pro access with the correct account, and provide account support. A profile picture supplied by Google may be retained in authentication metadata even though Intervls does not currently display it.",
+      "Google account information is stored with your Intervls authentication record in Supabase. Intervls session credentials are stored on your device or in your browser so you can remain signed in. Authentication and account-sync requests use HTTPS. Your cloud gameplay progress is linked to your Intervls account identifier.",
+      "We share Google sign-in information with Supabase to operate authentication. If you choose to start a web subscription, we also send your account email address to Stripe to create your billing customer record. We do not sell Google user data or share it with advertising providers, or use it for personalised advertising. Google sign-in profile information and identity tokens are not sent to Firebase Analytics.",
+      "We retain Google account information in your authentication record while your Intervls account is active. You can delete that account from Settings → Account in the iOS app or Player Profile on this website; this deletes the sign-in account, its Google profile information, and cloud-synced gameplay progress. Billing records held by Apple or Stripe are handled separately as described in this policy. Signing out does not delete the account. You can also remove Intervls access from your Google Account’s third-party connections settings; removing that access does not itself delete information already stored by Intervls.",
+      "Intervls’ use and transfer of information received from Google APIs adheres to the Google API Services User Data Policy, including the Limited Use requirements."
     ]
   },
   {
