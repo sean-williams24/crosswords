@@ -51,8 +51,8 @@ describe("Footer", () => {
       {
         title: "Socials",
         links: [
-          ["Instagram", "https://instagram.com/play.backword?dlrf=MTg1d3pmcmsydzIycA%3D%3D&utm_source=qr"],
-          ["TikTok", "https://www.tiktok.com/@play.backword"],
+          ["Instagram", "https://instagram.com/playintervls"],
+          ["TikTok", "https://www.tiktok.com/@playintervls"],
           ["Facebook", "https://www.facebook.com/share/1CWvuRkqxe/?mibextid=wwXIfr"]
         ]
       }

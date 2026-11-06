@@ -19,8 +19,8 @@ export const siteConfig = {
   developerName: "Sean Williams",
   supportEmail: "support@intervls.com",
   socialLinks: [
-    { label: "Instagram", href: "https://instagram.com/play.backword?dlrf=MTg1d3pmcmsydzIycA%3D%3D&utm_source=qr" },
-    { label: "TikTok", href: "https://www.tiktok.com/@play.backword" },
+    { label: "Instagram", href: "https://instagram.com/playintervls" },
+    { label: "TikTok", href: "https://www.tiktok.com/@playintervls" },
     { label: "Facebook", href: "https://www.facebook.com/share/1CWvuRkqxe/?mibextid=wwXIfr" }
   ],
   lastUpdated: "October 29, 2026",
