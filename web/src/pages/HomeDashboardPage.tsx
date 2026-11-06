@@ -25,6 +25,7 @@ import { AuthButton } from "../features/auth/AuthButton";
 import { useAuth } from "../features/auth/AuthProvider";
 import { HomeDashboardLoadingCard } from "../features/home/HomeDashboardLoadingCard";
 import { HomeArchiveCard } from "../features/home/HomeArchiveCard";
+import { HomeRebrandNotice } from "../features/home/HomeRebrandNotice";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
 import { anagramCloudRecord, midwordCloudRecord, backwordCloudRecord, crosswordCloudRecord, refreshAccountProgress } from "../features/sync/progressSync";
 
@@ -160,6 +161,7 @@ export function HomeDashboardPage() {
       </header>
 
       <section aria-label="Games" className="home-dashboard__content">
+        <HomeRebrandNotice />
         <div aria-busy={isLoading} className="home-dashboard__daily-layout">
           {isLoading ? <span className="home-dashboard__loading-label" role="status">Loading daily games</span> : null}
           {isLoading ? <HomeDashboardLoadingCard variant="word-of-the-day" /> : null}

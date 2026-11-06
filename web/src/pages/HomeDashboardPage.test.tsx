@@ -84,6 +84,22 @@ describe("web home dashboard", () => {
 
   afterEach(() => vi.useRealTimers());
 
+  it("places the advance name-change notice above the game cards while daily content loads", () => {
+    vi.stubGlobal("location", new URL("https://www.playbackword.com/"));
+    try {
+      testWordOfTheDay.state = "loading";
+      const { container } = renderDashboard();
+      const notice = screen.getByRole("complementary", { name: "Backword is becoming Intervls later this week" });
+      const dailyLayout = container.querySelector(".home-dashboard__daily-layout")!;
+
+      expect(notice.parentElement).toBe(screen.getByRole("region", { name: "Games" }));
+      expect(notice.compareDocumentPosition(dailyLayout) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(screen.getByRole("link", { name: "Sign in to save history" })).toHaveAttribute("href", "/sign-in");
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   it.each([false, true])("hides zero streaks on every game card (Pro: %s)", (isPro) => {
     testAuth.value.entitlement = isPro ? { isPro: true, expiresAt: null } : null;
     const { container } = renderDashboard();

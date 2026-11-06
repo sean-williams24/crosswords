@@ -4,6 +4,25 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 ---
 
+## Advance Intervls Notice on the Backword Website
+
+The notice-only branch keeps the existing Backword branding and adds a Home
+notice above the game cards on `https://playbackword.com` and
+`https://www.playbackword.com`. It announces the move later this week and sends
+guests through the existing Apple/Google sign-in flow, returning to Home for
+normal account sync. Signed-in players are directed to check their history in
+Player Profile; the notice does not claim that a sync has succeeded.
+
+Only history synced to the existing account is available on Intervls after
+signing in with that same account. Browser-only history and unsynced saves do
+not transfer between domains. Local Vite development also shows the notice on
+`localhost`, `127.0.0.1`, and `[::1]` for review. That exception is disabled in
+production builds. The notice is hidden on other origins, including Intervls,
+and is not a redirect or migration flow. Remove it from the full
+rebrand when launching; update the relative timing if the launch is delayed.
+
+---
+
 ## Intervls Rebrand and Domain Launch
 
 The umbrella app/site is `Intervls` and the subscription is `Intervls Pro`.
