@@ -290,6 +290,16 @@ describe("PlayerProfilePage", () => {
     expect(styles).toMatch(/\.player-profile > footer\s*\{[^}]*\bmargin-top:\s*auto/);
   });
 
+  it("reserves room for every Pro table column before placing the profile panels side by side", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    // 320px summary + 28px gap + 634px table + 40px page gutters.
+    expect(styles).toMatch(/@media \(min-width: 1022px\)\s*\{\s*\.player-profile__layout\s*\{[^}]*grid-template-columns:\s*minmax\(320px, 1fr\) minmax\(634px, 1\.4fr\)/);
+    expect(styles).not.toMatch(/@media \(min-width: 901px\)\s*\{\s*\.player-profile__layout/);
+    expect(styles).toMatch(/\.player-profile__table-scroll\s*\{[^}]*overflow-x:\s*auto/);
+    expect(styles).toMatch(/\.player-profile__column\s*\{[^}]*min-width:\s*0/);
+  });
+
   it("gives the delete-account control the same rounded corners as sign out", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 

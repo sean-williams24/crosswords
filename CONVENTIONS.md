@@ -1080,8 +1080,16 @@ it retrieves. On desktop, the profile summary and 14-day table are equal-height
 panels; detailed scoring rules open in a modal so they do not expand the
 dashboard. The summary places the rating and scoring guide first, then the
 always-visible rolling-window explainer, account details, and signed-in-only
-Sign Out and Delete Account actions. When the layout stacks below 901px, those
+Sign Out and Delete Account actions. When the layout stacks below 1022px, those
 actions move beneath the 14-day table instead.
+
+#### Browser profile table width
+
+The desktop layout reserves at least 634px for the 14-day table, enough for
+all Pro columns, and 320px for the summary. With the 28px gap and 40px page
+gutters, the panels sit side by side from 1022px and stack below that width.
+Keep horizontal scrolling inside the table for viewports narrower than the
+table itself; the desktop columns must not force scrolling when it can fit.
 
 The dashboard’s compact rating bar derives the same rolling 14-day rating from
 the active local progress namespace, then links to Player Profile. The profile
