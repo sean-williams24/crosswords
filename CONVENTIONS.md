@@ -512,6 +512,10 @@ fonts all use the bounded environment, while smaller text settings still scale.
 
 ## Profile Scoring Guide
 
+The iOS Player Profile always displays the full “How Scoring Works” guide,
+including all game tables and the rolling-window explanation. Its title is a
+static accessibility heading.
+
 The shared iOS `ScoringRuleView` uses text-only headings aligned with its score
 labels. The crossword hint-penalty note uses the same leading alignment.
 

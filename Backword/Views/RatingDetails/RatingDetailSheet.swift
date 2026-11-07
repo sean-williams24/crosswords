@@ -4,10 +4,7 @@ struct RatingDetailSheet: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject private var accountService: AccountService
     @Environment(\.dismiss) private var dismiss
-    @ScaledMetric private var spacing: CGFloat = 14
     @State private var animates = false
-    @State private var showHowItWorks = false
-    @ScaledMetric private var chevronSize: CGFloat = 12
     @ScaledMetric private var columnWidth: CGFloat = 60
     @ScaledMetric private var scrollingColumnWidth: CGFloat = 70
     @ScaledMetric private var totalColumnWidth: CGFloat = 30
@@ -42,7 +39,7 @@ struct RatingDetailSheet: View {
 
                     tierHero
                         .padding(.horizontal, AppLayout.screenPadding)
-                    howItWorksSection
+                    RatingScoringGuideView()
                         .padding(.horizontal, AppLayout.screenPadding)
                     ratingFooterSection
                 }
@@ -52,9 +49,9 @@ struct RatingDetailSheet: View {
                 ZStack(alignment: .bottom) {
                     AppBackgroundGradient()
 
-                    Color.appSurface
-                        .frame(height: RatingDetailSheetLayout.footerSurfaceExtension)
-                        .ignoresSafeArea(edges: .bottom)
+//                    Color.appSurface
+//                        .frame(height: RatingDetailSheetLayout.footerSurfaceExtension)
+//                        .ignoresSafeArea(edges: .bottom)
                 }
             }
             .ignoresSafeArea(edges: .bottom)
@@ -402,80 +399,6 @@ struct RatingDetailSheet: View {
         }
         .padding(.leading, 14)
         .padding(.vertical, 10)
-    }
-
-    // MARK: - How It Works
-
-    private var howItWorksSection: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Button {
-                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                    showHowItWorks.toggle()
-                }
-            } label: {
-                HStack {
-                    Text("HOW SCORING WORKS")
-                        .font(AppFont.clueLabel(12))
-                        .foregroundColor(.appAccent)
-                        .tracking(2)
-                    Spacer()
-                    Image(systemName: showHowItWorks ? "chevron.up" : "chevron.down")
-                        .font(.system(size: chevronSize, weight: .semibold))
-                        .foregroundColor(.appTextSecondary)
-                }
-                .padding(16)
-                .background(Color.appSurface)
-            }
-            .buttonStyle(.plain)
-
-            if showHowItWorks {
-                VStack(alignment: .leading, spacing: 14) {
-                    Divider().background(Color.appGridLine)
-
-                    ScoringRuleView.crossword()
-                        .padding(.leading, 8)
-
-                    Text("- 1 point deducted for every 3 hints used")
-                        .font(AppFont.caption())
-                        .foregroundColor(.appTextSecondary)
-                        .padding(.leading, 8)
-
-                    Divider().background(Color.appGridLine.opacity(0.5))
-
-                    ScoringRuleView.backword()
-                        .padding(.leading, 8)
-
-                    Divider().background(Color.appGridLine.opacity(0.5))
-
-                    ScoringRuleView.anagram()
-                        .padding(.leading, 8)
-
-                    Divider().background(Color.appGridLine.opacity(0.5))
-
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Rolling 14-day window")
-                            .font(AppFont.clueLabel(13))
-                            .foregroundColor(.appTextPrimary)
-                            .padding(.leading, 8)
-
-                        Text("Your rating reflects only the last 14 days. Skip a day and it scores 0, so play every day to keep your rating up.")
-                            .font(AppFont.caption())
-                            .foregroundColor(.appTextSecondary)
-                            .padding(.leading, 8)
-                    }
-                    .padding(.bottom, 4)
-                }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 16)
-                .transition(.opacity.combined(with: .move(edge: .top)))
-            }
-        }
-        .background(Color.appSurface)
-        .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
-        .overlay(
-            RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius)
-                .strokeBorder(.clear)
-        )
     }
 
     // MARK: - Helpers

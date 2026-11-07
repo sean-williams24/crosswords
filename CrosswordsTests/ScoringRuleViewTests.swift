@@ -1,9 +1,30 @@
+import SwiftUI
 import Testing
+import UIKit
 @testable import Backword
 
 @MainActor
 @Suite("Profile scoring guide")
 struct ScoringRuleViewTests {
+    @Test("All scoring tables are expanded on first layout",
+          arguments: [DynamicTypeSize.large, .accessibility5])
+    func scoringGuideIsAlwaysExpanded(dynamicTypeSize: DynamicTypeSize) {
+        let width: CGFloat = 320
+        func fittedSize<Content: View>(_ content: Content) -> CGSize {
+            UIHostingController(rootView: content.environment(\.dynamicTypeSize, dynamicTypeSize))
+                .sizeThatFits(in: CGSize(width: width, height: 10_000))
+        }
+
+        let tablesHeight = fittedSize(ScoringRuleView.crossword()).height
+            + fittedSize(ScoringRuleView.backword()).height
+            + fittedSize(ScoringRuleView.anagram()).height
+        let guideSize = fittedSize(RatingScoringGuideView())
+
+        #expect(tablesHeight > 0)
+        #expect(guideSize.height > tablesHeight)
+        #expect(guideSize.width <= width + 0.5)
+    }
+
     @Test("Scoring guides accept a text heading without an icon")
     func textHeading() {
         let guide = ScoringRuleView(title: "Scoring", rows: [("Solved", "5 pts")])
