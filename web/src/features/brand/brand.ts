@@ -2,7 +2,7 @@ export const brand = {
   name: "Intervls",
   proName: "Intervls Pro",
   homeTitle: "Intervls — Free daily word games",
-  tagline: "Free daily word games to challenge your mind",
+  tagline: "Free word games to challenge your mind during your daily intervals.",
   origin: "https://intervls.com",
   domain: "intervls.com",
   legacyOrigins: ["https://www.playbackword.com", "https://playbackword.com"],
