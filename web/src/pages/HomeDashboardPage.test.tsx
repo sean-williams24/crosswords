@@ -84,19 +84,25 @@ describe("web home dashboard", () => {
 
   afterEach(() => vi.useRealTimers());
 
-  it("places the advance name-change notice above the game cards while daily content loads", () => {
-    vi.stubGlobal("location", new URL("https://www.playbackword.com/"));
+  it.each(["http://localhost:5173", "https://www.playbackword.com/"])("omits the retired Home name-change notice at %s", (origin) => {
+    vi.stubEnv("DEV", true);
+    vi.stubGlobal("location", new URL(origin));
     try {
       testWordOfTheDay.state = "loading";
-      const { container } = renderDashboard();
-      const notice = screen.getByRole("complementary", { name: "Backword is becoming Intervls later this week" });
-      const dailyLayout = container.querySelector(".home-dashboard__daily-layout")!;
+      renderDashboard();
 
-      expect(notice.parentElement).toBe(screen.getByRole("region", { name: "Games" }));
-      expect(notice.compareDocumentPosition(dailyLayout) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-      expect(screen.getByRole("link", { name: "Sign in to save history" })).toHaveAttribute("href", "/sign-in");
+      expect(screen.getByRole("status")).toHaveTextContent("Loading daily games");
+      expect(screen.queryByRole("complementary", { name: /Backword is becoming Intervls/ })).not.toBeInTheDocument();
+
+      testWordOfTheDay.state = "loaded";
+      act(() => testWordOfTheDay.notify?.("loaded"));
+
+      expect(screen.getByRole("link", { name: "Quick Crossword, issue #122" })).toBeInTheDocument();
+      expect(screen.queryByRole("complementary", { name: /Backword is becoming Intervls/ })).not.toBeInTheDocument();
+      expect(screen.queryByRole("link", { name: "Sign in to save history" })).not.toBeInTheDocument();
     } finally {
       vi.unstubAllGlobals();
+      vi.unstubAllEnvs();
     }
   });
 

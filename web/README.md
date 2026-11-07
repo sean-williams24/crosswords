@@ -20,24 +20,14 @@ npm run test
 - `src/content/legal.ts`: reviewed privacy policy and terms copy.
 - `public/app-ads.txt`: production Google AdMob publisher line.
 
-## Advance Intervls notice
+## Rebrand notices
 
-The Home notice in `src/features/home/HomeRebrandNotice.tsx` is a standalone
-prelaunch change based on `main`. It appears on the two production Backword
-origins and keeps the existing website branding. During `npm run dev`, it also
-appears on `localhost`, `127.0.0.1`, and `[::1]` so it can be reviewed locally.
-This local exception is disabled in production builds. Guests can sign in with
-Apple or Google and return Home for normal account sync; signed-in players can
-check their history in Player Profile. It explains that only synced account
-history follows them to Intervls, not browser-only history or unsynced saves.
+The standalone Home announcement has been removed from the full Intervls
+rebrand, including its localhost development exception. The separate site-wide
+notice in `src/features/brand/RebrandNotice.tsx` remains opt-in through
+`VITE_REBRAND_NOTICE_ENABLED` and is hidden after launch or outside legacy origins.
 
-No extra environment variable is needed. Review and deploy this branch separately
-from the full rebrand. The notice says “later this week”; revise that timing if
-launch is delayed and remove this notice when merging the full rebrand. It is
-already hidden on `intervls.com`. Production domain redirects remain a separate
-launch step.
-
-Focused checks: `npm test -- src/features/home/HomeRebrandNotice.test.tsx src/pages/HomeDashboardPage.test.tsx`.
+Focused checks: `npm test -- src/pages/HomeDashboardPage.test.tsx`.
 
 ## Backword game configuration
 

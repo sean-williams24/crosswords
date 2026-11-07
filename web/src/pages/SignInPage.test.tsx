@@ -5,6 +5,15 @@ import { MemoryRouter } from "react-router-dom";
 import { SignInPage } from "./SignInPage";
 
 describe("SignInPage", () => {
+  it("anchors the menu to the full page instead of the centered logo header", () => {
+    render(<MemoryRouter><SignInPage /></MemoryRouter>);
+
+    const menu = screen.getByRole("button", { name: "Open game menu" }).closest(".bw-game-menu");
+    expect(menu?.parentElement).toBe(screen.getByRole("main"));
+    expect(menu?.closest("header")).toBeNull();
+    expect(screen.getByRole("link", { name: "Intervls home" }).closest("header")).toHaveClass("auth-page__header");
+  });
+
   it("uses the shared menu with a plain, borderless account layout", () => {
     const { container } = render(<MemoryRouter><SignInPage /></MemoryRouter>);
 
@@ -21,7 +30,8 @@ describe("SignInPage", () => {
     const googleButton = container.querySelector(".auth-google-button");
     expect(googleButton).toHaveAttribute("aria-label", "Continue with Google");
     expect(googleButton?.querySelector(".auth-google-button__identity")).toBeInTheDocument();
-    expect(googleButton?.querySelector("img")).toBeNull();
+    expect(googleButton?.querySelector(".auth-google-placeholder")).toBeVisible();
+    expect(googleButton?.querySelector(".auth-google-placeholder img")).toHaveAttribute("src", "/brand/google-sign-in-logo.svg");
     const providers = container.querySelector(".auth-content__providers--sign-in");
     expect(providers?.children[0]).toHaveClass("auth-google-button");
     expect(providers?.children[1]).toHaveClass("auth-apple-button");
@@ -34,6 +44,45 @@ describe("SignInPage", () => {
     expect(screen.getByRole("link", { name: "Intervls home" })).toHaveAttribute("href", "/");
     expect(container.querySelector(".auth-card")).not.toBeInTheDocument();
     expect(container.querySelector(".auth-content")).toBeInTheDocument();
+  });
+
+  it("reserves one rounded Google button slot while its controls are replaced", () => {
+    const stylesheet = document.createElement("style");
+    stylesheet.textContent = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    document.head.appendChild(stylesheet);
+    try {
+      const { container } = render(<MemoryRouter><SignInPage /></MemoryRouter>);
+      const identity = container.querySelector<HTMLElement>(".auth-google-button__identity")!;
+      // Google can temporarily leave both controls in the container.
+      for (let index = 0; index < 2; index += 1) {
+        const control = document.createElement("div");
+        control.style.height = "40px";
+        identity.append(control);
+      }
+      const googleStyles = getComputedStyle(identity);
+      const placeholder = container.querySelector(".auth-google-placeholder")!;
+      const placeholderStyles = getComputedStyle(placeholder);
+      const logoStyles = getComputedStyle(placeholder.querySelector("img")!);
+      const appleStyles = getComputedStyle(screen.getByRole("button", { name: "Continue with Apple" }));
+
+      expect(identity).not.toHaveFocus();
+      expect(googleStyles.height).toBe("40px");
+      expect(placeholderStyles.height).toBe(googleStyles.height);
+      expect(placeholderStyles.width).toBe(googleStyles.width);
+      expect(placeholderStyles.borderRadius).toBe(googleStyles.borderRadius);
+      expect(logoStyles.width).toBe("18px");
+      expect(logoStyles.height).toBe("18px");
+      expect(placeholderStyles.fontFamily).toContain("Google Sans");
+      expect(placeholderStyles.fontSize).toBe("14px");
+      expect(placeholderStyles.fontWeight).toBe("500");
+      expect(placeholderStyles.letterSpacing).toBe(".25px");
+      expect(googleStyles.overflow).toBe("hidden");
+      expect(googleStyles.borderRadius).not.toBe("");
+      expect(googleStyles.borderRadius).not.toBe("0px");
+      expect(googleStyles.borderRadius).toBe(appleStyles.borderRadius);
+    } finally {
+      stylesheet.remove();
+    }
   });
 
   it("clips the native Google button gutter and keeps both providers aligned", () => {

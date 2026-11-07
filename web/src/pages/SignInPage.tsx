@@ -21,7 +21,6 @@ export function SignInPage() {
   const returnTo = hasReturnTo ? location.state.returnTo as string : "/";
   const navigationHeader = (
     <header className="home-dashboard__header auth-page__header">
-      <GameMenu />
       <Link aria-label="Intervls home" to="/">
         <BrandLogo isPro={entitlement?.isPro === true} large />
       </Link>
@@ -64,6 +63,7 @@ export function SignInPage() {
 
   return (
     <main className="auth-page">
+      <GameMenu />
       {navigationHeader}
       <section aria-labelledby="sign-in-title" className="auth-content">
         <h1 className="auth-content__sign-in-title" id="sign-in-title">Sign in or create an account</h1>

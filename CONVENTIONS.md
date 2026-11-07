@@ -4,22 +4,12 @@ Key logic decisions, rules, and non-obvious behaviours across the codebase. Add 
 
 ---
 
-## Advance Intervls Notice on the Backword Website
+## Retired Home Rebrand Announcement
 
-The notice-only branch keeps the existing Backword branding and adds a Home
-notice above the game cards on `https://playbackword.com` and
-`https://www.playbackword.com`. It announces the move later this week and sends
-guests through the existing Apple/Google sign-in flow, returning to Home for
-normal account sync. Signed-in players are directed to check their history in
-Player Profile; the notice does not claim that a sync has succeeded.
-
-Only history synced to the existing account is available on Intervls after
-signing in with that same account. Browser-only history and unsynced saves do
-not transfer between domains. Local Vite development also shows the notice on
-`localhost`, `127.0.0.1`, and `[::1]` for review. That exception is disabled in
-production builds. The notice is hidden on other origins, including Intervls,
-and is not a redirect or migration flow. Remove it from the full
-rebrand when launching; update the relative timing if the launch is delayed.
+The full Intervls rebrand removes the standalone Home announcement and its
+localhost development exception. Home shows the games without the old
+“Backword is becoming Intervls later this week” banner. The separate optional
+site-wide advance notice remains controlled by the brand environment flags.
 
 ---
 
@@ -351,15 +341,35 @@ avoids exposing a Supabase project hostname during Google sign-in.
 The web initialises Google Identity once for each mounted sign-in control and
 keeps its current React handlers in refs, rather than reinitialising Google on
 every render. Its browser-managed FedCM button flow is explicitly enabled, and
-the focusable Google iframe is never hidden from assistive technology. If Google
-Identity cannot load, the branded control is replaced with visible retry copy
-and the existing safe sign-in error alert.
+the ready Google iframe remains focusable and available to assistive technology.
+The Google button appears on the first page render using a local presentation
+with Google's original vector logo at 18px and the same Google Sans Medium font
+as the native iframe, both preloaded from the site's own assets. Match Google's
+14px label, .25px letter spacing, and theme-specific logo spacing so the icon
+and text do not resize when the native control replaces the local presentation.
+The logo is copied from Google's public `gsi/client` script; Google Sans Medium
+is the original v62 font referenced by Google's `gsi/button` document.
+This presentation is disabled while Google's script and native control load;
+it never starts authentication itself. It occupies the same 40px slot as the
+native control and is replaced once Google gives the iframe positive dimensions
+and removes its temporary inline button. The iframe load event is too early:
+Google sizes it separately and removes the temporary button on subsequent
+animation frames. Observe those DOM changes without modifying Google's control;
+retain Google's accessible iframe overlay where present. Fixed height and
+clipped overflow keep the layout stable during the handoff. An inline-only
+Google control is revealed when rendering completes.
+There is no arbitrary reveal delay. If Google Identity cannot load, the branded
+control is replaced with visible retry copy and the existing safe sign-in error
+alert.
 Overlapping render requests for the same control are coalesced while Google
 Identity is loading, with the newest handlers retained, so development-mode
 effect replays cannot briefly create duplicate native controls.
 The web clips overflow on the Google button's container because its iframe can
-paint a white gutter outside the visible button in mobile Safari. The iframe
-remains focusable, and the container shows a focus outline when it has focus.
+paint a white gutter outside the visible button in mobile Safari. The container
+always uses the same corner radius as the Apple button, including before focus,
+so the white iframe background cannot show through at the rounded corners.
+The iframe remains focusable, and the container shows a focus outline when it
+has focus.
 
 The signed-in account surface is the Overall Rating sheet. Home and Settings
 send signed-in users there directly; a successful sign-in dismisses its
@@ -888,7 +898,9 @@ leave space for both action buttons.
 
 The shared web menu button is absolutely positioned at the top of the page, so
 it scrolls away with the page content. The open navigation drawer remains a
-fixed, document-level overlay.
+fixed, document-level overlay. On Sign In, mount the menu directly in the
+full-width page container, outside the absolutely positioned, width-limited
+logo header, so its top-left offsets match the other pages.
 
 The shared website footer is hidden on every route at viewport widths of 680px
 and below, using the site's mobile breakpoint. Anagram retains its existing
