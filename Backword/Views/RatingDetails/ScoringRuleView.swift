@@ -9,22 +9,14 @@ import SwiftUI
 
 struct ScoringRuleView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @ScaledMetric private var spacing: CGFloat = 14
-    let icon: String
     let title: String
     let rows: [(String, String)]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: spacing) {
-                Image(systemName: icon)
-                    .font(.body)
-                    .foregroundColor(.appAccent)
-                    .frame(width: 20)
-                Text(title)
-                    .font(AppFont.clueLabel(13))
-                    .foregroundColor(.appTextPrimary)
-            }
+            Text(title)
+                .font(AppFont.clueLabel(13))
+                .foregroundColor(.appTextPrimary)
             VStack(spacing: 4) {
                 ForEach(rows, id: \.0) { label, pts in
                     scoreRow(label: label, points: pts)
@@ -71,7 +63,6 @@ struct ScoringRuleView: View {
 
     static func backword(title: String = "Backword & Midword") -> ScoringRuleView {
         ScoringRuleView(
-            icon: "backward.circle",
             title: title,
             rows: [
                 ("Win in 1 guess", "5 pts"),
@@ -84,9 +75,22 @@ struct ScoringRuleView: View {
         )
     }
 
+    static func anagram() -> ScoringRuleView {
+        ScoringRuleView(
+            title: "Anagram",
+            rows: [
+                ("Under 30 seconds", "5 pts"),
+                ("Under 60 seconds", "4 pts"),
+                ("Under 120 seconds", "3 pts"),
+                ("Under 180 seconds", "2 pts"),
+                ("180 seconds or more", "1 pt"),
+                ("Give up or missed", "0 pts"),
+            ]
+        )
+    }
+
     static func crossword() -> some View {
         ScoringRuleView(
-            icon: "square.grid.3x3.fill",
             title: "Quick & Weekly Crossword",
             rows: [
                 ("100% complete", "5 pts"),
@@ -102,7 +106,6 @@ struct ScoringRuleView: View {
 
 #Preview {
     ScoringRuleView(
-        icon: "backward.circle",
         title: "Win in 1 guess",
         rows: [("Win in 1 guess", "5 pts"),
                ("Win in 2 guesses", "4 pts"),

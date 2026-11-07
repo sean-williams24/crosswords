@@ -438,7 +438,7 @@ struct RatingDetailSheet: View {
                     Text("- 1 point deducted for every 3 hints used")
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
-                        .padding(.leading, 42)
+                        .padding(.leading, 8)
 
                     Divider().background(Color.appGridLine.opacity(0.5))
 
@@ -447,22 +447,21 @@ struct RatingDetailSheet: View {
 
                     Divider().background(Color.appGridLine.opacity(0.5))
 
-                    VStack(alignment: .leading, spacing: 6) {
-                        HStack(spacing: spacing) {
-                            Image(systemName: "calendar")
-                                .font(.body)
-                                .foregroundColor(.appAccent)
-                                .frame(width: 20)
-                            Text("Rolling 14-day window")
-                                .font(AppFont.clueLabel(13))
-                                .foregroundColor(.appTextPrimary)
-                        }
+                    ScoringRuleView.anagram()
                         .padding(.leading, 8)
+
+                    Divider().background(Color.appGridLine.opacity(0.5))
+
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Rolling 14-day window")
+                            .font(AppFont.clueLabel(13))
+                            .foregroundColor(.appTextPrimary)
+                            .padding(.leading, 8)
 
                         Text("Your rating reflects only the last 14 days. Skip a day and it scores 0, so play every day to keep your rating up.")
                             .font(AppFont.caption())
                             .foregroundColor(.appTextSecondary)
-                            .padding(.leading, 42)
+                            .padding(.leading, 8)
                     }
                     .padding(.bottom, 4)
                 }

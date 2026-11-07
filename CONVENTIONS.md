@@ -512,10 +512,18 @@ fonts all use the bounded environment, while smaller text settings still scale.
 
 ## Profile Scoring Guide
 
+The shared iOS `ScoringRuleView` uses text-only headings aligned with its score
+labels. The crossword hint-penalty note uses the same leading alignment.
+
 iOS and web Player Profile explain Backword and Midword together under
 “Backword & Midword”, using one shared five-guess scoring guide: wins earn
 5–1 points for guesses 1–5, and losses or missed puzzles earn zero. Each game
 still earns its own rating points and has its own column in the 14-day breakdown.
+
+Both platforms show Anagram separately after Backword & Midword in the scoring
+guide: solves under 30, 60, 120, and 180 seconds earn 5, 4, 3, and 2 points;
+solves taking 180 seconds or more earn 1 point. Giving up or missing a puzzle
+earns zero.
 
 Both platforms order the breakdown columns as Quick, Weekly (Pro only),
 Backword, Midword, Anagram, followed by Total.
