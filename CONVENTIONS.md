@@ -910,6 +910,8 @@ logo header, so its top-left offsets match the other pages.
 The shared website footer is hidden on every route at viewport widths of 680px
 and below, using the site's mobile breakpoint. Anagram retains its existing
 700px footer cutoff. Wider layouts keep the footer visible.
+Sign In uses the same shared footer below its account controls, spanning the
+page width and pushed to the bottom on taller screens.
 
 The shared website footer groups its links into Intervls, Free games, Pro Account,
 Support, Legal, and Socials, in that order, each with a heading and vertical list. Intervls

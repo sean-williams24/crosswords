@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
+import { Footer } from "../components/Footer";
 import { useAuth } from "../features/auth/AuthProvider";
 import { BrandLogo } from "../features/brand/BrandLogo";
 import { AccountBenefitIcon } from "../features/auth/AccountBenefitIcon";
@@ -62,7 +63,7 @@ export function SignInPage() {
   }
 
   return (
-    <main className="auth-page">
+    <main className="auth-page auth-page--sign-in">
       <GameMenu />
       {navigationHeader}
       <section aria-labelledby="sign-in-title" className="auth-content">
@@ -108,6 +109,7 @@ export function SignInPage() {
         </div>
         <p className="auth-content__note">If you use Apple’s Hide My Email, use Apple to sign in on every device.</p>
       </section>
+      <Footer />
     </main>
   );
 }

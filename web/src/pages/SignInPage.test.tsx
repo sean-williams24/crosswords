@@ -1,10 +1,35 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { SignInPage } from "./SignInPage";
 
 describe("SignInPage", () => {
+  it("places the shared full-width footer below the sign-in content at the bottom of the page", () => {
+    const stylesheet = document.createElement("style");
+    stylesheet.textContent = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    document.head.appendChild(stylesheet);
+    try {
+      render(<MemoryRouter><SignInPage /></MemoryRouter>);
+
+      const page = screen.getByRole("main");
+      const content = screen.getByRole("region", { name: "Sign in or create an account" });
+      const navigation = screen.getByRole("navigation", { name: "Footer" });
+      const footer = navigation.closest("footer")!;
+
+      expect(content.nextElementSibling).toBe(footer);
+      expect(page.lastElementChild).toBe(footer);
+      expect(within(navigation).getByRole("link", { name: "Privacy", exact: true })).toHaveAttribute("href", "/privacy");
+      expect(within(navigation).getByRole("link", { name: "Contact" })).toHaveAttribute("href", "/contact");
+      expect(getComputedStyle(page).flexDirection).toBe("column");
+      expect(getComputedStyle(footer).width).toBe("100%");
+      expect(getComputedStyle(footer).marginTop).toBe("auto");
+      expect(getComputedStyle(page).paddingBottom).toBe("0px");
+    } finally {
+      stylesheet.remove();
+    }
+  });
+
   it("anchors the menu to the full page instead of the centered logo header", () => {
     render(<MemoryRouter><SignInPage /></MemoryRouter>);
 

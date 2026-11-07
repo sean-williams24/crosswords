@@ -1964,6 +1964,15 @@ body {
   width: min(100%, 540px);
 }
 
+.auth-page--sign-in {
+  padding: 121px 0 0;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.auth-page--sign-in > .auth-content { width: min(100% - 40px, 540px); padding-bottom: 72px; }
+.auth-page--sign-in > footer { width: 100%; margin-top: auto; }
+
 .auth-page__header { position: absolute; inset: 0 0 auto; }
 .auth-content__eyebrow { margin: 0 0 8px; color: #d6be87; font-size: 11px; font-weight: 700; letter-spacing: .18em; }
 .auth-content h1 { margin: 0; font-size: clamp(31px, 7vw, 44px); letter-spacing: -.045em; }
