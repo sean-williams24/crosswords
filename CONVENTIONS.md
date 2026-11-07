@@ -368,6 +368,11 @@ The web clips overflow on the Google button's container because its iframe can
 paint a white gutter outside the visible button in mobile Safari. The container
 always uses the same corner radius as the Apple button, including before focus,
 so the white iframe background cannot show through at the rounded corners.
+Set `color-scheme: light` on the iframe to match Google's embedded document,
+including for its filled-black and personalized buttons. Inheriting the app's
+dark scheme can make the browser paint an opaque white iframe canvas at the
+rounded edges; the matching scheme preserves the transparent canvas. This
+does not change the Google button theme selected by the native rendering API.
 The iframe remains focusable, and the container shows a focus outline when it
 has focus.
 

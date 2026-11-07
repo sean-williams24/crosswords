@@ -85,6 +85,27 @@ describe("SignInPage", () => {
     }
   });
 
+  it("matches Google's iframe canvas scheme even when the surrounding page is dark", () => {
+    const stylesheet = document.createElement("style");
+    stylesheet.textContent = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    document.head.appendChild(stylesheet);
+    const previousScheme = document.documentElement.style.colorScheme;
+    document.documentElement.style.colorScheme = "dark";
+    try {
+      const { container } = render(<MemoryRouter><SignInPage /></MemoryRouter>);
+      const identity = container.querySelector(".auth-google-button__identity")!;
+      const iframe = document.createElement("iframe");
+      identity.append(iframe);
+
+      expect(getComputedStyle(iframe).colorScheme).toBe("light");
+      expect(document.documentElement.style.colorScheme).toBe("dark");
+      expect(iframe).not.toHaveAttribute("aria-hidden");
+    } finally {
+      document.documentElement.style.colorScheme = previousScheme;
+      stylesheet.remove();
+    }
+  });
+
   it("clips the native Google button gutter and keeps both providers aligned", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 

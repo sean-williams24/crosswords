@@ -2003,6 +2003,8 @@ html[data-theme="light"] .auth-google-placeholder__logo { width: 18px; height: 1
 /* Google's inline and iframe controls can coexist during their handoff.
    Clip them to one large-button height so they cannot stack visibly. */
 .auth-google-button__identity { width: min(100%, 400px); height: 40px; overflow: hidden; border-radius: var(--auth-sign-in-corner-radius); }
+/* Match Google's document scheme so its rounded corners stay transparent. */
+.auth-google-button__identity iframe { color-scheme: light; }
 .auth-google-button__identity:focus-within { outline: 2px solid #79b7eb; outline-offset: 3px; }
 .auth-google-button--disabled { opacity: .62; cursor: wait; }
 .auth-google-button--disabled .auth-google-button__identity { pointer-events: none; }
