@@ -7,20 +7,20 @@ struct HomeDailyChallengeSummary: View {
     var body: some View {
         ViewThatFits(in: .horizontal) {
             HStack(spacing: AppLayout.homeDailySummarySpacing) {
-                countLabel
+                pointsLabel
                 markers
             }
             VStack(alignment: .trailing, spacing: AppLayout.homeDailySummaryLineSpacing) {
-                countLabel
+                pointsLabel
                 markers
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Today's daily challenge, \(snapshot.finishedCount) of 4 finished")
+        .accessibilityLabel("Today's daily challenge, \(snapshot.earnedPoints) of \(snapshot.possiblePoints) points, \(snapshot.finishedCount) of 4 games finished")
     }
 
-    private var countLabel: some View {
-        Text("TODAY \(snapshot.finishedCount)/4")
+    private var pointsLabel: some View {
+        Text("TODAY - \(snapshot.earnedPoints)/\(snapshot.possiblePoints) PTS")
             .font(AppFont.clueLabel(AppLayout.homeDailyLabelSize))
             .monospacedDigit()
             .foregroundStyle(snapshot.isComplete ? Color.solvedGold : Color.appTextSecondary)

@@ -728,7 +728,7 @@ they recognise an already-updated payload and never overwrite a divergent row.
 
 ## iOS Home Daily Challenge
 
-Home's rating label row also shows `TODAY n/4` and four markers, in fixed order:
+Home's rating label row also shows `TODAY n/20 PTS` and four markers, in fixed order:
 Backword, Quick Crossword, Anagram, Midword. The rating tier is left-aligned on
 Home; other rating bars retain their marker-following tier label. The daily
 summary is display-only and shares the existing rating-details tap action.
@@ -740,7 +740,14 @@ Daily challenge state is derived from saved progress in the active guest or
 account namespace, independently of fetching today's content. Only the device's
 current local release date contributes. A terminal loss or give-up counts as a
 finish, alongside a solve; older archive releases and weekly Pro Crossword never
-count. The denominator remains four when content is unavailable. Crossword
+count. Completion still requires all four games regardless of points earned.
+The points label sums the four daily games, each worth at most five points;
+its maximum remains 20 when content is unavailable. Backword uses its completed
+release-day score; Anagram and Midword use their saved release-day scores.
+Crossword includes points earned while in progress, using its completion
+thresholds and three-hint penalties. A give-up retains its pre-reveal score;
+revealed answers never increase the total. Saved crossword scores remain usable
+when clue-count metadata and downloaded content are unavailable. Crossword
 date/type metadata identifies saved progress offline; a matching loaded daily
 puzzle can also identify a legacy record missing that metadata. Unknown legacy
 dates are not guessed. Markers are wide rounded rectangles with small gaps and

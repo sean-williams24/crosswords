@@ -13,6 +13,90 @@ struct DailyChallengeSnapshotTests {
         #expect(snapshot.games.map(\.game) == [.backword, .crossword, .anagram, .midword])
         #expect(snapshot.finishedCount == finished)
         #expect(snapshot.isComplete == (finished == 4))
+        #expect(snapshot.possiblePoints == 20)
+    }
+
+    @Test("Today's points combine all four games, including an unfinished crossword")
+    func combinedPoints() {
+        var backword = BackwordProgress(date: date)
+        backword.guesses = ["CASTLE", "PUZZLE"]
+        backword.wonFlag = true
+        backword.completedAt = now
+        var crossword = DailyChallengeFixtures.crossword()
+        crossword.completedClueIds = [1, 2]
+        var anagram = AnagramProgress(puzzle: DailyChallengeFixtures.anagram, now: now)
+        anagram.finish(.solved, now: now.addingTimeInterval(65))
+        var midword = MidwordProgress(date: date)
+        midword.completedAt = now
+        midword.won = true
+        midword.releaseDateScore = 2
+        let snapshot = DailyChallengeSnapshot(
+            date: date, backword: backword, crosswords: [crossword], anagram: anagram, midword: midword
+        )
+        #expect(snapshot.games.map(\.earnedPoints) == [4, 3, 3, 2])
+        #expect(snapshot.earnedPoints == 12)
+        #expect(snapshot.possiblePoints == 20)
+        #expect(snapshot.finishedCount == 3)
+        #expect(!snapshot.isComplete)
+    }
+
+    @Test("A perfect day earns all twenty points")
+    func perfectPoints() {
+        var backword = BackwordProgress(date: date)
+        backword.guesses = ["PUZZLE"]
+        backword.wonFlag = true
+        backword.completedAt = now
+        var crossword = DailyChallengeFixtures.crossword()
+        crossword.completedClueIds = [1, 2, 3, 4]
+        crossword.completedAt = now
+        var anagram = AnagramProgress(puzzle: DailyChallengeFixtures.anagram, now: now)
+        anagram.finish(.solved, now: now)
+        var midword = MidwordProgress(date: date)
+        midword.completedAt = now
+        midword.won = true
+        midword.releaseDateScore = 5
+        let snapshot = DailyChallengeSnapshot(
+            date: date, backword: backword, crosswords: [crossword], anagram: anagram, midword: midword
+        )
+        #expect(snapshot.earnedPoints == snapshot.possiblePoints)
+        #expect(snapshot.isComplete)
+    }
+
+    @Test("Crossword points follow completion thresholds and hint penalties",
+          arguments: [0, 1, 2, 3, 4])
+    func crosswordPoints(completed: Int) {
+        var crossword = DailyChallengeFixtures.crossword()
+        crossword.completedClueIds = Set(0..<completed)
+        #expect(DailyChallengeSnapshot(date: date, crosswords: [crossword]).earnedPoints
+                == [0, 2, 3, 4, 5][completed])
+        crossword.hintsUsed = 3
+        #expect(DailyChallengeSnapshot(date: date, crosswords: [crossword]).earnedPoints
+                == [0, 1, 2, 3, 4][completed])
+        crossword.hintsUsed = 30
+        #expect(DailyChallengeSnapshot(date: date, crosswords: [crossword]).earnedPoints == 0)
+    }
+
+    @Test("Giving up the crossword never scores the revealed answers")
+    func crosswordGiveUpPoints() {
+        var crossword = DailyChallengeFixtures.crossword()
+        crossword.completedClueIds = [1, 2, 3, 4]
+        crossword.gaveUpAt = now
+        crossword.gaveUpScore = 2
+        crossword.releaseDateScore = 3
+        #expect(DailyChallengeSnapshot(date: date, crosswords: [crossword]).earnedPoints == 2)
+        crossword.gaveUpScore = nil
+        #expect(DailyChallengeSnapshot(date: date, crosswords: [crossword]).earnedPoints == 3)
+    }
+
+    @Test("Saved scores remain available without downloaded crossword content or clue counts")
+    func offlinePoints() {
+        var crossword = DailyChallengeFixtures.crossword()
+        crossword.totalClues = nil
+        crossword.releaseDateScore = 4
+        let snapshot = DailyChallengeSnapshot(date: date, crosswords: [crossword])
+        #expect(snapshot.earnedPoints == 4)
+        #expect(snapshot.possiblePoints == 20)
+        #expect(DailyChallengeSnapshot(date: date).earnedPoints == 0)
     }
 
     @Test("Unstarted records do not manufacture progress from guesses remaining")
@@ -70,6 +154,7 @@ struct DailyChallengeSnapshotTests {
             date: date, backword: backword, crosswords: [crossword], anagram: anagram, midword: midword
         )
         #expect(snapshot.isComplete)
+        #expect(snapshot.earnedPoints == 0)
         #expect(snapshot.games.allSatisfy { $0.state == .finished(won: false) })
         #expect(snapshot.games.allSatisfy { $0.accessibilityLabel.contains("Finished without a win") })
     }
@@ -77,16 +162,27 @@ struct DailyChallengeSnapshotTests {
     @Test("An older release completed today and weekly crosswords are excluded")
     func excludedReleases() {
         var backword = BackwordProgress(date: "2026-11-06")
+        backword.guesses = ["PUZZLE"]
+        backword.wonFlag = true
         backword.completedAt = now
         var weekly = DailyChallengeFixtures.crossword()
         weekly.isWeekly = true
         weekly.completedAt = now
+        weekly.releaseDateScore = 5
         var archive = DailyChallengeFixtures.crossword()
         archive.puzzleDate = "2026-11-06"
         archive.completedAt = now
+        archive.releaseDateScore = 5
+        var midword = MidwordProgress(date: "2026-11-06")
+        midword.completedAt = now
+        midword.releaseDateScore = 5
+        var anagram = AnagramProgress(puzzle: DailyChallengeFixtures.anagram, now: now)
+        anagram.finish(.solved, now: now)
         let snapshot = DailyChallengeSnapshot(date: date, backword: backword, crosswords: [weekly, archive])
         #expect(snapshot.finishedCount == 0)
+        #expect(snapshot.earnedPoints == 0)
         #expect(snapshot.games.allSatisfy { $0.state == .notStarted })
+        #expect(DailyChallengeSnapshot(date: "2026-11-08", anagram: anagram, midword: midword).earnedPoints == 0)
     }
 
     @Test("Explicit release metadata works without downloaded puzzle content")
