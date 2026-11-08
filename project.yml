@@ -55,6 +55,9 @@ targets:
       - path: CrosswordsTests/AnalyticsStartupServiceTests.swift
       - path: CrosswordsTests/CompletedBackwordCardLayoutTests.swift
       - path: CrosswordsTests/ScoringRuleViewTests.swift
+      - path: CrosswordsTests/DailyChallengeSnapshotTests.swift
+      - path: CrosswordsTests/HomeDailyChallengeViewModelTests.swift
+      - path: CrosswordsTests/HomeDailyChallengeLayoutTests.swift
     dependencies:
       - target: Backword
     settings:

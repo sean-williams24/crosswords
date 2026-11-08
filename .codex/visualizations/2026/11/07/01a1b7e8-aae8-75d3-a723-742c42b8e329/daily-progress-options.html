@@ -1,0 +1,92 @@
+<div id="intervls-progress-options">
+  <div class="viz-controls" aria-label="Example daily progress">
+    <button class="btn" type="button" data-stage="0" aria-pressed="false">New day</button>
+    <button class="btn" type="button" data-stage="1" aria-pressed="false">1 finished</button>
+    <button class="btn" type="button" data-stage="2" aria-pressed="true">2 finished</button>
+    <button class="btn" type="button" data-stage="3" aria-pressed="false">3 finished</button>
+    <button class="btn" type="button" data-stage="4" aria-pressed="false">All 4 finished</button>
+  </div>
+  <div class="viz-grid">
+    <section class="card"><div class="concept">
+      <strong>Four beats</strong><span class="text-small">DAILY INTERVLS</span>
+      <svg class="progress-drawing" viewBox="0 0 260 210" role="img" aria-label="Four game segments, two finished"><g data-graphic="beats"></g></svg>
+      <strong data-count>2 of 4 finished</strong><span class="text-small" data-copy>Keep your rhythm.</span>
+    </div></section>
+    <section class="card"><div class="concept">
+      <strong>Daily circuit</strong><span class="text-small">DAILY INTERVLS</span>
+      <svg class="progress-drawing" viewBox="0 0 260 210" role="img" aria-label="Four game arcs, two finished"><g data-graphic="circuit"></g></svg>
+      <strong data-count>2 of 4 finished</strong><span class="text-small" data-copy>Keep your rhythm.</span>
+    </div></section>
+    <section class="card"><div class="concept">
+      <strong>Build today’s badge</strong><span class="text-small">DAILY INTERVLS</span>
+      <svg class="progress-drawing" viewBox="0 0 260 210" role="img" aria-label="Four badge pieces, two earned"><g data-graphic="badge"></g></svg>
+      <strong data-count>2 of 4 finished</strong><span class="text-small" data-copy>Keep your rhythm.</span>
+    </div></section>
+  </div>
+  <div class="viz-row game-key text-small" aria-label="Game colours">
+    <span><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="var(--viz-series-1)"/></svg>BW · Backword</span>
+    <span><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="var(--viz-series-2)"/></svg>QC · Quick Crossword</span>
+    <span><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="var(--viz-series-3)"/></svg>AN · Anagram</span>
+    <span><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="var(--viz-series-4)"/></svg>MW · Midword</span>
+  </div>
+  <p class="text-small text-center" data-detail aria-live="polite">Backword won · Midword finished without a win · Quick Crossword in progress</p>
+</div>
+<style>
+#intervls-progress-options { color:var(--foreground); }
+#intervls-progress-options .concept { display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center; min-width:0; }
+#intervls-progress-options .viz-grid { margin-top:16px; }
+#intervls-progress-options .progress-drawing { width:100%; max-width:260px; overflow:visible; }
+#intervls-progress-options .progress-drawing text { fill:var(--foreground); font-family:inherit; font-weight:500; }
+#intervls-progress-options .game-key { margin-top:20px; }
+#intervls-progress-options .game-key span { display:inline-flex; align-items:center; gap:6px; }
+#intervls-progress-options .game-key svg { width:12px; height:12px; flex-shrink:0; }
+#intervls-progress-options .earned { transform-box:fill-box; transform-origin:center; }
+#intervls-progress-options.celebrate .earned { animation:intervls-settle 700ms ease-out; }
+@keyframes intervls-settle { 0% { transform:scale(.94); } 55% { transform:scale(1.04); } 100% { transform:scale(1); } }
+@media(prefers-reduced-motion:reduce) { #intervls-progress-options.celebrate .earned { animation:none; } }
+</style>
+<script>
+(() => {
+  const root = document.getElementById('intervls-progress-options');
+  const games = ['BW','QC','AN','MW'];
+  const sequence = [0,3,2,1];
+  const color = i => `var(--viz-series-${i+1})`;
+  const texts = ['Four games. Your daily interval.','You’re finding your rhythm.','Keep your rhythm.','One more to finish today.','Daily Intervls complete.'];
+  function draw(stage) {
+    const finished = new Set(sequence.slice(0,stage));
+    const active = stage > 0 && stage < 4 ? 1 : -1;
+    const value = i => finished.has(i) ? 1 : i === active ? .55 : 0;
+    const mark = i => finished.has(i) ? (i === 3 ? '−' : '✓') : i === active ? '·' : '';
+    const description = stage === 0 ? 'Four games ready to play.' : stage === 1 ? 'Backword won · Quick Crossword in progress' : stage === 2 ? 'Backword won · Midword finished without a win · Quick Crossword in progress' : stage === 3 ? 'Backword, Anagram and Midword finished · Quick Crossword in progress' : 'All four finished · 3 wins, 1 loss';
+    root.classList.toggle('celebrate',stage === 4);
+    root.querySelectorAll('[data-stage]').forEach(button => button.setAttribute('aria-pressed',String(Number(button.dataset.stage) === stage)));
+    root.querySelectorAll('[data-count]').forEach(label => label.textContent = `${stage} of 4 finished`);
+    root.querySelectorAll('[data-copy]').forEach(label => label.textContent = texts[stage]);
+    root.querySelector('[data-detail]').textContent = description;
+    root.querySelectorAll('.progress-drawing').forEach(svg => svg.setAttribute('aria-label',`${stage} of 4 games finished. ${description}`));
+    root.querySelector('[data-graphic="beats"]').innerHTML = games.map((game,i) => {
+      const x = 12+i*63;
+      const fill = value(i);
+      return `<g class="${finished.has(i) ? 'earned' : ''}"><rect x="${x}" y="50" width="47" height="88" rx="14" fill="var(--muted)" stroke="var(--border)"/><rect x="${x}" y="${138-88*fill}" width="47" height="${88*fill}" rx="14" fill="${color(i)}" fill-opacity=".4"/><text x="${x+23.5}" y="103" text-anchor="middle">${mark(i)}</text><text class="text-small" x="${x+23.5}" y="166" text-anchor="middle">${game}</text></g>`;
+    }).join('');
+    root.querySelector('[data-graphic="circuit"]').innerHTML = games.map((game,i) => {
+      const start = -90+i*90+5;
+      const path = amount => {
+        const end = start+80*amount;
+        const a = start*Math.PI/180;
+        const b = end*Math.PI/180;
+        return `M ${130+73*Math.cos(a)} ${99+73*Math.sin(a)} A 73 73 0 0 1 ${130+73*Math.cos(b)} ${99+73*Math.sin(b)}`;
+      };
+      const angle = (start+40)*Math.PI/180;
+      const x = 130+104*Math.cos(angle);
+      const y = 104+104*Math.sin(angle);
+      return `<g class="${finished.has(i) ? 'earned' : ''}"><path d="${path(1)}" fill="none" stroke="var(--muted)" stroke-width="15" stroke-linecap="round"/>${value(i) ? `<path d="${path(value(i))}" fill="none" stroke="${color(i)}" stroke-width="15" stroke-linecap="round"/>` : ''}<text class="text-small" x="${x}" y="${y}" text-anchor="middle">${game}${finished.has(i) ? ' '+mark(i) : ''}</text></g>`;
+    }).join('')+`<text x="130" y="99" text-anchor="middle">${stage} / 4</text><text class="text-small" x="130" y="121" text-anchor="middle">${stage === 4 ? 'Complete' : 'Today'}</text>`;
+    const pieces = ['M 130 16 L 209 95 L 134 95 L 134 20 Z','M 213 99 L 134 178 L 134 103 L 209 103 Z','M 130 182 L 51 103 L 126 103 L 126 178 Z','M 47 99 L 126 20 L 126 95 L 51 95 Z'];
+    const labels = [[153,69],[162,130],[107,144],[98,83]];
+    root.querySelector('[data-graphic="badge"]').innerHTML = games.map((game,i) => `<g class="${finished.has(i) ? 'earned' : ''}"><path d="${pieces[i]}" fill="${value(i) ? color(i) : 'var(--muted)'}" fill-opacity="${finished.has(i) ? '.45' : i === active ? '.16' : '1'}" stroke="var(--border)" stroke-width="1"/><text class="text-small" x="${labels[i][0]}" y="${labels[i][1]}" text-anchor="middle">${game}${finished.has(i) ? ' '+mark(i) : ''}</text></g>`).join('')+`<text class="text-small" x="130" y="207" text-anchor="middle">${stage === 4 ? 'TODAY’S BADGE EARNED' : `${stage} OF 4 PIECES EARNED`}</text>`;
+  }
+  root.querySelectorAll('[data-stage]').forEach(button => button.addEventListener('click',() => draw(Number(button.dataset.stage))));
+  draw(2);
+})();
+</script>

@@ -14,6 +14,8 @@ struct DebugSettingsView: View {
     @Environment(\.dismiss) private var dismiss
 
     var homeViewModel: HomeViewModel? = nil
+    var canReplayDailyCelebration = false
+    var replayDailyCelebration: (() -> Void)? = nil
     private let settings = AppSettings.shared
 
     @State private var showResetBackwordConfirmation = false
@@ -32,6 +34,18 @@ struct DebugSettingsView: View {
     var body: some View {
         NavigationStack {
             List {
+                if let replayDailyCelebration {
+                    Section("Home") {
+                        Button {
+                            replayDailyCelebration()
+                            dismiss()
+                        } label: {
+                            Label("Replay Daily Completion", systemImage: "sparkles")
+                                .font(AppFont.body())
+                        }
+                        .disabled(!canReplayDailyCelebration)
+                    }
+                }
                 Section("In-App Purchases") {
                     Toggle("Debug Pro Override", isOn: Binding(
                         get: { storeService.debugProOverrideValue ?? storeService.isProUser },

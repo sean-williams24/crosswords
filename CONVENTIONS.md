@@ -726,6 +726,48 @@ source `word_data` hashes, unresolved rows block publishing, and only human
 approved, unchanged rows may be patched. Apply and rollback are idempotent, so
 they recognise an already-updated payload and never overwrite a divergent row.
 
+## iOS Home Daily Challenge
+
+Home's rating label row also shows `TODAY n/4` and four markers, in fixed order:
+Backword, Quick Crossword, Anagram, Midword. The rating tier is left-aligned on
+Home; other rating bars retain their marker-following tier label. The daily
+summary is display-only and shares the existing rating-details tap action.
+Normal text sizes use the existing row; narrow widths and accessibility text
+can wrap rather than clip. Finished daily cards gain an inset outline without
+changing their measured size, existing status, or spacing.
+
+Daily challenge state is derived from saved progress in the active guest or
+account namespace, independently of fetching today's content. Only the device's
+current local release date contributes. A terminal loss or give-up counts as a
+finish, alongside a solve; older archive releases and weekly Pro Crossword never
+count. The denominator remains four when content is unavailable. Crossword
+date/type metadata identifies saved progress offline; a matching loaded daily
+puzzle can also identify a legacy record missing that metadata. Unknown legacy
+dates are not guessed. Markers are wide rounded rectangles with small gaps and
+no symbols. Started games use an outlined rectangle; finished games
+use a solid fill for either outcome. Only the crossword shows a measurable
+partial fill, building from the leading edge. The celebration lifts, stretches,
+and briefly glows each marker in sequence. Guess counts and Anagram tile
+placements are not interpreted as percentages toward solving.
+
+Returning Home after locally finishing the fourth daily game plays one marker
+ripple and success haptic, plus a 3.5-second overlay saying
+`Your daily Intervls, complete.` Feedback waits until Home is active, the launch
+splash has finished, and no modal or error is obstructing it. Ad SDK startup is
+not a prerequisite: Pro and ad-disabled sessions may never start it.
+On a scrolling Home, starting the celebration also brings the rating row back
+into view so the ripple does not play above the visible game cards.
+Acknowledgement is stored locally per guest/account and release date; it is not
+an aggregate cloud progress record. Restored and newly synced completion remains
+silent. A sync that leaves the daily snapshot unchanged preserves an already
+observed local finish. Account/date changes, progress resets, and changed cloud
+progress cancel pending feedback. Local midnight and timezone changes select
+the new release date. Reduce Motion skips the ripple and overlay transition;
+the static completed state and completion message remain available.
+In DEBUG builds, `Replay Daily Completion` in Debug Settings replays the real
+feedback after the sheet closes when all four games are finished. It does not
+change progress, scores, or daily acknowledgement.
+
 ## Home Card Appearance
 
 iOS Home presents Backword, Quick Crossword, Anagram, Midword, and Pro Crossword

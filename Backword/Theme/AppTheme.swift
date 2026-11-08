@@ -55,6 +55,21 @@ extension Color {
     static let anagramSurface = Color("AnagramSurface")
     static let anagramInk = Color("AnagramInk")
     static let anagramOnOrange = Color("AnagramOnOrange")
+    static let homeDailyBackword = Color("HomeDailyBackword")
+    static let homeDailyCrossword = Color("HomeDailyCrossword")
+    static let homeDailyAnagram = Color("HomeDailyAnagram")
+    static let homeDailyMidword = Color("HomeDailyMidword")
+}
+
+extension DailyChallengeGame {
+    var homeProgressColor: Color {
+        switch self {
+        case .backword: return .homeDailyBackword
+        case .crossword: return .homeDailyCrossword
+        case .anagram: return .homeDailyAnagram
+        case .midword: return .homeDailyMidword
+        }
+    }
 }
 
 enum AppGradient {
@@ -239,6 +254,19 @@ struct AppLayout {
     static let homeArchiveContentSpacing: CGFloat = 10
     static let homeArchiveTitleSize: CGFloat = 24
     static let homeArchiveBorderWidth: CGFloat = 1
+    static let homeDailyMarkerWidth: CGFloat = 22
+    static let homeDailyMarkerHeight: CGFloat = 8
+    static let homeDailyMarkerSpacing: CGFloat = 4
+    static let homeDailyMarkerCornerRadius: CGFloat = 3
+    static let homeDailySummarySpacing: CGFloat = 9
+    static let homeDailySummaryLineSpacing: CGFloat = 5
+    static let homeDailyMarkerBorderWidth: CGFloat = 1
+    static let homeDailyMarkerCelebrationScale: CGFloat = 1.7
+    static let homeDailyMarkerCelebrationLift: CGFloat = 3
+    static let homeDailyMarkerCelebrationGlow: CGFloat = 5
+    static let homeDailyLabelSize: CGFloat = 10
+    static let homeDailyCardBorderWidth: CGFloat = 1
+    static let homeDailyCelebrationPadding: CGFloat = 14
     static let onboardingInstructionIconSize: CGFloat = 18
     static let homeCardIssueNumberFontSize: CGFloat = 12
     static let sheetBackgroundBlurRadius: CGFloat = 4

@@ -16,6 +16,9 @@ struct RatingBarView: View {
     var category: RatingGameCategory? = nil
     var accentColor: Color? = nil
     var trackColor: Color? = nil
+    var dailyChallenge: DailyChallengeSnapshot? = nil
+    var dailyCelebrationID = 0
+    var onOpenDetails: (() -> Void)? = nil
 
     private func pointsView(category: RatingGameCategory) -> some View {
         Text("\(rating.points(for: category))/\(rating.maxPoints(for: category))")
@@ -44,7 +47,7 @@ struct RatingBarView: View {
 
     var body: some View {
         Button {
-            showDetail = true
+            if let onOpenDetails { onOpenDetails() } else { showDetail = true }
         } label: {
             VStack(spacing: 8) {
                 // Bar track
@@ -62,6 +65,11 @@ struct RatingBarView: View {
 
                 if let category {
                     pointsView(category: category)
+                } else if let dailyChallenge {
+                    HomeDailyChallengeRatingRow(snapshot: dailyChallenge, celebrationID: dailyCelebrationID) {
+                        tierLabel
+                    }
+                    .frame(minHeight: tierLabelHeight)
                 } else {
                     tierLabelView
                 }

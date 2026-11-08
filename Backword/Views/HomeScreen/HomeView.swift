@@ -16,11 +16,14 @@ struct HomeView: View {
     @State private var midwordProgress: MidwordProgress?
     @StateObject private var anagramService = AnagramService()
     @StateObject private var backwordStatsService = BackwordStatsService()
+    @StateObject private var dailyChallenge = HomeDailyChallengeViewModel()
     @State private var anagramProgressRecords: [AnagramProgress] = []
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.launchSplashDidComplete) private var launchSplashDidComplete
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var homeHasAppeared = false
     @ScaledMetric var proLogoFrame: CGFloat = AppLayout.homeProLogoHeight
     @ScaledMetric var navBarVStackSpacing: CGFloat = AppLayout.homeProLogoSpacing
     @ScaledMetric var navBarProLogoOffset: CGFloat = AppLayout.homeProLogoTrailingOffset
@@ -53,7 +56,25 @@ struct HomeView: View {
         AppLayout(sizeClass: sizeClass)
     }
 
+    private var canPresentDailyCelebration: Bool {
+        var available = homeHasAppeared && navigationPath.isEmpty && scenePhase == .active
+            && launchSplashDidComplete
+            && !adService.isPresentingFullScreenAd && !showArchive && !showPaywall
+            && !showWOTD && !showSettings && !showAccount && !showRatingDetails
+            && !showAdExplainer && !viewModel.crosswordsFetchDidFail
+            && accountService.accountDeletionNotice == nil
+        #if DEBUG
+        available = available && !showDebugSettings
+        #endif
+        return available
+    }
+
+    private func refreshDailyChallenge(source: HomeDailyChallengeViewModel.RefreshSource = .local) {
+        dailyChallenge.refresh(accountID: accountService.userID?.uuidString, dailyPuzzle: viewModel.todaysPuzzle, source: source)
+    }
+
     private func refreshHomeContent() async {
+        refreshDailyChallenge()
         await viewModel.refreshIfNeeded()
         await wotdService.refreshIfNeeded()
         await backwordService.refreshIfNeeded()
@@ -68,6 +89,7 @@ struct HomeView: View {
             daily: viewModel.todaysPuzzle,
             weekly: viewModel.weeklyPuzzle
         )
+        refreshDailyChallenge()
     }
 
     private func refreshHomeContentAtMidnight() async {
@@ -77,6 +99,7 @@ struct HomeView: View {
             guard let delay = secondsUntilMidnight(), delay > 0 else { break }
             try? await Task.sleep(for: .seconds(delay))
             guard !Task.isCancelled else { break }
+            refreshDailyChallenge()
             ratingService.recordCurrentPuzzles(
                 daily: viewModel.todaysPuzzle,
                 weekly: viewModel.weeklyPuzzle,
@@ -92,6 +115,7 @@ struct HomeView: View {
             refreshMidwordProgress()
             refreshAnagramCardProgress()
             ratingService.refresh()
+            refreshDailyChallenge()
         }
     }
 
@@ -108,12 +132,24 @@ struct HomeView: View {
             ZStack {
                 AppBackgroundGradient()
 
-                HomeDashboardView(usesTwoColumns: HomeGamesLayout.usesTwoColumns(for: sizeClass)) {
+                HomeDashboardView(
+                    usesTwoColumns: HomeGamesLayout.usesTwoColumns(for: sizeClass),
+                    scrollToTopTrigger: dailyChallenge.isCelebrating ? dailyChallenge.celebrationID : 0
+                ) {
                     homeContent(isExpanded: true)
                 } compact: {
                     homeContent(isExpanded: false)
                 }
             }
+            .overlay(alignment: .top) {
+                if dailyChallenge.isCelebrating {
+                    HomeDailyChallengeCelebration()
+                        .padding(.horizontal, appLayout.homeHorizontalPadding)
+                        .padding(.top, AppLayout.homeDailyCelebrationPadding)
+                        .transition(.opacity)
+                }
+            }
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: dailyChallenge.isCelebrating)
             .safeAreaInset(edge: .top, spacing: 0) {
                 navigationBar
             }
@@ -203,8 +239,13 @@ struct HomeView: View {
                 refreshMidwordProgress()
                 refreshAnagramCardProgress()
                 ratingService.refresh()
+                refreshDailyChallenge(source: .restored)
             }) {
-                DebugSettingsView(homeViewModel: viewModel)
+                DebugSettingsView(
+                    homeViewModel: viewModel,
+                    canReplayDailyCelebration: dailyChallenge.snapshot.isComplete,
+                    replayDailyCelebration: { dailyChallenge.replayCelebration() }
+                )
                     .environmentObject(storeService)
                     .environmentObject(backwordService)
                     .environmentObject(anagramService)
@@ -265,6 +306,10 @@ struct HomeView: View {
                 await refreshHomeContentAtMidnight()
             }
             .onAppear(perform: handleHomeAppear)
+            .onDisappear {
+                homeHasAppeared = false
+                dailyChallenge.setHomeAvailable(false)
+            }
     }
 
     private var homeTipObservationView: some View {
@@ -280,6 +325,7 @@ struct HomeView: View {
             }
             .onChange(of: showArchive) { _, _ in
                 updateSettingsTipReadiness()
+                refreshDailyChallenge()
             }
             .onChange(of: showPaywall) { _, _ in
                 updateSettingsTipReadiness()
@@ -300,8 +346,14 @@ struct HomeView: View {
 
     private var homeStateObservationView: some View {
         homeTipObservationView
+            .onChange(of: canPresentDailyCelebration) { _, available in
+                dailyChallenge.setHomeAvailable(available)
+            }
             .onChange(of: navigationPath) { oldPath, newPath in
                 handleNavigationPathChange(oldPath: oldPath, newPath: newPath)
+            }
+            .onChange(of: viewModel.todaysPuzzle?.id) { _, _ in
+                refreshDailyChallenge()
             }
             .onChange(of: scenePhase) { _, newPhase in
                 handleScenePhaseChange(newPhase)
@@ -352,6 +404,9 @@ struct HomeView: View {
     }
 
     private func handleHomeAppear() {
+        homeHasAppeared = true
+        refreshDailyChallenge()
+        dailyChallenge.setHomeAvailable(canPresentDailyCelebration)
         logoVisible = false
         proLogoVisible = false
         updateSettingsTipReadiness()
@@ -362,10 +417,23 @@ struct HomeView: View {
             backwordStatsService.refresh()
             refreshMidwordProgress()
             refreshAnagramCardProgress()
+            refreshDailyChallenge()
         }
     }
 
     private func handleNavigationPathChange(oldPath: [String], newPath: [String]) {
+        if oldPath.isEmpty, let destination = newPath.first,
+           let game = dailyGame(for: destination) {
+            dailyChallenge.beginGame(game, accountID: accountService.userID?.uuidString, dailyPuzzle: viewModel.todaysPuzzle)
+        }
+        if !oldPath.isEmpty, newPath.isEmpty {
+            viewModel.refreshProgressFromDisk()
+            if let destination = oldPath.first, dailyGame(for: destination) != nil {
+                dailyChallenge.returnFromGame(accountID: accountService.userID?.uuidString, dailyPuzzle: viewModel.todaysPuzzle)
+            } else {
+                refreshDailyChallenge()
+            }
+        }
         if !oldPath.isEmpty, newPath.isEmpty, hasOpenedDailyGameThisSession {
             didReturnFromDailyGame = true
             backwordStatsService.refresh()
@@ -375,12 +443,23 @@ struct HomeView: View {
         updateSettingsTipReadiness()
     }
 
+    private func dailyGame(for destination: String) -> DailyChallengeGame? {
+        switch destination {
+        case "backword": return .backword
+        case "puzzle": return .crossword
+        case "anagram": return .anagram
+        case "midword": return .midword
+        default: return nil
+        }
+    }
+
     private func handleScenePhaseChange(_ newPhase: ScenePhase) {
         updateSettingsTipReadiness()
         if newPhase == .background || newPhase == .inactive {
             logoVisible = false
             proLogoVisible = false
         } else if newPhase == .active {
+            refreshDailyChallenge()
             animateLogo()
 
             guard !adService.isPresentingFullScreenAd else { return }
@@ -396,21 +475,29 @@ struct HomeView: View {
                 await accountService.refreshAccountData()
                 refreshMidwordProgress()
                 refreshAnagramCardProgress()
+                refreshDailyChallenge()
             }
         }
     }
 
     private func refreshProgressAfterAccountChange() {
+        viewModel.refreshProgressFromDisk()
         statsService.refreshForActiveProgress()
         backwordStatsService.refresh()
         refreshMidwordProgress()
         refreshAnagramCardProgress()
         ratingService.refresh()
+        refreshDailyChallenge(source: .restored)
     }
 
     private func homeContent(isExpanded: Bool) -> some View {
         VStack(spacing: HomeGamesLayout.spacing) {
-            RatingBarView(rating: ratingService.rating, isPro: storeService.isProUser)
+            RatingBarView(
+                rating: ratingService.rating, isPro: storeService.isProUser,
+                dailyChallenge: dailyChallenge.snapshot,
+                dailyCelebrationID: dailyChallenge.isCelebrating ? dailyChallenge.celebrationID : 0,
+                onOpenDetails: { showRatingDetails = true }
+            )
                 .padding(.horizontal, appLayout.homeHorizontalPadding)
                 .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
 
@@ -496,6 +583,10 @@ struct HomeView: View {
                 navigationPath.append("midword")
             }
         )
+        .modifier(HomeDailyChallengeCardHighlight(
+            progress: dailyChallenge.snapshot[.midword],
+            isCurrentRelease: midwordService.todaysPuzzle?.date == dailyChallenge.snapshot.date
+        ))
     }
 
     @ViewBuilder
@@ -508,6 +599,10 @@ struct HomeView: View {
                     history: anagramProgressRecords
                 )
             ) { navigationPath.append("anagram") }
+            .modifier(HomeDailyChallengeCardHighlight(
+                progress: dailyChallenge.snapshot[.anagram],
+                isCurrentRelease: puzzle.date == dailyChallenge.snapshot.date
+            ))
         } else {
             AnagramPlaceholderCard(
                 isLoading: anagramService.isLoading || !anagramService.hasAttemptedLoad
@@ -611,6 +706,10 @@ struct HomeView: View {
             openDailyGame(.backword)
         }
         .environmentObject(backwordStatsService)
+        .modifier(HomeDailyChallengeCardHighlight(
+            progress: dailyChallenge.snapshot[.backword],
+            isCurrentRelease: backwordService.todaysWord?.date == dailyChallenge.snapshot.date
+        ))
     }
 
     private func refreshAnagramCardProgress() {
@@ -621,6 +720,10 @@ struct HomeView: View {
         DailyCrosswordCard(viewModel: viewModel) {
             openDailyGame(.crossword)
         }
+        .modifier(HomeDailyChallengeCardHighlight(
+            progress: dailyChallenge.snapshot[.crossword],
+            isCurrentRelease: viewModel.todaysPuzzle?.date == dailyChallenge.snapshot.date
+        ))
     }
 
     @ViewBuilder
