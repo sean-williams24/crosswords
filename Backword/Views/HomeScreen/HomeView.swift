@@ -141,21 +141,40 @@ struct HomeView: View {
                     homeContent(isExpanded: false)
                 }
             }
-            .overlay(alignment: .top) {
-                if dailyChallenge.isCelebrating {
-                    HomeDailyChallengeCelebration()
-                        .padding(.horizontal, appLayout.homeHorizontalPadding)
-                        .padding(.top, AppLayout.homeDailyCelebrationPadding)
-                        .transition(.opacity)
-                }
+            .onAppear(perform: handleHomeAppear)
+            .onDisappear {
+                homeHasAppeared = false
+                dailyChallenge.setHomeAvailable(false)
             }
-            .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: dailyChallenge.isCelebrating)
+            .task(id: canPresentDailyCelebration) {
+                // A pop updates the path before Home finishes appearing. Keep
+                // feedback queued until its content is visible and settled.
+                dailyChallenge.setHomeAvailable(false)
+                guard canPresentDailyCelebration else { return }
+                do { try await Task.sleep(for: .milliseconds(350)) } catch { return }
+                guard !Task.isCancelled else { return }
+                dailyChallenge.returnFromGame(
+                    accountID: accountService.userID?.uuidString, dailyPuzzle: viewModel.todaysPuzzle
+                )
+                dailyChallenge.setHomeAvailable(true)
+            }
             .safeAreaInset(edge: .top, spacing: 0) {
                 navigationBar
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 archiveFooterBar
             }
+            .allowsHitTesting(!dailyChallenge.isCelebrating)
+            .accessibilityHidden(dailyChallenge.isCelebrating)
+            .overlay {
+                if dailyChallenge.isCelebrating, let result = dailyChallenge.celebrationSnapshot {
+                    HomeDailyChallengeCelebration(snapshot: result) {
+                        dailyChallenge.dismissCelebration()
+                    }
+                    .transition(.opacity)
+                }
+            }
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: dailyChallenge.isCelebrating)
             .ignoresSafeArea(.keyboard)
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: String.self) { destination in
@@ -244,7 +263,14 @@ struct HomeView: View {
                 DebugSettingsView(
                     homeViewModel: viewModel,
                     canReplayDailyCelebration: dailyChallenge.snapshot.isComplete,
-                    replayDailyCelebration: { dailyChallenge.replayCelebration() }
+                    replayDailyCelebration: { dailyChallenge.replayCelebration() },
+                    previewDailyCelebration: { dailyChallenge.previewCelebration() },
+                    onDailyGameReset: { date in
+                        dailyChallenge.resetCelebrationForDebug(
+                            date: date, accountID: accountService.userID?.uuidString,
+                            dailyPuzzle: viewModel.todaysPuzzle
+                        )
+                    }
                 )
                     .environmentObject(storeService)
                     .environmentObject(backwordService)
@@ -305,11 +331,6 @@ struct HomeView: View {
             .task {
                 await refreshHomeContentAtMidnight()
             }
-            .onAppear(perform: handleHomeAppear)
-            .onDisappear {
-                homeHasAppeared = false
-                dailyChallenge.setHomeAvailable(false)
-            }
     }
 
     private var homeTipObservationView: some View {
@@ -347,7 +368,7 @@ struct HomeView: View {
     private var homeStateObservationView: some View {
         homeTipObservationView
             .onChange(of: canPresentDailyCelebration) { _, available in
-                dailyChallenge.setHomeAvailable(available)
+                if !available { dailyChallenge.setHomeAvailable(false) }
             }
             .onChange(of: navigationPath) { oldPath, newPath in
                 handleNavigationPathChange(oldPath: oldPath, newPath: newPath)
@@ -406,7 +427,6 @@ struct HomeView: View {
     private func handleHomeAppear() {
         homeHasAppeared = true
         refreshDailyChallenge()
-        dailyChallenge.setHomeAvailable(canPresentDailyCelebration)
         logoVisible = false
         proLogoVisible = false
         updateSettingsTipReadiness()
@@ -422,17 +442,9 @@ struct HomeView: View {
     }
 
     private func handleNavigationPathChange(oldPath: [String], newPath: [String]) {
-        if oldPath.isEmpty, let destination = newPath.first,
-           let game = dailyGame(for: destination) {
-            dailyChallenge.beginGame(game, accountID: accountService.userID?.uuidString, dailyPuzzle: viewModel.todaysPuzzle)
-        }
         if !oldPath.isEmpty, newPath.isEmpty {
             viewModel.refreshProgressFromDisk()
-            if let destination = oldPath.first, dailyGame(for: destination) != nil {
-                dailyChallenge.returnFromGame(accountID: accountService.userID?.uuidString, dailyPuzzle: viewModel.todaysPuzzle)
-            } else {
-                refreshDailyChallenge()
-            }
+            refreshDailyChallenge()
         }
         if !oldPath.isEmpty, newPath.isEmpty, hasOpenedDailyGameThisSession {
             didReturnFromDailyGame = true
@@ -441,16 +453,6 @@ struct HomeView: View {
         refreshMidwordProgress()
         refreshAnagramCardProgress()
         updateSettingsTipReadiness()
-    }
-
-    private func dailyGame(for destination: String) -> DailyChallengeGame? {
-        switch destination {
-        case "backword": return .backword
-        case "puzzle": return .crossword
-        case "anagram": return .anagram
-        case "midword": return .midword
-        default: return nil
-        }
     }
 
     private func handleScenePhaseChange(_ newPhase: ScenePhase) {
@@ -580,7 +582,7 @@ struct HomeView: View {
             play: {
                 cancelSettingsTipPresentation()
                 hasOpenedDailyGameThisSession = true
-                navigationPath.append("midword")
+                navigateToDailyChallenge(.midword, destination: "midword")
             }
         )
         .modifier(HomeDailyChallengeCardHighlight(
@@ -598,7 +600,7 @@ struct HomeView: View {
                     progress: anagramProgressRecords.first { $0.date == puzzle.date && $0.puzzleID == puzzle.id },
                     history: anagramProgressRecords
                 )
-            ) { navigationPath.append("anagram") }
+            ) { navigateToDailyChallenge(.anagram, destination: "anagram") }
             .modifier(HomeDailyChallengeCardHighlight(
                 progress: dailyChallenge.snapshot[.anagram],
                 isCurrentRelease: puzzle.date == dailyChallenge.snapshot.date
@@ -906,7 +908,7 @@ struct HomeView: View {
     private func navigateToBackword() {
         cancelSettingsTipPresentation()
         hasOpenedDailyGameThisSession = true
-        navigationPath.append("backword")
+        navigateToDailyChallenge(.backword, destination: "backword")
     }
 
     private func refreshMidwordProgress() {
@@ -917,7 +919,12 @@ struct HomeView: View {
     private func navigateToDailyCrossword() {
         cancelSettingsTipPresentation()
         hasOpenedDailyGameThisSession = true
-        navigationPath.append("puzzle")
+        navigateToDailyChallenge(.crossword, destination: "puzzle")
+    }
+
+    private func navigateToDailyChallenge(_ game: DailyChallengeGame, destination: String) {
+        dailyChallenge.beginGame(game, accountID: accountService.userID?.uuidString, dailyPuzzle: viewModel.todaysPuzzle)
+        navigationPath.append(destination)
     }
 
     private func cancelSettingsTipPresentation() {

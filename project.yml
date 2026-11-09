@@ -57,6 +57,7 @@ targets:
       - path: CrosswordsTests/ScoringRuleViewTests.swift
       - path: CrosswordsTests/DailyChallengeSnapshotTests.swift
       - path: CrosswordsTests/HomeDailyChallengeViewModelTests.swift
+      - path: CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift
       - path: CrosswordsTests/HomeDailyChallengeLayoutTests.swift
     dependencies:
       - target: Backword

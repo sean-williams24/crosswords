@@ -758,22 +758,60 @@ and briefly glows each marker in sequence. Guess counts and Anagram tile
 placements are not interpreted as percentages toward solving.
 
 Returning Home after locally finishing the fourth daily game plays one marker
-ripple and success haptic, plus a 3.5-second overlay saying
-`Your daily Intervls, complete.` Feedback waits until Home is active, the launch
+ripple and success haptic, plus a large centred celebration card titled
+`Todays Intervls Complete`. Against a dimmed Home, the card reveals each game's
+logo/title, then its earned points out of five, in the fixed daily marker order.
+Text game titles stay on one line, including `QUICK CROSSWORD`; they shrink to
+fit the available width rather than wrapping at larger Dynamic Type sizes.
+Backword and Midword share a 32-point visible logo height that scales with
+Dynamic Type. Their asset-specific transparent margins are excluded from the
+celebration layout so their visible artwork also aligns at the leading edge;
+each wordmark keeps its original aspect ratio and theme treatment.
+The normalized logo frame controls layout without clipping the image: Midword's
+1x/2x/3x assets have slightly different transparent margins, so artwork may
+extend into the row padding to keep its edges intact at every Dynamic Type size.
+The daily total out of 20 appears last with a gold highlight. The sequence takes
+about 3.3 seconds; the card remains open until Continue or VoiceOver's escape
+action dismisses it. There is no automatic toast timeout. Background Home controls
+are unavailable while the card is open. Short screens and accessibility text
+use a scrolling card, with game scores stacked under logos at accessibility
+sizes. Feedback waits until Home is active, the launch
 splash has finished, and no modal or error is obstructing it. Ad SDK startup is
 not a prerequisite: Pro and ad-disabled sessions may never start it.
+Attempts are recorded before pushing gameplay. Completion is evaluated from
+Home's actual content after its return transition has settled, rather than when
+the navigation path first becomes empty. This keeps the ripple and card from
+being consumed during the pop transition. Home disappearing cancels that wait.
 On a scrolling Home, starting the celebration also brings the rating row back
 into view so the ripple does not play above the visible game cards.
 Acknowledgement is stored locally per guest/account and release date; it is not
 an aggregate cloud progress record. Restored and newly synced completion remains
 silent. A sync that leaves the daily snapshot unchanged preserves an already
-observed local finish. Account/date changes, progress resets, and changed cloud
-progress cancel pending feedback. Local midnight and timezone changes select
-the new release date. Reduce Motion skips the ripple and overlay transition;
-the static completed state and completion message remain available.
+observed local finish. A sync of unfinished gameplay preserves the active attempt
+so a later local finish can still celebrate. Imported terminal results remain
+silent. Account/date changes, progress resets, and changed cloud progress cancel
+pending feedback. Local midnight and timezone changes select
+the new release date. Reduce Motion skips the ripple, card transition, and
+staged reveals: all four results and the total appear immediately. VoiceOver
+focuses the title, exposes the named scores, and announces the final total.
 In DEBUG builds, `Replay Daily Completion` in Debug Settings replays the real
 feedback after the sheet closes when all four games are finished. It does not
 change progress, scores, or daily acknowledgement.
+`Preview Daily Completion` is available even on an unplayed day. It presents
+the same card and animation with in-memory sample scores (5, 4, 3, 0; total 12/20)
+after Debug Settings closes. The real Home progress, ratings, and celebration
+acknowledgements remain unchanged, and the preview can be repeated. The card's
+display snapshot is separate from today's saved snapshot. Account/date changes
+cancel queued or visible previews; ordinary Home refreshes do not interrupt them.
+`HomeDailyChallengeCelebration.swift` also provides SwiftUI canvas previews for
+the animated dark appearance, the full result in Light Mode, and accessibility
+text. They reuse the same in-memory sample data without requiring app services
+or completed games. Use the animated preview in Live mode to see the sequence.
+Resetting any of today's four daily games through Debug Settings also clears
+today's celebration acknowledgement for the active guest/account, once the
+saved daily progress is incomplete. Completing the final game again then tests
+the normal return-to-Home feedback. Weekly and older release resets do not
+clear it, and an ordinary progress refresh or cloud sync never re-arms it.
 
 ## Home Card Appearance
 

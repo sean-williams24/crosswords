@@ -23,6 +23,9 @@ struct DailyChallengeProgressStore: DailyChallengeProgressLoading {
 protocol DailyChallengeCelebrationStoring {
     func contains(date: String, accountID: String?) -> Bool
     func acknowledge(date: String, accountID: String?)
+    #if DEBUG
+    func resetAcknowledgement(date: String, accountID: String?)
+    #endif
 }
 
 struct DailyChallengeCelebrationStore: DailyChallengeCelebrationStoring {
@@ -35,6 +38,12 @@ struct DailyChallengeCelebrationStore: DailyChallengeCelebrationStoring {
     func acknowledge(date: String, accountID: String?) {
         defaults.set(true, forKey: key(date: date, accountID: accountID))
     }
+
+    #if DEBUG
+    func resetAcknowledgement(date: String, accountID: String?) {
+        defaults.removeObject(forKey: key(date: date, accountID: accountID))
+    }
+    #endif
 
     private func key(date: String, accountID: String?) -> String {
         let namespace = accountID.map { "account:\($0)" } ?? "guest"

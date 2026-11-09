@@ -16,6 +16,8 @@ struct DebugSettingsView: View {
     var homeViewModel: HomeViewModel? = nil
     var canReplayDailyCelebration = false
     var replayDailyCelebration: (() -> Void)? = nil
+    var previewDailyCelebration: (() -> Void)? = nil
+    var onDailyGameReset: ((String) -> Void)? = nil
     private let settings = AppSettings.shared
 
     @State private var showResetBackwordConfirmation = false
@@ -34,16 +36,31 @@ struct DebugSettingsView: View {
     var body: some View {
         NavigationStack {
             List {
-                if let replayDailyCelebration {
-                    Section("Home") {
-                        Button {
-                            replayDailyCelebration()
-                            dismiss()
-                        } label: {
-                            Label("Replay Daily Completion", systemImage: "sparkles")
-                                .font(AppFont.body())
+                if previewDailyCelebration != nil || replayDailyCelebration != nil {
+                    Section {
+                        if let previewDailyCelebration {
+                            Button {
+                                previewDailyCelebration()
+                                dismiss()
+                            } label: {
+                                Label("Preview Daily Completion", systemImage: "play.rectangle")
+                                    .font(AppFont.body())
+                            }
                         }
-                        .disabled(!canReplayDailyCelebration)
+                        if let replayDailyCelebration {
+                            Button {
+                                replayDailyCelebration()
+                                dismiss()
+                            } label: {
+                                Label("Replay Daily Completion", systemImage: "sparkles")
+                                    .font(AppFont.body())
+                            }
+                            .disabled(!canReplayDailyCelebration)
+                        }
+                    } header: {
+                        Text("Home")
+                    } footer: {
+                        Text("Preview uses sample scores. Your saved games and points stay unchanged.")
                     }
                 }
                 Section("In-App Purchases") {
@@ -199,6 +216,7 @@ struct DebugSettingsView: View {
                     Button("Reset", role: .destructive) {
                         if let vm = homeViewModel, let puzzle = vm.todaysPuzzle {
                             vm.debugResetPuzzle(puzzle: puzzle, isWeekly: false)
+                            onDailyGameReset?(puzzle.date)
                         }
                         dismiss()
                     }
@@ -258,6 +276,7 @@ struct DebugSettingsView: View {
                     Button("Reset", role: .destructive) {
                         if let date = backwordService.todaysWord?.date {
                             BackwordProgress.delete(date: date)
+                            onDailyGameReset?(date)
                         }
                         Task { await backwordService.refreshIfNeeded(force: true) }
                         dismiss()
@@ -282,6 +301,7 @@ struct DebugSettingsView: View {
                 ) {
                     Button("Reset", role: .destructive) {
                         anagramService.debugResetTodaysProgress()
+                        onDailyGameReset?(ContentReleaseCalendar().dailyDateString)
                         dismiss()
                     }
                     Button("Cancel", role: .cancel) {}
@@ -304,6 +324,7 @@ struct DebugSettingsView: View {
                 ) {
                     Button("Reset", role: .destructive) {
                         midwordService.debugResetTodaysProgress()
+                        onDailyGameReset?(ContentReleaseCalendar().dailyDateString)
                         dismiss()
                     }
                     Button("Cancel", role: .cancel) {}

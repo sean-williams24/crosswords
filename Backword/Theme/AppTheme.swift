@@ -267,6 +267,26 @@ struct AppLayout {
     static let homeDailyLabelSize: CGFloat = 10
     static let homeDailyCardBorderWidth: CGFloat = 1
     static let homeDailyCelebrationPadding: CGFloat = 14
+    static let homeDailyCelebrationMaxWidth: CGFloat = 400
+    static let homeDailyCelebrationMargin: CGFloat = 20
+    static let homeDailyCelebrationCardPadding: CGFloat = 24
+    static let homeDailyCelebrationCornerRadius: CGFloat = 28
+    static let homeDailyCelebrationSpacing: CGFloat = 16
+    static let homeDailyCelebrationRowSpacing: CGFloat = 8
+    static let homeDailyCelebrationRowHeight: CGFloat = 44
+    static let homeDailyCelebrationLogoHeight: CGFloat = 32
+    // Artwork bounds exclude transparent margins in the existing 1x assets.
+    static let homeDailyCelebrationBackwordCanvasSize = CGSize(width: 341, height: 174)
+    static let homeDailyCelebrationBackwordDarkArtworkBounds = CGRect(x: 53, y: 30, width: 244, height: 106)
+    static let homeDailyCelebrationBackwordLightArtworkBounds = CGRect(x: 53, y: 29, width: 244, height: 107)
+    static let homeDailyCelebrationMidwordCanvasSize = CGSize(width: 128, height: 74)
+    static let homeDailyCelebrationMidwordArtworkBounds = CGRect(x: 6, y: 8, width: 115, height: 58)
+    static let homeDailyCelebrationTitleSize: CGFloat = 28
+    static let homeDailyCelebrationGameTitleSize: CGFloat = 20
+    static let homeDailyCelebrationScoreSize: CGFloat = 28
+    static let homeDailyCelebrationTotalSize: CGFloat = 56
+    static let homeDailyCelebrationEmblemSize: CGFloat = 44
+    static let homeDailyCelebrationRevealOffset: CGFloat = 16
     static let onboardingInstructionIconSize: CGFloat = 18
     static let homeCardIssueNumberFontSize: CGFloat = 12
     static let sheetBackgroundBlurRadius: CGFloat = 4

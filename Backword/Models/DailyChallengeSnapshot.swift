@@ -59,6 +59,17 @@ struct DailyChallengeSnapshot: Equatable {
         games.first { $0.game == game }!
     }
 
+    #if DEBUG
+    /// In-memory display data only; never written to game progress or ratings.
+    static func celebrationPreview(date: String) -> DailyChallengeSnapshot {
+        var preview = DailyChallengeSnapshot(date: date)
+        for (game, points) in zip(DailyChallengeGame.allCases, [5, 4, 3, 0]) {
+            preview.set(game, state: .finished(won: points > 0), earnedPoints: points)
+        }
+        return preview
+    }
+    #endif
+
     init(
         date: String,
         backword: BackwordProgress? = nil,
