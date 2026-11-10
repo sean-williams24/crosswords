@@ -281,11 +281,10 @@ struct AppLayout {
     static let homeDailyCelebrationBackwordLightArtworkBounds = CGRect(x: 53, y: 29, width: 244, height: 107)
     static let homeDailyCelebrationMidwordCanvasSize = CGSize(width: 128, height: 74)
     static let homeDailyCelebrationMidwordArtworkBounds = CGRect(x: 6, y: 8, width: 115, height: 58)
-    static let homeDailyCelebrationTitleSize: CGFloat = 28
+    static let homeDailyCelebrationTitleSize: CGFloat = 20
     static let homeDailyCelebrationGameTitleSize: CGFloat = 20
     static let homeDailyCelebrationScoreSize: CGFloat = 28
     static let homeDailyCelebrationTotalSize: CGFloat = 56
-    static let homeDailyCelebrationEmblemSize: CGFloat = 44
     static let homeDailyCelebrationRevealOffset: CGFloat = 16
     static let onboardingInstructionIconSize: CGFloat = 18
     static let homeCardIssueNumberFontSize: CGFloat = 12

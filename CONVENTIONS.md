@@ -761,6 +761,9 @@ Returning Home after locally finishing the fourth daily game plays one marker
 ripple and success haptic, plus a large centred celebration card titled
 `Todays Intervls Complete`. Against a dimmed Home, the card reveals each game's
 logo/title, then its earned points out of five, in the fixed daily marker order.
+The header shows the title as one centred text view, with no separate icon or
+wordmark. It wraps naturally at larger text sizes, and VoiceOver focuses the
+title as a heading.
 Text game titles stay on one line, including `QUICK CROSSWORD`; they shrink to
 fit the available width rather than wrapping at larger Dynamic Type sizes.
 Backword and Midword share a 32-point visible logo height that scales with

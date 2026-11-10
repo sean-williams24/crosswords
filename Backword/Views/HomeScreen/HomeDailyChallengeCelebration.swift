@@ -79,22 +79,14 @@ struct HomeDailyChallengeCelebration: View {
     }
 
     private var heading: some View {
-        VStack(spacing: AppLayout.homeDailyCelebrationPadding) {
-            Image(systemName: "sparkles")
-                .font(AppFont.header(AppLayout.homeDailyCelebrationTitleSize))
-                .foregroundStyle(Color.solvedGold)
-                .frame(width: AppLayout.homeDailyCelebrationEmblemSize, height: AppLayout.homeDailyCelebrationEmblemSize)
-                .background(Color.solvedGold.opacity(0.12), in: Circle())
-                .accessibilityHidden(true)
-
-            Text(Self.title)
-                .font(AppFont.header(AppLayout.homeDailyCelebrationTitleSize))
-                .foregroundStyle(Color.appTextPrimary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityFocused($titleFocused)
-        }
+        Text(Self.title)
+            .font(AppFont.header(AppLayout.homeDailyCelebrationTitleSize))
+            .foregroundStyle(Color.appTextPrimary)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityFocused($titleFocused)
     }
 
     private var total: some View {

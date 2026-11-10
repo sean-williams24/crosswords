@@ -98,11 +98,13 @@ struct HomeDailyChallengeLayoutTests {
         #expect(final.width <= 280.5)
     }
 
-    @Test("The celebration fits narrow and short screens with accessibility text",
-          arguments: [DynamicTypeSize.large, .accessibility5])
-    func celebrationViewport(size: DynamicTypeSize) {
+    @Test("The text-only celebration fits narrow and short screens in both appearances",
+          arguments: [DynamicTypeSize.large, .accessibility3, .accessibility5],
+                     [ColorScheme.light, .dark])
+    func celebrationViewport(size: DynamicTypeSize, colorScheme: ColorScheme) {
         let card = HomeDailyChallengeCelebration(snapshot: DailyChallengeFixtures.snapshot(finished: 4), dismiss: {})
             .environment(\.dynamicTypeSize, size)
+            .environment(\.colorScheme, colorScheme)
             .environment(\._accessibilityReduceMotion, true)
         let measured = UIHostingController(rootView: card).sizeThatFits(in: CGSize(width: 320, height: 568))
         #expect(measured.width <= 320.5)
