@@ -99,6 +99,29 @@ struct DailyChallengeSnapshotTests {
         #expect(DailyChallengeSnapshot(date: date).earnedPoints == 0)
     }
 
+    @Test("Backword and Midword fill by accepted guess without finishing early",
+          arguments: [0, 1, 2, 3, 4, 5])
+    func guessProgress(guesses: Int) {
+        var backword = BackwordProgress(date: date)
+        backword.guesses = Array(repeating: "CASTLE", count: guesses)
+        var midword = MidwordProgress(date: date)
+        midword.guesses = Array(repeating: "NOTE", count: guesses)
+        let snapshot = DailyChallengeSnapshot(date: date, backword: backword, midword: midword)
+        let expected = guesses == 0 ? nil : Double(min(guesses, 4)) / 5
+        #expect(snapshot[.backword].fillFraction == expected)
+        #expect(snapshot[.midword].fillFraction == expected)
+        #expect(snapshot[.backword].isFinished == false)
+        #expect(snapshot[.midword].isFinished == false)
+        #expect(snapshot[.backword].accessibilityLabel.contains("\(guesses) of 5 guesses used") == (guesses > 0))
+        midword.completedAt = now
+        backword.completedAt = now
+        let finished = DailyChallengeSnapshot(date: date, backword: backword, midword: midword)
+        #expect(finished[.backword].fillFraction == nil)
+        #expect(finished[.midword].fillFraction == nil)
+        #expect(finished[.backword].isFinished)
+        #expect(finished[.midword].isFinished)
+    }
+
     @Test("Unstarted records do not manufacture progress from guesses remaining")
     func unstartedAndGuesses() {
         var backword = BackwordProgress(date: date)
@@ -110,7 +133,8 @@ struct DailyChallengeSnapshotTests {
         snapshot = DailyChallengeSnapshot(date: date, backword: backword, midword: midword)
         #expect(snapshot[.backword].state == .inProgress)
         #expect(snapshot[.midword].state == .inProgress)
-        #expect(snapshot.games.allSatisfy { $0.crosswordFraction == nil })
+        #expect(snapshot[.backword].fillFraction == 0.2)
+        #expect(snapshot[.midword].fillFraction == 0.4)
         #expect(snapshot.finishedCount == 0)
     }
 
@@ -119,10 +143,38 @@ struct DailyChallengeSnapshotTests {
         var backword = BackwordProgress(date: date)
         backword.clueRevealed = true
         let anagram = AnagramProgress(puzzle: DailyChallengeFixtures.anagram, now: now)
-        let snapshot = DailyChallengeSnapshot(date: date, backword: backword, anagram: anagram)
+        let snapshot = DailyChallengeSnapshot(date: date, backword: backword, anagram: anagram, now: now)
         #expect(snapshot[.backword].state == .inProgress)
         #expect(snapshot[.anagram].state == .inProgress)
-        #expect(snapshot[.anagram].crosswordFraction == nil)
+        #expect(snapshot[.anagram].fillFraction == 0)
+        #expect(snapshot.nextAnagramProgressTick == now.addingTimeInterval(30))
+    }
+
+    @Test("Anagram advances every 30 seconds and stays below full before completion",
+          arguments: [0, 29, 30, 59, 60, 179, 180, 360])
+    func anagramTimer(seconds: Int) {
+        let progress = AnagramProgress(puzzle: DailyChallengeFixtures.anagram, now: now)
+        let snapshot = DailyChallengeSnapshot(
+            date: date, anagram: progress, now: now.addingTimeInterval(TimeInterval(seconds))
+        )
+        let intervals = min(seconds / 30, 6)
+        #expect(snapshot[.anagram].state == .inProgress)
+        #expect(snapshot[.anagram].fillFraction == Double(intervals) / 7)
+        #expect(snapshot.nextAnagramProgressTick == (intervals < 6
+            ? now.addingTimeInterval(TimeInterval((intervals + 1) * 30)) : nil))
+        #expect(snapshot[.anagram].accessibilityLabel.contains("\(intervals) 30-second intervals elapsed"))
+    }
+
+    @Test("Finishing Anagram fills its marker and stops the Home timer")
+    func completedAnagramTimer() {
+        var progress = AnagramProgress(puzzle: DailyChallengeFixtures.anagram, now: now)
+        progress.giveUp(now: now.addingTimeInterval(45))
+        let snapshot = DailyChallengeSnapshot(
+            date: date, anagram: progress, now: now.addingTimeInterval(300)
+        )
+        #expect(snapshot[.anagram].state == .finished(won: false))
+        #expect(snapshot[.anagram].fillFraction == nil)
+        #expect(snapshot.nextAnagramProgressTick == nil)
     }
 
     @Test("Crossword exposes clamped measurable progress but remains unfinished")
@@ -131,13 +183,32 @@ struct DailyChallengeSnapshotTests {
         progress.completedClueIds = [1, 2]
         var snapshot = DailyChallengeSnapshot(date: date, crosswords: [progress])
         #expect(snapshot[.crossword].state == .inProgress)
-        #expect(snapshot[.crossword].crosswordFraction == 0.5)
+        #expect(snapshot[.crossword].fillFraction == 0.5)
         #expect(snapshot.finishedCount == 0)
         progress.totalClues = 1
         snapshot = DailyChallengeSnapshot(date: date, crosswords: [progress])
-        #expect(snapshot[.crossword].crosswordFraction == 1)
+        #expect(snapshot[.crossword].fillFraction == 2.0 / 3.0)
+        #expect(snapshot[.crossword].state == .inProgress)
         progress.totalClues = 0
-        #expect(DailyChallengeSnapshot(date: date, crosswords: [progress])[.crossword].crosswordFraction == nil)
+        #expect(DailyChallengeSnapshot(date: date, crosswords: [progress])[.crossword].fillFraction == nil)
+    }
+
+    @Test("A loaded grid overrides stale saved clue counts before the last answer")
+    func loadedCrosswordClueCount() {
+        var progress = DailyChallengeFixtures.crossword()
+        progress.totalClues = 3
+        progress.completedClueIds = [1, 2, 3]
+        let clues = (1...4).map { id in
+            Clue(id: id, direction: .across, number: id, text: "Clue", hint: "Hint",
+                 answer: "A", startRow: 0, startCol: 0, length: 1)
+        }
+        let puzzle = Puzzle(id: progress.puzzleId, puzzleNumber: 1, date: date,
+                            size: 1, cells: [], clues: clues)
+
+        let snapshot = DailyChallengeSnapshot(date: date, crosswords: [progress], dailyPuzzle: puzzle)
+        #expect(snapshot[.crossword].state == .inProgress)
+        #expect(snapshot[.crossword].fillFraction == 0.75)
+        #expect(snapshot.finishedCount == 0)
     }
 
     @Test("Every loss and give-up counts as a finished game")
@@ -228,7 +299,7 @@ enum DailyChallengeFixtures {
         if finished >= 4 { midword.completedAt = at; midword.won = true }
         return DailyChallengeSnapshot(
             date: date, backword: backword, crosswords: finished >= 2 ? [crossword] : [],
-            anagram: finished >= 3 ? anagram : nil, midword: midword
+            anagram: finished >= 3 ? anagram : nil, midword: midword, now: at
         )
     }
 }

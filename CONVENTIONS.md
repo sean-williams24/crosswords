@@ -752,10 +752,19 @@ date/type metadata identifies saved progress offline; a matching loaded daily
 puzzle can also identify a legacy record missing that metadata. Unknown legacy
 dates are not guessed. Markers are wide rounded rectangles with small gaps and
 no symbols. Started games use an outlined rectangle; finished games
-use a solid fill for either outcome. Only the crossword shows a measurable
-partial fill, building from the leading edge. The celebration lifts, stretches,
-and briefly glows each marker in sequence. Guess counts and Anagram tile
-placements are not interpreted as percentages toward solving.
+use a solid fill for either outcome. While unfinished, Backword and Midword
+fill one fifth per accepted guess. Anagram fills one step per elapsed 30 seconds
+through the first three minutes, then holds below full; its timer continues
+when the player leaves the game, and Home refreshes at each step while visible.
+Anagram tile placements do not affect the marker. The crossword fills by
+completed clues. All partial fills build from the leading edge, retaining a
+visible gap until the game is finished. The celebration lifts, stretches, and
+briefly glows each marker in sequence. These fills do not change the points
+earned by each game.
+For an unfinished crossword, the loaded grid's clue count takes precedence over
+saved count metadata. If only saved metadata is available, the fraction still
+reserves at least one unanswered clue; the small marker keeps a visible unfilled
+gap until the puzzle reaches a terminal state.
 
 Returning Home after locally finishing the fourth daily game plays one marker
 ripple and success haptic, plus a large centred celebration card titled

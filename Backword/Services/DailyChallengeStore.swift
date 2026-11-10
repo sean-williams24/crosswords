@@ -1,11 +1,11 @@
 import Foundation
 
 protocol DailyChallengeProgressLoading {
-    func load(date: String, dailyPuzzle: Puzzle?) -> DailyChallengeSnapshot
+    func load(date: String, dailyPuzzle: Puzzle?, now: Date) -> DailyChallengeSnapshot
 }
 
 struct DailyChallengeProgressStore: DailyChallengeProgressLoading {
-    func load(date: String, dailyPuzzle: Puzzle?) -> DailyChallengeSnapshot {
+    func load(date: String, dailyPuzzle: Puzzle?, now: Date) -> DailyChallengeSnapshot {
         let crosswords: [UserProgress]
         if let dailyPuzzle, dailyPuzzle.date == date {
             crosswords = UserProgress.load(puzzleId: dailyPuzzle.id).map { [$0] } ?? []
@@ -15,7 +15,8 @@ struct DailyChallengeProgressStore: DailyChallengeProgressLoading {
         return DailyChallengeSnapshot(
             date: date, backword: BackwordProgress.load(date: date),
             crosswords: crosswords, dailyPuzzle: dailyPuzzle,
-            anagram: AnagramProgress.load(date: date), midword: MidwordProgress.load(date: date)
+            anagram: AnagramProgress.load(date: date), midword: MidwordProgress.load(date: date),
+            now: now
         )
     }
 }

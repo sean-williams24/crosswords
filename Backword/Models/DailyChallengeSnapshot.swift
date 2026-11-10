@@ -24,7 +24,8 @@ struct DailyChallengeGameProgress: Equatable, Identifiable {
 
     let game: DailyChallengeGame
     let state: State
-    var crosswordFraction: Double? = nil
+    var fillFraction: Double? = nil
+    var progressDetail: String? = nil
     var completedAt: Date? = nil
     var earnedPoints = 0
 
@@ -39,7 +40,7 @@ struct DailyChallengeGameProgress: Equatable, Identifiable {
         switch state {
         case .notStarted: status = "Not started"
         case .inProgress:
-            status = crosswordFraction.map { "In progress, \(Int($0 * 100)) percent" } ?? "In progress"
+            status = progressDetail.map { "In progress, \($0)" } ?? "In progress"
         case .finished(let won): status = won ? "Finished, solved" : "Finished without a win"
         }
         return "\(game.displayName): \(status)"
@@ -49,6 +50,11 @@ struct DailyChallengeGameProgress: Equatable, Identifiable {
 struct DailyChallengeSnapshot: Equatable {
     let date: String
     private(set) var games: [DailyChallengeGameProgress]
+    private(set) var nextAnagramProgressTick: Date?
+
+    private static let anagramIntervalSeconds = 30
+    private static let anagramMaximumIntervals = 6
+    private static let maximumGuesses = 5
 
     var finishedCount: Int { games.filter(\.isFinished).count }
     var isComplete: Bool { finishedCount == DailyChallengeGame.allCases.count }
@@ -76,13 +82,20 @@ struct DailyChallengeSnapshot: Equatable {
         crosswords: [UserProgress] = [],
         dailyPuzzle: Puzzle? = nil,
         anagram: AnagramProgress? = nil,
-        midword: MidwordProgress? = nil
+        midword: MidwordProgress? = nil,
+        now: Date = Date()
     ) {
         self.date = date
         games = DailyChallengeGame.allCases.map { DailyChallengeGameProgress(game: $0, state: .notStarted) }
+        nextAnagramProgressTick = nil
         if let backword, backword.date == date {
+            let finished = backword.isComplete
+            let guesses = backword.guesses.count
             set(.backword, state: backword.isComplete ? .finished(won: backword.isWon)
                 : backword.guesses.isEmpty && !backword.clueRevealed ? .notStarted : .inProgress,
+                fraction: !finished && guesses > 0 ? Self.guessFraction(guesses) : nil,
+                progressDetail: !finished && guesses > 0
+                    ? "\(guesses) of \(Self.maximumGuesses) guesses used" : nil,
                 completedAt: backword.completedAt, earnedPoints: backword.completedScore ?? 0)
         }
         // A loaded puzzle can identify legacy records without date metadata.
@@ -96,42 +109,70 @@ struct DailyChallengeSnapshot: Equatable {
         }.max { $0.updatedAt < $1.updatedAt }
         if let crossword {
             let finished = crossword.isComplete || crossword.gaveUpAt != nil
-            let total = crossword.totalClues ?? currentPuzzle?.clues.count ?? 0
+            // The loaded grid is authoritative when saved clue-count metadata
+            // is stale. Without it, an unfinished record still needs room for
+            // at least one unanswered clue in its progress fraction.
+            let loadedClueCount = currentPuzzle?.clues.count ?? 0
+            let total = loadedClueCount > 0 ? loadedClueCount : (crossword.totalClues ?? 0)
+            let completedCount = crossword.completedClueIds.count
+            let progressTotal = max(total, completedCount + 1)
             let points: Int
             if crossword.gaveUpAt != nil {
                 // Giving up reveals the remaining clues; retain only the
                 // score earned before that reveal.
                 points = crossword.gaveUpScore ?? crossword.releaseDateScore
             } else if total > 0 {
-                let percent = Int(min(1, Double(crossword.completedClueIds.count) / Double(total)) * 100)
+                let percent = Int(min(1, Double(completedCount) / Double(total)) * 100)
                 points = Int.crosswordScore(percentComplete: percent) - crossword.hintsUsed / 3
             } else {
                 points = crossword.releaseDateScore
             }
             set(.crossword, state: finished ? .finished(won: crossword.gaveUpAt == nil) : .inProgress,
                 fraction: !finished && total > 0
-                    ? min(1, Double(crossword.completedClueIds.count) / Double(total)) : nil,
+                    ? Double(completedCount) / Double(progressTotal) : nil,
+                progressDetail: !finished && total > 0
+                    ? "\(completedCount) of \(progressTotal) answers completed" : nil,
                 completedAt: crossword.completedAt ?? crossword.gaveUpAt, earnedPoints: points)
         }
         if let anagram, anagram.date == date {
-            set(.anagram, state: anagram.isComplete && anagram.completedAt != nil
-                ? .finished(won: anagram.outcome == .solved) : .inProgress,
+            let finished = anagram.isComplete && anagram.completedAt != nil
+            let intervals = min(anagram.elapsedSeconds(at: now) / Self.anagramIntervalSeconds,
+                                Self.anagramMaximumIntervals)
+            if !finished && intervals < Self.anagramMaximumIntervals {
+                nextAnagramProgressTick = anagram.startedAt.addingTimeInterval(
+                    TimeInterval((intervals + 1) * Self.anagramIntervalSeconds)
+                )
+            }
+            set(.anagram, state: finished ? .finished(won: anagram.outcome == .solved) : .inProgress,
+                fraction: !finished ? Double(intervals) / Double(Self.anagramMaximumIntervals + 1) : nil,
+                progressDetail: !finished ? "\(intervals) 30-second intervals elapsed" : nil,
                 completedAt: anagram.completedAt, earnedPoints: anagram.releaseDateScore)
         }
         if let midword, midword.date == date {
+            let finished = midword.isComplete
+            let guesses = midword.guesses.count
             set(.midword, state: midword.isComplete ? .finished(won: midword.isWon)
                 : midword.guesses.isEmpty ? .notStarted : .inProgress,
+                fraction: !finished && guesses > 0 ? Self.guessFraction(guesses) : nil,
+                progressDetail: !finished && guesses > 0
+                    ? "\(guesses) of \(Self.maximumGuesses) guesses used" : nil,
                 completedAt: midword.completedAt, earnedPoints: midword.releaseDateScore)
         }
     }
 
+    private static func guessFraction(_ count: Int) -> Double {
+        Double(min(max(0, count), maximumGuesses - 1)) / Double(maximumGuesses)
+    }
+
     private mutating func set(
         _ game: DailyChallengeGame, state: DailyChallengeGameProgress.State,
-        fraction: Double? = nil, completedAt: Date? = nil, earnedPoints: Int = 0
+        fraction: Double? = nil, progressDetail: String? = nil,
+        completedAt: Date? = nil, earnedPoints: Int = 0
     ) {
         guard let index = games.firstIndex(where: { $0.game == game }) else { return }
         games[index] = DailyChallengeGameProgress(
-            game: game, state: state, crosswordFraction: fraction, completedAt: completedAt,
+            game: game, state: state, fillFraction: fraction, progressDetail: progressDetail,
+            completedAt: completedAt,
             earnedPoints: min(5, max(0, earnedPoints))
         )
     }

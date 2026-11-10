@@ -451,14 +451,14 @@ struct HomeDailyChallengeViewModelTests {
         if lastGame != .midword || finishLast { midword.completedAt = at }
         return DailyChallengeSnapshot(
             date: DailyChallengeFixtures.date, backword: backword, crosswords: [crossword],
-            anagram: anagram, midword: midword
+            anagram: anagram, midword: midword, now: at
         )
     }
 
     private final class ProgressStore: DailyChallengeProgressLoading {
         var snapshot = DailyChallengeFixtures.snapshot(finished: 3)
         var requestedDates: [String] = []
-        func load(date: String, dailyPuzzle: Puzzle?) -> DailyChallengeSnapshot {
+        func load(date: String, dailyPuzzle: Puzzle?, now: Date) -> DailyChallengeSnapshot {
             requestedDates.append(date)
             return snapshot.date == date ? snapshot : DailyChallengeSnapshot(date: date)
         }

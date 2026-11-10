@@ -69,6 +69,11 @@ struct HomeView: View {
         return available
     }
 
+    private var nextAnagramHomeProgressTick: Date? {
+        guard homeHasAppeared, navigationPath.isEmpty, scenePhase == .active else { return nil }
+        return dailyChallenge.snapshot.nextAnagramProgressTick
+    }
+
     private func refreshDailyChallenge(source: HomeDailyChallengeViewModel.RefreshSource = .local) {
         dailyChallenge.refresh(accountID: accountService.userID?.uuidString, dailyPuzzle: viewModel.todaysPuzzle, source: source)
     }
@@ -157,6 +162,14 @@ struct HomeView: View {
                     accountID: accountService.userID?.uuidString, dailyPuzzle: viewModel.todaysPuzzle
                 )
                 dailyChallenge.setHomeAvailable(true)
+            }
+            .task(id: nextAnagramHomeProgressTick) {
+                guard let tick = nextAnagramHomeProgressTick else { return }
+                do {
+                    try await Task.sleep(for: .seconds(max(0, tick.timeIntervalSinceNow + 0.05)))
+                } catch { return }
+                guard !Task.isCancelled else { return }
+                refreshDailyChallenge()
             }
             .safeAreaInset(edge: .top, spacing: 0) {
                 navigationBar

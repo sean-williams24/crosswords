@@ -10,7 +10,7 @@ struct HomeDailyChallengeLayoutTests {
           arguments: [DailyChallengeGameProgress.State.notStarted, .inProgress,
                       .finished(won: true), .finished(won: false)])
     func rectangularMarker(state: DailyChallengeGameProgress.State) {
-        let progress = DailyChallengeGameProgress(game: .crossword, state: state, crosswordFraction: 0.5)
+        let progress = DailyChallengeGameProgress(game: .crossword, state: state, fillFraction: 0.5)
         let marker = HomeDailyChallengeMarker(progress: progress)
             .environment(\.dynamicTypeSize, .large)
             .environment(\._accessibilityReduceMotion, true)
@@ -20,6 +20,20 @@ struct HomeDailyChallengeLayoutTests {
         #expect(measured.width > measured.height)
         #expect(abs(measured.width - AppLayout.homeDailyMarkerWidth) < 0.5)
         #expect(abs(measured.height - AppLayout.homeDailyMarkerHeight) < 0.5)
+    }
+
+    @Test("An unfinished crossword marker leaves a visible gap even with one answer left")
+    func crosswordMarkerGap() {
+        let width = AppLayout.homeDailyMarkerWidth
+        let gap = AppLayout.homeDailyMarkerMinimumUnfilledWidth
+        let fill = HomeDailyChallengeMarker.partialFillWidth(
+            availableWidth: width, fraction: 17.0 / 18.0, minimumUnfilledWidth: gap
+        )
+        #expect(width - fill >= gap)
+        #expect(fill > 0)
+        #expect(HomeDailyChallengeMarker.partialFillWidth(
+            availableWidth: width, fraction: 1, minimumUnfilledWidth: gap
+        ) < width)
     }
 
     @Test("Default text shares one existing label row")

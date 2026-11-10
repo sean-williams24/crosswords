@@ -56,7 +56,7 @@ final class HomeDailyChallengeViewModel: ObservableObject {
             date: ContentReleaseCalendar(now: now(), calendar: calendar()).dailyDateString,
             accountID: accountID
         )
-        let loaded = progressStore.load(date: next.date, dailyPuzzle: dailyPuzzle)
+        let loaded = progressStore.load(date: next.date, dailyPuzzle: dailyPuzzle, now: now())
         if context != next {
             isPreviewing = false
             #if DEBUG

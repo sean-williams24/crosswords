@@ -258,6 +258,7 @@ struct AppLayout {
     static let homeDailyMarkerHeight: CGFloat = 8
     static let homeDailyMarkerSpacing: CGFloat = 4
     static let homeDailyMarkerCornerRadius: CGFloat = 3
+    static let homeDailyMarkerMinimumUnfilledWidth: CGFloat = 4
     static let homeDailySummarySpacing: CGFloat = 9
     static let homeDailySummaryLineSpacing: CGFloat = 5
     static let homeDailyMarkerBorderWidth: CGFloat = 1

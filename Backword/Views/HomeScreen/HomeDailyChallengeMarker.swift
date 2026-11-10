@@ -5,6 +5,7 @@ struct HomeDailyChallengeMarker: View {
     @ScaledMetric private var width = AppLayout.homeDailyMarkerWidth
     @ScaledMetric private var height = AppLayout.homeDailyMarkerHeight
     @ScaledMetric private var cornerRadius = AppLayout.homeDailyMarkerCornerRadius
+    @ScaledMetric private var minimumUnfilledWidth = AppLayout.homeDailyMarkerMinimumUnfilledWidth
     @State private var scale: CGFloat = 1
     let progress: DailyChallengeGameProgress
     var celebrationID = 0
@@ -14,10 +15,15 @@ struct HomeDailyChallengeMarker: View {
             ZStack(alignment: .leading) {
                 if progress.isFinished {
                     RoundedRectangle(cornerRadius: cornerRadius).fill(progress.game.homeProgressColor)
-                } else if progress.state == .inProgress, let fraction = progress.crosswordFraction {
+                } else if progress.state == .inProgress, let fraction = progress.fillFraction {
                     Rectangle()
                         .fill(progress.game.homeProgressColor)
-                        .frame(width: geometry.size.width * fraction)
+                        .frame(width: Self.partialFillWidth(
+                            availableWidth: geometry.size.width,
+                            fraction: fraction,
+                            minimumUnfilledWidth: minimumUnfilledWidth
+                        ))
+                        .animation(reduceMotion ? nil : .easeOut(duration: 0.25), value: fraction)
                 }
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .strokeBorder(progress.state == .notStarted ? Color.appTextSecondary : progress.game.homeProgressColor,
@@ -45,5 +51,12 @@ struct HomeDailyChallengeMarker: View {
                 scale = 1
             }
         }
+    }
+
+    static func partialFillWidth(
+        availableWidth: CGFloat, fraction: Double, minimumUnfilledWidth: CGFloat
+    ) -> CGFloat {
+        let width = max(0, availableWidth)
+        return min(width * CGFloat(max(0, min(fraction, 1))), max(0, width - minimumUnfilledWidth))
     }
 }
