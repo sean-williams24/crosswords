@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, expect, it, vi } from 'vitest';
 import { DailyChallengeCelebration, DailyChallengeSummary } from './DailyChallengeViews';
@@ -28,4 +29,24 @@ it('shows the complete result immediately with reduced motion', () => {
   render(<DailyChallengeCelebration snapshot={snapshot} dismiss={() => {}} />);
   expect(screen.getByText('DAILY TOTAL')).toBeVisible();
   expect(screen.getAllByText('/ 5')).toHaveLength(4);
+});
+
+it('uses the iOS Midword artwork with the same dark-mode colour split', () => {
+  vi.stubGlobal('matchMedia', () => ({ matches: true }));
+  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={() => {}} />);
+  expect(screen.getByRole('img', { name: 'Midword' })).toHaveAttribute('src', '/brand/midword-logo.png');
+  expect(readFileSync('public/brand/midword-logo.png')).toEqual(readFileSync('../Backword/Resources/Assets.xcassets/MidwordLogo.imageset/Untitled - 05 October 2026 at 23.33.36 (2)@3x.png'));
+  const css = readFileSync('src/features/home/dailyChallenge.css', 'utf8');
+  expect(css).toMatch(/html\[data-theme="dark"\] \.daily-celebration__midword-logo::after[\s\S]*?linear-gradient\(var\(--midword-accent\) 49%, var\(--midword-text\) 49%\)/);
+});
+it('dismisses when clicking outside the celebration but not inside it', () => {
+  vi.stubGlobal('matchMedia', () => ({ matches: true }));
+  const dismiss = vi.fn();
+  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={dismiss} />);
+  const dialog = screen.getByRole('dialog');
+  fireEvent.click(screen.getByRole('heading'));
+  fireEvent.click(dialog);
+  expect(dismiss).not.toHaveBeenCalled();
+  fireEvent.click(dialog.parentElement!);
+  expect(dismiss).toHaveBeenCalledOnce();
 });

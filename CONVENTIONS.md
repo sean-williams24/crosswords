@@ -2410,7 +2410,10 @@ saved clue counts. Completion feedback is acknowledged locally per account and
 release date. Home records the game being entered in session storage and shows
 the celebration only on return after that previously unfinished game completes;
 already-complete restored progress is acknowledged silently. Reduced Motion
-shows all results immediately. Weekly and archive games do not count.
+shows all results immediately. Weekly and archive games do not count. The web
+celebration uses the iOS Midword artwork and the same green/white Dark Mode
+mask; Light Mode retains its original green/black artwork. Clicking the dimmed
+area outside the celebration card dismisses it.
 
 In Vite development builds, Home's Debug menu offers `Preview Daily Completion`
 for guests and signed-in players. It closes the menu and runs the real Home
