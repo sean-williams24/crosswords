@@ -11,6 +11,7 @@ import { createBackwordStorage } from "../features/backword/storage";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { buildPlayerProfileRating, formatProfileDate, midwordLaunchDate } from "../features/profile/profileRating";
 import { loadLocalProfileRecords } from "../features/profile/profileRecords";
+import { ProfileDailyProgress } from "../features/profile/ProfileDailyProgress";
 import { Footer } from "../components/Footer";
 import { accountActionErrorMessage } from "../features/auth/authErrorPresentation";
 import { AccountDeletionConfirmationModal } from "../features/auth/AccountDeletionConfirmationModal";
@@ -172,6 +173,7 @@ export function PlayerProfilePage() {
         </div> : null}
 
         <div className="player-profile__layout">
+          <ProfileDailyProgress userId={userId} />
           <div className="player-profile__column player-profile__column--summary">
             <section className="player-profile__card player-profile__summary" aria-label="Player summary">
               <RatingHero fraction={rating.fraction} maxPoints={rating.maxPoints} tier={rating.tier} totalPoints={rating.totalPoints} />

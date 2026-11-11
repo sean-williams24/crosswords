@@ -1063,10 +1063,10 @@ a {
 .cw-scoring { padding-top: 2px; }
 .cw-scoring p { display: flex; margin: 5px 0; justify-content: space-between; }
 .cw-scoring strong { color: var(--app-accent); }
-.cw-completion-grid { display: grid; width: min(100%, 390px); grid-template-columns: repeat(var(--cw-grid-size, 9), 1fr); gap: 2px; padding: 2px; background: var(--app-page-deep); }
+.cw-completion-grid { display: grid; align-self: center; width: min(100%, 390px); grid-template-columns: repeat(var(--cw-grid-size, 9), 1fr); gap: 2px; padding: 2px; }
 .cw-completion-grid--weekly { width: min(100%, 470px); }
 .cw-completion-grid > span { display: grid; aspect-ratio: 1; place-items: center; border-radius: 1px; color: #fff; background: rgb(var(--app-correct-rgb) / 37%); font-family: ui-monospace, monospace; font-size: clamp(11px, 4vw, 20px); font-weight: 700; animation: cw-grid-reveal 350ms both cubic-bezier(.2,.8,.2,1); }
-.cw-completion-grid > .is-black { background: var(--app-page-deep); animation: none; }
+.cw-completion-grid > .is-black { background: transparent; animation: none; }
 .cw-completion-summary-card { display: grid; grid-template-columns: repeat(3, 1fr); padding: 17px 9px; border-radius: 12px; background: var(--app-surface); }
 .cw-completion-summary-card > div { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 5px; border-right: 1px solid var(--app-grid); }
 .cw-completion-summary-card > div:last-child { border: 0; }
@@ -2279,7 +2279,12 @@ html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); 
 
 /* Allow the full Pro table plus a readable summary before using two columns. */
 @media (min-width: 1022px) {
-  .player-profile__layout { grid-template-columns: minmax(320px, 1fr) minmax(634px, 1.4fr); align-items: stretch; }
+  .player-profile__layout { grid-template-columns: minmax(320px, 1fr) minmax(634px, 1.4fr); grid-template-areas: "summary daily" "summary breakdown"; align-items: stretch; row-gap: 20px; }
+  .player-profile__layout > .profile-daily-progress { grid-area: daily; }
+  .player-profile__column--summary { grid-area: summary; }
+  .player-profile__column--breakdown { grid-area: breakdown; }
+  .player-profile__account-controls { display: flex; flex: 1; flex-direction: column; justify-content: space-between; }
+  .player-profile__delete-account { margin-bottom: 0; }
 }
 
 @media (min-width: 681px) and (max-width: 1100px) {

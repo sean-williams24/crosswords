@@ -1593,6 +1593,8 @@ this overrides game-specific focus rings, including Midword's autofocus state.
 
 Daily and weekly crossword completion sheets use the solved grid as their visual centerpiece. Playable cells reveal in a diagonal wave; on-time solves finish with an accent bounce, glow, and restrained sparkle burst, late `Finished` solves use the wave and a softer bounce without sparkles, and `Gave up` reveals in red without a celebratory finish. Reduce Motion shows the final state immediately.
 
+On the web, completion grids are centred within the sheet, and empty cells and gaps reveal the sheet background.
+
 Returning to any persisted terminal crossword, including an archive give-up, opens its completion sheet with result sharing available. The web presents it once per game-page visit so a manual dismissal remains respected.
 
 All crossword completion outcomes show a live release countdown derived from `ContentReleaseCalendar` on every tick. Daily puzzles count down to the next local midnight; weekly puzzles count down to the next local Sunday at midnight and include days in the display. A late `Finished` result shows its no-points message above the standard stats card and displays a score of zero.
@@ -2421,10 +2423,14 @@ celebration with the iOS sample scores (5, 4, 3, 0), independently of today's
 saved progress and the once-per-day acknowledgement. The preview is repeatable
 and unavailable in production builds.
 
-## iOS Profile Daily Progress
+## Profile Daily Progress
 
 Player Profile shows today's four daily games and points above the rolling
 rating. It reads the same local daily challenge snapshot as Home, including
 in-progress points and terminal losses, and excludes weekly and archive games.
 The profile refreshes while open and after account sync or account changes so
-that the displayed local release day and restored progress stay current.
+that the displayed local release day and restored progress stay current. On web,
+the card sits above the 14-day table on desktop and above the summary when the
+profile stacks below 1022px. Desktop account controls fill the remaining space
+below the table, with Delete Account aligned to the bottom of the summary.
+The card also refreshes on cross-tab updates and when the page becomes visible.

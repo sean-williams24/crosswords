@@ -46,6 +46,8 @@ function renderPage() {
 describe("PlayerProfilePage", () => {
   beforeEach(() => {
     localStorage.clear();
+    sync.fetchCloudProgress.mockClear();
+    sync.refreshAccountProgress.mockClear();
     testAuth.value = {
       ready: true,
       user: { id: "player-1", email: "player@example.com" },
@@ -57,7 +59,51 @@ describe("PlayerProfilePage", () => {
       finishAccountDeletion: vi.fn().mockImplementation(async () => { testAuth.value.user = null; })
     };
     sync.fetchCloudProgress.mockResolvedValue([]);
-    sync.refreshAccountProgress.mockResolvedValue(undefined);
+    sync.refreshAccountProgress.mockReset().mockResolvedValue(undefined);
+  });
+
+  it.each(["guest", "signed-in"])("shows today's daily progress above the table for a %s player", async (player) => {
+    if (player === "guest") testAuth.value.user = null;
+    const scope = player === "guest" ? "" : ":user:player-1";
+    const today = localDateString();
+    localStorage.setItem(`backword:web:progress:v1${scope}`, JSON.stringify({
+      [today]: { schemaVersion: 1, date: today, guesses: ["CASTLE", "CASTLE", "CASTLE"], completedAt: new Date().toISOString(), outcome: "won" }
+    }));
+    renderPage();
+
+    const card = screen.getByRole("region", { name: "TODAY'S INTERVLS" });
+    expect(card).toHaveTextContent("3 / 20 PTS");
+    expect(card).toHaveTextContent("1 of 4 games finished");
+    expect(within(card).getByLabelText("Finished, solved, 3 of 5 points")).toHaveTextContent("Finished · 3 pts");
+    expect(within(card).getAllByText("Not started")).toHaveLength(3);
+    const summary = screen.getByLabelText("Player summary");
+    const breakdown = screen.getByRole("heading", { name: "LAST 14 DAYS" });
+    expect(card.compareDocumentPosition(summary) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(summary.compareDocumentPosition(breakdown) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    if (player === "signed-in") await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalled());
+  });
+
+  it("refreshes the daily card after account progress is restored", async () => {
+    const today = localDateString();
+    sync.refreshAccountProgress.mockImplementation(async (_userId, game, _records, restore) => {
+      if (game === "backword") restore({ payload: { schemaVersion: 1, date: today, guesses: ["CASTLE"], completedAt: new Date().toISOString(), outcome: "won" } });
+    });
+    renderPage();
+    const card = screen.getByRole("region", { name: "TODAY'S INTERVLS" });
+    await waitFor(() => expect(card).toHaveTextContent("5 / 20 PTS"));
+    expect(card).toHaveTextContent("1 of 4 games finished");
+  });
+
+  it("keeps guest and signed-in daily progress separate", async () => {
+    const today = localDateString();
+    localStorage.setItem("backword:web:progress:v1", JSON.stringify({
+      [today]: { schemaVersion: 1, date: today, guesses: ["CASTLE"], completedAt: new Date().toISOString(), outcome: "won" }
+    }));
+    renderPage();
+    const card = screen.getByRole("region", { name: "TODAY'S INTERVLS" });
+    expect(card).toHaveTextContent("0 / 20 PTS");
+    expect(card).toHaveTextContent("0 of 4 games finished");
+    await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalled());
   });
 
   it("shows signed-in account controls beneath the inline scoring and 14-day breakdown", async () => {
@@ -295,9 +341,17 @@ describe("PlayerProfilePage", () => {
 
     // 320px summary + 28px gap + 634px table + 40px page gutters.
     expect(styles).toMatch(/@media \(min-width: 1022px\)\s*\{\s*\.player-profile__layout\s*\{[^}]*grid-template-columns:\s*minmax\(320px, 1fr\) minmax\(634px, 1\.4fr\)/);
+    expect(styles).toMatch(/grid-template-areas:\s*"summary daily" "summary breakdown"/);
+    expect(styles).toMatch(/\.player-profile__layout > \.profile-daily-progress\s*\{[^}]*grid-area:\s*daily/);
     expect(styles).not.toMatch(/@media \(min-width: 901px\)\s*\{\s*\.player-profile__layout/);
     expect(styles).toMatch(/\.player-profile__table-scroll\s*\{[^}]*overflow-x:\s*auto/);
     expect(styles).toMatch(/\.player-profile__column\s*\{[^}]*min-width:\s*0/);
+  });
+
+  it("spreads account controls to the bottom of the summary on desktop", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    expect(styles).toMatch(/@media \(min-width: 1022px\)\s*\{[\s\S]*?\.player-profile__account-controls\s*\{[^}]*flex:\s*1[^}]*justify-content:\s*space-between/);
+    expect(styles).toMatch(/@media \(min-width: 1022px\)\s*\{[\s\S]*?\.player-profile__delete-account\s*\{[^}]*margin-bottom:\s*0/);
   });
 
   it("gives the delete-account control the same rounded corners as sign out", () => {
