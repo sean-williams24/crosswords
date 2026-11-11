@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { Link } from "react-router-dom";
 import { BrandLogo } from "../features/brand/BrandLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
@@ -27,6 +27,9 @@ import { HomeDashboardLoadingCard } from "../features/home/HomeDashboardLoadingC
 import { HomeArchiveCard } from "../features/home/HomeArchiveCard";
 import { buildPlayerProfileRating } from "../features/profile/profileRating";
 import { anagramCloudRecord, midwordCloudRecord, backwordCloudRecord, crosswordCloudRecord, refreshAccountProgress } from "../features/sync/progressSync";
+
+import { dailyChallenge, dailyChallengePreview, shouldCelebrate, type DailyAttempt, type DailyGame, type DailySnapshot } from "../features/home/dailyChallenge";
+import { DailyChallengeSummary, DailyChallengeCelebration } from "../features/home/DailyChallengeViews";
 
 type HomeSyncUser = { id: string; last_sign_in_at?: string };
 
@@ -78,9 +81,12 @@ export function HomeDashboardPage() {
   const homeSyncKey = user ? homeSyncStorageKey(user) : null;
   const [today, setToday] = useState(localDateString);
   const [syncRevision, setSyncRevision] = useState(0);
+  const [clock, setClock] = useState(Date.now);
+  const [celebration, setCelebration] = useState<DailySnapshot | null>(null);
+  const [celebrationId, setCelebrationId] = useState(0);
   const [syncedSessionKey, setSyncedSessionKey] = useState<string | null>(() => homeSyncKey && homeProgressIsFresh(homeSyncKey) ? homeSyncKey : null);
   useEffect(() => {
-    const timer = window.setInterval(() => setToday(localDateString()), 30_000);
+    const timer = window.setInterval(() => (setToday(localDateString()), setClock(Date.now())), 1_000);
     return () => window.clearInterval(timer);
   }, []);
   useEffect(() => {
@@ -143,23 +149,65 @@ export function HomeDashboardPage() {
       weeklyCrossword: weeklyCrosswordStorage.loadAllProgress().map((progress) => crosswordCloudRecord(progress))
     }, entitlement?.isPro === true);
   }, [entitlement?.isPro, user?.id, today, issueNumbers.firstAnagramRelease, syncRevision]);
+  const daily = useMemo(() => {
+    const crossword = createCrosswordStorage(window.localStorage, { userId: user?.id });
+    return dailyChallenge(today, {
+      backword: createBackwordStorage(window.localStorage, { userId: user?.id }).loadProgress(today),
+      crossword: crossword.loadProgressForDate(today), puzzle: crossword.loadCachedPuzzle(today),
+      anagram: createAnagramStorage(window.localStorage, { userId: user?.id }).loadAllProgress().find(p => p.date === today) ?? null,
+      midword: midwordProgress
+    }, new Date(clock));
+  }, [today, user?.id, syncRevision, midwordProgress, clock]);
+  const context = `${user?.id ?? "guest"}:${today}`;
+  const previousContext = useRef(context);
+  useEffect(() => {
+    if (!ready || wordOfTheDayState === "loading") return;
+    if (previousContext.current !== context) { setCelebration(null); previousContext.current = context; }
+    try {
+      const key = `intervls:daily-celebrated:${context}`;
+      const attempt = JSON.parse(sessionStorage.getItem("intervls:daily-attempt") ?? "null") as DailyAttempt | null;
+      sessionStorage.removeItem("intervls:daily-attempt");
+      if (daily.complete && !localStorage.getItem(key)) {
+        const qualifies = shouldCelebrate(daily, context, attempt);
+        localStorage.setItem(key, "1");
+        if (qualifies) {
+          setCelebration(daily);
+          setCelebrationId(id => id + 1);
+          window.scrollTo?.({ top: 0, behavior: "auto" });
+        }
+      }
+    } catch { /* Storage may be unavailable in private browsing. */ }
+  // Evaluate the locally saved result once on arrival or a change of account/date.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, context, wordOfTheDayState]);
+  const beginDailyGame = (event: MouseEvent<HTMLDivElement>) => {
+    const link = (event.target as Element).closest('a');
+    if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const game = ({ '/backword': 'backword', '/crossword': 'crossword', '/anagram': 'anagram', '/midword': 'midword' } as Record<string, DailyGame>)[new URL(link.href).pathname];
+    if (!game) return;
+    try { sessionStorage.setItem('intervls:daily-attempt', JSON.stringify({ context, game, started: Date.now(), wasFinished: daily.games.find(g => g.game === game)?.state === 'finished' })); } catch { /* Storage unavailable. */ }
+  };
   const isLoading = !ready || wordOfTheDayState === "loading";
   const isSyncing = Boolean(homeSyncKey && syncedSessionKey !== homeSyncKey);
 
   return (
     <main className="home-dashboard">
-      <header className="home-dashboard__header">
-        <GameMenu />
+      {celebration ? <DailyChallengeCelebration snapshot={celebration} dismiss={() => setCelebration(null)} /> : null}
+      <header className="home-dashboard__header" inert={celebration !== null}>
+        <GameMenu onPreviewDailyCompletion={() => {
+          setCelebration(dailyChallengePreview(daily));
+          setCelebrationId(id => id + 1);
+        }} />
         <Link aria-label="Intervls home" to="/">
           <BrandLogo isPro={entitlement?.isPro === true} large />
         </Link>
         <div className="home-dashboard__actions">
           <AuthButton className="auth-button--menu-upgrade" />
         </div>
-        <HomeProfileRatingLink fraction={profileRating.fraction} isSyncing={isSyncing} tier={profileRating.tier} />
+        <HomeProfileRatingLink fraction={profileRating.fraction} isSyncing={isSyncing} tier={profileRating.tier} dailySummary={<DailyChallengeSummary snapshot={daily} celebration={celebrationId} />} />
       </header>
 
-      <section aria-label="Games" className="home-dashboard__content">
+      <section aria-label="Games" className="home-dashboard__content" inert={celebration !== null}>
         <div aria-busy={isLoading} className="home-dashboard__daily-layout">
           {isLoading ? <span className="home-dashboard__loading-label" role="status">Loading daily games</span> : null}
           {isLoading ? <HomeDashboardLoadingCard variant="word-of-the-day" /> : null}
@@ -174,7 +222,7 @@ export function HomeDashboardPage() {
             className={isLoading ? "wotd-widget--preloading" : ""}
             onLoadStateChange={setWordOfTheDayState}
           />
-          <div className="home-dashboard__games-grid">
+          <div className="home-dashboard__games-grid" onClickCapture={beginDailyGame}>
             {isLoading ? (
               <>
                 <HomeDashboardLoadingCard variant="backword" />
@@ -186,7 +234,7 @@ export function HomeDashboardPage() {
               </>
             ) : (
               <>
-                <div className="home-dashboard__game home-dashboard__game--backword">
+                <div className={`home-dashboard__game home-dashboard__game--backword daily-backword${daily.games.find(g => g.game === "backword")?.state === "finished" ? " is-daily-finished" : ""}`}>
                   <DailyGameCard
                     className="home-game-card--backword"
                     destination="/backword"
@@ -199,7 +247,7 @@ export function HomeDashboardPage() {
                     <img alt="Backword" className="home-game-card__logo" src="/brand/backword-logo.png" />
                   </DailyGameCard>
                 </div>
-                <div className="home-dashboard__game home-dashboard__game--crossword">
+                <div className={`home-dashboard__game home-dashboard__game--crossword daily-crossword${daily.games.find(g => g.game === "crossword")?.state === "finished" ? " is-daily-finished" : ""}`}>
                   <DailyGameCard
                     className="home-game-card--crossword"
                     description="9×9"
@@ -214,12 +262,12 @@ export function HomeDashboardPage() {
                 <div className="home-dashboard__game home-dashboard__game--archive">
                   <HomeArchiveCard />
                 </div>
-                <div className="home-dashboard__game home-dashboard__game--anagram">
+                <div className={`home-dashboard__game home-dashboard__game--anagram daily-anagram${daily.games.find(g => g.game === "anagram")?.state === "finished" ? " is-daily-finished" : ""}`}>
                   <AnagramHomeCard issueNumber={issueNumbers.anagram}
                     score={anagramProgress?.outcome ? anagramProgress.releaseDateScore : null}
                     status={anagramStatus} streak={anagramStreak} />
                 </div>
-                <div className="home-dashboard__game home-dashboard__game--midword">
+                <div className={`home-dashboard__game home-dashboard__game--midword daily-midword${daily.games.find(g => g.game === "midword")?.state === "finished" ? " is-daily-finished" : ""}`}>
                   <MidwordHomeCard issueNumber={issueNumbers.midword ?? null} progress={midwordProgress} streak={midwordStreak} />
                 </div>
                 <div className="home-dashboard__game home-dashboard__game--weekly">
@@ -256,7 +304,7 @@ export function HomeDashboardPage() {
         </div>
       </section>
 
-      <Footer />
+      <div className="daily-home-footer" inert={celebration !== null}><Footer /></div>
     </main>
   );
 }

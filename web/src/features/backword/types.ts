@@ -21,6 +21,7 @@ export type BackwordProgress = {
   schemaVersion: 1;
   date: string;
   guesses: string[];
+  clueRevealed?: boolean;
   completedAt: string | null;
   outcome: BackwordOutcome;
   /** ISO timestamp used only for deterministic cross-device conflict resolution. */

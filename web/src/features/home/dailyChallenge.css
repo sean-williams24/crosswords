@@ -1,0 +1,32 @@
+.daily-summary { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 4px 9px; color: var(--app-text-secondary); }
+.daily-summary__points { font-size: 10px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.daily-summary__points.is-complete { color: #d4a939; }
+.daily-summary__markers { display: flex; gap: 4px; }
+.daily-backword { --daily-color: #9eacee; }.daily-crossword { --daily-color: #9cbfdf; }.daily-anagram { --daily-color: #ffbc7d; }.daily-midword { --daily-color: #b1e9b9; }
+html[data-theme="light"] .daily-backword { --daily-color: #5668aa; } html[data-theme="light"] .daily-crossword { --daily-color: #416c94; } html[data-theme="light"] .daily-anagram { --daily-color: #9e4e08; } html[data-theme="light"] .daily-midword { --daily-color: #28613a; }
+.daily-marker { display: block; width: 22px; height: 8px; overflow: hidden; border: 1px solid var(--daily-color); border-radius: 3px; }
+.daily-marker.is-notStarted { border-color: var(--app-text-secondary); }
+.daily-marker > span { display: block; height: 100%; background: var(--daily-color); transition: width .25s ease-out; }
+.daily-marker.is-celebrating { animation: daily-ripple .53s ease-in-out calc(var(--index) * 90ms) both; }
+@keyframes daily-ripple { 40% { transform: translateY(-3px) scaleY(1.7); box-shadow: 0 0 5px var(--daily-color); } }
+.home-dashboard__game.is-daily-finished { position: relative; }
+.home-dashboard__game.is-daily-finished::after { content: ''; position: absolute; inset: 4px; border: 1px solid var(--daily-color); border-radius: 8px; pointer-events: none; z-index: 2; }
+.daily-celebration-backdrop { position: fixed; z-index: 1000; inset: 0; display: grid; place-items: center; padding: 20px; background: rgb(0 0 0 / 88%); }
+.daily-celebration { width: min(400px, 100%); max-height: 100%; overflow: auto; padding: 24px; border: 1px solid rgb(212 169 57 / 45%); border-radius: 28px; background: var(--app-surface); color: var(--app-text-primary); box-shadow: 0 0 16px rgb(212 169 57 / 20%); }
+.daily-celebration h2 { margin: 0 0 16px; text-align: center; font-size: 20px; }
+.daily-celebration__rows { display: grid; gap: 8px; }
+.daily-celebration__row { min-height: 44px; padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; gap: 14px; border-radius: 12px; background: color-mix(in srgb, var(--daily-color) 10%, transparent); color: var(--daily-color); opacity: 0; transform: translateY(16px); transition: opacity .3s, transform .4s; }
+.daily-celebration__row.is-visible { opacity: 1; transform: none; }
+.daily-celebration__row strong { font-size: clamp(11px, 3vw, 16px); letter-spacing: .1em; white-space: nowrap; }
+.daily-celebration__row img { width: auto; max-width: 55%; height: 32px; object-fit: contain; }
+.daily-celebration__score { white-space: nowrap; color: var(--app-text-secondary); opacity: 0; transform: scale(.6); transition: opacity .3s, transform .4s; }
+.daily-celebration__score.is-visible { opacity: 1; transform: none; }.daily-celebration__score b { font-size: 28px; color: var(--daily-color); }
+.daily-celebration__total { height: 110px; margin: 16px 0; padding: 12px; text-align: center; border-radius: 12px; background: rgb(212 169 57 / 8%); color: #d4a939; opacity: 0; transform: scale(.8); transition: opacity .3s, transform .4s; }
+.daily-celebration__total.is-visible { opacity: 1; transform: none; }.daily-celebration__total span { display: block; font-size: 11px; letter-spacing: 2px; color: var(--app-text-secondary); }.daily-celebration__total b { font-size: 56px; }
+.daily-celebration button { width: 100%; padding: 14px; border: 1px solid rgb(212 169 57 / 40%); border-radius: 999px; background: rgb(212 169 57 / 18%); color: inherit; font-weight: 700; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { .daily-marker.is-celebrating { animation: none; } .daily-celebration__row, .daily-celebration__score, .daily-celebration__total, .daily-marker > span { transition: none; } }
+.home-profile-rating-link__label-row { display: flex; align-items: start; justify-content: space-between; gap: 9px; }
+.home-profile-rating-link__label-row .home-profile-rating-link__label { left: auto; flex: none; }
+.home-profile-rating-link.is-syncing .home-profile-rating-link__label-row .home-profile-rating-link__label { left: auto; transform: none; }
+
+.daily-home-footer { margin-top: auto; }

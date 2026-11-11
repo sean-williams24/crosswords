@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { act, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { useLayoutEffect } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { localDateOffset, localDateString, localWeekStartString } from "../features/backword/date";
@@ -102,6 +102,44 @@ describe("web home dashboard", () => {
       expect(screen.queryByRole("link", { name: "Sign in to save history" })).not.toBeInTheDocument();
     } finally {
       vi.unstubAllGlobals();
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("previews daily completion repeatedly without changing saved progress or acknowledgement", () => {
+    vi.stubEnv("DEV", true);
+    vi.stubGlobal("matchMedia", () => ({ matches: true }));
+    try {
+      localStorage.setItem("intervls:daily-celebrated:guest:" + localDateString(), "existing");
+      const before = Array.from({ length: localStorage.length }, (_, i) => [localStorage.key(i), localStorage.getItem(localStorage.key(i)!)]);
+      renderDashboard();
+      const preview = () => {
+        fireEvent.click(screen.getByRole("button", { name: "Open game menu" }));
+        fireEvent.click(screen.getByRole("button", { name: "Preview Daily Completion" }));
+        expect(screen.queryByRole("dialog", { name: "Game navigation" })).not.toBeInTheDocument();
+        const dialog = screen.getByRole("dialog", { name: "Todays Intervls Complete" });
+        expect(within(dialog).getByText("DAILY TOTAL").parentElement).toHaveTextContent("12 / 20");
+        expect(Array.from(dialog.querySelectorAll(".daily-celebration__score b"), element => element.textContent)).toEqual(["5", "4", "3", "0"]);
+        fireEvent.click(within(dialog).getByRole("button", { name: "Continue" }));
+      };
+      preview();
+      preview();
+      expect(screen.getByRole("group", { name: "Today's daily challenge, 0 of 20 points, 0 of 4 games finished" })).toBeInTheDocument();
+      expect(Array.from({ length: localStorage.length }, (_, i) => [localStorage.key(i), localStorage.getItem(localStorage.key(i)!)] )).toEqual(before);
+      expect(sessionStorage.getItem("intervls:daily-attempt")).toBeNull();
+    } finally {
+      vi.unstubAllGlobals();
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("does not expose the completion preview in production", () => {
+    vi.stubEnv("DEV", false);
+    try {
+      renderDashboard();
+      fireEvent.click(screen.getByRole("button", { name: "Open game menu" }));
+      expect(screen.queryByRole("button", { name: "Preview Daily Completion" })).not.toBeInTheDocument();
+    } finally {
       vi.unstubAllEnvs();
     }
   });

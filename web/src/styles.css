@@ -353,6 +353,21 @@ a {
 
 .bw-menu-debug__toggle input:disabled { cursor: not-allowed; opacity: .5; }
 
+.bw-menu-debug__action {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgb(var(--app-primary-rgb) / 20%);
+  border-radius: 9px;
+  color: var(--app-text-primary);
+  background: var(--app-control);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.bw-menu-debug__action:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+
 .bw-menu-debug p {
   margin: 8px 0 0;
   color: var(--app-text-secondary);

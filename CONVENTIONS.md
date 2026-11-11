@@ -2400,3 +2400,20 @@ names remain visible with full-size tap targets. Archive scroll content adds
 matching bottom clearance for the taller selector. The selector container uses
 a 25-point continuous corner radius, matching the selected capsules' radius
 plus their inset so corner selections are not clipped.
+
+## Web Home Daily Challenge
+
+The web Home summary uses the same four daily games, points and per-game marker
+progress as iOS. It reads the active account or guest saves, including Anagram
+progress without a cached puzzle; a cached crossword grid takes precedence over
+saved clue counts. Completion feedback is acknowledged locally per account and
+release date. Home records the game being entered in session storage and shows
+the celebration only on return after that previously unfinished game completes;
+already-complete restored progress is acknowledged silently. Reduced Motion
+shows all results immediately. Weekly and archive games do not count.
+
+In Vite development builds, Home's Debug menu offers `Preview Daily Completion`
+for guests and signed-in players. It closes the menu and runs the real Home
+celebration with the iOS sample scores (5, 4, 3, 0), independently of today's
+saved progress and the once-per-day acknowledgement. The preview is repeatable
+and unavailable in production builds.

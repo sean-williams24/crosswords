@@ -42,6 +42,7 @@ export type CrosswordProgress = {
   completedAt: string | null;
   /** Present on native records that were revealed rather than solved. */
   gaveUpAt?: string | null;
+  gaveUpScore?: number | null;
   releaseDateScore: number;
   totalClues?: number;
   isWeekly?: boolean;

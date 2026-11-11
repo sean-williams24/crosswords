@@ -1,12 +1,13 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { PlayerProfileRating } from "../profile/profileRating";
 
 type HomeProfileRatingLinkProps = Pick<PlayerProfileRating, "fraction" | "tier"> & {
   isSyncing?: boolean;
+  dailySummary?: ReactNode;
 };
 
-export function HomeProfileRatingLink({ fraction, isSyncing = false, tier }: HomeProfileRatingLinkProps) {
+export function HomeProfileRatingLink({ fraction, isSyncing = false, tier, dailySummary }: HomeProfileRatingLinkProps) {
   const percentage = Math.max(0, Math.min(100, fraction * 100));
   const style = { "--home-profile-rating-position": `${percentage}%` } as CSSProperties;
   const label = isSyncing ? "SYNCING" : tier.toUpperCase();
@@ -21,7 +22,7 @@ export function HomeProfileRatingLink({ fraction, isSyncing = false, tier }: Hom
         <span className="home-profile-rating-link__fill" style={isSyncing ? undefined : { clipPath: `inset(0 ${100 - Math.max(1, percentage)}% 0 0)` }} />
         {isSyncing ? null : <span className="home-profile-rating-link__marker" style={{ left: `${percentage}%` }} />}
       </span>
-      <span aria-hidden="true" className="home-profile-rating-link__label" style={style}>{label}</span>
+      <span className="home-profile-rating-link__label-row"><span aria-hidden="true" className="home-profile-rating-link__label" style={style}>{label}</span>{dailySummary}</span>
     </Link>
   );
 }
