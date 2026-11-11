@@ -4,6 +4,7 @@ struct RatingDetailSheet: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject private var accountService: AccountService
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var dailyProgress = ProfileDailyProgressViewModel()
     @State private var animates = false
     @ScaledMetric private var columnWidth: CGFloat = 60
     @ScaledMetric private var scrollingColumnWidth: CGFloat = 70
@@ -37,6 +38,8 @@ struct RatingDetailSheet: View {
                             .padding(.horizontal, AppLayout.screenPadding)
                     }
 
+                    ProfileDailyProgressView(snapshot: dailyProgress.snapshot)
+                        .padding(.horizontal, AppLayout.screenPadding)
                     tierHero
                         .padding(.horizontal, AppLayout.screenPadding)
                     RatingScoringGuideView()
@@ -68,6 +71,14 @@ struct RatingDetailSheet: View {
                 }
             }
         }
+        .task {
+            while !Task.isCancelled {
+                dailyProgress.refresh()
+                do { try await Task.sleep(for: .seconds(30)) } catch { break }
+            }
+        }
+        .onChange(of: accountService.isSyncing) { _ in dailyProgress.refresh() }
+        .onChange(of: accountService.userID) { _ in dailyProgress.refresh() }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 withAnimation(.spring(response: 0.8, dampingFraction: 0.75)) {

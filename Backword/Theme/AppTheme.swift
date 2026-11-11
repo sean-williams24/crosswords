@@ -254,6 +254,8 @@ struct AppLayout {
     static let homeArchiveContentSpacing: CGFloat = 10
     static let homeArchiveTitleSize: CGFloat = 24
     static let homeArchiveBorderWidth: CGFloat = 1
+    static let profileDailySpacing: CGFloat = 10
+    static let profileDailyPadding: CGFloat = 20
     static let homeDailyMarkerWidth: CGFloat = 22
     static let homeDailyMarkerHeight: CGFloat = 8
     static let homeDailyMarkerSpacing: CGFloat = 4

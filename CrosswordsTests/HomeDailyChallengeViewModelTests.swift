@@ -499,3 +499,30 @@ struct HomeDailyChallengeViewModelTests {
         }
     }
 }
+
+@MainActor
+@Suite("Profile daily progress")
+struct ProfileDailyProgressTests {
+    @Test("Refresh loads today's saved progress and follows the local date")
+    func refreshesCurrentDay() {
+        let store = ProfileProgressStore()
+        var now = Date(timeIntervalSince1970: 1_800_000_000)
+        let model = ProfileDailyProgressViewModel(store: store, now: { now })
+        model.refresh()
+        #expect(store.dates == [ContentReleaseCalendar(now: now).dailyDateString])
+        #expect(model.snapshot.date == store.dates.last)
+        now = now.addingTimeInterval(48 * 60 * 60)
+        model.refresh()
+        #expect(store.dates.count == 2)
+        #expect(model.snapshot.date == ContentReleaseCalendar(now: now).dailyDateString)
+        #expect(store.dates[0] != store.dates[1])
+    }
+}
+
+private final class ProfileProgressStore: DailyChallengeProgressLoading {
+    var dates: [String] = []
+    func load(date: String, dailyPuzzle: Puzzle?, now: Date) -> DailyChallengeSnapshot {
+        dates.append(date)
+        return DailyChallengeSnapshot(date: date)
+    }
+}

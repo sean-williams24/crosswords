@@ -2420,3 +2420,11 @@ for guests and signed-in players. It closes the menu and runs the real Home
 celebration with the iOS sample scores (5, 4, 3, 0), independently of today's
 saved progress and the once-per-day acknowledgement. The preview is repeatable
 and unavailable in production builds.
+
+## iOS Profile Daily Progress
+
+Player Profile shows today's four daily games and points above the rolling
+rating. It reads the same local daily challenge snapshot as Home, including
+in-progress points and terminal losses, and excludes weekly and archive games.
+The profile refreshes while open and after account sync or account changes so
+that the displayed local release day and restored progress stay current.

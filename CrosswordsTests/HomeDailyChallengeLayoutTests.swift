@@ -6,6 +6,24 @@ import UIKit
 @MainActor
 @Suite("Home daily challenge layout")
 struct HomeDailyChallengeLayoutTests {
+    @Test("Profile rows keep titles and statuses readable at narrow widths",
+          arguments: [DynamicTypeSize.large, .xxxLarge, .accessibility1, .accessibility5])
+    func profileRowAdaptsToTextSize(size: DynamicTypeSize) {
+        let progress = DailyChallengeGameProgress(game: .crossword, state: .notStarted)
+        let row = ProfileDailyProgressView.gameRow(progress)
+            .environment(\.dynamicTypeSize, size)
+        let host = UIHostingController(rootView: row)
+        let narrow = host.sizeThatFits(in: CGSize(width: 260, height: 1_000))
+        let text = Text("Quick Crossword").font(AppFont.body(14))
+            .environment(\.dynamicTypeSize, size)
+        let lineHeight = UIHostingController(rootView: text)
+            .sizeThatFits(in: CGSize(width: 1_000, height: 1_000)).height
+        #expect(narrow.width <= 260.5)
+        // The two labels may each wrap onto two lines, but must not collapse
+        // into the many character-sized lines seen when the status is squeezed.
+        #expect(narrow.height <= lineHeight * 5 + AppLayout.profileDailySpacing * 2)
+    }
+
     @Test("Every progress state uses the same wide rounded rectangular marker",
           arguments: [DailyChallengeGameProgress.State.notStarted, .inProgress,
                       .finished(won: true), .finished(won: false)])

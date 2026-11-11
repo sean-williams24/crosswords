@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A4B100000000000000000001 /* ProfileDailyProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B100000000000000000003 /* ProfileDailyProgressView.swift */; };
+		A4B100000000000000000002 /* ProfileDailyProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B100000000000000000004 /* ProfileDailyProgressViewModel.swift */; };
 		D6F52EBA7D6B5D974030B0EB /* HomeDailyChallengeCelebrationLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A862BA3012DCC9C4FC140CE3 /* HomeDailyChallengeCelebrationLogo.swift */; };
 		BABE7C7246E5A4E6EE51052F /* DailyChallengeCelebrationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE5582CCB770E392680461A /* DailyChallengeCelebrationViewModelTests.swift */; };
 		3EB186E94C2EE8FCB7B876AF /* HomeDailyChallengeCelebrationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BE5F7AD1ED68569335BAAB /* HomeDailyChallengeCelebrationRow.swift */; };
@@ -284,6 +286,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A4B100000000000000000003 /* ProfileDailyProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDailyProgressView.swift; sourceTree = "<group>"; };
+		A4B100000000000000000004 /* ProfileDailyProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDailyProgressViewModel.swift; sourceTree = "<group>"; };
 		A862BA3012DCC9C4FC140CE3 /* HomeDailyChallengeCelebrationLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeDailyChallengeCelebrationLogo.swift"; sourceTree = "<group>"; };
 		BDE5582CCB770E392680461A /* DailyChallengeCelebrationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift"; sourceTree = "<group>"; };
 		F3BE5F7AD1ED68569335BAAB /* HomeDailyChallengeCelebrationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeDailyChallengeCelebrationRow.swift"; sourceTree = "<group>"; };
@@ -796,6 +800,7 @@
 		86AFC3CF2FBFC323007623C3 /* RatingDetails */ = {
 			isa = PBXGroup;
 			children = (
+				A4B100000000000000000003 /* ProfileDailyProgressView.swift */,
 				963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */,
 				86AFC3D62FC25567007623C3 /* ScoreChipView.swift */,
 				F4F0000D3020000000000001 /* RatingScoringGuideView.swift */,
@@ -979,6 +984,7 @@
 		D5A47C913B0947C0B37F2D61 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				A4B100000000000000000004 /* ProfileDailyProgressViewModel.swift */,
 				7F3356D606F3E816FA598525 /* HomeDailyChallengeViewModel.swift */,
 				777B57F63E3A1AD53802C0F6 /* DailyChallengeCelebrationViewModel.swift */,
 				A8220AB384E18F7E4E984338 /* MidwordViewModel.swift */,
@@ -1224,6 +1230,8 @@
 				3EB186E94C2EE8FCB7B876AF /* HomeDailyChallengeCelebrationRow.swift in Sources */,
 				1AEFC550EAA6C3ACD5DFE75A /* HomeDailyChallengeCardHighlight.swift in Sources */,
 				A9D7D2D35B04352BB5D76224 /* HomeDailyChallengeRatingRow.swift in Sources */,
+				A4B100000000000000000001 /* ProfileDailyProgressView.swift in Sources */,
+				A4B100000000000000000002 /* ProfileDailyProgressViewModel.swift in Sources */,
 				27938D26A9B6C3A7D7123BA9 /* HomeDailyChallengeSummary.swift in Sources */,
 				7980901851029979675A8FBF /* HomeDailyChallengeMarker.swift in Sources */,
 				ECB321DC1981D94BE185BA5A /* HomeDailyChallengeViewModel.swift in Sources */,
