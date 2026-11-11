@@ -74,7 +74,9 @@ describe("PlayerProfilePage", () => {
     const card = screen.getByRole("region", { name: "TODAY'S INTERVLS" });
     expect(card).toHaveTextContent("3 / 20 PTS");
     expect(card).toHaveTextContent("1 of 4 games finished");
-    expect(within(card).getByLabelText("Finished, solved, 3 of 5 points")).toHaveTextContent("Finished · 3 pts");
+    const finished = within(card).getByLabelText("Finished, solved, 3 of 5 points");
+    expect(finished).toHaveTextContent("Finished · 3 pts");
+    expect(within(finished).getByText("3 pts")).toHaveClass("profile-daily-progress__points");
     expect(within(card).getAllByText("Not started")).toHaveLength(3);
     const summary = screen.getByLabelText("Player summary");
     const breakdown = screen.getByRole("heading", { name: "LAST 14 DAYS" });
@@ -92,6 +94,20 @@ describe("PlayerProfilePage", () => {
     const card = screen.getByRole("region", { name: "TODAY'S INTERVLS" });
     await waitFor(() => expect(card).toHaveTextContent("5 / 20 PTS"));
     expect(card).toHaveTextContent("1 of 4 games finished");
+  });
+
+  it("shows daily progress points in the primary text colour", () => {
+    testAuth.value.user = null;
+    const today = localDateString();
+    localStorage.setItem("backword:web:progress:v1", JSON.stringify({
+      [today]: { schemaVersion: 1, date: today, guesses: ["CASTLE", "CASTLE", "CASTLE", "CASTLE", "CASTLE"], completedAt: new Date().toISOString(), outcome: "failed" }
+    }));
+    renderPage();
+    const card = screen.getByRole("region", { name: "TODAY'S INTERVLS" });
+    const finished = within(card).getByLabelText("Finished, without a win, 0 of 5 points");
+    expect(within(finished).getByText("0 pts")).toHaveClass("profile-daily-progress__points");
+    const styles = readFileSync(resolve(process.cwd(), "src/features/profile/profileDailyProgress.css"), "utf8");
+    expect(styles).toMatch(/\.profile-daily-progress__points\s*\{[^}]*color:\s*var\(--app-text-primary\)/);
   });
 
   it("keeps guest and signed-in daily progress separate", async () => {
@@ -321,6 +337,17 @@ describe("PlayerProfilePage", () => {
     resolveFetch([]);
 
     await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalledTimes(fetchCallsBeforeRender + 5));
+  });
+
+  it("uses the primary text colour for zero-point scoring rules", () => {
+    testAuth.value.user = null;
+    renderPage();
+    const scoring = screen.getByLabelText("Player summary");
+    expect(within(scoring).getAllByText("0 pts")).toHaveLength(3);
+    for (const value of within(scoring).getAllByText("0 pts")) expect(value).toHaveClass("is-zero");
+    for (const value of within(scoring).getAllByText("5 pts")) expect(value).not.toHaveClass("is-zero");
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    expect(styles).toMatch(/\.player-profile__rule b\.is-zero\s*\{[^}]*color:\s*var\(--app-text-primary\)/);
   });
 
   it("compensates for transparent padding around the Pro logo", () => {

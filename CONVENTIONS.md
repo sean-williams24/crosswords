@@ -517,7 +517,9 @@ including all game tables and the rolling-window explanation. Its title is a
 static accessibility heading.
 
 The shared iOS `ScoringRuleView` uses text-only headings aligned with its score
-labels. The crossword hint-penalty note uses the same leading alignment.
+labels. The crossword hint-penalty note uses the same leading alignment. Both
+platforms show zero-point values in the primary text colour and other point
+values in the accent colour.
 
 iOS and web Player Profile explain Backword and Midword together under
 “Backword & Midword”, using one shared five-guess scoring guide: wins earn
@@ -2434,3 +2436,6 @@ the card sits above the 14-day table on desktop and above the summary when the
 profile stacks below 1022px. Desktop account controls fill the remaining space
 below the table, with Delete Account aligned to the bottom of the summary.
 The card also refreshes on cross-tab updates and when the page becomes visible.
+Point values in daily game rows use the primary text colour on both platforms.
+Web completion outlines use the card’s own border so they follow its corners and
+move with it on hover; keyboard focus retains the primary-colour outline.

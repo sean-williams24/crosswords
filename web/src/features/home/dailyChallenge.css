@@ -9,8 +9,8 @@ html[data-theme="light"] .daily-backword { --daily-color: #5668aa; } html[data-t
 .daily-marker > span { display: block; height: 100%; background: var(--daily-color); transition: width .25s ease-out; }
 .daily-marker.is-celebrating { animation: daily-ripple .53s ease-in-out calc(var(--index) * 90ms) both; }
 @keyframes daily-ripple { 40% { transform: translateY(-3px) scaleY(1.7); box-shadow: 0 0 5px var(--daily-color); } }
-.home-dashboard__game.is-daily-finished { position: relative; }
-.home-dashboard__game.is-daily-finished::after { content: ''; position: absolute; inset: 4px; border: 1px solid var(--daily-color); border-radius: 8px; pointer-events: none; z-index: 2; }
+.home-dashboard__game.is-daily-finished .home-game-card::after { border-color: var(--daily-color); }
+.home-dashboard__game.is-daily-finished .home-game-card:focus-visible::after { border-color: var(--app-text-primary); }
 .daily-celebration-backdrop { position: fixed; z-index: 1000; inset: 0; display: grid; place-items: center; padding: 20px; background: rgb(0 0 0 / 88%); }
 .daily-celebration { width: min(400px, 100%); max-height: 100%; overflow: auto; padding: 24px; border: 1px solid rgb(212 169 57 / 45%); border-radius: 28px; background: var(--app-surface); color: var(--app-text-primary); box-shadow: 0 0 16px rgb(212 169 57 / 20%); }
 .daily-celebration h2 { margin: 0 0 16px; text-align: center; font-size: 20px; }

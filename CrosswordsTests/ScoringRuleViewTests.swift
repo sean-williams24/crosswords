@@ -25,6 +25,13 @@ struct ScoringRuleViewTests {
         #expect(guideSize.width <= width + 0.5)
     }
 
+    @Test("Zero-point scores use the primary text colour")
+    func zeroPointsColor() {
+        #expect(ScoringRuleView.pointsColor("0 pts") == .appTextPrimary)
+        #expect(ScoringRuleView.pointsColor("1 pt") == .appAccent)
+        #expect(ScoringRuleView.pointsColor("5 pts") == .appAccent)
+    }
+
     @Test("Scoring guides accept a text heading without an icon")
     func textHeading() {
         let guide = ScoringRuleView(title: "Scoring", rows: [("Solved", "5 pts")])

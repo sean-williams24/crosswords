@@ -24,6 +24,11 @@ struct HomeDailyChallengeLayoutTests {
         #expect(narrow.height <= lineHeight * 5 + AppLayout.profileDailySpacing * 2)
     }
 
+    @Test("Daily progress points use primary text colour")
+    func profilePointsColor() {
+        #expect(ProfileDailyProgressView.pointsColor == .appTextPrimary)
+    }
+
     @Test("Every progress state uses the same wide rounded rectangular marker",
           arguments: [DailyChallengeGameProgress.State.notStarted, .inProgress,
                       .finished(won: true), .finished(won: false)])

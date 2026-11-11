@@ -48,14 +48,9 @@ export function ProfileDailyProgress({ userId }: { userId?: string }) {
         </span>
         <span>{game.name}</span>
       </span>
-      <span className="profile-daily-progress__status" aria-label={accessibleStatus(game)}>{status(game)}</span>
+      <span className="profile-daily-progress__status" aria-label={accessibleStatus(game)}>{game.state === "notStarted" ? "Not started" : <>{game.state === "finished" ? "Finished" : "In progress"} · <span className="profile-daily-progress__points">{game.points} pts</span></>}</span>
     </li>)}</ul>
   </section>;
-}
-
-function status(game: DailyItem): string {
-  if (game.state === "notStarted") return "Not started";
-  return `${game.state === "finished" ? "Finished" : "In progress"} · ${game.points} pts`;
 }
 
 function accessibleStatus(game: DailyItem): string {

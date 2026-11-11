@@ -262,7 +262,7 @@ function RollingWindowExplanation() {
 }
 
 function ScoringRule({ rows, title }: { rows: [string, string][]; title: string }) {
-  return <div className="player-profile__rule"><strong>{title}</strong>{rows.map(([label, score]) => <span key={label}><span>{label}</span><b>{score}</b></span>)}</div>;
+  return <div className="player-profile__rule"><strong>{title}</strong>{rows.map(([label, score]) => <span key={label}><span>{label}</span><b className={score === "0 pts" ? "is-zero" : undefined}>{score}</b></span>)}</div>;
 }
 
 function ScoreChip({ score }: { score: number }) {

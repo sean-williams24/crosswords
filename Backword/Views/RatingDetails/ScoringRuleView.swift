@@ -57,8 +57,12 @@ struct ScoringRuleView: View {
     private func scorePoints(_ points: String) -> some View {
         Text(points)
             .font(AppFont.clueLabel(11))
-            .foregroundColor(.appAccent)
+            .foregroundColor(Self.pointsColor(points))
             .fixedSize(horizontal: false, vertical: true)
+    }
+
+    static func pointsColor(_ points: String) -> Color {
+        points == "0 pts" ? .appTextPrimary : .appAccent
     }
 
     static func backword(title: String = "Backword & Midword") -> ScoringRuleView {

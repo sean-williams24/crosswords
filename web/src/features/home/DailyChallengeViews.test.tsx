@@ -50,3 +50,12 @@ it('dismisses when clicking outside the celebration but not inside it', () => {
   fireEvent.click(dialog.parentElement!);
   expect(dismiss).toHaveBeenCalledOnce();
 });
+
+it('draws the completion border on the card so it follows its shape and hover movement', () => {
+  const css = readFileSync('src/features/home/dailyChallenge.css', 'utf8');
+  const cardStyles = readFileSync('src/styles.css', 'utf8');
+  expect(css).toMatch(/\.home-dashboard__game\.is-daily-finished \.home-game-card::after\s*\{[^}]*border-color:\s*var\(--daily-color\)/);
+  expect(css).not.toMatch(/\.home-dashboard__game\.is-daily-finished::after/);
+  expect(css).toMatch(/\.home-game-card:focus-visible::after\s*\{[^}]*border-color:\s*var\(--app-text-primary\)/);
+  expect(cardStyles).toMatch(/\.home-game-card::after\s*\{[^}]*inset:\s*0[^}]*border-radius:\s*inherit/);
+});

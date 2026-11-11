@@ -2103,6 +2103,7 @@ html[data-theme="light"] .auth-google-placeholder__logo { width: 18px; height: 1
 .player-profile__rule > strong { margin-bottom: 3px; color: var(--app-text-primary); font-size: 14px; }
 .player-profile__rule > span { display: flex; justify-content: space-between; gap: 12px; color: var(--app-text-secondary); font-size: 13px; }
 .player-profile__rule b { color: var(--app-accent); font-size: 12px; }
+.player-profile__rule b.is-zero { color: var(--app-text-primary); }
 .player-profile__breakdown { overflow: hidden; padding-top: 20px; }
 .player-profile__breakdown h2 { padding: 0 20px 15px; }
 .player-profile__table-scroll { overflow-x: auto; }

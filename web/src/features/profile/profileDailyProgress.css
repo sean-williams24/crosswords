@@ -8,3 +8,5 @@
 .profile-daily-progress__game { display: flex; align-items: center; gap: 10px; font-size: 14px; }
 .profile-daily-progress__game .daily-marker { flex: 0 0 22px; }
 .profile-daily-progress__status { margin-left: auto; color: var(--app-text-secondary); font-size: 13px; text-align: right; }
+
+.profile-daily-progress__points { color: var(--app-text-primary); }

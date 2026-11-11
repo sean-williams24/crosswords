@@ -62,11 +62,22 @@ struct ProfileDailyProgressView: View {
     }
 
     private static func gameStatus(_ progress: DailyChallengeGameProgress) -> some View {
-        Text(status(for: progress))
+        let label: String
+        switch progress.state {
+        case .notStarted: label = "Not started"
+        case .inProgress: label = "In progress"
+        case .finished: label = "Finished"
+        }
+        let text = progress.state == .notStarted
+            ? Text(label).foregroundColor(.appTextSecondary)
+            : Text("\(label) · ").foregroundColor(.appTextSecondary)
+                + Text("\(progress.earnedPoints) pts").foregroundColor(pointsColor)
+        return text
             .font(AppFont.caption())
-            .foregroundColor(.appTextSecondary)
             .multilineTextAlignment(.trailing)
     }
+
+    static let pointsColor: Color = .appTextPrimary
 
     private var title: some View {
         Text("TODAY'S INTERVLS")
@@ -82,13 +93,5 @@ struct ProfileDailyProgressView: View {
             .monospacedDigit()
             .foregroundColor(.appTextPrimary)
             .fixedSize()
-    }
-
-    private static func status(for progress: DailyChallengeGameProgress) -> String {
-        switch progress.state {
-        case .notStarted: return "Not started"
-        case .inProgress: return "In progress · \(progress.earnedPoints) pts"
-        case .finished: return "Finished · \(progress.earnedPoints) pts"
-        }
     }
 }
