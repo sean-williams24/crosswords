@@ -12,6 +12,11 @@ enum PuzzleStatus {
     case inProgress
     case notStarted
 
+    var isGaveUp: Bool {
+        if case .gaveUp = self { return true }
+        return false
+    }
+
     var icon: String {
         switch self {
         case .completedOnTime: return "checkmark.circle.fill"

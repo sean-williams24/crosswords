@@ -145,10 +145,10 @@ struct DailyCrosswordCard: View {
 
 enum DailyCrosswordCardStatusStyle {
     static func textStyle(for status: PuzzleStatus) -> StatusLabelTextStyle {
-        if case .inProgress = status {
-            return .primary
+        switch status {
+        case .inProgress, .gaveUp: return .primary
+        default: return .statusColor
         }
-        return .statusColor
     }
 }
 

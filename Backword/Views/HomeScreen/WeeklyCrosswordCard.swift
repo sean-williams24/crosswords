@@ -120,6 +120,7 @@ struct WeeklyCrosswordCard: View {
                 } else {
                     StatusLabelView(
                         status: viewModel.weeklyPuzzleStatus,
+                        textStyle: WeeklyCrosswordCardStatusStyle.textStyle(for: viewModel.weeklyPuzzleStatus),
                         borderStyle: badgeBorderStyle
                     )
                 }
@@ -158,4 +159,11 @@ struct WeeklyCrosswordCard: View {
     WeeklyCrosswordCard(viewModel: HomeViewModel(puzzleService: PuzzleService(), storeService: StoreService()))
         .environmentObject(StatsService())
         .environmentObject(StoreService())
+}
+
+
+enum WeeklyCrosswordCardStatusStyle {
+    static func textStyle(for status: PuzzleStatus) -> StatusLabelTextStyle {
+        status.isGaveUp ? BackwordCardStatusStyle.textStyle : .statusColor
+    }
 }

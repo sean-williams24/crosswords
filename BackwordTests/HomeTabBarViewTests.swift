@@ -214,6 +214,9 @@ struct HomeCardStreakLayoutTests {
     func dailyInProgressStatusUsesPrimaryText() {
         #expect(DailyCrosswordCardStatusStyle.textStyle(for: .inProgress) == .primary)
         #expect(DailyCrosswordCardStatusStyle.textStyle(for: .notStarted) == .statusColor)
+        #expect(DailyCrosswordCardStatusStyle.textStyle(for: .gaveUp) == BackwordCardStatusStyle.textStyle)
+        #expect(WeeklyCrosswordCardStatusStyle.textStyle(for: .gaveUp) == BackwordCardStatusStyle.textStyle)
+        #expect(WeeklyCrosswordCardStatusStyle.textStyle(for: .completedOnTime) == .statusColor)
     }
 
     @Test("Daily card description matches the web home card colour")
