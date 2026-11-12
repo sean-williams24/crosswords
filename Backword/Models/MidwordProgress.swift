@@ -11,6 +11,7 @@ struct MidwordProgress: Codable, Equatable {
     var isComplete: Bool { completedAt != nil }
     var isWon: Bool { isComplete && won }
     var isFailed: Bool { isComplete && !won }
+    var isGaveUp: Bool { isFailed && guesses.count < 5 }
 
     init(date: String) { self.date = date }
 

@@ -6,6 +6,29 @@ import UIKit
 
 @Suite("Home games layout")
 struct HomeGamesLayoutTests {
+    @Test("Home statuses distinguish give-ups from exhausted attempts")
+    func givenUpGameStatuses() {
+        var backword = BackwordProgress(date: "2026-07-09")
+        backword.completedAt = Date()
+        #expect(PuzzleStatus.status(for: backword).label == "Gave up")
+        #expect(PuzzleStatus.status(for: backword, puzzleDate: backword.date).label == "Gave up")
+        backword.guesses = Array(repeating: "WRONG", count: 5)
+        #expect(PuzzleStatus.status(for: backword).label == "Failed")
+
+        var midword = MidwordProgress(date: "2026-07-09")
+        midword.giveUp()
+        #expect(PuzzleStatus.midwordStatus(for: midword).label == "Gave up")
+        midword.guesses = Array(repeating: "WORD", count: 5)
+        #expect(PuzzleStatus.midwordStatus(for: midword).label == "Failed")
+
+        var crossword = UserProgress(puzzleId: "status-test", size: 3)
+        crossword.completedAt = Date()
+        crossword.gaveUpAt = crossword.completedAt
+        for weekly in [false, true] {
+            #expect(PuzzleStatus.crosswordStatus(for: crossword, puzzleDate: "2026-07-09", isWeekly: weekly).label == "Gave up")
+        }
+    }
+
     @Test("Archive button follows Quick Crossword and sits above Anagram")
     func archiveButtonPosition() {
         #expect(HomeGamesLayout.gamesBeforeArchiveButton == [.backword, .quickCrossword])

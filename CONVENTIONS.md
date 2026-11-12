@@ -2443,3 +2443,5 @@ move with it on hover; keyboard focus retains the primary-colour outline.
 ## Giving Up Games
 
 Unfinished daily and weekly crosswords can be revealed by free and Pro players, including on their release day. Revealing locks the grid and preserves the score earned before reveal. Midword's flag confirms a terminal failure, preserves guesses, reveals the answer, and awards zero points.
+
+Home and archive game status labels show `Gave up` for revealed games and `Failed` for exhausted attempts. Backword and Midword give-ups are identified from terminal losses with fewer than five guesses, including older saved and synced progress.

@@ -112,15 +112,11 @@ final class HomeViewModel: ObservableObject {
     }
 
     var puzzleStatus: PuzzleStatus {
-        guard let progress = todaysProgress else { return .notStarted }
-        guard progress.isComplete, let completedAt = progress.completedAt else { return .inProgress }
-        return ContentReleaseCalendar(now: completedAt).dailyDateString == todaysPuzzle?.date ? .completedOnTime : .completedLate
+        PuzzleStatus.crosswordStatus(for: todaysProgress, puzzleDate: todaysPuzzle?.date, isWeekly: false)
     }
 
     var weeklyPuzzleStatus: PuzzleStatus {
-        guard let progress = weeklyProgress else { return .notStarted }
-        guard progress.isComplete, let completedAt = progress.completedAt else { return .inProgress }
-        return ContentReleaseCalendar(now: completedAt).weeklyDateString == weeklyPuzzle?.date ? .completedOnTime : .completedLate
+        PuzzleStatus.crosswordStatus(for: weeklyProgress, puzzleDate: weeklyPuzzle?.date, isWeekly: true)
     }
 }
 

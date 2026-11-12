@@ -74,7 +74,7 @@ enum PuzzleStatus {
         guard let completedAt = progress.completedAt else {
             return progress.guesses.isEmpty ? .notStarted : .inProgress
         }
-        guard progress.isWon else { return .failedBackword }
+        guard progress.isWon else { return progress.isGaveUp ? .gaveUp : .failedBackword }
         let completionDate = ContentReleaseCalendar(now: completedAt).dailyDateString
         return completionDate == progress.date ? .completedOnTime : .completedLate
     }
@@ -83,18 +83,22 @@ enum PuzzleStatus {
         guard let progress = UserProgress.load(puzzleId: entry.id) else {
             return .notStarted
         }
-        guard progress.isComplete, let completedAt = progress.completedAt else {
-            return .inProgress
-        }
+        return crosswordStatus(for: progress, puzzleDate: entry.date, isWeekly: isWeekly)
+    }
+
+    static func crosswordStatus(for progress: UserProgress?, puzzleDate: String?, isWeekly: Bool) -> PuzzleStatus {
+        guard let progress else { return .notStarted }
+        if progress.gaveUpAt != nil { return .gaveUp }
+        guard progress.isComplete, let completedAt = progress.completedAt else { return .inProgress }
         let releaseCalendar = ContentReleaseCalendar(now: completedAt)
         let completionDate = isWeekly ? releaseCalendar.weeklyDateString : releaseCalendar.dailyDateString
-        return completionDate == entry.date ? .completedOnTime : .completedLate
+        return completionDate == puzzleDate ? .completedOnTime : .completedLate
     }
 
     static func status(for progress: BackwordProgress?) -> PuzzleStatus {
         guard let progress else { return .notStarted }
         if progress.isComplete {
-            return progress.isWon ? .wonBackword(progress.guesses.count) : .failedBackword
+            return progress.isWon ? .wonBackword(progress.guesses.count) : (progress.isGaveUp ? .gaveUp : .failedBackword)
         }
         return progress.guesses.isEmpty ? .notStarted : .inProgress
     }
@@ -104,7 +108,7 @@ enum PuzzleStatus {
         guard progress.isComplete, let completedAt = progress.completedAt else {
             return progress.guesses.isEmpty ? .notStarted : .inProgress
         }
-        guard progress.isWon else { return .failedBackword }
+        guard progress.isWon else { return progress.isGaveUp ? .gaveUp : .failedBackword }
 
         let completionDate = ContentReleaseCalendar(now: completedAt).dailyDateString
         return completionDate == puzzleDate

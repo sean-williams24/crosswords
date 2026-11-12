@@ -38,6 +38,7 @@ struct BackwordProgress: Codable {
 
     var isWon: Bool { wonFlag && completedAt != nil }
     var isFailed: Bool { !wonFlag && completedAt != nil }
+    var isGaveUp: Bool { isFailed && guesses.count < 5 }
     var isComplete: Bool { completedAt != nil }
     var wasCompletedOnReleaseDate: Bool {
         guard let completedAt else { return false }
