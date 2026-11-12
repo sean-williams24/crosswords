@@ -14,7 +14,7 @@ struct MidwordBoardView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             guessCells
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Middle word, \(input.count) of \(puzzle.answer.count) letters entered")
+                .accessibilityLabel(won ? "Middle word, \(puzzle.answer)" : "Middle word, \(input.count) of \(puzzle.answer.count) letters entered")
             prompt(puzzle.secondWord)
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: .infinity, alignment: .trailing)

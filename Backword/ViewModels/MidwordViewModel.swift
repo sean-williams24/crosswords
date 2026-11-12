@@ -35,6 +35,15 @@ final class MidwordViewModel: ObservableObject {
         haptics.play(.letterEntered)
     }
 
+    func giveUp() {
+        guard !isComplete else { return }
+        progress.giveUp()
+        input = ""
+        message = nil
+        haptics.play(.backwordGameLost)
+        progress.save()
+    }
+
     func submitGuess(isValidWord: (String) -> Bool = WordValidator.isValidEnglishWord) {
         guard canSubmit else { return }
         guard !progress.guesses.contains(input) else {

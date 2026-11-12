@@ -17,6 +17,7 @@ struct MidwordView: View {
     @EnvironmentObject private var ratingService: OverallRatingService
     @State private var sheetPresentation = MidwordSheetPresentation()
     @State private var shouldPopAfterCompletionSheet = false
+    @State private var showGiveUpConfirmation = false
 
     private var appLayout: AppLayout { AppLayout(sizeClass: sizeClass) }
 
@@ -38,6 +39,12 @@ struct MidwordView: View {
         .toolbar(.hidden, for: .navigationBar)
         .enableSwipeBack()
         .navigationBarBackButtonHidden()
+        .alert("Give up?", isPresented: $showGiveUpConfirmation) {
+            Button("Cancel", role: .cancel) {}
+            Button("Reveal Answer", role: .destructive) { viewModel.giveUp() }
+        } message: {
+            Text("This will reveal the answer for zero points.")
+        }
         .onAppear { if viewModel.isComplete { sheetPresentation.showsCompletion = true } }
         .onChange(of: viewModel.isComplete) { _, complete in
             if complete {
@@ -89,7 +96,7 @@ struct MidwordView: View {
                 .font(AppFont.body())
                 .foregroundColor(.midwordText.opacity(0.85))
                 .multilineTextAlignment(.center)
-            MidwordBoardView(puzzle: viewModel.puzzle, input: viewModel.input, won: viewModel.progress.isWon)
+            MidwordBoardView(puzzle: viewModel.puzzle, input: viewModel.input, won: viewModel.isComplete)
             MidwordAttemptCounterView(progress: viewModel.progress)
             if let message = viewModel.message {
                 Text(message).font(AppFont.body()).foregroundColor(.midwordText)
@@ -166,6 +173,13 @@ struct MidwordView: View {
             }
             .accessibilityLabel("Back")
             Spacer()
+            if !viewModel.isComplete {
+                Button { showGiveUpConfirmation = true } label: {
+                    Image(systemName: "flag.fill")
+                        .frame(width: appLayout.iconSize, height: appLayout.iconSize)
+                }
+                .accessibilityLabel("Give up")
+            }
             Button { sheetPresentation.showsStats = true } label: {
                 Image(systemName: "brain.head.profile")
                     .frame(width: appLayout.iconSize, height: appLayout.iconSize)

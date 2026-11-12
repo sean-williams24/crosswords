@@ -163,7 +163,7 @@ struct PuzzleView: View {
                 viewModel.giveUp(displayScore: giveUpDisplayScore)
             }
         } message: {
-            Text("This will reveal and lock every answer for this archive puzzle.")
+            Text("This will reveal and lock every answer for this puzzle.")
         }
         .navigationBarBackButtonHidden(true)
         .onChange(of: storeService.isProUser) { _, isProUser in

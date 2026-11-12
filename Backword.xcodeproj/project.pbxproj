@@ -7,24 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A4B100000000000000000001 /* ProfileDailyProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B100000000000000000003 /* ProfileDailyProgressView.swift */; };
-		A4B100000000000000000002 /* ProfileDailyProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B100000000000000000004 /* ProfileDailyProgressViewModel.swift */; };
-		D6F52EBA7D6B5D974030B0EB /* HomeDailyChallengeCelebrationLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A862BA3012DCC9C4FC140CE3 /* HomeDailyChallengeCelebrationLogo.swift */; };
-		BABE7C7246E5A4E6EE51052F /* DailyChallengeCelebrationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE5582CCB770E392680461A /* DailyChallengeCelebrationViewModelTests.swift */; };
-		3EB186E94C2EE8FCB7B876AF /* HomeDailyChallengeCelebrationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BE5F7AD1ED68569335BAAB /* HomeDailyChallengeCelebrationRow.swift */; };
-		F23A738519DB07822088224A /* DailyChallengeCelebrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777B57F63E3A1AD53802C0F6 /* DailyChallengeCelebrationViewModel.swift */; };
-		7D36AAFB35AEF4E91CB1071D /* HomeDailyChallengeLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD34781B46A8A180D978DFC /* HomeDailyChallengeLayoutTests.swift */; };
-		9C5A7457CBAD64B4D49552EE /* HomeDailyChallengeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3A797CBA3BFB73F993F6CD /* HomeDailyChallengeViewModelTests.swift */; };
-		CDE7B3D1A8B803E660D8E10B /* DailyChallengeSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B0C8EE5084C41DFB4EB830 /* DailyChallengeSnapshotTests.swift */; };
-		AFA2F03099D439E90FBDB228 /* HomeDailyChallengeCelebration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18807D162976E27AE5C2CEC3 /* HomeDailyChallengeCelebration.swift */; };
-		1AEFC550EAA6C3ACD5DFE75A /* HomeDailyChallengeCardHighlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB61D3D1C00A7790B63631 /* HomeDailyChallengeCardHighlight.swift */; };
-		A9D7D2D35B04352BB5D76224 /* HomeDailyChallengeRatingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD1044A179E42EFE71553C /* HomeDailyChallengeRatingRow.swift */; };
-		27938D26A9B6C3A7D7123BA9 /* HomeDailyChallengeSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF081FFFA920E4CFBA726F5C /* HomeDailyChallengeSummary.swift */; };
-		7980901851029979675A8FBF /* HomeDailyChallengeMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE22632345BAEF6D547A3AB /* HomeDailyChallengeMarker.swift */; };
-		ECB321DC1981D94BE185BA5A /* HomeDailyChallengeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3356D606F3E816FA598525 /* HomeDailyChallengeViewModel.swift */; };
-		03ACF849F3B34FEBEB85B85D /* DailyChallengeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A43901A456AE111FBA9C021 /* DailyChallengeStore.swift */; };
-		59FFCB5AA08D85E66F1EA0DB /* DailyChallengeSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362D2D4894EDDE74EF4570D2 /* DailyChallengeSnapshot.swift */; };
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
+		03ACF849F3B34FEBEB85B85D /* DailyChallengeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A43901A456AE111FBA9C021 /* DailyChallengeStore.swift */; };
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
 		04ADAE912FFD100000000001 /* AdExplainerPresentationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */; };
 		04ADAE932FFD100000000001 /* AdExplainerPresentationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADAE922FFD100000000001 /* AdExplainerPresentationPolicy.swift */; };
@@ -85,27 +69,33 @@
 		1A7E20261029000000000004 /* ../CrosswordsTests/IntervlsBrandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7E20261029000000000003 /* ../CrosswordsTests/IntervlsBrandTests.swift */; };
 		1A9378281C994E16BFCC1FDC /* ArchivePuzzleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31664D1AD154A3FB5415AA5 /* ArchivePuzzleRow.swift */; };
 		1A93782A2FE2E56600000001 /* ArchiveTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9378292FE2E56600000001 /* ArchiveTabBarView.swift */; };
+		1AEFC550EAA6C3ACD5DFE75A /* HomeDailyChallengeCardHighlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB61D3D1C00A7790B63631 /* HomeDailyChallengeCardHighlight.swift */; };
 		1D5CED31842B691A8E91932F /* BackwordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64455C838772CB66C039CCE2 /* BackwordViewModel.swift */; };
 		1E354F5B18434CB3B98C776D /* ArchiveMonthGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D1C0AA78734BA68994AEF6 /* ArchiveMonthGrid.swift */; };
 		21618E85BCB44C8BE6735598 /* DebugSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04496BE6230D031AE10977A /* DebugSettingsView.swift */; };
 		23B843AEA4BD3659C133FD9D /* BackwordStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99766A650EBD6521697BD6C /* BackwordStats.swift */; };
+		27938D26A9B6C3A7D7123BA9 /* HomeDailyChallengeSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF081FFFA920E4CFBA726F5C /* HomeDailyChallengeSummary.swift */; };
 		30E8BB67675128C8176A7F6E /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FB91A4266664E312011B33 /* Puzzle.swift */; };
 		39D867F5E790F76409AF8AE0 /* PuzzleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31C198A0EE68F6859AD60A4 /* PuzzleService.swift */; };
 		3C161668681E34C0C10A14A3 /* AdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C31A4805F0514D4233C775 /* AdService.swift */; };
 		3C16166A681E34C0C10A14A3 /* AdLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C161669681E34C0C10A14A3 /* AdLogger.swift */; };
 		3C16166C681E34C0C10A14A3 /* BackwordAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C16166B681E34C0C10A14A3 /* BackwordAnalyticsService.swift */; };
+		3EB186E94C2EE8FCB7B876AF /* HomeDailyChallengeCelebrationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BE5F7AD1ED68569335BAAB /* HomeDailyChallengeCelebrationRow.swift */; };
 		437E4CF0032D9E5D69A92C43 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD8C5299844A6BAF87B504 /* AppSettings.swift */; };
 		46E2C3DE4959F83FA6F2E5E1 /* UserStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4D0C7C19A4685DF1DC48C2 /* UserStats.swift */; };
 		51C6F9994EF7199F8EDDF3CA /* PuzzleGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB36B91BB7D50A21760149C /* PuzzleGridView.swift */; };
 		549205098DAD4DCC7F508DD1 /* KeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDCB92E82855EB80981B63B /* KeyboardInputView.swift */; };
 		58638D080E0090141DE592A2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF93C5B6979DA0324E913C9 /* SettingsView.swift */; };
+		59FFCB5AA08D85E66F1EA0DB /* DailyChallengeSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362D2D4894EDDE74EF4570D2 /* DailyChallengeSnapshot.swift */; };
 		6113351E253762AC9BB6A8E0 /* BackwordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */; };
 		6AA64C192BEEF7710023A110 /* WordBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA64C182BEEF7710023A110 /* WordBankTests.swift */; };
 		6B0F8E2B5B724322AE390E5B /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */; };
 		70FDEC9954ABAD6370C542F4 /* RatingBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9165B37268686C367CEB6523 /* RatingBarView.swift */; };
 		72C4C6D82B1A4930A633D528 /* RatingBarLabelLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C4C6D72B1A4930A633D528 /* RatingBarLabelLayoutTests.swift */; };
 		753A45E043CDDEBF5C5DBB36 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12AC56422D31E9D619C3E /* PaywallView.swift */; };
+		7980901851029979675A8FBF /* HomeDailyChallengeMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE22632345BAEF6D547A3AB /* HomeDailyChallengeMarker.swift */; };
 		7D3636249D4EA1ACE0D6916C /* BackwordGuessRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ACCF7B840800AA52BD9ED7 /* BackwordGuessRow.swift */; };
+		7D36AAFB35AEF4E91CB1071D /* ../CrosswordsTests/HomeDailyChallengeLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD34781B46A8A180D978DFC /* ../CrosswordsTests/HomeDailyChallengeLayoutTests.swift */; };
 		7E83B33444F63FBE338C8198 /* OverallRatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */; };
 		809E28C92FF638D200FF7B33 /* AdFreeExperienceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E28C82FF638D200FF7B33 /* AdFreeExperienceButton.swift */; };
 		83FBB193723C144A6456932E /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C44B7584617BA53797B0963 /* ZoomableView.swift */; };
@@ -152,6 +142,7 @@
 		9248622AF11FEBE6A948671B /* WordOfTheDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D68E5D9B55DF552855C5B33 /* WordOfTheDay.swift */; };
 		9344322FC4BD6682AB74BE2A /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4762545EDB078B5DA1FA49 /* GameViewModel.swift */; };
 		95726DE84D084852B6D77C8C /* ArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625E52DC74D846679E9A73FE /* ArchiveViewModel.swift */; };
+		9C5A7457CBAD64B4D49552EE /* ../CrosswordsTests/HomeDailyChallengeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3A797CBA3BFB73F993F6CD /* ../CrosswordsTests/HomeDailyChallengeViewModelTests.swift */; };
 		9DAB5905105243A7AB4CA249 /* ArchiveViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AAC0EA05C940EEA05D4CE9 /* ArchiveViewModelTests.swift */; };
 		9F66E5C1AA96EC8A2DBEADF1 /* MiniGridPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */; };
 		A0A000000000000000000101 /* AnagramPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A000000000000000000001 /* AnagramPuzzle.swift */; };
@@ -187,6 +178,8 @@
 		A11DD001300A000000000001 /* AppleSignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11DD000300A000000000001 /* AppleSignInButton.swift */; };
 		A1C0A0013016000000000001 /* ArchiveIssueDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0A0023016000000000001 /* ArchiveIssueDateView.swift */; };
 		A220B5F6D4E48FCC57832B9C /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15EB4D0D354246894E51C7E /* CacheService.swift */; };
+		A4B100000000000000000001 /* ProfileDailyProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B100000000000000000003 /* ProfileDailyProgressView.swift */; };
+		A4B100000000000000000002 /* ProfileDailyProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B100000000000000000004 /* ProfileDailyProgressViewModel.swift */; };
 		A82CFBD4790ADB40E195ADD8 /* MidwordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8013956F1CB59F9C80F81AB /* MidwordCard.swift */; };
 		A83D7E3FB67BDC4A73E32933 /* MidwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */; };
 		A84B89AE16F5D3929016DE05 /* MidwordGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A821CFAEED5E90B1ABE4E8DD /* MidwordGameTests.swift */; };
@@ -201,6 +194,7 @@
 		A8C8B52EC75BCACC3BADB7A8 /* MidwordInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */; };
 		A8C9A673F6B624C5D7673E8C /* MidwordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85BAE372EF092378192E9B2 /* MidwordService.swift */; };
 		A8E5B970FFA351CAFAACA37B /* MidwordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8220AB384E18F7E4E984338 /* MidwordViewModel.swift */; };
+		A9D7D2D35B04352BB5D76224 /* HomeDailyChallengeRatingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD1044A179E42EFE71553C /* HomeDailyChallengeRatingRow.swift */; };
 		ABCD10000000000000000004 /* FeedbackEmailContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000001 /* FeedbackEmailContentTests.swift */; };
 		ABCD10000000000000000005 /* FeedbackEmailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000002 /* FeedbackEmailContent.swift */; };
 		ABCD10000000000000000006 /* MailComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD10000000000000000003 /* MailComposerView.swift */; };
@@ -218,12 +212,12 @@
 		ADA120053011000000000001 /* DeferredAdConsentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA120043011000000000001 /* DeferredAdConsentTests.swift */; };
 		ADA130013011000000000001 /* AnalyticsStartupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA130003011000000000001 /* AnalyticsStartupService.swift */; };
 		ADA130033011000000000001 /* AnalyticsStartupServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA130023011000000000001 /* AnalyticsStartupServiceTests.swift */; };
+		AFA2F03099D439E90FBDB228 /* HomeDailyChallengeCelebration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18807D162976E27AE5C2CEC3 /* HomeDailyChallengeCelebration.swift */; };
 		B022F8B276983EAF1219E126 /* WOTDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */; };
 		B77DC0100000000000000001 /* ../CrosswordsTests/MidwordColorAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */; };
 		B77DC0200000000000000001 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */; };
 		B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */; };
 		B77DC0400000000000000001 /* ../CrosswordsTests/HomeGameCardContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0400000000000000002 /* ../CrosswordsTests/HomeGameCardContentTests.swift */; };
-		C04D00010000000000000001 /* ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D00020000000000000001 /* ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift */; };
 		B77DC0500000000000000001 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */; };
 		B77DC0600000000000000001 /* ../CrosswordsTests/HomeGameCardFooterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0600000000000000002 /* ../CrosswordsTests/HomeGameCardFooterTests.swift */; };
 		B77DC0700000000000000001 /* ../CrosswordsTests/BackwordInstructionColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */; };
@@ -231,26 +225,32 @@
 		B77DC0900000000000000001 /* BackwordClueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0900000000000000002 /* BackwordClueView.swift */; };
 		B77DC0A00000000000000001 /* ../CrosswordsTests/BackwordClueViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */; };
 		B87E042C9276130084747CA3 /* StatsView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8254031869B9E1FAC8C5A377 /* StatsView2.swift */; };
+		BABE7C7246E5A4E6EE51052F /* ../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE5582CCB770E392680461A /* ../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift */; };
 		BB8A42F028D03862BEE427CD /* ClueBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2519353944EB9D4F32644E32 /* ClueBarView.swift */; };
 		BEF00EC711F525FD3B8EB3DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B35393D8C1799968B4B9119D /* Assets.xcassets */; };
+		C04D00010000000000000001 /* ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D00020000000000000001 /* ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift */; };
 		C2A2E6FA90B85E2884F67538 /* ClueListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84C8AB718DDE4C9E0EDDE1F /* ClueListView.swift */; };
 		C9B78241F73047C516573390 /* UserProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A38BFC4B60EA86A8DF662F3E /* UserProgress.swift */; };
+		CDE7B3D1A8B803E660D8E10B /* ../CrosswordsTests/DailyChallengeSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B0C8EE5084C41DFB4EB830 /* ../CrosswordsTests/DailyChallengeSnapshotTests.swift */; };
 		CDFB51C30CE8784881171A9F /* RatingDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */; };
 		CF96B7A7D6669B73DBA8125E /* BackwordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7143C2570D23B983CD7AF74 /* BackwordCard.swift */; };
 		D380A06E810FCE5F5A7B9D43 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AAFAD519B1F99879B1643D /* StoreService.swift */; };
 		D39F9C4C078DA5925A365ABB /* StatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B091EBD64E55AE0AB83F4B /* StatsService.swift */; };
+		D6F52EBA7D6B5D974030B0EB /* HomeDailyChallengeCelebrationLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A862BA3012DCC9C4FC140CE3 /* HomeDailyChallengeCelebrationLogo.swift */; };
 		DDA73F76F25BD250D7119DEA /* BackwordProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6124F655D1ABA64F820B278 /* BackwordProgress.swift */; };
 		E2020AB31629439996CCB55A /* ArchiveMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */; };
 		E73EB146AC34410C2E51519A /* WOTDDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE3BE7131C4A71B3845485 /* WOTDDetailView.swift */; };
 		E8738842257712E4D5867D6B /* BackwordApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894071960CD50EDF948DA15E /* BackwordApp.swift */; };
 		E9501AAB5231A6C28698D2E6 /* BackwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */; };
 		EAD7311D1E0CE5265794E80E /* BackwordWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC56EE6FE3BA2978D639A8 /* BackwordWord.swift */; };
+		ECB321DC1981D94BE185BA5A /* HomeDailyChallengeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3356D606F3E816FA598525 /* HomeDailyChallengeViewModel.swift */; };
 		F10000000000000000000002 /* HomeCardIssueNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000001 /* HomeCardIssueNumber.swift */; };
 		F10000000000000000000004 /* HomeGameCardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000003 /* HomeGameCardContent.swift */; };
 		F10000000000000000000006 /* HomeGameCardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000005 /* HomeGameCardLayout.swift */; };
 		F10000000000000000000008 /* HomeGameCardFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000007 /* HomeGameCardFooter.swift */; };
 		F1000000000000000000000A /* HomeGameCardHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000009 /* HomeGameCardHeader.swift */; };
 		F1000000000000000000000C /* ProOnlyBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000B /* ProOnlyBadge.swift */; };
+		F23A738519DB07822088224A /* DailyChallengeCelebrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777B57F63E3A1AD53802C0F6 /* DailyChallengeCelebrationViewModel.swift */; };
 		F2A000023010000000000001 /* HomeWordOfTheDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A000013010000000000001 /* HomeWordOfTheDayView.swift */; };
 		F3A000023016000000000001 /* HomeDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A000013016000000000001 /* HomeDashboardView.swift */; };
 		F3A000043016000000000001 /* HomeArchiveCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A000033016000000000001 /* HomeArchiveCard.swift */; };
@@ -268,11 +268,11 @@
 		F4F000063020000000000001 /* ../CrosswordsTests/CompletionLetterRevealTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F000053020000000000001 /* ../CrosswordsTests/CompletionLetterRevealTests.swift */; };
 		F4F000083020000000000001 /* ../CrosswordsTests/AnagramGameplayHapticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F000073020000000000001 /* ../CrosswordsTests/AnagramGameplayHapticsTests.swift */; };
 		F4F0000A3020000000000001 /* ../CrosswordsTests/ViewHostingTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F000093020000000000001 /* ../CrosswordsTests/ViewHostingTestSupport.swift */; };
+		F4F0000C3020000000000001 /* ../CrosswordsTests/ScoringRuleViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0000B3020000000000001 /* ../CrosswordsTests/ScoringRuleViewTests.swift */; };
+		F4F0000E3020000000000001 /* RatingScoringGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0000D3020000000000001 /* RatingScoringGuideView.swift */; };
 		F84C34B9EE4462A3EAF19616 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5A3938FD382B86EEB78063 /* ArchiveView.swift */; };
 		FB8811D4DA46B6D23CDE6ED8 /* OverallRating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FDFB84159BB8E3A26031D0 /* OverallRating.swift */; };
 		FC2E739DC6045316AD55D0F4 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 9919F8A6B05C3D85B7C8E63E /* GoogleMobileAds */; };
-		F4F0000C3020000000000001 /* ../CrosswordsTests/ScoringRuleViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0000B3020000000000001 /* ../CrosswordsTests/ScoringRuleViewTests.swift */; };
-		F4F0000E3020000000000001 /* RatingScoringGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0000D3020000000000001 /* RatingScoringGuideView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -286,23 +286,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A4B100000000000000000003 /* ProfileDailyProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDailyProgressView.swift; sourceTree = "<group>"; };
-		A4B100000000000000000004 /* ProfileDailyProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDailyProgressViewModel.swift; sourceTree = "<group>"; };
-		A862BA3012DCC9C4FC140CE3 /* HomeDailyChallengeCelebrationLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeDailyChallengeCelebrationLogo.swift"; sourceTree = "<group>"; };
-		BDE5582CCB770E392680461A /* DailyChallengeCelebrationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift"; sourceTree = "<group>"; };
-		F3BE5F7AD1ED68569335BAAB /* HomeDailyChallengeCelebrationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeDailyChallengeCelebrationRow.swift"; sourceTree = "<group>"; };
-		777B57F63E3A1AD53802C0F6 /* DailyChallengeCelebrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyChallengeCelebrationViewModel.swift"; sourceTree = "<group>"; };
-		0FD34781B46A8A180D978DFC /* HomeDailyChallengeLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "../CrosswordsTests/HomeDailyChallengeLayoutTests.swift"; sourceTree = "<group>"; };
-		BA3A797CBA3BFB73F993F6CD /* HomeDailyChallengeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "../CrosswordsTests/HomeDailyChallengeViewModelTests.swift"; sourceTree = "<group>"; };
-		07B0C8EE5084C41DFB4EB830 /* DailyChallengeSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "../CrosswordsTests/DailyChallengeSnapshotTests.swift"; sourceTree = "<group>"; };
-		18807D162976E27AE5C2CEC3 /* HomeDailyChallengeCelebration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeDailyChallengeCelebration.swift"; sourceTree = "<group>"; };
-		31EB61D3D1C00A7790B63631 /* HomeDailyChallengeCardHighlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeDailyChallengeCardHighlight.swift"; sourceTree = "<group>"; };
-		A1AD1044A179E42EFE71553C /* HomeDailyChallengeRatingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeDailyChallengeRatingRow.swift"; sourceTree = "<group>"; };
-		FF081FFFA920E4CFBA726F5C /* HomeDailyChallengeSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeDailyChallengeSummary.swift"; sourceTree = "<group>"; };
-		5EE22632345BAEF6D547A3AB /* HomeDailyChallengeMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeDailyChallengeMarker.swift"; sourceTree = "<group>"; };
-		7F3356D606F3E816FA598525 /* HomeDailyChallengeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeDailyChallengeViewModel.swift"; sourceTree = "<group>"; };
-		4A43901A456AE111FBA9C021 /* DailyChallengeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyChallengeStore.swift"; sourceTree = "<group>"; };
-		362D2D4894EDDE74EF4570D2 /* DailyChallengeSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyChallengeSnapshot.swift"; sourceTree = "<group>"; };
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
 		04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicyTests.swift; sourceTree = "<group>"; };
@@ -342,6 +325,7 @@
 		07AD00013010000000000001 /* BackwordOnboardingCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordOnboardingCardsView.swift; sourceTree = "<group>"; };
 		07AD10003010000000000001 /* BackwordStatsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsHistory.swift; sourceTree = "<group>"; };
 		07AD10023010000000000001 /* BackwordStatsHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStatsHistoryTests.swift; sourceTree = "<group>"; };
+		07B0C8EE5084C41DFB4EB830 /* ../CrosswordsTests/DailyChallengeSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/DailyChallengeSnapshotTests.swift; sourceTree = "<group>"; };
 		0838E5D42FE2D3A200000001 /* HomeTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewTests.swift; sourceTree = "<group>"; };
 		0838E5D62FE2E5AB00000001 /* ArchiveTabBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTabBarViewTests.swift; sourceTree = "<group>"; };
 		09FF00003011000000000001 /* PuzzleResultShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleResultShareTests.swift; sourceTree = "<group>"; };
@@ -353,7 +337,9 @@
 		0F0F00063010000000000001 /* GoogleNativeSignInService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleNativeSignInService.swift; sourceTree = "<group>"; };
 		0F0F00083010000000000001 /* GoogleNativeSignInServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleNativeSignInServiceTests.swift; sourceTree = "<group>"; };
 		0F6138C6D7443C2F49421F8A /* MiniGridPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniGridPattern.swift; sourceTree = "<group>"; };
+		0FD34781B46A8A180D978DFC /* ../CrosswordsTests/HomeDailyChallengeLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeDailyChallengeLayoutTests.swift; sourceTree = "<group>"; };
 		15C99D912FE2A3E6007A1001 /* AppVersionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionInfo.swift; sourceTree = "<group>"; };
+		18807D162976E27AE5C2CEC3 /* HomeDailyChallengeCelebration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDailyChallengeCelebration.swift; sourceTree = "<group>"; };
 		19A91B53D562DA6D94B1DC71 /* OverallRatingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingService.swift; sourceTree = "<group>"; };
 		1A7E20261029000000000001 /* AppBrand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBrand.swift; sourceTree = "<group>"; };
 		1A7E20261029000000000003 /* ../CrosswordsTests/IntervlsBrandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/IntervlsBrandTests.swift; sourceTree = "<group>"; };
@@ -365,6 +351,8 @@
 		26FDFB84159BB8E3A26031D0 /* OverallRating.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRating.swift; sourceTree = "<group>"; };
 		30AAC0EA05C940EEA05D4CE9 /* ArchiveViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveViewModelTests.swift; sourceTree = "<group>"; };
 		30C31A4805F0514D4233C775 /* AdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdService.swift; sourceTree = "<group>"; };
+		31EB61D3D1C00A7790B63631 /* HomeDailyChallengeCardHighlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDailyChallengeCardHighlight.swift; sourceTree = "<group>"; };
+		362D2D4894EDDE74EF4570D2 /* DailyChallengeSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyChallengeSnapshot.swift; sourceTree = "<group>"; };
 		3838DB082E2416DB47994C4D /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		3C161669681E34C0C10A14A3 /* AdLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdLogger.swift; sourceTree = "<group>"; };
 		3C16166B681E34C0C10A14A3 /* BackwordAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordAnalyticsService.swift; sourceTree = "<group>"; };
@@ -372,6 +360,8 @@
 		41BD8C5299844A6BAF87B504 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordView.swift; sourceTree = "<group>"; };
 		47B091EBD64E55AE0AB83F4B /* StatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsService.swift; sourceTree = "<group>"; };
+		4A43901A456AE111FBA9C021 /* DailyChallengeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyChallengeStore.swift; sourceTree = "<group>"; };
+		5EE22632345BAEF6D547A3AB /* HomeDailyChallengeMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDailyChallengeMarker.swift; sourceTree = "<group>"; };
 		625E52DC74D846679E9A73FE /* ArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveViewModel.swift; sourceTree = "<group>"; };
 		64455C838772CB66C039CCE2 /* BackwordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModel.swift; sourceTree = "<group>"; };
 		6AA64C182BEEF7710023A110 /* WordBankTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBankTests.swift; sourceTree = "<group>"; };
@@ -379,10 +369,12 @@
 		72C4C6D72B1A4930A633D528 /* RatingBarLabelLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingBarLabelLayoutTests.swift; sourceTree = "<group>"; };
 		73D1C0AA78734BA68994AEF6 /* ArchiveMonthGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveMonthGrid.swift; sourceTree = "<group>"; };
 		741EF0B3C1470452272529E1 /* CompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionView.swift; sourceTree = "<group>"; };
+		777B57F63E3A1AD53802C0F6 /* DailyChallengeCelebrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyChallengeCelebrationViewModel.swift; sourceTree = "<group>"; };
 		78FB91A4266664E312011B33 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
 		7CFE3BE7131C4A71B3845485 /* WOTDDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WOTDDetailView.swift; sourceTree = "<group>"; };
 		7D68E5D9B55DF552855C5B33 /* WordOfTheDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordOfTheDay.swift; sourceTree = "<group>"; };
 		7EDCB92E82855EB80981B63B /* KeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputView.swift; sourceTree = "<group>"; };
+		7F3356D606F3E816FA598525 /* HomeDailyChallengeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDailyChallengeViewModel.swift; sourceTree = "<group>"; };
 		809E28C82FF638D200FF7B33 /* AdFreeExperienceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButton.swift; sourceTree = "<group>"; };
 		8254031869B9E1FAC8C5A377 /* StatsView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView2.swift; sourceTree = "<group>"; };
 		8299222FB15ED0ECC8305F8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -460,10 +452,13 @@
 		A11C0A100000000000000001 /* AccountSyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSyncTests.swift; sourceTree = "<group>"; };
 		A11CC000300A000000000001 /* AccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSheet.swift; sourceTree = "<group>"; };
 		A11DD000300A000000000001 /* AppleSignInButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInButton.swift; sourceTree = "<group>"; };
+		A1AD1044A179E42EFE71553C /* HomeDailyChallengeRatingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDailyChallengeRatingRow.swift; sourceTree = "<group>"; };
 		A1C0A0023016000000000001 /* ArchiveIssueDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveIssueDateView.swift; sourceTree = "<group>"; };
 		A234FBA2F3CD340B6DB2C102 /* BackwordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModelTests.swift; sourceTree = "<group>"; };
 		A38BFC4B60EA86A8DF662F3E /* UserProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProgress.swift; sourceTree = "<group>"; };
 		A476BC6A4DF0107699E2A1FD /* BackwordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordService.swift; sourceTree = "<group>"; };
+		A4B100000000000000000003 /* ProfileDailyProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDailyProgressView.swift; sourceTree = "<group>"; };
+		A4B100000000000000000004 /* ProfileDailyProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDailyProgressViewModel.swift; sourceTree = "<group>"; };
 		A8013956F1CB59F9C80F81AB /* MidwordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordCard.swift; sourceTree = "<group>"; };
 		A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordGuessRow.swift; sourceTree = "<group>"; };
 		A81BADC74D85E195F31F646D /* MidwordBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordBoardView.swift; sourceTree = "<group>"; };
@@ -473,6 +468,7 @@
 		A84B19CBE925E605AAA62242 /* MidwordProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordProgress.swift; sourceTree = "<group>"; };
 		A8593FC71ACF6AF5027A308D /* MidwordPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordPuzzle.swift; sourceTree = "<group>"; };
 		A85BAE372EF092378192E9B2 /* MidwordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordService.swift; sourceTree = "<group>"; };
+		A862BA3012DCC9C4FC140CE3 /* HomeDailyChallengeCelebrationLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDailyChallengeCelebrationLogo.swift; sourceTree = "<group>"; };
 		A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStatsView.swift; sourceTree = "<group>"; };
 		A879468F72D819D636F0E298 /* MidwordInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordInstructionsView.swift; sourceTree = "<group>"; };
 		A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordView.swift; sourceTree = "<group>"; };
@@ -500,7 +496,6 @@
 		B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/GameDynamicTypeContainerTests.swift; sourceTree = "<group>"; };
 		B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/LetterRowSizingTests.swift; sourceTree = "<group>"; };
 		B77DC0400000000000000002 /* ../CrosswordsTests/HomeGameCardContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardContentTests.swift; sourceTree = "<group>"; };
-		C04D00020000000000000001 /* ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift; sourceTree = "<group>"; };
 		B77DC0500000000000000002 /* ../CrosswordsTests/HomeGameCardLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardLayoutTests.swift; sourceTree = "<group>"; };
 		B77DC0600000000000000002 /* ../CrosswordsTests/HomeGameCardFooterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeGameCardFooterTests.swift; sourceTree = "<group>"; };
 		B77DC0700000000000000002 /* ../CrosswordsTests/BackwordInstructionColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/BackwordInstructionColorTests.swift; sourceTree = "<group>"; };
@@ -508,7 +503,10 @@
 		B77DC0900000000000000002 /* BackwordClueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordClueView.swift; sourceTree = "<group>"; };
 		B77DC0A00000000000000002 /* ../CrosswordsTests/BackwordClueViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/BackwordClueViewTests.swift; sourceTree = "<group>"; };
 		B8669C3DD88CF9BC44A72C69 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
+		BA3A797CBA3BFB73F993F6CD /* ../CrosswordsTests/HomeDailyChallengeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeDailyChallengeViewModelTests.swift; sourceTree = "<group>"; };
 		BBAD8C25D043C7F852F2F85B /* OverallRatingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OverallRatingTests.swift; sourceTree = "<group>"; };
+		BDE5582CCB770E392680461A /* ../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift; sourceTree = "<group>"; };
+		C04D00020000000000000001 /* ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/CompletedBackwordCardLayoutTests.swift; sourceTree = "<group>"; };
 		C31664D1AD154A3FB5415AA5 /* ArchivePuzzleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivePuzzleRow.swift; sourceTree = "<group>"; };
 		C99766A650EBD6521697BD6C /* BackwordStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordStats.swift; sourceTree = "<group>"; };
 		C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WOTDService.swift; sourceTree = "<group>"; };
@@ -537,6 +535,7 @@
 		F3A000053016000000000001 /* ../CrosswordsTests/HomeDashboardViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeDashboardViewTests.swift; sourceTree = "<group>"; };
 		F3A000073016000000000001 /* ../CrosswordsTests/HomeArchiveCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/HomeArchiveCardTests.swift; sourceTree = "<group>"; };
 		F3A000093016000000000001 /* HomeGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGamesView.swift; sourceTree = "<group>"; };
+		F3BE5F7AD1ED68569335BAAB /* HomeDailyChallengeCelebrationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDailyChallengeCelebrationRow.swift; sourceTree = "<group>"; };
 		F4B000013016000000000001 /* MidwordHomeCardLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordHomeCardLogo.swift; sourceTree = "<group>"; };
 		F4C000013016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/SettingsAccountRowLayoutTests.swift; sourceTree = "<group>"; };
 		F4D000013017000000000001 /* MidwordLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordLogo.swift; sourceTree = "<group>"; };
@@ -550,6 +549,7 @@
 		F4F000093020000000000001 /* ../CrosswordsTests/ViewHostingTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/ViewHostingTestSupport.swift; sourceTree = "<group>"; };
 		F4F0000B3020000000000001 /* ../CrosswordsTests/ScoringRuleViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/ScoringRuleViewTests.swift; sourceTree = "<group>"; };
 		F4F0000D3020000000000001 /* RatingScoringGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingScoringGuideView.swift; sourceTree = "<group>"; };
+		FF081FFFA920E4CFBA726F5C /* HomeDailyChallengeSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDailyChallengeSummary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -604,10 +604,10 @@
 		00EC67C42E7E2A26C6A44CB3 /* BackwordTests */ = {
 			isa = PBXGroup;
 			children = (
-				0FD34781B46A8A180D978DFC /* HomeDailyChallengeLayoutTests.swift */,
-				BA3A797CBA3BFB73F993F6CD /* HomeDailyChallengeViewModelTests.swift */,
-				BDE5582CCB770E392680461A /* DailyChallengeCelebrationViewModelTests.swift */,
-				07B0C8EE5084C41DFB4EB830 /* DailyChallengeSnapshotTests.swift */,
+				0FD34781B46A8A180D978DFC /* ../CrosswordsTests/HomeDailyChallengeLayoutTests.swift */,
+				BA3A797CBA3BFB73F993F6CD /* ../CrosswordsTests/HomeDailyChallengeViewModelTests.swift */,
+				BDE5582CCB770E392680461A /* ../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift */,
+				07B0C8EE5084C41DFB4EB830 /* ../CrosswordsTests/DailyChallengeSnapshotTests.swift */,
 				ADA130023011000000000001 /* AnalyticsStartupServiceTests.swift */,
 				ADA120043011000000000001 /* DeferredAdConsentTests.swift */,
 				ADA110043011000000000001 /* PreGameAdConfigurationTests.swift */,
@@ -1144,10 +1144,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D36AAFB35AEF4E91CB1071D /* HomeDailyChallengeLayoutTests.swift in Sources */,
-				9C5A7457CBAD64B4D49552EE /* HomeDailyChallengeViewModelTests.swift in Sources */,
-				BABE7C7246E5A4E6EE51052F /* DailyChallengeCelebrationViewModelTests.swift in Sources */,
-				CDE7B3D1A8B803E660D8E10B /* DailyChallengeSnapshotTests.swift in Sources */,
+				7D36AAFB35AEF4E91CB1071D /* ../CrosswordsTests/HomeDailyChallengeLayoutTests.swift in Sources */,
+				9C5A7457CBAD64B4D49552EE /* ../CrosswordsTests/HomeDailyChallengeViewModelTests.swift in Sources */,
+				BABE7C7246E5A4E6EE51052F /* ../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift in Sources */,
+				CDE7B3D1A8B803E660D8E10B /* ../CrosswordsTests/DailyChallengeSnapshotTests.swift in Sources */,
 				A0B000000000000000000103 /* MidwordStatsHistoryTests.swift in Sources */,
 				A84B89AE16F5D3929016DE05 /* MidwordGameTests.swift in Sources */,
 				A84B89AE16F5D3929016DE06 /* MidwordInstructionsViewTests.swift in Sources */,

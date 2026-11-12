@@ -110,23 +110,7 @@ enum PuzzleLaunchContext: Equatable {
         isProUser: Bool,
         todayString: String = DateFormatting().todayString()
     ) -> Bool {
-        guard isProUser,
-              !progress.isComplete,
-              progress.gaveUpAt == nil,
-              case let .archive(type, currentWeeklyPuzzleId) = self else {
-            return false
-        }
-
-        switch type {
-        case .daily:
-            return puzzle.date < todayString
-        case .weekly:
-            return puzzle.id != currentWeeklyPuzzleId
-        case .backword, .anagram:
-            return false
-        case .midword:
-            return false
-        }
+        !progress.isComplete && progress.gaveUpAt == nil
     }
 }
 

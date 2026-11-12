@@ -273,7 +273,7 @@ struct GameViewModelTests {
         #expect(restored.isComplete)
     }
 
-    @Test("Home-launched puzzle cannot give up")
+    @Test("Home-launched puzzle can give up")
     func homeLaunchedPuzzleCannotGiveUp() async throws {
         let puzzle = makePuzzle(date: "2026-06-17")
         UserProgress.delete(puzzleId: puzzle.id)
@@ -281,10 +281,10 @@ struct GameViewModelTests {
 
         let vm = GameViewModel(puzzle: puzzle)
 
-        #expect(!vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
+        #expect(vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
     }
 
-    @Test("Archive daily for today cannot give up")
+    @Test("Archive daily for today can give up")
     func archiveDailyForTodayCannotGiveUp() async throws {
         let puzzle = makePuzzle(date: "2026-06-18")
         UserProgress.delete(puzzleId: puzzle.id)
@@ -295,7 +295,7 @@ struct GameViewModelTests {
             launchContext: .archive(type: .daily, currentWeeklyPuzzleId: nil)
         )
 
-        #expect(!vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
+        #expect(vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
     }
 
     @Test("Archive daily before today can give up for Pro")
@@ -312,7 +312,7 @@ struct GameViewModelTests {
         #expect(vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
     }
 
-    @Test("Current archive weekly cannot give up")
+    @Test("Current archive weekly can give up")
     func currentArchiveWeeklyCannotGiveUp() async throws {
         let puzzle = makePuzzle(id: "current-weekly", date: "2026-06-15")
         UserProgress.delete(puzzleId: puzzle.id)
@@ -323,7 +323,7 @@ struct GameViewModelTests {
             launchContext: .archive(type: .weekly, currentWeeklyPuzzleId: "current-weekly")
         )
 
-        #expect(!vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
+        #expect(vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
     }
 
     @Test("Older archive weekly can give up for Pro")
@@ -340,7 +340,7 @@ struct GameViewModelTests {
         #expect(vm.canGiveUp(isProUser: true, todayString: "2026-06-18"))
     }
 
-    @Test("Free archive users cannot give up")
+    @Test("Free archive users can give up")
     func freeArchiveUsersCannotGiveUp() async throws {
         let puzzle = makePuzzle(date: "2026-06-17")
         UserProgress.delete(puzzleId: puzzle.id)
@@ -351,7 +351,7 @@ struct GameViewModelTests {
             launchContext: .archive(type: .daily, currentWeeklyPuzzleId: nil)
         )
 
-        #expect(!vm.canGiveUp(isProUser: false, todayString: "2026-06-18"))
+        #expect(vm.canGiveUp(isProUser: false, todayString: "2026-06-18"))
     }
 
     @Test("Home daily crossword shows the instructions tip before it has been seen")

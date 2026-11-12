@@ -9,6 +9,21 @@ struct MidwordGameTests {
                       firstWord: "BANK", secondWord: "BOOK", answer: "NOTE", alternatives: [])
     }
 
+    @Test("Giving up preserves guesses, finishes for zero points, and prevents further guesses")
+    func giveUp() {
+        let game = puzzle()
+        var progress = MidwordProgress(date: game.date)
+        progress.submit("PAGE", for: game)
+        let now = Date()
+        progress.giveUp(at: now)
+        progress.submit(game.answer, for: game)
+        progress.giveUp(at: now.addingTimeInterval(10))
+        #expect(progress.guesses == ["PAGE"])
+        #expect(progress.isFailed)
+        #expect(progress.completedAt == now)
+        #expect(progress.releaseDateScore == 0)
+    }
+
     @Test("Every Midword sheet blurs the presenting view", arguments: [
         MidwordSheetPresentation(showsStats: true),
         MidwordSheetPresentation(showsInstructions: true),

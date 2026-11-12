@@ -1601,7 +1601,7 @@ Returning to any persisted terminal crossword, including an archive give-up, ope
 
 All crossword completion outcomes show a live release countdown derived from `ContentReleaseCalendar` on every tick. Daily puzzles count down to the next local midnight; weekly puzzles count down to the next local Sunday at midnight and include days in the display. A late `Finished` result shows its no-points message above the standard stats card and displays a score of zero.
 
-Giving up from an eligible archive crossword completes and saves the revealed puzzle before setting the same `isComplete` presentation trigger used by a solve. This presents the red `Gave up` completion experience immediately without recording a successful completion.
+Giving up from an unfinished crossword completes and saves the revealed puzzle before setting the same `isComplete` presentation trigger used by a solve. This presents the red `Gave up` completion experience immediately without recording a successful completion.
 
 ## Quick Crossword Naming
 
@@ -2439,3 +2439,7 @@ The card also refreshes on cross-tab updates and when the page becomes visible.
 Point values in daily game rows use the primary text colour on both platforms.
 Web completion outlines use the card’s own border so they follow its corners and
 move with it on hover; keyboard focus retains the primary-colour outline.
+
+## Giving Up Games
+
+Unfinished daily and weekly crosswords can be revealed by free and Pro players, including on their release day. Revealing locks the grid and preserves the score earned before reveal. Midword's flag confirms a terminal failure, preserves guesses, reveals the answer, and awards zero points.

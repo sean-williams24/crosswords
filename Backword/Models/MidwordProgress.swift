@@ -28,6 +28,14 @@ struct MidwordProgress: Codable, Equatable {
         updatedAt = try values.decodeIfPresent(Date.self, forKey: .updatedAt) ?? completedAt ?? Date()
     }
 
+    mutating func giveUp(at now: Date = Date()) {
+        guard !isComplete else { return }
+        completedAt = now
+        updatedAt = now
+        won = false
+        releaseDateScore = 0
+    }
+
     mutating func submit(_ guess: String, for puzzle: MidwordPuzzle, at now: Date = Date()) {
         guard !isComplete, guesses.count < 5, guess.count == puzzle.answer.count else { return }
         guesses.append(guess)
