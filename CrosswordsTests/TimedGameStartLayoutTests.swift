@@ -10,7 +10,7 @@ struct TimedGameStartLayoutTests {
           arguments: [CGFloat(320), CGFloat(744)], [DynamicTypeSize.large, .accessibility5])
     func introductionFits(width: CGFloat, textSize: DynamicTypeSize) {
         let host = UIHostingController(rootView:
-            MidwordStartView(puzzleNumber: 49, answerLength: 6, onStart: {})
+            MidwordStartView(answerLength: 6, onStart: {})
                 .environment(\.dynamicTypeSize, textSize)
         )
         for height in [CGFloat(300), CGFloat(700)] {

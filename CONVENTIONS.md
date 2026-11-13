@@ -1789,10 +1789,10 @@ shell mirrors the iOS Anagram hierarchy without showing a logo, and uses the
 same game menu and action icons as the other web games. The site footer appears
 on wider viewports and is hidden in the mobile layout at 700px and below. Wider
 viewports keep the answer in one row and widen the bottom game controls; narrow
-viewports fit both the answer and tray on single lines, matching iOS. The web title, issue label,
-share the maximum nine-letter content width from the first render, so loading
-a puzzle cannot move their left edge. The letter tray and
-controls sit at the bottom of the flexible board, with spare vertical space
+viewports fit both the answer and tray on single lines, matching iOS. The web
+title and issue label share the maximum nine-letter content width from the
+first render, so loading a puzzle cannot move their left edge. The letter tray
+and controls sit at the bottom of the flexible board, with spare vertical space
 between them and the answer, matching the iOS gameplay dock.
 
 ---
@@ -2471,7 +2471,10 @@ Anagram and Midword share a start-card layout on iOS and web. Titles stay at the
 top below navigation with the issue number directly below; Midword uses its
 existing logo. Only the introduction panels are vertically centered in the
 remaining space above the site footer where present. On iOS, `GameStartScreen`
-keeps the header outside the centered, scrollable `GameStartContainer`.
+keeps Anagram's header outside the centered, scrollable `GameStartContainer`.
+Midword keeps its logo in the navigation row and its issue label directly below
+in every state. Its introduction contains only the centered panel, so pressing
+Start does not move or duplicate either header element.
 The panel uses the same Outfit/AppFont heading, body, detail, and Start-button
 styles, square corners, and game-specific semantic colors. Midword includes its
 answer length and unlimited-guess guidance. Only pressing Start reveals a new

@@ -29,16 +29,15 @@ struct MidwordView: View {
         GameDynamicTypeContainer {
             VStack(spacing: 0) {
                 navBar
+                Text("Puzzle #\(viewModel.puzzle.puzzleNumber)")
+                    .font(AppFont.caption())
+                    .foregroundStyle(Color.appTextSecondary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.bottom, 12)
                 if viewModel.hasStarted || viewModel.isComplete {
-                    Text("Puzzle #\(viewModel.puzzle.puzzleNumber)")
-                        .font(AppFont.caption())
-                        .foregroundStyle(Color.appTextSecondary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.bottom, 12)
                     ScrollView { gameContent }
                 } else {
                     MidwordStartView(
-                        puzzleNumber: viewModel.puzzle.puzzleNumber,
                         answerLength: viewModel.puzzle.answer.count,
                         onStart: { viewModel.start() }
                     )
@@ -163,7 +162,7 @@ struct MidwordView: View {
 
     private var navBar: some View {
         ZStack {
-            if viewModel.hasStarted || viewModel.isComplete { navTitle }
+            navTitle
             navControls
         }
         .foregroundColor(.midwordText)
