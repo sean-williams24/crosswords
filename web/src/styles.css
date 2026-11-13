@@ -2367,19 +2367,11 @@ html[data-theme="light"] {
 .anagram-main--8 { --anagram-content-width: calc((8 * var(--anagram-letter-size)) + (7 * var(--anagram-answer-gap))); }
 .anagram-main--9 { --anagram-content-width: var(--anagram-max-content-width); }
 
-.anagram-title-block,
-.anagram-loading {
+.anagram-title-block {
   width: min(100%, var(--anagram-max-content-width));
   margin-inline: auto;
-}
-
-.anagram-title-block {
   flex: 0 0 auto;
   text-align: center;
-}
-
-.anagram-loading {
-  margin-top: 24px;
 }
 
 .anagram-gameplay-content {

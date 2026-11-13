@@ -1790,8 +1790,8 @@ same game menu and action icons as the other web games. The site footer appears
 on wider viewports and is hidden in the mobile layout at 700px and below. Wider
 viewports keep the answer in one row and widen the bottom game controls; narrow
 viewports fit both the answer and tray on single lines, matching iOS. The web title, issue label,
-and loading message share the maximum nine-letter content width from the first
-render, so loading a puzzle cannot move their left edge. The letter tray and
+share the maximum nine-letter content width from the first render, so loading
+a puzzle cannot move their left edge. The letter tray and
 controls sit at the bottom of the flexible board, with spare vertical space
 between them and the answer, matching the iOS gameplay dock.
 
@@ -2477,3 +2477,12 @@ styles, square corners, and game-specific semantic colors. Midword includes its
 answer length and unlimited-guess guidance. Only pressing Start reveals a new
 puzzle. Short viewports and larger text scroll naturally instead of clipping the
 panel. Active gameplay retains its existing board and dock placement.
+
+On web, the current header and introduction render immediately during access
+checks and cold puzzle fetches; Start stays disabled and the panel is marked
+busy until the puzzle and access are ready. The issue label reserves its line
+until the number is known. Valid cached puzzles and account-scoped progress
+hydrate synchronously, so background revalidation does not replace an
+introduction, running game, or completion with loading content. Optional Anagram
+first-release metadata loads independently of the puzzle. Changing the account
+or puzzle date remounts the game state so another game's content cannot flash.

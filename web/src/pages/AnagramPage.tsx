@@ -25,13 +25,32 @@ export function AnagramPage() {
   const [today, setToday] = useState(localDateString);
   const date = isReview ? "review" : archiveDate ?? today;
   const { ready, entitlementReady, entitlement, user } = useAuth();
+  const accessReady = ready && (!user || entitlementReady);
+  useEffect(() => {
+    if (archiveDate || isReview) return;
+    const timer = window.setInterval(() => setToday(localDateString()), 1000);
+    return () => window.clearInterval(timer);
+  }, [archiveDate, isReview]);
+
+  if (accessReady) {
+    if (routeDate && !archiveDate && !isReview) return <main className="anagram-page"><p>Invalid Anagram date.</p><Link to="/anagram">Today’s Anagram</Link></main>;
+    if (!isReview && date > today) return <main className="anagram-page"><p>This Anagram has not been released yet.</p><Link to="/anagram">Today’s Anagram</Link></main>;
+    if (date < today && !entitlement?.isPro) return <ProAccessRedirect feature="archive" returnTo={`/anagram/${date}`} />;
+  }
+  return <AnagramGame accessReady={accessReady} date={date} isReview={isReview}
+    key={`${accessReady ? user?.id ?? "guest" : "pending"}:${date}`} />;
+}
+
+function AnagramGame({ date, isReview, accessReady }: { date: string; isReview: boolean; accessReady: boolean }) {
+  const { entitlement, user } = useAuth();
   const { track } = useAnalytics();
   const storage = useMemo(() => createAnagramStorage(window.localStorage, { userId: user?.id,
     onProgressSaved: (progress) => { if (user) queueAndDebounce(user.id, anagramCloudRecord(progress)); }
   }), [user?.id]);
-  const [puzzle, setPuzzle] = useState<AnagramPuzzle | null>(null);
-  const [progress, setProgress] = useState<AnagramProgress | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [puzzle, setPuzzle] = useState<AnagramPuzzle | null>(() => !accessReady ? null
+    : isReview ? reviewAnagramPuzzle(localDateString()) : storage.loadCachedPuzzle(date));
+  const [progress, setProgress] = useState<AnagramProgress | null>(() => puzzle && !isReview ? storage.loadProgress(puzzle) : null);
+  const [loading, setLoading] = useState(() => !puzzle);
   const [error, setError] = useState("");
   const [offline, setOffline] = useState(false);
   const [syncError, setSyncError] = useState("");
@@ -39,41 +58,39 @@ export function AnagramPage() {
   const [showTip, setShowTip] = useState(false);
   const [now, setNow] = useState(new Date());
   const completionPresented = useRef(false);
-  const isArchive = date < today;
-  const needsPro = isArchive && !entitlement?.isPro;
+  const loadGeneration = useRef(0);
 
   const loadPuzzle = useCallback(async () => {
-    completionPresented.current = false;
-    setDialog(null);
-    setLoading(true); setError(""); setOffline(false); setPuzzle(null); setProgress(null);
-    if (isReview) {
-      setPuzzle(reviewAnagramPuzzle(today));
-      setLoading(false);
-      return;
-    }
+    if (!accessReady || isReview) return;
+    const generation = ++loadGeneration.current;
+    setError(""); setOffline(false);
     const cached = storage.loadCachedPuzzle(date);
     try {
       const repository = createAnagramRepository();
-      try {
-        const firstRelease = await repository.getFirstReleaseDate();
+      void repository.getFirstReleaseDate().then(firstRelease => {
         if (firstRelease) storage.setFirstReleaseDate(firstRelease);
-      } catch { /* A released puzzle can still load when this metadata query fails. */ }
+      }).catch(() => { /* Optional metadata must not delay the puzzle. */ });
       const next = await repository.getByDate(date);
+      if (generation !== loadGeneration.current) return;
       storage.cachePuzzle(next); setPuzzle(next); setProgress(storage.loadProgress(next));
     } catch (cause) {
+      if (generation !== loadGeneration.current) return;
       if (cached) { setPuzzle(cached); setProgress(storage.loadProgress(cached)); setOffline(true); }
       else {
         setError("Anagram could not be loaded. Check your connection and try again.");
         track(contentLoadFailed("anagram", cause instanceof Error && cause.message.includes("configuration") ? "configuration" : "network"));
       }
-    } finally { setLoading(false); }
-  }, [date, isReview, storage, today, track]);
+    } finally { if (generation === loadGeneration.current) setLoading(false); }
+  }, [accessReady, date, isReview, storage, track]);
 
-  useEffect(() => { if (!needsPro) void loadPuzzle(); }, [loadPuzzle, needsPro]);
   useEffect(() => {
-    const timer = window.setInterval(() => { setNow(new Date()); if (!archiveDate) setToday(localDateString()); }, 1000);
+    void loadPuzzle();
+    return () => { loadGeneration.current++; };
+  }, [loadPuzzle]);
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
     return () => window.clearInterval(timer);
-  }, [archiveDate]);
+  }, []);
   useEffect(() => {
     if (!puzzle || !user || isReview) return;
     const guest = createAnagramStorage();
@@ -136,7 +153,7 @@ export function AnagramPage() {
     }
   }
   function begin() {
-    if (!puzzle || progress) return;
+    if (!accessReady || !puzzle || progress) return;
     const next = startProgress(puzzle);
     update(next);
     if (!isReview) track(gameStarted("anagram"));
@@ -151,31 +168,26 @@ export function AnagramPage() {
     update(reshuffle(progress, puzzle, order));
   }
 
-  if (!ready || (user && !entitlementReady)) return <main className="anagram-page">Checking Anagram access…</main>;
-  if (routeDate && !archiveDate && !isReview) return <main className="anagram-page"><p>Invalid Anagram date.</p><Link to="/anagram">Today’s Anagram</Link></main>;
-  if (!isReview && date > today) return <main className="anagram-page"><p>This Anagram has not been released yet.</p><Link to="/anagram">Today’s Anagram</Link></main>;
-  if (needsPro) return <ProAccessRedirect feature="archive" returnTo={`/anagram/${date}`} />;
-
   return <div className="anagram-page">
-    <AnagramHeader onDismissTip={() => setShowTip(false)} onInfo={() => { setShowTip(false); setDialog("instructions"); }} onStats={() => setDialog("stats")} showTip={showTip} />
-    <main className={`anagram-main${puzzle && !progress ? " timed-game-start-layout" : ""}${puzzle ? ` anagram-main--${puzzle.answer.length}` : ""}`}>
+    <AnagramHeader onDismissTip={() => setShowTip(false)} onInfo={() => { setShowTip(false); setDialog("instructions"); }} onStats={() => setDialog("stats")} showTip={showTip} statsDisabled={!accessReady} />
+    <main className={`anagram-main${!progress && !error ? " timed-game-start-layout" : ""}${puzzle ? ` anagram-main--${puzzle.answer.length}` : ""}`}>
       <div className="anagram-title-block">
         <h1>ANAGRAM</h1>
-        <p>{isReview ? "Review puzzle" : puzzle ? `Puzzle #${puzzle.puzzleNumber}` : "Daily puzzle"}</p>
+        <p>{isReview ? "Review puzzle" : puzzle ? `Puzzle #${puzzle.puzzleNumber}` : "\u00a0"}</p>
       </div>
-      {loading ? <p className="anagram-loading" role="status">Loading Anagram…</p> : null}
       {!loading && error ? <div role="alert"><p>{error}</p><button onClick={() => void loadPuzzle()} type="button">Try again</button></div> : null}
+      {!progress && !error ? <div className="timed-game-start-body"><TimedGameStartCard game="anagram" loading={!accessReady || !puzzle}
+        headings={["Unscramble the letters.", "Find the word."]}
+        explanation="Tap letters to build an answer. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points."
+        detail={`${puzzle ? `${puzzle.answer.length} letters · ` : ""}one optional hint · no time limit`} onStart={begin} /></div> : null}
       {puzzle ? <>
         {offline ? <p className="anagram-note">Playing saved game offline</p> : null}
         {syncError ? <p className="anagram-note">{syncError}</p> : null}
-        {!progress ? <div className="timed-game-start-body"><TimedGameStartCard game="anagram" headings={["Unscramble the letters.", "Find the word."]}
-          explanation="Tap letters to build an answer. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points."
-          detail={`${puzzle.answer.length} letters · one optional hint · no time limit`} onStart={begin} /></div>
-          : <AnagramBoard now={now} onGiveUp={() => setDialog("giveUp")} onHint={() => setDialog("hint")}
+        {progress ? <AnagramBoard now={now} onGiveUp={() => setDialog("giveUp")} onHint={() => setDialog("hint")}
               onPlace={(tile) => update(placeTile(progress, puzzle, tile))} onRestart={() => update(restartTiles(progress))}
               onResetReview={isReview ? () => { completionPresented.current = false; setProgress(null); setDialog(null); } : undefined}
               onShuffle={shuffle} onUndo={() => update(undoTile(progress))} progress={progress} puzzle={puzzle}
-              shareResult={dialog === null ? shareResult : null} />}
+              shareResult={dialog === null ? shareResult : null} /> : null}
       </> : null}
     </main>
     <Footer />

@@ -47,6 +47,63 @@ describe("Midword browser gameplay", () => {
     mocks.fetch.mockImplementation(async (date: string) => puzzle(date));
     Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
   });
+  it("renders the current introduction immediately while loading without moving the header or panel", async () => {
+    let resolvePuzzle!: (value: MidwordPuzzle) => void;
+    mocks.fetch.mockReturnValue(new Promise<MidwordPuzzle>(resolve => { resolvePuzzle = resolve; }));
+    renderGame("/midword", false);
+    const introduction = screen.getByRole("region", { name: "Midword introduction" });
+    const logo = screen.getByRole("img", { name: "Midword" });
+    const issue = logo.closest("header")!.nextElementSibling!;
+    const main = screen.getByRole("main");
+    const start = within(introduction).getByRole("button", { name: "Start" });
+    expect(main).toHaveClass("timed-game-start-layout");
+    expect(issue.nextElementSibling).toBe(main);
+    expect(introduction).toHaveAttribute("aria-busy", "true");
+    expect(start).toBeDisabled();
+    expect(screen.queryByText(/Loading Midword|Checking Midword access/)).not.toBeInTheDocument();
+    await userEvent.setup().click(start);
+    expect(createMidwordStorage().loadProgress(localDateString()).startedAt).toBeFalsy();
+    await act(async () => resolvePuzzle(puzzle()));
+    expect(screen.getByRole("region", { name: "Midword introduction" })).toBe(introduction);
+    expect(screen.getByRole("main")).toBe(main);
+    expect(logo.closest("header")!.nextElementSibling).toBe(issue);
+    expect(issue).toHaveTextContent("Puzzle #11");
+    expect(start).toBeEnabled();
+    expect(introduction).toHaveAttribute("aria-busy", "false");
+  });
+  it("keeps the new shell visible during access checks without fetching or starting a game", async () => {
+    mocks.auth.ready = false;
+    const view = renderGame("/midword", false);
+    expect(screen.getByRole("img", { name: "Midword" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Midword introduction" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Midword stats" })).toBeDisabled();
+    expect(screen.queryByText("Checking Midword access…")).not.toBeInTheDocument();
+    expect(mocks.fetch).not.toHaveBeenCalled();
+    mocks.auth.ready = true;
+    view.rerender(<MemoryRouter><MidwordPage /></MemoryRouter>);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Start" })).toBeEnabled());
+  });
+  it.each([false, true])("restores cached content on the first render with started=%s while revalidating", async started => {
+    const storage = createMidwordStorage();
+    storage.cachePuzzle(puzzle());
+    let resolvePuzzle!: (value: MidwordPuzzle) => void;
+    mocks.fetch.mockReturnValue(new Promise<MidwordPuzzle>(resolve => { resolvePuzzle = resolve; }));
+    renderGame("/midword", started);
+    expect(screen.getByText("Puzzle #11")).toBeInTheDocument();
+    if (started) {
+      expect(screen.getByRole("region", { name: "Midword board" })).toBeInTheDocument();
+      expect(screen.queryByRole("region", { name: "Midword introduction" })).not.toBeInTheDocument();
+    } else {
+      expect(screen.getByRole("button", { name: "Start" })).toBeEnabled();
+      await userEvent.setup().click(screen.getByRole("button", { name: "Start" }));
+    }
+    const startedAt = storage.loadProgress(localDateString()).startedAt;
+    await act(async () => resolvePuzzle(puzzle()));
+    expect(screen.getByRole("region", { name: "Midword board" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Start" })).not.toBeInTheDocument();
+    expect(storage.loadProgress(localDateString()).startedAt).toBe(startedAt);
+  });
   it("renders the native prompt arrangement and exact answer length", async () => {
     renderGame();
     const board = await screen.findByRole("region", { name: "Midword board" });

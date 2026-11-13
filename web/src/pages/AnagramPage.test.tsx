@@ -1,23 +1,27 @@
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { localDateString } from "../features/backword/date";
-import { giveUp, placeTile, reviewAnagramPuzzle, startProgress } from "../features/anagram/engine";
+import { giveUp, placeTile, reviewAnagramPuzzle, startProgress, type AnagramPuzzle } from "../features/anagram/engine";
 import { createAnagramStorage } from "../features/anagram/storage";
 import { AnagramBoard } from "../features/anagram/components";
 import { AnagramPage } from "./AnagramPage";
 
-const repositoryState = vi.hoisted(() => ({ offline: false }));
+const repositoryState = vi.hoisted(() => ({ offline: false, fetch: vi.fn(), firstRelease: vi.fn(),
+  auth: { ready: true, entitlementReady: true, entitlement: null, user: null }
+}));
+
+vi.mock("../features/auth/AuthProvider", () => ({ useAuth: () => repositoryState.auth }));
 
 vi.mock("../features/anagram/repository", () => ({
   createAnagramRepository: () => ({
-    getFirstReleaseDate: async () => localDateString(),
+    getFirstReleaseDate: repositoryState.firstRelease,
     getByDate: async (date: string) => {
       if (repositoryState.offline) throw new Error("Offline");
-      return { ...reviewAnagramPuzzle(date), id: "today-anagram", puzzleNumber: 7 };
+      return repositoryState.fetch(date);
     }
   })
 }));
@@ -44,6 +48,9 @@ describe("Anagram browser game", () => {
   beforeEach(() => {
     localStorage.clear();
     repositoryState.offline = false;
+    repositoryState.auth = { ready: true, entitlementReady: true, entitlement: null, user: null };
+    repositoryState.fetch.mockReset().mockImplementation(async date => ({ ...reviewAnagramPuzzle(date), id: "today-anagram", puzzleNumber: 7 }));
+    repositoryState.firstRelease.mockReset().mockResolvedValue(localDateString());
     Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
   });
 
@@ -119,21 +126,72 @@ describe("Anagram browser game", () => {
     await screen.findByRole("button", { name: "Start" });
   });
 
-  it("aligns the loading message with the stable title column", async () => {
-    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
-    const main = styles.match(/\.anagram-main\s*\{([^}]*)\}/)?.[1];
-    const titleAndLoading = styles.match(/\.anagram-title-block,\s*\.anagram-loading\s*\{([^}]*)\}/)?.[1];
-
-    expect(main).toMatch(/--anagram-max-content-width:\s*calc\(/);
-    expect(titleAndLoading).toMatch(/width:\s*min\(100%,\s*var\(--anagram-max-content-width\)\)/);
-    expect(titleAndLoading).toMatch(/margin-inline:\s*auto/);
-    expect(titleAndLoading).not.toContain("--anagram-content-width");
-    expect(styles).toMatch(/\.anagram-loading\s*\{\s*margin-top:\s*24px;/);
-
+  it("renders the introduction immediately and keeps its layout while the puzzle loads", async () => {
+    let resolvePuzzle!: (puzzle: AnagramPuzzle) => void;
+    repositoryState.fetch.mockReturnValue(new Promise<AnagramPuzzle>(resolve => { resolvePuzzle = resolve; }));
     render(<MemoryRouter><AnagramPage /></MemoryRouter>);
-    expect(screen.getByRole("status")).toHaveTextContent("Loading Anagram…");
-    expect(screen.getByRole("status")).toHaveClass("anagram-loading");
-    await screen.findByRole("button", { name: "Start" });
+    const introduction = screen.getByRole("region", { name: "Anagram introduction" });
+    const main = screen.getByRole("main");
+    const title = main.firstElementChild!;
+    const start = within(introduction).getByRole("button", { name: "Start" });
+    expect(main).toHaveClass("timed-game-start-layout");
+    expect(introduction).toHaveAttribute("aria-busy", "true");
+    expect(start).toBeDisabled();
+    expect(screen.queryByText(/Loading Anagram|Checking Anagram access|Daily puzzle/)).not.toBeInTheDocument();
+    await userEvent.setup().click(start);
+    expect(createAnagramStorage().loadAllProgress()).toEqual([]);
+    await act(async () => resolvePuzzle({ ...reviewAnagramPuzzle(localDateString()), id: "today-anagram", puzzleNumber: 7 }));
+    expect(screen.getByRole("main")).toBe(main);
+    expect(main.firstElementChild).toBe(title);
+    expect(screen.getByRole("region", { name: "Anagram introduction" })).toBe(introduction);
+    expect(title).toContainElement(screen.getByText("Puzzle #7"));
+    expect(start).toBeEnabled();
+    expect(introduction).toHaveAttribute("aria-busy", "false");
+  });
+
+  it("keeps the current shell visible during access checks without fetching or starting a game", async () => {
+    repositoryState.auth.ready = false;
+    const page = render(<MemoryRouter><AnagramPage /></MemoryRouter>);
+    expect(screen.getByRole("heading", { name: "ANAGRAM", level: 1 })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Anagram introduction" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Anagram stats" })).toBeDisabled();
+    expect(repositoryState.fetch).not.toHaveBeenCalled();
+    expect(screen.queryByText("Checking Anagram access…")).not.toBeInTheDocument();
+    repositoryState.auth.ready = true;
+    page.rerender(<MemoryRouter><AnagramPage /></MemoryRouter>);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Start" })).toBeEnabled());
+  });
+
+  it.each([false, true])("restores cached content on the first render with started=%s while revalidating", async started => {
+    const puzzle = { ...reviewAnagramPuzzle(localDateString()), id: "today-anagram", puzzleNumber: 7 };
+    const storage = createAnagramStorage();
+    storage.cachePuzzle(puzzle);
+    const progress = startProgress(puzzle);
+    if (started) storage.saveProgress(progress);
+    let resolvePuzzle!: (puzzle: AnagramPuzzle) => void;
+    repositoryState.fetch.mockReturnValue(new Promise<AnagramPuzzle>(resolve => { resolvePuzzle = resolve; }));
+    render(<MemoryRouter><AnagramPage /></MemoryRouter>);
+    expect(screen.getByText("Puzzle #7")).toBeInTheDocument();
+    if (started) {
+      expect(screen.getByRole("region", { name: "Anagram board" })).toBeInTheDocument();
+      expect(screen.queryByRole("region", { name: "Anagram introduction" })).not.toBeInTheDocument();
+    } else {
+      expect(screen.getByRole("button", { name: "Start" })).toBeEnabled();
+      await userEvent.setup().click(screen.getByRole("button", { name: "Start" }));
+    }
+    const startedAt = storage.loadProgress(puzzle)?.startedAt;
+    await act(async () => resolvePuzzle(puzzle));
+    expect(screen.getByRole("region", { name: "Anagram board" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Start" })).not.toBeInTheDocument();
+    expect(storage.loadProgress(puzzle)?.startedAt).toBe(startedAt);
+  });
+
+  it("loads the puzzle without waiting for optional first-release metadata", async () => {
+    repositoryState.firstRelease.mockReturnValue(new Promise(() => {}));
+    render(<MemoryRouter><AnagramPage /></MemoryRouter>);
+    expect(await screen.findByText("Puzzle #7")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start" })).toBeEnabled();
   });
 
   it("centres the game title and issue number in the same header", async () => {
@@ -144,9 +202,7 @@ describe("Anagram browser game", () => {
     render(<MemoryRouter><AnagramPage /></MemoryRouter>);
     const title = screen.getByRole("heading", { name: "ANAGRAM", level: 1 });
     const header = title.closest(".anagram-title-block");
-    expect(header).toContainElement(screen.getByText("Daily puzzle"));
-    await screen.findByRole("button", { name: "Start" });
-    expect(header).toContainElement(screen.getByText("Puzzle #7"));
+    expect(header).toContainElement(await screen.findByText("Puzzle #7"));
   });
 
   it("keeps the letter tray and controls at the bottom of the game board", async () => {

@@ -11,7 +11,7 @@ import { BackwordKeyboard } from "../features/backword/components/BackwordKeyboa
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { createMidwordRepository } from "../features/midword/repository";
 import { createMidwordStorage } from "../features/midword/storage";
-import { midwordStats, submitGuess, startProgress, elapsedSeconds, formatTime, giveUp, type MidwordProgress, type MidwordPuzzle } from "../features/midword/engine";
+import { midwordStats, submitGuess, startProgress, elapsedSeconds, formatTime, giveUp, emptyProgress, type MidwordProgress, type MidwordPuzzle } from "../features/midword/engine";
 import { validMidwordGuesses } from "../features/midword/validGuesses";
 import { MidwordBoard } from "../features/midword/MidwordBoard";
 import { MidwordDialog } from "../features/midword/MidwordDialog";
@@ -35,26 +35,26 @@ export function MidwordPage() {
     return () => { window.clearInterval(timer); window.removeEventListener("focus", refreshDate); };
   }, []);
   const date = routeDate ?? today;
-  if (!ready || (user && !entitlementReady && date < today)) return <main className="midword-page">Checking Midword access…</main>;
+  if (!ready || (user && !entitlementReady && date < today)) return <MidwordGame accessReady={false} date={date} key={`pending:${date}`} />;
   if (routeDate && !isLocalDateString(routeDate)) return <main className="midword-page"><p>Invalid Midword date.</p><Link to="/midword">Today’s Midword</Link></main>;
   if (date > today) return <main className="midword-page"><p>This Midword has not been released yet.</p><Link to="/midword">Today’s Midword</Link></main>;
   if (date < today && !entitlement?.isPro) return <ProAccessRedirect feature="archive" returnTo={`/midword/${date}`} />;
   return <MidwordGame date={date} key={`${user?.id ?? "guest"}:${date}`} />;
 }
 
-function MidwordGame({ date }: { date: string }) {
+function MidwordGame({ date, accessReady = true }: { date: string; accessReady?: boolean }) {
   const { user, entitlement } = useAuth();
   const { track } = useAnalytics();
   const storage = useMemo(() => createMidwordStorage(window.localStorage, { userId: user?.id,
     onProgressSaved: (progress) => { if (user) queueAndDebounce(user.id, midwordCloudRecord(progress)); }
   }), [user?.id]);
-  const [puzzle, setPuzzle] = useState<MidwordPuzzle | null>(null);
-  const [progress, setProgress] = useState(() => storage.loadProgress(date));
+  const [puzzle, setPuzzle] = useState<MidwordPuzzle | null>(() => accessReady ? storage.loadCachedPuzzle(date) : null);
+  const [progress, setProgress] = useState(() => accessReady ? storage.loadProgress(date) : emptyProgress(date));
   const [input, setInput] = useState("");
   const [feedback, setFeedback] = useState<{ message: string } | null>(null);
   const [inputError, setInputError] = useState(false);
   const message = feedback?.message ?? "";
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => !puzzle);
   const [error, setError] = useState("");
   const [offline, setOffline] = useState(false);
   const [syncError, setSyncError] = useState("");
@@ -77,8 +77,9 @@ function MidwordGame({ date }: { date: string }) {
   }, [feedback]);
 
   useEffect(() => {
+    if (!accessReady) return;
     let active = true;
-    setLoading(true); setError(""); setOffline(false);
+    setError(""); setOffline(false);
     void (async () => {
       try {
         const next = await createMidwordRepository().getByDate(date);
@@ -94,10 +95,10 @@ function MidwordGame({ date }: { date: string }) {
       } finally { if (active) setLoading(false); }
     })();
     return () => { active = false; };
-  }, [date, retry, storage, track]);
+  }, [accessReady, date, retry, storage, track]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!accessReady || !user) return;
     let active = true, refreshing = false;
     const guest = createMidwordStorage();
     const applyWinner = (record: CloudRecord<MidwordProgress>) => storage.replaceProgress(record.payload);
@@ -119,7 +120,7 @@ function MidwordGame({ date }: { date: string }) {
       active = false; window.removeEventListener("focus", refresh); window.removeEventListener("online", refresh);
       document.removeEventListener("visibilitychange", refresh);
     };
-  }, [date, storage, user?.id]);
+  }, [accessReady, date, storage, user?.id]);
 
   useEffect(() => {
     if (loading || !puzzle || !progress.completedAt || completionPresented.current) return;
@@ -136,9 +137,10 @@ function MidwordGame({ date }: { date: string }) {
   const stats = useMemo(() => midwordStats(history, now), [history, now]);
   const rating = useMemo(() => buildPlayerProfileRating(loadLocalProfileRecords(user?.id), entitlement?.isPro === true), [progress, user?.id, entitlement?.isPro]);
   const shareResult = puzzle && progress.completedAt ? buildMidwordShareResult({ puzzle, progress, stats, rating }) : null;
-  const showsStart = !!puzzle && !loading && !progress.startedAt && !progress.completedAt;
+  const showsStart = !error && !progress.startedAt && !progress.completedAt;
   const canSubmit = !!puzzle && !!progress.startedAt && !progress.completedAt && input.length === puzzle.answer.length;
   const begin = () => {
+    if (!accessReady || !puzzle) return;
     const next = startProgress(progress);
     storage.saveProgress(next); setProgress(next); setNow(new Date()); track(gameStarted("midword"));
   };
@@ -182,23 +184,24 @@ function MidwordGame({ date }: { date: string }) {
       <header className="bw-game-header bw-game-header--offset midword-header">
         <GameMenu isOpen={menuOpen} onOpen={() => setMenuOpen(true)} onClose={() => setMenuOpen(false)} />
         <h1 className="bw-logo-lockup bw-logo-lockup--large"><img alt="Midword" className="bw-logo bw-logo--large" src="/brand/midword-logo.png" /></h1>
-        <nav aria-label="Midword actions" className="bw-game-actions--top bw-game-actions--logo-header"><button aria-label="Midword stats" className="bw-icon-button" onClick={() => setSheet("stats")} type="button">🧠</button>
+        <nav aria-label="Midword actions" className="bw-game-actions--top bw-game-actions--logo-header"><button aria-label="Midword stats" className="bw-icon-button" disabled={!accessReady} onClick={() => setSheet("stats")} type="button">🧠</button>
           <button aria-label="How to play Midword" className="bw-icon-button bw-info-icon" onClick={() => setSheet("instructions")} type="button">ⓘ</button></nav>
       </header>
-      {puzzle ? <p className="midword-issue">Puzzle #{puzzle.puzzleNumber}</p> : null}
+      <p className="midword-issue">{puzzle ? `Puzzle #${puzzle.puzzleNumber}` : "\u00a0"}</p>
       <main className={`midword-main${showsStart ? " timed-game-start-layout" : ""}`}>
-        {loading ? <p role="status">Loading Midword…</p> : error ? <div role="alert"><p>{error}</p><button className="bw-primary-button" onClick={() => setRetry((value) => value + 1)} type="button">Try again</button></div>
+        {showsStart ? <TimedGameStartCard game="midword" loading={!accessReady || !puzzle}
+          headings={["Find the connection.", "Complete both words."]}
+          explanation="Find the missing middle word that ends the top word and starts the bottom word. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points."
+          detail={`${puzzle ? `${puzzle.answer.length} letters · ` : ""}unlimited guesses · no time limit`} onStart={begin} /> : null}
+        {error ? <div role="alert"><p>{error}</p><button className="bw-primary-button" onClick={() => { setError(""); setRetry((value) => value + 1); }} type="button">Try again</button></div>
           : puzzle ? <>
             {offline ? <p className="midword-note">Playing saved game offline</p> : null}
             {syncError ? <p className="midword-note">{syncError}</p> : null}
-            {!progress.startedAt && !progress.completedAt ? <TimedGameStartCard game="midword"
-              headings={["Find the connection.", "Complete both words."]}
-              explanation="Find the missing middle word that ends the top word and starts the bottom word. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points."
-              detail={`${puzzle.answer.length} letters · unlimited guesses · no time limit`} onStart={begin} /> : <>
+            {!showsStart ? <>
             <p role="timer" aria-label="Elapsed time">{formatTime(progress.completedAt ? progress.elapsedSecondsAtCompletion : elapsedSeconds(progress, now))}</p>
             <MidwordBoard input={input} inputError={inputError} message={message} progress={progress} puzzle={puzzle} />
             {progress.startedAt && !progress.completedAt ? <button type="button" onClick={() => setConfirmGiveUp(true)}>Give up</button> : null}
-            </>}
+            </> : null}
             {shareResult && sheet === null ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
           </> : null}
       </main>

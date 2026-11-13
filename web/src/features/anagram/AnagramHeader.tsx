@@ -1,16 +1,17 @@
 import { InfoTooltip } from "../../components/InfoTooltip";
 import { GameMenu } from "../backword/components/GameMenu";
 
-export function AnagramHeader({ onDismissTip, onInfo, onStats, showTip }: {
+export function AnagramHeader({ onDismissTip, onInfo, onStats, showTip, statsDisabled = false }: {
   onDismissTip: () => void;
   onInfo: () => void;
   onStats: () => void;
   showTip: boolean;
+  statsDisabled?: boolean;
 }) {
   return <header className="anagram-header">
     <GameMenu />
     <nav aria-label="Anagram actions">
-      <button aria-label="Anagram stats" className="bw-icon-button" onClick={onStats} type="button">🧠</button>
+      <button aria-label="Anagram stats" className="bw-icon-button" disabled={statsDisabled} onClick={onStats} type="button">🧠</button>
       <span className="bw-info-tip-anchor">
         <button aria-describedby={showTip ? "anagram-info-tip" : undefined} aria-label="How to play Anagram" className="bw-icon-button bw-info-icon" onClick={onInfo} type="button">ⓘ</button>
         {showTip ? <InfoTooltip
