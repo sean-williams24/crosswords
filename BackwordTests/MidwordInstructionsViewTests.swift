@@ -6,16 +6,16 @@ import UIKit
 @MainActor
 @Suite("Midword instructions")
 struct MidwordInstructionsViewTests {
-    @Test("Scoring rows match the five-attempt rules")
+    @Test("Scoring rows match the timed rules")
     func scoringRowsMatchAttemptRules() {
         let rules = MidwordInstructionsView.scoringRules
 
         #expect(rules.count == 6)
-        #expect(rules[0].label == "First guess")
+        #expect(rules[0].label == "Under 30 seconds")
         #expect(rules[0].points == "5 pts")
-        #expect(rules[4].label == "Fifth guess")
+        #expect(rules[4].label == "180 seconds or more")
         #expect(rules[4].points == "1 pt")
-        #expect(rules[5].label == "Not solved")
+        #expect(rules[5].label == "Give up or missed")
         #expect(rules[5].points == "0 pts")
     }
 

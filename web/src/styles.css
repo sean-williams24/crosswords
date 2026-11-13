@@ -3596,3 +3596,47 @@ html[data-theme="light"] {
 
 .rebrand-notice { padding: 0.75rem 1.25rem; background: var(--app-surface); color: var(--app-text-primary); text-align: center; }
 .rebrand-notice a { color: var(--app-accent); text-decoration: underline; }
+
+/* Web titles stay at the top; introduction panels center in the remaining space.
+   Natural content height keeps short viewports scrollable. */
+.anagram-main.timed-game-start-layout,
+.midword-main.timed-game-start-layout {
+  min-height: 0;
+  flex: 1 0 auto;
+  justify-content: center;
+  gap: 24px;
+  padding-block: 24px;
+}
+.timed-game-start-layout > * { flex-shrink: 0; }
+.timed-game-start-card {
+  display: grid;
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding: 20px;
+  border: 0;
+  border-radius: 0;
+  color: var(--start-ink);
+  background: var(--start-surface);
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  gap: 20px;
+  text-align: left;
+}
+.anagram-start.timed-game-start-card {
+  --start-ink: var(--anagram-ink);
+  --start-accent: var(--anagram-accent);
+  --start-surface: var(--anagram-surface);
+  --start-on-accent: var(--anagram-on-accent);
+}
+.midword-start.timed-game-start-card {
+  --start-ink: var(--midword-text);
+  --start-accent: var(--midword-accent);
+  --start-surface: var(--midword-surface);
+  --start-on-accent: var(--midword-on-accent);
+}
+.timed-game-start-card h2 { display: flex; margin: 0; flex-direction: column; gap: 5px; color: var(--start-ink); font-size: 24px; font-weight: 700; line-height: 1.25; }
+.timed-game-start-card p { margin: 0; font-size: 16px; line-height: 1.5; }
+.timed-game-start-card small { margin: 0; color: var(--start-accent); font-size: 13px; line-height: 1.5; }
+.timed-game-start-card button { min-height: 48px; border: 1px solid var(--start-accent); border-radius: 0; color: var(--start-on-accent); background: var(--start-accent); font: inherit; font-size: 16px; cursor: pointer; }
+
+.anagram-main.timed-game-start-layout { justify-content: flex-start; padding-block: 0; gap: 0; }
+.timed-game-start-body { display: flex; width: 100%; padding-block: 24px; flex: 1 0 auto; align-items: center; justify-content: center; }

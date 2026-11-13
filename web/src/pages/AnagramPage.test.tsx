@@ -93,6 +93,23 @@ describe("Anagram browser game", () => {
     expect(storage.loadProgress(puzzle)).toEqual(saved);
   });
 
+  it("keeps the title and issue at the top while centering the introduction until Start is pressed", async () => {
+    const user = userEvent.setup();
+    render(<MemoryRouter><AnagramPage /></MemoryRouter>);
+    const start = await screen.findByRole("button", { name: "Start" });
+    expect(screen.getByRole("heading", { name: "ANAGRAM", level: 1 })).toBeInTheDocument();
+    expect(screen.getByText("Puzzle #7")).toBeInTheDocument();
+    const title = screen.getByRole("heading", { name: "ANAGRAM", level: 1 }).parentElement!;
+    expect(screen.getByRole("main").firstElementChild).toBe(title);
+    expect(title).toContainElement(screen.getByText("Puzzle #7"));
+    expect(title.nextElementSibling).toContainElement(start);
+    expect(start.closest(".timed-game-start-body")).toBeInTheDocument();
+    expect(start.closest("main")).toHaveClass("timed-game-start-layout");
+    expect(screen.getByRole("region", { name: "Anagram introduction" })).toContainElement(start);
+    await user.click(start);
+    expect(screen.getByRole("main")).not.toHaveClass("timed-game-start-layout");
+  });
+
   it("hides the footer in the mobile layout while retaining it on the page", async () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
     expect(styles).toMatch(/@media \(max-width: 700px\) \{\s*\.anagram-page > \.site-footer \{ display: none; \}/);

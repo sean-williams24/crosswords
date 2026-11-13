@@ -1,6 +1,6 @@
 import { localDateString } from "../backword/date";
 import { formatProfileDate } from "../profile/profileRating";
-import type { MidwordStats } from "./engine";
+import { formatTime, timeBands, type MidwordStats } from "./engine";
 
 export function MidwordRatingBar({ score }: { score: number }) {
   const percentage = Math.max(0, Math.min(100, score / 70 * 100));
@@ -17,19 +17,19 @@ export function MidwordStatistics({ stats }: { stats: MidwordStats }) {
       <div><strong>{stats.totalSolved}</strong><small>Total<br /> solved</small></div>
       <div><strong>{stats.bestStreak}</strong><small>Best<br /> streak</small></div>
     </section>
-    <section className="midword-distribution"><h3>Guess distribution</h3>
-      {stats.guessDistribution.map((count, index) => <div aria-label={`${index + 1} guesses: ${count} solves`} key={index}>
-        <span>{index + 1}</span><div><i style={{ width: `${count / Math.max(1, ...stats.guessDistribution) * 100}%` }} /></div><span>{count}</span>
+    <section className="midword-distribution"><h3>Solve time distribution</h3>
+      {stats.timeDistribution.map((count, index) => <div aria-label={`${timeBands[index]}: ${count} solves`} key={index}>
+        <span>{["<30s", "<1m", "<2m", "<3m", "3m+"][index]}</span><div><i style={{ width: `${count / Math.max(1, ...stats.timeDistribution) * 100}%` }} /></div><span>{count}</span>
       </div>)}
     </section>
     <section className="midword-history"><h3>Last 14 days</h3>
-      <table><thead><tr><th scope="col">Date</th><th scope="col">Score</th><th scope="col">Guesses</th></tr></thead>
+      <table><thead><tr><th scope="col">Date</th><th scope="col">Score</th><th scope="col">Time</th></tr></thead>
         <tbody>{stats.rows.map((row) => <tr key={row.date}>
           <td><time className={row.date === localDateString() ? "is-today" : undefined} dateTime={row.date}>{formatProfileDate(row.date)}</time>
             {row.date === localDateString() ? <small>TODAY</small> : null}
             {row.outcome !== "unplayed" ? <small>{row.outcome === "inProgress" ? "IN PROGRESS" : row.outcome.toUpperCase()}</small> : null}</td>
           <td><strong className={`midword-score-chip${row.score ? " is-earned" : ""}`}>{row.score}</strong></td>
-          <td className={`midword-history-guesses${row.guessCount === null ? " is-unplayed" : ""}`}>{row.guessCount === null ? "–" : `${row.guessCount}/5`}</td>
+          <td className={`midword-history-guesses${row.elapsedSeconds === null ? " is-unplayed" : ""}`}>{row.elapsedSeconds === null ? "–" : formatTime(row.elapsedSeconds)}</td>
         </tr>)}</tbody>
       </table>
     </section>

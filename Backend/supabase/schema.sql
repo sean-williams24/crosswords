@@ -372,6 +372,71 @@ BEGIN
         (p_status <> 'solved' AND current_row.status <> 'solved' AND incoming_terminal = current_terminal AND p_progress_rank = current_row.progress_rank AND p_client_updated_at > current_row.client_updated_at) OR
         (p_status = 'solved' AND current_row.status = 'solved' AND p_release_score = current_row.release_score AND p_client_updated_at > current_row.client_updated_at);
 
+    IF p_game_type = 'midword' THEN
+        -- Legacy completed results are immutable; a timed record also protects
+        -- against stale writes from clients that do not understand its clock.
+        IF current_terminal AND current_row.payload->>'startedAt' IS NULL AND
+            (p_payload->>'startedAt' IS NULL OR
+             (current_row.payload->>'completedAt')::TIMESTAMPTZ <= (p_payload->>'startedAt')::TIMESTAMPTZ) THEN
+            RETURN current_row;
+        END IF;
+        IF current_row.payload->>'startedAt' IS NOT NULL AND p_payload->>'startedAt' IS NULL THEN
+            -- A genuinely historical completion predates the new clock.
+            IF incoming_terminal AND (p_payload->>'completedAt')::TIMESTAMPTZ <=
+                    (current_row.payload->>'startedAt')::TIMESTAMPTZ THEN
+                UPDATE game_progress SET payload = p_payload, status = p_status,
+                    release_score = p_release_score, progress_rank = p_progress_rank,
+                    client_updated_at = p_client_updated_at, updated_at = NOW()
+                WHERE user_id = auth.uid() AND game_type = p_game_type AND content_key = p_content_key
+                RETURNING * INTO current_row;
+            END IF;
+            RETURN current_row;
+        END IF;
+        IF current_row.payload->>'startedAt' IS NULL AND p_payload->>'startedAt' IS NOT NULL THEN
+            use_incoming := TRUE;
+        ELSIF incoming_terminal <> current_terminal THEN
+            use_incoming := incoming_terminal;
+        ELSIF incoming_terminal THEN
+            use_incoming := (p_payload->>'completedAt')::TIMESTAMPTZ <
+                (current_row.payload->>'completedAt')::TIMESTAMPTZ;
+        ELSE
+            use_incoming := (p_payload->>'startedAt' IS NOT NULL AND current_row.payload->>'startedAt' IS NULL) OR
+                p_progress_rank > current_row.progress_rank OR
+                (p_progress_rank = current_row.progress_rank AND p_client_updated_at > current_row.client_updated_at);
+        END IF;
+        selected_anagram_payload := CASE WHEN use_incoming THEN p_payload ELSE current_row.payload END;
+        resolved_release_score := CASE WHEN use_incoming THEN p_release_score ELSE current_row.release_score END;
+        merged_start_at := LEAST((p_payload->>'startedAt')::TIMESTAMPTZ,
+            (current_row.payload->>'startedAt')::TIMESTAMPTZ);
+        merged_anagram_payload := selected_anagram_payload;
+        IF merged_start_at IS NOT NULL THEN
+            merged_anagram_payload := merged_anagram_payload || jsonb_build_object('startedAt', CASE
+                WHEN current_row.payload->>'startedAt' IS NULL OR
+                     (p_payload->>'startedAt')::TIMESTAMPTZ < (current_row.payload->>'startedAt')::TIMESTAMPTZ
+                THEN p_payload->>'startedAt' ELSE current_row.payload->>'startedAt' END);
+            IF selected_anagram_payload->>'completedAt' IS NOT NULL THEN
+                raw_elapsed_seconds := FLOOR(GREATEST(0, EXTRACT(EPOCH FROM
+                    ((selected_anagram_payload->>'completedAt')::TIMESTAMPTZ - merged_start_at))))::BIGINT;
+                merged_anagram_payload := merged_anagram_payload || jsonb_build_object('elapsedSecondsAtCompletion', raw_elapsed_seconds);
+                resolved_release_score := CASE WHEN selected_anagram_payload->>'outcome' = 'won' AND resolved_release_score > 0 THEN
+                    CASE WHEN raw_elapsed_seconds < 30 THEN 5 WHEN raw_elapsed_seconds < 60 THEN 4
+                        WHEN raw_elapsed_seconds < 120 THEN 3 WHEN raw_elapsed_seconds < 180 THEN 2 ELSE 1 END
+                    ELSE 0 END;
+            END IF;
+        END IF;
+        merged_anagram_payload := merged_anagram_payload || jsonb_build_object('releaseDateScore', resolved_release_score);
+        UPDATE game_progress SET
+            payload = merged_anagram_payload, release_score = resolved_release_score,
+            schema_version = CASE WHEN use_incoming THEN p_schema_version ELSE current_row.schema_version END,
+            status = CASE WHEN use_incoming THEN p_status ELSE current_row.status END,
+            progress_rank = CASE WHEN use_incoming THEN p_progress_rank ELSE current_row.progress_rank END,
+            client_updated_at = CASE WHEN use_incoming THEN p_client_updated_at ELSE current_row.client_updated_at END,
+            updated_at = NOW()
+        WHERE user_id = auth.uid() AND game_type = p_game_type AND content_key = p_content_key
+        RETURNING * INTO current_row;
+        RETURN current_row;
+    END IF;
+
     IF is_anagram THEN
         IF incoming_terminal <> current_terminal THEN
             use_incoming := incoming_terminal;

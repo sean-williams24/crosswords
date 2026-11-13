@@ -150,12 +150,16 @@ struct DailyChallengeSnapshot: Equatable {
         }
         if let midword, midword.date == date {
             let finished = midword.isComplete
-            let guesses = midword.guesses.count
-            set(.midword, state: midword.isComplete ? .finished(won: midword.isWon)
-                : midword.guesses.isEmpty ? .notStarted : .inProgress,
-                fraction: !finished && guesses > 0 ? Self.guessFraction(guesses) : nil,
-                progressDetail: !finished && guesses > 0
-                    ? "\(guesses) of \(Self.maximumGuesses) guesses used" : nil,
+            let started = midword.startedAt != nil
+            let intervals = min(6, midword.elapsedSeconds(at: now) / 30)
+            if !finished, let start = midword.startedAt, intervals < 6 {
+                let next = start.addingTimeInterval(TimeInterval((intervals + 1) * 30))
+                nextAnagramProgressTick = min(nextAnagramProgressTick ?? next, next)
+            }
+            set(.midword, state: finished ? .finished(won: midword.isWon)
+                : started || !midword.guesses.isEmpty ? .inProgress : .notStarted,
+                fraction: !finished && started ? Double(intervals) / 7 : nil,
+                progressDetail: !finished && started ? "\(intervals) 30-second intervals elapsed" : nil,
                 completedAt: midword.completedAt, earnedPoints: midword.releaseDateScore)
         }
     }

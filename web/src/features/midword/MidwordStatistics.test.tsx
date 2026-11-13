@@ -9,10 +9,10 @@ import { MidwordDialog } from "./MidwordDialog";
 const today = localDateString();
 const stats: MidwordStats = {
   currentStreak: 1, bestStreak: 3, totalSolved: 4, rollingScore: 5,
-  guessDistribution: [1, 2, 0, 1, 0],
+  timeDistribution: [1, 2, 0, 1, 0],
   rows: [
-    { date: today, outcome: "solved", score: 5, guessCount: 1 },
-    { date: localDateOffset(today, -1), outcome: "unplayed", score: 0, guessCount: null }
+    { date: today, outcome: "solved", score: 5, elapsedSeconds: 12 },
+    { date: localDateOffset(today, -1), outcome: "unplayed", score: 0, elapsedSeconds: null }
   ]
 };
 
@@ -23,7 +23,7 @@ function renderStats(values = stats) {
 }
 
 describe("Midword statistics native appearance", () => {
-  it("shows the native summary and Date / Score / Guesses history", () => {
+  it("shows the native summary and Date / Score / Time history", () => {
     renderStats();
     const summary = screen.getByLabelText("Midword statistics summary");
     expect(within(summary).getByText("Current streak")).toContainHTML("<br>");
@@ -31,27 +31,27 @@ describe("Midword statistics native appearance", () => {
     expect(within(summary).getByText("Best streak")).toContainHTML("<br>");
     const table = screen.getByRole("table");
     expect(within(table).getAllByRole("columnheader").map((cell) => cell.textContent))
-      .toEqual(["Date", "Score", "Guesses"]);
+      .toEqual(["Date", "Score", "Time"]);
     const [, solved, unplayed] = within(table).getAllByRole("row");
     expect(solved.querySelector("time")).toHaveClass("is-today");
     expect(within(solved).getByText("TODAY")).toBeInTheDocument();
     expect(within(solved).getByText("SOLVED")).toBeInTheDocument();
-    expect(within(solved).getAllByRole("cell").slice(1).map((cell) => cell.textContent)).toEqual(["5", "1/5"]);
+    expect(within(solved).getAllByRole("cell").slice(1).map((cell) => cell.textContent)).toEqual(["5", "00:00:12"]);
     expect(within(solved).getByText("5")).toHaveClass("is-earned");
     expect(within(unplayed).getByText("0")).not.toHaveClass("is-earned");
     expect(within(unplayed).getByText("–")).toHaveClass("is-unplayed");
-    expect(screen.getByLabelText("2 guesses: 2 solves").querySelector("i")).toHaveStyle({ width: "100%" });
-    expect(screen.getByLabelText("3 guesses: 0 solves").querySelector("i")).toHaveStyle({ width: "0%" });
+    expect(screen.getByLabelText("Under 60 seconds: 2 solves").querySelector("i")).toHaveStyle({ width: "100%" });
+    expect(screen.getByLabelText("Under 120 seconds: 0 solves").querySelector("i")).toHaveStyle({ width: "0%" });
   });
 
   it("keeps zero statistics and empty distribution tracks visible", () => {
     renderStats({ ...stats, currentStreak: 0, totalSolved: 0, bestStreak: 0,
-      rollingScore: 0, guessDistribution: [0, 0, 0, 0, 0], rows: [] });
+      rollingScore: 0, timeDistribution: [0, 0, 0, 0, 0], rows: [] });
     expect(screen.getByText("0/70")).toBeInTheDocument();
     const bar = screen.getByLabelText("0 of 70 Midword points");
     expect(bar.querySelector("i")).toHaveStyle({ left: "0%" });
     for (let guesses = 1; guesses <= 5; guesses++) {
-      expect(screen.getByLabelText(`${guesses} guesses: 0 solves`).querySelector("i"))
+      expect(screen.getByLabelText(`${["Under 30 seconds", "Under 60 seconds", "Under 120 seconds", "Under 180 seconds", "180 seconds or more"][guesses - 1]}: 0 solves`).querySelector("i"))
         .toHaveStyle({ width: "0%" });
     }
   });
@@ -70,7 +70,7 @@ describe("Midword statistics native appearance", () => {
       expect(label.fontWeight).toBe("900");
       expect(label.fontSize).toBe("10px");
       expect(label.letterSpacing).toBe("1px");
-      const heading = getComputedStyle(screen.getByRole("heading", { name: "Guess distribution" }));
+      const heading = getComputedStyle(screen.getByRole("heading", { name: "Solve time distribution" }));
       expect(heading.fontWeight).toBe("900");
       expect(heading.letterSpacing).toBe("2px");
       expect(getComputedStyle(screen.getByText("5/70")).fontWeight).toBe("900");

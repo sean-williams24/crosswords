@@ -109,7 +109,7 @@ captures and developer Xcode/upgrade verification are required before release.
 ## Midword Statistics
 
 Midword statistics count only puzzles won on their release date with a positive
-`releaseDateScore`. Archive completions do not affect totals, streaks, guess
+`releaseDateScore`. Archive completions do not affect totals, streaks, solve-time
 distribution, or the 14-day score history. An unfinished current puzzle keeps
 yesterday's streak alive, while a failed current puzzle resets it.
 
@@ -418,10 +418,12 @@ daily games, only a win completed on that release date earns rating points.
 
 Midword shows two words vertically. The player supplies one 3–6-letter word
 that forms two familiar closed compounds without spelling changes: BANK + NOTE
-and NOTE + BOOK. The input row shows the exact answer length. The player has
-five accepted guesses; an on-time win earns 5, 4, 3, 2, or 1 points. Invalid,
-incomplete, and duplicate guesses do not consume an attempt. Wrong accepted
-guesses receive whole-word feedback, with no positional letter hints.
+and NOTE + BOOK. The input row shows the exact answer length. Players press
+Start before seeing the puzzle and have unlimited guesses. The wall clock keeps
+running after leaving the game. Release-day solves under 30, 60, 120, and 180
+seconds earn 5, 4, 3, and 2 points; 180 seconds or more earns 1. Giving up or
+solving in the Archive earns zero. Invalid, incomplete, and duplicate guesses
+are rejected. Previous guesses and attempt counters are not shown.
 
 Puzzle content comes from `Backend/midword_approved.json`. The discovery script
 only produces candidates for review; it must never publish them. Candidate
@@ -436,7 +438,7 @@ the remaining approved triples when needed. Already published dates and issue
 numbers are never changed when the bank or difficulty ranking changes.
 
 Midword uses its own chartreuse and charcoal semantic colours. Its input,
-previous guesses, and completion tiles use the reusable Backword cell's default
+and completion tiles use the reusable Backword cell's default
 rounded corners. Both games share the Submit button styling, with Midword's
 own button colours, and show it only when the answer input is full. Midword's
 rating progress bar spans the screen with the same spacing above the keyboard
@@ -449,7 +451,7 @@ custom fonts and `@ScaledMetric` dimensions use the same bounded environment;
 smaller system text sizes remain supported. The gameplay header and keyboard
 stay pinned while puzzle content scrolls, including at accessibility settings.
 
-Midword input, previous guesses, and completion rows never scroll horizontally.
+Midword input and completion rows never scroll horizontally.
 `FittedLetterRow` shrinks square cells and their gaps proportionally to fit the
 available width, keeping shorter rows centered at their preferred size. Cell
 letter sizes follow the fitted cell size. Completion rows reserve enough width
@@ -475,14 +477,14 @@ with the same spacing and padding. It
 uses a dedicated semantic foreground: white text and a translucent white status
 badge in Light Mode, retaining the existing black foreground in Dark Mode.
 Gameplay controls continue to use their separate on-accent colour.
-Empty progress is New; accepted guesses are In
-Progress; wins are Solved on the release date or Finished later; exhausted
-attempts are Failed.
+Empty progress is New; a started timer or existing legacy guesses are In
+Progress; wins are Solved on the release date or Finished later; giving up
+finishes for zero points.
 
 Midword progress is saved locally first in the current guest/account namespace,
 then uploaded through the account-tagged cloud queue. Cross-device conflicts
-select one whole guess list; the greater release-day score snapshot is retained
-independently. Rating uses a 14-day window and adds five possible points for
+retain one whole guess list and the earliest start. The first timed terminal
+outcome wins; completed legacy results retain their saved scores. Rating uses a 14-day window and adds five possible points for
 each Midword release from `2026-10-01` onward.
 
 The DEBUG reset action deletes only today's local Midword progress in the active
@@ -522,13 +524,12 @@ labels. The crossword hint-penalty note uses the same leading alignment. Both
 platforms show zero-point values in the primary text colour and other point
 values in the accent colour.
 
-iOS and web Player Profile explain Backword and Midword together under
-“Backword & Midword”, using one shared five-guess scoring guide: wins earn
-5–1 points for guesses 1–5, and losses or missed puzzles earn zero. Each game
-still earns its own rating points and has its own column in the 14-day breakdown.
+iOS and web Player Profile show Backword’s five-guess scoring guide separately.
+Anagram & Midword share a timed scoring guide. Each game earns independent
+rating points and has its own column in the 14-day breakdown.
 
-Both platforms show Anagram separately after Backword & Midword in the scoring
-guide: solves under 30, 60, 120, and 180 seconds earn 5, 4, 3, and 2 points;
+The timed scoring guide awards solves under 30, 60, 120, and 180 seconds
+5, 4, 3, and 2 points;
 solves taking 180 seconds or more earn 1 point. Giving up or missing a puzzle
 earns zero.
 
@@ -541,19 +542,18 @@ Midword is playable at `/midword`, with immutable dated links at
 `/midword/:date`. Earlier releases require the existing Pro archive gate;
 invalid and future dates never fetch puzzle content. The browser reads the
 same `midword_puzzles` rows, exact answer lengths, approved alternatives, and
-five-attempt rules as iOS. Wrong guesses get whole-word feedback only.
+unlimited guesses and timed scoring as iOS. Wrong guesses have no positional hints.
 
 The browser uses the current native Midword colour assets and wordmarks,
 including appearance-specific backgrounds, borders, and Home-card foregrounds.
-The header, board, guess history, progress bar, and keyboard stay in normal
+The header, board, timer, progress bar, and keyboard stay in normal
 document flow and scroll together with the viewport. The page fills at least
 the viewport height, including the site footer on wider screens, and grows
 with its content rather than scrolling the board behind the keyboard. The board
 has 24px of bottom padding above the rating bar, with another 12px above the
 bar inside the controls. The bar sits directly above the keyboard or Submit
 button when shown, moving up and down as the button appears and disappears.
-Long guess histories extend the page without shrinking their rows. Mobile
-retains its hidden site footer.
+Mobile retains its hidden site footer.
 The gameplay wordmark shares Backword's centered large-logo dimensions,
 narrow-screen sizing, header offset, and action placement in both appearances.
 Above the keyboard, Midword uses the shared rounded, keyboard-width rating
@@ -562,13 +562,9 @@ The gameplay rating bar has no Today score label.
 Completion reveals the primary answer and both compounds; animation is removed
 when Reduce Motion is requested. Instructions, statistics, navigation, sharing,
 and Pro entry points use the established web game controls.
-Previous-guess cells cap at 48px with smaller lettering; the active answer
-cells retain their 56px cap. Both rows shrink to fit narrow viewports.
+Active answer cells retain their 56px cap and shrink to fit narrow viewports.
 The prompt-word board shares the explainer's responsive 520px maximum width,
 aligning the top word's leading edge and bottom word's trailing edge with it.
-Previous guesses use the primary Midword text colour (white in dark mode) and
-1px outcome-coloured borders at 45% opacity, retaining their subtle outcome
-background tints. This treatment applies only to guess history.
 
 Guesses are validated offline against a checked-in 3–6-letter wordfreq list,
 with reviewed name and explicit profanity exclusions. Approved answers bypass
@@ -579,9 +575,9 @@ Browser Midword progress uses the native **cloud** schema (`schemaVersion: 1`,
 `outcome`, and ISO timestamps), rather than Swift's device-local `won` field.
 An omitted `completedAt` normalises to `null`. Local saves precede queued
 account uploads; guest ownership protects Midword-only migrations too. Conflicts
-select one whole guess list using native ranking (won, terminal, fewer guesses
-for wins, more guesses otherwise, then latest update), retaining the maximum
-release-day score separately. Account/date changes remount gameplay, and pending
+retain one whole guess list, the earliest start and the first terminal outcome.
+Timed release-day scores are recalculated after reconciling the start. Legacy
+completed results remain unchanged. Account/date changes remount gameplay, and pending
 loads and syncs cannot update the new account's displayed game.
 
 Home refreshes all five game caches and presents them alongside one shared
@@ -596,8 +592,9 @@ Outfit Regular for body text, Bold (700) for summary values, and Black (900)
 for labels, section headings, rating points, and score chips. Labels use the
 Midword accent, while values use Midword text. Cards and distribution tracks
 use text at 8% opacity; the rating track uses 12%. History follows the native
-Date / Score / Guesses order, with green today/status text, tinted zero-score
-chips, and guess counts out of five. These styles use semantic Midword colours
+Date / Score / Time order, with green today/status text, tinted zero-score
+chips, and solve times. Historical results without times show a dash and are
+excluded from the time-band distribution. These styles use semantic Midword colours
 in both appearances. The stats navigation title retains the native system font.
 
 The completion sheet keeps its Outfit title inside the scrolling content and
@@ -755,8 +752,8 @@ date/type metadata identifies saved progress offline; a matching loaded daily
 puzzle can also identify a legacy record missing that metadata. Unknown legacy
 dates are not guessed. Markers are wide rounded rectangles with small gaps and
 no symbols. Started games use an outlined rectangle; finished games
-use a solid fill for either outcome. While unfinished, Backword and Midword
-fill one fifth per accepted guess. Anagram fills one step per elapsed 30 seconds
+use a solid fill for either outcome. While unfinished, Backword fills one fifth per accepted guess. Anagram and
+Midword fill one step per elapsed 30 seconds
 through the first three minutes, then holds below full; its timer continues
 when the player leaves the game, and Home refreshes at each step while visible.
 Anagram tile placements do not affect the marker. The crossword fills by
@@ -2448,3 +2445,35 @@ Unfinished daily and weekly crosswords can be revealed by free and Pro players, 
 Home and archive game status labels show `Gave up` for revealed games and `Failed` for exhausted attempts. Both crossword home cards use the same primary text colour as Backword for the `Gave up` label. Backword and Midword give-ups are identified from terminal losses with fewer than five guesses, including older saved and synced progress.
 
 Backword animates the info card above previous guesses with wide horizontal screen margins, replacing the stuck message with an unfilled flag reminder after one minute in an unfinished game. Each accepted guess hides the reminder and restarts the one-minute countdown; leaving or completing the game cancels it.
+
+## Timed Midword progress compatibility
+
+`startedAt` and `elapsedSecondsAtCompletion` are optional additions to the native
+local record and shared schemaVersion 1 cloud payload. Missing fields identify
+legacy saves. Unfinished legacy games keep their guesses and require Start to
+begin a fresh timer. Completed legacy scores are never inferred from elapsed
+time or changed retroactively. Accepted guesses remain internal for duplicate
+validation; unlimited guesses have no failure threshold. A give-up can have zero
+guesses. Statistics use saved release-day eligibility, and time bands match the
+scoring thresholds.
+
+Deploy `20261113_timed_midword.sql` before releasing timed clients. It adds a
+Midword-specific merge branch without changing the other games. Older clients
+cannot reliably play or read unlimited timed attempts and should be updated;
+server reconciliation protects a timed clock against writes without a start.
+A legacy completion predating that clock remains authoritative; a completion
+written after the timed start is treated as a stale older-client attempt.
+No migration of historical puzzle content or scores is required.
+
+## Timed game introduction layout
+
+Anagram and Midword share a start-card layout on iOS and web. Titles stay at the
+top below navigation with the issue number directly below; Midword uses its
+existing logo. Only the introduction panels are vertically centered in the
+remaining space above the site footer where present. On iOS, `GameStartScreen`
+keeps the header outside the centered, scrollable `GameStartContainer`.
+The panel uses the same Outfit/AppFont heading, body, detail, and Start-button
+styles, square corners, and game-specific semantic colors. Midword includes its
+answer length and unlimited-guess guidance. Only pressing Start reveals a new
+puzzle. Short viewports and larger text scroll naturally instead of clipping the
+panel. Active gameplay retains its existing board and dock placement.

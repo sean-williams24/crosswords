@@ -1,7 +1,7 @@
 import { backwordScore } from "../backword/engine";
 import { localDateString } from "../backword/date";
 import { normalizeAnagramProgress, pointsForSeconds, type AnagramProgress } from "../anagram/engine";
-import { decodeProgress, type MidwordProgress } from "../midword/engine";
+import { decodeProgress, mergeProgress, type MidwordProgress } from "../midword/engine";
 import type { BackwordProgress } from "../backword/types";
 import type { CrosswordKind, CrosswordProgress } from "../crossword/types";
 import { supabase } from "../../lib/supabase";
@@ -115,19 +115,10 @@ function chooseWholeRecord<T>(first: CloudRecord<T>, second: CloudRecord<T>): Cl
     const a = decodeProgress(first.payload), b = decodeProgress(second.payload);
     if (!a) return second;
     if (!b) return first;
-    // Match native Midword ranking while retaining earned points independently.
-    const aWon = a.outcome === "won", bWon = b.outcome === "won";
-    const aComplete = a.completedAt !== null, bComplete = b.completedAt !== null;
-    let winner: CloudRecord<T>;
-    if (aWon !== bWon) winner = aWon ? first : second;
-    else if (aComplete !== bComplete) winner = aComplete ? first : second;
-    else if (a.guesses.length !== b.guesses.length) {
-      const preferFirst = aWon ? a.guesses.length < b.guesses.length : a.guesses.length > b.guesses.length;
-      winner = preferFirst ? first : second;
-    } else winner = Date.parse(a.updatedAt) >= Date.parse(b.updatedAt) ? first : second;
-    const score = Math.max(first.release_score, second.release_score, a.releaseDateScore, b.releaseDateScore);
-    return { ...winner, game_type: "midword", release_score: score,
-      payload: { ...(winner.payload === first.payload ? a : b), releaseDateScore: score } as T };
+    const payload = mergeProgress(a, b);
+    return { ...first, status: payload.outcome === "won" ? "solved" : payload.completedAt ? "failed" : "in_progress",
+      progress_rank: payload.guesses.length, release_score: payload.releaseDateScore,
+      client_updated_at: payload.updatedAt, payload: payload as T };
   }
   if (first.game_type === "anagram" && second.game_type === "anagram") {
     const a = normalizeAnagramProgress(first.payload as AnagramProgress);

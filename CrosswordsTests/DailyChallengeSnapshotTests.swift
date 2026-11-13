@@ -109,7 +109,7 @@ struct DailyChallengeSnapshotTests {
         let snapshot = DailyChallengeSnapshot(date: date, backword: backword, midword: midword)
         let expected = guesses == 0 ? nil : Double(min(guesses, 4)) / 5
         #expect(snapshot[.backword].fillFraction == expected)
-        #expect(snapshot[.midword].fillFraction == expected)
+        #expect(snapshot[.midword].fillFraction == nil)
         #expect(snapshot[.backword].isFinished == false)
         #expect(snapshot[.midword].isFinished == false)
         #expect(snapshot[.backword].accessibilityLabel.contains("\(guesses) of 5 guesses used") == (guesses > 0))
@@ -134,7 +134,7 @@ struct DailyChallengeSnapshotTests {
         #expect(snapshot[.backword].state == .inProgress)
         #expect(snapshot[.midword].state == .inProgress)
         #expect(snapshot[.backword].fillFraction == 0.2)
-        #expect(snapshot[.midword].fillFraction == 0.4)
+        #expect(snapshot[.midword].fillFraction == nil)
         #expect(snapshot.finishedCount == 0)
     }
 

@@ -2,13 +2,13 @@ import { describe, expect, it } from "vitest";
 import { localDateOffset } from "../backword/date";
 import { buildPlayerProfileRating } from "../profile/profileRating";
 import { chooseBestProgress, midwordCloudRecord } from "../sync/progressSync";
-import { accepts, decodeProgress, emptyProgress, midwordStats, midwordStatus, submitGuess, validPuzzle, type MidwordPuzzle } from "./engine";
+import { accepts, startProgress, giveUp, elapsedSeconds, mergeProgress, decodeProgress, emptyProgress, midwordStats, midwordStatus, submitGuess, validPuzzle, type MidwordPuzzle } from "./engine";
 import { validMidwordGuesses } from "./validGuesses";
 
 const now = new Date(2026, 9, 11, 12);
 const date = "2026-10-11";
 export const puzzle: MidwordPuzzle = { id: "midword-11", date, puzzleNumber: 11, firstWord: "BANK", secondWord: "BOOK", answer: "NOTE", alternatives: [] };
-const submit = (progress = emptyProgress(date), word = "NOTE", time = now) => submitGuess(progress, puzzle, word, () => true, time).progress;
+const submit = (progress = startProgress(emptyProgress(date), now), word = "NOTE", time = now) => submitGuess(startProgress(progress, now), puzzle, word, () => true, time).progress;
 
 describe("Midword rules and statistics", () => {
   it("validates answer length, alternatives, ASCII prompts and real calendar dates", () => {
@@ -17,13 +17,43 @@ describe("Midword rules and statistics", () => {
       expect(validPuzzle({ ...puzzle, ...changes })).toBe(false);
     }
   });
-  it.each([1, 2, 3, 4, 5])("scores a release-day win on guess %i", (attempt) => {
-    let progress = emptyProgress(date);
-    for (let index = 0; index < attempt - 1; index++) progress = submit(progress, ["PAGE", "WORD", "READ", "LINE"][index]);
-    progress = submit(progress);
-    expect(progress.outcome).toBe("won");
-    expect(progress.releaseDateScore).toBe(6 - attempt);
-    expect(progress.completedAt).toBe(now.toISOString());
+  it.each([[0,5],[29,5],[30,4],[59,4],[60,3],[119,3],[120,2],[179,2],[180,1],[3600,1]])("scores a solve at %i seconds as %i", (seconds, points) => {
+    const progress = submitGuess(startProgress(emptyProgress(date), now), puzzle, "NOTE", () => true, new Date(now.getTime() + seconds * 1000)).progress;
+    expect(progress.releaseDateScore).toBe(points);
+    expect(progress.elapsedSecondsAtCompletion).toBe(seconds);
+  });
+  it("requires Start and does not reset an existing start", () => {
+    const blank = emptyProgress(date);
+    expect(submitGuess(blank, puzzle, "NOTE", () => true, now).progress).toBe(blank);
+    const started = startProgress(blank, now);
+    expect(startProgress(started, new Date(now.getTime() + 10000))).toBe(started);
+    expect(elapsedSeconds(started, new Date(now.getTime() + 60000))).toBe(60);
+  });
+  it("merges the earliest start and first terminal result in either order", () => {
+    const early = startProgress(emptyProgress(date), now);
+    const later = startProgress(emptyProgress(date), new Date(now.getTime() + 30000));
+    const solved = submitGuess(later, puzzle, "NOTE", () => true, new Date(now.getTime() + 60000)).progress;
+    for (const merged of [mergeProgress(early, solved), mergeProgress(solved, early)]) {
+      expect(merged.startedAt).toBe(early.startedAt);
+      expect(merged.elapsedSecondsAtCompletion).toBe(60);
+      expect(merged.releaseDateScore).toBe(3);
+    }
+    const abandoned = giveUp(early, new Date(now.getTime() + 20000));
+    expect(mergeProgress(solved, abandoned).outcome).toBe("failed");
+  });
+  it("preserves completed legacy scores and starts unfinished legacy progress afresh", () => {
+    const legacy = { ...emptyProgress(date), guesses: ["NOTE"], outcome: "won" as const, completedAt: now.toISOString(), releaseDateScore: 4 };
+    expect(mergeProgress(legacy, startProgress(emptyProgress(date), now))).toBe(legacy);
+    expect(midwordStats([legacy], now).timeDistribution).toEqual([0,0,0,0,0]);
+    expect(midwordStats([legacy], now).rollingScore).toBe(4);
+    const timed = startProgress(emptyProgress(date), now);
+    const stale = { ...legacy, completedAt: new Date(now.getTime() + 10000).toISOString() };
+    expect(mergeProgress(timed, stale)).toEqual(timed);
+    expect(mergeProgress(stale, timed)).toEqual(timed);
+    const resumed = startProgress({ ...emptyProgress(date), guesses: ["PAGE"] }, now);
+    expect(resumed.guesses).toEqual(["PAGE"]);
+    expect(resumed.startedAt).toBe(now.toISOString());
+    expect(decodeProgress(JSON.parse(JSON.stringify(resumed)))).toMatchObject(resumed);
   });
   it("does not consume incomplete, duplicate, invalid or repeated-letter guesses", () => {
     const progress = submit(emptyProgress(date), "PAGE");
@@ -37,15 +67,20 @@ describe("Midword rules and statistics", () => {
   it("always accepts approved answers and alternatives independently of the dictionary", () => {
     const alternativePuzzle = { ...puzzle, alternatives: ["LINK"] };
     expect(accepts(alternativePuzzle, "LINK")).toBe(true);
-    expect(submitGuess(emptyProgress(date), alternativePuzzle, "LINK", () => false, now).progress.outcome).toBe("won");
-    expect(submitGuess(emptyProgress(date), puzzle, "NOTE", () => false, now).progress.outcome).toBe("won");
+    expect(submitGuess(startProgress(emptyProgress(date), now), alternativePuzzle, "LINK", () => false, now).progress.outcome).toBe("won");
+    expect(submitGuess(startProgress(emptyProgress(date), now), puzzle, "NOTE", () => false, now).progress.outcome).toBe("won");
   });
-  it("fails after five accepted wrong words and never changes terminal progress", () => {
-    let progress = emptyProgress(date);
-    for (const word of ["PAGE", "WORD", "READ", "LINE", "BOOK"]) progress = submit(progress, word);
-    expect(progress.outcome).toBe("failed");
-    expect(progress.releaseDateScore).toBe(0);
-    expect(submit(progress)).toBe(progress);
+  it("continues past five wrong words and gives up only explicitly", () => {
+    let progress = startProgress(emptyProgress(date), now);
+    for (const word of ["PAGE", "WORD", "READ", "LINE", "BOOK", "LINK"]) progress = submit(progress, word);
+    expect(progress.completedAt).toBeNull();
+    expect(decodeProgress(progress)?.guesses).toHaveLength(6);
+    expect(submit(progress).outcome).toBe("won");
+    const abandoned = giveUp(progress, now);
+    expect(abandoned.outcome).toBe("failed");
+    expect(abandoned.releaseDateScore).toBe(0);
+    expect(decodeProgress(giveUp(startProgress(emptyProgress(date), now), now))).not.toBeNull();
+    expect(submit(abandoned)).toBe(abandoned);
   });
   it("gives archive wins no points and labels them Finished", () => {
     const progress = submit(emptyProgress(date), "NOTE", new Date(2026, 9, 12, 12));
@@ -69,11 +104,12 @@ describe("Midword rules and statistics", () => {
     expect(stats.totalSolved).toBe(2);
     expect(stats.currentStreak).toBe(2);
     expect(stats.bestStreak).toBe(2);
-    expect(stats.guessDistribution).toEqual([2, 0, 0, 0, 0]);
+    expect(stats.timeDistribution).toEqual([2, 0, 0, 0, 0]);
     expect(stats.rollingScore).toBe(10);
-    expect(stats.rows.find((r) => r.date === "2026-10-08")).toMatchObject({ outcome: "unplayed", guessCount: null, score: 0 });
-    let failed = emptyProgress(date);
+    expect(stats.rows.find((r) => r.date === "2026-10-08")).toMatchObject({ outcome: "unplayed", elapsedSeconds: null, score: 0 });
+    let failed = startProgress(emptyProgress(date), now);
     for (const word of ["PAGE", "WORD", "READ", "LINE", "BOOK"]) failed = submit(failed, word);
+    failed = giveUp(failed, now);
     expect(midwordStats([...records.filter((p) => p.date !== date), failed], now).currentStreak).toBe(0);
   });
   it("limits history to fourteen local release dates after launch", () => {
@@ -91,31 +127,13 @@ describe("Midword rules and statistics", () => {
     const rating = buildPlayerProfileRating({ backword: [], dailyCrossword: [], weeklyCrossword: [],
       midword: [midwordCloudRecord(progress)] }, false, viewingDate);
 
-    expect(stats.rows.find((row) => row.date === progress.date)).toMatchObject({ outcome: "solved", score: 5, guessCount: 1 });
+    expect(stats.rows.find((row) => row.date === progress.date)).toMatchObject({ outcome: "solved", score: 5, elapsedSeconds: 0 });
     expect(stats.rollingScore).toBe(5);
     expect(stats.rollingScore).toBe(rating.totalPoints);
     expect(stats.totalSolved).toBe(1);
     expect(stats.currentStreak).toBe(1);
     expect(stats.bestStreak).toBe(1);
-    expect(stats.guessDistribution).toEqual([1, 0, 0, 0, 0]);
-  });
-  it("uses the release-day score preserved separately from a merged archive attempt", () => {
-    const onTime = { ...submit(), date: "2026-10-15", guesses: ["PAGE", "NOTE"],
-      releaseDateScore: 4, completedAt: "2026-10-15T12:00:00Z", updatedAt: "2026-10-15T12:00:00Z" };
-    const archive = { ...onTime, guesses: ["NOTE"], releaseDateScore: 0,
-      completedAt: "2026-10-16T12:00:00Z", updatedAt: "2026-10-16T12:00:00Z" };
-    const merged = chooseBestProgress(midwordCloudRecord(onTime), midwordCloudRecord(archive));
-    expect(merged.payload.completedAt).toBe(archive.completedAt);
-
-    const viewingDate = new Date(2026, 9, 16, 12);
-    const stats = midwordStats([merged.payload], viewingDate);
-    const rating = buildPlayerProfileRating({ backword: [], dailyCrossword: [], weeklyCrossword: [],
-      midword: [merged] }, false, viewingDate);
-    expect(stats.rows.find((row) => row.date === onTime.date)).toMatchObject({ outcome: "solved", score: 4, guessCount: 1 });
-    expect(stats.rollingScore).toBe(rating.totalPoints);
-    expect(stats.currentStreak).toBe(1);
-    expect(stats.guessDistribution).toEqual([1, 0, 0, 0, 0]);
-    expect(midwordStats([archive], viewingDate)).toMatchObject({ totalSolved: 0, rollingScore: 0 });
+    expect(stats.timeDistribution).toEqual([1, 0, 0, 0, 0]);
   });
   it("bundles common 3–6-letter guesses for offline play", () => {
     for (const word of ["CAT", "NOTE", "WORD", "HOUSE", "CASTLE"]) expect(validMidwordGuesses.has(word)).toBe(true);

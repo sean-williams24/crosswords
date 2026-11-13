@@ -5,12 +5,12 @@ import { chooseBestProgress, midwordCloudRecord } from "../sync/progressSync";
 import { canMigrateGuestProgress, clearGuestMigrationOwnerIfEmpty } from "../sync/guestMigration";
 import { buildMidwordShareResult } from "../share/puzzleResult";
 import { puzzleResultCardSvg } from "../share/PuzzleResultShare";
-import { emptyProgress, midwordStats, submitGuess, type MidwordPuzzle } from "./engine";
+import { emptyProgress, startProgress, midwordStats, submitGuess, type MidwordPuzzle } from "./engine";
 import { createMidwordStorage } from "./storage";
 
 const now = new Date(2026, 9, 11, 12);
 const puzzle: MidwordPuzzle = { id: "puzzle", date: "2026-10-11", puzzleNumber: 11, firstWord: "BANK", secondWord: "BOOK", answer: "NOTE", alternatives: [] };
-const won = submitGuess(emptyProgress(puzzle.date), puzzle, "NOTE", () => false, now).progress;
+const won = submitGuess(startProgress(emptyProgress(puzzle.date), now), puzzle, "NOTE", () => false, now).progress;
 beforeEach(() => localStorage.clear());
 
 describe("Midword account, rating and sharing integration", () => {
@@ -37,14 +37,14 @@ describe("Midword account, rating and sharing integration", () => {
     storage.deleteProgress(won.date); clearGuestMigrationOwnerIfEmpty(localStorage);
     expect(localStorage.getItem("backword:web:sync:guest-migration-owner:v1")).toBeNull();
   });
-  it("prefers the native shorter solved guess list while preserving release-day points", () => {
-    const onTime = { ...won, guesses: ["PAGE", "NOTE"], releaseDateScore: 4 };
+  it("keeps the first terminal result instead of ranking by guesses", () => {
+    const onTime = { ...won, guesses: ["PAGE", "NOTE"] };
     const archive = { ...won, completedAt: new Date(2026, 9, 12, 12).toISOString(), releaseDateScore: 0 };
     const merged = chooseBestProgress(midwordCloudRecord(onTime), midwordCloudRecord(archive));
-    expect(merged.payload.guesses).toEqual(["NOTE"]);
-    expect(merged.payload.completedAt).toBe(archive.completedAt);
-    expect(merged.release_score).toBe(4);
-    expect(merged.payload.releaseDateScore).toBe(4);
+    expect(merged.payload.guesses).toEqual(["PAGE", "NOTE"]);
+    expect(merged.payload.completedAt).toBe(onTime.completedAt);
+    expect(merged.release_score).toBe(5);
+    expect(merged.payload.releaseDateScore).toBe(5);
   });
   it("includes local Midword points immediately in the shared player rating", () => {
     localStorage.setItem("backword:web:anagram:first-release:v1", "2026-09-01");
@@ -61,7 +61,7 @@ describe("Midword account, rating and sharing integration", () => {
     const result = buildMidwordShareResult({ puzzle, progress: won, stats: midwordStats([won], now),
       rating: buildPlayerProfileRating(loadLocalProfileRecords(), false, now), origin: "https://playbackword.com" });
     expect(result.url).toContain("/midword/2026-10-11?utm_source=share");
-    expect(result.primaryStat).toEqual({ label: "GUESSES", value: "1/5" });
+    expect(result.primaryStat).toEqual({ label: "TIME", value: "00:00:00" });
     const shared = JSON.stringify(result) + puzzleResultCardSvg(result);
     for (const word of ["BANK", "BOOK", "NOTE", "BANKNOTE", "NOTEBOOK"]) expect(shared).not.toContain(word);
     expect(puzzleResultCardSvg(result)).toContain('fill="#1f1f1f"');

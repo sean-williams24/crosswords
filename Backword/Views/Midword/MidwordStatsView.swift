@@ -117,7 +117,7 @@ struct MidwordStatsView: View {
                 .font(AppFont.clueLabel(14))
                 .foregroundStyle(Color.midwordAccent)
                 .tracking(3)
-            Text(progress.isWon ? "In \(progress.guesses.count) guesses" : "The answer was...")
+            Text(progress.isWon ? (progress.elapsedSecondsAtCompletion == nil ? "Solved" : "Solved in \(progress.formattedCompletionTime)") : "The answer was...")
                 .font(AppFont.body())
                 .foregroundStyle(Color.midwordText)
         }
@@ -155,14 +155,14 @@ struct MidwordStatsView: View {
     private var statsContent: some View {
         VStack(spacing: 28) {
             summaryCard.padding(.horizontal, AppLayout.screenPadding)
-            guessDistributionCard.padding(.horizontal, AppLayout.screenPadding)
+            timeDistributionCard.padding(.horizontal, AppLayout.screenPadding)
             MidwordStatsHistoryView(rows: history.rows)
         }
     }
 
     private var completionStats: some View {
         HStack(spacing: 0) {
-            completionStat(value: "\(progress.guesses.count)/5", label: "GUESSES")
+            completionStat(value: progress.formattedCompletionTime, label: "TIME")
             divider
             completionStat(value: "\(progress.releaseDateScore)/5", label: "POINTS")
         }
@@ -196,21 +196,21 @@ struct MidwordStatsView: View {
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
-    private var guessDistributionCard: some View {
+    private var timeDistributionCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("GUESS DISTRIBUTION")
+            Text("SOLVE TIME DISTRIBUTION")
                 .font(AppFont.clueLabel(12))
                 .foregroundStyle(Color.midwordAccent)
                 .tracking(2)
-            ForEach(1...5, id: \.self) { guessCount in
+            ForEach(1...5, id: \.self) { band in
                 HStack(spacing: 10) {
-                    Text("\(guessCount)")
+                    Text(["<30s", "<1m", "<2m", "<3m", "3m+"][band - 1])
                         .font(AppFont.clueLabel(11))
                         .foregroundStyle(Color.midwordText)
-                        .frame(width: 14)
+                        .frame(width: 40)
                     GeometryReader { geometry in
-                        let count = history.guessDistribution[guessCount, default: 0]
-                        let maximum = max(1, history.guessDistribution.values.max() ?? 0)
+                        let count = history.timeDistribution[band, default: 0]
+                        let maximum = max(1, history.timeDistribution.values.max() ?? 0)
                         ZStack(alignment: .leading) {
                             Capsule().fill(Color.midwordText.opacity(0.08))
                             Capsule().fill(Color.midwordAccent)
@@ -218,7 +218,7 @@ struct MidwordStatsView: View {
                         }
                     }
                     .frame(height: 18)
-                    Text("\(history.guessDistribution[guessCount, default: 0])")
+                    Text("\(history.timeDistribution[band, default: 0])")
                         .font(AppFont.body(12))
                         .foregroundStyle(Color.midwordText)
                         .frame(width: 22, alignment: .trailing)

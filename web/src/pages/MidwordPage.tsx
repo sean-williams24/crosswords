@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { TimedGameStartCard } from "../components/TimedGameStartCard";
 import { Footer } from "../components/Footer";
+import { BackwordModal } from "../features/backword/components/BackwordModal";
 import { GameSubmitButton } from "../components/GameSubmitButton";
 import { useAuth } from "../features/auth/AuthProvider";
 import { ProAccessRedirect } from "../features/pro/ProAccessRedirect";
@@ -9,7 +11,7 @@ import { BackwordKeyboard } from "../features/backword/components/BackwordKeyboa
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { createMidwordRepository } from "../features/midword/repository";
 import { createMidwordStorage } from "../features/midword/storage";
-import { midwordStats, submitGuess, type MidwordProgress, type MidwordPuzzle } from "../features/midword/engine";
+import { midwordStats, submitGuess, startProgress, elapsedSeconds, formatTime, giveUp, type MidwordProgress, type MidwordPuzzle } from "../features/midword/engine";
 import { validMidwordGuesses } from "../features/midword/validGuesses";
 import { MidwordBoard } from "../features/midword/MidwordBoard";
 import { MidwordDialog } from "../features/midword/MidwordDialog";
@@ -61,6 +63,7 @@ function MidwordGame({ date }: { date: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [now, setNow] = useState(new Date());
   const completionPresented = useRef(false);
+  const [confirmGiveUp, setConfirmGiveUp] = useState(false);
 
   useEffect(() => {
     setInputError(feedback !== null);
@@ -123,38 +126,48 @@ function MidwordGame({ date }: { date: string }) {
     completionPresented.current = true; setInput(""); setFeedback(null); setSheet("completion");
   }, [loading, progress.completedAt, puzzle]);
   useEffect(() => {
-    if (sheet !== "completion") return;
+    if (sheet !== "completion" && (!progress.startedAt || progress.completedAt)) return;
     setNow(new Date());
     const timer = window.setInterval(() => setNow(new Date()), 1000);
     return () => window.clearInterval(timer);
-  }, [sheet]);
+  }, [sheet, progress.startedAt, progress.completedAt]);
 
   const history = useMemo(() => storage.loadAllProgress(), [progress, storage]);
   const stats = useMemo(() => midwordStats(history, now), [history, now]);
   const rating = useMemo(() => buildPlayerProfileRating(loadLocalProfileRecords(user?.id), entitlement?.isPro === true), [progress, user?.id, entitlement?.isPro]);
   const shareResult = puzzle && progress.completedAt ? buildMidwordShareResult({ puzzle, progress, stats, rating }) : null;
-  const canSubmit = !!puzzle && !progress.completedAt && input.length === puzzle.answer.length;
+  const showsStart = !!puzzle && !loading && !progress.startedAt && !progress.completedAt;
+  const canSubmit = !!puzzle && !!progress.startedAt && !progress.completedAt && input.length === puzzle.answer.length;
+  const begin = () => {
+    const next = startProgress(progress);
+    storage.saveProgress(next); setProgress(next); setNow(new Date()); track(gameStarted("midword"));
+  };
+  const abandon = () => {
+    const next = giveUp(progress);
+    storage.saveProgress(next); setProgress(next); setConfirmGiveUp(false);
+    track(gameCompleted("midword", "failed", { releaseDay: isCompletedOnReleaseDate(date, next.completedAt), score: 0, durationSeconds: next.elapsedSecondsAtCompletion ?? null }));
+  };
   const enterLetter = useCallback((letter: string) => {
-    if (!puzzle || progress.completedAt || !/^[a-z]$/i.test(letter)) return;
+    if (!puzzle || !progress.startedAt || progress.completedAt || !/^[a-z]$/i.test(letter)) return;
     setInput((current) => (current + letter.toUpperCase()).slice(0, puzzle.answer.length)); setFeedback(null);
-  }, [progress.completedAt, puzzle]);
+  }, [progress.startedAt, progress.completedAt, puzzle]);
   const deleteLetter = useCallback(() => {
-    if (!progress.completedAt) { setInput((current) => current.slice(0, -1)); setFeedback(null); }
-  }, [progress.completedAt]);
+    if (progress.startedAt && !progress.completedAt) { setInput((current) => current.slice(0, -1)); setFeedback(null); }
+  }, [progress.startedAt, progress.completedAt]);
   const submit = useCallback(() => {
     if (!puzzle) return;
     const result = submitGuess(progress, puzzle, input, (word) => validMidwordGuesses.has(word));
     if (result.message) { setFeedback({ message: result.message }); navigator.vibrate?.([30, 50, 80]); }
     if (result.progress === progress) return;
     storage.saveProgress(result.progress); setProgress(result.progress); setInput(""); setFeedback(null);
-    if (!progress.guesses.length) track(gameStarted("midword"));
+
     if (result.progress.completedAt) track(gameCompleted("midword", result.progress.outcome === "won" ? "won" : "failed", {
-      releaseDay: isCompletedOnReleaseDate(date, result.progress.completedAt), score: result.progress.releaseDateScore, durationSeconds: null
+      releaseDay: isCompletedOnReleaseDate(date, result.progress.completedAt), score: result.progress.releaseDateScore, durationSeconds: result.progress.elapsedSecondsAtCompletion ?? null
     }));
   }, [date, input, progress, puzzle, storage, track]);
   useEffect(() => {
     const keyDown = (event: KeyboardEvent) => {
-      if (sheet || menuOpen || loading || event.ctrlKey || event.metaKey || event.altKey
+      if (sheet || menuOpen || confirmGiveUp || loading || event.ctrlKey || event.metaKey || event.altKey
         || (event.target instanceof HTMLElement && (event.target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(event.target.tagName)))) return;
       if (/^[a-z]$/i.test(event.key)) { event.preventDefault(); enterLetter(event.key); }
       else if (event.key === "Backspace") { event.preventDefault(); deleteLetter(); }
@@ -162,7 +175,7 @@ function MidwordGame({ date }: { date: string }) {
     };
     window.addEventListener("keydown", keyDown);
     return () => window.removeEventListener("keydown", keyDown);
-  }, [deleteLetter, enterLetter, loading, menuOpen, sheet, submit]);
+  }, [deleteLetter, enterLetter, loading, menuOpen, confirmGiveUp, sheet, submit]);
 
   return <div className="bw-page midword-page">
     <div className="bw-shell midword-shell">
@@ -172,23 +185,34 @@ function MidwordGame({ date }: { date: string }) {
         <nav aria-label="Midword actions" className="bw-game-actions--top bw-game-actions--logo-header"><button aria-label="Midword stats" className="bw-icon-button" onClick={() => setSheet("stats")} type="button">🧠</button>
           <button aria-label="How to play Midword" className="bw-icon-button bw-info-icon" onClick={() => setSheet("instructions")} type="button">ⓘ</button></nav>
       </header>
-      <main className="midword-main">
+      {puzzle ? <p className="midword-issue">Puzzle #{puzzle.puzzleNumber}</p> : null}
+      <main className={`midword-main${showsStart ? " timed-game-start-layout" : ""}`}>
         {loading ? <p role="status">Loading Midword…</p> : error ? <div role="alert"><p>{error}</p><button className="bw-primary-button" onClick={() => setRetry((value) => value + 1)} type="button">Try again</button></div>
           : puzzle ? <>
-            <p className="midword-issue">PUZZLE #{puzzle.puzzleNumber}</p>
             {offline ? <p className="midword-note">Playing saved game offline</p> : null}
             {syncError ? <p className="midword-note">{syncError}</p> : null}
+            {!progress.startedAt && !progress.completedAt ? <TimedGameStartCard game="midword"
+              headings={["Find the connection.", "Complete both words."]}
+              explanation="Find the missing middle word that ends the top word and starts the bottom word. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points."
+              detail={`${puzzle.answer.length} letters · unlimited guesses · no time limit`} onStart={begin} /> : <>
+            <p role="timer" aria-label="Elapsed time">{formatTime(progress.completedAt ? progress.elapsedSecondsAtCompletion : elapsedSeconds(progress, now))}</p>
             <MidwordBoard input={input} inputError={inputError} message={message} progress={progress} puzzle={puzzle} />
+            {progress.startedAt && !progress.completedAt ? <button type="button" onClick={() => setConfirmGiveUp(true)}>Give up</button> : null}
+            </>}
             {shareResult && sheet === null ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
           </> : null}
       </main>
-      {!loading && puzzle && !progress.completedAt ? <footer className="bw-game-controls midword-controls">
+      {!loading && puzzle && progress.startedAt && !progress.completedAt ? <footer className="bw-game-controls midword-controls">
         <div aria-label={`${stats.rollingScore} of 70 Midword points`} className="bw-game-score bw-game-score--keyboard-width"><span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} /></div>
         <GameSubmitButton onSubmit={submit} visible={canSubmit} />
         <BackwordKeyboard ariaLabel="Midword keyboard" disabled={false} onDelete={deleteLetter} onLetter={enterLetter} />
       </footer> : null}
     </div>
     <Footer />
+    {confirmGiveUp ? <BackwordModal title="Give up?" className="midword-dialog" onClose={() => setConfirmGiveUp(false)}>
+      <p>This will reveal the answer for zero points.</p>
+      <button type="button" onClick={() => setConfirmGiveUp(false)}>Cancel</button><button type="button" onClick={abandon}>Reveal Answer</button>
+    </BackwordModal> : null}
     {sheet ? <MidwordDialog kind={sheet} now={now} onClose={() => setSheet(null)} progress={progress} puzzle={puzzle} shareResult={shareResult} stats={stats} /> : null}
   </div>;
 }

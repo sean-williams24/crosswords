@@ -214,6 +214,8 @@
 		ADA130033011000000000001 /* AnalyticsStartupServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA130023011000000000001 /* AnalyticsStartupServiceTests.swift */; };
 		AFA2F03099D439E90FBDB228 /* HomeDailyChallengeCelebration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18807D162976E27AE5C2CEC3 /* HomeDailyChallengeCelebration.swift */; };
 		B022F8B276983EAF1219E126 /* WOTDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */; };
+		B11111111111111111111111 /* MidwordStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11111111111111111111112 /* MidwordStartView.swift */; };
+		B11111111111111111111113 /* ../CrosswordsTests/TimedMidwordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11111111111111111111114 /* ../CrosswordsTests/TimedMidwordTests.swift */; };
 		B77DC0100000000000000001 /* ../CrosswordsTests/MidwordColorAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */; };
 		B77DC0200000000000000001 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */; };
 		B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */; };
@@ -490,6 +492,8 @@
 		ADA120043011000000000001 /* DeferredAdConsentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeferredAdConsentTests.swift; path = ../CrosswordsTests/DeferredAdConsentTests.swift; sourceTree = "<group>"; };
 		ADA130003011000000000001 /* AnalyticsStartupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsStartupService.swift; sourceTree = "<group>"; };
 		ADA130023011000000000001 /* AnalyticsStartupServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AnalyticsStartupServiceTests.swift; path = ../CrosswordsTests/AnalyticsStartupServiceTests.swift; sourceTree = "<group>"; };
+		B11111111111111111111112 /* MidwordStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStartView.swift; sourceTree = "<group>"; };
+		B11111111111111111111114 /* ../CrosswordsTests/TimedMidwordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/TimedMidwordTests.swift; sourceTree = "<group>"; };
 		B35393D8C1799968B4B9119D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveMonth.swift; sourceTree = "<group>"; };
 		B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/MidwordColorAssetTests.swift; sourceTree = "<group>"; };
@@ -604,6 +608,7 @@
 		00EC67C42E7E2A26C6A44CB3 /* BackwordTests */ = {
 			isa = PBXGroup;
 			children = (
+				B11111111111111111111114 /* ../CrosswordsTests/TimedMidwordTests.swift */,
 				0FD34781B46A8A180D978DFC /* ../CrosswordsTests/HomeDailyChallengeLayoutTests.swift */,
 				BA3A797CBA3BFB73F993F6CD /* ../CrosswordsTests/HomeDailyChallengeViewModelTests.swift */,
 				BDE5582CCB770E392680461A /* ../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift */,
@@ -919,6 +924,7 @@
 				A87188026ADFE52E10DA7994 /* MidwordStatsView.swift */,
 				A0B000000000000000000002 /* MidwordStatsHistoryView.swift */,
 				A8A0A1414A965F7AD329B7C4 /* MidwordView.swift */,
+				B11111111111111111111112 /* MidwordStartView.swift */,
 				F4D000013017000000000001 /* MidwordLogo.swift */,
 			);
 			path = Midword;
@@ -1188,6 +1194,7 @@
 				ADA110073011000000000001 /* PreGameAdServiceTests.swift in Sources */,
 				04F1AE892FE2A3E6007A1001 /* AppVersionInfoTests.swift in Sources */,
 				1A7E20261029000000000004 /* ../CrosswordsTests/IntervlsBrandTests.swift in Sources */,
+				B11111111111111111111113 /* ../CrosswordsTests/TimedMidwordTests.swift in Sources */,
 				0838E5D72FE2E5AB00000001 /* ArchiveTabBarViewTests.swift in Sources */,
 				05A1D9B72FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift in Sources */,
 				AD5100053011000000000001 /* AppleAdsAttributionServiceTests.swift in Sources */,
@@ -1254,6 +1261,7 @@
 				A8C8B52EC75BCACC3BADB7A8 /* MidwordInstructionsView.swift in Sources */,
 				A87593C9AEA8FA0C03E315E7 /* MidwordStatsView.swift in Sources */,
 				A83D7E3FB67BDC4A73E32933 /* MidwordView.swift in Sources */,
+				B11111111111111111111111 /* MidwordStartView.swift in Sources */,
 				F4D000023017000000000001 /* MidwordLogo.swift in Sources */,
 				A0A000000000000000000111 /* AnagramArchiveRow.swift in Sources */,
 				A0A000000000000000000119 /* AnagramCompletionWordView.swift in Sources */,

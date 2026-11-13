@@ -15,9 +15,9 @@ const progress: MidwordProgress = {
   ...emptyProgress(today), outcome: "failed", guesses: ["PAGE", "WORD", "READ", "LINE", "BOOK"]
 };
 const stats: MidwordStats = {
-  currentStreak: 0, bestStreak: 0, totalSolved: 0, rollingScore: 0, guessDistribution: [0, 0, 0, 0, 0],
+  currentStreak: 0, bestStreak: 0, totalSolved: 0, rollingScore: 0, timeDistribution: [0, 0, 0, 0, 0],
   rows: Array.from({ length: 14 }, (_, index) => ({
-    date: localDateOffset(today, -index), outcome: "unplayed", score: 0, guessCount: null
+    date: localDateOffset(today, -index), outcome: "unplayed", score: 0, elapsedSeconds: null
   }))
 };
 
@@ -50,17 +50,17 @@ describe("Midword completion native appearance", () => {
   });
 
   it("shows solved styling, singular guess copy and earned points for a win", () => {
-    renderCompletion({ ...progress, outcome: "won", guesses: ["NOTE"], releaseDateScore: 5 });
+    renderCompletion({ ...progress, outcome: "won", guesses: ["NOTE"], elapsedSecondsAtCompletion: 12, releaseDateScore: 5 });
     expect(screen.getByRole("heading", { name: "Solved!" })).toBeInTheDocument();
-    expect(screen.getByText("In 1 guess")).toBeInTheDocument();
+    expect(screen.getByText("In 00:00:12")).toBeInTheDocument();
     expect(screen.getByRole("group", { name: "NOTE" })).toHaveClass("is-correct");
     expect(screen.getByRole("group", { name: "NOTE" })).not.toHaveClass("is-incorrect");
-    expect(screen.getByLabelText("Midword completion statistics")).toHaveTextContent("1/5Guesses5/5Points");
+    expect(screen.getByLabelText("Midword completion statistics")).toHaveTextContent("00:00:12Time5/5Points");
   });
 
   it("uses plural guess copy for multiple guesses", () => {
     renderCompletion({ ...progress, outcome: "won", guesses: ["PAGE", "NOTE"], releaseDateScore: 4 });
-    expect(screen.getByText("In 2 guesses")).toBeInTheDocument();
+    expect(screen.getByText("Solved")).toBeInTheDocument();
   });
 
   it("keeps HOME and BACK TO GAME outside the scroll area and navigates home", async () => {

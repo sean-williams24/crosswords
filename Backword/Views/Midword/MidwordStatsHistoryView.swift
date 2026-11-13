@@ -23,7 +23,7 @@ struct MidwordStatsHistoryView: View {
                 HStack(spacing: 0) {
                     Text("Date").frame(maxWidth: .infinity, alignment: .leading)
                     Text("Score").frame(width: scoreColumnWidth)
-                    Text("Guesses").frame(width: AppLayout.statsHistoryTimeColumnWidth)
+                    Text("Time").frame(width: AppLayout.statsHistoryTimeColumnWidth)
                 }
                 .font(AppFont.clueLabel(10))
                 .foregroundStyle(Color.midwordAccent)
@@ -71,8 +71,8 @@ struct MidwordStatsHistoryView: View {
                 .frame(width: scoreColumnWidth)
 
             Group {
-                if let guessCount = row.guessCount {
-                    Text("\(guessCount)/5")
+                if let seconds = row.elapsedSeconds {
+                    Text(MidwordProgress.formatTime(seconds))
                 } else {
                     Text("–").foregroundStyle(Color.midwordAccent.opacity(0.5))
                 }

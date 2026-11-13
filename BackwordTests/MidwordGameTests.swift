@@ -13,6 +13,7 @@ struct MidwordGameTests {
     func giveUp() {
         let game = puzzle()
         var progress = MidwordProgress(date: game.date)
+        progress.start()
         progress.submit("PAGE", for: game)
         let now = Date()
         progress.giveUp(at: now)
@@ -57,36 +58,40 @@ struct MidwordGameTests {
                                  alternatives: ["PAGE"])
         #expect(game.isValid)
         var progress = MidwordProgress(date: game.date)
+        progress.start()
         progress.submit("PAGE", for: game)
         #expect(progress.isWon)
     }
 
-    @Test("All five winning scores", arguments: 1...5)
+    @Test("Guess count does not reduce a quick solve score", arguments: 1...5)
     func score(guessNumber: Int) {
         let game = puzzle()
         var progress = MidwordProgress(date: game.date)
+        progress.start()
         for _ in 1..<guessNumber { progress.submit("TEST", for: game) }
         progress.submit("NOTE", for: game)
         #expect(progress.isWon)
-        #expect(progress.releaseDateScore == 6 - guessNumber)
+        #expect(progress.releaseDateScore == 5)
         #expect(progress.guesses.count == guessNumber)
     }
 
-    @Test("Five wrong guesses end play without points")
+    @Test("Five wrong guesses do not end play")
     func failure() {
         let game = puzzle()
         var progress = MidwordProgress(date: game.date)
+        progress.start()
         for _ in 0..<5 { progress.submit("TEST", for: game) }
         progress.submit("NOTE", for: game)
-        #expect(progress.isFailed)
-        #expect(progress.guesses.count == 5)
-        #expect(progress.releaseDateScore == 0)
+        #expect(progress.isWon)
+        #expect(progress.guesses.count == 6)
+        #expect(progress.releaseDateScore == 5)
     }
 
     @Test("Archive solutions do not earn release points")
     func lateWin() {
         let game = puzzle(date: "2026-01-01")
         var progress = MidwordProgress(date: game.date)
+        progress.start()
         progress.submit("NOTE", for: game, at: Date())
         #expect(progress.isWon)
         #expect(progress.releaseDateScore == 0)
@@ -96,9 +101,10 @@ struct MidwordGameTests {
     @MainActor
     func inputRejection() {
         let vm = MidwordViewModel(puzzle: puzzle(), progress: MidwordProgress(date: puzzle().date))
+        vm.start()
         for character in "ZZZZ" { vm.enterLetter(character) }
         vm.submitGuess(isValidWord: { _ in false })
-        #expect(vm.remainingAttempts == 5)
+        #expect(vm.progress.guesses.isEmpty)
         #expect(vm.input == "ZZZZ")
         #expect(vm.message == "Not in the dictionary")
 
@@ -111,11 +117,11 @@ struct MidwordGameTests {
     func repeatedLetterRejection() {
         let game = puzzle()
         let vm = MidwordViewModel(puzzle: game, progress: MidwordProgress(date: game.date))
+        vm.start()
         for character in "DDDD" { vm.enterLetter(character) }
 
         vm.submitGuess(isValidWord: { _ in true })
 
-        #expect(vm.remainingAttempts == 5)
         #expect(vm.progress.guesses.isEmpty)
         #expect(vm.input == "DDDD")
         #expect(vm.message == "Not in the dictionary")
@@ -126,12 +132,13 @@ struct MidwordGameTests {
     func duplicateAndInputLimit() {
         let game = puzzle()
         var progress = MidwordProgress(date: game.date)
+        progress.start()
         progress.submit("TEST", for: game)
         let vm = MidwordViewModel(puzzle: game, progress: progress)
         for character in "TESTX" { vm.enterLetter(character) }
         #expect(vm.input == "TEST")
         vm.submitGuess(isValidWord: { _ in true })
-        #expect(vm.remainingAttempts == 4)
+        #expect(vm.progress.guesses.count == 1)
         #expect(vm.message == "Already guessed")
     }
 
@@ -141,6 +148,7 @@ struct MidwordGameTests {
         let game = puzzle()
         let vm = MidwordViewModel(puzzle: game, progress: MidwordProgress(date: game.date))
         #expect(!vm.canSubmit)
+        vm.start()
         for character in "NOT" { vm.enterLetter(character) }
         #expect(!vm.canSubmit)
         vm.enterLetter("E")
@@ -156,10 +164,11 @@ struct MidwordGameTests {
     func completedSubmitAvailability(won: Bool) {
         let game = puzzle()
         var progress = MidwordProgress(date: game.date)
+        progress.start()
         if won {
             progress.submit("NOTE", for: game)
         } else {
-            for _ in 0..<5 { progress.submit("TEST", for: game) }
+            progress.giveUp()
         }
         let vm = MidwordViewModel(puzzle: game, progress: progress)
         for character in "NOTE" { vm.enterLetter(character) }
@@ -172,6 +181,7 @@ struct MidwordGameTests {
     func completedGameIsImmutable() {
         let game = puzzle()
         var progress = MidwordProgress(date: game.date)
+        progress.start()
         progress.submit("NOTE", for: game)
         progress.submit("TEST", for: game)
         #expect(progress.isWon)
@@ -182,11 +192,13 @@ struct MidwordGameTests {
     func cloudResolution() {
         let game = puzzle()
         var local = MidwordProgress(date: game.date)
+        local.start()
         local.submit("TEST", for: game)
         var remote = MidwordProgress(date: game.date)
+        remote.start()
         remote.submit("NOTE", for: game)
-        #expect(CloudProgressRanking.shouldReplace(local: local, with: remote))
-        #expect(!CloudProgressRanking.shouldReplace(local: remote, with: local))
+        #expect(MidwordProgress.merged(local, remote).isWon)
+        #expect(MidwordProgress.merged(remote, local).isWon)
     }
 
     @Test("Older saved ratings decode with zero Midword points")
@@ -210,6 +222,7 @@ struct MidwordGameTests {
     func inProgressCardStatus() {
         let game = puzzle()
         var progress = MidwordProgress(date: game.date)
+        progress.start()
         progress.submit("TEST", for: game)
         guard case .inProgress = PuzzleStatus.midwordStatus(for: progress) else {
             Issue.record("An accepted guess should show In Progress")
@@ -222,6 +235,7 @@ struct MidwordGameTests {
         let now = Date()
         let game = puzzle(date: late ? "2026-01-01" : ContentReleaseCalendar(now: now).dailyDateString)
         var progress = MidwordProgress(date: game.date)
+        progress.start()
         progress.submit("NOTE", for: game, at: now)
         let status = PuzzleStatus.midwordStatus(for: progress)
         if late {
@@ -237,12 +251,14 @@ struct MidwordGameTests {
         }
     }
 
-    @Test("An exhausted Midword uses the shared Failed status")
+    @Test("Giving up uses the shared give-up status")
     func failedCardStatus() {
         let game = puzzle()
         var progress = MidwordProgress(date: game.date)
+        progress.start()
         for _ in 0..<5 { progress.submit("TEST", for: game) }
-        guard case .failedBackword = PuzzleStatus.midwordStatus(for: progress) else {
+        progress.giveUp()
+        guard case .gaveUp = PuzzleStatus.midwordStatus(for: progress) else {
             Issue.record("An unsuccessful game should show Failed")
             return
         }

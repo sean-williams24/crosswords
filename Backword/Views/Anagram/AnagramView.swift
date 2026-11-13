@@ -59,31 +59,38 @@ struct AnagramView: View {
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
 
-            VStack(alignment: .leading, spacing: 24) {
-                header
-
-                if let progress = viewModel.progress {
-                    activeGame(progress)
-                } else {
+            if viewModel.progress == nil {
+                GameStartScreen {
+                    header
+                } content: {
                     instructions
                 }
-            #if DEBUG
-                if viewModel.puzzle.date == "review" {
-                    Button("Reset review puzzle") {
-                        AnagramProgress.delete(date: "review")
-                        viewModel.reload()
-                        hasPresentedCompletion = false
-                    }
-                    .font(AppFont.body())
-                    .foregroundStyle(Color.anagramOrange)
-                }
-            #endif
-            }
-            .padding(AppLayout.screenPadding)
-            .frame(maxWidth: 560)
-            .frame(maxWidth: .infinity)
+            } else {
+                VStack(alignment: .leading, spacing: 24) {
+                    header
 
-            Spacer()
+                    if let progress = viewModel.progress {
+                        activeGame(progress)
+                    }
+                #if DEBUG
+                    if viewModel.puzzle.date == "review" {
+                        Button("Reset review puzzle") {
+                            AnagramProgress.delete(date: "review")
+                            viewModel.reload()
+                            hasPresentedCompletion = false
+                        }
+                        .font(AppFont.body())
+                        .foregroundStyle(Color.anagramOrange)
+                    }
+                #endif
+                }
+                .padding(AppLayout.screenPadding)
+                .frame(maxWidth: 560)
+                .frame(maxWidth: .infinity)
+
+                Spacer()
+            }
+
             if let progress = viewModel.progress {
                 gameplayDock(progress)
                     .padding(.horizontal, AppLayout.screenPadding)
@@ -268,28 +275,16 @@ struct AnagramView: View {
     }
 
     private var instructions: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            VStack(alignment: .leading, spacing: 5) {
-                Text("Unscramble the letters.")
-                Text("Find the word.")
-            }
-            .font(AppFont.header(24))
-            .foregroundStyle(Color.anagramInk)
-            .dynamicTypeSize(...DynamicTypeSize.xLarge)
-
-            Text("Tap letters to build an answer. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points.")
-                .font(AppFont.body())
-                .foregroundStyle(Color.anagramInk)
-                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
-
-            Text("\(viewModel.puzzle.length) letters - one optional hint - no time limit")
-                .font(AppFont.caption())
-                .foregroundStyle(Color.anagramOrange)
-                .dynamicTypeSize(...DynamicTypeSize.large)
-            AnagramActionButton(title: "Start", prominent: true) { viewModel.start() }
-        }
-        .padding(20)
-        .background(Color.anagramSurface)
+        TimedGameStartCard(
+            heading: "Unscramble the letters.\nFind the word.",
+            explanation: "Tap letters to build an answer. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points.",
+            detail: "\(viewModel.puzzle.length) letters · one optional hint · no time limit",
+            foreground: .anagramInk,
+            accent: .anagramOrange,
+            surface: .anagramSurface,
+            onAccent: .anagramOnOrange,
+            onStart: { viewModel.start() }
+        )
     }
 
     private func activeGame(_ progress: AnagramProgress) -> some View {

@@ -16,8 +16,10 @@ struct HomeGamesLayoutTests {
         #expect(PuzzleStatus.status(for: backword).label == "Failed")
 
         var midword = MidwordProgress(date: "2026-07-09")
+        midword.start()
         midword.giveUp()
         #expect(PuzzleStatus.midwordStatus(for: midword).label == "Gave up")
+        midword.startedAt = nil // Preserve the status of a legacy exhausted game.
         midword.guesses = Array(repeating: "WORD", count: 5)
         #expect(PuzzleStatus.midwordStatus(for: midword).label == "Failed")
 

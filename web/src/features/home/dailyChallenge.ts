@@ -1,7 +1,7 @@
 import { backwordScore } from '../backword/engine';
 import type { BackwordProgress } from '../backword/types';
 import { elapsedSeconds, type AnagramProgress } from '../anagram/engine';
-import type { MidwordProgress } from '../midword/engine';
+import { elapsedSeconds as midwordElapsed, type MidwordProgress } from '../midword/engine';
 import { crosswordScore } from '../crossword/engine';
 import type { CrosswordProgress, CrosswordPuzzle } from '../crossword/types';
 
@@ -23,7 +23,7 @@ export function dailyChallenge(date: string, data: { backword: BackwordProgress 
     { game: 'backword', name: 'Backword', state: b?.completedAt ? 'finished' : b?.guesses.length || b?.clueRevealed ? 'inProgress' : 'notStarted', won: b?.outcome === 'won', fraction: guesses(b?.guesses.length ?? 0), detail: b?.guesses.length ? `${b.guesses.length} of 5 guesses used` : undefined, points: b ? backwordScore(b) : 0, completedAt: b?.completedAt },
     { game: 'crossword', name: 'Quick Crossword', state: cFinished ? 'finished' : c ? 'inProgress' : 'notStarted', won: cFinished && !c?.gaveUpAt, fraction: total > 0 ? count / Math.max(total, count + 1) : 0, detail: total > 0 ? `${count} of ${Math.max(total, count + 1)} answers completed` : undefined, points: c ? c.gaveUpAt ? c.gaveUpScore ?? c.releaseDateScore : total > 0 ? crosswordScore(Math.min(count, total), total, c.hintsUsed) : c.releaseDateScore : 0, completedAt: c?.completedAt ?? c?.gaveUpAt },
     { game: 'anagram', name: 'Anagram', state: a?.outcome && a.completedAt ? 'finished' : a ? 'inProgress' : 'notStarted', won: a?.outcome === 'solved', fraction: intervals / 7, detail: `${intervals} 30-second intervals elapsed`, points: a?.releaseDateScore ?? 0, completedAt: a?.completedAt },
-    { game: 'midword', name: 'Midword', state: m?.completedAt ? 'finished' : m?.guesses.length ? 'inProgress' : 'notStarted', won: m?.outcome === 'won', fraction: guesses(m?.guesses.length ?? 0), detail: m?.guesses.length ? `${m.guesses.length} of 5 guesses used` : undefined, points: m?.releaseDateScore ?? 0, completedAt: m?.completedAt }
+    { game: 'midword', name: 'Midword', state: m?.completedAt ? 'finished' : m?.startedAt || m?.guesses.length ? 'inProgress' : 'notStarted', won: m?.outcome === 'won', fraction: m?.startedAt ? Math.min(6, Math.floor(midwordElapsed(m, now) / 30)) / 7 : 0, detail: m?.startedAt ? `${Math.min(6, Math.floor(midwordElapsed(m, now) / 30))} 30-second intervals elapsed` : undefined, points: m?.releaseDateScore ?? 0, completedAt: m?.completedAt }
   ];
   return { games, points: games.reduce((sum, game) => sum + Math.max(0, Math.min(5, game.points)), 0), complete: games.every(game => game.state === 'finished') };
 }

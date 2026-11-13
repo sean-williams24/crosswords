@@ -95,7 +95,7 @@ file changes, or Safari migration profile is required.
 - [ ] Sign in on Intervls with Apple and Google. Confirm sign-out and re-sign-in work in a private window without a Vercel login prompt.
 - [ ] Use an existing account with known cloud history. Compare its games, scores, ratings, and streaks on Intervls. Check Home, dated games, Archive, and Player Profile; use the same provider/account.
 - [ ] Check guest saves while signed out on Intervls. In each game, make a saved action, refresh the same tab, and check it remains:
-  - Backword / Midword: submit a valid guess and confirm it appears in the guess history. Letters merely typed into the answer box are an unsaved draft.
+  - Backword: submit a valid guess and confirm it appears in the guess history. Midword: press Start, submit a valid guess, and confirm the timer and saved game resume after reopening. Letters merely typed into the answer box are an unsaved draft.
   - Anagram: press Start, then place at least one tile. The arrangement and running game should restore.
   - Quick Crossword: enter at least one grid letter. It should restore without a separate Submit action.
   - Keep the same origin and browser session throughout. Explain in launch/support copy that browser-only Backword history and unsynced saves do not transfer.

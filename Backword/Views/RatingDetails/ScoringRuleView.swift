@@ -65,7 +65,7 @@ struct ScoringRuleView: View {
         points == "0 pts" ? .appTextPrimary : .appAccent
     }
 
-    static func backword(title: String = "Backword & Midword") -> ScoringRuleView {
+    static func backword(title: String = "Backword") -> ScoringRuleView {
         ScoringRuleView(
             title: title,
             rows: [
@@ -81,7 +81,7 @@ struct ScoringRuleView: View {
 
     static func anagram() -> ScoringRuleView {
         ScoringRuleView(
-            title: "Anagram",
+            title: "Anagram & Midword",
             rows: [
                 ("Under 30 seconds", "5 pts"),
                 ("Under 60 seconds", "4 pts"),

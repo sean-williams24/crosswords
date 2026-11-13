@@ -151,7 +151,7 @@ struct PuzzleResultShareTests {
         #expect(result.caption.contains("RAGTLINE") == false)
     }
 
-    @Test("Midword result reports guesses without revealing its compounds")
+    @Test("Midword result reports elapsed time without revealing its compounds")
     func midwordResultReportsStats() {
         let puzzle = MidwordPuzzle(
             id: "midword-id", date: "2026-10-05", puzzleNumber: 5,
@@ -160,11 +160,12 @@ struct PuzzleResultShareTests {
         var progress = MidwordProgress(date: puzzle.date)
         progress.guesses = ["PAGE", "NOTE"]
         progress.completedAt = Date()
+        progress.elapsedSecondsAtCompletion = 45
         progress.won = true
         progress.releaseDateScore = 4
         let history = MidwordStatsHistory(
             rows: [], currentStreak: 2, bestStreak: 3,
-            totalSolved: 4, guessDistribution: [2: 1]
+            totalSolved: 4, timeDistribution: [2: 1]
         )
 
         let result = PuzzleShareResult.midword(
@@ -178,7 +179,7 @@ struct PuzzleResultShareTests {
         #expect(result.game == .midword)
         #expect(result.issueLabel == "Midword #5")
         #expect(result.score == 4)
-        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "GUESSES", value: "2/5"))
+        #expect(result.primaryStat == PuzzleShareResult.Stat(label: "TIME", value: "00:00:45"))
         #expect(result.shareURL.path == "/midword/2026-10-05")
         #expect(result.caption.contains("NOTE") == false)
         #expect(result.caption.contains("BANK") == false)

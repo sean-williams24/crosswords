@@ -14,9 +14,9 @@ describe('daily challenge', () => {
       backword: { date, guesses: ['ABC', 'DEF'], outcome: 'inProgress', completedAt: null } as BackwordProgress,
       crossword: { date, completedClueIds: [1, 2, 3, 4], totalClues: 8, hintsUsed: 3, releaseDateScore: 0 } as CrosswordProgress,
       anagram: { date, startedAt: '2026-11-10T12:00:00Z', outcome: null, completedAt: null, releaseDateScore: 0 } as AnagramProgress,
-      midword: { date, guesses: ['ONE'], completedAt: null, releaseDateScore: 0 } as MidwordProgress
+      midword: { date, startedAt: '2026-11-10T12:01:05Z', guesses: ['ONE'], completedAt: null, releaseDateScore: 0 } as MidwordProgress
     }, new Date('2026-11-10T12:01:35Z'));
-    expect(snapshot.games.map(g => g.fraction)).toEqual([.4, .5, 3 / 7, .2]);
+    expect(snapshot.games.map(g => g.fraction)).toEqual([.4, .5, 3 / 7, 1 / 7]);
     expect(snapshot.points).toBe(2);
     expect(snapshot.complete).toBe(false);
   });

@@ -192,13 +192,13 @@ describe("PlayerProfilePage", () => {
     expect(screen.getByRole("link", { name: /Manage web subscription through Link/ })).toHaveAttribute("target", "_blank");
   });
 
-  it.each(["guest", "signed-in"])("shows one shared Backword and Midword scoring guide for a %s player", async (player) => {
+  it.each(["guest", "signed-in"])("shows separate guess and timed scoring guides for a %s player", async (player) => {
     if (player === "guest") testAuth.value.user = null;
     const fetchCallsBeforeRender = sync.fetchCloudProgress.mock.calls.length;
     renderPage();
 
     const summary = screen.getByLabelText("Player summary");
-    const guide = within(summary).getByText("Backword & Midword").parentElement!;
+    const guide = within(summary).getByText("Backword", { selector: "strong" }).parentElement!;
     const rows = [
       ["Win in 1 guess", "5 pts"],
       ["Win in 2 guesses", "4 pts"],
@@ -212,7 +212,7 @@ describe("PlayerProfilePage", () => {
       expect(within(row).getByText(points)).toBeInTheDocument();
       expect(within(summary).getAllByText(label)).toHaveLength(1);
     }
-    expect(within(summary).queryByText("Backword")).not.toBeInTheDocument();
+    expect(within(summary).getByText("Anagram & Midword")).toBeInTheDocument();
     expect(within(summary).queryByText("Midword")).not.toBeInTheDocument();
     const breakdown = screen.getByRole("heading", { name: "LAST 14 DAYS" }).closest("section")!;
     expect(within(breakdown).getByText("Backword")).toBeInTheDocument();
@@ -292,7 +292,7 @@ describe("PlayerProfilePage", () => {
     expect(rollingWindow.compareDocumentPosition(dailyScoring) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(dailyScoring).toBeInTheDocument();
     expect(screen.getByText("− 1 point deducted for every 3 hints used")).toBeInTheDocument();
-    expect(within(screen.getByLabelText("Player summary")).getByText("Backword & Midword")).toBeInTheDocument();
+    expect(within(screen.getByLabelText("Player summary")).getByText("Backword", { selector: "strong" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Sign Out" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Delete Account" })).not.toBeInTheDocument();
     expect(sync.fetchCloudProgress).not.toHaveBeenCalled();

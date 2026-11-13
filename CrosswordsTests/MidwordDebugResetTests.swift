@@ -22,6 +22,7 @@ struct MidwordDebugResetTests {
             firstWord: "BANK", secondWord: "BOOK", answer: "NOTE", alternatives: []
         )
         var current = MidwordProgress(date: today)
+        current.start(at: now)
         current.submit(completed ? "NOTE" : "TEST", for: puzzle, at: now)
         let previous = MidwordProgress(date: yesterday)
         defer {

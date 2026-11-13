@@ -10,7 +10,7 @@ struct MidwordStatsHistoryTests {
         return calendar
     }()
 
-    @Test("History includes release-day results and builds streak and guess totals")
+    @Test("History includes release-day results and builds streaks while excluding unknown legacy times")
     func releaseDayBreakdown() throws {
         let now = try #require(ISO8601DateFormatter().date(from: "2026-10-05T12:00:00Z"))
         let first = try progress(date: "2026-10-01", completed: "2026-10-01T12:00:00Z", won: true, score: 4, guesses: 2)
@@ -31,14 +31,14 @@ struct MidwordStatsHistoryTests {
         #expect(history.rows.count == 5)
         #expect(history.rows[0].outcome == .inProgress)
         #expect(history.rows[1].outcome == .solved)
-        #expect(history.rows[1].guessCount == 1)
+        #expect(history.rows[1].elapsedSeconds == nil)
         #expect(history.rows[2].outcome == .failed)
         #expect(history.rows[3].score == 3)
         #expect(history.rows[4].score == 4)
         #expect(history.totalSolved == 3)
         #expect(history.currentStreak == 1)
         #expect(history.bestStreak == 2)
-        #expect(history.guessDistribution == [1: 1, 2: 1, 3: 1])
+        #expect(history.timeDistribution.isEmpty)
     }
 
     @Test("A failure today resets the current streak")
@@ -71,12 +71,12 @@ struct MidwordStatsHistoryTests {
 
         #expect(row.outcome == .solved)
         #expect(row.score == 5)
-        #expect(row.guessCount == 1)
+        #expect(row.elapsedSeconds == nil)
         #expect(history.rows.reduce(0) { $0 + $1.score } == 5)
         #expect(history.totalSolved == 1)
         #expect(history.currentStreak == 1)
         #expect(history.bestStreak == 1)
-        #expect(history.guessDistribution == [1: 1])
+        #expect(history.timeDistribution.isEmpty)
     }
 
     @Test("A merged Archive attempt retains its independent release-day score")
@@ -94,11 +94,11 @@ struct MidwordStatsHistoryTests {
 
         #expect(row.outcome == .solved)
         #expect(row.score == 4)
-        #expect(row.guessCount == 1)
+        #expect(row.elapsedSeconds == nil)
         #expect(history.totalSolved == 1)
         #expect(history.currentStreak == 1)
         #expect(history.bestStreak == 1)
-        #expect(history.guessDistribution == [1: 1])
+        #expect(history.timeDistribution.isEmpty)
     }
 
     @Test("Zero-score wins and unfinished or failed records do not count as earned solves")
@@ -114,11 +114,11 @@ struct MidwordStatsHistoryTests {
             releaseCalendar: ContentReleaseCalendar(now: now, calendar: calendar)
         )
 
-        #expect(history.rows.allSatisfy { $0.score == 0 && $0.guessCount == nil && $0.outcome != .solved })
+        #expect(history.rows.allSatisfy { $0.score == 0 && $0.elapsedSeconds == nil && $0.outcome != .solved })
         #expect(history.totalSolved == 0)
         #expect(history.currentStreak == 0)
         #expect(history.bestStreak == 0)
-        #expect(history.guessDistribution.isEmpty)
+        #expect(history.timeDistribution.isEmpty)
     }
 
     @Test("Countdown uses clock formatting and rounds partial seconds up")

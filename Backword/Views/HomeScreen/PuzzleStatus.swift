@@ -77,7 +77,7 @@ enum PuzzleStatus {
     static func midwordStatus(for progress: MidwordProgress?) -> PuzzleStatus {
         guard let progress else { return .notStarted }
         guard let completedAt = progress.completedAt else {
-            return progress.guesses.isEmpty ? .notStarted : .inProgress
+            return progress.startedAt == nil && progress.guesses.isEmpty ? .notStarted : .inProgress
         }
         guard progress.isWon else { return progress.isGaveUp ? .gaveUp : .failedBackword }
         let completionDate = ContentReleaseCalendar(now: completedAt).dailyDateString

@@ -12,7 +12,7 @@ struct MidwordStatsHistoryRow {
     let date: Date
     let isToday: Bool
     let score: Int
-    let guessCount: Int?
+    let elapsedSeconds: Int?
     let outcome: Outcome
 }
 
@@ -21,7 +21,7 @@ struct MidwordStatsHistory {
     let currentStreak: Int
     let bestStreak: Int
     let totalSolved: Int
-    let guessDistribution: [Int: Int]
+    let timeDistribution: [Int: Int]
 
     static func make(
         rating: OverallRating,
@@ -59,14 +59,14 @@ struct MidwordStatsHistory {
                 outcome = .unplayed
             }
             let score = outcome == .solved
-                ? max(rating.score(for: .midword, date: dateStr), progress?.releaseDateScore ?? 0)
+                ? (progress?.releaseDateScore ?? 0)
                 : 0
             return MidwordStatsHistoryRow(
                 dateStr: dateStr,
                 date: date,
                 isToday: dateStr == today,
                 score: score,
-                guessCount: outcome == .solved ? progress?.guesses.count : nil,
+                elapsedSeconds: outcome == .solved ? progress?.elapsedSecondsAtCompletion : nil,
                 outcome: outcome
             )
         }
@@ -92,14 +92,12 @@ struct MidwordStatsHistory {
             }
         }
 
-        let distribution = Dictionary(grouping: eligibleSolves, by: { $0.guesses.count })
-            .mapValues(\.count)
         return MidwordStatsHistory(
             rows: rows,
             currentStreak: currentStreak,
             bestStreak: bestStreak,
             totalSolved: eligibleSolves.count,
-            guessDistribution: distribution
+            timeDistribution: Dictionary(grouping: eligibleSolves.filter { $0.elapsedSecondsAtCompletion != nil }, by: { 6 - MidwordProgress.points(for: $0.elapsedSecondsAtCompletion!) }).mapValues(\.count)
         )
     }
 

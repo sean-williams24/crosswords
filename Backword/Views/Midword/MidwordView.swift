@@ -29,7 +29,20 @@ struct MidwordView: View {
         GameDynamicTypeContainer {
             VStack(spacing: 0) {
                 navBar
-                ScrollView { gameContent }
+                if viewModel.hasStarted || viewModel.isComplete {
+                    Text("Puzzle #\(viewModel.puzzle.puzzleNumber)")
+                        .font(AppFont.caption())
+                        .foregroundStyle(Color.appTextSecondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.bottom, 12)
+                    ScrollView { gameContent }
+                } else {
+                    MidwordStartView(
+                        puzzleNumber: viewModel.puzzle.puzzleNumber,
+                        answerLength: viewModel.puzzle.answer.count,
+                        onStart: { viewModel.start() }
+                    )
+                }
                 inputControls
             }
         }
@@ -97,20 +110,17 @@ struct MidwordView: View {
                 .foregroundColor(.midwordText.opacity(0.85))
                 .multilineTextAlignment(.center)
             MidwordBoardView(puzzle: viewModel.puzzle, input: viewModel.input, won: viewModel.isComplete)
-            MidwordAttemptCounterView(progress: viewModel.progress)
+            TimelineView(.periodic(from: .now, by: 1)) { context in
+                Text(viewModel.isComplete ? viewModel.progress.formattedCompletionTime : MidwordProgress.formatTime(viewModel.progress.elapsedSeconds(at: context.date)))
+                    .font(AppFont.header(24))
+                    .foregroundStyle(Color.midwordText)
+                    .monospacedDigit()
+                    .accessibilityLabel("Elapsed time")
+            }
             if let message = viewModel.message {
                 Text(message).font(AppFont.body()).foregroundColor(.midwordText)
                     .accessibilityAddTraits(.updatesFrequently)
                     .transition(.opacity)
-            }
-            if !viewModel.progress.guesses.isEmpty {
-                VStack(alignment: .center, spacing: 10) {
-                    Text("Previous guesses").font(AppFont.caption())
-                    ForEach(Array(viewModel.progress.guesses.enumerated()), id: \.offset) { _, guess in
-                        MidwordGuessRow(guess: guess, isCorrect: viewModel.puzzle.accepts(guess))
-                    }
-                }
-                .foregroundColor(.midwordText)
             }
         }
         .frame(maxWidth: 520)
@@ -122,7 +132,7 @@ struct MidwordView: View {
 
     @ViewBuilder
     private var inputControls: some View {
-        if !viewModel.isComplete {
+        if viewModel.hasStarted && !viewModel.isComplete {
             VStack(spacing: 0) {
                 GameScoreProgressBarView(rating: ratingService.rating, category: .midword)
                     .padding(.vertical, viewModel.canSubmit ? 5 : 0)
@@ -153,7 +163,7 @@ struct MidwordView: View {
 
     private var navBar: some View {
         ZStack {
-            navTitle
+            if viewModel.hasStarted || viewModel.isComplete { navTitle }
             navControls
         }
         .foregroundColor(.midwordText)
@@ -173,7 +183,7 @@ struct MidwordView: View {
             }
             .accessibilityLabel("Back")
             Spacer()
-            if !viewModel.isComplete {
+            if viewModel.hasStarted && !viewModel.isComplete {
                 Button { showGiveUpConfirmation = true } label: {
                     Image(systemName: "flag.fill")
                         .frame(width: appLayout.iconSize, height: appLayout.iconSize)
@@ -217,6 +227,7 @@ private extension MidwordView {
         let completionDate = Calendar.current.date(
             from: DateComponents(year: 2026, month: 10, day: 1, hour: 12)
         ) ?? Date()
+        progress.start(at: completionDate)
         for guess in guesses {
             progress.submit(guess, for: puzzle, at: completionDate)
         }
@@ -250,7 +261,7 @@ private extension MidwordView {
     MidwordView.preview(guesses: ["PAGE", "WORD", "NOTE"])
 }
 
-#Preview("Failed — 5 guesses") {
+#Preview("Still playing — 5 guesses") {
     MidwordView.preview(guesses: ["PAGE", "WORD", "BOOK", "READ", "LINE"])
 }
 

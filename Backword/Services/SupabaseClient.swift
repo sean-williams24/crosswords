@@ -1022,18 +1022,9 @@ final class ProgressCloudSync {
         for row in rows {
             guard let decoded = row.payload.progress(formatter: iso8601) else { continue }
             if let saved = MidwordProgress.load(date: decoded.date) {
-                var local = saved
-                var remote = decoded
-                let score = max(local.releaseDateScore, remote.releaseDateScore)
-                local.releaseDateScore = score
-                remote.releaseDateScore = score
-                if CloudProgressRanking.shouldReplace(local: local, with: remote) {
-                    remote.save()
-                    if remote.releaseDateScore != decoded.releaseDateScore { await upload(remote) }
-                } else {
-                    if local != saved { local.save() }
-                    await upload(local)
-                }
+                let merged = MidwordProgress.merged(saved, decoded)
+                if merged != saved { merged.save() }
+                if merged != decoded { await upload(merged) }
             } else {
                 decoded.save()
             }
@@ -1254,6 +1245,8 @@ private struct CloudMidwordPayload: Codable {
     let date: String
     let guesses: [String]
     let outcome: String
+    let startedAt: String?
+    let elapsedSecondsAtCompletion: Int?
     let completedAt: String?
     let releaseDateScore: Int
     let updatedAt: String
@@ -1263,19 +1256,26 @@ private struct CloudMidwordPayload: Codable {
         date = progress.date
         guesses = progress.guesses
         outcome = progress.isWon ? "won" : (progress.isFailed ? "failed" : "inProgress")
+        startedAt = progress.startedAt.map { formatter.string(from: $0) }
+        elapsedSecondsAtCompletion = progress.elapsedSecondsAtCompletion
         completedAt = progress.completedAt.map { formatter.string(from: $0) }
         releaseDateScore = progress.releaseDateScore
         updatedAt = formatter.string(from: progress.updatedAt)
     }
 
     func progress(formatter: ISO8601DateFormatter) -> MidwordProgress? {
+        func parse(_ value: String) -> Date? {
+            formatter.date(from: value) ?? ISO8601DateFormatter().date(from: value)
+        }
         var value = MidwordProgress(date: date)
-        guard guesses.count <= 5, guesses.allSatisfy({ (3...6).contains($0.count) }) else { return nil }
+        guard guesses.allSatisfy({ (3...6).contains($0.count) }) else { return nil }
         value.guesses = guesses
-        value.completedAt = completedAt.flatMap { formatter.date(from: $0) }
+        value.startedAt = startedAt.flatMap { parse($0) }
+        value.elapsedSecondsAtCompletion = elapsedSecondsAtCompletion
+        value.completedAt = completedAt.flatMap { parse($0) }
         value.won = outcome == "won"
         value.releaseDateScore = min(5, max(0, releaseDateScore))
-        value.updatedAt = formatter.date(from: updatedAt) ?? value.completedAt ?? Date()
+        value.updatedAt = parse(updatedAt) ?? value.completedAt ?? Date()
         return value
     }
 
@@ -1349,15 +1349,6 @@ private struct CloudCrosswordPayload: Codable {
 }
 
 enum CloudProgressRanking {
-    static func shouldReplace(local: MidwordProgress, with remote: MidwordProgress) -> Bool {
-        if local.isWon != remote.isWon { return remote.isWon }
-        if local.isComplete != remote.isComplete { return remote.isComplete }
-        if local.isWon && local.guesses.count != remote.guesses.count {
-            return remote.guesses.count < local.guesses.count
-        }
-        if local.guesses.count != remote.guesses.count { return remote.guesses.count > local.guesses.count }
-        return remote.updatedAt > local.updatedAt
-    }
     static func shouldReplace(local: BackwordProgress, with remote: BackwordProgress, formatter: ISO8601DateFormatter) -> Bool {
         if remote.isWon != local.isWon { return remote.isWon }
         if remote.isComplete != local.isComplete { return remote.isComplete }

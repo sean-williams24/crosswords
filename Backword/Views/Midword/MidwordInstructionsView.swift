@@ -11,12 +11,12 @@ struct MidwordInstructionsView: View {
     @ScaledMetric private var iconFrame: CGFloat = 22
 
     static let scoringRules = [
-        ScoringRule(label: "First guess", points: "5 pts"),
-        ScoringRule(label: "Second guess", points: "4 pts"),
-        ScoringRule(label: "Third guess", points: "3 pts"),
-        ScoringRule(label: "Fourth guess", points: "2 pts"),
-        ScoringRule(label: "Fifth guess", points: "1 pt"),
-        ScoringRule(label: "Not solved", points: "0 pts")
+        ScoringRule(label: "Under 30 seconds", points: "5 pts"),
+        ScoringRule(label: "Under 60 seconds", points: "4 pts"),
+        ScoringRule(label: "Under 120 seconds", points: "3 pts"),
+        ScoringRule(label: "Under 180 seconds", points: "2 pts"),
+        ScoringRule(label: "180 seconds or more", points: "1 pt"),
+        ScoringRule(label: "Give up or missed", points: "0 pts")
     ]
 
     var body: some View {
@@ -47,11 +47,11 @@ struct MidwordInstructionsView: View {
             )
             instructionRow(
                 icon: "book.closed",
-                text: "Guesses must be valid English words. Invalid or repeated words do not use an attempt."
+                text: "Guesses must be valid English words. Invalid or repeated words are not accepted."
             )
             instructionRow(
                 icon: "rectangle.stack",
-                text: "You have five attempts."
+                text: "You have unlimited guesses. Press Start to begin; the clock keeps running if you leave the game."
             )
         }
     }

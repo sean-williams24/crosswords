@@ -208,7 +208,7 @@ struct PuzzleShareResult: Equatable {
             ratingTier: rating.tier(isPro: isPro).displayName,
             ratingPoints: rating.totalPoints(isPro: isPro),
             ratingMaxPoints: rating.maxPoints(isPro: isPro),
-            primaryStat: Stat(label: "GUESSES", value: "\(progress.guesses.count)/5"),
+            primaryStat: Stat(label: "TIME", value: progress.formattedCompletionTime),
             timeStat: nil
         )
     }

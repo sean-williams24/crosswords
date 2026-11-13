@@ -14,13 +14,18 @@ final class MidwordViewModel: ObservableObject {
         self.haptics = haptics
     }
 
-    var remainingAttempts: Int { max(0, 5 - progress.guesses.count) }
+    var hasStarted: Bool { progress.startedAt != nil }
+
+    func start() {
+        progress.start()
+        progress.save()
+    }
     var isComplete: Bool { progress.isComplete }
-    var canSubmit: Bool { !isComplete && input.count == puzzle.answer.count }
+    var canSubmit: Bool { hasStarted && !isComplete && input.count == puzzle.answer.count }
 
     func enterLetter(_ letter: Character) {
         let upper = String(letter).uppercased()
-        guard !isComplete, input.count < puzzle.answer.count,
+        guard hasStarted, !isComplete, input.count < puzzle.answer.count,
               upper.utf8.count == 1,
               let byte = upper.utf8.first, (65...90).contains(byte) else { return }
         input.append(contentsOf: upper)

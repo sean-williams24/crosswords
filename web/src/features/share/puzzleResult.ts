@@ -46,7 +46,7 @@ export function buildMidwordShareResult({ puzzle, progress, stats, rating, origi
     outcome: progress.outcome === "won" ? "SOLVED" : "COMPLETED", score: progress.releaseDateScore,
     streak: stats.currentStreak, totalGamesSolved: stats.totalSolved,
     ratingTier: rating.tier, ratingPoints: rating.totalPoints, ratingMaxPoints: rating.maxPoints,
-    primaryStat: { label: "GUESSES", value: `${progress.guesses.length}/5` }, timeStat: null,
+    primaryStat: { label: "TIME", value: progress.elapsedSecondsAtCompletion == null ? "–" : formatDuration(progress.elapsedSecondsAtCompletion) }, timeStat: null,
     url: shareUrl("midword", progress.date, origin)
   });
 }

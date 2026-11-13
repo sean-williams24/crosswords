@@ -23,11 +23,11 @@ describe("Midword info sheet", () => {
       expect(heading.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
     }
     expect(dialog.querySelectorAll(".game-instructions__row")).toHaveLength(4);
-    expect(within(dialog).getByText("You have five attempts.")).toBeInTheDocument();
-    expect(within(dialog).getByText(/Invalid or repeated words do not use an attempt/)).toBeInTheDocument();
+    expect(within(dialog).getByText("You have unlimited guesses. Press Start to begin; the clock keeps running if you leave the game.")).toBeInTheDocument();
+    expect(within(dialog).getByText(/Invalid or repeated words are not accepted/)).toBeInTheDocument();
     expect(within(dialog).getByText("BANK + NOTE = BANKNOTE")).toBeInTheDocument();
     expect(within(dialog).getByText("NOTE + BOOK = NOTEBOOK")).toBeInTheDocument();
-    expect(within(dialog).getByText("First guess", { selector: "dt" })).toBeInTheDocument();
+    expect(within(dialog).getByText("Under 30 seconds", { selector: "dt" })).toBeInTheDocument();
     expect(within(dialog).getByText("1 pt")).toBeInTheDocument();
     expect(within(dialog).getByText("0 pts")).toBeInTheDocument();
     expect(within(dialog).getByText(/release day adds points to your rolling 14-day rating/)).toBeInTheDocument();
@@ -61,7 +61,7 @@ describe("Midword info sheet", () => {
       expect(getComputedStyle(midwordHeading).fontSize).toBe("15px");
       expect(getComputedStyle(midwordHeading).textTransform).toBe("none");
       expect(getComputedStyle(midwordHeading.querySelector("svg")!).width).toBe("22px");
-      const paragraph = within(dialog).getByText("You have five attempts.");
+      const paragraph = within(dialog).getByText("You have unlimited guesses. Press Start to begin; the clock keeps running if you leave the game.");
       expect(getComputedStyle(paragraph).margin).toBe("0px");
       expect(getComputedStyle(paragraph).lineHeight).toBe("1.45");
       expect(getComputedStyle(within(dialog).getByText("5 pts")).fontWeight).toBe("700");

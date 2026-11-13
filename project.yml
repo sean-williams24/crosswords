@@ -54,6 +54,8 @@ targets:
       - path: CrosswordsTests/DeferredAdConsentTests.swift
       - path: CrosswordsTests/AnalyticsStartupServiceTests.swift
       - path: CrosswordsTests/CompletedBackwordCardLayoutTests.swift
+      - path: CrosswordsTests/TimedGameStartLayoutTests.swift
+      - path: CrosswordsTests/TimedMidwordTests.swift
       - path: CrosswordsTests/ScoringRuleViewTests.swift
       - path: CrosswordsTests/DailyChallengeSnapshotTests.swift
       - path: CrosswordsTests/HomeDailyChallengeViewModelTests.swift

@@ -23,14 +23,14 @@ struct CompletionSheetLayoutTests {
                 puzzle: puzzle, progress: progress, showsCompletion: true,
                 previewHistory: MidwordStatsHistory(
                     rows: rows, currentStreak: 0, bestStreak: 0,
-                    totalSolved: 0, guessDistribution: [:]
+                    totalSolved: 0, timeDistribution: [:]
                 )
             )
         }
         let rows = (0..<14).map { index in
             MidwordStatsHistoryRow(
                 dateStr: "row-\(index)", date: .now, isToday: false,
-                score: 0, guessCount: nil, outcome: .unplayed
+                score: 0, elapsedSeconds: nil, outcome: .unplayed
             )
         }
         let empty = try initialScrollSize(sheet(rows: []), reduceMotion: reduceMotion)

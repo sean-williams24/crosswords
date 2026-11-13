@@ -46,7 +46,7 @@ struct ScoringRuleViewTests {
     func anagramExplanation() {
         let guide = ScoringRuleView.anagram()
 
-        #expect(guide.title == "Anagram")
+        #expect(guide.title == "Anagram & Midword")
         #expect(guide.rows.map(\.0) == [
             "Under 30 seconds",
             "Under 60 seconds",

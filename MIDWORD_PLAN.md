@@ -1,5 +1,8 @@
 # Midword implementation and content plan
 
+Historical implementation plan. The timed Midword rules in CONVENTIONS.md
+supersede the five-attempt gameplay and guess-based scoring described below.
+
 Status: Midword is implemented in the working tree for review. The migration and scheduled publisher have not been deployed. Native visual verification remains for the developer in Xcode; the focused simulator test could not start because the configured simulator UUID is unavailable.
 
 Release date: 2026-10-01. The publisher includes the current date on its first run.
@@ -7,16 +10,16 @@ Release date: 2026-10-01. The publisher includes the current date on its first r
 ## Confirmed rules
 
 - Show two words and find a middle word that forms two compounds: BANK + NOTE = BANKNOTE; NOTE + BOOK = NOTEBOOK.
-- Five accepted guesses. An on-time win scores 5, 4, 3, 2, or 1 points; failure scores 0.
+- Unlimited guesses after pressing Start. Release-day solves under 30/60/120/180 seconds earn 5/4/3/2 points; longer solves earn 1. Giving up earns 0.
 - An incorrect guess receives whole-word feedback only. No letter-position feedback, coloured keyboard hints, or automatic letter reveals.
 - Middle words contain 3–6 letters. Show the answer length through the number of cells. Recommend retaining three-letter answers and selecting difficulty by compound familiarity, not length alone.
-- Two prompt words are vertically stacked with one active guess row between them. Previous guesses appear beneath the puzzle. Use the existing custom keyboard and a separate submit control, consistent with Backword.
+- Two prompt words are vertically stacked with one active guess row between them. Previous guesses are retained internally and hidden from gameplay. Use the existing custom keyboard and a separate submit control, consistent with Backword.
 - Use Backword cell interaction and completion animations with square corners and the supplied chartreuse #7A802F / charcoal #1F1F1F palette.
 
 ## Proposed defaults
 
 - First release accepts closed compounds with unchanged spelling; spaces, hyphens, proper names, abbreviations, and arbitrary substring joins are excluded. Prompt words and the link must all be standalone words. Dictionary occurrence alone is not proof of a meaningful compound.
-- Incomplete, duplicate, and unrecognised guesses do not consume attempts. Reuse the US/UK dictionary policy; approved puzzle answers always bypass system-dictionary rejection. A recognised but incorrect link consumes one attempt.
+- Incomplete, duplicate, and unrecognised guesses are rejected. Reuse the US/UK dictionary policy; approved puzzle answers always bypass system-dictionary rejection. There is no attempt limit.
 - Prefer a single familiar solution. Reject ambiguous candidates during curation; the payload may carry explicitly reviewed alternative answers of the same length so a legitimate known solution is never marked wrong.
 - Free daily game, available from Home. Include the existing archive/progress/statistics patterns. No new monetisation rule is assumed.
 - Scope is native iOS gameplay and its backend. Web sync/rating compatibility is required where shared data changes; a full web game is a separate scope decision.
@@ -35,7 +38,7 @@ Release date: 2026-10-01. The publisher includes the current date on its first r
 1. Define pure MidwordPuzzle, MidwordProgress, and statistics/history models. Puzzle data includes immutable ID, date, issue number, first word, second word, answer, reviewed alternatives, both completed compounds, and schema version. Progress includes accepted guesses, completion outcome/time, updatedAt, and a durable release-date score. Validate payloads before use: A–Z words, 3–6-letter answers, equal-length alternatives, and exact compound concatenation.
 2. Add an injected MidwordService plus @MainActor MidwordViewModel. The service handles fetching/caching and account-scoped persistence; the view model owns input, validation, submission, and transitions. Save locally first, then queue account-tagged cloud uploads. Prevent extra input and duplicate completion while an animation/submission is active. Resume incomplete games and preserve all guesses in terminal games.
 3. Add isolated view files under Backword/Views/Midword/: game, board, guess history, home card, instructions, stats, and completion presentation. Extract a shared configurable letter-cell primitive from Backword rather than copying its animation implementation. Preserve Backword defaults; Midword supplies zero corner radius and its own semantic palette. Keep game rules outside the cell component.
-4. Match the existing custom navigation bar: back, game title, stats, and info. Match sheet title style, dismissal controls, detents, padding, stats tiles, five-bar guess distribution, 14-day history, and release countdown. Completion shows the link plus both full compounds, using the existing staged reveal/bounce timing, appropriate outcome haptics, and Reduce Motion behaviour. Reopening a completed puzzle opens the completion sheet once per visit.
+4. Match the existing custom navigation bar: back, game title, stats, and info. Match sheet title style, dismissal controls, detents, padding, stats tiles, five-band solve-time distribution, 14-day history, and release countdown. Completion shows the link plus both full compounds, using the existing staged reveal/bounce timing, appropriate outcome haptics, and Reduce Motion behaviour. Reopening a completed puzzle opens the completion sheet once per visit.
 5. Integrate Home loading/error/retry states, issue number, saved progress, score/streak, local-midnight refresh, archive month loading, and app environment injection. Include loading and offline states; never silently substitute yesterday's game as today's. Keep an already-open puzzle tied to its original date across midnight, and score according to its release window.
 6. Extend progress sync, guest migration, account isolation, conflict resolution, deletion/reset flows, rating breakdowns, history, and sharing. Reuse whole-record conflict rules; never merge individual guesses from different devices. Make new fields backward compatible and have web readers safely preserve or ignore unfamiliar records without deleting them.
 7. Add the Midword rating category and its launch date. Count only eligible releases after launch in the 14-day denominator, reaching 210 free / 220 Pro points after 14 days. This avoids counting pre-launch days as missed games. Apply the same calculation to shared web rating surfaces. Preserve historical release-score snapshots so late play or later timezone changes cannot alter earned points.
@@ -43,12 +46,12 @@ Release date: 2026-10-01. The publisher includes the current date on its first r
 
 ## Layout and accessibility
 
-- Suggested board: first word, centred square answer cells, second word; then attempt counter and previous guesses. The outer words remain visually distinct from editable cells. Completion explicitly demonstrates both combinations.
+- Suggested board: first word, centred square answer cells, second word; then the running timer. The outer words remain visually distinct from editable cells. Completion explicitly demonstrates both combinations.
 - Add game-specific semantic colour assets in AppTheme. Use exact chartreuse and charcoal for branding/background accents, with accessible semantic text and focus colours. Their measured mutual contrast is approximately 3.89:1, so they should not be the sole pairing for small body text. White on chartreuse is also below 4.5:1; use a darker on-accent text token.
 - Reuse CustomKeyboardView with backward-compatible configuration if sizing or theming changes are needed. Its current fixed key height and fixed grid font need attention for this game's Dynamic Type requirement.
 - Use scaled metrics and available-width layout for 3–6 cells. Keep cells square and the full answer in one row; allow the board to scroll horizontally at extreme text sizes rather than clipping letters or disabling Dynamic Type. Let secondary content and stats stack vertically when needed.
 - Keep keyboard/submit reachable using safe-area layout, with a scrollable board; at accessibility sizes allow an alternative scroll layout if a pinned keyboard leaves insufficient board space. Do not fix sheet heights.
-- VoiceOver labels announce prompt words, entered answer, remaining attempts, and whole-guess feedback. Provide non-colour failure/success indicators and respect Reduce Motion. Preview narrow phones, iPad layouts, long prompt words, largest accessibility sizes, and both appearances.
+- VoiceOver labels announce prompt words, entered answer, elapsed time, and whole-guess feedback. Provide non-colour failure/success indicators and respect Reduce Motion. Preview narrow phones, iPad layouts, long prompt words, largest accessibility sizes, and both appearances.
 
 ## Content sourcing and quality
 
@@ -78,7 +81,7 @@ Sources: https://github.com/rspeer/wordfreq ; https://wordnet.princeton.edu/ ; h
 
 ## Verification and handoff
 
-- Focused Swift Testing coverage: all five win scores, fifth-guess failure, dictionary/duplicate rejection, approved alternatives, normalisation, input limits, completed-game immutability, save/resume, local-first persistence, account changes, sync conflicts, old payload decoding, midnight/DST behaviour, release snapshots, launch-aware rating maxima, stats history, and completion presentation/Reduce Motion state.
+- Focused Swift Testing coverage: all scoring-time boundaries, unlimited guesses and explicit give-up, dictionary/duplicate rejection, approved alternatives, normalisation, input limits, completed-game immutability, save/resume, local-first persistence, account changes, sync conflicts, old payload decoding, midnight/DST behaviour, release snapshots, launch-aware rating maxima, stats history, and completion presentation/Reduce Motion state.
 - Focused Python tests: exact compound joins, false-segmentation rejection, ambiguity, bounds, repeat exclusions, all-or-nothing validation, malformed optional reviewer replies, dry-run, gap filling, idempotent retries, and preserved issue numbers. Add schema constraint/RLS coverage using the existing backend test style.
 - Run only affected unit tests. Do not run standalone builds, launch simulators, perform runtime verification, or retry simulator infrastructure failures without an explicit request. Provide an Xcode visual-check list for Dynamic Type and animations for the developer.
 - Present changes for review and wait for explicit approval before committing, per AGENTS.md.

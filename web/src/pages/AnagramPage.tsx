@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { TimedGameStartCard } from "../components/TimedGameStartCard";
 import { Footer } from "../components/Footer";
 import { useAuth } from "../features/auth/AuthProvider";
 import { ProAccessRedirect } from "../features/pro/ProAccessRedirect";
@@ -157,7 +158,7 @@ export function AnagramPage() {
 
   return <div className="anagram-page">
     <AnagramHeader onDismissTip={() => setShowTip(false)} onInfo={() => { setShowTip(false); setDialog("instructions"); }} onStats={() => setDialog("stats")} showTip={showTip} />
-    <main className={`anagram-main${puzzle ? ` anagram-main--${puzzle.answer.length}` : ""}`}>
+    <main className={`anagram-main${puzzle && !progress ? " timed-game-start-layout" : ""}${puzzle ? ` anagram-main--${puzzle.answer.length}` : ""}`}>
       <div className="anagram-title-block">
         <h1>ANAGRAM</h1>
         <p>{isReview ? "Review puzzle" : puzzle ? `Puzzle #${puzzle.puzzleNumber}` : "Daily puzzle"}</p>
@@ -167,7 +168,9 @@ export function AnagramPage() {
       {puzzle ? <>
         {offline ? <p className="anagram-note">Playing saved game offline</p> : null}
         {syncError ? <p className="anagram-note">{syncError}</p> : null}
-        {!progress ? <section className="anagram-start"><div><strong>Unscramble the letters.</strong><strong>Find the word.</strong></div><p>Tap letters to build an answer. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points.</p><small>{puzzle.answer.length} letters · one optional hint · no time limit</small><button className="anagram-primary" onClick={begin} type="button">Start</button></section>
+        {!progress ? <div className="timed-game-start-body"><TimedGameStartCard game="anagram" headings={["Unscramble the letters.", "Find the word."]}
+          explanation="Tap letters to build an answer. Your clock starts when you press Start and keeps running if you leave the game. Solve in under 30 seconds for five points."
+          detail={`${puzzle.answer.length} letters · one optional hint · no time limit`} onStart={begin} /></div>
           : <AnagramBoard now={now} onGiveUp={() => setDialog("giveUp")} onHint={() => setDialog("hint")}
               onPlace={(tile) => update(placeTile(progress, puzzle, tile))} onRestart={() => update(restartTiles(progress))}
               onResetReview={isReview ? () => { completionPresented.current = false; setProgress(null); setDialog(null); } : undefined}
