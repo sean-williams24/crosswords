@@ -25,10 +25,10 @@ swift docs/intervls-brand/import-icon.swift "$PWD"
 
 ## Outputs
 
-The browser-tab favicon uses `Web tab icon.png`, copied unchanged to
-`web/public/brand/intervls-tab-icon.png` and linked from `web/index.html`.
-It is separate from the iOS app icon and Apple touch icon. After replacing the
-source, copy it again to the public path to update the favicon.
+The browser-tab favicon uses `web/public/brand/intervls-tab-icon.svg`, linked
+from `web/index.html`. `Web tab icon.png` remains the original supplied artwork.
+It is separate from the iOS app icon and Apple touch icon; edit the SVG to
+update the favicon.
 
 The Apple touch icon uses `intervls-icon.png`, resized to 180 × 180 for Home
 Screen shortcuts by `import-icon.swift` above, after removing its unused alpha channel.

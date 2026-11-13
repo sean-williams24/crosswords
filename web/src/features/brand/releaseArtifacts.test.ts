@@ -176,14 +176,15 @@ describe("Intervls release artifacts", () => {
     expect(original.readUInt32BE(16)).toBe(1024);
     expect(original.readUInt32BE(20)).toBe(1024);
   });
-  it("uses the supplied browser-tab artwork as the favicon", () => {
+  it("uses a rounded charcoal favicon with the IV mark", () => {
     const html = new DOMParser().parseFromString(read("web/index.html").toString(), "text/html");
     const favicon = html.querySelector('link[rel="icon"]');
-    expect(favicon?.getAttribute("href")).toBe("/brand/intervls-tab-icon.png");
-    expect(favicon?.getAttribute("type")).toBe("image/png");
-    const installed = read(`web/public${favicon?.getAttribute("href")}`);
-    expect(installed.equals(read("docs/intervls-brand/Web tab icon.png"))).toBe(true);
-    expect(favicon?.getAttribute("sizes")).toBe(`${installed.readUInt32BE(16)}x${installed.readUInt32BE(20)}`);
+    expect(favicon?.getAttribute("href")).toBe("/brand/intervls-tab-icon.svg");
+    expect(favicon?.getAttribute("type")).toBe("image/svg+xml");
+    const svg = new DOMParser().parseFromString(read(`web/public${favicon?.getAttribute("href")}`).toString(), "image/svg+xml");
+    expect(svg.querySelector("rect")?.getAttribute("rx")).toBe("230");
+    expect(svg.querySelector("rect")?.getAttribute("fill")).toBe("#424244");
+    expect(svg.querySelectorAll("path")).toHaveLength(1);
   });
   it.runIf(process.platform === "darwin")("uses a 180px export of the supplied Intervls icon for Apple Home Screen shortcuts", () => {
     const html = new DOMParser().parseFromString(read("web/index.html").toString(), "text/html");

@@ -58,8 +58,9 @@ The current app icon source is `docs/intervls-brand/intervls-icon.png`.
 `import-icon.swift` preserves that source, removes only its unused alpha channel,
 verifies identical visible pixels, and updates the iOS AppIcon catalog and
 `web/public/brand/intervls-icon.png`. Earlier icon drafts remain for comparison.
-The browser-tab favicon has its own supplied source, `Web tab icon.png`, copied
-unchanged to `web/public/brand/intervls-tab-icon.png`.
+The browser-tab favicon is a separate SVG at `web/public/brand/intervls-tab-icon.svg`,
+with the IV mark on a rounded charcoal tile. The supplied `Web tab icon.png`
+remains as the original artwork.
 The same importer resizes the opaque icon to 180 × 180 at
 `web/public/apple-touch-icon.png` for Home Screen shortcuts.
 
