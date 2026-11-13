@@ -1,5 +1,10 @@
 import SwiftUI
 
+enum BackwordInfoMessage: Hashable {
+    case stuck
+    case giveUp
+}
+
 @MainActor
 final class BackwordViewModel: ObservableObject {
 
@@ -18,6 +23,9 @@ final class BackwordViewModel: ObservableObject {
     private let settings: AppSettings
     private let haptics: HapticsPlaying
     private var explainerTask: Task<Void, Never>?
+    private var giveUpReminderTask: Task<Void, Never>?
+    @Published private(set) var showsGiveUpReminder = false
+    static let giveUpReminderDelay: UInt64 = 60_000_000_000
 
     init(
         word: BackwordWord,
@@ -140,7 +148,12 @@ final class BackwordViewModel: ObservableObject {
     var maxGuesses: Int { 5 }
     var guessesRemaining: Int { maxGuesses - guessCount }
     var shouldShowExplainerBanner: Bool {
-        isExplainerEligible && isDetailedExplainerVisible
+        isExplainerEligible && isDetailedExplainerVisible && !showsGiveUpReminder
+    }
+
+    var infoMessage: BackwordInfoMessage? {
+        if showsGiveUpReminder { return .giveUp }
+        return shouldShowExplainerBanner ? .stuck : nil
     }
 
     private var isExplainerEligible: Bool {
@@ -214,6 +227,27 @@ final class BackwordViewModel: ObservableObject {
         isDetailedExplainerVisible = true
     }
 
+    func startGiveUpReminderCountdown() {
+        stopGiveUpReminderCountdown()
+        guard !progress.isComplete else { return }
+        giveUpReminderTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: Self.giveUpReminderDelay)
+            guard !Task.isCancelled else { return }
+            self?.showGiveUpReminder()
+        }
+    }
+
+    func stopGiveUpReminderCountdown() {
+        giveUpReminderTask?.cancel()
+        giveUpReminderTask = nil
+        showsGiveUpReminder = false
+    }
+
+    func showGiveUpReminder() {
+        guard !progress.isComplete else { return }
+        showsGiveUpReminder = true
+    }
+
     var statsIconColour: Color {
         if isFailed {
             return .red
@@ -247,6 +281,7 @@ final class BackwordViewModel: ObservableObject {
         guard !progress.isComplete else { return }
 
         stopExplainerCountdown()
+        stopGiveUpReminderCountdown()
         currentInput = ""
         invalidWordMessage = nil
         newlyRevealedIndex = nil
@@ -285,6 +320,7 @@ final class BackwordViewModel: ObservableObject {
             BackwordAnalyticsService.shared.log(.gameStarted(game: .backword))
         }
         stopExplainerCountdown()
+        stopGiveUpReminderCountdown()
         currentInput = ""
 
         let isCorrect = isTarget
@@ -310,6 +346,7 @@ final class BackwordViewModel: ObservableObject {
             logGameCompletion(outcome: .failed)
             haptics.play(.backwordGameLost)
         } else {
+            startGiveUpReminderCountdown()
             let justRevealed = revealedIndices.subtracting(prevRevealed)
             progress.save()
             haptics.play(

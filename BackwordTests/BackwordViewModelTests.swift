@@ -96,6 +96,26 @@ struct BackwordViewModelTests {
         #expect(!vm.onboardingSteps.contains(.clue))
     }
 
+    @Test("Give-up reminder resets after an accepted guess and ends with the game")
+    func giveUpReminderLifecycle() {
+        let vm = makeViewModel()
+        defer { BackwordProgress.delete(date: vm.word.date) }
+        #expect(BackwordViewModel.giveUpReminderDelay == 60_000_000_000)
+        vm.startGiveUpReminderCountdown()
+        #expect(!vm.showsGiveUpReminder)
+        vm.showGiveUpReminder()
+        #expect(vm.showsGiveUpReminder)
+        vm.currentInput = "XXXXXX"
+        vm.submitGuess()
+        #expect(!vm.showsGiveUpReminder)
+        vm.showGiveUpReminder()
+        #expect(vm.showsGiveUpReminder)
+        vm.giveUp()
+        #expect(!vm.showsGiveUpReminder)
+        vm.showGiveUpReminder()
+        #expect(!vm.showsGiveUpReminder)
+    }
+
     @Test("Explainer banner stays hidden after onboarding until the delay elapses")
     func explainerBannerWaitsAfterOnboarding() {
         let word = makeWord()
@@ -111,6 +131,21 @@ struct BackwordViewModelTests {
         vm.markExplainerDelayElapsed()
         #expect(vm.shouldShowExplainerBanner)
         #expect(vm.explainerText == "If you're stuck, guess any word to reveal a letter")
+    }
+
+    @Test("Give-up reminder replaces the stuck message")
+    func giveUpReminderReplacesExplainer() {
+        let word = makeWord()
+        let settings = makeSettings()
+        settings.markBackwordInstructionsSeen(.onboarding)
+        let vm = BackwordViewModel(word: word, progress: BackwordProgress(date: word.date), settings: settings)
+        #expect(vm.infoMessage == nil)
+        vm.markExplainerDelayElapsed()
+        #expect(vm.infoMessage == .stuck)
+        vm.showGiveUpReminder()
+        #expect(vm.infoMessage == .giveUp)
+        vm.stopGiveUpReminderCountdown()
+        #expect(vm.infoMessage == .stuck)
     }
 
     @Test("Explainer banner stays hidden while onboarding cards remain")

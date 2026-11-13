@@ -59,12 +59,13 @@ struct BackwordView: View {
                                 .foregroundColor(.red.opacity(0.6))
                                 .transition(.opacity)
                         }
-                        guessHistoryView
-
-                        if viewModel.shouldShowExplainerBanner {
+                        if let message = viewModel.infoMessage {
                             explainerBanner
+                                .padding(.horizontal, AppLayout.screenPaddingLarge)
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
+                                .id(message)
                         }
+                        guessHistoryView
 
                         if !viewModel.onboardingSteps.isEmpty {
                             BackwordOnboardingCardsView(
@@ -119,6 +120,7 @@ struct BackwordView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             ratingService.refresh()
+            viewModel.startGiveUpReminderCountdown()
             updateInstructionsTipPresentation()
             if viewModel.isComplete {
                 statsService.refresh()
@@ -130,10 +132,11 @@ struct BackwordView: View {
         }
         .onDisappear {
             viewModel.stopExplainerCountdown()
+            viewModel.stopGiveUpReminderCountdown()
         }
         .animation(.easeInOut(duration: 0.2), value: shouldShowSubmitButton)
         .animation(.easeInOut(duration: 0.3), value: viewModel.invalidWordMessage != nil)
-        .animation(.easeInOut(duration: 0.3), value: viewModel.shouldShowExplainerBanner)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.infoMessage)
         .animation(.easeInOut(duration: 0.3), value: viewModel.isDetailedExplainerVisible)
         .animation(.spring(response: 0.4, dampingFraction: 0.82), value: viewModel.onboardingSteps)
         .alert("Give up?", isPresented: $showGiveUpConfirmation) {
@@ -451,10 +454,17 @@ struct BackwordView: View {
     // MARK: - Explainer Banner
 
     private var explainerBanner: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
-            BackwordLightbulbIcon()
+        HStack(alignment: .center, spacing: 8) {
+            if viewModel.showsGiveUpReminder {
+                Image(systemName: "arrowshape.up.fill")
+                    .font(AppFont.body(15))
+                    .foregroundColor(.appTextPrimary)
+                    .accessibilityHidden(true)
+            } else {
+                BackwordLightbulbIcon()
+            }
 
-            Text(viewModel.explainerText)
+            Text(viewModel.showsGiveUpReminder ? "Tap the flag to give up if you're out of ideas" : viewModel.explainerText)
                 .font(AppFont.body(15))
                 .foregroundColor(.appTextSecondary)
         }

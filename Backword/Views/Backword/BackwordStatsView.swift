@@ -71,7 +71,7 @@ struct BackwordStatsView: View {
                 }
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                StatsHomeBar(onBackToGame: { dismiss() })
+                StatsHomeBar(foregroundColor: .appAccent, onBackToGame: { dismiss() })
             }
             .navigationTitle("Backword Stats")
             .navigationBarTitleDisplayMode(.inline)
@@ -127,7 +127,7 @@ struct BackwordStatsView: View {
                 .padding(.bottom, 28)
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                StatsHomeBar(onBackToGame: { dismiss() }) {
+                StatsHomeBar(foregroundColor: .appAccent, onBackToGame: { dismiss() }) {
                     dismiss()
                     shouldPop = true
                 }

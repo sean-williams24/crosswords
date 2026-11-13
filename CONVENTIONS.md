@@ -2445,3 +2445,5 @@ move with it on hover; keyboard focus retains the primary-colour outline.
 Unfinished daily and weekly crosswords can be revealed by free and Pro players, including on their release day. Revealing locks the grid and preserves the score earned before reveal. Midword's flag confirms a terminal failure, preserves guesses, reveals the answer, and awards zero points.
 
 Home and archive game status labels show `Gave up` for revealed games and `Failed` for exhausted attempts. Both crossword home cards use the same primary text colour as Backword for the `Gave up` label. Backword and Midword give-ups are identified from terminal losses with fewer than five guesses, including older saved and synced progress.
+
+Backword animates the info card above previous guesses with wide horizontal screen margins, replacing the stuck message with an unfilled flag reminder after one minute in an unfinished game. Each accepted guess hides the reminder and restarts the one-minute countdown; leaving or completing the game cancels it.
