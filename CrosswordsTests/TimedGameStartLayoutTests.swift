@@ -12,6 +12,7 @@ struct TimedGameStartLayoutTests {
         let host = UIHostingController(rootView:
             MidwordStartView(answerLength: 6, onStart: {})
                 .environment(\.dynamicTypeSize, textSize)
+                .coordinateSpace(name: GameStartCoordinateSpace.viewport)
         )
         for height in [CGFloat(300), CGFloat(700)] {
             let size = host.sizeThatFits(in: CGSize(width: width, height: height))
@@ -20,29 +21,61 @@ struct TimedGameStartLayoutTests {
         }
     }
 
-    @Test("The header stays at the top while the panel centers below it",
-          arguments: [CGFloat(300), CGFloat(700)])
-    func headerAndPanelPlacement(height: CGFloat) throws {
-        let host = UIHostingController(rootView: GameStartScreen {
-            StartScreenLayoutProbe(name: "header").frame(height: 40)
-        } content: {
-            StartScreenLayoutProbe(name: "panel").frame(height: 180)
-        })
-        host.view.frame = CGRect(x: 0, y: 0, width: 320, height: height)
-        host.view.setNeedsLayout()
-        host.view.layoutIfNeeded()
+    @Test("The panel centers in the full viewport while navigation and the header stay at the top",
+          arguments: [CGFloat(300), CGFloat(700)], [CGFloat(0), CGFloat(56)])
+    func headerAndPanelPlacement(height: CGFloat, navigationHeight: CGFloat) throws {
+        let host = UIHostingController(rootView:
+            VStack(spacing: 0) {
+                StartScreenLayoutProbe(name: "navigation").frame(height: navigationHeight)
+                GameStartScreen {
+                    StartScreenLayoutProbe(name: "header").frame(height: 40)
+                } content: {
+                    StartScreenLayoutProbe(name: "panel").frame(height: 180)
+                }
+            }
+            .coordinateSpace(name: GameStartCoordinateSpace.viewport)
+        )
 
-        func find(_ name: String, in view: UIView) -> UIView? {
-            if view.accessibilityIdentifier == name { return view }
-            return view.subviews.lazy.compactMap { find(name, in: $0) }.first
+        try withLaidOutHostingController(host, size: CGSize(width: 320, height: height)) {
+            let header = try #require(find("header", in: host.view))
+            let panel = try #require(find("panel", in: host.view))
+            let headerFrame = header.convert(header.bounds, to: host.view)
+            let panelFrame = panel.convert(panel.bounds, to: host.view)
+            #expect(abs(headerFrame.minY - navigationHeight - AppLayout.screenPadding) < 1)
+            #expect(abs(panelFrame.midX - 160) < 1)
+            let remainingTop = headerFrame.maxY + AppLayout.screenPadding
+            // Short screens put the panel below the header, with scrolling.
+            let expectedCenter = max(height / 2, remainingTop + AppLayout.screenPadding + 90)
+            #expect(abs(panelFrame.midY - expectedCenter) < 1)
         }
-        let header = try #require(find("header", in: host.view))
-        let panel = try #require(find("panel", in: host.view))
-        let headerFrame = header.convert(header.bounds, to: host.view)
-        let panelFrame = panel.convert(panel.bounds, to: host.view)
-        #expect(abs(headerFrame.minY - AppLayout.screenPadding) < 1)
-        let remainingTop = headerFrame.maxY + AppLayout.screenPadding
-        #expect(abs(panelFrame.midY - (remainingTop + height) / 2) < 1)
+    }
+
+    @Test("Midword's panel centers in the viewport below its existing navigation and issue row",
+          arguments: [CGFloat(300), CGFloat(700)])
+    func midwordPanelPlacement(height: CGFloat) throws {
+        let headerHeight: CGFloat = 90
+        let host = UIHostingController(rootView:
+            VStack(spacing: 0) {
+                StartScreenLayoutProbe(name: "header").frame(height: headerHeight)
+                GameStartContainer {
+                    StartScreenLayoutProbe(name: "panel").frame(height: 180)
+                }
+            }
+            .coordinateSpace(name: GameStartCoordinateSpace.viewport)
+        )
+
+        try withLaidOutHostingController(host, size: CGSize(width: 320, height: height)) {
+            let panel = try #require(find("panel", in: host.view))
+            let frame = panel.convert(panel.bounds, to: host.view)
+            #expect(abs(frame.midX - 160) < 1)
+            let expectedCenter = max(height / 2, headerHeight + AppLayout.screenPadding + 90)
+            #expect(abs(frame.midY - expectedCenter) < 1)
+        }
+    }
+
+    private func find(_ name: String, in view: UIView) -> UIView? {
+        if view.accessibilityIdentifier == name { return view }
+        return view.subviews.lazy.compactMap { find(name, in: $0) }.first
     }
 
     @Test("Shared start panels wrap their text and retain the Start control on narrow screens")

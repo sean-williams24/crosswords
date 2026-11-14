@@ -2469,12 +2469,17 @@ No migration of historical puzzle content or scores is required.
 
 Anagram and Midword share a start-card layout on iOS and web. Titles stay at the
 top below navigation with the issue number directly below; Midword uses its
-existing logo. Only the introduction panels are vertically centered in the
+existing logo. On web, the introduction panels are vertically centered in the
 remaining space above the site footer where present. On iOS, `GameStartScreen`
 keeps Anagram's header outside the centered, scrollable `GameStartContainer`.
 Midword keeps its logo in the navigation row and its issue label directly below
 in every state. Its introduction contains only the centered panel, so pressing
 Start does not move or duplicate either header element.
+Both iOS panels center horizontally and vertically in the full safe-area
+viewport, including the space occupied by navigation and titles. The screens
+name that coordinate space, and `GameStartContainer` balances the header height
+with bottom padding. When a panel cannot fit between the fixed header and the
+viewport edge, it starts below the header and scrolls instead of overlapping it.
 The panel uses the same Outfit/AppFont heading, body, detail, and Start-button
 styles, square corners, and game-specific semantic colors. Midword includes its
 answer length and unlimited-guess guidance. Only pressing Start reveals a new

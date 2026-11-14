@@ -44,6 +44,7 @@ struct MidwordView: View {
                 }
                 inputControls
             }
+            .coordinateSpace(name: GameStartCoordinateSpace.viewport)
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.canSubmit)
         .background(Color.midwordBackground.ignoresSafeArea())

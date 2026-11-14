@@ -100,6 +100,7 @@ struct AnagramView: View {
                     .background(Color.appBackground)
             }
         }
+        .coordinateSpace(name: GameStartCoordinateSpace.viewport)
         .background(Color.appBackground)
         .navigationTitle("Anagram")
         .toolbar(.hidden, for: .navigationBar)
