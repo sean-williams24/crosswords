@@ -900,9 +900,13 @@ a {
 
 .bw-onboarding-card__ok:active { transform: scale(.88); }
 
-.bw-game-controls {
+.bw-game-controls,
+.midword-shell {
   --bw-keyboard-max-width: 650px;
   --bw-keyboard-inline-padding: 8px;
+}
+
+.bw-game-controls {
   z-index: 2;
   flex: 0 0 auto;
   padding-bottom: env(safe-area-inset-bottom);
@@ -1319,7 +1323,7 @@ a {
   .cw-page .cw-header-title { font-size: 12px; letter-spacing: .08em; }
   .cw-page .bw-icon-button { width: 36px; height: 36px; font-size: 18px; }
   .cw-page .bw-icon-button.bw-menu-button { width: 42px; height: 42px; font-size: 26px; }
-  .bw-game-controls { --bw-keyboard-inline-padding: 4px; }
+  .bw-game-controls, .midword-shell { --bw-keyboard-inline-padding: 4px; }
   .bw-game-main { padding-inline: 14px; gap: 18px; }
   .bw-keyboard { padding-inline: 4px; }
   .bw-keyboard-row { gap: 3px; }

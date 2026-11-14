@@ -559,6 +559,12 @@ narrow-screen sizing, header offset, and action placement in both appearances.
 Above the keyboard, Midword uses the shared rounded, keyboard-width rating
 bar and masked rating gradient, including the minimum visible fill at zero.
 The gameplay rating bar has no Today score label.
+During play, a green rounded Give up text button sits at the bottom right of
+the main gameplay area, above the rating bar and keyboard. It opens the existing
+reveal confirmation. After completion, the compact Share control uses that same
+action row. Its trailing edge aligns with the outermost keyboard keys, using
+the same maximum width and responsive inline padding as the keyboard and rating
+bar. Both stay in document flow on mobile and desktop.
 Completion reveals the primary answer and both compounds; animation is removed
 when Reduce Motion is requested. Instructions, statistics, navigation, sharing,
 and Pro entry points use the established web game controls.

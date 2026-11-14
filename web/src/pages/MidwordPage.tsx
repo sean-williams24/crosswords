@@ -200,9 +200,11 @@ function MidwordGame({ date, accessReady = true }: { date: string; accessReady?:
             {!showsStart ? <>
             <p role="timer" aria-label="Elapsed time">{formatTime(progress.completedAt ? progress.elapsedSecondsAtCompletion : elapsedSeconds(progress, now))}</p>
             <MidwordBoard input={input} inputError={inputError} message={message} progress={progress} puzzle={puzzle} />
-            {progress.startedAt && !progress.completedAt ? <button type="button" onClick={() => setConfirmGiveUp(true)}>Give up</button> : null}
             </> : null}
-            {shareResult && sheet === null ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
+            {(progress.startedAt && !progress.completedAt) || (shareResult && sheet === null) ? <div className="midword-game-actions">
+              {progress.startedAt && !progress.completedAt ? <button className="midword-give-up" type="button" onClick={() => setConfirmGiveUp(true)}>Give up</button>
+                : shareResult ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
+            </div> : null}
           </> : null}
       </main>
       {!loading && puzzle && progress.startedAt && !progress.completedAt ? <footer className="bw-game-controls midword-controls">

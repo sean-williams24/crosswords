@@ -45,10 +45,11 @@ html[data-theme="dark"] .midword-header h1::after {
 }
 .midword-header .bw-icon-button { color: var(--midword-text); }
 .midword-main {
+  --midword-inline-padding: max(16px, env(safe-area-inset-left));
   position: relative;
   display: flex;
   min-height: 0;
-  padding: 16px max(16px, env(safe-area-inset-left)) 24px;
+  padding: 16px var(--midword-inline-padding) 24px;
   flex: 1 0 auto;
   flex-direction: column;
   align-items: center;
@@ -82,6 +83,23 @@ html[data-theme="dark"] .midword-header h1::after {
 .midword-attempt-status { display: flex; max-width: 100%; flex-direction: column; align-items: center; }
 .midword-message, .midword-note { margin: 0; font-size: 14px; text-align: center; }
 .midword-message { margin-top: 22px; color: var(--bw-error, #ff6b6b); font-weight: 700; }
+.midword-game-actions {
+  display: flex;
+  width: min(
+    calc(100% + 2 * (var(--midword-inline-padding) - var(--bw-keyboard-inline-padding))),
+    calc(var(--bw-keyboard-max-width) - 2 * var(--bw-keyboard-inline-padding))
+  );
+  margin-top: auto;
+  justify-content: flex-end;
+}
+.midword-game-actions > .puzzle-result-share--compact { position: relative; inset: auto; }
+.midword-give-up {
+  min-height: 44px; padding: 10px 14px; border: 0; border-radius: 6px;
+  color: var(--midword-on-accent); background: var(--midword-accent);
+  font: 400 16px var(--midword-font); cursor: pointer;
+}
+.midword-give-up:hover { background: color-mix(in srgb, var(--midword-accent) 88%, var(--midword-text)); }
+.midword-give-up:active { transform: scale(0.96); }
 .midword-controls { padding-top: 12px; background: var(--midword-background); }
 .midword-controls .bw-key { color: var(--midword-text); background: color-mix(in srgb, var(--midword-text) 12%, var(--midword-background)); }
 .midword-controls .bw-key-delete, .midword-page .bw-submit, .midword-page .bw-primary-button { color: var(--midword-on-accent); background: var(--midword-accent); }
