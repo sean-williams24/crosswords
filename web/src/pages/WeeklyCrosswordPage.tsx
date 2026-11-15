@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Footer } from "../components/Footer";
+import { GameGiveUpButton } from "../components/GameGiveUpButton";
+import { GameGiveUpDialog } from "../components/GameGiveUpDialog";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { isLocalDateString, localWeekStartString } from "../features/backword/date";
 import {
@@ -12,6 +14,7 @@ import {
   deriveWeeklyCrosswordStats,
   enterLetter,
   firstWhiteSelection,
+  giveUp,
   navigateToClue,
   selectCell,
   toggleDirection,
@@ -36,7 +39,7 @@ import { buildPlayerProfileRating } from "../features/profile/profileRating";
 import { PuzzleResultShare } from "../features/share/PuzzleResultShare";
 import { buildCrosswordShareResult } from "../features/share/puzzleResult";
 
-type Sheet = "clues" | "completion" | "instructions" | "stats" | null;
+type Sheet = "clues" | "completion" | "instructions" | "stats" | "giveUp" | null;
 
 export function WeeklyCrosswordPage() {
   const { date: routeDate } = useParams<{ date?: string }>();
@@ -230,7 +233,20 @@ export function WeeklyCrosswordPage() {
   if (!ready || (user && !entitlementReady)) return <StatusPanel title="Checking Pro access…" />;
   if (!entitlement?.isPro) return <ProAccessRedirect feature="weekly_crossword" returnTo={archiveDate ? `/weekly-crossword/${archiveDate}` : "/weekly-crossword"} />;
 
-  const liveScore = puzzle && progress ? crosswordScore(progress.completedClueIds.length, puzzle.clues.length, progress.hintsUsed) : 0;
+  const liveScore = puzzle && progress ? progress.gaveUpAt ? progress.gaveUpScore ?? progress.releaseDateScore
+    : crosswordScore(progress.completedClueIds.length, puzzle.clues.length, progress.hintsUsed) : 0;
+  const giveUpScore = progress ? progress.date === localWeekStartString() ? liveScore : progress.releaseDateScore : 0;
+
+  function confirmGiveUp() {
+    if (!puzzle || !progress || progress.completedAt) return;
+    const updated = giveUp(progress, puzzle, new Date(), "weekly");
+    persist(updated); setShowHint(false);
+    completionPresentedForDate.current = updated.date;
+    track(gameCompleted("weekly_crossword", "gave_up", {
+      releaseDay: completedInReleaseWindow("weekly", updated.date, updated.completedAt), score: updated.releaseDateScore,
+      durationSeconds: Math.max(0, Math.floor((Date.parse(updated.completedAt!) - Date.parse(updated.startedAt)) / 1000)) }));
+    setSheet("completion");
+  }
   const clueText = showHint && currentClue ? currentClue.hint : currentClue?.text;
   const shareResult = puzzle && progress?.completedAt
     ? buildCrosswordShareResult({ progress, puzzle, stats, kind: "weekly", rating })
@@ -243,6 +259,7 @@ export function WeeklyCrosswordPage() {
           <GameMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} onOpen={() => setIsMenuOpen(true)} />
           <h1 className="cw-header-title">PRO CROSSWORD</h1>
           <nav aria-label="Crossword actions" className="bw-game-actions--top">
+            {!loading && puzzle && progress && !progress.completedAt ? <GameGiveUpButton flag onClick={() => setSheet("giveUp")} /> : null}
             <button aria-label={currentClue && showHint ? "Show clue" : "Show hint"} className="cw-hint-action" disabled={!currentClue || progress?.completedAt !== null} onClick={() => {
               if (!puzzle || !progress || !currentClue) return;
               if (progress.hintedClueIds.includes(currentClue.id)) setShowHint((visible) => !visible);
@@ -271,6 +288,8 @@ export function WeeklyCrosswordPage() {
       {sheet === "instructions" ? <CrosswordInstructions onClose={() => setSheet(null)} onCorrectHighlightChange={changeCorrectHighlight} settings={settings} /> : null}
       {sheet === "clues" && puzzle && progress ? <CrosswordClueList activeClueId={currentClue?.id ?? null} onClose={() => setSheet(null)} onSelect={(clue: CrosswordClue) => { setSelection(navigateToClue(progress, clue)); setShowHint(false); setSheet(null); }} progress={progress} puzzle={puzzle} /> : null}
       {sheet === "stats" ? <CrosswordStats kind="weekly" onClose={() => setSheet(null)} stats={stats} /> : null}
+      {sheet === "giveUp" ? <GameGiveUpDialog game="weekly_crossword" onClose={() => setSheet(null)} onConfirm={confirmGiveUp}
+        description={`This reveals every answer and ends your attempt. You keep ${giveUpScore} of 5 points earned before giving up. You cannot continue this attempt after revealing the grid.`} /> : null}
       {sheet === "completion" && puzzle && progress ? <CrosswordCompletion kind="weekly" onClose={() => setSheet(null)} progress={progress} puzzle={puzzle} rating={rating} stats={stats} /> : null}
     </div>
   );

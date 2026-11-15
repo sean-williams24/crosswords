@@ -11,6 +11,8 @@ import { GameMenu } from "../features/backword/components/GameMenu";
 import { Footer } from "../components/Footer";
 import { GameSubmitButton } from "../components/GameSubmitButton";
 import { GameInputMessage } from "../components/GameInputMessage";
+import { GameGiveUpButton } from "../components/GameGiveUpButton";
+import { GameGiveUpDialog } from "../components/GameGiveUpDialog";
 import { InfoTooltip } from "../components/InfoTooltip";
 import { isCompletedOnReleaseDate, isLocalDateString, localDateString } from "../features/backword/date";
 import {
@@ -20,6 +22,7 @@ import {
   buildGuess,
   connectedSuffixIndices,
   deriveStats,
+  giveUp,
   revealedIndices,
   sanitizeInput,
   submitGuess,
@@ -49,7 +52,7 @@ import { buildPlayerProfileRating } from "../features/profile/profileRating";
 import { PuzzleResultShare } from "../features/share/PuzzleResultShare";
 import { buildBackwordShareResult } from "../features/share/puzzleResult";
 
-type Sheet = "instructions" | "stats" | "completion" | null;
+type Sheet = "instructions" | "stats" | "completion" | "giveUp" | null;
 
 export function BackwordPage() {
   const { date: routeDate } = useParams<{ date?: string }>();
@@ -321,6 +324,18 @@ export function BackwordPage() {
     setSheet(null);
   }
 
+  function confirmGiveUp() {
+    if (!word || progress.outcome !== "inProgress") return;
+    const updated = giveUp(progress);
+    storage.saveProgress(updated);
+    setProgress(updated);
+    setInput(""); setInputError(false); setInvalidWordMessage(""); setShowInstructionsTip(false);
+    completionPresentedForDate.current = updated.date;
+    track(gameCompleted("backword", "gave_up", { mode: settings.mode,
+      releaseDay: isCompletedOnReleaseDate(updated.date, updated.completedAt), score: 0, durationSeconds: null }));
+    setSheet("completion");
+  }
+
   function dismissOnboardingStep(step: BackwordOnboardingStep) {
     setSettings(storage.dismissOnboardingStep(settings, step));
   }
@@ -450,6 +465,9 @@ export function BackwordPage() {
             </main>
 
             <footer className="bw-game-controls">
+              {progress.outcome === "inProgress" ? <div className="game-keyboard-actions">
+                <GameGiveUpButton onClick={() => { setShowInstructionsTip(false); setSheet("giveUp"); }} />
+              </div> : null}
               <div aria-label={`${stats.rollingScore} of 70 Backword points`} className="bw-game-score bw-game-score--keyboard-width">
                 <span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} />
               </div>
@@ -474,6 +492,8 @@ export function BackwordPage() {
         />
       ) : null}
       {sheet === "stats" ? <BackwordStats onClose={() => setSheet(null)} stats={stats} /> : null}
+      {sheet === "giveUp" ? <GameGiveUpDialog game="backword" onClose={() => setSheet(null)} onConfirm={confirmGiveUp}
+        description="This ends your attempt for zero points and reveals the answer. You cannot replay it for a higher score." /> : null}
       {sheet === "completion" && word ? (
         <BackwordCompletion
           onClose={() => setSheet(null)}

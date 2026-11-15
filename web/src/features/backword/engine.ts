@@ -167,6 +167,11 @@ export function backwordScore(progress: BackwordProgress): number {
   return Math.max(0, 6 - progress.guesses.length);
 }
 
+export function giveUp(progress: BackwordProgress, now = new Date()): BackwordProgress {
+  if (progress.outcome !== "inProgress") return progress;
+  return { ...progress, outcome: "failed", completedAt: now.toISOString(), updatedAt: now.toISOString() };
+}
+
 export function connectedSuffixIndices(guess: string, answer: string): Set<number> {
   const suffixLength = matchingSuffixLength(guess, answer);
   return new Set(
@@ -251,11 +256,11 @@ export function deriveStats(
       date,
       isToday: offset === 0,
       score: statsProgress ? backwordScore(statsProgress) : 0,
-      guessCount: statsProgress ? statsProgress.guesses.length : null,
+      guessCount: statsProgress && !(statsProgress.outcome === "failed" && statsProgress.guesses.length < MAX_GUESSES) ? statsProgress.guesses.length : null,
       outcome: statsProgress
         ? statsProgress.outcome === "won"
           ? "solved"
-          : statsProgress.outcome
+          : statsProgress.outcome === "failed" && statsProgress.guesses.length < MAX_GUESSES ? "gaveUp" : statsProgress.outcome
         : "unplayed"
     };
   });

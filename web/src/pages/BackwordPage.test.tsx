@@ -6,6 +6,9 @@ import { resolve } from "node:path";
 import { parse } from "postcss";
 import { localDateString } from "../features/backword/date";
 import { BackwordPage } from "./BackwordPage";
+import { createBackwordStorage } from "../features/backword/storage";
+import { emptyProgress } from "../features/backword/engine";
+import { backwordDashboardStatus } from "../features/home/backwordStatus";
 
 const repositoryDates = vi.hoisted(() => ({ values: [] as string[] }));
 const wordValidator = vi.hoisted(() => vi.fn());
@@ -46,6 +49,34 @@ async function dismissOnboarding(user: ReturnType<typeof userEvent.setup>, remai
 }
 
 describe("Backword browser game", () => {
+  it.each([0, 2])("offers Give up above the keyboard, preserving %s guesses and the terminal result on reload", async count => {
+    const user = userEvent.setup();
+    const storage = createBackwordStorage();
+    storage.markInstructionsSeen(storage.loadSettings());
+    const date = localDateString();
+    storage.saveProgress({ ...emptyProgress(date), guesses: Array(count).fill("BOTTLE") });
+    const page = renderGame();
+    await screen.findByText("FORTRESS");
+    const button = screen.getByRole("button", { name: "Give up" });
+    const keyboard = screen.getByRole("group", { name: "Backword keyboard" });
+    expect(keyboard.parentElement!.firstElementChild).toBe(button.closest(".game-keyboard-actions"));
+    const before = storage.loadProgress(date);
+    await user.click(button);
+    const confirmation = screen.getByRole("dialog", { name: "Give up?" });
+    await user.keyboard("CASTLE");
+    expect(storage.loadProgress(date)).toEqual(before);
+    await user.click(within(confirmation).getByRole("button", { name: "Keep playing" }));
+    expect(storage.loadProgress(date)).toEqual(before);
+    await user.click(button);
+    await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
+    expect(await screen.findByRole("dialog", { name: "Gave up" })).toHaveTextContent("The answer was...");
+    expect(storage.loadProgress(date)).toMatchObject({ outcome: "failed", guesses: before.guesses });
+    expect(backwordDashboardStatus()).toMatchObject({ label: "Gave up" });
+    expect(screen.queryByRole("button", { name: "Give up" })).not.toBeInTheDocument();
+    expect(within(keyboard).getByRole("button", { name: "A" })).toBeDisabled();
+    page.unmount(); renderGame();
+    expect(await screen.findByRole("dialog", { name: "Gave up" })).toBeInTheDocument();
+  });
   beforeEach(() => {
     localStorage.clear();
     repositoryDates.values = [];

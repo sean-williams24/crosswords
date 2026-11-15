@@ -4,6 +4,7 @@ import {
   connectedSuffixIndices,
   deriveStats,
   emptyProgress,
+  giveUp,
   matchingSuffixLength,
   revealedIndices,
   submitGuess
@@ -24,6 +25,23 @@ function progressWithGuesses(
 
 describe("Backword engine", () => {
   const acceptsAllWords = () => true;
+
+  it.each([0, 2, 4])("giving up after %s guesses preserves history, reveals the answer, and locks a zero-point result", count => {
+    const before = progressWithGuesses(Array(count).fill("BOTTLE"));
+    const now = new Date(2026, 7, 3, 12);
+    const ended = giveUp(before, now);
+    expect(ended.guesses).toEqual(before.guesses);
+    expect(ended.completedAt).toBe(now.toISOString());
+    expect(ended.outcome).toBe("failed");
+    expect(backwordScore(ended)).toBe(0);
+    expect(revealedIndices(ended, "CASTLE", "easy").size).toBe(6);
+    expect(submitGuess(ended, "CASTLE", "CASTLE", "easy", acceptsAllWords)).toBeNull();
+    expect(giveUp(ended)).toBe(ended);
+    expect(deriveStats([ended], now)).toMatchObject({ gamesPlayed: 1, gamesWon: 0, currentStreak: 0, rollingScore: 0 });
+    expect(deriveStats([ended], now).history[0]).toMatchObject({ outcome: "gaveUp", guessCount: null });
+    const won = progressWithGuesses(["CASTLE"], "won");
+    expect(giveUp(won)).toBe(won);
+  });
 
   it("starts with no letters revealed", () => {
     expect([...revealedIndices(emptyProgress("2026-08-03"), "CASTLE", "normal")]).toEqual([]);

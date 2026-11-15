@@ -2,6 +2,25 @@ import { describe, expect, it } from "vitest";
 import { backwordCloudRecord, chooseBestProgress, crosswordCloudRecord } from "./progressSync";
 
 describe("cloud progress conflict selection", () => {
+  it.each(["daily", "weekly"] as const)("uploads a %s crossword reveal as gave_up and keeps it terminal against stale unfinished progress", kind => {
+    const payload = {
+      schemaVersion: 1 as const, puzzleId: "revealed", date: "2026-08-02", size: kind === "weekly" ? 13 : 9,
+      entries: [["A", "B"]], completedClueIds: [0], hintedClueIds: [], hintsUsed: 0,
+      startedAt: "2026-08-02T10:00:00Z", completedAt: "2026-08-02T11:00:00Z",
+      gaveUpAt: "2026-08-02T11:00:00Z", gaveUpScore: 2, releaseDateScore: 2,
+      gaveUpRevealedCells: ["0,1"], isWeekly: kind === "weekly"
+    };
+    const revealed = crosswordCloudRecord(payload, kind);
+    expect(revealed).toMatchObject({ status: "gave_up", release_score: 2, payload });
+    const stale = crosswordCloudRecord({ ...payload, completedAt: null, gaveUpAt: null, completedClueIds: [], entries: [["A", null]] }, kind);
+    expect(chooseBestProgress(revealed, stale).payload).toMatchObject({ gaveUpAt: payload.gaveUpAt, releaseDateScore: 2 });
+    expect(chooseBestProgress(stale, revealed).status).toBe("gave_up");
+  });
+
+  it("uploads a Backword give-up without discarding its partial guesses or marking it solved", () => {
+    expect(backwordCloudRecord({ schemaVersion: 1, date: "2026-08-02", guesses: ["BOTTLE"], outcome: "failed", completedAt: "2026-08-02T11:00:00Z" }))
+      .toMatchObject({ status: "failed", release_score: 0, payload: { guesses: ["BOTTLE"], outcome: "failed" } });
+  });
   it("keeps a solved result over an in-progress result", () => {
     const inProgress = {
       game_type: "backword" as const,

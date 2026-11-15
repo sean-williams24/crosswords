@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 import { GameGiveUpDialog } from "./GameGiveUpDialog";
 
-describe.each(["anagram", "midword"] as const)("%s give-up confirmation", game => {
+describe.each(["anagram", "midword", "backword", "daily_crossword", "weekly_crossword"] as const)("%s give-up confirmation", game => {
   it("uses the same centered dialog, close control, explanation, and action order", () => {
     const style = document.createElement("style");
     style.textContent = readFileSync("src/styles.css", "utf8");

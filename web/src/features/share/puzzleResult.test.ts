@@ -13,6 +13,23 @@ const rating = {
 };
 
 describe("puzzle share results", () => {
+  it.each(["daily", "weekly"] as const)("shares a %s give-up as a completed reveal with its retained score", kind => {
+    const result = buildCrosswordShareResult({
+      kind,
+      puzzle: { puzzleNumber: 4 },
+      progress: {
+        schemaVersion: 1, puzzleId: "revealed", date: "2026-09-13", size: kind === "daily" ? 9 : 13,
+        entries: [], completedClueIds: [0, 1], hintedClueIds: [], hintsUsed: 0,
+        startedAt: "2026-09-13T10:00:00Z", completedAt: "2026-09-23T10:00:00Z",
+        gaveUpAt: "2026-09-23T10:00:00Z", gaveUpScore: 2, releaseDateScore: 2
+      },
+      stats: { totalSolved: 0, currentStreak: 0, longestStreak: 0, averageSolveTimeSeconds: null, rollingScore: 2, history: [] },
+      rating,
+      origin: "https://example.com"
+    });
+    expect(result).toMatchObject({ outcome: "COMPLETED", score: 2, totalGamesSolved: 0, primaryStat: { label: "TIME" } });
+    expect(result.caption).not.toContain("SOLVED");
+  });
   it("builds a scored Backword result without including the answer or guesses", () => {
     const answer = "CASTLE";
     const result = buildBackwordShareResult({

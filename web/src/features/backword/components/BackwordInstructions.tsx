@@ -63,6 +63,9 @@ export function BackwordInstructions({
           <Instruction number="3">
             The fewer guesses you need, the more points you score.
           </Instruction>
+          <Instruction number="4">
+            Give up above the keyboard reveals the answer and ends your attempt for zero points.
+          </Instruction>
         </div>
 
         <div className="bw-divider" />

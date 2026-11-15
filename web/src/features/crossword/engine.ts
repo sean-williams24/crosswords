@@ -293,6 +293,24 @@ function solvedProgress(progress: CrosswordProgress): boolean {
   return progress.completedAt !== null && !progress.gaveUpAt;
 }
 
+/** Reveal the grid without crediting the revealed answers toward the saved score. */
+export function giveUp(progress: CrosswordProgress, puzzle: CrosswordPuzzle, now = new Date(), kind: CrosswordKind = "daily"): CrosswordProgress {
+  if (progress.completedAt || progress.gaveUpAt) return progress;
+  const score = isInReleaseWindow(kind, progress.date, now)
+    ? crosswordScore(progress.completedClueIds.length, puzzle.clues.length, progress.hintsUsed)
+    : progress.releaseDateScore;
+  const gaveUpRevealedCells: string[] = [];
+  const entries = puzzle.cells.map((row, rowIndex) => row.map((cell, colIndex) => {
+    if (cell.letter === null) return null;
+    if (!isCompletedCell(progress, puzzle, rowIndex, colIndex)) gaveUpRevealedCells.push(`${rowIndex},${colIndex}`);
+    return cell.letter.toUpperCase();
+  }));
+  return { ...progress, entries, completedClueIds: puzzle.clues.map(clue => clue.id),
+    completedAt: now.toISOString(), gaveUpAt: now.toISOString(), gaveUpScore: score,
+    gaveUpRevealedCells, releaseDateScore: score, totalClues: puzzle.clues.length,
+    isWeekly: kind === "weekly", updatedAt: now.toISOString() };
+}
+
 function longestConsecutive(dates: string[]): number {
   let current = 0;
   let longest = 0;
@@ -348,7 +366,7 @@ export function deriveCrosswordStats(progressRecords: CrosswordProgress[], now =
       isToday: offset === 0,
       score: progress?.releaseDateScore ?? 0,
       solveTimeSeconds,
-      outcome: progress ? solveTimeSeconds !== null ? "solved" : "inProgress" : "unplayed"
+      outcome: progress?.gaveUpAt ? "gaveUp" : progress ? solveTimeSeconds !== null ? "solved" : "inProgress" : "unplayed"
     } as const;
   });
   const visibleSolveTimes = history
@@ -373,8 +391,8 @@ export function crosswordDashboardStatus(
   if (!progress) return { label: "New", tone: "new", score: null, streak: stats.currentStreak };
   if (progress.completedAt) {
     return {
-      label: isCompletedOnReleaseDate(progress.date, progress.completedAt) ? "Solved" : "Finished",
-      tone: "solved",
+      label: progress.gaveUpAt ? "Gave up" : isCompletedOnReleaseDate(progress.date, progress.completedAt) ? "Solved" : "Finished",
+      tone: progress.gaveUpAt ? "failed" : "solved",
       score: progress.releaseDateScore,
       streak: stats.currentStreak
     };
@@ -394,8 +412,8 @@ export function weeklyCrosswordDashboardStatus(
   if (!progress) return { label: "New", tone: "new", score: null, streak: stats.currentStreak };
   if (progress.completedAt) {
     return {
-      label: completedInReleaseWindow("weekly", progress.date, progress.completedAt) ? "Solved" : "Finished",
-      tone: "solved",
+      label: progress.gaveUpAt ? "Gave up" : completedInReleaseWindow("weekly", progress.date, progress.completedAt) ? "Solved" : "Finished",
+      tone: progress.gaveUpAt ? "failed" : "solved",
       score: progress.releaseDateScore,
       streak: stats.currentStreak
     };
@@ -425,7 +443,7 @@ export function deriveWeeklyCrosswordStats(progressRecords: CrosswordProgress[],
       isToday: date === localDateString(now),
       score: progress?.releaseDateScore ?? 0,
       solveTimeSeconds,
-      outcome: progress ? solveTimeSeconds !== null ? "solved" : "inProgress" : "unplayed"
+      outcome: progress?.gaveUpAt ? "gaveUp" : progress ? solveTimeSeconds !== null ? "solved" : "inProgress" : "unplayed"
     } as const;
   });
   const recentHistory = rows.slice(0, 2);

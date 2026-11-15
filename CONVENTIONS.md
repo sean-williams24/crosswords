@@ -1272,8 +1272,8 @@ Weekly progress syncs as `weekly_crossword` and preserves the native payload's
 for Pro and deduct one point for every three used. Scores are captured only
 while the completed puzzle belongs to the browser's current local Sunday
 release window; the weekly stats surface mirrors iOS with two current-window
-weeks and five prior games. Weekly archives and answer reveal remain iOS-only
-on the web.
+weeks and five prior games. Answer reveal is available on web through the
+navigation flag, with the same earned-score preservation as iOS.
 
 Quick and Pro Crossword expose the same info action and shared How to Play
 sheet/modal on both platforms. On a first home daily-game launch, the sheet
@@ -2458,11 +2458,24 @@ Home and archive game status labels show `Gave up` for revealed games and `Faile
 
 Backword animates the info card above previous guesses with wide horizontal screen margins, replacing the stuck message with an unfilled flag reminder after one minute in an unfinished game. Each accepted guess hides the reminder and restarts the one-minute countdown; leaving or completing the game cancels it.
 
-Web Anagram and Midword share `GameGiveUpDialog`: a centered rounded dialog
-with a circular close control, the zero-points/replay explanation, and Give up
+All five web games share `GameGiveUpDialog`: a centered rounded dialog
+with a circular close control, the game's scoring/replay explanation, and Give up
 and reveal followed by Keep playing. It uses Anagram's established layout with
 each game's accent colors. Escape, backdrop, close, and Keep playing dismiss
 without changing progress; only the primary confirmation ends the game.
+Backword has an accent-colored Give up text button immediately above the
+progress bar and keyboard, aligned with the outermost keys. Quick and Pro
+Crossword use an accessible flag in the navigation bar. These controls are
+available only for loaded, unfinished games; completed games remain locked.
+Backword preserves its guesses and saves the native-compatible failed result
+for zero points; fewer than five guesses distinguishes Gave up from an exhausted
+failure. Crossword confirmations explain that earned points are retained. A
+reveal captures the pre-reveal score, fills the grid, and saves `gaveUpAt`,
+`gaveUpScore`, and comma-separated `gaveUpRevealedCells` coordinates. Archive
+reveals preserve the release-date score snapshot. Sync uploads crossword
+reveals as `gave_up`, which the existing server merge already handles as a
+terminal result. Reveals are excluded from solve counts and time averages;
+completion, history, Home, and sharing do not describe them as solved.
 
 ## Timed Midword progress compatibility
 

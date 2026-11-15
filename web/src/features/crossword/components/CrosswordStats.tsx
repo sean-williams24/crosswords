@@ -59,6 +59,7 @@ function HistorySection({ rows, title }: { rows: CrosswordStatsModel["history"];
                 {formatDate(row.date)}
                 {row.isToday ? <small className="is-today">TODAY</small> : null}
                 {row.outcome === "solved" ? <small className="is-solved">SOLVED</small> : null}
+                {row.outcome === "gaveUp" ? <small className="is-failed">GAVE UP</small> : null}
               </span>
               <strong className={`bw-score-chip ${scoreChipTone(row.score)}`}>{row.score}</strong>
               <span className={`is-${row.outcome}`}>{formatDuration(row.solveTimeSeconds)}</span>

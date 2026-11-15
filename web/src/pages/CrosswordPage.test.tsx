@@ -1,9 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { localDateString } from "../features/backword/date";
+import { localDateString, localDateOffset } from "../features/backword/date";
 import { emptyProgress } from "../features/crossword/engine";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { CrosswordPage } from "./CrosswordPage";
@@ -30,6 +30,43 @@ vi.mock("../features/crossword/repository", async () => {
 });
 
 describe("CrosswordPage", () => {
+  it.each([false, true])("reveals from a navigation flag, keeps earned scores and stays locked after reload with archive=%s", async archive => {
+    const user = userEvent.setup();
+    const date = archive ? localDateOffset(localDateString(), -1) : localDateString();
+    const storage = createCrosswordStorage();
+    const saved = emptyProgress({ id: "today-crossword", date, size: 9 });
+    saved.entries[0][0] = "A";
+    saved.releaseDateScore = archive ? 2 : 0;
+    storage.saveProgress(saved);
+    const game = <MemoryRouter initialEntries={[`/crossword/${date}`]}><Routes>
+      <Route element={<CrosswordPage />} path="/crossword/:date" />
+    </Routes></MemoryRouter>;
+    const page = render(game);
+    const button = await screen.findByRole("button", { name: "Give up" });
+    expect(button.querySelector("svg")).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Crossword actions" })).toContainElement(button);
+    const before = storage.loadProgress({ id: "today-crossword", date, size: 9 });
+    await user.click(button);
+    const dialog = screen.getByRole("dialog", { name: "Give up?" });
+    expect(dialog).toHaveTextContent(`You keep ${archive ? 2 : 0} of 5 points`);
+    await user.keyboard("B{Backspace}");
+    expect(storage.loadProgress({ id: "today-crossword", date, size: 9 })).toEqual(before);
+    await user.click(within(dialog).getByRole("button", { name: "Keep playing" }));
+    expect(storage.loadProgress({ id: "today-crossword", date, size: 9 })).toEqual(before);
+    await user.click(button);
+    await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
+    expect(await screen.findByRole("dialog", { name: "Gave up" })).toHaveTextContent(`${archive ? 2 : 0}/5`);
+    const ended = storage.loadProgress({ id: "today-crossword", date, size: 9 });
+    expect(ended.gaveUpAt).toBeTruthy();
+    expect(ended.releaseDateScore).toBe(archive ? 2 : 0);
+    expect(ended.entries[0].slice(0, 2)).toEqual(["A", "B"]);
+    expect(screen.queryByRole("button", { name: "Give up" })).not.toBeInTheDocument();
+    expect(screen.getByRole("gridcell", { name: /Row 1, column 1/ })).toBeDisabled();
+    const keyboard = screen.getByRole("group", { name: "Crossword keyboard" });
+    expect(within(keyboard).getByRole("button", { name: "A" })).toBeDisabled();
+    page.unmount(); render(game);
+    expect(await screen.findByRole("dialog", { name: "Gave up" })).toBeInTheDocument();
+  });
   beforeEach(() => {
     localStorage.clear();
     repositoryDates.values = [];

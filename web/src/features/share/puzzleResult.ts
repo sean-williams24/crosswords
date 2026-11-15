@@ -154,14 +154,14 @@ export function buildCrosswordShareResult({
     gameName: kind === "weekly" ? "Pro Crossword" : "Quick Crossword",
     issueNumber: puzzle.puzzleNumber,
     date: progress.date,
-    outcome: "SOLVED",
-    score: onTime ? progress.releaseDateScore : 0,
+    outcome: progress.gaveUpAt ? "COMPLETED" : "SOLVED",
+    score: progress.gaveUpAt ? progress.gaveUpScore ?? progress.releaseDateScore : onTime ? progress.releaseDateScore : 0,
     streak: stats.currentStreak,
     totalGamesSolved: stats.totalSolved,
     ratingTier: rating.tier,
     ratingPoints: rating.totalPoints,
     ratingMaxPoints: rating.maxPoints,
-    primaryStat: { label: "SOLVE TIME", value: formatDuration(solveSeconds) },
+    primaryStat: { label: progress.gaveUpAt ? "TIME" : "SOLVE TIME", value: formatDuration(solveSeconds) },
     timeStat: null,
     url: shareUrl(game, progress.date, origin)
   });

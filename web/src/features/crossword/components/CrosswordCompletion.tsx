@@ -28,6 +28,8 @@ type CrosswordCompletionProps = {
 export function CrosswordCompletion({ onClose, progress, puzzle, stats, kind = "daily", rating }: CrosswordCompletionProps) {
   const [seconds, setSeconds] = useState(() => kind === "weekly" ? secondsUntilNextLocalSunday() : secondsUntilNextLocalMidnight());
   const onTime = completedInReleaseWindow(kind, progress.date, progress.completedAt);
+  const gaveUp = Boolean(progress.gaveUpAt);
+  const title = gaveUp ? "Gave up" : onTime ? "Solved!" : "Finished";
   const completedAt = new Date(progress.completedAt ?? "").getTime();
   const startedAt = new Date(progress.startedAt).getTime();
   const solveTime = Number.isFinite(completedAt - startedAt) ? Math.max(0, Math.floor((completedAt - startedAt) / 1000)) : null;
@@ -39,18 +41,19 @@ export function CrosswordCompletion({ onClose, progress, puzzle, stats, kind = "
   }, []);
 
   return (
-    <BackwordModal className="bw-completion-modal cw-completion-modal" onClose={onClose} showCloseButton={false} title={onTime ? "Solved!" : "Finished"}>
+    <BackwordModal className="bw-completion-modal cw-completion-modal" onClose={onClose} showCloseButton={false} title={title}>
       <div className="bw-modal-scroll bw-completion-scroll stats-sheet-scroll">
-        <h2 className={onTime ? "" : "is-finished"}>{onTime ? "Solved!" : "Finished"}</h2>
+        <h2 className={gaveUp ? "is-failed" : onTime ? "" : "is-finished"}>{title}</h2>
         <p className="bw-completion-summary">PUZZLE #{puzzle.puzzleNumber}</p>
-        <div aria-label="Completed crossword grid" className={`cw-completion-grid ${kind === "weekly" ? "cw-completion-grid--weekly" : ""}`} style={{ "--cw-grid-size": puzzle.size } as CSSProperties}>
+        <div aria-label="Completed crossword grid" className={`cw-completion-grid ${kind === "weekly" ? "cw-completion-grid--weekly" : ""}${gaveUp ? " is-gave-up" : ""}`} style={{ "--cw-grid-size": puzzle.size } as CSSProperties}>
           {puzzle.cells.flatMap((row, rowIndex) => row.map((cell, colIndex) => cell.letter === null
             ? <span className="is-black" key={`${rowIndex}:${colIndex}`} />
             : <span key={`${rowIndex}:${colIndex}`} style={{ animationDelay: `${(rowIndex + colIndex) * 40}ms` }}>{cell.letter}</span>
           ))}
         </div>
         <div className="bw-countdown"><span>NEXT {kind === "weekly" ? "WEEKLY" : "QUICK"} CROSSWORD IN</span><strong>{kind === "weekly" ? weeklyCountdownText(seconds) : countdownText(seconds)}</strong></div>
-        {!onTime ? <p className="bw-late-message">Complete the crossword on its release date to earn points.</p> : null}
+        {gaveUp ? <p className="bw-late-message">The grid has been revealed. Your score earned before giving up is preserved.</p>
+          : !onTime ? <p className="bw-late-message">Complete the crossword on its release date to earn points.</p> : null}
         <section className="cw-completion-summary-card">
           <div><strong>{progress.releaseDateScore}/5</strong><span>SCORE</span></div>
           <div><strong>{stats.currentStreak}</strong><span>STREAK</span></div>

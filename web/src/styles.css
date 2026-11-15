@@ -913,6 +913,20 @@ a {
   background: var(--app-background);
 }
 
+.game-keyboard-actions {
+  display: flex;
+  width: min(calc(100% - 2 * var(--bw-keyboard-inline-padding)), calc(var(--bw-keyboard-max-width) - 2 * var(--bw-keyboard-inline-padding)));
+  margin: 0 auto 12px;
+  justify-content: flex-end;
+}
+.game-give-up-button {
+  min-height: 44px; padding: 10px 14px; border: 0; border-radius: 6px;
+  color: var(--bw-primary); background: var(--bw-accent); font: 400 16px "Outfit", sans-serif; cursor: pointer;
+}
+.game-give-up-button:hover { filter: brightness(1.1); }
+.game-give-up-button:focus-visible { outline: 2px solid var(--bw-primary); outline-offset: 3px; }
+.cw-give-up-action svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
 .bw-game-score {
   width: min(100%, var(--bw-keyboard-max-width));
   height: 7px;
@@ -1050,6 +1064,7 @@ a {
 .cw-cell.is-selected small { color: #e8f1fa; }
 .cw-cell.is-completed { background: rgb(var(--app-correct-rgb) / 30%); }
 .cw-cell.is-completed.is-selected { background: rgb(var(--app-correct-rgb) / 70%); }
+.cw-cell.is-revealed, .cw-cell.is-revealed.is-selected { color: var(--bw-primary); background: rgb(236 84 84 / 20%); border-color: var(--bw-failed); }
 .cw-game-controls { padding-top: 6px; }
 .cw-score-label { width: min(100%, 650px); margin: 7px auto -3px; padding-inline: 8px; color: var(--app-text-secondary); font-size: 11px; text-align: right; }
 .cw-hint-action { border: 0; color: #d6be87; background: transparent; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
@@ -1071,6 +1086,7 @@ a {
 .cw-completion-grid--weekly { width: min(100%, 470px); }
 .cw-completion-grid > span { display: grid; aspect-ratio: 1; place-items: center; border-radius: 1px; color: #fff; background: rgb(var(--app-correct-rgb) / 37%); font-family: ui-monospace, monospace; font-size: clamp(11px, 4vw, 20px); font-weight: 700; animation: cw-grid-reveal 350ms both cubic-bezier(.2,.8,.2,1); }
 .cw-completion-grid > .is-black { background: transparent; animation: none; }
+.cw-completion-grid.is-gave-up > span:not(.is-black) { background: rgb(236 84 84 / 30%); }
 .cw-completion-summary-card { display: grid; grid-template-columns: repeat(3, 1fr); padding: 17px 9px; border-radius: 12px; background: var(--app-surface); }
 .cw-completion-summary-card > div { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 5px; border-right: 1px solid var(--app-grid); }
 .cw-completion-summary-card > div:last-child { border: 0; }
@@ -2771,6 +2787,20 @@ html[data-theme="light"] {
   --confirmation-line: var(--midword-accent);
   --confirmation-surface: var(--midword-surface);
   --confirmation-on-accent: var(--midword-on-accent);
+}
+
+.game-confirmation-dialog--backword {
+  --confirmation-accent: var(--app-accent);
+  --confirmation-line: var(--app-accent);
+  --confirmation-surface: var(--app-control);
+  --confirmation-on-accent: var(--app-text-primary);
+}
+.game-confirmation-dialog--daily_crossword,
+.game-confirmation-dialog--weekly_crossword {
+  --confirmation-accent: #d6be87;
+  --confirmation-line: #d6be87;
+  --confirmation-surface: var(--app-control);
+  --confirmation-on-accent: #1a1a1a;
 }
 
 .anagram-dialog--instructions {

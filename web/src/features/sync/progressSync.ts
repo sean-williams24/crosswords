@@ -88,7 +88,7 @@ export function crosswordCloudRecord(
     content_key: progress.puzzleId,
     release_date: progress.date,
     schema_version: progress.schemaVersion,
-    status: progress.completedAt ? "solved" : "in_progress",
+    status: progress.gaveUpAt ? "gave_up" : progress.completedAt ? "solved" : "in_progress",
     progress_rank: progress.completedClueIds.length * 100 + progress.entries.flat().filter(Boolean).length,
     release_score: progress.releaseDateScore,
     client_updated_at: progress.updatedAt ?? progress.completedAt ?? progress.startedAt,

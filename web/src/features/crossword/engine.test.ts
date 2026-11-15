@@ -6,6 +6,9 @@ import {
   emptyProgress,
   enterLetter,
   firstWhiteSelection,
+  giveUp,
+  crosswordDashboardStatus,
+  weeklyCrosswordDashboardStatus,
   selectCell,
   toggleHint
 } from "./engine";
@@ -19,6 +22,42 @@ function puzzle(): CrosswordPuzzle {
 }
 
 describe("crossword engine", () => {
+  it.each(["daily", "weekly"] as const)("giving up a %s crossword reveals and locks it without increasing earned points", kind => {
+    const currentPuzzle = puzzle();
+    // Four crossing clues leave one genuinely solved answer before reveal.
+    currentPuzzle.clues = [currentPuzzle.clues[0],
+      { ...currentPuzzle.clues[0], id: 1, answer: "CD", startRow: 1 },
+      { ...currentPuzzle.clues[0], id: 2, answer: "AC", direction: "down" },
+      { ...currentPuzzle.clues[0], id: 3, answer: "BD", direction: "down", startCol: 1 }];
+    currentPuzzle.date = kind === "weekly" ? "2026-08-02" : "2026-08-05";
+    currentPuzzle.cells[1][0] = { letter: "C", clueNumber: 2, acrossClueId: 1, downClueId: 2 };
+    currentPuzzle.cells[1][1] = { letter: "D", clueNumber: null, acrossClueId: 1, downClueId: 3 };
+    let before = emptyProgress(currentPuzzle, new Date("2026-08-05T09:00:00"));
+    before = { ...before, completedClueIds: [0], hintsUsed: 3, releaseDateScore: 1 };
+    before.entries[0][0] = "A"; before.entries[0][1] = "B";
+    const now = new Date("2026-08-05T10:00:00");
+    const ended = giveUp(before, currentPuzzle, now, kind);
+    expect(ended).toMatchObject({ gaveUpAt: now.toISOString(), gaveUpScore: 1, releaseDateScore: 1,
+      completedAt: now.toISOString(), completedClueIds: [0, 1, 2, 3], isWeekly: kind === "weekly" });
+    expect(ended.entries[1].slice(0, 3)).toEqual(["C", "D", null]);
+    expect(ended.gaveUpRevealedCells).toEqual(["1,0", "1,1"]);
+    expect(before.entries[1][0]).toBeNull();
+    const selection = firstWhiteSelection(currentPuzzle);
+    expect(enterLetter(ended, currentPuzzle, selection, "Z", false).progress).toBe(ended);
+    expect(deleteLetter(ended, currentPuzzle, selection, false).progress).toBe(ended);
+    expect(toggleHint(ended, currentPuzzle, currentPuzzle.clues[0])).toBe(ended);
+    expect(giveUp(ended, currentPuzzle)).toBe(ended);
+    const stats = kind === "weekly" ? deriveWeeklyCrosswordStats([ended], now) : deriveCrosswordStats([ended], now);
+    expect(stats).toMatchObject({ totalSolved: 0, averageSolveTimeSeconds: null, rollingScore: 1 });
+    const status = kind === "weekly" ? weeklyCrosswordDashboardStatus(ended, now, [ended]) : crosswordDashboardStatus(ended, now, [ended]);
+    expect(status).toMatchObject({ label: "Gave up", tone: "failed", score: 1 });
+    const archive = giveUp(before, currentPuzzle, new Date("2026-08-12T10:00:00"), kind);
+    expect(archive.releaseDateScore).toBe(1);
+    expect(archive.gaveUpScore).toBe(1);
+    const unscoredArchive = giveUp({ ...before, releaseDateScore: 0 }, currentPuzzle, new Date("2026-08-12T10:00:00"), kind);
+    expect(unscoredArchive.releaseDateScore).toBe(0);
+    expect(giveUp({ ...before, completedAt: now.toISOString() }, currentPuzzle, now, kind).gaveUpAt).toBeUndefined();
+  });
   it("completes a clue, locks it by default, and restores editable mode", () => {
     const currentPuzzle = puzzle();
     let progress = emptyProgress(currentPuzzle, new Date("2026-08-05T09:00:00"));

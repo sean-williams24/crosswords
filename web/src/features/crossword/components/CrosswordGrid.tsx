@@ -25,10 +25,12 @@ export function CrosswordGrid({ activeClue, correctHighlight, onSelect, progress
         const selected = selection.row === rowIndex && selection.col === colIndex;
         const completed = correctHighlight && isCompletedCell(progress, puzzle, rowIndex, colIndex);
         const inActiveWord = activeCells.has(`${rowIndex}:${colIndex}`);
+        const revealed = progress.gaveUpRevealedCells?.includes(`${rowIndex},${colIndex}`);
         return (
           <button
             aria-label={`Row ${rowIndex + 1}, column ${colIndex + 1}${cell.clueNumber ? `, clue ${cell.clueNumber}` : ""}`}
-            className={`cw-cell ${selected ? "is-selected" : ""} ${inActiveWord ? "is-active" : ""} ${completed ? "is-completed" : ""}`}
+            className={`cw-cell ${selected ? "is-selected" : ""} ${inActiveWord ? "is-active" : ""} ${completed ? "is-completed" : ""} ${revealed ? "is-revealed" : ""}`}
+            disabled={Boolean(progress.gaveUpAt)}
             key={`${rowIndex}:${colIndex}`}
             onClick={() => onSelect(rowIndex, colIndex)}
             role="gridcell"

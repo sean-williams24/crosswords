@@ -25,7 +25,7 @@ export function backwordDashboardStatus(
   }
 
   if (progress.outcome === "failed") {
-    return { label: "Failed", tone: "failed" };
+    return { label: progress.guesses.length < 5 ? "Gave up" : "Failed", tone: "failed" };
   }
 
   if (progress.guesses.length > 0) {

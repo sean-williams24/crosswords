@@ -43,6 +43,7 @@ export type CrosswordProgress = {
   /** Present on native records that were revealed rather than solved. */
   gaveUpAt?: string | null;
   gaveUpScore?: number | null;
+  gaveUpRevealedCells?: string[];
   releaseDateScore: number;
   totalClues?: number;
   isWeekly?: boolean;
@@ -64,7 +65,7 @@ export type CrosswordSelection = {
 
 export type CrosswordDashboardStatus = {
   label: string;
-  tone: "new" | "progress" | "solved";
+  tone: "new" | "progress" | "solved" | "failed";
   score: number | null;
   streak: number;
 };
@@ -74,7 +75,7 @@ export type CrosswordHistoryRow = {
   isToday: boolean;
   score: number;
   solveTimeSeconds: number | null;
-  outcome: "unplayed" | "inProgress" | "solved";
+  outcome: "unplayed" | "inProgress" | "solved" | "gaveUp";
 };
 
 export type CrosswordStats = {

@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 
-export function GameGiveUpDialog({ game, onClose, onConfirm }: {
-  game: "anagram" | "midword";
+export function GameGiveUpDialog({ game, onClose, onConfirm, description = "This ends today’s attempt for zero points and reveals the answer. You cannot replay it for a higher score." }: {
+  game: "anagram" | "midword" | "backword" | "daily_crossword" | "weekly_crossword";
+  description?: string;
   onClose: () => void;
   onConfirm: () => void;
 }) {
@@ -25,7 +26,7 @@ export function GameGiveUpDialog({ game, onClose, onConfirm }: {
     <section aria-label="Give up?" aria-modal="true" className={`game-confirmation-dialog game-confirmation-dialog--${game}`} role="dialog">
       <button aria-label="Close" className="game-confirmation-close" onClick={onClose} ref={closeRef} type="button">×</button>
       <h2>Give up?</h2>
-      <p>This ends today’s attempt for zero points and reveals the answer. You cannot replay it for a higher score.</p>
+      <p>{description}</p>
       <button className="game-confirmation-primary" onClick={onConfirm} type="button">Give up and reveal</button>
       <button onClick={onClose} type="button">Keep playing</button>
     </section>

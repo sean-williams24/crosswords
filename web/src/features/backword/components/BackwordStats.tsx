@@ -82,6 +82,7 @@ export function StatsContent({
                 {row.isToday ? <small className="is-today">TODAY</small> : null}
                 {row.outcome === "solved" ? <small className="is-solved">SOLVED</small> : null}
                 {!row.isToday && row.outcome === "failed" ? <small className="is-failed">FAILED</small> : null}
+                {row.outcome === "gaveUp" ? <small className="is-failed">GAVE UP</small> : null}
               </span>
               <strong className={`bw-score-chip ${scoreChipTone(row.score)}`}>{row.score}</strong>
               <span className={`is-${row.outcome}`}>{row.guessCount ?? "–"}</span>

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { localWeekStartString } from "../features/backword/date";
@@ -37,6 +37,31 @@ vi.mock("../features/crossword/repository", async () => {
 
 describe("WeeklyCrosswordPage", () => {
   beforeEach(() => localStorage.clear());
+
+  it("offers a navigation flag, confirms give-up, and restores a revealed Pro game without a solved score", async () => {
+    const user = userEvent.setup();
+    const page = render(<MemoryRouter><WeeklyCrosswordPage /></MemoryRouter>);
+    const button = await screen.findByRole("button", { name: "Give up" });
+    expect(screen.getByRole("navigation", { name: "Crossword actions" })).toContainElement(button);
+    await user.keyboard("A");
+    const storage = createCrosswordStorage(undefined, { kind: "weekly", userId: "pro-player" });
+    const before = storage.loadProgressForDate(localWeekStartString());
+    await user.click(button);
+    await user.keyboard("B{Backspace}");
+    expect(storage.loadProgressForDate(localWeekStartString())).toEqual(before);
+    await user.click(screen.getByRole("button", { name: "Keep playing" }));
+    expect(storage.loadProgressForDate(localWeekStartString())).toEqual(before);
+    await user.click(button);
+    await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
+    expect(await screen.findByRole("dialog", { name: "Gave up" })).toHaveTextContent("0/5");
+    expect(screen.getByText("This week: 0/5")).toBeInTheDocument();
+    expect(storage.loadProgressForDate(localWeekStartString())).toMatchObject({ releaseDateScore: 0, gaveUpScore: 0 });
+    expect(screen.queryByRole("button", { name: "Give up" })).not.toBeInTheDocument();
+    expect(within(screen.getByRole("group", { name: "Crossword keyboard" })).getByRole("button", { name: "A" })).toBeDisabled();
+    page.unmount();
+    render(<MemoryRouter><WeeklyCrosswordPage /></MemoryRouter>);
+    expect(await screen.findByRole("dialog", { name: "Gave up" })).toBeInTheDocument();
+  });
 
   it("loads the Pro 13×13 grid, opens the same instructions modal, offers hints, and uses weekly completion copy", async () => {
     const user = userEvent.setup();

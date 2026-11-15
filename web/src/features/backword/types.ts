@@ -41,7 +41,8 @@ export type BackwordHistoryOutcome =
   | "unplayed"
   | "inProgress"
   | "solved"
-  | "failed";
+  | "failed"
+  | "gaveUp";
 
 export type BackwordHistoryRow = {
   date: string;
