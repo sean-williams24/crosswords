@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { TimedGameStartCard } from "../components/TimedGameStartCard";
 import { Footer } from "../components/Footer";
-import { BackwordModal } from "../features/backword/components/BackwordModal";
+import { GameGiveUpDialog } from "../components/GameGiveUpDialog";
 import { GameSubmitButton } from "../components/GameSubmitButton";
 import { useAuth } from "../features/auth/AuthProvider";
 import { ProAccessRedirect } from "../features/pro/ProAccessRedirect";
@@ -214,10 +214,7 @@ function MidwordGame({ date, accessReady = true }: { date: string; accessReady?:
       </footer> : null}
     </div>
     <Footer />
-    {confirmGiveUp ? <BackwordModal title="Give up?" className="midword-dialog" onClose={() => setConfirmGiveUp(false)}>
-      <p>This will reveal the answer for zero points.</p>
-      <button type="button" onClick={() => setConfirmGiveUp(false)}>Cancel</button><button type="button" onClick={abandon}>Reveal Answer</button>
-    </BackwordModal> : null}
+    {confirmGiveUp ? <GameGiveUpDialog game="midword" onClose={() => setConfirmGiveUp(false)} onConfirm={abandon} /> : null}
     {sheet ? <MidwordDialog kind={sheet} now={now} onClose={() => setSheet(null)} progress={progress} puzzle={puzzle} shareResult={shareResult} stats={stats} /> : null}
   </div>;
 }

@@ -1,4 +1,5 @@
 import { StatsSheetActions } from "../../components/StatsSheetActions";
+import { GameGiveUpDialog } from "../../components/GameGiveUpDialog";
 import { useEffect, useRef } from "react";
 import { localDateString } from "../backword/date";
 import type { PuzzleShareResult } from "../share/puzzleResult";
@@ -89,11 +90,13 @@ export function AnagramDialog({ kind, onClose, onConfirmHint, onConfirmGiveUp, p
   const hintNarrowsAnswers = puzzle?.acceptedAnswers.some((answer) =>
     answer[hintPosition] !== hintLetter) ?? false;
   useEffect(() => {
+    if (kind === "giveUp") return;
     closeRef.current?.focus();
     const escape = (event: KeyboardEvent) => { if (event.key === "Escape") onClose(); };
     window.addEventListener("keydown", escape);
     return () => window.removeEventListener("keydown", escape);
-  }, [onClose]);
+  }, [kind, onClose]);
+  if (kind === "giveUp") return <GameGiveUpDialog game="anagram" onClose={onClose} onConfirm={onConfirmGiveUp} />;
   const historyByDate = new Map(history.map((record) => [record.date, record]));
   const releaseDays = Array.from({ length: 14 }, (_, offset) => {
     const day = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12);
@@ -134,7 +137,7 @@ export function AnagramDialog({ kind, onClose, onConfirmHint, onConfirmGiveUp, p
     <div className="anagram-stats__primary"><span><strong>{stats.streak}</strong><small>Current<br />Streak</small></span><span><strong>{stats.solved}</strong><small>Total<br />Solved</small></span><span><strong>{stats.bestStreak}</strong><small>Best<br />Streak</small></span></div>
     <span className="anagram-stats__average"><strong>{stats.averageSeconds === null ? "–" : duration(stats.averageSeconds)}</strong><small>Avg Time</small></span>
   </section>;
-  const backdropModifier = kind === "giveUp" || kind === "hint"
+  const backdropModifier = kind === "hint"
     ? " anagram-dialog-backdrop--centered"
     : kind === "stats" || kind === "instructions" || kind === "result"
       ? " anagram-dialog-backdrop--stats"
@@ -144,7 +147,6 @@ export function AnagramDialog({ kind, onClose, onConfirmHint, onConfirmGiveUp, p
       {kind !== "result" && kind !== "stats" ? <button aria-label={kind === "instructions" ? "Close How to Play" : "Close"} className="anagram-dialog-close" onClick={onClose} ref={closeRef} type="button">×</button> : null}
       {kind === "instructions" ? <><header className="anagram-instructions-header"><h2>How to Play</h2></header><div className="anagram-instructions-scroll"><AnagramInstructions /></div></> : null}
       {kind === "hint" ? <><h2>Reveal a letter?</h2><p>One correct letter will lock in place. A 30 second scoring penalty applies; the timer keeps running.{hintNarrowsAnswers ? " The locked letter may rule out some other answers." : ""}</p><button className="anagram-primary" onClick={onConfirmHint} type="button">Reveal letter (+30s)</button><button onClick={onClose} type="button">Cancel</button></> : null}
-      {kind === "giveUp" ? <><h2>Give up?</h2><p>This ends today’s attempt for zero points and reveals the answer. You cannot replay it for a higher score.</p><button className="anagram-primary" onClick={onConfirmGiveUp} type="button">Give up and reveal</button><button onClick={onClose} type="button">Keep playing</button></> : null}
       {kind === "stats" ? <><header className="anagram-stats-header"><h2>Anagram Stats</h2></header><div className="anagram-stats-scroll stats-sheet-scroll">{ratingBar}{statsSummary}{historyTable}</div><StatsSheetActions onClose={onClose} showHome={false} /></> : null}
       {kind === "result" && progress && puzzle ? <AnagramCompletion countdown={countdown} historyTable={historyTable} onClose={onClose} progress={progress} puzzle={puzzle} ratingBar={ratingBar} shareResult={shareResult} statsSummary={statsSummary} /> : null}
     </section>

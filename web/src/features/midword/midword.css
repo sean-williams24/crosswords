@@ -49,7 +49,7 @@ html[data-theme="dark"] .midword-header h1::after {
   position: relative;
   display: flex;
   min-height: 0;
-  padding: 16px var(--midword-inline-padding) 24px;
+  padding: 16px var(--midword-inline-padding) 8px;
   flex: 1 0 auto;
   flex-direction: column;
   align-items: center;
@@ -100,7 +100,7 @@ html[data-theme="dark"] .midword-header h1::after {
 }
 .midword-give-up:hover { background: color-mix(in srgb, var(--midword-accent) 88%, var(--midword-text)); }
 .midword-give-up:active { transform: scale(0.96); }
-.midword-controls { padding-top: 12px; background: var(--midword-background); }
+.midword-controls { padding-top: 4px; background: var(--midword-background); }
 .midword-controls .bw-key { color: var(--midword-text); background: color-mix(in srgb, var(--midword-text) 12%, var(--midword-background)); }
 .midword-controls .bw-key-delete, .midword-page .bw-submit, .midword-page .bw-primary-button { color: var(--midword-on-accent); background: var(--midword-accent); }
 .midword-dialog {

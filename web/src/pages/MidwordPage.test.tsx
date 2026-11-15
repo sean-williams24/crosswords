@@ -197,6 +197,10 @@ describe("Midword browser gameplay", () => {
     try {
       expect(getComputedStyle(row).marginTop).toBe("auto");
       expect(getComputedStyle(row).justifyContent).toBe("flex-end");
+      const mainRule = Array.from(style.sheet!.cssRules).find(rule =>
+        rule instanceof CSSStyleRule && rule.selectorText === ".midword-main") as CSSStyleRule;
+      expect(mainRule.style.getPropertyValue("padding")).toBe("16px var(--midword-inline-padding) 8px");
+      expect(getComputedStyle(bar.parentElement!).paddingTop).toBe("4px");
       const shell = main.parentElement!;
       expect(getComputedStyle(shell).getPropertyValue("--bw-keyboard-max-width").trim()).toBe("650px");
       expect(getComputedStyle(shell).getPropertyValue("--bw-keyboard-inline-padding").trim()).toBe("8px");
@@ -219,8 +223,9 @@ describe("Midword browser gameplay", () => {
 
     await user.click(button);
     const confirmation = screen.getByRole("dialog", { name: "Give up?" });
-    expect(confirmation).toHaveTextContent("This will reveal the answer for zero points.");
-    await user.click(within(confirmation).getByRole("button", { name: "Cancel" }));
+    expect(confirmation).toHaveClass("game-confirmation-dialog--midword");
+    expect(confirmation).toHaveTextContent("This ends today’s attempt for zero points and reveals the answer. You cannot replay it for a higher score.");
+    await user.click(within(confirmation).getByRole("button", { name: "Keep playing" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(createMidwordStorage().loadProgress(localDateString()).completedAt).toBeNull();
     expect(main.lastElementChild).toContainElement(button);
@@ -379,7 +384,7 @@ describe("Midword browser gameplay", () => {
     for (const word of ["PAGE", "WORD", "READ", "LINE", "BOOK", "LINK"]) await typeGuess(user, word);
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Give up" }));
-    await user.click(screen.getByRole("button", { name: "Reveal Answer" }));
+    await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
     expect(await screen.findByRole("dialog", { name: "Finished" })).toHaveTextContent("The answer was…");
     const progress = createMidwordStorage().loadProgress(localDateString());
     expect(progress.outcome).toBe("failed"); expect(progress.releaseDateScore).toBe(0);

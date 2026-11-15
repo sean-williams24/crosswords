@@ -239,6 +239,10 @@ struct AppLayout {
     static let statsHomeButtonHorizontalPadding: CGFloat = 8
     static let statsHomeBarVerticalPadding: CGFloat = 8
     static let minimumTouchTarget: CGFloat = 44
+    static let keyboardPadding: CGFloat = 16
+    static let keyboardKeyCornerRadius: CGFloat = 6
+    static let keyboardActionHorizontalPadding: CGFloat = 14
+    static let keyboardActionBottomSpacing: CGFloat = 12
     static let statsHistoryScoreColumnWidth: CGFloat = 50
     static let statsHistoryAccessibleScoreColumnWidth: CGFloat = 60
     static let statsHistoryTimeColumnWidth: CGFloat = 72

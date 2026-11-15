@@ -445,6 +445,12 @@ rating progress bar spans the screen with the same spacing above the keyboard
 as Backword. Completion reveals the answer with the same timing and Reduce
 Motion behaviour as Backword.
 
+On iOS, Midword's Give up control is a green rounded text button above the
+progress bar and keyboard, replacing the navigation flag. It is visible only
+in an unfinished started game and opens the existing reveal confirmation.
+`GameKeyboardActionRow` and `CustomKeyboardView` share `AppLayout.keyboardPadding`
+so the button's trailing edge matches the outermost keys at every screen width.
+
 Midword gameplay, stats, and completion cap Dynamic Type at XXX Large
 size through `GameDynamicTypeContainer`. The cap applies above child views so
 custom fonts and `@ScaledMetric` dimensions use the same bounded environment;
@@ -549,9 +555,9 @@ including appearance-specific backgrounds, borders, and Home-card foregrounds.
 The header, board, timer, progress bar, and keyboard stay in normal
 document flow and scroll together with the viewport. The page fills at least
 the viewport height, including the site footer on wider screens, and grows
-with its content rather than scrolling the board behind the keyboard. The board
-has 24px of bottom padding above the rating bar, with another 12px above the
-bar inside the controls. The bar sits directly above the keyboard or Submit
+with its content rather than scrolling the board behind the keyboard. The
+gameplay area has 8px of bottom padding, with another 4px above the bar inside
+the controls, leaving a 12px gap below Give up. The bar sits directly above the keyboard or Submit
 button when shown, moving up and down as the button appears and disappears.
 Mobile retains its hidden site footer.
 The gameplay wordmark shares Backword's centered large-logo dimensions,
@@ -2446,11 +2452,17 @@ move with it on hover; keyboard focus retains the primary-colour outline.
 
 ## Giving Up Games
 
-Unfinished daily and weekly crosswords can be revealed by free and Pro players, including on their release day. Revealing locks the grid and preserves the score earned before reveal. Midword's flag confirms a terminal failure, preserves guesses, reveals the answer, and awards zero points.
+Unfinished daily and weekly crosswords can be revealed by free and Pro players, including on their release day. Revealing locks the grid and preserves the score earned before reveal. Midword's Give up button confirms a terminal failure, preserves guesses, reveals the answer, and awards zero points.
 
 Home and archive game status labels show `Gave up` for revealed games and `Failed` for exhausted attempts. Both crossword home cards use the same primary text colour as Backword for the `Gave up` label. Backword and Midword give-ups are identified from terminal losses with fewer than five guesses, including older saved and synced progress.
 
 Backword animates the info card above previous guesses with wide horizontal screen margins, replacing the stuck message with an unfilled flag reminder after one minute in an unfinished game. Each accepted guess hides the reminder and restarts the one-minute countdown; leaving or completing the game cancels it.
+
+Web Anagram and Midword share `GameGiveUpDialog`: a centered rounded dialog
+with a circular close control, the zero-points/replay explanation, and Give up
+and reveal followed by Keep playing. It uses Anagram's established layout with
+each game's accent colors. Escape, backdrop, close, and Keep playing dismiss
+without changing progress; only the primary confirmation ends the game.
 
 ## Timed Midword progress compatibility
 

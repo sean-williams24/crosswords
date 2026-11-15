@@ -27,7 +27,7 @@ struct CustomKeyboardView: View {
                 specialTextColor: specialTextColor
             )
         }
-        .padding()
+        .padding(AppLayout.keyboardPadding)
         .background(backgroundColor)
     }
 }
@@ -50,7 +50,7 @@ struct KeyButtonStyle: ButtonStyle {
             .frame(height: keyHeight)
             .background(isSpecial ? specialKeyColor : keyColor)
             .foregroundColor(isSpecial ? (specialTextColor ?? textColor) : textColor)
-            .cornerRadius(6)
+            .cornerRadius(AppLayout.keyboardKeyCornerRadius)
             .scaleEffect(configuration.isPressed ? 0.90 : 1.0)
     }
 }

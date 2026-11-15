@@ -2635,13 +2635,14 @@ html[data-theme="light"] {
   cursor: pointer;
 }
 
-.anagram-dialog > button:not(.anagram-dialog-close) {
+.anagram-dialog > button:not(.anagram-dialog-close),
+.game-confirmation-dialog > button:not(.game-confirmation-close) {
   min-height: 54px;
   padding: 9px 16px;
-  border: 1px solid var(--anagram-line);
+  border: 1px solid var(--confirmation-line, var(--anagram-line));
   border-radius: 0;
-  color: var(--anagram-accent);
-  background: var(--anagram-surface);
+  color: var(--confirmation-accent, var(--anagram-accent));
+  background: var(--confirmation-surface, var(--anagram-surface));
   font: inherit;
   font-size: 17px;
   font-weight: 500;
@@ -2650,7 +2651,8 @@ html[data-theme="light"] {
 
 .anagram-controls button:hover:not(:disabled),
 .anagram-secondary-controls button:hover:not(:disabled),
-.anagram-dialog > button:not(.anagram-dialog-close):hover:not(:disabled) {
+.anagram-dialog > button:not(.anagram-dialog-close):hover:not(:disabled),
+.game-confirmation-dialog > button:not(.game-confirmation-close):hover:not(:disabled) {
   filter: brightness(1.1);
 }
 
@@ -2663,6 +2665,11 @@ html[data-theme="light"] {
   outline-offset: 3px;
 }
 
+.game-confirmation-dialog > button:focus-visible {
+  outline: 2px solid var(--confirmation-accent, var(--anagram-accent));
+  outline-offset: 3px;
+}
+
 .anagram-controls button:disabled,
 .anagram-secondary-controls button:disabled,
 .anagram-tile:disabled {
@@ -2670,7 +2677,8 @@ html[data-theme="light"] {
   opacity: .4;
 }
 
-.anagram-dialog-backdrop {
+.anagram-dialog-backdrop,
+.game-confirmation-backdrop {
   position: fixed;
   z-index: 100;
   inset: 0;
@@ -2681,7 +2689,8 @@ html[data-theme="light"] {
   background: rgb(0 0 0 / 72%);
 }
 
-.anagram-dialog-backdrop--centered {
+.anagram-dialog-backdrop--centered,
+.game-confirmation-backdrop {
   padding: 16px;
   align-items: center;
 }
@@ -2690,13 +2699,8 @@ html[data-theme="light"] {
   padding-inline: 0;
 }
 
-.anagram-dialog-backdrop--centered .anagram-dialog {
-  border-bottom: 1px solid var(--app-border);
-  border-radius: 28px;
-  box-shadow: 0 12px 50px rgb(0 0 0 / 30%);
-}
-
-.anagram-dialog {
+.anagram-dialog,
+.game-confirmation-dialog {
   position: relative;
   width: min(100%, 720px);
   max-height: 91svh;
@@ -2711,18 +2715,28 @@ html[data-theme="light"] {
   text-align: left;
 }
 
-.anagram-dialog h2 {
+.anagram-dialog-backdrop--centered .anagram-dialog,
+.game-confirmation-backdrop .game-confirmation-dialog {
+  border-bottom: 1px solid var(--app-border);
+  border-radius: 28px;
+  box-shadow: 0 12px 50px rgb(0 0 0 / 30%);
+}
+
+.anagram-dialog h2,
+.game-confirmation-dialog h2 {
   margin: 0 58px 26px 0;
   color: var(--app-text-primary);
   font-size: clamp(26px, 4vw, 34px);
   line-height: 1.15;
 }
 
-.anagram-dialog p {
+.anagram-dialog p,
+.game-confirmation-dialog p {
   line-height: 1.55;
 }
 
-.anagram-dialog-close {
+.anagram-dialog-close,
+.game-confirmation-close {
   position: absolute;
   top: 23px;
   right: 24px;
@@ -2740,13 +2754,23 @@ html[data-theme="light"] {
   cursor: pointer;
 }
 
-.anagram-dialog > button:not(.anagram-dialog-close) {
+.anagram-dialog > button:not(.anagram-dialog-close),
+.game-confirmation-dialog > button:not(.game-confirmation-close) {
   margin: 10px 10px 0 0;
 }
 
-.anagram-dialog button.anagram-primary {
-  color: var(--anagram-on-accent);
-  background: var(--anagram-accent);
+.anagram-dialog button.anagram-primary,
+.game-confirmation-dialog button.game-confirmation-primary {
+  color: var(--confirmation-on-accent, var(--anagram-on-accent));
+  background: var(--confirmation-accent, var(--anagram-accent));
+}
+
+.game-confirmation-dialog { font-family: "Outfit", sans-serif; }
+.game-confirmation-dialog--midword {
+  --confirmation-accent: var(--midword-accent);
+  --confirmation-line: var(--midword-accent);
+  --confirmation-surface: var(--midword-surface);
+  --confirmation-on-accent: var(--midword-on-accent);
 }
 
 .anagram-dialog--instructions {

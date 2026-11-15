@@ -42,6 +42,34 @@ struct GameDynamicTypeContainerTests {
         #expect(standard.height < maximum.height)
     }
 
+    @Test("Midword's Give up button aligns with the keyboard's trailing inset and remains tappable",
+          arguments: [CGFloat(320), CGFloat(768)], [DynamicTypeSize.large, .xxxLarge, .accessibility5])
+    func giveUpAlignsWithKeyboard(width: CGFloat, size: DynamicTypeSize) throws {
+        let host = UIHostingController(rootView:
+            GameDynamicTypeContainer {
+                VStack(spacing: 0) {
+                    GameKeyboardActionRow {
+                        MidwordGiveUpButton(action: {})
+                            .background(KeyboardActionLayoutProbe())
+                    }
+                    CustomKeyboardView(onKeyTap: { _ in }, onDelete: {})
+                }
+            }
+            .environment(\.dynamicTypeSize, size)
+        )
+        try withLaidOutHostingController(host, size: CGSize(width: width, height: 600)) {
+            func findProbe(in view: UIView) -> UIView? {
+                if view.accessibilityIdentifier == "keyboard-action" { return view }
+                return view.subviews.lazy.compactMap { findProbe(in: $0) }.first
+            }
+            let button = try #require(findProbe(in: host.view))
+            let frame = button.convert(button.bounds, to: host.view)
+            #expect(abs(frame.maxX - (width - AppLayout.keyboardPadding)) < 0.5)
+            #expect(frame.minX >= AppLayout.keyboardPadding)
+            #expect(frame.height >= AppLayout.minimumTouchTarget)
+        }
+    }
+
     @Test("Prompt words and input cells stop growing at the game text limit", arguments: [
         DynamicTypeSize.xxxLarge, .accessibility1, .accessibility5
     ])
@@ -97,4 +125,14 @@ struct GameDynamicTypeContainerTests {
         )
         return host.sizeThatFits(in: CGSize(width: 320, height: 10_000))
     }
+}
+
+private struct KeyboardActionLayoutProbe: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        view.accessibilityIdentifier = "keyboard-action"
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {}
 }

@@ -34,9 +34,9 @@ describe("Anagram accessible controls", () => {
   it("lets the shared share menu keep its standard action styling", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
-    expect(styles).toMatch(/\.anagram-dialog > button:not\(\.anagram-dialog-close\)\s*\{/);
+    expect(styles).toContain(".anagram-dialog > button:not(.anagram-dialog-close)");
     expect(styles).not.toMatch(/\.anagram-dialog button:not\(\.anagram-dialog-close\)\s*\{/);
-    expect(styles).toMatch(/\.anagram-main > \.puzzle-result-share--compact\s*\{[^}]*top:\s*0;[^}]*bottom:\s*auto;/);
+    expect(styles).toMatch(/\.anagram-gameplay-dock > \.puzzle-result-share--compact\s*\{[^}]*position:\s*relative;[^}]*bottom:\s*auto;/);
   });
 
   it("exposes duplicate tile identities and disables unavailable actions", () => {
@@ -65,7 +65,8 @@ describe("Anagram accessible controls", () => {
     expect(screen.queryByText("TAP LETTERS IN ORDER")).not.toBeInTheDocument();
     expect(screen.queryByText("POINTS")).not.toBeInTheDocument();
     expect(container.querySelector(".anagram-gameplay-dock .anagram-tray")).not.toBeNull();
-    expect(screen.getByLabelText("Scrambled letter tray").children).toHaveLength(2);
+    expect(screen.getByLabelText("Scrambled letter tray").children).toHaveLength(1);
+    expect(screen.getByLabelText("Scrambled letter tray").querySelectorAll("button")).toHaveLength(puzzle.answer.length);
     expect(screen.getByLabelText("Answer cells")).toHaveClass(`anagram-answer--${puzzle.answer.length}`);
     expect(screen.getByLabelText("Answer cells").children).toHaveLength(puzzle.answer.length);
   });
@@ -96,7 +97,7 @@ describe("Anagram accessible controls", () => {
     };
     const { rerender } = render(<AnagramDialog {...props} kind="giveUp" />);
 
-    expect(screen.getByRole("dialog", { name: "Give up" }).parentElement).toHaveClass("anagram-dialog-backdrop--centered");
+    expect(screen.getByRole("dialog", { name: "Give up?" }).parentElement).toHaveClass("game-confirmation-backdrop");
 
     rerender(<AnagramDialog {...props} kind="hint" />);
 
