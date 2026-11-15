@@ -132,11 +132,11 @@ struct AnagramView: View {
             PaywallView()
                 .environmentObject(storeService)
         }
-        .confirmationDialog("Give up?", isPresented: $showingGiveUp) {
-            Button("Give up and reveal answer", role: .destructive) {
+        .alert("Give up?", isPresented: $showingGiveUp) {
+            Button("Cancel", role: .cancel) { }
+            Button("Reveal Answer", role: .destructive) {
                 viewModel.giveUp()
             }
-            Button("Keep playing", role: .cancel) { }
         } message: {
             Text("This ends today's attempt for zero points.")
         }
