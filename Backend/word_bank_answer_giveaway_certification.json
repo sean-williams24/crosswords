@@ -705300,40 +705300,40 @@
     {
       "answer": "CLEAVAGE",
       "field": "text",
-      "clue": "Separation between breasts",
-      "fingerprint": "f1054b078e9929a08e3b618e8e71d858b49a543c5d0b2e4a61b49f56af5cbb46",
+      "clue": "Mineral's tendency to split along flat planes",
+      "fingerprint": "656777b552b257e3a91cf55394b453fde1c9c00e903e47d87b2693ab48faec42",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
     {
       "answer": "CLEAVAGE",
       "field": "hard_text",
-      "clue": "Line that divides in fashion",
-      "fingerprint": "628792cbf1b204afdc5211479c0c10e9b828f5e8c78bf20244ab10cbcced8a1a",
+      "clue": "Separation into distinct parts",
+      "fingerprint": "91b9921f2d0209cb7efb6bf96c7de4e3b1bf73467c70023ec6459ff0c5c51242",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
     {
       "answer": "CLEAVAGE",
       "field": "clues[0]",
-      "clue": "Area highlighted by low-cut tops",
-      "fingerprint": "4047f3d34820242b66777956fa5d1f0f1649749e862436a7daa3d48fa715a247",
+      "clue": "Deep division within society",
+      "fingerprint": "79ff9d07df54c1211ba6fe1cf7ec1d90b87dbc15c35b5c20354d267975b5ba32",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
     {
       "answer": "CLEAVAGE",
       "field": "clues[1]",
-      "clue": "Notable feature in some attire",
-      "fingerprint": "1a918d55a9d69d01d9b58b1d99cd2ab72f3a2be9e217a6e82815157cc2e4b62a",
+      "clue": "Early embryonic cell division",
+      "fingerprint": "2a9bae82890c6c7d7f89373249b7e6d7b459d22a1a05baa9e3ee4ebe91caaf2b",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
     {
       "answer": "CLEAVAGE",
       "field": "clues[2]",
-      "clue": "Division that turns heads",
-      "fingerprint": "65b95f68620c818c45bf26b0fdd174be640a5e1d2e7b235e15ab0d0ff12c9ddb",
+      "clue": "Breaking of a chemical bond",
+      "fingerprint": "a962acb599bbbc5de9c2c87e857526adf38e201a679b01c6e5ccc69f54d6175e",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
