@@ -465,7 +465,6 @@ struct PuzzleResultShareButton: View {
     let result: PuzzleShareResult
     var compact = false
     var foregroundColor: Color = .appTextPrimary
-    var backgroundColor: Color = .appSurface
     @Environment(\.scenePhase) private var scenePhase
     @State private var presentsShareSheet = false
     @State private var shareSheetBackgrounded = false
@@ -482,14 +481,8 @@ struct PuzzleResultShareButton: View {
                 .frame(maxWidth: compact ? nil : .infinity)
                 .padding(.horizontal, compact ? 14 : 0)
                 .padding(.vertical, compact ? 10 : 14)
-                .background(compact ? Color.appAccent : backgroundColor)
+                .background(Color.appShareButtonBackground)
                 .clipShape(RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
-                .shadow(
-                    color: compact ? Color.appTextPrimary.opacity(0.16) : .clear,
-                    radius: compact ? 6 : 0,
-                    x: 0,
-                    y: compact ? 3 : 0
-                )
         }
         .accessibilityHint("Opens the system share sheet")
         .sheet(isPresented: $presentsShareSheet) {

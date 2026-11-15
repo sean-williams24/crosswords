@@ -1,9 +1,21 @@
 import Foundation
 import Testing
+import UIKit
 @testable import Backword
 
 @Suite("Puzzle result sharing")
 struct PuzzleResultShareTests {
+    @Test("Share button background matches the grey web control in both appearances")
+    func shareButtonBackground() throws {
+        let color = try #require(UIColor(named: "ShareButtonBackground"))
+        for (style, expected) in [(UIUserInterfaceStyle.light, 236.0 / 255), (.dark, 48.0 / 255)] {
+            let resolved = color.resolvedColor(with: UITraitCollection(userInterfaceStyle: style))
+            var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+            #expect(resolved.getRed(&red, green: &green, blue: &blue, alpha: &alpha))
+            #expect(abs(red - expected) < 0.002 && abs(green - expected) < 0.002 && abs(blue - expected) < 0.002)
+            #expect(alpha == 1)
+        }
+    }
     @Test("Backword result is spoiler-safe and links to its exact issue")
     func backwordResultIsSpoilerSafe() {
         let today = ContentReleaseCalendar().dailyDateString

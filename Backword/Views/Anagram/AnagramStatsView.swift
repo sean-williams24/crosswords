@@ -100,8 +100,7 @@ struct AnagramStatsView: View {
             ratingBar
             PuzzleResultShareButton(
                 result: shareResult(for: completion),
-                foregroundColor: .anagramOrange,
-                backgroundColor: .anagramSurface
+                foregroundColor: .anagramOrange
             )
             .padding(.horizontal, AppLayout.screenPadding)
             completionStats(completion)

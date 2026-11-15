@@ -96,8 +96,7 @@ struct MidwordStatsView: View {
             ratingBar
             PuzzleResultShareButton(
                 result: shareResult,
-                foregroundColor: .midwordAccent,
-                backgroundColor: .midwordText.opacity(0.08)
+                foregroundColor: .midwordAccent
             )
             .padding(.horizontal, AppLayout.screenPadding)
             completionStats

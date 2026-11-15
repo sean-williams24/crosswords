@@ -20,6 +20,7 @@ enum AppColorSchemePreference {
 extension Color {
     static let appBackground = Color("Background")
     static let appSurface = Color("Surface")
+    static let appShareButtonBackground = Color("ShareButtonBackground")
     static let appGridLine = Color("GridLine")
     static let appAccent = Color("Accent")
     static let appInstructionIcon = Color("InstructionIcon")

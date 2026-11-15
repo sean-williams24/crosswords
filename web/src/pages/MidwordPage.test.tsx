@@ -242,6 +242,13 @@ describe("Midword browser gameplay", () => {
     const share = screen.getByRole("button", { name: "Share result" });
     expect(screen.queryByRole("button", { name: "Give up" })).not.toBeInTheDocument();
     expect(screen.getByRole("main").lastElementChild).toBe(share.closest(".midword-game-actions"));
+    const midwordStyles = readFileSync("src/features/midword/midword.css", "utf8");
+    const sharedStyles = readFileSync("src/styles.css", "utf8");
+    expect(midwordStyles).toMatch(/@media \(min-width: 700px\)\s*\{\s*\.midword-game-actions > \.puzzle-result-share--compact\s*\{[^}]*position:\s*fixed;[^}]*top:/);
+    expect(midwordStyles).toMatch(/\.midword-completion-details > \.puzzle-result-share \.puzzle-result-share__button\s*\{[^}]*background:\s*var\(--app-control\)/);
+    expect(sharedStyles).toMatch(/\.puzzle-result-share__button\s*\{[^}]*background:\s*var\(--app-control\)/);
+    expect(sharedStyles).toMatch(/\.puzzle-result-share__button--compact\s*\{[^}]*box-shadow:\s*none/);
+    expect(sharedStyles).toMatch(/\.anagram-completion-details > \.puzzle-result-share \.puzzle-result-share__button\s*\{[^}]*background:\s*var\(--app-control\)/);
   });
   it("retains invalid and duplicate input without consuming an attempt", async () => {
     const user = userEvent.setup(); renderGame(); await screen.findByRole("region", { name: "Midword board" });

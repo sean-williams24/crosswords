@@ -1249,9 +1249,9 @@ a {
 .puzzle-result-share__preview > strong { position: relative; z-index: 1; display: block; font-size: 21px; }
 .puzzle-result-share__stats { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 7px; margin-top: 15px; }
 .puzzle-result-share__stats span { padding: 5px 8px; border: 1px solid rgb(255 255 255 / 12%); border-radius: 999px; color: var(--app-text-muted); background: rgb(0 0 0 / 18%); font-size: 10px; font-weight: 700; letter-spacing: .06em; }
-.puzzle-result-share__button { margin-top: 0; }
-.puzzle-result-share__button--compact { display: inline-flex; width: auto; min-height: 44px; margin: 0; padding: 10px 14px; align-items: center; gap: 10px; border-radius: 6px; color: var(--app-text-primary); background: var(--app-accent); box-shadow: 0 3px 6px rgb(var(--app-primary-rgb) / 16%); font-family: "Outfit", sans-serif; font-size: 16px; font-weight: 400; }
-.puzzle-result-share__button--compact:hover { background: color-mix(in srgb, var(--app-accent) 88%, var(--app-text-primary)); }
+.puzzle-result-share__button { margin-top: 0; background: var(--app-control); }
+.puzzle-result-share__button--compact { display: inline-flex; width: auto; min-height: 44px; margin: 0; padding: 10px 14px; align-items: center; gap: 10px; border-radius: 6px; color: var(--app-text-primary); background: var(--app-control); box-shadow: none; font-family: "Outfit", sans-serif; font-size: 16px; font-weight: 400; }
+.puzzle-result-share__button--compact:hover { background: var(--app-control-hover); }
 .puzzle-result-share__button--compact:focus-visible { outline: 2px solid var(--app-text-primary); outline-offset: 3px; }
 .puzzle-result-share__icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
 .puzzle-result-share__fallback { position: absolute; z-index: 10; top: calc(100% + 8px); right: 0; display: grid; width: max-content; min-width: 176px; padding: 6px; border: 1px solid var(--app-control); border-radius: 8px; color: var(--app-text-primary); background: var(--app-surface-raised); box-shadow: 0 8px 18px rgb(0 0 0 / 28%); gap: 2px; }
@@ -3186,7 +3186,7 @@ html[data-theme="light"] {
   border: 0;
   border-radius: 18px;
   color: var(--anagram-accent);
-  background: var(--anagram-surface);
+  background: var(--app-control);
   font: 400 18px "Outfit", sans-serif;
 }
 
