@@ -2623,7 +2623,7 @@ html[data-theme="light"] {
 
 .anagram-secondary-controls {
   margin-top: clamp(10px, 1.8vw, 18px);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .anagram-controls button,

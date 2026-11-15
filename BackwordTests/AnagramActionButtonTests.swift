@@ -8,7 +8,7 @@ import UIKit
 struct AnagramActionButtonTests {
     @Test("Gameplay button rows retain their height at accessibility text sizes")
     func actionRowsCapDynamicType() {
-        for titles in [["Undo", "Restart", "Shuffle"], ["Hint", "Give up"], ["Start"]] {
+        for titles in [["Undo", "Restart", "Hint"], ["Shuffle"], ["Start"]] {
             let largeSize = rowSize(titles: titles, dynamicTypeSize: .large)
             let accessibilitySize = rowSize(titles: titles, dynamicTypeSize: .accessibility5)
 

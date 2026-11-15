@@ -70,9 +70,9 @@ export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart
       <div className="anagram-controls">
         <button disabled={ended || !progress.placementHistory.length} onClick={onUndo} type="button">Undo</button>
         <button disabled={ended || !progress.placementHistory.length} onClick={onRestart} type="button">Restart</button>
-        <button disabled={ended || available.size < 2} onClick={onShuffle} type="button">Shuffle</button>
+        <button disabled={ended || progress.hintUsed} onClick={onHint} type="button">Hint</button>
       </div>
-      <div className="anagram-secondary-controls"><button disabled={ended || progress.hintUsed} onClick={onHint} type="button">Hint</button></div>
+      <div className="anagram-secondary-controls"><button disabled={ended || available.size < 2} onClick={onShuffle} type="button">Shuffle</button></div>
     </div>
   </section>;
 }

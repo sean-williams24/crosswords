@@ -13,6 +13,21 @@ const puzzle = mapAnagramRow(fixtures.puzzles[0]);
 const now = new Date("2026-10-01T10:00:00Z");
 
 describe("Anagram accessible controls", () => {
+  it("places Hint in the top row and gives Shuffle the full row below", () => {
+    const onHint = vi.fn();
+    const onShuffle = vi.fn();
+    const { container } = render(<AnagramBoard now={now} onHint={onHint} onPlace={vi.fn()} onRestart={vi.fn()} onShuffle={onShuffle} onUndo={vi.fn()} progress={startProgress(puzzle, now)} puzzle={puzzle} />);
+    expect(Array.from(container.querySelectorAll(".anagram-controls button"), button => button.textContent)).toEqual(["Undo", "Restart", "Hint"]);
+    expect(Array.from(container.querySelectorAll(".anagram-secondary-controls button"), button => button.textContent)).toEqual(["Shuffle"]);
+    fireEvent.click(screen.getByRole("button", { name: "Hint" }));
+    fireEvent.click(screen.getByRole("button", { name: "Shuffle" }));
+    expect(onHint).toHaveBeenCalledOnce();
+    expect(onShuffle).toHaveBeenCalledOnce();
+    const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    expect(styles).toMatch(/\.anagram-controls,\s*\.anagram-secondary-controls\s*\{[^}]*width:\s*min\(66\.667%, 510px\)/);
+    expect(styles).toMatch(/\.anagram-secondary-controls\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/);
+  });
+
   it.each(["instructions", "hint", "giveUp", "stats", "result"] as const)("dismisses the %s sheet only on backdrop clicks", (kind) => {
     const onClose = vi.fn();
     const onConfirmGiveUp = vi.fn();

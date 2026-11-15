@@ -1660,6 +1660,8 @@ the rule is skipped when no different available letter can replace it. A full
 tray must not become an accepted answer as a result of the correction. Undo
 follows placement history, while Restart
 clears player placements without changing the start time, hint, or penalty.
+The gameplay controls place Undo, Restart, and Hint in the first row, with
+Shuffle spanning their combined width in the row below on web and iOS.
 
 On iOS, Start, tile placement, Undo (letter removal), and Restart play the same
 light impact as the other games' letter input. Shuffle uses a soft impact when

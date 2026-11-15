@@ -335,14 +335,12 @@ struct AnagramView: View {
             HStack(spacing: 10) {
                 AnagramActionButton(title: "Undo", enabled: viewModel.canUndo) { viewModel.undo() }
                 AnagramActionButton(title: "Restart", enabled: viewModel.canRestart) { viewModel.restart() }
-                AnagramActionButton(title: "Shuffle", enabled: !progress.isComplete) { viewModel.shuffle() }
-            }
-            HStack(spacing: 10) {
                 AnagramActionButton(title: "Hint", enabled: viewModel.canHint) {
                     hintBannerMode = AnagramHintBannerMode(isProUser: storeService.isProUser)
                     withAnimation { showingHintBanner = true }
                 }
             }
+            AnagramActionButton(title: "Shuffle", enabled: !progress.isComplete) { viewModel.shuffle() }
         }
     }
 
