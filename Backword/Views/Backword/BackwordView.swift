@@ -285,7 +285,8 @@ struct BackwordView: View {
                                 .font(AppFont.body(appLayout.iconGlyphSize))
                                 .frame(width: appLayout.iconSize)
                                 .padding(.vertical, 8)
-                                .foregroundColor(.appTextPrimary)
+                                .foregroundColor(.white)
+                                .shadow(color: .black.opacity(0.7), radius: 1)
                         }
                         .accessibilityLabel("Give up")
                     }

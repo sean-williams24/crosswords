@@ -29,10 +29,10 @@ function historyDate(dateString: string) {
   }).format(new Date(year, month - 1, day, 12));
 }
 
-export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart, onShuffle, onHint, onGiveUp, onResetReview, shareResult }: {
+export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart, onShuffle, onHint, onResetReview, shareResult }: {
   puzzle: AnagramPuzzle; progress: AnagramProgress; now: Date;
   onPlace: (tile: number) => void; onUndo: () => void; onRestart: () => void;
-  onShuffle: () => void; onHint: () => void; onGiveUp: () => void;
+  onShuffle: () => void; onHint: () => void;
   onResetReview?: () => void;
   shareResult?: PuzzleShareResult | null;
 }) {
@@ -72,7 +72,7 @@ export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart
         <button disabled={ended || !progress.placementHistory.length} onClick={onRestart} type="button">Restart</button>
         <button disabled={ended || available.size < 2} onClick={onShuffle} type="button">Shuffle</button>
       </div>
-      <div className="anagram-secondary-controls"><button disabled={ended || progress.hintUsed} onClick={onHint} type="button">Hint</button><button disabled={ended} onClick={onGiveUp} type="button">Give up</button></div>
+      <div className="anagram-secondary-controls"><button disabled={ended || progress.hintUsed} onClick={onHint} type="button">Hint</button></div>
     </div>
   </section>;
 }

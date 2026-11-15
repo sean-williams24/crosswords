@@ -314,7 +314,7 @@ export function CrosswordPage() {
           <GameMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} onOpen={() => setIsMenuOpen(true)} />
           <h1 className="cw-header-title">QUICK CROSSWORD</h1>
           <nav aria-label="Crossword actions" className="bw-game-actions--top">
-            {!loading && puzzle && progress && !progress.completedAt ? <GameGiveUpButton flag onClick={() => {
+            {!loading && puzzle && progress && !progress.completedAt ? <GameGiveUpButton onClick={() => {
               setShowInstructionsTip(false); setSheet("giveUp");
             }} /> : null}
             <button aria-label={currentClue && showHint ? "Show clue" : "Show hint"} className="cw-hint-action" disabled={!currentClue || progress?.completedAt !== null} onClick={() => {

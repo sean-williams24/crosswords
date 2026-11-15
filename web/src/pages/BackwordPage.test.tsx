@@ -49,7 +49,7 @@ async function dismissOnboarding(user: ReturnType<typeof userEvent.setup>, remai
 }
 
 describe("Backword browser game", () => {
-  it.each([0, 2])("offers Give up above the keyboard, preserving %s guesses and the terminal result on reload", async count => {
+  it.each([0, 2])("offers a navigation flag, preserving %s guesses and the terminal result on reload", async count => {
     const user = userEvent.setup();
     const storage = createBackwordStorage();
     storage.markInstructionsSeen(storage.loadSettings());
@@ -58,8 +58,9 @@ describe("Backword browser game", () => {
     const page = renderGame();
     await screen.findByText("FORTRESS");
     const button = screen.getByRole("button", { name: "Give up" });
+    expect(screen.getByRole("navigation", { name: "Backword actions" })).toContainElement(button);
+    expect(button.querySelector("svg")).toBeInTheDocument();
     const keyboard = screen.getByRole("group", { name: "Backword keyboard" });
-    expect(keyboard.parentElement!.firstElementChild).toBe(button.closest(".game-keyboard-actions"));
     const before = storage.loadProgress(date);
     await user.click(button);
     const confirmation = screen.getByRole("dialog", { name: "Give up?" });
@@ -214,7 +215,7 @@ describe("Backword browser game", () => {
   it.each([
     ["two guesses", ["STACKS", "STANCE"]],
     ["four guesses", ["STACKS", "STANCE", "PLANET", "MASTER"]]
-  ])("keeps the game at least a full viewport above the site footer with %s", async (_label, guesses) => {
+  ])("allows the game and footer to share the viewport with %s", async (_label, guesses) => {
     const date = localDateString();
     localStorage.setItem("backword:web:progress:v1", JSON.stringify({
       [date]: {
@@ -244,7 +245,7 @@ describe("Backword browser game", () => {
     });
     document.head.append(style);
     try {
-      expect(getComputedStyle(shell).minHeight).toBe("100svh");
+      expect(getComputedStyle(shell).minHeight).toBe("0");
       expect(getComputedStyle(shell).flexShrink).toBe("0");
       expect(getComputedStyle(shell).height).toBe("");
       expect(getComputedStyle(main!).flexGrow).toBe("1");

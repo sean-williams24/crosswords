@@ -360,6 +360,7 @@ export function BackwordPage() {
           />
           <BackwordLogo isPro={entitlement?.isPro === true} large />
           <nav aria-label="Backword actions" className="bw-game-actions--top bw-game-actions--logo-header">
+            {!loading && word && progress.outcome === "inProgress" ? <GameGiveUpButton onClick={() => { setShowInstructionsTip(false); setSheet("giveUp"); }} /> : null}
             <button
               aria-label="Backword stats"
               className="bw-icon-button"
@@ -465,9 +466,6 @@ export function BackwordPage() {
             </main>
 
             <footer className="bw-game-controls">
-              {progress.outcome === "inProgress" ? <div className="game-keyboard-actions">
-                <GameGiveUpButton onClick={() => { setShowInstructionsTip(false); setSheet("giveUp"); }} />
-              </div> : null}
               <div aria-label={`${stats.rollingScore} of 70 Backword points`} className="bw-game-score bw-game-score--keyboard-width">
                 <span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} />
               </div>

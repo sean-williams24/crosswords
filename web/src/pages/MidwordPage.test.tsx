@@ -178,48 +178,11 @@ describe("Midword browser gameplay", () => {
     expect(screen.queryByText(/^Today:/)).not.toBeInTheDocument();
     expect(bar.parentElement).toContainElement(screen.getByRole("group", { name: "Midword keyboard" }));
   });
-  it("places a green Give up text button at the bottom right of gameplay above the rating bar and keyboard", async () => {
+  it("places a Give up flag in the navigation bar", async () => {
     const user = userEvent.setup(); renderGame();
     const button = await screen.findByRole("button", { name: "Give up" });
-    const main = screen.getByRole("main");
-    const row = button.parentElement!;
-    const bar = screen.getByLabelText("0 of 70 Midword points");
-    expect(main.lastElementChild).toBe(row);
-    expect(row).toHaveClass("midword-game-actions");
-    expect(button).toHaveClass("midword-give-up");
-    expect(main.nextElementSibling).toBe(bar.parentElement);
-    expect(bar.parentElement!.firstElementChild).toBe(bar);
-    expect(bar.parentElement).toContainElement(screen.getByRole("group", { name: "Midword keyboard" }));
-
-    const style = document.createElement("style");
-    style.textContent = readFileSync("src/styles.css", "utf8") + "\n" + readFileSync("src/features/midword/midword.css", "utf8");
-    document.head.append(style);
-    try {
-      expect(getComputedStyle(row).marginTop).toBe("auto");
-      expect(getComputedStyle(row).justifyContent).toBe("flex-end");
-      const mainRule = Array.from(style.sheet!.cssRules).find(rule =>
-        rule instanceof CSSStyleRule && rule.selectorText === ".midword-main") as CSSStyleRule;
-      expect(mainRule.style.getPropertyValue("padding")).toBe("16px var(--midword-inline-padding) 8px");
-      expect(getComputedStyle(bar.parentElement!).paddingTop).toBe("4px");
-      const shell = main.parentElement!;
-      expect(getComputedStyle(shell).getPropertyValue("--bw-keyboard-max-width").trim()).toBe("650px");
-      expect(getComputedStyle(shell).getPropertyValue("--bw-keyboard-inline-padding").trim()).toBe("8px");
-      const actionRule = Array.from(style.sheet!.cssRules).find(rule =>
-        rule instanceof CSSStyleRule && rule.selectorText === ".midword-game-actions") as CSSStyleRule;
-      // Expand beyond the board's padding on phones, then cap at the keyboard's key edges.
-      expect(actionRule.style.getPropertyValue("width").replace(/\s+/g, " ").trim()).toBe([
-        "min( calc(100% + 2 * (var(--midword-inline-padding) - var(--bw-keyboard-inline-padding))),",
-        "calc(var(--bw-keyboard-max-width) - 2 * var(--bw-keyboard-inline-padding)) )"
-      ].join(" "));
-      expect(style.textContent).toMatch(/\.bw-game-controls,\s*\.midword-shell\s*\{\s*--bw-keyboard-inline-padding: 4px;/);
-      expect(getComputedStyle(button).minHeight).toBe("44px");
-      expect(getComputedStyle(button).borderRadius).toBe("6px");
-      // jsdom cannot resolve the semantic Display P3 color variables.
-      const buttonRule = Array.from(style.sheet!.cssRules).find(rule =>
-        rule instanceof CSSStyleRule && rule.selectorText === ".midword-give-up") as CSSStyleRule;
-      expect(buttonRule.style.getPropertyValue("background")).toBe("var(--midword-accent)");
-      expect(buttonRule.style.getPropertyValue("color")).toBe("var(--midword-on-accent)");
-    } finally { style.remove(); }
+    expect(screen.getByRole("navigation", { name: "Midword actions" })).toContainElement(button);
+    expect(button.querySelector("svg")).toBeInTheDocument();
 
     await user.click(button);
     const confirmation = screen.getByRole("dialog", { name: "Give up?" });
@@ -228,7 +191,7 @@ describe("Midword browser gameplay", () => {
     await user.click(within(confirmation).getByRole("button", { name: "Keep playing" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(createMidwordStorage().loadProgress(localDateString()).completedAt).toBeNull();
-    expect(main.lastElementChild).toContainElement(button);
+    expect(screen.getByRole("navigation", { name: "Midword actions" })).toContainElement(button);
   });
   it("fills the rating bar from earned history without awarding points for today's wrong guesses", async () => {
     const yesterday = localDateOffset(localDateString(), -1);

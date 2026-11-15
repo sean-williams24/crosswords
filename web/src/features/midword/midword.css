@@ -93,13 +93,6 @@ html[data-theme="dark"] .midword-header h1::after {
   justify-content: flex-end;
 }
 .midword-game-actions > .puzzle-result-share--compact { position: relative; inset: auto; }
-.midword-give-up {
-  min-height: 44px; padding: 10px 14px; border: 0; border-radius: 6px;
-  color: var(--midword-on-accent); background: var(--midword-accent);
-  font: 400 16px var(--midword-font); cursor: pointer;
-}
-.midword-give-up:hover { background: color-mix(in srgb, var(--midword-accent) 88%, var(--midword-text)); }
-.midword-give-up:active { transform: scale(0.96); }
 .midword-controls { padding-top: 4px; background: var(--midword-background); }
 .midword-controls .bw-key { color: var(--midword-text); background: color-mix(in srgb, var(--midword-text) 12%, var(--midword-background)); }
 .midword-controls .bw-key-delete, .midword-page .bw-submit, .midword-page .bw-primary-button { color: var(--midword-on-accent); background: var(--midword-accent); }

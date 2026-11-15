@@ -1,9 +1,11 @@
+import { GameGiveUpButton } from "../../components/GameGiveUpButton";
 import { InfoTooltip } from "../../components/InfoTooltip";
 import { GameMenu } from "../backword/components/GameMenu";
 
-export function AnagramHeader({ onDismissTip, onInfo, onStats, showTip, statsDisabled = false }: {
+export function AnagramHeader({ onDismissTip, onInfo, onStats, onGiveUp, showTip, statsDisabled = false }: {
   onDismissTip: () => void;
   onInfo: () => void;
+  onGiveUp?: () => void;
   onStats: () => void;
   showTip: boolean;
   statsDisabled?: boolean;
@@ -11,6 +13,7 @@ export function AnagramHeader({ onDismissTip, onInfo, onStats, showTip, statsDis
   return <header className="anagram-header">
     <GameMenu />
     <nav aria-label="Anagram actions">
+      {onGiveUp ? <GameGiveUpButton onClick={onGiveUp} /> : null}
       <button aria-label="Anagram stats" className="bw-icon-button" disabled={statsDisabled} onClick={onStats} type="button">🧠</button>
       <span className="bw-info-tip-anchor">
         <button aria-describedby={showTip ? "anagram-info-tip" : undefined} aria-label="How to play Anagram" className="bw-icon-button bw-info-icon" onClick={onInfo} type="button">ⓘ</button>

@@ -259,7 +259,7 @@ export function WeeklyCrosswordPage() {
           <GameMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} onOpen={() => setIsMenuOpen(true)} />
           <h1 className="cw-header-title">PRO CROSSWORD</h1>
           <nav aria-label="Crossword actions" className="bw-game-actions--top">
-            {!loading && puzzle && progress && !progress.completedAt ? <GameGiveUpButton flag onClick={() => setSheet("giveUp")} /> : null}
+            {!loading && puzzle && progress && !progress.completedAt ? <GameGiveUpButton onClick={() => setSheet("giveUp")} /> : null}
             <button aria-label={currentClue && showHint ? "Show clue" : "Show hint"} className="cw-hint-action" disabled={!currentClue || progress?.completedAt !== null} onClick={() => {
               if (!puzzle || !progress || !currentClue) return;
               if (progress.hintedClueIds.includes(currentClue.id)) setShowHint((visible) => !visible);

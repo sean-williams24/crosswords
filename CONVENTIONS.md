@@ -1096,12 +1096,10 @@ Validation and guess counts stay unchanged. Reduce Motion also skips the shake.
 
 ## Website Backword Parity
 
-Backword's game shell has a minimum height of one small viewport (`100svh`),
-independent of the site footer's height. The main game content grows into the
-remaining space above the score bar and keyboard, preserving the large layout's
-breathing room when the middle layout's footer wraps into more rows. The footer
-follows the game below that viewport. This is a minimum, not a fixed height, so
-long guess histories and the expanded Submit control can extend the page.
+Backword's game and site footer share the available viewport height. The main
+game content grows into the remaining space above the score bar and keyboard;
+long guess histories, the expanded Submit control, or a wrapped footer can
+extend the page when they need more room.
 
 The browser Backword game lives at `/backword` as an immersive route outside the
 marketing site's header and footer. Its game dashboard lives at `/`, while
@@ -2463,9 +2461,7 @@ with a circular close control, the game's scoring/replay explanation, and Give u
 and reveal followed by Keep playing. It uses Anagram's established layout with
 each game's accent colors. Escape, backdrop, close, and Keep playing dismiss
 without changing progress; only the primary confirmation ends the game.
-Backword has an accent-colored Give up text button immediately above the
-progress bar and keyboard, aligned with the outermost keys. Quick and Pro
-Crossword use an accessible flag in the navigation bar. These controls are
+All five games use a white flag in the navigation bar to open the give-up confirmation. The flag is
 available only for loaded, unfinished games; completed games remain locked.
 Backword preserves its guesses and saves the native-compatible failed result
 for zero points; fewer than five guesses distinguishes Gave up from an exhausted

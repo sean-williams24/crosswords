@@ -204,6 +204,11 @@ struct AnagramView: View {
                 Spacer()
 
                 HStack(spacing: 8) {
+                    if let progress = viewModel.progress, !progress.isComplete {
+                        GiveUpFlagButton(iconSize: appLayout.iconSize, glyphSize: appLayout.iconGlyphSize) {
+                            showingGiveUp = true
+                        }
+                    }
                     Button {
                         request(.stats)
                     } label: {
@@ -337,7 +342,6 @@ struct AnagramView: View {
                     hintBannerMode = AnagramHintBannerMode(isProUser: storeService.isProUser)
                     withAnimation { showingHintBanner = true }
                 }
-                AnagramActionButton(title: "Give up", enabled: !progress.isComplete) { showingGiveUp = true }
             }
         }
     }

@@ -216,7 +216,7 @@ a {
   background: var(--app-background);
 }
 
-.bw-shell--backword { min-height: 100svh; }
+.bw-shell--backword { min-height: 0; }
 
 .bw-game-header {
   position: relative;
@@ -913,19 +913,8 @@ a {
   background: var(--app-background);
 }
 
-.game-keyboard-actions {
-  display: flex;
-  width: min(calc(100% - 2 * var(--bw-keyboard-inline-padding)), calc(var(--bw-keyboard-max-width) - 2 * var(--bw-keyboard-inline-padding)));
-  margin: 0 auto 12px;
-  justify-content: flex-end;
-}
-.game-give-up-button {
-  min-height: 44px; padding: 10px 14px; border: 0; border-radius: 6px;
-  color: var(--bw-primary); background: var(--bw-accent); font: 400 16px "Outfit", sans-serif; cursor: pointer;
-}
-.game-give-up-button:hover { filter: brightness(1.1); }
-.game-give-up-button:focus-visible { outline: 2px solid var(--bw-primary); outline-offset: 3px; }
-.cw-give-up-action svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.cw-give-up-action { color: white !important; }
+.cw-give-up-action svg { filter: drop-shadow(0 0 1px #333); width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 .bw-game-score {
   width: min(100%, var(--bw-keyboard-max-width));

@@ -42,7 +42,7 @@ describe("Anagram accessible controls", () => {
   it("exposes duplicate tile identities and disables unavailable actions", () => {
     const progress = startProgress(puzzle, now);
     const onPlace = vi.fn();
-    render(<AnagramBoard now={now} onGiveUp={vi.fn()} onHint={vi.fn()} onPlace={onPlace} onRestart={vi.fn()} onShuffle={vi.fn()} onUndo={vi.fn()} progress={progress} puzzle={puzzle} />);
+    render(<AnagramBoard now={now} onHint={vi.fn()} onPlace={onPlace} onRestart={vi.fn()} onShuffle={vi.fn()} onUndo={vi.fn()} progress={progress} puzzle={puzzle} />);
     expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "Restart" })).toBeDisabled();
     fireEvent.click(screen.getByRole("button", { name: "Letter R, tray position 1" }));
@@ -51,7 +51,7 @@ describe("Anagram accessible controls", () => {
 
   it("keeps a revealed letter labelled and blocks a second hint", () => {
     const progress = revealHint(placeTile(startProgress(puzzle, now), puzzle, 0, now), puzzle, now);
-    render(<AnagramBoard now={now} onGiveUp={vi.fn()} onHint={vi.fn()} onPlace={vi.fn()} onRestart={vi.fn()} onShuffle={vi.fn()} onUndo={vi.fn()} progress={progress} puzzle={puzzle} />);
+    render(<AnagramBoard now={now} onHint={vi.fn()} onPlace={vi.fn()} onRestart={vi.fn()} onShuffle={vi.fn()} onUndo={vi.fn()} progress={progress} puzzle={puzzle} />);
     expect(screen.getByLabelText("Cell 1: T, locked hint")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Hint" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "Letter R, tray position 1" })).toBeEnabled();
@@ -59,7 +59,7 @@ describe("Anagram accessible controls", () => {
 
   it("matches the iOS active-game information hierarchy", () => {
     const progress = startProgress(puzzle, now);
-    const { container } = render(<AnagramBoard now={now} onGiveUp={vi.fn()} onHint={vi.fn()} onPlace={vi.fn()} onRestart={vi.fn()} onShuffle={vi.fn()} onUndo={vi.fn()} progress={progress} puzzle={puzzle} />);
+    const { container } = render(<AnagramBoard now={now} onHint={vi.fn()} onPlace={vi.fn()} onRestart={vi.fn()} onShuffle={vi.fn()} onUndo={vi.fn()} progress={progress} puzzle={puzzle} />);
 
     expect(screen.getByText("YOUR ANSWER")).toBeInTheDocument();
     expect(screen.queryByText("TAP LETTERS IN ORDER")).not.toBeInTheDocument();

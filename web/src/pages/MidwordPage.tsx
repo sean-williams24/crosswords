@@ -1,3 +1,4 @@
+import { GameGiveUpButton } from "../components/GameGiveUpButton";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { TimedGameStartCard } from "../components/TimedGameStartCard";
@@ -184,7 +185,7 @@ function MidwordGame({ date, accessReady = true }: { date: string; accessReady?:
       <header className="bw-game-header bw-game-header--offset midword-header">
         <GameMenu isOpen={menuOpen} onOpen={() => setMenuOpen(true)} onClose={() => setMenuOpen(false)} />
         <h1 className="bw-logo-lockup bw-logo-lockup--large"><img alt="Midword" className="bw-logo bw-logo--large" src="/brand/midword-logo.png" /></h1>
-        <nav aria-label="Midword actions" className="bw-game-actions--top bw-game-actions--logo-header"><button aria-label="Midword stats" className="bw-icon-button" disabled={!accessReady} onClick={() => setSheet("stats")} type="button">🧠</button>
+        <nav aria-label="Midword actions" className="bw-game-actions--top bw-game-actions--logo-header">{!loading && puzzle && progress.startedAt && !progress.completedAt ? <GameGiveUpButton onClick={() => setConfirmGiveUp(true)} /> : null}<button aria-label="Midword stats" className="bw-icon-button" disabled={!accessReady} onClick={() => setSheet("stats")} type="button">🧠</button>
           <button aria-label="How to play Midword" className="bw-icon-button bw-info-icon" onClick={() => setSheet("instructions")} type="button">ⓘ</button></nav>
       </header>
       <p className="midword-issue">{puzzle ? `Puzzle #${puzzle.puzzleNumber}` : "\u00a0"}</p>
@@ -201,10 +202,7 @@ function MidwordGame({ date, accessReady = true }: { date: string; accessReady?:
             <p role="timer" aria-label="Elapsed time">{formatTime(progress.completedAt ? progress.elapsedSecondsAtCompletion : elapsedSeconds(progress, now))}</p>
             <MidwordBoard input={input} inputError={inputError} message={message} progress={progress} puzzle={puzzle} />
             </> : null}
-            {(progress.startedAt && !progress.completedAt) || (shareResult && sheet === null) ? <div className="midword-game-actions">
-              {progress.startedAt && !progress.completedAt ? <button className="midword-give-up" type="button" onClick={() => setConfirmGiveUp(true)}>Give up</button>
-                : shareResult ? <PuzzleResultShare compact result={shareResult} showPreview={false} /> : null}
-            </div> : null}
+            {shareResult && sheet === null ? <div className="midword-game-actions"><PuzzleResultShare compact result={shareResult} showPreview={false} /></div> : null}
           </> : null}
       </main>
       {!loading && puzzle && progress.startedAt && !progress.completedAt ? <footer className="bw-game-controls midword-controls">

@@ -36,7 +36,7 @@ describe("Anagram browser game", () => {
     const progress = startProgress(puzzle);
     const onPlace = vi.fn();
     render(<AnagramBoard puzzle={puzzle} progress={progress} now={new Date()}
-      onPlace={onPlace} onUndo={vi.fn()} onRestart={vi.fn()} onShuffle={vi.fn()} onHint={vi.fn()} onGiveUp={vi.fn()} />);
+      onPlace={onPlace} onUndo={vi.fn()} onRestart={vi.fn()} onShuffle={vi.fn()} onHint={vi.fn()} />);
     const tray = screen.getByLabelText("Scrambled letter tray");
     expect(tray.querySelectorAll(".anagram-letter-row")).toHaveLength(1);
     expect(within(tray).getAllByRole("button")).toHaveLength(answer.length);
@@ -221,7 +221,7 @@ describe("Anagram browser game", () => {
     await user.click(await screen.findByRole("button", { name: "Start" }));
     const boardElement = screen.getByRole("region", { name: "Anagram board" });
     expect(boardElement.querySelector(".anagram-gameplay-dock")).toContainElement(screen.getByLabelText("Scrambled letter tray"));
-    expect(boardElement.querySelector(".anagram-gameplay-dock")).toContainElement(screen.getByRole("button", { name: "Give up" }));
+    expect(screen.getByRole("navigation", { name: "Anagram actions" })).toContainElement(screen.getByRole("button", { name: "Give up" }));
   });
 
   it.each(["solved", "gave_up"])("places the compact share action above the tray after a %s completion closes", async (outcome) => {

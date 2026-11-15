@@ -169,7 +169,7 @@ function AnagramGame({ date, isReview, accessReady }: { date: string; isReview: 
   }
 
   return <div className="anagram-page">
-    <AnagramHeader onDismissTip={() => setShowTip(false)} onInfo={() => { setShowTip(false); setDialog("instructions"); }} onStats={() => setDialog("stats")} showTip={showTip} statsDisabled={!accessReady} />
+    <AnagramHeader onGiveUp={progress && !progress.completedAt ? () => setDialog("giveUp") : undefined} onDismissTip={() => setShowTip(false)} onInfo={() => { setShowTip(false); setDialog("instructions"); }} onStats={() => setDialog("stats")} showTip={showTip} statsDisabled={!accessReady} />
     <main className={`anagram-main${!progress && !error ? " timed-game-start-layout" : ""}${puzzle ? ` anagram-main--${puzzle.answer.length}` : ""}`}>
       <div className="anagram-title-block">
         <h1>ANAGRAM</h1>
@@ -183,7 +183,7 @@ function AnagramGame({ date, isReview, accessReady }: { date: string; isReview: 
       {puzzle ? <>
         {offline ? <p className="anagram-note">Playing saved game offline</p> : null}
         {syncError ? <p className="anagram-note">{syncError}</p> : null}
-        {progress ? <AnagramBoard now={now} onGiveUp={() => setDialog("giveUp")} onHint={() => setDialog("hint")}
+        {progress ? <AnagramBoard now={now} onHint={() => setDialog("hint")}
               onPlace={(tile) => update(placeTile(progress, puzzle, tile))} onRestart={() => update(restartTiles(progress))}
               onResetReview={isReview ? () => { completionPresented.current = false; setProgress(null); setDialog(null); } : undefined}
               onShuffle={shuffle} onUndo={() => update(undoTile(progress))} progress={progress} puzzle={puzzle}

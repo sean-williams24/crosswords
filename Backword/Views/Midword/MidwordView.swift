@@ -134,10 +134,6 @@ struct MidwordView: View {
     private var inputControls: some View {
         if viewModel.hasStarted && !viewModel.isComplete {
             VStack(spacing: 0) {
-                GameKeyboardActionRow {
-                    MidwordGiveUpButton { showGiveUpConfirmation = true }
-                }
-                .padding(.bottom, AppLayout.keyboardActionBottomSpacing)
                 GameScoreProgressBarView(rating: ratingService.rating, category: .midword)
                     .padding(.vertical, viewModel.canSubmit ? 5 : 0)
                 if viewModel.canSubmit {
@@ -187,6 +183,11 @@ struct MidwordView: View {
             }
             .accessibilityLabel("Back")
             Spacer()
+            if viewModel.hasStarted && !viewModel.isComplete {
+                GiveUpFlagButton(iconSize: appLayout.iconSize, glyphSize: appLayout.iconGlyphSize) {
+                    showGiveUpConfirmation = true
+                }
+            }
             Button { sheetPresentation.showsStats = true } label: {
                 Image(systemName: "brain.head.profile")
                     .frame(width: appLayout.iconSize, height: appLayout.iconSize)

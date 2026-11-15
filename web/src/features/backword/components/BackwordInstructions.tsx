@@ -64,7 +64,7 @@ export function BackwordInstructions({
             The fewer guesses you need, the more points you score.
           </Instruction>
           <Instruction number="4">
-            Give up above the keyboard reveals the answer and ends your attempt for zero points.
+            The flag in the navigation bar reveals the answer and ends your attempt for zero points.
           </Instruction>
         </div>
 

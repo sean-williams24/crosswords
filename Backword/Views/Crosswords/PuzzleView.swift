@@ -417,7 +417,8 @@ struct PuzzleView: View {
                 Image(systemName: "flag.fill")
                     .font(AppFont.body(appLayout.iconGlyphSize))
                     .frame(width: appLayout.iconSize)
-                    .foregroundColor(.appTextPrimary)
+                    .foregroundColor(.white)
+                    .shadow(color: .black.opacity(0.7), radius: 1)
             }
             .accessibilityLabel("Give up")
         }
