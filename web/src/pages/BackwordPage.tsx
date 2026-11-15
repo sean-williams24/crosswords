@@ -405,7 +405,7 @@ export function BackwordPage() {
         {!loading && word ? (
           <>
             <main className="bw-game-main">
-              {!(progress.outcome === "won" || (progress.outcome === "failed" && progress.guesses.length < MAX_GUESSES)) ?
+              {progress.outcome === "inProgress" ?
                 <p className="bw-game-explainer"><span>Guess the six letter word.</span><br />Spell it forwards - letters reveal backwards.</p> : null}
               {usingCache ? <p className="bw-offline-note">Playing saved game offline</p> : null}
               {syncError ? <p className="bw-offline-note">{syncError}</p> : null}
@@ -413,6 +413,8 @@ export function BackwordPage() {
               {progress.outcome === "won" ? <p className="bw-game-explainer">Solved in {progress.guesses.length} {progress.guesses.length === 1 ? "guess" : "guesses"}...</p> : null}
               {progress.outcome === "failed" && progress.guesses.length < MAX_GUESSES ?
                 <p className="bw-game-explainer">You gave up, the answer was...</p> : null}
+              {progress.outcome === "failed" && progress.guesses.length >= MAX_GUESSES ?
+                <p className="bw-game-explainer">Not this time, the answer was...</p> : null}
 
               <div aria-label={`${progress.guesses.length} of ${MAX_GUESSES} guesses used`} className="bw-guess-counter">
                 {Array.from({ length: MAX_GUESSES }, (_, index) => (

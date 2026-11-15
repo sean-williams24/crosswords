@@ -876,6 +876,8 @@ struct BackwordViewModelTests {
         #expect(vm.isComplete == true)
         #expect(vm.didComplete == true)
         #expect(vm.guessCount == 5)
+        #expect(vm.gameExplainer == "Not this time, the answer was...")
+        #expect(vm.explainerBelowClue)
         #expect(haptics.playedTypes == [
             .backwordGuessIncorrect,
             .backwordGuessIncorrect,

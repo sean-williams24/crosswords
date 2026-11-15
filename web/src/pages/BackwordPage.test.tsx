@@ -189,6 +189,14 @@ describe("Backword browser game", () => {
     expect(document.querySelector(".bw-clue")?.nextElementSibling).toHaveTextContent("Solved in 2 guesses...");
   });
 
+  it("shows the failure message below the clue after five wrong guesses", async () => {
+    const date = localDateString();
+    createBackwordStorage().saveProgress({ ...emptyProgress(date), guesses: Array(5).fill("BOTTLE"), outcome: "failed", completedAt: new Date().toISOString() });
+    renderGame();
+    await screen.findByRole("dialog", { name: "Not this time" });
+    expect(document.querySelector(".bw-clue")?.nextElementSibling).toHaveTextContent("Not this time, the answer was...");
+  });
+
   it("opens and closes a menu with game and legal routes", async () => {
     const user = userEvent.setup();
     renderGame();
