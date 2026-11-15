@@ -2455,6 +2455,8 @@ move with it on hover; keyboard focus retains the primary-colour outline.
 Unfinished daily and weekly crosswords can be revealed by free and Pro players, including on their release day. Revealing locks the grid and preserves the score earned before reveal. Midword's Give up button confirms a terminal failure, preserves guesses, reveals the answer, and awards zero points.
 
 Anagram displays the canonical answer in the main answer cells after give-up on iOS and web, including for restored progress. The saved tile arrangement remains unchanged and the tray appears empty. Midword also displays the answer in its main board after give-up.
+Anagram's answer label reads “You got it, the answer was...” after a solve and “You gave up, the answer was...” after give-up on both platforms.
+Anagram's revealed give-up answer cells use a slightly redder orange than the normal filled cells on iOS and web.
 
 Backword's terminal failed board shows all five attempt markers in red and the revealed answer in red-tinted cells on iOS and web, regardless of how many guesses preceded a give-up.
 

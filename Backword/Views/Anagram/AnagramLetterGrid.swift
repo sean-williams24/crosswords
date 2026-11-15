@@ -38,7 +38,7 @@ struct AnagramLetterGrid: View {
 
     private var answer: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("YOUR ANSWER")
+            Text(progress.answerLabel)
                 .font(AppFont.clueLabel())
                 .foregroundStyle(Color.anagramOrange)
                 .dynamicTypeSize(...DynamicTypeSize.accessibility1)
@@ -66,11 +66,12 @@ struct AnagramLetterGrid: View {
     private func answerCell(_ index: Int) -> some View {
         let letter = progress.answerCellLetters(for: puzzle)[index]
         let locked = progress.outcome != .gaveUp && index == progress.lockedCellIndex
+        let color: Color = progress.outcome == .gaveUp ? .anagramGaveUp : .anagramOrange
         return ZStack {
             Rectangle()
-                .fill(letter == nil ? Color.anagramSurface : Color.anagramOrange)
+                .fill(letter == nil ? Color.anagramSurface : color)
             Rectangle()
-                .strokeBorder(Color.anagramOrange, lineWidth: locked ? 3 : 1)
+                .strokeBorder(color, lineWidth: locked ? 3 : 1)
             if let letter {
                 Text(String(letter))
                     .font(AppFont.header(24))

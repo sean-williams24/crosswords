@@ -47,8 +47,8 @@ export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart
         {progress.penaltySeconds > 0 ? <span className="anagram-penalty">+{duration(progress.penaltySeconds)} hint</span> : null}
       </div>
       <div className="anagram-answer-block">
-        <p>YOUR ANSWER</p>
-        <div aria-label="Answer cells" className={`anagram-answer anagram-answer--${puzzle.answer.length}`}>
+        <p>{progress.outcome === "solved" ? "You got it, the answer was..." : progress.outcome === "gave_up" ? "You gave up, the answer was..." : "YOUR ANSWER"}</p>
+        <div aria-label="Answer cells" className={`anagram-answer anagram-answer--${puzzle.answer.length}${progress.outcome === "gave_up" ? " is-gave-up" : ""}`}>
           {Array.from({ length: puzzle.answer.length }, (_, index) => {
             const tile = progress.placedTileIDs[index];
             const letter = progress.outcome === "gave_up" ? puzzle.answer[index] : tile === null ? "" : letters[tile];

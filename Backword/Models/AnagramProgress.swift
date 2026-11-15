@@ -61,6 +61,13 @@ struct AnagramProgress: Codable, Equatable {
     var canUndo: Bool { !isComplete && !placementHistory.isEmpty }
     var canRestart: Bool { canUndo }
     var availableTileIDs: [Int] { trayOrder.filter { !placedTileIDs.contains($0) } }
+    var answerLabel: String {
+        switch outcome {
+        case .solved: return "You got it, the answer was..."
+        case .gaveUp: return "You gave up, the answer was..."
+        case nil: return "YOUR ANSWER"
+        }
+    }
 
     func answerCellLetters(for puzzle: AnagramPuzzle) -> [Character?] {
         if outcome == .gaveUp { return puzzle.answer.map { Optional($0) } }

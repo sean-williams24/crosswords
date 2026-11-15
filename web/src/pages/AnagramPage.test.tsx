@@ -27,6 +27,18 @@ vi.mock("../features/anagram/repository", () => ({
 }));
 
 describe("Anagram browser game", () => {
+  it.each([
+    [null, "YOUR ANSWER"],
+    ["solved", "You got it, the answer was..."],
+    ["gave_up", "You gave up, the answer was..."]
+  ] as const)("shows the answer label for outcome %s", (outcome, label) => {
+    const puzzle = reviewAnagramPuzzle(localDateString());
+    const progress = { ...startProgress(puzzle), outcome };
+    render(<AnagramBoard puzzle={puzzle} progress={progress} now={new Date()}
+      onPlace={vi.fn()} onUndo={vi.fn()} onRestart={vi.fn()} onShuffle={vi.fn()} onHint={vi.fn()} />);
+    expect(screen.getByText(label)).toBeInTheDocument();
+    expect(screen.getByLabelText("Answer cells").classList.contains("is-gave-up")).toBe(outcome === "gave_up");
+  });
   it("reveals the answer and clears the tray after giving up", () => {
     const puzzle = reviewAnagramPuzzle(localDateString());
     const partial = placeTile(startProgress(puzzle), puzzle, 0);
@@ -34,6 +46,8 @@ describe("Anagram browser game", () => {
     render(<AnagramBoard puzzle={puzzle} progress={progress} now={new Date()}
       onPlace={vi.fn()} onUndo={vi.fn()} onRestart={vi.fn()} onShuffle={vi.fn()} onHint={vi.fn()} />);
     expect(screen.getByLabelText("Answer cells")).toHaveTextContent(puzzle.answer);
+    expect(screen.getByLabelText("Answer cells")).toHaveClass("is-gave-up");
+    expect(readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8")).toMatch(/\.anagram-answer\.is-gave-up \.anagram-cell\.is-filled\s*\{[^}]*background:\s*var\(--anagram-gave-up\)/);
     expect(within(screen.getByLabelText("Scrambled letter tray")).queryAllByRole("button")).toHaveLength(0);
     expect(progress.placedTileIDs).toEqual(partial.placedTileIDs);
   });

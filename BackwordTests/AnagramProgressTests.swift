@@ -4,6 +4,15 @@ import Testing
 
 @Suite("Anagram progress")
 struct AnagramProgressTests {
+    @Test("Answer label reflects the game outcome")
+    func answerLabel() {
+        var progress = AnagramProgress(puzzle: puzzle)
+        #expect(progress.answerLabel == "YOUR ANSWER")
+        progress.finish(.solved, now: Date())
+        #expect(progress.answerLabel == "You got it, the answer was...")
+        progress.outcome = .gaveUp
+        #expect(progress.answerLabel == "You gave up, the answer was...")
+    }
     @Test("Giving up reveals the canonical answer without changing saved placements")
     func giveUpDisplaysAnswer() throws {
         var progress = AnagramProgress(puzzle: puzzle)

@@ -51,6 +51,7 @@ extension Color {
     static let midwordOnAccent = Color("MidwordOnAccent")
     static let midwordHomeCardForeground = Color("MidwordHomeCardForeground")
     static let anagramOrange = Color("AnagramOrange")
+    static let anagramGaveUp = Color("AnagramGaveUp")
     static let anagramHomeCardBackground = Color("AnagramHomeCardBackground")
     static let anagramSurface = Color("AnagramSurface")
     static let anagramInk = Color("AnagramInk")
