@@ -53,6 +53,7 @@ struct MidwordGameTests {
         progress.giveUp(at: now.addingTimeInterval(10))
         #expect(progress.guesses == ["PAGE"])
         #expect(progress.isFailed)
+        #expect(progress.completionTitle == "Gave up")
         #expect(!progress.isWon)
         #expect(progress.isComplete)
         #expect(progress.completedAt == now)
@@ -95,6 +96,7 @@ struct MidwordGameTests {
         progress.start()
         progress.submit("PAGE", for: game)
         #expect(progress.isWon)
+        #expect(progress.completionTitle == "Solved!")
     }
 
     @Test("Guess count does not reduce a quick solve score", arguments: 1...5)

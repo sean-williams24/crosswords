@@ -13,6 +13,11 @@ export type MidwordProgress = {
   schemaVersion: 1; outcome: "inProgress" | "won" | "failed"; releaseDateScore: number; updatedAt: string;
 };
 
+export function completionTitle(progress: MidwordProgress): string {
+  if (progress.outcome === "won") return "Solved!";
+  return progress.outcome === "failed" && (progress.startedAt != null || progress.guesses.length < 5) ? "Gave up" : "Finished";
+}
+
 export function validPuzzle(value: unknown): value is MidwordPuzzle {
   if (!value || typeof value !== "object") return false;
   const p = value as MidwordPuzzle;

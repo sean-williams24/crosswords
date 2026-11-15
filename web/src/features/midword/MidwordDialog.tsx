@@ -1,7 +1,7 @@
 import { StatsSheetActions } from "../../components/StatsSheetActions";
 import { BackwordModal } from "../backword/components/BackwordModal";
 import type { PuzzleShareResult } from "../share/puzzleResult";
-import type { MidwordProgress, MidwordPuzzle, MidwordStats } from "./engine";
+import { completionTitle, type MidwordProgress, type MidwordPuzzle, type MidwordStats } from "./engine";
 import { MidwordInstructions } from "./MidwordInstructions";
 import { MidwordCompletion } from "./MidwordCompletion";
 import { MidwordRatingBar, MidwordStatistics } from "./MidwordStatistics";
@@ -12,7 +12,7 @@ export function MidwordDialog({ kind, onClose, puzzle, progress, stats, shareRes
   shareResult: PuzzleShareResult | null; now: Date;
 }) {
   const title = kind === "instructions" ? "How to Play" : kind === "stats" ? "Midword Stats"
-    : progress.outcome === "won" ? "Solved!" : "Finished";
+    : completionTitle(progress);
   return <BackwordModal backdropClassName={kind === "instructions" ? "midword-instructions-backdrop" : kind === "completion" ? "midword-completion-backdrop" : undefined}
     showCloseButton={kind === "instructions"}
     showHeader={kind !== "completion"}

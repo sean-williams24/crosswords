@@ -110,7 +110,7 @@ struct MidwordStatsView: View {
 
     private var completionHeader: some View {
         VStack(spacing: 8) {
-            Text(progress.isWon ? "Solved!" : "Finished")
+            Text(progress.completionTitle)
                 .font(AppFont.header(40))
                 .foregroundStyle(progress.isWon ? Color.midwordAccent : Color.appGaveUp)
             Text("PUZZLE #\(puzzle.puzzleNumber)")

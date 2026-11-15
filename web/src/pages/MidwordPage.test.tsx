@@ -348,13 +348,13 @@ describe("Midword browser gameplay", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Give up" }));
     await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
-    expect(await screen.findByRole("dialog", { name: "Finished" })).toHaveTextContent("The answer was…");
+    expect(await screen.findByRole("dialog", { name: "Gave up" })).toHaveTextContent("The answer was…");
     await user.keyboard("{Escape}");
     expect(within(screen.getByRole("group", { name: "Midword keyboard" })).getByRole("button", { name: "A" })).toBeDisabled();
     const progress = createMidwordStorage().loadProgress(localDateString());
     expect(progress.outcome).toBe("failed"); expect(progress.releaseDateScore).toBe(0);
     view.unmount(); renderGame();
-    expect(await screen.findByRole("dialog", { name: "Finished" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "Gave up" })).toBeInTheDocument();
   });
   it("blocks physical game input while instructions or navigation are open", async () => {
     const user = userEvent.setup(); renderGame(); await screen.findByRole("region", { name: "Midword board" });

@@ -32,6 +32,11 @@ function renderCompletion(value = progress) {
 }
 
 describe("Midword completion native appearance", () => {
+  it.each([0, 6])("identifies a started give-up with %s guesses", count => {
+    renderCompletion({ ...progress, startedAt: new Date().toISOString(), guesses: Array(count).fill("PAGE"), completedAt: new Date().toISOString() });
+    const dialog = screen.getByRole("dialog", { name: "Gave up" });
+    expect(within(dialog).getByRole("heading", { name: "Gave up" })).toBeInTheDocument();
+  });
   it("keeps the title, failed answer and all statistics together in the scrolling content", () => {
     renderCompletion();
     const dialog = screen.getByRole("dialog", { name: "Finished" });

@@ -2,7 +2,7 @@ import { StatsSheetActions } from "../../components/StatsSheetActions";
 import { countdownText, secondsUntilNextLocalMidnight } from "../backword/date";
 import { PuzzleResultShare } from "../share/PuzzleResultShare";
 import type { PuzzleShareResult } from "../share/puzzleResult";
-import { formatTime, type MidwordProgress, type MidwordPuzzle, type MidwordStats } from "./engine";
+import { completionTitle, formatTime, type MidwordProgress, type MidwordPuzzle, type MidwordStats } from "./engine";
 import { MidwordLetterRow } from "./MidwordLetterRow";
 import { MidwordRatingBar, MidwordStatistics } from "./MidwordStatistics";
 
@@ -15,7 +15,7 @@ export function MidwordCompletion({ puzzle, progress, stats, shareResult, now, o
   return <>
     <div className="midword-dialog-scroll midword-completion-scroll stats-sheet-scroll">
       <header className="midword-completion-header">
-        <h2>{won ? "Solved!" : "Finished"}</h2>
+        <h2>{completionTitle(progress)}</h2>
         <strong>PUZZLE #{puzzle.puzzleNumber}</strong>
         <p>{won ? progress.elapsedSecondsAtCompletion == null ? "Solved" : `In ${formatTime(progress.elapsedSecondsAtCompletion)}` : "The answer was…"}</p>
       </header>
