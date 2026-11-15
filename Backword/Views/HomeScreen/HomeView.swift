@@ -181,9 +181,12 @@ struct HomeView: View {
             .accessibilityHidden(dailyChallenge.isCelebrating)
             .overlay {
                 if dailyChallenge.isCelebrating, let result = dailyChallenge.celebrationSnapshot {
-                    HomeDailyChallengeCelebration(snapshot: result) {
+                    HomeDailyChallengeCelebration(snapshot: result, dismiss: {
                         dailyChallenge.dismissCelebration()
-                    }
+                    }, openArchive: {
+                        dailyChallenge.dismissCelebration()
+                        openArchive()
+                    })
                     .transition(.opacity)
                 }
             }

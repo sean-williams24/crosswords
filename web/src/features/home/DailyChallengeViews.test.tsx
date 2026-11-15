@@ -14,7 +14,7 @@ it('reveals each result and total in sequence and closes on escape', () => {
   vi.useFakeTimers();
   vi.stubGlobal('matchMedia', () => ({ matches: false }));
   const dismiss = vi.fn();
-  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={dismiss} />);
+  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={dismiss} openArchive={() => {}} />);
   expect(screen.getByRole('heading')).toHaveFocus();
   expect(screen.queryByText('DAILY TOTAL')).not.toBeInTheDocument();
   act(() => vi.advanceTimersByTime(300));
@@ -26,14 +26,14 @@ it('reveals each result and total in sequence and closes on escape', () => {
 });
 it('shows the complete result immediately with reduced motion', () => {
   vi.stubGlobal('matchMedia', () => ({ matches: true }));
-  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={() => {}} />);
+  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={() => {}} openArchive={() => {}} />);
   expect(screen.getByText('DAILY TOTAL')).toBeVisible();
   expect(screen.getAllByText('/ 5')).toHaveLength(4);
 });
 
 it('uses the iOS Midword artwork with the same dark-mode colour split', () => {
   vi.stubGlobal('matchMedia', () => ({ matches: true }));
-  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={() => {}} />);
+  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={() => {}} openArchive={() => {}} />);
   expect(screen.getByRole('img', { name: 'Midword' })).toHaveAttribute('src', '/brand/midword-logo.png');
   expect(readFileSync('public/brand/midword-logo.png')).toEqual(readFileSync('../Backword/Resources/Assets.xcassets/MidwordLogo.imageset/Untitled - 05 October 2026 at 23.33.36 (2)@3x.png'));
   const css = readFileSync('src/features/home/dailyChallenge.css', 'utf8');
@@ -42,7 +42,7 @@ it('uses the iOS Midword artwork with the same dark-mode colour split', () => {
 it('dismisses when clicking outside the celebration but not inside it', () => {
   vi.stubGlobal('matchMedia', () => ({ matches: true }));
   const dismiss = vi.fn();
-  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={dismiss} />);
+  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={dismiss} openArchive={() => {}} />);
   const dialog = screen.getByRole('dialog');
   fireEvent.click(screen.getByRole('heading'));
   fireEvent.click(dialog);
@@ -58,4 +58,34 @@ it('draws the completion border on the card so it follows its shape and hover mo
   expect(css).not.toMatch(/\.home-dashboard__game\.is-daily-finished::after/);
   expect(css).toMatch(/\.home-game-card:focus-visible::after\s*\{[^}]*border-color:\s*var\(--app-text-primary\)/);
   expect(cardStyles).toMatch(/\.home-game-card::after\s*\{[^}]*inset:\s*0[^}]*border-radius:\s*inherit/);
+});
+
+it('offers distinct archive and Home actions', () => {
+  vi.stubGlobal('matchMedia', () => ({ matches: true }));
+  const dismiss = vi.fn();
+  const openArchive = vi.fn();
+  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={dismiss} openArchive={openArchive} />);
+  expect(screen.queryByRole('button', { name: 'Continue' })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Explore the archive' }));
+  expect(openArchive).toHaveBeenCalledOnce();
+  expect(dismiss).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button', { name: 'Back to home' }));
+  expect(dismiss).toHaveBeenCalledOnce();
+});
+
+it('cycles keyboard focus through both actions in each direction', () => {
+  vi.stubGlobal('matchMedia', () => ({ matches: true }));
+  render(<DailyChallengeCelebration snapshot={snapshot} dismiss={() => {}} openArchive={() => {}} />);
+  const archive = screen.getByRole('button', { name: 'Explore the archive' });
+  const home = screen.getByRole('button', { name: 'Back to home' });
+  fireEvent.keyDown(window, { key: 'Tab' });
+  expect(archive).toHaveFocus();
+  fireEvent.keyDown(window, { key: 'Tab' });
+  expect(home).toHaveFocus();
+  fireEvent.keyDown(window, { key: 'Tab' });
+  expect(archive).toHaveFocus();
+  fireEvent.keyDown(window, { key: 'Tab', shiftKey: true });
+  expect(home).toHaveFocus();
+  fireEvent.keyDown(window, { key: 'Tab', shiftKey: true });
+  expect(archive).toHaveFocus();
 });

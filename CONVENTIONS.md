@@ -799,8 +799,14 @@ The normalized logo frame controls layout without clipping the image: Midword's
 1x/2x/3x assets have slightly different transparent margins, so artwork may
 extend into the row padding to keep its edges intact at every Dynamic Type size.
 The daily total out of 20 appears last with a gold highlight. The sequence takes
-about 3.3 seconds; the card remains open until Continue or VoiceOver's escape
-action dismisses it. There is no automatic toast timeout. Background Home controls
+about 3.3 seconds; the card remains open until an action is chosen.
+“Back to home”, VoiceOver's escape action, and web Escape/backdrop dismissal
+close the card. “Explore the archive” acknowledges the celebration and uses the
+existing Home archive access flow: Pro players open the archive; non-Pro players
+see the Pro subscription/sign-up screen (web preserves `/archive` as its return
+destination). Both platforms stack the archive action above Back to home, with
+stronger emphasis on the archive. Web keyboard focus cycles through both actions.
+There is no automatic toast timeout. Background Home controls
 are unavailable while the card is open. Short screens and accessibility text
 use a scrolling card, with game scores stacked under logos at accessibility
 sizes. Feedback waits until Home is active, the launch

@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { useLayoutEffect } from "react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, useLocation } from "react-router-dom";
 import { localDateOffset, localDateString, localWeekStartString } from "../features/backword/date";
 import { emptyProgress } from "../features/crossword/engine";
 import { emptyProgress as emptyBackwordProgress } from "../features/backword/engine";
@@ -58,10 +58,16 @@ vi.mock("../features/wotd/components/WordOfTheDayCard", () => ({
   }
 }));
 
+function CurrentRoute() {
+  const location = useLocation();
+  return <div aria-label="Current route">{location.pathname + location.search}</div>;
+}
+
 function renderDashboard() {
   return render(
     <MemoryRouter>
       <HomeDashboardPage />
+      <CurrentRoute />
     </MemoryRouter>
   );
 }
@@ -120,13 +126,32 @@ describe("web home dashboard", () => {
         const dialog = screen.getByRole("dialog", { name: "Todays Intervls Complete" });
         expect(within(dialog).getByText("DAILY TOTAL").parentElement).toHaveTextContent("12 / 20");
         expect(Array.from(dialog.querySelectorAll(".daily-celebration__score b"), element => element.textContent)).toEqual(["5", "4", "3", "0"]);
-        fireEvent.click(within(dialog).getByRole("button", { name: "Continue" }));
+        fireEvent.click(within(dialog).getByRole("button", { name: "Back to home" }));
       };
       preview();
       preview();
       expect(screen.getByRole("group", { name: "Today's daily challenge, 0 of 20 points, 0 of 4 games finished" })).toBeInTheDocument();
       expect(Array.from({ length: localStorage.length }, (_, i) => [localStorage.key(i), localStorage.getItem(localStorage.key(i)!)] )).toEqual(before);
       expect(sessionStorage.getItem("intervls:daily-attempt")).toBeNull();
+    } finally {
+      vi.unstubAllGlobals();
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it.each(["guest", "free", "pro"])("routes %s players from daily completion to the appropriate archive access screen", (player) => {
+    vi.stubEnv("DEV", true);
+    vi.stubGlobal("matchMedia", () => ({ matches: true }));
+    testAuth.value.user = player === "guest" ? null : { id: "player" };
+    testAuth.value.entitlement = player === "guest" ? null : { isPro: player === "pro", expiresAt: null };
+    try {
+      renderDashboard();
+      fireEvent.click(screen.getByRole("button", { name: "Open game menu" }));
+      fireEvent.click(screen.getByRole("button", { name: "Preview Daily Completion" }));
+      fireEvent.click(within(screen.getByRole("dialog", { name: "Todays Intervls Complete" }))
+        .getByRole("button", { name: "Explore the archive" }));
+      expect(screen.getByLabelText("Current route")).toHaveTextContent(player === "pro" ? "/archive" : "/pro?return_to=%2Farchive");
+      expect(screen.queryByRole("dialog", { name: "Todays Intervls Complete" })).not.toBeInTheDocument();
     } finally {
       vi.unstubAllGlobals();
       vi.unstubAllEnvs();
@@ -289,6 +314,7 @@ describe("web home dashboard", () => {
     view.rerender(
       <MemoryRouter>
         <HomeDashboardPage />
+      <CurrentRoute />
       </MemoryRouter>
     );
 
@@ -674,7 +700,7 @@ describe("web home dashboard", () => {
     ],
     [
       "Failed",
-      { schemaVersion: 1, date: localDateString(), guesses: ["CASTLE"], completedAt: new Date().toISOString(), outcome: "failed" }
+      { schemaVersion: 1, date: localDateString(), guesses: Array(5).fill("CASTLE"), completedAt: new Date().toISOString(), outcome: "failed" }
     ]
   ])("derives the Backword %s status from saved progress", (label, progress) => {
     saveProgress(progress);

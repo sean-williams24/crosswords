@@ -139,13 +139,33 @@ struct HomeDailyChallengeLayoutTests {
           arguments: [DynamicTypeSize.large, .accessibility3, .accessibility5],
                      [ColorScheme.light, .dark])
     func celebrationViewport(size: DynamicTypeSize, colorScheme: ColorScheme) {
-        let card = HomeDailyChallengeCelebration(snapshot: DailyChallengeFixtures.snapshot(finished: 4), dismiss: {})
+        let card = HomeDailyChallengeCelebration(snapshot: DailyChallengeFixtures.snapshot(finished: 4), dismiss: {}, openArchive: {})
             .environment(\.dynamicTypeSize, size)
             .environment(\.colorScheme, colorScheme)
             .environment(\._accessibilityReduceMotion, true)
         let measured = UIHostingController(rootView: card).sizeThatFits(in: CGSize(width: 320, height: 568))
         #expect(measured.width <= 320.5)
         #expect(measured.height <= 568.5)
+    }
+
+    @Test("Both celebration actions fit narrow cards and grow with accessibility text",
+          arguments: [DynamicTypeSize.large, .accessibility3, .accessibility5])
+    func celebrationActionsFit(size: DynamicTypeSize) {
+        let card = HomeDailyChallengeCelebration(
+            snapshot: DailyChallengeFixtures.snapshot(finished: 4), dismiss: {}, openArchive: {}
+        )
+        let actions = card.actions.environment(\.dynamicTypeSize, size)
+        let measured = UIHostingController(rootView: actions)
+            .sizeThatFits(in: CGSize(width: 220, height: 10_000))
+        #expect(measured.width <= 220.5)
+        #expect(measured.height >= 2 * AppLayout.minimumTouchTarget
+                + AppLayout.homeDailyCelebrationRowSpacing)
+        let label = Text("Explore the archive").font(AppFont.clueLabel())
+            .environment(\.dynamicTypeSize, size)
+        let labelSize = UIHostingController(rootView: label)
+            .sizeThatFits(in: CGSize(width: 220, height: 10_000))
+        #expect(measured.height >= labelSize.height + 2 * AppLayout.homeDailyCelebrationPadding
+                + AppLayout.minimumTouchTarget + AppLayout.homeDailyCelebrationRowSpacing)
     }
 
     @Test("Celebration text titles render as one line at narrow widths and every text size",

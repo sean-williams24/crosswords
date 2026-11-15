@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BrandLogo } from "../features/brand/BrandLogo";
 import { GameMenu } from "../features/backword/components/GameMenu";
 import { localDateString, localWeekStartString } from "../features/backword/date";
@@ -77,6 +77,7 @@ function refreshHomeProgress(user: HomeSyncUser, key: string) {
 }
 
 export function HomeDashboardPage() {
+  const navigate = useNavigate();
   const { entitlement, ready, user } = useAuth();
   const homeSyncKey = user ? homeSyncStorageKey(user) : null;
   const [today, setToday] = useState(localDateString);
@@ -192,7 +193,10 @@ export function HomeDashboardPage() {
 
   return (
     <main className="home-dashboard">
-      {celebration ? <DailyChallengeCelebration snapshot={celebration} dismiss={() => setCelebration(null)} /> : null}
+      {celebration ? <DailyChallengeCelebration snapshot={celebration} dismiss={() => setCelebration(null)} openArchive={() => {
+        setCelebration(null);
+        navigate(entitlement?.isPro ? "/archive" : "/pro?return_to=%2Farchive");
+      }} /> : null}
       <header className="home-dashboard__header" inert={celebration !== null}>
         <GameMenu onPreviewDailyCompletion={() => {
           setCelebration(dailyChallengePreview(daily));

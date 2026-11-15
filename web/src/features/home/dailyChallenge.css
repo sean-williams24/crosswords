@@ -32,6 +32,8 @@ html[data-theme="dark"] .daily-celebration__midword-logo::after {
 .daily-celebration__total { height: 110px; margin: 16px 0; padding: 12px; text-align: center; border-radius: 12px; background: rgb(212 169 57 / 8%); color: #d4a939; opacity: 0; transform: scale(.8); transition: opacity .3s, transform .4s; }
 .daily-celebration__total.is-visible { opacity: 1; transform: none; }.daily-celebration__total span { display: block; font-size: 11px; letter-spacing: 2px; color: var(--app-text-secondary); }.daily-celebration__total b { font-size: 56px; }
 .daily-celebration button { width: 100%; padding: 14px; border: 1px solid rgb(212 169 57 / 40%); border-radius: 999px; background: rgb(212 169 57 / 18%); color: inherit; font-weight: 700; cursor: pointer; }
+.daily-celebration__actions { display: grid; gap: 8px; }
+.daily-celebration .daily-celebration__home { background: rgb(212 169 57 / 4%); border-color: rgb(212 169 57 / 20%); }
 @media (prefers-reduced-motion: reduce) { .daily-marker.is-celebrating { animation: none; } .daily-celebration__row, .daily-celebration__score, .daily-celebration__total, .daily-marker > span { transition: none; } }
 .home-profile-rating-link__label-row { display: flex; align-items: start; justify-content: space-between; gap: 9px; }
 .home-profile-rating-link__label-row .home-profile-rating-link__label { left: auto; flex: none; }

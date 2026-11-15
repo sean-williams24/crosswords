@@ -9,6 +9,7 @@ struct HomeDailyChallengeCelebration: View {
     @AccessibilityFocusState private var titleFocused: Bool
     let snapshot: DailyChallengeSnapshot
     let dismiss: () -> Void
+    let openArchive: () -> Void
 
     var body: some View {
         GeometryReader { geometry in
@@ -63,19 +64,31 @@ struct HomeDailyChallengeCelebration: View {
 
             total
 
-            Button(action: dismiss) {
-                Text("Continue")
-                    .font(AppFont.clueLabel())
-                    .foregroundStyle(Color.appTextPrimary)
-                    .frame(maxWidth: .infinity)
-                    .padding(AppLayout.homeDailyCelebrationPadding)
-                    .background(Color.solvedGold.opacity(0.18), in: Capsule())
-                    .overlay(Capsule().strokeBorder(Color.solvedGold.opacity(0.4),
-                                                   lineWidth: AppLayout.homeDailyCardBorderWidth))
-            }
-            .buttonStyle(.plain)
+            actions
         }
         .padding(AppLayout.homeDailyCelebrationCardPadding)
+    }
+
+    var actions: some View {
+        VStack(spacing: AppLayout.homeDailyCelebrationRowSpacing) {
+            celebrationButton("Explore the archive", action: openArchive)
+            celebrationButton("Back to home", emphasized: false, action: dismiss)
+        }
+    }
+
+    private func celebrationButton(_ title: String, emphasized: Bool = true, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(AppFont.clueLabel())
+                .foregroundStyle(Color.appTextPrimary)
+                .multilineTextAlignment(.center)
+                .padding(AppLayout.homeDailyCelebrationPadding)
+                .frame(maxWidth: .infinity, minHeight: AppLayout.minimumTouchTarget)
+                .background(Color.solvedGold.opacity(emphasized ? 0.18 : 0.04), in: Capsule())
+                .overlay(Capsule().strokeBorder(Color.solvedGold.opacity(emphasized ? 0.4 : 0.2),
+                                               lineWidth: AppLayout.homeDailyCardBorderWidth))
+        }
+        .buttonStyle(.plain)
     }
 
     private var heading: some View {
@@ -140,7 +153,8 @@ struct HomeDailyChallengeCelebration: View {
 #Preview("Celebration · Animated · Dark") {
     HomeDailyChallengeCelebration(
         snapshot: .celebrationPreview(date: ContentReleaseCalendar().dailyDateString),
-        dismiss: {}
+        dismiss: {},
+        openArchive: {}
     )
     .background(AppBackgroundGradient())
     .preferredColorScheme(.dark)
@@ -149,7 +163,8 @@ struct HomeDailyChallengeCelebration: View {
 #Preview("Celebration · Full Result · Light") {
     HomeDailyChallengeCelebration(
         snapshot: .celebrationPreview(date: ContentReleaseCalendar().dailyDateString),
-        dismiss: {}
+        dismiss: {},
+        openArchive: {}
     )
     .background(AppBackgroundGradient())
     .preferredColorScheme(.light)
@@ -159,7 +174,8 @@ struct HomeDailyChallengeCelebration: View {
 #Preview("Celebration · Accessibility") {
     HomeDailyChallengeCelebration(
         snapshot: .celebrationPreview(date: ContentReleaseCalendar().dailyDateString),
-        dismiss: {}
+        dismiss: {},
+        openArchive: {}
     )
     .background(AppBackgroundGradient())
     .preferredColorScheme(.dark)
