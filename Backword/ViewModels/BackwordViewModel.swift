@@ -143,9 +143,10 @@ final class BackwordViewModel: ObservableObject {
     var isComplete: Bool { progress.isComplete }
     var isWon: Bool { progress.isWon }
     var isFailed: Bool { progress.isFailed }
-    var explainerBelowClue: Bool { progress.isGaveUp }
+    var explainerBelowClue: Bool { progress.isGaveUp || progress.isWon }
     var gameExplainer: String {
-        progress.isGaveUp ? "You gave up,\nthe answer was..." : "Guess the six letter word.\nSpell it forwards - letters reveal backwards."
+        if progress.isWon { return "Solved in \(guessCount) \(guessCount == 1 ? "guess" : "guesses")..." }
+        return progress.isGaveUp ? "You gave up,\nthe answer was..." : "Guess the six letter word.\nSpell it forwards - letters reveal backwards."
     }
     var guessCount: Int { progress.guesses.count }
     var guessesForHistory: [String] { progress.guesses.reversed() }

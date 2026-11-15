@@ -2460,6 +2460,7 @@ Backword's terminal failed board shows all five attempt markers in red and the r
 
 After giving up, Backword and Midword replace their main game explainer with “You gave up, the answer was...” on iOS and web.
 Backword places this message below the clue on both platforms. On the web, the message is a single line.
+After a solve, Backword and Midword show the number of guesses in their main game explainers on both platforms. Backword places the message below the clue and ends it with an ellipsis.
 
 Home and archive game status labels show `Gave up` for revealed games and `Failed` for exhausted attempts. Both crossword home cards use the same primary text colour as Backword for the `Gave up` label. Backword and Midword give-ups are identified from terminal losses with fewer than five guesses, including older saved and synced progress.
 

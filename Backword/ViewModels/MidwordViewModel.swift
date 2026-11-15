@@ -22,7 +22,11 @@ final class MidwordViewModel: ObservableObject {
     }
     var isComplete: Bool { progress.isComplete }
     var gameExplainer: String {
-        progress.isGaveUp ? "You gave up,\nthe answer was..." : "Find the link that ends the top word and starts the bottom word to make 2 new words"
+        if progress.isWon {
+            let count = progress.guesses.count
+            return "Solved in \(count) \(count == 1 ? "guess" : "guesses")"
+        }
+        return progress.isGaveUp ? "You gave up,\nthe answer was..." : "Find the link that ends the top word and starts the bottom word to make 2 new words"
     }
     var canSubmit: Bool { hasStarted && !isComplete && input.count == puzzle.answer.count }
 

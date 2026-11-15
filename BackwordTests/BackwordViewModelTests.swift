@@ -787,6 +787,8 @@ struct BackwordViewModelTests {
         #expect(vm.isWon == true)
         #expect(vm.isFailed == false)
         #expect(vm.guessCount == 1)
+        #expect(vm.gameExplainer == "Solved in 1 guess...")
+        #expect(vm.explainerBelowClue)
         #expect(haptics.playedTypes == [.backwordGameWon])
     }
 
@@ -805,6 +807,7 @@ struct BackwordViewModelTests {
         #expect(vm.isWon == true)
         #expect(vm.isComplete == true)
         #expect(vm.guessCount == 4)
+        #expect(vm.gameExplainer == "Solved in 4 guesses...")
     }
 
     // MARK: - Fail Condition

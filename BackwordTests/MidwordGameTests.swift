@@ -15,6 +15,17 @@ struct MidwordGameTests {
         let finished = MidwordViewModel(puzzle: game, progress: progress)
         #expect(finished.gameExplainer == "You gave up,\nthe answer was...")
     }
+
+    @Test("Solved explainer uses the number of guesses", arguments: [1, 2])
+    @MainActor func solvedExplainer(count: Int) {
+        let game = puzzle(date: "review")
+        var progress = MidwordProgress(date: game.date)
+        progress.start()
+        if count == 2 { progress.submit("PAGE", for: game) }
+        progress.submit("NOTE", for: game)
+        let vm = MidwordViewModel(puzzle: game, progress: progress)
+        #expect(vm.gameExplainer == (count == 1 ? "Solved in 1 guess" : "Solved in 2 guesses"))
+    }
     private func puzzle(date: String = ContentReleaseCalendar().dailyDateString) -> MidwordPuzzle {
         MidwordPuzzle(id: "test", date: date, puzzleNumber: 1,
                       firstWord: "BANK", secondWord: "BOOK", answer: "NOTE", alternatives: [])

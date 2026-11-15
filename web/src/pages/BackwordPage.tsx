@@ -405,11 +405,12 @@ export function BackwordPage() {
         {!loading && word ? (
           <>
             <main className="bw-game-main">
-              {!(progress.outcome === "failed" && progress.guesses.length < MAX_GUESSES) ?
+              {!(progress.outcome === "won" || (progress.outcome === "failed" && progress.guesses.length < MAX_GUESSES)) ?
                 <p className="bw-game-explainer"><span>Guess the six letter word.</span><br />Spell it forwards - letters reveal backwards.</p> : null}
               {usingCache ? <p className="bw-offline-note">Playing saved game offline</p> : null}
               {syncError ? <p className="bw-offline-note">{syncError}</p> : null}
               <p className="bw-clue"><span>Clue:</span> {word.clue.toUpperCase()}</p>
+              {progress.outcome === "won" ? <p className="bw-game-explainer">Solved in {progress.guesses.length} {progress.guesses.length === 1 ? "guess" : "guesses"}...</p> : null}
               {progress.outcome === "failed" && progress.guesses.length < MAX_GUESSES ?
                 <p className="bw-game-explainer">You gave up, the answer was...</p> : null}
 

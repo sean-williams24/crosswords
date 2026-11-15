@@ -26,6 +26,11 @@ describe("Midword prompt alignment", () => {
 });
 
 describe("Midword hidden guess history", () => {
+  it.each([[1, "guess"], [2, "guesses"]] as const)("shows the solved message for %s guesses", (count, noun) => {
+    const progress = { ...emptyProgress(puzzle.date), outcome: "won" as const, completedAt: new Date().toISOString(), guesses: count === 1 ? ["NOTE"] : ["PAGE", "NOTE"] };
+    render(<MidwordBoard input="" message="" puzzle={puzzle} progress={progress} />);
+    expect(document.querySelector(".midword-explainer")).toHaveTextContent(`Solved in ${count} ${noun}`);
+  });
   it("reveals the answer on the board after giving up", () => {
     const progress = giveUp(startProgress(emptyProgress(puzzle.date)));
     render(<MidwordBoard input="PA" message="" puzzle={puzzle} progress={progress} />);

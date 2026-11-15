@@ -8,7 +8,9 @@ export function MidwordBoard({ puzzle, progress, input, inputError = false, mess
   const won = progress.outcome === "won";
   const revealed = won || progress.outcome === "failed";
   return <>
-    <p className="midword-explainer">{progress.outcome === "failed" && (progress.startedAt != null || progress.guesses.length < 5)
+    <p className="midword-explainer">{progress.outcome === "won"
+      ? `Solved in ${progress.guesses.length} ${progress.guesses.length === 1 ? "guess" : "guesses"}`
+      : progress.outcome === "failed" && (progress.startedAt != null || progress.guesses.length < 5)
       ? "You gave up, the answer was..."
       : "Find the link that ends the top word and starts the bottom word to make 2 new words"}</p>
     <section aria-label="Midword board" className="midword-board">

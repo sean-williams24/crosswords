@@ -177,7 +177,16 @@ describe("Backword browser game", () => {
     renderGame();
 
     expect(await screen.findByRole("dialog", { name: "Solved!" })).toBeInTheDocument();
+    expect(document.querySelector(".bw-clue")?.nextElementSibling).toHaveTextContent("Solved in 1 guess...");
     expect(screen.getByRole("button", { name: "Share result" })).toBeInTheDocument();
+  });
+
+  it("shows plural guesses for a saved solve", async () => {
+    const date = localDateString();
+    createBackwordStorage().saveProgress({ ...emptyProgress(date), guesses: ["BOTTLE", "CASTLE"], outcome: "won", completedAt: new Date().toISOString() });
+    renderGame();
+    await screen.findByRole("dialog", { name: "Solved!" });
+    expect(document.querySelector(".bw-clue")?.nextElementSibling).toHaveTextContent("Solved in 2 guesses...");
   });
 
   it("opens and closes a menu with game and legal routes", async () => {
