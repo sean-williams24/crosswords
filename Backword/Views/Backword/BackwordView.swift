@@ -42,14 +42,14 @@ struct BackwordView: View {
                                 .frame(height: 100)
                         }
 
-                        Text("Guess the six letter word.\nSpell it forwards - letters reveal backwards.")
-                            .font(AppFont.body())
-                            .foregroundColor(.appTextPrimary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, AppLayout.screenPadding)
-                            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                        if !viewModel.explainerBelowClue {
+                            gameExplainer
+                        }
 
                         BackwordClueView(clue: viewModel.word.clue)
+                        if viewModel.explainerBelowClue {
+                            gameExplainer
+                        }
                         guessCounter
                         revealedLetterRow
 
@@ -351,6 +351,15 @@ struct BackwordView: View {
         }
         .presentationDetents([.fraction(0.85)])
         .presentationDragIndicator(.visible)
+    }
+
+    private var gameExplainer: some View {
+        Text(viewModel.gameExplainer)
+            .font(AppFont.body())
+            .foregroundColor(.appTextPrimary)
+            .multilineTextAlignment(.center)
+            .padding(.horizontal, AppLayout.screenPadding)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
     // MARK: - Letter Row

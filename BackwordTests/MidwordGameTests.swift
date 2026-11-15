@@ -4,6 +4,17 @@ import Testing
 
 @Suite("Midword rules")
 struct MidwordGameTests {
+    @Test("Give-up changes the main game explainer")
+    @MainActor func giveUpExplainer() {
+        let game = puzzle(date: "review")
+        var progress = MidwordProgress(date: game.date)
+        let playing = MidwordViewModel(puzzle: game, progress: progress)
+        #expect(playing.gameExplainer.hasPrefix("Find the link"))
+        progress.start()
+        progress.giveUp()
+        let finished = MidwordViewModel(puzzle: game, progress: progress)
+        #expect(finished.gameExplainer == "You gave up,\nthe answer was...")
+    }
     private func puzzle(date: String = ContentReleaseCalendar().dailyDateString) -> MidwordPuzzle {
         MidwordPuzzle(id: "test", date: date, puzzleNumber: 1,
                       firstWord: "BANK", secondWord: "BOOK", answer: "NOTE", alternatives: [])

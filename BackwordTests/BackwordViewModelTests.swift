@@ -815,11 +815,15 @@ struct BackwordViewModelTests {
         let vm = makeViewModel("CASTLE", haptics: haptics)
         defer { BackwordProgress.delete(date: vm.word.date) }
 
+        #expect(vm.gameExplainer.hasPrefix("Guess the six letter word."))
+        #expect(!vm.explainerBelowClue)
         vm.currentInput = "CA"
         vm.giveUp()
 
         #expect(vm.isComplete)
         #expect(vm.isFailed)
+        #expect(vm.gameExplainer == "You gave up,\nthe answer was...")
+        #expect(vm.explainerBelowClue)
         #expect(!vm.isWon)
         #expect(vm.didComplete)
         #expect(vm.progress.completedScore == 0)

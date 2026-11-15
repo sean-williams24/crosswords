@@ -2458,6 +2458,9 @@ Anagram displays the canonical answer in the main answer cells after give-up on 
 
 Backword's terminal failed board shows all five attempt markers in red and the revealed answer in red-tinted cells on iOS and web, regardless of how many guesses preceded a give-up.
 
+After giving up, Backword and Midword replace their main game explainer with “You gave up, the answer was...” on iOS and web.
+Backword places this message below the clue on both platforms. On the web, the message is a single line.
+
 Home and archive game status labels show `Gave up` for revealed games and `Failed` for exhausted attempts. Both crossword home cards use the same primary text colour as Backword for the `Gave up` label. Backword and Midword give-ups are identified from terminal losses with fewer than five guesses, including older saved and synced progress.
 
 Backword animates the info card above previous guesses with wide horizontal screen margins, replacing the stuck message with an unfilled flag reminder after one minute in an unfinished game. Each accepted guess hides the reminder and restarts the one-minute countdown; leaving or completing the game cancels it.

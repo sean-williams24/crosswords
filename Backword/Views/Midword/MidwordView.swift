@@ -105,7 +105,7 @@ struct MidwordView: View {
 
     private var gameContent: some View {
         VStack(spacing: 24) {
-            Text("Find the link that ends the top word and starts the bottom word to make 2 new words")
+            Text(viewModel.gameExplainer)
                 .font(AppFont.body())
                 .foregroundColor(.midwordText.opacity(0.85))
                 .multilineTextAlignment(.center)

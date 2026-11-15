@@ -71,6 +71,9 @@ describe("Backword browser game", () => {
     await user.click(button);
     await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
     expect(await screen.findByRole("dialog", { name: "Gave up" })).toHaveTextContent("The answer was...");
+    expect(document.querySelector(".bw-game-explainer")).toHaveTextContent("You gave up, the answer was...");
+    expect(document.querySelector(".bw-clue")?.nextElementSibling).toHaveClass("bw-game-explainer");
+    expect(document.querySelector(".bw-game-explainer br")).toBeNull();
     expect(document.querySelectorAll(".bw-guess-counter .is-failed")).toHaveLength(5);
     const answerCells = document.querySelectorAll(".bw-letter-row > .is-failed");
     expect(answerCells).toHaveLength(6);

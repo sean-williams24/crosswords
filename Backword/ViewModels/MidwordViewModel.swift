@@ -21,6 +21,9 @@ final class MidwordViewModel: ObservableObject {
         progress.save()
     }
     var isComplete: Bool { progress.isComplete }
+    var gameExplainer: String {
+        progress.isGaveUp ? "You gave up,\nthe answer was..." : "Find the link that ends the top word and starts the bottom word to make 2 new words"
+    }
     var canSubmit: Bool { hasStarted && !isComplete && input.count == puzzle.answer.count }
 
     func enterLetter(_ letter: Character) {

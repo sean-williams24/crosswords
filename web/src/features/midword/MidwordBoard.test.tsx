@@ -29,6 +29,8 @@ describe("Midword hidden guess history", () => {
   it("reveals the answer on the board after giving up", () => {
     const progress = giveUp(startProgress(emptyProgress(puzzle.date)));
     render(<MidwordBoard input="PA" message="" puzzle={puzzle} progress={progress} />);
+    expect(document.querySelector(".midword-explainer")).toHaveTextContent("You gave up, the answer was...");
+    expect(document.querySelector(".midword-explainer br")).toBeNull();
     expect(screen.getByRole("group", { name: "Middle word, NOTE" })).toHaveTextContent("NOTE");
   });
   it("keeps the input visible without an attempt counter or previous guesses", () => {
