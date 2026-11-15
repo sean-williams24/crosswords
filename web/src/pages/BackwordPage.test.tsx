@@ -10,6 +10,13 @@ import { createBackwordStorage } from "../features/backword/storage";
 import { emptyProgress } from "../features/backword/engine";
 import { backwordDashboardStatus } from "../features/home/backwordStatus";
 
+it("rounds the top corners of compact game statistics and completion sheets", () => {
+  const css = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+  const root = parse(css);
+  const compact = root.nodes.find((node) => node.type === "atrule" && node.name === "media" && node.params === "(max-width: 699px)" && node.toString().includes(".midword-dialog--stats"));
+  expect(compact?.toString()).toMatch(/\.bw-stats-modal,\s*\.bw-completion-modal,\s*\.midword-dialog--stats,\s*\.anagram-dialog--stats,\s*\.anagram-dialog--completion\s*\{\s*border-radius:\s*28px 28px 0 0;/);
+});
+
 const repositoryDates = vi.hoisted(() => ({ values: [] as string[] }));
 const wordValidator = vi.hoisted(() => vi.fn());
 

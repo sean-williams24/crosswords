@@ -15,6 +15,7 @@ struct MidwordView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var sizeClass
     @EnvironmentObject private var ratingService: OverallRatingService
+    @EnvironmentObject private var storeService: StoreService
     @State private var sheetPresentation = MidwordSheetPresentation()
     @State private var shouldPopAfterCompletionSheet = false
     @State private var showGiveUpConfirmation = false
@@ -134,6 +135,13 @@ struct MidwordView: View {
     private var inputControls: some View {
         if viewModel.hasStarted || viewModel.isComplete {
             VStack(spacing: 0) {
+                if let result = viewModel.completionShareResult(rating: ratingService.rating, isPro: storeService.isProUser) {
+                    PuzzleResultShareButton(result: result, compact: true)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(.horizontal, AppLayout.screenPadding)
+                        .padding(.bottom, 12)
+                        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+                }
                 GameScoreProgressBarView(rating: ratingService.rating, category: .midword)
                     .padding(.vertical, viewModel.canSubmit ? 5 : 0)
                 if viewModel.canSubmit {

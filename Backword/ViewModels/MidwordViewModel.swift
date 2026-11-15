@@ -21,6 +21,15 @@ final class MidwordViewModel: ObservableObject {
         progress.save()
     }
     var isComplete: Bool { progress.isComplete }
+    func completionShareResult(rating: OverallRating, isPro: Bool, progressRecords: [MidwordProgress]? = nil) -> PuzzleShareResult? {
+        guard isComplete else { return nil }
+        let records = (progressRecords ?? MidwordProgress.loadAll()).filter { $0.date != puzzle.date } + [progress]
+        return .midword(
+            puzzle: puzzle, progress: progress,
+            history: MidwordStatsHistory.make(rating: rating, progressRecords: records),
+            rating: rating, isPro: isPro
+        )
+    }
     var gameExplainer: String {
         if progress.isWon {
             let count = progress.guesses.count

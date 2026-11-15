@@ -4,6 +4,22 @@ import Testing
 
 @Suite("Midword rules")
 struct MidwordGameTests {
+    @Test("Share result appears for solved and given-up games")
+    @MainActor func completionShareResult() throws {
+        let game = puzzle()
+        var progress = MidwordProgress(date: game.date)
+        let rating = OverallRating()
+        #expect(MidwordViewModel(puzzle: game, progress: progress).completionShareResult(rating: rating, isPro: false, progressRecords: []) == nil)
+        progress.start()
+        progress.submit("NOTE", for: game)
+        let solved = try #require(MidwordViewModel(puzzle: game, progress: progress).completionShareResult(rating: rating, isPro: false, progressRecords: []))
+        #expect(solved.outcome == "SOLVED")
+        var givenUp = MidwordProgress(date: game.date)
+        givenUp.start()
+        givenUp.giveUp()
+        let failed = try #require(MidwordViewModel(puzzle: game, progress: givenUp).completionShareResult(rating: rating, isPro: false, progressRecords: []))
+        #expect(failed.outcome == "COMPLETED")
+    }
     @Test("Give-up changes the main game explainer")
     @MainActor func giveUpExplainer() {
         let game = puzzle(date: "review")

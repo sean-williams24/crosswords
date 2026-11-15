@@ -108,6 +108,10 @@ captures and developer Xcode/upgrade verification are required before release.
 
 ## Midword Statistics
 
+On iOS, completed Midword games show a compact share control above the rating
+bar after the completion sheet closes. Its result includes the current progress
+alongside saved history, including for give-ups and restored games.
+
 Midword statistics count only puzzles won on their release date with a positive
 `releaseDateScore`. Archive completions do not affect totals, streaks, solve-time
 distribution, or the 14-day score history. An unfinished current puzzle keeps

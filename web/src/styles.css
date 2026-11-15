@@ -3387,6 +3387,13 @@ html[data-theme="light"] {
   }
 }
 
+@media (max-width: 699px) {
+  .bw-stats-modal, .bw-completion-modal, .midword-dialog--stats,
+  .anagram-dialog--stats, .anagram-dialog--completion {
+    border-radius: 28px 28px 0 0;
+  }
+}
+
 .archive-entry-card--anagram {
   color: #fff4e8;
   background: linear-gradient(145deg, #9c4515, #71320e);
