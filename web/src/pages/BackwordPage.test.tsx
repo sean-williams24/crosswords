@@ -71,6 +71,10 @@ describe("Backword browser game", () => {
     await user.click(button);
     await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
     expect(await screen.findByRole("dialog", { name: "Gave up" })).toHaveTextContent("The answer was...");
+    expect(document.querySelectorAll(".bw-guess-counter .is-failed")).toHaveLength(5);
+    const answerCells = document.querySelectorAll(".bw-letter-row > .is-failed");
+    expect(answerCells).toHaveLength(6);
+    expect(Array.from(answerCells, cell => cell.textContent).join("")).toBe("CASTLE");
     expect(storage.loadProgress(date)).toMatchObject({ outcome: "failed", guesses: before.guesses });
     expect(backwordDashboardStatus()).toMatchObject({ label: "Gave up" });
     expect(screen.queryByRole("button", { name: "Give up" })).not.toBeInTheDocument();
@@ -292,6 +296,7 @@ describe("Backword browser game", () => {
     expect(styles).toContain("background: rgb(var(--app-surface-rgb) / 50%);");
     expect(styles).toContain("color: rgb(var(--app-text-secondary-rgb) / 40%);");
     expect(styles).toContain(".bw-letter-row > .is-revealed { border-color: rgb(var(--bw-cell-accent-rgb) / 50%); }");
+    expect(styles).toContain(".bw-letter-row > .is-failed { border-color: rgb(236 84 84 / 75%); color: var(--bw-primary); background: rgb(236 84 84 / 15%); }");
     expect(styles).toMatch(/\.puzzle-result-share__button--compact\s*\{[^}]*min-height:\s*44px;[^}]*border-radius:\s*6px;/);
     expect(styles).toMatch(/\.puzzle-result-share--compact\s*\{[^}]*z-index:\s*4;[^}]*pointer-events:\s*auto;/);
     expect(styles).toMatch(/@media \(min-width: 700px\)\s*\{[\s\S]*?\.puzzle-result-share--compact\s*\{[^}]*position:\s*fixed;[^}]*top:\s*calc\(max\(8px, env\(safe-area-inset-top\)\) \+ 54px\);[^}]*bottom:\s*auto;/);

@@ -414,10 +414,10 @@ export function BackwordPage() {
                 {Array.from({ length: MAX_GUESSES }, (_, index) => (
                   <span
                     className={
-                      index < progress.guesses.length
-                        ? progress.outcome === "failed"
-                          ? "is-failed"
-                          : progress.outcome === "won" && index === progress.guesses.length - 1
+                      progress.outcome === "failed"
+                        ? "is-failed"
+                        : index < progress.guesses.length
+                          ? progress.outcome === "won" && index === progress.guesses.length - 1
                             ? "is-won"
                             : "is-used"
                         : ""
@@ -528,7 +528,7 @@ function LetterRow({
         const display = outcome === "won" ? answerLetter : revealed.has(index) ? answerLetter : typed;
         return (
           <span
-            className={`${display ? "has-letter" : "is-empty"} ${revealed.has(index) ? "is-revealed" : ""} ${isCursor ? "is-cursor" : ""} ${outcome === "won" ? "is-won" : ""}`}
+            className={`${display ? "has-letter" : "is-empty"} ${revealed.has(index) ? "is-revealed" : ""} ${isCursor ? "is-cursor" : ""} ${outcome === "won" ? "is-won" : ""} ${outcome === "failed" ? "is-failed" : ""}`}
             key={index}
           >
             {display ?? "_"}

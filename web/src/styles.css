@@ -736,7 +736,7 @@ a {
 }
 
 .bw-guess-counter .is-won { border-color: var(--bw-correct); background: var(--bw-correct); }
-.bw-guess-counter .is-failed { border-color: var(--bw-failed); background: var(--bw-failed); }
+.bw-guess-counter .is-failed { border-color: var(--bw-grid); background: #ff3b30; }
 
 .bw-letter-row,
 .bw-guess-row {
@@ -770,6 +770,7 @@ a {
 .bw-letter-row > .is-empty { font-size: clamp(16px, 4.5vw, 21px); }
 .bw-letter-row > .is-revealed { border-color: rgb(var(--bw-cell-accent-rgb) / 50%); }
 .bw-letter-row > .is-won { border-color: rgb(var(--app-correct-rgb) / 60%); color: var(--bw-primary); background: rgb(var(--app-correct-rgb) / 15%); }
+.bw-letter-row > .is-failed { border-color: rgb(236 84 84 / 75%); color: var(--bw-primary); background: rgb(236 84 84 / 15%); }
 
 .bw-letter-row > .is-cursor {
   color: rgb(255 255 255 / 20%);

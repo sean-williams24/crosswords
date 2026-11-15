@@ -64,15 +64,15 @@ struct AnagramLetterGrid: View {
     }
 
     private func answerCell(_ index: Int) -> some View {
-        let tile = progress.placedTileIDs[index]
-        let locked = index == progress.lockedCellIndex
+        let letter = progress.answerCellLetters(for: puzzle)[index]
+        let locked = progress.outcome != .gaveUp && index == progress.lockedCellIndex
         return ZStack {
             Rectangle()
-                .fill(tile == nil ? Color.anagramSurface : Color.anagramOrange)
+                .fill(letter == nil ? Color.anagramSurface : Color.anagramOrange)
             Rectangle()
                 .strokeBorder(Color.anagramOrange, lineWidth: locked ? 3 : 1)
-            if let tile {
-                Text(String(Array(puzzle.initialScramble)[tile]))
+            if let letter {
+                Text(String(letter))
                     .font(AppFont.header(24))
                     .foregroundStyle(Color.anagramOnOrange)
                     .lineLimit(1)
@@ -81,11 +81,11 @@ struct AnagramLetterGrid: View {
         }
         .aspectRatio(1, contentMode: .fit)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Answer cell \(index + 1), \(tile.map { String(Array(puzzle.initialScramble)[$0]) } ?? "empty")\(locked ? ", hint locked" : "")")
+        .accessibilityLabel("Answer cell \(index + 1), \(letter.map { String($0) } ?? "empty")\(locked ? ", hint locked" : "")")
     }
 
     private func trayCell(_ tile: Int) -> some View {
-        let available = progress.availableTileIDs.contains(tile)
+        let available = progress.outcome != .gaveUp && progress.availableTileIDs.contains(tile)
         return Button { place(tile) } label: {
             ZStack {
                 Rectangle()

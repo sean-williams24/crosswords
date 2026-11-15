@@ -1,7 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { emptyProgress, type MidwordPuzzle } from "./engine";
+import { emptyProgress, giveUp, startProgress, type MidwordPuzzle } from "./engine";
 import { MidwordBoard } from "./MidwordBoard";
 
 const puzzle: MidwordPuzzle = {
@@ -26,6 +26,11 @@ describe("Midword prompt alignment", () => {
 });
 
 describe("Midword hidden guess history", () => {
+  it("reveals the answer on the board after giving up", () => {
+    const progress = giveUp(startProgress(emptyProgress(puzzle.date)));
+    render(<MidwordBoard input="PA" message="" puzzle={puzzle} progress={progress} />);
+    expect(screen.getByRole("group", { name: "Middle word, NOTE" })).toHaveTextContent("NOTE");
+  });
   it("keeps the input visible without an attempt counter or previous guesses", () => {
     render(<MidwordBoard input="" message="" puzzle={puzzle} progress={{ ...emptyProgress(puzzle.date), guesses: ["PAGE"] }} />);
     expect(screen.queryByRole("region", { name: "Previous guesses" })).not.toBeInTheDocument();

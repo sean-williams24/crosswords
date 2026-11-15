@@ -62,6 +62,12 @@ struct AnagramProgress: Codable, Equatable {
     var canRestart: Bool { canUndo }
     var availableTileIDs: [Int] { trayOrder.filter { !placedTileIDs.contains($0) } }
 
+    func answerCellLetters(for puzzle: AnagramPuzzle) -> [Character?] {
+        if outcome == .gaveUp { return puzzle.answer.map { Optional($0) } }
+        let letters = Array(puzzle.initialScramble)
+        return placedTileIDs.map { $0.map { letters[$0] } }
+    }
+
     func isValid(for puzzle: AnagramPuzzle) -> Bool {
         guard schemaVersion == 1, puzzleID == puzzle.id, date == puzzle.date,
               trayOrder.sorted() == Array(0..<puzzle.length),

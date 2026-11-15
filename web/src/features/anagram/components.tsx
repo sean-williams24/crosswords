@@ -37,7 +37,7 @@ export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart
   shareResult?: PuzzleShareResult | null;
 }) {
   const ended = progress.outcome !== null;
-  const available = new Set(availableTileIDs(progress));
+  const available = new Set(progress.outcome === "gave_up" ? [] : availableTileIDs(progress));
   const letters = [...puzzle.initialScramble];
   const answer = answerText(progress, puzzle);
   return <section aria-label="Anagram board" className="anagram-board">
@@ -51,7 +51,9 @@ export function AnagramBoard({ puzzle, progress, now, onPlace, onUndo, onRestart
         <div aria-label="Answer cells" className={`anagram-answer anagram-answer--${puzzle.answer.length}`}>
           {Array.from({ length: puzzle.answer.length }, (_, index) => {
             const tile = progress.placedTileIDs[index];
-            return <span aria-label={`Cell ${index + 1}: ${tile === null ? "empty" : letters[tile]}${progress.lockedCellIndex === index ? ", locked hint" : ""}`} className={`anagram-cell${tile !== null ? " is-filled" : ""}${progress.lockedCellIndex === index ? " is-locked" : ""}`} key={index}>{tile === null ? "" : letters[tile]}</span>;
+            const letter = progress.outcome === "gave_up" ? puzzle.answer[index] : tile === null ? "" : letters[tile];
+            const locked = progress.outcome !== "gave_up" && progress.lockedCellIndex === index;
+            return <span aria-label={`Cell ${index + 1}: ${letter || "empty"}${locked ? ", locked hint" : ""}`} className={`anagram-cell${letter ? " is-filled" : ""}${locked ? " is-locked" : ""}`} key={index}>{letter}</span>;
           })}
         </div>
       </div>

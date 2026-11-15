@@ -27,6 +27,16 @@ vi.mock("../features/anagram/repository", () => ({
 }));
 
 describe("Anagram browser game", () => {
+  it("reveals the answer and clears the tray after giving up", () => {
+    const puzzle = reviewAnagramPuzzle(localDateString());
+    const partial = placeTile(startProgress(puzzle), puzzle, 0);
+    const progress = giveUp(partial);
+    render(<AnagramBoard puzzle={puzzle} progress={progress} now={new Date()}
+      onPlace={vi.fn()} onUndo={vi.fn()} onRestart={vi.fn()} onShuffle={vi.fn()} onHint={vi.fn()} />);
+    expect(screen.getByLabelText("Answer cells")).toHaveTextContent(puzzle.answer);
+    expect(within(screen.getByLabelText("Scrambled letter tray")).queryAllByRole("button")).toHaveLength(0);
+    expect(progress.placedTileIDs).toEqual(partial.placedTileIDs);
+  });
   it.each([
     { answer: "BUBBLES", initialScramble: "BBBLUES" },
     { answer: "TRIANGLE", initialScramble: "RAGTLINE" },

@@ -6,12 +6,13 @@ export function MidwordBoard({ puzzle, progress, input, inputError = false, mess
   puzzle: MidwordPuzzle; progress: MidwordProgress; input: string; inputError?: boolean; message: string;
 }) {
   const won = progress.outcome === "won";
+  const revealed = won || progress.outcome === "failed";
   return <>
     <p className="midword-explainer">Find the link that ends the top word and starts the bottom word to make 2 new words</p>
     <section aria-label="Midword board" className="midword-board">
       <p className="midword-prompt midword-prompt--first">{puzzle.firstWord}</p>
-      <MidwordLetterRow active={!progress.completedAt} correct={won} inputError={inputError} label={`Middle word, ${won ? puzzle.answer.length : input.length} of ${puzzle.answer.length} letters entered`}
-        length={puzzle.answer.length} word={won ? puzzle.answer : input} />
+      <MidwordLetterRow active={!progress.completedAt} correct={won} failed={progress.outcome === "failed"} inputError={inputError} label={revealed ? `Middle word, ${puzzle.answer}` : `Middle word, ${input.length} of ${puzzle.answer.length} letters entered`}
+        length={puzzle.answer.length} word={revealed ? puzzle.answer : input} />
       <p className="midword-prompt midword-prompt--second">{puzzle.secondWord}</p>
     </section>
     <div className="midword-attempt-status">

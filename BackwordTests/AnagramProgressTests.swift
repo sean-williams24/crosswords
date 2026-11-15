@@ -4,6 +4,18 @@ import Testing
 
 @Suite("Anagram progress")
 struct AnagramProgressTests {
+    @Test("Giving up reveals the canonical answer without changing saved placements")
+    func giveUpDisplaysAnswer() throws {
+        var progress = AnagramProgress(puzzle: puzzle)
+        progress.place(0, in: puzzle)
+        let placements = progress.placedTileIDs
+        #expect(progress.answerCellLetters(for: puzzle)[0] == Array(puzzle.initialScramble)[0])
+        progress.giveUp()
+        let restored = try JSONDecoder().decode(AnagramProgress.self, from: JSONEncoder().encode(progress))
+        #expect(restored.placedTileIDs == placements)
+        #expect(restored.answerCellLetters(for: puzzle) == puzzle.answer.map { Optional($0) })
+        #expect(restored.releaseDateScore == 0)
+    }
     private let puzzle = AnagramPuzzle(
         id: "00000000-0000-4000-8000-000000000001", date: "2026-10-01",
         puzzleNumber: 1, schemaVersion: 1, answer: "TRIANGLE",
