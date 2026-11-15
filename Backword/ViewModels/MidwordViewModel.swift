@@ -24,8 +24,9 @@ final class MidwordViewModel: ObservableObject {
     var gameExplainer: String {
         if progress.isWon {
             let count = progress.guesses.count
-            return "Solved in \(count) \(count == 1 ? "guess" : "guesses")"
+            return "Solved in \(count) \(count == 1 ? "guess" : "guesses")..."
         }
+        if progress.isFailed && !progress.isGaveUp { return "Not this time, the answer was..." }
         return progress.isGaveUp ? "You gave up,\nthe answer was..." : "Find the link that ends the top word and starts the bottom word to make 2 new words"
     }
     var canSubmit: Bool { hasStarted && !isComplete && input.count == puzzle.answer.count }

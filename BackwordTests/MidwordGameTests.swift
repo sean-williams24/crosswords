@@ -24,7 +24,17 @@ struct MidwordGameTests {
         if count == 2 { progress.submit("PAGE", for: game) }
         progress.submit("NOTE", for: game)
         let vm = MidwordViewModel(puzzle: game, progress: progress)
-        #expect(vm.gameExplainer == (count == 1 ? "Solved in 1 guess" : "Solved in 2 guesses"))
+        #expect(vm.gameExplainer == (count == 1 ? "Solved in 1 guess..." : "Solved in 2 guesses..."))
+    }
+
+    @Test("Legacy exhausted attempt shows the failed explainer")
+    @MainActor func failedExplainer() {
+        let game = puzzle(date: "review")
+        var progress = MidwordProgress(date: game.date)
+        progress.guesses = ["PAGE", "WORD", "READ", "LINE", "BOOK"]
+        progress.completedAt = Date()
+        let vm = MidwordViewModel(puzzle: game, progress: progress)
+        #expect(vm.gameExplainer == "Not this time, the answer was...")
     }
     private func puzzle(date: String = ContentReleaseCalendar().dailyDateString) -> MidwordPuzzle {
         MidwordPuzzle(id: "test", date: date, puzzleNumber: 1,
@@ -43,6 +53,8 @@ struct MidwordGameTests {
         progress.giveUp(at: now.addingTimeInterval(10))
         #expect(progress.guesses == ["PAGE"])
         #expect(progress.isFailed)
+        #expect(!progress.isWon)
+        #expect(progress.isComplete)
         #expect(progress.completedAt == now)
         #expect(progress.releaseDateScore == 0)
     }

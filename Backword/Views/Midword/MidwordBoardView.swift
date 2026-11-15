@@ -3,7 +3,7 @@ import SwiftUI
 struct MidwordBoardView: View {
     let puzzle: MidwordPuzzle
     let input: String
-    let won: Bool
+    let progress: MidwordProgress
 
     @ScaledMetric private var cellSize = AppLayout.midwordInputCellSize
 
@@ -14,7 +14,7 @@ struct MidwordBoardView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             guessCells
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel(won ? "Middle word, \(puzzle.answer)" : "Middle word, \(input.count) of \(puzzle.answer.count) letters entered")
+                .accessibilityLabel(progress.isComplete ? "Middle word, \(puzzle.answer)" : "Middle word, \(input.count) of \(puzzle.answer.count) letters entered")
             prompt(puzzle.secondWord)
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -28,16 +28,17 @@ struct MidwordBoardView: View {
             preferredCellSize: cellSize,
             spacing: AppLayout.midwordInputCellSpacing
         ) { index, fittedCellSize in
-            let letters = Array(won ? puzzle.answer : input)
+            let letters = Array(progress.isComplete ? puzzle.answer : input)
             BackwordLetterCell(
-                letter: won ? letters[index] : nil,
-                inputLetter: !won && index < letters.count ? letters[index] : nil,
-                isCursor: !won && index == letters.count,
-                isCorrect: won,
+                letter: progress.isComplete ? letters[index] : nil,
+                inputLetter: !progress.isComplete && index < letters.count ? letters[index] : nil,
+                isCursor: !progress.isComplete && index == letters.count,
+                isCorrect: progress.isWon,
+                isFailed: progress.isFailed,
                 size: fittedCellSize,
                 accentColor: .midwordAccent,
                 surfaceColor: .midwordBackground,
-                textColor: .midwordText,
+                textColor: progress.isFailed ? .appGaveUp : .midwordText,
                 correctColor: .midwordAccent,
                 inactiveBorderColor: .midwordInactiveCellBorder
             )
@@ -65,7 +66,7 @@ struct MidwordBoardView: View {
         alternatives: []
     )
     var progress = MidwordProgress(date: puzzle.date)
-    MidwordBoardView(puzzle: puzzle, input: "", won: false)
+    MidwordBoardView(puzzle: puzzle, input: "", progress: progress)
         .padding(.horizontal)
         .background(Color.gray)
 }

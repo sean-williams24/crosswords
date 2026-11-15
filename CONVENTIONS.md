@@ -2464,6 +2464,8 @@ After giving up, Backword and Midword replace their main game explainer with “
 Backword places this message below the clue on both platforms. On the web, the message is a single line.
 After a solve, Backword and Midword show the number of guesses in their main game explainers on both platforms. Backword places the message below the clue and ends it with an ellipsis.
 After five wrong Backword guesses, the main game explainer below the clue reads “Not this time, the answer was...” on both platforms.
+Midword uses the same solved, give-up and legacy exhausted-attempt wording as Backword. Its keyboard and rating bar remain visible after completion, with keyboard input disabled, on iOS and web.
+On iOS, Midword places the timer below the puzzle number and shows failed answer cells in red; solved cells retain the Midword accent.
 
 Home and archive game status labels show `Gave up` for revealed games and `Failed` for exhausted attempts. Both crossword home cards use the same primary text colour as Backword for the `Gave up` label. Backword and Midword give-ups are identified from terminal losses with fewer than five guesses, including older saved and synced progress.
 

@@ -205,10 +205,10 @@ function MidwordGame({ date, accessReady = true }: { date: string; accessReady?:
             {shareResult && sheet === null ? <div className="midword-game-actions"><PuzzleResultShare compact result={shareResult} showPreview={false} /></div> : null}
           </> : null}
       </main>
-      {!loading && puzzle && progress.startedAt && !progress.completedAt ? <footer className="bw-game-controls midword-controls">
+      {!loading && puzzle && (progress.startedAt || progress.completedAt) ? <footer className="bw-game-controls midword-controls">
         <div aria-label={`${stats.rollingScore} of 70 Midword points`} className="bw-game-score bw-game-score--keyboard-width"><span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} /></div>
         <GameSubmitButton onSubmit={submit} visible={canSubmit} />
-        <BackwordKeyboard ariaLabel="Midword keyboard" disabled={false} onDelete={deleteLetter} onLetter={enterLetter} />
+        <BackwordKeyboard ariaLabel="Midword keyboard" disabled={Boolean(progress.completedAt)} onDelete={deleteLetter} onLetter={enterLetter} />
       </footer> : null}
     </div>
     <Footer />

@@ -236,9 +236,9 @@ describe("Midword browser gameplay", () => {
     expect(within(result).getByText("BANKNOTE · NOTEBOOK")).toBeInTheDocument();
     expect(within(result).getByLabelText("Midword completion statistics")).toHaveTextContent("5/5");
     expect(createMidwordStorage().loadProgress(localDateString()).releaseDateScore).toBe(5);
-    expect(screen.queryByRole("group", { name: "Midword keyboard" })).not.toBeInTheDocument();
     expect(mocks.track.mock.calls.map((args) => args[0].name)).toEqual(["game_completed"]);
     await user.keyboard("{Escape}");
+    expect(within(screen.getByRole("group", { name: "Midword keyboard" })).getByRole("button", { name: "A" })).toBeDisabled();
     const share = screen.getByRole("button", { name: "Share result" });
     expect(screen.queryByRole("button", { name: "Give up" })).not.toBeInTheDocument();
     expect(screen.getByRole("main").lastElementChild).toBe(share.closest(".midword-game-actions"));
@@ -349,6 +349,8 @@ describe("Midword browser gameplay", () => {
     await user.click(screen.getByRole("button", { name: "Give up" }));
     await user.click(screen.getByRole("button", { name: "Give up and reveal" }));
     expect(await screen.findByRole("dialog", { name: "Finished" })).toHaveTextContent("The answer was…");
+    await user.keyboard("{Escape}");
+    expect(within(screen.getByRole("group", { name: "Midword keyboard" })).getByRole("button", { name: "A" })).toBeDisabled();
     const progress = createMidwordStorage().loadProgress(localDateString());
     expect(progress.outcome).toBe("failed"); expect(progress.releaseDateScore).toBe(0);
     view.unmount(); renderGame();

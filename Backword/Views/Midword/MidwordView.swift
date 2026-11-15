@@ -105,11 +105,6 @@ struct MidwordView: View {
 
     private var gameContent: some View {
         VStack(spacing: 24) {
-            Text(viewModel.gameExplainer)
-                .font(AppFont.body())
-                .foregroundColor(.midwordText.opacity(0.85))
-                .multilineTextAlignment(.center)
-            MidwordBoardView(puzzle: viewModel.puzzle, input: viewModel.input, won: viewModel.isComplete)
             TimelineView(.periodic(from: .now, by: 1)) { context in
                 Text(viewModel.isComplete ? viewModel.progress.formattedCompletionTime : MidwordProgress.formatTime(viewModel.progress.elapsedSeconds(at: context.date)))
                     .font(AppFont.header(24))
@@ -117,6 +112,11 @@ struct MidwordView: View {
                     .monospacedDigit()
                     .accessibilityLabel("Elapsed time")
             }
+            Text(viewModel.gameExplainer)
+                .font(AppFont.body())
+                .foregroundColor(.midwordText.opacity(0.85))
+                .multilineTextAlignment(.center)
+            MidwordBoardView(puzzle: viewModel.puzzle, input: viewModel.input, progress: viewModel.progress)
             if let message = viewModel.message {
                 Text(message).font(AppFont.body()).foregroundColor(.midwordText)
                     .accessibilityAddTraits(.updatesFrequently)
@@ -132,7 +132,7 @@ struct MidwordView: View {
 
     @ViewBuilder
     private var inputControls: some View {
-        if viewModel.hasStarted && !viewModel.isComplete {
+        if viewModel.hasStarted || viewModel.isComplete {
             VStack(spacing: 0) {
                 GameScoreProgressBarView(rating: ratingService.rating, category: .midword)
                     .padding(.vertical, viewModel.canSubmit ? 5 : 0)
@@ -157,6 +157,7 @@ struct MidwordView: View {
                     textColor: .midwordText,
                     specialTextColor: .midwordOnAccent
                 )
+                .disabled(viewModel.isComplete)
             }
         }
     }
