@@ -49,7 +49,7 @@ struct PuzzleView: View {
                 navigationBar
 
                 // Rewarded hint banner
-                if showRewardedHintBanner {
+                if adService.adsEnabled && showRewardedHintBanner {
                     rewardedHintBanner
                         .transition(.move(edge: .top).combined(with: .opacity))
                 }
@@ -263,7 +263,8 @@ struct PuzzleView: View {
                 activeClueIsHinted: viewModel.activeClueIsHinted,
                 hintedClueCount: viewModel.progress.hintedClueIds.count,
                 freeHintLimit: freeHintLimit,
-                adBonusHints: viewModel.adBonusHints
+                adBonusHints: viewModel.adBonusHints,
+                rewardedAdsEnabled: adService.adsEnabled
             ) {
                 viewModel.useHint()
             } else {
@@ -275,7 +276,7 @@ struct PuzzleView: View {
             HStack(spacing: 4) {
                 Image(systemName: viewModel.activeClueIsHinted ? "lightbulb.fill" : "lightbulb")
                     .frame(height: 44)
-                let hintsRemaining = storeService.isProUser ? 1 : max(0, freeHintLimit + viewModel.adBonusHints - viewModel.progress.hintedClueIds.count)
+                let hintsRemaining = !adService.adsEnabled || storeService.isProUser ? 1 : max(0, freeHintLimit + viewModel.adBonusHints - viewModel.progress.hintedClueIds.count)
                 Text(viewModel.activeClueIsHinted || hintsRemaining > 0 ? "Hint" : "Get hint")
                     .font(AppFont.body(13))
             }

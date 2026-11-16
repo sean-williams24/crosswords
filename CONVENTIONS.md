@@ -1485,19 +1485,33 @@ When the setting is disabled, completed cells remain editable and deletable for 
 
 ## Daily Game Ad Explainer
 
-Pre-game interstitials are temporarily paused on iOS. The single internal switch
-`AdConfiguration.preGameInterstitialsEnabled` is `false` in every build
-configuration. Backword and Daily Crossword open directly; the explainer and its
-Settings section are hidden. Interstitial startup preloading, loading, eligibility,
-and presentation are disabled, without altering saved impression dates or the
-explainer opt-out preference. Rewarded hint ads, consent, and ad privacy choices
-remain active. Pro copy describes ad-free hints while the pause is in effect.
-The Home Archive upsell keeps its archive-focused copy independently of this
-switch.
+All iOS ads are temporarily paused by `AdConfiguration.adsEnabled = false` in
+every build configuration. The separate `preGameInterstitialsEnabled` switch
+also remains `false`. `AdService` combines both switches for interstitial
+eligibility, loading, and presentation; enabling the master switch alone restores
+rewarded hints without restoring pre-game ads or their explainer.
 
-To restore the existing pre-game ads in a future release, set that switch to
-`true`. This also restores the explainer, its Settings controls, and the original
-Pro ad-benefit copy. Update the tests that assert the paused production default.
+During the pause, Quick Crossword hints bypass the free allowance and rewarded
+banner for everyone, while still counting hints and applying normal scoring
+penalties. Anagram uses its existing one-letter confirmation and 30-second
+penalty for everyone. This does not grant Pro: archive access and premium puzzles retain their existing
+entitlements. Crossword instructions describe the flag-based give-up action for
+everyone, without a Pro restriction. The web already uses
+these hint rules; its instructions and Pro wording match the paused app.
+
+Ad startup is considered complete immediately so Home tips remain eligible.
+There are no UMP refreshes, advertising-consent forms, ATT prompts, Mobile Ads
+startup, ad loads, or presentations during the pause. Ad privacy controls and
+ad-related Pro benefits are hidden. Saved consent, ad impression dates, and
+explainer preferences are retained. Firebase analytics and Apple Ads acquisition
+attribution remain independent of this switch.
+
+To restore rewarded ads, set `adsEnabled` to `true`; this also restores the
+retained iOS instructions, hint offers, privacy controls, and ad-related Pro
+copy. Pre-game ads additionally require `preGameInterstitialsEnabled = true`.
+Update tests asserting the paused production defaults when restoring either.
+Website copy and local StoreKit descriptions must be reviewed separately when
+ads resume. The Home Archive upsell remains archive-focused.
 The original eligibility and presentation rules below are retained for that time.
 
 Non-Pro users can see a full-screen explainer before the Backword or daily crossword interstitial. The opt-out preference is shared across both games. The explainer is only shown when that game's once-per-day interstitial slot is still eligible; same-day repeat opens skip both the advert and the explainer.
@@ -1745,8 +1759,10 @@ issue-and-answer hash, so a shared position takes priority. If no position
 fits every answer, the hint may rule out alternatives; the hint confirmation
 explains this when it applies. Older rows without the field reveal position 0,
 preserving saved progress and the published launch payload.
-On iOS, tapping Hint opens an inline panel below the navigation bar. Free
-players can watch a rewarded ad for the letter or open the Pro paywall through
+On iOS, tapping Hint opens an inline panel below the navigation bar. While ads
+are paused, all players confirm the 30-second penalty. The following rewarded
+flow is retained for reactivation: free players can watch a rewarded ad for the
+letter or open the Pro paywall through
 “Go ad-free”; Pro players confirm a 30-second penalty instead. An ad grants a
 free letter only after its reward callback. If the ad is unavailable or cannot
 be presented, the panel offers the 30-second alternative without revealing a
@@ -2312,9 +2328,13 @@ Debug entitlement dumps may inspect `Transaction.currentEntitlements` and print 
 
 ## Ads
 
-Ads are served via Google AdMob and managed by `AdService`. Free-tier users only.
+Ads are managed by `AdService` and currently paused by the master switch above.
+When enabled, Google AdMob ads are offered to free-tier users only.
 
 ### Deferred iOS ad consent
+
+The following consent flow applies only when `AdConfiguration.adsEnabled` is
+`true`. During the pause even silent UMP refreshes are skipped.
 
 App launch only refreshes UMP consent information silently and updates the
 Settings privacy-options entry point. It never presents the consent form or
@@ -2336,7 +2356,7 @@ its ad is requested; app launch remains silent.
 | Format | Type | Purpose |
 |---|---|---|
 | Interstitial | `InterstitialAd` | Retained for transition points; temporarily disabled on iOS |
-| Rewarded | `RewardedAd` | Shown when the user requests a hint clue |
+| Rewarded | `RewardedAd` | Retained for crossword and Anagram hints; temporarily disabled on iOS |
 
 ### Test IDs (DEBUG builds)
 

@@ -79,6 +79,12 @@ struct AnagramInstructionsContentView: View {
         }
     }
 
+    static func hintInstructions(rewardedAdsEnabled: Bool = AdConfiguration.adsEnabled) -> String {
+        rewardedAdsEnabled
+            ? "Free players can watch a rewarded ad. If an ad is unavailable, or if you are a Pro player, the hint adds 30 seconds to your scoring time."
+            : "Revealing a letter adds 30 seconds to your scoring time."
+    }
+
     private var hintSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             sectionTitle(icon: "lightbulb", title: "Hint")
@@ -88,7 +94,7 @@ struct AnagramInstructionsContentView: View {
                 .foregroundStyle(Color.anagramInk)
                 .fixedSize(horizontal: false, vertical: true)
 
-            Text("Free players can watch a rewarded ad. If an ad is unavailable, or if you are a Pro player, the hint adds 30 seconds to your scoring time.")
+            Text(Self.hintInstructions())
                 .font(AppFont.body(14))
                 .foregroundStyle(Color.anagramInk)
                 .fixedSize(horizontal: false, vertical: true)

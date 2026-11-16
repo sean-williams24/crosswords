@@ -52,9 +52,17 @@ describe("Google sign-in privacy disclosures", () => {
     expect(screen.getByText(/Questions about privacy/)).toHaveTextContent("support@intervls.com");
   });
 
+  it("explains the current ad pause while retaining future advertising disclosures", () => {
+    renderPrivacy();
+    expect(screen.getByText(/During the pause, Intervls does not request or show AdMob ads/)).toHaveTextContent(
+      /does not request or show AdMob ads or present advertising-consent prompts/
+    );
+    expect(screen.getByText(/Intervls may show interstitial and rewarded ads/)).toBeInTheDocument();
+  });
+
   it("dates the revised privacy policy independently of other legal pages", () => {
     renderPrivacy();
-    expect(screen.getByText("Last updated November 5, 2026")).toBeInTheDocument();
+    expect(screen.getByText("Last updated November 15, 2026")).toBeInTheDocument();
     cleanup();
 
     render(<LegalPage title="Other legal page" intro="Existing policy" sections={[]} />);

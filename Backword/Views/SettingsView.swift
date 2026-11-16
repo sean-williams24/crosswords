@@ -43,7 +43,7 @@ struct SettingsView: View {
                         .textCase(nil)
                 } footer: {
                     if SettingsSubscribeFooterVisibility.shouldShow(isProUser: storeService.isProUser) {
-                        Text(ProAdBenefitsContent(preGameInterstitialsEnabled: adService.preGameInterstitialsEnabled).settingsFooter)
+                        Text(ProAdBenefitsContent(adsEnabled: adService.adsEnabled, preGameInterstitialsEnabled: adService.preGameInterstitialsEnabled).settingsFooter)
                         .font(AppFont.caption())
                         .foregroundColor(.appTextSecondary)
                     }

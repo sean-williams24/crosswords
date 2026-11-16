@@ -24,7 +24,7 @@ export function AnagramInstructions() {
 
     <InstructionSection icon="hint" title="Hint">
       <p>You can reveal one letter per game. Using a hint returns your placed letters to the tray, then locks one correct letter in the answer so it cannot be undone.</p>
-      <p>Free players can watch a rewarded ad. If an ad is unavailable, or if you are a Pro player, the hint adds 30 seconds to your scoring time.</p>
+      <p>Revealing a letter adds 30 seconds to your scoring time.</p>
     </InstructionSection>
 
     <InstructionSection icon="scoring" title="Scoring">

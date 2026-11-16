@@ -243,7 +243,9 @@ struct PaywallView: View {
             featureRow(icon: "brain.head.profile", text: "Weekly challenging puzzles")
             featureRow(icon: "archivebox.fill", text: "Unlimited puzzle archive")
             featureRow(icon: "flag.fill", text: "Reveal answers when stuck")
-            featureRow(icon: "lightbulb.fill", text: "Ad-free hints")
+            if ProAdBenefitsContent().showsAdFreeHintsBenefit {
+                featureRow(icon: "lightbulb.fill", text: "Ad-free hints")
+            }
             if ProAdBenefitsContent().showsAdFreeExperienceBenefit {
                 featureRow(icon: "eye.slash.fill", text: "Ad-free experience")
             }

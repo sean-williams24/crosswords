@@ -11,14 +11,22 @@ struct DailyCrosswordInstructionsContentView: View {
         self.onSubscribe = onSubscribe
     }
 
+    static func hintInstructions(rewardedAdsEnabled: Bool = AdConfiguration.adsEnabled) -> String {
+        rewardedAdsEnabled
+            ? "Tap Get hint to reveal an alternate clue. Free users watch an ad for a hint; Pro users get hints without ads"
+            : "Tap Hint to reveal an alternate clue."
+    }
+
+    static let giveUpInstructions = "Tap the flag to give up and reveal the answers."
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 VStack(alignment: .leading, spacing: 12) {
                     instructionRow(icon: "timer", text: "Complete the grid and lock-in your score before the next crossword refreshes at midnight")
                     instructionRow(icon: "list.bullet", text: "Tap a cell to select it, tap the same cell again to switch direction, or use the clue list to browse all clues")
-                    instructionRow(icon: "lightbulb", text: "Tap Get hint to reveal an alternate clue. Free users watch an ad for a hint; Pro users get hints without ads")
-                    instructionRow(icon: "flag.fill", text: "Pro users are able to give up and reveal the answers")
+                    instructionRow(icon: "lightbulb", text: Self.hintInstructions())
+                    instructionRow(icon: "flag.fill", text: Self.giveUpInstructions)
 
                     if !isProUser {
                         subscribeButton

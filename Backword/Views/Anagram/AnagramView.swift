@@ -17,7 +17,7 @@ struct AnagramView: View {
     private let showsFirstUseTip: Bool
     @State private var showingInstructions = false
     @State private var showingHintBanner = false
-    @State private var hintBannerMode: AnagramHintBannerMode = .watchAd
+    @State private var hintBannerMode = AnagramHintBannerMode(isProUser: false)
     @State private var isRewardedAdRequestInFlight = false
     @State private var showingPaywall = false
     @State private var showingGiveUp = false
@@ -181,7 +181,7 @@ struct AnagramView: View {
             if !canHint { closeHintBanner() }
         }
         .onChange(of: storeService.isProUser) { _, isProUser in
-            if showingHintBanner { hintBannerMode = AnagramHintBannerMode(isProUser: isProUser) }
+            if showingHintBanner { hintBannerMode = AnagramHintBannerMode(isProUser: isProUser, rewardedAdsEnabled: adService.adsEnabled) }
         }
         .onChange(of: accountService.syncRevision) { _, _ in
             viewModel.reload()
@@ -336,7 +336,7 @@ struct AnagramView: View {
                 AnagramActionButton(title: "Undo", enabled: viewModel.canUndo) { viewModel.undo() }
                 AnagramActionButton(title: "Restart", enabled: viewModel.canRestart) { viewModel.restart() }
                 AnagramActionButton(title: "Hint", enabled: viewModel.canHint) {
-                    hintBannerMode = AnagramHintBannerMode(isProUser: storeService.isProUser)
+                    hintBannerMode = AnagramHintBannerMode(isProUser: storeService.isProUser, rewardedAdsEnabled: adService.adsEnabled)
                     withAnimation { showingHintBanner = true }
                 }
             }

@@ -52,6 +52,13 @@ describe("ProPage", () => {
     analytics.track.mockClear();
   });
 
+  it("promotes paid puzzle features without claiming ad-free gameplay", () => {
+    renderPage();
+    expect(screen.getByText("The 13 x 13 crossword")).toBeInTheDocument();
+    expect(screen.getByText("Every puzzle, on demand")).toBeInTheDocument();
+    expect(screen.queryByText(/ad-free|without ads|More room to focus/i)).not.toBeInTheDocument();
+  });
+
   it("shows plans to guests and sends the trial action through account sign-in", async () => {
     const user = userEvent.setup();
     auth.value.user = null;

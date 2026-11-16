@@ -66,7 +66,7 @@
       "id" : "D4E5F6A7-B8C9-0D1E-2F3A-4B5C6D7E8F9A",
       "localizations" : [
         {
-          "description" : "Unlock all five games, the archive, and an ad-free experience",
+          "description" : "Unlock weekly crosswords and the puzzle archive",
           "displayName" : "Intervls Pro",
           "locale" : "en_GB"
         }
@@ -93,7 +93,7 @@
           },
           "localizations" : [
             {
-              "description" : "Ad-free, unlimited archive & hints",
+              "description" : "Weekly crosswords & unlimited archive",
               "displayName" : "Intervls Pro Monthly",
               "locale" : "en_GB"
             }
@@ -124,7 +124,7 @@
           },
           "localizations" : [
             {
-              "description" : "Ad-free, unlimited archive & hints — best value",
+              "description" : "Weekly crosswords & unlimited archive — best value",
               "displayName" : "Intervls Pro Annual",
               "locale" : "en_GB"
             }

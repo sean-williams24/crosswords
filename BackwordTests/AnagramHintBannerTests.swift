@@ -6,18 +6,28 @@ import UIKit
 @MainActor
 @Suite("Anagram hint banner")
 struct AnagramHintBannerTests {
+    @Test("Paused ads give every player the time-penalty confirmation", arguments: [false, true])
+    func pausedHintChoices(isProUser: Bool) {
+        let mode = AnagramHintBannerMode(isProUser: isProUser)
+        #expect(mode == .timePenalty)
+        #expect(mode.title == "Reveal a letter?")
+        #expect(mode.primaryButtonTitle == "Reveal letter")
+        #expect(mode.subtitle == "Reveal one letter with a 30-second penalty.")
+        #expect(!mode.showsAdFreeButton)
+    }
+
     @Test("Free players can watch an ad or open the ad-free paywall")
     func freePlayerChoices() {
-        let mode = AnagramHintBannerMode(isProUser: false)
+        let mode = AnagramHintBannerMode(isProUser: false, rewardedAdsEnabled: true)
 
         #expect(mode == .watchAd)
         #expect(mode.primaryButtonTitle == "Watch")
         #expect(mode.showsAdFreeButton)
     }
 
-    @Test("Pro players confirm a time penalty without an ad-free offer")
-    func proPlayerChoice() {
-        let mode = AnagramHintBannerMode(isProUser: true)
+    @Test("Pro players confirm a time penalty without an ad-free offer", arguments: [false, true])
+    func proPlayerChoice(rewardedAdsEnabled: Bool) {
+        let mode = AnagramHintBannerMode(isProUser: true, rewardedAdsEnabled: rewardedAdsEnabled)
 
         #expect(mode == .timePenalty)
         #expect(mode.primaryButtonTitle == "Reveal letter")

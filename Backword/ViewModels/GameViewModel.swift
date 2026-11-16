@@ -301,9 +301,10 @@ final class GameViewModel: ObservableObject {
         activeClueIsHinted: Bool,
         hintedClueCount: Int,
         freeHintLimit: Int,
-        adBonusHints: Int
+        adBonusHints: Int,
+        rewardedAdsEnabled: Bool = AdConfiguration.adsEnabled
     ) -> Bool {
-        isProUser || activeClueIsHinted || hintedClueCount < freeHintLimit + adBonusHints
+        !rewardedAdsEnabled || isProUser || activeClueIsHinted || hintedClueCount < freeHintLimit + adBonusHints
     }
 
     func useHint() {

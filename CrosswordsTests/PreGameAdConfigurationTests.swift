@@ -5,6 +5,7 @@ import Testing
 struct PreGameAdConfigurationTests {
     @Test("Pre-game ads are disabled by default")
     func disabledByDefault() {
+        #expect(!AdConfiguration.adsEnabled)
         #expect(!AdConfiguration.preGameInterstitialsEnabled)
     }
 
@@ -33,18 +34,51 @@ struct PreGameAdConfigurationTests {
         ))
     }
 
-    @Test("Paused Pro copy describes hints and hides the full-experience benefit")
+    @Test("Paused Pro copy promotes archive access and hides all ad benefits")
     func pausedProBenefits() {
         let content = ProAdBenefitsContent()
 
+        #expect(content.homeTitle == "Archive access")
+        #expect(!content.showsAdFreeHintsBenefit)
+        #expect(content.settingsFooter == "Subscribe for weekly crossword and all archive games.")
+        #expect(!content.showsAdFreeExperienceBenefit)
+    }
+
+    @Test("Restoring rewarded ads alone restores only the hint benefit")
+    func rewardedOnlyBenefits() {
+        let content = ProAdBenefitsContent(adsEnabled: true, preGameInterstitialsEnabled: false)
         #expect(content.homeTitle == "Ad-free hints")
         #expect(content.settingsFooter == "Subscribe for ad-free hints, weekly crossword and all archive games.")
+        #expect(content.showsAdFreeHintsBenefit)
         #expect(!content.showsAdFreeExperienceBenefit)
+    }
+
+    @Test("Master pause suppresses benefits even with pre-game ads configured")
+    func masterPauseSuppressesBenefits() {
+        let content = ProAdBenefitsContent(adsEnabled: false, preGameInterstitialsEnabled: true)
+        #expect(!content.showsAdFreeHintsBenefit)
+        #expect(!content.showsAdFreeExperienceBenefit)
+        #expect(!content.settingsFooter.contains("ad-free"))
+    }
+
+    @Test("Crossword instructions offer give-up without a Pro restriction")
+    @MainActor
+    func giveUpInstructionsAreAvailableToEveryone() {
+        #expect(DailyCrosswordInstructionsContentView.giveUpInstructions == "Tap the flag to give up and reveal the answers.")
+    }
+
+    @Test("Instructions follow the rewarded ads setting")
+    @MainActor
+    func hintInstructions() {
+        #expect(DailyCrosswordInstructionsContentView.hintInstructions() == "Tap Hint to reveal an alternate clue.")
+        #expect(AnagramInstructionsContentView.hintInstructions() == "Revealing a letter adds 30 seconds to your scoring time.")
+        #expect(DailyCrosswordInstructionsContentView.hintInstructions(rewardedAdsEnabled: true).contains("watch an ad"))
+        #expect(AnagramInstructionsContentView.hintInstructions(rewardedAdsEnabled: true).contains("rewarded ad"))
     }
 
     @Test("Re-enabling pre-game ads restores the original Pro copy")
     func enabledProBenefits() {
-        let content = ProAdBenefitsContent(preGameInterstitialsEnabled: true)
+        let content = ProAdBenefitsContent(adsEnabled: true, preGameInterstitialsEnabled: true)
 
         #expect(content.homeTitle == "Ad-free experience")
         #expect(content.settingsFooter == "Subscribe to remove ads, access weekly crossword and all archive games.")

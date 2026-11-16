@@ -5,8 +5,8 @@ enum AnagramHintBannerMode: Equatable {
     case timePenalty
     case adUnavailable
 
-    init(isProUser: Bool) {
-        self = isProUser ? .timePenalty : .watchAd
+    init(isProUser: Bool, rewardedAdsEnabled: Bool = AdConfiguration.adsEnabled) {
+        self = isProUser || !rewardedAdsEnabled ? .timePenalty : .watchAd
     }
 
     var title: String {

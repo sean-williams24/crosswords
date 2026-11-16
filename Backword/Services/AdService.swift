@@ -79,6 +79,7 @@ final class AdService: NSObject, ObservableObject {
     private var rewardedAdContext: RewardedAdPresentationContext?
     private let interstitialGate: InterstitialPresentationGate
     private let consentCoordinator: AdConsentCoordinator
+    let adsEnabled: Bool
     let preGameInterstitialsEnabled: Bool
     private var startupTask: Task<Bool, Never>?
     private var adsHaveStarted = false
@@ -88,16 +89,20 @@ final class AdService: NSObject, ObservableObject {
     init(
         interstitialGate: InterstitialPresentationGate = InterstitialPresentationGate(userDefaults: .standard),
         adConsentService: AdConsentPreparing = GoogleAdConsentService(),
+        adsEnabled: Bool = AdConfiguration.adsEnabled,
         preGameInterstitialsEnabled: Bool = AdConfiguration.preGameInterstitialsEnabled
     ) {
         self.interstitialGate = interstitialGate
         self.consentCoordinator = AdConsentCoordinator(consentService: adConsentService)
-        self.preGameInterstitialsEnabled = preGameInterstitialsEnabled
+        self.adsEnabled = adsEnabled
+        self.preGameInterstitialsEnabled = adsEnabled && preGameInterstitialsEnabled
         super.init()
+        adStartupDidComplete = !adsEnabled
     }
 
     @discardableResult
     func prepareAdsIfNeeded() async -> Bool {
+        guard adsEnabled else { return false }
         if let startupTask {
             return await startupTask.value
         }
@@ -133,15 +138,17 @@ final class AdService: NSObject, ObservableObject {
     }
 
     func refreshConsentStatusIfNeeded() async {
+        guard adsEnabled else { return }
         await consentCoordinator.refreshStatusIfNeeded()
         refreshPrivacyOptionsRequirement()
     }
 
     func refreshPrivacyOptionsRequirement() {
-        isPrivacyOptionsRequired = consentCoordinator.isPrivacyOptionsRequired
+        isPrivacyOptionsRequired = adsEnabled && consentCoordinator.isPrivacyOptionsRequired
     }
 
     func presentPrivacyOptionsForm() async {
+        guard adsEnabled else { return }
         await consentCoordinator.presentPrivacyOptionsForm()
         refreshPrivacyOptionsRequirement()
     }
@@ -168,7 +175,7 @@ final class AdService: NSObject, ObservableObject {
     }
 
     func loadRewardedAd() async {
-        guard adsHaveStarted else { return }
+        guard adsEnabled, adsHaveStarted else { return }
 
         do {
             rewarded = try await RewardedAd.load(
@@ -295,6 +302,11 @@ final class AdService: NSObject, ObservableObject {
     }
 
     func showRewardedAd(onComplete: @escaping @MainActor (RewardedAdResult) -> Void) {
+        guard adsEnabled else {
+            onComplete(.unavailable)
+            return
+        }
+
         guard rewardedAdContext == nil else {
             logger.rewardedAdRequestIgnoredAlreadyInProgress()
             onComplete(.dismissedWithoutReward)

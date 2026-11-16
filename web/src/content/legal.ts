@@ -1,6 +1,6 @@
 import { siteConfig } from "../lib/siteConfig";
 
-export const privacyLastUpdated = "November 5, 2026";
+export const privacyLastUpdated = "November 15, 2026";
 
 export const privacySections = [
   {
@@ -16,7 +16,7 @@ export const privacySections = [
       "Account and cloud sync data: If you choose to sign in with Apple or Google, Intervls stores your account identifier and, where provided by the provider, your name and email address. We also store versioned gameplay progress, scores, rating history, and subscription entitlement state so your progress can be restored across devices. Account creation is optional.",
       "Puzzle content requests: Intervls connects to backend services to fetch daily Backword words, Quick and weekly crosswords, archive content, and Word of the Day. These requests may involve standard technical information such as IP address, device or browser information, request timestamps, and network metadata.",
       "Purchase information: Apple processes iOS subscriptions and Stripe processes web subscriptions. Intervls receives subscription entitlement information so Pro features can be unlocked across supported devices. We do not receive or store payment card details.",
-      "Advertising information: Intervls uses Google AdMob to show ads. Google and its partners may collect information such as device identifiers, advertising identifiers where permitted, ad interactions, approximate location, diagnostics, and usage information to deliver ads, limit ad frequency, prevent fraud, and report ad performance.",
+      "Advertising information: Advertising is currently paused in Intervls. If ads are enabled again, Intervls may use Google AdMob, and Google and its partners may collect information such as device identifiers, advertising identifiers where permitted, ad interactions, approximate location, diagnostics, and usage information to deliver ads, limit ad frequency, prevent fraud, and report ad performance.",
       "Website information: When you visit this website, hosting providers may process standard technical information such as IP address, browser type, device information, pages visited, and timestamps for security, diagnostics, and reliability.",
       "Optional website analytics: If you allow analytics, Intervls uses Google Firebase Analytics to measure page views, broad campaign source, game and Pro-subscription milestones, sign-in milestones, App Store link clicks, grouped content-load failures, result-card share interactions and outcomes, and broad domain-migration outcomes. We do not send guesses, answers, clue text, entered letters, account identifiers, names, email addresses, Stripe customer details, checkout identifiers, or payment information to website analytics."
     ]
@@ -41,6 +41,7 @@ export const privacySections = [
   {
     title: "Advertising and AdMob",
     body: [
+      "Advertising is currently paused. During the pause, Intervls does not request or show AdMob ads or present advertising-consent prompts. The following disclosures describe advertising if it is enabled again.",
       "Intervls may show interstitial and rewarded ads through Google AdMob. Ads may be personalized or non-personalized depending on your region, consent choices, device settings, and Google’s ad settings. Even non-personalized ads may use mobile identifiers or similar technologies for frequency capping, aggregated reporting, security, and fraud prevention where permitted.",
       "Where required, Intervls will ask for permission before allowing tracking for advertising purposes. You can change tracking permission in iOS Settings. If tracking is disabled, ads may still appear, but they may be less relevant."
     ]

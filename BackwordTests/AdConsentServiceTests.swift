@@ -11,7 +11,7 @@ struct AdConsentServiceTests {
             canRequestAds: false,
             privacyOptionsRequirementStatus: .required
         )
-        let adService = AdService(adConsentService: consentService)
+        let adService = AdService(adConsentService: consentService, adsEnabled: true)
 
         await adService.refreshConsentStatusIfNeeded()
         await adService.refreshConsentStatusIfNeeded()
@@ -32,7 +32,7 @@ struct AdConsentServiceTests {
             canRequestAds: false,
             privacyOptionsRequirementStatus: .required
         )
-        let adService = AdService(adConsentService: consentService)
+        let adService = AdService(adConsentService: consentService, adsEnabled: true)
 
         let canRequestAds = await adService.prepareAdsIfNeeded()
 
@@ -48,7 +48,7 @@ struct AdConsentServiceTests {
     @MainActor
     func concurrentAdRequestsShareConsentPreparation() async {
         let consentService = FakeAdConsentService(canRequestAds: false, pausesPreparation: true)
-        let adService = AdService(adConsentService: consentService)
+        let adService = AdService(adConsentService: consentService, adsEnabled: true)
         let firstRequest = Task { await adService.prepareAdsIfNeeded() }
         await consentService.waitForPreparationToStart()
 
@@ -69,7 +69,7 @@ struct AdConsentServiceTests {
     @MainActor
     func interstitialGateContinuesWhenConsentStartupIsNotReady() {
         let consentService = FakeAdConsentService(canRequestAds: false)
-        let adService = AdService(adConsentService: consentService, preGameInterstitialsEnabled: true)
+        let adService = AdService(adConsentService: consentService, adsEnabled: true, preGameInterstitialsEnabled: true)
         var didContinue = false
 
         adService.showInterstitialOnce(for: .dailyPuzzleOpen) {
@@ -86,7 +86,7 @@ struct AdConsentServiceTests {
             canRequestAds: false,
             privacyOptionsRequirementStatus: .required
         )
-        let adService = AdService(adConsentService: consentService)
+        let adService = AdService(adConsentService: consentService, adsEnabled: true)
 
         adService.refreshPrivacyOptionsRequirement()
 
@@ -100,7 +100,7 @@ struct AdConsentServiceTests {
             canRequestAds: false,
             privacyOptionsRequirementStatus: .notRequired
         )
-        let adService = AdService(adConsentService: consentService)
+        let adService = AdService(adConsentService: consentService, adsEnabled: true)
 
         adService.refreshPrivacyOptionsRequirement()
 
@@ -114,7 +114,7 @@ struct AdConsentServiceTests {
             canRequestAds: false,
             privacyOptionsRequirementStatus: .required
         )
-        let adService = AdService(adConsentService: consentService)
+        let adService = AdService(adConsentService: consentService, adsEnabled: true)
 
         await adService.presentPrivacyOptionsForm()
 

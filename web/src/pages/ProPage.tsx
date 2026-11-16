@@ -36,10 +36,6 @@ const features = [
   {
     title: "A helpful nudge when needed",
     detail: "Reveal an answer when a clue has you stumped, then carry on and finish the puzzle your way."
-  },
-  {
-    title: "More room to focus",
-    detail: "Enjoy hints and gameplay without ads interrupting your train of thought."
   }
 ];
 

@@ -138,6 +138,36 @@ struct GameViewModelTests {
             activeClueIsHinted: false,
             hintedClueCount: 3,
             freeHintLimit: 0,
+            adBonusHints: 0,
+            rewardedAdsEnabled: true
+        ))
+    }
+
+    @Test("Hints during the pause are counted and persisted without an ad bonus")
+    func pausedHintStillCountsAndPersists() {
+        let puzzle = makePuzzle()
+        UserProgress.delete(puzzleId: puzzle.id)
+        defer { UserProgress.delete(puzzleId: puzzle.id) }
+        let vm = GameViewModel(puzzle: puzzle)
+        vm.useHint()
+        #expect(vm.progress.hintsUsed == 1)
+        #expect(vm.progress.hintedClueIds == [0])
+        #expect(vm.adBonusHints == 0)
+        vm.useHint()
+        vm.useHint()
+        #expect(vm.progress.hintsUsed == 1)
+        let restored = GameViewModel(puzzle: puzzle)
+        #expect(restored.progress.hintsUsed == 1)
+        #expect(restored.progress.hintedClueIds == [0])
+    }
+
+    @Test("Paused ads allow free users to hint after all allowances are exhausted")
+    func pausedAdsBypassHintLimit() {
+        #expect(GameViewModel.canUseHintWithoutRewardedBanner(
+            isProUser: false,
+            activeClueIsHinted: false,
+            hintedClueCount: 10,
+            freeHintLimit: 0,
             adBonusHints: 0
         ))
     }
@@ -149,7 +179,8 @@ struct GameViewModelTests {
             activeClueIsHinted: false,
             hintedClueCount: 1,
             freeHintLimit: 1,
-            adBonusHints: 0
+            adBonusHints: 0,
+            rewardedAdsEnabled: true
         ))
     }
 
@@ -160,7 +191,8 @@ struct GameViewModelTests {
             activeClueIsHinted: true,
             hintedClueCount: 1,
             freeHintLimit: 0,
-            adBonusHints: 0
+            adBonusHints: 0,
+            rewardedAdsEnabled: true
         ))
     }
 
