@@ -124340,8 +124340,8 @@
     {
       "answer": "ASHY",
       "field": "text",
-      "clue": "Covered in ash",
-      "fingerprint": "d713a6329141971c8de35990c6636086fed8e229788a0573639de03c26d47afe",
+      "clue": "Covered in fire residue",
+      "fingerprint": "36c86f8f793b807e81f41c4e3af7684d3b29fd5ed26d279783d82d02f378af97",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
@@ -670148,8 +670148,8 @@
     {
       "answer": "USABLE",
       "field": "text",
-      "clue": "Fit for use; practical",
-      "fingerprint": "a638be56742844203747759e15fcab03f52fce41455af027c8986b947d7052ce",
+      "clue": "Functional",
+      "fingerprint": "4577933560cd9910973bcc6c8089b0b891911710c7f3ad65989ee840fc69bfd7",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
@@ -744716,8 +744716,8 @@
     {
       "answer": "MARRIES",
       "field": "text",
-      "clue": "Joins in marriage",
-      "fingerprint": "f226bbb92f2e24c9b5f40ac44fb1024d759abe119b0f85b975617d4a77729224",
+      "clue": "Weds",
+      "fingerprint": "bf36b7a94a0846fdf96cc49acfa7cd21a3a51365f4b978d902592f4acc8f0f6f",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },

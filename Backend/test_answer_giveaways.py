@@ -114,6 +114,19 @@ class GiveawayAuditTests(unittest.TestCase):
 
         self.assertEqual(certification_errors(entries, certification), [])
 
+    def test_both_generators_load_certified_production_bank(self) -> None:
+        entries = audit.load_entries()
+        for generator in (generate_puzzle, generate_weekly_puzzle):
+            with self.subTest(generator=generator.__name__):
+                bank = generator.load_word_bank()
+                expected = {
+                    item["word"] for item in entries
+                    if len(item["word"]) in bank
+                }
+                loaded = {item["word"] for group in bank.values() for item in group}
+                self.assertTrue(loaded)
+                self.assertEqual(loaded, expected)
+
     def test_missing_certification_fails_closed_without_a_traceback(self) -> None:
         entries = [entry("RAPID", "Fast", hard_text="Moving swiftly", clues=["Quick"])]
         with tempfile.TemporaryDirectory() as directory:
