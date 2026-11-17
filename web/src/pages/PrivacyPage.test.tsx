@@ -60,9 +60,19 @@ describe("Google sign-in privacy disclosures", () => {
     expect(screen.getByText(/Intervls may show interstitial and rewarded ads/)).toBeInTheDocument();
   });
 
+  it("explains optional iOS analytics and how to withdraw consent", () => {
+    renderPrivacy();
+    expect(screen.getByText(/Optional iOS analytics:/)).toHaveTextContent(
+      /disabled until you choose Accept analytics/
+    );
+    expect(screen.getByText(/Optional iOS analytics:/)).toHaveTextContent(
+      /Share usage analytics/
+    );
+  });
+
   it("dates the revised privacy policy independently of other legal pages", () => {
     renderPrivacy();
-    expect(screen.getByText("Last updated November 15, 2026")).toBeInTheDocument();
+    expect(screen.getByText("Last updated November 16, 2026")).toBeInTheDocument();
     cleanup();
 
     render(<LegalPage title="Other legal page" intro="Existing policy" sections={[]} />);

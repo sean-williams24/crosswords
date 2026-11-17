@@ -1359,21 +1359,60 @@ activation is emitted only from a direct, verified StoreKit purchase that grants
 Pro access. Restores, renewals, entitlement refreshes, and account-linked access
 never count as a new purchase conversion.
 
+### Optional iOS analytics
+
+iOS matches the web's explicit analytics opt-in. `AnalyticsConsentViewModel`
+stores a device-local accepted/declined choice under `analytics.consent.v1`.
+Missing or unrecognised choices default off, including upgrades from versions
+that collected analytics without a separate choice. A non-blocking banner offers
+Decline and Accept analytics after the splash; Settings → Analytics provides
+Share usage analytics for later changes. Refusal is remembered without asking
+again. Preferences are independent of account, Pro, and advertising consent.
+
+The consent banner caps Dynamic Type at X Large so it remains a compact bottom
+inset. Both actions stay on one line and may shrink to fit narrow phones. The
+explanation still wraps in full; the cap applies only to this banner.
+
+`Info.plist` defaults both analytics storage and collection to false. Firebase
+is configured in `didFinishLaunching` with collection explicitly disabled before
+SDK configuration, overriding collection preferences saved by older releases.
+This registers SDK lifecycle hooks before the app becomes active, including on
+a fresh install whose user accepts later from Home. SDK preparation is separate
+from analytics readiness: unknown/declined consent keeps analytics storage denied,
+collection disabled, reporting context unset, and app-owned events blocked.
+On acceptance, `AnalyticsStartupService` applies ad restrictions, grants analytics
+storage, restores reporting context, and enables collection last without
+reinitialising Firebase. App-owned events are dropped until consent and SDK readiness;
+there is no pre-consent event queue or replay on acceptance. Automatic events
+and Firebase's Apple Ads campaign measurement are also subject to the choice.
+
+Withdrawal blocks app-owned events immediately, disables SDK collection, resets
+local analytics data/identifiers, and denies analytics storage while keeping
+advertising denied. Reacceptance restores reporting context before collection.
+Withdrawal does not promise deletion of previously uploaded data. Game progress,
+cloud sync, sign-in, purchases, and Pro access do not depend on analytics.
+
+Debug builds emit local `[Analytics diagnostics]` logs after consent and successful
+startup, showing the actual Firebase project/app destination and whether an
+Analytics app-instance ID exists. The ID itself is never logged. App-owned
+events also log their name when handed to Firebase; this confirms the SDK call,
+not server ingestion or DebugView visibility. Diagnostics do not initialise
+Firebase or bypass consent, and are excluded from release builds.
+
 ### Apple Ads campaign measurement on iOS
 
 Firebase advertising use is disabled on iOS independently of rewarded-ad
 consent. `Info.plist` defaults ad storage, ad user data and ad personalization to
 denied. `AnalyticsStartupService` also reapplies those restrictions once per
 launch after Firebase is available, overriding persisted advertising grants
-before app-owned measurement starts. It does not change analytics-storage
-consent or force analytics collection on. ATT/UMP approval for a rewarded hint
-must not grant Firebase advertising permissions.
+before app-owned measurement starts. Analytics storage and collection follow
+the separate explicit choice described above. ATT/UMP approval for a rewarded
+hint must not grant Firebase analytics or advertising permissions.
 
 Consent changes can clear Firebase user properties, so advertising restrictions
 must precede the reporting-context setup below. Missing configuration and failed
 SDK setup remain retryable; successful startup is idempotent within one launch.
-Ordinary gameplay reporting is retained, subject to any separate analytics
-consent requirements. This policy reduces Firebase advertising capabilities;
+Ordinary gameplay reporting runs only after analytics acceptance. This policy reduces Firebase advertising capabilities;
 it is not a claim that every advertising attribution report is unaffected.
 See [Google's consent controls](https://developers.google.com/tag-platform/security/guides/app-consent?platform=ios).
 
@@ -1384,7 +1423,7 @@ or a custom install event for the same acquisition: that could duplicate or
 overwrite the SDK's attribution. Missing attribution is not proof of an organic
 install.
 
-After Firebase configures at launch, `AppleAdsAttributionService` sets the default
+After Firebase configures with analytics consent, `AppleAdsAttributionService` sets the default
 `platform=ios` and `environment` event parameters, plus the `app_environment`
 user property. This labels automatic SDK events and custom milestones for
 reporting. Context is refreshed on each app launch; repeated configuration in

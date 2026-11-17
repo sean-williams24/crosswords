@@ -1,0 +1,89 @@
+import Foundation
+import Testing
+@testable import Backword
+
+@MainActor
+@Suite("Optional iOS analytics")
+struct AnalyticsConsentViewModelTests {
+    @Test("Missing or unknown choices stay disabled and show the prompt", arguments: ["", "unknown"])
+    func defaultIsOff(rawValue: String) {
+        let suiteName = "AnalyticsConsentTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        if !rawValue.isEmpty { defaults.set(rawValue, forKey: AnalyticsConsent.storageKey) }
+        var applied: [Bool] = []
+        let model = AnalyticsConsentViewModel(defaults: defaults, applyConsent: { applied.append($0) })
+        #expect(model.shouldShowPrompt)
+        #expect(!model.isEnabled)
+        #expect(applied == [false])
+    }
+
+    @Test("Accept and decline are persisted and survive the next launch", arguments: [false, true])
+    func persistsChoice(enabled: Bool) {
+        let suiteName = "AnalyticsConsentTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let model = AnalyticsConsentViewModel(defaults: defaults, applyConsent: { _ in })
+        model.setEnabled(enabled)
+        #expect(!model.shouldShowPrompt)
+        #expect(model.isEnabled == enabled)
+        var restored: [Bool] = []
+        let nextLaunch = AnalyticsConsentViewModel(defaults: defaults, applyConsent: { restored.append($0) })
+        #expect(!nextLaunch.shouldShowPrompt)
+        #expect(nextLaunch.isEnabled == enabled)
+        #expect(restored == [enabled])
+    }
+
+    @Test("Settings withdrawal and reacceptance update collection immediately")
+    func changesInSettings() {
+        let suiteName = "AnalyticsConsentTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        var applied: [Bool] = []
+        let model = AnalyticsConsentViewModel(defaults: defaults, applyConsent: { applied.append($0) })
+        model.setEnabled(true)
+        model.setEnabled(false)
+        #expect(model.choice == .declined)
+        #expect(!model.shouldShowPrompt)
+        #expect(!model.isEnabled)
+        model.setEnabled(true)
+        #expect(applied == [false, true, false, true])
+        #expect(AnalyticsConsent.savedChoice(in: defaults) == .accepted)
+    }
+
+}
+
+#if os(iOS)
+import SwiftUI
+import UIKit
+
+@MainActor
+@Suite("Analytics consent banner layout")
+struct AnalyticsConsentBannerLayoutTests {
+    @Test("The banner stays compact on narrow phones at every Dynamic Type size",
+          arguments: [CGFloat(320), CGFloat(393)], DynamicTypeSize.allCases)
+    func compactBanner(width: CGFloat, textSize: DynamicTypeSize) {
+        let suiteName = "AnalyticsConsentBannerTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let model = AnalyticsConsentViewModel(defaults: defaults, applyConsent: { _ in })
+
+        func fittedSize(_ size: DynamicTypeSize) -> CGSize {
+            let host = UIHostingController(rootView:
+                AnalyticsConsentBanner()
+                    .environmentObject(model)
+                    .environment(\.dynamicTypeSize, size)
+            )
+            return host.sizeThatFits(in: CGSize(width: width, height: 1_000))
+        }
+
+        let size = fittedSize(textSize)
+        #expect(size.width <= width + 0.5)
+        #expect(size.height > 0)
+        #expect(size.height <= 260)
+        if textSize > .xLarge {
+            #expect(abs(size.height - fittedSize(.xLarge).height) < 0.5)
+        }
+    }
+}
+#endif

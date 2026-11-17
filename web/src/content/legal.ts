@@ -1,6 +1,6 @@
 import { siteConfig } from "../lib/siteConfig";
 
-export const privacyLastUpdated = "November 15, 2026";
+export const privacyLastUpdated = "November 16, 2026";
 
 export const privacySections = [
   {
@@ -18,6 +18,7 @@ export const privacySections = [
       "Purchase information: Apple processes iOS subscriptions and Stripe processes web subscriptions. Intervls receives subscription entitlement information so Pro features can be unlocked across supported devices. We do not receive or store payment card details.",
       "Advertising information: Advertising is currently paused in Intervls. If ads are enabled again, Intervls may use Google AdMob, and Google and its partners may collect information such as device identifiers, advertising identifiers where permitted, ad interactions, approximate location, diagnostics, and usage information to deliver ads, limit ad frequency, prevent fraud, and report ad performance.",
       "Website information: When you visit this website, hosting providers may process standard technical information such as IP address, browser type, device information, pages visited, and timestamps for security, diagnostics, and reliability.",
+      "Optional iOS analytics: Analytics is disabled until you choose Accept analytics. If you accept, Intervls uses Google Firebase Analytics to measure app usage, game and subscription milestones, and campaign performance. Firebase uses an app-installation identifier. You can decline or change your choice in app Settings under Analytics using Share usage analytics. Declining does not affect gameplay, saved progress, purchases, or Pro access. Turning analytics off stops collection and resets local analytics data; it does not delete information already sent.",
       "Optional website analytics: If you allow analytics, Intervls uses Google Firebase Analytics to measure page views, broad campaign source, game and Pro-subscription milestones, sign-in milestones, App Store link clicks, grouped content-load failures, result-card share interactions and outcomes, and broad domain-migration outcomes. We do not send guesses, answers, clue text, entered letters, account identifiers, names, email addresses, Stripe customer details, checkout identifiers, or payment information to website analytics."
     ]
   },
@@ -114,6 +115,12 @@ export const privacyChoicesSections = [
     body: [
       "Apple processes iOS subscriptions, which you manage through Apple ID settings. Stripe processes web subscriptions, which you manage from Player Profile on this website. Deleting an Intervls account does not cancel an Apple subscription; it schedules a web subscription to stop renewing.",
       "If an eligible purchase is not available after you sign in, use Restore Purchases in the app or contact support."
+    ]
+  },
+  {
+    title: "iOS Analytics",
+    body: [
+      "Choose Accept analytics or Decline when prompted in the iOS app. To change your choice later, open Settings → Analytics and use Share usage analytics. Your choice is saved on this device and does not change the website's separate analytics preference."
     ]
   },
   {

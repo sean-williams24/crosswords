@@ -15,6 +15,11 @@ final class AppleAdsAttributionService {
         self.setUserProperty = setUserProperty
     }
 
+    /// Analytics withdrawal clears SDK properties; allow context to be restored on reacceptance.
+    func reset() {
+        isConfigured = false
+    }
+
     /// Call as soon as Firebase is available, before logging gameplay events.
     /// A failed Firebase setup leaves this service eligible for a later retry.
     func configureIfPossible(analyticsConfigured: Bool, environment: String) {

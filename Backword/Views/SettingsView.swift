@@ -49,6 +49,8 @@ struct SettingsView: View {
                     }
                 }
 
+                AnalyticsSettingsSection()
+
                 Section(header: Text("Appearance")) {
                     Picker("Theme", selection: $appColorScheme) {
                         Text("Light").tag(AppColorSchemePreference.lightValue)
@@ -528,6 +530,7 @@ enum SettingsDeletionConfirmationPresentation {
 
 #Preview {
     SettingsView()
+        .environmentObject(AnalyticsConsentViewModel(applyConsent: { _ in }))
         .environmentObject(StoreService())
         .environmentObject(AdService())
         .environmentObject(AccountService())

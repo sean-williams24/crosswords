@@ -16,6 +16,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 struct BackwordApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var analyticsConsent = AnalyticsConsentViewModel(
+        applyConsent: { BackwordAnalyticsService.shared.setAnalyticsConsent(isGranted: $0) }
+    )
     @StateObject private var statsService: StatsService
     @StateObject private var puzzleService: PuzzleService
     @StateObject private var storeService: StoreService
@@ -30,8 +33,14 @@ struct BackwordApp: App {
         WindowGroup {
             LaunchSplashView {
                 HomeView(viewModel: homeViewModel)
+                    .safeAreaInset(edge: .bottom, spacing: 0) {
+                        if analyticsConsent.shouldShowPrompt {
+                            AnalyticsConsentBanner()
+                        }
+                    }
             }
                 .preferredColorScheme(selectedScheme)
+                .environmentObject(analyticsConsent)
                 .environmentObject(statsService)
                 .environmentObject(puzzleService)
                 .environmentObject(storeService)

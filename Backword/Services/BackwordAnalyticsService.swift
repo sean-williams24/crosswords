@@ -345,7 +345,14 @@ final class BackwordAnalyticsService {
                 analyticsConfigured: true,
                 environment: AppEnvironment.current
             )
-        }
+        },
+        setAnalyticsConsent: { Analytics.setConsent([.analyticsStorage: $0 ? .granted : .denied]) },
+        setCollectionEnabled: { Analytics.setAnalyticsCollectionEnabled($0) },
+        resetAnalyticsData: { [unowned self] in
+            Analytics.resetAnalyticsData()
+            self.appleAdsAttributionService.reset()
+        },
+        onReady: { [unowned self] in self.reportDebugReadiness() }
     )
 
     private let appleAdsAttributionService = AppleAdsAttributionService(
@@ -362,18 +369,38 @@ final class BackwordAnalyticsService {
 
     @discardableResult
     func configureIfPossible() -> Bool {
-        let didConfigure = startupService.configureIfPossible()
-        if didConfigure {
-            logger.info("Firebase Analytics configured")
-        } else {
-            logger.info("Firebase Analytics unavailable: configuration is missing or SDK setup failed")
-        }
-        return didConfigure
+        // This entry point runs in didFinishLaunching, even before the user has
+        // made a choice. Keep collection off while registering SDK lifecycle hooks.
+        startupService.prepareForLaunch()
+        setAnalyticsConsent(isGranted: AnalyticsConsent.savedChoice() == .accepted)
+        return startupService.isConfigured
+    }
+
+    func setAnalyticsConsent(isGranted: Bool) {
+        startupService.updateConsent(isGranted: isGranted)
     }
 
     func log(_ event: BackwordAnalyticsEvent) {
-        guard startupService.isConfigured else { return }
+        guard startupService.canLogEvents else { return }
         Analytics.logEvent(event.name, parameters: event.parameters)
+        #if DEBUG
+        logger.notice("[Analytics diagnostics] Event handed to Firebase: \(event.name, privacy: .public)")
+        #endif
+    }
+
+    private func reportDebugReadiness() {
+        #if DEBUG
+        // Reading the instance ID can access Firebase's database. Keep it off
+        // the main thread, and log only its presence, never the identifier.
+        DispatchQueue.global(qos: .utility).async { [self] in
+            let options = FirebaseApp.app()?.options
+            let project = options?.projectID ?? "missing"
+            let app = options?.googleAppID ?? "missing"
+            let bundle = Bundle.main.bundleIdentifier ?? "missing"
+            let hasInstanceID = Analytics.appInstanceID() != nil
+            logger.notice("[Analytics diagnostics] Collection requested after acceptance. Project: \(project, privacy: .public); app: \(app, privacy: .public); bundle: \(bundle, privacy: .public); instanceIDPresent: \(hasInstanceID, privacy: .public)")
+        }
+        #endif
     }
 }
 
