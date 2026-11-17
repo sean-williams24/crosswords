@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A17120261117000000000002 /* MidwordAnalyticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17120261117000000000001 /* MidwordAnalyticsTests.swift */; };
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
 		03ACF849F3B34FEBEB85B85D /* DailyChallengeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A43901A456AE111FBA9C021 /* DailyChallengeStore.swift */; };
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
@@ -293,6 +294,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A17120261117000000000001 /* MidwordAnalyticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/MidwordAnalyticsTests.swift; sourceTree = "<group>"; };
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
 		04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicyTests.swift; sourceTree = "<group>"; };
@@ -620,6 +622,7 @@
 			children = (
 				ADA140083011000000000001 /* AnalyticsConsentViewModelTests.swift */,
 				B11111111111111111111114 /* ../CrosswordsTests/TimedMidwordTests.swift */,
+				A17120261117000000000001 /* MidwordAnalyticsTests.swift */,
 				0FD34781B46A8A180D978DFC /* ../CrosswordsTests/HomeDailyChallengeLayoutTests.swift */,
 				BA3A797CBA3BFB73F993F6CD /* ../CrosswordsTests/HomeDailyChallengeViewModelTests.swift */,
 				BDE5582CCB770E392680461A /* ../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift */,
@@ -1210,6 +1213,7 @@
 				04F1AE892FE2A3E6007A1001 /* AppVersionInfoTests.swift in Sources */,
 				1A7E20261029000000000004 /* ../CrosswordsTests/IntervlsBrandTests.swift in Sources */,
 				B11111111111111111111113 /* ../CrosswordsTests/TimedMidwordTests.swift in Sources */,
+				A17120261117000000000002 /* MidwordAnalyticsTests.swift in Sources */,
 				0838E5D72FE2E5AB00000001 /* ArchiveTabBarViewTests.swift in Sources */,
 				05A1D9B72FFCF62100AD5001 /* BackwordAnalyticsEventTests.swift in Sources */,
 				AD5100053011000000000001 /* AppleAdsAttributionServiceTests.swift in Sources */,

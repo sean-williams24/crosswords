@@ -7,18 +7,31 @@ final class MidwordViewModel: ObservableObject {
     @Published private(set) var input = ""
     @Published private(set) var message: String?
     private let haptics: HapticsPlaying
+    private let persistsChanges: Bool
+    private let logEvent: (BackwordAnalyticsEvent) -> Void
 
-    init(puzzle: MidwordPuzzle, progress: MidwordProgress? = nil, haptics: HapticsPlaying = HapticsEngine()) {
+    init(
+        puzzle: MidwordPuzzle,
+        progress: MidwordProgress? = nil,
+        haptics: HapticsPlaying = HapticsEngine(),
+        persistsChanges: Bool = true,
+        logEvent: @escaping (BackwordAnalyticsEvent) -> Void = { BackwordAnalyticsService.shared.log($0) }
+    ) {
         self.puzzle = puzzle
-        self.progress = progress ?? MidwordProgress.load(date: puzzle.date) ?? MidwordProgress(date: puzzle.date)
+        self.progress = progress ?? (persistsChanges ? MidwordProgress.load(date: puzzle.date) : nil)
+            ?? MidwordProgress(date: puzzle.date)
         self.haptics = haptics
+        self.persistsChanges = persistsChanges
+        self.logEvent = logEvent
     }
 
     var hasStarted: Bool { progress.startedAt != nil }
 
-    func start() {
-        progress.start()
-        progress.save()
+    func start(now: Date = Date()) {
+        guard !hasStarted, !isComplete else { return }
+        progress.start(at: now)
+        persist()
+        logEvent(.gameStarted(game: .midword))
     }
     var isComplete: Bool { progress.isComplete }
     func completionShareResult(rating: OverallRating, isPro: Bool, progressRecords: [MidwordProgress]? = nil) -> PuzzleShareResult? {
@@ -57,16 +70,17 @@ final class MidwordViewModel: ObservableObject {
         haptics.play(.letterEntered)
     }
 
-    func giveUp() {
-        guard !isComplete else { return }
-        progress.giveUp()
+    func giveUp(now: Date = Date()) {
+        guard hasStarted, !isComplete else { return }
+        progress.giveUp(at: now)
         input = ""
         message = nil
         haptics.play(.backwordGameLost)
-        progress.save()
+        persist()
+        logCompletion()
     }
 
-    func submitGuess(isValidWord: (String) -> Bool = WordValidator.isValidEnglishWord) {
+    func submitGuess(now: Date = Date(), isValidWord: (String) -> Bool = WordValidator.isValidEnglishWord) {
         guard canSubmit else { return }
         guard !progress.guesses.contains(input) else {
             message = "Already guessed"
@@ -78,7 +92,7 @@ final class MidwordViewModel: ObservableObject {
             message = "Not in the dictionary"
             return
         }
-        progress.submit(input, for: puzzle)
+        progress.submit(input, for: puzzle, at: now)
         if progress.isWon {
             haptics.play(.backwordGameWon)
         } else if progress.isFailed {
@@ -88,6 +102,22 @@ final class MidwordViewModel: ObservableObject {
         }
         input = ""
         message = nil
-        progress.save()
+        persist()
+        if isComplete { logCompletion() }
+    }
+
+    private func persist() {
+        if persistsChanges { progress.save() }
+    }
+
+    private func logCompletion() {
+        guard let completedAt = progress.completedAt else { return }
+        logEvent(.gameCompleted(
+            game: .midword,
+            outcome: progress.isWon ? .won : .failed,
+            releaseDay: ContentReleaseCalendar(now: completedAt).dailyDateString == puzzle.date,
+            score: progress.releaseDateScore,
+            durationSeconds: progress.elapsedSecondsAtCompletion.map { TimeInterval($0) }
+        ))
     }
 }

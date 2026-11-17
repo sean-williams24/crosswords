@@ -1440,6 +1440,17 @@ downloads and Firebase first opens are distinct metrics, and ad spend remains
 in Apple Ads. See [the campaign measurement guide](docs/apple-ads-measurement.md)
 for console configuration and release verification.
 
+### Midword gameplay analytics
+
+iOS Midword emits `game_started` only when a new timer starts, and
+`game_completed` only when an active game is solved or given up. Restoring
+progress and repeated terminal actions do not replay milestones. Both events
+use `game=midword`; completion matches the web's `won`/`failed` outcomes
+(give-up is `failed`) and includes the saved score and elapsed-time bands.
+Release-day eligibility compares the completion's local date with the puzzle
+date independently of score, so release-day give-ups still report `yes`.
+Events pass through the existing consent gate without queuing or replay.
+
 ## Crossword Configuration & Word Repeat Prevention
 
 ### Daily crossword (9×9)
