@@ -427,7 +427,17 @@ Start before seeing the puzzle and have unlimited guesses. The wall clock keeps
 running after leaving the game. Release-day solves under 30, 60, 120, and 180
 seconds earn 5, 4, 3, and 2 points; 180 seconds or more earns 1. Giving up or
 solving in the Archive earns zero. Invalid, incomplete, and duplicate guesses
-are rejected. Previous guesses and attempt counters are not shown.
+are rejected. Wrong guesses appear below the board, newest first, using smaller
+neutral cells with no positional hints. Accepted answers stay in the main board
+and are excluded from history. Each newly accepted wrong guess animates from
+the input cells into the top history row, shrinking as older rows move down.
+iOS uses shared cell geometry; the browser measures the input and history cells.
+Restored history appears immediately, and Reduce Motion skips the movement.
+Validation messages appear between the board and Previous Guesses on both
+platforms, so invalid-word and duplicate feedback stays above the history.
+Midword dismisses both messages after three seconds; repeated rejections restart
+that countdown. Editing, accepting a guess, or leaving cancels pending dismissal.
+Attempt counters remain hidden.
 
 The Monday workflow uses `Backend/automate_midword.py` to fill today and the
 next 20 days. Fresh candidates come from the crossword bank and the top 100,000
@@ -1116,7 +1126,7 @@ assertive alerts. The message is grouped with its preceding input or attempts
 indicator, so a collapsed label leaves no extra flex gap. Reduce Motion removes
 the transition. Midword matches Backword's invalid-word feedback: the input
 row uses the shared 420ms horizontal shake, its shake state clears after 500ms,
-and the red, bold `Not a valid word` alert automatically hides after two seconds.
+and the red, bold `Not a valid word` alert automatically hides after three seconds.
 Midword's duplicate-guess label uses the same feedback. Editing or an accepted
 submission clears Midword feedback immediately, and repeated rejections restart
 the dismissal timers; clearing feedback or leaving the game cancels them.
@@ -2593,7 +2603,7 @@ completion, history, Home, and sharing do not describe them as solved.
 local record and shared schemaVersion 1 cloud payload. Missing fields identify
 legacy saves. Unfinished legacy games keep their guesses and require Start to
 begin a fresh timer. Completed legacy scores are never inferred from elapsed
-time or changed retroactively. Accepted guesses remain internal for duplicate
+time or changed retroactively. Accepted guesses are retained for history and duplicate
 validation; unlimited guesses have no failure threshold. A give-up can have zero
 guesses. Statistics use saved release-day eligibility, and time bands match the
 scoring thresholds.

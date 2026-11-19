@@ -216,3 +216,9 @@ html[data-theme="dark"] .midword-header h1::after {
 }
 
 .midword-distribution > div > span:first-child { min-width: 40px; }
+
+.midword-guess-history { width: min(100%, 520px); text-align: center; }
+.midword-guess-history h2 { margin: 0 0 8px; color: var(--midword-muted); font-size: 16px; font-weight: 400; }
+.midword-guess-history ul { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.midword-guess-history .midword-letter-row { width: min(100%, calc(var(--midword-letter-count) * 38px + (var(--midword-letter-count) - 1) * 6px)); gap: 6px; }
+.midword-guess-history .midword-letter-row > span { font-size: clamp(14px, 4vw, 17px); }

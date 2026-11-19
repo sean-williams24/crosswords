@@ -54,7 +54,7 @@ struct GameDynamicTypeContainerTests {
         DynamicTypeSize.xxxLarge, .accessibility1, .accessibility5
     ])
     func boardStaysCompact(size: DynamicTypeSize) {
-        let board = MidwordBoardView(puzzle: puzzle, input: "NO", won: false)
+        let board = MidwordBoardView(puzzle: puzzle, input: "NO", progress: MidwordProgress(date: puzzle.date))
         let baseline = fittedSize(board, at: AppLayout.gameMaximumDynamicTypeSize)
         let enlarged = fittedSize(board, at: size)
 
@@ -72,6 +72,19 @@ struct GameDynamicTypeContainerTests {
         let enlarged = fittedSize(rows, at: .accessibility5)
 
         #expect(abs(enlarged.height - baseline.height) < 0.5)
+    }
+
+    @Test("Animated guess cells preserve their input and history dimensions", arguments: [
+        AppLayout.midwordInputCellSize, AppLayout.midwordGuessCellSize
+    ])
+    func animatedGuessCellSize(cellSize: CGFloat) {
+        let cell = MidwordAnimatedGuessCell(
+            letter: "N", size: cellSize, guessIndex: 0, letterIndex: 0, namespace: nil
+        )
+        let measured = fittedSize(cell, at: .large)
+
+        #expect(abs(measured.width - cellSize) < 0.5)
+        #expect(abs(measured.height - cellSize) < 0.5)
     }
 
     @Test("Custom fonts stop growing while smaller text settings are preserved")

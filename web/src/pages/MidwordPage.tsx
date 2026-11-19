@@ -70,7 +70,7 @@ function MidwordGame({ date, accessReady = true }: { date: string; accessReady?:
     setInputError(feedback !== null);
     if (!feedback) return;
     const shakeTimer = window.setTimeout(() => setInputError(false), 500);
-    const messageTimer = window.setTimeout(() => setFeedback(null), 2_000);
+    const messageTimer = window.setTimeout(() => setFeedback(null), 3_000);
     return () => {
       window.clearTimeout(shakeTimer);
       window.clearTimeout(messageTimer);

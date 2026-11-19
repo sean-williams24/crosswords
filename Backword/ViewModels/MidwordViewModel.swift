@@ -6,6 +6,7 @@ final class MidwordViewModel: ObservableObject {
     @Published private(set) var progress: MidwordProgress
     @Published private(set) var input = ""
     @Published private(set) var message: String?
+    private var messageDismissalTask: Task<Void, Never>?
     private let haptics: HapticsPlaying
     private let persistsChanges: Bool
     private let logEvent: (BackwordAnalyticsEvent) -> Void
@@ -23,6 +24,11 @@ final class MidwordViewModel: ObservableObject {
         self.haptics = haptics
         self.persistsChanges = persistsChanges
         self.logEvent = logEvent
+    }
+
+    /// Stable saved indices let existing rows move down when a newer guess arrives.
+    var previousGuessIndices: [Int] {
+        progress.guesses.indices.reversed().filter { !puzzle.accepts(progress.guesses[$0]) }
     }
 
     var hasStarted: Bool { progress.startedAt != nil }
@@ -59,14 +65,14 @@ final class MidwordViewModel: ObservableObject {
               upper.utf8.count == 1,
               let byte = upper.utf8.first, (65...90).contains(byte) else { return }
         input.append(contentsOf: upper)
-        message = nil
+        clearMessage()
         haptics.play(.letterEntered)
     }
 
     func deleteLetter() {
         guard !isComplete, !input.isEmpty else { return }
         input.removeLast()
-        message = nil
+        clearMessage()
         haptics.play(.letterEntered)
     }
 
@@ -74,7 +80,7 @@ final class MidwordViewModel: ObservableObject {
         guard hasStarted, !isComplete else { return }
         progress.giveUp(at: now)
         input = ""
-        message = nil
+        clearMessage()
         haptics.play(.backwordGameLost)
         persist()
         logCompletion()
@@ -83,13 +89,13 @@ final class MidwordViewModel: ObservableObject {
     func submitGuess(now: Date = Date(), isValidWord: (String) -> Bool = WordValidator.isValidEnglishWord) {
         guard canSubmit else { return }
         guard !progress.guesses.contains(input) else {
-            message = "Already guessed"
+            showValidationMessage("Already guessed")
             return
         }
         let isApprovedAnswer = puzzle.accepts(input)
         let hasMultipleDistinctLetters = Set(input).count > 1
         guard isApprovedAnswer || (hasMultipleDistinctLetters && isValidWord(input)) else {
-            message = "Not in the dictionary"
+            showValidationMessage("Not in the dictionary")
             return
         }
         progress.submit(input, for: puzzle, at: now)
@@ -101,9 +107,30 @@ final class MidwordViewModel: ObservableObject {
             haptics.play(.backwordGuessIncorrect)
         }
         input = ""
-        message = nil
+        clearMessage()
         persist()
         if isComplete { logCompletion() }
+    }
+
+    func clearMessage() {
+        messageDismissalTask?.cancel()
+        messageDismissalTask = nil
+        message = nil
+    }
+
+    private func showValidationMessage(_ text: String) {
+        clearMessage()
+        message = text
+        messageDismissalTask = Task { [weak self] in
+            do {
+                try await Task.sleep(nanoseconds: 3_000_000_000)
+            } catch {
+                return
+            }
+            guard !Task.isCancelled else { return }
+            self?.message = nil
+            self?.messageDismissalTask = nil
+        }
     }
 
     private func persist() {

@@ -124,16 +124,20 @@ describe("Midword browser gameplay", () => {
     expect(shell?.parentElement).toHaveClass("midword-page");
     expect(footer).toContainElement(screen.getByRole("link", { name: "Midword" }));
     await typeGuess(user, "PAGE");
-    expect(screen.queryByRole("region", { name: "Previous guesses" })).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Previous guesses" })).toHaveTextContent("PAGE");
     expect(shell?.nextElementSibling).toBe(footer);
     expect(main).not.toContainElement(screen.getByRole("group", { name: "Midword keyboard" }));
   });
-  it("resumes beyond five guesses without displaying history", async () => {
+  it("resumes beyond five guesses with newest-first history", async () => {
     createMidwordStorage().saveProgress(startProgress({ ...emptyProgress(localDateString()), guesses: ["PAGE", "READ", "LINE", "BOOK", "WORD"] }));
     const user = userEvent.setup(); renderGame();
     await screen.findByRole("region", { name: "Midword board" });
-    expect(screen.queryByRole("region", { name: "Previous guesses" })).not.toBeInTheDocument();
+    const history = screen.getByRole("region", { name: "Previous guesses" });
+    expect(within(history).getAllByRole("listitem")).toHaveLength(5);
+    expect(within(history).getAllByRole("group")[0]).toHaveAccessibleName("WORD, incorrect");
     await typeGuess(user, "LINK");
+    expect(within(history).getAllByRole("listitem")).toHaveLength(6);
+    expect(within(history).getAllByRole("group")[0]).toHaveAccessibleName("LINK, incorrect");
     expect(createMidwordStorage().loadProgress(localDateString()).guesses).toHaveLength(6);
     expect(screen.getByRole("group", { name: "Midword keyboard" })).toBeInTheDocument();
   });
@@ -219,7 +223,7 @@ describe("Midword browser gameplay", () => {
     expect(transition).toHaveClass("game-submit--visible");
     expect(transition).toContainElement(submit);
     expect(transition?.nextElementSibling).toBe(keyboard);
-    expect(screen.queryByRole("region", { name: "Previous guesses" })).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Previous guesses" })).toHaveTextContent("PAGE");
     expect(screen.queryByText(/^Today:/)).not.toBeInTheDocument();
     await user.keyboard("{Backspace}");
     expect(screen.queryByRole("button", { name: "Submit" })).not.toBeInTheDocument();
@@ -267,7 +271,7 @@ describe("Midword browser gameplay", () => {
     expect(screen.getByLabelText("Middle word, 3 of 4 letters entered")).not.toHaveClass("is-shaking");
     await user.keyboard("{Backspace}{Backspace}{Backspace}");
     await typeGuess(user, "PAGE");
-    expect(screen.queryByRole("region", { name: "Previous guesses" })).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Previous guesses" })).toHaveTextContent("PAGE");
     expect(screen.getByRole("group", { name: "Middle word, 0 of 4 letters entered" }).children).toHaveLength(4);
     await typeGuess(user, "PAGE");
     expect(screen.getByRole("alert")).toHaveTextContent("Already guessed");
@@ -275,8 +279,9 @@ describe("Midword browser gameplay", () => {
     expect(transition).toHaveClass("game-input-message--visible");
     expect(screen.queryByLabelText(/attempts remaining/)).not.toBeInTheDocument();
     expect(createMidwordStorage().loadProgress(localDateString()).guesses).toEqual(["PAGE"]);
+    expect(within(screen.getByRole("region", { name: "Previous guesses" })).getAllByRole("listitem")).toHaveLength(1);
   });
-  it("matches Backword's shake and red invalid-word label, hiding it after two seconds without consuming a guess", async () => {
+  it("matches Backword's shake and red invalid-word label, hiding it after three seconds without consuming a guess", async () => {
     renderGame(); await screen.findByRole("region", { name: "Midword board" });
     vi.useFakeTimers();
     try {
@@ -292,7 +297,7 @@ describe("Midword browser gameplay", () => {
       act(() => vi.advanceTimersByTime(500));
       expect(input).not.toHaveClass("is-shaking");
       expect(screen.getByRole("alert")).toBe(label);
-      act(() => vi.advanceTimersByTime(1499));
+      act(() => vi.advanceTimersByTime(2499));
       expect(screen.getByRole("alert")).toBe(label);
       act(() => vi.advanceTimersByTime(1));
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
@@ -309,6 +314,21 @@ describe("Midword browser gameplay", () => {
       vi.useRealTimers();
     }
   });
+  it("hides duplicate feedback after three seconds while retaining input and history", async () => {
+    createMidwordStorage().saveProgress(startProgress({ ...emptyProgress(localDateString()), guesses: ["PAGE"] }));
+    renderGame(); await screen.findByRole("region", { name: "Midword board" });
+    vi.useFakeTimers();
+    try {
+      for (const key of ["P", "A", "G", "E", "Enter"]) fireEvent.keyDown(window, { key });
+      expect(screen.getByRole("alert")).toHaveTextContent("Already guessed");
+      act(() => vi.advanceTimersByTime(2999));
+      expect(screen.getByRole("alert")).toHaveTextContent("Already guessed");
+      act(() => vi.advanceTimersByTime(1));
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      expect(screen.getByLabelText("Middle word, 4 of 4 letters entered")).toHaveTextContent("PAGE");
+      expect(within(screen.getByRole("region", { name: "Previous guesses" })).getAllByRole("listitem")).toHaveLength(1);
+    } finally { vi.useRealTimers(); }
+  });
   it("restarts invalid-word feedback timers on repeated submission", async () => {
     renderGame(); await screen.findByRole("region", { name: "Midword board" });
     vi.useFakeTimers();
@@ -322,7 +342,7 @@ describe("Midword browser gameplay", () => {
       act(() => vi.advanceTimersByTime(1000));
       expect(screen.getByRole("alert")).toHaveTextContent("Not a valid word");
       expect(input).not.toHaveClass("is-shaking");
-      act(() => vi.advanceTimersByTime(999));
+      act(() => vi.advanceTimersByTime(1999));
       expect(screen.getByRole("alert")).toBeInTheDocument();
       act(() => vi.advanceTimersByTime(1));
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();

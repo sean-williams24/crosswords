@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { readFileSync } from "node:fs";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { emptyProgress, giveUp, startProgress, type MidwordPuzzle } from "./engine";
 import { MidwordBoard } from "./MidwordBoard";
 
@@ -25,7 +25,18 @@ describe("Midword prompt alignment", () => {
   });
 });
 
-describe("Midword hidden guess history", () => {
+describe("Midword guess history", () => {
+  it.each(["Not a valid word", "Already guessed"])("places %s between the board and previous guesses", message => {
+    render(<MidwordBoard input="ZZZZ" inputError message={message} puzzle={puzzle}
+      progress={{ ...emptyProgress(puzzle.date), guesses: ["PAGE"] }} />);
+    const board = screen.getByRole("region", { name: "Midword board" });
+    const feedback = screen.getByRole("alert");
+    const history = screen.getByRole("region", { name: "Previous guesses" });
+    expect(feedback).toHaveTextContent(message);
+    expect(board.compareDocumentPosition(feedback) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(feedback.compareDocumentPosition(history) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(history).getAllByRole("listitem")).toHaveLength(1);
+  });
   it.each([[1, "guess"], [2, "guesses"]] as const)("shows the solved message for %s guesses", (count, noun) => {
     const progress = { ...emptyProgress(puzzle.date), outcome: "won" as const, completedAt: new Date().toISOString(), guesses: count === 1 ? ["NOTE"] : ["PAGE", "NOTE"] };
     render(<MidwordBoard input="" message="" puzzle={puzzle} progress={progress} />);
@@ -43,10 +54,53 @@ describe("Midword hidden guess history", () => {
     expect(document.querySelector(".midword-explainer br")).toBeNull();
     expect(screen.getByRole("group", { name: "Middle word, NOTE" })).toHaveTextContent("NOTE");
   });
-  it("keeps the input visible without an attempt counter or previous guesses", () => {
+  it("shows saved guesses below the board without an attempt counter", () => {
     render(<MidwordBoard input="" message="" puzzle={puzzle} progress={{ ...emptyProgress(puzzle.date), guesses: ["PAGE"] }} />);
-    expect(screen.queryByRole("region", { name: "Previous guesses" })).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Previous guesses" })).toHaveTextContent("PAGE");
     expect(screen.queryByLabelText(/attempts remaining/)).not.toBeInTheDocument();
     expect(screen.getByRole("group", { name: "Middle word, 0 of 4 letters entered" })).toBeInTheDocument();
+  });
+});
+
+
+describe("Midword previous guess movement", () => {
+  it.each(["NOTE", "LINK"])("orders wrong guesses newest first and excludes solved answer %s", answer => {
+    render(<MidwordBoard input="" message="" puzzle={{ ...puzzle, alternatives: ["LINK"] }}
+      progress={{ ...emptyProgress(puzzle.date), outcome: "won", guesses: ["PAGE", "WORD", answer] }} />);
+    const history = screen.getByRole("region", { name: "Previous guesses" });
+    expect(within(history).getAllByRole("group").map(row => row.getAttribute("aria-label"))).toEqual(["WORD, incorrect", "PAGE, incorrect"]);
+    expect(within(history).queryByText("LINK")).not.toBeInTheDocument();
+  });
+
+  it.each([false, true])("moves new cells from the input and pushes saved rows down; reduce motion = %s", (reduced) => {
+    const originalAnimate = HTMLElement.prototype.animate;
+    const animate = vi.fn((_keyframes: Keyframe[], _options: KeyframeAnimationOptions) => ({ cancel: vi.fn(), playState: "finished" } as unknown as Animation));
+    HTMLElement.prototype.animate = animate;
+    vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: reduced })));
+    const bounds = vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (this: HTMLElement) {
+      const history = !!this.closest(".midword-guess-history");
+      const row = this.closest("li");
+      const rowIndex = row?.dataset.index;
+      return { left: 0, top: history ? (rowIndex === "0" && row?.parentElement?.children.length === 2 ? 250 : 200) : 100,
+        width: history ? 38 : 56, height: history ? 38 : 56 } as DOMRect;
+    });
+    try {
+      const progress = { ...emptyProgress(puzzle.date), guesses: ["PAGE"] };
+      const { rerender, unmount } = render(<MidwordBoard input="WORD" message="" puzzle={puzzle} progress={progress} />);
+      // Hydrating a saved game does not replay old submissions.
+      expect(animate).not.toHaveBeenCalled();
+      rerender(<MidwordBoard input="" message="" puzzle={puzzle} progress={{ ...progress, guesses: ["PAGE", "WORD"] }} />);
+      if (reduced) expect(animate).not.toHaveBeenCalled();
+      else {
+        expect(animate).toHaveBeenCalledTimes(5); // Four new letters and one existing row.
+        expect(animate.mock.calls[1][0][0].transform).toContain("-100px");
+        expect(animate.mock.calls[1][0][0].transform).toContain("1.473");
+        expect(animate.mock.calls[4][0][0].transform).toContain("-50px");
+      }
+      unmount();
+    } finally {
+      HTMLElement.prototype.animate = originalAnimate;
+      bounds.mockRestore(); vi.unstubAllGlobals();
+    }
   });
 });

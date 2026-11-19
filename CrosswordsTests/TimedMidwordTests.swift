@@ -81,4 +81,89 @@ struct TimedMidwordTests {
         #expect(resumed.guesses == ["PAGE"])
         #expect(MidwordProgress.merged(saved, resumed) == saved)
     }
+    @Test("Wrong guesses appear newest first and rejected guesses never enter history")
+    @MainActor func guessHistory() {
+        let model = MidwordViewModel(puzzle: puzzle, haptics: MidwordHistorySilentHaptics(), persistsChanges: false, logEvent: { _ in })
+        model.start(now: now)
+        #expect(model.previousGuessIndices.isEmpty)
+        for guess in ["PAGE", "WORD"] {
+            for letter in guess { model.enterLetter(letter) }
+            model.submitGuess(now: now, isValidWord: { _ in true })
+            #expect(model.input.isEmpty)
+        }
+        #expect(model.previousGuessIndices.map { model.progress.guesses[$0] } == ["WORD", "PAGE"])
+        for letter in "WORD" { model.enterLetter(letter) }
+        model.submitGuess(now: now, isValidWord: { _ in true })
+        #expect(model.message == "Already guessed")
+        #expect(model.previousGuessIndices == [1, 0])
+        for _ in 0..<4 { model.deleteLetter() }
+        for letter in "ZZQX" { model.enterLetter(letter) }
+        model.submitGuess(now: now, isValidWord: { _ in false })
+        #expect(model.message == "Not in the dictionary")
+        #expect(model.previousGuessIndices == [1, 0])
+    }
+
+    @Test("Validation messages hide after three seconds without changing the guess", arguments: ["ZZQX", "PAGE"])
+    @MainActor func validationMessageExpires(guess: String) async throws {
+        var progress = MidwordProgress(date: puzzle.date)
+        progress.start(at: now)
+        progress.submit("PAGE", for: puzzle, at: now)
+        let model = MidwordViewModel(puzzle: puzzle, progress: progress,
+            haptics: MidwordHistorySilentHaptics(), persistsChanges: false, logEvent: { _ in })
+        for letter in guess { model.enterLetter(letter) }
+        model.submitGuess(now: now, isValidWord: { _ in false })
+        let expected = guess == "PAGE" ? "Already guessed" : "Not in the dictionary"
+        #expect(model.message == expected)
+        try await Task.sleep(nanoseconds: 2_000_000_000)
+        #expect(model.message == expected)
+        try await Task.sleep(nanoseconds: 1_100_000_000)
+        #expect(model.message == nil)
+        #expect(model.input == guess)
+        #expect(model.progress == progress)
+    }
+
+    @Test("Repeated validation restarts the dismissal countdown")
+    @MainActor func validationMessageRestarts() async throws {
+        let model = MidwordViewModel(puzzle: puzzle, haptics: MidwordHistorySilentHaptics(),
+            persistsChanges: false, logEvent: { _ in })
+        model.start(now: now)
+        for letter in "ZZQX" { model.enterLetter(letter) }
+        model.submitGuess(now: now, isValidWord: { _ in false })
+        try await Task.sleep(nanoseconds: 1_600_000_000)
+        model.submitGuess(now: now, isValidWord: { _ in false })
+        try await Task.sleep(nanoseconds: 1_600_000_000)
+        #expect(model.message == "Not in the dictionary")
+        try await Task.sleep(nanoseconds: 1_500_000_000)
+        #expect(model.message == nil)
+    }
+
+    @Test("Restored solved history excludes canonical and approved answers", arguments: ["NOTE", "PAGE"])
+    @MainActor func restoredHistory(answer: String) {
+        let game = MidwordPuzzle(id: puzzle.id, date: puzzle.date, puzzleNumber: puzzle.puzzleNumber,
+            firstWord: puzzle.firstWord, secondWord: puzzle.secondWord, answer: puzzle.answer, alternatives: ["PAGE"])
+        var progress = MidwordProgress(date: game.date)
+        progress.start(at: now)
+        progress.submit("WORD", for: game, at: now)
+        progress.submit(answer, for: game, at: now)
+        let model = MidwordViewModel(puzzle: game, progress: progress, haptics: MidwordHistorySilentHaptics(), persistsChanges: false, logEvent: { _ in })
+        #expect(model.isComplete)
+        #expect(model.previousGuessIndices == [0])
+    }
+
+    @Test("Giving up keeps all previous wrong guesses")
+    @MainActor func givenUpHistory() {
+        var progress = MidwordProgress(date: puzzle.date)
+        progress.start(at: now)
+        progress.submit("WORD", for: puzzle, at: now)
+        let model = MidwordViewModel(puzzle: puzzle, progress: progress, haptics: MidwordHistorySilentHaptics(), persistsChanges: false, logEvent: { _ in })
+        model.giveUp(now: now)
+        #expect(model.previousGuessIndices == [0])
+        #expect(model.progress.guesses == ["WORD"])
+    }
+
+}
+
+
+private final class MidwordHistorySilentHaptics: HapticsPlaying {
+    func play(_ type: HapticsEngine.HapticType) {}
 }

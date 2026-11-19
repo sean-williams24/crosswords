@@ -4,6 +4,7 @@ struct MidwordBoardView: View {
     let puzzle: MidwordPuzzle
     let input: String
     let progress: MidwordProgress
+    var guessAnimation: Namespace.ID? = nil
 
     @ScaledMetric private var cellSize = AppLayout.midwordInputCellSize
 
@@ -31,7 +32,7 @@ struct MidwordBoardView: View {
             let letters = Array(progress.isComplete ? puzzle.answer : input)
             BackwordLetterCell(
                 letter: progress.isComplete ? letters[index] : nil,
-                inputLetter: !progress.isComplete && index < letters.count ? letters[index] : nil,
+                inputLetter: nil,
                 isCursor: !progress.isComplete && index == letters.count,
                 isCorrect: progress.isWon,
                 isFailed: progress.isFailed,
@@ -42,6 +43,15 @@ struct MidwordBoardView: View {
                 correctColor: .midwordAccent,
                 inactiveBorderColor: .midwordInactiveCellBorder
             )
+            .overlay {
+                if !progress.isComplete && index < letters.count {
+                    MidwordAnimatedGuessCell(
+                        letter: letters[index], size: fittedCellSize,
+                        guessIndex: progress.guesses.count, letterIndex: index,
+                        namespace: guessAnimation
+                    )
+                }
+            }
         }
     }
 

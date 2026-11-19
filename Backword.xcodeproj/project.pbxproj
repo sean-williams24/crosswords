@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB1912000000000000000002 /* MidwordGuessHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1911000000000000000002 /* MidwordGuessHistoryView.swift */; };
+		AB1912000000000000000001 /* MidwordAnimatedGuessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1911000000000000000001 /* MidwordAnimatedGuessCell.swift */; };
 		A17120261117000000000002 /* MidwordAnalyticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17120261117000000000001 /* MidwordAnalyticsTests.swift */; };
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
 		03ACF849F3B34FEBEB85B85D /* DailyChallengeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A43901A456AE111FBA9C021 /* DailyChallengeStore.swift */; };
@@ -294,6 +296,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AB1911000000000000000002 /* MidwordGuessHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordGuessHistoryView.swift; sourceTree = "<group>"; };
+		AB1911000000000000000001 /* MidwordAnimatedGuessCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordAnimatedGuessCell.swift; sourceTree = "<group>"; };
 		A17120261117000000000001 /* MidwordAnalyticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/MidwordAnalyticsTests.swift; sourceTree = "<group>"; };
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
@@ -932,6 +936,8 @@
 			isa = PBXGroup;
 			children = (
 				A805A92C3A0ABD469811475E /* MidwordGuessRow.swift */,
+				AB1911000000000000000002 /* MidwordGuessHistoryView.swift */,
+				AB1911000000000000000001 /* MidwordAnimatedGuessCell.swift */,
 				AD602F7C819B45D0A146E1B4 /* MidwordAttemptCounterView.swift */,
 				A8AB82BBFACA33CA3778BC1A /* MidwordCompletionWordView.swift */,
 				A81BADC74D85E195F31F646D /* MidwordBoardView.swift */,
@@ -1268,6 +1274,8 @@
 				A0B000000000000000000101 /* MidwordStatsHistory.swift in Sources */,
 				A0B000000000000000000102 /* MidwordStatsHistoryView.swift in Sources */,
 				A8C7F36D88E76EDF2BADA86A /* MidwordGuessRow.swift in Sources */,
+				AB1912000000000000000002 /* MidwordGuessHistoryView.swift in Sources */,
+				AB1912000000000000000001 /* MidwordAnimatedGuessCell.swift in Sources */,
 				AD602F7C819B45D0A146E1B3 /* MidwordAttemptCounterView.swift in Sources */,
 				A86355B66F25A22B9C9AB15B /* MidwordCompletionWordView.swift in Sources */,
 				A8668C9DDE853E7503FE8BC4 /* MidwordPuzzle.swift in Sources */,
