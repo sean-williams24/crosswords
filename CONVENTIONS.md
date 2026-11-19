@@ -584,15 +584,17 @@ unlimited guesses and timed scoring as iOS. Wrong guesses have no positional hin
 
 The browser uses the current native Midword colour assets and wordmarks,
 including appearance-specific backgrounds, borders, and Home-card foregrounds.
-During active and completed gameplay, the shell fits the dynamic viewport.
+During active and completed gameplay, the page fits the dynamic viewport.
+The site footer reserves its natural height on desktop, and the game shell
+flexes into the remaining space so long guess lists cannot push it offscreen.
 The header, puzzle number, progress bar, and keyboard retain their space while
 the board, timer, and previous guesses scroll in the remaining area. A 32px
 background gradient above the web controls fades content at the keyboard edge;
 it ignores pointer input so the history remains scrollable. iOS uses an opacity
 mask on its gameplay scroll view for the same fade. Both leave enough bottom
 padding to scroll the final guess fully above the fade. Introduction screens
-retain their natural, scrollable layout, and the desktop site footer remains
-after the game shell. Active gameplay reserves 40px of bottom scroll padding,
+retain their natural, scrollable layout. The footer follows the site's shared
+responsive visibility rules. Active gameplay reserves 40px of bottom scroll padding,
 with another 4px above the bar inside the controls. The bar sits directly above the keyboard or Submit
 button when shown, moving up and down as the button appears and disappears.
 Mobile retains its hidden site footer.

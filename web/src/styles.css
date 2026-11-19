@@ -926,13 +926,6 @@ a {
   background: var(--app-elevated);
 }
 
-.bw-game-score--keyboard-width {
-  width: min(
-    calc(100% - var(--bw-keyboard-inline-padding) - var(--bw-keyboard-inline-padding)),
-    calc(var(--bw-keyboard-max-width) - var(--bw-keyboard-inline-padding) - var(--bw-keyboard-inline-padding))
-  );
-}
-
 .bw-game-score span,
 .bw-rating-fill {
   display: block;
@@ -996,6 +989,14 @@ a {
 }
 
 .bw-secondary-button { width: 100%; margin-top: 22px; background: var(--bw-surface); color: var(--bw-primary); }
+
+.bw-game-score--keyboard-width,
+.midword-controls .bw-submit {
+  width: min(
+    calc(100% - var(--bw-keyboard-inline-padding) - var(--bw-keyboard-inline-padding)),
+    calc(var(--bw-keyboard-max-width) - var(--bw-keyboard-inline-padding) - var(--bw-keyboard-inline-padding))
+  );
+}
 
 .bw-keyboard {
   display: flex;

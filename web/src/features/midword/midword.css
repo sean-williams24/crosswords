@@ -57,11 +57,13 @@ html[data-theme="dark"] .midword-header h1::after {
   overflow: visible;
 }
 .midword-main > * { flex-shrink: 0; }
-/* Keep gameplay within the viewport; only the board/history can grow and scroll. */
-.midword-page--game .midword-shell {
+/* Reserve room for the site footer; only the board/history can grow and scroll. */
+.midword-page--game {
   height: 100svh;
   height: 100dvh;
-  flex: 0 0 auto;
+}
+.midword-page--game .midword-shell {
+  flex: 1 1 0;
   overflow: hidden;
 }
 .midword-page--game .midword-main {
@@ -123,6 +125,7 @@ html[data-theme="dark"] .midword-header h1::after {
   .midword-game-actions > .puzzle-result-share--compact { position: fixed; top: calc(max(8px, env(safe-area-inset-top)) + 54px); right: clamp(20px, 5vw, 80px); bottom: auto; }
 }
 .midword-controls { padding-top: 4px; background: var(--midword-background); }
+.midword-controls .bw-submit { max-width: none; }
 .midword-controls .bw-key { color: var(--midword-text); background: color-mix(in srgb, var(--midword-text) 12%, var(--midword-background)); }
 .midword-controls .bw-key-delete, .midword-page .bw-submit, .midword-page .bw-primary-button { color: var(--midword-on-accent); background: var(--midword-accent); }
 .midword-dialog {

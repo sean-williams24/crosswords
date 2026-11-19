@@ -128,7 +128,7 @@ describe("Midword browser gameplay", () => {
     expect(shell?.nextElementSibling).toBe(footer);
     expect(main).not.toContainElement(screen.getByRole("group", { name: "Midword keyboard" }));
   });
-  it("keeps long history in a shrinking scroll area above the keyboard with a nonblocking fade", async () => {
+  it("reserves footer space while long history scrolls above the keyboard with a nonblocking fade", async () => {
     createMidwordStorage().saveProgress(startProgress({ ...emptyProgress(localDateString()),
       guesses: ["PAGE", "READ", "LINE", "BOOK", "WORD", "LINK", "POOL", "LOOP"] }));
     const styles = document.createElement("style");
@@ -140,8 +140,15 @@ describe("Midword browser gameplay", () => {
       const main = board.closest("main")!;
       const shell = main.parentElement!;
       expect(shell.parentElement).toHaveClass("midword-page--game");
-      expect(getComputedStyle(shell).height).toBe("100dvh");
-      expect(getComputedStyle(shell).flexShrink).toBe("0");
+      const page = shell.parentElement!;
+      const footer = screen.getByRole("navigation", { name: "Footer" }).closest("footer")!;
+      expect(getComputedStyle(page).height).toBe("100dvh");
+      expect(getComputedStyle(shell).flexBasis).toBe("0px");
+      expect(getComputedStyle(shell).flexShrink).toBe("1");
+      expect(footer.parentElement).toBe(page);
+      expect(shell.nextElementSibling).toBe(footer);
+      expect(getComputedStyle(footer).flexShrink).toBe("0");
+      expect(getComputedStyle(footer).display).not.toBe("none");
       expect(getComputedStyle(main).flexShrink).toBe("1");
       expect(getComputedStyle(main).overflowY).toBe("auto");
       expect(getComputedStyle(main).paddingBottom).toBe("40px");
@@ -235,6 +242,23 @@ describe("Midword browser gameplay", () => {
     await typeGuess(user, "PAGE");
     expect(screen.queryByText(/^Today:/)).not.toBeInTheDocument();
     expect(bar).toHaveAttribute("aria-label", "3 of 70 Midword points");
+  });
+  it("aligns Submit with the keyboard edges using the rating bar's responsive width", async () => {
+    const styles = document.createElement("style");
+    styles.textContent = readFileSync("src/styles.css", "utf8") + readFileSync("src/features/midword/midword.css", "utf8");
+    document.head.append(styles);
+    try {
+      const user = userEvent.setup(); renderGame();
+      const bar = await screen.findByLabelText("0 of 70 Midword points");
+      await user.keyboard("WORD");
+      const submit = screen.getByRole("button", { name: "Submit" });
+      expect(getComputedStyle(submit).width).toBe(getComputedStyle(bar).width);
+      expect(getComputedStyle(submit).maxWidth).toBe("none");
+      expect(getComputedStyle(submit).marginLeft).toBe("auto");
+      expect(getComputedStyle(submit).marginRight).toBe("auto");
+      expect(bar.parentElement).toContainElement(submit);
+      expect(bar.parentElement).toContainElement(screen.getByRole("group", { name: "Midword keyboard" }));
+    } finally { styles.remove(); }
   });
   it("places the rating bar directly above the keyboard or Submit as input is filled and cleared", async () => {
     const user = userEvent.setup(); renderGame();
