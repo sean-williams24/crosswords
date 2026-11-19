@@ -12,6 +12,7 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     permissions:
       contents: read
       issues: write
@@ -22,39 +23,60 @@ jobs:
           python-version: "3.13"
       - run: pip install -r Backend/requirements.txt
       - name: Test selection and inventory
-        run: python -m unittest discover -s Backend -p test_generate_midword.py
+        run: |
+          python -m unittest discover -s Backend -p test_generate_midword.py
+          python -m unittest discover -s Backend -p test_automate_midword.py
       - name: Fill today and the next three weeks
         id: publish
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          set -o pipefail
-          python Backend/generate_midword.py --target-days 21 | tee "$RUNNER_TEMP/midword-report.json"
-          echo "remaining=$(jq -r '.remaining' "$RUNNER_TEMP/midword-report.json")" >> "$GITHUB_OUTPUT"
-      - name: Report low approved inventory
-        if: steps.publish.outputs.remaining != '' && fromJSON(steps.publish.outputs.remaining) < 21
-        uses: actions/github-script@v7
+          python Backend/automate_midword.py --publish --target-days 21 \
+            --output "$RUNNER_TEMP/midword-puzzles.json" \
+            --report "$RUNNER_TEMP/midword-report.json"
+      - name: Upload generated puzzles and review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          script: |
-            const remaining = ${{ steps.publish.outputs.remaining }};
-            const title = 'Midword approved inventory running low';
-            const issues = await github.rest.issues.listForRepo({owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100});
-            if (!issues.data.some(issue => issue.title === title)) {
-              await github.rest.issues.create({owner: context.repo.owner, repo: context.repo.repo,
-                title, body: `${remaining} approved puzzles remain. Curate more compound pairs in Backend/midword_approved.json before the weekly publisher runs out.`});
-            }
+          name: midword-generation-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/midword-puzzles.json
+            ${{ runner.temp }}/midword-report.json
+          if-no-files-found: warn
+      - name: Write generation summary
+        if: always()
+        env:
+          REPORT_PATH: ${{ runner.temp }}/midword-report.json
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path = Path(os.environ['REPORT_PATH'])
+          report = json.loads(path.read_text()) if path.exists() else {}
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('## Midword generation\n\n')
+              for key in ('status', 'needed', 'generated', 'editorial', 'moderate', 'easyFallback', 'targetDate', 'error'):
+                  if key in report:
+                      summary.write(f'- {key}: {report[key]}\n')
+              summary.write('\nFull candidate and review details are in the run artifact.\n')
+          PY
       - name: Report generation failure
         if: failure()
         uses: actions/github-script@v7
         with:
           script: |
+            const fs = require('fs');
             const title = 'Midword generation failed';
             const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const issues = await github.rest.issues.listForRepo({owner: context.repo.owner, repo: context.repo.repo, state: 'open', per_page: 100});
-            const existing = issues.data.find(issue => issue.title === title);
+            const path = `${process.env.RUNNER_TEMP}/midword-report.json`;
+            const report = fs.existsSync(path) ? JSON.parse(fs.readFileSync(path, 'utf8')) : {};
+            const body = `Midword publishing failed: ${run}\n\n${report.error ?? 'Check the failed step logs.'}\n\nNeeded: ${report.needed ?? 'unknown'}; review attempts: ${report.attempts?.length ?? 0}. Full evidence is in the run artifact.`;
+            const issues = await github.paginate(github.rest.issues.listForRepo, {owner: context.repo.owner, repo: context.repo.repo, state: 'open'});
+            const existing = issues.find(issue => !issue.pull_request && issue.title === title);
             if (existing) {
-              await github.rest.issues.createComment({owner: context.repo.owner, repo: context.repo.repo, issue_number: existing.number, body: `Midword publishing failed again: ${run}`});
+              await github.rest.issues.createComment({owner: context.repo.owner, repo: context.repo.repo, issue_number: existing.number, body});
             } else {
-              await github.rest.issues.create({owner: context.repo.owner, repo: context.repo.repo, title, body: `The Midword inventory or publishing job needs attention: ${run}`});
+              await github.rest.issues.create({owner: context.repo.owner, repo: context.repo.repo, title, body});
             }

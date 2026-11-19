@@ -32,6 +32,8 @@ Backend/*.py
 !Backend/build_remaining_clue_repair_queue.py
 !Backend/test_generate_backword.py
 !Backend/generate_midword.py
+!Backend/automate_midword.py
+!Backend/test_automate_midword.py
 !Backend/build_midword_bank.py
 !Backend/test_generate_midword.py
 !Backend/test_generate_wotd.py
