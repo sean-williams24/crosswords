@@ -7,16 +7,18 @@ struct MidwordGuessHistoryView: View {
 
     var body: some View {
         if !indices.isEmpty {
-            VStack(spacing: AppLayout.midwordGuessHistorySpacing) {
+            VStack(spacing: AppLayout.midwordGuessHeadingSpacing) {
                 Text("Previous Guesses")
                     .font(AppFont.caption(16))
                     .foregroundStyle(Color.midwordText.opacity(0.7))
-                ForEach(indices, id: \.self) { index in
-                    MidwordGuessRow(
-                        guess: guesses[index], guessIndex: index,
-                        guessAnimation: guessAnimation
-                    )
-                    .transition(.identity)
+                VStack(spacing: AppLayout.midwordGuessHistorySpacing) {
+                    ForEach(indices, id: \.self) { index in
+                        MidwordGuessRow(
+                            guess: guesses[index], guessIndex: index,
+                            guessAnimation: guessAnimation
+                        )
+                        .transition(.identity)
+                    }
                 }
             }
             .frame(maxWidth: .infinity)

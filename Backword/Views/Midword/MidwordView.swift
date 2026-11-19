@@ -120,19 +120,21 @@ struct MidwordView: View {
                 .font(AppFont.body())
                 .foregroundColor(.midwordText.opacity(0.85))
                 .multilineTextAlignment(.center)
-            MidwordBoardView(
-                puzzle: viewModel.puzzle, input: viewModel.input, progress: viewModel.progress,
-                guessAnimation: reduceMotion ? nil : guessAnimation
-            )
-            if let message = viewModel.message {
-                Text(message).font(AppFont.body()).foregroundColor(.midwordText)
-                    .accessibilityAddTraits(.updatesFrequently)
-                    .transition(.opacity)
+            VStack(spacing: AppLayout.midwordBoardHistorySpacing) {
+                MidwordBoardView(
+                    puzzle: viewModel.puzzle, input: viewModel.input, progress: viewModel.progress,
+                    guessAnimation: reduceMotion ? nil : guessAnimation
+                )
+                if let message = viewModel.message {
+                    Text(message).font(AppFont.body()).foregroundColor(.midwordText)
+                        .accessibilityAddTraits(.updatesFrequently)
+                        .transition(.opacity)
+                }
+                MidwordGuessHistoryView(
+                    guesses: viewModel.progress.guesses, indices: viewModel.previousGuessIndices,
+                    guessAnimation: reduceMotion ? nil : guessAnimation
+                )
             }
-            MidwordGuessHistoryView(
-                guesses: viewModel.progress.guesses, indices: viewModel.previousGuessIndices,
-                guessAnimation: reduceMotion ? nil : guessAnimation
-            )
         }
         .frame(maxWidth: 520)
         .frame(maxWidth: .infinity)

@@ -74,6 +74,17 @@ struct GameDynamicTypeContainerTests {
         #expect(abs(enlarged.height - baseline.height) < 0.5)
     }
 
+    @Test("History adds breathing room beneath its heading while keeping rows compact")
+    func historyHeadingSpacing() {
+        let history = MidwordGuessHistoryView(guesses: ["PAGE", "WORD"], indices: [1, 0], guessAnimation: nil)
+        let heading = Text("Previous Guesses").font(AppFont.caption(16))
+        let headingHeight = fittedSize(heading, at: .large).height
+        let historyHeight = fittedSize(history, at: .large).height
+        let expected = headingHeight + AppLayout.midwordGuessHeadingSpacing
+            + 2 * AppLayout.midwordGuessCellSize + AppLayout.midwordGuessHistorySpacing
+        #expect(abs(historyHeight - expected) < 0.5)
+    }
+
     @Test("Animated guess cells preserve their input and history dimensions", arguments: [
         AppLayout.midwordInputCellSize, AppLayout.midwordGuessCellSize
     ])

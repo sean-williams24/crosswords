@@ -17,15 +17,17 @@ export function MidwordBoard({ puzzle, progress, input, inputError = false, mess
       ? "You gave up, the answer was..."
       : progress.outcome === "failed" ? "Not this time, the answer was..."
       : "Find the link that ends the top word and starts the bottom word to make 2 new words"}</p>
-    <section ref={boardRef} aria-label="Midword board" className="midword-board">
-      <p className="midword-prompt midword-prompt--first">{puzzle.firstWord}</p>
-      <MidwordLetterRow active={!progress.completedAt} correct={won} failed={progress.outcome === "failed"} inputError={inputError} label={revealed ? `Middle word, ${puzzle.answer}` : `Middle word, ${input.length} of ${puzzle.answer.length} letters entered`}
-        length={puzzle.answer.length} word={revealed ? puzzle.answer : input} />
-      <p className="midword-prompt midword-prompt--second">{puzzle.secondWord}</p>
-    </section>
-    <div className="midword-attempt-status">
-      <GameInputMessage className="midword-message" message={message} />
+    <div className="midword-play-area">
+      <section ref={boardRef} aria-label="Midword board" className="midword-board">
+        <p className="midword-prompt midword-prompt--first">{puzzle.firstWord}</p>
+        <MidwordLetterRow active={!progress.completedAt} correct={won} failed={progress.outcome === "failed"} inputError={inputError} label={revealed ? `Middle word, ${puzzle.answer}` : `Middle word, ${input.length} of ${puzzle.answer.length} letters entered`}
+          length={puzzle.answer.length} word={revealed ? puzzle.answer : input} />
+        <p className="midword-prompt midword-prompt--second">{puzzle.secondWord}</p>
+      </section>
+      <div className="midword-attempt-status">
+        <GameInputMessage className="midword-message" message={message} />
+        <MidwordGuessHistory guesses={progress.guesses} puzzle={puzzle} input={input} boardRef={boardRef} />
+      </div>
     </div>
-    <MidwordGuessHistory guesses={progress.guesses} puzzle={puzzle} input={input} boardRef={boardRef} />
   </>;
 }

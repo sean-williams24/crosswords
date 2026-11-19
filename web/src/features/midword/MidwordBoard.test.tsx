@@ -36,6 +36,24 @@ describe("Midword prompt alignment", () => {
 });
 
 describe("Midword guess history", () => {
+  it("keeps collapsed feedback with history so there is only one gap above the heading", () => {
+    const style = document.createElement("style");
+    style.textContent = readFileSync("src/features/midword/midword.css", "utf8");
+    document.head.append(style);
+    try {
+      render(<MidwordBoard input="" message="" puzzle={puzzle}
+        progress={{ ...emptyProgress(puzzle.date), guesses: ["PAGE", "WORD"] }} />);
+      const history = screen.getByRole("region", { name: "Previous guesses" });
+      const feedback = document.querySelector(".game-input-message")!;
+      expect(history.parentElement).toBe(feedback.parentElement);
+      const board = screen.getByRole("region", { name: "Midword board" });
+      expect(board.parentElement).toContainElement(history);
+      expect(getComputedStyle(board.parentElement!).gap).toBe("16px");
+      expect(feedback).toHaveAttribute("aria-hidden", "true");
+      expect(getComputedStyle(within(history).getByRole("heading")).marginBottom).toBe("12px");
+      expect(getComputedStyle(within(history).getByRole("list")).gap).toBe("8px");
+    } finally { style.remove(); }
+  });
   it.each(["Not a valid word", "Already guessed"])("places %s between the board and previous guesses", message => {
     render(<MidwordBoard input="ZZZZ" inputError message={message} puzzle={puzzle}
       progress={{ ...emptyProgress(puzzle.date), guesses: ["PAGE"] }} />);
