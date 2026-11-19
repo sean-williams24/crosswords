@@ -429,17 +429,35 @@ seconds earn 5, 4, 3, and 2 points; 180 seconds or more earns 1. Giving up or
 solving in the Archive earns zero. Invalid, incomplete, and duplicate guesses
 are rejected. Previous guesses and attempt counters are not shown.
 
-Puzzle content comes from `Backend/midword_approved.json`. The discovery script
-only produces candidates for review; it must never publish them. Candidate
-selection from the existing word bank and `wordfreq` can produce false splits
-and ambiguous pairs, so new entries need editorial review of both compounds
-and competing links. The scheduled publisher uses only approved entries and
-fails before writing if its full coverage window cannot be filled. The batch
-publishing RPC validates and inserts all selected rows in one transaction.
-The approved bank marks moderately challenging triples separately. Publishing
-shuffles deterministically within that tier and selects it first, then uses
-the remaining approved triples when needed. Already published dates and issue
-numbers are never changed when the bank or difficulty ranking changes.
+The Monday workflow uses `Backend/automate_midword.py` to fill today and the
+next 20 days. Fresh candidates come from the crossword bank and the top 100,000
+`wordfreq` words. Discovery rejects known competing links and requires familiar
+components and compounds, but cannot prove that a split is meaningful: MAN+AGE
+in MANAGE is invalid. Two independent model reviews must both accept each new
+triple, explain both compounds, and report no competing answer. Missing,
+malformed, or mismatched decisions cannot approve a candidate. These reviews
+reduce semantic errors; dictionary membership alone never approves a puzzle.
+
+The publisher reviews at most eight batches of 60 candidates per run, using the
+existing `OPENAI_API_KEY` secret and `gpt-5.4` by default. It prefers newly
+validated triples rated moderate by both reviewers: familiar compounds with a
+less immediate link, sometimes using different ordinary senses of the answer.
+RAIN BOW TIE anchors easy; HAND BOOK STORE anchors moderate. Rarity and longer
+words are not difficulty goals. Either reviewer rating a triple `too_hard`
+excludes it. Mixed easy/moderate ratings count as easy. The publisher keeps
+searching within its bounded review budget for moderate coverage, then uses
+moderate editorial reserve entries before easier validated or reserve entries.
+Difficulty ratings and the number of easy fallbacks are saved in the evidence
+and summary. The reserve is `Backend/midword_approved.json`. Used prompt pairs are never reused, and new
+answers cannot repeat within seven calendar days, including adjacent published
+releases. A full buffer needs no AI calls. If the coverage window cannot be
+filled, nothing is published. All selected rows enter the existing publishing
+RPC in one transaction. Already published dates and issue numbers never change.
+The workflow uploads candidate decisions, selected puzzle JSON, and failure
+reports as artifacts, and displays a status/error summary on the run page.
+
+`build_midword_bank.py` remains a discovery-only utility. `generate_midword.py`
+remains available for manual publication from the approved editorial inventory.
 
 Midword uses its own chartreuse and charcoal semantic colours. Its input,
 and completion tiles use the reusable Backword cell's default
