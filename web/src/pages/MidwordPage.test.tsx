@@ -128,6 +128,34 @@ describe("Midword browser gameplay", () => {
     expect(shell?.nextElementSibling).toBe(footer);
     expect(main).not.toContainElement(screen.getByRole("group", { name: "Midword keyboard" }));
   });
+  it("keeps long history in a shrinking scroll area above the keyboard with a nonblocking fade", async () => {
+    createMidwordStorage().saveProgress(startProgress({ ...emptyProgress(localDateString()),
+      guesses: ["PAGE", "READ", "LINE", "BOOK", "WORD", "LINK", "POOL", "LOOP"] }));
+    const styles = document.createElement("style");
+    styles.textContent = readFileSync("src/styles.css", "utf8") + readFileSync("src/features/midword/midword.css", "utf8");
+    document.head.append(styles);
+    try {
+      renderGame();
+      const board = await screen.findByRole("region", { name: "Midword board" });
+      const main = board.closest("main")!;
+      const shell = main.parentElement!;
+      expect(shell.parentElement).toHaveClass("midword-page--game");
+      expect(getComputedStyle(shell).height).toBe("100dvh");
+      expect(getComputedStyle(shell).flexShrink).toBe("0");
+      expect(getComputedStyle(main).flexShrink).toBe("1");
+      expect(getComputedStyle(main).overflowY).toBe("auto");
+      expect(getComputedStyle(main).paddingBottom).toBe("40px");
+      const keyboard = screen.getByRole("group", { name: "Midword keyboard" });
+      expect(main).not.toContainElement(keyboard);
+      expect(shell).toContainElement(keyboard);
+      const fade = Array.from(styles.sheet!.cssRules).find(rule =>
+        rule instanceof CSSStyleRule && rule.selectorText === ".midword-page--game .midword-controls::before") as CSSStyleRule;
+      expect(fade.style.getPropertyValue("pointer-events")).toBe("none");
+      expect(fade.style.getPropertyValue("background")).toContain("linear-gradient");
+      expect(fade.style.getPropertyValue("height")).toBe("32px");
+      expect(within(screen.getByRole("region", { name: "Previous guesses" })).getAllByRole("listitem")).toHaveLength(8);
+    } finally { styles.remove(); }
+  });
   it("resumes beyond five guesses with newest-first history", async () => {
     createMidwordStorage().saveProgress(startProgress({ ...emptyProgress(localDateString()), guesses: ["PAGE", "READ", "LINE", "BOOK", "WORD"] }));
     const user = userEvent.setup(); renderGame();

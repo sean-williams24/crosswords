@@ -87,6 +87,31 @@ struct GameDynamicTypeContainerTests {
         #expect(abs(measured.height - cellSize) < 0.5)
     }
 
+    @Test("Fading scroll content keeps a bounded viewport and space to reveal the final guess", arguments: [1, 20])
+    func fadingScrollKeepsHistoryReachable(count: Int) throws {
+        let fadeHeight = AppLayout.midwordScrollFadeHeight
+        let rowHeight = AppLayout.midwordGuessCellSize
+        let host = UIHostingController(rootView:
+            BottomFadingScrollView(fadeHeight: fadeHeight) {
+                VStack(spacing: 0) {
+                    ForEach(0..<count, id: \.self) { index in
+                        Text("Guess \(index)").frame(height: rowHeight)
+                    }
+                }
+            }
+        )
+        try withLaidOutHostingController(host, size: CGSize(width: 320, height: 200)) {
+            func findScrollView(in view: UIView) -> UIScrollView? {
+                if let scroll = view as? UIScrollView { return scroll }
+                return view.subviews.lazy.compactMap { findScrollView(in: $0) }.first
+            }
+            let scroll = try #require(findScrollView(in: host.view))
+            #expect(scroll.bounds.height <= 200.5)
+            #expect(scroll.contentSize.height >= CGFloat(count) * rowHeight + fadeHeight - 0.5)
+            if count > 1 { #expect(scroll.contentSize.height > scroll.bounds.height) }
+        }
+    }
+
     @Test("Custom fonts stop growing while smaller text settings are preserved")
     func typographyUsesBoundedEnvironment() {
         let text = Text("Find the link that ends the top word and starts the bottom word to make 2 new words")

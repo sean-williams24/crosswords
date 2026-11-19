@@ -584,12 +584,16 @@ unlimited guesses and timed scoring as iOS. Wrong guesses have no positional hin
 
 The browser uses the current native Midword colour assets and wordmarks,
 including appearance-specific backgrounds, borders, and Home-card foregrounds.
-The header, board, timer, progress bar, and keyboard stay in normal
-document flow and scroll together with the viewport. The page fills at least
-the viewport height, including the site footer on wider screens, and grows
-with its content rather than scrolling the board behind the keyboard. The
-gameplay area has 8px of bottom padding, with another 4px above the bar inside
-the controls, leaving a 12px gap below Give up. The bar sits directly above the keyboard or Submit
+During active and completed gameplay, the shell fits the dynamic viewport.
+The header, puzzle number, progress bar, and keyboard retain their space while
+the board, timer, and previous guesses scroll in the remaining area. A 32px
+background gradient above the web controls fades content at the keyboard edge;
+it ignores pointer input so the history remains scrollable. iOS uses an opacity
+mask on its gameplay scroll view for the same fade. Both leave enough bottom
+padding to scroll the final guess fully above the fade. Introduction screens
+retain their natural, scrollable layout, and the desktop site footer remains
+after the game shell. Active gameplay reserves 40px of bottom scroll padding,
+with another 4px above the bar inside the controls. The bar sits directly above the keyboard or Submit
 button when shown, moving up and down as the button appears and disappears.
 Mobile retains its hidden site footer.
 The gameplay wordmark shares Backword's centered large-logo dimensions,

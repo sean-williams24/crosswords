@@ -38,7 +38,7 @@ struct MidwordView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.bottom, 12)
                 if viewModel.hasStarted || viewModel.isComplete {
-                    ScrollView { gameContent }
+                    BottomFadingScrollView(fadeHeight: AppLayout.midwordScrollFadeHeight) { gameContent }
                 } else {
                     MidwordStartView(
                         answerLength: viewModel.puzzle.answer.count,

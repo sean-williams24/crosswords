@@ -302,6 +302,7 @@ struct AppLayout {
     static let midwordInputCellSize: CGFloat = 56
     static let midwordCompletionCellSize: CGFloat = 44
     static let midwordInputCellSpacing: CGFloat = 7
+    static let midwordScrollFadeHeight: CGFloat = 32
     static let midwordGuessCellSize: CGFloat = 38
     static let midwordGuessHistorySpacing: CGFloat = 8
     static let midwordGuessCellSpacing: CGFloat = 6

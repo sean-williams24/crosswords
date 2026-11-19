@@ -10,6 +10,16 @@ const puzzle: MidwordPuzzle = {
 };
 
 describe("Midword prompt alignment", () => {
+  it("uses the board gap without adding extra margin above validation feedback", () => {
+    const style = document.createElement("style");
+    style.textContent = readFileSync("src/features/midword/midword.css", "utf8");
+    document.head.append(style);
+    try {
+      render(<MidwordBoard input="ZZZZ" message="Not a valid word" puzzle={puzzle}
+        progress={{ ...emptyProgress(puzzle.date), guesses: ["PAGE"] }} />);
+      expect(getComputedStyle(screen.getByRole("alert")).marginTop).toBe("0px");
+    } finally { style.remove(); }
+  });
   it("shares the explainer's responsive width and aligns the bottom prompt to the trailing edge", () => {
     const style = document.createElement("style");
     style.textContent = readFileSync("src/features/midword/midword.css", "utf8");

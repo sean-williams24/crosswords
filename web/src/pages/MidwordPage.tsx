@@ -180,7 +180,9 @@ function MidwordGame({ date, accessReady = true }: { date: string; accessReady?:
     return () => window.removeEventListener("keydown", keyDown);
   }, [deleteLetter, enterLetter, loading, menuOpen, confirmGiveUp, sheet, submit]);
 
-  return <div className="bw-page midword-page">
+  const hasGameControls = !loading && !!puzzle && !!(progress.startedAt || progress.completedAt);
+
+  return <div className={`bw-page midword-page${hasGameControls ? " midword-page--game" : ""}`}>
     <div className="bw-shell midword-shell">
       <header className="bw-game-header bw-game-header--offset midword-header">
         <GameMenu isOpen={menuOpen} onOpen={() => setMenuOpen(true)} onClose={() => setMenuOpen(false)} />
@@ -205,7 +207,7 @@ function MidwordGame({ date, accessReady = true }: { date: string; accessReady?:
             {shareResult && sheet === null ? <div className="midword-game-actions"><PuzzleResultShare compact result={shareResult} showPreview={false} /></div> : null}
           </> : null}
       </main>
-      {!loading && puzzle && (progress.startedAt || progress.completedAt) ? <footer className="bw-game-controls midword-controls">
+      {hasGameControls ? <footer className="bw-game-controls midword-controls">
         <div aria-label={`${stats.rollingScore} of 70 Midword points`} className="bw-game-score bw-game-score--keyboard-width"><span style={{ clipPath: `inset(0 ${100 - Math.max(1, (stats.rollingScore / 70) * 100)}% 0 0)` }} /></div>
         <GameSubmitButton onSubmit={submit} visible={canSubmit} />
         <BackwordKeyboard ariaLabel="Midword keyboard" disabled={Boolean(progress.completedAt)} onDelete={deleteLetter} onLetter={enterLetter} />

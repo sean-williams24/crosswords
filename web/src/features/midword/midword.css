@@ -57,6 +57,30 @@ html[data-theme="dark"] .midword-header h1::after {
   overflow: visible;
 }
 .midword-main > * { flex-shrink: 0; }
+/* Keep gameplay within the viewport; only the board/history can grow and scroll. */
+.midword-page--game .midword-shell {
+  height: 100svh;
+  height: 100dvh;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+.midword-page--game .midword-main {
+  flex: 1 1 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding-bottom: 40px;
+  scroll-padding-bottom: 40px;
+}
+.midword-page--game .midword-controls { position: relative; }
+.midword-page--game .midword-controls::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  inset-inline: 0;
+  height: 32px;
+  background: linear-gradient(to bottom, transparent, var(--midword-background));
+  pointer-events: none;
+}
 .midword-issue { margin: 8px 0 0; color: var(--midword-muted); font-size: clamp(15px, 1.5vw, 18px); font-weight: 400; line-height: 1.2; text-align: center; }
 .midword-explainer, .midword-board { width: min(100%, 520px); }
 .midword-explainer { margin: 0; color: var(--midword-muted); font-size: 16px; line-height: 1.5; text-align: center; }
@@ -82,7 +106,7 @@ html[data-theme="dark"] .midword-header h1::after {
 .midword-letter-row.is-incorrect > span { color: var(--bw-failed); border-color: var(--bw-failed); background: color-mix(in srgb, var(--bw-failed) 10%, var(--midword-background)); }
 .midword-attempt-status { display: flex; max-width: 100%; flex-direction: column; align-items: center; }
 .midword-message, .midword-note { margin: 0; font-size: 14px; text-align: center; }
-.midword-message { margin-top: 22px; color: var(--bw-error, #ff6b6b); font-weight: 700; }
+.midword-message { color: var(--bw-error, #ff6b6b); font-weight: 700; }
 .midword-game-actions {
   display: flex;
   width: min(
@@ -207,7 +231,6 @@ html[data-theme="dark"] .midword-header h1::after {
 @media (max-width: 680px) {
   .midword-page > .site-footer { display: none; }
   .midword-main { gap: 18px; }
-  .midword-message { margin-top: 18px; }
   .midword-controls { padding-bottom: env(safe-area-inset-bottom); }
   .midword-dialog:not(.midword-dialog--instructions) { max-height: 94dvh; }
 }
