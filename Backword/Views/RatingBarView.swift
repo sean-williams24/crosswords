@@ -29,20 +29,10 @@ struct RatingBarView: View {
     }
 
     private var tierLabelView: some View {
-        GeometryReader { geo in
-            ZStack(alignment: .topLeading) {
-                RatingBarTierLabel(tier: tier)
-                    .alignmentGuide(.leading) { dimensions in
-                        -RatingBarLabelLayout.leadingOffset(
-                            barWidth: geo.size.width,
-                            fraction: fraction,
-                            labelWidth: dimensions.width
-                        )
-                    }
-            }
-            .frame(width: geo.size.width, height: tierLabelHeight, alignment: .topLeading)
+        RatingBarLabelLayout(fraction: fraction) {
+            RatingBarTierLabel(tier: tier)
         }
-        .frame(height: tierLabelHeight)
+        .frame(height: tierLabelHeight, alignment: .top)
     }
 
     var body: some View {
@@ -93,17 +83,6 @@ struct RatingBarView: View {
                 }
             }
         }
-    }
-}
-
-enum RatingBarLabelLayout {
-    static func leadingOffset(barWidth: CGFloat, fraction: Double, labelWidth: CGFloat) -> CGFloat {
-        let dotX = barWidth * CGFloat(fraction)
-        let ideal = dotX - labelWidth / 2
-        if labelWidth > barWidth {
-            return barWidth - labelWidth
-        }
-        return max(0, min(ideal, barWidth - labelWidth))
     }
 }
 

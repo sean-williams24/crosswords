@@ -4,6 +4,15 @@ import Testing
 
 @Suite("Rating bar label layout")
 struct RatingBarLabelLayoutTests {
+    @Test("Moves the label along the bar while keeping it inside both edges")
+    func followsProgress() {
+        let offsets = [0, 0.25, 0.5, 0.75, 1].map { fraction in
+            RatingBarLabelLayout.leadingOffset(barWidth: 240, fraction: fraction, labelWidth: 80)
+        }
+
+        #expect(offsets == [0, 20, 80, 140, 160])
+    }
+
     @Test("Centers label under the dot away from edges")
     func centersLabelUnderDot() {
         let offset = RatingBarLabelLayout.leadingOffset(

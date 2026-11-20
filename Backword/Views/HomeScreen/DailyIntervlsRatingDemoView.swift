@@ -29,8 +29,11 @@ struct DailyIntervlsRatingDemoView: View, Animatable {
                 animates: true,
                 animatesProgressChanges: false
             )
-            RatingBarTierLabel(tier: example.tier)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            RatingBarLabelLayout(fraction: example.fraction) {
+                RatingBarTierLabel(tier: example.tier)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+            }
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(OverallRating.windowDays)-day rating example")
