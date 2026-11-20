@@ -176,6 +176,29 @@ struct HomeDailyChallengeLayoutTests {
         #expect(final == celebration)
     }
 
+    @Test("The rating example fits the points total, track and tier in three rows",
+          arguments: [DynamicTypeSize.large, .accessibility3])
+    func guideRatingHeight(textSize: DynamicTypeSize) {
+        let proposal = CGSize(width: 280, height: 1_000)
+        let example = DailyIntervlsRatingExample(fraction: 1, isPro: false)
+
+        func measure(_ view: some View) -> CGSize {
+            UIHostingController(rootView: view.environment(\.dynamicTypeSize, textSize)).sizeThatFits(in: proposal)
+        }
+
+        let demo = measure(DailyIntervlsRatingDemoView(progress: 1, isPro: false))
+        let total = measure(Text("\(example.points) / \(example.maximumPoints) pts")
+            .font(AppFont.statNumber(AppLayout.dailyIntervlsGuidePointsSize))
+            .lineLimit(1))
+        let tier = measure(RatingBarTierLabel(tier: example.tier))
+        let trackStyle = RatingProgressTrack.Style.detailed(markerColor: example.tier.color, pulses: false,
+                                                            markerAnimationDelay: 0)
+        let expectedHeight = total.height + trackStyle.height + tier.height + AppLayout.homeDailyCelebrationRowSpacing * 2
+
+        #expect(demo.width <= proposal.width)
+        #expect(abs(demo.height - expectedHeight) < 1)
+    }
+
     @Test("The text-only celebration fits narrow and short screens in both appearances",
           arguments: [DynamicTypeSize.large, .accessibility3, .accessibility5],
                      [ColorScheme.light, .dark])

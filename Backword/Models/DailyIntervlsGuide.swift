@@ -7,7 +7,7 @@ enum DailyIntervlsGuideStep: Equatable {
     var title: String {
         switch self {
         case .gameplay: return "Your Daily Intervls"
-        case .scoring: return "Points and rating"
+        case .scoring: return "Points and Rating"
         }
     }
 

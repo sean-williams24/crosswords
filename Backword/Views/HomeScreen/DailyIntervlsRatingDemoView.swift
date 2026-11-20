@@ -13,11 +13,8 @@ struct DailyIntervlsRatingDemoView: View, Animatable {
     var body: some View {
         let example = DailyIntervlsRatingExample(fraction: reduceMotion ? 1 : progress, isPro: isPro)
         VStack(spacing: AppLayout.homeDailyCelebrationRowSpacing) {
-            Text("\(OverallRating.windowDays)-day example")
-                .font(AppFont.caption())
-                .foregroundStyle(Color.appTextSecondary)
             Text("\(example.points) / \(example.maximumPoints) pts")
-                .font(AppFont.statNumber(AppLayout.homeDailyCelebrationScoreSize))
+                .font(AppFont.statNumber(AppLayout.dailyIntervlsGuidePointsSize))
                 .foregroundStyle(Color.appTextPrimary)
                 .monospacedDigit()
                 .lineLimit(1)
