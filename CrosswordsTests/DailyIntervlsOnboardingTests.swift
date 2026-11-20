@@ -138,6 +138,25 @@ struct DailyIntervlsOnboardingTests {
         #expect(lastLowerScore.tier.nextThreshold == tier.threshold)
     }
 
+    @Test("Tier labels crossfade as progress passes the qualifying score",
+          arguments: [RatingTier.scribe, .linguist, .grandmaster, .virtuoso], [false, true])
+    func ratingExampleLabelFade(tier: RatingTier, isPro: Bool) {
+        let maximum = Double(DailyIntervlsRatingExample(fraction: 1, isPro: isPro).maximumPoints)
+        let qualifyingPoints = ceil(tier.threshold * maximum)
+        let previousTier = RatingTier.forFraction((qualifyingPoints - 1) / maximum)
+        let startFraction = qualifyingPoints / maximum
+        let start = DailyIntervlsRatingExample(fraction: startFraction, isPro: isPro)
+        let midpoint = DailyIntervlsRatingExample(fraction: startFraction + 0.025, isPro: isPro)
+        let end = DailyIntervlsRatingExample(fraction: startFraction + 0.05, isPro: isPro)
+
+        #expect(start.labelOpacity(for: previousTier) == 1)
+        #expect(start.labelOpacity(for: tier) == 0)
+        #expect(abs(midpoint.labelOpacity(for: previousTier) - 0.5) < 0.0001)
+        #expect(abs(midpoint.labelOpacity(for: tier) - 0.5) < 0.0001)
+        #expect(end.labelOpacity(for: previousTier) == 0)
+        #expect(end.labelOpacity(for: tier) == 1)
+    }
+
     private func withDefaults(_ test: (UserDefaults) -> Void) {
         let name = "DailyIntervlsOnboardingTests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: name)!

@@ -805,7 +805,8 @@ The scoring page explains the rolling rating window. The rating reflects the
 share of available points earned over the last 14 days, including today. Each
 new day replaces the oldest, and missed games contribute zero points.
 Above the explanation, a full-window example uses Home's rating bar and tier
-thresholds. The tier label follows the marker and stays inside the bar's width.
+thresholds. The tier label travels continuously within the bar's width and
+crossfades at each threshold using the same progress value as the fill.
 The points, bar and tier advance together from zero to the available
 total for daily games, including weekly points for Pro players. The example is
 independent of saved progress and content downloads. Reduce Motion shows its

@@ -13,6 +13,16 @@ struct RatingBarLabelLayoutTests {
         #expect(offsets == [0, 20, 80, 140, 160])
     }
 
+    @Test("The guide label keeps moving near the end of the bar during the last tier change")
+    func fullWidthTravel() {
+        let offsets = [0, 0.85, 0.9, 0.95, 1].map { fraction in
+            RatingBarLabelLayout.leadingOffset(barWidth: 240, fraction: fraction, labelWidth: 80,
+                                               placement: .fullWidth)
+        }
+
+        #expect(offsets == [0, 136, 144, 152, 160])
+    }
+
     @Test("Centers label under the dot away from edges")
     func centersLabelUnderDot() {
         let offset = RatingBarLabelLayout.leadingOffset(

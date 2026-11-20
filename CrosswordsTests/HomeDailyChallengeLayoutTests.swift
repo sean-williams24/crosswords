@@ -176,17 +176,17 @@ struct HomeDailyChallengeLayoutTests {
         #expect(final == celebration)
     }
 
-    @Test("The rating example fits the points total, track and tier in three rows",
-          arguments: [DynamicTypeSize.large, .accessibility3])
-    func guideRatingHeight(textSize: DynamicTypeSize) {
+    @Test("The rating example fits the points total, track and label in three rows at every tier",
+          arguments: [DynamicTypeSize.large, .accessibility3], [0.1, 0.3, 0.6, 0.8, 1.0])
+    func guideRatingHeight(textSize: DynamicTypeSize, progress: Double) {
         let proposal = CGSize(width: 280, height: 1_000)
-        let example = DailyIntervlsRatingExample(fraction: 1, isPro: false)
+        let example = DailyIntervlsRatingExample(fraction: progress, isPro: false)
 
         func measure(_ view: some View) -> CGSize {
             UIHostingController(rootView: view.environment(\.dynamicTypeSize, textSize)).sizeThatFits(in: proposal)
         }
 
-        let demo = measure(DailyIntervlsRatingDemoView(progress: 1, isPro: false))
+        let demo = measure(DailyIntervlsRatingDemoView(progress: progress, isPro: false))
         let total = measure(Text("\(example.points) / \(example.maximumPoints) pts")
             .font(AppFont.statNumber(AppLayout.dailyIntervlsGuidePointsSize))
             .lineLimit(1))

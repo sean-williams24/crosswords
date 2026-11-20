@@ -39,4 +39,17 @@ struct DailyIntervlsRatingExample {
 
     var points: Int { Int((Double(maximumPoints) * fraction).rounded(.down)) }
     var tier: RatingTier { RatingTier.forFraction(Double(points) / Double(maximumPoints)) }
+
+    func labelOpacity(for tier: RatingTier) -> Double {
+        let fadeIn = tier == .novice ? 1 : tierFadeProgress(at: tier.threshold)
+        let fadeOut = tier == .virtuoso ? 0 : tierFadeProgress(at: tier.nextThreshold)
+        return fadeIn - fadeOut
+    }
+
+    private func tierFadeProgress(at threshold: Double) -> Double {
+        let maximum = Double(maximumPoints)
+        let start = ceil(threshold * maximum) / maximum
+        let progress = min(max((fraction - start) / 0.05, 0), 1)
+        return progress * progress * (3 - 2 * progress)
+    }
 }

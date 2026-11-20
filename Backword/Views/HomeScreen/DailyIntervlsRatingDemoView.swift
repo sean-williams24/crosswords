@@ -12,6 +12,7 @@ struct DailyIntervlsRatingDemoView: View, Animatable {
 
     var body: some View {
         let example = DailyIntervlsRatingExample(fraction: reduceMotion ? 1 : progress, isPro: isPro)
+        let tier = example.tier
         VStack(spacing: AppLayout.homeDailyCelebrationRowSpacing) {
             Text("\(example.points) / \(example.maximumPoints) pts")
                 .font(AppFont.statNumber(AppLayout.dailyIntervlsGuidePointsSize))
@@ -22,15 +23,22 @@ struct DailyIntervlsRatingDemoView: View, Animatable {
 
             RatingProgressTrack(
                 fraction: example.fraction,
-                style: .detailed(markerColor: example.tier.color, pulses: false, markerAnimationDelay: 0),
+                style: .detailed(markerColor: tier.color, pulses: false, markerAnimationDelay: 0),
                 animates: true,
                 animatesProgressChanges: false
             )
-            RatingBarLabelLayout(fraction: example.fraction) {
-                RatingBarTierLabel(tier: example.tier)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
+            RatingBarLabelLayout(fraction: example.fraction, placement: .fullWidth) {
+                ZStack {
+                    // Keep the same label width while the active tier fades in.
+                    ForEach(RatingTier.allCases, id: \.self) { tier in
+                        RatingBarTierLabel(tier: tier)
+                            .opacity(example.labelOpacity(for: tier))
+                    }
+                }
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
             }
+            .animation(nil, value: example.fraction)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(OverallRating.windowDays)-day rating example")

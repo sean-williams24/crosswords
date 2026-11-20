@@ -19,7 +19,12 @@ struct RatingBarTierLabel: View {
 }
 
 struct RatingBarLabelLayout: Layout {
+    enum Placement {
+        case centeredBelowMarker, fullWidth
+    }
+
     let fraction: Double
+    var placement: Placement = .centeredBelowMarker
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         guard let label = subviews.first else { return .zero }
@@ -32,11 +37,16 @@ struct RatingBarLabelLayout: Layout {
         guard let label = subviews.first else { return }
         let labelProposal = ProposedViewSize(width: bounds.width, height: nil)
         let labelWidth = label.sizeThatFits(labelProposal).width
-        let offset = Self.leadingOffset(barWidth: bounds.width, fraction: fraction, labelWidth: labelWidth)
+        let offset = Self.leadingOffset(barWidth: bounds.width, fraction: fraction, labelWidth: labelWidth,
+                                        placement: placement)
         label.place(at: CGPoint(x: bounds.minX + offset, y: bounds.minY), anchor: .topLeading, proposal: labelProposal)
     }
 
-    static func leadingOffset(barWidth: CGFloat, fraction: Double, labelWidth: CGFloat) -> CGFloat {
+    static func leadingOffset(barWidth: CGFloat, fraction: Double, labelWidth: CGFloat,
+                              placement: Placement = .centeredBelowMarker) -> CGFloat {
+        if placement == .fullWidth {
+            return max(0, barWidth - labelWidth) * CGFloat(fraction)
+        }
         let dotX = barWidth * CGFloat(fraction)
         let ideal = dotX - labelWidth / 2
         if labelWidth > barWidth {
