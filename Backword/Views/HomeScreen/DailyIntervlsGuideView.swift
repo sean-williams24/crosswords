@@ -95,7 +95,7 @@ struct DailyIntervlsGuideView: View {
                     .accessibilityAddTraits(.isHeader)
                     .accessibilityFocused($isHeadingFocused)
                 if step == .gameplay {
-                    explanation(step.introduction)
+                    explanation(DailyIntervlsGuideStep.gameplayIntroduction)
                 }
             }
             .multilineTextAlignment(.center)
@@ -105,14 +105,24 @@ struct DailyIntervlsGuideView: View {
                 dailyLineup
             } else {
                 DailyIntervlsRatingDemoView(progress: ratingProgress, isPro: isPro)
-                VStack(spacing: AppLayout.homeDailyCelebrationRowSpacing) {
-                    explanation(step.introduction)
-                    explanation(DailyIntervlsGuideStep.ratingWindowDescription)
-                }
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
+                ratingBulletList
             }
         }
+    }
+
+    private var ratingBulletList: some View {
+        VStack(alignment: .leading, spacing: AppLayout.homeDailyCelebrationRowSpacing) {
+            ForEach(DailyIntervlsGuideStep.ratingBulletPoints, id: \.self) { point in
+                HStack(alignment: .firstTextBaseline, spacing: AppLayout.homeDailyCelebrationRowSpacing) {
+                    explanation("•")
+                        .fixedSize(horizontal: true, vertical: false)
+                        .accessibilityHidden(true)
+                    explanation(point)
+                }
+            }
+        }
+        .multilineTextAlignment(.leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var dailyLineup: some View {

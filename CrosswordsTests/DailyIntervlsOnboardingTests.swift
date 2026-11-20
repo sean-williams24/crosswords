@@ -92,16 +92,18 @@ struct DailyIntervlsOnboardingTests {
         #expect(DailyIntervlsGuideStep.scoring.actionTitle(isOnboarding: manual.isOnboarding) == "Done")
     }
 
-    @Test("The lineup uses Home order and the scoring page explains the rating window")
+    @Test("The lineup uses Home order and the scoring page has three separate rating points")
     func guideContent() {
         #expect(DailyChallengeGame.allCases.map(\.displayName) == ["Backword", "Quick Crossword", "Anagram", "Midword"])
-        #expect(DailyIntervlsGuideStep.gameplay.introduction ==
-                "Finish all four daily games before midnight, score a maximum of 20 points.")
+        #expect(DailyIntervlsGuideStep.gameplayIntroduction ==
+                "Complete all four daily games before midnight, score a maximum of 20 points.")
 
-        let ratingIntroduction = DailyIntervlsGuideStep.scoring.introduction
-        #expect(ratingIntroduction.contains("last \(OverallRating.windowDays) days, including today"))
-        #expect(DailyIntervlsGuideStep.ratingWindowDescription ==
-                "Each new day replaces the oldest. Missed games score zero.")
+        let points = DailyIntervlsGuideStep.ratingBulletPoints
+        #expect(points == [
+            "Your rating is based on the points you earned over the last \(OverallRating.windowDays) days.",
+            "Complete your Intervls everyday to reach the highest tier and stay there.",
+            "Each new day replaces the oldest."
+        ])
     }
 
     @Test("The example goes from zero to the full 14-day rating maximum", arguments: [false, true])

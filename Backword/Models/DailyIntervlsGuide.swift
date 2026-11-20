@@ -11,14 +11,13 @@ enum DailyIntervlsGuideStep: Equatable {
         }
     }
 
-    var introduction: String {
-        switch self {
-        case .gameplay:
-            return "Complete all four daily games before midnight, score a maximum of 20 points."
-        case .scoring:
-            return "Your rating is based on the points you earned over the last \(OverallRating.windowDays) days./n/n Complete your Intervls everyday to reach the highest tier and stay there."
-        }
-    }
+    static let gameplayIntroduction = "Complete all four daily games before midnight, score a maximum of 20 points."
+
+    static let ratingBulletPoints = [
+        "Your rating is based on the points you earned over the last \(OverallRating.windowDays) days.",
+        "Complete your Intervls everyday to reach the highest tier and stay there.",
+        "Each new day replaces the oldest."
+    ]
 
     func actionTitle(isOnboarding: Bool) -> String {
         switch self {
@@ -26,8 +25,6 @@ enum DailyIntervlsGuideStep: Equatable {
         case .scoring: return isOnboarding ? "Lets play" : "Done"
         }
     }
-
-    static let ratingWindowDescription = "Each new day replaces the oldest. Missed games score zero."
 }
 
 struct DailyIntervlsRatingExample {
