@@ -776,6 +776,37 @@ source `word_data` hashes, unresolved rows block publishing, and only human
 approved, unchanged rows may be patched. Apply and rollback are idempotent, so
 they recognise an already-updated payload and never overwrite a divergent row.
 
+## iOS Daily Intervls Onboarding
+
+Classify the installation before app startup services can write preferences,
+rating data, or puzzle caches. Retained app preferences or app data identify
+an upgrade. With no retained evidence of prior use, the installation receives
+the first-launch walkthrough. This state is installation-wide across guest
+and signed-in play.
+
+The walkthrough opens when Home becomes available after the launch splash.
+`OK` saves the scoring page as the resume point. `Lets play` records
+completion and closes the modal. A game-load error waits until the
+guide closes, so the walkthrough is available offline.
+
+The guide uses a centred, dimmed modal with the daily celebration card’s width
+and corner radius. It uses Liquid Glass on iOS 26 and regular material on
+earlier versions. Background controls are unavailable while it is open.
+On short screens and at large text sizes, the guide content scrolls while
+its actions remain visible.
+
+The gameplay page shows the four daily games in Home order using the
+completion card’s game rows. The rows rise and fade in one at a time, then
+each Home progress marker fills with its game colour and transitions to the
+maximum score. VoiceOver describes the maximum as “up to” five points per game.
+Reduce Motion shows the entire lineup at its maximum scores immediately.
+
+Upgrades get an inline tip below the Home rating in the first eligible
+session. The tip is recorded when it is offered and stays visible in that
+session until dismissed or opened. The permanent Daily Intervls guide in
+Player Profile and the tip both open the same content on its gameplay page.
+Manual guide use leaves automatic presentation state untouched.
+
 ## iOS Home Daily Challenge
 
 Home's rating label row also shows `TODAY n/20 PTS` and four markers, in fixed order:

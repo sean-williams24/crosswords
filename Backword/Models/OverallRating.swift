@@ -160,7 +160,7 @@ struct OverallRating: Codable {
 
     // MARK: - Rolling 14-day window
 
-    private static let windowDays = 14
+    static let windowDays = 14
 
     private var window: [DailyScore] {
         let range = Self.windowDateRange()

@@ -57,6 +57,19 @@ final class AppSettings: ObservableObject {
         static let lastSeenBackwordRulesVersion = "lastSeenBackwordRulesVersion"
     }
 
+    static func hasStoredPreferences(in defaults: UserDefaults) -> Bool {
+        [
+            Keys.backwordLetterFeedback,
+            Keys.backwordMode,
+            Keys.crosswordCorrectHighlight,
+            Keys.hasDismissedAdExplainer,
+            Keys.hasSeenDailyCrosswordOnboarding,
+            Keys.hasSeenBackwordOnboarding,
+            Keys.dismissedBackwordOnboardingSteps,
+            Keys.lastSeenBackwordRulesVersion
+        ].contains { defaults.object(forKey: $0) != nil }
+    }
+
     private let userDefaults: UserDefaults
 
     /// Pro-only: highlight letters in past guesses that appear anywhere in the target word.

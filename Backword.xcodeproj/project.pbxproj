@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA117202611190000000000A /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000009 /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift */; };
+		DA1172026111900000000008 /* HomeDailyIntervlsTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000007 /* HomeDailyIntervlsTip.swift */; };
+		DA1172026111900000000006 /* DailyIntervlsGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000005 /* DailyIntervlsGuideView.swift */; };
+		DA1172026111900000000004 /* DailyIntervlsOnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000003 /* DailyIntervlsOnboardingViewModel.swift */; };
+		DA1172026111900000000002 /* DailyIntervlsGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000001 /* DailyIntervlsGuide.swift */; };
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
 		03ACF849F3B34FEBEB85B85D /* DailyChallengeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A43901A456AE111FBA9C021 /* DailyChallengeStore.swift */; };
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
@@ -296,6 +301,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DA1172026111900000000009 /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/DailyIntervlsOnboardingTests.swift; sourceTree = "<group>"; };
+		DA1172026111900000000007 /* HomeDailyIntervlsTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDailyIntervlsTip.swift; sourceTree = "<group>"; };
+		DA1172026111900000000005 /* DailyIntervlsGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsGuideView.swift; sourceTree = "<group>"; };
+		DA1172026111900000000003 /* DailyIntervlsOnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsOnboardingViewModel.swift; sourceTree = "<group>"; };
+		DA1172026111900000000001 /* DailyIntervlsGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsGuide.swift; sourceTree = "<group>"; };
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
 		04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicyTests.swift; sourceTree = "<group>"; };
@@ -628,6 +638,7 @@
 				B11111111111111111111114 /* ../CrosswordsTests/TimedMidwordTests.swift */,
 				A17120261117000000000001 /* ../CrosswordsTests/MidwordAnalyticsTests.swift */,
 				0FD34781B46A8A180D978DFC /* ../CrosswordsTests/HomeDailyChallengeLayoutTests.swift */,
+				DA1172026111900000000009 /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift */,
 				BA3A797CBA3BFB73F993F6CD /* ../CrosswordsTests/HomeDailyChallengeViewModelTests.swift */,
 				BDE5582CCB770E392680461A /* ../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift */,
 				07B0C8EE5084C41DFB4EB830 /* ../CrosswordsTests/DailyChallengeSnapshotTests.swift */,
@@ -709,6 +720,7 @@
 			isa = PBXGroup;
 			children = (
 				ADA140003011000000000001 /* AnalyticsConsent.swift */,
+				DA1172026111900000000001 /* DailyIntervlsGuide.swift */,
 				362D2D4894EDDE74EF4570D2 /* DailyChallengeSnapshot.swift */,
 				ADA110003011000000000001 /* AdConfiguration.swift */,
 				ADA110023011000000000001 /* ProAdBenefitsContent.swift */,
@@ -857,7 +869,9 @@
 				F3BE5F7AD1ED68569335BAAB /* HomeDailyChallengeCelebrationRow.swift */,
 				31EB61D3D1C00A7790B63631 /* HomeDailyChallengeCardHighlight.swift */,
 				A1AD1044A179E42EFE71553C /* HomeDailyChallengeRatingRow.swift */,
+				DA1172026111900000000005 /* DailyIntervlsGuideView.swift */,
 				FF081FFFA920E4CFBA726F5C /* HomeDailyChallengeSummary.swift */,
+				DA1172026111900000000007 /* HomeDailyIntervlsTip.swift */,
 				5EE22632345BAEF6D547A3AB /* HomeDailyChallengeMarker.swift */,
 				A8013956F1CB59F9C80F81AB /* MidwordCard.swift */,
 				F4B000013016000000000001 /* MidwordHomeCardLogo.swift */,
@@ -1013,6 +1027,7 @@
 			children = (
 				ADA140023011000000000001 /* AnalyticsConsentViewModel.swift */,
 				A4B100000000000000000004 /* ProfileDailyProgressViewModel.swift */,
+				DA1172026111900000000003 /* DailyIntervlsOnboardingViewModel.swift */,
 				7F3356D606F3E816FA598525 /* HomeDailyChallengeViewModel.swift */,
 				777B57F63E3A1AD53802C0F6 /* DailyChallengeCelebrationViewModel.swift */,
 				A8220AB384E18F7E4E984338 /* MidwordViewModel.swift */,
@@ -1175,6 +1190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D36AAFB35AEF4E91CB1071D /* ../CrosswordsTests/HomeDailyChallengeLayoutTests.swift in Sources */,
+				DA117202611190000000000A /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift in Sources */,
 				9C5A7457CBAD64B4D49552EE /* ../CrosswordsTests/HomeDailyChallengeViewModelTests.swift in Sources */,
 				BABE7C7246E5A4E6EE51052F /* ../CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift in Sources */,
 				CDE7B3D1A8B803E660D8E10B /* ../CrosswordsTests/DailyChallengeSnapshotTests.swift in Sources */,
@@ -1265,11 +1281,15 @@
 				A9D7D2D35B04352BB5D76224 /* HomeDailyChallengeRatingRow.swift in Sources */,
 				A4B100000000000000000001 /* ProfileDailyProgressView.swift in Sources */,
 				A4B100000000000000000002 /* ProfileDailyProgressViewModel.swift in Sources */,
+				DA1172026111900000000006 /* DailyIntervlsGuideView.swift in Sources */,
 				27938D26A9B6C3A7D7123BA9 /* HomeDailyChallengeSummary.swift in Sources */,
+				DA1172026111900000000008 /* HomeDailyIntervlsTip.swift in Sources */,
 				7980901851029979675A8FBF /* HomeDailyChallengeMarker.swift in Sources */,
+				DA1172026111900000000004 /* DailyIntervlsOnboardingViewModel.swift in Sources */,
 				ECB321DC1981D94BE185BA5A /* HomeDailyChallengeViewModel.swift in Sources */,
 				F23A738519DB07822088224A /* DailyChallengeCelebrationViewModel.swift in Sources */,
 				03ACF849F3B34FEBEB85B85D /* DailyChallengeStore.swift in Sources */,
+				DA1172026111900000000002 /* DailyIntervlsGuide.swift in Sources */,
 				59FFCB5AA08D85E66F1EA0DB /* DailyChallengeSnapshot.swift in Sources */,
 				A0B000000000000000000101 /* MidwordStatsHistory.swift in Sources */,
 				A0B000000000000000000102 /* MidwordStatsHistoryView.swift in Sources */,

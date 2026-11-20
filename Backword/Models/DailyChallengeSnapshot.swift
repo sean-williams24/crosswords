@@ -55,11 +55,13 @@ struct DailyChallengeSnapshot: Equatable {
     private static let anagramIntervalSeconds = 30
     private static let anagramMaximumIntervals = 6
     private static let maximumGuesses = 5
+    static let maximumPointsPerGame = 5
+    static var maximumDailyPoints: Int { DailyChallengeGame.allCases.count * maximumPointsPerGame }
 
     var finishedCount: Int { games.filter(\.isFinished).count }
     var isComplete: Bool { finishedCount == DailyChallengeGame.allCases.count }
     var earnedPoints: Int { games.reduce(0) { $0 + $1.earnedPoints } }
-    var possiblePoints: Int { DailyChallengeGame.allCases.count * 5 }
+    var possiblePoints: Int { Self.maximumDailyPoints }
 
     subscript(game: DailyChallengeGame) -> DailyChallengeGameProgress {
         games.first { $0.game == game }!
@@ -177,7 +179,7 @@ struct DailyChallengeSnapshot: Equatable {
         games[index] = DailyChallengeGameProgress(
             game: game, state: state, fillFraction: fraction, progressDetail: progressDetail,
             completedAt: completedAt,
-            earnedPoints: min(5, max(0, earnedPoints))
+            earnedPoints: min(Self.maximumPointsPerGame, max(0, earnedPoints))
         )
     }
 }

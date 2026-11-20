@@ -27,17 +27,13 @@ struct BackwordApp: App {
     @StateObject private var appReviewPromptService: AppReviewPromptService
     @StateObject private var accountService: AccountService
     @StateObject private var homeViewModel: HomeViewModel
+    @StateObject private var dailyIntervlsOnboarding: DailyIntervlsOnboardingViewModel
     @AppStorage("appColorScheme") private var appColorScheme: Int = AppColorSchemePreference.defaultValue
 
     var body: some Scene {
         WindowGroup {
             LaunchSplashView {
-                HomeView(viewModel: homeViewModel)
-                    .safeAreaInset(edge: .bottom, spacing: 0) {
-                        if analyticsConsent.shouldShowPrompt {
-                            AnalyticsConsentBanner()
-                        }
-                    }
+                HomeView(viewModel: homeViewModel, showsAnalyticsConsentBanner: analyticsConsent.shouldShowPrompt)
             }
                 .preferredColorScheme(selectedScheme)
                 .environmentObject(analyticsConsent)
@@ -48,6 +44,7 @@ struct BackwordApp: App {
                 .environmentObject(ratingService)
                 .environmentObject(appReviewPromptService)
                 .environmentObject(accountService)
+                .environmentObject(dailyIntervlsOnboarding)
                 .onChange(of: accountService.isProUser) { _, isAccountProUser in
                     storeService.setAccountProStatus(isAccountProUser)
                 }
@@ -73,6 +70,7 @@ struct BackwordApp: App {
     }
 
     init() {
+        let dailyIntervlsOnboarding = DailyIntervlsOnboardingViewModel()
         let accountService = AccountService()
         let statsService = StatsService()
         let puzzleService = PuzzleService()
@@ -88,6 +86,7 @@ struct BackwordApp: App {
         _ratingService = StateObject(wrappedValue: ratingService)
         _appReviewPromptService = StateObject(wrappedValue: appReviewPromptService)
         _accountService = StateObject(wrappedValue: accountService)
+        _dailyIntervlsOnboarding = StateObject(wrappedValue: dailyIntervlsOnboarding)
         _homeViewModel = StateObject(wrappedValue: HomeViewModel(
             puzzleService: puzzleService,
             storeService: storeService

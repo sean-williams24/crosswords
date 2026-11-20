@@ -2,10 +2,12 @@ import SwiftUI
 
 struct RatingDetailSheet: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @EnvironmentObject private var accountService: AccountService
     @Environment(\.dismiss) private var dismiss
     @StateObject private var dailyProgress = ProfileDailyProgressViewModel()
     @State private var animates = false
+    @State private var showDailyIntervlsGuide = false
     @ScaledMetric private var columnWidth: CGFloat = 60
     @ScaledMetric private var scrollingColumnWidth: CGFloat = 70
     @ScaledMetric private var totalColumnWidth: CGFloat = 30
@@ -40,6 +42,8 @@ struct RatingDetailSheet: View {
 
                     ProfileDailyProgressView(snapshot: dailyProgress.snapshot)
                         .padding(.horizontal, AppLayout.screenPadding)
+                    dailyIntervlsGuideButton
+                        .padding(.horizontal, AppLayout.screenPadding)
                     tierHero
                         .padding(.horizontal, AppLayout.screenPadding)
                     RatingScoringGuideView()
@@ -71,6 +75,16 @@ struct RatingDetailSheet: View {
                 }
             }
         }
+        .allowsHitTesting(!showDailyIntervlsGuide)
+        .accessibilityHidden(showDailyIntervlsGuide)
+        .overlay {
+            if showDailyIntervlsGuide {
+                DailyIntervlsGuideView(dismiss: { showDailyIntervlsGuide = false })
+                    .transition(.opacity)
+            }
+        }
+        .interactiveDismissDisabled(showDailyIntervlsGuide)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: showDailyIntervlsGuide)
         .task {
             while !Task.isCancelled {
                 dailyProgress.refresh()
@@ -86,6 +100,21 @@ struct RatingDetailSheet: View {
                 }
             }
         }
+    }
+
+    private var dailyIntervlsGuideButton: some View {
+        Button {
+            showDailyIntervlsGuide = true
+        } label: {
+            Label("Daily Intervls guide", systemImage: "book")
+                .font(AppFont.body())
+                .frame(maxWidth: .infinity, minHeight: AppLayout.minimumTouchTarget, alignment: .leading)
+                .padding(.horizontal, AppLayout.screenPadding)
+                .padding(.vertical, AppLayout.homeDailyMarkerSpacing)
+                .foregroundStyle(Color.appAccent)
+                .background(Color.appSurface, in: RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
+        }
+        .buttonStyle(.plain)
     }
 
     private var accountActions: some View {

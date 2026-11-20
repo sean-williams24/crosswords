@@ -117,15 +117,10 @@ struct LaunchSplashView<Content: View>: View {
     }
 }
 
+#if DEBUG
 #Preview {
-    let puzzleService = PuzzleService()
-    let storeService = StoreService()
     LaunchSplashView {
-        HomeView(viewModel: HomeViewModel(puzzleService: puzzleService, storeService: storeService))
-            .environmentObject(StatsService())
-            .environmentObject(puzzleService)
-            .environmentObject(storeService)
-            .environmentObject(AdService())
-            .environmentObject(OverallRatingService())
+        HomeViewPreviewContainer()
     }
 }
+#endif

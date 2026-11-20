@@ -135,6 +135,47 @@ struct HomeDailyChallengeLayoutTests {
         #expect(final.width <= 280.5)
     }
 
+    @Test("Guide rows keep the celebration score layout throughout the reveal and announce the maximum",
+          arguments: DailyChallengeGame.allCases, [DynamicTypeSize.large, .accessibility3])
+    func guideRowMeasurements(game: DailyChallengeGame, textSize: DynamicTypeSize) {
+        let proposal = CGSize(width: 280, height: 1_000)
+        let progress = DailyChallengeFixtures.snapshot(finished: 4)[game]
+        let celebration = HomeDailyChallengeCelebrationRow(progress: progress, showsGame: true, showsPoints: true)
+            .environment(\.dynamicTypeSize, textSize)
+        let celebrationSize = UIHostingController(rootView: celebration).sizeThatFits(in: proposal)
+
+        for phase in HomeDailyChallengeCelebrationRow.GuidePhase.allCases {
+            let row = HomeDailyChallengeCelebrationRow(game: game, guidePhase: phase)
+            let measured = UIHostingController(rootView: row.environment(\.dynamicTypeSize, textSize))
+                .sizeThatFits(in: proposal)
+            #expect(measured == celebrationSize)
+            #expect(measured.width <= 280.5)
+            #expect(row.accessibilityDescription == "\(game.displayName), up to 5 points")
+        }
+    }
+
+    @Test("The guide fills the capsule and ends on the standard maximum-points score")
+    func guideRowArtwork() throws {
+        let game = DailyChallengeGame.anagram
+        let maximum = DailyChallengeSnapshot.maximumPointsPerGame
+        let progress = DailyChallengeGameProgress(game: game, state: .finished(won: true), earnedPoints: maximum)
+        func pixels(of row: HomeDailyChallengeCelebrationRow) throws -> [UInt8] {
+            let renderer = ImageRenderer(content: row.environment(\.colorScheme, .dark))
+            renderer.proposedSize = ProposedViewSize(width: 280, height: nil)
+            renderer.scale = 2
+            return try rgbaPixels(#require(renderer.cgImage))
+        }
+
+        let outline = try pixels(of: HomeDailyChallengeCelebrationRow(game: game, guidePhase: .marker))
+        let filled = try pixels(of: HomeDailyChallengeCelebrationRow(game: game, guidePhase: .filled))
+        let final = try pixels(of: HomeDailyChallengeCelebrationRow(game: game, guidePhase: .points))
+        let celebration = try pixels(of: HomeDailyChallengeCelebrationRow(progress: progress, showsGame: true, showsPoints: true))
+
+        #expect(outline != filled)
+        #expect(filled != final)
+        #expect(final == celebration)
+    }
+
     @Test("The text-only celebration fits narrow and short screens in both appearances",
           arguments: [DynamicTypeSize.large, .accessibility3, .accessibility5],
                      [ColorScheme.light, .dark])

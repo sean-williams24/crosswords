@@ -8,7 +8,9 @@ struct HomeView: View {
     @EnvironmentObject var adService: AdService
     @EnvironmentObject var ratingService: OverallRatingService
     @EnvironmentObject var accountService: AccountService
+    @EnvironmentObject private var dailyIntervlsOnboarding: DailyIntervlsOnboardingViewModel
     @ObservedObject private var viewModel: HomeViewModel
+    private let showsAnalyticsConsentBanner: Bool
     @ObservedObject private var settings = AppSettings.shared
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
@@ -38,6 +40,7 @@ struct HomeView: View {
     @State private var logoVisible = false
     @State private var proLogoVisible = false
     @State private var showRatingDetails = false
+    @State private var dailyIntervlsGuideMode: DailyIntervlsGuideView.Mode?
     @State private var navigationPath = [String]()
     @State private var navigationBarDidAppear = false
     @State private var settingsTipReadinessTask: Task<Void, Never>?
@@ -56,17 +59,27 @@ struct HomeView: View {
         AppLayout(sizeClass: sizeClass)
     }
 
-    private var canPresentDailyCelebration: Bool {
-        var available = homeHasAppeared && navigationPath.isEmpty && scenePhase == .active
-            && launchSplashDidComplete
-            && !adService.isPresentingFullScreenAd && !showArchive && !showPaywall
-            && !showWOTD && !showSettings && !showAccount && !showRatingDetails
-            && !showAdExplainer && !viewModel.crosswordsFetchDidFail
+    private var homeIsAvailable: Bool {
+        homeHasAppeared && launchSplashDidComplete && scenePhase == .active
+            && !adService.isPresentingFullScreenAd && !homeHasActivePresentation
             && accountService.accountDeletionNotice == nil
-        #if DEBUG
-        available = available && !showDebugSettings
-        #endif
-        return available
+    }
+
+    private var canPresentDailyCelebration: Bool {
+        homeIsAvailable && dailyIntervlsOnboarding.firstLaunchStep == nil && !viewModel.crosswordsFetchDidFail
+    }
+
+    private var dailyIntervlsHomeOffer: DailyIntervlsOnboardingViewModel.HomeOffer? {
+        dailyIntervlsOnboarding.homeOffer(
+            isHomeReady: homeIsAvailable && !dailyChallenge.isCelebrating,
+            hasGameLoadError: viewModel.crosswordsFetchDidFail
+        )
+    }
+
+    private var blocksSettingsTip: Bool {
+        dailyIntervlsOnboarding.firstLaunchStep != nil
+            || dailyIntervlsOnboarding.showsReturningTip
+            || dailyIntervlsGuideMode != nil
     }
 
     private var nextAnagramHomeProgressTick: Date? {
@@ -124,12 +137,32 @@ struct HomeView: View {
         }
     }
 
-    init(viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModel, showsAnalyticsConsentBanner: Bool = false) {
         self.viewModel = viewModel
+        self.showsAnalyticsConsentBanner = showsAnalyticsConsentBanner
     }
 
     var body: some View {
         homeLifecycleView
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if showsAnalyticsConsentBanner && dailyIntervlsOnboarding.firstLaunchStep == nil {
+                    AnalyticsConsentBanner()
+                }
+            }
+            .allowsHitTesting(dailyIntervlsGuideMode == nil)
+            .accessibilityHidden(dailyIntervlsGuideMode != nil)
+            .overlay {
+                if let dailyIntervlsGuideMode {
+                    DailyIntervlsGuideView(
+                        mode: dailyIntervlsGuideMode,
+                        acknowledgeGameplay: { dailyIntervlsOnboarding.acknowledgeGameplay() },
+                        finishOnboarding: { dailyIntervlsOnboarding.finishOnboarding() },
+                        dismiss: { self.dailyIntervlsGuideMode = nil }
+                    )
+                    .transition(.opacity)
+                }
+            }
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: dailyIntervlsGuideMode != nil)
     }
 
     private var homeNavigationView: some View {
@@ -177,8 +210,8 @@ struct HomeView: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 archiveFooterBar
             }
-            .allowsHitTesting(!dailyChallenge.isCelebrating)
-            .accessibilityHidden(dailyChallenge.isCelebrating)
+            .allowsHitTesting(!dailyChallenge.isCelebrating && dailyIntervlsOnboarding.firstLaunchStep == nil)
+            .accessibilityHidden(dailyChallenge.isCelebrating || dailyIntervlsOnboarding.firstLaunchStep != nil)
             .overlay {
                 if dailyChallenge.isCelebrating, let result = dailyChallenge.celebrationSnapshot {
                     HomeDailyChallengeCelebration(snapshot: result, dismiss: {
@@ -351,6 +384,19 @@ struct HomeView: View {
 
     private var homeTipObservationView: some View {
         homeTaskView
+            .onChange(of: dailyIntervlsHomeOffer, initial: true) { _, offer in
+                switch offer {
+                case .firstLaunch(let step):
+                    presentDailyIntervlsGuide(.onboarding(step))
+                case .returningTip:
+                    dailyIntervlsOnboarding.presentReturningTip()
+                case nil:
+                    break
+                }
+            }
+            .onChange(of: blocksSettingsTip) { _, _ in
+                updateSettingsTipReadiness()
+            }
             .onChange(of: launchSplashDidComplete) { _, _ in
                 updateSettingsTipReadiness()
             }
@@ -419,7 +465,7 @@ struct HomeView: View {
             } message: {
                 Text(accountService.accountDeletionNotice ?? "")
             }
-            .alert("There was a problem loading the games, please check your network.", isPresented: $viewModel.crosswordsFetchDidFail) {
+            .alert("There was a problem loading the games, please check your network.", isPresented: gameLoadAlertBinding) {
                 Button("OK", role: .cancel) { }
                 Button("Try again") {
                     Task {
@@ -431,12 +477,22 @@ struct HomeView: View {
 
     private var accountDeletionNoticeBinding: Binding<Bool> {
         Binding(
-            get: { accountService.accountDeletionNotice != nil },
+            get: { accountService.accountDeletionNotice != nil && dailyIntervlsGuideMode == nil },
             set: { isPresented in
                 if !isPresented {
                     accountService.dismissAccountDeletionNotice()
                 }
             }
+        )
+    }
+
+    private var gameLoadAlertBinding: Binding<Bool> {
+        Binding(
+            get: {
+                viewModel.crosswordsFetchDidFail && dailyIntervlsOnboarding.firstLaunchStep == nil
+                    && dailyIntervlsGuideMode == nil && accountService.accountDeletionNotice == nil
+            },
+            set: { viewModel.crosswordsFetchDidFail = $0 }
         )
     }
 
@@ -518,6 +574,16 @@ struct HomeView: View {
             )
                 .padding(.horizontal, appLayout.homeHorizontalPadding)
                 .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
+
+            if dailyIntervlsOnboarding.showsReturningTip && !dailyChallenge.isCelebrating {
+                HomeDailyIntervlsTip {
+                    dailyIntervlsOnboarding.dismissReturningTip()
+                    presentDailyIntervlsGuide(.manual)
+                } dismiss: {
+                    dailyIntervlsOnboarding.dismissReturningTip()
+                }
+                .padding(.horizontal, appLayout.homeHorizontalPadding)
+            }
 
             if !isExpanded {
                 wordOfTheDay(showsInlineDetails: false)
@@ -784,7 +850,7 @@ struct HomeView: View {
     }
 
     private var settingsTipCanPresent: Bool {
-        SettingsTipPresentationReadiness.canPresent(
+        !blocksSettingsTip && SettingsTipPresentationReadiness.canPresent(
             launchSplashDidComplete: launchSplashDidComplete,
             navigationBarDidAppear: navigationBarDidAppear,
             adStartupDidComplete: adService.adStartupDidComplete,
@@ -795,7 +861,10 @@ struct HomeView: View {
     }
 
     private var homeHasActivePresentation: Bool {
-        !navigationPath.isEmpty
+        #if DEBUG
+        if showDebugSettings { return true }
+        #endif
+        return !navigationPath.isEmpty
             || showArchive
             || showPaywall
             || showWOTD
@@ -803,6 +872,12 @@ struct HomeView: View {
             || showSettings
             || showAccount
             || showRatingDetails
+            || dailyIntervlsGuideMode != nil
+    }
+
+    private func presentDailyIntervlsGuide(_ mode: DailyIntervlsGuideView.Mode) {
+        cancelSettingsTipPresentation()
+        dailyIntervlsGuideMode = mode
     }
 
     private func openDailyGame(_ game: DailyGame) {
@@ -1018,6 +1093,7 @@ struct HomeViewPreviewContainer: View {
     @StateObject private var ratingService: OverallRatingService
     @StateObject private var accountService: AccountService
     @StateObject private var viewModel: HomeViewModel
+    @StateObject private var dailyIntervlsOnboarding = DailyIntervlsOnboardingViewModel.preview()
 
     init(completedPuzzle: Bool = false) {
         let puzzleService = PuzzleService()
@@ -1047,6 +1123,7 @@ struct HomeViewPreviewContainer: View {
             .environmentObject(adService)
             .environmentObject(ratingService)
             .environmentObject(accountService)
+            .environmentObject(dailyIntervlsOnboarding)
     }
 }
 
