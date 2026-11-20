@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA1172026112000000000002 /* DailyIntervlsRatingDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026112000000000001 /* DailyIntervlsRatingDemoView.swift */; };
+		DA1172026112000000000004 /* RatingBarTierLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026112000000000003 /* RatingBarTierLabel.swift */; };
 		DA117202611190000000000A /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000009 /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift */; };
 		DA1172026111900000000008 /* HomeDailyIntervlsTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000007 /* HomeDailyIntervlsTip.swift */; };
 		DA1172026111900000000006 /* DailyIntervlsGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000005 /* DailyIntervlsGuideView.swift */; };
@@ -301,6 +303,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DA1172026112000000000001 /* DailyIntervlsRatingDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsRatingDemoView.swift; sourceTree = "<group>"; };
+		DA1172026112000000000003 /* RatingBarTierLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingBarTierLabel.swift; sourceTree = "<group>"; };
 		DA1172026111900000000009 /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/DailyIntervlsOnboardingTests.swift; sourceTree = "<group>"; };
 		DA1172026111900000000007 /* HomeDailyIntervlsTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDailyIntervlsTip.swift; sourceTree = "<group>"; };
 		DA1172026111900000000005 /* DailyIntervlsGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsGuideView.swift; sourceTree = "<group>"; };
@@ -870,6 +874,7 @@
 				31EB61D3D1C00A7790B63631 /* HomeDailyChallengeCardHighlight.swift */,
 				A1AD1044A179E42EFE71553C /* HomeDailyChallengeRatingRow.swift */,
 				DA1172026111900000000005 /* DailyIntervlsGuideView.swift */,
+				DA1172026112000000000001 /* DailyIntervlsRatingDemoView.swift */,
 				FF081FFFA920E4CFBA726F5C /* HomeDailyChallengeSummary.swift */,
 				DA1172026111900000000007 /* HomeDailyIntervlsTip.swift */,
 				5EE22632345BAEF6D547A3AB /* HomeDailyChallengeMarker.swift */,
@@ -1064,6 +1069,7 @@
 				86AFC3D42FC2402F007623C3 /* StatsView.swift */,
 				7CFE3BE7131C4A71B3845485 /* WOTDDetailView.swift */,
 				9165B37268686C367CEB6523 /* RatingBarView.swift */,
+				DA1172026112000000000003 /* RatingBarTierLabel.swift */,
 				86AFC3CF2FBFC323007623C3 /* RatingDetails */,
 				922354966A899721DF1CF25C /* CrosswordStatsView.swift */,
 			);
@@ -1282,6 +1288,7 @@
 				A4B100000000000000000001 /* ProfileDailyProgressView.swift in Sources */,
 				A4B100000000000000000002 /* ProfileDailyProgressViewModel.swift in Sources */,
 				DA1172026111900000000006 /* DailyIntervlsGuideView.swift in Sources */,
+				DA1172026112000000000002 /* DailyIntervlsRatingDemoView.swift in Sources */,
 				27938D26A9B6C3A7D7123BA9 /* HomeDailyChallengeSummary.swift in Sources */,
 				DA1172026111900000000008 /* HomeDailyIntervlsTip.swift in Sources */,
 				7980901851029979675A8FBF /* HomeDailyChallengeMarker.swift in Sources */,
@@ -1452,6 +1459,7 @@
 				143A79FE56648107686BEF85 /* OverallRatingService.swift in Sources */,
 				86F02E4A2FBA15550083B752 /* PuzzleStatus.swift in Sources */,
 				70FDEC9954ABAD6370C542F4 /* RatingBarView.swift in Sources */,
+				DA1172026112000000000004 /* RatingBarTierLabel.swift in Sources */,
 				CDFB51C30CE8784881171A9F /* RatingDetailSheet.swift in Sources */,
 				8F92754416251062C7FCA46E /* CrosswordStatsView.swift in Sources */,
 				86E5C00A2FA9211200A42156 /* WeeklyCrosswordCard.swift in Sources */,

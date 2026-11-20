@@ -20,19 +20,23 @@ struct DailyIntervlsGuideView: View {
     @AccessibilityFocusState private var isHeadingFocused: Bool
     @State private var step: DailyIntervlsGuideStep
     @State private var lineupPhase: HomeDailyChallengeCelebrationRow.GuidePhase = .hidden
+    @State private var ratingProgress: Double = 0
 
     private let mode: Mode
+    private let isPro: Bool
     private let acknowledgeGameplay: () -> Void
     private let finishOnboarding: () -> Void
     private let dismiss: () -> Void
 
     init(
         mode: Mode = .manual,
+        isPro: Bool = false,
         acknowledgeGameplay: @escaping () -> Void = {},
         finishOnboarding: @escaping () -> Void = {},
         dismiss: @escaping () -> Void
     ) {
         self.mode = mode
+        self.isPro = isPro
         self.acknowledgeGameplay = acknowledgeGameplay
         self.finishOnboarding = finishOnboarding
         self.dismiss = dismiss
@@ -60,8 +64,10 @@ struct DailyIntervlsGuideView: View {
         }
         .task(id: step) {
             isHeadingFocused = true
-            guard step == .gameplay else { return }
-            await animateLineup()
+            switch step {
+            case .gameplay: await animateLineup()
+            case .scoring: await animateRating()
+            }
         }
     }
 
@@ -88,7 +94,9 @@ struct DailyIntervlsGuideView: View {
                     .foregroundStyle(Color.appTextPrimary)
                     .accessibilityAddTraits(.isHeader)
                     .accessibilityFocused($isHeadingFocused)
-                explanation(step.introduction)
+                if step == .gameplay {
+                    explanation(step.introduction)
+                }
             }
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
@@ -96,11 +104,13 @@ struct DailyIntervlsGuideView: View {
             if step == .gameplay {
                 dailyLineup
             } else {
-                scoringRows
-                VStack(alignment: .leading, spacing: AppLayout.homeDailyCelebrationRowSpacing) {
-                    explanation(DailyIntervlsGuideStep.ratingDescription)
-                    explanation(DailyIntervlsGuideStep.eligibilityDescription)
+                DailyIntervlsRatingDemoView(progress: ratingProgress, isPro: isPro)
+                VStack(spacing: AppLayout.homeDailyCelebrationRowSpacing) {
+                    explanation(step.introduction)
+                    explanation(DailyIntervlsGuideStep.ratingWindowDescription)
                 }
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
             }
         }
     }
@@ -130,33 +140,22 @@ struct DailyIntervlsGuideView: View {
         }
     }
 
-    private var scoringRows: some View {
-        VStack(alignment: .leading, spacing: AppLayout.homeDailyCelebrationRowSpacing) {
-            ForEach([DailyChallengeGame.backword, .crossword]) { game in
-                guideRow(game.displayName, game.guideScoringDescription)
-            }
-            guideRow(
-                "\(DailyChallengeGame.anagram.displayName) & \(DailyChallengeGame.midword.displayName)",
-                DailyChallengeGame.anagram.guideScoringDescription
-            )
-        }
-    }
-
-    private func guideRow(_ title: String, _ description: String) -> some View {
-        VStack(alignment: .leading, spacing: AppLayout.homeDailySummaryLineSpacing) {
-            Text(title)
-                .font(AppFont.body(AppLayout.dailyIntervlsGuideLabelSize).weight(.semibold))
-                .foregroundStyle(Color.appTextPrimary)
-            explanation(description)
-        }
-        .accessibilityElement(children: .combine)
-    }
-
     private func explanation(_ text: String) -> some View {
         Text(text)
             .font(AppFont.caption())
             .foregroundStyle(Color.appTextPrimary)
             .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func animateRating() async {
+        guard !reduceMotion else {
+            ratingProgress = 1
+            return
+        }
+        do { try await Task.sleep(for: .milliseconds(250)) } catch { return }
+        withAnimation(.linear(duration: 4.5)) {
+            ratingProgress = 1
+        }
     }
 
     private var actions: some View {
@@ -218,10 +217,17 @@ struct DailyIntervlsGuideView: View {
         .preferredColorScheme(.dark)
 }
 
-#Preview("Daily Intervls · Scoring · Light") {
+#Preview("Daily Intervls · Scoring · Animated") {
     DailyIntervlsGuideView(mode: .onboarding(.scoring), dismiss: {})
         .background(AppBackgroundGradient())
         .preferredColorScheme(.light)
+}
+
+#Preview("Daily Intervls · Scoring · Pro · Reduce Motion") {
+    DailyIntervlsGuideView(mode: .onboarding(.scoring), isPro: true, dismiss: {})
+        .background(AppBackgroundGradient())
+        .environment(\.dynamicTypeSize, .accessibility3)
+        .environment(\._accessibilityReduceMotion, true)
 }
 
 #Preview("Daily Intervls · Manual · Accessibility") {

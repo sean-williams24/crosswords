@@ -155,6 +155,7 @@ struct HomeView: View {
                 if let dailyIntervlsGuideMode {
                     DailyIntervlsGuideView(
                         mode: dailyIntervlsGuideMode,
+                        isPro: storeService.isProUser,
                         acknowledgeGameplay: { dailyIntervlsOnboarding.acknowledgeGameplay() },
                         finishOnboarding: { dailyIntervlsOnboarding.finishOnboarding() },
                         dismiss: { self.dailyIntervlsGuideMode = nil }

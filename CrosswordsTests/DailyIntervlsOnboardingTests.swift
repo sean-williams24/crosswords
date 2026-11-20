@@ -94,16 +94,46 @@ struct DailyIntervlsOnboardingTests {
 
     @Test("The lineup uses Home order and the scoring page explains the rating window")
     func guideContent() {
-        let games = DailyChallengeGame.allCases
-        #expect(games.map(\.displayName) == ["Backword", "Quick Crossword", "Anagram", "Midword"])
-        for game in games {
-            #expect(!game.guideScoringDescription.isEmpty)
-        }
+        #expect(DailyChallengeGame.allCases.map(\.displayName) == ["Backword", "Quick Crossword", "Anagram", "Midword"])
         #expect(DailyIntervlsGuideStep.gameplay.introduction ==
-                "Finish all four games before midnight, in any order. A loss or give-up counts.")
-        #expect(DailyIntervlsGuideStep.scoring.introduction.contains("\(DailyChallengeSnapshot.maximumDailyPoints) points"))
-        #expect(DailyIntervlsGuideStep.ratingDescription.contains("last \(OverallRating.windowDays) days"))
-        #expect(DailyChallengeGame.anagram.guideScoringDescription == DailyChallengeGame.midword.guideScoringDescription)
+                "Finish all four daily games before midnight, score a maximum of 20 points.")
+
+        let ratingIntroduction = DailyIntervlsGuideStep.scoring.introduction
+        #expect(ratingIntroduction.contains("last \(OverallRating.windowDays) days, including today"))
+        #expect(DailyIntervlsGuideStep.ratingWindowDescription ==
+                "Each new day replaces the oldest. Missed games score zero.")
+    }
+
+    @Test("The example goes from zero to the full 14-day rating maximum", arguments: [false, true])
+    func ratingExampleTotals(isPro: Bool) {
+        let initial = DailyIntervlsRatingExample(fraction: -0.1, isPro: isPro)
+        let final = DailyIntervlsRatingExample(fraction: 1.1, isPro: isPro)
+        let fullWindow = OverallRating().maxPoints(
+            isPro: isPro, now: Date(timeIntervalSince1970: 1_800_000_000),
+            firstAnagramRelease: OverallRating.midwordLaunchDate
+        )
+
+        #expect(initial.fraction == 0)
+        #expect(initial.points == 0)
+        #expect(initial.tier == .novice)
+        #expect(final.fraction == 1)
+        #expect(final.maximumPoints == fullWindow)
+        #expect(final.points == fullWindow)
+        #expect(final.tier == .virtuoso)
+    }
+
+    @Test("The example shows the next tier when its displayed points reach the rating threshold",
+          arguments: [RatingTier.scribe, .linguist, .grandmaster, .virtuoso], [false, true])
+    func ratingExampleTier(tier: RatingTier, isPro: Bool) {
+        let maximum = Double(DailyIntervlsRatingExample(fraction: 1, isPro: isPro).maximumPoints)
+        let qualifyingPoints = ceil(tier.threshold * maximum)
+        let firstQualifyingScore = DailyIntervlsRatingExample(fraction: (qualifyingPoints + 0.25) / maximum, isPro: isPro)
+        let lastLowerScore = DailyIntervlsRatingExample(fraction: (qualifyingPoints - 0.25) / maximum, isPro: isPro)
+
+        #expect(firstQualifyingScore.tier == tier)
+        #expect(firstQualifyingScore.points == Int(qualifyingPoints))
+        #expect(lastLowerScore.points == firstQualifyingScore.points - 1)
+        #expect(lastLowerScore.tier.nextThreshold == tier.threshold)
     }
 
     private func withDefaults(_ test: (UserDefaults) -> Void) {

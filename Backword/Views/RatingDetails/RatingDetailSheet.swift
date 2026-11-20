@@ -79,7 +79,7 @@ struct RatingDetailSheet: View {
         .accessibilityHidden(showDailyIntervlsGuide)
         .overlay {
             if showDailyIntervlsGuide {
-                DailyIntervlsGuideView(dismiss: { showDailyIntervlsGuide = false })
+                DailyIntervlsGuideView(isPro: isPro, dismiss: { showDailyIntervlsGuide = false })
                     .transition(.opacity)
             }
         }

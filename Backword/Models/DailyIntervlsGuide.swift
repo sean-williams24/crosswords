@@ -14,9 +14,9 @@ enum DailyIntervlsGuideStep: Equatable {
     var introduction: String {
         switch self {
         case .gameplay:
-            return "Finish all four daily games before midnight, score a maximum of 20 points."
+            return "Complete all four daily games before midnight, score a maximum of 20 points."
         case .scoring:
-            return "Up to \(DailyChallengeSnapshot.maximumPointsPerGame) points per game, \(DailyChallengeSnapshot.maximumDailyPoints) points per day."
+            return "Your rating is based on the points you earned over the last \(OverallRating.windowDays) days./n/n Complete your Intervls everyday to reach the highest tier and stay there."
         }
     }
 
@@ -27,22 +27,19 @@ enum DailyIntervlsGuideStep: Equatable {
         }
     }
 
-    static var ratingDescription: String {
-        "Your tier is based on your share of available points over the last \(OverallRating.windowDays) days. Missed games score zero."
-    }
-
-    static let eligibilityDescription = "Archive play earns no rating points. Weekly Pro Crossword points count toward the Pro rating."
+    static let ratingWindowDescription = "Each new day replaces the oldest. Missed games score zero."
 }
 
-extension DailyChallengeGame {
-    var guideScoringDescription: String {
-        switch self {
-        case .backword:
-            return "Fewer guesses earn more points."
-        case .crossword:
-            return "Complete more clues for more points. Lose 1 point per 3 hints."
-        case .anagram, .midword:
-            return "Faster solves earn more points."
-        }
+struct DailyIntervlsRatingExample {
+    let fraction: Double
+    let maximumPoints: Int
+
+    init(fraction: Double, isPro: Bool) {
+        self.fraction = min(max(fraction, 0), 1)
+        let dailyPoints = OverallRating.windowDays * DailyChallengeSnapshot.maximumDailyPoints
+        maximumPoints = dailyPoints + (isPro ? RatingGameCategory.weeklyCrossword.maxPoints : 0)
     }
+
+    var points: Int { Int((Double(maximumPoints) * fraction).rounded(.down)) }
+    var tier: RatingTier { RatingTier.forFraction(Double(points) / Double(maximumPoints)) }
 }

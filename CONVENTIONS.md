@@ -801,6 +801,15 @@ each Home progress marker fills with its game colour and transitions to the
 maximum score. VoiceOver describes the maximum as “up to” five points per game.
 Reduce Motion shows the entire lineup at its maximum scores immediately.
 
+The scoring page explains the rolling rating window. The rating reflects the
+share of available points earned over the last 14 days, including today. Each
+new day replaces the oldest, and missed games contribute zero points.
+Above the explanation, a full-window example uses Home's rating bar and tier
+thresholds. The points, bar and tier advance together from zero to the available
+total for daily games, including weekly points for Pro players. The example is
+independent of saved progress and content downloads. Reduce Motion shows its
+final score and tier immediately.
+
 Upgrades get an inline tip below the Home rating in the first eligible
 session. The tip is recorded when it is offered and stays visible in that
 session until dismissed or opened. The permanent Daily Intervls guide in

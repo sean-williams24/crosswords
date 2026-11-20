@@ -128,6 +128,10 @@ enum RatingTier: CaseIterable {
         case .virtuoso:    return 1.0
         }
     }
+
+    static func forFraction(_ fraction: Double) -> RatingTier {
+        allCases.reversed().first { $0.threshold <= fraction } ?? .novice
+    }
 }
 
 // MARK: - Scoring Helpers
@@ -245,23 +249,19 @@ struct OverallRating: Codable {
     }
 
     func tier(for category: RatingGameCategory) -> RatingTier {
-        let categoryFraction = fraction(for: category)
-        return RatingTier.allCases.reversed().first {
-            $0.threshold <= categoryFraction
-        } ?? .novice
+        RatingTier.forFraction(fraction(for: category))
     }
 
     func tier(
         isPro: Bool, now: Date = Date(), calendar: Calendar = .current,
         firstAnagramRelease: String? = UserDefaults.standard.string(forKey: "Anagram.firstReleaseDate")
     ) -> RatingTier {
-        let f = fraction(
+        RatingTier.forFraction(fraction(
             isPro: isPro,
             now: now,
             calendar: calendar,
             firstAnagramRelease: firstAnagramRelease
-        )
-        return RatingTier.allCases.reversed().first { $0.threshold <= f } ?? .novice
+        ))
     }
 
     private func scoreFor(_ day: DailyScore, isPro: Bool) -> Int {

@@ -31,7 +31,7 @@ struct RatingBarView: View {
     private var tierLabelView: some View {
         GeometryReader { geo in
             ZStack(alignment: .topLeading) {
-                tierLabel
+                RatingBarTierLabel(tier: tier)
                     .alignmentGuide(.leading) { dimensions in
                         -RatingBarLabelLayout.leadingOffset(
                             barWidth: geo.size.width,
@@ -67,7 +67,7 @@ struct RatingBarView: View {
                     pointsView(category: category)
                 } else if let dailyChallenge {
                     HomeDailyChallengeRatingRow(snapshot: dailyChallenge, celebrationID: dailyCelebrationID) {
-                        tierLabel
+                        RatingBarTierLabel(tier: tier)
                     }
                     .frame(minHeight: tierLabelHeight)
                 } else {
@@ -94,23 +94,6 @@ struct RatingBarView: View {
             }
         }
     }
-
-    // MARK: - Helpers
-
-    private var tierLabel: some View {
-        HStack(spacing: 4) {
-            if tier == .virtuoso {
-                Image(systemName: "star.fill")
-                    .font(.system(size: 9, weight: .bold))
-                    .foregroundStyle(tier.gradient)
-            }
-            Text(tier.displayName.uppercased())
-                .font(AppFont.clueLabel(10))
-                .foregroundColor(tier.color)
-                .tracking(1.5)
-        }
-    }
-
 }
 
 enum RatingBarLabelLayout {

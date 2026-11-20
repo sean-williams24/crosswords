@@ -42,6 +42,7 @@ struct RatingProgressTrack: View {
     let animates: Bool
     var accentColor: Color? = nil
     var trackColor: Color? = nil
+    var animatesProgressChanges = true
 
     private var clampedFraction: CGFloat {
         CGFloat(min(max(fraction, 0), 1))
@@ -76,7 +77,7 @@ struct RatingProgressTrack: View {
                             .cornerRadius(style.cornerRadius)
                     }
                     .animation(
-                        .spring(response: 0.8, dampingFraction: 0.75),
+                        animatesProgressChanges ? .spring(response: 0.8, dampingFraction: 0.75) : nil,
                         value: displayedFraction
                     )
 
@@ -101,8 +102,9 @@ struct RatingProgressTrack: View {
                         )
                     )
                     .animation(
-                        .spring(response: 0.8, dampingFraction: 0.75)
-                            .delay(markerAnimationDelay),
+                        animatesProgressChanges
+                            ? .spring(response: 0.8, dampingFraction: 0.75).delay(markerAnimationDelay)
+                            : nil,
                         value: displayedFraction
                     )
                 }
