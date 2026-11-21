@@ -26,16 +26,12 @@ const plans: Array<{ id: ProPlan; name: string; price: string; detail: string; b
 
 const features = [
   {
-    title: "The 13 x 13 crossword",
-    detail: "Take on a larger, satisfyingly tricky crossword whenever you are ready for a deeper solve."
-  },
-  {
     title: "Every puzzle, on demand",
     detail: "Explore the complete archive for Backword, Midword, Anagram and both crosswords, with past puzzles ready whenever the mood strikes."
   },
   {
-    title: "A helpful nudge when needed",
-    detail: "Reveal an answer when a clue has you stumped, then carry on and finish the puzzle your way."
+    title: "The 13 x 13 crossword",
+    detail: "Take on a larger, satisfyingly tricky crossword whenever you are ready for a deeper solve."
   }
 ];
 

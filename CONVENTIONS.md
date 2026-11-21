@@ -397,6 +397,15 @@ destinations.
 
 ---
 
+## Web Pro Paywall Benefits
+
+The web Pro paywall promotes the full puzzle archive first, followed by the
+13 × 13 crossword. The site has no ads and hints are available to all players.
+The two benefit cards are centred above the plan picker, with centred text, and
+stack on narrow screens.
+
+---
+
 ## Settings Account Row Dynamic Type
 
 The iOS Settings account row keeps its horizontal layout through XXX Large.

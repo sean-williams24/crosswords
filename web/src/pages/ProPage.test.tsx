@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -52,10 +52,13 @@ describe("ProPage", () => {
     analytics.track.mockClear();
   });
 
-  it("promotes paid puzzle features without claiming ad-free gameplay", () => {
+  it("shows the archive benefit before the premium crossword benefit", () => {
     renderPage();
-    expect(screen.getByText("The 13 x 13 crossword")).toBeInTheDocument();
-    expect(screen.getByText("Every puzzle, on demand")).toBeInTheDocument();
+    const benefits = within(screen.getByRole("list", { name: "Included with Intervls Pro" }));
+    const cards = benefits.getAllByRole("listitem");
+    expect(cards).toHaveLength(2);
+    expect(within(cards[0]).getByRole("heading", { name: "Every puzzle, on demand" })).toBeInTheDocument();
+    expect(within(cards[1]).getByRole("heading", { name: "The 13 x 13 crossword" })).toBeInTheDocument();
     expect(screen.queryByText(/ad-free|without ads|More room to focus/i)).not.toBeInTheDocument();
   });
 
@@ -71,7 +74,7 @@ describe("ProPage", () => {
     expect(screen.getByText("Or")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Login" })).toHaveAttribute("href", "/sign-in");
     expect(screen.getByRole("heading", { name: "The 13 x 13 crossword" })).toBeInTheDocument();
-    expect(screen.getByText(/complete Backword and crossword archive/i)).toBeInTheDocument();
+    expect(screen.getByText(/complete archive for Backword, Midword, Anagram and both crosswords/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Annual/i })).toHaveTextContent("£8.99");
     expect(screen.getByRole("button", { name: /Annual/i })).toHaveTextContent("Save 50%");
 
