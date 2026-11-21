@@ -60,24 +60,33 @@ import UIKit
 @MainActor
 @Suite("Analytics consent banner layout")
 struct AnalyticsConsentBannerLayoutTests {
-    @Test("The dismissal animation respects Reduce Motion")
-    func dismissalAnimationRespectsReduceMotion() {
-        #expect(AnalyticsConsentBanner.dismissalAnimation(reduceMotion: false) != nil)
-        #expect(AnalyticsConsentBanner.dismissalAnimation(reduceMotion: true) == nil)
+    @Test("The dismissal uses a one-second animation and respects Reduce Motion")
+    func dismissalAnimationTiming() {
+        #expect(AnalyticsConsentBannerPresentation.dismissalAnimation(reduceMotion: false) == Animation.easeInOut(duration: 1))
+        #expect(AnalyticsConsentBannerPresentation.dismissalAnimation(reduceMotion: true) == nil)
+    }
+
+    @Test("The footer stays mounted through the slide after consent is saved", arguments: [false, true])
+    func footerRemainsVisibleDuringDismissal(enabled: Bool) {
+        let suiteName = "AnalyticsConsentBannerDismissalTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let model = AnalyticsConsentViewModel(defaults: defaults, applyConsent: { _ in })
+
+        #expect(AnalyticsConsentBannerPresentation.showsFooter(shouldShowPrompt: model.shouldShowPrompt, isDismissing: false))
+        model.setEnabled(enabled)
+
+        #expect(AnalyticsConsent.savedChoice(in: defaults) == (enabled ? .accepted : .declined))
+        #expect(AnalyticsConsentBannerPresentation.showsFooter(shouldShowPrompt: model.shouldShowPrompt, isDismissing: true))
+        #expect(!AnalyticsConsentBannerPresentation.showsFooter(shouldShowPrompt: model.shouldShowPrompt, isDismissing: false))
     }
 
     @Test("The banner stays compact on narrow phones at every Dynamic Type size",
           arguments: [CGFloat(320), CGFloat(393)], DynamicTypeSize.allCases)
     func compactBanner(width: CGFloat, textSize: DynamicTypeSize) {
-        let suiteName = "AnalyticsConsentBannerTests.\(UUID().uuidString)"
-        let defaults = UserDefaults(suiteName: suiteName)!
-        defer { defaults.removePersistentDomain(forName: suiteName) }
-        let model = AnalyticsConsentViewModel(defaults: defaults, applyConsent: { _ in })
-
         func fittedSize(_ size: DynamicTypeSize) -> CGSize {
             let host = UIHostingController(rootView:
-                AnalyticsConsentBanner()
-                    .environmentObject(model)
+                AnalyticsConsentBanner(selectConsent: { _ in })
                     .environment(\.dynamicTypeSize, size)
             )
             return host.sizeThatFits(in: CGSize(width: width, height: 1_000))
@@ -87,9 +96,21 @@ struct AnalyticsConsentBannerLayoutTests {
         #expect(size.width <= width + 0.5)
         #expect(size.height > 0)
         #expect(size.height <= 260)
-        if textSize > .xLarge {
-            #expect(abs(size.height - fittedSize(.xLarge).height) < 0.5)
+        if textSize > .xxxLarge {
+            #expect(abs(size.height - fittedSize(.xxxLarge).height) < 0.5)
         }
+    }
+
+    @Test("The footer slides far enough to clear the physical screen edge", arguments: [CGFloat(0), CGFloat(34)])
+    func dismissalClearsScreen(bottomSafeArea: CGFloat) {
+        let bannerHeight: CGFloat = 160
+        let topAtRest = -bannerHeight - bottomSafeArea
+        let offset = AnalyticsConsentBannerPresentation.dismissalOffset(
+            bannerHeight: bannerHeight,
+            bottomSafeArea: bottomSafeArea
+        )
+
+        #expect(topAtRest + offset == 0)
     }
 }
 #endif

@@ -31,7 +31,7 @@ const features = [
   },
   {
     title: "Every puzzle, on demand",
-    detail: "Explore the complete Backword and crossword archive, with past puzzles ready whenever the mood strikes."
+    detail: "Explore the complete archive for Backword, Midword, Anagram and both crosswords, with past puzzles ready whenever the mood strikes."
   },
   {
     title: "A helpful nudge when needed",

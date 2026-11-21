@@ -225,6 +225,7 @@
 		ADA140013011000000000001 /* AnalyticsConsent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA140003011000000000001 /* AnalyticsConsent.swift */; };
 		ADA140033011000000000001 /* AnalyticsConsentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA140023011000000000001 /* AnalyticsConsentViewModel.swift */; };
 		ADA140053011000000000001 /* AnalyticsConsentBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA140043011000000000001 /* AnalyticsConsentBanner.swift */; };
+		ADA1400B3011000000000001 /* AnalyticsConsentBannerPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA1400A3011000000000001 /* AnalyticsConsentBannerPresentation.swift */; };
 		ADA140073011000000000001 /* AnalyticsSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA140063011000000000001 /* AnalyticsSettingsSection.swift */; };
 		ADA140093011000000000001 /* ../CrosswordsTests/AnalyticsConsentViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA140083011000000000001 /* ../CrosswordsTests/AnalyticsConsentViewModelTests.swift */; };
 		AFA2F03099D439E90FBDB228 /* HomeDailyChallengeCelebration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18807D162976E27AE5C2CEC3 /* HomeDailyChallengeCelebration.swift */; };
@@ -524,6 +525,7 @@
 		ADA140003011000000000001 /* AnalyticsConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConsent.swift; sourceTree = "<group>"; };
 		ADA140023011000000000001 /* AnalyticsConsentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConsentViewModel.swift; sourceTree = "<group>"; };
 		ADA140043011000000000001 /* AnalyticsConsentBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConsentBanner.swift; sourceTree = "<group>"; };
+		ADA1400A3011000000000001 /* AnalyticsConsentBannerPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConsentBannerPresentation.swift; sourceTree = "<group>"; };
 		ADA140063011000000000001 /* AnalyticsSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSettingsSection.swift; sourceTree = "<group>"; };
 		ADA140083011000000000001 /* ../CrosswordsTests/AnalyticsConsentViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/AnalyticsConsentViewModelTests.swift; sourceTree = "<group>"; };
 		B11111111111111111111112 /* MidwordStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStartView.swift; sourceTree = "<group>"; };
@@ -1056,6 +1058,7 @@
 			children = (
 				ADA140063011000000000001 /* AnalyticsSettingsSection.swift */,
 				ADA140043011000000000001 /* AnalyticsConsentBanner.swift */,
+				ADA1400A3011000000000001 /* AnalyticsConsentBannerPresentation.swift */,
 				A80AED63B3AB2532B11AFCB6 /* Midword */,
 				860A8F242FCE196700C2BE38 /* SharedViews */,
 				BBA3617EFAC18A3821319F9A /* Backword */,
@@ -1358,6 +1361,7 @@
 				ADA130013011000000000001 /* AnalyticsStartupService.swift in Sources */,
 				ADA140073011000000000001 /* AnalyticsSettingsSection.swift in Sources */,
 				ADA140053011000000000001 /* AnalyticsConsentBanner.swift in Sources */,
+				ADA1400B3011000000000001 /* AnalyticsConsentBannerPresentation.swift in Sources */,
 				ADA140033011000000000001 /* AnalyticsConsentViewModel.swift in Sources */,
 				ADA140013011000000000001 /* AnalyticsConsent.swift in Sources */,
 				E2020AB31629439996CCB55A /* ArchiveMonth.swift in Sources */,

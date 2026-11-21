@@ -1,12 +1,7 @@
 import SwiftUI
 
 struct AnalyticsConsentBanner: View {
-    @EnvironmentObject private var analyticsConsent: AnalyticsConsentViewModel
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    static func dismissalAnimation(reduceMotion: Bool) -> Animation? {
-        reduceMotion ? nil : .easeInOut(duration: 0.75)
-    }
+    let selectConsent: (Bool) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppLayout.screenPadding / 2) {
@@ -28,24 +23,29 @@ struct AnalyticsConsentBanner: View {
         }
         .padding(AppLayout.screenPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.appSurface)
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     private func consentButton(_ title: String, enabled: Bool) -> some View {
         Button {
-            withAnimation(Self.dismissalAnimation(reduceMotion: reduceMotion)) {
-                analyticsConsent.setEnabled(enabled)
-            }
+            selectConsent(enabled)
         } label: {
             Text(title)
                 .font(AppFont.body())
                 .lineLimit(1)
                 .minimumScaleFactor(0.75)
-                .frame(maxWidth: .infinity)
+                .padding(.horizontal, AppLayout.screenPadding / 2)
         }
-        .buttonStyle(.bordered)
-        .controlSize(.large)
-        .tint(.appAccent)
+        .buttonStyle(ConsentButtonStyle())
+    }
+
+    private struct ConsentButtonStyle: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .foregroundStyle(Color.appAccent)
+                .frame(maxWidth: .infinity, minHeight: AppLayout.minimumTouchTarget)
+                .background(Color.appAccent.opacity(configuration.isPressed ? 0.28 : 0.18), in: Capsule())
+                .contentShape(Capsule())
+        }
     }
 }

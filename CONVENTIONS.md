@@ -1468,11 +1468,13 @@ Decline and Accept analytics after the splash; Settings → Analytics provides
 Share usage analytics for later changes. Refusal is remembered without asking
 again. Preferences are independent of account, Pro, and advertising consent.
 
-The consent banner caps Dynamic Type at X Large so it remains a compact bottom
+The consent banner caps Dynamic Type at XXX Large so it remains a compact bottom
 inset. Both actions stay on one line and may shrink to fit narrow phones. The
 explanation still wraps in full; the cap applies only to this banner.
-After either choice the banner slides down and releases its bottom inset as
-the preference is saved. Reduce Motion removes the banner immediately.
+After either choice, the preference is saved immediately. Home reserves the
+banner's measured height while a separate, screen-anchored overlay slides the
+banner and its controls below the bottom safe area. Home releases the reserved
+space when the animation completes. Reduce Motion removes the banner immediately.
 
 `Info.plist` defaults both analytics storage and collection to false. Firebase
 is configured in `didFinishLaunching` with collection explicitly disabled before

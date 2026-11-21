@@ -10,7 +10,7 @@ struct HomeView: View {
     @EnvironmentObject var accountService: AccountService
     @EnvironmentObject private var dailyIntervlsOnboarding: DailyIntervlsOnboardingViewModel
     @ObservedObject private var viewModel: HomeViewModel
-    private let showsAnalyticsConsentBanner: Bool
+    private let offersAnalyticsConsentBanner: Bool
     @ObservedObject private var settings = AppSettings.shared
     @StateObject private var wotdService = WOTDService()
     @StateObject private var backwordService = BackwordService()
@@ -133,20 +133,17 @@ struct HomeView: View {
         }
     }
 
-    init(viewModel: HomeViewModel, showsAnalyticsConsentBanner: Bool = false) {
+    init(viewModel: HomeViewModel, offersAnalyticsConsentBanner: Bool = false) {
         self.viewModel = viewModel
-        self.showsAnalyticsConsentBanner = showsAnalyticsConsentBanner
+        self.offersAnalyticsConsentBanner = offersAnalyticsConsentBanner
     }
 
     var body: some View {
         homeLifecycleView
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                if showsAnalyticsConsentBanner && dailyIntervlsOnboarding.pendingStep == nil
-                    && dailyIntervlsGuideMode?.isOnboarding != true {
-                    AnalyticsConsentBanner()
-                        .transition(.asymmetric(insertion: .identity, removal: .move(edge: .bottom)))
-                }
-            }
+            .modifier(AnalyticsConsentBannerPresentation(
+                isAvailable: offersAnalyticsConsentBanner && dailyIntervlsOnboarding.pendingStep == nil
+                    && dailyIntervlsGuideMode?.isOnboarding != true
+            ))
             .allowsHitTesting(dailyIntervlsGuideMode == nil)
             .accessibilityHidden(dailyIntervlsGuideMode != nil)
             .blur(radius: dailyIntervlsGuideMode == nil ? 0 : AppLayout.dailyIntervlsGuideScreenBlurRadius)

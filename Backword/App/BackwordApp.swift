@@ -33,7 +33,7 @@ struct BackwordApp: App {
     var body: some Scene {
         WindowGroup {
             LaunchSplashView {
-                HomeView(viewModel: homeViewModel, showsAnalyticsConsentBanner: analyticsConsent.shouldShowPrompt)
+                HomeView(viewModel: homeViewModel, offersAnalyticsConsentBanner: true)
             }
                 .preferredColorScheme(selectedScheme)
                 .environmentObject(analyticsConsent)
