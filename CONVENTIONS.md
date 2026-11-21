@@ -787,7 +787,8 @@ pending tip starts at gameplay. A saved scoring step resumes, and a saved
 completion stays complete.
 
 The walkthrough opens when Home becomes available after the launch splash.
-`OK` saves the scoring page as the resume point. `Lets play` records
+`OK` saves the scoring page as the resume point and replaces the content
+and action in a single unanimated update. `Lets play` records
 completion and closes the modal. A game-load error waits until the
 guide closes, so the walkthrough is available offline.
 
@@ -1477,6 +1478,8 @@ again. Preferences are independent of account, Pro, and advertising consent.
 The consent banner caps Dynamic Type at X Large so it remains a compact bottom
 inset. Both actions stay on one line and may shrink to fit narrow phones. The
 explanation still wraps in full; the cap applies only to this banner.
+After either choice the banner slides down and releases its bottom inset as
+the preference is saved. Reduce Motion removes the banner immediately.
 
 `Info.plist` defaults both analytics storage and collection to false. Firebase
 is configured in `didFinishLaunching` with collection explicitly disabled before

@@ -2,6 +2,11 @@ import SwiftUI
 
 struct AnalyticsConsentBanner: View {
     @EnvironmentObject private var analyticsConsent: AnalyticsConsentViewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    static func dismissalAnimation(reduceMotion: Bool) -> Animation? {
+        reduceMotion ? nil : .easeInOut(duration: 0.75)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppLayout.screenPadding / 2) {
@@ -28,7 +33,11 @@ struct AnalyticsConsentBanner: View {
     }
 
     private func consentButton(_ title: String, enabled: Bool) -> some View {
-        Button { analyticsConsent.setEnabled(enabled) } label: {
+        Button {
+            withAnimation(Self.dismissalAnimation(reduceMotion: reduceMotion)) {
+                analyticsConsent.setEnabled(enabled)
+            }
+        } label: {
             Text(title)
                 .font(AppFont.body())
                 .lineLimit(1)

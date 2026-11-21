@@ -60,6 +60,12 @@ import UIKit
 @MainActor
 @Suite("Analytics consent banner layout")
 struct AnalyticsConsentBannerLayoutTests {
+    @Test("The dismissal animation respects Reduce Motion")
+    func dismissalAnimationRespectsReduceMotion() {
+        #expect(AnalyticsConsentBanner.dismissalAnimation(reduceMotion: false) != nil)
+        #expect(AnalyticsConsentBanner.dismissalAnimation(reduceMotion: true) == nil)
+    }
+
     @Test("The banner stays compact on narrow phones at every Dynamic Type size",
           arguments: [CGFloat(320), CGFloat(393)], DynamicTypeSize.allCases)
     func compactBanner(width: CGFloat, textSize: DynamicTypeSize) {

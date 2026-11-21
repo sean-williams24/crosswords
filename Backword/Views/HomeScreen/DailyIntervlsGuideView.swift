@@ -175,6 +175,7 @@ struct DailyIntervlsGuideView: View {
             }
         }
         .foregroundStyle(Color.appTextPrimary)
+        .id(step)
     }
 
     @ViewBuilder
@@ -190,12 +191,20 @@ struct DailyIntervlsGuideView: View {
     private func advanceOrFinish() {
         switch step {
         case .gameplay:
-            if mode.isOnboarding { acknowledgeGameplay() }
-            step = .scoring
+            withTransaction(Self.pageAdvanceTransaction) {
+                if mode.isOnboarding { acknowledgeGameplay() }
+                step = .scoring
+            }
         case .scoring:
             if mode.isOnboarding { finishOnboarding() }
             closeScoring()
         }
+    }
+
+    static var pageAdvanceTransaction: Transaction {
+        var transaction = Transaction(animation: nil)
+        transaction.disablesAnimations = true
+        return transaction
     }
 
     private func closeScoring() {

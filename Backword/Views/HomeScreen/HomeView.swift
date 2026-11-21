@@ -152,6 +152,7 @@ struct HomeView: View {
                 if showsAnalyticsConsentBanner && dailyIntervlsOnboarding.pendingStep == nil
                     && dailyIntervlsGuideMode?.isOnboarding != true {
                     AnalyticsConsentBanner()
+                        .transition(.asymmetric(insertion: .identity, removal: .move(edge: .bottom)))
                 }
             }
             .allowsHitTesting(dailyIntervlsGuideMode == nil)

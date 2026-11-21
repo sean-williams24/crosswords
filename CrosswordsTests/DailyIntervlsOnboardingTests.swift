@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Testing
 @testable import Backword
 
@@ -72,6 +73,13 @@ struct DailyIntervlsOnboardingTests {
         #expect(DailyIntervlsGuideStep.gameplay.actionTitle(isOnboarding: resumed.isOnboarding) == "OK")
         #expect(DailyIntervlsGuideStep.scoring.actionTitle(isOnboarding: resumed.isOnboarding) == "Lets play")
         #expect(DailyIntervlsGuideStep.scoring.actionTitle(isOnboarding: manual.isOnboarding) == "Done")
+    }
+
+    @Test("Advancing the guide suppresses inherited and implicit layout animations")
+    func guidePageAdvanceDisablesAnimations() {
+        let transaction = DailyIntervlsGuideView.pageAdvanceTransaction
+        #expect(transaction.animation == nil)
+        #expect(transaction.disablesAnimations)
     }
 
     @Test("The lineup uses Home order and the scoring page has three separate rating points")
