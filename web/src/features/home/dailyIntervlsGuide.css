@@ -13,7 +13,10 @@
   color: var(--app-text-primary);
 }
 .daily-intervls-guide[open] { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; }
-.daily-intervls-guide::backdrop { background: color-mix(in srgb, var(--app-background) 76%, transparent); }
+.daily-intervls-guide::backdrop {
+  background-color: rgb(0 0 0 / 40%);
+  backdrop-filter: blur(6px);
+}
 html:has(.daily-intervls-guide[open]) { overflow: hidden; }
 body:has(.daily-intervls-guide[data-onboarding][open]) .analytics-consent { visibility: hidden; }
 
@@ -109,8 +112,8 @@ body:has(.daily-intervls-guide[data-onboarding][open]) .analytics-consent { visi
 .daily-intervls-guide .home-profile-rating-link__marker { border-color: currentColor; }
 .daily-intervls-guide .home-profile-rating-link__fill { transition: none; }
 .daily-intervls-guide__track .home-profile-rating-link__track::before { background: var(--app-background); }
-.daily-intervls-guide.is-handing-off .daily-intervls-guide__card,
-.daily-intervls-guide.is-handing-off::backdrop { animation: daily-intervls-fade-out 550ms ease-in-out both; }
+.daily-intervls-guide.is-handing-off .daily-intervls-guide__card { animation: daily-intervls-fade-out 550ms ease-in-out both; }
+.daily-intervls-guide.is-handing-off::backdrop { animation: daily-intervls-backdrop-out 550ms ease-in-out both; }
 .daily-intervls-guide.is-handing-off .daily-intervls-guide__track { visibility: hidden; }
 .home-dashboard:has(.daily-intervls-guide.is-handing-off) .home-profile-rating-link .home-profile-rating-link__track { visibility: hidden; }
 .daily-intervls-guide__handoff {
@@ -121,6 +124,7 @@ body:has(.daily-intervls-guide[data-onboarding][open]) .analytics-consent { visi
 .daily-intervls-guide__handoff .home-profile-rating-link__fill { animation: daily-intervls-handoff-fill 550ms ease-in-out both; }
 .daily-intervls-guide__handoff .home-profile-rating-link__marker { animation: daily-intervls-handoff-marker 550ms ease-in-out both; }
 @keyframes daily-intervls-fade-out { to { opacity: 0; } }
+@keyframes daily-intervls-backdrop-out { to { background-color: transparent; backdrop-filter: blur(0); } }
 @keyframes daily-intervls-handoff {
   from { left: var(--source-left); top: var(--source-top); width: var(--source-width); }
   to { left: var(--target-left); top: var(--target-top); width: var(--target-width); }

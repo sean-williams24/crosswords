@@ -76,6 +76,11 @@ struct HomeView: View {
         dailyIntervlsOnboarding.homeStep(isReady: homeIsAvailable && !dailyChallenge.isCelebrating)
     }
 
+    private var dailyIntervlsGuideScreenBlurRadius: CGFloat {
+        guard dailyIntervlsGuideMode != nil else { return 0 }
+        return AppLayout.dailyIntervlsGuideScreenBlurRadius * CGFloat(1 - ratingHandoffProgress)
+    }
+
     private var blocksSettingsTip: Bool {
         dailyIntervlsOnboarding.pendingStep != nil
             || dailyIntervlsGuideMode != nil
@@ -151,6 +156,7 @@ struct HomeView: View {
             }
             .allowsHitTesting(dailyIntervlsGuideMode == nil)
             .accessibilityHidden(dailyIntervlsGuideMode != nil)
+            .blur(radius: dailyIntervlsGuideScreenBlurRadius)
             .overlay {
                 if let dailyIntervlsGuideMode {
                     DailyIntervlsGuideView(

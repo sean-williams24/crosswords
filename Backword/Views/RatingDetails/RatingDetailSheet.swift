@@ -77,6 +77,7 @@ struct RatingDetailSheet: View {
         }
         .allowsHitTesting(!showDailyIntervlsGuide)
         .accessibilityHidden(showDailyIntervlsGuide)
+        .blur(radius: showDailyIntervlsGuide ? AppLayout.dailyIntervlsGuideScreenBlurRadius : 0)
         .overlay {
             if showDailyIntervlsGuide {
                 DailyIntervlsGuideView(isPro: isPro, dismiss: { showDailyIntervlsGuide = false })

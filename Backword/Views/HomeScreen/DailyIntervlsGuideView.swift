@@ -51,7 +51,7 @@ struct DailyIntervlsGuideView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                Color.appBackground.opacity(AppLayout.dailyIntervlsGuideBackdropOpacity)
+                Color.appModalBackdrop
                     .ignoresSafeArea()
                     .accessibilityHidden(true)
 

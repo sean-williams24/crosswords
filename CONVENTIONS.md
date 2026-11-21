@@ -791,9 +791,12 @@ The walkthrough opens when Home becomes available after the launch splash.
 completion and closes the modal. A game-load error waits until the
 guide closes, so the walkthrough is available offline.
 
-The guide uses a centred, dimmed modal with the daily celebration card’s width
-and corner radius. It uses Liquid Glass on iOS 26 and regular material on
-earlier versions. Background controls are unavailable while it is open.
+The guide uses a centred modal with the daily celebration card’s width and
+corner radius. On both platforms, the screen behind the guide is blurred and
+dimmed with a 40% black backdrop in Light and Dark Mode. The blur clears
+during the Home rating handoff. The card uses Liquid Glass on iOS 26 and
+regular material on earlier versions. Background controls are unavailable
+while it is open.
 On short screens and at large text sizes, the guide content scrolls while
 its actions remain visible.
 

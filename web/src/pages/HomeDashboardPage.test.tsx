@@ -97,6 +97,19 @@ describe("web home dashboard", () => {
     expect(styles).toMatch(/\.daily-intervls-guide__earned\s*\{[^}]*font-size:\s*1rem;/);
   });
 
+  it("darkens and blurs the screen behind the guide on web and iOS", () => {
+    const guideStyles = readFileSync(resolve(process.cwd(), "src/features/home/dailyIntervlsGuide.css"), "utf8");
+    const nativeTheme = readFileSync(resolve(process.cwd(), "../Backword/Theme/AppTheme.swift"), "utf8");
+    const nativeGuide = readFileSync(resolve(process.cwd(), "../Backword/Views/HomeScreen/DailyIntervlsGuideView.swift"), "utf8");
+    const nativeHome = readFileSync(resolve(process.cwd(), "../Backword/Views/HomeScreen/HomeView.swift"), "utf8");
+    const nativeProfile = readFileSync(resolve(process.cwd(), "../Backword/Views/RatingDetails/RatingDetailSheet.swift"), "utf8");
+    expect(guideStyles).toMatch(/\.daily-intervls-guide::backdrop\s*\{[^}]*background-color:\s*rgb\(0 0 0 \/ 40%\);[^}]*backdrop-filter:\s*blur\(6px\)/);
+    expect(nativeTheme).toContain("appModalBackdrop = Color.black.opacity(0.40)");
+    expect(nativeGuide).toContain("Color.appModalBackdrop");
+    expect(nativeHome).toMatch(/\.blur\(radius: dailyIntervlsGuideScreenBlurRadius\)\s*\.overlay/);
+    expect(nativeProfile).toMatch(/\.blur\(radius: showDailyIntervlsGuide \? AppLayout.dailyIntervlsGuideScreenBlurRadius : 0\)\s*\.overlay/);
+  });
+
   it("resumes first-visit onboarding and completes while daily content is unavailable", () => {
     localStorage.removeItem(dailyIntervlsOnboardingKey);
     testWordOfTheDay.state = "loading";

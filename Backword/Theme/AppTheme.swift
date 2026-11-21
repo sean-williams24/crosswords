@@ -19,6 +19,7 @@ enum AppColorSchemePreference {
 
 extension Color {
     static let appBackground = Color("Background")
+    static let appModalBackdrop = Color.black.opacity(0.40)
     static let appSurface = Color("Surface")
     static let appShareButtonBackground = Color("ShareButtonBackground")
     static let appGridLine = Color("GridLine")
@@ -270,7 +271,7 @@ struct AppLayout {
     static let profileDailyGameTitleSize: CGFloat = 17
     static let profileDailyScoreSize: CGFloat = 22
     static let profileDailyMarkerWidth: CGFloat = 36
-    static let dailyIntervlsGuideBackdropOpacity = 0.55
+    static let dailyIntervlsGuideScreenBlurRadius: CGFloat = 6
     static let dailyIntervlsGuidePointsSize: CGFloat = 12
     static let dailyIntervlsGuideMarkerWidth: CGFloat = 44
     static let homeDailyMarkerWidth: CGFloat = 22
