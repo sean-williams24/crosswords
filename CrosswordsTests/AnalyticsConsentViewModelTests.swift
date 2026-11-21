@@ -60,9 +60,9 @@ import UIKit
 @MainActor
 @Suite("Analytics consent banner layout")
 struct AnalyticsConsentBannerLayoutTests {
-    @Test("The dismissal uses a one-second animation and respects Reduce Motion")
+    @Test("The dismissal uses a 0.8-second animation and respects Reduce Motion")
     func dismissalAnimationTiming() {
-        #expect(AnalyticsConsentBannerPresentation.dismissalAnimation(reduceMotion: false) == Animation.easeInOut(duration: 1))
+        #expect(AnalyticsConsentBannerPresentation.dismissalAnimation(reduceMotion: false) == Animation.easeInOut(duration: 0.8))
         #expect(AnalyticsConsentBannerPresentation.dismissalAnimation(reduceMotion: true) == nil)
     }
 

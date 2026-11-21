@@ -9,7 +9,7 @@ struct AnalyticsConsentBannerPresentation: ViewModifier {
     let isAvailable: Bool
 
     static func dismissalAnimation(reduceMotion: Bool) -> Animation? {
-        reduceMotion ? nil : .easeInOut(duration: 1)
+        reduceMotion ? nil : .easeInOut(duration: 0.8)
     }
 
     static func showsFooter(shouldShowPrompt: Bool, isDismissing: Bool) -> Bool {
