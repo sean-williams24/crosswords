@@ -15,3 +15,7 @@ const testStorage = new TestStorage();
 Object.defineProperty(window, "localStorage", { configurable: true, value: testStorage });
 Object.defineProperty(globalThis, "localStorage", { configurable: true, value: testStorage });
 Object.defineProperty(window, "scrollTo", { configurable: true, value: () => undefined, writable: true });
+
+// jsdom exposes <dialog> without its native modal methods.
+window.HTMLDialogElement.prototype.showModal ??= function () { this.open = true; };
+window.HTMLDialogElement.prototype.close ??= function () { this.open = false; };

@@ -27,8 +27,10 @@ html[data-theme="dark"] .daily-celebration__midword-logo::after {
   background: linear-gradient(var(--midword-accent) 49%, var(--midword-text) 49%);
   mask: url('/brand/midword-logo.png') center / contain no-repeat;
 }
-.daily-celebration__score { white-space: nowrap; color: var(--app-text-secondary); opacity: 0; transform: scale(.6); transition: opacity .3s, transform .4s; }
-.daily-celebration__score.is-visible { opacity: 1; transform: none; }.daily-celebration__score b { font-size: 28px; color: var(--daily-color); }
+.daily-game-score { white-space: nowrap; color: var(--app-text-secondary); }
+.daily-game-score b { font-size: 1.75rem; color: var(--daily-color); }
+.daily-celebration__score { opacity: 0; transform: scale(.6); transition: opacity .3s, transform .4s; }
+.daily-celebration__score.is-visible { opacity: 1; transform: none; }
 .daily-celebration__total { height: 110px; margin: 16px 0; padding: 12px; text-align: center; border-radius: 12px; background: rgb(212 169 57 / 8%); color: #d4a939; opacity: 0; transform: scale(.8); transition: opacity .3s, transform .4s; }
 .daily-celebration__total.is-visible { opacity: 1; transform: none; }.daily-celebration__total span { display: block; font-size: 11px; letter-spacing: 2px; color: var(--app-text-secondary); }.daily-celebration__total b { font-size: 56px; }
 .daily-celebration button { width: 100%; padding: 14px; border: 1px solid rgb(212 169 57 / 40%); border-radius: 999px; background: rgb(212 169 57 / 18%); color: inherit; font-weight: 700; cursor: pointer; }

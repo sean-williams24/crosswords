@@ -30,6 +30,9 @@ import { anagramCloudRecord, midwordCloudRecord, backwordCloudRecord, crosswordC
 
 import { dailyChallenge, dailyChallengePreview, shouldCelebrate, type DailyAttempt, type DailyGame, type DailySnapshot } from "../features/home/dailyChallenge";
 import { DailyChallengeSummary, DailyChallengeCelebration } from "../features/home/DailyChallengeViews";
+import { DailyIntervlsGuide } from "../features/home/DailyIntervlsGuide";
+import { DailyIntervlsTip } from "../features/home/DailyIntervlsTip";
+import { useDailyIntervlsOnboarding } from "../features/home/useDailyIntervlsOnboarding";
 
 type HomeSyncUser = { id: string; last_sign_in_at?: string };
 
@@ -113,6 +116,12 @@ export function HomeDashboardPage() {
   }, [homeSyncKey, user]);
   const issueNumbers = useHomeGameIssueNumbers(today);
   const [wordOfTheDayState, setWordOfTheDayState] = useState<WordOfTheDayLoadState>("loading");
+  const isLoading = !ready || wordOfTheDayState === "loading";
+  const onboarding = useDailyIntervlsOnboarding(!isLoading && !celebration);
+  const [showsManualGuide, setShowsManualGuide] = useState(false);
+  const ratingTrack = useRef<HTMLSpanElement>(null);
+  const onboardingStep = ready ? onboarding.firstLaunchStep : null;
+  const showsGuide = onboardingStep !== null || showsManualGuide;
   const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, today, user?.id), [syncRevision, today, user?.id]);
   const backwordStreak = useMemo(() => deriveStats(createBackwordStorage(window.localStorage, { userId: user?.id }).loadAllProgress()).currentStreak, [syncRevision, today, user?.id]);
   const backwordScore = useMemo(() => backwordDashboardScore(window.localStorage, today, user?.id), [syncRevision, today, user?.id]);
@@ -162,7 +171,7 @@ export function HomeDashboardPage() {
   const context = `${user?.id ?? "guest"}:${today}`;
   const previousContext = useRef(context);
   useEffect(() => {
-    if (!ready || wordOfTheDayState === "loading") return;
+    if (isLoading || showsGuide) return;
     if (previousContext.current !== context) { setCelebration(null); previousContext.current = context; }
     try {
       const key = `intervls:daily-celebrated:${context}`;
@@ -180,7 +189,7 @@ export function HomeDashboardPage() {
     } catch { /* Storage may be unavailable in private browsing. */ }
   // Evaluate the locally saved result once on arrival or a change of account/date.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, context, wordOfTheDayState]);
+  }, [context, isLoading, showsGuide]);
   const beginDailyGame = (event: MouseEvent<HTMLDivElement>) => {
     const link = (event.target as Element).closest('a');
     if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -188,12 +197,24 @@ export function HomeDashboardPage() {
     if (!game) return;
     try { sessionStorage.setItem('intervls:daily-attempt', JSON.stringify({ context, game, started: Date.now(), wasFinished: daily.games.find(g => g.game === game)?.state === 'finished' })); } catch { /* Storage unavailable. */ }
   };
-  const isLoading = !ready || wordOfTheDayState === "loading";
   const isSyncing = Boolean(homeSyncKey && syncedSessionKey !== homeSyncKey);
+  const focusRating = () => ratingTrack.current?.closest("a")?.focus();
 
   return (
     <main className="home-dashboard">
-      {celebration ? <DailyChallengeCelebration snapshot={celebration} dismiss={() => setCelebration(null)} openArchive={() => {
+      {showsGuide ? (
+        <DailyIntervlsGuide
+          isPro={entitlement?.isPro === true}
+          homeRating={isSyncing ? undefined : { tier: profileRating.tier, fraction: profileRating.fraction, trackRef: ratingTrack }}
+          onboarding={onboardingStep ? { startingStep: onboardingStep, onAdvance: onboarding.acknowledgeGameplay, onComplete: onboarding.recordCompletion } : undefined}
+          onClose={() => {
+            if (onboardingStep) onboarding.closeOnboarding();
+            setShowsManualGuide(false);
+            focusRating();
+          }}
+        />
+      ) : null}
+      {celebration && !showsGuide ? <DailyChallengeCelebration snapshot={celebration} dismiss={() => setCelebration(null)} openArchive={() => {
         setCelebration(null);
         navigate(entitlement?.isPro ? "/archive" : "/pro?return_to=%2Farchive");
       }} /> : null}
@@ -208,9 +229,16 @@ export function HomeDashboardPage() {
         <div className="home-dashboard__actions">
           <AuthButton className="auth-button--menu-upgrade" />
         </div>
-        <HomeProfileRatingLink fraction={profileRating.fraction} isSyncing={isSyncing} tier={profileRating.tier} dailySummary={<DailyChallengeSummary snapshot={daily} celebration={celebrationId} />} />
+        <HomeProfileRatingLink fraction={profileRating.fraction} isSyncing={isSyncing} tier={profileRating.tier} ratingTrackRef={ratingTrack} dailySummary={<DailyChallengeSummary snapshot={daily} celebration={celebrationId} />} />
       </header>
 
+      {onboarding.showsTip && !celebration ? <DailyIntervlsTip dismiss={() => {
+        onboarding.dismissTip();
+        focusRating();
+      }} openGuide={() => {
+        onboarding.dismissTip();
+        setShowsManualGuide(true);
+      }} /> : null}
       <section aria-label="Games" className="home-dashboard__content" inert={celebration !== null}>
         <div aria-busy={isLoading} className="home-dashboard__daily-layout">
           {isLoading ? <span className="home-dashboard__loading-label" role="status">Loading daily games</span> : null}

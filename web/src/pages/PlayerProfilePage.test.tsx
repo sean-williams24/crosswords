@@ -1,10 +1,11 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { localDateString } from "../features/backword/date";
+import { dailyIntervlsOnboardingKey } from "../features/home/dailyIntervlsOnboarding";
 
 const testAuth = vi.hoisted(() => ({
   value: {
@@ -60,6 +61,28 @@ describe("PlayerProfilePage", () => {
     };
     sync.fetchCloudProgress.mockResolvedValue([]);
     sync.refreshAccountProgress.mockReset().mockResolvedValue(undefined);
+  });
+
+  it.each([false, true])("opens the permanent guide with the right example total (Pro: %s)", async (isPro) => {
+    if (!isPro) testAuth.value.user = null;
+    const matchMedia = vi.fn().mockReturnValue({ matches: true });
+    vi.stubGlobal("matchMedia", matchMedia);
+    try {
+      localStorage.setItem(dailyIntervlsOnboardingKey, "scoring");
+      renderPage();
+      const entry = screen.getByRole("button", { name: "Daily Intervls guide" });
+      fireEvent.click(entry);
+      fireEvent.click(within(screen.getByRole("dialog", { name: "Your Daily Intervls" })).getByRole("button", { name: "OK" }));
+      const scoring = screen.getByRole("dialog", { name: "Points and Rating" });
+      expect(within(scoring).getByText(isPro ? "290 / 290 pts" : "280 / 280 pts")).toBeInTheDocument();
+      fireEvent.click(within(scoring).getByRole("button", { name: "Done" }));
+      expect(scoring).not.toBeInTheDocument();
+      expect(entry).toHaveFocus();
+      expect(localStorage.getItem(dailyIntervlsOnboardingKey)).toBe("scoring");
+      if (isPro) await waitFor(() => expect(sync.fetchCloudProgress).toHaveBeenCalled());
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   it.each(["guest", "signed-in"])("shows today's daily progress above the table for a %s player", async (player) => {

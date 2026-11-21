@@ -829,6 +829,26 @@ session until dismissed or opened. The permanent Daily Intervls guide in
 Player Profile and the tip both open the same content on its gameplay page.
 Manual guide use leaves automatic presentation state untouched.
 
+## Web Daily Intervls Onboarding
+
+Classify the browser before startup effects write game caches or preferences.
+Retained site data gets an inline Home tip. Fresh browsers get the two-page
+walkthrough when Home becomes available, including while content loads or the
+browser is offline. Store the current page and completion in local storage
+across guests and accounts. Record the returning tip when it is offered and
+keep it in that tab's session until dismissed or opened.
+
+Player Profile and the Home tip open the same guide from its first page. The
+first-visit walkthrough requires each page's acknowledgement. The manual guide
+dismisses on Escape or a backdrop click and leaves onboarding progress intact.
+Each gameplay row reveals `5 / 5` using the celebration's game-coloured
+numerator and muted denominator. Screen readers announce “up to 5 points”.
+The rating example uses the Home track and shared tier thresholds. It shows a
+full window of 280 daily points plus 10 weekly points for Pro. Reduced Motion
+shows the finished examples immediately. On Home, the rating track moves into
+the player's live rating slot when both tracks are visible and the Home track
+is ready. Player Profile closes the guide in place.
+
 ## iOS Home Daily Challenge
 
 Home's rating label row also shows `TODAY n/20 PTS` and four markers, in fixed order:
@@ -1158,7 +1178,7 @@ platform icons and visible names and open in a new tab.
 
 ## Website Sheet Dismissal
 
-All web sheets dismiss when the player taps or clicks their backdrop, including
+Dismissible web sheets close when the player taps or clicks their backdrop, including
 game instructions, stats, completion, clues, confirmations, Pro details, and the
 navigation drawer. Events from inside a sheet must not dismiss it through the
 backdrop. The account-deleted summary uses its existing Continue action when

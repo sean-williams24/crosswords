@@ -11,6 +11,7 @@ import { emptyProgress as emptyMidwordProgress } from "../features/midword/engin
 import { createMidwordStorage } from "../features/midword/storage";
 import { createCrosswordStorage } from "../features/crossword/storage";
 import { HomeDashboardPage } from "./HomeDashboardPage";
+import { dailyIntervlsOnboardingKey } from "../features/home/dailyIntervlsOnboarding";
 
 const testAuth = vi.hoisted(() => ({
   value: {
@@ -79,6 +80,7 @@ function saveProgress(progress: Record<string, unknown>) {
 describe("web home dashboard", () => {
   beforeEach(() => {
     localStorage.clear();
+    localStorage.setItem(dailyIntervlsOnboardingKey, "complete");
     sessionStorage.clear();
     testAuth.value = { entitlement: null, ready: true, user: null };
     testWordOfTheDay.notify = null;
@@ -89,6 +91,89 @@ describe("web home dashboard", () => {
   });
 
   afterEach(() => vi.useRealTimers());
+
+  it("resumes first-visit onboarding and completes while daily content is unavailable", () => {
+    localStorage.removeItem(dailyIntervlsOnboardingKey);
+    testWordOfTheDay.state = "loading";
+    vi.stubGlobal("matchMedia", () => ({ matches: true }));
+    try {
+      const first = renderDashboard();
+      const gameplay = screen.getByRole("dialog", { name: "Your Daily Intervls" });
+      expect(within(gameplay).getByRole("heading")).toHaveFocus();
+      expect(within(gameplay).getAllByRole("listitem").map(row => row.querySelector("img")?.alt ?? row.querySelector("strong")?.textContent)).toEqual([
+        "Backword", "QUICK CROSSWORD", "ANAGRAM", "Midword"
+      ]);
+      for (const row of within(gameplay).getAllByRole("listitem")) {
+        const score = within(row).getByText("/ 5");
+        expect(score).toHaveTextContent("5 / 5");
+        expect(within(score).getByText("5").tagName).toBe("B");
+        expect(score).toHaveAttribute("aria-hidden", "true");
+        expect(within(row).getByText("Up to 5 points")).toBeInTheDocument();
+      }
+      fireEvent.click(gameplay);
+      fireEvent(gameplay, new Event("cancel", { cancelable: true }));
+      expect(gameplay).toHaveAttribute("open");
+      fireEvent.click(within(gameplay).getByRole("button", { name: "OK" }));
+      expect(localStorage.getItem(dailyIntervlsOnboardingKey)).toBe("scoring");
+      first.unmount();
+
+      testWordOfTheDay.state = "unavailable";
+      const resumed = renderDashboard();
+      const scoring = screen.getByRole("dialog", { name: "Points and Rating" });
+      expect(within(scoring).getByText("280 / 280 pts")).toBeInTheDocument();
+      expect(within(scoring).getByText(/last 14 days/)).toBeInTheDocument();
+      fireEvent.click(within(scoring).getByRole("button", { name: "Lets play" }));
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+      expect(localStorage.getItem(dailyIntervlsOnboardingKey)).toBe("complete");
+      expect(screen.getByRole("link", { name: /view player profile/i })).toHaveFocus();
+      resumed.unmount();
+
+      renderDashboard();
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "View guide" })).not.toBeInTheDocument();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it("offers a returning browser the guide once and opens a dismissible walkthrough", () => {
+    localStorage.removeItem(dailyIntervlsOnboardingKey);
+    localStorage.setItem("backword:web:theme:v1", "dark");
+    const first = renderDashboard();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "View guide" })).toBeInTheDocument();
+    expect(localStorage.getItem(dailyIntervlsOnboardingKey)).toBe("complete");
+    first.unmount();
+
+    const resumed = renderDashboard();
+    fireEvent.click(screen.getByRole("button", { name: "View guide" }));
+    const guide = screen.getByRole("dialog", { name: "Your Daily Intervls" });
+    fireEvent.click(guide);
+    expect(guide).not.toBeInTheDocument();
+    resumed.unmount();
+
+    renderDashboard();
+    expect(screen.queryByRole("button", { name: "View guide" })).not.toBeInTheDocument();
+  });
+
+  it("hands the scoring example off to the live Home track after recording completion", () => {
+    localStorage.setItem(dailyIntervlsOnboardingKey, "scoring");
+    const { container } = renderDashboard();
+    const scoring = screen.getByRole("dialog", { name: "Points and Rating" });
+    const track = scoring.querySelector(".home-profile-rating-link__track")!;
+    vi.spyOn(track, "getBoundingClientRect").mockReturnValue(new DOMRect(220, 300, 300, 18));
+    vi.spyOn(scoring.querySelector(".daily-intervls-guide__content")!, "getBoundingClientRect").mockReturnValue(new DOMRect(200, 250, 340, 220));
+    vi.spyOn(container.querySelector(".home-profile-rating-link .home-profile-rating-link__track")!, "getBoundingClientRect").mockReturnValue(new DOMRect(20, 100, 340, 18));
+
+    fireEvent.click(within(scoring).getByRole("button", { name: "Lets play" }));
+    expect(localStorage.getItem(dailyIntervlsOnboardingKey)).toBe("complete");
+    expect(scoring).toHaveAttribute("open");
+    const handoff = scoring.querySelector<HTMLElement>(".daily-intervls-guide__handoff")!;
+    expect(handoff.style.getPropertyValue("--source-top")).toBe("300px");
+    expect(handoff.style.getPropertyValue("--target-top")).toBe("100px");
+    fireEvent.animationEnd(handoff);
+    expect(scoring).not.toBeInTheDocument();
+  });
 
   it.each(["http://localhost:5173", "https://www.playbackword.com/"])("omits the retired Home name-change notice at %s", (origin) => {
     vi.stubEnv("DEV", true);

@@ -3,9 +3,10 @@ import { backwordScore } from "../backword/engine";
 import type { BackwordProgress } from "../backword/types";
 import type { CloudRecord } from "../sync/progressSync";
 
-const windowDays = 14;
+export const ratingWindowDays = 14;
+export const weeklyRatingMaxPoints = 10;
 export const midwordLaunchDate = "2026-10-01";
-const tierThresholds = [
+export const tierThresholds = [
   ["Novice", 0],
   ["Scribe", 0.2],
   ["Linguist", 0.5],
@@ -14,6 +15,10 @@ const tierThresholds = [
 ] as const;
 
 export type RatingTierName = (typeof tierThresholds)[number][0];
+
+export function ratingTierForFraction(fraction: number): RatingTierName {
+  return [...tierThresholds].reverse().find(([, threshold]) => fraction >= threshold)?.[0] ?? "Novice";
+}
 
 export type PlayerProfileDay = {
   date: string;
@@ -90,7 +95,7 @@ export function buildPlayerProfileRating(
   now = new Date()
 ): PlayerProfileRating {
   const today = localDateString(now);
-  const dates = Array.from({ length: windowDays }, (_, offset) => localDateOffset(today, -offset));
+  const dates = Array.from({ length: ratingWindowDays }, (_, offset) => localDateOffset(today, -offset));
   const visibleDates = new Set(dates);
   const dailyScores = scoreMap(records.dailyCrossword, visibleDates);
   const backwordScores = backwordScoreMap(records.backword, visibleDates);
@@ -116,10 +121,10 @@ export function buildPlayerProfileRating(
     };
   });
   const anagramPossiblePoints = firstRelease ? dates.filter((date) => date >= firstRelease).length * 5 : 0;
-  const maxPoints = 140 + (isPro ? 10 : 0) + anagramPossiblePoints + dates.filter((date) => date >= midwordLaunchDate).length * 5;
+  const maxPoints = 140 + (isPro ? weeklyRatingMaxPoints : 0) + anagramPossiblePoints + dates.filter((date) => date >= midwordLaunchDate).length * 5;
   const totalPoints = days.reduce((total, day) => total + day.total, 0);
   const fraction = Math.min(totalPoints / maxPoints, 1);
-  const tier = [...tierThresholds].reverse().find(([, threshold]) => fraction >= threshold)?.[0] ?? "Novice";
+  const tier = ratingTierForFraction(fraction);
 
   return { days, maxPoints, totalPoints, fraction, tier };
 }

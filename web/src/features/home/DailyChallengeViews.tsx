@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import type { DailySnapshot } from './dailyChallenge';
+import { maximumPointsPerDailyGame, type DailySnapshot } from './dailyChallenge';
 import './dailyChallenge.css';
 
 export function DailyChallengeSummary({ snapshot, celebration }: { snapshot: DailySnapshot; celebration: number }) {
@@ -43,7 +43,7 @@ export function DailyChallengeCelebration({ snapshot, dismiss, openArchive }: { 
     <h2 id="daily-celebration-title" ref={heading} tabIndex={-1}>Todays Intervls Complete</h2>
     <div className="daily-celebration__rows">{snapshot.games.map((g, index) => <div key={g.game} className={`daily-celebration__row daily-${g.game} ${step >= index * 2 + 1 ? 'is-visible' : ''}`} aria-hidden={step < index * 2 + 2}>
       {g.game === 'midword' ? <span className="daily-celebration__midword-logo"><img alt={g.name} src="/brand/midword-logo.png" /></span> : g.game === 'backword' ? <img alt={g.name} src="/brand/backword-logo.png" /> : <strong>{g.name.toUpperCase()}</strong>}
-      <span className={`daily-celebration__score ${step >= index * 2 + 2 ? 'is-visible' : ''}`}><b>{g.points}</b> / 5</span>
+      <span className={`daily-game-score daily-celebration__score ${step >= index * 2 + 2 ? 'is-visible' : ''}`}><b>{g.points}</b> / {maximumPointsPerDailyGame}</span>
     </div>)}</div>
     <div className={`daily-celebration__total ${step >= 9 ? 'is-visible' : ''}`} aria-live="polite">{step >= 9 ? <><span>DAILY TOTAL</span><div><b>{snapshot.points}</b> / 20</div></> : null}</div>
     <div className="daily-celebration__actions">

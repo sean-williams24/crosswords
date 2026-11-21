@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthProvider";
 import { GameMenu } from "../features/backword/components/GameMenu";
@@ -9,15 +9,14 @@ import { midwordCloudRecord } from "../features/sync/progressSync";
 import { createAnagramRepository } from "../features/anagram/repository";
 import { createBackwordStorage } from "../features/backword/storage";
 import { createCrosswordStorage } from "../features/crossword/storage";
-import { buildPlayerProfileRating, formatProfileDate, midwordLaunchDate } from "../features/profile/profileRating";
+import { buildPlayerProfileRating, formatProfileDate, midwordLaunchDate, tierThresholds } from "../features/profile/profileRating";
 import { loadLocalProfileRecords } from "../features/profile/profileRecords";
 import { ProfileDailyProgress } from "../features/profile/ProfileDailyProgress";
 import { Footer } from "../components/Footer";
 import { accountActionErrorMessage } from "../features/auth/authErrorPresentation";
 import { AccountDeletionConfirmationModal } from "../features/auth/AccountDeletionConfirmationModal";
 import type { AccountDeletionSummary } from "../features/auth/accountDeletionSummary";
-
-const ratingLevels = ["Novice", "Scribe", "Linguist", "Grandmaster", "Virtuoso"] as const;
+import { DailyIntervlsGuide } from "../features/home/DailyIntervlsGuide";
 
 type ProfileRecords = {
   backword: Awaited<ReturnType<typeof fetchCloudProgress>>;
@@ -37,6 +36,8 @@ export function PlayerProfilePage() {
   const { ready, user, entitlement, entitlementWarning, refreshEntitlement, signOut, deleteAccount, finishAccountDeletion, debugProOverrideActive } = useAuth();
   const [records, setRecords] = useState<AccountProfileRecords | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [showsDailyIntervlsGuide, setShowsDailyIntervlsGuide] = useState(false);
+  const dailyIntervlsGuideButton = useRef<HTMLButtonElement>(null);
   const [syncError, setSyncError] = useState<string | null>(null);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -177,6 +178,7 @@ export function PlayerProfilePage() {
           <div className="player-profile__column player-profile__column--summary">
             <section className="player-profile__card player-profile__summary" aria-label="Player summary">
               <RatingHero fraction={rating.fraction} maxPoints={rating.maxPoints} tier={rating.tier} totalPoints={rating.totalPoints} />
+              <button className="daily-intervls-profile-link" onClick={() => setShowsDailyIntervlsGuide(true)} ref={dailyIntervlsGuideButton} type="button">Daily Intervls guide</button>
               <RollingWindowExplanation />
               <ScoringDetailsContent />
               {user ? <div className="player-profile__account-actions">
@@ -218,6 +220,10 @@ export function PlayerProfilePage() {
         </div>
       </section>
       <Footer />
+      {showsDailyIntervlsGuide ? <DailyIntervlsGuide isPro={isPro} onClose={() => {
+        setShowsDailyIntervlsGuide(false);
+        dailyIntervlsGuideButton.current?.focus();
+      }} /> : null}
       {accountDeleted && deletionSummary ? <AccountDeletionConfirmationModal error={deletionFinishError} isFinishing={isFinishingDeletion} onContinue={() => void finishDeletion()} summary={deletionSummary} /> : null}
     </main>
   );
@@ -237,10 +243,10 @@ function RatingHero({ fraction, maxPoints, tier, totalPoints }: { fraction: numb
       <div className="player-profile__tier"><strong>{tier.toUpperCase()}</strong><span>{totalPoints} / {maxPoints} pts</span></div>
       <div className="player-profile__rating-track">
         <span className="player-profile__rating-fill" style={{ clipPath: `inset(0 ${100 - Math.max(1, percentage)}% 0 0)` }} />
-        {[20, 50, 75, 90].map((threshold) => <span aria-hidden="true" className="player-profile__threshold" key={threshold} style={{ left: `${threshold}%` }} />)}
+        {tierThresholds.slice(1).map(([level, threshold]) => <span aria-hidden="true" className="player-profile__threshold" key={level} style={{ left: `${threshold * 100}%` }} />)}
         <span aria-hidden="true" className="player-profile__rating-marker" style={{ left: `${percentage}%` }} />
       </div>
-      <div className="player-profile__tier-scale">{ratingLevels.map((level) => <span className={level === tier ? "is-current" : ""} key={level}>{level}</span>)}</div>
+      <div className="player-profile__tier-scale">{tierThresholds.map(([level]) => <span className={level === tier ? "is-current" : ""} key={level}>{level}</span>)}</div>
     </section>
   );
 }
