@@ -781,11 +781,10 @@ they recognise an already-updated payload and never overwrite a divergent row.
 
 ## iOS Daily Intervls Onboarding
 
-Classify the installation before app startup services can write preferences,
-rating data, or puzzle caches. Retained app preferences or app data identify
-an upgrade. With no retained evidence of prior use, the installation receives
-the first-launch walkthrough. This state is installation-wide across guest
-and signed-in play.
+New and returning players get the same two-step walkthrough. The saved stage
+is shared across guest and signed-in play on the installation. A legacy
+pending tip starts at gameplay. A saved scoring step resumes, and a saved
+completion stays complete.
 
 The walkthrough opens when Home becomes available after the launch splash.
 `OK` saves the scoring page as the resume point. `Lets play` records
@@ -823,23 +822,19 @@ at the player's actual rating. The Home track takes over when the movement
 ends. Reduce Motion, missing or offscreen tracks, and guide dismissal within
 Player Profile use the regular dismissal.
 
-Upgrades get an inline tip below the Home rating in the first eligible
-session. The tip is recorded when it is offered and stays visible in that
-session until dismissed or opened. The permanent Daily Intervls guide in
-Player Profile and the tip both open the same content on its gameplay page.
+The permanent Daily Intervls guide in Player Profile opens on its gameplay page.
 Manual guide use leaves automatic presentation state untouched.
 
 ## Web Daily Intervls Onboarding
 
-Classify the browser before startup effects write game caches or preferences.
-Retained site data gets an inline Home tip. Fresh browsers get the two-page
-walkthrough when Home becomes available, including while content loads or the
-browser is offline. Store the current page and completion in local storage
-across guests and accounts. Record the returning tip when it is offered and
-keep it in that tab's session until dismissed or opened.
+New and returning players get the same walkthrough when Home becomes
+available, including while content loads or the browser is offline. Store the
+current page and completion in local storage across guests and accounts. A
+legacy pending tip starts at gameplay. A saved scoring step resumes, and a
+saved completion stays complete.
 
-Player Profile and the Home tip open the same guide from its first page. The
-first-visit walkthrough requires each page's acknowledgement. The manual guide
+Player Profile opens the same guide from its first page. The automatic
+walkthrough requires each page's acknowledgement. The manual guide
 dismisses on Escape or a backdrop click and leaves onboarding progress intact.
 Each gameplay row reveals `5 / 5` using the celebration's game-coloured
 numerator and muted denominator. Screen readers announce “up to 5 points”.

@@ -86,7 +86,7 @@ body:has(.daily-intervls-guide[data-onboarding][open]) .analytics-consent { visi
   margin-bottom: 6px;
   color: var(--app-text-primary);
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-variant-numeric: tabular-nums;
 }
 .daily-intervls-guide__tiers {
@@ -134,31 +134,14 @@ body:has(.daily-intervls-guide[data-onboarding][open]) .analytics-consent { visi
   to { left: var(--target-fraction); }
 }
 
-.daily-intervls-tip {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 8px;
-  width: min(340px, calc(100% - 24px));
-  margin: 0 clamp(20px, 4vw, 60px) 12px auto;
-  padding: 12px 12px 4px 16px;
-  border: 1px solid var(--app-border-strong);
-  border-radius: 12px;
-  background: var(--app-surface);
-  font-size: .9375rem;
-}
-.daily-intervls-tip p { margin: 4px 0 0; }
-.daily-intervls-tip button { min-height: 44px; font-weight: 700; }
-.daily-intervls-tip button:not(.daily-intervls-tip__close), .daily-intervls-profile-link { color: var(--app-accent); }
-.daily-intervls-tip__close { min-width: 44px; color: var(--app-text-secondary); font-size: 1.25rem; }
 .daily-intervls-profile-link {
   align-self: start;
   min-height: 44px;
   margin: 0 20px 8px;
+  color: var(--app-accent);
   font-weight: 700;
   text-align: start;
 }
-@media (max-width: 1100px) { .daily-intervls-tip { margin-inline: auto; } }
 @media (prefers-reduced-motion: reduce) {
   .daily-intervls-lineup .daily-celebration__row, .daily-intervls-lineup__points { animation: none; }
   .daily-intervls-lineup .daily-marker { visibility: hidden; animation: none; }

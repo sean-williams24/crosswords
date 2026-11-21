@@ -31,7 +31,6 @@ import { anagramCloudRecord, midwordCloudRecord, backwordCloudRecord, crosswordC
 import { dailyChallenge, dailyChallengePreview, shouldCelebrate, type DailyAttempt, type DailyGame, type DailySnapshot } from "../features/home/dailyChallenge";
 import { DailyChallengeSummary, DailyChallengeCelebration } from "../features/home/DailyChallengeViews";
 import { DailyIntervlsGuide } from "../features/home/DailyIntervlsGuide";
-import { DailyIntervlsTip } from "../features/home/DailyIntervlsTip";
 import { useDailyIntervlsOnboarding } from "../features/home/useDailyIntervlsOnboarding";
 
 type HomeSyncUser = { id: string; last_sign_in_at?: string };
@@ -117,11 +116,10 @@ export function HomeDashboardPage() {
   const issueNumbers = useHomeGameIssueNumbers(today);
   const [wordOfTheDayState, setWordOfTheDayState] = useState<WordOfTheDayLoadState>("loading");
   const isLoading = !ready || wordOfTheDayState === "loading";
-  const onboarding = useDailyIntervlsOnboarding(!isLoading && !celebration);
-  const [showsManualGuide, setShowsManualGuide] = useState(false);
+  const onboarding = useDailyIntervlsOnboarding();
   const ratingTrack = useRef<HTMLSpanElement>(null);
-  const onboardingStep = ready ? onboarding.firstLaunchStep : null;
-  const showsGuide = onboardingStep !== null || showsManualGuide;
+  const onboardingStep = ready ? onboarding.pendingStep : null;
+  const showsGuide = onboardingStep !== null;
   const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, today, user?.id), [syncRevision, today, user?.id]);
   const backwordStreak = useMemo(() => deriveStats(createBackwordStorage(window.localStorage, { userId: user?.id }).loadAllProgress()).currentStreak, [syncRevision, today, user?.id]);
   const backwordScore = useMemo(() => backwordDashboardScore(window.localStorage, today, user?.id), [syncRevision, today, user?.id]);
@@ -198,19 +196,17 @@ export function HomeDashboardPage() {
     try { sessionStorage.setItem('intervls:daily-attempt', JSON.stringify({ context, game, started: Date.now(), wasFinished: daily.games.find(g => g.game === game)?.state === 'finished' })); } catch { /* Storage unavailable. */ }
   };
   const isSyncing = Boolean(homeSyncKey && syncedSessionKey !== homeSyncKey);
-  const focusRating = () => ratingTrack.current?.closest("a")?.focus();
 
   return (
     <main className="home-dashboard">
-      {showsGuide ? (
+      {onboardingStep ? (
         <DailyIntervlsGuide
           isPro={entitlement?.isPro === true}
           homeRating={isSyncing ? undefined : { tier: profileRating.tier, fraction: profileRating.fraction, trackRef: ratingTrack }}
-          onboarding={onboardingStep ? { startingStep: onboardingStep, onAdvance: onboarding.acknowledgeGameplay, onComplete: onboarding.recordCompletion } : undefined}
+          onboarding={{ startingStep: onboardingStep, onAdvance: onboarding.acknowledgeGameplay, onComplete: onboarding.recordCompletion }}
           onClose={() => {
-            if (onboardingStep) onboarding.closeOnboarding();
-            setShowsManualGuide(false);
-            focusRating();
+            onboarding.closeOnboarding();
+            ratingTrack.current?.closest("a")?.focus();
           }}
         />
       ) : null}
@@ -232,13 +228,6 @@ export function HomeDashboardPage() {
         <HomeProfileRatingLink fraction={profileRating.fraction} isSyncing={isSyncing} tier={profileRating.tier} ratingTrackRef={ratingTrack} dailySummary={<DailyChallengeSummary snapshot={daily} celebration={celebrationId} />} />
       </header>
 
-      {onboarding.showsTip && !celebration ? <DailyIntervlsTip dismiss={() => {
-        onboarding.dismissTip();
-        focusRating();
-      }} openGuide={() => {
-        onboarding.dismissTip();
-        setShowsManualGuide(true);
-      }} /> : null}
       <section aria-label="Games" className="home-dashboard__content" inert={celebration !== null}>
         <div aria-busy={isLoading} className="home-dashboard__daily-layout">
           {isLoading ? <span className="home-dashboard__loading-label" role="status">Loading daily games</span> : null}

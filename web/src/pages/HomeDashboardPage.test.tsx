@@ -92,6 +92,11 @@ describe("web home dashboard", () => {
 
   afterEach(() => vi.useRealTimers());
 
+  it("uses body-text size for the guide's example points total", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/features/home/dailyIntervlsGuide.css"), "utf8");
+    expect(styles).toMatch(/\.daily-intervls-guide__earned\s*\{[^}]*font-size:\s*1rem;/);
+  });
+
   it("resumes first-visit onboarding and completes while daily content is unavailable", () => {
     localStorage.removeItem(dailyIntervlsOnboardingKey);
     testWordOfTheDay.state = "loading";
@@ -136,23 +141,22 @@ describe("web home dashboard", () => {
     }
   });
 
-  it("offers a returning browser the guide once and opens a dismissible walkthrough", () => {
-    localStorage.removeItem(dailyIntervlsOnboardingKey);
+  it.each([null, "returningTipPending"])("shows the full walkthrough to an existing browser (prior stage: %s)", priorStage => {
+    if (priorStage) localStorage.setItem(dailyIntervlsOnboardingKey, priorStage);
+    else localStorage.removeItem(dailyIntervlsOnboardingKey);
     localStorage.setItem("backword:web:theme:v1", "dark");
     const first = renderDashboard();
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "View guide" })).toBeInTheDocument();
+    const gameplay = screen.getByRole("dialog", { name: "Your Daily Intervls" });
+    expect(within(gameplay).queryByRole("button", { name: "Close" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "View guide" })).not.toBeInTheDocument();
+    fireEvent.click(within(gameplay).getByRole("button", { name: "OK" }));
+    const scoring = screen.getByRole("dialog", { name: "Points and Rating" });
+    fireEvent.click(within(scoring).getByRole("button", { name: "Lets play" }));
     expect(localStorage.getItem(dailyIntervlsOnboardingKey)).toBe("complete");
     first.unmount();
 
-    const resumed = renderDashboard();
-    fireEvent.click(screen.getByRole("button", { name: "View guide" }));
-    const guide = screen.getByRole("dialog", { name: "Your Daily Intervls" });
-    fireEvent.click(guide);
-    expect(guide).not.toBeInTheDocument();
-    resumed.unmount();
-
     renderDashboard();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "View guide" })).not.toBeInTheDocument();
   });
 

@@ -5,79 +5,61 @@ import Testing
 @MainActor
 @Suite("Daily Intervls onboarding")
 struct DailyIntervlsOnboardingTests {
-    @Test("A fresh installation offers gameplay after Home is ready, even offline")
+    @Test("A fresh installation offers gameplay after Home is ready")
     func freshInstallation() {
         withDefaults { defaults in
-            let onboarding = DailyIntervlsOnboardingViewModel(defaults: defaults, legacyAppDataExists: false)
-            #expect(onboarding.firstLaunchStep == .gameplay)
-            #expect(onboarding.homeOffer(isHomeReady: false, hasGameLoadError: false) == nil)
-            #expect(onboarding.homeOffer(isHomeReady: true, hasGameLoadError: false) == .firstLaunch(.gameplay))
-            #expect(onboarding.homeOffer(isHomeReady: true, hasGameLoadError: true) == .firstLaunch(.gameplay))
-            #expect(!onboarding.showsReturningTip)
+            let onboarding = DailyIntervlsOnboardingViewModel(defaults: defaults)
+            #expect(onboarding.pendingStep == .gameplay)
+            #expect(onboarding.homeStep(isReady: false) == nil)
+            #expect(onboarding.homeStep(isReady: true) == .gameplay)
         }
     }
 
-    @Test("Gameplay acknowledgement survives an interruption even after startup has written data")
+    @Test("Gameplay acknowledgement survives an interruption")
     func resumeScoring() {
         withDefaults { defaults in
-            let onboarding = DailyIntervlsOnboardingViewModel(defaults: defaults, legacyAppDataExists: false)
+            let onboarding = DailyIntervlsOnboardingViewModel(defaults: defaults)
             onboarding.finishOnboarding()
-            #expect(onboarding.firstLaunchStep == .gameplay)
+            #expect(onboarding.pendingStep == .gameplay)
             onboarding.acknowledgeGameplay()
 
-            let relaunched = DailyIntervlsOnboardingViewModel(defaults: defaults, legacyAppDataExists: true)
-            #expect(relaunched.firstLaunchStep == .scoring)
-            #expect(relaunched.homeOffer(isHomeReady: true, hasGameLoadError: true) == .firstLaunch(.scoring))
+            let relaunched = DailyIntervlsOnboardingViewModel(defaults: defaults)
+            #expect(relaunched.homeStep(isReady: true) == .scoring)
         }
     }
 
     @Test("Finishing the scoring page completes onboarding for later launches")
     func completeOnboarding() {
         withDefaults { defaults in
-            let onboarding = DailyIntervlsOnboardingViewModel(defaults: defaults, legacyAppDataExists: false)
+            let onboarding = DailyIntervlsOnboardingViewModel(defaults: defaults)
             onboarding.acknowledgeGameplay()
             onboarding.finishOnboarding()
 
-            let relaunched = DailyIntervlsOnboardingViewModel(defaults: defaults, legacyAppDataExists: true)
-            #expect(relaunched.firstLaunchStep == nil)
-            #expect(relaunched.homeOffer(isHomeReady: true, hasGameLoadError: false) == nil)
-            #expect(!relaunched.showsReturningTip)
+            let relaunched = DailyIntervlsOnboardingViewModel(defaults: defaults)
+            #expect(relaunched.homeStep(isReady: true) == nil)
         }
     }
 
-    @Test("Stored legacy preferences count as prior use, including a false choice",
+    @Test("Installations with existing preferences get the gameplay walkthrough",
           arguments: ["hasSeenDailyCrosswordOnboarding", AnalyticsConsent.storageKey, "appColorScheme"])
     func legacyPreferences(key: String) {
         withDefaults { defaults in
             defaults.set(false, forKey: key)
-            let onboarding = DailyIntervlsOnboardingViewModel(defaults: defaults, legacyAppDataExists: false)
-            #expect(onboarding.firstLaunchStep == nil)
-            #expect(onboarding.homeOffer(isHomeReady: true, hasGameLoadError: false) == .returningTip)
+            let onboarding = DailyIntervlsOnboardingViewModel(defaults: defaults)
+            #expect(onboarding.homeStep(isReady: true) == .gameplay)
         }
     }
 
-    @Test("The returning tip waits for an eligible Home and appears only in that session")
-    func returningTip() {
+    @Test("A previously pending returning tip enters the full walkthrough")
+    func legacyPendingTip() {
         withDefaults { defaults in
-            let onboarding = DailyIntervlsOnboardingViewModel(defaults: defaults, legacyAppDataExists: true)
-            #expect(onboarding.firstLaunchStep == nil)
-            #expect(onboarding.homeOffer(isHomeReady: false, hasGameLoadError: false) == nil)
-            #expect(onboarding.homeOffer(isHomeReady: true, hasGameLoadError: true) == nil)
-
-            // Waiting for Home to become eligible has not consumed the tip on relaunch.
-            let relaunched = DailyIntervlsOnboardingViewModel(defaults: defaults, legacyAppDataExists: true)
-            #expect(relaunched.homeOffer(isHomeReady: true, hasGameLoadError: false) == .returningTip)
-            relaunched.presentReturningTip()
-            #expect(relaunched.showsReturningTip)
-            #expect(relaunched.homeOffer(isHomeReady: true, hasGameLoadError: false) == nil)
-
-            let nextLaunch = DailyIntervlsOnboardingViewModel(defaults: defaults, legacyAppDataExists: true)
-            #expect(!nextLaunch.showsReturningTip)
-            #expect(nextLaunch.homeOffer(isHomeReady: true, hasGameLoadError: false) == nil)
-
-            relaunched.dismissReturningTip()
-            relaunched.presentReturningTip()
-            #expect(!relaunched.showsReturningTip)
+            defaults.set("returningTipPending", forKey: "dailyIntervls.onboarding.v1")
+            let onboarding = DailyIntervlsOnboardingViewModel(defaults: defaults)
+            #expect(onboarding.homeStep(isReady: true) == .gameplay)
+            onboarding.acknowledgeGameplay()
+            #expect(onboarding.homeStep(isReady: true) == .scoring)
+            onboarding.finishOnboarding()
+            #expect(onboarding.homeStep(isReady: true) == nil)
         }
     }
 

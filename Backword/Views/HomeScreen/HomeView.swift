@@ -69,19 +69,15 @@ struct HomeView: View {
     }
 
     private var canPresentDailyCelebration: Bool {
-        homeIsAvailable && dailyIntervlsOnboarding.firstLaunchStep == nil && !viewModel.crosswordsFetchDidFail
+        homeIsAvailable && dailyIntervlsOnboarding.pendingStep == nil && !viewModel.crosswordsFetchDidFail
     }
 
-    private var dailyIntervlsHomeOffer: DailyIntervlsOnboardingViewModel.HomeOffer? {
-        dailyIntervlsOnboarding.homeOffer(
-            isHomeReady: homeIsAvailable && !dailyChallenge.isCelebrating,
-            hasGameLoadError: viewModel.crosswordsFetchDidFail
-        )
+    private var dailyIntervlsHomeStep: DailyIntervlsGuideStep? {
+        dailyIntervlsOnboarding.homeStep(isReady: homeIsAvailable && !dailyChallenge.isCelebrating)
     }
 
     private var blocksSettingsTip: Bool {
-        dailyIntervlsOnboarding.firstLaunchStep != nil
-            || dailyIntervlsOnboarding.showsReturningTip
+        dailyIntervlsOnboarding.pendingStep != nil
             || dailyIntervlsGuideMode != nil
     }
 
@@ -148,7 +144,7 @@ struct HomeView: View {
     var body: some View {
         homeLifecycleView
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                if showsAnalyticsConsentBanner && dailyIntervlsOnboarding.firstLaunchStep == nil
+                if showsAnalyticsConsentBanner && dailyIntervlsOnboarding.pendingStep == nil
                     && dailyIntervlsGuideMode?.isOnboarding != true {
                     AnalyticsConsentBanner()
                 }
@@ -238,8 +234,8 @@ struct HomeView: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 archiveFooterBar
             }
-            .allowsHitTesting(!dailyChallenge.isCelebrating && dailyIntervlsOnboarding.firstLaunchStep == nil)
-            .accessibilityHidden(dailyChallenge.isCelebrating || dailyIntervlsOnboarding.firstLaunchStep != nil)
+            .allowsHitTesting(!dailyChallenge.isCelebrating && dailyIntervlsOnboarding.pendingStep == nil)
+            .accessibilityHidden(dailyChallenge.isCelebrating || dailyIntervlsOnboarding.pendingStep != nil)
             .overlay {
                 if dailyChallenge.isCelebrating, let result = dailyChallenge.celebrationSnapshot {
                     HomeDailyChallengeCelebration(snapshot: result, dismiss: {
@@ -412,14 +408,9 @@ struct HomeView: View {
 
     private var homeTipObservationView: some View {
         homeTaskView
-            .onChange(of: dailyIntervlsHomeOffer, initial: true) { _, offer in
-                switch offer {
-                case .firstLaunch(let step):
+            .onChange(of: dailyIntervlsHomeStep, initial: true) { _, step in
+                if let step {
                     presentDailyIntervlsGuide(.onboarding(step))
-                case .returningTip:
-                    dailyIntervlsOnboarding.presentReturningTip()
-                case nil:
-                    break
                 }
             }
             .onChange(of: blocksSettingsTip) { _, _ in
@@ -517,7 +508,7 @@ struct HomeView: View {
     private var gameLoadAlertBinding: Binding<Bool> {
         Binding(
             get: {
-                viewModel.crosswordsFetchDidFail && dailyIntervlsOnboarding.firstLaunchStep == nil
+                viewModel.crosswordsFetchDidFail && dailyIntervlsOnboarding.pendingStep == nil
                     && dailyIntervlsGuideMode == nil && accountService.accountDeletionNotice == nil
             },
             set: { viewModel.crosswordsFetchDidFail = $0 }
@@ -603,16 +594,6 @@ struct HomeView: View {
             )
                 .padding(.horizontal, appLayout.homeHorizontalPadding)
                 .padding(.bottom, dynamicTypeSize > .accessibility3 ? 16 : 0)
-
-            if dailyIntervlsOnboarding.showsReturningTip && !dailyChallenge.isCelebrating {
-                HomeDailyIntervlsTip {
-                    dailyIntervlsOnboarding.dismissReturningTip()
-                    presentDailyIntervlsGuide(.manual)
-                } dismiss: {
-                    dailyIntervlsOnboarding.dismissReturningTip()
-                }
-                .padding(.horizontal, appLayout.homeHorizontalPadding)
-            }
 
             if !isExpanded {
                 wordOfTheDay(showsInlineDetails: false)
