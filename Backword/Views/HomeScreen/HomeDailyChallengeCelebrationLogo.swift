@@ -3,8 +3,16 @@ import SwiftUI
 /// Aligns the visible artwork rather than the PNGs' differing transparent margins.
 struct HomeDailyChallengeCelebrationLogo: View {
     @Environment(\.colorScheme) private var colorScheme
-    @ScaledMetric private var height = AppLayout.homeDailyCelebrationLogoHeight
+    @ScaledMetric private var height: CGFloat
     let game: DailyChallengeGame
+    private let compact: Bool
+
+    init(game: DailyChallengeGame, compact: Bool = false) {
+        self.game = game
+        self.compact = compact
+        let logoHeight = compact ? AppLayout.profileDailyLogoHeight : AppLayout.homeDailyCelebrationLogoHeight
+        _height = ScaledMetric(wrappedValue: logoHeight)
+    }
 
     @ViewBuilder
     var body: some View {
@@ -26,8 +34,9 @@ struct HomeDailyChallengeCelebrationLogo: View {
                 .minimumScaleFactor(0.2)
                 .fixedSize(horizontal: false, vertical: true)
         case .anagram:
+            let titleSize = compact ? AppLayout.profileDailyGameTitleSize : AppLayout.homeDailyCelebrationGameTitleSize
             Text("ANAGRAM")
-                .font(AppFont.clueLabel(AppLayout.homeDailyCelebrationGameTitleSize))
+                .font(AppFont.clueLabel(titleSize))
                 .tracking(2)
                 .foregroundStyle(game.homeProgressColor)
                 .lineLimit(1)

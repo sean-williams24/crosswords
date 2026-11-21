@@ -1,20 +1,23 @@
 import SwiftUI
 
 struct HomeDailyChallengeCelebrationRow: View {
-    static let guideMarkerFillMilliseconds = 550
+    static let markerFillMilliseconds = 550
 
-    enum GuidePhase: CaseIterable {
+    enum RevealPhase: CaseIterable {
         case hidden, marker, filled, points
     }
 
     private enum Accessory {
         case points(Int, isRevealed: Bool)
-        case guide(GuidePhase, delay: Double)
+        case lineup(progress: DailyChallengeGameProgress?, phase: RevealPhase, delay: Double)
     }
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric private var minimumHeight = AppLayout.homeDailyCelebrationRowHeight
+    @ScaledMetric private var compactMinimumHeight = AppLayout.profileDailyRowHeight
+    @ScaledMetric private var profileMarkerWidth = AppLayout.profileDailyMarkerWidth
+    @ScaledMetric private var markerHeight = AppLayout.homeDailyMarkerHeight
     private let game: DailyChallengeGame
     private let showsGame: Bool
     private let accessory: Accessory
@@ -25,17 +28,31 @@ struct HomeDailyChallengeCelebrationRow: View {
         self.accessory = .points(progress.earnedPoints, isRevealed: showsPoints)
     }
 
-    init(game: DailyChallengeGame, guidePhase: GuidePhase, delay: Double = 0) {
+    init(game: DailyChallengeGame, guidePhase: RevealPhase, delay: Double = 0) {
         self.game = game
         self.showsGame = guidePhase != .hidden
-        self.accessory = .guide(guidePhase, delay: delay)
+        self.accessory = .lineup(progress: nil, phase: guidePhase, delay: delay)
+    }
+
+    init(progress: DailyChallengeGameProgress, profilePhase: RevealPhase, delay: Double = 0) {
+        self.game = progress.game
+        self.showsGame = profilePhase != .hidden
+        self.accessory = .lineup(progress: progress, phase: profilePhase, delay: delay)
+    }
+
+    private var isCompact: Bool {
+        if case let .lineup(progress, _, _) = accessory { return progress != nil }
+        return false
     }
 
     var body: some View {
+        let horizontalPadding = isCompact ? AppLayout.profileDailyRowHorizontalPadding : AppLayout.homeDailyCelebrationPadding
+        let verticalPadding = isCompact ? AppLayout.profileDailyRowVerticalPadding : AppLayout.homeDailyCelebrationRowSpacing
         Group {
             if dynamicTypeSize.isAccessibilitySize {
                 VStack(alignment: .leading, spacing: AppLayout.homeDailyCelebrationRowSpacing) {
                     logo
+                        .padding(.top, isCompact ? AppLayout.profileDailyAccessibilityLogoTopPadding : 0)
                     HStack {
                         Spacer()
                         trailingContent
@@ -43,16 +60,16 @@ struct HomeDailyChallengeCelebrationRow: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
-                HStack(spacing: AppLayout.homeDailyCelebrationPadding) {
+                HStack(spacing: horizontalPadding) {
                     logo
                         .frame(maxWidth: .infinity, alignment: .leading)
                     trailingContent
                 }
             }
         }
-        .frame(minHeight: minimumHeight)
-        .padding(.horizontal, AppLayout.homeDailyCelebrationPadding)
-        .padding(.vertical, AppLayout.homeDailyCelebrationRowSpacing)
+        .frame(minHeight: isCompact ? compactMinimumHeight : minimumHeight)
+        .padding(.horizontal, horizontalPadding)
+        .padding(.vertical, verticalPadding)
         .background(game.homeProgressColor.opacity(0.1),
                     in: RoundedRectangle(cornerRadius: AppLayout.cardCornerRadius))
         .opacity(showsGame ? 1 : 0)
@@ -63,14 +80,19 @@ struct HomeDailyChallengeCelebrationRow: View {
     }
 
     private var logo: some View {
-        HomeDailyChallengeCelebrationLogo(game: game)
+        HomeDailyChallengeCelebrationLogo(game: game, compact: isCompact)
     }
 
     var accessibilityDescription: String {
-        if case let .points(earned, _) = accessory {
-            return "\(game.displayName), \(earned) of \(DailyChallengeSnapshot.maximumPointsPerGame) points"
+        let maximum = DailyChallengeSnapshot.maximumPointsPerGame
+        switch accessory {
+        case let .points(earned, _):
+            return "\(game.displayName), \(earned) of \(maximum) points"
+        case let .lineup(progress?, _, _):
+            return "\(progress.accessibilityLabel), \(progress.earnedPoints) of \(maximum) points"
+        case .lineup:
+            return "\(game.displayName), up to \(maximum) points"
         }
-        return "\(game.displayName), up to \(DailyChallengeSnapshot.maximumPointsPerGame) points"
     }
 
     private var isAccessoryRevealed: Bool {
@@ -83,43 +105,67 @@ struct HomeDailyChallengeCelebrationRow: View {
         switch accessory {
         case let .points(earned, isRevealed):
             points(earned, isRevealed: isRevealed)
-        case let .guide(phase, delay):
-            guidePoints(phase: phase, delay: delay)
+        case let .lineup(progress, phase, delay):
+            lineupPoints(progress: progress, phase: phase, delay: delay)
         }
     }
 
-    private func guidePoints(phase: GuidePhase, delay: Double) -> some View {
+    @ViewBuilder
+    private func lineupPoints(progress: DailyChallengeGameProgress?, phase: RevealPhase, delay: Double) -> some View {
         let showsPoints = phase == .points
         let fillsMarker = phase == .filled || showsPoints
-        let markerWidth = AppLayout.dailyIntervlsGuideMarkerWidth
-        let fillAnimation = reduceMotion ? nil : Animation.easeInOut(
-            duration: Double(Self.guideMarkerFillMilliseconds) / 1_000
-        ).delay(delay)
         let transition = reduceMotion ? nil : Animation.easeInOut(duration: 0.28).delay(delay)
-
-        return points(DailyChallengeSnapshot.maximumPointsPerGame, isRevealed: showsPoints)
+        let target = progress ?? DailyChallengeGameProgress(game: game, state: .finished(won: true))
+        let score = points(progress?.earnedPoints ?? DailyChallengeSnapshot.maximumPointsPerGame, isRevealed: showsPoints)
             .animation(transition, value: showsPoints)
-            .overlay(alignment: .trailing) {
-                HomeDailyChallengeMarker(progress: .init(game: game, state: .notStarted), width: markerWidth)
-                    .overlay {
-                        HomeDailyChallengeMarker(progress: .init(game: game, state: .finished(won: true)),
-                                                 width: markerWidth)
-                            .mask(alignment: .leading) {
-                                Rectangle().scaleEffect(x: fillsMarker ? 1 : 0, y: 1, anchor: .leading)
-                            }
-                            .animation(fillAnimation, value: fillsMarker)
+        let marker = lineupMarker(progress: target, fillsMarker: fillsMarker, delay: delay)
+
+        if isCompact {
+            score
+                .frame(minWidth: profileMarkerWidth, alignment: .trailing)
+                .padding(.bottom, markerHeight + AppLayout.homeDailyMarkerSpacing)
+                .overlay {
+                    GeometryReader { geometry in
+                        marker
+                            .offset(y: showsPoints ? 0 : (markerHeight - geometry.size.height) / 2)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                     }
+                    .animation(transition, value: showsPoints)
+                }
+        } else {
+            score.overlay(alignment: .trailing) {
+                marker
                     .opacity(showsPoints ? 0 : 1)
                     .scaleEffect(showsPoints && !reduceMotion ? 0.6 : 1)
                     .animation(transition, value: showsPoints)
-                    .accessibilityHidden(true)
             }
+        }
+    }
+
+    private func lineupMarker(progress: DailyChallengeGameProgress, fillsMarker: Bool, delay: Double) -> some View {
+        let width = isCompact ? AppLayout.profileDailyMarkerWidth : AppLayout.dailyIntervlsGuideMarkerWidth
+        let fillAnimation = reduceMotion ? nil : Animation.easeInOut(
+            duration: Double(Self.markerFillMilliseconds) / 1_000
+        ).delay(delay)
+
+        return HomeDailyChallengeMarker(progress: .init(game: game, state: .notStarted), width: width)
+            .overlay {
+                if progress.state != .notStarted {
+                    HomeDailyChallengeMarker(progress: progress, width: width)
+                        .mask(alignment: .leading) {
+                            Rectangle().scaleEffect(x: fillsMarker ? 1 : 0, y: 1, anchor: .leading)
+                        }
+                        .animation(fillAnimation, value: fillsMarker)
+                }
+            }
+            .accessibilityHidden(true)
     }
 
     private func points(_ earned: Int, isRevealed: Bool) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: AppLayout.homeDailyMarkerSpacing) {
+        let scoreSize = isCompact ? AppLayout.profileDailyScoreSize : AppLayout.homeDailyCelebrationScoreSize
+        return HStack(alignment: .firstTextBaseline, spacing: AppLayout.homeDailyMarkerSpacing) {
             Text("\(earned)")
-                .font(AppFont.statNumber(AppLayout.homeDailyCelebrationScoreSize))
+                .font(AppFont.statNumber(scoreSize))
                 .foregroundStyle(game.homeProgressColor)
             Text("/ \(DailyChallengeSnapshot.maximumPointsPerGame)")
                 .font(AppFont.caption())

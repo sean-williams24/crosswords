@@ -262,6 +262,14 @@ struct AppLayout {
     static let homeArchiveBorderWidth: CGFloat = 1
     static let profileDailySpacing: CGFloat = 10
     static let profileDailyPadding: CGFloat = 20
+    static let profileDailyRowHeight: CGFloat = 38
+    static let profileDailyRowHorizontalPadding: CGFloat = 12
+    static let profileDailyRowVerticalPadding: CGFloat = 6
+    static let profileDailyAccessibilityLogoTopPadding: CGFloat = 6
+    static let profileDailyLogoHeight: CGFloat = 26
+    static let profileDailyGameTitleSize: CGFloat = 17
+    static let profileDailyScoreSize: CGFloat = 22
+    static let profileDailyMarkerWidth: CGFloat = 36
     static let dailyIntervlsGuideBackdropOpacity = 0.55
     static let dailyIntervlsGuidePointsSize: CGFloat = 12
     static let dailyIntervlsGuideMarkerWidth: CGFloat = 44

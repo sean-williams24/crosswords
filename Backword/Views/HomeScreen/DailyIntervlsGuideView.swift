@@ -19,7 +19,6 @@ struct DailyIntervlsGuideView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AccessibilityFocusState private var isHeadingFocused: Bool
     @State private var step: DailyIntervlsGuideStep
-    @State private var lineupPhase: HomeDailyChallengeCelebrationRow.GuidePhase = .hidden
     @State private var ratingProgress: Double = 0
 
     private let mode: Mode
@@ -72,10 +71,7 @@ struct DailyIntervlsGuideView: View {
         }
         .task(id: step) {
             isHeadingFocused = true
-            switch step {
-            case .gameplay: await animateLineup()
-            case .scoring: await animateRating()
-            }
+            if step == .scoring { await animateRating() }
         }
     }
 
@@ -110,7 +106,7 @@ struct DailyIntervlsGuideView: View {
             .frame(maxWidth: .infinity)
 
             if step == .gameplay {
-                dailyLineup
+                DailyIntervlsLineupView()
             } else {
                 DailyIntervlsRatingDemoView(progress: ratingProgress, isPro: isPro, hidesTrack: hidesRatingTrack)
                 ratingBulletList
@@ -131,31 +127,6 @@ struct DailyIntervlsGuideView: View {
         }
         .multilineTextAlignment(.leading)
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private var dailyLineup: some View {
-        VStack(spacing: AppLayout.homeDailyCelebrationRowSpacing) {
-            ForEach(Array(DailyChallengeGame.allCases.enumerated()), id: \.element.id) { index, game in
-                let delay = Double(index) * 0.14
-                let phase = reduceMotion ? .points : lineupPhase
-                HomeDailyChallengeCelebrationRow(game: game, guidePhase: phase, delay: delay)
-                    .animation(reduceMotion ? nil : .spring(response: 0.42, dampingFraction: 0.72).delay(delay),
-                               value: phase != .hidden)
-            }
-        }
-    }
-
-    private func animateLineup() async {
-        do {
-            try await Task.sleep(for: .milliseconds(120))
-            lineupPhase = .marker
-            try await Task.sleep(for: .milliseconds(220))
-            lineupPhase = .filled
-            try await Task.sleep(for: .milliseconds(HomeDailyChallengeCelebrationRow.guideMarkerFillMilliseconds + 120))
-            lineupPhase = .points
-        } catch {
-            // Advancing or dismissing the guide cancels the reveal.
-        }
     }
 
     private func explanation(_ text: String) -> some View {

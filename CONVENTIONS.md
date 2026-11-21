@@ -2604,13 +2604,19 @@ and unavailable in production builds.
 Player Profile shows today's four daily games and points above the rolling
 rating. It reads the same local daily challenge snapshot as Home, including
 in-progress points and terminal losses, and excludes weekly and archive games.
+On iOS, the daily lineup uses the onboarding row design and staggered reveal
+with more compact artwork and spacing. Stacked rows at accessibility text sizes
+give the game logos and titles extra top padding. Each capsule fills to the player's
+actual progress, then slides beneath the earned score out of five and stays
+visible. Reduce Motion displays the final rows immediately. VoiceOver reads
+the game status and earned points together.
 The profile refreshes while open and after account sync or account changes so
 that the displayed local release day and restored progress stay current. On web,
 the card sits above the 14-day table on desktop and above the summary when the
 profile stacks below 1022px. Desktop account controls fill the remaining space
 below the table, with Delete Account aligned to the bottom of the summary.
 The card also refreshes on cross-tab updates and when the page becomes visible.
-Point values in daily game rows use the primary text colour on both platforms.
+Web point values in daily game rows use the primary text colour.
 Web completion outlines use the card’s own border so they follow its corners and
 move with it on hover; keyboard focus retains the primary-colour outline.
 

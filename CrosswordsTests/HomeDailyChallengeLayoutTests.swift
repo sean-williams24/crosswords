@@ -6,27 +6,86 @@ import UIKit
 @MainActor
 @Suite("Home daily challenge layout")
 struct HomeDailyChallengeLayoutTests {
-    @Test("Profile rows keep titles and statuses readable at narrow widths",
+    @Test("Profile rows fit narrow widths and reserve the same space throughout the reveal",
           arguments: [DynamicTypeSize.large, .xxxLarge, .accessibility1, .accessibility5])
     func profileRowAdaptsToTextSize(size: DynamicTypeSize) {
-        let progress = DailyChallengeGameProgress(game: .crossword, state: .notStarted)
-        let row = ProfileDailyProgressView.gameRow(progress)
-            .environment(\.dynamicTypeSize, size)
-        let host = UIHostingController(rootView: row)
-        let narrow = host.sizeThatFits(in: CGSize(width: 260, height: 1_000))
-        let text = Text("Quick Crossword").font(AppFont.body(14))
-            .environment(\.dynamicTypeSize, size)
-        let lineHeight = UIHostingController(rootView: text)
-            .sizeThatFits(in: CGSize(width: 1_000, height: 1_000)).height
-        #expect(narrow.width <= 260.5)
-        // The two labels may each wrap onto two lines, but must not collapse
-        // into the many character-sized lines seen when the status is squeezed.
-        #expect(narrow.height <= lineHeight * 5 + AppLayout.profileDailySpacing * 2)
+        let progress = DailyChallengeGameProgress(game: .crossword, state: .inProgress, fillFraction: 0.4,
+                                                  earnedPoints: 2)
+        let proposal = CGSize(width: 244, height: 1_000)
+        let sizes = HomeDailyChallengeCelebrationRow.RevealPhase.allCases.map { phase in
+            let row = HomeDailyChallengeCelebrationRow(progress: progress, profilePhase: phase)
+            #expect(row.accessibilityDescription == "Quick Crossword: In progress, 2 of 5 points")
+            return UIHostingController(rootView: row.environment(\.dynamicTypeSize, size)).sizeThatFits(in: proposal)
+        }
+
+        #expect(sizes.dropFirst().allSatisfy { sizes.first == $0 })
+        #expect(sizes.allSatisfy { $0.width <= proposal.width + 0.5 })
+        if size == .large {
+            let guide = HomeDailyChallengeCelebrationRow(game: .crossword, guidePhase: .points)
+                .environment(\.dynamicTypeSize, size)
+            let guideHeight = UIHostingController(rootView: guide).sizeThatFits(in: proposal).height
+            #expect(sizes.allSatisfy { $0.height < guideHeight })
+        }
     }
 
-    @Test("Daily progress points use primary text colour")
-    func profilePointsColor() {
-        #expect(ProfileDailyProgressView.pointsColor == .appTextPrimary)
+    @Test("Stacked profile rows add top padding above the game title",
+          arguments: [DynamicTypeSize.accessibility1, .accessibility5])
+    func profileLogoHasTopPadding(size: DynamicTypeSize) throws {
+        let progress = DailyChallengeGameProgress(game: .crossword, state: .notStarted)
+        let width: CGFloat = 260
+        let scale: CGFloat = 2
+
+        func firstOpaqueRow(_ view: some View, width: CGFloat) throws -> CGFloat {
+            let renderer = ImageRenderer(content: view.environment(\.dynamicTypeSize, size))
+            renderer.proposedSize = ProposedViewSize(width: width, height: nil)
+            renderer.scale = scale
+            let image = try #require(renderer.cgImage)
+            let pixels = try rgbaPixels(image)
+            let firstOpaquePixel = try #require(stride(from: 3, to: pixels.count, by: 4).first { pixels[$0] > 128 })
+            return CGFloat(firstOpaquePixel / (image.width * 4)) / scale
+        }
+
+        let rowTop = try firstOpaqueRow(HomeDailyChallengeCelebrationRow(progress: progress, profilePhase: .points),
+                                        width: width)
+        let titleTop = try firstOpaqueRow(HomeDailyChallengeCelebrationLogo(game: .crossword, compact: true),
+                                          width: width - 2 * AppLayout.profileDailyRowHorizontalPadding)
+        let expected = AppLayout.profileDailyRowVerticalPadding + AppLayout.profileDailyAccessibilityLogoTopPadding
+        #expect(abs((rowTop - titleTop) - expected) <= 1)
+    }
+
+    @Test("The profile progress capsule moves below the revealed score and stays visible",
+          arguments: [DailyChallengeGameProgress.State.inProgress, .finished(won: false)])
+    func profileMarkerMovesBelowScore(state: DailyChallengeGameProgress.State) throws {
+        let empty = DailyChallengeGameProgress(game: .anagram, state: .notStarted)
+        let played = DailyChallengeGameProgress(game: .anagram, state: state, fillFraction: 0.4)
+        func render(_ progress: DailyChallengeGameProgress, phase: HomeDailyChallengeCelebrationRow.RevealPhase) throws -> CGImage {
+            let row = HomeDailyChallengeCelebrationRow(progress: progress, profilePhase: phase)
+                .environment(\.colorScheme, .dark)
+                .environment(\.dynamicTypeSize, .large)
+            let renderer = ImageRenderer(content: row)
+            renderer.proposedSize = ProposedViewSize(width: 244, height: nil)
+            renderer.scale = 2
+            return try #require(renderer.cgImage)
+        }
+
+        func changedRows(at phase: HomeDailyChallengeCelebrationRow.RevealPhase) throws -> [Int] {
+            let emptyImage = try render(empty, phase: phase)
+            let playedImage = try render(played, phase: phase)
+            try #require(emptyImage.width == playedImage.width && emptyImage.height == playedImage.height)
+            let emptyPixels = try rgbaPixels(emptyImage)
+            let playedPixels = try rgbaPixels(playedImage)
+            return emptyPixels.indices.compactMap { index in
+                emptyPixels[index] == playedPixels[index] ? nil : index / (4 * playedImage.width)
+            }
+        }
+
+        // Both rows have zero points, so the capsule is the only difference.
+        #expect(try changedRows(at: .marker).isEmpty)
+        let filled = try changedRows(at: .filled)
+        let settled = try changedRows(at: .points)
+        let filledTop = try #require(filled.min())
+        let settledTop = try #require(settled.min())
+        #expect(settledTop > filledTop)
     }
 
     @Test("Every progress state uses the same wide rounded rectangular marker",
@@ -144,7 +203,7 @@ struct HomeDailyChallengeLayoutTests {
             .environment(\.dynamicTypeSize, textSize)
         let celebrationSize = UIHostingController(rootView: celebration).sizeThatFits(in: proposal)
 
-        for phase in HomeDailyChallengeCelebrationRow.GuidePhase.allCases {
+        for phase in HomeDailyChallengeCelebrationRow.RevealPhase.allCases {
             let row = HomeDailyChallengeCelebrationRow(game: game, guidePhase: phase)
             let measured = UIHostingController(rootView: row.environment(\.dynamicTypeSize, textSize))
                 .sizeThatFits(in: proposal)
