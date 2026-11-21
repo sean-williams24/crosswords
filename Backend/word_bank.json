@@ -42390,8 +42390,7 @@
         "hard_text": "Tree with a belly full of water?",
         "clues": [
             "It's a bottle tree in the wild",
-            "Source of fruit for local fauna",
-            "Massive African tree with a swollen trunk"
+            "Iconic tree of Madagascar"
         ]
     },
     {
@@ -51386,12 +51385,12 @@
     },
     {
         "word": "same",
-        "text": "Previously mentioned person or thing, in formal usage",
+        "text": "Equal in value or appearance",
         "hint": "Synonym for uniform, sometimes",
         "clues": [
-            "Synonym for uniform",
             "As alike as two peas in a pod",
-            "Equal in value or appearance"
+            "Ditto",
+            "Unchanged"
         ],
         "hard_text": "Identical in every conceivable way"
     },

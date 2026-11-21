@@ -154068,16 +154068,8 @@
     {
       "answer": "BAOBAB",
       "field": "clues[1]",
-      "clue": "Source of fruit for local fauna",
-      "fingerprint": "096a00328b295ef0bd546670bd271505281e50fba480bdeccb565e323092e08b",
-      "provenance": "deterministic",
-      "auditStatus": "deterministic_safe"
-    },
-    {
-      "answer": "BAOBAB",
-      "field": "clues[2]",
-      "clue": "Massive African tree with a swollen trunk",
-      "fingerprint": "919f9b15dabc53543a2747af6989ea81109247f5d328c06919b44f31679e57f5",
+      "clue": "Iconic tree of Madagascar",
+      "fingerprint": "ee9b1c09e2c6e418224f37117d88820431f828c73be688f84438b5b5003eed73",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
@@ -186740,8 +186732,8 @@
     {
       "answer": "SAME",
       "field": "text",
-      "clue": "Previously mentioned person or thing, in formal usage",
-      "fingerprint": "003757a191ef0a0eeb550b0633c0c9fde8b5ca12d44d701279b5583713b63aa5",
+      "clue": "Equal in value or appearance",
+      "fingerprint": "499ff005f0da282f41671298b2ae7e949a591dd1df95d8ef857f8ccdf8c8025c",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
@@ -186756,24 +186748,24 @@
     {
       "answer": "SAME",
       "field": "clues[0]",
-      "clue": "Synonym for uniform",
-      "fingerprint": "78263beaa7a3b422e45bb7472f4c5567fcbc5fe2f57cb00c6a6c6f0fa80412e8",
+      "clue": "As alike as two peas in a pod",
+      "fingerprint": "7501b4438996cf0770c97ac32cc201e617830d43e0cd16486189fee9f0890615",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
     {
       "answer": "SAME",
       "field": "clues[1]",
-      "clue": "As alike as two peas in a pod",
-      "fingerprint": "5c35202cc1ac8c09bb54d9cd8c76aa18f08296c77f895a160bfdaf8ff4aba857",
+      "clue": "Ditto",
+      "fingerprint": "ac58dd9ede9eb9ad000c05c8f9f23f86262bc19c2de0390fd668bffcb7231840",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
     {
       "answer": "SAME",
       "field": "clues[2]",
-      "clue": "Equal in value or appearance",
-      "fingerprint": "fa0305a67935ec486d1fc62a070397fc9ae6c11873c8fa43792427ca36c9eeed",
+      "clue": "Unchanged",
+      "fingerprint": "be801751f9688f6952a4462cb547225b480229cfb183e1a4f1c5586a156513bc",
       "provenance": "deterministic",
       "auditStatus": "deterministic_safe"
     },
