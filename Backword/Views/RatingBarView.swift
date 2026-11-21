@@ -18,6 +18,7 @@ struct RatingBarView: View {
     var trackColor: Color? = nil
     var dailyChallenge: DailyChallengeSnapshot? = nil
     var dailyCelebrationID = 0
+    var hidesTrack = false
     var onOpenDetails: (() -> Void)? = nil
 
     private func pointsView(category: RatingGameCategory) -> some View {
@@ -52,6 +53,11 @@ struct RatingBarView: View {
                     accentColor: accentColor,
                     trackColor: trackColor
                 )
+                .opacity(hidesTrack ? 0 : 1)
+                .animation(nil, value: hidesTrack)
+                .anchorPreference(key: HomeRatingHandoffAnchors.self, value: .bounds) { bounds in
+                    HomeRatingHandoffAnchors.Value(home: dailyChallenge == nil ? nil : bounds)
+                }
 
                 if let category {
                     pointsView(category: category)

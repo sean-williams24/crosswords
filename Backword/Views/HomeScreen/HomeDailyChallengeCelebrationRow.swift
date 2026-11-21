@@ -91,6 +91,7 @@ struct HomeDailyChallengeCelebrationRow: View {
     private func guidePoints(phase: GuidePhase, delay: Double) -> some View {
         let showsPoints = phase == .points
         let fillsMarker = phase == .filled || showsPoints
+        let markerWidth = AppLayout.dailyIntervlsGuideMarkerWidth
         let fillAnimation = reduceMotion ? nil : Animation.easeInOut(
             duration: Double(Self.guideMarkerFillMilliseconds) / 1_000
         ).delay(delay)
@@ -99,9 +100,10 @@ struct HomeDailyChallengeCelebrationRow: View {
         return points(DailyChallengeSnapshot.maximumPointsPerGame, isRevealed: showsPoints)
             .animation(transition, value: showsPoints)
             .overlay(alignment: .trailing) {
-                HomeDailyChallengeMarker(progress: .init(game: game, state: .notStarted))
+                HomeDailyChallengeMarker(progress: .init(game: game, state: .notStarted), width: markerWidth)
                     .overlay {
-                        HomeDailyChallengeMarker(progress: .init(game: game, state: .finished(won: true)))
+                        HomeDailyChallengeMarker(progress: .init(game: game, state: .finished(won: true)),
+                                                 width: markerWidth)
                             .mask(alignment: .leading) {
                                 Rectangle().scaleEffect(x: fillsMarker ? 1 : 0, y: 1, anchor: .leading)
                             }

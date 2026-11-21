@@ -2,13 +2,20 @@ import SwiftUI
 
 struct HomeDailyChallengeMarker: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @ScaledMetric private var width = AppLayout.homeDailyMarkerWidth
+    @ScaledMetric private var width: CGFloat
     @ScaledMetric private var height = AppLayout.homeDailyMarkerHeight
     @ScaledMetric private var cornerRadius = AppLayout.homeDailyMarkerCornerRadius
     @ScaledMetric private var minimumUnfilledWidth = AppLayout.homeDailyMarkerMinimumUnfilledWidth
     @State private var scale: CGFloat = 1
     let progress: DailyChallengeGameProgress
-    var celebrationID = 0
+    let celebrationID: Int
+
+    init(progress: DailyChallengeGameProgress, celebrationID: Int = 0,
+         width: CGFloat = AppLayout.homeDailyMarkerWidth) {
+        self.progress = progress
+        self.celebrationID = celebrationID
+        _width = ScaledMetric(wrappedValue: width)
+    }
 
     var body: some View {
         GeometryReader { geometry in

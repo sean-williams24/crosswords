@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA1172026112000000000006 /* HomeRatingHandoffView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026112000000000005 /* HomeRatingHandoffView.swift */; };
 		DA1172026112000000000002 /* DailyIntervlsRatingDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026112000000000001 /* DailyIntervlsRatingDemoView.swift */; };
 		DA1172026112000000000004 /* RatingBarTierLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026112000000000003 /* RatingBarTierLabel.swift */; };
 		DA117202611190000000000A /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000009 /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift */; };
@@ -303,6 +304,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DA1172026112000000000005 /* HomeRatingHandoffView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRatingHandoffView.swift; sourceTree = "<group>"; };
 		DA1172026112000000000001 /* DailyIntervlsRatingDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsRatingDemoView.swift; sourceTree = "<group>"; };
 		DA1172026112000000000003 /* RatingBarTierLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingBarTierLabel.swift; sourceTree = "<group>"; };
 		DA1172026111900000000009 /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/DailyIntervlsOnboardingTests.swift; sourceTree = "<group>"; };
@@ -875,6 +877,7 @@
 				A1AD1044A179E42EFE71553C /* HomeDailyChallengeRatingRow.swift */,
 				DA1172026111900000000005 /* DailyIntervlsGuideView.swift */,
 				DA1172026112000000000001 /* DailyIntervlsRatingDemoView.swift */,
+				DA1172026112000000000005 /* HomeRatingHandoffView.swift */,
 				FF081FFFA920E4CFBA726F5C /* HomeDailyChallengeSummary.swift */,
 				DA1172026111900000000007 /* HomeDailyIntervlsTip.swift */,
 				5EE22632345BAEF6D547A3AB /* HomeDailyChallengeMarker.swift */,
@@ -1289,6 +1292,7 @@
 				A4B100000000000000000002 /* ProfileDailyProgressViewModel.swift in Sources */,
 				DA1172026111900000000006 /* DailyIntervlsGuideView.swift in Sources */,
 				DA1172026112000000000002 /* DailyIntervlsRatingDemoView.swift in Sources */,
+				DA1172026112000000000006 /* HomeRatingHandoffView.swift in Sources */,
 				27938D26A9B6C3A7D7123BA9 /* HomeDailyChallengeSummary.swift in Sources */,
 				DA1172026111900000000008 /* HomeDailyIntervlsTip.swift in Sources */,
 				7980901851029979675A8FBF /* HomeDailyChallengeMarker.swift in Sources */,

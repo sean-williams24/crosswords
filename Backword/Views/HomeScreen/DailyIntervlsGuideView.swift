@@ -24,22 +24,28 @@ struct DailyIntervlsGuideView: View {
 
     private let mode: Mode
     private let isPro: Bool
+    private let hidesRatingTrack: Bool
     private let acknowledgeGameplay: () -> Void
     private let finishOnboarding: () -> Void
     private let dismiss: () -> Void
+    private let dismissScoring: (() -> Void)?
 
     init(
         mode: Mode = .manual,
         isPro: Bool = false,
+        hidesRatingTrack: Bool = false,
         acknowledgeGameplay: @escaping () -> Void = {},
         finishOnboarding: @escaping () -> Void = {},
+        dismissScoring: (() -> Void)? = nil,
         dismiss: @escaping () -> Void
     ) {
         self.mode = mode
         self.isPro = isPro
+        self.hidesRatingTrack = hidesRatingTrack
         self.acknowledgeGameplay = acknowledgeGameplay
         self.finishOnboarding = finishOnboarding
         self.dismiss = dismiss
+        self.dismissScoring = dismissScoring
         _step = State(initialValue: mode.startingStep)
     }
 
@@ -60,7 +66,9 @@ struct DailyIntervlsGuideView: View {
         .accessibilityElement(children: .contain)
         .accessibilityAddTraits(.isModal)
         .accessibilityAction(.escape) {
-            if !mode.isOnboarding { dismiss() }
+            if !mode.isOnboarding {
+                if step == .scoring { closeScoring() } else { dismiss() }
+            }
         }
         .task(id: step) {
             isHeadingFocused = true
@@ -104,7 +112,7 @@ struct DailyIntervlsGuideView: View {
             if step == .gameplay {
                 dailyLineup
             } else {
-                DailyIntervlsRatingDemoView(progress: ratingProgress, isPro: isPro)
+                DailyIntervlsRatingDemoView(progress: ratingProgress, isPro: isPro, hidesTrack: hidesRatingTrack)
                 ratingBulletList
             }
         }
@@ -215,8 +223,12 @@ struct DailyIntervlsGuideView: View {
             step = .scoring
         case .scoring:
             if mode.isOnboarding { finishOnboarding() }
-            dismiss()
+            closeScoring()
         }
+    }
+
+    private func closeScoring() {
+        (dismissScoring ?? dismiss)()
     }
 }
 

@@ -799,6 +799,8 @@ The gameplay page shows the four daily games in Home order using the
 completion card’s game rows. The rows rise and fade in one at a time, then
 each Home progress marker fills with its game colour and transitions to the
 maximum score. VoiceOver describes the maximum as “up to” five points per game.
+The guide's animated markers are twice as wide as the Home summary markers
+at the same text size and keep the same height.
 Reduce Motion shows the entire lineup at its maximum scores immediately.
 
 The scoring page explains the rolling rating window. The rating reflects the
@@ -811,6 +813,12 @@ The points, bar and tier advance together from zero to the available
 total for daily games, including weekly points for Pro players. The example is
 independent of saved progress and content downloads. Reduce Motion shows its
 final score and tier immediately.
+
+When the scoring page closes to Home, the track travels from its measured
+modal position to Home's rating slot while the card fades. Its fill settles
+at the player's actual rating. The Home track takes over when the movement
+ends. Reduce Motion, missing or offscreen tracks, and guide dismissal within
+Player Profile use the regular dismissal.
 
 Upgrades get an inline tip below the Home rating in the first eligible
 session. The tip is recorded when it is offered and stays visible in that

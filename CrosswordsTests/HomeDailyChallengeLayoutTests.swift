@@ -154,24 +154,36 @@ struct HomeDailyChallengeLayoutTests {
         }
     }
 
-    @Test("The guide fills the capsule and ends on the standard maximum-points score")
+    @Test("The guide fills a double-width capsule and ends on the standard maximum-points score")
     func guideRowArtwork() throws {
         let game = DailyChallengeGame.anagram
         let maximum = DailyChallengeSnapshot.maximumPointsPerGame
         let progress = DailyChallengeGameProgress(game: game, state: .finished(won: true), earnedPoints: maximum)
-        func pixels(of row: HomeDailyChallengeCelebrationRow) throws -> [UInt8] {
-            let renderer = ImageRenderer(content: row.environment(\.colorScheme, .dark))
+        let scale: CGFloat = 2
+        func render(_ row: HomeDailyChallengeCelebrationRow) throws -> CGImage {
+            let renderer = ImageRenderer(content: row
+                .environment(\.colorScheme, .dark)
+                .environment(\.dynamicTypeSize, .large))
             renderer.proposedSize = ProposedViewSize(width: 280, height: nil)
-            renderer.scale = 2
-            return try rgbaPixels(#require(renderer.cgImage))
+            renderer.scale = scale
+            return try #require(renderer.cgImage)
         }
 
-        let outline = try pixels(of: HomeDailyChallengeCelebrationRow(game: game, guidePhase: .marker))
-        let filled = try pixels(of: HomeDailyChallengeCelebrationRow(game: game, guidePhase: .filled))
-        let final = try pixels(of: HomeDailyChallengeCelebrationRow(game: game, guidePhase: .points))
-        let celebration = try pixels(of: HomeDailyChallengeCelebrationRow(progress: progress, showsGame: true, showsPoints: true))
+        let outlineImage = try render(HomeDailyChallengeCelebrationRow(game: game, guidePhase: .marker))
+        let filledImage = try render(HomeDailyChallengeCelebrationRow(game: game, guidePhase: .filled))
+        try #require(outlineImage.width == filledImage.width && outlineImage.height == filledImage.height)
+        let outline = try rgbaPixels(outlineImage)
+        let filled = try rgbaPixels(filledImage)
+        let changedColumns = Set(outline.indices.compactMap { index in
+            outline[index] == filled[index] ? nil : (index / 4) % filledImage.width
+        })
+        let fillWidth = CGFloat(changedColumns.count) / scale
+        #expect(abs(fillWidth - AppLayout.homeDailyMarkerWidth * 2) <= 1)
 
-        #expect(outline != filled)
+        let final = try rgbaPixels(render(HomeDailyChallengeCelebrationRow(game: game, guidePhase: .points)))
+        let celebration = try rgbaPixels(render(HomeDailyChallengeCelebrationRow(
+            progress: progress, showsGame: true, showsPoints: true
+        )))
         #expect(filled != final)
         #expect(final == celebration)
     }

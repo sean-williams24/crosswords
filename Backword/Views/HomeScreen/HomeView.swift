@@ -41,6 +41,9 @@ struct HomeView: View {
     @State private var proLogoVisible = false
     @State private var showRatingDetails = false
     @State private var dailyIntervlsGuideMode: DailyIntervlsGuideView.Mode?
+    @State private var requestsRatingHandoff = false
+    @State private var ratingHandoff: HomeRatingHandoff?
+    @State private var ratingHandoffProgress = 0.0
     @State private var navigationPath = [String]()
     @State private var navigationBarDidAppear = false
     @State private var settingsTipReadinessTask: Task<Void, Never>?
@@ -145,7 +148,8 @@ struct HomeView: View {
     var body: some View {
         homeLifecycleView
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                if showsAnalyticsConsentBanner && dailyIntervlsOnboarding.firstLaunchStep == nil {
+                if showsAnalyticsConsentBanner && dailyIntervlsOnboarding.firstLaunchStep == nil
+                    && dailyIntervlsGuideMode?.isOnboarding != true {
                     AnalyticsConsentBanner()
                 }
             }
@@ -156,14 +160,37 @@ struct HomeView: View {
                     DailyIntervlsGuideView(
                         mode: dailyIntervlsGuideMode,
                         isPro: storeService.isProUser,
+                        hidesRatingTrack: ratingHandoff != nil,
                         acknowledgeGameplay: { dailyIntervlsOnboarding.acknowledgeGameplay() },
                         finishOnboarding: { dailyIntervlsOnboarding.finishOnboarding() },
-                        dismiss: { self.dailyIntervlsGuideMode = nil }
+                        dismissScoring: dismissDailyIntervlsScoring,
+                        dismiss: closeDailyIntervlsGuide
                     )
+                    .opacity(ratingHandoff == nil ? 1 : 0)
+                    .animation(.easeOut(duration: 0.2), value: ratingHandoff != nil)
+                    .allowsHitTesting(!requestsRatingHandoff && ratingHandoff == nil)
+                    .accessibilityHidden(ratingHandoff != nil)
                     .transition(.opacity)
                 }
             }
             .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: dailyIntervlsGuideMode != nil)
+            .overlayPreferenceValue(HomeRatingHandoffAnchors.self, alignment: .topLeading, ratingHandoffOverlay)
+    }
+
+    private func ratingHandoffOverlay(_ anchors: HomeRatingHandoffAnchors.Value) -> some View {
+        GeometryReader { geometry in
+            Color.clear.task(id: requestsRatingHandoff) {
+                guard requestsRatingHandoff else { return }
+                beginRatingHandoff(using: anchors, in: geometry)
+            }
+
+            if let ratingHandoff {
+                HomeRatingHandoffView(handoff: ratingHandoff, progress: ratingHandoffProgress)
+                    .task { await animateRatingHandoff() }
+            }
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 
     private var homeNavigationView: some View {
@@ -571,6 +598,7 @@ struct HomeView: View {
                 rating: ratingService.rating, isPro: storeService.isProUser,
                 dailyChallenge: dailyChallenge.snapshot,
                 dailyCelebrationID: dailyChallenge.isCelebrating ? dailyChallenge.celebrationID : 0,
+                hidesTrack: ratingHandoff != nil,
                 onOpenDetails: { showRatingDetails = true }
             )
                 .padding(.horizontal, appLayout.homeHorizontalPadding)
@@ -879,6 +907,45 @@ struct HomeView: View {
     private func presentDailyIntervlsGuide(_ mode: DailyIntervlsGuideView.Mode) {
         cancelSettingsTipPresentation()
         dailyIntervlsGuideMode = mode
+    }
+
+    private func dismissDailyIntervlsScoring() {
+        guard ratingHandoff == nil else { return }
+        if reduceMotion {
+            closeDailyIntervlsGuide()
+        } else {
+            requestsRatingHandoff = true
+        }
+    }
+
+    private func beginRatingHandoff(using anchors: HomeRatingHandoffAnchors.Value, in geometry: GeometryProxy) {
+        requestsRatingHandoff = false
+        guard !reduceMotion, let guide = anchors.guide, let home = anchors.home,
+              let handoff = HomeRatingHandoff(
+                source: .init(frame: geometry[guide.bounds], fraction: guide.fraction),
+                destination: .init(frame: geometry[home], fraction: ratingService.rating.fraction(isPro: storeService.isProUser)),
+                viewport: CGRect(origin: .zero, size: geometry.size)
+              ) else {
+            closeDailyIntervlsGuide()
+            return
+        }
+        ratingHandoff = handoff
+    }
+
+    private func animateRatingHandoff() async {
+        await Task.yield()
+        guard !Task.isCancelled else { return }
+        let duration = 0.55
+        withAnimation(.easeInOut(duration: duration)) { ratingHandoffProgress = 1 }
+        do { try await Task.sleep(for: .seconds(duration)) } catch { return }
+        closeDailyIntervlsGuide()
+    }
+
+    private func closeDailyIntervlsGuide() {
+        requestsRatingHandoff = false
+        dailyIntervlsGuideMode = nil
+        ratingHandoff = nil
+        ratingHandoffProgress = 0
     }
 
     private func openDailyGame(_ game: DailyGame) {

@@ -264,6 +264,7 @@ struct AppLayout {
     static let profileDailyPadding: CGFloat = 20
     static let dailyIntervlsGuideBackdropOpacity = 0.55
     static let dailyIntervlsGuidePointsSize: CGFloat = 12
+    static let dailyIntervlsGuideMarkerWidth: CGFloat = 44
     static let dailyIntervlsTipSpacing: CGFloat = 12
     static let dailyIntervlsTipPadding: CGFloat = 12
     static let homeDailyMarkerWidth: CGFloat = 22
