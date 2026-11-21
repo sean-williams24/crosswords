@@ -1,12 +1,11 @@
-import { useEffect, useState, type CSSProperties, type Ref } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { HomeRatingTrack } from "./HomeProfileRatingLink";
 import { maximumDailyPoints } from "./dailyChallenge";
 import { ratingWindowDays, ratingTierForFraction, tierThresholds, weeklyRatingMaxPoints } from "../profile/profileRating";
 
-export function DailyIntervlsRatingDemo({ isPro, reduceMotion, trackRef }: {
+export function DailyIntervlsRatingDemo({ isPro, reduceMotion }: {
   isPro: boolean;
   reduceMotion: boolean;
-  trackRef: Ref<HTMLSpanElement>;
 }) {
   const [progress, setProgress] = useState(0);
   useEffect(() => {
@@ -37,8 +36,8 @@ export function DailyIntervlsRatingDemo({ isPro, reduceMotion, trackRef }: {
       <p className="sr-only">Example rating with all available points: {maximum} out of {maximum}, Virtuoso.</p>
       <div aria-hidden="true">
         <strong className="daily-intervls-guide__earned">{points} / {maximum} pts</strong>
-        <div className="daily-intervls-guide__track" data-fraction={fraction}>
-          <HomeRatingTrack fraction={fraction} ref={trackRef} />
+        <div className="daily-intervls-guide__track">
+          <HomeRatingTrack fraction={fraction} />
         </div>
         <div className="daily-intervls-guide__tiers" style={{ "--progress": fraction } as CSSProperties}>
           <div>

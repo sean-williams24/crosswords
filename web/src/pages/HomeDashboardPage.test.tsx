@@ -106,7 +106,7 @@ describe("web home dashboard", () => {
     expect(guideStyles).toMatch(/\.daily-intervls-guide::backdrop\s*\{[^}]*background-color:\s*rgb\(0 0 0 \/ 40%\);[^}]*backdrop-filter:\s*blur\(6px\)/);
     expect(nativeTheme).toContain("appModalBackdrop = Color.black.opacity(0.40)");
     expect(nativeGuide).toContain("Color.appModalBackdrop");
-    expect(nativeHome).toMatch(/\.blur\(radius: dailyIntervlsGuideScreenBlurRadius\)\s*\.overlay/);
+    expect(nativeHome).toMatch(/\.blur\(radius: dailyIntervlsGuideMode == nil \? 0 : AppLayout.dailyIntervlsGuideScreenBlurRadius\)\s*\.overlay/);
     expect(nativeProfile).toMatch(/\.blur\(radius: showDailyIntervlsGuide \? AppLayout.dailyIntervlsGuideScreenBlurRadius : 0\)\s*\.overlay/);
   });
 
@@ -173,23 +173,21 @@ describe("web home dashboard", () => {
     expect(screen.queryByRole("button", { name: "View guide" })).not.toBeInTheDocument();
   });
 
-  it("hands the scoring example off to the live Home track after recording completion", () => {
+  it("closes the guide immediately when both rating tracks are visible", () => {
     localStorage.setItem(dailyIntervlsOnboardingKey, "scoring");
     const { container } = renderDashboard();
     const scoring = screen.getByRole("dialog", { name: "Points and Rating" });
     const track = scoring.querySelector(".home-profile-rating-link__track")!;
     vi.spyOn(track, "getBoundingClientRect").mockReturnValue(new DOMRect(220, 300, 300, 18));
     vi.spyOn(scoring.querySelector(".daily-intervls-guide__content")!, "getBoundingClientRect").mockReturnValue(new DOMRect(200, 250, 340, 220));
-    vi.spyOn(container.querySelector(".home-profile-rating-link .home-profile-rating-link__track")!, "getBoundingClientRect").mockReturnValue(new DOMRect(20, 100, 340, 18));
+    const homeTrack = container.querySelector(".home-profile-rating-link .home-profile-rating-link__track")!;
+    vi.spyOn(homeTrack, "getBoundingClientRect").mockReturnValue(new DOMRect(20, 100, 340, 18));
 
     fireEvent.click(within(scoring).getByRole("button", { name: "Lets play" }));
     expect(localStorage.getItem(dailyIntervlsOnboardingKey)).toBe("complete");
-    expect(scoring).toHaveAttribute("open");
-    const handoff = scoring.querySelector<HTMLElement>(".daily-intervls-guide__handoff")!;
-    expect(handoff.style.getPropertyValue("--source-top")).toBe("300px");
-    expect(handoff.style.getPropertyValue("--target-top")).toBe("100px");
-    fireEvent.animationEnd(handoff);
     expect(scoring).not.toBeInTheDocument();
+    expect(container.querySelector(".home-profile-rating-link__track")).toBe(homeTrack);
+    expect(screen.getByRole("link", { name: /view player profile/i })).toHaveFocus();
   });
 
   it.each(["http://localhost:5173", "https://www.playbackword.com/"])("omits the retired Home name-change notice at %s", (origin) => {

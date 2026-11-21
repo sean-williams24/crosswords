@@ -5,10 +5,10 @@ import type { PlayerProfileRating } from "../profile/profileRating";
 type HomeProfileRatingLinkProps = Pick<PlayerProfileRating, "fraction" | "tier"> & {
   isSyncing?: boolean;
   dailySummary?: ReactNode;
-  ratingTrackRef?: Ref<HTMLSpanElement>;
+  ref?: Ref<HTMLAnchorElement>;
 };
 
-export function HomeProfileRatingLink({ fraction, isSyncing = false, tier, dailySummary, ratingTrackRef }: HomeProfileRatingLinkProps) {
+export function HomeProfileRatingLink({ fraction, isSyncing = false, tier, dailySummary, ref }: HomeProfileRatingLinkProps) {
   const style = { "--home-profile-rating-position": `${Math.max(0, Math.min(100, fraction * 100))}%` } as CSSProperties;
   const label = isSyncing ? "SYNCING" : tier.toUpperCase();
 
@@ -16,18 +16,19 @@ export function HomeProfileRatingLink({ fraction, isSyncing = false, tier, daily
     <Link
       aria-label={isSyncing ? "Syncing player progress. View player profile" : `Overall rating: ${tier}. View player profile`}
       className={`home-profile-rating-link is-${tier.toLowerCase()}${isSyncing ? " is-syncing" : ""}`}
+      ref={ref}
       to="/player-profile"
     >
-      <HomeRatingTrack fraction={fraction} isSyncing={isSyncing} ref={ratingTrackRef} />
+      <HomeRatingTrack fraction={fraction} isSyncing={isSyncing} />
       <span className="home-profile-rating-link__label-row"><span aria-hidden="true" className="home-profile-rating-link__label" style={style}>{label}</span>{dailySummary}</span>
     </Link>
   );
 }
 
-export function HomeRatingTrack({ fraction, isSyncing = false, ref }: { fraction: number; isSyncing?: boolean; ref?: Ref<HTMLSpanElement> }) {
+export function HomeRatingTrack({ fraction, isSyncing = false }: { fraction: number; isSyncing?: boolean }) {
   const percentage = Math.max(0, Math.min(100, fraction * 100));
   return (
-    <span aria-hidden="true" className="home-profile-rating-link__track" ref={ref}>
+    <span aria-hidden="true" className="home-profile-rating-link__track">
       <span className="home-profile-rating-link__fill" style={isSyncing ? undefined : { clipPath: `inset(0 ${100 - Math.max(1, percentage)}% 0 0)` }} />
       {isSyncing ? null : <span className="home-profile-rating-link__marker" style={{ left: `${percentage}%` }} />}
     </span>

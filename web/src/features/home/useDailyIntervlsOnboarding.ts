@@ -12,7 +12,9 @@ export function useDailyIntervlsOnboarding() {
   return {
     pendingStep: stage === "complete" ? null : stage,
     acknowledgeGameplay,
-    recordCompletion: () => saveDailyIntervlsStage(window.localStorage, "complete"),
-    closeOnboarding: () => setStage("complete")
+    finishOnboarding: () => {
+      saveDailyIntervlsStage(window.localStorage, "complete");
+      setStage("complete");
+    }
   };
 }

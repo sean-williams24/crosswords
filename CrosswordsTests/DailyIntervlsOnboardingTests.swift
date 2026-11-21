@@ -147,30 +147,19 @@ struct DailyIntervlsOnboardingTests {
         #expect(end.labelOpacity(for: tier) == 1)
     }
 
-    @Test("The rating bar moves and resizes from the guide to the live Home rating")
-    func ratingHandoffTravel() throws {
-        let source = HomeRatingHandoff.Track(frame: CGRect(x: 40, y: 300, width: 240, height: 18), fraction: 0.75)
-        let destination = HomeRatingHandoff.Track(frame: CGRect(x: 20, y: 100, width: 280, height: 18), fraction: 0.25)
-        let viewport = CGRect(x: 0, y: 0, width: 320, height: 600)
-        let handoff = try #require(HomeRatingHandoff(source: source, destination: destination, viewport: viewport))
+    @Test("Finishing the guide dismisses immediately and only records completion during onboarding",
+          arguments: [false, true])
+    func finishGuide(isOnboarding: Bool) {
+        var actions: [String] = []
+        let guide = DailyIntervlsGuideView(
+            mode: isOnboarding ? .onboarding(.scoring) : .manual,
+            finishOnboarding: { actions.append("complete") },
+            dismiss: { actions.append("dismiss") }
+        )
 
-        #expect(handoff.track(at: 0).frame == source.frame)
-        #expect(handoff.track(at: 0).fraction == source.fraction)
-        #expect(handoff.track(at: 0.5).frame == CGRect(x: 30, y: 200, width: 260, height: 18))
-        #expect(handoff.track(at: 0.5).fraction == 0.5)
-        #expect(handoff.track(at: 1).frame == destination.frame)
-        #expect(handoff.track(at: 1).fraction == destination.fraction)
-    }
+        guide.finishGuide()
 
-    @Test("The rating bar handoff requires both tracks to be visible",
-          arguments: [CGRect.zero, CGRect(x: 20, y: -9, width: 280, height: 18)])
-    func ratingHandoffUnavailable(frame: CGRect) {
-        let unavailable = HomeRatingHandoff.Track(frame: frame, fraction: 0.5)
-        let visible = HomeRatingHandoff.Track(frame: CGRect(x: 20, y: 100, width: 280, height: 18), fraction: 0.25)
-        let viewport = CGRect(x: 0, y: 0, width: 320, height: 600)
-
-        #expect(HomeRatingHandoff(source: unavailable, destination: visible, viewport: viewport) == nil)
-        #expect(HomeRatingHandoff(source: visible, destination: unavailable, viewport: viewport) == nil)
+        #expect(actions == (isOnboarding ? ["complete", "dismiss"] : ["dismiss"]))
     }
 
     private func withDefaults(_ test: (UserDefaults) -> Void) {

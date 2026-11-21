@@ -4,7 +4,6 @@ struct DailyIntervlsRatingDemoView: View, Animatable {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     var progress: Double
     let isPro: Bool
-    var hidesTrack = false
 
     var animatableData: Double {
         get { progress }
@@ -28,11 +27,6 @@ struct DailyIntervlsRatingDemoView: View, Animatable {
                 animates: true,
                 animatesProgressChanges: false
             )
-            .opacity(hidesTrack ? 0 : 1)
-            .animation(nil, value: hidesTrack)
-            .anchorPreference(key: HomeRatingHandoffAnchors.self, value: .bounds) { bounds in
-                HomeRatingHandoffAnchors.Value(guide: .init(bounds: bounds, fraction: example.fraction))
-            }
             RatingBarLabelLayout(fraction: example.fraction, placement: .fullWidth) {
                 ZStack {
                     // Keep the same label width while the active tier fades in.

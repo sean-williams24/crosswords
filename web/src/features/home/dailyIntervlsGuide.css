@@ -112,31 +112,6 @@ body:has(.daily-intervls-guide[data-onboarding][open]) .analytics-consent { visi
 .daily-intervls-guide .home-profile-rating-link__marker { border-color: currentColor; }
 .daily-intervls-guide .home-profile-rating-link__fill { transition: none; }
 .daily-intervls-guide__track .home-profile-rating-link__track::before { background: var(--app-background); }
-.daily-intervls-guide.is-handing-off .daily-intervls-guide__card { animation: daily-intervls-fade-out 550ms ease-in-out both; }
-.daily-intervls-guide.is-handing-off::backdrop { animation: daily-intervls-backdrop-out 550ms ease-in-out both; }
-.daily-intervls-guide.is-handing-off .daily-intervls-guide__track { visibility: hidden; }
-.home-dashboard:has(.daily-intervls-guide.is-handing-off) .home-profile-rating-link .home-profile-rating-link__track { visibility: hidden; }
-.daily-intervls-guide__handoff {
-  position: fixed;
-  pointer-events: none;
-  animation: daily-intervls-handoff 550ms ease-in-out both;
-}
-.daily-intervls-guide__handoff .home-profile-rating-link__fill { animation: daily-intervls-handoff-fill 550ms ease-in-out both; }
-.daily-intervls-guide__handoff .home-profile-rating-link__marker { animation: daily-intervls-handoff-marker 550ms ease-in-out both; }
-@keyframes daily-intervls-fade-out { to { opacity: 0; } }
-@keyframes daily-intervls-backdrop-out { to { background-color: transparent; backdrop-filter: blur(0); } }
-@keyframes daily-intervls-handoff {
-  from { left: var(--source-left); top: var(--source-top); width: var(--source-width); }
-  to { left: var(--target-left); top: var(--target-top); width: var(--target-width); }
-}
-@keyframes daily-intervls-handoff-fill {
-  from { clip-path: inset(0 var(--source-inset) 0 0); }
-  to { clip-path: inset(0 var(--target-inset) 0 0); }
-}
-@keyframes daily-intervls-handoff-marker {
-  from { left: var(--source-fraction); }
-  to { left: var(--target-fraction); }
-}
 
 .daily-intervls-profile-link {
   align-self: start;

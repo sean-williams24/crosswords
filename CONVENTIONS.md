@@ -795,7 +795,7 @@ guide closes, so the walkthrough is available offline.
 The guide uses a centred modal with the daily celebration card’s width and
 corner radius. On both platforms, the screen behind the guide is blurred and
 dimmed with a 40% black backdrop in Light and Dark Mode. The blur clears
-during the Home rating handoff. The card uses Liquid Glass on iOS 26 and
+when the guide closes. The card uses Liquid Glass on iOS 26 and
 regular material on earlier versions. Background controls are unavailable
 while it is open.
 On short screens and at large text sizes, the guide content scrolls while
@@ -820,12 +820,6 @@ total for daily games, including weekly points for Pro players. The example is
 independent of saved progress and content downloads. Reduce Motion shows its
 final score and tier immediately.
 
-When the scoring page closes to Home, the track travels from its measured
-modal position to Home's rating slot while the card fades. Its fill settles
-at the player's actual rating. The Home track takes over when the movement
-ends. Reduce Motion, missing or offscreen tracks, and guide dismissal within
-Player Profile use the regular dismissal.
-
 The permanent Daily Intervls guide in Player Profile opens on its gameplay page.
 Manual guide use leaves automatic presentation state untouched.
 
@@ -844,9 +838,8 @@ Each gameplay row reveals `5 / 5` using the celebration's game-coloured
 numerator and muted denominator. Screen readers announce “up to 5 points”.
 The rating example uses the Home track and shared tier thresholds. It shows a
 full window of 280 daily points plus 10 weekly points for Pro. Reduced Motion
-shows the finished examples immediately. On Home, the rating track moves into
-the player's live rating slot when both tracks are visible and the Home track
-is ready. Player Profile closes the guide in place.
+shows the finished examples immediately. The guide closes in place on Home
+and in Player Profile.
 
 ## iOS Home Daily Challenge
 

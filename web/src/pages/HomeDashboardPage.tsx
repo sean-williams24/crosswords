@@ -117,7 +117,7 @@ export function HomeDashboardPage() {
   const [wordOfTheDayState, setWordOfTheDayState] = useState<WordOfTheDayLoadState>("loading");
   const isLoading = !ready || wordOfTheDayState === "loading";
   const onboarding = useDailyIntervlsOnboarding();
-  const ratingTrack = useRef<HTMLSpanElement>(null);
+  const ratingLink = useRef<HTMLAnchorElement>(null);
   const onboardingStep = ready ? onboarding.pendingStep : null;
   const showsGuide = onboardingStep !== null;
   const backwordStatus = useMemo(() => backwordDashboardStatus(window.localStorage, today, user?.id), [syncRevision, today, user?.id]);
@@ -202,12 +202,8 @@ export function HomeDashboardPage() {
       {onboardingStep ? (
         <DailyIntervlsGuide
           isPro={entitlement?.isPro === true}
-          homeRating={isSyncing ? undefined : { tier: profileRating.tier, fraction: profileRating.fraction, trackRef: ratingTrack }}
-          onboarding={{ startingStep: onboardingStep, onAdvance: onboarding.acknowledgeGameplay, onComplete: onboarding.recordCompletion }}
-          onClose={() => {
-            onboarding.closeOnboarding();
-            ratingTrack.current?.closest("a")?.focus();
-          }}
+          onboarding={{ startingStep: onboardingStep, onAdvance: onboarding.acknowledgeGameplay, onComplete: onboarding.finishOnboarding }}
+          onClose={() => ratingLink.current?.focus()}
         />
       ) : null}
       {celebration && !showsGuide ? <DailyChallengeCelebration snapshot={celebration} dismiss={() => setCelebration(null)} openArchive={() => {
@@ -225,7 +221,7 @@ export function HomeDashboardPage() {
         <div className="home-dashboard__actions">
           <AuthButton className="auth-button--menu-upgrade" />
         </div>
-        <HomeProfileRatingLink fraction={profileRating.fraction} isSyncing={isSyncing} tier={profileRating.tier} ratingTrackRef={ratingTrack} dailySummary={<DailyChallengeSummary snapshot={daily} celebration={celebrationId} />} />
+        <HomeProfileRatingLink fraction={profileRating.fraction} isSyncing={isSyncing} tier={profileRating.tier} ref={ratingLink} dailySummary={<DailyChallengeSummary snapshot={daily} celebration={celebrationId} />} />
       </header>
 
       <section aria-label="Games" className="home-dashboard__content" inert={celebration !== null}>
