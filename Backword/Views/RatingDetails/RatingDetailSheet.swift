@@ -314,21 +314,9 @@ struct RatingDetailSheet: View {
         }
     }
 
-    @ViewBuilder
     private var breakdownTable: some View {
-        if useHorizontalScroll {
-            ScrollView(.horizontal, showsIndicators: true) {
-                tableViewContent(isScrolling: true)
-                    .frame(minWidth: isPro ? 560 : 520)
-            }
-        } else {
-            tableViewContent(isScrolling: false)
-        }
-    }
-
-    @ViewBuilder
-    private func tableViewContent(isScrolling: Bool) -> some View {
-        VStack(alignment: .center, spacing: 0) {
+        let isScrolling = useHorizontalScroll
+        return RatingBreakdownTableLayout(isScrolling: isScrolling, isPro: isPro) {
             HStack(alignment: .center, spacing: 0) {
                 Text("Date")
                     .frame(maxWidth: isScrolling ? .none : .infinity, alignment: .leading)
@@ -359,7 +347,7 @@ struct RatingDetailSheet: View {
             .font(AppFont.clueLabel(10))
             .foregroundColor(.appTextSecondary)
             .tracking(1)
-            .padding(.leading, 14)
+            .padding(.leading, AppLayout.statsHistoryRowInset)
             .padding(.vertical, 8)
             .padding(.top, 8)
 
@@ -437,7 +425,7 @@ struct RatingDetailSheet: View {
                 .foregroundColor(total > 0 ? .appTextPrimary : .appTextSecondary.opacity(0.4))
                 .frame(width: isScrolling ? scrollingColumnWidth : columnWidth, alignment: .center)
         }
-        .padding(.leading, 14)
+        .padding(.leading, AppLayout.statsHistoryRowInset)
         .padding(.vertical, 10)
     }
 

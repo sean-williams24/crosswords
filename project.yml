@@ -61,6 +61,8 @@ targets:
       - path: CrosswordsTests/HomeDailyChallengeViewModelTests.swift
       - path: CrosswordsTests/DailyChallengeCelebrationViewModelTests.swift
       - path: CrosswordsTests/HomeDailyChallengeLayoutTests.swift
+      - path: CrosswordsTests/RatingBreakdownTableLayoutTests.swift
+      - path: CrosswordsTests/ViewHostingTestSupport.swift
     dependencies:
       - target: Backword
     settings:

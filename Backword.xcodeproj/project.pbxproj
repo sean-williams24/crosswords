@@ -252,6 +252,8 @@
 		C9B78241F73047C516573390 /* UserProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A38BFC4B60EA86A8DF662F3E /* UserProgress.swift */; };
 		CDE7B3D1A8B803E660D8E10B /* ../CrosswordsTests/DailyChallengeSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B0C8EE5084C41DFB4EB830 /* ../CrosswordsTests/DailyChallengeSnapshotTests.swift */; };
 		CDFB51C30CE8784881171A9F /* RatingDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */; };
+		B6CDBD9066C54B41844A7C79 /* RatingBreakdownTableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B46805492E4408883CBB14 /* RatingBreakdownTableLayout.swift */; };
+		4D73F75F81F64094AD12CD4D /* ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9C95148F64F0FBD23DB89 /* ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift */; };
 		CF96B7A7D6669B73DBA8125E /* BackwordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7143C2570D23B983CD7AF74 /* BackwordCard.swift */; };
 		D380A06E810FCE5F5A7B9D43 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AAFAD519B1F99879B1643D /* StoreService.swift */; };
 		D39F9C4C078DA5925A365ABB /* StatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B091EBD64E55AE0AB83F4B /* StatsService.swift */; };
@@ -447,6 +449,8 @@
 		91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
 		922354966A899721DF1CF25C /* CrosswordStatsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CrosswordStatsView.swift; sourceTree = "<group>"; };
 		963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RatingDetailSheet.swift; sourceTree = "<group>"; };
+		55B46805492E4408883CBB14 /* RatingBreakdownTableLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingBreakdownTableLayout.swift; sourceTree = "<group>"; };
+		D3E9C95148F64F0FBD23DB89 /* ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift; sourceTree = "<group>"; };
 		9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsEngine.swift; sourceTree = "<group>"; };
 		A04496BE6230D031AE10977A /* DebugSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSettingsView.swift; sourceTree = "<group>"; };
 		A0A000000000000000000001 /* AnagramPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramPuzzle.swift; sourceTree = "<group>"; };
@@ -666,6 +670,7 @@
 				F4F000013020000000000001 /* ../CrosswordsTests/StatsHomeBarTests.swift */,
 				F4F000033020000000000001 /* ../CrosswordsTests/CompletionSheetLayoutTests.swift */,
 				F4F000093020000000000001 /* ../CrosswordsTests/ViewHostingTestSupport.swift */,
+				D3E9C95148F64F0FBD23DB89 /* ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift */,
 				F4F000053020000000000001 /* ../CrosswordsTests/CompletionLetterRevealTests.swift */,
 				F4F000073020000000000001 /* ../CrosswordsTests/AnagramGameplayHapticsTests.swift */,
 				F4C000013016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift */,
@@ -846,6 +851,7 @@
 			children = (
 				A4B100000000000000000003 /* ProfileDailyProgressView.swift */,
 				963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */,
+				55B46805492E4408883CBB14 /* RatingBreakdownTableLayout.swift */,
 				86AFC3D62FC25567007623C3 /* ScoreChipView.swift */,
 				F4F0000D3020000000000001 /* RatingScoringGuideView.swift */,
 				86AFC3D02FBFC367007623C3 /* ScoringRuleView.swift */,
@@ -1218,6 +1224,7 @@
 				F4F000023020000000000001 /* ../CrosswordsTests/StatsHomeBarTests.swift in Sources */,
 				F4F000043020000000000001 /* ../CrosswordsTests/CompletionSheetLayoutTests.swift in Sources */,
 				F4F0000A3020000000000001 /* ../CrosswordsTests/ViewHostingTestSupport.swift in Sources */,
+				4D73F75F81F64094AD12CD4D /* ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift in Sources */,
 				F4F000063020000000000001 /* ../CrosswordsTests/CompletionLetterRevealTests.swift in Sources */,
 				F4F000083020000000000001 /* ../CrosswordsTests/AnagramGameplayHapticsTests.swift in Sources */,
 				F4C000023016000000000001 /* ../CrosswordsTests/SettingsAccountRowLayoutTests.swift in Sources */,
@@ -1469,6 +1476,7 @@
 				70FDEC9954ABAD6370C542F4 /* RatingBarView.swift in Sources */,
 				DA1172026112000000000004 /* RatingBarTierLabel.swift in Sources */,
 				CDFB51C30CE8784881171A9F /* RatingDetailSheet.swift in Sources */,
+				B6CDBD9066C54B41844A7C79 /* RatingBreakdownTableLayout.swift in Sources */,
 				8F92754416251062C7FCA46E /* CrosswordStatsView.swift in Sources */,
 				86E5C00A2FA9211200A42156 /* WeeklyCrosswordCard.swift in Sources */,
 				F1000000000000000000000C /* ProOnlyBadge.swift in Sources */,

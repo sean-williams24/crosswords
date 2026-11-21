@@ -573,6 +573,9 @@ earns zero.
 
 Both platforms order the breakdown columns as Quick, Weekly (Pro only),
 Backword, Midword, Anagram, followed by Total.
+On iOS, the Date header and dates use the standard stats history row inset.
+The horizontal scroll layout keeps that same leading inset when its minimum
+content width exceeds the combined width of the columns.
 
 ## Website Midword Parity
 
