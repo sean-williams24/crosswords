@@ -996,6 +996,8 @@ Web Home uses three equal columns and two rows: Backword, Anagram, Midword;
 then Quick Crossword, Archive, Pro Crossword. Grid rows share the same height,
 including when larger content needs extra space; loading reserves all six
 positions. The Anagram card stays present while its issue number is unavailable.
+The game, Archive, and Word of the Day cards use a 6px outer corner radius at
+all widths, including loading placeholders and the unavailable Word of the Day.
 At mobile widths up to 680px, Word of the Day comes first, followed by Backword,
 Quick Crossword, Archive, Anagram, Midword, and Pro Crossword. Archive matches
 the compact Word of the Day card’s 95px height; mobile grid rows size to their

@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { parse } from "postcss";
 import { useLayoutEffect } from "react";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import { localDateOffset, localDateString, localWeekStartString } from "../features/backword/date";
@@ -488,6 +489,26 @@ describe("web home dashboard", () => {
     expect(screen.queryByText("♛")).not.toBeInTheDocument();
   });
 
+  it("uses 6px outer corners for Home cards and their placeholders at every width", () => {
+    const styles = parse(["src/styles.css", "src/features/midword/midword.css"]
+      .map((path) => readFileSync(path, "utf8")).join("\n"));
+    const cardSelectors = [
+      ".home-game-card", ".weekly-card", ".home-dashboard-loading-card",
+      ".wotd-card", ".wotd-detail", ".wotd-unavailable-card"
+    ];
+    for (const selector of cardSelectors) {
+      const radii: string[] = [];
+      styles.walkRules((rule) => {
+        if (!rule.selectors.includes(selector)) return;
+        rule.walkDecls("border-radius", ({ value }) => { radii.push(value); });
+      });
+      expect(radii, selector).toEqual(["6px"]);
+    }
+    styles.walkRules(/^\.(home-game-card|home-dashboard-loading-card)--[\w-]+$/, (rule) => {
+      rule.walkDecls("border-radius", ({ value }) => { expect(value, rule.selector).toBe("6px"); });
+    });
+  });
+
   it("preserves the desktop three-column order above the full-width Word of the Day panel", () => {
     const { container } = renderDashboard();
     const layout = container.querySelector(".home-dashboard__daily-layout");
@@ -774,7 +795,7 @@ describe("web home dashboard", () => {
     expect(styles).toContain('src: url("/fonts/Outfit-Black.ttf") format("truetype");');
     expect(styles).toContain('--anagram-home-card-accent: color(srgb 0.967 0.434 0.040);');
     expect(styles).toContain('--anagram-home-card-accent: color(display-p3 1 0.604 0.331);');
-    expect(styles).toMatch(/\.home-game-card--anagram\s*\{[^}]*padding:\s*12px 18px[^}]*border-radius:\s*12px[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*var\(--anagram-home-card-accent\)/);
+    expect(styles).toMatch(/\.home-game-card--anagram\s*\{[^}]*padding:\s*12px 18px[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*var\(--anagram-home-card-accent\)/);
     expect(styles).toMatch(/\.home-game-card--anagram \.home-status\s*\{[^}]*border:\s*0[^}]*color:\s*var\(--anagram-on-accent\)[^}]*background:\s*color-mix\(in srgb, var\(--anagram-on-accent\) 12%, transparent\)/);
     expect(styles).toMatch(/\.home-game-card--anagram \.home-game-card__streak\s*\{[^}]*color:\s*var\(--anagram-on-accent\)/);
     expect(styles).toMatch(/\.home-game-card__stats\s*\{[^}]*display:\s*contents;/);

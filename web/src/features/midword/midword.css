@@ -214,7 +214,7 @@ html[data-theme="dark"] .midword-header h1::after {
 .midword-completion-statistics > .midword-summary, .midword-completion-statistics > .midword-distribution { margin-inline: 20px; }
 .midword-completion-statistics .midword-history h3 { margin-inline: 20px; }
 .midword-page button:not(.stats-sheet-actions__button):focus-visible, .midword-dialog button:not(.stats-sheet-actions__button):focus-visible { outline: 2px solid var(--midword-accent); outline-offset: 3px; }
-.home-game-card--midword { display: grid; padding: 12px 18px; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; border-radius: 12px; color: var(--midword-home-foreground); background: var(--midword-accent); }
+.home-game-card--midword { display: grid; padding: 12px 18px; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; color: var(--midword-home-foreground); background: var(--midword-accent); }
 .midword-home-card__identity { display: flex; min-width: 0; flex-direction: column; gap: 6px; }
 .midword-home-card__identity { grid-area: identity; align-self: center; align-items: center; justify-content: center; text-align: center; }
 .midword-home-card__identity img { width: auto; max-width: 100%; height: 40px; object-fit: contain; }
