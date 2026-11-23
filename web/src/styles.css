@@ -2133,10 +2133,10 @@ html[data-theme="light"] .auth-google-placeholder__logo { width: 18px; height: 1
 .player-profile .bw-score-chip.is-perfect { background: var(--app-correct); }
 .player-profile__empty-score { color: rgb(119 119 119 / 45%); font-size: 15px; }
 .player-profile__account-controls { padding-top: 14px; border-top: 1px solid rgb(var(--app-grid-rgb) / 70%); }
-.player-profile__sign-out { width: calc(100% - 40px); min-height: 44px; margin: 0 20px 10px; border: 1px solid var(--app-border-strong); border-radius: 9px; color: var(--app-text-primary); background: var(--app-control); font: inherit; font-weight: 700; cursor: pointer; }
-.player-profile__sign-out:hover,
-.player-profile__sign-out:focus-visible { border-color: #79b7eb; background: var(--app-control-hover); outline: 2px solid #79b7eb; outline-offset: 2px; }
-.player-profile__sign-out:disabled { opacity: .62; cursor: wait; }
+.player-profile__button { width: calc(100% - 40px); min-height: 44px; margin: 0 20px 10px; border: 1px solid var(--app-border-strong); border-radius: 9px; color: var(--app-text-primary); background: var(--app-control); font: inherit; font-weight: 700; text-align: center; cursor: pointer; }
+.player-profile__button:hover,
+.player-profile__button:focus-visible { border-color: #79b7eb; background: var(--app-control-hover); outline: 2px solid #79b7eb; outline-offset: 2px; }
+.player-profile__button:disabled { opacity: .62; cursor: wait; }
 .player-profile__delete-account { width: calc(100% - 40px); min-height: 38px; margin: 0 20px 18px; padding: 0; border: 0; border-radius: 9px; color: #ffb9b9; background: transparent; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
 .player-profile__delete-account:hover,
 .player-profile__delete-account:focus-visible { color: #ff9e9e; outline: 2px solid #ff9e9e; outline-offset: 2px; }
@@ -2290,7 +2290,7 @@ html[data-theme="light"] .weekly-card__status { color: var(--app-text-primary); 
 /* Allow the full Pro table plus a readable summary before using two columns. */
 @media (min-width: 1022px) {
   .player-profile__layout { grid-template-columns: minmax(320px, 1fr) minmax(634px, 1.4fr); grid-template-areas: "summary daily" "summary breakdown"; align-items: stretch; row-gap: 20px; }
-  .player-profile__layout > .profile-daily-progress { grid-area: daily; }
+  .player-profile__column--daily { grid-area: daily; }
   .player-profile__column--summary { grid-area: summary; }
   .player-profile__column--breakdown { grid-area: breakdown; }
   .player-profile__account-controls { display: flex; flex: 1; flex-direction: column; justify-content: space-between; }

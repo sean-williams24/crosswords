@@ -1,0 +1,80 @@
+.daily-intervls-lineup {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.daily-intervls-lineup .daily-celebration__row {
+  --row-delay: calc(var(--index) * 140ms);
+  flex-wrap: wrap;
+  gap: .25rem .75rem;
+  opacity: 1;
+  transform: none;
+  animation: daily-intervls-row-in 420ms ease-out calc(120ms + var(--row-delay)) both;
+}
+
+.daily-intervls-lineup .daily-celebration__row strong { white-space: normal; }
+
+.daily-intervls-lineup__result {
+  display: grid;
+  margin-inline-start: auto;
+  place-items: center end;
+}
+
+.daily-intervls-lineup .daily-marker > span {
+  transform-origin: left;
+  animation: daily-intervls-marker-fill var(--marker-duration) ease-out calc(340ms + var(--row-delay)) both;
+}
+
+.daily-intervls-lineup__points {
+  font-variant-numeric: tabular-nums;
+  animation: daily-intervls-row-in 220ms ease-out calc(var(--score-delay) + var(--row-delay)) both;
+}
+
+.daily-intervls-lineup--guide { --marker-duration: 360ms; --score-delay: 820ms; }
+.daily-intervls-lineup--guide .daily-intervls-lineup__result > :not(.sr-only) { grid-area: 1 / 1; }
+.daily-intervls-lineup--guide .daily-marker {
+  width: 44px;
+  animation: daily-intervls-marker-out 220ms ease-in calc(780ms + var(--row-delay)) both;
+}
+
+.daily-intervls-lineup--profile { --marker-duration: 550ms; --score-delay: 1010ms; }
+.daily-intervls-lineup--profile .daily-celebration__row {
+  min-height: 3.125rem;
+  padding: .375rem .75rem;
+}
+.daily-intervls-lineup--profile .daily-celebration__row strong {
+  font-size: .75rem;
+  font-weight: 900;
+  letter-spacing: .17em;
+}
+.daily-intervls-lineup--profile .daily-anagram strong { font-size: 1.0625rem; }
+.daily-intervls-lineup--profile .daily-intervls-lineup__backword-logo {
+  height: 2.6875rem;
+  /* Account for transparent PNG padding when aligning the mark. */
+  margin: -.25rem 0;
+  margin-inline-start: -.8125rem;
+}
+.daily-intervls-lineup--profile .daily-celebration__midword-logo img { height: 1.875rem; }
+.daily-intervls-lineup--profile .daily-intervls-lineup__result { gap: .25rem; }
+.daily-intervls-lineup--profile .daily-game-score { grid-area: 1 / 1; font-size: .8125rem; line-height: 1.18; }
+.daily-intervls-lineup--profile .daily-game-score b { font-size: 1.375rem; }
+.daily-intervls-lineup--profile .daily-marker {
+  grid-area: 2 / 1;
+  width: 2.25rem;
+  height: .5rem;
+  animation: daily-intervls-marker-slide 280ms ease-in-out calc(var(--score-delay) + var(--row-delay)) both;
+}
+
+@keyframes daily-intervls-row-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes daily-intervls-marker-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes daily-intervls-marker-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes daily-intervls-marker-slide { from { transform: translateY(-.9375rem); } to { transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .daily-intervls-lineup .daily-celebration__row,
+  .daily-intervls-lineup .daily-marker,
+  .daily-intervls-lineup .daily-marker > span,
+  .daily-intervls-lineup__points { animation: none; }
+  .daily-intervls-lineup--guide .daily-marker { visibility: hidden; }
+}

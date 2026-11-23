@@ -170,15 +170,17 @@ export function PlayerProfilePage() {
 
       <section aria-labelledby="player-profile-title" className="player-profile__content">
         {user ? <div className="player-profile__heading">
-          <p>YOUR BACKWORD ACCOUNT</p>
+          <p>Your Intervls account</p>
         </div> : null}
 
         <div className="player-profile__layout">
-          <ProfileDailyProgress userId={userId} />
+          <div className="player-profile__column player-profile__column--daily">
+            <ProfileDailyProgress userId={userId} />
+            <button className="player-profile__button" onClick={() => setShowsDailyIntervlsGuide(true)} ref={dailyIntervlsGuideButton} type="button">Daily Intervls guide</button>
+          </div>
           <div className="player-profile__column player-profile__column--summary">
             <section className="player-profile__card player-profile__summary" aria-label="Player summary">
               <RatingHero fraction={rating.fraction} maxPoints={rating.maxPoints} tier={rating.tier} totalPoints={rating.totalPoints} />
-              <button className="daily-intervls-profile-link" onClick={() => setShowsDailyIntervlsGuide(true)} ref={dailyIntervlsGuideButton} type="button">Daily Intervls guide</button>
               <RollingWindowExplanation />
               <ScoringDetailsContent />
               {user ? <div className="player-profile__account-actions">
@@ -231,7 +233,7 @@ export function PlayerProfilePage() {
 
 function ProfileActions({ isDeleting, isSigningOut, onDelete, onSignOut }: { isDeleting: boolean; isSigningOut: boolean; onDelete: () => Promise<void>; onSignOut: () => Promise<void> }) {
   return <div className="player-profile__account-controls">
-    <button className="player-profile__sign-out" disabled={isSigningOut} onClick={() => void onSignOut()} type="button">{isSigningOut ? "Signing Out…" : "Sign Out"}</button>
+    <button className="player-profile__button" disabled={isSigningOut} onClick={() => void onSignOut()} type="button">{isSigningOut ? "Signing Out…" : "Sign Out"}</button>
     <button className="player-profile__delete-account" disabled={isDeleting} onClick={() => void onDelete()} type="button">{isDeleting ? "Deleting Account…" : "Delete Account"}</button>
   </div>;
 }

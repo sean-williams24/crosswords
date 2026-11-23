@@ -840,9 +840,11 @@ current page and completion in local storage across guests and accounts. A
 legacy pending tip starts at gameplay. A saved scoring step resumes, and a
 saved completion stays complete.
 
-Player Profile opens the same guide from its first page. The automatic
-walkthrough requires each page's acknowledgement. The manual guide
-dismisses on Escape or a backdrop click and leaves onboarding progress intact.
+The Daily Intervls guide button sits directly below Today's Intervls in Player
+Profile. It shares the Sign Out button style and opens the guide from its first
+page. The automatic walkthrough requires each page's acknowledgement. The
+manual guide dismisses on Escape or a backdrop click and leaves onboarding
+progress intact.
 Each gameplay row reveals `5 / 5` using the celebration's game-coloured
 numerator and muted denominator. Screen readers announce “up to 5 points”.
 The rating example uses the Home track and shared tier thresholds. It shows a
@@ -2644,7 +2646,9 @@ the card sits above the 14-day table on desktop and above the summary when the
 profile stacks below 1022px. Desktop account controls fill the remaining space
 below the table, with Delete Account aligned to the bottom of the summary.
 The card also refreshes on cross-tab updates and when the page becomes visible.
-Web point values in daily game rows use the primary text colour.
+The web profile shares the guide's Daily Intervls lineup with compact rows,
+game-coloured scores out of five, and progress markers that settle below each
+score after the reveal. Reduced Motion displays scores and markers immediately.
 Web completion outlines use the card’s own border so they follow its corners and
 move with it on hover; keyboard focus retains the primary-colour outline.
 

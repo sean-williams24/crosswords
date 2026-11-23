@@ -1,12 +1,34 @@
-.profile-daily-progress { padding: 20px; }
-.profile-daily-progress__heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px; }
-.profile-daily-progress__heading h2 { margin: 0; color: var(--app-accent); font-size: 12px; font-weight: 700; letter-spacing: .18em; }
-.profile-daily-progress__heading strong { font-size: 12px; font-variant-numeric: tabular-nums; }
-.profile-daily-progress > p { margin: 10px 0; color: var(--app-text-secondary); font-size: 13px; }
-.profile-daily-progress ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.profile-daily-progress__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; }
-.profile-daily-progress__game { display: flex; align-items: center; gap: 10px; font-size: 14px; }
-.profile-daily-progress__game .daily-marker { flex: 0 0 22px; }
-.profile-daily-progress__status { margin-left: auto; color: var(--app-text-secondary); font-size: 13px; text-align: right; }
+.profile-daily-progress {
+  display: grid;
+  gap: .625rem;
+  padding: 1.25rem;
+  font-family: Outfit, sans-serif;
+}
 
-.profile-daily-progress__points { color: var(--app-text-primary); }
+.profile-daily-progress__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .25rem .625rem;
+  font-size: .75rem;
+}
+
+.profile-daily-progress__heading h2 {
+  margin: 0;
+  color: var(--app-accent);
+  font-weight: 900;
+  letter-spacing: .17em;
+}
+
+.profile-daily-progress__heading strong {
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.profile-daily-progress > p {
+  margin: 0;
+  color: var(--app-text-secondary);
+  font-size: .875rem;
+}

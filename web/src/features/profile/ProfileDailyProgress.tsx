@@ -4,8 +4,8 @@ import { createBackwordStorage } from "../backword/storage";
 import { createCrosswordStorage } from "../crossword/storage";
 import { createAnagramStorage } from "../anagram/storage";
 import { createMidwordStorage } from "../midword/storage";
-import { dailyChallenge, type DailyItem } from "../home/dailyChallenge";
-import "../home/dailyChallenge.css";
+import { dailyChallenge, maximumDailyPoints } from "../home/dailyChallenge";
+import { DailyIntervlsLineup } from "../home/DailyIntervlsLineup";
 import "./profileDailyProgress.css";
 
 export function ProfileDailyProgress({ userId }: { userId?: string }) {
@@ -38,23 +38,9 @@ export function ProfileDailyProgress({ userId }: { userId?: string }) {
   return <section className="profile-daily-progress player-profile__card" aria-labelledby="profile-daily-title">
     <div className="profile-daily-progress__heading">
       <h2 id="profile-daily-title">TODAY'S INTERVLS</h2>
-      <strong>{snapshot.points} / 20 PTS</strong>
+      <strong>{snapshot.points} / {maximumDailyPoints} PTS</strong>
     </div>
-    <p>{finished} of 4 games finished</p>
-    <ul>{snapshot.games.map(game => <li className="profile-daily-progress__row" key={game.game}>
-      <span className="profile-daily-progress__game">
-        <span aria-hidden="true" className={`daily-marker daily-${game.game} is-${game.state}`}>
-          <span style={{ width: game.state === "finished" ? "100%" : `min(${game.fraction * 100}%, calc(100% - 4px))` }} />
-        </span>
-        <span>{game.name}</span>
-      </span>
-      <span className="profile-daily-progress__status" aria-label={accessibleStatus(game)}>{game.state === "notStarted" ? "Not started" : <>{game.state === "finished" ? "Finished" : "In progress"} · <span className="profile-daily-progress__points">{game.points} pts</span></>}</span>
-    </li>)}</ul>
+    <p>{finished} of {snapshot.games.length} games finished</p>
+    <DailyIntervlsLineup snapshot={snapshot} />
   </section>;
-}
-
-function accessibleStatus(game: DailyItem): string {
-  if (game.state === "notStarted") return "Not started, 0 of 5 points";
-  const result = game.state === "finished" ? `Finished, ${game.won ? "solved" : "without a win"}` : `In progress${game.detail ? `, ${game.detail}` : ""}`;
-  return `${result}, ${game.points} of 5 points`;
 }

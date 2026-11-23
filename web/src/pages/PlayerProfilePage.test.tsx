@@ -5,6 +5,8 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { localDateString } from "../features/backword/date";
+import { emptyProgress } from "../features/crossword/engine";
+import { createCrosswordStorage } from "../features/crossword/storage";
 import { dailyIntervlsOnboardingKey } from "../features/home/dailyIntervlsOnboarding";
 
 const testAuth = vi.hoisted(() => ({
@@ -71,6 +73,10 @@ describe("PlayerProfilePage", () => {
       localStorage.setItem(dailyIntervlsOnboardingKey, "scoring");
       renderPage();
       const entry = screen.getByRole("button", { name: "Daily Intervls guide" });
+      const daily = screen.getByRole("region", { name: "TODAY'S INTERVLS" });
+      expect(entry).toHaveClass("player-profile__button");
+      expect(daily.nextElementSibling).toBe(entry);
+      expect(daily.parentElement).toHaveClass("player-profile__column--daily");
       fireEvent.click(entry);
       fireEvent.click(within(screen.getByRole("dialog", { name: "Your Daily Intervls" })).getByRole("button", { name: "OK" }));
       const scoring = screen.getByRole("dialog", { name: "Points and Rating" });
@@ -97,10 +103,16 @@ describe("PlayerProfilePage", () => {
     const card = screen.getByRole("region", { name: "TODAY'S INTERVLS" });
     expect(card).toHaveTextContent("3 / 20 PTS");
     expect(card).toHaveTextContent("1 of 4 games finished");
-    const finished = within(card).getByLabelText("Finished, solved, 3 of 5 points");
-    expect(finished).toHaveTextContent("Finished · 3 pts");
-    expect(within(finished).getByText("3 pts")).toHaveClass("profile-daily-progress__points");
-    expect(within(card).getAllByText("Not started")).toHaveLength(3);
+    const rows = within(card).getAllByRole("listitem");
+    expect(rows.map(row => row.querySelector("img")?.alt ?? row.querySelector("strong")?.textContent)).toEqual([
+      "Backword", "QUICK CROSSWORD", "ANAGRAM", "Midword"
+    ]);
+    expect(rows.map(row => within(row).getByText("/ 5").textContent)).toEqual(["3 / 5", "0 / 5", "0 / 5", "0 / 5"]);
+    expect(within(rows[0]).getByText("Finished, solved, 3 of 5 points")).toHaveClass("sr-only");
+    expect(rows[0].querySelector(".daily-marker")).toHaveClass("is-finished");
+    expect(rows[0].querySelector(".daily-marker > span")).toHaveStyle({ width: "100%" });
+    expect(within(card).getAllByText("Not started, 0 of 5 points")).toHaveLength(3);
+    expect(card.querySelectorAll(".daily-marker.is-notStarted")).toHaveLength(3);
     const summary = screen.getByLabelText("Player summary");
     const breakdown = screen.getByRole("heading", { name: "LAST 14 DAYS" });
     expect(card.compareDocumentPosition(summary) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -119,7 +131,28 @@ describe("PlayerProfilePage", () => {
     expect(card).toHaveTextContent("1 of 4 games finished");
   });
 
-  it("shows daily progress points in the primary text colour", () => {
+  it("shows a partially filled marker and earned points for a crossword in progress", () => {
+    testAuth.value.user = null;
+    const date = localDateString();
+    createCrosswordStorage().saveProgress({
+      ...emptyProgress({ id: "daily-crossword", date, size: 9 }),
+      completedClueIds: [1, 2],
+      totalClues: 4,
+      releaseDateScore: 3
+    });
+    renderPage();
+
+    const card = screen.getByRole("region", { name: "TODAY'S INTERVLS" });
+    const crossword = within(card).getByText("QUICK CROSSWORD").closest("li")!;
+    expect(card).toHaveTextContent("3 / 20 PTS");
+    expect(card).toHaveTextContent("0 of 4 games finished");
+    expect(within(crossword).getByText("/ 5")).toHaveTextContent("3 / 5");
+    expect(within(crossword).getByText("In progress, 2 of 4 answers completed, 3 of 5 points")).toHaveClass("sr-only");
+    expect(crossword.querySelector(".daily-marker")).toHaveClass("is-inProgress");
+    expect(crossword.querySelector(".daily-marker > span")).toHaveStyle({ width: "min(50%, calc(100% - 4px))" });
+  });
+
+  it("shows a filled marker for a finished game that earned zero points", () => {
     testAuth.value.user = null;
     const today = localDateString();
     localStorage.setItem("backword:web:progress:v1", JSON.stringify({
@@ -127,10 +160,11 @@ describe("PlayerProfilePage", () => {
     }));
     renderPage();
     const card = screen.getByRole("region", { name: "TODAY'S INTERVLS" });
-    const finished = within(card).getByLabelText("Finished, without a win, 0 of 5 points");
-    expect(within(finished).getByText("0 pts")).toHaveClass("profile-daily-progress__points");
-    const styles = readFileSync(resolve(process.cwd(), "src/features/profile/profileDailyProgress.css"), "utf8");
-    expect(styles).toMatch(/\.profile-daily-progress__points\s*\{[^}]*color:\s*var\(--app-text-primary\)/);
+    const backword = within(card).getByRole("img", { name: "Backword" }).closest("li")!;
+    expect(card).toHaveTextContent("1 of 4 games finished");
+    expect(within(backword).getByText("/ 5")).toHaveTextContent("0 / 5");
+    expect(within(backword).getByText("Finished, without a win, 0 of 5 points")).toHaveClass("sr-only");
+    expect(backword.querySelector(".daily-marker.is-finished > span")).toHaveStyle({ width: "100%" });
   });
 
   it("keeps guest and signed-in daily progress separate", async () => {
@@ -149,6 +183,7 @@ describe("PlayerProfilePage", () => {
     renderPage();
 
     expect(screen.getByRole("heading", { name: "Player Profile" })).toBeInTheDocument();
+    expect(screen.getByText("Your Intervls account")).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Intervls home" })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Download Intervls on the App Store" })).not.toBeInTheDocument();
     const footer = screen.getByRole("navigation", { name: "Footer" });
@@ -168,6 +203,7 @@ describe("PlayerProfilePage", () => {
     const signOut = screen.getByRole("button", { name: "Sign Out" });
     const deleteAccount = screen.getByRole("button", { name: "Delete Account" });
     const breakdown = screen.getByRole("heading", { name: "LAST 14 DAYS" }).closest("section");
+    expect(signOut).toHaveClass("player-profile__button");
     expect(rating.compareDocumentPosition(rollingWindow) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(rollingWindow.compareDocumentPosition(dailyScoring) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(dailyScoring.compareDocumentPosition(account) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -306,7 +342,7 @@ describe("PlayerProfilePage", () => {
 
     expect(screen.getByRole("heading", { name: "Player Profile" })).toBeInTheDocument();
     expect(screen.getByText(/3 \/ \d+ pts/)).toBeInTheDocument();
-    expect(screen.queryByText("YOUR BACKWORD ACCOUNT")).not.toBeInTheDocument();
+    expect(screen.queryByText("Your Intervls account")).not.toBeInTheDocument();
     expect(screen.queryByLabelText("Account summary")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "HOW SCORING WORKS" })).not.toBeInTheDocument();
     expect(screen.queryByRole("dialog", { name: "How scoring works" })).not.toBeInTheDocument();
@@ -392,7 +428,7 @@ describe("PlayerProfilePage", () => {
     // 320px summary + 28px gap + 634px table + 40px page gutters.
     expect(styles).toMatch(/@media \(min-width: 1022px\)\s*\{\s*\.player-profile__layout\s*\{[^}]*grid-template-columns:\s*minmax\(320px, 1fr\) minmax\(634px, 1\.4fr\)/);
     expect(styles).toMatch(/grid-template-areas:\s*"summary daily" "summary breakdown"/);
-    expect(styles).toMatch(/\.player-profile__layout > \.profile-daily-progress\s*\{[^}]*grid-area:\s*daily/);
+    expect(styles).toMatch(/\.player-profile__column--daily\s*\{[^}]*grid-area:\s*daily/);
     expect(styles).not.toMatch(/@media \(min-width: 901px\)\s*\{\s*\.player-profile__layout/);
     expect(styles).toMatch(/\.player-profile__table-scroll\s*\{[^}]*overflow-x:\s*auto/);
     expect(styles).toMatch(/\.player-profile__column\s*\{[^}]*min-width:\s*0/);
@@ -404,10 +440,10 @@ describe("PlayerProfilePage", () => {
     expect(styles).toMatch(/@media \(min-width: 1022px\)\s*\{[\s\S]*?\.player-profile__delete-account\s*\{[^}]*margin-bottom:\s*0/);
   });
 
-  it("gives the delete-account control the same rounded corners as sign out", () => {
+  it("centres the standard profile button labels and uses the same rounded corners for Delete Account", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
 
-    expect(styles).toMatch(/\.player-profile__sign-out\s*\{[^}]*\bborder-radius:\s*9px/);
+    expect(styles).toMatch(/\.player-profile__button\s*\{[^}]*\bborder-radius:\s*9px[^}]*\btext-align:\s*center/);
     expect(styles).toMatch(/\.player-profile__delete-account\s*\{[^}]*\bborder-radius:\s*9px/);
   });
 
