@@ -92,6 +92,11 @@ describe("web home dashboard", () => {
 
   afterEach(() => vi.useRealTimers());
 
+  it("uses a 6px corner radius for the shared Daily Intervls guide card and buttons", () => {
+    const styles = readFileSync(resolve(process.cwd(), "src/features/home/dailyIntervlsGuide.css"), "utf8");
+    expect(styles).toMatch(/\.daily-intervls-guide__card,\s*\.daily-intervls-guide__actions button\s*\{\s*border-radius:\s*6px;/);
+  });
+
   it("uses body-text size for the guide's example points total", () => {
     const styles = readFileSync(resolve(process.cwd(), "src/features/home/dailyIntervlsGuide.css"), "utf8");
     expect(styles).toMatch(/\.daily-intervls-guide__earned\s*\{[^}]*font-size:\s*1rem;/);

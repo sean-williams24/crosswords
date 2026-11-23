@@ -841,6 +841,8 @@ current page and completion in local storage across guests and accounts. A
 legacy pending tip starts at gameplay. A saved scoring step resumes, and a
 saved completion stays complete.
 
+Both pages use a 6px corner radius on the shared web guide card and its buttons.
+
 The Daily Intervls guide button sits directly below Today's Intervls in Player
 Profile. It shares the Sign Out button style and opens the guide from its first
 page. The automatic walkthrough requires each page's acknowledgement. The
