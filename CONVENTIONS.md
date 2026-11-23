@@ -67,9 +67,10 @@ The same importer resizes the opaque icon to 180 × 180 at
 This is an upgrade of the existing app/service. Bundle ID, App Store ID,
 subscription IDs/groups, Supabase/Firebase projects, account UUIDs, Stripe
 customers/prices/metadata keys, local save paths/keys, Keychain identifiers, and
-`backword://login-callback` remain compatible. Legacy account-link error strings
-also remain recognised by the renamed UI. Do not perform a global Backword
-replacement across technical identifiers or game names.
+`backword://login-callback` remain compatible. The Apple entitlement claim
+endpoint returns the original 409 strings because older iOS builds match them
+verbatim. The iOS account UI displays Intervls wording for these conflicts.
+Keep technical identifiers and game names compatible with existing clients.
 
 The web launch uses direct permanent redirects from both Backword hostnames to
 `https://intervls.com`, configured in Vercel's domain settings only at launch.
@@ -2563,9 +2564,11 @@ rolling-rating tier. Result links target the immutable dated game route and add
 the standard share campaign parameters; they do not identify the player.
 
 Chrome and Safari expose an in-page result-share menu so its image copy and
-download paths do not depend on inconsistent native-sheet handling. The menu is
-anchored to the result button within completion modals, and remains openable
-while the PNG is prepared so text copying is never blocked by image rendering.
+download paths do not depend on inconsistent native-sheet handling. Exported
+web cards use `intervls-<game>-<issue>.<format>` for downloads and attachments.
+The menu is anchored to the result button within completion modals, and
+remains openable while the PNG is prepared so text copying is never blocked
+by image rendering.
 Anagram uses the same menu action styling as the other games: its dialog button
 rules apply only to direct dialog controls, and its completed game keeps a
 compact share button after the completion dialog closes. On smaller web layouts

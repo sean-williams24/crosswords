@@ -527,8 +527,9 @@ final class AccountService: ObservableObject {
             // The account sheet keeps the server's safe diagnostic available
             // to retry or correct Apple API configuration.
             let message = AccountFunctionError.message(for: error)
-            localProLinkedElsewhere = AccountEntitlementPresentation.isAlreadyLinkedPurchaseError(message)
-            presentError(error, operation: "Apple entitlement claim", message: message)
+            let linkedPurchaseMessage = AccountEntitlementPresentation.linkedPurchaseErrorMessage(message)
+            localProLinkedElsewhere = linkedPurchaseMessage != nil
+            presentError(error, operation: "Apple entitlement claim", message: linkedPurchaseMessage ?? message)
         }
     }
 

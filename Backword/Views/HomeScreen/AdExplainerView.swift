@@ -76,7 +76,7 @@ struct AdExplainerView: View {
                 )
 
                 explainerText(
-                    "On the free version of Backword, we may show a full-screen advert before the \(gameName) game. The advert usually has a short progress bar or timer, and the close button appears when it finishes.",
+                    "On the free version of Intervls, we may show a full-screen advert before the \(gameName) game. The advert usually has a short progress bar or timer, and the close button appears when it finishes.",
                     font: AppFont.body(15),
                     color: .appTextPrimary
                 )

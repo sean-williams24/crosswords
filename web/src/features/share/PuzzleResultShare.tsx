@@ -116,14 +116,18 @@ async function embeddedAssetSource(url: string): Promise<string> {
   }
 }
 
+type ShareCardFormat = "png" | "svg";
+
+function shareCardFilename(result: PuzzleShareResult, format: ShareCardFormat): string {
+  return `intervls-${result.game}-${result.issueNumber}.${format}`;
+}
+
 function createImmediateCardFile(result: PuzzleShareResult): File | null {
   if (typeof File === "undefined") return null;
-  return new File([puzzleResultCardSvg(result)], `backword-${result.game}-${result.issueNumber}.svg`, {
+  return new File([puzzleResultCardSvg(result)], shareCardFilename(result, "svg"), {
     type: "image/svg+xml"
   });
 }
-
-type ShareCardFormat = "png" | "svg";
 
 /** Native share sheets handle a raster image more consistently than an SVG file. */
 export function shareCardFormat(_userAgent: string): ShareCardFormat {
@@ -179,9 +183,9 @@ async function createEmbeddedCardFile(result: PuzzleShareResult, format: ShareCa
   const svg = puzzleResultCardSvg(result, logoSource, fontSources);
   if (format === "png") {
     const png = await rasterizeCard(svg);
-    return png ? new File([png], `backword-${result.game}-${result.issueNumber}.png`, { type: "image/png" }) : null;
+    return png ? new File([png], shareCardFilename(result, "png"), { type: "image/png" }) : null;
   }
-  return new File([svg], `backword-${result.game}-${result.issueNumber}.svg`, {
+  return new File([svg], shareCardFilename(result, "svg"), {
     type: "image/svg+xml"
   });
 }

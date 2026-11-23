@@ -56,10 +56,14 @@ struct IntervlsBrandTests {
         #expect(StoreService.annualID == "com.backword.annualpro")
     }
 
-    @Test("Legacy account-link errors are still recognised after the rename")
-    func legacyErrorCompatibility() {
-        #expect(AccountEntitlementPresentation.isAlreadyLinkedPurchaseError("This purchase belongs to a different Backword account."))
-        #expect(AccountEntitlementPresentation.isAlreadyLinkedPurchaseError("This subscription is already linked to another Backword account."))
+    @Test("Account-link conflicts display Intervls copy for either server wording", arguments: ["Backword", "Intervls"])
+    func linkedPurchaseErrorBranding(serverBrand: String) {
+        #expect(AccountEntitlementPresentation.linkedPurchaseErrorMessage(
+            "This purchase belongs to a different \(serverBrand) account."
+        ) == "This purchase belongs to a different Intervls account.")
+        #expect(AccountEntitlementPresentation.linkedPurchaseErrorMessage(
+            "This subscription is already linked to another \(serverBrand) account."
+        ) == "This subscription is already linked to another Intervls account.")
         #expect(AccountEntitlementPresentation.linkedElsewhereExplanation.contains("Intervls account"))
     }
 }

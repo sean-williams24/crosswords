@@ -51,9 +51,10 @@ Deno.serve(async (request) => {
       return new Response("Transaction identifiers do not match", { status: 400 });
     }
     // Purchases started while signed in carry this UUID through StoreKit's
-    // appAccountToken, so they cannot be claimed by another Backword account.
+    // appAccountToken, so they cannot be claimed by another Intervls account.
     // Older signed-out purchases have no token and remain claimable only after
     // Apple verifies their transaction with the App Store Server API.
+    // Older iOS builds match both 409 response bodies verbatim.
     if (transaction.appAccountToken && transaction.appAccountToken !== user.id) {
       return new Response("This purchase belongs to a different Backword account.", { status: 409 });
     }

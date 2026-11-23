@@ -201,13 +201,13 @@ struct AccountSyncTests {
 
     @Test("A confirmed cross-account purchase conflict has clear device-only Pro copy")
     func linkedElsewherePurchasePresentation() {
-        #expect(AccountEntitlementPresentation.isAlreadyLinkedPurchaseError(
+        #expect(AccountEntitlementPresentation.linkedPurchaseErrorMessage(
             "This purchase belongs to a different Backword account."
-        ))
+        ) == "This purchase belongs to a different Intervls account.")
         #expect(AccountEntitlementPresentation.linkedElsewhereExplanation.contains("not shared"))
-        #expect(!AccountEntitlementPresentation.isAlreadyLinkedPurchaseError(
+        #expect(AccountEntitlementPresentation.linkedPurchaseErrorMessage(
             "Apple transaction lookup failed (500)."
-        ))
+        ) == nil)
     }
 
     @Test("Account Pro status uses the shared Pro logo and mutes inactive access")

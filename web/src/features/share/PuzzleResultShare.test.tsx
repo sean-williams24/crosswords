@@ -24,7 +24,10 @@ describe("result sharing", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false }));
   });
 
-  afterEach(() => vi.unstubAllGlobals());
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
 
   it("uses descriptive labels for result-card actions", () => {
     expect(resultShareActionLabels).toEqual({
@@ -66,6 +69,31 @@ describe("result sharing", () => {
     const button = screen.getByRole("button", { name: "Share result" });
     expect(button.querySelector(".puzzle-result-share__icon")).toHaveAttribute("aria-hidden", "true");
     expect(button).not.toHaveClass("puzzle-result-share__button--compact");
+  });
+
+  it("downloads the PNG with the Intervls prefix and the game name", async () => {
+    const user = userEvent.setup();
+    const filenames: string[] = [];
+    vi.spyOn(navigator, "userAgent", "get").mockReturnValue("Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36");
+    vi.stubGlobal("URL", class extends URL {
+      static createObjectURL = () => "blob:share-card";
+      static revokeObjectURL = () => {};
+    });
+    vi.stubGlobal("Image", class {
+      onload?: () => void;
+      set src(_url: string) { this.onload?.(); }
+    });
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({ drawImage: vi.fn() } as unknown as CanvasRenderingContext2D);
+    vi.spyOn(HTMLCanvasElement.prototype, "toBlob").mockImplementation(callback => callback(new Blob([], { type: "image/png" })));
+    vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(function (this: HTMLAnchorElement) {
+      filenames.push(this.download);
+    });
+
+    render(<PuzzleResultShare result={{ ...result, game: "midword", gameName: "Midword" }} />);
+    await user.click(screen.getByRole("button", { name: "Share result" }));
+    await user.click(await screen.findByRole("button", { name: "Download results card" }));
+
+    expect(filenames).toEqual(["intervls-midword-7.png"]);
   });
 
   it("uses a PNG image card for both Chrome and Safari", () => {
@@ -179,6 +207,7 @@ describe("result sharing", () => {
 
     await expect(sharePuzzleResult(result)).resolves.toBe("native_file");
     expect(nativeShare).toHaveBeenCalledWith({ files: [expect.any(Blob)] });
+    expect(nativeShare.mock.calls[0][0].files[0].name).toBe("intervls-backword-7.svg");
     expect(nativeShare.mock.calls[0][0].text).toBeUndefined();
     expect(nativeShare.mock.calls[0][0].url).toBeUndefined();
     expect(fetch).not.toHaveBeenCalled();

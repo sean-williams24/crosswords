@@ -182,8 +182,15 @@ enum AccountEntitlementPresentation {
     static let linkedElsewhereExplanation =
         "This App Store subscription is linked to another Intervls account, so it is not shared with this account or on the web."
 
-    static func isAlreadyLinkedPurchaseError(_ message: String) -> Bool {
-        message == "This purchase belongs to a different Backword account."
-            || message == "This subscription is already linked to another Backword account."
+    static func linkedPurchaseErrorMessage(_ message: String) -> String? {
+        switch message {
+        case "This purchase belongs to a different Backword account.",
+             "This purchase belongs to a different Intervls account.",
+             "This subscription is already linked to another Backword account.",
+             "This subscription is already linked to another Intervls account.":
+            return message.replacingOccurrences(of: "Backword", with: AppBrand.name)
+        default:
+            return nil
+        }
     }
 }

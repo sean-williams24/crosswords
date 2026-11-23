@@ -91,7 +91,8 @@ class SupabaseAccountSchemaTests(unittest.TestCase):
 
         self.assertIn("Missing transaction identifiers", claim_function)
         self.assertIn("Transaction identifiers do not match", claim_function)
-        self.assertIn("already linked to another Backword account", claim_function)
+        self.assertIn('new Response("This purchase belongs to a different Backword account.", { status: 409 })', claim_function)
+        self.assertIn('new Response("This subscription is already linked to another Backword account.", { status: 409 })', claim_function)
         self.assertIn("appAccountToken", claim_function)
         self.assertIn('console.error("Apple entitlement claim failed"', claim_function)
         self.assertIn('console.error("Apple entitlement claim unauthenticated"', claim_function)
