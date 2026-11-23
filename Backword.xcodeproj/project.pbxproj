@@ -7,13 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DA1172026112100000000002 /* DailyIntervlsLineupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026112100000000001 /* DailyIntervlsLineupView.swift */; };
-		DA1172026112000000000002 /* DailyIntervlsRatingDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026112000000000001 /* DailyIntervlsRatingDemoView.swift */; };
-		DA1172026112000000000004 /* RatingBarTierLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026112000000000003 /* RatingBarTierLabel.swift */; };
-		DA117202611190000000000A /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000009 /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift */; };
-		DA1172026111900000000006 /* DailyIntervlsGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000005 /* DailyIntervlsGuideView.swift */; };
-		DA1172026111900000000004 /* DailyIntervlsOnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000003 /* DailyIntervlsOnboardingViewModel.swift */; };
-		DA1172026111900000000002 /* DailyIntervlsGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000001 /* DailyIntervlsGuide.swift */; };
 		02C1A6E50078D9539A02B6DE /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9FF2FC2ECF11EDD31D930 /* PuzzleView.swift */; };
 		03ACF849F3B34FEBEB85B85D /* DailyChallengeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A43901A456AE111FBA9C021 /* DailyChallengeStore.swift */; };
 		049A8A912FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */; };
@@ -90,6 +83,7 @@
 		3EB186E94C2EE8FCB7B876AF /* HomeDailyChallengeCelebrationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BE5F7AD1ED68569335BAAB /* HomeDailyChallengeCelebrationRow.swift */; };
 		437E4CF0032D9E5D69A92C43 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BD8C5299844A6BAF87B504 /* AppSettings.swift */; };
 		46E2C3DE4959F83FA6F2E5E1 /* UserStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4D0C7C19A4685DF1DC48C2 /* UserStats.swift */; };
+		4D73F75F81F64094AD12CD4D /* ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9C95148F64F0FBD23DB89 /* ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift */; };
 		51C6F9994EF7199F8EDDF3CA /* PuzzleGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB36B91BB7D50A21760149C /* PuzzleGridView.swift */; };
 		549205098DAD4DCC7F508DD1 /* KeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDCB92E82855EB80981B63B /* KeyboardInputView.swift */; };
 		58638D080E0090141DE592A2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF93C5B6979DA0324E913C9 /* SettingsView.swift */; };
@@ -225,13 +219,14 @@
 		ADA140013011000000000001 /* AnalyticsConsent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA140003011000000000001 /* AnalyticsConsent.swift */; };
 		ADA140033011000000000001 /* AnalyticsConsentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA140023011000000000001 /* AnalyticsConsentViewModel.swift */; };
 		ADA140053011000000000001 /* AnalyticsConsentBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA140043011000000000001 /* AnalyticsConsentBanner.swift */; };
-		ADA1400B3011000000000001 /* AnalyticsConsentBannerPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA1400A3011000000000001 /* AnalyticsConsentBannerPresentation.swift */; };
 		ADA140073011000000000001 /* AnalyticsSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA140063011000000000001 /* AnalyticsSettingsSection.swift */; };
 		ADA140093011000000000001 /* ../CrosswordsTests/AnalyticsConsentViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA140083011000000000001 /* ../CrosswordsTests/AnalyticsConsentViewModelTests.swift */; };
+		ADA1400B3011000000000001 /* AnalyticsConsentBannerPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA1400A3011000000000001 /* AnalyticsConsentBannerPresentation.swift */; };
 		AFA2F03099D439E90FBDB228 /* HomeDailyChallengeCelebration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18807D162976E27AE5C2CEC3 /* HomeDailyChallengeCelebration.swift */; };
 		B022F8B276983EAF1219E126 /* WOTDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */; };
 		B11111111111111111111111 /* MidwordStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11111111111111111111112 /* MidwordStartView.swift */; };
 		B11111111111111111111113 /* ../CrosswordsTests/TimedMidwordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11111111111111111111114 /* ../CrosswordsTests/TimedMidwordTests.swift */; };
+		B6CDBD9066C54B41844A7C79 /* RatingBreakdownTableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B46805492E4408883CBB14 /* RatingBreakdownTableLayout.swift */; };
 		B77DC0100000000000000001 /* ../CrosswordsTests/MidwordColorAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0100000000000000002 /* ../CrosswordsTests/MidwordColorAssetTests.swift */; };
 		B77DC0200000000000000001 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0200000000000000002 /* ../CrosswordsTests/GameDynamicTypeContainerTests.swift */; };
 		B77DC0300000000000000001 /* ../CrosswordsTests/LetterRowSizingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DC0300000000000000002 /* ../CrosswordsTests/LetterRowSizingTests.swift */; };
@@ -251,12 +246,17 @@
 		C9B78241F73047C516573390 /* UserProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A38BFC4B60EA86A8DF662F3E /* UserProgress.swift */; };
 		CDE7B3D1A8B803E660D8E10B /* ../CrosswordsTests/DailyChallengeSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B0C8EE5084C41DFB4EB830 /* ../CrosswordsTests/DailyChallengeSnapshotTests.swift */; };
 		CDFB51C30CE8784881171A9F /* RatingDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */; };
-		B6CDBD9066C54B41844A7C79 /* RatingBreakdownTableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B46805492E4408883CBB14 /* RatingBreakdownTableLayout.swift */; };
-		4D73F75F81F64094AD12CD4D /* ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E9C95148F64F0FBD23DB89 /* ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift */; };
 		CF96B7A7D6669B73DBA8125E /* BackwordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7143C2570D23B983CD7AF74 /* BackwordCard.swift */; };
 		D380A06E810FCE5F5A7B9D43 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AAFAD519B1F99879B1643D /* StoreService.swift */; };
 		D39F9C4C078DA5925A365ABB /* StatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B091EBD64E55AE0AB83F4B /* StatsService.swift */; };
 		D6F52EBA7D6B5D974030B0EB /* HomeDailyChallengeCelebrationLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A862BA3012DCC9C4FC140CE3 /* HomeDailyChallengeCelebrationLogo.swift */; };
+		DA1172026111900000000002 /* DailyIntervlsGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000001 /* DailyIntervlsGuide.swift */; };
+		DA1172026111900000000004 /* DailyIntervlsOnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000003 /* DailyIntervlsOnboardingViewModel.swift */; };
+		DA1172026111900000000006 /* DailyIntervlsGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000005 /* DailyIntervlsGuideView.swift */; };
+		DA117202611190000000000A /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026111900000000009 /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift */; };
+		DA1172026112000000000002 /* DailyIntervlsRatingDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026112000000000001 /* DailyIntervlsRatingDemoView.swift */; };
+		DA1172026112000000000004 /* RatingBarTierLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026112000000000003 /* RatingBarTierLabel.swift */; };
+		DA1172026112100000000002 /* DailyIntervlsLineupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1172026112100000000001 /* DailyIntervlsLineupView.swift */; };
 		DDA73F76F25BD250D7119DEA /* BackwordProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6124F655D1ABA64F820B278 /* BackwordProgress.swift */; };
 		E2020AB31629439996CCB55A /* ArchiveMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63764C5F6E04CBD944B0FEB /* ArchiveMonth.swift */; };
 		E73EB146AC34410C2E51519A /* WOTDDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE3BE7131C4A71B3845485 /* WOTDDetailView.swift */; };
@@ -306,13 +306,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		DA1172026112100000000001 /* DailyIntervlsLineupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsLineupView.swift; sourceTree = "<group>"; };
-		DA1172026112000000000001 /* DailyIntervlsRatingDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsRatingDemoView.swift; sourceTree = "<group>"; };
-		DA1172026112000000000003 /* RatingBarTierLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingBarTierLabel.swift; sourceTree = "<group>"; };
-		DA1172026111900000000009 /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/DailyIntervlsOnboardingTests.swift; sourceTree = "<group>"; };
-		DA1172026111900000000005 /* DailyIntervlsGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsGuideView.swift; sourceTree = "<group>"; };
-		DA1172026111900000000003 /* DailyIntervlsOnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsOnboardingViewModel.swift; sourceTree = "<group>"; };
-		DA1172026111900000000001 /* DailyIntervlsGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsGuide.swift; sourceTree = "<group>"; };
 		038A68C6C4BF20D72379BD11 /* Backword.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backword.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049A8A902FF6392D00A3D921 /* AdFreeExperienceButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFreeExperienceButtonTests.swift; sourceTree = "<group>"; };
 		04ADAE902FFD100000000001 /* AdExplainerPresentationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdExplainerPresentationPolicyTests.swift; sourceTree = "<group>"; };
@@ -388,6 +381,7 @@
 		464EFF9C497E2B1F8674F3B7 /* BackwordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordView.swift; sourceTree = "<group>"; };
 		47B091EBD64E55AE0AB83F4B /* StatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsService.swift; sourceTree = "<group>"; };
 		4A43901A456AE111FBA9C021 /* DailyChallengeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyChallengeStore.swift; sourceTree = "<group>"; };
+		55B46805492E4408883CBB14 /* RatingBreakdownTableLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingBreakdownTableLayout.swift; sourceTree = "<group>"; };
 		5EE22632345BAEF6D547A3AB /* HomeDailyChallengeMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDailyChallengeMarker.swift; sourceTree = "<group>"; };
 		625E52DC74D846679E9A73FE /* ArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveViewModel.swift; sourceTree = "<group>"; };
 		64455C838772CB66C039CCE2 /* BackwordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordViewModel.swift; sourceTree = "<group>"; };
@@ -446,8 +440,6 @@
 		91C21DA95E2C4F219E2947D0 /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
 		922354966A899721DF1CF25C /* CrosswordStatsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CrosswordStatsView.swift; sourceTree = "<group>"; };
 		963F153A2AC2B9E9E8D44DAF /* RatingDetailSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RatingDetailSheet.swift; sourceTree = "<group>"; };
-		55B46805492E4408883CBB14 /* RatingBreakdownTableLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingBreakdownTableLayout.swift; sourceTree = "<group>"; };
-		D3E9C95148F64F0FBD23DB89 /* ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift; sourceTree = "<group>"; };
 		9D1AA88826DBFDA8FE8ECE12 /* HapticsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsEngine.swift; sourceTree = "<group>"; };
 		A04496BE6230D031AE10977A /* DebugSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSettingsView.swift; sourceTree = "<group>"; };
 		A0A000000000000000000001 /* AnagramPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnagramPuzzle.swift; sourceTree = "<group>"; };
@@ -525,9 +517,9 @@
 		ADA140003011000000000001 /* AnalyticsConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConsent.swift; sourceTree = "<group>"; };
 		ADA140023011000000000001 /* AnalyticsConsentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConsentViewModel.swift; sourceTree = "<group>"; };
 		ADA140043011000000000001 /* AnalyticsConsentBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConsentBanner.swift; sourceTree = "<group>"; };
-		ADA1400A3011000000000001 /* AnalyticsConsentBannerPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConsentBannerPresentation.swift; sourceTree = "<group>"; };
 		ADA140063011000000000001 /* AnalyticsSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSettingsSection.swift; sourceTree = "<group>"; };
 		ADA140083011000000000001 /* ../CrosswordsTests/AnalyticsConsentViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/AnalyticsConsentViewModelTests.swift; sourceTree = "<group>"; };
+		ADA1400A3011000000000001 /* AnalyticsConsentBannerPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConsentBannerPresentation.swift; sourceTree = "<group>"; };
 		B11111111111111111111112 /* MidwordStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidwordStartView.swift; sourceTree = "<group>"; };
 		B11111111111111111111114 /* ../CrosswordsTests/TimedMidwordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/TimedMidwordTests.swift; sourceTree = "<group>"; };
 		B35393D8C1799968B4B9119D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -552,8 +544,16 @@
 		C9C0EFCFD82AE5B548185AC6 /* WOTDService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WOTDService.swift; sourceTree = "<group>"; };
 		CAB36B91BB7D50A21760149C /* PuzzleGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleGridView.swift; sourceTree = "<group>"; };
 		D15EB4D0D354246894E51C7E /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
+		D3E9C95148F64F0FBD23DB89 /* ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/RatingBreakdownTableLayoutTests.swift; sourceTree = "<group>"; };
 		D6AAFAD519B1F99879B1643D /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		D84C8AB718DDE4C9E0EDDE1F /* ClueListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClueListView.swift; sourceTree = "<group>"; };
+		DA1172026111900000000001 /* DailyIntervlsGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsGuide.swift; sourceTree = "<group>"; };
+		DA1172026111900000000003 /* DailyIntervlsOnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsOnboardingViewModel.swift; sourceTree = "<group>"; };
+		DA1172026111900000000005 /* DailyIntervlsGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsGuideView.swift; sourceTree = "<group>"; };
+		DA1172026111900000000009 /* ../CrosswordsTests/DailyIntervlsOnboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../CrosswordsTests/DailyIntervlsOnboardingTests.swift; sourceTree = "<group>"; };
+		DA1172026112000000000001 /* DailyIntervlsRatingDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsRatingDemoView.swift; sourceTree = "<group>"; };
+		DA1172026112000000000003 /* RatingBarTierLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingBarTierLabel.swift; sourceTree = "<group>"; };
+		DA1172026112100000000001 /* DailyIntervlsLineupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyIntervlsLineupView.swift; sourceTree = "<group>"; };
 		E6124F655D1ABA64F820B278 /* BackwordProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordProgress.swift; sourceTree = "<group>"; };
 		E6C438C3B404924971764D12 /* CrosswordsProducts.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = CrosswordsProducts.storekit; sourceTree = "<group>"; };
 		E7143C2570D23B983CD7AF74 /* BackwordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackwordCard.swift; sourceTree = "<group>"; };
@@ -1513,7 +1513,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.12;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1706,7 +1706,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.12;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.backword.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
