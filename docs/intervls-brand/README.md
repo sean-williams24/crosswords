@@ -39,7 +39,8 @@ Screen shortcuts by `import-icon.swift` above, after removing its unused alpha c
 | `intervls-pro-stripe-902x700.png` | Stripe product image, matching the supplied Backword Pro reference dimensions |
 | `intervls-dark.svg` / `.pdf` | Cropped supplied logo on dark surfaces and share cards |
 | `social-cover-1640x624.png` | Social cover using the supplied dark logo |
-| `social-preview-1200x630.png` | Website link preview using the supplied dark logo |
+| `Intervals Social Logo.png` | Supplied square website link preview, copied to `web/public/brand/intervls-social-preview-square.png` |
+| `social-preview-1200x630.png` | Landscape artwork served at the legacy website preview URL |
 | `app-store-header-3840x1646.png` | Product-page promotional header |
 | `app-store-header-5244x2950.png` | Larger product-page promotional header |
 | `app-store-search-3840x2560.png` | Search promotional artwork |
@@ -52,7 +53,7 @@ SWIFT_MODULECACHE_PATH=/private/tmp/intervls-swift-module-cache \
 swift docs/intervls-brand/render-brand.swift "$PWD"
 ```
 
-This updates the website wordmarks/link preview, iOS wordmark image sets, and wordmark-based promotional exports. Outfit is used only for the existing tagline. Game logos, source files, icons, and original screenshots are preserved. Review the updated app in Xcode before release; fresh screenshots/video remain outstanding.
+This updates the website wordmarks and legacy landscape preview, iOS wordmark image sets, and wordmark-based promotional exports. Outfit is used only for the existing tagline. Game logos, source files, icons, and original screenshots are preserved. Review the updated app in Xcode before release; fresh screenshots/video remain outstanding.
 
 The promotional tagline is **Free daily word games to challenge your mind**.
 Its light blue is opaque sRGB `#7FA9E3`, chosen for legibility on the near-black
@@ -62,7 +63,7 @@ App Store crop. The taller header and social layouts retain their spacing.
 These are static images: the wider header's adjustment applies wherever that
 asset is displayed, so check its App Store preview after upload.
 Add `--promotional-only` to regenerate only PNG promotional artwork and the
-website link preview while preserving the imported wordmark PDFs/SVGs.
+legacy landscape preview while preserving the imported wordmark PDFs/SVGs.
 
 The Stripe image is a separate imagegen export with a white Intervls wordmark
 and a trailing gold PRO badge on a near-black background. It is ready for manual

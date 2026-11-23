@@ -11,7 +11,7 @@ All text is prepared for review. No posts or emails have been sent. Rebrand the 
 - Bio: **Free daily word games to challenge your mind. Formerly Backword.**
 - Avatar: `../intervls-brand/intervls-icon.png`
 - Cover: `../intervls-brand/social-cover-1640x624.png`
-- Link preview: `../intervls-brand/social-preview-1200x630.png`
+- Link preview: `../intervls-brand/Intervals Social Logo.png`
 
 Update Facebook Page name and username separately, the About section, contact/website fields, buttons, Instagram highlights, TikTok bio/link, link-in-bio tools, QR codes, active ads, and reusable video end cards. Keep a pinned transition post for at least 90 days. Existing historical posts can stay; update pinned or actively promoted material first.
 

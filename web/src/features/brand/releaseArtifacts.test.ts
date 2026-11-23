@@ -85,9 +85,21 @@ describe("Intervls release artifacts", () => {
     expect(subtitle.centerY).toBeCloseTo(subtitleCenter, 2);
     expect(title.maxY).toBeLessThan(subtitle.minY);
   });
-  it("keeps the website link preview identical to the social export", () => {
+  it("keeps the legacy landscape preview identical to the social export", () => {
     expect(read("web/public/brand/intervls-social-preview.png"))
       .toEqual(read("docs/intervls-brand/social-preview-1200x630.png"));
+  });
+  it("advertises the supplied square wordmark for website link previews", () => {
+    const html = new DOMParser().parseFromString(read("web/index.html").toString(), "text/html");
+    const image = html.querySelector('meta[property="og:image"]')?.getAttribute("content");
+    expect(image).toBe("https://intervls.com/brand/intervls-social-preview-square.png");
+    const png = read(`web/public${new URL(image!).pathname}`);
+    expect(png).toEqual(read("docs/intervls-brand/Intervals Social Logo.png"));
+    expect(png.readUInt32BE(16)).toBe(1024);
+    expect(png.readUInt32BE(20)).toBe(1024);
+    expect(html.querySelector('meta[property="og:image:width"]')?.getAttribute("content")).toBe("1024");
+    expect(html.querySelector('meta[property="og:image:height"]')?.getAttribute("content")).toBe("1024");
+    expect(html.querySelector('meta[name="twitter:card"]')?.getAttribute("content")).toBe("summary");
   });
   it("keeps the approved marketing line in launch copy and the artwork renderer", () => {
     const metadata = JSON.parse(read("docs/intervls-rebrand/app-store-metadata.en-GB.json").toString());

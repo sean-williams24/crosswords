@@ -29,6 +29,9 @@ inbound forwarding only, not published contact addresses.
 The browser Home title is `Intervls — Free daily word games`. Marketing copy uses
 `Free daily word games to challenge your mind`, including social previews and
 promotional artwork. Keep page-specific game titles and Pro access explanations.
+Website link metadata points to the supplied 1024 × 1024 social wordmark so
+compact link cards can show the full logo. The old landscape image URL stays
+available for cached previews.
 App Store and social promotional text uses light blue `#7FA9E3` for contrast
 against the near-black artwork background. The wider 3840 × 1646 App Store
 header moves the wordmark down and the tagline up by 5% of the canvas height
